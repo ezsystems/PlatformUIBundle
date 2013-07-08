@@ -1,5 +1,8 @@
 parameters:
-#    ez_systems_editorial.example.class: EzSystems\EditorialBundle\Example
+    # use the EzSystemsEditorialBundle's pagelayout
+    # Remove this as soon as we have a proper design/theme system
+    ezpublish_legacy.ezdemo_site_user.view_default_layout: EzSystemsEditorialBundle::pagelayout.html.twig
+    ezpublish_legacy.eng.view_default_layout: EzSystemsEditorialBundle::pagelayout.html.twig
 
 services:
 #    ez_systems_editorial.example:
