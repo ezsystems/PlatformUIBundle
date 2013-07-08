@@ -1,0 +1,7 @@
+parameters:
+#    ez_systems_editorial.example.class: EzSystems\EditorialBundle\Example
+
+services:
+#    ez_systems_editorial.example:
+#        class: %ez_systems_editorial.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
