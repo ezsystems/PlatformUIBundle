@@ -1,6 +1,41 @@
 {% extends "eZDemoBundle::pagelayout.html.twig" %}
 
 {% block footerScript %}
+<p><a href="#/edit">Edit</a></p>
+<div class="ez-editorial-app"></div>
+<script>
+YUI.GlobalConfig = {
 
+    modules: {
+        "ez-editorialapp": {
+            requires: [
+                'app', 'app-transitions',
+                'ez-contenteditview'
+            ],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/apps/ez-editorialapp.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
+        "ez-contenteditview": {
+            requires: [
+                'view'
+            ],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-contenteditview.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        }
+    }
+};
+
+YUI().use('ez-editorialapp', function (Y) {
+    var app = new Y.eZ.EditorialApp({
+            container: '.ez-editorial-app'
+        });
+
+    app.render().dispatch();
+});
+
+
+</script>
     {{ parent() }}
 {% endblock %}
