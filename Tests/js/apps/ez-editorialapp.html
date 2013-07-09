@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Editorial App tests</title>
+</head>
+<body>
+
+<div class="app">
+    <div class="view-container"></div>
+</div>
+
+
+<script type="text/javascript" src="http://yui.yahooapis.com/3.10.3/build/yui/yui.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
+    YUI({
+        coverage: ['ez-editorialapp'],
+        filter: filter,
+        modules: {
+            "ez-editorialapp": {
+                requires: [
+                    'app', 'app-transitions', 'node-screen', 'event-tap', 'transition'
+                ],
+                fullpath: "../../../Resources/public/js/apps/ez-editorialapp" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            },
+
+        }
+    }).use('test', 'ez-editorialapp', function (Y) {
+        var app, appTest, container = Y.one('.app'), docHeight = container.get('docHeight');
+
+        app  = new Y.eZ.EditorialApp({
+            container: '.app',
+            viewContainer: '.view-container'
+        });
+        app.render();
+
+        appTest = new Y.Test.Case({
+            name: "eZ Editorial App tests",
+
+            "Should open the application": function () {
+
+                app.open({}, {}, function () { });
+                Y.assert(
+                    container.hasClass('is-app-open'),
+                    "The app container should have the class is-app-open"
+                );
+                console.log(app.get('viewContainer').getStyle('height'));
+                Y.Assert.areEqual(
+                    app.get('viewContainer').getStyle('height').replace('px', ''),
+                    docHeight,
+                    "The view container should have the same height as the document"
+                );
+            },
+
+            "Should close the application": function () {
+                app.close();
+
+                this.wait(function () {
+                    Y.assert(
+                        !container.hasClass('is-app-open'),
+                        "The app container should not have the class is-app-open"
+                    );
+
+                    Y.Assert.areEqual(
+                        container.getStyle('transform'),
+                        'none',
+                        "The container should have 'none' as transform"
+                    );
+
+                    Y.Assert.areEqual(
+                        app.get('viewContainer').getStyle('height'),
+                        'auto',
+                        "The view container should have 'auto' as height"
+                    );
+                }, 400);
+            },
+
+            "Should open again the application": function () {
+                this["Should open the application"]();
+            },
+
+
+            "Should close again the application": function () {
+                this["Should close the application"]();
+            },
+
+            "Should close the application when contentEditView:close event is fired": function () {
+                app.open(null, null, function () { });
+
+                app.fire('contentEditView:close');
+
+                this.wait(function () {
+                    Y.assert(
+                        !container.hasClass('is-app-open'),
+                        "The app container should not have the class is-app-open"
+                    );
+                }, 400);
+            }
+        });
+
+        Y.Test.Runner.setName("eZ Editorial App tests");
+        Y.Test.Runner.add(appTest);
+        Y.Test.Runner.run();
+
+    });
+</script>
+</body>
+</html>
