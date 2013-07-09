@@ -1,0 +1,26 @@
+
+.ez-editorial-app {
+    position:absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    width: 100%;
+}
+
+.is-app-open {
+    display: block;
+    z-index: 1000;
+}
+
+.ez-view-container {
+    width: 100%;
+    min-height: 100%;
+}
+
+.ez-view-contenteditview {
+    overflow: hidden;
+    padding-left: 10%;
+    height: 100%;
+    background: #000;
+    background: rgba(0, 0, 0, 0.8);
+}

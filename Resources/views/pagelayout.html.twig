@@ -2,24 +2,35 @@
 
 {% block footerScript %}
 <p><a href="#/edit">Edit</a></p>
-<div class="ez-editorial-app"></div>
+<div class="ez-editorial-app pure">
+    <div class="ez-view-container"></div>
+</div>
+{% stylesheets
+    '@EzSystemsEditorialBundle/Resources/public/css/pure/0.2.0/base-context-min.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/layout.css'
+%}
+<link rel="stylesheet" href="{{ asset_url }}" />
+{% endstylesheets %}
 <script>
 YUI.GlobalConfig = {
-
     modules: {
         "ez-editorialapp": {
             requires: [
-                'app', 'app-transitions',
+                'app', 'app-transitions', 'node-screen',
                 'ez-contenteditview'
             ],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/apps/ez-editorialapp.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         },
+        "ez-templatebasedview": {
+            requires: ['view', 'handlebars'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-templatebasedview.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
         "ez-contenteditview": {
-            requires: [
-                'view'
-            ],
+            requires: ['ez-templatebasedview'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-contenteditview.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
@@ -29,13 +40,18 @@ YUI.GlobalConfig = {
 
 YUI().use('ez-editorialapp', function (Y) {
     var app = new Y.eZ.EditorialApp({
-            container: '.ez-editorial-app'
+            container: '.ez-editorial-app',
+            viewContainer: '.ez-view-container'
         });
 
     app.render().dispatch();
 });
 
 
+</script>
+
+<script type="text/x-handlebars-template" id="contenteditview-ez-template">
+    <h1>Content edit view</h1>
 </script>
     {{ parent() }}
 {% endblock %}

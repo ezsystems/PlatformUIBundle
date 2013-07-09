@@ -7,6 +7,8 @@ YUI.add('ez-editorialapp', function (Y) {
 
     Y.namespace('eZ');
 
+    var APP_OPEN = 'is-app-open';
+
     /**
      * Editorial Application
      *
@@ -33,13 +35,30 @@ YUI.add('ez-editorialapp', function (Y) {
          */
         handleContentEdit: function (req, res, next) {
             this.showView('contentEditView');
+        },
+
+        /**
+         * Changes the application state to be open
+         *
+         * @method open
+         * @param {Object} req the request object
+         * @param {Function} res the response object
+         * @param {Function} next the function to pass control to the next route callback
+         */
+        open: function (req, res, next) {
+            var container = this.get('container'),
+                viewContainer = this.get('viewContainer');
+
+            container.addClass(APP_OPEN);
+            viewContainer.setStyle('height', container.get('docHeight') + 'px');
+            next();
         }
 
     }, {
         ATTRS: {
             routes: {
                 value: [
-                    {path: '/edit', callback: 'handleContentEdit'}
+                    {path: '/edit', callback: ['open', 'handleContentEdit']}
                 ]
             },
             serverRouting: {

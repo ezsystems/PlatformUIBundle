@@ -13,9 +13,9 @@ YUI.add('ez-contenteditview', function (Y) {
      * @namespace eZ
      * @class ContentEditView
      * @constructor
-     * @extends View
+     * @extends eZ.TemplateBasedView
      */
-    Y.eZ.ContentEditView = Y.Base.create('contentEditView', Y.View, [], {
+    Y.eZ.ContentEditView = Y.Base.create('contentEditView', Y.eZ.TemplateBasedView, [], {
 
         /**
          * Renders the content edit view
@@ -24,6 +24,7 @@ YUI.add('ez-contenteditview', function (Y) {
          * @return {eZ.ContentEditView} the view itself
          */
         render: function () {
+            this.get('container').setHTML(this.template());
             return this;
         }
 
