@@ -76,8 +76,18 @@ YUI.add('ez-editorialapp', function (Y) {
             var container = this.get('container'),
                 viewContainer = this.get('viewContainer');
 
-            container.removeClass(APP_OPEN);
-            viewContainer.setStyle('height', 'auto');
+            container.transition({
+                duration: 0.3,
+                transform: 'translateX(100%)',
+
+                on: {
+                    end: function () {
+                        container.removeClass(APP_OPEN)
+                            .setStyle('transform', 'none');
+                        viewContainer.setStyle('height', 'auto');
+                    }
+                }
+            });
         }
 
     }, {
