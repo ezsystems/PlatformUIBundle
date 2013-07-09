@@ -1,10 +1,60 @@
 
+@font-face {
+    font-family: 'ez-editorial-icomoon';
+    src:url('../bundles/ezsystemseditorial/fonts/icomoon.eot');
+    src:url('../bundles/ezsystemseditorial/fonts/icomoon.eot?#iefix') format('embedded-opentype'),
+        url('../bundles/ezsystemseditorial/fonts/icomoon.woff') format('woff'),
+        url('../bundles/ezsystemseditorial/fonts/icomoon.ttf') format('truetype'),
+        url('../bundles/ezsystemseditorial/fonts/icomoon.svg#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+    font-family: 'ez-editorial-icomoon';
+    content: attr(data-icon);
+    speak: none;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+
+[data-icon-after]:after {
+    font-family: 'ez-editorial-icomoon';
+    content: attr(data-icon-after);
+    speak: none;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ez-editorial-app a:hover {
+    text-decoration: none;
+}
+
+.ez-editorial-app h1,
+.ez-editorial-app h2,
+.ez-editorial-app h3,
+.ez-editorial-app h4,
+.ez-editorial-app h5,
+.ez-editorial-app h5 {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+
+}
+
 .ez-editorial-app {
     position:absolute;
     top: 0;
     left: 0;
     display: none;
     width: 100%;
+
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .is-app-open {
@@ -23,4 +73,61 @@
     height: 100%;
     background: #000;
     background: rgba(0, 0, 0, 0.8);
+    color: #444;
+}
+
+.ez-view-contenteditview .ez-main-content {
+    background: #f3f3f3;
+    min-height: 800px; /* temporary, until we get enough content */
+    border-bottom-left-radius: 10px;
+}
+
+
+.ez-view-contenteditview header {
+    padding: 2em;
+    background: #f3f3f3;
+}
+
+.ez-view-contenteditview .ez-view-close {
+    display: block;
+    float: right;
+    font-weight: bold;
+    color: #555;
+    font-size: 90%;
+}
+
+
+.ez-view-contenteditview .ez-view-close:after {
+    font-size: 90%;
+    padding-left: 0.5em;
+}
+
+.ez-view-contenteditview .ez-content-name {
+    color: #222;
+    margin: 0;
+}
+
+
+.ez-view-contenteditview .ez-content-name:before {
+    padding-right: 0.3em;
+}
+
+.ez-view-contenteditview .ez-technical-infos {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    font-size: 80%;
+}
+
+.ez-view-contenteditview .ez-technical-infos li {
+    display: inline-block;
+}
+
+
+.ez-view-contenteditview .ez-technical-infos li:after {
+    content: " /";
+}
+
+.ez-view-contenteditview .ez-technical-infos li:last-child:after {
+    content: "";
 }

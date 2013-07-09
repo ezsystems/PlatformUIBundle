@@ -26,6 +26,19 @@ YUI.add('ez-editorialapp', function (Y) {
         },
 
         /**
+         * Initialize the application:
+         *
+         *   * set up the 'close' event that closes the application
+         *
+         * @method initiliazer
+         */
+        initializer: function () {
+            this.on('contentEditView:close', function (e) {
+                this.close();
+            });
+        },
+
+        /**
          * Display the content edit view
          *
          * @method handleContentEdit
@@ -52,6 +65,19 @@ YUI.add('ez-editorialapp', function (Y) {
             container.addClass(APP_OPEN);
             viewContainer.setStyle('height', container.get('docHeight') + 'px');
             next();
+        },
+
+        /**
+         * Changes the application sate to be close
+         *
+         * @method close
+         */
+        close: function () {
+            var container = this.get('container'),
+                viewContainer = this.get('viewContainer');
+
+            container.removeClass(APP_OPEN);
+            viewContainer.setStyle('height', 'auto');
         }
 
     }, {

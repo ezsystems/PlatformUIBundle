@@ -16,7 +16,7 @@ YUI.GlobalConfig = {
     modules: {
         "ez-editorialapp": {
             requires: [
-                'app', 'app-transitions', 'node-screen',
+                'app', 'app-transitions', 'node-screen', 'event-tap', 'transition',
                 'ez-contenteditview'
             ],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/apps/ez-editorialapp.js' %}
@@ -50,8 +50,21 @@ YUI().use('ez-editorialapp', function (Y) {
 
 </script>
 
+{% verbatim %}
 <script type="text/x-handlebars-template" id="contenteditview-ez-template">
-    <h1>Content edit view</h1>
+    <div class="ez-main-content">
+        <header>
+            <a href="#" class="ez-view-close" data-icon-after="&#xe000;">Close</a>
+            <h1 class="ez-content-name" data-icon="&#xe001;">Content title</h1>
+            <ul class="ez-technical-infos"{{#unless isTouch}} style="opacity: 0;"{{/unless}}>
+                <li>Article</li>
+                <li>Created by Administrator</li>
+                <li>12.09.2013</li>
+                <li>Object ID: 1212, Node ID: 234234</li>
+            </ul>
+        </header>
+    </div>
 </script>
+{% endverbatim %}
     {{ parent() }}
 {% endblock %}
