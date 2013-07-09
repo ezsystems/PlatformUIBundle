@@ -63,6 +63,13 @@ YUI.add('ez-editorialapp', function (Y) {
             },
             serverRouting: {
                 value: false
+            },
+            transitions: {
+                value: {
+                    navigate: 'slideLeft',
+                    toChild: 'slideLeft',
+                    toParent: 'slideRight'
+                }
             }
         }
     });
