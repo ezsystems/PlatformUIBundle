@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Content Edit view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="contenteditview-ez-template">
+    <div class="ez-main-content">
+        <header>
+            <a href="#" class="ez-view-close">Close</a>
+            <h1 class="ez-content-name">Content title</h1>
+            <ul class="ez-technical-infos"{{#unless isTouch}} style="opacity: 0;"{{/unless}}>
+                <li>Article</li>
+            </ul>
+        </header>
+    </div>
+</script>
+
+
+<script type="text/javascript" src="http://yui.yahooapis.com/3.10.3/build/yui/yui.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
+
+    YUI({
+        coverage: ['ez-contenteditview'],
+        filter: filter,
+        modules: {
+            "ez-contenteditview": {
+                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-contenteditview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            },
+            "ez-templatebasedview": {
+                requires: ['view', 'handlebars'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            }
+        }
+    }).use('test', 'event-tap', 'node-event-simulate', 'ez-contenteditview', function (Y) {
+        var view, container = Y.one('.container')
+
+            GESTURE_MAP = Y.Event._GESTURE_MAP;
+
+        // trick to simulate a tap event
+        // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
+        Y.Node.prototype.tap = function (startOpts, endOpts) {
+            Y.Event.simulate(this._node, GESTURE_MAP.start, startOpts);
+            Y.Event.simulate(this._node, GESTURE_MAP.end, endOpts);
+        };
+        Y.NodeList.importMethod(Y.Node.prototype, 'tap');
+
+
+        viewTest = new Y.Test.Case({
+            name: "eZ Content Edit View test",
+
+            _should: {
+                ignore: {
+                    "Should fire a close event": (Y.UA.phantomjs) // tap trick does not work in phantomjs
+                }
+            },
+
+            "Should fire a close event": function () {
+                var closeFired = false;
+
+
+                view = new Y.eZ.ContentEditView({
+                    container: container
+                });
+                view.render();
+
+                view.on('close', function (e) {
+                    closeFired = true;
+                });
+
+                Y.one('.ez-view-close').tap();
+                Y.assert(closeFired, "The close event should have been fired");
+
+                view.destroy();
+            },
+
+            "opacity of technical infos should vary if the device is not a touch device": function () {
+                var header;
+
+                view = new Y.eZ.ContentEditView({
+                    container: container
+                });
+                view._isTouch = function () { return false };
+                view.render();
+
+                header = view.get('container').one('header');
+                header.simulate('mouseover');
+                
+                this.wait(function () {
+                    Y.assert(
+                        header.one('.ez-technical-infos').getStyle('opacity') == 1,
+                        "Opacity should be 1"
+                    );
+                }, 300);
+
+
+                header.simulate('mouseout');
+                this.wait(function () {
+                    Y.assert(
+                        header.one('.ez-technical-infos').getStyle('opacity') == 0,
+                        "Opacity should be 0"
+                    );
+                }, 300);
+
+                view.destroy();
+            },
+
+            "opacity of technical infos should stay at 1 if the device is a touch device": function () {
+                var header;
+
+                view = new Y.eZ.ContentEditView({
+                    container: container
+                });
+                view._isTouch = function () { return true };
+                view.render();
+
+                header = view.get('container').one('header');
+                header.simulate('mouseover');
+                
+
+                Y.assert(
+                    header.one('.ez-technical-infos').getStyle('opacity') == 1,
+                    "Opacity should be 1"
+                );
+                this.wait(function () {
+                    Y.assert(
+                        header.one('.ez-technical-infos').getStyle('opacity') == 1,
+                        "Opacity should be 1"
+                    );
+                }, 300);
+
+
+                header.simulate('mouseout');
+                Y.assert(
+                    header.one('.ez-technical-infos').getStyle('opacity') == 1,
+                    "Opacity should be 1"
+                );
+                this.wait(function () {
+                    Y.assert(
+                        header.one('.ez-technical-infos').getStyle('opacity') == 1,
+                        "Opacity should be 1"
+                    );
+                }, 300);
+
+                view.destroy();
+            }
+
+        });
+
+        Y.Test.Runner.setName("eZ Content Edit View tests");
+        Y.Test.Runner.add(viewTest);
+        Y.Test.Runner.run();
+
+    });
+</script>
+</body>
+</html>

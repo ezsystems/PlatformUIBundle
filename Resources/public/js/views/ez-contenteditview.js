@@ -36,8 +36,19 @@ YUI.add('ez-contenteditview', function (Y) {
          */
         render: function () {
             this.get('container').setHTML(this.template({
-                isTouch: IS_TOUCH
+                isTouch: this._isTouch()
             }));
+            return this;
+        },
+
+        /**
+         * Destroys the content edit view
+         *
+         * @method destroy
+         * @return {eZ.ContentEditView} the view itself
+         */
+        destroy: function () {
+            this.get('container').setHTML('');
             return this;
         },
 
@@ -50,7 +61,7 @@ YUI.add('ez-contenteditview', function (Y) {
          * @protected
          */
         _showDetails: function () {
-            if ( !IS_TOUCH ) {
+            if ( !this._isTouch() ) {
                 this.get('container')
                     .all(DETAILS_SEL)
                     .show('fadeIn', {duration: 0.2});
@@ -66,7 +77,7 @@ YUI.add('ez-contenteditview', function (Y) {
          * @protected
          */
         _hideDetails: function () {
-            if ( !IS_TOUCH ) {
+            if ( !this._isTouch() ) {
                 this.get('container')
                     .all(DETAILS_SEL)
                     .hide('fadeOut', {duration: 0.2});
@@ -88,6 +99,17 @@ YUI.add('ez-contenteditview', function (Y) {
              */
             this.fire('close');
             e.preventDefault();
+        },
+
+        /**
+         * Returns whether the current browser is a touch device or not
+         *
+         * @method _isTouch
+         * @private
+         * @return {Boolean}
+         */
+        _isTouch: function () {
+            return IS_TOUCH;
         }
     });
 
