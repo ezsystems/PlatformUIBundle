@@ -26,7 +26,7 @@ YUI.add('ez-templatebasedview', function (Y) {
          *   * the template property is filled with the content of the element
          *     which id is the name of view in the lower case followed by
          *     "-ez-template". If this element is not found, the template property
-         *     is filled with an empty function
+         *     is filled with a function that returns an empty string
          *   * defines the containerTemplate property so that it contains a
          *     class based on the name of the view object
          *
@@ -35,7 +35,7 @@ YUI.add('ez-templatebasedview', function (Y) {
         initializer: function () {
             var tplEl = Y.one('#' + this.name.toLowerCase() + TPL_ELEM_SUFFIX);
 
-            this.template = function () { };
+            this.template = function () { return ''; };
             if ( tplEl ) {
                 this.template = Y.Handlebars.compile(
                     tplEl.getHTML()
