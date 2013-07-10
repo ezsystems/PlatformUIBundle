@@ -16,7 +16,7 @@ YUI.GlobalConfig = {
     modules: {
         "ez-editorialapp": {
             requires: [
-                'app', 'app-transitions', 'node-screen', 'event-tap', 'transition',
+                'app', 'app-transitions', 'node-screen',
                 'ez-contenteditview'
             ],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/apps/ez-editorialapp.js' %}
@@ -30,7 +30,7 @@ YUI.GlobalConfig = {
             {% endjavascripts %}
         },
         "ez-contenteditview": {
-            requires: ['ez-templatebasedview'],
+            requires: ['ez-templatebasedview', 'transition', 'event-tap'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-contenteditview.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
