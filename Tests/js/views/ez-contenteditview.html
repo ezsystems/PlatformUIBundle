@@ -60,6 +60,41 @@
                 }
             },
 
+            "Test render/destroy": function () {
+                var templateCalled = false,
+                    origTpl;
+
+                view = new Y.eZ.ContentEditView({
+                    container: container
+                });
+                origTpl = view.template;
+                view.template = function () {
+                    templateCalled = true;
+                    return origTpl.apply(this, arguments);
+                };
+                view.render();
+                Y.Assert.isTrue(templateCalled, "The template should have used to render the view");
+                Y.Assert.areNotEqual("", container.getHTML(), "View container should contain the result of the view");
+
+                view.destroy();
+                Y.Assert.areEqual("", container.getHTML(), "View container should be empty");
+            },
+
+            "Test available variable in template": function () {
+                view = new Y.eZ.ContentEditView({
+                    container: container
+                });
+                view.template = function (variables) {
+                    Y.Assert.isObject(variables, "The template should receive some variables");
+                    Y.Assert.areEqual(1, Y.Object.keys(variables).length, "The template should receive one variable");
+                    Y.Assert.isBoolean(variables.isTouch, "isTouch should be available in the template and should be boolean");
+
+                    return "";
+                };
+                view.render();
+                view.destroy();
+            },
+
             "Should fire a close event": function () {
                 var closeFired = false;
 
