@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Template based view tests</title>
+</head>
+<body>
+
+<script type="text/x-handlebars-template" id="testview-ez-template">template based view</script>
+<script type="text/javascript" src="http://yui.yahooapis.com/3.10.3/build/yui/yui.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
+
+    YUI({
+        coverage: ['ez-templatebasedview'],
+        filter: filter,
+        modules: {
+            "ez-templatebasedview": {
+                requires: ['view', 'handlebars'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            }
+        }
+    }).use('test', 'ez-templatebasedview', function (Y) {
+        var testView, testViewNoTemplate;
+
+        testView = Y.Base.create('testView', Y.eZ.TemplateBasedView, []);
+        testViewNoTemplate = Y.Base.create('testViewNoTemplate', Y.eZ.TemplateBasedView, []);
+
+        viewTest = new Y.Test.Case({
+            name: "eZ Template based view test",
+
+            "Should find the template": function () {
+                var view = new testView();
+
+                Y.Assert.isFunction(view.template, "The template property should be function");
+                Y.Assert.areEqual(
+                    Y.one('#testview-ez-template').getHTML(), view.template(),
+                    "The template should generate the content of the #testview-ez-template element"
+                );
+            },
+            "Should generate a template which returns an empty is the template element is not found": function () {
+                var view = new testViewNoTemplate();
+
+                Y.Assert.isFunction(view.template, "The template property should be function");
+                Y.Assert.areEqual(
+                    "", view.template(),
+                    "The template should generate the content of the #testview-ez-template element"
+                );
+            },
+            "containerTemplate property should include a class based on the view name": function () {
+                var view = new testView(), n;
+
+                n = Y.Node.create(view.containerTemplate);
+                Y.assert(
+                    n.hasClass("ez-view-testview"),
+                    "A node created with containerTemplate property should have the class ez-view-testview"
+                );
+            }
+        });
+
+        Y.Test.Runner.setName("eZ Template Based view tests");
+        Y.Test.Runner.add(viewTest);
+        Y.Test.Runner.run();
+
+    });
+</script>
+</body>
+</html>
