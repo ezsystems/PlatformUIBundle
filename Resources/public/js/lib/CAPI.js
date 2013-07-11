@@ -4663,6 +4663,7 @@ var ConnectionManager = (function() {
         this._endPointUrl = endPointUrl;
         this._authenticationAgent = authenticationAgent;
 
+        this._connectionFactory = connectionFactory;
         this._activeConnection = connectionFactory.createConnection();
 
         this.logRequests = false;
@@ -4694,7 +4695,8 @@ var ConnectionManager = (function() {
                 url : this._endPointUrl + url,
                 body : body,
                 headers : headers
-            });
+            }),
+            c = this._connectionFactory.createConnection();
 
         // TODO: Suspend Requests during initial authentication
         // Check if we are already authenticated, make it happen if not
@@ -4711,7 +4713,7 @@ var ConnectionManager = (function() {
                                     console.log(request);
                                 }
                                 // Main goal
-                                that._activeConnection.execute(authenticatedRequest, callback);
+                                c.execute(authenticatedRequest, callback);
                             } else {
                                 callback(
                                     new CAPIError({
