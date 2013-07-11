@@ -60,7 +60,7 @@
                 }
             },
 
-            "Test render/destroy": function () {
+            "Test render": function () {
                 var templateCalled = false,
                     origTpl;
 
@@ -77,7 +77,6 @@
                 Y.Assert.areNotEqual("", container.getHTML(), "View container should contain the result of the view");
 
                 view.destroy();
-                Y.Assert.areEqual("", container.getHTML(), "View container should be empty");
             },
 
             "Test available variable in template": function () {

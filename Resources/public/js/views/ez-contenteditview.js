@@ -42,17 +42,6 @@ YUI.add('ez-contenteditview', function (Y) {
         },
 
         /**
-         * Destroys the content edit view
-         *
-         * @method destroy
-         * @return {eZ.ContentEditView} the view itself
-         */
-        destroy: function () {
-            this.get('container').setHTML('');
-            return this;
-        },
-
-        /**
          * Shows the technical infos of the content. If the device is detected
          * as a touch device, it does nothing as the technical infos are always
          * visible in this case.
