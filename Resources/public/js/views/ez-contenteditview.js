@@ -36,7 +36,11 @@ YUI.add('ez-contenteditview', function (Y) {
          */
         render: function () {
             this.get('container').setHTML(this.template({
-                isTouch: this._isTouch()
+                isTouch: this._isTouch(),
+                content: this.get('content'),
+                mainLocation: this.get('mainLocation'),
+                contentType: this.get('contentType'),
+                owner: this.get('owner')
             }));
             return this;
         },
@@ -99,6 +103,52 @@ YUI.add('ez-contenteditview', function (Y) {
          */
         _isTouch: function () {
             return IS_TOUCH;
+        }
+    }, {
+        ATTRS: {
+            /**
+             * The content being edited
+             *
+             * @attribute content
+             * @default {}
+             * @required
+             */
+            content: {
+                value: {}
+            },
+
+            /**
+             * The content type of the content being edited
+             *
+             * @attribute contentType
+             * @default {}
+             * @required
+             */
+            contentType: {
+                value: {}
+            },
+
+            /**
+             * The main location of the content being edited
+             *
+             * @attribute mainLocation
+             * @default {}
+             * @required
+             */
+            mainLocation: {
+                value: {}
+            },
+
+            /**
+             * The owner of the content being edited
+             *
+             * @attribute owner
+             * @default {}
+             * @required
+             */
+            owner: {
+                value: {}
+            }
         }
     });
 

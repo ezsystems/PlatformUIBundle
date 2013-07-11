@@ -76,12 +76,12 @@ YUI().use('ez-editorialapp', function (Y) {
     <div class="ez-main-content">
         <header>
             <a href="#" class="ez-view-close" data-icon-after="&#xe000;">Close</a>
-            <h1 class="ez-content-name" data-icon="&#xe001;">Content title</h1>
+            <h1 class="ez-content-name" data-icon="&#xe001;">{{ content.Name }}</h1>
             <ul class="ez-technical-infos"{{#unless isTouch}} style="opacity: 0;"{{/unless}}>
-                <li>Article</li>
-                <li>Created by Administrator</li>
-                <li>12.09.2013</li>
-                <li>Object ID: 1212, Node ID: 234234</li>
+                <li>{{ contentType.identifier }}</li>
+                <li>Created by {{ owner.name }}</li>
+                <li>{{ content.lastModificationDate }}</li>
+                <li>Object ID: {{ content._id }}, Node ID: {{ mainLocation.id }}</li>
             </ul>
         </header>
     </div>

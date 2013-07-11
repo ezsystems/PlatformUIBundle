@@ -38,7 +38,8 @@
             }
         }
     }).use('test', 'event-tap', 'node-event-simulate', 'ez-contenteditview', function (Y) {
-        var container = Y.one('.container')
+        var container = Y.one('.container'),
+            content = {}, contentType = {}, owner = {}, mainLocation = {};
 
             GESTURE_MAP = Y.Event._GESTURE_MAP;
 
@@ -62,7 +63,11 @@
 
             setUp: function () {
                 this.view = new Y.eZ.ContentEditView({
-                    container: container
+                    container: container,
+                    content: content,
+                    contentType: contentType,
+                    mainLocation: mainLocation,
+                    owner: owner
                 });
             },
 
@@ -87,8 +92,17 @@
             "Test available variable in template": function () {
                 this.view.template = function (variables) {
                     Y.Assert.isObject(variables, "The template should receive some variables");
-                    Y.Assert.areEqual(1, Y.Object.keys(variables).length, "The template should receive one variable");
+                    Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variables");
                     Y.Assert.isBoolean(variables.isTouch, "isTouch should be available in the template and should be boolean");
+                    Y.Assert.isObject(variables.content, "content should be available in the template and should be an object");
+                    Y.Assert.isObject(variables.contentType, "contentType should be available in the template and should be an object");
+                    Y.Assert.isObject(variables.mainLocation, "mainLocation should be available in the template and should be an object");
+                    Y.Assert.isObject(variables.owner, "owner should be available in the template and should be an object");
+
+                    Y.Assert.areSame(content, variables.content, "content should be the content provided while creating the view");
+                    Y.Assert.areSame(contentType, variables.contentType, "contentType should be the contentType provided while creating the view");
+                    Y.Assert.areSame(mainLocation, variables.mainLocation, "mainLocation should be the mainLocation provided while creating the view");
+                    Y.Assert.areSame(owner, variables.owner, "owner should be the owner provided while creating the view");
 
                     return "";
                 };
