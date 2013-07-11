@@ -30,7 +30,7 @@ YUI.add('ez-editorialapp', function (Y) {
          *
          *   * set up the 'close' event that closes the application
          *
-         * @method initiliazer
+         * @method initializer
          */
         initializer: function () {
             this.on('contentEditView:close', function (e) {
