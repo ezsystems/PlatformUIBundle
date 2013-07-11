@@ -14,10 +14,15 @@
 <script>
 YUI.GlobalConfig = {
     modules: {
+        "ez-capi": {
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/lib/CAPI.js' %}
+            fullpath: "{{ asset_url }}",
+            {% endjavascripts %}
+        },
         "ez-editorialapp": {
             requires: [
                 'app', 'app-transitions', 'node-screen',
-                'ez-contenteditview'
+                'ez-capi', 'ez-contenteditview'
             ],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/apps/ez-editorialapp.js' %}
             fullpath: "{{ asset_url }}"
@@ -35,19 +40,35 @@ YUI.GlobalConfig = {
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         }
+    },
+    onSuccess: function (e) {
+        for (var i = 0, len = e.data.length; i < len; ++i) {
+            if ( e.data[i] === 'ez-capi' ) {
+                YUI.add('ez-capi', function (Y) {
+                    Y.namespace('eZ');
+                    Y.eZ.CAPI = CAPI;
+                    Y.eZ.SessionAuthAgent = SessionAuthAgent;
+                });
+            }
+        }
     }
 };
 
 YUI().use('ez-editorialapp', function (Y) {
     var app = new Y.eZ.EditorialApp({
             container: '.ez-editorial-app',
-            viewContainer: '.ez-view-container'
+            viewContainer: '.ez-view-container',
+            capi: new Y.eZ.CAPI(
+                "{{ app.request.uriForPath('/')|trim('/') }}",
+                new Y.eZ.SessionAuthAgent({
+                    login: "admin",
+                    password: "ezpublish"
+                })
+            )
         });
 
     app.render().dispatch();
 });
-
-
 </script>
 
 {% verbatim %}

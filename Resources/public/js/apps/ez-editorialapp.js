@@ -106,6 +106,20 @@ YUI.add('ez-editorialapp', function (Y) {
                     toChild: 'slideLeft',
                     toParent: 'slideRight'
                 }
+            },
+
+            /**
+             * eZ Publish REST client
+             *
+             * @attribute capi
+             * @default null
+             * @type eZ.CAPI
+             * @writeOnce
+             * @required
+             */
+            capi: {
+                writeOnce: "initOnly",
+                value: null
             }
         }
     });
