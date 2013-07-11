@@ -38,7 +38,7 @@
             }
         }
     }).use('test', 'event-tap', 'node-event-simulate', 'ez-contenteditview', function (Y) {
-        var view, container = Y.one('.container')
+        var container = Y.one('.container')
 
             GESTURE_MAP = Y.Event._GESTURE_MAP;
 
@@ -60,69 +60,61 @@
                 }
             },
 
+            setUp: function () {
+                this.view = new Y.eZ.ContentEditView({
+                    container: container
+                });
+            },
+
+            tearDown: function () {
+                this.view.destroy();
+            },
+
             "Test render": function () {
                 var templateCalled = false,
                     origTpl;
 
-                view = new Y.eZ.ContentEditView({
-                    container: container
-                });
-                origTpl = view.template;
-                view.template = function () {
+                origTpl = this.view.template;
+                this.view.template = function () {
                     templateCalled = true;
                     return origTpl.apply(this, arguments);
                 };
-                view.render();
-                Y.Assert.isTrue(templateCalled, "The template should have used to render the view");
-                Y.Assert.areNotEqual("", container.getHTML(), "View container should contain the result of the view");
-
-                view.destroy();
+                this.view.render();
+                Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
+                Y.Assert.areNotEqual("", container.getHTML(), "View container should contain the result of the this.view");
             },
 
             "Test available variable in template": function () {
-                view = new Y.eZ.ContentEditView({
-                    container: container
-                });
-                view.template = function (variables) {
+                this.view.template = function (variables) {
                     Y.Assert.isObject(variables, "The template should receive some variables");
                     Y.Assert.areEqual(1, Y.Object.keys(variables).length, "The template should receive one variable");
                     Y.Assert.isBoolean(variables.isTouch, "isTouch should be available in the template and should be boolean");
 
                     return "";
                 };
-                view.render();
-                view.destroy();
+                this.view.render();
             },
 
             "Should fire a close event": function () {
                 var closeFired = false;
 
+                this.view.render();
 
-                view = new Y.eZ.ContentEditView({
-                    container: container
-                });
-                view.render();
-
-                view.on('close', function (e) {
+                this.view.on('close', function (e) {
                     closeFired = true;
                 });
 
-                Y.one('.ez-view-close').tap();
+                Y.one('.ez-this.view-close').tap();
                 Y.assert(closeFired, "The close event should have been fired");
-
-                view.destroy();
             },
 
             "opacity of technical infos should vary if the device is not a touch device": function () {
                 var header;
 
-                view = new Y.eZ.ContentEditView({
-                    container: container
-                });
-                view._isTouch = function () { return false };
-                view.render();
+                this.view._isTouch = function () { return false };
+                this.view.render();
 
-                header = view.get('container').one('header');
+                header = this.view.get('container').one('header');
                 header.simulate('mouseover');
                 
                 this.wait(function () {
@@ -140,20 +132,15 @@
                         "Opacity should be 0"
                     );
                 }, 300);
-
-                view.destroy();
             },
 
             "opacity of technical infos should stay at 1 if the device is a touch device": function () {
                 var header;
 
-                view = new Y.eZ.ContentEditView({
-                    container: container
-                });
-                view._isTouch = function () { return true };
-                view.render();
+                this.view._isTouch = function () { return true };
+                this.view.render();
 
-                header = view.get('container').one('header');
+                header = this.view.get('container').one('header');
                 header.simulate('mouseover');
                 
 
@@ -180,8 +167,6 @@
                         "Opacity should be 1"
                     );
                 }, 300);
-
-                view.destroy();
             }
 
         });
