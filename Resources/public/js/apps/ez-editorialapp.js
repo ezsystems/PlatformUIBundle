@@ -7,7 +7,8 @@ YUI.add('ez-editorialapp', function (Y) {
 
     Y.namespace('eZ');
 
-    var APP_OPEN = 'is-app-open';
+    var L = Y.Lang,
+        APP_OPEN = 'is-app-open';
 
     /**
      * Editorial Application
@@ -123,7 +124,9 @@ YUI.add('ez-editorialapp', function (Y) {
 
             container.addClass(APP_OPEN);
             viewContainer.setStyle('height', container.get('docHeight') + 'px');
-            next();
+            if ( L.isFunction(next) ) {
+                next();
+            }
         },
 
         /**

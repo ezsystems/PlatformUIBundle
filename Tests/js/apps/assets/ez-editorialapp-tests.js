@@ -45,8 +45,13 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         name: "eZ Editorial App tests",
 
         "Should open the application": function () {
+            var nextCalled = false;
 
-            app.open({}, {}, function () { });
+            app.open({}, {}, function () {
+                nextCalled = true;
+            });
+
+            Y.assert(nextCalled, "Next middleware should have been called");
             Y.assert(
                 container.hasClass('is-app-open'),
                 "The app container should have the class is-app-open"
@@ -91,7 +96,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
 
         "Should close the application when contentEditView:close event is fired": function () {
-            app.open(null, null, function () { });
+            app.open();
 
             app.fire('contentEditView:close');
 
