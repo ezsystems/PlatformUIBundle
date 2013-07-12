@@ -50,16 +50,24 @@
 .ez-editorial-app {
     position:absolute;
     top: 0;
-    left: 0;
-    display: none;
+    left: 100%;
     width: 100%;
+    opacity: 0;
 
+    -moz-transition: opacity 0.2s ease, left 0.3s ease;
+    -webkit-transition: opacity 0.2s ease, left 0.3s ease;
+    -o-transition: opacity 0.2s ease, left 0.3s ease;
+    -ms-transition: opacity 0.2s ease, left 0.3s ease;
+    transition: opacity 0.2s ease, left 0.3s ease;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .is-app-open {
-    display: block;
+    left: 0;
     z-index: 1000;
+    opacity: 1;
+    background: #000;
+    background: rgba(0, 0, 0, 0.8);
 }
 
 .ez-view-container {
@@ -140,8 +148,6 @@
     overflow: hidden;
     padding-left: 10%;
     height: 100%;
-    background: #000;
-    background: rgba(0, 0, 0, 0.8);
     color: #444;
 }
 

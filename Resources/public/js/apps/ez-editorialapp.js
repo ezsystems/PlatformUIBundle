@@ -24,6 +24,9 @@ YUI.add('ez-editorialapp', function (Y) {
         views: {
             contentEditView: {
                 type: Y.eZ.ContentEditView
+            },
+            dummyView: {
+                type: Y.View
             }
         },
 
@@ -148,12 +151,9 @@ YUI.add('ez-editorialapp', function (Y) {
          * @method close
          */
         close: function () {
-            var container = this.get('container'),
-                viewContainer = this.get('viewContainer');
-
-            container.transition({
-                duration: 0.3,
-                transform: 'translateX(100%)',
+            this.showView('dummyView');
+            this.get('container').removeClass(APP_OPEN);
+        },
 
         /**
          * Event handler for the loadingChange event. Adds or removes the

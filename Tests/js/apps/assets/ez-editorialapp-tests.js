@@ -2,7 +2,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
     var app, appTest,
         capiMock,
-        container = Y.one('.app'), docHeight = container.get('docHeight'),
+        container = Y.one('.app'),
 
         LOAD_CONTENT_RESPONSE = {
             "Content": {
@@ -45,7 +45,8 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         name: "eZ Editorial App tests",
 
         "Should open the application": function () {
-            var nextCalled = false;
+            var nextCalled = false,
+                 docHeight = container.get('docHeight');
 
             app.open({}, {}, function () {
                 nextCalled = true;
@@ -70,18 +71,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 Y.assert(
                     !container.hasClass('is-app-open'),
                     "The app container should not have the class is-app-open"
-                );
-
-                Y.Assert.areEqual(
-                    container.getStyle('transform'),
-                    'none',
-                    "The container should have 'none' as transform"
-                );
-
-                Y.Assert.areEqual(
-                    app.get('viewContainer').getStyle('height'),
-                    'auto',
-                    "The view container should have 'auto' as height"
                 );
             }, 400);
         },
