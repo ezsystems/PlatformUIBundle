@@ -82,6 +82,7 @@ YUI.add('ez-editorialapp', function (Y) {
                 userService = capi.getUserService(),
                 contentTypeService = capi.getContentTypeService();
 
+            // TODO moves this to proper Model objects
             contentService.loadContentInfoAndCurrentVersion(
                 "/api/ezp/v2/content/objects/" + req.params.id,
                 function (error, response) {
@@ -112,8 +113,12 @@ YUI.add('ez-editorialapp', function (Y) {
                         contentTypeService.loadContentType(
                             struct.Content.ContentType._href,
                             tasks.add(function (error, response) {
+                                var type = Y.JSON.parse(response.body).ContentType;
+
+                                // TODO: take the one with a correct language
+                                type.Name = type.names.value[0]["#text"];
                                 if ( !error ) {
-                                    app.set('contentEditViewVariables.contentType', Y.JSON.parse(response.body).ContentType);
+                                    app.set('contentEditViewVariables.contentType', type);
                                 }
                             })
                         );

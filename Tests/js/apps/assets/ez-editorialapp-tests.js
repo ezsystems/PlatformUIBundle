@@ -31,7 +31,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
         LOAD_USER_RESPONSE = {"User": {"_id": 14}},
         LOAD_LOCATION_RESPONSE = {"Location": {"id": 2}},
-        LOAD_CONTENTTYPE_RESPONSE = {"ContentType": {"id": 23}};
+        LOAD_CONTENTTYPE_RESPONSE = {"ContentType": {"id": 23, "names": {"value": [{"#text": "Name"}]}}};
 
     capiMock = new Y.Mock();
     app = new Y.eZ.EditorialApp({
