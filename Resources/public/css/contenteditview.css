@@ -1,0 +1,53 @@
+.ez-view-contenteditview {
+    overflow: hidden;
+    padding-left: 10%;
+    height: 100%;
+}
+
+.ez-view-contenteditview .ez-main-content {
+    min-height: 800px; /* temporary, until we get enough content */
+}
+
+.ez-view-contenteditview header {
+    padding: 2em;
+}
+
+.ez-view-contenteditview .ez-view-close {
+    display: block;
+    float: right;
+    font-weight: bold;
+    font-size: 90%;
+}
+
+.ez-view-contenteditview .ez-view-close:after {
+    font-size: 90%;
+    padding-left: 0.5em;
+}
+
+.ez-view-contenteditview .ez-content-name {
+    color: #222;
+    margin: 0;
+}
+
+.ez-view-contenteditview .ez-content-name:before {
+    padding-right: 0.3em;
+}
+
+.ez-view-contenteditview .ez-technical-infos {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    font-size: 80%;
+}
+
+.ez-view-contenteditview .ez-technical-infos li {
+    display: inline-block;
+}
+
+.ez-view-contenteditview .ez-technical-infos li:after {
+    content: " /";
+}
+
+.ez-view-contenteditview .ez-technical-infos li:last-child:after {
+    content: "";
+}

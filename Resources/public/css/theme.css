@@ -1,0 +1,63 @@
+/* application styles */
+@font-face {
+    font-family: 'ez-editorial-icomoon';
+    src:url('../bundles/ezsystemseditorial/fonts/icomoon.eot');
+    src:url('../bundles/ezsystemseditorial/fonts/icomoon.eot?#iefix') format('embedded-opentype'),
+        url('../bundles/ezsystemseditorial/fonts/icomoon.woff') format('woff'),
+        url('../bundles/ezsystemseditorial/fonts/icomoon.ttf') format('truetype'),
+        url('../bundles/ezsystemseditorial/fonts/icomoon.svg#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.ez-editorial-app h1,
+.ez-editorial-app h2,
+.ez-editorial-app h3,
+.ez-editorial-app h4,
+.ez-editorial-app h5,
+.ez-editorial-app h5,
+.ez-editorial-app {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+
+}
+
+.is-app-open {
+    background: #000;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+
+.is-app-loading .ez-view-container:before {
+    -moz-animation: spin 0.5s infinite linear;
+    -o-animation: spin 0.5s infinite linear;
+    -webkit-animation: spin 0.5s infinite linear;
+    animation: spin 0.5s infinite linear;
+    box-sizing: border-box;
+    border-radius: 2em;
+    border-width: 0.5em;
+    border-style: solid;
+    border-color: #aaa #aaa #aaa #fff;
+    border-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
+
+/* content edit view */
+.ez-view-contenteditview {
+    color: #444;
+}
+
+.ez-view-contenteditview .ez-main-content {
+    background: #f3f3f3;
+    border-bottom-left-radius: 10px;
+}
+
+.ez-view-contenteditview header {
+    background: #f3f3f3;
+}
+
+.ez-view-contenteditview .ez-view-close {
+    color: #555;
+}
+
+.ez-view-contenteditview .ez-content-name {
+    color: #222;
+}

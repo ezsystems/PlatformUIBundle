@@ -1,16 +1,18 @@
 {% extends "eZDemoBundle::pagelayout.html.twig" %}
 
 {% block footerScript %}
-<ul style="position: absolute; top: 0; left: 0;">
-    <li><a href="#/edit/59">Edit Getting started</a></li>
-    <li><a href="#/edit/186">Edit Post-by-REST-2</a></li>
-</ul>
+<p style="position: absolute; top: 0; left: 200px;">
+    <a href="#/edit/59" class="btn btn-warning">Edit "Getting started"</a>
+    <a href="#/edit/186" class="btn btn-warning">Edit "Post-by-REST-2"</a>
+</p>
 <div class="ez-editorial-app pure">
     <div class="ez-view-container"></div>
 </div>
 {% stylesheets
     '@EzSystemsEditorialBundle/Resources/public/css/pure/0.2.0/base-context-min.css'
     '@EzSystemsEditorialBundle/Resources/public/css/layout.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/contenteditview.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/theme.css'
 %}
 <link rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}
