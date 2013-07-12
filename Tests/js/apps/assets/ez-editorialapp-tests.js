@@ -191,6 +191,38 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             Y.Assert.areEqual(LOAD_USER_RESPONSE.User._id, vars.owner._id);
             Y.Assert.areEqual(LOAD_CONTENTTYPE_RESPONSE.ContentType.id, vars.contentType.id);
             Y.Assert.areEqual(LOAD_LOCATION_RESPONSE.Location.id, vars.mainLocation.id);
+        },
+
+        "Should show the content edit view": function () {
+            var rendered = false, initialized = false,
+                vars = {'content': 1, 'contentType': {}, 'mainLocation': {}, 'owner': {}};
+
+            app.views.contentEditView.type = Y.Base.create('testView', Y.View, [], {
+                initializer: function () {
+                    initialized = true;
+                },
+
+                render: function () {
+                    rendered = true;
+                    Y.Assert.areEqual(
+                        this.get('content'), vars.content,
+                        "The view attributes should be updated with the app contentEditViewVariables attribute"
+                    );
+                }
+            });
+
+            app.set('contentEditViewVariables', vars);
+            app.handleContentEdit();
+
+            Y.assert(initialized, "The content edit view should have been initialized");
+            Y.assert(rendered, "The content edit view should have been rendered");
+
+            rendered = false;
+            vars.content++;
+            app.set('contentEditViewVariables', vars);
+            app.handleContentEdit();
+
+            Y.assert(rendered, "The content edit view should have been rerendered");
         }
     });
 
