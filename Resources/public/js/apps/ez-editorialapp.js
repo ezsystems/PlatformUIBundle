@@ -8,7 +8,8 @@ YUI.add('ez-editorialapp', function (Y) {
     Y.namespace('eZ');
 
     var L = Y.Lang,
-        APP_OPEN = 'is-app-open';
+        APP_OPEN = 'is-app-open',
+        APP_LOADING = 'is-app-loading';
 
     /**
      * Editorial Application
@@ -37,6 +38,12 @@ YUI.add('ez-editorialapp', function (Y) {
             this.on('contentEditView:close', function (e) {
                 this.close();
             });
+
+            this.on('loadingChange', this._loading);
+
+            this.on('navigate', function (e) {
+                this.set('loading', true);
+            });
         },
 
         /**
@@ -48,7 +55,13 @@ YUI.add('ez-editorialapp', function (Y) {
          * @param {Function} next the function to pass control to the next route callback
          */
         handleContentEdit: function (req, res, next) {
-            this.showView('contentEditView', this.get('contentEditViewVariables'));
+            this.showView('contentEditView', this.get('contentEditViewVariables'), {
+                update: true,
+                render: true,
+                callback: function () {
+                    this.set('loading', false);
+                }
+            });
         },
 
         /**
@@ -142,14 +155,20 @@ YUI.add('ez-editorialapp', function (Y) {
                 duration: 0.3,
                 transform: 'translateX(100%)',
 
-                on: {
-                    end: function () {
-                        container.removeClass(APP_OPEN)
-                            .setStyle('transform', 'none');
-                        viewContainer.setStyle('height', 'auto');
-                    }
-                }
-            });
+        /**
+         * Event handler for the loadingChange event. Adds or removes the
+         * is-app-loading class on the application container.
+         *
+         * @method _loading
+         * @method protected
+         * @param {Object} e the event facade object of the loadingChange event
+         */
+        _loading: function (e) {
+            if ( e.newVal ) {
+                this.get('container').addClass(APP_LOADING);
+            } else {
+                this.get('container').removeClass(APP_LOADING);
+            }
         }
 
     }, {
@@ -168,6 +187,19 @@ YUI.add('ez-editorialapp', function (Y) {
                     toChild: 'slideLeft',
                     toParent: 'slideRight'
                 }
+            },
+
+            /**
+             * Loading state. Tells whether the application is waiting for
+             * something to be loaded
+             *
+             * @attribute loading
+             * @default false
+             * @type boolean
+             */
+            loading: {
+                validator: L.isBoolean,
+                value: false
             },
 
             /**

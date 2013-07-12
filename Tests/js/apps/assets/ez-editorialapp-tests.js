@@ -108,6 +108,30 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             }, 400);
         },
 
+        "Should set/unset the app in loading mode": function () {
+            app.set('loading', true);
+            Y.assert(
+                container.hasClass('is-app-loading'),
+                "The application container should get the is-app-loading class"
+            );
+            app.set('loading', false);
+            Y.assert(
+                !container.hasClass('is-app-loading'),
+                "The application container should not get the is-app-loading class"
+            );
+        },
+
+        "Navigate event should change the loading attribute": function () {
+            app.set('loading', false);
+            app.fire('navigate');
+            Y.assert(
+                app.get('loading'),
+                "The application should be in loading mode"
+            );
+            app.set('loading', false);
+        },
+
+
         "Should load the content info and the current version and the associated entities": function () {
             var contentServiceMock, userServiceMock, contentTypeServiceMock,
                 nextCalled = false, vars,
