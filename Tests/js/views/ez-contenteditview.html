@@ -110,7 +110,8 @@
             },
 
             "Should fire a close event": function () {
-                var closeFired = false;
+                var closeFired = false,
+                    close;
 
                 this.view.render();
 
@@ -118,7 +119,123 @@
                     closeFired = true;
                 });
 
-                Y.one('.ez-view-close').tap();
+                close = Y.one('.ez-view-close');
+                close.tap({
+                    target: close,
+                    type: GESTURE_MAP.start,
+                    bubbles: true,            // boolean
+                    cancelable: true,         // boolean
+                    view: window,               // DOMWindow
+                    detail: 0,
+                    pageX: 5,
+                    pageY:5,            // long
+                    screenX: 5,
+                    screenY: 5,  // long
+                    clientX: 5,
+                    clientY: 5,   // long
+                    ctrlKey: false,
+                    altKey: false,
+                    shiftKey:false,
+                    metaKey: false, // boolean
+                    touches: [
+                        {
+                            identifier: 'foo',
+                            screenX: 5,
+                            screenY: 5,
+                            clientX: 5,
+                            clientY: 5,
+                            pageX: 5,
+                            pageY: 5,
+                            radiusX: 15,
+                            radiusY: 15,
+                            rotationAngle: 0,
+                            force: 0.5,
+                            target: close
+                        }
+                    ],            // TouchList
+                    targetTouches: [
+                        {
+                            identifier: 'foo',
+                            screenX: 5,
+                            screenY: 5,
+                            clientX: 5,
+                            clientY: 5,
+                            pageX: 5,
+                            pageY: 5,
+                            radiusX: 15,
+                            radiusY: 15,
+                            rotationAngle: 0,
+                            force: 0.5,
+                            target: close
+                        }
+                    ],      // TouchList
+                    changedTouches: []     // TouchList
+                }, {
+                    target: close,
+                    type: GESTURE_MAP.end,
+                    bubbles: true,            // boolean
+                    cancelable: true,         // boolean
+                    view: window,               // DOMWindow
+                    detail: 0,
+                    pageX: 5,
+                    pageY:5,            // long
+                    screenX: 5,
+                    screenY: 5,  // long
+                    clientX: 5,
+                    clientY: 5,   // long
+                    ctrlKey: false,
+                    altKey: false,
+                    shiftKey:false,
+                    metaKey: false, // boolean
+                    touches: [
+                        {
+                            identifier: 'foo',
+                            screenX: 5,
+                            screenY: 5,
+                            clientX: 5,
+                            clientY: 5,
+                            pageX: 5,
+                            pageY: 5,
+                            radiusX: 15,
+                            radiusY: 15,
+                            rotationAngle: 0,
+                            force: 0.5,
+                            target: close
+                        }
+                    ],            // TouchList
+                    targetTouches: [
+                        {
+                            identifier: 'foo',
+                            screenX: 5,
+                            screenY: 5,
+                            clientX: 5,
+                            clientY: 5,
+                            pageX: 5,
+                            pageY: 5,
+                            radiusX: 15,
+                            radiusY: 15,
+                            rotationAngle: 0,
+                            force: 0.5,
+                            target: close
+                        }
+                    ],      // TouchList
+                    changedTouches: [
+                        {
+                            identifier: 'foo',
+                            screenX: 5,
+                            screenY: 5,
+                            clientX: 5,
+                            clientY: 5,
+                            pageX: 5,
+                            pageY: 5,
+                            radiusX: 15,
+                            radiusY: 15,
+                            rotationAngle: 0,
+                            force: 0.5,
+                            target: close
+                        }
+                    ]
+                });
                 Y.assert(closeFired, "The close event should have been fired");
             },
 
@@ -130,7 +247,7 @@
 
                 header = this.view.get('container').one('header');
                 header.simulate('mouseover');
-                
+
                 this.wait(function () {
                     Y.assert(
                         header.one('.ez-technical-infos').getStyle('opacity') == 1,
@@ -156,7 +273,7 @@
 
                 header = this.view.get('container').one('header');
                 header.simulate('mouseover');
-                
+
 
                 Y.assert(
                     header.one('.ez-technical-infos').getStyle('opacity') == 1,
