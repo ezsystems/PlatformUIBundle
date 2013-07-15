@@ -1,7 +1,12 @@
 .ez-view-contenteditview {
     overflow: hidden;
-    padding-left: 10%;
     height: 100%;
+}
+
+@media (min-width: 980px) {
+    .ez-view-contenteditview {
+        padding-left: 10%;
+    }
 }
 
 .ez-view-contenteditview .ez-main-content {
