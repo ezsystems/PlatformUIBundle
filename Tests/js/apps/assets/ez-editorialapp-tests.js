@@ -211,18 +211,26 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 }
             });
 
+            app.set('loading', true);
             app.set('contentEditViewVariables', vars);
             app.handleContentEdit();
 
             Y.assert(initialized, "The content edit view should have been initialized");
             Y.assert(rendered, "The content edit view should have been rendered");
+            this.wait(function () {
+                Y.assert(!app.get('loading'), "The app should not be in loading mode");
+            }, 500);
 
             rendered = false;
             vars.content++;
+            app.set('loading', true);
             app.set('contentEditViewVariables', vars);
             app.handleContentEdit();
 
             Y.assert(rendered, "The content edit view should have been rerendered");
+            this.wait(function () {
+                Y.assert(!app.get('loading'), "The app should not be in loading mode");
+            }, 500);
         }
     });
 
