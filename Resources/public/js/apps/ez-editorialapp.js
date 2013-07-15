@@ -145,6 +145,7 @@ YUI.add('ez-editorialapp', function (Y) {
 
             container.addClass(APP_OPEN);
             viewContainer.setStyle('height', container.get('docHeight') + 'px');
+            this.showView('dummyView');
             if ( L.isFunction(next) ) {
                 next();
             }
