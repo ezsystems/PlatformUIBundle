@@ -7,9 +7,7 @@ YUI.add('ez-contenteditview', function (Y) {
 
     Y.namespace('eZ');
 
-    var DETAILS_SEL = '.ez-technical-infos',
-        doc = Y.config.doc,
-        IS_TOUCH = !!(doc && doc.createTouch);
+    var DETAILS_SEL = '.ez-technical-infos';
 
     /**
      * The content edit view
@@ -102,7 +100,7 @@ YUI.add('ez-contenteditview', function (Y) {
          * @return {Boolean}
          */
         _isTouch: function () {
-            return IS_TOUCH;
+            return Y.UA.touchEnabled;
         }
     }, {
         ATTRS: {
