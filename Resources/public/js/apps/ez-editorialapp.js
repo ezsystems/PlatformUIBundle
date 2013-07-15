@@ -82,6 +82,7 @@ YUI.add('ez-editorialapp', function (Y) {
                 userService = capi.getUserService(),
                 contentTypeService = capi.getContentTypeService();
 
+            app.set('loading', true);
             // TODO moves this to proper Model objects
             contentService.loadContentInfoAndCurrentVersion(
                 "/api/ezp/v2/content/objects/" + req.params.id,
