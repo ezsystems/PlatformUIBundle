@@ -238,4 +238,4 @@ YUI.add('ez-editorialapp-tests', function (Y) {
     Y.Test.Runner.add(appTest);
 
 
-}, '0.0.1', {requires: ['test', 'ez-editorialapp', 'json']});
+}, '0.0.1', {requires: ['test', 'ez-editorialapp', 'json', 'parallel']});
