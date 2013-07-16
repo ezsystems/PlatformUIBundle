@@ -1,4 +1,5 @@
 YUI.add('ez-templatebasedview', function (Y) {
+    "use strict";
     /**
      * Provides the Template Based view
      * 

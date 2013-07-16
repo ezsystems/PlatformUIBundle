@@ -1,4 +1,5 @@
 YUI.add('ez-contenteditview', function (Y) {
+    "use strict";
     /**
      * Provides the Content Edit View class
      *

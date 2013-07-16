@@ -1,4 +1,5 @@
 YUI.add('ez-editorialapp', function (Y) {
+    "use strict";
     /**
      * Provides the Editorial Application class
      *
