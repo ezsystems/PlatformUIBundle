@@ -120,7 +120,9 @@ YUI.add('ez-restmodel', function (Y) {
                 }
             });
             Y.Array.each(cl[0].LINKS_MAP, function (item) {
-                links[item] = struct[item]._href;
+                if ( struct[item] ) {
+                    links[item] = struct[item]._href;
+                }
             });
             attrs.resources = links;
             return attrs;
@@ -156,7 +158,7 @@ YUI.add('ez-restmodel', function (Y) {
         ATTRS_REST_MAP: [],
 
         /**
-         * Array of link resources to parse and make available
+         * Array of linked resources to parse and make available
          * in the resources attribute
          * Example:
          *
