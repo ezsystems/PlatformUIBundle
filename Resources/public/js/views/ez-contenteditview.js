@@ -36,10 +36,10 @@ YUI.add('ez-contenteditview', function (Y) {
         render: function () {
             this.get('container').setHTML(this.template({
                 isTouch: this._isTouch(),
-                content: this.get('content'),
-                mainLocation: this.get('mainLocation'),
-                contentType: this.get('contentType'),
-                owner: this.get('owner')
+                content: this.get('content').toJSON(),
+                mainLocation: this.get('mainLocation').toJSON(),
+                contentType: this.get('contentType').toJSON(),
+                owner: this.get('owner').toJSON()
             }));
             return this;
         },
