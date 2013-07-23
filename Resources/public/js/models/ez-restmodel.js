@@ -103,11 +103,10 @@ YUI.add('ez-restmodel', function (Y) {
          * @return {Object}
          */
         _parseStruct: function (struct) {
-            var cl = this._getClasses(),
-                attrs = {},
+            var attrs = {},
                 links = {};
 
-            Y.Array.each(cl[0].ATTRS_REST_MAP, function (item) {
+            Y.Array.each(this.constructor.ATTRS_REST_MAP, function (item) {
                 var key;
 
                 if ( L.isString(item) ) {
@@ -119,7 +118,7 @@ YUI.add('ez-restmodel', function (Y) {
                     attrs[item[key]] = struct[key];
                 }
             });
-            Y.Array.each(cl[0].LINKS_MAP, function (item) {
+            Y.Array.each(this.constructor.LINKS_MAP, function (item) {
                 if ( struct[item] ) {
                     links[item] = struct[item]._href;
                 }
