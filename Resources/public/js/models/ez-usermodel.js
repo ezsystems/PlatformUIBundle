@@ -3,21 +3,32 @@ YUI.add('ez-usermodel', function (Y) {
     /**
      * Provides the User model class
      *
-     * @method ez-usermodel
+     * @module ez-usermodel
      */
 
     Y.namespace('eZ');
 
     /**
-     * User model
+     * User model used to represent an eZ Publish user.
      *
      * @namespace eZ
      * @class User
      * @constructor
-     * @extends Model
+     * @extends eZ.RestModel
      */
     Y.eZ.User = Y.Base.create('userModel', Y.eZ.RestModel, [], {
 
+        /**
+         * sync implementation that relies on the JS REST client.
+         * For now, it only supports the 'read' action. The callback is
+         * directly passed to the UserService.loadUser method.
+         *
+         * @method sync
+         * @param {String} action the action, currently only 'read' is supported
+         * @param {Object} options the options for the sync.
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Function} callback a callback executed when the operation is finished
+         */
         sync: function (action, options, callback) {
             var api = options.api;
 
@@ -35,7 +46,8 @@ YUI.add('ez-usermodel', function (Y) {
          *
          * @method parse
          * @param {Object} response the response object from the eZ JS REST Client
-         * @return {Object} attribute hash
+         * @return {Object|null} attribute hash or null if  the response contains an
+         * invalid JSON structure
          */
         parse: function (response) {
             var user;

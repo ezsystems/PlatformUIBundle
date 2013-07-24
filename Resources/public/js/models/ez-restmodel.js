@@ -12,7 +12,9 @@ YUI.add('ez-restmodel', function (Y) {
 
     /**
      * Abstract class for the model objects loaded from the
-     * eZ Publish REST API.
+     * eZ Publish REST API. It provides some helper methods to deal with type
+     * conversions and generic mapping system to map the JSON structure the
+     * attributes.
      *
      * @namespace eZ
      * @class RestModel
