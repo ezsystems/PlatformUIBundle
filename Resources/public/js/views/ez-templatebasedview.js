@@ -34,7 +34,8 @@ YUI.add('ez-templatebasedview', function (Y) {
          * @method initializer
          */
         initializer: function () {
-            var tplEl = Y.one('#' + this.name.toLowerCase() + TPL_ELEM_SUFFIX);
+            var name = this.constructor.NAME,
+                tplEl = Y.one('#' + name.toLowerCase() + TPL_ELEM_SUFFIX);
 
             this.template = function () { return ''; };
             if ( tplEl ) {
@@ -42,7 +43,7 @@ YUI.add('ez-templatebasedview', function (Y) {
                     tplEl.getHTML()
                 );
             }
-            this.containerTemplate = '<div class="' + VIEW_PREFIX + this.name.toLowerCase() + '"/>';
+            this.containerTemplate = '<div class="' + VIEW_PREFIX + name.toLowerCase() + '"/>';
         }
 
     });
