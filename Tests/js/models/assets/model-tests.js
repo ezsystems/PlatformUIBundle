@@ -70,7 +70,7 @@ YUI.add('model-tests', function (Y) {
         "parse should return a correctly parsed hash": function () {
             var m = this.model,
                 response, res = false,
-                errorFired = false, key, identifier, i, len, linksMap;
+                errorFired = false, key, identifier, i, len;
 
             response = {
                 body: Y.JSON.stringify(this.loadResponse)
@@ -94,14 +94,45 @@ YUI.add('model-tests', function (Y) {
                     identifier = Y.Object.keys(key)[0];
                     key = key[identifier];
                 }
-                Y.Assert.areEqual(
-                    res[identifier],
-                    this.loadResponse[this.rootProperty][key],
-                    identifier + " should have been set to the value of this.loadResponse." +
-                        this.rootProperty + "." + key + "('" +
-                        this.loadResponse[this.rootProperty][key]  +"')"
-                );
+                if ( Y.Lang.isObject(res[identifier]) ) {
+                    // this not very clean but in this case this working as
+                    // expect since we are testing a JSON parse method
+                    Y.Assert.areEqual(
+                        Y.JSON.stringify(res[identifier]),
+                        Y.JSON.stringify(this.loadResponse[this.rootProperty][key]),
+                        identifier + " should have been set to the value of this.loadResponse." +
+                            this.rootProperty + "." + key
+                    );
+                } else {
+                    Y.Assert.areEqual(
+                        res[identifier],
+                        this.loadResponse[this.rootProperty][key],
+                        identifier + " should have been set to the value of this.loadResponse." +
+                            this.rootProperty + "." + key + "('" +
+                            this.loadResponse[this.rootProperty][key]  +"')"
+                    );
+                }
             }
+        },
+
+        "parse should set the correct links": function () {
+            var m = this.model,
+                response, res = false,
+                errorFired = false, key, i, len, linksMap;
+
+            response = {
+                body: Y.JSON.stringify(this.loadResponse)
+            };
+
+            m.on('error', function (e) {
+                errorFired = true;
+            });
+
+            res = m.parse(response);
+
+            Y.Assert.isFalse(errorFired, "The error event should not have been fired");
+
+
             linksMap = this.model.constructor.LINKS_MAP ? this.model.constructor.LINKS_MAP : [];
             Y.Assert.areEqual(Y.Object.size(res.resources), linksMap.length, "resources length");
             for (i = 0, len = linksMap.length; i != len; ++i) {
