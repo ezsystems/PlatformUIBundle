@@ -1,0 +1,254 @@
+=========================
+Review - Editorial Bundle
+=========================
+
+:Author: Jakob Westhoff
+:Date: 2013-07-26
+:Status: Completed
+:Git-Rev: 993dbff2413433f0cb8770287be83c9688bfc87b
+
+Scope
+=====
+
+This document represents a quick review of the current codebase including open
+questions as well as ideas regarding the future implementation. It is no in
+detail review, as the current code base and methodology hasn't evolved enough
+to make this feasible.
+
+
+Basic Observations
+==================
+
+Unit Tests
+----------
+
+Infrastructure
+^^^^^^^^^^^^^^
+
+Currently Unit-Tests are created as HTML-Pages utilizing YUI-Test. They are run
+using PhantomJs and **grover**. During development this is a feasible testing
+scenario. However in the future tests of the interface need to be run in
+realworld browser scenarios, to determine full compatibility with every
+supported browser.
+
+To allow for this scenarios to be tested a multi-browser client/server testing
+approach should be utilized. `yeti`__ comes to mind as it specializes in *YUI*.
+
+__ http://yeti.cx/
+
+An alternative would be the `karma-runner`__. However this solution would most
+likely need more adaptions to be made in order to cooperate with *YUITest*
+
+__ http://karma-runner.github.io/
+
+It needs to be evaluated if the current test setup can easily and sustainably
+moved over to one of those solutions. Otherwise a lot of work is invested into
+the test infrastructure now, which can't really be used later on, or needes
+major refactorings.
+
+.. note:: It should be possible to combine *Yeti* with *PhantomJs*. This should
+    be automated in a way, such that a complete switch to this testing environment
+    is possible. It could the easily be used during development as well as release
+    testing.
+
+Structure
+^^^^^^^^^
+
+Currently there are different tests for each part of the application, which is
+fine. Each of those tests has an html page which loads and initializes the
+YUITest-Runner in conjunction with the unit-test code itself.
+
+It needs to be evaluated if a full blown HTML page for each test suite is really
+needed/possible once the switch to a system like *Yeti* is made.
+
+If it is possible a separation between HTML-Fixtures (Snippets of HTML needed
+to be inside the DOM for testing) and the HTML-Base-Framework (Loaded
+libraries, ...) should be made. Otherwise a lot of copy&paste is done between
+the different test suites. This can cause a major headache once certain
+prerequisites are changed (for example the version number of the *YUI*
+library).
+
+Furthermore there are certain test suites, which mixup the basic HTML with the
+unit test code itself. This should definitely be changed and split up in
+a clean way, which is defined throughout all unit tests.
+
+Build-System
+------------
+
+JavaScript Linting
+^^^^^^^^^^^^^^^^^^
+
+Eventhough a project wide jshint configuration was devised before starting with
+the implementation it is not be seen inside the repository. Neither is any
+automated way available to run the appropriate linting checks on all source
+files belonging to the project.
+
+Providing an easy way of linting all project sources, while having direct
+feedback of errors is important. As soon as it is *work* to lint the project
+developers will hesitate to lint their additions and changes before commiting
+them. If it is easy to check the new sources chances of everybody doing it are
+drastically improved. (See the following **Infrastructure** section for ideas
+on how to realize such means.)
+
+Infrastructure
+^^^^^^^^^^^^^^
+
+Currently no build system is utilized, which is responsible for linting
+JavaScript files, running the test suite, managing dependencies, compiling
+templates or fulfilling other build related tasks.
+
+As most of those features will be needed quite soon or are needed right now
+alreay an appropriate solution should be devised sooner then later. Otherwise
+structures within the implementation as well as assets will be created, which
+hinder proper build management in the future and therefore need to be changed
+again.
+
+Gruntjs
+~~~~~~~
+
+In the current state of the project I would advise to utiize `gruntjs`__ as
+a first means to get an automated build infrastructure up and running. *Grunt*
+isn't a fully featured build-system as it does not support
+build-taget-dependency management, nor does it provide generic actions, but it
+supports nearly any JavaScript related tool one can think of through plugins.
+
+__ http://gruntjs.com
+
+Therefore the time needed to intitially setup a proper *Grunt* environment is
+quite minimal, while still providing much benefit.
+
+Once the need for a more feature rich build system should arise grunt can quite
+easily be integrated into other build systems like *Ant*, which may call the
+necessary *Grunt* actions as part of a more sophisticated build process in the
+future.
+
+Gruntjs should take care of the following tasks for now:
+
+- Linting project relevant JavaScript files
+- Running the Test-suite of the project with minimal effort.
+
+In the future Grunt will most likely also be responsible for the following
+tasks:
+
+- Precompiling Handlebar-Templates before a release.
+- Minifying JavaScript files
+  
+.. note:: The Minification process might be taken care of *Assetic* as well.
+    A general descision needs to be made here, which approach is more viable. Most
+    likely a custom minification and module building approach will be chosen over
+    assetic, as it provides more flexibility regarding the size of the application.
+
+
+Npm / package.json
+~~~~~~~~~~~~~~~~~~
+
+Dependency-Management is a problem, which quickly arises within each project.
+There are not only dependencies on external sources and libraries, like YUI as
+well as the CAPI inside of this project, but furthermore dependencies on all
+the tools needed during development, like *gruntjs*, *yeti*, *handlebars*, ...
+
+Managing, installing and providing all of those depdencies can be quite
+painful. Therefore the usage of *nodejs* + *npm* in conjunction with a properly
+created ``package.json`` file is advised.
+
+**Npm**  is the *node package manager*. It is a package repository toolkit,
+which is distributed in conjunction with nodejs. The repository does not only
+include *nodejs* related JavaScript, but a lot of browser based libraries as
+well, like *YUI* for example. Furthermore it does include all the needed build
+and development tools needed.
+
+All the depdencies are managed using a file called ``package.json``. Once such
+a file has been created all the needed depdencies may be installed, by simply
+calling the following command from within the repository::
+
+    npm install
+
+Subdepdencies of the selected packages are automatically resolved and
+installed as well.
+
+.. note:: Currently YUI is fetched from the YUI CDN servers during tests and
+    application execution. This should be changed to utilize a local copy of
+    the library, which is managed using *npm*. Otherwise no development
+    whatsoever is possible without an internet connection. The *npm* version of
+    YUI is not build, but installed as seperate JavaScript files, which need to
+    be combined first using YUIs ``shifter`` utillity. This needs to be taken
+    into account when installing YUI via. *npm*. Maybe it is a cleaner solution
+    to just store a specific release version under a ``vendor`` folder inside
+    the repository. Unfortunately `Bower`_ is no alternative, as it does not
+    provide a YUI package.
+
+.. note:: In the *npm* repository two different YUI packages exist. One is
+    called ``yui`` the other is called ``yui3``. The last of those is a specialized
+    nodejs build of the library which might not work well in browsers, whereas the
+    first one is the described to be build version of YUI version 3.
+
+Regarding internal dependencies like the **CAPI** it is possible to create and
+manage a private *npm* package server, which might hold this dependency without
+presenting it to the public. On the otherhand I assume the **CAPI** is to be
+opensourced anyway. In this case it could be pushed as a *npm* package and be
+managed easily just like any other dependency.
+
+If this is not wanted at the current state. I would suggest to utilize
+git-submodule to include the *CAPI* repository inside the *EditorialBundle*. If
+the build process of the CAPI isn't complete enough yet to produce a proper
+build to be usable by the EditorialInterface, this build process should be
+adapted.
+
+.. note:: As far as I can see the encapsulation inside an immediate function is
+    still missing inside the CAPI build process. Therefore all internal
+    implementation parts are exposed to the outside world, where only the ``CAPI``
+    symbol should have been exported. This should be checked and changed.
+
+Bower
+~~~~~
+
+Bower__ is an alternative package manager created by Twitter especially for
+browser related dependencies. It works mostly the same as *npm* but provides
+certain special functionality like multi file assets (images, css, javascript)
+as well as require.js integration, which is needed when creating libraries for
+the browser.
+
+__http://bower.io/
+
+Unfortunately *Bower* does not provide us with a version of the YUI library.
+Therefore there is currently no need for it. Furthermore it should not
+introduced as a dependency if *npm* is sufficient.
+
+Nevertheless in the future a use case for a system like this may arise inside
+the EditorialInterface. It may even be a possibility to manage custom user
+extensions with an approach like that.
+
+YUI-Modules
+~~~~~~~~~~~
+
+Currently the different YUI-Modules are defined within the base template of the
+Bundle. This needs to be done, as url path resolvement to the appropriate
+resources (JavaScript files) is needed to be done by the application stack.
+
+Unfortunately this will get quite hard to maintain, once the application grows.
+If the JavaScript build process including module resolvement as well as
+minification and co. is moved over to a seperate processing step. Like
+suggested before, this would allow the module definition to reside in
+a seperate file, while being a lot more readable and concise regarding its
+paths and definitions.
+
+Furthermore as far as I know I should be quite easily possible using this
+technique to automatically resolve module dependencies and create more
+sophisticated bundled builds of different parts of the application utilizing
+grunt and others.
+
+.. note:: This automated building process needs further evaluation. Especially
+    possibilities to resolve and build YUIModules into bigger packages, while still
+    using the YUI loading system. Furthermore a way needs to be devised to load
+    all dependencies without intermittant building steps during development as
+    this can get quite painful, while still maintaining all the build options
+    for releases.
+
+
+
+..
+   Local Variables:
+   mode: rst
+   fill-column: 79
+   End: 
+   vim: et syn=rst tw=79
