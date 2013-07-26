@@ -208,7 +208,7 @@ certain special functionality like multi file assets (images, css, javascript)
 as well as require.js integration, which is needed when creating libraries for
 the browser.
 
-__http://bower.io/
+__ http://bower.io/
 
 Unfortunately *Bower* does not provide us with a version of the YUI library.
 Therefore there is currently no need for it. Furthermore it should not
