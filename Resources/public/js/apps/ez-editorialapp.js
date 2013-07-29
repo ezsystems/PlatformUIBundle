@@ -62,8 +62,9 @@ YUI.add('ez-editorialapp', function (Y) {
             this.showView('contentEditView', this.get('contentEditViewVariables'), {
                 update: true,
                 render: true,
-                callback: function () {
+                callback: function (view) {
                     this.set('loading', false);
+                    view.setFocus();
                 }
             });
         },
