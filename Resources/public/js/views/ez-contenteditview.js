@@ -8,7 +8,9 @@ YUI.add('ez-contenteditview', function (Y) {
 
     Y.namespace('eZ');
 
-    var DETAILS_SEL = '.ez-technical-infos';
+    var DETAILS_SEL = '.ez-technical-infos',
+        CONTENT_SEL = '.ez-main-content',
+        ESCAPE_KEY = 27;
 
     /**
      * The content edit view
@@ -24,6 +26,9 @@ YUI.add('ez-contenteditview', function (Y) {
             'header': {
                 'mouseover': '_showDetails',
                 'mouseout': '_hideDetails'
+            },
+            '.ez-main-content': {
+                'keypress': '_handleKeyboard'
             }
         },
 
@@ -42,6 +47,15 @@ YUI.add('ez-contenteditview', function (Y) {
                 owner: this.get('owner').toJSON()
             }));
             return this;
+        },
+
+        /**
+         * Set current input focus on the view
+         *
+         * @method setFocus
+         */
+        setFocus: function () {
+            this.get('container').one(CONTENT_SEL).focus();
         },
 
         /**
@@ -91,6 +105,21 @@ YUI.add('ez-contenteditview', function (Y) {
              */
             this.fire('close');
             e.preventDefault();
+        },
+
+        /**
+         * Event event handler for any key pressed within the content edit view
+         *
+         * @method _handleKeyboard
+         * @protected
+         * @param {Object} e event facade of the keyboard event
+         */
+        _handleKeyboard: function (e) {
+
+            if (e.keyCode === ESCAPE_KEY) {
+                this._closeView(e);
+            }
+
         },
 
         /**
