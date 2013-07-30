@@ -27,7 +27,7 @@ YUI.add('ez-contenteditview', function (Y) {
                 'mouseout': '_hideDetails'
             },
             '.ez-main-content': {
-                'keyup': '_handleKeyboard'
+                'keypress': '_handleKeyboard'
             }
         },
 
@@ -54,7 +54,7 @@ YUI.add('ez-contenteditview', function (Y) {
          * @method setFocus
          */
         setFocus: function () {
-            Y.one(CONTENT_SEL).focus();
+            this.get('container').one(CONTENT_SEL).focus();
         },
 
         /**
@@ -90,7 +90,7 @@ YUI.add('ez-contenteditview', function (Y) {
         },
 
         /**
-         * Event handler for the close link in the content edit view
+         * Event event handler for the close link in the content edit view
          *
          * @method _closeView
          * @protected
@@ -107,7 +107,7 @@ YUI.add('ez-contenteditview', function (Y) {
         },
 
         /**
-         * Event handler for any key pressed within the content edit view
+         * Event event handler for any key pressed within the content edit view
          *
          * @method _handleKeyboard
          * @protected
