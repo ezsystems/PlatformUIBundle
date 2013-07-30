@@ -64,7 +64,9 @@ YUI.add('ez-editorialapp', function (Y) {
                 render: true,
                 callback: function (view) {
                     this.set('loading', false);
-                    view.setFocus();
+                    if (view.setFocus !== undefined) {
+                        view.setFocus();
+                    }
                 }
             });
         },
