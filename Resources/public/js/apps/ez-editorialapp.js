@@ -217,7 +217,21 @@ YUI.add('ez-editorialapp', function (Y) {
                     content: new Y.eZ.Content(),
                     contentType: new Y.eZ.ContentType(),
                     mainLocation: new Y.eZ.Location(),
-                    owner: new Y.eZ.User()
+                    owner: new Y.eZ.User(),
+                    form: {
+                        fieldSets : [
+                            {
+                                fieldSetName : "Content",
+                                fields : [
+                                ]
+                            },
+                            {
+                                fieldSetName : "Meta",
+                                fields : [
+                                ]
+                            }
+                        ]
+                    }
                 }
             }
         }

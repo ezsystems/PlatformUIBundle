@@ -1,10 +1,10 @@
 /* application styles */
 @font-face {
     font-family: 'ez-editorial-icomoon';
-    src:url('../bundles/ezsystemseditorial/fonts/icomoon.eot');
+    src:url('../bundles/ezsystemseditorial/fonts/icomoon.eot?v2');
     src:url('../bundles/ezsystemseditorial/fonts/icomoon.eot?#iefix') format('embedded-opentype'),
-        url('../bundles/ezsystemseditorial/fonts/icomoon.woff') format('woff'),
-        url('../bundles/ezsystemseditorial/fonts/icomoon.ttf') format('truetype'),
+        url('../bundles/ezsystemseditorial/fonts/icomoon.woff?v2') format('woff'),
+        url('../bundles/ezsystemseditorial/fonts/icomoon.ttf?v2') format('truetype'),
         url('../bundles/ezsystemseditorial/fonts/icomoon.svg#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
@@ -60,4 +60,23 @@
 
 .ez-view-contenteditview .ez-content-name {
     color: #222;
+}
+
+.ez-view-formview .ez-form-content fieldset {
+    border: 1px solid #CCCCCC;
+    box-shadow: 0 0 2px #CCCCCC;
+    padding-top: 1em;
+}
+
+.ez-view-formview .ez-form-content fieldset label {
+    display: inline-block;
+    background-color: #f9f9f9;
+    color: #333333;
+    font-weight: bold;
+    left: 15px;
+    overflow: hidden;
+    padding: 0 10px;
+    position: absolute;
+    top: -10px;
+    z-index: 5;
 }
