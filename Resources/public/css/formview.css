@@ -1,0 +1,16 @@
+.ez-view-formview {
+    overflow: hidden;
+}
+
+.ez-view-formview .ez-form-content {
+    padding: 2em;
+}
+
+.ez-view-formview .ez-form-content fieldset {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.ez-view-formview .ez-form-content fieldset label {
+    cursor: pointer;
+}
