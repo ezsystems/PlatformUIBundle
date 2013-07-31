@@ -20,6 +20,16 @@
     -webkit-font-smoothing: antialiased;
 }
 
+.font-icon:before, .font-icon:after {
+    font-family: 'ez-editorial-icomoon';
+    speak: none;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+
 @-moz-keyframes spin {
   0% {
     -moz-transform: rotate(0deg);

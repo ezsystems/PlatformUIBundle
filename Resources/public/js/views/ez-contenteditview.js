@@ -10,7 +10,8 @@ YUI.add('ez-contenteditview', function (Y) {
 
     var DETAILS_SEL = '.ez-technical-infos',
         CONTENT_SEL = '.ez-main-content',
-        ESCAPE_KEY = 27;
+        ESCAPE_KEY = 27,
+        FORM_CONTAINER = '.ez-contenteditformview-container';
 
     /**
      * The content edit view
@@ -33,19 +34,44 @@ YUI.add('ez-contenteditview', function (Y) {
         },
 
         /**
+         * Initializer is called upon view's init
+         * Creating and managing child views inside it
+         *
+         * @method initializer
+         */
+        initializer: function () {
+            this.get('formView').addTarget(this);
+        },
+
+        /**
+         * Destructor is called upon view's destruction
+         * Destroying and cleaning up child views
+         *
+         * @method destructor
+         */
+        destructor: function () {
+            this.get('formView').destroy();
+        },
+
+        /**
          * Renders the content edit view
          *
          * @method render
          * @return {eZ.ContentEditView} the view itself
          */
         render: function () {
-            this.get('container').setHTML(this.template({
+            var container = this.get('container');
+
+            container.setHTML(this.template({
                 isTouch: this._isTouch(),
                 content: this.get('content').toJSON(),
                 mainLocation: this.get('mainLocation').toJSON(),
                 contentType: this.get('contentType').toJSON(),
                 owner: this.get('owner').toJSON()
             }));
+
+            container.one(FORM_CONTAINER).append(this.get('formView').render().get('container'));
+
             return this;
         },
 
@@ -153,7 +179,11 @@ YUI.add('ez-contenteditview', function (Y) {
              * @required
              */
             contentType: {
-                value: {}
+                value: {},
+                setter: function (val, name) {
+                    this.get('formView').set('contentType', val);
+                    return val;
+                }
             },
 
             /**
@@ -176,6 +206,18 @@ YUI.add('ez-contenteditview', function (Y) {
              */
             owner: {
                 value: {}
+            },
+
+            /**
+             * The ContentEditFormView (by default) instance which will be used to render form
+             *
+             * @attribute formView
+             * @default {}
+             * @type {eZ.ContentEditFormView}
+             * @required
+             */
+            formView: {
+                value: new Y.eZ.ContentEditFormView({})
             }
         }
     });

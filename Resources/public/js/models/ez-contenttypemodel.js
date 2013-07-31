@@ -39,15 +39,87 @@ YUI.add('ez-contenttypemodel', function (Y) {
             } else {
                 callback("Only read operation is supported at the moment");
             }
+        },
+
+        /**
+         * Parses the response from the eZ Publish REST API
+         *
+         * @method parse
+         * @param {Object} response the response object from the eZ JS REST Client
+         * @return {Object} attribute hash
+         */
+        parse: function (response) {
+            var type;
+
+            try {
+                type = Y.JSON.parse(response.body);
+            } catch (ex) {
+                /**
+                 * Fired when a parsing error occurs
+                 *
+                 * @event error
+                 * @param {String} src "parse"
+                 * @param {String} error the error message
+                 * @param {Object} response the response object that failed to
+                 * be parsed
+                 */
+                this.fire('error', {
+                    src: 'parse',
+                    error: "No content in the response",
+                    response: response
+                });
+                return null;
+            }
+            return this._parseStruct(type.ContentType);
+        },
+
+        /**
+         * Returns array of FieldGroups ready to use by ContentEditFormView
+         *
+         * @method getFieldGroups
+         * @return {Array} array of fieldGroups to be used by ContentEditFormView
+         */
+        getFieldGroups: function () {
+            var fieldDefinitions = this.get('FieldDefinitions').FieldDefinition,
+                fieldGroups = [],
+                fieldGroupNames = [];
+
+            Y.Array.each(fieldDefinitions, function (item) {
+                var fieldGroupName = item.fieldGroup,
+                    field = {
+                        identifier: item.identifier,
+                        fieldType: item.fieldType
+                    },
+                    fieldGroup;
+
+                // Add new field group, if FieldDefinition.fieldGroup is unique
+                if (fieldGroupNames.indexOf(fieldGroupName) === -1) {
+                    fieldGroups.push({
+                        fieldGroupName: fieldGroupName,
+                        fields: []
+                    });
+
+                    fieldGroupNames.push(fieldGroupName);
+                }
+
+                // Add field to appropriate FieldGroup
+                fieldGroup = Y.Array.find(fieldGroups, function (group) {
+                    return group.fieldGroupName == fieldGroupName;
+                });
+
+                fieldGroup.fields.push(field);
+            });
+
+            return fieldGroups;
         }
+
     }, {
-        REST_STRUCT_ROOT: "ContentType",
         ATTRS_REST_MAP: [
             'creationDate', 'defaultAlwaysAvailable',
             'defaultSortField', 'defaultSortOrder', 'descriptions',
             'identifier', 'isContainer', 'mainLanguageCode',
             'modificationDate', 'names', 'nameSchema',
-            'remoteId', 'status', 'urlAliasSchema'
+            'remoteId', 'status', 'urlAliasSchema','FieldDefinitions'
         ],
         ATTRS: {
             /**
@@ -208,6 +280,17 @@ YUI.add('ez-contenttypemodel', function (Y) {
              */
             urlAliasSchema: {
                 value: ""
+            },
+
+            /**
+             * The content type's field definitions
+             *
+             * @attribute fieldDefinitions
+             * @default {}
+             * @type Object
+             */
+            FieldDefinitions: {
+                value: {}
             }
         }
     });

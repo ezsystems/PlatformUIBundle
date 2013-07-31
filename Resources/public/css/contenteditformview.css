@@ -1,0 +1,20 @@
+.ez-view-contenteditformview .ez-form-content {
+    padding: 2em;
+}
+
+.ez-view-contenteditformview fieldset {
+    margin-bottom: 20px;
+    padding-top: 0.5em;
+}
+
+.ez-view-contenteditformview .fieldgroup-name {
+    cursor: pointer;
+    line-height: 18px;
+    padding: 3px 10px;
+    margin: 0;
+    width: auto;
+}
+
+.ez-view-contenteditformview .fieldgroup-fields {
+    overflow: hidden;
+}

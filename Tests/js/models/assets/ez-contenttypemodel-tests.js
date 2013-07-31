@@ -62,7 +62,7 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
                                 "id": 232,
                                 "identifier": "name",
                                 "fieldType": "ezstring",
-                                "fieldGroup": "",
+                                "fieldGroup": "content",
                                 "position": 1,
                                 "isTranslatable": "true",
                                 "isRequired": "true",
@@ -99,8 +99,42 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
                                 "id": 233,
                                 "identifier": "page",
                                 "fieldType": "ezpage",
-                                "fieldGroup": "",
+                                "fieldGroup": "meta",
                                 "position": 2,
+                                "isTranslatable": "true",
+                                "isRequired": "false",
+                                "isInfoCollector": "false",
+                                "defaultValue": null,
+                                "isSearchable": "false",
+                                "names": {
+                                    "value": [
+                                        {
+                                            "_languageCode": "eng-GB",
+                                            "#text": "Layout"
+                                        }
+                                    ]
+                                },
+                                "descriptions": {
+                                    "value": [
+                                        {
+                                            "_languageCode": "eng-GB",
+                                            "#text": ""
+                                        }
+                                    ]
+                                },
+                                "fieldSettings": {
+                                    "defaultLayout": ""
+                                },
+                                "validatorConfiguration": []
+                            },
+                            {
+                                "_media-type": "application/vnd.ez.api.FieldDefinition+json",
+                                "_href": "/api/ezp/v2/content/types/23/fieldDefinitions/234",
+                                "id": 234,
+                                "identifier": "page",
+                                "fieldType": "ezpage",
+                                "fieldGroup": "meta",
+                                "position": 3,
                                 "isTranslatable": "true",
                                 "isRequired": "false",
                                 "isInfoCollector": "false",
@@ -140,6 +174,43 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
         tearDown: function () {
             this.model.destroy();
             delete this.model;
+        },
+
+        "Should create correct field groups for the FormEditView from the REST data" : function () {
+            var m = this.model,
+                mockResponse = {},
+                fieldGroups;
+
+            mockResponse.body = Y.JSON.stringify(this.loadResponse);
+            m.setAttrs(m.parse(mockResponse));
+
+            fieldGroups = m.getFieldGroups();
+
+            Y.Assert.areEqual(
+                fieldGroups.length,
+                2,
+                "Should split field definitions in groups correctly depending on 'FieldGroup' property"
+            );
+            Y.Assert.areEqual(
+                fieldGroups[0].fieldGroupName,
+                this.loadResponse.ContentType.FieldDefinitions.FieldDefinition[0].fieldGroup,
+                "Should give correct name to each field group according to 'FieldGroup' property"
+            );
+            Y.Assert.areEqual(
+                fieldGroups[1].fieldGroupName,
+                this.loadResponse.ContentType.FieldDefinitions.FieldDefinition[1].fieldGroup,
+                "Should give correct name to each field group according to 'FieldGroup' property"
+            );
+            Y.Assert.areEqual(
+                fieldGroups[0].fields[0].identifier,
+                this.loadResponse.ContentType.FieldDefinitions.FieldDefinition[0].identifier,
+                "Should import 'identifier' property correctly to created field groups"
+            );
+            Y.Assert.areEqual(
+                fieldGroups[0].fields[0].fieldType,
+                this.loadResponse.ContentType.FieldDefinitions.FieldDefinition[0].fieldType,
+                "Should import 'fieldType property correctly to created field groups"
+            );
         }
 
     });
