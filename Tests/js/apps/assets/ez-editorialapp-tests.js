@@ -2,36 +2,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
     var app, appTest,
         capiMock,
-        container = Y.one('.app'),
-
-        LOAD_CONTENT_RESPONSE = {
-            "Content": {
-                "_media-type": "application\/vnd.ez.api.Content+json",
-                "_href": "\/api\/ezp\/v2\/content\/objects\/57",
-                "_remoteId": "8a9c9c761004866fb458d89910f52bee",
-                "_id": 57,
-                "ContentType": {
-                    "_media-type": "application\/vnd.ez.api.ContentType+json",
-                    "_href": "\/api\/ezp\/v2\/content\/types\/23"
-                },
-                "Name": "Home",
-                "MainLocation": {
-                    "_media-type": "application\/vnd.ez.api.Location+json",
-                    "_href": "\/api\/ezp\/v2\/content\/locations\/1\/2"
-                },
-                "Owner": {
-                    "_media-type": "application\/vnd.ez.api.User+json",
-                    "_href": "\/api\/ezp\/v2\/user\/users\/14"
-                },
-                "lastModificationDate": "2010-09-14T10:46:59+02:00",
-                "publishedDate": "2007-11-19T14:54:46+01:00",
-                "mainLanguageCode": "eng-GB",
-                "alwaysAvailable": "true"
-            }
-        },
-        LOAD_USER_RESPONSE = {"User": {"_id": 14}},
-        LOAD_LOCATION_RESPONSE = {"Location": {"id": 2}},
-        LOAD_CONTENTTYPE_RESPONSE = {"ContentType": {"id": 23, "names": {"value": [{"#text": "Name"}]}}};
+        container = Y.one('.app');
 
     capiMock = new Y.Mock();
     app = new Y.eZ.EditorialApp({
@@ -121,76 +92,117 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
 
 
-        "Should load the content info and the current version and the associated entities": function () {
-            var contentServiceMock, userServiceMock, contentTypeServiceMock,
-                nextCalled = false, vars,
-                contentId = 59;
+        "Should load the content, the location, the owner and the content type": function () {
+            var contentMock, userMock, locationMock, typeMock,
+                resources = {
+                    'Owner': '/api/ezp/v2/user/users/14',
+                    'MainLocation': '/api/ezp/v2/content/locations/1/2/61',
+                    'ContentType': '/api/ezp/v2/content/types/23'
+                },
+                nextCalled = false,
+                contentId = 59,
+                runLoadCallback = function (options, callback) {
+                    Y.Assert.isObject(options.api, "The load options should an 'api' property");
+                    Y.Assert.areSame(options.api, capiMock, "The 'api' property should be the CAPI");
 
-            contentServiceMock = Y.Mock();
-            userServiceMock = Y.Mock();
-            contentTypeServiceMock = Y.Mock();
-            Y.Mock.expect(capiMock, {
-                method: 'getContentService',
-                args: [],
-                returns: contentServiceMock
+                    callback(false);
+                },
+                vars;
+
+            contentMock = new Y.Mock();
+            userMock = new Y.Mock();
+            locationMock = new Y.Mock();
+            typeMock = new Y.Mock();
+
+            Y.Mock.expect(contentMock, {
+                method: 'set',
+                args: [
+                    'id',
+                    "/api/ezp/v2/content/objects/" + contentId
+                ]
             });
-            Y.Mock.expect(capiMock, {
-                method: 'getUserService',
-                args: [],
-                returns: userServiceMock
-            });
-            Y.Mock.expect(capiMock, {
-                method: 'getContentTypeService',
-                args: [],
-                returns: contentTypeServiceMock
+            Y.Mock.expect(contentMock, {
+                method: 'get',
+                args: [
+                    'resources',
+                ],
+                returns: resources
             });
 
-            Y.Mock.expect(contentServiceMock, {
-                method: 'loadContentInfoAndCurrentVersion',
-                args: ["/api/ezp/v2/content/objects/" + contentId, Y.Mock.Value.Function],
-                run: function (uri, callback) {
-                    callback(false, {body: Y.JSON.stringify(LOAD_CONTENT_RESPONSE)});
-                }
+            Y.Mock.expect(userMock, {
+                method: 'set',
+                args: [
+                    'id',
+                    resources.Owner
+                ]
+            });
+            Y.Mock.expect(locationMock, {
+                method: 'set',
+                args: [
+                    'id',
+                    resources.MainLocation
+                ]
+            });
+            Y.Mock.expect(typeMock, {
+                method: 'set',
+                args: [
+                    'id',
+                    resources.ContentType
+                ]
             });
 
-            Y.Mock.expect(userServiceMock, {
-                method: 'loadUser',
-                args: [LOAD_CONTENT_RESPONSE.Content.Owner._href, Y.Mock.Value.Function],
-                run: function (uri, callback) {
-                    callback(false, {body: Y.JSON.stringify(LOAD_USER_RESPONSE)});
-                }
+            Y.Mock.expect(contentMock, {
+                method: 'load',
+                args: [
+                    Y.Mock.Value.Object,
+                    Y.Mock.Value.Function
+                ],
+                run: runLoadCallback
             });
-            Y.Mock.expect(contentServiceMock, {
-                method: 'loadLocation',
-                args: [LOAD_CONTENT_RESPONSE.Content.MainLocation._href, Y.Mock.Value.Function],
-                run: function (uri, callback) {
-                    callback(false, {body: Y.JSON.stringify(LOAD_LOCATION_RESPONSE)});
-                }
+            Y.Mock.expect(userMock, {
+                method: 'load',
+                args: [
+                    Y.Mock.Value.Object,
+                    Y.Mock.Value.Function
+                ],
+                run: runLoadCallback
             });
-            Y.Mock.expect(contentTypeServiceMock, {
-                method: 'loadContentType',
-                args: [LOAD_CONTENT_RESPONSE.Content.ContentType._href, Y.Mock.Value.Function],
-                run: function (uri, callback) {
-                    callback(false, {body: Y.JSON.stringify(LOAD_CONTENTTYPE_RESPONSE)});
-                }
+            Y.Mock.expect(typeMock, {
+                method: 'load',
+                args: [
+                    Y.Mock.Value.Object,
+                    Y.Mock.Value.Function
+                ],
+                run: runLoadCallback
+            });
+            Y.Mock.expect(locationMock, {
+                method: 'load',
+                args: [
+                    Y.Mock.Value.Object,
+                    Y.Mock.Value.Function
+                ],
+                run: runLoadCallback
+            });
+
+            app.set('contentEditViewVariables', {
+                content: contentMock,
+                owner: userMock,
+                contentType: typeMock,
+                mainLocation: locationMock
             });
 
             app.loadContentForEdit({params: {id: contentId}}, {}, function () {
                 nextCalled = true;
             });
 
-            Y.Mock.verify(capiMock);
-            Y.Mock.verify(contentServiceMock);
-            Y.Mock.verify(contentTypeServiceMock);
-            Y.Mock.verify(userServiceMock);
-
             Y.assert(nextCalled, 'Next middleware should have been called');
 
-            vars = app.get('contentEditViewVariables');
-            Y.Assert.areEqual(LOAD_CONTENT_RESPONSE.Content._id, vars.content._id);
-            Y.Assert.areEqual(LOAD_USER_RESPONSE.User._id, vars.owner._id);
-            Y.Assert.areEqual(LOAD_CONTENTTYPE_RESPONSE.ContentType.id, vars.contentType.id);
-            Y.Assert.areEqual(LOAD_LOCATION_RESPONSE.Location.id, vars.mainLocation.id);
+            Y.Mock.verify(contentMock);
+            Y.Mock.verify(userMock);
+            Y.Mock.verify(locationMock);
+            Y.Mock.verify(typeMock);
+
+            Y.assert(app.get('loading'), "The app should be in loading mode");
         },
 
         "Should show the content edit view": function () {

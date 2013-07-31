@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Rest Model tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="http://yui.yahooapis.com/3.10.3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-restmodel-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
+    YUI({
+        coverage: ['ez-restmodel'],
+        filter: filter,
+        modules: {
+            "ez-restmodel": {
+                requires: [
+                    'model'
+                ],
+                fullpath: "../../../Resources/public/js/models/ez-restmodel" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            },
+
+        }
+    }).use('ez-restmodel-tests', function (Y) {
+        Y.Test.Runner.run();
+
+    });
+</script>
+</body>
+</html>
