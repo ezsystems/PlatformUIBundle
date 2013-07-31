@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Edit Preview View tests</title>
+</head>
+<body>
+
+<div class="editpreviewview-container is-hidden"><div class="container"></div></div>
+
+<script type="text/x-handlebars-template" id="editpreviewview-ez-template">
+    <div class="ez-preview-content" tabindex="0">
+        <header>
+            <button class="ez-preview-hide" data-icon-after="&#xe000;">Close preview</button>
+            <h2>Previewing: <strong>{{ legend }}</strong></h2>
+        </header>
+        <div class="preview-device loading {{ mode.id }}">
+            <div class="iframe-wrapper">
+                <div class="ez-loader is-loading"></div>
+                <iframe class="preview-iframe" width="{{ mode.width }}" height="{{ mode.height }}" src="{{ source }}" frameBorder="0" marginwidth="0"></iframe>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-editpreviewview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-editpreviewview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-editpreviewview": {
+                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-editpreviewview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['view', 'handlebars'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-contentmodel": {
+                requires: [
+                    'ez-restmodel'
+                ],
+                fullpath: "../../../Resources/public/js/models/ez-contentmodel.js"
+            },
+            "ez-restmodel": {
+                requires: [
+                    'model'
+                ],
+                fullpath: "../../../Resources/public/js/models/ez-restmodel.js"
+            }
+        }
+    }).use('ez-editpreviewview-tests', function (Y) {
+        Y.Test.Runner.run();
+
+    });
+</script>
+</body>
+</html>

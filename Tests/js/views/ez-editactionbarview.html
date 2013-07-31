@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Action Bar tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="editactionbarview-ez-template">
+    <menu class="ez-actions-list active-actions" tabindex="0">
+    </menu>
+    <button class="view-more-button is-hidden">{{ viewMoreText }}</button>
+    <menu class="ez-actions-list view-more-actions is-hidden">
+    </menu>
+</script>
+
+<script type="text/x-handlebars-template" id="buttonactionview-ez-template">
+    <button class="ez-action {{#if disabled}}is-disabled {{else}}{{#if actionId}}action-trigger {{/if}}{{/if}}{{#if hint}}with-hint{{/if}}" data-action="{{ actionId }}">
+        <div class="font-icon action-icon">
+            <p class="action-label">{{ label }}</p>
+            {{#if hint}}
+            <p class="action-hint">{{ hint }}</p>
+            {{/if}}
+        </div>
+    </button>
+</script>
+
+<script type="text/x-handlebars-template" id="previewactionview-ez-template">
+    <div class="ez-action {{#if disabled}}is-disabled {{/if}}{{#if hint}}with-hint{{/if}}"  data-action="{{ actionId }}">
+        <div class="font-icon action-icon">
+            <p class="action-label">{{ label }}</p>
+            {{#if hint}}
+            <p class="action-hint">{{ hint }}</p>
+            {{/if}}
+            <menu class="preview-modes">
+                {{#each buttons}}
+                <button class="preview-mode-button action-trigger font-icon" data-action="{{ ../actionId }}" {{#if option}}data-action-option="{{ option }}"{{/if}} ></button>
+                {{/each}}
+            </menu>
+        </div>
+        <div class="ez-editpreviewview-container is-hidden"></div>
+    </div>
+</script>
+
+<script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-editactionbarview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-editactionbarview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-editactionbarview": {
+                requires: ['ez-templatebasedview', 'ez-buttonactionview', 'ez-previewactionview', 'transition', 'event-tap', 'event-resize'],
+                fullpath: "../../../Resources/public/js/views/ez-editactionbarview.js"
+            },
+            "ez-buttonactionview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../Resources/public/js/views/actions/ez-buttonactionview.js"
+            },
+            "ez-previewactionview": {
+                requires: ['ez-buttonactionview', 'ez-editpreviewview'],
+                fullpath: "../../../Resources/public/js/views/actions/ez-previewactionview.js"
+            },
+            "ez-editpreviewview": {
+                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-editpreviewview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['view', 'handlebars'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            }
+        }
+    }).use('ez-editactionbarview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+
+</script>
+</body>
+</html>

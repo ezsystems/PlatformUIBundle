@@ -2,7 +2,12 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
     var app, appTest,
         capiMock,
-        container = Y.one('.app');
+        container = Y.one('.app'),
+        mockActionBar = {};
+
+    mockActionBar.handleHeightUpdate = function () {};
+    Y.Handlebars = {};
+    Y.Handlebars.registerPartial = function () {};
 
     capiMock = new Y.Mock();
     app = new Y.eZ.EditorialApp({
@@ -75,7 +80,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     !container.hasClass('is-app-open'),
                     "The app container should not have the class is-app-open"
                 );
-            }, 400);
+            }, 500);
         },
 
         "Should set/unset the app in loading mode": function () {
@@ -233,6 +238,13 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 setFocus: function () {
                     focused = true;
                 }
+            }, {
+                ATTRS: {
+                    actionBar : {
+                        value: mockActionBar
+                    }
+                }
+
             });
 
             app.set('loading', true);

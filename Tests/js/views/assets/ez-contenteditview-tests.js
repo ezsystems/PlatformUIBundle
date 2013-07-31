@@ -2,6 +2,8 @@ YUI.add('ez-contenteditview-tests', function (Y) {
     var container = Y.one('.container'),
         formContents = "<form></form>",
         content, contentType, owner, mainLocation, formView,
+        actionBar,
+        actionBarContents = "<menu></menu>",
         mockConf = {
             method: 'toJSON',
             returns: {}
@@ -43,6 +45,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         setUp: function () {
 
             formView = new Y.Mock();
+            actionBar = new Y.Mock();
 
             Y.Mock.expect(formView, {
                 method: 'get',
@@ -74,7 +77,31 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 method: 'render',
                 returns: formView
             });
+            Y.Mock.expect(formView, {
+                method: 'destroy'
+            });
 
+            Y.Mock.expect(actionBar, {
+                method: 'get',
+                args: ['container'],
+                returns: actionBarContents
+            });
+            Y.Mock.expect(actionBar, {
+                method: 'set',
+                args: ['content', content]
+            });
+            Y.Mock.expect(actionBar, {
+                method: 'addTarget',
+                args: [Y.Mock.Value.Object],
+                returns: true
+            });
+            Y.Mock.expect(actionBar, {
+                method: 'render',
+                returns: actionBar
+            });
+            Y.Mock.expect(actionBar, {
+                method: 'destroy'
+            });
 
             this.view = new Y.eZ.ContentEditView({
                 container: container,
@@ -82,8 +109,10 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 contentType: contentType,
                 mainLocation: mainLocation,
                 owner: owner,
-                formView: formView
+                formView: formView,
+                actionBar: actionBar
             });
+
         },
 
         tearDown: function () {
@@ -102,7 +131,9 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             this.view.render();
             Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
             Y.Assert.areNotEqual("", container.getHTML(), "View container should contain the result of the this.view");
+            this.view.destroy();
             Y.Mock.verify(formView);
+            Y.Mock.verify(actionBar);
         },
 
         "Test available variable in template": function () {
@@ -115,13 +146,16 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 Y.Assert.isObject(variables.mainLocation, "mainLocation should be available in the template and should be an object");
                 Y.Assert.isObject(variables.owner, "owner should be available in the template and should be an object");
 
-                return '<div class="ez-contenteditformview-container"></div>';
+                return  '<div class="ez-contenteditformview-container"></div>' +
+                        '<div class="ez-editactionbar-container"></div>';
             };
             this.view.render();
+            this.view.destroy();
             Y.Mock.verify(formView);
+            Y.Mock.verify(actionBar);
         },
 
-        "Should render formView in designated container": function () {
+        "Should render formView and actionBar in designated containers": function () {
             this.view.render();
 
             Y.Assert.areEqual(
@@ -129,27 +163,40 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 container.one('.ez-contenteditformview-container').getHTML(),
                 "mock formContents is rendered in container"
             );
+            Y.Assert.areEqual(
+                actionBarContents,
+                container.one('.ez-editactionbar-container').getHTML(),
+                "mock actionBarContents is rendered in container"
+            );
+
+            this.view.destroy();
             Y.Mock.verify(formView);
+            Y.Mock.verify(actionBar);
         },
 
-        "Should destroy formView when destroying itself": function () {
+        "Should destroy formView and ActionBar when destroying itself": function () {
             Y.Mock.expect(formView, {
+                method: 'destroy'
+            });
+            Y.Mock.expect(actionBar, {
                 method: 'destroy'
             });
 
             this.view.render();
             this.view.destroy();
             Y.Mock.verify(formView);
+            Y.Mock.verify(actionBar);
         },
 
         "Should recieve events fired on it's child formView": function () {
             // We need another (not as in "setUp") view initialization sequence to test that
             var view = new Y.eZ.ContentEditView({
-                    container: container,
-                    content: content,
-                    contentType: contentType,
-                    mainLocation: mainLocation,
-                    owner: owner,
+                container: container,
+                content: content,
+                contentType: contentType,
+                mainLocation: mainLocation,
+                owner: owner,
+                actionBar: actionBar
                 }),
                 testEventReceived = false;
 
@@ -161,6 +208,28 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
             Y.assert(testEventReceived, "Should have recieved the 'testEvent' from child contentEditFormView");
         },
+
+        "Should recieve events fired on it's child actionBar": function () {
+            // We need another (not as in "setUp") view initialization sequence to test that
+            var view = new Y.eZ.ContentEditView({
+                    container: container,
+                    content: content,
+                    contentType: contentType,
+                    mainLocation: mainLocation,
+                    owner: owner,
+                    formView: formView
+                }),
+                testEventReceived = false;
+
+            view.on('editActionBarView:testEvent', function () {
+                testEventReceived = true;
+            });
+
+            view.get('actionBar').fire('testEvent');
+
+            Y.assert(testEventReceived, "Should have recieved the 'testEvent' from child editActionBarView");
+        },
+
 
         "Should fire a close event when tapping 'close' link": function () {
             var closeFired = false,

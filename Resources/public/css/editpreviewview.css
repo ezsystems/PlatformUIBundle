@@ -1,0 +1,85 @@
+.ez-editpreviewview-container {
+    position: absolute;
+
+    -webkit-transform: translateX(0);
+       -moz-transform: translateX(0);
+        -ms-transform: translateX(0);
+         -o-transform: translateX(0);
+            transform: translateX(0);
+
+    -webkit-transition: -webkit-transform 0.4s;
+       -moz-transition: -moz-transform 0.4s;
+        -ms-transition: -ms-transform 0.4s;
+         -o-transition: -o-transform 0.4s;
+            transition: transform 0.4s;
+
+    -webkit-transform-style: preserve-3d; /* increasing performance on mobile devices */
+       -moz-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+}
+
+.ez-editpreviewview-container.is-hidden {
+    -webkit-transform: translateX(200%);
+       -moz-transform: translateX(200%);
+        -ms-transform: translateX(200%);
+         -o-transform: translateX(200%);
+            transform: translateX(200%);
+}
+
+.ez-view-editpreviewview {
+    height: 100%;
+    overflow: hidden;
+}
+
+.ez-preview-content header  {
+    min-height: 0;
+}
+
+.ez-preview-content header h2 {
+    font-size: 150%;
+    text-align: center;
+}
+
+.ez-preview-content .ez-preview-hide {
+    display: block;
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+    font-size: 90%;
+    padding: 0.5em;
+    background: none;
+    border: none;
+}
+
+.ez-preview-content .ez-preview-hide:after {
+    font-size: 90%;
+    padding-left: 0.5em;
+}
+
+.ez-preview-content .preview-device {
+    margin: 20px auto;
+    overflow: hidden;
+}
+
+.ez-preview-content .iframe-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.ez-preview-content .preview-device.tablet .iframe-wrapper {
+    width: 769px;
+}
+
+.ez-preview-content .ez-loader.is-loading {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1011;
+}
+
+.ez-preview-content .preview-iframe {
+    display: block;
+    margin: 0;
+}

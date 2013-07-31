@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Button Action view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="buttonactionview-ez-template">
+    <button class="action {{#if disabled}}is-disabled{{else}}{{#if actionId}}action-trigger{{/if}}{{/if}}" data-action="{{ actionId }}">
+        <div class="font-icon action-icon">
+            <p class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</p>
+            {{#if hint}}
+            <p class="action-hint">{{ hint }}</p>
+            {{/if}}
+        </div>
+    </button>
+</script>
+
+<script type="text/javascript" src="../../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-buttonactionview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+
+    YUI({
+        coverage: ['ez-buttonactionview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-buttonactionview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/actions/ez-buttonactionview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['view', 'handlebars'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            }
+        }
+    }).use('ez-buttonactionview-tests', function (Y) {
+
+        Y.Test.Runner.run();
+
+    });
+</script>
+</body>
+</html>
