@@ -39,9 +39,18 @@
         }
     }).use('test', 'event-tap', 'node-event-simulate', 'ez-contenteditview', function (Y) {
         var container = Y.one('.container'),
-            content = {}, contentType = {}, owner = {}, mainLocation = {};
-
+            content, contentType, owner, mainLocation;
+            mockConf = {
+                method: 'toJSON',
+                returns: {}
+            },
             GESTURE_MAP = Y.Event._GESTURE_MAP;
+
+        content = contentType = owner = mainLocation = new Y.Mock();
+        Y.Mock.expect(content, mockConf);
+        Y.Mock.expect(contentType, mockConf);
+        Y.Mock.expect(owner, mockConf);
+        Y.Mock.expect(mainLocation, mockConf);
 
         // trick to simulate a tap event
         // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -98,11 +107,6 @@
                     Y.Assert.isObject(variables.contentType, "contentType should be available in the template and should be an object");
                     Y.Assert.isObject(variables.mainLocation, "mainLocation should be available in the template and should be an object");
                     Y.Assert.isObject(variables.owner, "owner should be available in the template and should be an object");
-
-                    Y.Assert.areSame(content, variables.content, "content should be the content provided while creating the view");
-                    Y.Assert.areSame(contentType, variables.contentType, "contentType should be the contentType provided while creating the view");
-                    Y.Assert.areSame(mainLocation, variables.mainLocation, "mainLocation should be the mainLocation provided while creating the view");
-                    Y.Assert.areSame(owner, variables.owner, "owner should be the owner provided while creating the view");
 
                     return "";
                 };

@@ -78,59 +78,40 @@ YUI.add('ez-editorialapp', function (Y) {
          */
         loadContentForEdit: function (req, res, next) {
             var app = this,
-                capi = this.get('capi'),
-                contentService = capi.getContentService(),
-                userService = capi.getUserService(),
-                contentTypeService = capi.getContentTypeService();
+                loadOptions = {
+                    api: this.get('capi')
+                },
+                vars = this.get('contentEditViewVariables'),
+                content = vars.content,
+                mainLocation = vars.mainLocation,
+                type = vars.contentType,
+                owner = vars.owner;
 
             app.set('loading', true);
-            // TODO moves this to proper Model objects
-            contentService.loadContentInfoAndCurrentVersion(
-                "/api/ezp/v2/content/objects/" + req.params.id,
-                function (error, response) {
-                    var struct, tasks;
+            content.set('id', "/api/ezp/v2/content/objects/" + req.params.id);
+            content.load(loadOptions, function (error) {
+                var tasks,
+                    resources = content.get('resources');
 
-                    if ( !error ) {
-                        struct = Y.JSON.parse(response.body);
-                        app.set('contentEditViewVariables.content', struct.Content);
+                // TODO handle errors
+                if ( !error ) {
+                    // parallel loading of owner, mainLocation and contentType
+                    tasks = new Y.Parallel();
 
-                        // doing the subsequent REST calls in parallel
-                        tasks = new Y.Parallel();
-                        userService.loadUser(
-                            struct.Content.Owner._href,
-                            tasks.add(function (error, response) {
-                                if ( !error ) {
-                                    app.set('contentEditViewVariables.owner', Y.JSON.parse(response.body).User);
-                                }
-                            })
-                        );
-                        contentService.loadLocation(
-                            struct.Content.MainLocation._href,
-                            tasks.add(function (error, response) {
-                                if ( !error ) {
-                                    app.set('contentEditViewVariables.mainLocation', Y.JSON.parse(response.body).Location);
-                                }
-                            })
-                        );
-                        contentTypeService.loadContentType(
-                            struct.Content.ContentType._href,
-                            tasks.add(function (error, response) {
-                                var type = Y.JSON.parse(response.body).ContentType;
+                    owner.set('id', resources.Owner);
+                    owner.load(loadOptions, tasks.add(function (error) {}));
 
-                                // TODO: take the one with a correct language
-                                type.Name = type.names.value[0]["#text"];
-                                if ( !error ) {
-                                    app.set('contentEditViewVariables.contentType', type);
-                                }
-                            })
-                        );
-                        tasks.done(function() {
-                            next();
-                        });
-                    }
-                    // TODO handle errors
+                    mainLocation.set('id', resources.MainLocation);
+                    mainLocation.load(loadOptions, tasks.add(function (error) {}));
+
+                    type.set('id', resources.ContentType);
+                    type.load(loadOptions, tasks.add(function (error) {}));
+
+                    tasks.done(function () {
+                        next();
+                    });
                 }
-            );
+            });
         },
 
         /**
@@ -231,11 +212,12 @@ YUI.add('ez-editorialapp', function (Y) {
              * @default
              */
             contentEditViewVariables: {
+                cloneDefaultValue: false,
                 value: {
-                    content: {},
-                    contentType: {},
-                    mainLocation: {},
-                    owner: {}
+                    content: new Y.eZ.Content(),
+                    contentType: new Y.eZ.ContentType(),
+                    mainLocation: new Y.eZ.Location(),
+                    owner: new Y.eZ.User()
                 }
             }
         }

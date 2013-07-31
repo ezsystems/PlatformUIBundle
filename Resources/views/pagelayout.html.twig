@@ -27,7 +27,8 @@ YUI.GlobalConfig = {
         "ez-editorialapp": {
             requires: [
                 'app', 'app-transitions', 'node-screen', 'json', 'parallel',
-                'ez-capi', 'ez-contenteditview'
+                'ez-capi', 'ez-contenteditview',
+                'ez-restmodel', 'ez-contentmodel', 'ez-locationmodel', 'ez-usermodel', 'ez-contenttypemodel'
             ],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/apps/ez-editorialapp.js' %}
             fullpath: "{{ asset_url }}"
@@ -42,6 +43,37 @@ YUI.GlobalConfig = {
         "ez-contenteditview": {
             requires: ['ez-templatebasedview', 'transition', 'event-tap'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-contenteditview.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
+
+        "ez-restmodel": {
+            requires: ['model'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/models/ez-restmodel.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
+        "ez-contentmodel": {
+            requires: ['ez-restmodel'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/models/ez-contentmodel.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
+        "ez-locationmodel": {
+            requires: ['ez-restmodel'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/models/ez-locationmodel.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
+        "ez-usermodel": {
+            requires: ['ez-restmodel'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/models/ez-usermodel.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
+        "ez-contenttypemodel": {
+            requires: ['ez-restmodel'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/models/ez-contenttypemodel.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         }
@@ -81,12 +113,12 @@ YUI().use('ez-editorialapp', function (Y) {
     <div class="ez-main-content">
         <header>
             <a href="#" class="ez-view-close" data-icon-after="&#xe000;">Close</a>
-            <h1 class="ez-content-name" data-icon="&#xe001;">{{ content.Name }}</h1>
+            <h1 class="ez-content-name" data-icon="&#xe001;">{{ content.name }}</h1>
             <ul class="ez-technical-infos"{{#unless isTouch}} style="opacity: 0;"{{/unless}}>
-                <li>{{ contentType.Name }}</li>
+                <li>{{ contentType.names.[eng-GB] }}</li>
                 <li>Created by {{ owner.name }}</li>
                 <li>{{ content.lastModificationDate }}</li>
-                <li>Object ID: {{ content._id }}, Node ID: {{ mainLocation.id }}</li>
+                <li>Object ID: {{ content.contentId }}, Node ID: {{ mainLocation.locationId }}</li>
             </ul>
         </header>
     </div>

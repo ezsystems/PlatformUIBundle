@@ -11,6 +11,7 @@
 
 
 <script type="text/javascript" src="http://yui.yahooapis.com/3.10.3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/fake-models.js"></script>
 <script type="text/javascript" src="./assets/ez-editorialapp-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
@@ -20,7 +21,8 @@
         modules: {
             "ez-editorialapp": {
                 requires: [
-                    'app', 'app-transitions', 'node-screen', 'event-tap', 'transition'
+                    'app', 'app-transitions', 'node-screen', 'event-tap', 'transition',
+                    'fake-models'
                 ],
                 fullpath: "../../../Resources/public/js/apps/ez-editorialapp" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
             },
