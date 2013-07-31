@@ -40,41 +40,9 @@ YUI.add('ez-contentmodel', function (Y) {
             } else {
                 callback("Only read operation is supported at the moment");
             }
-        },
-
-        /**
-         * Parses the response from the eZ Publish REST API
-         *
-         * @method parse
-         * @param {Object} response the response object from the eZ JS REST Client
-         * @return {Object} attribute hash
-         */
-        parse: function (response) {
-            var content;
-
-            try {
-                content = Y.JSON.parse(response.body);
-            } catch (ex) {
-                /**
-                 * Fired when a parsing error occurs
-                 *
-                 * @event error
-                 * @param {String} src "parse"
-                 * @param {String} error the error message
-                 * @param {Object} response the response object that failed to
-                 * be parsed
-                 */
-                this.fire('error', {
-                    src: 'parse',
-                    error: "No content in the response",
-                    response: response
-                });
-                return null;
-            }
-            return this._parseStruct(content.Content);
         }
-
     }, {
+        REST_STRUCT_ROOT: "Content",
         ATTRS_REST_MAP: [
             'alwaysAvailable', 'lastModificationDate',
             'mainLanguageCode', 'publishedDate',

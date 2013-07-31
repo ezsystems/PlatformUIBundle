@@ -127,9 +127,54 @@ YUI.add('ez-restmodel', function (Y) {
             });
             attrs.resources = links;
             return attrs;
+        },
+
+        /**
+         * Parses the response from the eZ Publish REST API
+         *
+         * @method parse
+         * @param {Object} response the response object from the eZ JS REST Client
+         * @return {Object} attribute hash
+         */
+        parse: function (response) {
+            var content,
+                root = this.constructor.REST_STRUCT_ROOT;
+
+            try {
+                content = Y.JSON.parse(response.body);
+            } catch (ex) {
+                /**
+                 * Fired when a parsing error occurs
+                 *
+                 * @event error
+                 * @param {String} src "parse"
+                 * @param {String} error the error message
+                 * @param {Object} response the response object that failed to
+                 * be parsed
+                 */
+                this.fire('error', {
+                    src: 'parse',
+                    error: "No content in the response",
+                    response: response
+                });
+                return null;
+            }
+            return this._parseStruct(root ? content[root] : content);
         }
 
+
     }, {
+        /**
+         * Root element in the REST API response where the data is located.
+         *
+         * @static
+         * @property REST_STRUCT_ROOT
+         * @type string
+         * @default ""
+         */
+        REST_STRUCT_ROOT: "",
+
+
         /**
          * Mapping between properties in a hash structure
          * and the attributes of the model object. Each element can be

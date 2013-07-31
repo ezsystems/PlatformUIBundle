@@ -4,9 +4,6 @@ YUI.add('ez-restmodel-tests', function (Y) {
         Model;
 
     Model = Y.Base.create('testModel', Y.eZ.RestModel, [], {
-        parse: function (struct) {
-            return this._parseStruct(struct);
-        }
 
     }, {
         ATTRS: {
@@ -125,9 +122,12 @@ YUI.add('ez-restmodel-tests', function (Y) {
                     "name": "My name",
                     "restId": 42,
                     "notParsed": false
+                },
+                response = {
+                    body: Y.JSON.stringify(struct)
                 };
 
-            m.setAttrs(m.parse(struct));
+            m.setAttrs(m.parse(response));
             Y.Assert.isUndefined(
                 m.get('notParsed'),
                 "'notParsed' property should not be parsed/imported"
@@ -156,8 +156,12 @@ YUI.add('ez-restmodel-tests', function (Y) {
                     Link3: {
                         _href: "/link3"
                     }
+                },
+                response = {
+                    body: Y.JSON.stringify(struct)
                 };
-            m.setAttrs(m.parse(struct));
+
+            m.setAttrs(m.parse(response));
 
             Y.Assert.areEqual(
                 Model.LINKS_MAP.length,

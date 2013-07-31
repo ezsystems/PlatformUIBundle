@@ -38,42 +38,9 @@ YUI.add('ez-locationmodel', function (Y) {
             } else {
                 callback("Only read operation is supported at the moment");
             }
-        },
-
-        /**
-         * Parses the response from the eZ Publish REST API
-         *
-         * @method parse
-         * @param {Object} response the response object from the eZ JS REST Client
-         * @return {Object} attribute hash
-         */
-        parse: function (response) {
-            var loc;
-
-            try {
-                loc = Y.JSON.parse(response.body);
-            } catch (ex) {
-                /**
-                 * Fired when a parsing error occurs
-                 *
-                 * @event error
-                 * @param {String} src "parse"
-                 * @param {String} error the error message
-                 * @param {Object} response the response object that failed to
-                 * be parsed
-                 */
-                this.fire('error', {
-                    src: 'parse',
-                    error: "No location in the response",
-                    response: response
-                });
-                return null;
-            }
-
-            return this._parseStruct(loc.Location);
         }
-
     }, {
+        REST_STRUCT_ROOT: "Location",
         ATTRS_REST_MAP: [
             'childCount', 'depth', 'hidden', 'invisible', 'pathString',
             'priority', 'remoteId', 'sortField', 'sortOrder',
