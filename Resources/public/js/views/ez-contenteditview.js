@@ -8,7 +8,8 @@ YUI.add('ez-contenteditview', function (Y) {
 
     Y.namespace('eZ');
 
-    var DETAILS_SEL = '.ez-technical-infos';
+    var DETAILS_SEL = '.ez-technical-infos',
+        FORM_CONTAINER = '.ez-contenteditformview-container';
 
     /**
      * The content edit view
@@ -34,13 +35,8 @@ YUI.add('ez-contenteditview', function (Y) {
          * @method initializer
          */
         initializer: function () {
-
-            this.contentEditFormView = new Y.eZ.ContentEditFormView({
-                model : this.get('form')
-            });
-
+            this.contentEditFormView = this.get('formView');
             this.contentEditFormView.addTarget(this);
-
         },
 
         /**
@@ -61,7 +57,9 @@ YUI.add('ez-contenteditview', function (Y) {
          * @return {eZ.ContentEditView} the view itself
          */
         render: function () {
-            this.get('container').setHTML(this.template({
+            var container = this.get('container');
+
+            container.setHTML(this.template({
                 isTouch: this._isTouch(),
                 content: this.get('content').toJSON(),
                 mainLocation: this.get('mainLocation').toJSON(),
@@ -69,7 +67,7 @@ YUI.add('ez-contenteditview', function (Y) {
                 owner: this.get('owner').toJSON()
             }));
 
-            this.get('container').one('.ez-contenteditformview-container').append(this.contentEditFormView.render().get('container'));
+            container.one(FORM_CONTAINER).append(this.contentEditFormView.render().get('container'));
 
             return this;
         },
@@ -180,13 +178,13 @@ YUI.add('ez-contenteditview', function (Y) {
             },
 
             /**
-             * The form structure which will be passed to ContentEditFormView
+             * The ContentEditFormView instance which will be used to render form
              *
-             * @attribute form
+             * @attribute formView
              * @default {}
              * @required
              */
-            form: {
+            formView: {
                 value: {}
             }
         }

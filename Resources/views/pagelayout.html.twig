@@ -42,7 +42,7 @@ YUI.GlobalConfig = {
             {% endjavascripts %}
         },
         "ez-contenteditview": {
-            requires: ['ez-templatebasedview', 'transition', 'anim', 'event-tap'],
+            requires: ['ez-templatebasedview', 'transition', 'event-tap'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-contenteditview.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
@@ -135,11 +135,11 @@ YUI().use('ez-editorialapp', function (Y) {
     <form class="ez-form-content">
         {{#each form.fieldSets}}
             <fieldset>
-                <label data-icon-after="&#xe002;">{{fieldSetName}}</label>
-                <details>
-                    FieldEditViews go here...<br/>
-                    and here...
-                </details>
+                <legend class="ez-formview-fieldset-name" data-icon-after="&#xe002;">{{fieldSetName}}</legend>
+                <div class="ez-formview-fieldset-fields">
+                FieldEditViews go here...<br/>
+                and here...
+                </div>
             </fieldset>
         {{/each}}
     </form>

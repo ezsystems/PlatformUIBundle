@@ -3,32 +3,33 @@ YUI.add('ez-contenteditformview', function (Y) {
     /**
      * Provides the Form View class
      *
-     * @module ez-formview
+     * @module ez-contenteditformview
      */
 
     Y.namespace('eZ');
 
-    var COLLAPSED_CLASS = 'collapsed';
+    var COLLAPSED_CLASS = 'is-collapsed',
+        FIELDSET_FIELDS_CLASS = '.ez-formview-fieldset-fields';
 
 
     /**
      * The form view
      *
      * @namespace eZ
-     * @class FormView
+     * @class ContentEditFormView
      * @constructor
      * @extends eZ.TemplateBasedView
      */
     Y.eZ.ContentEditFormView = Y.Base.create('contentEditFormView', Y.eZ.TemplateBasedView, [], {
         events: {
-            'fieldset label': {'tap': '_toggleFieldsetCollapse'}
+            '.ez-formview-fieldset-name': {'tap': '_toggleFieldsetCollapse'}
         },
 
         /**
          * Renders the form view
          *
          * @method render
-         * @return {eZ.FormView} the view itself
+         * @return {eZ.ContentEditFormView} the view itself
          */
         render: function () {
             this.get('container').setHTML(this.template({
@@ -39,15 +40,13 @@ YUI.add('ez-contenteditformview', function (Y) {
 
         _toggleFieldsetCollapse: function (e) {
 
-            var label = e.currentTarget,
-                fieldSet = label.get('parentNode');
+            var legend = e.currentTarget,
+                fieldSet = legend.get('parentNode');
 
             if (fieldSet.hasClass(COLLAPSED_CLASS)) {
-                fieldSet.one('details').show(true);
-                label.setAttribute('data-icon-after', "\uE002");
+                fieldSet.one(FIELDSET_FIELDS_CLASS).show(true);
             } else {
-                fieldSet.one('details').hide(true);
-                label.setAttribute('data-icon-after', "\uE004");
+                fieldSet.one(FIELDSET_FIELDS_CLASS).hide(true);
             }
 
             fieldSet.toggleClass(COLLAPSED_CLASS);
