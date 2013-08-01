@@ -194,7 +194,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
 
         "Should show the content edit view": function () {
-            var rendered = false, initialized = false,
+            var rendered = false, initialized = false, focused = false,
                 vars = {'content': 1, 'contentType': {}, 'mainLocation': {}, 'owner': {}};
 
             app.views.contentEditView.type = Y.Base.create('testView', Y.View, [], {
@@ -208,6 +208,10 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                         this.get('content'), vars.content,
                         "The view attributes should be updated with the app contentEditViewVariables attribute"
                     );
+                },
+
+                setFocus: function () {
+                    focused = true;
                 }
             });
 
@@ -219,6 +223,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             Y.assert(rendered, "The content edit view should have been rendered");
             this.wait(function () {
                 Y.assert(!app.get('loading'), "The app should not be in loading mode");
+                Y.assert(focused, "The content edit view should have input focus");
             }, 500);
 
             rendered = false;

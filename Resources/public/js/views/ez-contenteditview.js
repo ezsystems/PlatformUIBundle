@@ -9,7 +9,8 @@ YUI.add('ez-contenteditview', function (Y) {
     Y.namespace('eZ');
 
     var DETAILS_SEL = '.ez-technical-infos',
-        CONTENT_SEL = '.ez-main-content';
+        CONTENT_SEL = '.ez-main-content',
+        ESCAPE_KEY = 27;
 
     /**
      * The content edit view
@@ -115,7 +116,7 @@ YUI.add('ez-contenteditview', function (Y) {
          */
         _handleKeyboard: function (e) {
 
-            if (e.keyCode === 27) { // escape key
+            if (e.keyCode === ESCAPE_KEY) {
                 this._closeView(e);
             }
 
