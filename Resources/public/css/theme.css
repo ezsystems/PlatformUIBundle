@@ -119,6 +119,7 @@
 
 .ez-view-contenteditformview .fieldgroup-fields {
     border: 1px solid #CCCCCC;
+    box-shadow: 0 0 2px #CCCCCC;
 }
 
 .ez-view-contenteditformview .fieldgroup-name {
