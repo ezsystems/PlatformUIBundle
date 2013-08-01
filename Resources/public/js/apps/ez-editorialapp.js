@@ -313,20 +313,22 @@ YUI.add('ez-editorialapp', function (Y) {
                     contentType: new Y.eZ.ContentType(),
                     mainLocation: new Y.eZ.Location(),
                     owner: new Y.eZ.User(),
-                    form: {
-                        fieldSets : [
-                            {
-                                fieldSetName : "Content",
-                                fields : [
-                                ]
-                            },
-                            {
-                                fieldSetName : "Meta",
-                                fields : [
-                                ]
-                            }
-                        ]
-                    }
+                    formView: new Y.eZ.ContentEditFormView({
+                        model : {
+                            fieldSets : [
+                                {
+                                    fieldSetName : "Content",
+                                    fields : [
+                                    ]
+                                },
+                                {
+                                    fieldSetName : "Meta",
+                                    fields : [
+                                    ]
+                                }
+                            ]
+                        }
+                    })
                 }
             }
         }
