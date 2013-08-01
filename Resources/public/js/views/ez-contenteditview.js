@@ -35,11 +35,11 @@ YUI.add('ez-contenteditview', function (Y) {
          */
         initializer: function () {
 
-            this.formView = new Y.eZ.FormView({
+            this.contentEditFormView = new Y.eZ.ContentEditFormView({
                 model : this.get('form')
             });
 
-            this.formView.addTarget(this);
+            this.contentEditFormView.addTarget(this);
 
         },
 
@@ -50,8 +50,8 @@ YUI.add('ez-contenteditview', function (Y) {
          * @method destructor
          */
         destructor: function () {
-            this.formView.destroy();
-            delete this.formView;
+            this.contentEditFormView.destroy();
+            delete this.contentEditFormView;
         },
 
         /**
@@ -69,7 +69,7 @@ YUI.add('ez-contenteditview', function (Y) {
                 owner: this.get('owner').toJSON()
             }));
 
-            this.get('container').one('.ez-formview-container').append(this.formView.render().get('container'));
+            this.get('container').one('.ez-contenteditformview-container').append(this.contentEditFormView.render().get('container'));
 
             return this;
         },
@@ -180,7 +180,7 @@ YUI.add('ez-contenteditview', function (Y) {
             },
 
             /**
-             * The form structure which will be passed to FormView
+             * The form structure which will be passed to ContentEditFormView
              *
              * @attribute form
              * @default {}

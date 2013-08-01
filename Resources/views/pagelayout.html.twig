@@ -12,7 +12,7 @@
     '@EzSystemsEditorialBundle/Resources/public/css/pure/0.2.0/base-context-min.css'
     '@EzSystemsEditorialBundle/Resources/public/css/layout.css'
     '@EzSystemsEditorialBundle/Resources/public/css/contenteditview.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/formview.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/contenteditformview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/theme.css'
 %}
 <link rel="stylesheet" href="{{ asset_url }}" />
@@ -28,7 +28,7 @@ YUI.GlobalConfig = {
         "ez-editorialapp": {
             requires: [
                 'app', 'app-transitions', 'node-screen', 'json', 'parallel',
-                'ez-capi', 'ez-contenteditview', 'ez-formview',
+                'ez-capi', 'ez-contenteditview', 'ez-contenteditformview',
                 'ez-restmodel', 'ez-contentmodel', 'ez-locationmodel', 'ez-usermodel', 'ez-contenttypemodel'
             ],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/apps/ez-editorialapp.js' %}
@@ -47,9 +47,9 @@ YUI.GlobalConfig = {
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         },
-        "ez-formview": {
+        "ez-contenteditformview": {
             requires: ['ez-templatebasedview', 'transition', 'event-tap'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-formview.js' %}
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-contenteditformview.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         },
@@ -128,16 +128,16 @@ YUI().use('ez-editorialapp', function (Y) {
                 <li>Object ID: {{ content.contentId }}, Node ID: {{ mainLocation.locationId }}</li>
             </ul>
         </header>
-        <div class="ez-formview-container"></div>
+        <div class="ez-contenteditformview-container"></div>
     </div>
 </script>
-<script type="text/x-handlebars-template" id="formview-ez-template">
+<script type="text/x-handlebars-template" id="contenteditformview-ez-template">
     <form class="ez-form-content">
         {{#each form.fieldSets}}
             <fieldset>
                 <label data-icon-after="&#xe002;">{{fieldSetName}}</label>
                 <details>
-                    Fieldset's attributes go here...<br/>
+                    FieldEditViews go here...<br/>
                     and here...
                 </details>
             </fieldset>

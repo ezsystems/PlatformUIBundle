@@ -1,4 +1,4 @@
-YUI.add('ez-formview', function (Y) {
+YUI.add('ez-contenteditformview', function (Y) {
     "use strict";
     /**
      * Provides the Form View class
@@ -19,7 +19,7 @@ YUI.add('ez-formview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.FormView = Y.Base.create('formView', Y.eZ.TemplateBasedView, [], {
+    Y.eZ.ContentEditFormView = Y.Base.create('contentEditFormView', Y.eZ.TemplateBasedView, [], {
         events: {
             'fieldset label': {'tap': '_toggleFieldsetCollapse'}
         },
