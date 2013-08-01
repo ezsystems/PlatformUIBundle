@@ -89,36 +89,6 @@ YUI.add('ez-contenteditformview', function (Y) {
         },
 
         /**
-         * Makes sure the field edit views are correctly destroyed
-         *
-         * @method destructor
-         */
-        destructor: function () {
-            Y.Array.each(this._fieldEditViews, function (v, idx) {
-                v.destroy();
-            });
-            this._fieldEditViews = [];
-        },
-
-        /**
-         * Renders the field edit views in the correct fieldset (field group)
-         *
-         * @protected
-         * @method _renderFieldEditViews
-         */
-        _renderFieldEditViews: function () {
-            var container = this.get('container');
-
-            Y.Array.each(this._fieldEditViews, function (view) {
-                var fieldset,
-                    def = view.get('fieldDefinition');
-
-                fieldset = container.one('.ez-fieldgroup-' + def.fieldGroup + ' .fieldgroup-fields');
-                fieldset.append(view.render().get('container'));
-            });
-        },
-
-        /**
          * Toggles collapsing for parent fieldSet with "SlideUp/Down" effect.
          *
          * @method _toggleFieldsetCollapse
@@ -129,6 +99,7 @@ YUI.add('ez-contenteditformview', function (Y) {
                 fields = fieldSet.one(FIELDSET_FIELDS_CLASS);
 
             if (fieldSet.hasClass(COLLAPSED_CLASS)) {
+
                 fields.transition({
                     height: function(node) {
                         return node.get('scrollHeight') + 'px';
@@ -136,17 +107,21 @@ YUI.add('ez-contenteditformview', function (Y) {
                     duration: TRANSITION_DURATION,
                     easing: TRANSITION_EASE_OUT
                 });
+
             } else {
+
                 fields.transition({
                     height: 0,
                     duration: TRANSITION_DURATION,
                     easing: TRANSITION_EASE_IN
                 });
+
             }
 
             fieldSet.toggleClass(COLLAPSED_CLASS);
         }
     });
+
 }, {
     ATTRS: {
         /**
@@ -158,18 +133,6 @@ YUI.add('ez-contenteditformview', function (Y) {
          * @required
          */
         contentType: {
-            value: {}
-        },
-
-        /**
-         * The content instance
-         *
-         * @attribute content
-         * @default {}
-         * @type {eZ.Content}
-         * @required
-         */
-        content: {
             value: {}
         }
     }
