@@ -65,7 +65,6 @@
 .ez-view-formview .ez-form-content fieldset {
     border: 1px solid #CCCCCC;
     box-shadow: 0 0 2px #CCCCCC;
-    padding-top: 1em;
 }
 
 .ez-view-formview .ez-form-content fieldset label {
@@ -75,8 +74,6 @@
     font-weight: bold;
     left: 15px;
     overflow: hidden;
-    padding: 0 10px;
-    position: absolute;
     top: -10px;
     z-index: 5;
 }

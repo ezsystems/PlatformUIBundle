@@ -9,8 +9,11 @@
 .ez-view-contenteditformview .ez-form-content fieldset {
     margin-bottom: 20px;
     position: relative;
+    padding-top: 1em;
 }
 
 .ez-view-contenteditformview .ez-form-content fieldset label {
     cursor: pointer;
+    padding: 0 10px;
+    position: absolute;
 }
