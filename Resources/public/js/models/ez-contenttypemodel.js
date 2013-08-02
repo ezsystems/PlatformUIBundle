@@ -76,7 +76,7 @@ YUI.add('ez-contenttypemodel', function (Y) {
         /**
          * Returns array of FieldGroups ready to use by ContentEditFormView
          *
-         * @method getFieldSets
+         * @method getFieldGroups
          * @return {Array} array of fieldGroups to be used by ContentEditFormView
          */
         getFieldGroups: function () {
@@ -92,7 +92,7 @@ YUI.add('ez-contenttypemodel', function (Y) {
                     },
                     fieldGroup;
 
-                // Add new field set, if fieldGroup is unique
+                // Add new field group, if FieldDefinition.fieldGroup is unique
                 if (fieldGroupNames.indexOf(fieldGroupName) === -1) {
                     fieldGroups.push({
                         fieldGroupName: fieldGroupName,
