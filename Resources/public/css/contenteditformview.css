@@ -1,17 +1,26 @@
-.ez-view-contenteditformview {
-    overflow: hidden;
-}
-
 .ez-view-contenteditformview .ez-form-content {
     padding: 2em;
 }
 
-.ez-view-contenteditformview .ez-form-content fieldset {
+.ez-view-contenteditformview fieldset {
     margin-bottom: 20px;
     padding-top: 0.5em;
 }
 
-.ez-formview-fieldset-name {
+.ez-view-contenteditformview .fieldgroup-name {
     cursor: pointer;
-    padding: 0 10px;
+    line-height: 18px;
+    padding: 3px 10px;
+    margin: 0;
+    width: auto;
+}
+
+.ez-view-contenteditformview .fieldgroup-fields {
+    overflow: hidden;
+    transition: height 1s;
+    -webkit-transition: height 1s;
+}
+
+.ez-view-contenteditformview .is-collapsed .fieldgroup-fields {
+    height: 0px;
 }

@@ -9,7 +9,7 @@ YUI.add('ez-contenteditformview', function (Y) {
     Y.namespace('eZ');
 
     var COLLAPSED_CLASS = 'is-collapsed',
-        FIELDSET_FIELDS_CLASS = '.ez-formview-fieldset-fields';
+        FIELDSET_FIELDS_CLASS = '.fieldgroup-fields';
 
 
     /**
@@ -22,7 +22,7 @@ YUI.add('ez-contenteditformview', function (Y) {
      */
     Y.eZ.ContentEditFormView = Y.Base.create('contentEditFormView', Y.eZ.TemplateBasedView, [], {
         events: {
-            '.ez-formview-fieldset-name': {'tap': '_toggleFieldsetCollapse'}
+            '.fieldgroup-name': {'tap': '_toggleFieldsetCollapse'}
         },
 
         /**
@@ -39,17 +39,7 @@ YUI.add('ez-contenteditformview', function (Y) {
         },
 
         _toggleFieldsetCollapse: function (e) {
-
-            var legend = e.currentTarget,
-                fieldSet = legend.get('parentNode');
-
-            if (fieldSet.hasClass(COLLAPSED_CLASS)) {
-                fieldSet.one(FIELDSET_FIELDS_CLASS).show(true);
-            } else {
-                fieldSet.one(FIELDSET_FIELDS_CLASS).hide(true);
-            }
-
-            fieldSet.toggleClass(COLLAPSED_CLASS);
+            e.currentTarget.get('parentNode').toggleClass(COLLAPSED_CLASS);
         }
 
     });

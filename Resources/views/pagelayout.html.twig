@@ -133,10 +133,10 @@ YUI().use('ez-editorialapp', function (Y) {
 </script>
 <script type="text/x-handlebars-template" id="contenteditformview-ez-template">
     <form class="ez-form-content">
-        {{#each form.fieldSets}}
+        {{#each form.fieldGroups}}
             <fieldset>
-                <legend class="ez-formview-fieldset-name" data-icon-after="&#xe002;">{{fieldSetName}}</legend>
-                <div class="ez-formview-fieldset-fields">
+                <legend class="fieldgroup-name" data-icon-after="&#xe002;">{{fieldGroupName}}</legend>
+                <div class="fieldgroup-fields">
                 FieldEditViews go here...<br/>
                 and here...
                 </div>

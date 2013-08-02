@@ -71,6 +71,46 @@ YUI.add('ez-contenttypemodel', function (Y) {
                 return null;
             }
             return this._parseStruct(type.ContentType);
+        },
+
+        /**
+         * Returns array of FieldGroups ready to use by ContentEditFormView
+         *
+         * @method getFieldSets
+         * @return {Array} array of fieldGroups to be used by ContentEditFormView
+         */
+        getFieldGroups: function () {
+            var fieldDefinitions = this.get('FieldDefinitions').FieldDefinition,
+                fieldGroups = [],
+                fieldGroupNames = [];
+
+            Y.Array.each(fieldDefinitions, function(item){
+                var fieldGroupName = item.fieldGroup,
+                    field = {
+                        identifier: item.identifier,
+                        fieldType: item.fieldType
+                    },
+                    fieldGroup;
+
+                // Add new field set, if fieldGroup is unique
+                if (fieldGroupNames.indexOf(fieldGroupName) === -1) {
+                    fieldGroups.push({
+                        fieldGroupName: fieldGroupName,
+                        fields: []
+                    });
+
+                    fieldGroupNames.push(fieldGroupName);
+                }
+
+                // Add field to appropriate FieldGroup
+                fieldGroup = Y.Array.find(fieldGroups, function (group) {
+                    return group.fieldGroupName == fieldGroupName;
+                });
+
+                fieldGroup.fields.push(field);
+            });
+
+            return fieldGroups;
         }
 
     }, {
@@ -79,7 +119,7 @@ YUI.add('ez-contenttypemodel', function (Y) {
             'defaultSortField', 'defaultSortOrder', 'descriptions',
             'identifier', 'isContainer', 'mainLanguageCode',
             'modificationDate', 'names', 'nameSchema',
-            'remoteId', 'status', 'urlAliasSchema'
+            'remoteId', 'status', 'urlAliasSchema','FieldDefinitions'
         ],
         ATTRS: {
             /**
@@ -239,6 +279,17 @@ YUI.add('ez-contenttypemodel', function (Y) {
              * @type string
              */
             urlAliasSchema: {
+                value: ""
+            },
+
+            /**
+             * The content type's field definitions
+             *
+             * @attribute fieldDefinitions
+             * @default ""
+             * @type string
+             */
+            FieldDefinitions: {
                 value: ""
             }
         }

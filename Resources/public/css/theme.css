@@ -62,23 +62,18 @@
     color: #222;
 }
 
-.ez-view-contenteditformview .ez-form-content fieldset {
+.ez-view-contenteditformview fieldset {
     border: 1px solid #CCCCCC;
 }
 
-legend.ez-formview-fieldset-name {
+.ez-view-contenteditformview .fieldgroup-name {
     background-color: #f9f9f9;
     color: #333333;
     font-size: 14px;
     font-weight: bold;
-    line-height: 18px;
-    z-index: 5;
-    padding: 3px 10px;
-    margin: 0;
-    width: auto;
-    height: auto;
+    text-transform: capitalize;
 }
 
-.ez-view-contenteditformview .ez-form-content fieldset.is-collapsed .ez-formview-fieldset-name:after {
+.ez-view-contenteditformview .is-collapsed .fieldgroup-name:after {
     content: "\E004";
 }
