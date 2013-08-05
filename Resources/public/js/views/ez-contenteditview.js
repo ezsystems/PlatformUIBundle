@@ -35,8 +35,7 @@ YUI.add('ez-contenteditview', function (Y) {
          * @method initializer
          */
         initializer: function () {
-            this.contentEditFormView = this.get('formView');
-            this.contentEditFormView.addTarget(this);
+            this.get('formView').addTarget(this);
         },
 
         /**
@@ -46,8 +45,7 @@ YUI.add('ez-contenteditview', function (Y) {
          * @method destructor
          */
         destructor: function () {
-            this.contentEditFormView.destroy();
-            delete this.contentEditFormView;
+            this.get('formView').destroy();
         },
 
         /**
@@ -67,7 +65,7 @@ YUI.add('ez-contenteditview', function (Y) {
                 owner: this.get('owner').toJSON()
             }));
 
-            container.one(FORM_CONTAINER).append(this.contentEditFormView.render().get('container'));
+            container.one(FORM_CONTAINER).append(this.get('formView').render().get('container'));
 
             return this;
         },
@@ -178,14 +176,16 @@ YUI.add('ez-contenteditview', function (Y) {
             },
 
             /**
-             * The ContentEditFormView instance which will be used to render form
+             * The ContentEditFormView (by default) instance which will be used to render form
              *
              * @attribute formView
              * @default {}
              * @required
              */
             formView: {
-                value: {}
+                value: new Y.eZ.ContentEditFormView({
+                    contentType: {}
+                })
             }
         }
     });

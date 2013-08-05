@@ -33,7 +33,9 @@ YUI.add('ez-contenteditformview', function (Y) {
          */
         render: function () {
             this.get('container').setHTML(this.template({
-                form: this.get('model')
+                form: {
+                    fieldGroups: this.get('contentType').getFieldGroups()
+                }
             }));
             return this;
         },
@@ -44,4 +46,17 @@ YUI.add('ez-contenteditformview', function (Y) {
 
     });
 
+}, {
+    ATTRS: {
+        /**
+         * The content type instance, which we use to build correct Field Groups
+         *
+         * @attribute contentType
+         * @default {}
+         * @required
+         */
+        contentType: {
+            value: {}
+        }
+    }
 });
