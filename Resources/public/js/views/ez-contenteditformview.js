@@ -41,7 +41,48 @@ YUI.add('ez-contenteditformview', function (Y) {
         },
 
         _toggleFieldsetCollapse: function (e) {
-            e.currentTarget.get('parentNode').toggleClass(COLLAPSED_CLASS);
+            var fieldSet = e.currentTarget.get('parentNode');
+
+            if (fieldSet.hasClass(COLLAPSED_CLASS)) {
+
+                fieldSet.transition({
+                    height: function(node) {
+                        var summaryHeight = parseInt(node.get('scrollHeight'),10) +
+                                            parseInt(node.getStyle('paddingTop'),10) +
+                                            parseInt(node.getStyle('paddingBottom'),10);
+                        console.log(summaryHeight);
+                        return summaryHeight + 'px';
+                    },
+                    duration: 0.4,
+                    easing: 'ease-out',
+                    on: {
+                        start: function() {
+                            var overflow = this.getStyle('overflow');
+                            if (overflow !== 'hidden') { // enable scrollHeight/Width
+                                this.setStyle('overflow', 'hidden');
+                                this._transitionOverflow = overflow;
+                            }
+                        },
+                        end: function() {
+                            if (this._transitionOverflow) { // revert overridden value
+                                this.setStyle('overflow', this._transitionOverflow);
+                                delete this._transitionOverflow;
+                            }
+                        }
+                    }
+                });
+
+            } else {
+
+                fieldSet.transition({
+                    height: '10px',
+                    duration: 0.4,
+                    easing: 'ease-in'
+                });
+
+            }
+
+            fieldSet.toggleClass(COLLAPSED_CLASS);
         }
 
     });
