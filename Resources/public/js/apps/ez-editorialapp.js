@@ -128,11 +128,9 @@ YUI.add('ez-editorialapp', function (Y) {
          * @param {Function} next the function to pass control to the next route callback
          */
         handleContentEdit: function (req, res, next) {
-            var vars = this.get('contentEditViewVariables'),
-                form = vars.formView.get('model'),
-                type = vars.contentType;
+            var vars = this.get('contentEditViewVariables');
 
-            form.fieldGroups = type.getFieldGroups();
+            vars.formView.set('contentType', vars.contentType);
 
             this.showView('contentEditView', vars, {
                 update: true,
@@ -320,9 +318,7 @@ YUI.add('ez-editorialapp', function (Y) {
                     mainLocation: new Y.eZ.Location(),
                     owner: new Y.eZ.User(),
                     formView: new Y.eZ.ContentEditFormView({
-                        model : {
-                            fieldGroups : []
-                        }
+                        contentType: {}
                     })
                 }
             }
