@@ -153,6 +153,7 @@ YUI.add('ez-contenteditview', function (Y) {
                 value: {},
                 setter: function (val, name) {
                     this.get('formView').set('contentType', val);
+                    return val;
                 }
             },
 

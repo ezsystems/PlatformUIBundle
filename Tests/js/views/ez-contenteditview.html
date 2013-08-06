@@ -16,6 +16,7 @@
                 <li>Article</li>
             </ul>
         </header>
+        <div class="ez-contenteditformview-container"></div>
     </div>
 </script>
 
@@ -29,8 +30,12 @@
         filter: filter,
         modules: {
             "ez-contenteditview": {
-                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                requires: ['ez-templatebasedview', 'ez-contenteditformview', 'transition', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-contenteditview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            },
+            "ez-contenteditformview": {
+                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-contenteditformview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
             },
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],
@@ -39,18 +44,40 @@
         }
     }).use('test', 'event-tap', 'node-event-simulate', 'ez-contenteditview', function (Y) {
         var container = Y.one('.container'),
-            content, contentType, owner, mainLocation;
+            formContents = "<form></form>",
+            content, contentType, owner, mainLocation, formView;
             mockConf = {
                 method: 'toJSON',
                 returns: {}
-            },
+            }
             GESTURE_MAP = Y.Event._GESTURE_MAP;
 
-        content = contentType = owner = mainLocation = new Y.Mock();
+        content = contentType = owner = mainLocation = formView = new Y.Mock();
         Y.Mock.expect(content, mockConf);
         Y.Mock.expect(contentType, mockConf);
         Y.Mock.expect(owner, mockConf);
         Y.Mock.expect(mainLocation, mockConf);
+        Y.Mock.expect(formView, {
+            method: 'addTarget',
+            args: [Y.Mock.Value.Object],
+            returns: true
+        });
+        Y.Mock.expect(formView, {
+            method: 'render',
+            returns: formView
+        });
+        Y.Mock.expect(formView, {
+            method: 'get',
+            args: [Y.Mock.Value.String],
+            returns: formContents
+        });
+        Y.Mock.expect(formView, {
+            method: 'set',
+            args: [Y.Mock.Value.String, Y.Mock.Value.Any]
+        });
+        Y.Mock.expect(formView, {
+            method: 'destroy'
+        });
 
         // trick to simulate a tap event
         // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -76,7 +103,8 @@
                     content: content,
                     contentType: contentType,
                     mainLocation: mainLocation,
-                    owner: owner
+                    owner: owner,
+                    formView: formView
                 });
             },
 
@@ -108,9 +136,16 @@
                     Y.Assert.isObject(variables.mainLocation, "mainLocation should be available in the template and should be an object");
                     Y.Assert.isObject(variables.owner, "owner should be available in the template and should be an object");
 
-                    return "";
+                    return '<div class="ez-contenteditformview-container"></div>';
                 };
                 this.view.render();
+            },
+
+            "Should render formView in designated container": function () {
+                this.view.render();
+
+                Y.Assert.areEqual(formContents, container.one('.ez-contenteditformview-container').getHTML(), "mock formContents is rendered in container");
+
             },
 
             "Should fire a close event": function () {

@@ -43,8 +43,8 @@
         var container = Y.one('.container'),
             contentType;
             mockConf = {
-                method: 'toJSON',
-                returns: {}
+                method: 'getFieldGroups',
+                returns: []
             },
             GESTURE_MAP = Y.Event._GESTURE_MAP;
 
@@ -64,6 +64,7 @@
 
             setUp: function () {
                 this.view = new Y.eZ.ContentEditFormView({
+                    container: container,
                     contentType: contentType
                 });
             },
@@ -89,212 +90,17 @@
             "Test available variable in template": function () {
                 this.view.template = function (variables) {
                     Y.Assert.isObject(variables, "The template should receive some variables");
-                    Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variables");
-                    Y.Assert.isBoolean(variables.isTouch, "isTouch should be available in the template and should be boolean");
-                    Y.Assert.isObject(variables.content, "content should be available in the template and should be an object");
-                    Y.Assert.isObject(variables.contentType, "contentType should be available in the template and should be an object");
-                    Y.Assert.isObject(variables.mainLocation, "mainLocation should be available in the template and should be an object");
-                    Y.Assert.isObject(variables.owner, "owner should be available in the template and should be an object");
+                    Y.Assert.areEqual(1, Y.Object.keys(variables).length, "The template should receive 1 variable");
+                    Y.Assert.isObject(variables.fieldGroups, "fieldGroup should be available in the template and should be an object");
 
                     return "";
                 };
                 this.view.render();
-            },
-
-            "Should fire a close event": function () {
-                var closeFired = false,
-                    close;
-
-                this.view.render();
-
-                this.view.on('close', function (e) {
-                    closeFired = true;
-                });
-
-                close = Y.one('.ez-view-close');
-                close.tap({
-                    target: close,
-                    type: GESTURE_MAP.start,
-                    bubbles: true,            // boolean
-                    cancelable: true,         // boolean
-                    view: window,               // DOMWindow
-                    detail: 0,
-                    pageX: 5,
-                    pageY:5,            // long
-                    screenX: 5,
-                    screenY: 5,  // long
-                    clientX: 5,
-                    clientY: 5,   // long
-                    ctrlKey: false,
-                    altKey: false,
-                    shiftKey:false,
-                    metaKey: false, // boolean
-                    touches: [
-                        {
-                            identifier: 'foo',
-                            screenX: 5,
-                            screenY: 5,
-                            clientX: 5,
-                            clientY: 5,
-                            pageX: 5,
-                            pageY: 5,
-                            radiusX: 15,
-                            radiusY: 15,
-                            rotationAngle: 0,
-                            force: 0.5,
-                            target: close
-                        }
-                    ],            // TouchList
-                    targetTouches: [
-                        {
-                            identifier: 'foo',
-                            screenX: 5,
-                            screenY: 5,
-                            clientX: 5,
-                            clientY: 5,
-                            pageX: 5,
-                            pageY: 5,
-                            radiusX: 15,
-                            radiusY: 15,
-                            rotationAngle: 0,
-                            force: 0.5,
-                            target: close
-                        }
-                    ],      // TouchList
-                    changedTouches: []     // TouchList
-                }, {
-                    target: close,
-                    type: GESTURE_MAP.end,
-                    bubbles: true,            // boolean
-                    cancelable: true,         // boolean
-                    view: window,               // DOMWindow
-                    detail: 0,
-                    pageX: 5,
-                    pageY:5,            // long
-                    screenX: 5,
-                    screenY: 5,  // long
-                    clientX: 5,
-                    clientY: 5,   // long
-                    ctrlKey: false,
-                    altKey: false,
-                    shiftKey:false,
-                    metaKey: false, // boolean
-                    touches: [
-                        {
-                            identifier: 'foo',
-                            screenX: 5,
-                            screenY: 5,
-                            clientX: 5,
-                            clientY: 5,
-                            pageX: 5,
-                            pageY: 5,
-                            radiusX: 15,
-                            radiusY: 15,
-                            rotationAngle: 0,
-                            force: 0.5,
-                            target: close
-                        }
-                    ],            // TouchList
-                    targetTouches: [
-                        {
-                            identifier: 'foo',
-                            screenX: 5,
-                            screenY: 5,
-                            clientX: 5,
-                            clientY: 5,
-                            pageX: 5,
-                            pageY: 5,
-                            radiusX: 15,
-                            radiusY: 15,
-                            rotationAngle: 0,
-                            force: 0.5,
-                            target: close
-                        }
-                    ],      // TouchList
-                    changedTouches: [
-                        {
-                            identifier: 'foo',
-                            screenX: 5,
-                            screenY: 5,
-                            clientX: 5,
-                            clientY: 5,
-                            pageX: 5,
-                            pageY: 5,
-                            radiusX: 15,
-                            radiusY: 15,
-                            rotationAngle: 0,
-                            force: 0.5,
-                            target: close
-                        }
-                    ]
-                });
-                Y.assert(closeFired, "The close event should have been fired");
-            },
-
-            "opacity of technical infos should vary if the device is not a touch device": function () {
-                var header;
-
-                this.view._isTouch = function () { return false };
-                this.view.render();
-
-                header = this.view.get('container').one('header');
-                header.simulate('mouseover');
-
-                this.wait(function () {
-                    Y.assert(
-                        header.one('.ez-technical-infos').getStyle('opacity') == 1,
-                        "Opacity should be 1"
-                    );
-                }, 300);
-
-
-                header.simulate('mouseout');
-                this.wait(function () {
-                    Y.assert(
-                        header.one('.ez-technical-infos').getStyle('opacity') == 0,
-                        "Opacity should be 0"
-                    );
-                }, 300);
-            },
-
-            "opacity of technical infos should stay at 1 if the device is a touch device": function () {
-                var header;
-
-                this.view._isTouch = function () { return true };
-                this.view.render();
-
-                header = this.view.get('container').one('header');
-                header.simulate('mouseover');
-
-
-                Y.assert(
-                    header.one('.ez-technical-infos').getStyle('opacity') == 1,
-                    "Opacity should be 1"
-                );
-                this.wait(function () {
-                    Y.assert(
-                        header.one('.ez-technical-infos').getStyle('opacity') == 1,
-                        "Opacity should be 1"
-                    );
-                }, 300);
-
-
-                header.simulate('mouseout');
-                Y.assert(
-                    header.one('.ez-technical-infos').getStyle('opacity') == 1,
-                    "Opacity should be 1"
-                );
-                this.wait(function () {
-                    Y.assert(
-                        header.one('.ez-technical-infos').getStyle('opacity') == 1,
-                        "Opacity should be 1"
-                    );
-                }, 300);
             }
 
         });
 
-        Y.Test.Runner.setName("eZ Content Edit View tests");
+        Y.Test.Runner.setName("eZ Content Edit Form View tests");
         Y.Test.Runner.add(viewTest);
         Y.Test.Runner.run();
 
