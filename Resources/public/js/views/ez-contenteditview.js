@@ -40,10 +40,7 @@ YUI.add('ez-contenteditview', function (Y) {
          * @method initializer
          */
         initializer: function () {
-            var formView = this.get('formView');
-
-            formView.addTarget(this);
-            formView.set('contentType', this.get('contentType'));
+            this.get('formView').addTarget(this);
         },
 
         /**
