@@ -41,18 +41,15 @@
         }
     }).use('test', 'event-tap', 'node-event-simulate', 'ez-contenteditformview', function (Y) {
         var container = Y.one('.container'),
-            content, contentType, owner, mainLocation;
+            contentType;
             mockConf = {
                 method: 'toJSON',
                 returns: {}
             },
             GESTURE_MAP = Y.Event._GESTURE_MAP;
 
-        content = contentType = owner = mainLocation = new Y.Mock();
-        Y.Mock.expect(content, mockConf);
+        contentType = new Y.Mock();
         Y.Mock.expect(contentType, mockConf);
-        Y.Mock.expect(owner, mockConf);
-        Y.Mock.expect(mainLocation, mockConf);
 
         // trick to simulate a tap event
         // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -62,23 +59,12 @@
         };
         Y.NodeList.importMethod(Y.Node.prototype, 'tap');
 
-
         viewTest = new Y.Test.Case({
-            name: "eZ Content Edit View test",
-
-            _should: {
-                ignore: {
-                    "Should fire a close event": (Y.UA.phantomjs) // tap trick does not work in phantomjs
-                }
-            },
+            name: "eZ Content Edit Form View test",
 
             setUp: function () {
-                this.view = new Y.eZ.ContentEditView({
-                    container: container,
-                    content: content,
-                    contentType: contentType,
-                    mainLocation: mainLocation,
-                    owner: owner
+                this.view = new Y.eZ.ContentEditFormView({
+                    contentType: contentType
                 });
             },
 

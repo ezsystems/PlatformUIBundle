@@ -9,7 +9,10 @@ YUI.add('ez-contenteditformview', function (Y) {
     Y.namespace('eZ');
 
     var COLLAPSED_CLASS = 'is-collapsed',
-        FIELDSET_FIELDS_CLASS = '.fieldgroup-fields';
+        FIELDSET_FIELDS_CLASS = '.fieldgroup-fields',
+        TRANSITION_DURATION = 0.4,
+        TRANSITION_EASE_IN = 'ease-in',
+        TRANSITION_EASE_OUT = 'ease-out';
 
 
     /**
@@ -33,51 +36,31 @@ YUI.add('ez-contenteditformview', function (Y) {
          */
         render: function () {
             this.get('container').setHTML(this.template({
-                form: {
-                    fieldGroups: this.get('contentType').getFieldGroups()
-                }
+                fieldGroups: this.get('contentType').getFieldGroups()
             }));
             return this;
         },
 
         _toggleFieldsetCollapse: function (e) {
-            var fieldSet = e.currentTarget.get('parentNode');
+            var fieldSet = e.currentTarget.get('parentNode'),
+                fields = fieldSet.one(FIELDSET_FIELDS_CLASS);
 
             if (fieldSet.hasClass(COLLAPSED_CLASS)) {
 
-                fieldSet.transition({
+                fields.transition({
                     height: function(node) {
-                        var summaryHeight = parseInt(node.get('scrollHeight'),10) +
-                                            parseInt(node.getStyle('paddingTop'),10) +
-                                            parseInt(node.getStyle('paddingBottom'),10);
-                        console.log(summaryHeight);
-                        return summaryHeight + 'px';
+                        return node.get('scrollHeight') + 'px';
                     },
-                    duration: 0.4,
-                    easing: 'ease-out',
-                    on: {
-                        start: function() {
-                            var overflow = this.getStyle('overflow');
-                            if (overflow !== 'hidden') { // enable scrollHeight/Width
-                                this.setStyle('overflow', 'hidden');
-                                this._transitionOverflow = overflow;
-                            }
-                        },
-                        end: function() {
-                            if (this._transitionOverflow) { // revert overridden value
-                                this.setStyle('overflow', this._transitionOverflow);
-                                delete this._transitionOverflow;
-                            }
-                        }
-                    }
+                    duration: TRANSITION_DURATION,
+                    easing: TRANSITION_EASE_OUT
                 });
 
             } else {
 
-                fieldSet.transition({
-                    height: '10px',
-                    duration: 0.4,
-                    easing: 'ease-in'
+                fields.transition({
+                    height: 0,
+                    duration: TRANSITION_DURATION,
+                    easing: TRANSITION_EASE_IN
                 });
 
             }
@@ -94,6 +77,7 @@ YUI.add('ez-contenteditformview', function (Y) {
          *
          * @attribute contentType
          * @default {}
+         * @type {eZ.ContentType}
          * @required
          */
         contentType: {

@@ -84,7 +84,7 @@ YUI.add('ez-contenttypemodel', function (Y) {
                 fieldGroups = [],
                 fieldGroupNames = [];
 
-            Y.Array.each(fieldDefinitions, function(item){
+            Y.Array.each(fieldDefinitions, function (item) {
                 var fieldGroupName = item.fieldGroup,
                     field = {
                         identifier: item.identifier,
@@ -287,7 +287,7 @@ YUI.add('ez-contenttypemodel', function (Y) {
              *
              * @attribute fieldDefinitions
              * @default ""
-             * @type string
+             * @type Object
              */
             FieldDefinitions: {
                 value: ""

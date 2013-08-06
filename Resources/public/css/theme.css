@@ -74,6 +74,10 @@
     text-transform: capitalize;
 }
 
+.ez-view-contenteditformview .fieldgroup-name:after {
+    content: "\E002";
+}
+
 .ez-view-contenteditformview .is-collapsed .fieldgroup-name:after {
     content: "\E004";
 }

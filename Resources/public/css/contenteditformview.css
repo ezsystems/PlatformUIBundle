@@ -17,10 +17,4 @@
 
 .ez-view-contenteditformview .fieldgroup-fields {
     overflow: hidden;
-    transition: height 1s;
-    -webkit-transition: height 1s;
-}
-
-.ez-view-contenteditformview .is-collapsed .fieldgroup-fields {
-    height: 0px;
 }
