@@ -286,11 +286,11 @@ YUI.add('ez-contenttypemodel', function (Y) {
              * The content type's field definitions
              *
              * @attribute fieldDefinitions
-             * @default ""
+             * @default {}
              * @type Object
              */
             FieldDefinitions: {
-                value: ""
+                value: {}
             }
         }
     });

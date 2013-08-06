@@ -41,6 +41,12 @@ YUI.add('ez-contenteditformview', function (Y) {
             return this;
         },
 
+        /**
+         * Toggles collapsing for parent fieldSet with "SlideUp/Down" effect.
+         *
+         * @method _toggleFieldsetCollapse
+         * @protected
+         */
         _toggleFieldsetCollapse: function (e) {
             var fieldSet = e.currentTarget.get('parentNode'),
                 fields = fieldSet.one(FIELDSET_FIELDS_CLASS);
