@@ -9,7 +9,7 @@
 
 <script type="text/x-handlebars-template" id="contenteditformview-ez-template">
     <form class="ez-form-content">
-        {{#each form.fieldGroups}}
+        {{#each fieldGroups}}
         <fieldset>
             <legend class="fieldgroup-name" data-icon-after="&#xe002;">{{fieldGroupName}}</legend>
             <div class="fieldgroup-fields">
@@ -44,7 +44,10 @@
             contentType;
             mockConf = {
                 method: 'getFieldGroups',
-                returns: []
+                returns: [{
+                    fieldGroupName: "Test Field Group",
+                    fields: []
+                }]
             },
             GESTURE_MAP = Y.Event._GESTURE_MAP;
 
@@ -61,6 +64,12 @@
 
         viewTest = new Y.Test.Case({
             name: "eZ Content Edit Form View test",
+
+            _should: {
+                ignore: {
+                    "Should collapse and remove collapsing of a fieldset once repeatedly tapped": (Y.UA.phantomjs) // tap trick does not work in phantomjs
+                }
+            },
 
             setUp: function () {
                 this.view = new Y.eZ.ContentEditFormView({
@@ -96,6 +105,262 @@
                     return "";
                 };
                 this.view.render();
+            },
+
+            "Should collapse and remove collapsing of a fieldset once repeatedly tapped": function () {
+                var fieldGroupName, fieldGroupFields;
+
+                this.view.render();
+
+                fieldGroupName = Y.one('.fieldgroup-name');
+                fieldGroupFields = fieldGroupName.get('parentNode').one('.fieldgroup-fields');
+
+                fieldGroupName.tap({
+                    target: fieldGroupName,
+                    type: GESTURE_MAP.start,
+                    bubbles: true,            // boolean
+                    cancelable: true,         // boolean
+                    view: window,               // DOMWindow
+                    detail: 0,
+                    pageX: 5,
+                    pageY:5,            // long
+                    screenX: 5,
+                    screenY: 5,  // long
+                    clientX: 5,
+                    clientY: 5,   // long
+                    ctrlKey: false,
+                    altKey: false,
+                    shiftKey:false,
+                    metaKey: false, // boolean
+                    touches: [
+                        {
+                            identifier: 'foo',
+                            screenX: 5,
+                            screenY: 5,
+                            clientX: 5,
+                            clientY: 5,
+                            pageX: 5,
+                            pageY: 5,
+                            radiusX: 15,
+                            radiusY: 15,
+                            rotationAngle: 0,
+                            force: 0.5,
+                            target: fieldGroupName
+                        }
+                    ],            // TouchList
+                    targetTouches: [
+                        {
+                            identifier: 'foo',
+                            screenX: 5,
+                            screenY: 5,
+                            clientX: 5,
+                            clientY: 5,
+                            pageX: 5,
+                            pageY: 5,
+                            radiusX: 15,
+                            radiusY: 15,
+                            rotationAngle: 0,
+                            force: 0.5,
+                            target: fieldGroupName
+                        }
+                    ],      // TouchList
+                    changedTouches: []     // TouchList
+                }, {
+                    target: fieldGroupName,
+                    type: GESTURE_MAP.end,
+                    bubbles: true,            // boolean
+                    cancelable: true,         // boolean
+                    view: window,               // DOMWindow
+                    detail: 0,
+                    pageX: 5,
+                    pageY:5,            // long
+                    screenX: 5,
+                    screenY: 5,  // long
+                    clientX: 5,
+                    clientY: 5,   // long
+                    ctrlKey: false,
+                    altKey: false,
+                    shiftKey:false,
+                    metaKey: false, // boolean
+                    touches: [
+                        {
+                            identifier: 'foo',
+                            screenX: 5,
+                            screenY: 5,
+                            clientX: 5,
+                            clientY: 5,
+                            pageX: 5,
+                            pageY: 5,
+                            radiusX: 15,
+                            radiusY: 15,
+                            rotationAngle: 0,
+                            force: 0.5,
+                            target: fieldGroupName
+                        }
+                    ],            // TouchList
+                    targetTouches: [
+                        {
+                            identifier: 'foo',
+                            screenX: 5,
+                            screenY: 5,
+                            clientX: 5,
+                            clientY: 5,
+                            pageX: 5,
+                            pageY: 5,
+                            radiusX: 15,
+                            radiusY: 15,
+                            rotationAngle: 0,
+                            force: 0.5,
+                            target: fieldGroupName
+                        }
+                    ],      // TouchList
+                    changedTouches: [
+                        {
+                            identifier: 'foo',
+                            screenX: 5,
+                            screenY: 5,
+                            clientX: 5,
+                            clientY: 5,
+                            pageX: 5,
+                            pageY: 5,
+                            radiusX: 15,
+                            radiusY: 15,
+                            rotationAngle: 0,
+                            force: 0.5,
+                            target: fieldGroupName
+                        }
+                    ]
+                });
+
+
+
+
+                this.wait(function () {
+
+                    Y.assert(parseInt(fieldGroupFields.getComputedStyle('height'), 10) == 0, "On first tap field group fields should collapse");
+
+                    fieldGroupName.tap({
+                        target: fieldGroupName,
+                        type: GESTURE_MAP.start,
+                        bubbles: true,            // boolean
+                        cancelable: true,         // boolean
+                        view: window,               // DOMWindow
+                        detail: 0,
+                        pageX: 5,
+                        pageY:5,            // long
+                        screenX: 5,
+                        screenY: 5,  // long
+                        clientX: 5,
+                        clientY: 5,   // long
+                        ctrlKey: false,
+                        altKey: false,
+                        shiftKey:false,
+                        metaKey: false, // boolean
+                        touches: [
+                            {
+                                identifier: 'foo',
+                                screenX: 5,
+                                screenY: 5,
+                                clientX: 5,
+                                clientY: 5,
+                                pageX: 5,
+                                pageY: 5,
+                                radiusX: 15,
+                                radiusY: 15,
+                                rotationAngle: 0,
+                                force: 0.5,
+                                target: fieldGroupName
+                            }
+                        ],            // TouchList
+                        targetTouches: [
+                            {
+                                identifier: 'foo',
+                                screenX: 5,
+                                screenY: 5,
+                                clientX: 5,
+                                clientY: 5,
+                                pageX: 5,
+                                pageY: 5,
+                                radiusX: 15,
+                                radiusY: 15,
+                                rotationAngle: 0,
+                                force: 0.5,
+                                target: fieldGroupName
+                            }
+                        ],      // TouchList
+                        changedTouches: []     // TouchList
+                    }, {
+                        target: fieldGroupName,
+                        type: GESTURE_MAP.end,
+                        bubbles: true,            // boolean
+                        cancelable: true,         // boolean
+                        view: window,               // DOMWindow
+                        detail: 0,
+                        pageX: 5,
+                        pageY:5,            // long
+                        screenX: 5,
+                        screenY: 5,  // long
+                        clientX: 5,
+                        clientY: 5,   // long
+                        ctrlKey: false,
+                        altKey: false,
+                        shiftKey:false,
+                        metaKey: false, // boolean
+                        touches: [
+                            {
+                                identifier: 'foo',
+                                screenX: 5,
+                                screenY: 5,
+                                clientX: 5,
+                                clientY: 5,
+                                pageX: 5,
+                                pageY: 5,
+                                radiusX: 15,
+                                radiusY: 15,
+                                rotationAngle: 0,
+                                force: 0.5,
+                                target: fieldGroupName
+                            }
+                        ],            // TouchList
+                        targetTouches: [
+                            {
+                                identifier: 'foo',
+                                screenX: 5,
+                                screenY: 5,
+                                clientX: 5,
+                                clientY: 5,
+                                pageX: 5,
+                                pageY: 5,
+                                radiusX: 15,
+                                radiusY: 15,
+                                rotationAngle: 0,
+                                force: 0.5,
+                                target: fieldGroupName
+                            }
+                        ],      // TouchList
+                        changedTouches: [
+                            {
+                                identifier: 'foo',
+                                screenX: 5,
+                                screenY: 5,
+                                clientX: 5,
+                                clientY: 5,
+                                pageX: 5,
+                                pageY: 5,
+                                radiusX: 15,
+                                radiusY: 15,
+                                rotationAngle: 0,
+                                force: 0.5,
+                                target: fieldGroupName
+                            }
+                        ]
+                    });
+
+                    this.wait(function () {
+                        Y.assert(parseInt(fieldGroupFields.getComputedStyle('height'), 10) > 0, "On second tap field group fields should remove collapsing");
+                    }, 500);
+
+                }, 500);
             }
 
         });
