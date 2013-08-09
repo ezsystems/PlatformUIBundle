@@ -23,23 +23,32 @@
 
 <script type="text/javascript" src="http://yui.yahooapis.com/3.12.0/build/yui/yui.js"></script>
 <script>
-    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
 
     YUI({
         coverage: ['ez-contenteditview'],
-        filter: filter,
+        filter: loaderFilter,
         modules: {
             "ez-contenteditview": {
                 requires: ['ez-templatebasedview', 'ez-contenteditformview', 'transition', 'event-tap'],
-                fullpath: "../../../Resources/public/js/views/ez-contenteditview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+                fullpath: "../../../Resources/public/js/views/ez-contenteditview.js"
             },
             "ez-contenteditformview": {
                 requires: ['ez-templatebasedview', 'transition', 'event-tap'],
-                fullpath: "../../../Resources/public/js/views/ez-contenteditformview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+                fullpath: "../../../Resources/public/js/views/ez-contenteditformview.js"
             },
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],
-                fullpath: "../../../Resources/public/js/views/ez-templatebasedview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
             }
         }
     }).use('test', 'event-tap', 'node-event-simulate', 'ez-contenteditview', function (Y) {
@@ -174,7 +183,7 @@
                     content: content,
                     contentType: contentType,
                     mainLocation: mainLocation,
-                    owner: owner,
+                    owner: owner
                 });
 
                 Y.Assert.areEqual(
@@ -191,7 +200,7 @@
                     content: content,
                     contentType: contentType,
                     mainLocation: mainLocation,
-                    owner: owner,
+                    owner: owner
                     }),
                     testEventReceived = false;
 
@@ -204,7 +213,6 @@
                 Y.assert(testEventReceived, "Should have recieved the 'testEvent' from child contentEditFormView");
             },
 
-            "Should fire a close event": function () {
             "Should fire a close event when tapping 'close' link": function () {
                 var closeFired = false,
                     close;

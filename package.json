@@ -1,0 +1,18 @@
+{
+  "name": "EditorialBundle",
+  "repository": "https://github.com/ezsystems/EditorialBundle",
+  "description": "This bundle provides the (future) Editorial Interface for eZ Publish.",
+  "version": "0.0.1",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-shell": "~0.3.1",
+    "grunt-contrib-yuidoc": "~0.4.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-istanbul": "~0.2.1"
+  },
+  "scripts": {
+    "test": "put something here, so Travis will run it for each build"
+  }
+}
