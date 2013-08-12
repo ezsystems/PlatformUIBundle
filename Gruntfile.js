@@ -35,8 +35,11 @@ module.exports = function(grunt) {
                 src: trashFiles
             }
         },
-        instrument : {
-            files : sourceFiles
+        instrument: {
+            files : sourceFiles,
+            options : {
+                basePath : 'Tests/instrument/'
+            }
         },
         pkg: grunt.file.readJSON('package.json'),
         yuidoc: {
@@ -57,6 +60,13 @@ module.exports = function(grunt) {
             }
         },
         shell: {
+            grover: {
+                command: 'grover --server Tests/js/*/*.html',
+                options: {
+                    stdout: true,
+                    stderr: true
+                }
+            },
             livedoc: {
                 command: 'yuidoc --server',
                 options: {
@@ -76,7 +86,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('lint', ['jshint']);
     grunt.registerTask('ugly', ['jshint', 'uglify']);
-    grunt.registerTask('test', ['concat', 'jasmine_node'] );
+    grunt.registerTask('test', ['jshint', 'shell:grover'] );
     grunt.registerTask('doc', ['yuidoc'] );
     grunt.registerTask('livedoc', ['shell:livedoc'] );
 
