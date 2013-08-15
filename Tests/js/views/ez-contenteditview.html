@@ -52,32 +52,15 @@
             }
             GESTURE_MAP = Y.Event._GESTURE_MAP;
 
-        content = contentType = owner = mainLocation = formView = new Y.Mock();
+        content = new Y.Mock();
+        contentType = new Y.Mock();
+        owner = new Y.Mock();
+        mainLocation = new Y.Mock();
+
         Y.Mock.expect(content, mockConf);
         Y.Mock.expect(contentType, mockConf);
         Y.Mock.expect(owner, mockConf);
         Y.Mock.expect(mainLocation, mockConf);
-        Y.Mock.expect(formView, {
-            method: 'addTarget',
-            args: [Y.Mock.Value.Object],
-            returns: true
-        });
-        Y.Mock.expect(formView, {
-            method: 'render',
-            returns: formView
-        });
-        Y.Mock.expect(formView, {
-            method: 'get',
-            args: [Y.Mock.Value.String],
-            returns: formContents
-        });
-        Y.Mock.expect(formView, {
-            method: 'set',
-            args: [Y.Mock.Value.String, Y.Mock.Value.Any]
-        });
-        Y.Mock.expect(formView, {
-            method: 'destroy'
-        });
 
         // trick to simulate a tap event
         // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -98,6 +81,29 @@
             },
 
             setUp: function () {
+
+                formView = new Y.Mock();
+
+                Y.Mock.expect(formView, {
+                    method: 'get',
+                    args: ['container'],
+                    returns: formContents
+                });
+                Y.Mock.expect(formView, {
+                    method: 'set',
+                    args: ['contentType', contentType]
+                })
+                Y.Mock.expect(formView, {
+                    method: 'addTarget',
+                    args: [Y.Mock.Value.Object],
+                    returns: true
+                });
+                Y.Mock.expect(formView, {
+                    method: 'render',
+                    returns: formView
+                });
+
+
                 this.view = new Y.eZ.ContentEditView({
                     container: container,
                     content: content,
@@ -124,6 +130,7 @@
                 this.view.render();
                 Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
                 Y.Assert.areNotEqual("", container.getHTML(), "View container should contain the result of the this.view");
+                Y.Mock.verify(formView);
             },
 
             "Test available variable in template": function () {
@@ -139,13 +146,24 @@
                     return '<div class="ez-contenteditformview-container"></div>';
                 };
                 this.view.render();
+                Y.Mock.verify(formView);
             },
 
             "Should render formView in designated container": function () {
                 this.view.render();
 
                 Y.Assert.areEqual(formContents, container.one('.ez-contenteditformview-container').getHTML(), "mock formContents is rendered in container");
+                Y.Mock.verify(formView);
+            },
 
+            "Should destroy formView when destroying itself": function () {
+                Y.Mock.expect(formView, {
+                    method: 'destroy'
+                });
+
+                this.view.render();
+                this.view.destroy();
+                Y.Mock.verify(formView);
             },
 
             "Should fire a close event": function () {
