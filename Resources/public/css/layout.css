@@ -116,3 +116,7 @@
     height: 2em;
     font-size: 200%;
 }
+
+.clear {
+    clear:both;
+}

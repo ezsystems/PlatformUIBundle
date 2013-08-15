@@ -1,6 +1,8 @@
 .ez-view-contenteditview {
     overflow: hidden;
     height: 100%;
+    padding-right: 230px;
+    position: relative;
 }
 
 @media (min-width: 980px) {
@@ -56,4 +58,12 @@
 
 .ez-view-contenteditview .ez-technical-infos li:last-child:after {
     content: "";
+}
+
+.ez-editactionbar-container {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 230px;
+    height: 100%;
 }

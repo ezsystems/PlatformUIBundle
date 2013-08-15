@@ -11,7 +11,8 @@ YUI.add('ez-contenteditview', function (Y) {
     var DETAILS_SEL = '.ez-technical-infos',
         CONTENT_SEL = '.ez-main-content',
         ESCAPE_KEY = 27,
-        FORM_CONTAINER = '.ez-contenteditformview-container';
+        FORM_CONTAINER = '.ez-contenteditformview-container',
+        ACTION_BAR_CONTAINER = '.ez-editactionbar-container';
 
     /**
      * The content edit view
@@ -41,6 +42,7 @@ YUI.add('ez-contenteditview', function (Y) {
          */
         initializer: function () {
             this.get('formView').addTarget(this);
+            this.get('actionBar').addTarget(this);
         },
 
         /**
@@ -51,6 +53,7 @@ YUI.add('ez-contenteditview', function (Y) {
          */
         destructor: function () {
             this.get('formView').destroy();
+            this.get('actionBar').destroy();
         },
 
         /**
@@ -71,6 +74,7 @@ YUI.add('ez-contenteditview', function (Y) {
             }));
 
             container.one(FORM_CONTAINER).append(this.get('formView').render().get('container'));
+            container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').render().get('container'));
 
             return this;
         },
@@ -222,6 +226,18 @@ YUI.add('ez-contenteditview', function (Y) {
              */
             formView: {
                 value: new Y.eZ.ContentEditFormView()
+            },
+
+            /**
+             * The EditActionBar (by default) instance which will be used to render form
+             *
+             * @attribute actionBar
+             * @default {}
+             * @type {eZ.EditActionBar}
+             * @required
+             */
+            actionBar: {
+                value: new Y.eZ.EditActionBar()
             }
         }
     });

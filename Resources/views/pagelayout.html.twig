@@ -18,6 +18,7 @@
     '@EzSystemsEditorialBundle/Resources/public/css/fieldeditview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/textline-editview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/errorview.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/editactionbar.css'
     '@EzSystemsEditorialBundle/Resources/public/css/theme.css'
 %}
 <link rel="stylesheet" href="{{ asset_url }}" />
@@ -33,7 +34,7 @@ YUI.GlobalConfig = {
         "ez-editorialapp": {
             requires: [
                 'app', 'app-transitions', 'node-screen', 'json', 'parallel',
-                'ez-capi', 'ez-contenteditview', 'ez-contenteditformview',
+                'ez-capi', 'ez-contenteditview', 'ez-contenteditformview', 'ez-editactionbar',
                 'ez-textline-editview', 'ez-errorview',
                 'ez-restmodel', 'ez-contentmodel', 'ez-locationmodel', 'ez-usermodel', 'ez-contenttypemodel'
             ],
@@ -48,7 +49,7 @@ YUI.GlobalConfig = {
             {% endjavascripts %}
         },
         "ez-contenteditview": {
-            requires: ['ez-templatebasedview', 'ez-contenteditformview', 'transition', 'event-tap'],
+            requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbar', 'transition', 'event-tap'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-contenteditview.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
@@ -77,6 +78,13 @@ YUI.GlobalConfig = {
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         },
+        "ez-editactionbar": {
+            requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-actionbar.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
+
         "ez-restmodel": {
             requires: ['model'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/models/ez-restmodel.js' %}
@@ -171,6 +179,7 @@ YUI().use('ez-editorialapp', function (Y) {
         </header>
         <div class="ez-contenteditformview-container"></div>
     </div>
+    <div class="ez-editactionbar-container"></div>
 </script>
 
 <script type="text/x-handlebars-template" id="contenteditformview-ez-template">
@@ -182,6 +191,28 @@ YUI().use('ez-editorialapp', function (Y) {
             </fieldset>
         {{/each}}
     </form>
+</script>
+    
+<script type="text/x-handlebars-template" id="editactionbar-ez-template">
+    <menu class="actions-list" tabindex="0">
+        {{#each actionsList}}
+            <li class="action" data-action="{{ action }}">
+                <div class="action-icon" data-icon="{{{ icon }}}"></div>
+                <label class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</label>
+                {{#if hint}}
+                    <div class="action-hint">{{ hint }}</div>
+                {{/if}}
+                {{#if widget}}
+                    <div class="action-widget">
+                    {{#each widget.buttons}}
+                        <div class="action-button" data-icon="{{{ icon }}}" data-action="{{ action }}"></div>
+                    {{/each}}
+                    </div>
+                {{/if}}
+                <br class="clear" />
+            </li>
+        {{/each}}
+    </menu>
 </script>
 
 <script type="text/x-handlebars-template" id="textlineeditview-ez-template">

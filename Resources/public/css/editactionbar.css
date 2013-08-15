@@ -1,0 +1,50 @@
+.ez-view-editactionbar .actions-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.ez-view-editactionbar .actions-list .action {
+    padding: 15px 20px;
+    cursor: pointer;
+}
+
+.ez-view-editactionbar .actions-list .action-icon{
+    float: left;
+    margin-right: 10px;
+}
+
+.ez-view-editactionbar .actions-list .action-label{
+    display: block;
+    float: left;
+    margin: 2px 0 0 0;
+    cursor: pointer;
+}
+.ez-view-editactionbar .actions-list .action-label.with-hint{
+    margin-top: -5px;
+}
+
+.ez-view-editactionbar .actions-list .action-hint{
+    float: left;
+    font-size: 12px;
+}
+
+.ez-view-editactionbar .actions-list .action-widget{
+    float: left;
+    width: 180px;
+}
+
+.ez-view-editactionbar .actions-list .action-widget .action-button{
+    float: left;
+    background: #242328;
+    width: 16px;
+    height: 16px;
+    color: white;
+    font-size: 16px;
+    padding: 8px;
+    margin-left: 5px;
+
+}
+
+.ez-view-editactionbar .actions-list .action-widget .action-button:hover{
+    background: #486235;
+}

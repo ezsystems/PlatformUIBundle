@@ -214,4 +214,39 @@
 .ez-errorview-container .ez-error-dialog h2 {
     font-size: 160%;
     border-bottom: 2px solid #bf3e33;
+}}
+
+/* edit action bar */
+.ez-view-editactionbar .actions-list {
+    background: #333333;
 }
+.ez-view-editactionbar .actions-list li {
+    border-top: 1px solid #424242;
+    border-bottom: 1px solid #242424;
+}
+
+.ez-view-editactionbar .actions-list .action-icon {
+    color: #e3e3e3;
+    font-size: 22px;
+    text-shadow: 0 2px 2px black;
+}
+
+.ez-view-editactionbar .actions-list .action-label{
+    color: white;
+}
+.ez-view-editactionbar .actions-list .action:hover .action-icon, .ez-view-editactionbar .actions-list .action:hover .action-label{
+    color: #d8fcff;
+}
+
+.ez-view-editactionbar .actions-list .action-hint{
+    color: #9eaa8f;
+}
+
+.ez-view-editactionbar .actions-list .action-widget .action-button {
+    border-radius: 2px;
+}
+
+.ez-view-editactionbar .actions-list .action-widget .action-button:hover {
+    color: #d8fcff;
+}
+
