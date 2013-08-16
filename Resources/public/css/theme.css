@@ -250,3 +250,10 @@
     color: #d8fcff;
 }
 
+.ez-view-editactionbar .actions-list .view-more {
+    color: white;
+}
+
+.ez-view-editactionbar .actions-list .view-more:hover {
+    color: #d8fcff;
+}

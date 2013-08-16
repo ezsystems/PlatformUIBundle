@@ -133,6 +133,7 @@ YUI.add('ez-editorialapp', function (Y) {
                 render: true,
                 callback: function (view) {
                     this.set('loading', false);
+                    view.get('actionBar').handleWindowResize(null);
                     view.setFocus();
                 }
             });

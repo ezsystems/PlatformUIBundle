@@ -79,7 +79,7 @@ YUI.GlobalConfig = {
             {% endjavascripts %}
         },
         "ez-editactionbar": {
-            requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+            requires: ['ez-templatebasedview', 'transition', 'event-tap', 'event-resize'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-actionbar.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
@@ -181,7 +181,7 @@ YUI().use('ez-editorialapp', function (Y) {
     </div>
     <div class="ez-editactionbar-container"></div>
 </script>
-
+    
 <script type="text/x-handlebars-template" id="contenteditformview-ez-template">
     <form class="ez-form-content">
         {{#each fieldGroups}}
@@ -192,26 +192,40 @@ YUI().use('ez-editorialapp', function (Y) {
         {{/each}}
     </form>
 </script>
-    
+
+<script type="text/x-handlebars-template" id="action-partial">
+    <li class="action {{#if action}}action-trigger" data-action="{{ action }}{{/if}}" data-action-id="{{ id }}">
+        <div class="action-icon" data-icon="{{{ icon }}}"></div>
+        <div class="wrapper">
+            <label class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</label>
+            {{#if hint}}
+            <div class="action-hint">{{ hint }}</div>
+            {{/if}}
+            {{#if widget}}
+            <div class="action-widget">
+                {{#each widget.buttons}}
+                <div class="action-button action-trigger" data-icon="{{{ icon }}}" data-action="{{ action }}"></div>
+                {{/each}}
+            </div>
+            {{/if}}
+        </div>
+        <br class="clear" />
+    </li>
+</script>
+
 <script type="text/x-handlebars-template" id="editactionbar-ez-template">
-    <menu class="actions-list" tabindex="0">
-        {{#each actionsList}}
-            <li class="action" data-action="{{ action }}">
-                <div class="action-icon" data-icon="{{{ icon }}}"></div>
-                <label class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</label>
-                {{#if hint}}
-                    <div class="action-hint">{{ hint }}</div>
-                {{/if}}
-                {{#if widget}}
-                    <div class="action-widget">
-                    {{#each widget.buttons}}
-                        <div class="action-button" data-icon="{{{ icon }}}" data-action="{{ action }}"></div>
-                    {{/each}}
-                    </div>
-                {{/if}}
-                <br class="clear" />
-            </li>
+    <menu class="actions-list active-actions" tabindex="0">
+        {{#each activeActionsList}}
+            {{> action }}
         {{/each}}
+        {{#if viewMoreActionsList.length}}
+            <label class="view-more">View more</label>
+            <menu class="actions-list view-more-actions">
+                {{#each viewMoreActionsList}}
+                {{> action }}
+                {{/each}}
+            </menu>
+        {{/if}}
     </menu>
 </script>
 
