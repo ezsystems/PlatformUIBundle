@@ -8,10 +8,6 @@
     padding: 15px 20px;
     cursor: pointer;
 }
-.ez-view-editactionbar .actions-list .action.is-disabled {
-    cursor: default;
-}
-
 
 .ez-view-editactionbar .actions-list .action-icon{
     float: left;
@@ -64,4 +60,9 @@
 }
 .ez-view-editactionbar .view-more-actions.is-shown {
     display: block;
+}
+
+.ez-view-editactionbar .actions-list .action.is-disabled,
+.ez-view-editactionbar .actions-list .action.is-disabled .action-label {
+    cursor: default;
 }
