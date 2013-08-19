@@ -178,16 +178,24 @@ YUI.add('ez-editactionbar', function (Y) {
                 value: [
                     {
                         id : 1,
-                        icon : "&#xe00d;",
-                        label : "Minimize",
-                        action : "min"
+                        icon : "&#xe00c;",
+                        label : "Publish",
+                        action : "publish",
+                        disabled: 1
                     },
                     {
                         id : 2,
-                        icon : "&#xe006;",
-                        label : "Edit",
-                        hint : "Continue work on the draft",
-                        action : "edit"
+                        icon : "&#xe00e;",
+                        label : "Save",
+                        action : "save",
+                        disabled: 1
+                    },
+                    {
+                        id : 13,
+                        icon : "&#xe000;",
+                        label : "Discard changes",
+                        action : "discard",
+                        disabled: 1
                     },
                     {
                         id : 3,

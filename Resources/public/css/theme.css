@@ -238,6 +238,13 @@
     color: #d8fcff;
 }
 
+.ez-view-editactionbar .action.is-disabled .action-icon,
+.ez-view-editactionbar .action.is-disabled .action-label,
+.ez-view-editactionbar .action.is-disabled:hover .action-icon,
+.ez-view-editactionbar .action.is-disabled:hover .action-label {
+    color: grey;
+}
+
 .ez-view-editactionbar .actions-list .action-hint{
     color: #9eaa8f;
 }
