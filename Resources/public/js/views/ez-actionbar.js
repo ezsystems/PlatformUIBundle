@@ -32,6 +32,12 @@ YUI.add('ez-editactionbar', function (Y) {
             }
         },
 
+        /**
+         * Initializer is called upon view's init
+         * Creating actions lookup object, misc init workflow
+         *
+         * @method initializer
+         */
         initializer: function () {
             var actionsList = this.get('actionsList'),
                 index, length;
@@ -137,10 +143,14 @@ YUI.add('ez-editactionbar', function (Y) {
          */
         _handleActionClick: function (e) {
 
-            var action = e.currentTarget.getAttribute('data-action');
+            var action = e.currentTarget.getAttribute('data-action'),
+                option = e.currentTarget.getAttribute('data-action-option');
 
             if (action) {
-                this.fire('action:' + action);
+                this.fire('action', {
+                    action: action,
+                    option: option
+                });
             }
         },
 
@@ -204,13 +214,16 @@ YUI.add('ez-editactionbar', function (Y) {
                         widget : {
                             buttons : [{
                                     icon : "&#xe008;",
-                                    action : "previewDesktop"
+                                    action : "preview",
+                                    option : "desktop"
                                 }, {
                                     icon : "&#xe009;",
-                                    action : "previewTablet"
+                                    action : "preview",
+                                    option : "tablet"
                                 }, {
                                     icon : "&#xe00a;",
-                                    action : "previewMobile"
+                                    action : "preview",
+                                    option : "mobile"
                                 }
                             ]
                         }

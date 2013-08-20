@@ -12,7 +12,8 @@ YUI.add('ez-contenteditview', function (Y) {
         CONTENT_SEL = '.ez-main-content',
         ESCAPE_KEY = 27,
         FORM_CONTAINER = '.ez-contenteditformview-container',
-        ACTION_BAR_CONTAINER = '.ez-editactionbar-container';
+        ACTION_BAR_CONTAINER = '.ez-editactionbar-container',
+        EDIT_PREVIEW_CONTAINER = '.ez-editpreview-container';
 
     /**
      * The content edit view
@@ -37,12 +38,17 @@ YUI.add('ez-contenteditview', function (Y) {
         /**
          * Initializer is called upon view's init
          * Creating and managing child views inside it
+         * Also setting event dispatchers
          *
          * @method initializer
          */
         initializer: function () {
             this.get('formView').addTarget(this);
             this.get('actionBar').addTarget(this);
+            this.get('editPreview').addTarget(this);
+
+            this.on('*:action', this._dispatchAction);
+
         },
 
         /**
@@ -75,8 +81,22 @@ YUI.add('ez-contenteditview', function (Y) {
 
             container.one(FORM_CONTAINER).append(this.get('formView').render().get('container'));
             container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').render().get('container'));
+            container.one(EDIT_PREVIEW_CONTAINER).append(this.get('editPreview').render().get('container'));
 
             return this;
+        },
+
+        _dispatchAction: function (e){
+
+            console.log(e.action);
+
+            if (e.action == "preview"){
+
+                this.get('editPreview').set('currentMode', newMode);
+                this.get('editPreview').show();
+
+            }
+
         },
 
         /**
@@ -238,6 +258,18 @@ YUI.add('ez-contenteditview', function (Y) {
              */
             actionBar: {
                 value: new Y.eZ.EditActionBar()
+            },
+
+            /**
+             * The EditPreview (by default) instance
+             *
+             * @attribute editPreview
+             * @default {}
+             * @type {eZ.EditPreview}
+             * @required
+             */
+            editPreview: {
+                value: new Y.eZ.EditPreview({})
             }
         }
     });

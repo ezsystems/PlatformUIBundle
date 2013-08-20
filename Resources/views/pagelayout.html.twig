@@ -19,6 +19,7 @@
     '@EzSystemsEditorialBundle/Resources/public/css/textline-editview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/errorview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/editactionbar.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/editpreview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/theme.css'
 %}
 <link rel="stylesheet" href="{{ asset_url }}" />
@@ -34,7 +35,7 @@ YUI.GlobalConfig = {
         "ez-editorialapp": {
             requires: [
                 'app', 'app-transitions', 'node-screen', 'json', 'parallel',
-                'ez-capi', 'ez-contenteditview', 'ez-contenteditformview', 'ez-editactionbar',
+                'ez-capi', 'ez-contenteditview', 'ez-contenteditformview', 'ez-editactionbar', 'ez-editpreview',
                 'ez-textline-editview', 'ez-errorview',
                 'ez-restmodel', 'ez-contentmodel', 'ez-locationmodel', 'ez-usermodel', 'ez-contenttypemodel'
             ],
@@ -49,7 +50,8 @@ YUI.GlobalConfig = {
             {% endjavascripts %}
         },
         "ez-contenteditview": {
-            requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbar', 'transition', 'event-tap'],
+            requires: [ 'ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbar', 'ez-editpreview',
+                        'transition', 'event-tap'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-contenteditview.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
@@ -81,6 +83,12 @@ YUI.GlobalConfig = {
         "ez-editactionbar": {
             requires: ['ez-templatebasedview', 'transition', 'event-tap', 'event-resize'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-actionbar.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
+        "ez-editpreview": {
+            requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-editpreview.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         },
@@ -178,6 +186,7 @@ YUI().use('ez-editorialapp', function (Y) {
             </ul>
         </header>
         <div class="ez-contenteditformview-container"></div>
+        <div class="ez-editpreview-container"></div>
     </div>
     <div class="ez-editactionbar-container"></div>
 </script>
@@ -194,7 +203,7 @@ YUI().use('ez-editorialapp', function (Y) {
 </script>
 
 <script type="text/x-handlebars-template" id="action-partial">
-    <li class="action {{#if action}}action-trigger" data-action="{{ action }}{{/if}}" data-action-id="{{ id }}">
+    <li class="action {{#if disabled}}is-disabled{{else}}{{#if action}}action-trigger" data-action="{{ action }}{{/if}}{{/if}}" data-action-id="{{ id }}">
         <div class="action-icon" data-icon="{{{ icon }}}"></div>
         <div class="wrapper">
             <label class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</label>
@@ -204,7 +213,7 @@ YUI().use('ez-editorialapp', function (Y) {
             {{#if widget}}
             <div class="action-widget">
                 {{#each widget.buttons}}
-                <div class="action-button action-trigger" data-icon="{{{ icon }}}" data-action="{{ action }}"></div>
+                <div class="action-button action-trigger" data-icon="{{{ icon }}}" data-action="{{ action }}" {{#if option}}data-action-option="{{ option }}"{{/if}} ></div>
                 {{/each}}
             </div>
             {{/if}}
@@ -250,6 +259,17 @@ YUI().use('ez-editorialapp', function (Y) {
                     {{#if maxLength}} maxlength="{{ maxLength }}"{{/if}}
                     {{#if minLengthPattern}} pattern="{{ minLengthPattern }}"{{/if}}
                 ></div></div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="editpreview-ez-template">
+    <div class="ez-preview-content" tabindex="0">
+        <a href="#" class="ez-preview-hide" data-icon-after="&#xe000;">Close preview</a>
+        <br class="clear">
+        <div class="preview-legend">Previewing: {{ legend }}</div>
+        <div class="iframe-wrapper {{ mode.id }}">
+            <iframe width="{{ mode.width }}" height="{{ mode.height }}" src={{ source }} frameBorder="0"></iframe>
         </div>
     </div>
 </script>

@@ -119,7 +119,6 @@
 
 .ez-view-contenteditformview .fieldgroup-fields {
     border: 1px solid #CCCCCC;
-    box-shadow: 0 0 2px #CCCCCC;
 }
 
 .ez-view-contenteditformview .fieldgroup-name {
@@ -263,4 +262,8 @@
 
 .ez-view-editactionbar .actions-list .view-more:hover {
     color: #d8fcff;
+}
+
+.ez-view-editpreview {
+    background: #f3f3f3;
 }

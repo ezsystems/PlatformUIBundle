@@ -1,0 +1,31 @@
+.ez-view-editpreview {
+    height: 100%;
+    overflow: hidden;
+}
+
+.ez-preview-content  {
+    padding: 10px;
+}
+
+.ez-preview-content .preview-legend  {
+    text-align: center;
+}
+
+.ez-preview-content .ez-preview-hide {
+    display: block;
+    float: right;
+    font-weight: bold;
+    font-size: 90%;
+    padding: 0.5em;
+}
+
+.ez-preview-content .iframe-wrapper {
+    margin: 20px auto;
+}
+
+.ez-preview-content .iframe-wrapper.mobile {
+    width: 322px;
+    height: 478px;
+    padding: 118px 30px 113px 30px;
+    background: url('/bundles/ezsystemseditorial/img/mobile-preview.png');
+}
