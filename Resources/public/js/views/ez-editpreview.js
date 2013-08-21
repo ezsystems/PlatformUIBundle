@@ -73,31 +73,26 @@ YUI.add('ez-editpreview', function (Y) {
 
 
         /**
-         * Showing the edit preview with nice transition
+         * Showing the edit preview with a nice transition
          *
          * @method show
          */
         show: function () {
-
             this.get('container').get('parentNode').removeClass(IS_HIDDEN_CLASS);
-
             this.render();
-
         },
 
 
         /**
          * Event event handler for the "close preview" link in the edit preview
-         * Hiding the edit preview with nice transition
+         * Hiding the edit preview with a nice transition
          *
          * @method hide
          * @param {Object} e event facade of the tap event
          */
         hide: function (e) {
             e.preventDefault();
-
             this.get('container').get('parentNode').addClass(IS_HIDDEN_CLASS);
-
         }
 
     }, {

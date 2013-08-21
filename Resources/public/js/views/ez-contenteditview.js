@@ -81,11 +81,20 @@ YUI.add('ez-contenteditview', function (Y) {
 
             container.one(FORM_CONTAINER).append(this.get('formView').render().get('container'));
             container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').render().get('container'));
+
+            //Do NOT render preview yet (to reduce load)
             container.one(EDIT_PREVIEW_CONTAINER).append(this.get('editPreview').get('container'));
 
             return this;
         },
 
+        /**
+         * Dispatching actions coming from editActionBar, and wherever else
+         *
+         * @method _dispatchAction
+         * @protected
+         * @param e {Object} object sent along with the the action
+         */
         _dispatchAction: function (e){
 
             if (e.action == "preview"){
