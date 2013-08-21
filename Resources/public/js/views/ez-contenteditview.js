@@ -47,7 +47,7 @@ YUI.add('ez-contenteditview', function (Y) {
             this.get('actionBar').addTarget(this);
             this.get('editPreview').addTarget(this);
 
-            this.on('*:action', this._dispatchAction);
+            this.on('*:action', this._dispatchAction, this);
 
         },
 
@@ -81,20 +81,16 @@ YUI.add('ez-contenteditview', function (Y) {
 
             container.one(FORM_CONTAINER).append(this.get('formView').render().get('container'));
             container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').render().get('container'));
-            container.one(EDIT_PREVIEW_CONTAINER).append(this.get('editPreview').render().get('container'));
+            container.one(EDIT_PREVIEW_CONTAINER).append(this.get('editPreview').get('container'));
 
             return this;
         },
 
         _dispatchAction: function (e){
 
-            console.log(e.action);
-
             if (e.action == "preview"){
-
-                this.get('editPreview').set('currentMode', newMode);
+                this.get('editPreview').set('currentMode', e.option);
                 this.get('editPreview').show();
-
             }
 
         },

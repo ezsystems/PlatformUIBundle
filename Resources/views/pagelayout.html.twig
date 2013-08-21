@@ -186,7 +186,7 @@ YUI().use('ez-editorialapp', function (Y) {
             </ul>
         </header>
         <div class="ez-contenteditformview-container"></div>
-        <div class="ez-editpreview-container"></div>
+        <div class="ez-editpreview-container is-hidden"></div>
     </div>
     <div class="ez-editactionbar-container"></div>
 </script>
@@ -267,9 +267,11 @@ YUI().use('ez-editorialapp', function (Y) {
     <div class="ez-preview-content" tabindex="0">
         <a href="#" class="ez-preview-hide" data-icon-after="&#xe000;">Close preview</a>
         <br class="clear">
-        <div class="preview-legend">Previewing: {{ legend }}</div>
-        <div class="iframe-wrapper {{ mode.id }}">
-            <iframe width="{{ mode.width }}" height="{{ mode.height }}" src={{ source }} frameBorder="0"></iframe>
+        <div class="preview-legend">Previewing: <strong>{{ legend }}</strong></div>
+        <div class="preview-device loading {{ mode.id }}">
+            <div class="iframe-wrapper">
+            <div class="loader is-loading"></div>
+            <iframe class="preview-iframe" width="{{ mode.width }}" height="{{ mode.height }}" src={{ source }} frameBorder="0"></iframe></div>
         </div>
     </div>
 </script>

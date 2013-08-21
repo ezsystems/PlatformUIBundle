@@ -8,6 +8,9 @@ YUI.add('ez-editpreview', function (Y) {
 
     Y.namespace('eZ');
 
+    var IS_HIDDEN_CLASS = 'is-hidden',
+        IS_LOADING_CLASS = 'is-loading';
+
     /**
      * The edit action bar
      *
@@ -35,11 +38,9 @@ YUI.add('ez-editpreview', function (Y) {
             this.modesSearch = {};
 
             for (index = 0, length = previewModes.length; index < length; index++) {
-
-                console.log(previewModes[index]);
-
                 this.modesSearch[previewModes[index].id] = previewModes[index];
             }
+
 
         },
 
@@ -51,13 +52,21 @@ YUI.add('ez-editpreview', function (Y) {
          */
         render: function () {
 
-            console.log(this.modesSearch);
+            var container = this.get('container'),
+                loader;
 
-            this.get('container').setHTML(this.template({
+            container.setHTML(this.template({
                 mode : this.modesSearch[this.get('currentMode')],
                 source : this.get('previewSource'),
                 legend : this.get('previewLegend')
             }));
+
+            loader = container.one('.loader');
+            loader.addClass(IS_LOADING_CLASS);
+
+            container.one('.preview-iframe').on('load', function () {
+                loader.removeClass(IS_LOADING_CLASS);
+            });
 
             return this;
         },
@@ -69,7 +78,10 @@ YUI.add('ez-editpreview', function (Y) {
          * @method show
          */
         show: function () {
-            
+
+            this.get('container').get('parentNode').removeClass(IS_HIDDEN_CLASS);
+
+            this.render();
 
         },
 
@@ -84,6 +96,7 @@ YUI.add('ez-editpreview', function (Y) {
         hide: function (e) {
             e.preventDefault();
 
+            this.get('container').get('parentNode').addClass(IS_HIDDEN_CLASS);
 
         }
 
@@ -101,15 +114,15 @@ YUI.add('ez-editpreview', function (Y) {
                 value: [{
                         id: "desktop",
                         width: 1024,
-                        height: 768
+                        height: 700
                     }, {
                         id: "tablet",
-                        width: 1024,
-                        height: 768
+                        width: 800,
+                        height: 600
                     }, {
                         id: "mobile",
-                        width: 320,
-                        height: 480
+                        width: 321, /* preview-mobile.png image has such a strange dimensions */
+                        height: 481 /* preview-mobile.png image has such a strange dimensions */
                     }
                 ]
             },
@@ -128,7 +141,8 @@ YUI.add('ez-editpreview', function (Y) {
             /**
              * Source for the preview iframe
              *
-             * @attribute currentMode
+             * @attribute previewSoruce
+             * @type String
              * @default "/Getting-Started"
              * @required
              */
@@ -139,8 +153,9 @@ YUI.add('ez-editpreview', function (Y) {
             /**
              * Legend describing the preview page
              *
-             * @attribute currentMode
-             * @default "/Getting-Started"
+             * @attribute previewLegend
+             * @type String
+             * @default "Getting Started page"
              * @required
              */
             previewLegend: {

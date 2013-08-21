@@ -4,7 +4,7 @@
 }
 
 .ez-preview-content  {
-    padding: 10px;
+    padding: 30px;
 }
 
 .ez-preview-content .preview-legend  {
@@ -19,13 +19,46 @@
     padding: 0.5em;
 }
 
-.ez-preview-content .iframe-wrapper {
+.ez-preview-content .preview-device {
     margin: 20px auto;
 }
 
-.ez-preview-content .iframe-wrapper.mobile {
+/* For now relating to images here, not in theme.css, since those are "service" images */
+.ez-preview-content .preview-device.mobile {
     width: 322px;
     height: 478px;
-    padding: 118px 30px 113px 30px;
-    background: url('/bundles/ezsystemseditorial/img/mobile-preview.png');
+    padding: 118px 30px 118px 31px;
+    background: transparent url('/bundles/ezsystemseditorial/img/preview-mobile.png') top left no-repeat;
+}
+
+.ez-preview-content .preview-device.tablet {
+    width: 800px;
+    height: 600px;
+    padding: 20px;
+    background: transparent url('/bundles/ezsystemseditorial/img/preview-tablet.png') top left no-repeat;
+}
+
+.ez-preview-content .preview-device.desktop {
+    width: 1024px;
+    height: 700px;
+    padding: 10px;
+    background: transparent url('/bundles/ezsystemseditorial/img/preview-desktop.png') top left no-repeat;
+}
+
+
+.ez-preview-content .iframe-wrapper {
+    position: relative;
+}
+
+.ez-preview-content .loader.is-loading {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1011;
+}
+
+.ez-preview-content .preview-iframe {
+    display: block;
 }

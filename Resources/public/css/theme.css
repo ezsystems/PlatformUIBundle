@@ -267,3 +267,9 @@
 .ez-view-editpreview {
     background: #f3f3f3;
 }
+.ez-preview-content .ez-preview-hide {
+    color: #555;
+}
+.ez-preview-content .loader.is-loading {
+    background: rgba(0, 0, 0, 0.8);
+}
