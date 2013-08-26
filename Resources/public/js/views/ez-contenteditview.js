@@ -82,7 +82,7 @@ YUI.add('ez-contenteditview', function (Y) {
             container.one(FORM_CONTAINER).append(this.get('formView').render().get('container'));
             container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').render().get('container'));
 
-            //Do NOT render preview yet (to reduce load)
+            //Do NOT render preview yet (to reduce loading time for main UI parts)
             container.one(EDIT_PREVIEW_CONTAINER).append(this.get('editPreview').get('container'));
 
             return this;
@@ -98,7 +98,7 @@ YUI.add('ez-contenteditview', function (Y) {
         _dispatchAction: function (e){
 
             if (e.action == "preview"){
-                this.get('editPreview').set('currentMode', e.option);
+                this.get('editPreview').set('currentModeId', e.option);
                 this.get('editPreview').show();
             }
 

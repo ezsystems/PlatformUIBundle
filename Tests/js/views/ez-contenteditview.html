@@ -17,7 +17,9 @@
             </ul>
         </header>
         <div class="ez-contenteditformview-container"></div>
+        <div class="ez-editpreview-container is-hidden"></div>
     </div>
+    <div class="ez-editactionbar-container"></div>
 </script>
 
 
@@ -46,6 +48,14 @@
             "ez-contenteditformview": {
                 requires: ['ez-templatebasedview', 'transition', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-contenteditformview.js"
+            },
+            "ez-editactionbar": {
+                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-actionbar.js"
+            },
+            "ez-editpreview": {
+                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-editpreview.js"
             },
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],

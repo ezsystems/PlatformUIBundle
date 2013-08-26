@@ -41,7 +41,6 @@ YUI.add('ez-editpreview', function (Y) {
                 this.modesSearch[previewModes[index].id] = previewModes[index];
             }
 
-
         },
 
         /**
@@ -56,11 +55,12 @@ YUI.add('ez-editpreview', function (Y) {
                 loader;
 
             container.setHTML(this.template({
-                mode : this.modesSearch[this.get('currentMode')],
+                mode : this.modesSearch[this.get('currentModeId')],
                 source : this.get('previewSource'),
                 legend : this.get('previewLegend')
             }));
 
+            // loader node for the iframe
             loader = container.one('.loader');
             loader.addClass(IS_LOADING_CLASS);
 
@@ -125,11 +125,11 @@ YUI.add('ez-editpreview', function (Y) {
             /**
              * Mode of the actual preview to be rendered
              *
-             * @attribute currentMode
+             * @attribute currentModeId
              * @default "mobile"
              * @required
              */
-            currentMode: {
+            currentModeId: {
                 value: "mobile"
             },
 
