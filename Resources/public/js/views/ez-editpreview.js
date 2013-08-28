@@ -112,8 +112,8 @@ YUI.add('ez-editpreview', function (Y) {
                         height: 700
                     }, {
                         id: "tablet",
-                        width: 800,
-                        height: 600
+                        width: 769, /* preview-tablet.png image has such a strange dimensions */
+                        height: 1025 /* preview-tablet.png image has such a strange dimensions */
                     }, {
                         id: "mobile",
                         width: 321, /* preview-mobile.png image has such a strange dimensions */

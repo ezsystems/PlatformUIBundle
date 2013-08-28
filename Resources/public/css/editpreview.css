@@ -21,6 +21,7 @@
 
 .ez-preview-content .preview-device {
     margin: 20px auto;
+    overflow: hidden;
 }
 
 /* For now relating to images here, not in theme.css, since those are "service" images */
@@ -32,9 +33,9 @@
 }
 
 .ez-preview-content .preview-device.tablet {
-    width: 800px;
-    height: 600px;
-    padding: 20px;
+    width: 872px;
+    height: 1263px;
+    padding: 119px 0 0 103px;
     background: transparent url('/bundles/ezsystemseditorial/img/preview-tablet.png') top left no-repeat;
 }
 
@@ -45,9 +46,13 @@
     background: transparent url('/bundles/ezsystemseditorial/img/preview-desktop.png') top left no-repeat;
 }
 
-
 .ez-preview-content .iframe-wrapper {
     position: relative;
+    overflow: hidden;
+}
+
+.ez-preview-content .preview-device.tablet .iframe-wrapper {
+    width: 769px;
 }
 
 .ez-preview-content .loader.is-loading {
@@ -61,4 +66,10 @@
 
 .ez-preview-content .preview-iframe {
     display: block;
+    margin: 0;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
 }
