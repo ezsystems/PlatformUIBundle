@@ -48,7 +48,6 @@ YUI.add('ez-contenteditview', function (Y) {
             this.get('editPreview').addTarget(this);
 
             this.on('*:action', this._dispatchAction, this);
-
         },
 
         /**
@@ -60,6 +59,7 @@ YUI.add('ez-contenteditview', function (Y) {
         destructor: function () {
             this.get('formView').destroy();
             this.get('actionBar').destroy();
+            this.get('editPreview').destroy();
         },
 
         /**

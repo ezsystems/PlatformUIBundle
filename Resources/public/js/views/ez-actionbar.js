@@ -24,7 +24,7 @@ YUI.add('ez-editactionbar', function (Y) {
      */
     Y.eZ.EditActionBar = Y.Base.create('editActionBar', Y.eZ.TemplateBasedView, [], {
         events: {
-            '.action-trigger': {
+            '[data-action]': {
                 'tap': '_handleActionClick'
             },
             '.view-more': {
@@ -39,10 +39,11 @@ YUI.add('ez-editactionbar', function (Y) {
          * @method initializer
          */
         initializer: function () {
+
             var actionsList = this.get('actionsList'),
                 index, length;
 
-            // Creating lookup object for easy action search
+            // Creating lookup object for easy actions search
             this.actionsSearch = {};
 
             for (index = 0, length = actionsList.length; index < length; index++) {
@@ -146,12 +147,10 @@ YUI.add('ez-editactionbar', function (Y) {
             var action = e.currentTarget.getAttribute('data-action'),
                 option = e.currentTarget.getAttribute('data-action-option');
 
-            if (action) {
-                this.fire('action', {
-                    action: action,
-                    option: option
-                });
-            }
+            this.fire('action', {
+                action: action,
+                option: option
+            });
         },
 
         /**

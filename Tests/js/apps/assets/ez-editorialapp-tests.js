@@ -2,7 +2,12 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
     var app, appTest,
         capiMock,
-        container = Y.one('.app');
+        container = Y.one('.app'),
+        mockActionBar = {};
+
+    mockActionBar.handleWindowResize = function () {};
+    Y.Handlebars = {};
+    Y.Handlebars.registerPartial = function () {};
 
     capiMock = new Y.Mock();
     app = new Y.eZ.EditorialApp({
@@ -234,6 +239,13 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 setFocus: function () {
                     focused = true;
                 }
+            }, {
+                ATTRS: {
+                    actionBar : {
+                        value: mockActionBar
+                    }
+                }
+
             });
 
             app.set('loading', true);
