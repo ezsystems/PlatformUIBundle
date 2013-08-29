@@ -265,13 +265,13 @@ YUI().use('ez-editorialapp', function (Y) {
 
 <script type="text/x-handlebars-template" id="editpreview-ez-template">
     <div class="ez-preview-content" tabindex="0">
-        <a href="#" class="ez-preview-hide" data-icon-after="&#xe000;">Close preview</a>
+        <label class="ez-preview-hide" data-icon-after="&#xe000;">Close preview</label>
         <br class="clear">
         <div class="preview-legend">Previewing: <strong>{{ legend }}</strong></div>
         <div class="preview-device loading {{ mode.id }}">
             <div class="iframe-wrapper">
             <div class="loader is-loading"></div>
-            <iframe class="preview-iframe" width="{{ mode.width }}" height="{{ mode.height }}" src={{ source }} frameBorder="0"></iframe></div>
+            <iframe class="preview-iframe" width="{{ mode.width }}" height="{{ mode.height }}" src={{ source }} frameBorder="0" marginwidth="0"></iframe></div>
         </div>
     </div>
 </script>

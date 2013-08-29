@@ -93,6 +93,7 @@ YUI.add('ez-editpreview', function (Y) {
         hide: function (e) {
             e.preventDefault();
             this.get('container').get('parentNode').addClass(IS_HIDDEN_CLASS);
+            this.fire('editPreviewHide');
         }
 
     }, {

@@ -246,15 +246,24 @@
 
 .ez-view-editactionbar .actions-list .action-hint{
     color: #9eaa8f;
+    font-size: 12px;
 }
 
 .ez-view-editactionbar .actions-list .action-widget .action-button {
     border-radius: 2px;
+    background: #242328;
+    color: white;
+    font-size: 16px;
 }
 
 .ez-view-editactionbar .actions-list .action-widget .action-button:hover {
-    color: #d8fcff;
+    background: #486235;
 }
+.ez-view-editactionbar .actions-list .action-widget .action-button.is-selected {
+    background: #256213;
+}
+
+
 
 .ez-view-editactionbar .actions-list .view-more {
     color: white;

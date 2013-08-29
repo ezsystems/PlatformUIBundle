@@ -43,9 +43,13 @@ YUI.add('ez-contenteditview', function (Y) {
          * @method initializer
          */
         initializer: function () {
+
             this.get('formView').addTarget(this);
             this.get('actionBar').addTarget(this);
             this.get('editPreview').addTarget(this);
+
+            // keeping in mind, that only one-way targeting is possible
+            this.get('editPreview').addTarget(this.get('actionBar'));
 
             this.on('*:action', this._dispatchAction, this);
         },
@@ -103,6 +107,7 @@ YUI.add('ez-contenteditview', function (Y) {
             }
 
         },
+
 
         /**
          * Set current input focus on the view

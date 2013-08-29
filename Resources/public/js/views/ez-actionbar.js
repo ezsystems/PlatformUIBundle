@@ -11,6 +11,7 @@ YUI.add('ez-editactionbar', function (Y) {
     var MENU_SEL = '.ez-edit-actions',
         VIEW_MORE_HEIGHT = 30,
         IS_SHOWN_CLASS = "is-shown",
+        IS_SELECTED_CLASS = "is-selected",
         VIEW_LESS_TEXT = "View less",
         VIEW_MORE_TEXT = "View more";
 
@@ -54,6 +55,7 @@ YUI.add('ez-editactionbar', function (Y) {
             this.set('activeActionsList', actionsList);
 
             Y.on("windowresize", Y.bind(this.handleWindowResize, this));
+            this.on('*:editPreviewHide', this.handleEditPreviewHide, this);
 
         },
 
@@ -81,14 +83,21 @@ YUI.add('ez-editactionbar', function (Y) {
          * @return {eZ.EditActionBar} the view itself
          */
         renderFull: function () {
-
             this.get('container').setHTML(this.template({
                 activeActionsList: this.get('actionsList'),
                 viewMoreActionsList : []
             }));
-
         },
 
+        /**
+         * Makes changes to UI once editPreview is hidden (removes preview selection)
+         *
+         * @method render
+         * @return {eZ.EditActionBar} the view itself
+         */
+        handleEditPreviewHide : function () {
+            this.get('container').all('[data-action="preview"]').removeClass(IS_SELECTED_CLASS);
+        },
 
         /**
          * Event event handler for window resize
@@ -134,7 +143,6 @@ YUI.add('ez-editactionbar', function (Y) {
             }
         },
 
-
         /**
          * Event event handler for clicks on any of the action-trigger nodes.
          *
@@ -143,14 +151,20 @@ YUI.add('ez-editactionbar', function (Y) {
          * @param {Object} e event facade of the click event
          */
         _handleActionClick: function (e) {
-
-            var action = e.currentTarget.getAttribute('data-action'),
-                option = e.currentTarget.getAttribute('data-action-option');
+            var actionTrigger = e.currentTarget,
+                action = actionTrigger.getAttribute('data-action'),
+                option = actionTrigger.getAttribute('data-action-option');
 
             this.fire('action', {
                 action: action,
                 option: option
             });
+
+            //changes to UI
+            if (action == "preview") {
+                this.get('container').all('[data-action="preview"]').removeClass(IS_SELECTED_CLASS);
+                actionTrigger.addClass(IS_SELECTED_CLASS);
+            }
         },
 
         /**
