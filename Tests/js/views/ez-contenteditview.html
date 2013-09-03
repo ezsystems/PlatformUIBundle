@@ -166,6 +166,43 @@
                 Y.Mock.verify(formView);
             },
 
+            "Should set 'contentType' property of it's child formView once this property is changing": function () {
+                // We need another (not as in "setUp") view initialization sequence to test that
+                var view = new Y.eZ.ContentEditView({
+                    container: container,
+                    content: content,
+                    contentType: contentType,
+                    mainLocation: mainLocation,
+                    owner: owner,
+                });
+
+                Y.Assert.areEqual(
+                    view.get('contentType'),
+                    view.get('formView').get('contentType'),
+                    "'contentType' property should be the same for contentEditView and it's child contentEditFormView"
+                );
+            },
+
+            "Should recieve events fired on it's child formView": function () {
+                // We need another (not as in "setUp") view initialization sequence to test that
+                var view = new Y.eZ.ContentEditView({
+                    container: container,
+                    content: content,
+                    contentType: contentType,
+                    mainLocation: mainLocation,
+                    owner: owner,
+                    }),
+                    testEventReceived = false;
+
+                view.on('contentEditFormView:testEvent', function () {
+                    testEventReceived = true;
+                });
+
+                view.get('formView').fire('testEvent');
+
+                Y.assert(testEventReceived, "Should have recieved the 'testEvent' from child contentEditFormView");
+            },
+
             "Should fire a close event": function () {
                 var closeFired = false,
                     close;

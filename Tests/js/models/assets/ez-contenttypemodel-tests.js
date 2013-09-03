@@ -126,6 +126,40 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
                                     "defaultLayout": ""
                                 },
                                 "validatorConfiguration": []
+                            },
+                            {
+                                "_media-type": "application/vnd.ez.api.FieldDefinition+json",
+                                "_href": "/api/ezp/v2/content/types/23/fieldDefinitions/234",
+                                "id": 234,
+                                "identifier": "page",
+                                "fieldType": "ezpage",
+                                "fieldGroup": "meta",
+                                "position": 3,
+                                "isTranslatable": "true",
+                                "isRequired": "false",
+                                "isInfoCollector": "false",
+                                "defaultValue": null,
+                                "isSearchable": "false",
+                                "names": {
+                                    "value": [
+                                        {
+                                            "_languageCode": "eng-GB",
+                                            "#text": "Layout"
+                                        }
+                                    ]
+                                },
+                                "descriptions": {
+                                    "value": [
+                                        {
+                                            "_languageCode": "eng-GB",
+                                            "#text": ""
+                                        }
+                                    ]
+                                },
+                                "fieldSettings": {
+                                    "defaultLayout": ""
+                                },
+                                "validatorConfiguration": []
                             }
                         ]
                     }
@@ -154,7 +188,7 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
 
             Y.Assert.areEqual(
                 fieldGroups.length,
-                this.loadResponse.ContentType.FieldDefinitions.FieldDefinition.length,
+                2,
                 "Should split field definitions in groups correctly depending on 'FieldGroup' property"
             );
             Y.Assert.areEqual(
