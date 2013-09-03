@@ -9,22 +9,22 @@
 <script type="text/javascript" src="./assets/model-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-contentmodel-tests.js"></script>
 <script>
-    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
+    var srcPrefix = (window.location.search.match(/[?&]srcPrefix=([^&]+)/) || [])[1] || 'default';
     YUI({
         coverage: ['ez-contentmodel'],
-        filter: filter,
+        srcPrefix: srcPrefix,
         modules: {
             "ez-contentmodel": {
                 requires: [
                     'ez-restmodel'
                 ],
-                fullpath: "../../../Resources/public/js/models/ez-contentmodel" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+                fullpath: "../../../" + ( srcPrefix != 'default' ? srcPrefix : "" ) + "/Resources/public/js/models/ez-contentmodel.js"
             },
             "ez-restmodel": {
                 requires: [
                     'model'
                 ],
-                fullpath: "../../../Resources/public/js/models/ez-restmodel" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+                fullpath: "../../../" + ( srcPrefix != 'default' ? srcPrefix : "" ) + "/Resources/public/js/models/ez-restmodel.js"
             },
         }
     }).use('ez-contentmodel-tests', function (Y) {

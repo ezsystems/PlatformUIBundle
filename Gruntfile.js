@@ -67,6 +67,13 @@ module.exports = function(grunt) {
                     stderr: true
                 }
             },
+            groverCoverage: {
+                command: '  grover --server --coverage -S "?srcPrefix=Tests/instrument" Tests/js/*/*.html',
+                options: {
+                    stdout: true,
+                    stderr: true
+                }
+            },
             livedoc: {
                 command: 'yuidoc --server',
                 options: {
@@ -87,6 +94,7 @@ module.exports = function(grunt) {
     grunt.registerTask('lint', ['jshint']);
     grunt.registerTask('ugly', ['jshint', 'uglify']);
     grunt.registerTask('test', ['jshint', 'shell:grover'] );
+    grunt.registerTask('coverage', ['jshint', 'instrument', 'shell:groverCoverage'] );
     grunt.registerTask('doc', ['yuidoc'] );
     grunt.registerTask('livedoc', ['shell:livedoc'] );
 
