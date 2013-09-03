@@ -109,7 +109,7 @@ YUI.add('ez-editpreview', function (Y) {
             previewModes: {
                 value: [{
                         id: "desktop",
-                        width: 1024,
+                        width: 1100,
                         height: 700
                     }, {
                         id: "tablet",
