@@ -2,14 +2,14 @@ module.exports = function(grunt) {
 
     // Syntax "!<whatever>" means - exclude whatever from the result set
     var sourceFiles = [
-            "./Resources/public/js/apps/*.js", "!./Resources/public/js/apps/*-min.js", "!./Resources/public/js/apps/*-coverage.js",
-            "./Resources/public/js/views/*.js", "!./Resources/public/js/views/*-min.js", "!./Resources/public/js/views/*-coverage.js",
-            "./Resources/public/js/models/*.js", "!./Resources/public/js/models/*-min.js", "!./Resources/public/js/models/*-coverage.js"
+            "./Resources/public/js/apps/*.js", "!./Resources/public/js/apps/*-min.js",
+            "./Resources/public/js/views/*.js", "!./Resources/public/js/views/*-min.js",
+            "./Resources/public/js/models/*.js", "!./Resources/public/js/models/*-min.js"
         ],
         trashFiles = [
-            "./Resources/public/js/apps/*-min.js", "./Resources/public/js/apps/*-coverage.js",
-            "./Resources/public/js/views/*-min.js", "./Resources/public/js/views/*-coverage.js",
-            "./Resources/public/js/models/*-min.js", "./Resources/public/js/models/*-coverage.js"
+            "./Resources/public/js/apps/*-min.js",
+            "./Resources/public/js/views/*-min.js",
+            "./Resources/public/js/models/*-min.js"
         ];
 
     grunt.initConfig({
