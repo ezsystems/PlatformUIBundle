@@ -1,0 +1,63 @@
+.ez-errorview-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 1050;
+    background: rgba(0, 0, 0, 0.4);
+
+    -webkit-transform: translateX(0);
+       -moz-transform: translateX(0);
+        -ms-transform: translateX(0);
+         -o-transform: translateX(0);
+            transform: translateX(0);
+
+    -webkit-transition: -webkit-transform 0.4s;
+       -moz-transition: -moz-transform 0.4s;
+        -ms-transition: -ms-transform 0.4s;
+         -o-transition: -o-transform 0.4s;
+            transition: transform 0.4s;
+
+    -webkit-transform-style: preserve-3d; /* increasing performance on mobile devices */
+       -moz-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+}
+
+.ez-errorview-container.is-hidden {
+    -webkit-transform: translateX(200%);
+       -moz-transform: translateX(200%);
+        -ms-transform: translateX(200%);
+         -o-transform: translateX(200%);
+            transform: translateX(200%);
+}
+
+.ez-errorview-container .ez-error-content {
+    height: 100%;
+    text-align: center;
+}
+
+.ez-errorview-container .ez-error-dialog {
+    display: inline-block;
+    margin-top: 5em;
+    padding: 1em;
+    text-align: left;
+}
+
+.ez-errorview-container .ez-error-dialog h2 {
+    margin-top: 0;
+}
+
+.ez-error-dialog .ez-buttons-container {
+    text-align: center;
+}
+
+.ez-error-dialog button {
+    padding: 0.7em;
+    margin: 0.5em;
+}
+
+.ez-error-dialog button:before {
+    margin-right: 0.5em;
+}

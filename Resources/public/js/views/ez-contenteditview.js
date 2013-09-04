@@ -29,7 +29,7 @@ YUI.add('ez-contenteditview', function (Y) {
                 'mouseout': '_hideDetails'
             },
             '.ez-main-content': {
-                'keypress': '_handleKeyboard'
+                'keyup': '_handleKeyboard'
             }
         },
 

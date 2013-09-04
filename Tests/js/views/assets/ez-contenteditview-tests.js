@@ -294,7 +294,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             });
 
             this.view.render();
-            container.one('.ez-main-content').simulate("keypress", { charCode: 27 }); // Sending "escape" key code
+            container.one('.ez-main-content').simulate("keyup", { charCode: 27 }); // Sending "escape" key code
             Y.assert(closeFired, "The close event should have been fired");
         },
 
@@ -306,7 +306,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             });
 
             this.view.render();
-            container.one('.ez-main-content').simulate("keypress", { charCode: 28 }); // Sending some other key code
+            container.one('.ez-main-content').simulate("keyup", { charCode: 28 }); // Sending some other key code
             Y.assert(!closeFired, "The close event should NOT have been fired");
         },
 

@@ -203,3 +203,14 @@
 .ez-view-textlineeditview.is-error .ez-textline-input-ui:before {
     opacity: 1;
 }
+
+/* error view */
+.ez-errorview-container .ez-error-dialog {
+    background: #f3f3f3;
+    border-radius: 10px;
+}
+
+.ez-errorview-container .ez-error-dialog h2 {
+    font-size: 160%;
+    border-bottom: 2px solid #bf3e33;
+}

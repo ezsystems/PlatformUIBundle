@@ -7,6 +7,7 @@
 </p>
 <div class="ez-editorial-app pure">
     <div class="ez-view-container"></div>
+    <div class="ez-errorview-container is-hidden"></div>
 </div>
 {% stylesheets
     '@EzSystemsEditorialBundle/Resources/public/css/pure/0.3.0/base-context-min.css'
@@ -16,6 +17,7 @@
     '@EzSystemsEditorialBundle/Resources/public/css/contenteditformview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/fieldeditview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/textline-editview.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/errorview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/theme.css'
 %}
 <link rel="stylesheet" href="{{ asset_url }}" />
@@ -32,7 +34,7 @@ YUI.GlobalConfig = {
             requires: [
                 'app', 'app-transitions', 'node-screen', 'json', 'parallel',
                 'ez-capi', 'ez-contenteditview', 'ez-contenteditformview',
-                'ez-textline-editview',
+                'ez-textline-editview', 'ez-errorview',
                 'ez-restmodel', 'ez-contentmodel', 'ez-locationmodel', 'ez-usermodel', 'ez-contenttypemodel'
             ],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/apps/ez-editorialapp.js' %}
@@ -57,7 +59,12 @@ YUI.GlobalConfig = {
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         },
-
+        "ez-errorview": {
+            requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-errorview.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
         "ez-fieldeditview": {
             requires: ['ez-templatebasedview'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-fieldeditview.js' %}
@@ -70,7 +77,6 @@ YUI.GlobalConfig = {
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         },
-
         "ez-restmodel": {
             requires: ['model'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/models/ez-restmodel.js' %}
@@ -133,6 +139,24 @@ YUI().use('ez-editorialapp', function (Y) {
 </script>
 
 {% verbatim %}
+
+<script type="text/x-handlebars-template" id="errorview-ez-template">
+        <div class="ez-error-content">
+            <div class="ez-error-dialog" tabindex="0">
+                <h2>An error has occurred</h2>
+                <p class="additional-info">
+                    {{#if additionalInfo.errorText}}
+                        {{ additionalInfo.errorText }}
+                    {{/if}}
+                </p>
+                <div class="ez-buttons-container">
+                    <button class="pure-button ez-close-app" data-icon="&#xe000;">Close the application</button>
+                    <button class="pure-button ez-retry" data-icon="&#xe00f;">Retry the operation</button>
+                </div>
+            </div>
+        </div>
+</script>
+
 <script type="text/x-handlebars-template" id="contenteditview-ez-template">
     <div class="ez-main-content" tabindex="0">
         <header>
