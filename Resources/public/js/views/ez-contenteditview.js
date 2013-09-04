@@ -129,7 +129,7 @@ YUI.add('ez-contenteditview', function (Y) {
              *
              * @event close
              */
-            this.fire('close');
+            this.fire('closeApp');
             e.preventDefault();
         },
 

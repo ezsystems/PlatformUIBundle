@@ -27,6 +27,9 @@ YUI.add('ez-editorialapp', function (Y) {
                 type: Y.eZ.ContentEditView,
                 preserve: true
             },
+            errorView: {
+                type: Y.eZ.ErrorView
+            },
             dummyView: {
                 type: Y.View
             }
@@ -40,14 +43,39 @@ YUI.add('ez-editorialapp', function (Y) {
          * @method initializer
          */
         initializer: function () {
-            this.on('contentEditView:close', function (e) {
+            this.on('*:closeApp', function (e) {
                 this.close();
+            });
+
+            this.on('*:fatalError', function (errorInfo) {
+                this.handleError(errorInfo);
             });
 
             this.on('loadingChange', this._loading);
 
             this.on('navigate', function (e) {
                 this.set('loading', true);
+            });
+        },
+
+        /**
+         * Display the error view
+         *
+         * @param errorInfo {Object} Object containing additional info about the error
+         */
+        handleError: function (errorInfo) {
+            this.set('loading', true);
+            this.showView('errorView',
+                {
+                    retryAction: errorInfo.retryAction,
+                    additionalInfo: errorInfo.additionalInfo
+                }, {
+                    update: true,
+                    render: true,
+                    callback: function (view) {
+                        this.set('loading', false);
+                        view.setFocus();
+                }
             });
         },
 

@@ -1,0 +1,14 @@
+.ez-view-errorview {
+    padding: 20%;
+}
+.ez-view-errorview .ez-error-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.ez-error-content a {
+    display: inline-block;
+    font-size: 20px;
+    padding: 20px;
+    margin: 10px;
+}

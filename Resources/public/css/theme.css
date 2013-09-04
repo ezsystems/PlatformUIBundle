@@ -203,3 +203,14 @@
 .ez-view-textlineeditview.is-error .ez-textline-input-ui:before {
     opacity: 1;
 }
+
+
+/* error view */
+.ez-view-errorview .ez-error-content {
+    background: #f3f3f3;
+    border-radius: 10px;
+}
+
+.ez-error-content a {
+    background-color: #c6c6c6;
+}
