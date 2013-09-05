@@ -142,11 +142,14 @@ YUI().use('ez-editorialapp', function (Y) {
 <script type="text/x-handlebars-template" id="errorview-ez-template">
     <div class="ez-error-content" tabindex="0">
         <h2>Oh oh, an error has occured</h2>
-        {{#if additionalInfo}}
             <div class="additional-info">
-                {{ additionalInfo }}
+                {{#if additionalInfo.errorCode}}
+                Error code: {{ additionalInfo.errorCode }}<br/>
+                {{/if}}
+                {{#if additionalInfo.errorText}}
+                Error text: {{ additionalInfo.errorText }}<br/>
+                {{/if}}
             </div>
-        {{/if}}
         <a href="#close-app" class="ez-close-app" data-icon="&#xe000;">Close the application</a>
         <a href="#retry" class="ez-retry" data-icon="&#xe00f;">Retry the operation</a>
     </div>

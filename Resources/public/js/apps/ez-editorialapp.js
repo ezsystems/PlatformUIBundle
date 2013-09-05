@@ -123,8 +123,16 @@ YUI.add('ez-editorialapp', function (Y) {
                 var tasks,
                     resources = content.get('resources');
 
-                // TODO handle errors
-                if ( !error ) {
+                if (error) {
+                    // TODO correct retryAction
+                    app.fire('fatalError', {
+                        retryAction : "don't have enough info to retry anything yet",
+                        additionalInfo : {
+                            errorCode : error.errorCode,
+                            errorText : error.errorText
+                        }
+                    })
+                } else  {
                     // parallel loading of owner, mainLocation and contentType
                     tasks = new Y.Parallel();
 

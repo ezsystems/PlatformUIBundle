@@ -113,13 +113,13 @@ YUI.add('ez-errorview', function (Y) {
             },
 
             /**
-             * The string containing additional information about the error
+             * An object containing additional information about the error
              *
              * @attribute additionalInfo
-             * @default null
+             * @default {}
              */
             additionalInfo: {
-                value: null
+                value: {}
             }
         }
     });
