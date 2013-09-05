@@ -24,7 +24,7 @@ YUI.add('ez-errorview', function (Y) {
             '.ez-close-app': {'tap': '_closeApp'},
             '.ez-retry' : {'tap': '_retry'},
             '.ez-error-content': {
-                'keypress': '_handleKeyboard'
+                'keyup': '_handleKeyboard'
             }
         },
 
@@ -94,7 +94,7 @@ YUI.add('ez-errorview', function (Y) {
         _handleKeyboard: function (e) {
 
             if (e.keyCode === ESCAPE_KEY) {
-                this._closeView(e);
+                this._closeApp(e);
             }
 
         }
