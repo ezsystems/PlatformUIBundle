@@ -58,7 +58,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         "Should close the application when contentEditView:close event is fired": function () {
             app.open();
 
-            app.fire('contentEditView:close');
+            app.fire('contentEditView:closeApp');
 
             this.wait(function () {
                 Y.assert(
@@ -247,7 +247,41 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             this.wait(function () {
                 Y.assert(!app.get('loading'), "The app should not be in loading mode");
             }, 500);
+        },
+
+        "Should show the error view, when catching 'fatalError' event": function () {
+            var rendered = false, initialized = false, focused = false,
+                errorInfo = {'retryAction:': {}, 'additionalInfo': 1};
+
+            app.views.errorView.type = Y.Base.create('testView', Y.View, [], {
+                initializer: function () {
+                    initialized = true;
+                },
+
+                render: function () {
+                    rendered = true;
+                    Y.Assert.areEqual(
+                        this.get('additionalInfo'), errorInfo.additionalInfo,
+                        "The view attributes should be updated with the app variables attribute"
+                    );
+                },
+
+                setFocus: function () {
+                    focused = true;
+                }
+            });
+
+            app.fire('contentEditView:fatalError', errorInfo);
+
+            Y.assert(initialized, "The error view should have been initialized");
+            Y.assert(rendered, "The error view should have been rendered");
+            this.wait(function () {
+                Y.assert(!app.get('loading'), "The app should not be in loading mode");
+                Y.assert(focused, "The error view should have input focus");
+            }, 500);
         }
+
+
     });
 
     Y.Test.Runner.setName("eZ Editorial App tests");

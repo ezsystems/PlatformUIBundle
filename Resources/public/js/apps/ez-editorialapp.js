@@ -61,6 +61,7 @@ YUI.add('ez-editorialapp', function (Y) {
         /**
          * Display the error view
          *
+         * @method handleError
          * @param errorInfo {Object} Object containing additional info about the error
          */
         handleError: function (errorInfo) {
