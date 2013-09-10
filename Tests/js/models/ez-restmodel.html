@@ -8,16 +8,16 @@
 <script type="text/javascript" src="http://yui.yahooapis.com/3.12.0/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-restmodel-tests.js"></script>
 <script>
-    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
+    var srcPrefix = (window.location.search.match(/[?&]srcPrefix=([^&]+)/) || [])[1] || 'default';
     YUI({
         coverage: ['ez-restmodel'],
-        filter: filter,
+        srcPrefix: srcPrefix,
         modules: {
             "ez-restmodel": {
                 requires: [
                     'model'
                 ],
-                fullpath: "../../../Resources/public/js/models/ez-restmodel" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+                fullpath: "../../../" + ( srcPrefix != 'default' ? srcPrefix : "" ) + "/Resources/public/js/models/ez-restmodel.js"
             },
 
         }
