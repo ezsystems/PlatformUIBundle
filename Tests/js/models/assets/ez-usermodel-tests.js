@@ -11,6 +11,7 @@ YUI.add('ez-usermodel-tests', function (Y) {
             this.serviceMock = new Y.Mock();
             this.serviceLoad = 'loadUser';
             this.rootProperty = "User";
+            this.parsedAttributeNumber = Y.eZ.User.ATTRS_REST_MAP.length + 1; // links
             this.loadResponse = {
                 "User": {
                     "_media-type": "application/vnd.ez.api.User+json",
