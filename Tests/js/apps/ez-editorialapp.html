@@ -14,17 +14,17 @@
 <script type="text/javascript" src="./assets/fake-models.js"></script>
 <script type="text/javascript" src="./assets/ez-editorialapp-tests.js"></script>
 <script>
-    var srcPrefix = (window.location.search.match(/[?&]srcPrefix=([^&]+)/) || [])[1] || 'default';
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
     YUI({
         coverage: ['ez-editorialapp'],
-        srcPrefix: srcPrefix,
+        filter: filter,
         modules: {
             "ez-editorialapp": {
                 requires: [
                     'app', 'app-transitions', 'node-screen', 'event-tap', 'transition',
                     'fake-models'
                 ],
-                fullpath: "../../../" + ( srcPrefix != 'default' ? srcPrefix : "" ) + "/Resources/public/js/apps/ez-editorialapp.js"
+                fullpath: "../../.." + ( filter == 'coverage' ? "/Tests/instrument/Resources/" : "/Resources/" ) + "public/js/apps/ez-editorialapp.js"
             },
 
         }

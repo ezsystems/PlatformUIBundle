@@ -22,19 +22,19 @@
 
 <script type="text/javascript" src="http://yui.yahooapis.com/3.10.3/build/yui/yui.js"></script>
 <script>
-    var srcPrefix = (window.location.search.match(/[?&]srcPrefix=([^&]+)/) || [])[1] || 'default';
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
 
     YUI({
         coverage: ['ez-contenteditview'],
-        srcPrefix: srcPrefix,
+        filter: filter,
         modules: {
             "ez-contenteditview": {
                 requires: ['ez-templatebasedview', 'transition', 'event-tap'],
-                fullpath: "../../../" + ( srcPrefix != 'default' ? srcPrefix : "" ) + "/Resources/public/js/views/ez-contenteditview.js"
+                fullpath: "../../.." + ( filter == 'coverage' ? "/Tests/instrument/Resources/" : "/Resources/" ) + "public/js/views/ez-contenteditview.js"
             },
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],
-                fullpath: "../../../" + ( srcPrefix != 'default' ? srcPrefix : "" ) + "/Resources/public/js/views/ez-templatebasedview.js"
+                fullpath: "../../.." + ( filter == 'coverage' ? "/Tests/instrument/Resources/" : "/Resources/" ) + "public/js/views/ez-templatebasedview.js"
             }
         }
     }).use('test', 'event-tap', 'node-event-simulate', 'ez-contenteditview', function (Y) {

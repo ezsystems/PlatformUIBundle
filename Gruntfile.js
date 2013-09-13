@@ -68,7 +68,7 @@ module.exports = function(grunt) {
                 }
             },
             groverCoverage: {
-                command: '  grover --server --coverage -S "?srcPrefix=Tests/instrument" Tests/js/*/*.html',
+                command: '  grover --server --coverage -S "?filter=coverage" Tests/js/*/*.html',
                 options: {
                     stdout: true,
                     stderr: true
