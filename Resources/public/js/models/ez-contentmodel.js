@@ -19,6 +19,27 @@ YUI.add('ez-contentmodel', function (Y) {
     Y.eZ.Content = Y.Base.create('contentModel', Y.eZ.RestModel, [], {
 
         /**
+         * Override of the eZ.RestModel _parseStruct method to also read the
+         * fields of the current version
+         *
+         * @protected
+         * @method _parseStruct
+         * @param {Object} struct the struct to transform
+         * @return {Object}
+         */
+        _parseStruct: function (struct) {
+            var attrs, fields = {};
+
+            attrs = this.constructor.superclass._parseStruct.call(this, struct);
+
+            Y.Array.each(struct.CurrentVersion.Version.Fields.field, function (field) {
+                fields[field.fieldDefinitionIdentifier] = field;
+            });
+            attrs.fields = fields;
+            return attrs;
+        },
+
+        /**
          * sync implementation that relies on the JS REST client.
          * For now, it only supports the 'read' action. The callback is
          * directly passed to the UserService.loadContentInfoAndCurrentVersion
@@ -40,6 +61,18 @@ YUI.add('ez-contentmodel', function (Y) {
             } else {
                 callback("Only read operation is supported at the moment");
             }
+        },
+
+        /**
+         * Returns the field which identifier is in parameter
+         *
+         * @method getField
+         * @param {String} identifier the field definition identifier
+         * @return {Object} or undefined if the field does not exists
+         */
+        getField: function (identifier) {
+            var fields = this.get('fields');
+            return fields[identifier];
         }
     }, {
         REST_STRUCT_ROOT: "Content",
@@ -133,6 +166,18 @@ YUI.add('ez-contentmodel', function (Y) {
             publishedDate: {
                 setter: '_setterDate',
                 value: ''
+            },
+
+            /**
+             * Fields in the current version of the content indexed by field
+             * definition identifier
+             *
+             * @attribute fields
+             * @default {}
+             * @type Object
+             */
+            fields: {
+                value: {}
             }
         }
     });

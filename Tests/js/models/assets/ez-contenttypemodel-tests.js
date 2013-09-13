@@ -11,6 +11,7 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
             this.serviceMock = new Y.Mock();
             this.serviceLoad = 'loadContentType';
             this.rootProperty = "ContentType";
+            this.parsedAttributeNumber = Y.eZ.ContentType.ATTRS_REST_MAP.length + 1; // links
             this.loadResponse = {
                 "ContentType": {
                     "_media-type": "application/vnd.ez.api.ContentType+json",

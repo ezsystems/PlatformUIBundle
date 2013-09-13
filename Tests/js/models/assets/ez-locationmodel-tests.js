@@ -11,6 +11,7 @@ YUI.add('ez-locationmodel-tests', function (Y) {
             this.serviceMock = new Y.Mock();
             this.serviceLoad = 'loadLocation';
             this.rootProperty = "Location";
+            this.parsedAttributeNumber = Y.eZ.Location.ATTRS_REST_MAP.length + 1; // links
             this.loadResponse = {
                 "Location": {
                     "_media-type": "application/vnd.ez.api.Location+json",

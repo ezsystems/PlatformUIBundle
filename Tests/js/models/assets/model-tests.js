@@ -84,7 +84,7 @@ YUI.add('model-tests', function (Y) {
 
             Y.Assert.isFalse(errorFired, "The error event should not have been fired");
 
-            Y.Assert.areEqual(Y.Object.size(res), this.model.constructor.ATTRS_REST_MAP.length + 1);
+            Y.Assert.areEqual(Y.Object.size(res), this.parsedAttributeNumber);
             for (i = 0, len = this.model.constructor.ATTRS_REST_MAP.length; i != len; ++i) {
                 key = this.model.constructor.ATTRS_REST_MAP[i];
 
