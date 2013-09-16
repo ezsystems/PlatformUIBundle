@@ -80,23 +80,19 @@ YUI.add('ez-contenttypemodel', function (Y) {
          * @return {Array} array of fieldGroups to be used by ContentEditFormView
          */
         getFieldGroups: function () {
-            var fieldDefinitions = this.get('FieldDefinitions').FieldDefinition,
+            var fieldDefinitions = this.get('fieldDefinitions'),
                 fieldGroups = [],
                 fieldGroupNames = [];
 
-            Y.Array.each(fieldDefinitions, function (item) {
+            Y.Object.each(fieldDefinitions, function (item) {
                 var fieldGroupName = item.fieldGroup,
-                    field = {
-                        identifier: item.identifier,
-                        fieldType: item.fieldType
-                    },
                     fieldGroup;
 
                 // Add new field group, if FieldDefinition.fieldGroup is unique
                 if (fieldGroupNames.indexOf(fieldGroupName) === -1) {
                     fieldGroups.push({
                         fieldGroupName: fieldGroupName,
-                        fields: []
+                        fieldDefinitions: []
                     });
 
                     fieldGroupNames.push(fieldGroupName);
@@ -107,7 +103,7 @@ YUI.add('ez-contenttypemodel', function (Y) {
                     return group.fieldGroupName == fieldGroupName;
                 });
 
-                fieldGroup.fields.push(field);
+                fieldGroup.fieldDefinitions.push(item);
             });
 
             return fieldGroups;
@@ -119,7 +115,8 @@ YUI.add('ez-contenttypemodel', function (Y) {
             'defaultSortField', 'defaultSortOrder', 'descriptions',
             'identifier', 'isContainer', 'mainLanguageCode',
             'modificationDate', 'names', 'nameSchema',
-            'remoteId', 'status', 'urlAliasSchema','FieldDefinitions'
+            'remoteId', 'status', 'urlAliasSchema',
+            {'FieldDefinitions': 'fieldDefinitions'}
         ],
         ATTRS: {
             /**
@@ -283,14 +280,35 @@ YUI.add('ez-contenttypemodel', function (Y) {
             },
 
             /**
-             * The content type's field definitions
+             * The content type's field definitions indexed by field definition
+             * identifier. The localized properties names and description of
+             * each field definition are normalized with
+             * {{#crossLink "eZ.RestModel/_setterLocalizedValue:method"}}_setterLocalizedValue{{/crossLink}}
              *
              * @attribute fieldDefinitions
              * @default {}
              * @type Object
              */
-            FieldDefinitions: {
-                value: {}
+            fieldDefinitions: {
+                value: {},
+                setter: function (val) {
+                    var that = this,
+                        newval = {};
+
+                    if ( val.FieldDefinition ) {
+                        // val comes from the REST API, it needs to be
+                        // normalized
+                        Y.Array.each(val.FieldDefinition, function (item, index) {
+                            var identifier = val.FieldDefinition[index].identifier;
+
+                            newval[identifier] = val.FieldDefinition[index];
+                            newval[identifier].names = that._setterLocalizedValue(item.names);
+                            newval[identifier].descriptions = that._setterLocalizedValue(item.descriptions);
+                        });
+                        return newval;
+                    }
+                    return val;
+                }
             }
         }
     });
