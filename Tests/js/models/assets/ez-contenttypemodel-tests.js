@@ -119,7 +119,7 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
                                     "value": [
                                         {
                                             "_languageCode": "eng-GB",
-                                            "#text": ""
+                                            "#text": "Description text in eng-GB"
                                         }
                                     ]
                                 },
@@ -132,7 +132,7 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
                                 "_media-type": "application/vnd.ez.api.FieldDefinition+json",
                                 "_href": "/api/ezp/v2/content/types/23/fieldDefinitions/234",
                                 "id": 234,
-                                "identifier": "page",
+                                "identifier": "page_meta",
                                 "fieldType": "ezpage",
                                 "fieldGroup": "meta",
                                 "position": 3,
@@ -203,14 +203,74 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
                 "Should give correct name to each field group according to 'FieldGroup' property"
             );
             Y.Assert.areEqual(
-                fieldGroups[0].fields[0].identifier,
+                fieldGroups[0].fieldDefinitions[0].identifier,
                 this.loadResponse.ContentType.FieldDefinitions.FieldDefinition[0].identifier,
-                "Should import 'identifier' property correctly to created field groups"
+                "Should import the field definition"
             );
             Y.Assert.areEqual(
-                fieldGroups[0].fields[0].fieldType,
+                fieldGroups[0].fieldDefinitions[0].fieldType,
                 this.loadResponse.ContentType.FieldDefinitions.FieldDefinition[0].fieldType,
-                "Should import 'fieldType property correctly to created field groups"
+                "Should import the field definition"
+            );
+            Y.Assert.areEqual(
+                fieldGroups[1].fieldDefinitions[0].identifier,
+                this.loadResponse.ContentType.FieldDefinitions.FieldDefinition[1].identifier,
+                "Should import the field definition"
+            );
+            Y.Assert.areEqual(
+                fieldGroups[1].fieldDefinitions[0].fieldType,
+                this.loadResponse.ContentType.FieldDefinitions.FieldDefinition[1].fieldType,
+                "Should import the field definition"
+            );
+        },
+
+        "Should set FieldDefinitions without any change": function () {
+            var m = this.model,
+                result,
+                fieldDefinitions = {'name': {'names': 'bar'}, 'layout': {'descriptions': 'foo'}};
+
+            m.set('fieldDefinitions', fieldDefinitions);
+            result = m.get('fieldDefinitions');
+
+            Y.Assert.areSame(
+                fieldDefinitions,
+                result
+            );
+        },
+
+        "Should normalize the names and descriptions properties of the fieldDefinitions": function () {
+            var m = this.model,
+                fieldDefinitions = {};
+
+            m.set('fieldDefinitions', this.loadResponse.ContentType.FieldDefinitions);
+
+            fieldDefinitions = m.get('fieldDefinitions');
+
+            Y.Assert.areEqual(
+                "Name",
+                fieldDefinitions.name.names["eng-GB"]
+            );
+            Y.Assert.areEqual(
+                "",
+                fieldDefinitions.name.descriptions["eng-GB"]
+            );
+
+            Y.Assert.areEqual(
+                "Layout",
+                fieldDefinitions.page.names["eng-GB"]
+            );
+            Y.Assert.areEqual(
+                "Description text in eng-GB",
+                fieldDefinitions.page.descriptions["eng-GB"]
+            );
+
+            Y.Assert.areEqual(
+                "Layout",
+                fieldDefinitions.page_meta.names["eng-GB"]
+            );
+            Y.Assert.areEqual(
+                "",
+                fieldDefinitions.page_meta.descriptions["eng-GB"]
             );
         }
 
