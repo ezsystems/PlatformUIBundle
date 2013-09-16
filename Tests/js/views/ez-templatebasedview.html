@@ -8,15 +8,24 @@
 <script type="text/x-handlebars-template" id="testview-ez-template">template based view</script>
 <script type="text/javascript" src="http://yui.yahooapis.com/3.10.3/build/yui/yui.js"></script>
 <script>
-    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        }
+    } else {
+        loaderFilter = filter;
+    }
 
     YUI({
         coverage: ['ez-templatebasedview'],
-        filter: filter,
+        filter: loaderFilter,
         modules: {
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],
-                fullpath: "../../.." + ( filter == 'coverage' ? "/Tests/instrument/Resources/" : "/Resources/" ) + "public/js/views/ez-templatebasedview.js"
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
             }
         }
     }).use('test', 'ez-templatebasedview', function (Y) {

@@ -14,17 +14,27 @@
 <script type="text/javascript" src="./assets/fake-models.js"></script>
 <script type="text/javascript" src="./assets/ez-editorialapp-tests.js"></script>
 <script>
-    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        }
+    } else {
+        loaderFilter = filter;
+    }
+
     YUI({
         coverage: ['ez-editorialapp'],
-        filter: filter,
+        filter: loaderFilter,
         modules: {
             "ez-editorialapp": {
                 requires: [
                     'app', 'app-transitions', 'node-screen', 'event-tap', 'transition',
                     'fake-models'
                 ],
-                fullpath: "../../.." + ( filter == 'coverage' ? "/Tests/instrument/Resources/" : "/Resources/" ) + "public/js/apps/ez-editorialapp.js"
+                fullpath: "../../../Resources/public/js/apps/ez-editorialapp.js"
             },
 
         }

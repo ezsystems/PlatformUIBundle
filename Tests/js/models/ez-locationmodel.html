@@ -9,22 +9,32 @@
 <script type="text/javascript" src="./assets/model-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-locationmodel-tests.js"></script>
 <script>
-    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        }
+    } else {
+        loaderFilter = filter;
+    }
+
     YUI({
         coverage: ['ez-usermodel'],
-        filter: filter,
+        filter: loaderFilter,
         modules: {
             "ez-locationmodel": {
                 requires: [
                     'ez-restmodel'
                 ],
-                fullpath: "../../.." + ( filter == 'coverage' ? "/Tests/instrument/Resources/" : "/Resources/" ) + "public/js/models/ez-locationmodel.js"
+                fullpath: "../../../Resources/public/js/models/ez-locationmodel.js"
             },
             "ez-restmodel": {
                 requires: [
                     'model'
                 ],
-                fullpath: "../../.." + ( filter == 'coverage' ? "/Tests/instrument/Resources/" : "/Resources/" ) + "public/js/models/ez-restmodel.js"
+                fullpath: "../../../Resources/public/js/models/ez-restmodel.js"
             },
         }
     }).use('ez-locationmodel-tests', function (Y) {

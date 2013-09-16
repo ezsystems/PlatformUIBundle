@@ -22,19 +22,28 @@
 
 <script type="text/javascript" src="http://yui.yahooapis.com/3.10.3/build/yui/yui.js"></script>
 <script>
-    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        }
+    } else {
+        loaderFilter = filter;
+    }
 
     YUI({
         coverage: ['ez-contenteditview'],
-        filter: filter,
+        filter: loaderFilter,
         modules: {
             "ez-contenteditview": {
                 requires: ['ez-templatebasedview', 'transition', 'event-tap'],
-                fullpath: "../../.." + ( filter == 'coverage' ? "/Tests/instrument/Resources/" : "/Resources/" ) + "public/js/views/ez-contenteditview.js"
+                fullpath: "../../../Resources/public/js/views/ez-contenteditview.js"
             },
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],
-                fullpath: "../../.." + ( filter == 'coverage' ? "/Tests/instrument/Resources/" : "/Resources/" ) + "public/js/views/ez-templatebasedview.js"
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js",
             }
         }
     }).use('test', 'event-tap', 'node-event-simulate', 'ez-contenteditview', function (Y) {
