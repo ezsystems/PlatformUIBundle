@@ -48,7 +48,19 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             });
             Y.Mock.expect(formView, {
                 method: 'set',
-                args: ['contentType', contentType]
+                callCount: 2,
+                args: [Y.Mock.Value.String, Y.Mock.Value.Object],
+                run: function (attribute, value) {
+                    // fails if attribute and value are not consistent
+                    // or if we set something else than content or contentType
+                    if (
+                        ( attribute === 'content' && value !== content ) ||
+                        ( attribute === 'contentType' && value !== contentType ) ||
+                        ( attribute !== 'content' && attribute !== 'contentType' )
+                    ) {
+                        Y.Asset.fail('Expecting to set either the content or contentType on the formView');
+                    }
+                }
             });
             Y.Mock.expect(formView, {
                 method: 'addTarget',
@@ -121,23 +133,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             this.view.render();
             this.view.destroy();
             Y.Mock.verify(formView);
-        },
-
-        "Should set 'contentType' property of it's child formView once this property is changing": function () {
-            // We need another (not as in "setUp") view initialization sequence to test that
-            var view = new Y.eZ.ContentEditView({
-                container: container,
-                content: content,
-                contentType: contentType,
-                mainLocation: mainLocation,
-                owner: owner,
-            });
-
-            Y.Assert.areEqual(
-                view.get('contentType'),
-                view.get('formView').get('contentType'),
-                "'contentType' property should be the same for contentEditView and it's child contentEditFormView"
-            );
         },
 
         "Should recieve events fired on it's child formView": function () {
