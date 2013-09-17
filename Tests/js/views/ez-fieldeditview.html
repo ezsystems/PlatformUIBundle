@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Field Edit view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="fieldeditview-ez-template"></script>
+
+
+<script type="text/javascript" src="http://yui.yahooapis.com/3.12.0/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-fieldeditview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-fieldeditview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-fieldeditview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../Resources/public/js/views/ez-fieldeditview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['view', 'handlebars'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            }
+        }
+    }).use('ez-fieldeditview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
