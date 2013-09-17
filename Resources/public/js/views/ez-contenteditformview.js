@@ -88,6 +88,18 @@ YUI.add('ez-contenteditformview', function (Y) {
          */
         contentType: {
             value: {}
+        },
+
+        /**
+         * The content instance
+         *
+         * @attribute content
+         * @default {}
+         * @type {eZ.Content}
+         * @required
+         */
+        content: {
+            value: {}
         }
     }
 });
