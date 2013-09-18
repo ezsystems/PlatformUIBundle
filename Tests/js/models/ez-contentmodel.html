@@ -10,12 +10,12 @@
 <script type="text/javascript" src="./assets/ez-contentmodel-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
-            loaderFilter;
+        loaderFilter;
     if (filter == 'coverage'){
         loaderFilter = {
             searchExp : "/Resources/",
             replaceStr: "/Tests/instrument/Resources/"
-        }
+        };
     } else {
         loaderFilter = filter;
     }
