@@ -14,7 +14,7 @@ YUI.add('ez-contenttypemodel', function (Y) {
      * @namespace eZ
      * @class ContentType
      * @constructor
-     * @extends Model
+     * @extends eZ.RestModel
      */
     Y.eZ.ContentType = Y.Base.create('contentTypeModel', Y.eZ.RestModel, [], {
 
