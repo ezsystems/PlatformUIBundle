@@ -8,6 +8,7 @@
     height: 1.8em;
     margin: 1em 2em;
 }
+
 .ez-view-textlineeditview .ez-textline-input-ui:before {
     width: 2em;
     margin-left: -2em;
@@ -22,5 +23,3 @@
             box-sizing: border-box;
 
 }
-
-

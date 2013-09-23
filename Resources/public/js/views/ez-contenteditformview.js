@@ -14,7 +14,6 @@ YUI.add('ez-contenteditformview', function (Y) {
         TRANSITION_EASE_IN = 'ease-in',
         TRANSITION_EASE_OUT = 'ease-out';
 
-
     /**
      * The form view
      *
@@ -130,7 +129,6 @@ YUI.add('ez-contenteditformview', function (Y) {
                 fields = fieldSet.one(FIELDSET_FIELDS_CLASS);
 
             if (fieldSet.hasClass(COLLAPSED_CLASS)) {
-
                 fields.transition({
                     height: function(node) {
                         return node.get('scrollHeight') + 'px';
@@ -138,22 +136,17 @@ YUI.add('ez-contenteditformview', function (Y) {
                     duration: TRANSITION_DURATION,
                     easing: TRANSITION_EASE_OUT
                 });
-
             } else {
-
                 fields.transition({
                     height: 0,
                     duration: TRANSITION_DURATION,
                     easing: TRANSITION_EASE_IN
                 });
-
             }
 
             fieldSet.toggleClass(COLLAPSED_CLASS);
         }
-
     });
-
 }, {
     ATTRS: {
         /**

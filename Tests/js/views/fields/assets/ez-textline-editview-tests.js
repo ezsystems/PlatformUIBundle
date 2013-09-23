@@ -223,7 +223,6 @@ YUI.add('ez-textline-editview-tests', function (Y) {
                 Y.Assert.fail("Y.eZ.TextLineEditView is not registered under ezstring key");
             }
         }
-
     });
 
     Y.Test.Runner.setName("eZ Text Line Edit View tests");

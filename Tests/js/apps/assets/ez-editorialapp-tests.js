@@ -91,7 +91,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             app.set('loading', false);
         },
 
-
         "Should load the content, the location, the owner and the content type": function () {
             var contentMock, userMock, locationMock, typeMock,
                 resources = {

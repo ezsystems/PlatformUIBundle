@@ -1,5 +1,4 @@
 YUI.add('ez-contenteditformview-tests', function (Y) {
-
     var viewTest, fieldeditViewsTest,
         container = Y.one('.container'),
         contentType, content,
@@ -64,7 +63,6 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
 
     Y.eZ.FieldEditView.registerFieldEditView('test1', Test1FieldEditView);
     Y.eZ.FieldEditView.registerFieldEditView('test2', Test2FieldEditView);
-
 
     // trick to simulate a tap event
     // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -258,8 +256,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
 
 
             this.wait(function () {
-
-                Y.assert(parseInt(fieldGroupFields.getComputedStyle('height'), 10) == 0, "On first tap field group fields should collapse");
+                Y.assert(parseInt(fieldGroupFields.getComputedStyle('height'), 10) === 0, "On first tap field group fields should collapse");
 
                 fieldGroupName.tap({
                     target: fieldGroupName,
@@ -379,7 +376,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 });
 
                 this.wait(function () {
-                    Y.assert(parseInt(fieldGroupFields.getComputedStyle('height'), 10) > 0, "On second tap field group fields should remove collapsing");
+                    Y.assert(parseInt(fieldGroupFields.getComputedStyle('height'), 10) !== 0, "On second tap field group should get an automatic height");
                 }, 500);
 
             }, 500);
@@ -390,7 +387,4 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Content Edit Form View tests");
     Y.Test.Runner.add(viewTest);
 
-
-
 }, '0.0.1', {requires: ['test', 'event-tap', 'node-event-simulate', 'ez-contenteditformview']});
-
