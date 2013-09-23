@@ -70,14 +70,12 @@
 .ez-editorial-app h5,
 .ez-editorial-app {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-
 }
 
 .is-app-open {
     background: #000;
     background: rgba(0, 0, 0, 0.8);
 }
-
 
 .is-app-loading .ez-view-container:before {
     -moz-animation: spin 0.5s infinite linear;

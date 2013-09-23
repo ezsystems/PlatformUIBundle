@@ -6,7 +6,8 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             method: 'toJSON',
             returns: {}
         },
-        GESTURE_MAP = Y.Event._GESTURE_MAP;
+        GESTURE_MAP = Y.Event._GESTURE_MAP,
+        viewTest;
 
     content = new Y.Mock();
     contentType = new Y.Mock();
@@ -343,7 +344,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             header.simulate('mouseout');
             this.wait(function () {
                 Y.assert(
-                    header.one('.ez-technical-infos').getStyle('opacity') == 0,
+                    header.one('.ez-technical-infos').getStyle('opacity') === 0,
                     "Opacity should be 0"
                 );
             }, 300);
@@ -352,7 +353,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         "opacity of technical infos should stay at 1 if the device is a touch device": function () {
             var header;
 
-            this.view._isTouch = function () { return true };
+            this.view._isTouch = function () { return true; };
             this.view.render();
 
             header = this.view.get('container').one('header');

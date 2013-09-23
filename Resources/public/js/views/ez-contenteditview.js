@@ -225,5 +225,4 @@ YUI.add('ez-contenteditview', function (Y) {
             }
         }
     });
-
 });

@@ -1,5 +1,4 @@
 YUI.add('ez-restmodel-tests', function (Y) {
-
     var modelTest,
         Model;
 

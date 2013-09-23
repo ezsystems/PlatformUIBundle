@@ -1,4 +1,3 @@
-
 .ez-editfield-row {
     padding-left: 200px;
 }
@@ -39,11 +38,7 @@
     cursor: pointer;
 }
 
-.ez-editfield-input-area .ez-editfield-input {
-}
-
 .ez-editfield-infos .ez-editfield-error-message {
     line-height: 1.2em;
     min-height: 2.4em;
 }
-
