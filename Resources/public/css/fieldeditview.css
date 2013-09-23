@@ -1,0 +1,49 @@
+
+.ez-editfield-row {
+    padding-left: 200px;
+}
+
+.ez-editfield-infos {
+    margin-left: -200px;
+    width: 200px;
+}
+
+.ez-editfield-input-area {
+    width: 100%;
+}
+
+.ez-editfield-infos .ez-fielddefinition-name, .ez-editfield-infos .ez-editfield-error-message {
+    margin: 0;
+    padding: 0 0.2em 0 0;
+}
+
+.ez-editfield-infos label {
+    padding: 1.5em 0.5em 0 0.5em;
+    margin: 0;
+    text-align: right;
+    vertical-align: baseline;
+    display: block;
+}
+
+.ez-editfield-infos .ez-editfield-i {
+    display: inline-block;
+    width: 2ex;
+    height: 2ex;
+    line-height: 2ex;
+    text-align: center;
+    float: left;
+    margin-left: 0.5em;
+}
+
+.ez-editfield-infos .ez-editfield-i:hover {
+    cursor: pointer;
+}
+
+.ez-editfield-input-area .ez-editfield-input {
+}
+
+.ez-editfield-infos .ez-editfield-error-message {
+    line-height: 1.2em;
+    min-height: 2.4em;
+}
+

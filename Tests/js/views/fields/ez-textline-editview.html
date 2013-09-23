@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Text Line Edit view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="textlineeditview-ez-template">
+    <p class="ez-textline-input-ui">
+        <input type="text"
+            {{#if isRequired}}required{{/if}}
+            {{#if minLength}}pattern="{{minLengthPattern}}"{{/if}}
+            {{#if maxLength}}maxlength="{{maxLength}}"{{/if}}
+        >
+    </p>
+    <p class="ez-editfield-error-message"></p>
+</script>
+
+<script type="text/javascript" src="http://yui.yahooapis.com/3.12.0/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-textline-editview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-textline-editview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-textline-editview": {
+                requires: ['ez-fieldeditview'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-textline-editview.js"
+            },
+            "ez-fieldeditview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/ez-fieldeditview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['view', 'handlebars'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            }
+        }
+    }).use('ez-textline-editview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

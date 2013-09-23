@@ -10,6 +10,58 @@
     font-style: normal;
 }
 
+.ez-editorial-app {
+    font-size: 15px;
+}
+
+.ez-editorial-app input[type=text],
+.ez-editorial-app input[type=email],
+.ez-editorial-app input[type=search],
+.ez-editorial-app input[type=password],
+.ez-editorial-app textarea {
+    line-height: 1.8em;
+    height: 1.8em;
+    padding: 0 0.4em;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+         -o-box-sizing: border-box;
+            box-sizing: border-box;
+    border: 1px solid #ccc;
+    background: #fdfdfd;
+    -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+         -o-transition: all 0.30s ease-in-out;
+            transition: all 0.30s ease-in-out;
+}
+
+.ez-editorial-app input[type=text]:focus,
+.ez-editorial-app input[type=email]:focus,
+.ez-editorial-app input[type=search]:focus,
+.ez-editorial-app input[type=password]:focus,
+.ez-editorial-app textarea:focus {
+    -webkit-box-shadow: inset 0 0 6px #ccc;
+       -moz-box-shadow: inset 0 0 6px #ccc;
+        -ms-box-shadow: inset 0 0 6px #ccc;
+         -o-box-shadow: inset 0 0 6px #ccc;
+            box-shadow: inset 0 0 6px #ccc;
+    border: 1px solid #ccc;
+    outline: none;
+    background: #fff;
+}
+
+.ez-editorial-app .is-error input[type=text],
+.ez-editorial-app .is-error input[type=email],
+.ez-editorial-app .is-error input[type=search],
+.ez-editorial-app .is-error input[type=password],
+.ez-editorial-app .is-error textarea {
+    border: 1px solid #BF3E33;
+    outline: none;
+    box-shadow: none;
+    background: #FEECEA;
+}
+
 .ez-editorial-app h1,
 .ez-editorial-app h2,
 .ez-editorial-app h3,
@@ -62,14 +114,18 @@
     color: #222;
 }
 
-.ez-view-contenteditformview fieldset {
+/* content edit form view */
+.ez-view-contenteditformview .ez-fieldgroup {
+    border: 0;
+}
+
+.ez-view-contenteditformview .fieldgroup-fields {
     border: 1px solid #CCCCCC;
 }
 
 .ez-view-contenteditformview .fieldgroup-name {
     background-color: #f9f9f9;
     color: #333333;
-    font-size: 14px;
     font-weight: bold;
     text-transform: capitalize;
 }
@@ -80,4 +136,72 @@
 
 .ez-view-contenteditformview .is-collapsed .fieldgroup-name:after {
     content: "\E004";
+}
+
+/* field edit view */
+.ez-editfield-infos {
+    background: #FAFAFA;
+    border-right: 1px solid #ccc;
+    margin-left: -201px; /* 200 + 1 to compensate the border */
+}
+
+.ez-editfield-row {
+    background: #FFF;
+}
+
+.ez-editfield-infos .ez-editfield-i {
+    color: #fff;
+    border-radius: 50%;
+    background: #888;
+    font-size: 80%;
+    font-weight: bold;
+}
+
+.ez-editfield-infos .ez-fielddefinition-name {
+    font-weight: bold;
+}
+
+.ez-editfield-input-area {
+    background: #fff;
+}
+
+.ez-editfield-infos .ez-editfield-error-message {
+    font-size: 85%;
+    font-style: italic;
+    color: #BF3E33;
+    opacity: 0;
+    -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+         -o-transition: all 0.30s ease-in-out;
+            transition: all 0.30s ease-in-out;
+}
+
+.is-error .ez-editfield-infos .ez-editfield-error-message {
+    opacity: 1;
+}
+
+.is-error .ez-fielddefinition-name {
+    color: #BF3E33;
+}
+
+/* text line edit view */
+.ez-view-textlineeditview .ez-textline-input-ui:before {
+    content: "!";
+    background: #BF3E33;
+    color: #fff;
+    font-weight: bold;
+    opacity: 0;
+    border: 1px solid #BF3E33;
+    border-left: 0;
+    border-right: 0;
+    -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+         -o-transition: all 0.30s ease-in-out;
+            transition: all 0.30s ease-in-out;
+}
+
+.ez-view-textlineeditview.is-error .ez-textline-input-ui:before {
+    opacity: 1;
 }

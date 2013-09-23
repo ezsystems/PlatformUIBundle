@@ -28,6 +28,53 @@ YUI.add('ez-contenteditformview', function (Y) {
             '.fieldgroup-name': {'tap': '_toggleFieldsetCollapse'}
         },
 
+        initializer: function () {
+            this.after('contentTypeChange', this._setFieldEditViews);
+            if ( this.get('contentType') ) {
+                this._setFieldEditViews();
+            }
+        },
+
+        /**
+         * Sets the field edit views instance for the current content/contentType
+         *
+         * @method _setFieldEditViews
+         * @protected
+         */
+        _setFieldEditViews: function () {
+            var content = this.get('content'),
+                contentType = this.get('contentType'),
+                fieldDefinitions = contentType.get('fieldDefinitions'),
+                views = [];
+
+            Y.Object.each(fieldDefinitions, function (def) {
+                var EditView;
+
+                try {
+                    EditView = Y.eZ.FieldEditView.getFieldEditView(def.fieldType);
+                    views.push(
+                        new EditView({
+                            content: content,
+                            contentType: contentType,
+                            fieldDefinition: def,
+                            field: content.getField(def.identifier)
+                        })
+                    );
+                } catch (e) {
+                    console.error(e.message);
+                }
+            });
+
+            /**
+             * The field edit views instances for the current content
+             *
+             * @property _fieldEditViews
+             * @default []
+             * @type Array of {eZ.FieldEditView}
+             */
+            this._fieldEditViews = views;
+        },
+
         /**
          * Renders the form view
          *
@@ -38,7 +85,38 @@ YUI.add('ez-contenteditformview', function (Y) {
             this.get('container').setHTML(this.template({
                 fieldGroups: this.get('contentType').getFieldGroups()
             }));
+            this._renderFieldEditViews();
             return this;
+        },
+
+        /**
+         * Makes sure the field edit views are correctly destroyed
+         *
+         * @method destructor
+         */
+        destructor: function () {
+            Y.Array.each(this._fieldEditViews, function (v, idx) {
+                v.destroy();
+            });
+            this._fieldEditViews = [];
+        },
+
+        /**
+         * Renders the field edit views in the correct fieldset (field group)
+         *
+         * @protected
+         * @method _renderFieldEditViews
+         */
+        _renderFieldEditViews: function () {
+            var container = this.get('container');
+
+            Y.Array.each(this._fieldEditViews, function (view) {
+                var fieldset,
+                    def = view.get('fieldDefinition');
+
+                fieldset = container.one('.ez-fieldgroup-' + def.fieldGroup + ' .fieldgroup-fields');
+                fieldset.append(view.render().get('container'));
+            });
         },
 
         /**
