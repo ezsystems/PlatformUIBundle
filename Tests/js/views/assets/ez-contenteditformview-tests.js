@@ -1,18 +1,70 @@
 YUI.add('ez-contenteditformview-tests', function (Y) {
 
-    var container = Y.one('.container'),
-        contentType,
-        mockConf = {
-            method: 'getFieldGroups',
-            returns: [{
-                fieldGroupName: "Test Field Group",
-                fields: []
-            }]
-        },
+    var viewTest, fieldeditViewsTest,
+        container = Y.one('.container'),
+        contentType, content,
+        Test1FieldEditView, Test2FieldEditView,
         GESTURE_MAP = Y.Event._GESTURE_MAP;
 
     contentType = new Y.Mock();
-    Y.Mock.expect(contentType, mockConf);
+    content = new Y.Mock();
+    Y.Mock.expect(contentType, {
+        method: 'getFieldGroups',
+        returns: [{
+            fieldGroupName: "testfieldgroup",
+            fieldDefinitions: []
+        }]
+    });
+
+    Y.Mock.expect(contentType, {
+        method: 'get',
+        args: ['fieldDefinitions'],
+        returns: {
+            'id1': {
+                'identifier': 'id1',
+                'fieldType': 'test1',
+                'fieldGroup': 'testfieldgroup',
+            },
+            'id2': {
+                'identifier': 'id2',
+                'fieldType': 'test2',
+                'fieldGroup': 'testfieldgroup',
+            },
+            'id3': {
+                'identifier': 'id3',
+                'fieldType': 'unsupported',
+                'fieldGroup': 'testfieldgroup',
+            }
+        }
+    });
+
+    Y.Mock.expect(content, {
+        method: 'getField',
+        args: [Y.Mock.Value.String],
+        run: function (id) {
+            return {
+                'identifier': id
+            };
+        }
+    });
+
+    Test1FieldEditView = Y.Base.create('test1FieldEditView', Y.View, [], {
+        render: function () {
+            this.get('container').setContent('test1 rendered');
+            return this;
+        }
+    });
+
+    Test2FieldEditView = Y.Base.create('test2FieldEditView', Y.View, [], {
+        render: function () {
+            this.get('container').setContent('test2 rendered');
+            return this;
+        }
+    });
+
+    Y.eZ.FieldEditView.registerFieldEditView('test1', Test1FieldEditView);
+    Y.eZ.FieldEditView.registerFieldEditView('test2', Test2FieldEditView);
+
 
     // trick to simulate a tap event
     // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -34,7 +86,8 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
         setUp: function () {
             this.view = new Y.eZ.ContentEditFormView({
                 container: container,
-                contentType: contentType
+                contentType: contentType,
+                content: content
             });
         },
 
@@ -53,16 +106,25 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             };
             this.view.render();
             Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
-            Y.Assert.areNotEqual("", container.getHTML(), "View container should contain the result of the this.view");
+
+            Y.Assert.isTrue(
+                container.getContent().indexOf('test1 rendered') !== -1,
+                "Test1FieldEditView should have been rendered"
+            );
+            Y.Assert.isTrue(
+                container.getContent().indexOf('test2 rendered') !== -1,
+                "Test2FieldEditView should have been rendered"
+            );
         },
 
         "Test available variable in template": function () {
+            origTpl = this.view.template;
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
                 Y.Assert.areEqual(1, Y.Object.keys(variables).length, "The template should receive 1 variable");
                 Y.Assert.isObject(variables.fieldGroups, "fieldGroup should be available in the template and should be an object");
 
-                return "";
+                return origTpl.apply(this, arguments);
             };
             this.view.render();
         },

@@ -4,11 +4,13 @@ module.exports = function(grunt) {
     var sourceFiles = [
             "./Resources/public/js/apps/*.js", "!./Resources/public/js/apps/*-min.js",
             "./Resources/public/js/views/*.js", "!./Resources/public/js/views/*-min.js",
+            "./Resources/public/js/views/fields/*.js", "!./Resources/public/js/views/fields/*-min.js",
             "./Resources/public/js/models/*.js", "!./Resources/public/js/models/*-min.js"
         ],
         trashFiles = [
             "./Resources/public/js/apps/*-min.js",
             "./Resources/public/js/views/*-min.js",
+            "./Resources/public/js/views/fields/*-min.js",
             "./Resources/public/js/models/*-min.js"
         ];
 
@@ -61,14 +63,14 @@ module.exports = function(grunt) {
         },
         shell: {
             grover: {
-                command: 'grover --server Tests/js/*/*.html',
+                command: 'grover --server Tests/js/*/*.html Tests/js/*/*/*.html',
                 options: {
                     stdout: true,
                     stderr: true
                 }
             },
             groverCoverage: {
-                command: '  grover --server --coverage -S "?filter=coverage" Tests/js/*/*.html',
+                command: '  grover --server --coverage -S "?filter=coverage" Tests/js/*/*.html Tests/js/*/*/*.html',
                 options: {
                     stdout: true,
                     stderr: true

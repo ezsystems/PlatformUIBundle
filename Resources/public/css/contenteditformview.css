@@ -2,19 +2,22 @@
     padding: 2em;
 }
 
-.ez-view-contenteditformview fieldset {
-    margin-bottom: 20px;
-    padding-top: 0.5em;
+.ez-view-contenteditformview .ez-fieldgroup {
+    margin-bottom: 1.5em;
+    padding: 0;
 }
 
 .ez-view-contenteditformview .fieldgroup-name {
+    line-height: 1.2em;
+    padding: 0 0.2em 0 0.4em;
+    margin: 0 1em 0 1em;;
+    display: inline-block;
     cursor: pointer;
-    line-height: 18px;
-    padding: 3px 10px;
-    margin: 0;
-    width: auto;
+    position:relative;
+    top: 0.6em;
 }
 
 .ez-view-contenteditformview .fieldgroup-fields {
     overflow: hidden;
+    margin-top: -0.3em;
 }

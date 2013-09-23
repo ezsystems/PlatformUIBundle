@@ -221,7 +221,7 @@ YUI.add('ez-contenteditview', function (Y) {
              * @required
              */
             formView: {
-                value: new Y.eZ.ContentEditFormView({})
+                value: new Y.eZ.ContentEditFormView()
             }
         }
     });

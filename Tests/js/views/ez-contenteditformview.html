@@ -10,12 +10,9 @@
 <script type="text/x-handlebars-template" id="contenteditformview-ez-template">
     <form class="ez-form-content">
         {{#each fieldGroups}}
-        <fieldset>
+        <fieldset class="ez-fieldgroup-{{ fieldGroupName }}">
             <legend class="fieldgroup-name" data-icon-after="&#xe002;">{{fieldGroupName}}</legend>
-            <div class="fieldgroup-fields">
-                FieldEditViews go here...<br/>
-                and here...
-            </div>
+            <div class="fieldgroup-fields"></div>
         </fieldset>
         {{/each}}
     </form>
@@ -41,12 +38,16 @@
         filter: loaderFilter,
         modules: {
             "ez-contenteditformview": {
-                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                requires: ['ez-templatebasedview', 'ez-fieldeditview', 'transition', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-contenteditformview.js"
             },
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-fieldeditview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../Resources/public/js/views/ez-fieldeditview.js"
             }
         }
     }).use('ez-contenteditformview-tests', function (Y) {

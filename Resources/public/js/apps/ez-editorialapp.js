@@ -24,7 +24,8 @@ YUI.add('ez-editorialapp', function (Y) {
 
         views: {
             contentEditView: {
-                type: Y.eZ.ContentEditView
+                type: Y.eZ.ContentEditView,
+                preserve: true
             },
             dummyView: {
                 type: Y.View
