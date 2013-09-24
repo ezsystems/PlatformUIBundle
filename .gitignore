@@ -1,3 +1,5 @@
 /api/
 /coverage/
 *-coverage.js
+Tests/instrument/
+node_modules/
