@@ -15,11 +15,11 @@
     '@EzSystemsEditorialBundle/Resources/public/css/layout.css'
     '@EzSystemsEditorialBundle/Resources/public/css/contenteditview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/contenteditformview.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/editactionbarview.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/editpreviewview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/fieldeditview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/textline-editview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/errorview.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/editactionbar.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/editpreview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/theme.css'
 %}
 <link rel="stylesheet" href="{{ asset_url }}" />
@@ -35,8 +35,8 @@ YUI.GlobalConfig = {
         "ez-editorialapp": {
             requires: [
                 'app', 'app-transitions', 'node-screen', 'json', 'parallel',
-                'ez-capi', 'ez-contenteditview', 'ez-contenteditformview', 'ez-editactionbar', 'ez-editpreview',
-                'ez-textline-editview', 'ez-errorview',
+                'ez-capi', 'ez-contenteditview', 'ez-contenteditformview', 'ez-editactionbarview', 'ez-editpreviewview',
+                'ez-textline-editview', 'ez-errorview', 'ez-buttonactionview', 'ez-previewactionview',
                 'ez-restmodel', 'ez-contentmodel', 'ez-locationmodel', 'ez-usermodel', 'ez-contenttypemodel'
             ],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/apps/ez-editorialapp.js' %}
@@ -50,7 +50,7 @@ YUI.GlobalConfig = {
             {% endjavascripts %}
         },
         "ez-contenteditview": {
-            requires: [ 'ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbar', 'ez-editpreview',
+            requires: [ 'ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'ez-editpreviewview',
                         'transition', 'event-tap'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-contenteditview.js' %}
             fullpath: "{{ asset_url }}"
@@ -80,15 +80,27 @@ YUI.GlobalConfig = {
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         },
-        "ez-editactionbar": {
-            requires: ['ez-templatebasedview', 'transition', 'event-tap', 'event-resize'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-actionbar.js' %}
+        "ez-editactionbarview": {
+            requires: ['ez-templatebasedview', 'ez-buttonactionview', 'ez-previewactionview', 'transition', 'event-tap', 'event-resize'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-editactionbarview.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         },
-        "ez-editpreview": {
+        "ez-buttonactionview": {
+            requires: ['ez-templatebasedview'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/actions/ez-buttonactionview.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
+        "ez-previewactionview": {
+            requires: ['ez-buttonactionview'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/actions/ez-previewactionview.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
+        "ez-editpreviewview": {
             requires: ['ez-templatebasedview', 'transition', 'event-tap'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-editpreview.js' %}
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-editpreviewview.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         },
@@ -186,7 +198,7 @@ YUI().use('ez-editorialapp', function (Y) {
             </ul>
         </header>
         <div class="ez-contenteditformview-container"></div>
-        <div class="ez-editpreview-container is-hidden"></div>
+        <div class="ez-editpreviewview-container is-hidden"></div>
     </div>
     <div class="ez-editactionbar-container"></div>
 </script>
@@ -202,27 +214,34 @@ YUI().use('ez-editorialapp', function (Y) {
     </form>
 </script>
 
-<script type="text/x-handlebars-template" id="action-partial">
-    <li class="action {{#if disabled}}is-disabled{{else}}{{#if action}}action-trigger" data-action="{{ action }}{{/if}}{{/if}}" data-action-id="{{ id }}">
-        <div class="action-icon" data-icon="{{{ icon }}}"></div>
-        <div class="wrapper">
-            <label class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</label>
+<script type="text/x-handlebars-template" id="buttonactionview-ez-template">
+    <button class="action {{#if disabled}}is-disabled{{else}}{{#if actionId}}action-trigger{{/if}}{{/if}}" data-action="{{ actionId }}">
+        <div class="font-icon action-icon">
+            <p class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</p>
             {{#if hint}}
-            <div class="action-hint">{{ hint }}</div>
-            {{/if}}
-            {{#if widget}}
-            <div class="action-widget">
-                {{#each widget.buttons}}
-                <div class="action-button action-trigger" data-icon="{{{ icon }}}" data-action="{{ action }}" {{#if option}}data-action-option="{{ option }}"{{/if}} ></div>
-                {{/each}}
-            </div>
+            <p class="action-hint">{{ hint }}</p>
             {{/if}}
         </div>
-        <br class="clear" />
-    </li>
+    </button>
 </script>
 
-<script type="text/x-handlebars-template" id="editactionbar-ez-template">
+<script type="text/x-handlebars-template" id="previewactionview-ez-template">
+    <button class="action {{#if disabled}}is-disabled{{else}}{{#if action}}action-trigger{{/if}}{{/if}}" data-action="{{ actionId }}">
+        <div class="font-icon action-icon">
+            <p class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</p>
+            {{#if hint}}
+            <p class="action-hint">{{ hint }}</p>
+            {{/if}}
+            <div class="action-widget">
+                {{#each buttons}}
+                <span class="action-widget-button action-trigger font-icon" data-action="{{ ../actionId }}" {{#if option}}data-action-option="{{ option }}"{{/if}} ></span>
+                {{/each}}
+            </div>
+        </div>
+    </button>
+</script>    
+
+<script type="text/x-handlebars-template" id="editactionbarview-ez-template">
     <menu class="actions-list active-actions" tabindex="0">
         {{#each activeActionsList}}
             {{> action }}
@@ -263,15 +282,16 @@ YUI().use('ez-editorialapp', function (Y) {
     </div>
 </script>
 
-<script type="text/x-handlebars-template" id="editpreview-ez-template">
+<script type="text/x-handlebars-template" id="editpreviewview-ez-template">
     <div class="ez-preview-content" tabindex="0">
-        <label class="ez-preview-hide" data-icon-after="&#xe000;">Close preview</label>
-        <br class="clear">
-        <div class="preview-legend">Previewing: <strong>{{ legend }}</strong></div>
+        <header>
+            <button class="ez-preview-hide" data-icon-after="&#xe000;">Close preview</button>
+            <h2>Previewing: <strong>{{ legend }}</strong></h2>
+        </header>
         <div class="preview-device loading {{ mode.id }}">
             <div class="iframe-wrapper">
-            <div class="loader is-loading"></div>
-            <iframe class="preview-iframe" width="{{ mode.width }}" height="{{ mode.height }}" src={{ source }} frameBorder="0" marginwidth="0"></iframe></div>
+                <div class="loader is-loading"></div>
+                <iframe class="preview-iframe" width="{{ mode.width }}" height="{{ mode.height }}" src={{ source }} frameBorder="0" marginwidth="0"></iframe></div>
         </div>
     </div>
 </script>

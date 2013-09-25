@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Action Bar tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="editactionbarview-ez-template">
+    <menu class="actions-list active-actions" tabindex="0">
+        {{{ actions }}}
+        {{#if viewMoreActions.length}}
+        <button class="view-more-button">{{ viewMoreText }}</button>
+        <menu class="actions-list view-more-actions">
+            {{{ viewMoreActions }}}
+        </menu>
+        {{/if}}
+    </menu>
+</script>
+
+<script type="text/x-handlebars-template" id="buttonactionview-ez-template">
+    <li class="action {{#if disabled}}is-disabled{{else}}{{#if actionId}}action-trigger{{/if}}{{/if}}" data-action="{{ actionId }}">
+        <div class="font-icon action-icon">
+            <p class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</p>
+            {{#if hint}}
+            <p class="action-hint">{{ hint }}</p>
+            {{/if}}
+        </div>
+    </li>
+</script>
+
+<script type="text/x-handlebars-template" id="previewactionview-ez-template">
+    <li class="action {{#if disabled}}is-disabled{{else}}{{#if action}}action-trigger{{/if}}{{/if}}" data-action="{{ actionId }}">
+        <div class="font-icon action-icon">
+            <p class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</p>
+            {{#if hint}}
+            <p class="action-hint">{{ hint }}</p>
+            {{/if}}
+            <div class="action-widget">
+                {{#each buttons}}
+                <span class="action-widget-button action-trigger font-icon" data-action="{{ ../actionId }}" {{#if option}}data-action-option="{{ option }}"{{/if}} ></span>
+                {{/each}}
+            </div>
+        </div>
+    </li>
+</script>
+
+<script type="text/javascript" src="http://yui.yahooapis.com/3.12.0/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-editactionbarview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
+
+    YUI({
+        coverage: ['ez-editactionbarview'],
+        filter: filter,
+        modules: {
+            "ez-editactionbarview": {
+                requires: ['ez-templatebasedview', 'ez-buttonactionview', 'ez-previewactionview', 'transition', 'event-tap', 'event-resize'],
+                fullpath: "../../../Resources/public/js/views/ez-editactionbarview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            },
+            "ez-buttonactionview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../Resources/public/js/views/actions/ez-buttonactionview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            },
+            "ez-previewactionview": {
+                requires: ['ez-buttonactionview'],
+                fullpath: "../../../Resources/public/js/views/actions/ez-previewactionview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            },
+
+            "ez-templatebasedview": {
+                requires: ['view', 'handlebars'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            }
+        }
+    }).use('ez-editactionbarview-tests', function (Y) {
+                Y.Test.Runner.run();
+            });
+
+</script>
+</body>
+</html>

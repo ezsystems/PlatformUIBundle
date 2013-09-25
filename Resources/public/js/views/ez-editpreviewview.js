@@ -1,4 +1,4 @@
-YUI.add('ez-editpreview', function (Y) {
+YUI.add('ez-editpreviewview', function (Y) {
     "use strict";
     /**
      * Provides the Edit Preview class
@@ -15,11 +15,11 @@ YUI.add('ez-editpreview', function (Y) {
      * The edit action bar
      *
      * @namespace eZ
-     * @class EditPreview
+     * @class EditPreviewView
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.EditPreview = Y.Base.create('editPreview', Y.eZ.TemplateBasedView, [], {
+    Y.eZ.EditPreviewView = Y.Base.create('editPreviewView', Y.eZ.TemplateBasedView, [], {
         events: {
             '.ez-preview-hide': {'tap': 'hide'}
         },
@@ -52,12 +52,13 @@ YUI.add('ez-editpreview', function (Y) {
         render: function () {
 
             var container = this.get('container'),
+                content = this.get('content'),
                 loader;
 
             container.setHTML(this.template({
                 mode : this.modesSearch[this.get('currentModeId')],
-                source : this.get('previewSource'),
-                legend : this.get('previewLegend')
+                source : '/content/versionview/' + content.get('contentId') + '/1/eng-GB',
+                legend : content.get('name')
             }));
 
             // loader node for the iframe
@@ -135,29 +136,16 @@ YUI.add('ez-editpreview', function (Y) {
             },
 
             /**
-             * Source for the preview iframe
+             * Content which should be previewed
              *
-             * @attribute previewSoruce
-             * @type String
-             * @default "/Getting-Started"
+             * @attribute content
+             * @type Object
+             * @default {}
              * @required
              */
-            previewSource: {
-                value: "/Getting-Started"
-            },
-
-            /**
-             * Legend describing the preview page
-             *
-             * @attribute previewLegend
-             * @type String
-             * @default "Getting Started page"
-             * @required
-             */
-            previewLegend: {
-                value: "Getting Started page"
+            content: {
+                value: {}
             }
-
         }
     });
 

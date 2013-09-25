@@ -1,0 +1,53 @@
+.ez-view-editpreviewview {
+    height: 100%;
+    overflow: hidden;
+}
+
+
+.ez-preview-content header  {
+    min-height: 0;
+}
+.ez-preview-content header h2 {
+    font-size: 150%;
+    text-align: center;
+}
+
+.ez-preview-content .ez-preview-hide {
+    display: block;
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+    font-size: 90%;
+    padding: 0.5em;
+    background: none;
+    border: none;
+    outline: 0;
+}
+
+.ez-preview-content .preview-device {
+    margin: 20px auto;
+    overflow: hidden;
+}
+
+.ez-preview-content .iframe-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.ez-preview-content .preview-device.tablet .iframe-wrapper {
+    width: 769px;
+}
+
+.ez-preview-content .loader.is-loading {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1011;
+}
+
+.ez-preview-content .preview-iframe {
+    display: block;
+    margin: 0;
+}

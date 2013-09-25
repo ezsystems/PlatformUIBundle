@@ -1,46 +1,24 @@
 <!doctype html>
 <html>
 <head>
-<title>eZ Action Bar tests</title>
+<title>eZ Edit Preview View tests</title>
 </head>
 <body>
 
 <div class="container"></div>
 
-<script type="text/x-handlebars-template" id="action-partial">
-    <li class="action {{#if disabled}}is-disabled{{else}}{{#if action}}action-trigger" data-action="{{ action }}{{/if}}{{/if}}" data-action-id="{{ id }}">
-        <div class="action-icon" data-icon="{{{ icon }}}"></div>
-        <div class="wrapper">
-            <label class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</label>
-            {{#if hint}}
-            <div class="action-hint">{{ hint }}</div>
-            {{/if}}
-            {{#if widget}}
-            <div class="action-widget">
-                {{#each widget.buttons}}
-                <div class="action-button action-trigger" data-icon="{{{ icon }}}" data-action="{{ action }}" {{#if option}}data-action-option="{{ option }}"{{/if}} ></div>
-            {{/each}}
+<script type="text/x-handlebars-template" id="editpreviewview-ez-template">
+    <div class="ez-preview-content" tabindex="0">
+        <header>
+            <button class="ez-preview-hide" data-icon-after="&#xe000;">Close preview</button>
+            <h2>Previewing: <strong>{{ legend }}</strong></h2>
+        </header>
+        <div class="preview-device loading {{ mode.id }}">
+            <div class="iframe-wrapper">
+                <div class="loader is-loading"></div>
+                <iframe class="preview-iframe" width="{{ mode.width }}" height="{{ mode.height }}" src={{ source }} frameBorder="0" marginwidth="0"></iframe></div>
         </div>
-        {{/if}}
-        </div>
-        <br class="clear" />
-    </li>
-</script>
-
-<script type="text/x-handlebars-template" id="editactionbar-ez-template">
-    <menu class="actions-list active-actions" tabindex="0">
-        {{#each activeActionsList}}
-        {{> action }}
-        {{/each}}
-        {{#if viewMoreActionsList.length}}
-        <label class="view-more">View more</label>
-        <menu class="actions-list view-more-actions">
-            {{#each viewMoreActionsList}}
-            {{> action }}
-            {{/each}}
-        </menu>
-        {{/if}}
-    </menu>
+    </div>
 </script>
 
 <script type="text/javascript" src="http://yui.yahooapis.com/3.10.3/build/yui/yui.js"></script>
@@ -48,21 +26,40 @@
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
 
     YUI({
-        coverage: ['ez-actionbar'],
+        coverage: ['ez-editpreview'],
         filter: filter,
         modules: {
-            "ez-editactionbar": {
-                requires: ['ez-templatebasedview', 'transition', 'event-tap', 'event-resize'],
-                fullpath: "../../../Resources/public/js/views/ez-actionbar" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            "ez-editpreviewview": {
+                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-editpreviewview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
             },
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            },
+            "ez-contentmodel": {
+                requires: [
+                    'ez-restmodel'
+                ],
+                fullpath: "../../../Resources/public/js/models/ez-contentmodel" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            },
+            "ez-restmodel": {
+                requires: [
+                    'model'
+                ],
+                fullpath: "../../../Resources/public/js/models/ez-restmodel" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
             }
         }
-    }).use('test', 'event-tap', 'node-event-simulate', 'ez-editactionbar', function (Y) {
+    }).use('test', 'event-tap', 'node-event-simulate', 'ez-editpreviewview', 'ez-contentmodel', function (Y) {
         var viewContainer = Y.one('.container'),
-            GESTURE_MAP = Y.Event._GESTURE_MAP;
+            GESTURE_MAP = Y.Event._GESTURE_MAP,
+            IS_HIDDEN_CLASS = 'is-hidden',
+            IS_LOADING_CLASS = 'is-loading';
+            mockContent = new Y.eZ.Content({
+                contentId : 59,
+                name : "Test name"
+            });
+
 
         // trick to simulate a tap event
         // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -73,32 +70,19 @@
         Y.NodeList.importMethod(Y.Node.prototype, 'tap');
 
         viewTest = new Y.Test.Case({
-            name: "eZ Action Bar test",
+            name: "eZ Edit Preview View test",
 
             _should: {
                 ignore: {
-                    "Should fire an action once any of the action labels are tapped": (Y.UA.phantomjs) // tap trick does not work in phantomjs
+                    "Should hide itself once 'Close preview' link is tapped": (Y.UA.phantomjs) // tap trick does not work in phantomjs
                 }
             },
 
             setUp: function () {
 
-                Y.Handlebars.registerPartial("action", Y.one("#action-partial").getHTML());
-
-                this.view = new Y.eZ.EditActionBar({
+                this.view = new Y.eZ.EditPreviewView({
                     container: viewContainer,
-                    actionsList: [{
-                        id : 1,
-                        icon : "&#xe00c;",
-                        label : "Publish",
-                        action : "publish"
-                    }, {
-                        id : 2,
-                        icon : "&#xe00c;",
-                        label : "Save",
-                        action : "save"
-                    }
-                    ]
+                    content: mockContent
                 });
 
             },
@@ -125,28 +109,58 @@
                 origTpl = this.view.template;
                 this.view.template = function (variables) {
                     Y.Assert.isObject(variables, "The template should receive some variables");
-                    Y.Assert.areEqual(2, Y.Object.keys(variables).length, "The template should receive 2 variables");
-                    Y.Assert.isArray(variables.activeActionsList, "activeActionsList should be available in the template and should be an array");
-                    Y.Assert.isArray(variables.viewMoreActionsList, "viewMoreActionsList should be available in the template and should be an array");
+                    Y.Assert.areEqual(3, Y.Object.keys(variables).length, "The template should receive 3 variables");
+                    Y.Assert.isObject(variables.mode, "mode should be available in the template and should be an object");
+                    Y.Assert.isString(variables.legend, "legend should be available in the template and should be a string");
+                    Y.Assert.isString(variables.source, "source should be available in the template and should be a string");
                     return origTpl.apply(this, arguments);
                 };
                 this.view.render();
             },
 
-            "Should fire an action once any of the action labels are tapped": function () {
-                var publishActionLabel,
-                    actionFired = false;
+            "Should show itself when needed": function () {
 
-                this.view.on('action', function () {
-                    actionFired = true;
-                });
+                var previewNode = this.view.get('container').get('parentNode');
+
+                this.view.show();
+
+                Y.assert(!previewNode.hasClass(IS_HIDDEN_CLASS), "Container's parent node should NOT have certain class" );
+            },
+
+            "Should show iframe loader once it begins to load": function () {
+
+                var loader;
+
+                this.view.render();
+                loader = this.view.get('container').one('.loader');
+
+                Y.assert(loader.hasClass(IS_LOADING_CLASS), "Right after rendering, iframe loader should have certain class");
+
+            },
+
+
+            "Should hide iframe loader once it is done loading": function () {
+
+                var loader;
+
+                this.view.render();
+                loader = this.view.get('container').one('.loader');
+
+                this.wait(function () {
+                    Y.assert(!loader.hasClass(IS_LOADING_CLASS), "After iframe is done loading, iframe loader should NOT have certain class");
+                }, 800);
+            },
+
+            "Should hide itself once 'Close preview' link is tapped": function () {
+                var hidePreview, previewNode;
 
                 this.view.render();
 
-                publishActionLabel = this.view.get('container').one('[data-action="publish"]');
+                previewNode = this.view.get('container').get('parentNode');
+                hidePreview = previewNode.one('.ez-preview-hide');
 
-                publishActionLabel.tap({
-                    target: publishActionLabel,
+                hidePreview.tap({
+                    target: hidePreview,
                     type: GESTURE_MAP.start,
                     bubbles: true,            // boolean
                     cancelable: true,         // boolean
@@ -175,7 +189,7 @@
                             radiusY: 15,
                             rotationAngle: 0,
                             force: 0.5,
-                            target: publishActionLabel
+                            target: hidePreview
                         }
                     ],            // TouchList
                     targetTouches: [
@@ -191,12 +205,12 @@
                             radiusY: 15,
                             rotationAngle: 0,
                             force: 0.5,
-                            target: publishActionLabel
+                            target: hidePreview
                         }
                     ],      // TouchList
                     changedTouches: []     // TouchList
                 }, {
-                    target: publishActionLabel,
+                    target: hidePreview,
                     type: GESTURE_MAP.end,
                     bubbles: true,            // boolean
                     cancelable: true,         // boolean
@@ -225,7 +239,7 @@
                             radiusY: 15,
                             rotationAngle: 0,
                             force: 0.5,
-                            target: publishActionLabel
+                            target: hidePreview
                         }
                     ],            // TouchList
                     targetTouches: [
@@ -241,7 +255,7 @@
                             radiusY: 15,
                             rotationAngle: 0,
                             force: 0.5,
-                            target: publishActionLabel
+                            target: hidePreview
                         }
                     ],      // TouchList
                     changedTouches: [
@@ -257,17 +271,18 @@
                             radiusY: 15,
                             rotationAngle: 0,
                             force: 0.5,
-                            target: publishActionLabel
+                            target: hidePreview
                         }
                     ]
                 });
 
-                Y.assert(actionFired, "Action event should have been fired");
+                Y.assert(previewNode.hasClass(IS_HIDDEN_CLASS), "After 'Close preview' tap, certain class should be added to container's parent node");
+
             }
 
         });
 
-        Y.Test.Runner.setName("eZ Action Bar tests");
+        Y.Test.Runner.setName("eZ Edit Preview View tests");
         Y.Test.Runner.add(viewTest);
         Y.Test.Runner.run();
 

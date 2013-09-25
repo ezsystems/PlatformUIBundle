@@ -216,64 +216,111 @@
 }}
 
 /* edit action bar */
-.ez-view-editactionbar .actions-list {
+.ez-view-editactionbarview .actions-list {
     background: #333333;
 }
-.ez-view-editactionbar .actions-list li {
+.ez-view-editactionbarview .actions-list li {
     border-top: 1px solid #424242;
     border-bottom: 1px solid #242424;
 }
 
-.ez-view-editactionbar .actions-list .action-icon {
+.ez-view-editactionbarview .actions-list .action-icon {
     color: #e3e3e3;
     font-size: 22px;
     text-shadow: 0 2px 2px black;
 }
 
-.ez-view-editactionbar .actions-list .action-label{
+
+/* default action icon */
+.action .action-icon:before {
+    content: "\E001";
+}
+
+/* actual actions icons */
+.action[data-action="publish"] .action-icon:before {
+    content: "\E00c";
+}
+
+.action[data-action="save"] .action-icon:before {
+    content: "\E00e";
+}
+
+.action[data-action="discard"] .action-icon:before {
+    content: "\E000";
+}
+
+.action[data-action="collaborate"] .action-icon:before {
+    content: "\E00b";
+}
+
+.action[data-action="preview"] .action-icon:before {
+    content: "\E007";
+}
+
+.action[data-action="preview"] .action-trigger[data-action-option="desktop"]:before {
+    content: "\E008";
+}
+.action[data-action="preview"] .action-trigger[data-action-option="tablet"]:before {
+    content: "\E009";
+}
+.action[data-action="preview"] .action-trigger[data-action-option="mobile"]:before {
+    content: "\E00a";
+}
+
+
+
+/* */
+
+
+.ez-view-editactionbarview .actions-list .action-label{
     color: white;
 }
-.ez-view-editactionbar .actions-list .action:hover .action-icon, .ez-view-editactionbar .actions-list .action:hover .action-label{
+.ez-view-editactionbarview .actions-list .action:hover .action-icon, .ez-view-editactionbarview .actions-list .action:hover .action-label{
     color: #d8fcff;
 }
 
-.ez-view-editactionbar .action.is-disabled .action-icon,
-.ez-view-editactionbar .action.is-disabled .action-label,
-.ez-view-editactionbar .action.is-disabled:hover .action-icon,
-.ez-view-editactionbar .action.is-disabled:hover .action-label {
+.ez-view-editactionbarview .action.is-disabled .action-icon,
+.ez-view-editactionbarview .action.is-disabled .action-label,
+.ez-view-editactionbarview .action.is-disabled .action-hint,
+.ez-view-editactionbarview .action.is-disabled:hover .action-icon,
+.ez-view-editactionbarview .action.is-disabled:hover .action-label {
     color: grey;
 }
 
-.ez-view-editactionbar .actions-list .action-hint{
+.ez-view-editactionbarview .actions-list .action-hint{
     color: #9eaa8f;
     font-size: 12px;
 }
 
-.ez-view-editactionbar .actions-list .action-widget .action-button {
+.ez-view-editactionbarview .actions-list .action-widget .action-widget-button:before {
     border-radius: 2px;
     background: #242328;
     color: white;
     font-size: 16px;
 }
 
-.ez-view-editactionbar .actions-list .action-widget .action-button:hover {
+.ez-view-editactionbarview .actions-list .action-widget .action-widget-button:hover {
     background: #486235;
 }
-.ez-view-editactionbar .actions-list .action-widget .action-button.is-selected {
+.ez-view-editactionbarview .actions-list .action-widget .action-widget-button.is-selected {
     background: #256213;
 }
 
 
 
-.ez-view-editactionbar .actions-list .view-more {
+.ez-view-editactionbarview .actions-list .view-more-button {
     color: white;
+    background: none;
+    border: none;
+    outline: 0;
+    margin: 0;
 }
 
-.ez-view-editactionbar .actions-list .view-more:hover {
+.ez-view-editactionbarview .actions-list .view-more-button:hover {
     color: #d8fcff;
 }
 
-.ez-view-editpreview {
+.ez-view-editpreviewview {
     background: #f3f3f3;
 }
 .ez-preview-content .ez-preview-hide {
@@ -281,4 +328,26 @@
 }
 .ez-preview-content .loader.is-loading {
     background: rgba(0, 0, 0, 0.8);
+}
+
+
+.ez-preview-content .preview-device.mobile {
+    width: 322px;
+    height: 478px;
+    padding: 118px 30px 118px 31px;
+    background: transparent url('../bundles/ezsystemseditorial/img/preview-mobile.png') top left no-repeat;
+}
+
+.ez-preview-content .preview-device.tablet {
+    width: 872px;
+    height: 1263px;
+    padding: 119px 0 0 103px;
+    background: transparent url('../bundles/ezsystemseditorial/img/preview-tablet.png') top left no-repeat;
+}
+
+.ez-preview-content .preview-device.desktop {
+    width: 1100px;
+    height: 700px;
+    border: 4px solid #a6a6a6;
+    border-radius: 4px;
 }

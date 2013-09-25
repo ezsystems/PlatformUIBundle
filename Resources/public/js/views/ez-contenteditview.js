@@ -13,7 +13,7 @@ YUI.add('ez-contenteditview', function (Y) {
         ESCAPE_KEY = 27,
         FORM_CONTAINER = '.ez-contenteditformview-container',
         ACTION_BAR_CONTAINER = '.ez-editactionbar-container',
-        EDIT_PREVIEW_CONTAINER = '.ez-editpreview-container';
+        EDIT_PREVIEW_CONTAINER = '.ez-editpreviewview-container';
 
     /**
      * The content edit view
@@ -84,7 +84,10 @@ YUI.add('ez-contenteditview', function (Y) {
             }));
 
             container.one(FORM_CONTAINER).append(this.get('formView').render().get('container'));
-            container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').render().get('container'));
+
+            //Do not render action bar, but trigger window resize event, to draw responsive height version, if needed
+            container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').get('container'));
+            this.get('actionBar').handleWindowResize();
 
             //Do NOT render preview yet (to reduce loading time for main UI parts)
             container.one(EDIT_PREVIEW_CONTAINER).append(this.get('editPreview').get('container'));
@@ -263,7 +266,7 @@ YUI.add('ez-contenteditview', function (Y) {
              *
              * @attribute actionBar
              * @default {}
-             * @type {eZ.EditActionBar}
+             * @type {eZ.EditActionBarView}
              * @required
              */
             actionBar: {
@@ -279,7 +282,7 @@ YUI.add('ez-contenteditview', function (Y) {
              * @required
              */
             editPreview: {
-                value: new Y.eZ.EditPreview({})
+                value: new Y.eZ.EditPreviewView()
             }
         }
     });

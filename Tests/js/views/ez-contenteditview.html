@@ -17,7 +17,7 @@
             </ul>
         </header>
         <div class="ez-contenteditformview-container"></div>
-        <div class="ez-editpreview-container is-hidden"></div>
+        <div class="ez-editpreviewview-container is-hidden"></div>
     </div>
     <div class="ez-editactionbar-container"></div>
 </script>
@@ -42,20 +42,30 @@
         filter: loaderFilter,
         modules: {
             "ez-contenteditview": {
-                requires: ['ez-templatebasedview', 'ez-contenteditformview', 'transition', 'event-tap'],
+                requires: [ 'ez-templatebasedview', 'ez-contenteditformview',  'ez-editactionbarview', 'ez-buttonactionview',
+                            'ez-previewactionview', 'ez-editpreviewview', 'transition', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-contenteditview.js"
             },
             "ez-contenteditformview": {
                 requires: ['ez-templatebasedview', 'transition', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-contenteditformview.js"
             },
-            "ez-editactionbar": {
-                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
-                fullpath: "../../../Resources/public/js/views/ez-actionbar.js"
+            "ez-editactionbarview": {
+                requires: ['ez-templatebasedview', 'ez-buttonactionview', 'ez-previewactionview', 'transition', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-editactionbarview.js"
             },
-            "ez-editpreview": {
+            "ez-buttonactionview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../Resources/public/js/views/actions/ez-buttonactionview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            },
+            "ez-previewactionview": {
+                requires: ['ez-buttonactionview'],
+                fullpath: "../../../Resources/public/js/views/actions/ez-previewactionview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+            },
+
+            "ez-editpreviewview": {
                 requires: ['ez-templatebasedview', 'transition', 'event-tap'],
-                fullpath: "../../../Resources/public/js/views/ez-editpreview.js"
+                fullpath: "../../../Resources/public/js/views/ez-editpreviewview.js"
             },
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],

@@ -69,7 +69,7 @@
     height: 100%;
 }
 
-.ez-editpreview-container {
+.ez-editpreviewview-container {
     position: absolute;
     left: 0;
     right: 0;
@@ -81,7 +81,7 @@
     transition: left 1s;
 }
 
-.ez-editpreview-container.is-hidden {
+.ez-editpreviewview-container.is-hidden {
     left: 3000px; /* seems reasonable enough, the div is outside of the frames of contenteditview which has overflow:hidden */
     width: 1000px;
     right: auto;
