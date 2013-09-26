@@ -151,7 +151,7 @@ YUI.add('ez-editactionbarview', function (Y) {
 
             actionsList.push(action);
             this.set('actionsList', actionsList);
-            this._sortActions;
+            this._sortActions();
 
             // Updating lookup object for easy actions search
             this.actionsSearch = {};
@@ -300,13 +300,15 @@ YUI.add('ez-editactionbarview', function (Y) {
                     new Y.eZ.PreviewActionView({
                         actionId : "preview",
                         label : "Preview",
-                        buttons : [{
+                        buttons : [
+                            {
                                 option : "desktop"
                             }, {
                                 option : "tablet"
                             }, {
                                 option : "mobile"
-                            }],
+                            }
+                        ],
                         priority : 170
                     }),
 
