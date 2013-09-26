@@ -1,7 +1,9 @@
 module.exports = function(grunt) {
 
-    // Syntax "!<whatever>" means - exclude whatever from the result set
-    var sourceFiles = [
+
+    var reportDir = "./Tests/report",
+        instrumentDir = "./Tests/instrument",
+        sourceFiles = [ // Syntax "!<whatever>" means - exclude whatever from the result set
             "./Resources/public/js/apps/*.js", "!./Resources/public/js/apps/*-min.js",
             "./Resources/public/js/views/*.js", "!./Resources/public/js/views/*-min.js",
             "./Resources/public/js/models/*.js", "!./Resources/public/js/models/*-min.js"
@@ -9,7 +11,9 @@ module.exports = function(grunt) {
         trashFiles = [
             "./Resources/public/js/apps/*-min.js",
             "./Resources/public/js/views/*-min.js",
-            "./Resources/public/js/models/*-min.js"
+            "./Resources/public/js/models/*-min.js",
+            instrumentDir,
+            reportDir
         ];
 
     grunt.initConfig({
@@ -38,7 +42,7 @@ module.exports = function(grunt) {
         instrument: {
             files : sourceFiles,
             options : {
-                basePath : 'Tests/instrument/'
+                basePath : instrumentDir
             }
         },
         pkg: grunt.file.readJSON('package.json'),
@@ -68,7 +72,7 @@ module.exports = function(grunt) {
                 }
             },
             groverCoverage: {
-                command: '  grover --server --coverage -S "?filter=coverage" Tests/js/*/*.html',
+                command: '  grover --server --coverage --coverdir "' + reportDir + '" -S "?filter=coverage" Tests/js/*/*.html',
                 options: {
                     stdout: true,
                     stderr: true
@@ -94,7 +98,7 @@ module.exports = function(grunt) {
     grunt.registerTask('lint', ['jshint']);
     grunt.registerTask('ugly', ['jshint', 'uglify']);
     grunt.registerTask('test', ['jshint', 'shell:grover'] );
-    grunt.registerTask('coverage', ['jshint', 'instrument', 'shell:groverCoverage'] );
+    grunt.registerTask('coverage', ['jshint', 'clean', 'instrument', 'shell:groverCoverage'] );
     grunt.registerTask('doc', ['yuidoc'] );
     grunt.registerTask('livedoc', ['shell:livedoc'] );
 
