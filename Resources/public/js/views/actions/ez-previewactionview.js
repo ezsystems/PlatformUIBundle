@@ -42,7 +42,11 @@ YUI.add('ez-previewactionview', function (Y) {
     }, {
         ATTRS: {
             /**
+             * Buttons array which provide preview options
              *
+             * @attribute buttons
+             * @type Array
+             * @default []
              */
             buttons : {
                 value : []

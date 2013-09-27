@@ -36,18 +36,6 @@ YUI.add('ez-buttonactionview', function (Y) {
             }));
 
             return this;
-        },
-
-        /**
-         * Runs primary action
-         *
-         * @method run
-         */
-        run: function () {
-            this.fire('action', {
-                action : this.get('action'),
-                option : this.get('option')
-            });
         }
 
     }, {

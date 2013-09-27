@@ -7,6 +7,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/apps/*.js", "!./Resources/public/js/apps/*-min.js",
             "./Resources/public/js/views/*.js", "!./Resources/public/js/views/*-min.js",
             "./Resources/public/js/views/fields/*.js", "!./Resources/public/js/views/fields/*-min.js",
+            "./Resources/public/js/views/actions/*.js", "!./Resources/public/js/views/actions/*-min.js",
             "./Resources/public/js/models/*.js", "!./Resources/public/js/models/*-min.js"
         ],
         trashFiles = [
@@ -14,6 +15,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/*-min.js",
             "./Resources/public/js/views/fields/*-min.js",
             "./Resources/public/js/models/*-min.js",
+            "./Resources/public/js/views/actions/*-min.js",
             instrumentDir,
             reportDir
         ];

@@ -49,28 +49,37 @@
 <script type="text/javascript" src="http://yui.yahooapis.com/3.12.0/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-editactionbarview-tests.js"></script>
 <script>
-    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw';
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
 
     YUI({
         coverage: ['ez-editactionbarview'],
-        filter: filter,
+        filter: loaderFilter,
         modules: {
             "ez-editactionbarview": {
                 requires: ['ez-templatebasedview', 'ez-buttonactionview', 'ez-previewactionview', 'transition', 'event-tap', 'event-resize'],
-                fullpath: "../../../Resources/public/js/views/ez-editactionbarview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+                fullpath: "../../../Resources/public/js/views/ez-editactionbarview.js"
             },
             "ez-buttonactionview": {
                 requires: ['ez-templatebasedview'],
-                fullpath: "../../../Resources/public/js/views/actions/ez-buttonactionview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+                fullpath: "../../../Resources/public/js/views/actions/ez-buttonactionview.js"
             },
             "ez-previewactionview": {
                 requires: ['ez-buttonactionview'],
-                fullpath: "../../../Resources/public/js/views/actions/ez-previewactionview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+                fullpath: "../../../Resources/public/js/views/actions/ez-previewactionview.js"
             },
 
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],
-                fullpath: "../../../Resources/public/js/views/ez-templatebasedview" + ( filter != 'raw' ? "-" + filter : "" ) + ".js"
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
             }
         }
     }).use('ez-editactionbarview-tests', function (Y) {
