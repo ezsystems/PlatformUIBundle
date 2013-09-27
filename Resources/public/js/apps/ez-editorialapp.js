@@ -65,7 +65,6 @@ YUI.add('ez-editorialapp', function (Y) {
          * @param errorInfo {Object} Object containing additional info about the error
          */
         handleError: function (errorInfo) {
-            this.set('loading', true);
             this.showView('errorView',
                 {
                     retryAction: errorInfo.retryAction,
@@ -125,15 +124,19 @@ YUI.add('ez-editorialapp', function (Y) {
                     resources = content.get('resources');
 
                 if (error) {
-                    // TODO correct retryAction
                     app.fire('fatalError', {
-                        retryAction : "don't have enough info to retry anything yet",
+                        retryAction : {
+                            run : app.loadContentForEdit,
+                            args : [req, res, next],
+                            owner : app
+                        },
                         additionalInfo : {
                             errorCode : error.errorCode,
                             errorText : error.errorText
                         }
                     })
                 } else  {
+                    // TODO: Handle errors
                     // parallel loading of owner, mainLocation and contentType
                     tasks = new Y.Parallel();
 

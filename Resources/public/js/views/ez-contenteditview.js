@@ -23,7 +23,7 @@ YUI.add('ez-contenteditview', function (Y) {
      */
     Y.eZ.ContentEditView = Y.Base.create('contentEditView', Y.eZ.TemplateBasedView, [], {
         events: {
-            '.ez-view-close': {'tap': '_closeApp'},
+            '.ez-view-close': {'tap': '_closeView'},
             'header': {
                 'mouseover': '_showDetails',
                 'mouseout': '_hideDetails'
@@ -119,11 +119,11 @@ YUI.add('ez-contenteditview', function (Y) {
         /**
          * Event event handler for the close link in the content edit view
          *
-         * @method _closeApp
+         * @method _closeView
          * @protected
          * @param {Object} e event facade of the tap event
          */
-        _closeApp: function (e) {
+        _closeView: function (e) {
             /**
              * Fired when the close link is clicked
              *
@@ -143,7 +143,7 @@ YUI.add('ez-contenteditview', function (Y) {
         _handleKeyboard: function (e) {
 
             if (e.keyCode === ESCAPE_KEY) {
-                this._closeApp(e);
+                this._closeView(e);
             }
 
         },

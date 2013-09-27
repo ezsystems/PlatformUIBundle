@@ -1,7 +1,7 @@
 YUI.add('ez-errorview', function (Y) {
     "use strict";
     /**
-     * Provides the Content Edit View class
+     * Provides the Error View class
      *
      * @module ez-errorview
      */
@@ -12,7 +12,7 @@ YUI.add('ez-errorview', function (Y) {
         ESCAPE_KEY = 27;
 
     /**
-     * The content edit view
+     * The error view
      *
      * @namespace eZ
      * @class ErrorView
@@ -29,7 +29,7 @@ YUI.add('ez-errorview', function (Y) {
         },
 
         /**
-         * Renders the content edit view
+         * Renders the error view
          *
          * @method render
          * @return {eZ.ErrorView} the view itself
@@ -61,7 +61,7 @@ YUI.add('ez-errorview', function (Y) {
             /**
              * Fired when the close link is clicked
              *
-             * @event close
+             * @event closeApp
              */
             this.fire('closeApp');
             e.preventDefault();
@@ -75,12 +75,9 @@ YUI.add('ez-errorview', function (Y) {
          * @param {Object} e event facade of the tap event
          */
         _retry: function (e) {
-            /**
-             * Fired when the retry link is clicked
-             *
-             * @event retry
-             */
-            this.fire('retry');
+            var retryAction = this.get('retryAction');
+
+            retryAction.run.apply(retryAction.owner, retryAction.args);
             e.preventDefault();
         },
 
@@ -105,11 +102,17 @@ YUI.add('ez-errorview', function (Y) {
              * An object describing an action which caused the error
              *
              * @attribute retryAction
-             * @default {}
+             * @default {
+             *     retry : function () {},
+             *     arguments : []
+             * }
              * @required
              */
             retryAction: {
-                value: {}
+                value: {
+                    retry : function () {},
+                    args : []
+                }
             },
 
             /**

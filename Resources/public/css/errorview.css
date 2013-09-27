@@ -2,13 +2,13 @@
     padding: 20%;
 }
 .ez-view-errorview .ez-error-content {
-    padding: 20px;
+    padding: 2em;
     text-align: center;
 }
 
 .ez-error-content a {
     display: inline-block;
-    font-size: 20px;
-    padding: 20px;
-    margin: 10px;
+    font-size: 120%;
+    padding: 2em;
+    margin: 1em;
 }

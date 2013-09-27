@@ -72,6 +72,12 @@
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+.ez-editorial-app button {
+    background-image : none;
+    outline: 0;
+    border: none;
+}
+
 .is-app-open {
     background: #000;
     background: rgba(0, 0, 0, 0.8);
@@ -211,6 +217,12 @@
     border-radius: 10px;
 }
 
-.ez-error-content a {
+.ez-error-content button {
     background-color: #c6c6c6;
+    padding: 2em;
+    margin: 0.5em;
+}
+
+.ez-error-content button:hover {
+    background-color: #c0c0c0;
 }
