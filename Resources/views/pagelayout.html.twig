@@ -16,6 +16,8 @@
     '@EzSystemsEditorialBundle/Resources/public/css/contenteditview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/contenteditformview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/editactionbarview.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/buttonactionview.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/previewactionview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/editpreviewview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/fieldeditview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/textline-editview.css'
@@ -50,7 +52,7 @@ YUI.GlobalConfig = {
             {% endjavascripts %}
         },
         "ez-contenteditview": {
-            requires: [ 'ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'ez-editpreviewview',
+            requires: [ 'ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview',
                         'transition', 'event-tap'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-contenteditview.js' %}
             fullpath: "{{ asset_url }}"
@@ -93,7 +95,7 @@ YUI.GlobalConfig = {
             {% endjavascripts %}
         },
         "ez-previewactionview": {
-            requires: ['ez-buttonactionview'],
+            requires: ['ez-buttonactionview', 'ez-editpreviewview'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/actions/ez-previewactionview.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
@@ -202,16 +204,24 @@ YUI().use('ez-editorialapp', function (Y) {
     </div>
     <div class="ez-editactionbar-container"></div>
 </script>
-    
+
 <script type="text/x-handlebars-template" id="contenteditformview-ez-template">
     <form class="ez-form-content">
         {{#each fieldGroups}}
-            <fieldset class="ez-fieldgroup ez-fieldgroup-{{ fieldGroupName }}">
-                <legend class="fieldgroup-name font-icon">{{fieldGroupName}}</legend>
-                <div class="fieldgroup-fields"></div>
-            </fieldset>
+        <fieldset class="ez-fieldgroup ez-fieldgroup-{{ fieldGroupName }}">
+            <legend class="fieldgroup-name font-icon">{{fieldGroupName}}</legend>
+            <div class="fieldgroup-fields"></div>
+        </fieldset>
         {{/each}}
     </form>
+</script>
+
+<script type="text/x-handlebars-template" id="editactionbarview-ez-template">
+    <menu class="actions-list active-actions" tabindex="0">
+    </menu>
+    <button class="view-more-button">{{ viewMoreText }}</button>
+    <menu class="actions-list view-more-actions">
+    </menu>
 </script>
 
 <script type="text/x-handlebars-template" id="buttonactionview-ez-template">
@@ -226,35 +236,19 @@ YUI().use('ez-editorialapp', function (Y) {
 </script>
 
 <script type="text/x-handlebars-template" id="previewactionview-ez-template">
-    <button class="action {{#if disabled}}is-disabled{{else}}{{#if action}}action-trigger{{/if}}{{/if}}" data-action="{{ actionId }}">
+    <div class="action {{#if disabled}}is-disabled{{/if}}" data-action="{{ actionId }}">
         <div class="font-icon action-icon">
             <p class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</p>
             {{#if hint}}
             <p class="action-hint">{{ hint }}</p>
             {{/if}}
-            <div class="action-widget">
+            <menu class="preview-modes">
                 {{#each buttons}}
-                <span class="action-widget-button action-trigger font-icon" data-action="{{ ../actionId }}" {{#if option}}data-action-option="{{ option }}"{{/if}} ></span>
-                {{/each}}
-            </div>
-        </div>
-    </button>
-</script>    
-
-<script type="text/x-handlebars-template" id="editactionbarview-ez-template">
-    <menu class="actions-list active-actions" tabindex="0">
-        {{#each activeActionsList}}
-            {{> action }}
-        {{/each}}
-        {{#if viewMoreActionsList.length}}
-            <label class="view-more">View more</label>
-            <menu class="actions-list view-more-actions">
-                {{#each viewMoreActionsList}}
-                {{> action }}
+                <span class="preview-mode-button action-trigger font-icon" data-action="{{ ../actionId }}" {{#if option}}data-action-option="{{ option }}"{{/if}} ></span>
                 {{/each}}
             </menu>
-        {{/if}}
-    </menu>
+        </div>
+    </div>
 </script>
 
 <script type="text/x-handlebars-template" id="textlineeditview-ez-template">
@@ -281,7 +275,7 @@ YUI().use('ez-editorialapp', function (Y) {
         </div>
     </div>
 </script>
-
+    
 <script type="text/x-handlebars-template" id="editpreviewview-ez-template">
     <div class="ez-preview-content" tabindex="0">
         <header>
@@ -290,8 +284,9 @@ YUI().use('ez-editorialapp', function (Y) {
         </header>
         <div class="preview-device loading {{ mode.id }}">
             <div class="iframe-wrapper">
-                <div class="loader is-loading"></div>
-                <iframe class="preview-iframe" width="{{ mode.width }}" height="{{ mode.height }}" src={{ source }} frameBorder="0" marginwidth="0"></iframe></div>
+            <div class="loader is-loading"></div>
+            <iframe class="preview-iframe" width="{{ mode.width }}" height="{{ mode.height }}" src="{{ source }}" frameBorder="0" marginwidth="0"></iframe>
+            </div>
         </div>
     </div>
 </script>

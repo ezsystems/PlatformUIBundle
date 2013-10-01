@@ -1,12 +1,35 @@
+.ez-editpreviewview-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 1010;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    transition: transform 0.4s;
+    -webkit-transition: -webkit-transform 0.4s;
+    -webkit-transform-style: preserve-3d /* increasing performance on mobile devices */
+}
+
+.ez-editpreviewview-container.is-hidden {
+    width: 1000px;
+    right: auto;
+    -webkit-transform: translateX(200%);
+    transform: translateX(200%);
+    transition: transform 0.4s;
+    -webkit-transition: -webkit-transform 0.4s;
+    -webkit-transform-style: preserve-3d /* increasing performance on mobile devices */
+}
+
 .ez-view-editpreviewview {
     height: 100%;
     overflow: hidden;
 }
 
-
 .ez-preview-content header  {
     min-height: 0;
 }
+
 .ez-preview-content header h2 {
     font-size: 150%;
     text-align: center;
@@ -21,7 +44,6 @@
     padding: 0.5em;
     background: none;
     border: none;
-    outline: 0;
 }
 
 .ez-preview-content .preview-device {

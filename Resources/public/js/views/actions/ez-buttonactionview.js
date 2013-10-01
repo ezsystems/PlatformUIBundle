@@ -17,7 +17,11 @@ YUI.add('ez-buttonactionview', function (Y) {
      * @extends Y.TemplateBasedView
      */
     Y.eZ.ButtonActionView = Y.Base.create('buttonActionView',  Y.eZ.TemplateBasedView, [], {
-
+        events: {
+            '.action-trigger': {
+                'tap': '_handleActionClick'
+            }
+        },
 
         /**
          * Renders the action
@@ -36,6 +40,20 @@ YUI.add('ez-buttonactionview', function (Y) {
             }));
 
             return this;
+        },
+
+        /**
+         * Handles tap on the view's action button
+         *
+         * _handleActionClick
+         * @param e {Object} event facade
+         * @private
+         */
+        _handleActionClick: function (e) {
+            console.log(e);
+
+            var actionId = this.get('actionId');
+            this.fire('action' + actionId.charAt(0).toUpperCase() + actionId.slice(1));
         }
 
     }, {
@@ -66,18 +84,6 @@ YUI.add('ez-buttonactionview', function (Y) {
             },
 
             /**
-             * The secondary option of the action (e.g. 'mobile' option for 'preview' action)
-             *
-             * @attribute option
-             * @default ''
-             * @type string
-             * @required
-             */
-            option: {
-                value: ''
-            },
-
-            /**
              * Action label
              *
              * @attribute label
@@ -95,19 +101,33 @@ YUI.add('ez-buttonactionview', function (Y) {
              *
              * @attribute hint
              * @type string
+             * @default ''
              */
             hint: {
+                value: ''
             },
 
             /**
-             * Weather or not the action button is disabled
+             * Whether or not the action button is disabled
              *
              * @attribute disabled
              * @default false
              * @type boolean
              */
             disabled: {
-               value: false
+                value: false
+            },
+
+            /**
+             * Content which is currently loaded in content edit view
+             *
+             * @attribute content
+             * @type Y.eZ.Content
+             * @default {}
+             * @required
+             */
+            content: {
+                value: {}
             }
         }
     });

@@ -1,0 +1,29 @@
+.ez-view-editactionbarview .actions-list .action {
+    position: relative;
+    padding-left: 1em;
+    padding-top: 1em;
+    cursor: pointer;
+    background: none;
+    border: none;
+    display: block;
+    text-align: left;
+}
+
+.ez-view-editactionbarview .action p {
+    padding: 0 3em;
+    margin: 0;
+}
+
+.ez-view-editactionbarview .action .action-icon:before {
+    position: absolute;
+}
+
+.ez-view-editactionbarview .actions-list .action-label {
+    display: block;
+    margin-top: 2px;
+    cursor: pointer;
+}
+
+.ez-view-editactionbarview .actions-list .action-label.with-hint {
+    margin-top: -5px;
+}

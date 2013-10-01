@@ -61,33 +61,10 @@
     content: "";
 }
 
-.ez-editactionbar-container {
+.ez-view-contenteditview .ez-editactionbar-container {
     position: absolute;
-    right: 0px;
-    top: 0px;
+    right: 0;
+    top: 0;
     width: 230px;
     height: 100%;
 }
-
-.ez-editpreviewview-container {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 1010;
-    -moz-transition: left 1s;
-    -webkit-transition: left 1s;
-    -o-transition: left 1s;
-    transition: left 1s;
-}
-
-.ez-editpreviewview-container.is-hidden {
-    left: 3000px; /* seems reasonable enough, the div is outside of the frames of contenteditview which has overflow:hidden */
-    width: 1000px;
-    right: auto;
-    -moz-transition: left 1s;
-    -webkit-transition: left 1s;
-    -o-transition: left 1s;
-    transition: left 1s;
-}
-

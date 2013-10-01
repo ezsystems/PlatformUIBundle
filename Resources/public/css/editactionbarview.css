@@ -4,48 +4,15 @@
     margin: 0;
     padding: 0;
 }
-.ez-view-editactionbarview .actions-list .action {
-    position: relative;
-    padding: 15px 20px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    outline: 0;
-    display: block;
-    text-align: left;
+
+.ez-view-editactionbarview .view-more-button {
+    margin: 0.5em;
+    padding: 0.5em 2em;
+    visibility: hidden;
 }
 
-.ez-view-editactionbarview .action p {
-    padding: 0 30px;
-    margin: 0;
-}
-
-.ez-view-editactionbarview .action .action-icon:before {
-    position: absolute;
-}
-
-.ez-view-editactionbarview .actions-list .action-label{
-    display: block;
-    margin: 2px 0 0 0;
-    cursor: pointer;
-}
-.ez-view-editactionbarview .actions-list .action-label.with-hint{
-    margin-top: -5px;
-}
-
-.ez-view-editactionbarview .actions-list .action-widget {
-    padding: 20px 0 10px 30px;
-}
-
-.ez-view-editactionbarview .actions-list .action-widget .action-widget-button{
-    padding: 8px;
-    margin-right: 5px;
-    margin-top: 10px;
-}
-
-.ez-view-editactionbarview .actions-list .view-more-button {
-    padding: 5px 20px;
-    cursor: pointer;
+.ez-view-editactionbarview .view-more-button.is-shown {
+    visibility: visible;
 }
 
 .ez-view-editactionbarview .view-more-actions {
@@ -56,6 +23,7 @@
     z-index: 1015;
     display: none;
 }
+
 .ez-view-editactionbarview .view-more-actions.is-shown {
     display: block;
 }

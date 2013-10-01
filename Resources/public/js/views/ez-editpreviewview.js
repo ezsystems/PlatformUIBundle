@@ -1,9 +1,9 @@
 YUI.add('ez-editpreviewview', function (Y) {
     "use strict";
     /**
-     * Provides the Edit Preview class
+     * Provides the Edit Preview View class
      *
-     * @module ez-editpreview
+     * @module ez-editpreviewview
      */
 
     Y.namespace('eZ');
@@ -21,26 +21,7 @@ YUI.add('ez-editpreviewview', function (Y) {
      */
     Y.eZ.EditPreviewView = Y.Base.create('editPreviewView', Y.eZ.TemplateBasedView, [], {
         events: {
-            '.ez-preview-hide': {'tap': 'hide'}
-        },
-
-        /**
-         * Initializer is called upon view's init
-         * Creating modes lookup object
-         *
-         * @method initializer
-         */
-        initializer: function () {
-            var previewModes = this.get('previewModes'),
-                index, length;
-
-            // Creating lookup object for easy preview modes search
-            this.modesSearch = {};
-
-            for (index = 0, length = previewModes.length; index < length; index++) {
-                this.modesSearch[previewModes[index].id] = previewModes[index];
-            }
-
+            '.ez-preview-hide': {'tap': 'editPreviewHide'}
         },
 
         /**
@@ -56,7 +37,7 @@ YUI.add('ez-editpreviewview', function (Y) {
                 loader;
 
             container.setHTML(this.template({
-                mode : this.modesSearch[this.get('currentModeId')],
+                mode : this.get('previewModes')[this.get('currentModeId')],
                 source : '/content/versionview/' + content.get('contentId') + '/1/eng-GB',
                 legend : content.get('name')
             }));
@@ -91,7 +72,7 @@ YUI.add('ez-editpreviewview', function (Y) {
          * @method hide
          * @param {Object} e event facade of the tap event
          */
-        hide: function (e) {
+        editPreviewHide: function (e) {
             e.preventDefault();
             this.get('container').get('parentNode').addClass(IS_HIDDEN_CLASS);
             this.fire('editPreviewHide');
@@ -108,21 +89,23 @@ YUI.add('ez-editpreviewview', function (Y) {
              * @required
              */
             previewModes: {
-                value: [
-                    {
+                value: {
+                    "desktop" : {
                         id: "desktop",
                         width: 1100,
                         height: 700
-                    }, {
+                    },
+                    "tablet" : {
                         id: "tablet",
                         width: 769, /* preview-tablet.png image has such a strange dimensions */
                         height: 1025 /* preview-tablet.png image has such a strange dimensions */
-                    }, {
+                    },
+                    "mobile" : {
                         id: "mobile",
                         width: 321, /* preview-mobile.png image has such a strange dimensions */
                         height: 481 /* preview-mobile.png image has such a strange dimensions */
                     }
-                ]
+                }
             },
 
             /**
@@ -140,7 +123,7 @@ YUI.add('ez-editpreviewview', function (Y) {
              * Content which should be previewed
              *
              * @attribute content
-             * @type Object
+             * @type Y.eZ.Content
              * @default {}
              * @required
              */

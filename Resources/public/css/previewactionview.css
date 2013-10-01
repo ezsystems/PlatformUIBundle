@@ -1,0 +1,12 @@
+.ez-view-editactionbarview .actions-list .preview-modes {
+    margin: 0.5em 0;
+    padding: 0.5em 0 0 2em;
+}
+
+.ez-view-editactionbarview .actions-list .preview-modes .preview-mode-button {
+    padding: 0.3em;
+    margin-right: 0.1em;
+    margin-top: 1em;
+    background: none;
+    border: none;
+}

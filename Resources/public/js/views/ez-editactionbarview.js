@@ -8,9 +8,9 @@ YUI.add('ez-editactionbarview', function (Y) {
 
     Y.namespace('eZ');
 
-    var VIEW_MORE_HEIGHT = 30,
-        IS_SHOWN_CLASS = "is-shown",
-        IS_SELECTED_CLASS = "is-selected";
+    var IS_SHOWN_CLASS = "is-shown",
+        ACTIVE_MENU_CLASS = ".active-actions",
+        VIEW_MORE_MENU_CLASS = ".view-more-actions";
 
     /**
      * The edit action bar
@@ -22,9 +22,6 @@ YUI.add('ez-editactionbarview', function (Y) {
      */
     Y.eZ.EditActionBarView = Y.Base.create('editActionBarView', Y.eZ.TemplateBasedView, [], {
         events: {
-            '.action-trigger': {
-                'tap': '_handleActionClick'
-            },
             '.view-more-button': {
                 'tap': '_toggleViewMore'
             }
@@ -37,145 +34,92 @@ YUI.add('ez-editactionbarview', function (Y) {
          * @method initializer
          */
         initializer: function () {
-            var actionsList, index, length;
-
             this._sortActions();
-            actionsList = this.get('actionsList');
-
-            // Creating lookup object for easy actions search
-            this.actionsSearch = {};
-            for (index = 0, length = actionsList.length; index < length; index++) {
-                this.actionsSearch[actionsList[index].get('actionId')] = actionsList[index];
-            }
-
-            // By default all the actions are visible
-            this.set('activeActionsList', actionsList);
-
-            Y.on("windowresize", Y.bind(this.handleWindowResize, this));
-            this.on('*:editPreviewHide', this.handleEditPreviewHide, this);
-
+            Y.on("windowresize", Y.bind(this.render, this));
         },
 
         /**
-         * Renders the edit action bar
+         * Renders the edit action bar.
+         * Height responsive - we are filling-in main (ACTIVE_MENU_CLASS) menu, until container becomes higher than the screen bounds,
+         * after that we are filling hidden (VIEW_MORE_MENU_CLASS) menu.
          *
          * @method render
          * @return {eZ.EditActionBarView} the view itself
          */
         render: function () {
             var container = this.get('container'),
-                actions = Y.Node.create('<div></div>'),
-                viewMoreActions = Y.Node.create('<div></div>');
-
-            Y.Array.each(this.get('activeActionsList'), function(actionView){
-                actions.append(actionView.render().get('container'));
-            });
-
-            Y.Array.each(this.get('viewMoreActionsList'), function(actionView){
-                viewMoreActions.append(actionView.render().get('container'));
-            });
+                screenHeight = container.get('winHeight'),
+                viewMoreTrigger,
+                barHeight,
+                showViewMore = false;
 
             container.setHTML(this.template({
-                actions : actions.getHTML(),
-                viewMoreActions : viewMoreActions.getHTML(),
                 viewMoreText : this.get('viewMoreText')
             }));
 
-            return this;
-        },
+            viewMoreTrigger = container.one('.view-more-button');
+            viewMoreTrigger.removeClass(IS_SHOWN_CLASS);
 
-        /**
-         * Makes changes to UI once editPreview is hidden (removes preview selection)
-         *
-         * @method render
-         * @return {eZ.EditActionBar} the view itself
-         */
-        handleEditPreviewHide : function () {
-            this.get('container').all('[data-action="preview"]').removeClass(IS_SELECTED_CLASS);
-        },
+            Y.Array.each(this.get('actionsList'), function(actionView){
 
-        /**
-         * Event event handler for window resize
-         * (Public, until we can find a way to fire it after ACTUAL rendering of the EditActionBar)
-         *
-         * @method handleWindowResize
-         * @param {Object} e event facade of the resize event
-         */
-        handleWindowResize: function (e) {
-            var container = this.get('container'),
-                barHeight,
-                screenHeight,
-                actionNodesList,
-                barDynamicHeight = 0,
-                activeActionsList = [],
-                viewMoreActionsList = [];
+                if (!showViewMore) {
 
-            //Rendering the full version of edit action bar
-            this._renderFull();
+                    container.one(ACTIVE_MENU_CLASS).append(actionView.render().get('container'));
+                    barHeight = container.get('scrollHeight');
 
-            barHeight = container.get('scrollHeight');
-            screenHeight = container.get('winHeight');
+                    if (barHeight > screenHeight) {
+                        // set a flag, that .view-more-actions menu should be filled from now on, until the end of the actionsList
+                        showViewMore = true;
+                        viewMoreTrigger.addClass(IS_SHOWN_CLASS);
 
-            if (barHeight > screenHeight) {
-                actionNodesList = container.all('.action');
-
-                actionNodesList.each(function (actionNode) {
-                    barDynamicHeight += actionNode.get('scrollHeight');
-
-                    if (barDynamicHeight + VIEW_MORE_HEIGHT < screenHeight) {
-                        activeActionsList.push(this.actionsSearch[actionNode.getAttribute('data-action')]);
-                    } else {
-                        viewMoreActionsList.push(this.actionsSearch[actionNode.getAttribute('data-action')]);
+                        // move the last actionView into .view-more-actions menu
+                        actionView.get('container').remove();
+                        container.one(VIEW_MORE_MENU_CLASS).append(actionView.render().get('container'));
                     }
 
-                }, this);
+                } else {
+                    container.one(VIEW_MORE_MENU_CLASS).prepend(actionView.render().get('container'));
+                }
 
-                this.set('activeActionsList', activeActionsList);
-                this.set('viewMoreActionsList', viewMoreActionsList);
+            });
 
-                // Rendering "height responsive" version
-                this.render();
-
-            }
+            return this;
         },
 
         /**
          * Add the action to the main actions list
          *
          * @method addAction
-         * @param action {Object} Instance of one of the ...ActionView objects (e.g.  new Y.eZ.ButtonActionView({...}) )
+         * @param action {eZ.ButtonActionView} instance of an action view
          */
         addAction: function (action) {
-            var actionsList = this.get('actionsList'),
-                index, length;
+            var actionsList = this.get('actionsList');
 
             actionsList.push(action);
             this.set('actionsList', actionsList);
             this._sortActions();
-
-            // Updating lookup object for easy actions search
-            this.actionsSearch = {};
-            for (index = 0, length = actionsList.length; index < length; index++) {
-                this.actionsSearch[actionsList[index].get('actionId')] = actionsList[index];
-            }
-
         },
-
 
         /**
          * Remove an action from the main actions list
          *
          * @method removeAction
          * @param actionId {String} Unique action identifier
+         * @return {boolean} True, if action was found and removed, false otherwise
          */
         removeAction: function (actionId) {
             var actionsList = this.get('actionsList'),
-                targetAction = this.actionsSearch[actionId],
-                index = actionsList.indexOf(targetAction);
+                index,
+                length;
 
-            if (index > -1) {
-                actionsList.splice(index, 1);
+            for (index = 0, length = actionsList.length; index < length; index++) {
+                if (actionsList[index].get('actionId') == actionId) {
+                    actionsList.splice(index, 1);
+                    return true;
+                }
             }
+
+            return false;
         },
 
         /**
@@ -187,55 +131,10 @@ YUI.add('ez-editactionbarview', function (Y) {
         _sortActions: function () {
             var actionsList = this.get('actionsList');
 
-            actionsList.sort(function(a,b) {
+            actionsList.sort(function (a, b) {
                 return b.get('priority') - a.get('priority');
             });
             this.set('actionsList', actionsList);
-        },
-
-        /**
-         * Renders the full version of edit action bar (no actions are hidden)
-         * Necessary when we want to recalculate heights after resize
-         *
-         * @method _renderFull
-         * @protected
-         * @return {eZ.EditActionBarView} the view itself
-         */
-        _renderFull: function () {
-            var actions = Y.Node.create('<div></div>');
-
-            Y.Array.each(this.get('actionsList'), function(actionView){
-                actions.append(actionView.render().get('container'));
-            });
-
-            this.get('container').setHTML(this.template({
-                actions : actions.getHTML(),
-                viewMoreText : this.get('viewMoreText')
-            }));
-        },
-
-        /**
-         * Event event handler for clicks on any of the action-trigger nodes.
-         *
-         * @method _handleActionClick
-         * @protected
-         * @param {Object} e event facade of the click event
-         */
-        _handleActionClick: function (e) {
-            var actionTrigger = e.currentTarget,
-                action = actionTrigger.getAttribute('data-action'),
-                option = actionTrigger.getAttribute('data-action-option');
-
-            this.fire('action', {
-                action: action,
-                option: option
-            });
-
-            //changes to UI
-            if (action == "preview") {
-                this.get('container').all('[data-action="preview"]').removeClass(IS_SELECTED_CLASS);
-                actionTrigger.addClass(IS_SELECTED_CLASS);
-            }
         },
 
         /**
@@ -265,7 +164,7 @@ YUI.add('ez-editactionbarview', function (Y) {
              * The actions list
              *
              * @attribute actionsList
-             * @default []
+             * @default Preset array on ActionViews
              * @required
              */
 
@@ -290,16 +189,10 @@ YUI.add('ez-editactionbarview', function (Y) {
                         label : "Discard changes",
                         priority : 180
                     }),
-                    new Y.eZ.ButtonActionView({
-                        actionId : "collaborate",
-                        label : "Collaborate",
-                        hint : "Jill is a contributor",
-                        priority : 160
-                    }),
-
                     new Y.eZ.PreviewActionView({
                         actionId : "preview",
                         label : "Preview",
+                        priority : 170,
                         buttons : [
                             {
                                 option : "desktop"
@@ -308,58 +201,9 @@ YUI.add('ez-editactionbarview', function (Y) {
                             }, {
                                 option : "mobile"
                             }
-                        ],
-                        priority : 170
-                    }),
-
-                    new Y.eZ.ButtonActionView({
-                        actionId : "collaborate1",
-                        label : "Collaborate",
-                        hint : "Jill is a contributor",
-                        priority : 100
-                    }),
-                    new Y.eZ.ButtonActionView({
-                        actionId : "collaborate2",
-                        label : "Collaborate",
-                        hint : "Jill is a contributor",
-                        priority : 100
-                    }),
-                    new Y.eZ.ButtonActionView({
-                        actionId : "collaborate3",
-                        label : "Collaborate",
-                        hint : "Jill is a contributor",
-                        priority : 100
-                    }),
-                    new Y.eZ.ButtonActionView({
-                        actionId : "collaborate4",
-                        label : "Collaborate",
-                        hint : "Jill is a contributor",
-                        priority : 100
+                        ]
                     })
-
                 ]
-            },
-
-            /**
-             * The active actions list (which should be rendered at any time)
-             *
-             * @attribute activeActionsList
-             * @default []
-             * @required
-             */
-            activeActionsList: {
-                value: []
-            },
-
-            /**
-             * The list of actions which should be hidden until "view more" link is clicked
-             *
-             * @attribute viewMoreActionsList
-             * @default []
-             * @required
-             */
-            viewMoreActionsList: {
-                value: []
             },
 
             /**
@@ -380,8 +224,26 @@ YUI.add('ez-editactionbarview', function (Y) {
              */
             viewLessText: {
                 value: "View less"
-            }
+            },
 
+            /**
+             * Content which is currently loaded in content edit view
+             *
+             * @attribute content
+             * @type Y.eZ.Content
+             * @default {}
+             * @required
+             */
+            content: {
+                value: {},
+                setter: function (val, name) {
+                    Y.Array.each(this.get('actionsList'), function(actionView){
+                        actionView.set('content', val);
+                    });
+
+                    return val;
+                }
+            }
 
         }
     });

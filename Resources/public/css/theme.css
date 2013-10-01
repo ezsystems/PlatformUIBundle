@@ -124,9 +124,11 @@
 .ez-view-contenteditformview .fieldgroup-name {
     background-color: #f9f9f9;
     color: #333333;
+    font-size: 100%;
     font-weight: bold;
     text-transform: capitalize;
 }
+
 
 .ez-view-contenteditformview .fieldgroup-name:after {
     content: "\E002";
@@ -219,6 +221,7 @@
 .ez-view-editactionbarview .actions-list {
     background: #333333;
 }
+
 .ez-view-editactionbarview .actions-list li {
     border-top: 1px solid #424242;
     border-bottom: 1px solid #242424;
@@ -226,10 +229,9 @@
 
 .ez-view-editactionbarview .actions-list .action-icon {
     color: #e3e3e3;
-    font-size: 22px;
+    font-size: 140%;
     text-shadow: 0 2px 2px black;
 }
-
 
 /* default action icon */
 .action .action-icon:before {
@@ -260,22 +262,21 @@
 .action[data-action="preview"] .action-trigger[data-action-option="desktop"]:before {
     content: "\E008";
 }
+
 .action[data-action="preview"] .action-trigger[data-action-option="tablet"]:before {
     content: "\E009";
 }
+
 .action[data-action="preview"] .action-trigger[data-action-option="mobile"]:before {
     content: "\E00a";
 }
 
-
-
-/* */
-
-
-.ez-view-editactionbarview .actions-list .action-label{
-    color: white;
+/* action bar */
+.ez-view-editactionbarview .actions-list .action-label {
+    color: #fff;
 }
-.ez-view-editactionbarview .actions-list .action:hover .action-icon, .ez-view-editactionbarview .actions-list .action:hover .action-label{
+
+.ez-view-editactionbarview .actions-list .action:hover .action-icon, .ez-view-editactionbarview .actions-list .action:hover .action-label {
     color: #d8fcff;
 }
 
@@ -284,25 +285,26 @@
 .ez-view-editactionbarview .action.is-disabled .action-hint,
 .ez-view-editactionbarview .action.is-disabled:hover .action-icon,
 .ez-view-editactionbarview .action.is-disabled:hover .action-label {
-    color: grey;
+    color: #808080;
 }
 
-.ez-view-editactionbarview .actions-list .action-hint{
+.ez-view-editactionbarview .actions-list .action-hint {
     color: #9eaa8f;
-    font-size: 12px;
+    font-size: 60%;
 }
 
-.ez-view-editactionbarview .actions-list .action-widget .action-widget-button:before {
+.ez-view-editactionbarview .actions-list .preview-modes .preview-mode-button:before {
     border-radius: 2px;
     background: #242328;
     color: white;
-    font-size: 16px;
+    font-size: 80%;
 }
 
-.ez-view-editactionbarview .actions-list .action-widget .action-widget-button:hover {
+.ez-view-editactionbarview .actions-list .preview-modes .preview-mode-button:hover {
     background: #486235;
 }
-.ez-view-editactionbarview .actions-list .action-widget .action-widget-button.is-selected {
+
+.ez-view-editactionbarview .actions-list .preview-modes .preview-mode-button.is-selected {
     background: #256213;
 }
 
@@ -312,7 +314,6 @@
     color: white;
     background: none;
     border: none;
-    outline: 0;
     margin: 0;
 }
 
@@ -323,13 +324,14 @@
 .ez-view-editpreviewview {
     background: #f3f3f3;
 }
+
 .ez-preview-content .ez-preview-hide {
     color: #555;
 }
+
 .ez-preview-content .loader.is-loading {
     background: rgba(0, 0, 0, 0.8);
 }
-
 
 .ez-preview-content .preview-device.mobile {
     width: 322px;

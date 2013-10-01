@@ -12,8 +12,7 @@ YUI.add('ez-contenteditview', function (Y) {
         CONTENT_SEL = '.ez-main-content',
         ESCAPE_KEY = 27,
         FORM_CONTAINER = '.ez-contenteditformview-container',
-        ACTION_BAR_CONTAINER = '.ez-editactionbar-container',
-        EDIT_PREVIEW_CONTAINER = '.ez-editpreviewview-container';
+        ACTION_BAR_CONTAINER = '.ez-editactionbar-container';
 
     /**
      * The content edit view
@@ -46,10 +45,6 @@ YUI.add('ez-contenteditview', function (Y) {
 
             this.get('formView').addTarget(this);
             this.get('actionBar').addTarget(this);
-            this.get('editPreview').addTarget(this);
-
-            // keeping in mind, that only one-way targeting is possible
-            this.get('editPreview').addTarget(this.get('actionBar'));
 
             this.on('*:action', this._dispatchAction, this);
         },
@@ -63,7 +58,6 @@ YUI.add('ez-contenteditview', function (Y) {
         destructor: function () {
             this.get('formView').destroy();
             this.get('actionBar').destroy();
-            this.get('editPreview').destroy();
         },
 
         /**
@@ -85,32 +79,12 @@ YUI.add('ez-contenteditview', function (Y) {
 
             container.one(FORM_CONTAINER).append(this.get('formView').render().get('container'));
 
-            //Do not render action bar, but trigger window resize event, to draw responsive height version, if needed
+            // Do not render action bar here, but window resize event will be triggered from app
+            // after content edit view loading, (to draw responsive height version)
             container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').get('container'));
-            this.get('actionBar').handleWindowResize();
-
-            //Do NOT render preview yet (to reduce loading time for main UI parts)
-            container.one(EDIT_PREVIEW_CONTAINER).append(this.get('editPreview').get('container'));
 
             return this;
         },
-
-        /**
-         * Dispatching actions coming from editActionBar, and wherever else
-         *
-         * @method _dispatchAction
-         * @protected
-         * @param e {Object} object sent along with the the action
-         */
-        _dispatchAction: function (e){
-
-            if (e.action == "preview"){
-                this.get('editPreview').set('currentModeId', e.option);
-                this.get('editPreview').show();
-            }
-
-        },
-
 
         /**
          * Set current input focus on the view
@@ -208,6 +182,7 @@ YUI.add('ez-contenteditview', function (Y) {
                 value: {},
                 setter: function (val, name) {
                     this.get('formView').set('content', val);
+                    this.get('actionBar').set('content', val);
                     return val;
                 }
             },
@@ -253,7 +228,7 @@ YUI.add('ez-contenteditview', function (Y) {
              * The ContentEditFormView (by default) instance which will be used to render form
              *
              * @attribute formView
-             * @default {}
+             * @default new Y.eZ.ContentEditFormView()
              * @type {eZ.ContentEditFormView}
              * @required
              */
@@ -262,27 +237,15 @@ YUI.add('ez-contenteditview', function (Y) {
             },
 
             /**
-             * The EditActionBar (by default) instance which will be used to render form
+             * The EditActionBarView (by default) instance
              *
              * @attribute actionBar
-             * @default {}
+             * @default new Y.eZ.EditActionBarView()
              * @type {eZ.EditActionBarView}
              * @required
              */
             actionBar: {
-                value: new Y.eZ.EditActionBar()
-            },
-
-            /**
-             * The EditPreview (by default) instance
-             *
-             * @attribute editPreview
-             * @default {}
-             * @type {eZ.EditPreview}
-             * @required
-             */
-            editPreview: {
-                value: new Y.eZ.EditPreviewView()
+                value: new Y.eZ.EditActionBarView()
             }
         }
     });
