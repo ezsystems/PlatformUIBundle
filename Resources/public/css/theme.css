@@ -72,12 +72,6 @@
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
-.ez-editorial-app button {
-    background-image : none;
-    outline: 0;
-    border: none;
-}
-
 .is-app-open {
     background: #000;
     background: rgba(0, 0, 0, 0.8);
@@ -209,7 +203,6 @@
 .ez-view-textlineeditview.is-error .ez-textline-input-ui:before {
     opacity: 1;
 }
-
 
 /* error view */
 .ez-view-errorview .ez-error-content {

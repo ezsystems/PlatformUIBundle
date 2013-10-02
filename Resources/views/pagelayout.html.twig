@@ -7,6 +7,7 @@
 </p>
 <div class="ez-editorial-app pure">
     <div class="ez-view-container"></div>
+    <div class="ez-errorview-container is-hidden"></div>
 </div>
 {% stylesheets
     '@EzSystemsEditorialBundle/Resources/public/css/pure/0.3.0/base-context-min.css'
@@ -124,6 +125,7 @@ YUI().use('ez-editorialapp', function (Y) {
     var app = new Y.eZ.EditorialApp({
             container: '.ez-editorial-app',
             viewContainer: '.ez-view-container',
+            errorViewContainer: '.ez-errorview-container',
             capi: new Y.eZ.CAPI(
                 "{{ app.request.uriForPath('/')|trim('/') }}",
                 new Y.eZ.SessionAuthAgent({
@@ -142,13 +144,13 @@ YUI().use('ez-editorialapp', function (Y) {
 <script type="text/x-handlebars-template" id="errorview-ez-template">
     <div class="ez-error-content" tabindex="0">
         <h2>Oh oh, an error has occured</h2>
-            <div class="additional-info">
+            <p class="additional-info">
                 {{#if additionalInfo.errorText}}
-                Error text: {{ additionalInfo.errorText }}<br/>
+                    {{ additionalInfo.errorText }}
                 {{/if}}
-            </div>
-        <button href="#close-app" class="ez-close-app" data-icon="&#xe000;">Close the application</button>
-        <button href="#retry" class="ez-retry" data-icon="&#xe00f;">Retry the operation</button>
+            </p>
+        <button class="ez-close-app" data-icon="&#xe000;">Close the application</button>
+        <button class="ez-retry" data-icon="&#xe00f;">Retry the operation</button>
     </div>
 </script>
 

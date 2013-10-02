@@ -1,12 +1,38 @@
+.ez-errorview-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 1050;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    transition: transform 0.4s;
+    -webkit-transition: -webkit-transform 0.4s;
+    -webkit-transform-style: preserve-3d /* increasing performance on mobile devices */
+}
+
+.ez-errorview-container.is-hidden {
+    width: 1000px;
+    right: auto;
+    -webkit-transform: translateX(200%);
+    transform: translateX(200%);
+    transition: transform 0.4s;
+    -webkit-transition: -webkit-transform 0.4s;
+    -webkit-transform-style: preserve-3d /* increasing performance on mobile devices */
+}
+
 .ez-view-errorview {
     padding: 20%;
 }
+
 .ez-view-errorview .ez-error-content {
     padding: 2em;
     text-align: center;
 }
 
-.ez-error-content a {
+.ez-error-content button {
     display: inline-block;
     font-size: 120%;
     padding: 2em;

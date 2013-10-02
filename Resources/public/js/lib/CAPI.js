@@ -533,7 +533,7 @@ var FieldDefinitionCreateStruct = (function() {
 var FieldDefinitionUpdateStruct = (function() {
     "use strict";
 
-    var FieldDefinitionUpdateStruct = function(){
+    var FieldDefinitionUpdateStruct = function(identifier, fieldType, fieldGroup, names){
 
         this.body = {};
         this.body.FieldDefinitionUpdate = {};
@@ -784,32 +784,10 @@ var Response = (function() {
 
     var Response = function(valuesContainer){
 
-        /**
-         * Body of the response (most times JSON string recieved from REST service via a Connection object)
-         *
-         * @property body
-         * @type {String}
-         * @default ""
-         */
-        this.body = "";
-
-        /**
-         * Document represents "body" property of the response parsed into structured object
-         *
-         * @property document
-         * @type {Object}
-         * @default null
-         */
-        this.document = null;
-
         for (var property in valuesContainer) {
             if (valuesContainer.hasOwnProperty(property)) {
                 this[property] = valuesContainer[property];
             }
-        }
-
-        if ( this.body ) {
-            this.document = JSON.parse(this.body);
         }
 
         return this;
@@ -867,29 +845,24 @@ var DiscoveryService = (function() {
                 this.connectionManager.request(
                     "GET",
                     rootPath,
-                    "",
+                    {},
                     { "Accept" : "application/vnd.ez.api.Root+json" },
                     function(error, rootJSON) {
                         if (!error) {
 
-                            that.copyToCache(rootJSON.document);
+                            that.copyToCache(JSON.parse(rootJSON.body));
                             callback(false, true);
 
                         } else {
                             callback(
-                                new CAPIError( {
+                                new CAPIError({
                                     errorText : "Discover service failed to retrieve root object."
                                 }),
-                                new Response({
-                                    status : "error",
-                                    body : ""
-                                })
+                                false
                             );
                         }
                     }
                 );
-            } else {
-                callback(false, true);
             }
         };
 
@@ -945,10 +918,7 @@ var DiscoveryService = (function() {
                     new CAPIError({
                         errorText : "Discover service failed to find cached object with name '" + name + "'"
                     }),
-                    new Response({
-                        status : "error",
-                        body : ""
-                    })
+                    false
                 );
             }
         };
@@ -966,22 +936,10 @@ var DiscoveryService = (function() {
             name,
             function(error, cachedObject){
                 if (!error) {
-                    if (cachedObject) {
-                        callback(
-                            false,
-                            cachedObject._href
-                        );
-                    } else {
-                        callback(
-                            new CAPIError({
-                                errorText : "Broken cached object returned when searching for '" + name + "'"
-                            }),
-                            new Response({
-                                status : "error",
-                                body : ""
-                            })
-                        );
-                    }
+                    callback(
+                        false,
+                        cachedObject._href
+                    );
                 } else {
                     callback(
                         error,
@@ -1014,9 +972,7 @@ var DiscoveryService = (function() {
                         );
                     } else {
                         callback(
-                            new CAPIError({
-                                errorText : "Broken cached object returned when searching for '" + name + "'"
-                            }),
+                            error,
                             new Response({
                                 status : "error",
                                 body : ""
@@ -1024,13 +980,7 @@ var DiscoveryService = (function() {
                         );
                     }
                 } else {
-                    callback(
-                        error,
-                        new Response({
-                            status : "error",
-                            body : ""
-                        })
-                    );
+                    callback(error, false);
                 }
             }
         );
@@ -1055,9 +1005,7 @@ var DiscoveryService = (function() {
                         );
                     } else {
                         callback(
-                            new CAPIError({
-                                errorText : "Broken cached object returned when searching for '" + name + "'"
-                            }),
+                            error,
                             new Response({
                                 status : "error",
                                 body : ""
@@ -1065,13 +1013,7 @@ var DiscoveryService = (function() {
                         );
                     }
                 } else {
-                    callback(
-                        error,
-                        new Response({
-                            status : "error",
-                            body : ""
-                        })
-                    );
+                    callback(error, false);
                 }
             }
         );
@@ -1135,6 +1077,7 @@ var ContentService = (function() {
      *
      * @method newContentMetadataUpdateStruct
      * @param language {string}
+     * @param user {string}
      */
     ContentService.prototype.newContentMetadataUpdateStruct = function newContentMetadataUpdateStruct(language) {
 
@@ -1149,23 +1092,11 @@ var ContentService = (function() {
      * @param contentTypeId {href}
      * @param locationCreateStruct {object}
      * @param language {string}
+     * @param user {string}
      */
     ContentService.prototype.newContentCreateStruct = function newContentCreateStruct(contentTypeId, locationCreateStruct, language) {
 
         return new ContentCreateStruct(contentTypeId, locationCreateStruct, language);
-
-    };
-
-    /**
-     * Returns input structure for Section
-     *
-     * @method newSectionInputStruct
-     * @param identifier {string}
-     * @param name {string}
-     */
-    ContentService.prototype.newSectionInputStruct = function newSectionInputStruct(identifier, name) {
-
-        return new SectionInputStruct(identifier, name);
 
     };
 
@@ -1186,8 +1117,10 @@ var ContentService = (function() {
      * Returns update structure for Location
      *
      * @method newLocationUpdateStruct
+     * @param parentLocationId {href}
+
      */
-    ContentService.prototype.newLocationUpdateStruct = function newLocationUpdateStruct() {
+    ContentService.prototype.newLocationUpdateStruct = function newLocationUpdateStruct(parentLocationId) {
 
         return new LocationUpdateStruct();
 
@@ -1585,7 +1518,7 @@ var ContentService = (function() {
             function(error, contentResponse){
                 if (!error) {
 
-                    var currentVersion = contentResponse.document.Content.CurrentVersion;
+                    var currentVersion = JSON.parse(contentResponse.body).Content.CurrentVersion;
 
                     that._connectionManager.request(
                         "GET",
@@ -1638,7 +1571,7 @@ var ContentService = (function() {
             function(error, contentResponse){
                 if (!error) {
 
-                    var contentVersions = contentResponse.document.Content.Versions;
+                    var contentVersions = JSON.parse(contentResponse.body).Content.Versions;
 
                     that._connectionManager.request(
                         "GET",
@@ -1694,12 +1627,12 @@ var ContentService = (function() {
             function(error, contentResponse){
                 if (!error) {
 
-                    if (versionId !== null) {
+                    if (versionId != null) {
                         // Version id is declared
 
                         console.log(versionId);
 
-                        contentVersions = contentResponse.document.Content.Versions;
+                        contentVersions = JSON.parse(contentResponse.body).Content.Versions;
 
                         that._connectionManager.request(
                             "COPY",
@@ -1712,7 +1645,7 @@ var ContentService = (function() {
                     } else {
                         // Version id is NOT declared
 
-                        currentVersion = contentResponse.document.Content.CurrentVersion;
+                        currentVersion = JSON.parse(contentResponse.body).Content.CurrentVersion;
 
                         that._connectionManager.request(
                             "COPY",
@@ -1878,7 +1811,7 @@ var ContentService = (function() {
             function(error, locationResponse){
                 if (!error) {
 
-                    var location = locationResponse.document.Location;
+                    var location = JSON.parse(locationResponse.body).Location;
 
                     that._connectionManager.request(
                         "GET",
@@ -2025,7 +1958,7 @@ var ContentService = (function() {
             function(error, versionResponse){
                 if (!error) {
 
-                    var version = versionResponse.document.Version;
+                    var version = JSON.parse(versionResponse.body).Version;
 
                     that._connectionManager.request(
                         "GET",
@@ -2059,7 +1992,7 @@ var ContentService = (function() {
             function(error, currentVersionResponse){
                 if (!error) {
 
-                    var currentVersion = currentVersionResponse.document.Version;
+                    var currentVersion = JSON.parse(currentVersionResponse.body).Version;
 
                     that._connectionManager.request(
                         "GET",
@@ -2112,7 +2045,7 @@ var ContentService = (function() {
             function(error, versionResponse){
                 if (!error) {
 
-                    var version = versionResponse.document.Version;
+                    var version = JSON.parse(versionResponse.body).Version;
 
                     that._connectionManager.request(
                         "POST",
@@ -2710,9 +2643,9 @@ var ContentTypeService = (function() {
      * @param names
      * @return {FieldDefinitionCreateStruct}
      */
-    ContentTypeService.prototype.newFieldDefinitionUpdateStruct = function newFieldDefinitionUpdateStruct() {
+    ContentTypeService.prototype.newFieldDefinitionUpdateStruct = function newFieldDefinitionUpdateStruct(identifier, fieldType, fieldGroup, names) {
 
-        return new FieldDefinitionUpdateStruct();
+        return new FieldDefinitionUpdateStruct(identifier, fieldType, fieldGroup, names);
 
     };
 
@@ -2751,7 +2684,7 @@ var ContentTypeService = (function() {
         this._connectionManager.request(
             "GET",
             contentTypeGroups,
-            "",
+            {},
             { "Accept" : "application/vnd.ez.api.ContentTypeGroupList+json" },
             callback
         );
@@ -2760,7 +2693,7 @@ var ContentTypeService = (function() {
     /**
      * Load single content type group
      *
-     * @method loadContentTypeGroup
+     * @method loadContentTypeGroups
      * @param contentTypeGroupId {href}
      * @param callback {function} function, which will be executed on request success
      */
@@ -2768,7 +2701,7 @@ var ContentTypeService = (function() {
         this._connectionManager.request(
             "GET",
             contentTypeGroupId,
-            "",
+            {},
             { "Accept" : "application/vnd.ez.api.ContentTypeGroup+json" },
             callback
         );
@@ -2825,7 +2758,7 @@ var ContentTypeService = (function() {
             function(error, contentTypeGroupResponse){
                 if (!error) {
 
-                    var contentTypeGroup = contentTypeGroupResponse.document.ContentTypeGroup;
+                    var contentTypeGroup = JSON.parse(contentTypeGroupResponse.body).ContentTypeGroup;
 
                     that._connectionManager.request(
                         "GET",
@@ -2883,7 +2816,7 @@ var ContentTypeService = (function() {
             function(error, contentTypeGroupResponse){
                 if (!error) {
 
-                    var contentTypeGroup = contentTypeGroupResponse.document.ContentTypeGroup,
+                    var contentTypeGroup = JSON.parse(contentTypeGroupResponse.body).ContentTypeGroup,
                         parameters = (publish === true) ? "?publish=true" : "";
 
                     that._connectionManager.request(
@@ -2952,7 +2885,7 @@ var ContentTypeService = (function() {
                     that._connectionManager.request(
                         "GET",
                         contentTypes._href + "?identifier=" + identifier,
-                        "",
+                        {},
                         { "Accept" : contentTypes["_media-type"] },
                         callback
                     );
@@ -2981,11 +2914,11 @@ var ContentTypeService = (function() {
     /**
      * Load content type groups
      *
-     * @method loadGroupsOfContentType
+     * @method loadContentTypeGroups
      * @param contentTypeId {href}
      * @param callback {function} function, which will be executed on request success
      */
-    ContentTypeService.prototype.loadGroupsOfContentType = function loadGroupsOfContentType(contentTypeId, callback) {
+    ContentTypeService.prototype.loadContentTypeGroups = function loadContentTypeGroups(contentTypeId, callback) {
         this._connectionManager.request(
             "GET",
             contentTypeId + '/groups',
@@ -3139,7 +3072,7 @@ var ContentTypeService = (function() {
             function(error, contentTypeDraftResponse){
                 if (!error) {
 
-                    var contentTypeDraftFieldDefinitions = contentTypeDraftResponse.document.ContentType.FieldDefinitions;
+                    var contentTypeDraftFieldDefinitions = JSON.parse(contentTypeDraftResponse.body).ContentType.FieldDefinitions;
 
                     that._connectionManager.request(
                         "POST",
@@ -3473,7 +3406,7 @@ var UserService = (function() {
             function(error, userGroupResponse){
                 if (!error) {
 
-                    var subGroups = userGroupResponse.document.UserGroup.Subgroups;
+                    var subGroups = JSON.parse(userGroupResponse.body).UserGroup.Subgroups;
 
                     that._connectionManager.request(
                         "POST",
@@ -3525,7 +3458,7 @@ var UserService = (function() {
             function(error, userGroupResponse){
                 if (!error) {
 
-                    var subGroups = userGroupResponse.document.UserGroup.Subgroups;
+                    var subGroups = JSON.parse(userGroupResponse.body).UserGroup.Subgroups;
 
                     that._connectionManager.request(
                         "GET",
@@ -3560,7 +3493,7 @@ var UserService = (function() {
             function(error, userGroupResponse){
                 if (!error) {
 
-                    var users = userGroupResponse.document.UserGroup.Users;
+                    var users = JSON.parse(userGroupResponse.body).UserGroup.Users;
 
                     that._connectionManager.request(
                         "GET",
@@ -3620,7 +3553,7 @@ var UserService = (function() {
             function(error, userGroupResponse){
                 if (!error) {
 
-                    var users = userGroupResponse.document.UserGroup.Users;
+                    var users = JSON.parse(userGroupResponse.body).UserGroup.Users;
 
                     that._connectionManager.request(
                         "POST",
@@ -3729,7 +3662,7 @@ var UserService = (function() {
             function(error, userResponse){
                 if (!error) {
 
-                    var userGroups = userResponse.document.User.UserGroups;
+                    var userGroups = JSON.parse(userResponse.body).User.UserGroups;
 
                     that._connectionManager.request(
                         "POST",
@@ -3756,9 +3689,15 @@ var UserService = (function() {
      * @param userAssignedGroupId {href}
      * @param callback {function} function, which will be executed on request success
      */
-    UserService.prototype.unassignUserFromUserGroup = function unassignUserFromUserGroup(userAssignedGroupId, callback) {
-        this._connectionManager.delete(
+    UserService.prototype.unAssignUserFromUserGroup = function unAssignUserFromUserGroup(userAssignedGroupId, callback) {
+
+        this._connectionManager.request(
+            "DELETE",
             userAssignedGroupId,
+            "",
+            {
+                "Accept" : "application/vnd.ez.api.UserGroupRefList+json"
+            },
             callback
         );
 
@@ -3910,7 +3849,7 @@ var UserService = (function() {
             function(error, userResponse){
                 if (!error) {
 
-                    var userRoles = userResponse.document.User.Roles;
+                    var userRoles = JSON.parse(userResponse.body).User.Roles;
 
                     that._connectionManager.request(
                         "GET",
@@ -3945,7 +3884,7 @@ var UserService = (function() {
             function(error, userGroupResponse){
                 if (!error) {
 
-                    var userGroupRoles = userGroupResponse.document.UserGroup.Roles;
+                    var userGroupRoles = JSON.parse(userGroupResponse.body).UserGroup.Roles;
 
                     that._connectionManager.request(
                         "GET",
@@ -4021,7 +3960,7 @@ var UserService = (function() {
             function(error, userResponse){
                 if (!error) {
 
-                    var userRoles = userResponse.document.User.Roles;
+                    var userRoles = JSON.parse(userResponse.body).User.Roles;
 
                     that._connectionManager.request(
                         "POST",
@@ -4055,7 +3994,7 @@ var UserService = (function() {
             function(error, userGroupResponse){
                 if (!error) {
 
-                    var userGroupRoles = userGroupResponse.document.UserGroup.Roles;
+                    var userGroupRoles = JSON.parse(userGroupResponse.body).UserGroup.Roles;
 
                     that._connectionManager.request(
                         "POST",
@@ -4120,7 +4059,7 @@ var UserService = (function() {
             function(error, roleResponse){
                 if (!error) {
 
-                    var rolePolicies = roleResponse.document.Role.Policies;
+                    var rolePolicies = JSON.parse(roleResponse.body).Role.Policies;
 
                     that._connectionManager.request(
                         "POST",
@@ -4152,7 +4091,7 @@ var UserService = (function() {
             function(error, roleResponse){
                 if (!error) {
 
-                    var rolePolicies = roleResponse.document.Role.Policies;
+                    var rolePolicies = JSON.parse(roleResponse.body).Role.Policies;
 
                     that._connectionManager.request(
                         "GET",
@@ -4271,8 +4210,13 @@ var UserService = (function() {
      * @param callback {function} function, which will be executed on request success
      */
     UserService.prototype.deleteSession = function deleteSession(sessionId, callback) {
-        this._connectionManager.delete(
+        this._connectionManager.request(
+            "DELETE",
             sessionId,
+            "",
+            {
+                "X-CSRF-Token" : "6245d05aa911d064c3f68fcf6b01aaaf65fca8ca"
+            },
             callback
         );
     };
@@ -4430,7 +4374,7 @@ var MicrosoftXmlHttpRequestConnection = (function() {
             };
 
             if (request.httpBasicAuth) {
-                XHR.open(request.method, request.url, true, request.login, request.password);
+                XHR.open(request.method, request.url, true, request.user, request.password);
             } else {
                 XHR.open(request.method, request.url, true);
             }
@@ -4555,10 +4499,11 @@ var SessionAuthAgent = (function() {
      * A cycle may contain one or more queued up requests
      *
      * @method ensureAuthentication
-     * @param done {Function} Callback function, which is to be called by the implementation to signal the authentication has been completed.
+     * @param done {Function} Callback function, which is to be called by the implementation
+     * to signal the authentication has been completed.
      */
     SessionAuthAgent.prototype.ensureAuthentication = function(done) {
-        if (this.sessionId === null) {
+        if ((typeof this.sessionId === 'undefined') || (this.sessionId === null)) {
 
             var that = this,
                 userService = this.CAPI.getUserService(),
@@ -4587,12 +4532,7 @@ var SessionAuthAgent = (function() {
                         done(false, true);
 
                     } else {
-                        done(
-                            new CAPIError({
-                                errorText : "Failed to create new session."
-                            }),
-                            false
-                        );
+                        console.log(error, sessionResponse);
                     }
                 }
             );
@@ -4612,9 +4552,7 @@ var SessionAuthAgent = (function() {
      */
     SessionAuthAgent.prototype.authenticateRequest = function(request, done) {
 
-        if (request.method !== "GET" && request.method !== "HEAD" && request.method !== "OPTIONS" && request.method !== "TRACE" ) {
-            request.headers["X-CSRF-Token"] = this.csrfToken;
-        }
+        request.headers["X-CSRF-Token"] = this.csrfToken;
 
         done(false, request);
 
@@ -4724,10 +4662,9 @@ var ConnectionManager = (function() {
 
         this._endPointUrl = endPointUrl;
         this._authenticationAgent = authenticationAgent;
-        this._connectionFactory = connectionFactory;
 
-        this._requestsQueue = [];
-        this._authInProgress = false;
+        this._connectionFactory = connectionFactory;
+        this._activeConnection = connectionFactory.createConnection();
 
         this.logRequests = false;
 
@@ -4753,76 +4690,57 @@ var ConnectionManager = (function() {
         callback = (typeof callback === "undefined") ? function(){} : callback;
 
         var that = this,
-            nextRequest,
             request = new Request({
                 method : method,
                 url : this._endPointUrl + url,
                 body : body,
                 headers : headers
-            });
+            }),
+            c = this._connectionFactory.createConnection();
 
-        // Requests suspending workflow
-        // first, put any request in queue anyway (the queue will be emptied after ensuring authentication)
-        this._requestsQueue.push(request);
+        // TODO: Suspend Requests during initial authentication
+        // Check if we are already authenticated, make it happen if not
+        this._authenticationAgent.ensureAuthentication(
+            function(error, success){
+                if (!error) {
 
-        // if our request is the first one, or authorization is not in progress, go on
-        if (!this._authInProgress || (this._requestsQueue.length === 1)) {
+                    that._authenticationAgent.authenticateRequest(
+                        request,
+                        function(error, authenticatedRequest) {
+                            if (!error) {
 
-            // queue all other requests, until this one is authenticated
-            this._authInProgress = true;
-
-            // check if we are already authenticated, make it happen if not
-            this._authenticationAgent.ensureAuthentication(
-                function(error, success){
-                    if (!error) {
-
-                        that._authInProgress = false;
-
-                        // emptying requests Queue
-                        while (nextRequest = that._requestsQueue.shift()) {
-
-                            that._authenticationAgent.authenticateRequest(
-                                nextRequest,
-                                function(error, authenticatedRequest) {
-                                    if (!error) {
-
-                                        if (that.logRequests) {
-                                            console.dir(request);
-                                        }
-                                        // Main goal
-                                        that._connectionFactory.createConnection().execute(authenticatedRequest, callback);
-                                    } else {
-                                        callback(
-                                            new CAPIError({
-                                                errorText : "An error occured during request authentication!"
-                                            }),
-                                            new Response({
-                                                status : "error",
-                                                body : ""
-                                            })
-                                        );
-                                    }
+                                if (that.logRequests) {
+                                    console.log(request);
                                 }
-                            );
-                        } // while
+                                // Main goal
+                                c.execute(authenticatedRequest, callback);
+                            } else {
+                                callback(
+                                    new CAPIError({
+                                        errorText : "An error occured during request authentication!"
+                                    }),
+                                    new Response({
+                                        status : "error",
+                                        body : ""
+                                    })
+                                );
+                            }
+                        }
+                    );
 
-                    } else {
-
-                        that._authInProgress = false;
-
-                        callback(
-                            new CAPIError({
-                                errorText : "An error occured during ensureAuthentication call!"
-                            }),
-                            new Response({
-                                status : "error",
-                                body : ""
-                            })
-                        );
-                    }
+                } else {
+                    callback(
+                        new CAPIError({
+                            errorText : "An error occured during ensureAuthentication call!"
+                        }),
+                        new Response({
+                            status : "error",
+                            body : ""
+                        })
+                    );
                 }
-            );
-        }
+            }
+        );
     };
 
 
@@ -4854,11 +4772,11 @@ var ConnectionManager = (function() {
         });
 
         if (this.logRequests) {
-            console.dir(request);
+            console.log(request);
         }
 
         // Main goal
-        this._connectionFactory.createConnection().execute(request, callback);
+        this._activeConnection.execute(request, callback);
 
     };
 
@@ -4940,8 +4858,8 @@ var CAPI = (function() {
             //TODO: move hardcoded rootPath to the same config file as above...
             discoveryService = new DiscoveryService('/api/ezp/v2/', connectionManager);
 
-        //TODO: move logRequests to the same config file as above...
-        connectionManager.logRequests = true;
+            //TODO: move logRequests to the same config file as above...
+            connectionManager.logRequests = true;
 
         /**
          * Get instance of Content Service

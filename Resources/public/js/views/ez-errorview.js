@@ -8,7 +8,8 @@ YUI.add('ez-errorview', function (Y) {
 
     Y.namespace('eZ');
 
-    var ERROR_SEL = '.ez-error-content',
+    var IS_HIDDEN_CLASS = 'is-hidden',
+        ERROR_SEL = '.ez-error-content',
         ESCAPE_KEY = 27;
 
     /**
@@ -22,14 +23,14 @@ YUI.add('ez-errorview', function (Y) {
     Y.eZ.ErrorView = Y.Base.create('errorView', Y.eZ.TemplateBasedView, [], {
         events: {
             '.ez-close-app': {'tap': '_closeApp'},
-            '.ez-retry' : {'tap': '_retry'},
+            '.ez-retry': {'tap': '_retry'},
             '.ez-error-content': {
                 'keyup': '_handleKeyboard'
             }
         },
 
         /**
-         * Renders the error view
+         * Renders the error view (with transition)
          *
          * @method render
          * @return {eZ.ErrorView} the view itself
@@ -38,7 +39,19 @@ YUI.add('ez-errorview', function (Y) {
             this.get('container').setHTML(this.template({
                 additionalInfo: this.get('additionalInfo')
             }));
+
+            this.get('container').get('parentNode').removeClass(IS_HIDDEN_CLASS);
+
             return this;
+        },
+
+        /**
+         * Hides the error view (with transition)
+         *
+         * @method hide
+         */
+        hide: function () {
+            this.get('container').get('parentNode').addClass(IS_HIDDEN_CLASS);
         },
 
         /**
@@ -63,6 +76,7 @@ YUI.add('ez-errorview', function (Y) {
              *
              * @event closeApp
              */
+            this.hide();
             this.fire('closeApp');
             e.preventDefault();
         },
@@ -75,9 +89,13 @@ YUI.add('ez-errorview', function (Y) {
          * @param {Object} e event facade of the tap event
          */
         _retry: function (e) {
-            var retryAction = this.get('retryAction');
-
-            retryAction.run.apply(retryAction.owner, retryAction.args);
+            /**
+             * Fired when "retry the operation" link is clicked
+             *
+             * @event retryAction
+             */
+            this.hide();
+            this.fire('retryAction', this.get('retryAction'));
             e.preventDefault();
         },
 
@@ -103,15 +121,17 @@ YUI.add('ez-errorview', function (Y) {
              *
              * @attribute retryAction
              * @default {
-             *     retry : function () {},
-             *     arguments : []
+             *     run: function () {},
+             *     args: [],
+             *     context: null
              * }
              * @required
              */
             retryAction: {
                 value: {
-                    retry : function () {},
-                    args : []
+                    run: function () {},
+                    args: [],
+                    context: null
                 }
             },
 

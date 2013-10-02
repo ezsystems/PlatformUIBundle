@@ -27,9 +27,6 @@ YUI.add('ez-editorialapp', function (Y) {
                 type: Y.eZ.ContentEditView,
                 preserve: true
             },
-            errorView: {
-                type: Y.eZ.ErrorView
-            },
             dummyView: {
                 type: Y.View
             }
@@ -43,40 +40,54 @@ YUI.add('ez-editorialapp', function (Y) {
          * @method initializer
          */
         initializer: function () {
-            this.on('*:closeApp', function (e) {
+
+            // Setting events handlers
+            this.on('contentEditView:close', function (e) {
+                // For now just closing the application
                 this.close();
             });
 
-            this.on('*:fatalError', function (errorInfo) {
-                this.handleError(errorInfo);
-            });
+            this.on('*:closeApp', this.close);
+
+            this.on('*:fatalError', this._handleError);
+
+            this.on('*:retryAction', this._retryAction);
 
             this.on('loadingChange', this._loading);
 
             this.on('navigate', function (e) {
                 this.set('loading', true);
             });
+
+            // Listening for events fired on child views
+            this.get('errorView').addTarget(this);
         },
 
         /**
          * Display the error view
          *
-         * @method handleError
+         * @method _handleError
          * @param errorInfo {Object} Object containing additional info about the error
+         * @protected
          */
-        handleError: function (errorInfo) {
-            this.showView('errorView',
-                {
-                    retryAction: errorInfo.retryAction,
-                    additionalInfo: errorInfo.additionalInfo
-                }, {
-                    update: true,
-                    render: true,
-                    callback: function (view) {
-                        this.set('loading', false);
-                        view.setFocus();
-                }
-            });
+        _handleError: function (errorInfo) {
+            var errorView = this.get('errorView');
+
+            errorView.set('retryAction', errorInfo.retryAction);
+            errorView.set('additionalInfo', errorInfo.additionalInfo);
+            errorView.render();
+            errorView.setFocus();
+        },
+
+        /**
+         * Retry the action
+         *
+         * @method _retryAction
+         * @param retryAction {Object} Object containing full info about the action which should be retried
+         * @protected
+         */
+        _retryAction: function (retryAction) {
+            retryAction.run.apply(retryAction.context, retryAction.args);
         },
 
         /**
@@ -124,16 +135,22 @@ YUI.add('ez-editorialapp', function (Y) {
                     resources = content.get('resources');
 
                 if (error) {
+
+                    /**
+                     * Fired when a fatal error occurs
+                     *
+                     * @event fatalError
+                     */
                     app.fire('fatalError', {
-                        retryAction : {
-                            run : app.loadContentForEdit,
-                            args : [req, res, next],
-                            owner : app
+                        retryAction: {
+                            run: app.loadContentForEdit,
+                            args: [req, res, next],
+                            context: app
                         },
-                        additionalInfo : {
-                            errorCode : error.errorCode,
-                            errorText : error.errorText
+                        additionalInfo: {
+                            errorText: " Could not load the content with id '" + req.params.id + "'"
                         }
+
                     })
                 } else  {
                     // TODO: Handle errors
@@ -166,7 +183,12 @@ YUI.add('ez-editorialapp', function (Y) {
          */
         open: function (req, res, next) {
             var container = this.get('container'),
-                viewContainer = this.get('viewContainer');
+                viewContainer = this.get('viewContainer'),
+                errorViewContainer = Y.one(this.get('errorViewContainer'));
+
+            errorViewContainer.setHTML(this.get('errorView').get('container'));
+            // Hiding error view, in case if it is already visible
+            this.get('errorView').hide();
 
             container.addClass(APP_OPEN);
             viewContainer.setStyle('height', container.get('docHeight') + 'px');
@@ -221,6 +243,18 @@ YUI.add('ez-editorialapp', function (Y) {
             },
 
             /**
+             * CSS selector of a container for the error view
+             *
+             * @attribute errorViewContainer
+             * @default ""
+             * @type string
+             * @required
+             */
+            errorViewContainer: {
+                value: ""
+            },
+
+            /**
              * Loading state. Tells whether the application is waiting for
              * something to be loaded
              *
@@ -231,6 +265,18 @@ YUI.add('ez-editorialapp', function (Y) {
             loading: {
                 validator: L.isBoolean,
                 value: false
+            },
+
+
+            /**
+             * Error view of the application
+             *
+             * @attribute errorView
+             * @default new Y.eZ.ErrorView()
+             * @type Y.eZ.ErrorView
+             */
+            errorView: {
+                value: new Y.eZ.ErrorView()
             },
 
             /**
