@@ -126,45 +126,84 @@ YUI.add('ez-editorialapp', function (Y) {
                 content = vars.content,
                 mainLocation = vars.mainLocation,
                 type = vars.contentType,
-                owner = vars.owner;
+                owner = vars.owner,
+                retryLoadContent = {
+                    run: app.loadContentForEdit,
+                    args: [req, res, next],
+                    context: app
+                };
 
             app.set('loading', true);
             content.set('id', "/api/ezp/v2/content/objects/" + req.params.id);
             content.load(loadOptions, function (error) {
                 var tasks,
                     resources = content.get('resources');
-
                 if (error) {
-
                     /**
-                     * Fired when a fatal error occurs
+                     * Fired when the fatal error occurs during content loading
                      *
                      * @event fatalError
                      */
                     app.fire('fatalError', {
-                        retryAction: {
-                            run: app.loadContentForEdit,
-                            args: [req, res, next],
-                            context: app
-                        },
+                        retryAction: retryLoadContent,
                         additionalInfo: {
                             errorText: " Could not load the content with id '" + req.params.id + "'"
                         }
-
-                    })
+                    });
                 } else  {
-                    // TODO: Handle errors
                     // parallel loading of owner, mainLocation and contentType
                     tasks = new Y.Parallel();
 
                     owner.set('id', resources.Owner);
-                    owner.load(loadOptions, tasks.add(function (error) {}));
+                    owner.load(loadOptions, tasks.add(function (error) {
+                        if (error) {
+                            /**
+                             * Fired when the fatal error occurs during user loading
+                             *
+                             * @event fatalError
+                             */
+                            app.fire('fatalError', {
+                                retryAction: retryLoadContent,
+                                additionalInfo: {
+                                    errorText: " Could not load the user with id '" + resources.Owner + "'"
+                                }
+                            });
+                        }
+                    }));
 
                     mainLocation.set('id', resources.MainLocation);
-                    mainLocation.load(loadOptions, tasks.add(function (error) {}));
+                    mainLocation.load(loadOptions, tasks.add(function (error) {
+                        if (error) {
+                            /**
+                             * Fired when the fatal error occurs during location loading
+                             *
+                             * @event fatalError
+                             */
+                            app.fire('fatalError', {
+                                retryAction: retryLoadContent,
+                                additionalInfo: {
+                                    errorText: " Could not load the location with id '" + resources.MainLocation + "'"
+                                }
+                            });
+                        }
+                    }));
 
                     type.set('id', resources.ContentType);
-                    type.load(loadOptions, tasks.add(function (error) {}));
+                    type.load(loadOptions, tasks.add(function (error) {
+                        if (error) {
+                            /**
+                             * Fired when the fatal error occurs during content type loading
+                             *
+                             * @event fatalError
+                             */
+                            app.fire('fatalError', {
+                                retryAction: retryLoadContent,
+                                additionalInfo: {
+                                    errorText: " Could not load the content type with id '" + resources.ContentType + "'"
+                                }
+                            });
+                        }
+                    }));
 
                     tasks.done(function () {
                         next();
