@@ -10,7 +10,28 @@ YUI.add('ez-editorialapp', function (Y) {
 
     var L = Y.Lang,
         APP_OPEN = 'is-app-open',
-        APP_LOADING = 'is-app-loading';
+        APP_LOADING = 'is-app-loading',
+        ERROR_VIEW_CONTAINER = '.ez-errorview-container',
+
+        /**
+         * Fired when
+         *
+         * @event fatalError
+         * @param retryAction {Object} Object describing the action which was interrupted by error, and could be retried
+         * @param additionalInfo {Object} Object containing additional information about the error
+         * @example
+         *     app.fire(EVT_FATALERROR, {
+         *         retryAction: {
+         *             run: app.loadContentForEdit,
+          *            args: [req, res, next],
+          *            context: app
+         *         },
+         *         additionalInfo: {
+         *             errorText: " Could not load the content with id '" + req.params.id + "'"
+         *         }
+         *     });
+         */
+        EVT_FATALERROR = 'fatalError';
 
     /**
      * Editorial Application
@@ -29,6 +50,11 @@ YUI.add('ez-editorialapp', function (Y) {
             },
             dummyView: {
                 type: Y.View
+            },
+            errorView: {
+                instance: new Y.eZ.ErrorView({
+                    container: ERROR_VIEW_CONTAINER
+                })
             }
         },
 
@@ -60,7 +86,7 @@ YUI.add('ez-editorialapp', function (Y) {
             });
 
             // Listening for events fired on child views
-            this.get('errorView').addTarget(this);
+            this.views['errorView'].instance.addTarget(this);
         },
 
         /**
@@ -71,10 +97,13 @@ YUI.add('ez-editorialapp', function (Y) {
          * @protected
          */
         _handleError: function (errorInfo) {
-            var errorView = this.get('errorView');
 
-            errorView.set('retryAction', errorInfo.retryAction);
-            errorView.set('additionalInfo', errorInfo.additionalInfo);
+            var errorView = this.views['errorView'].instance;
+
+            errorView.setAttrs({
+                'retryAction': errorInfo.retryAction,
+                'additionalInfo': errorInfo.additionalInfo
+            });
             errorView.render();
             errorView.setFocus();
         },
@@ -127,82 +156,49 @@ YUI.add('ez-editorialapp', function (Y) {
                 mainLocation = vars.mainLocation,
                 type = vars.contentType,
                 owner = vars.owner,
-                retryLoadContent = {
-                    run: app.loadContentForEdit,
-                    args: [req, res, next],
-                    context: app
+                errorHandling = function (error, errorMessage) {
+                    if (error) {
+                        app.fire(EVT_FATALERROR, {
+                            retryAction: {
+                                run: app.loadContentForEdit,
+                                args: [req, res, next],
+                                context: app
+                            },
+                            additionalInfo: {
+                                errorText: errorMessage
+                            }
+                        });
+                        return true;
+                    } else {
+                        return false;
+                    }
                 };
+
 
             app.set('loading', true);
             content.set('id', "/api/ezp/v2/content/objects/" + req.params.id);
             content.load(loadOptions, function (error) {
                 var tasks,
                     resources = content.get('resources');
-                if (error) {
-                    /**
-                     * Fired when the fatal error occurs during content loading
-                     *
-                     * @event fatalError
-                     */
-                    app.fire('fatalError', {
-                        retryAction: retryLoadContent,
-                        additionalInfo: {
-                            errorText: " Could not load the content with id '" + req.params.id + "'"
-                        }
-                    });
-                } else  {
+
+                if (!errorHandling(error, "Could not load the content with id '" + req.params.id + "'")) {
+
                     // parallel loading of owner, mainLocation and contentType
                     tasks = new Y.Parallel();
 
                     owner.set('id', resources.Owner);
                     owner.load(loadOptions, tasks.add(function (error) {
-                        if (error) {
-                            /**
-                             * Fired when the fatal error occurs during user loading
-                             *
-                             * @event fatalError
-                             */
-                            app.fire('fatalError', {
-                                retryAction: retryLoadContent,
-                                additionalInfo: {
-                                    errorText: " Could not load the user with id '" + resources.Owner + "'"
-                                }
-                            });
-                        }
+                        errorHandling(error, "Could not load the user with id '" + resources.Owner + "'");
                     }));
 
                     mainLocation.set('id', resources.MainLocation);
                     mainLocation.load(loadOptions, tasks.add(function (error) {
-                        if (error) {
-                            /**
-                             * Fired when the fatal error occurs during location loading
-                             *
-                             * @event fatalError
-                             */
-                            app.fire('fatalError', {
-                                retryAction: retryLoadContent,
-                                additionalInfo: {
-                                    errorText: " Could not load the location with id '" + resources.MainLocation + "'"
-                                }
-                            });
-                        }
+                        errorHandling(error, "Could not load the location with id '" + resources.MainLocation + "'");
                     }));
 
                     type.set('id', resources.ContentType);
                     type.load(loadOptions, tasks.add(function (error) {
-                        if (error) {
-                            /**
-                             * Fired when the fatal error occurs during content type loading
-                             *
-                             * @event fatalError
-                             */
-                            app.fire('fatalError', {
-                                retryAction: retryLoadContent,
-                                additionalInfo: {
-                                    errorText: " Could not load the content type with id '" + resources.ContentType + "'"
-                                }
-                            });
-                        }
+                        errorHandling(error, "Could not load the content type with id '" + resources.ContentType + "'");
                     }));
 
                     tasks.done(function () {
@@ -222,12 +218,7 @@ YUI.add('ez-editorialapp', function (Y) {
          */
         open: function (req, res, next) {
             var container = this.get('container'),
-                viewContainer = this.get('viewContainer'),
-                errorViewContainer = Y.one(this.get('errorViewContainer'));
-
-            errorViewContainer.setHTML(this.get('errorView').get('container'));
-            // Hiding error view, in case if it is already visible
-            this.get('errorView').hide();
+                viewContainer = this.get('viewContainer');
 
             container.addClass(APP_OPEN);
             viewContainer.setStyle('height', container.get('docHeight') + 'px');
@@ -245,6 +236,7 @@ YUI.add('ez-editorialapp', function (Y) {
         close: function () {
             this.showView('dummyView');
             this.get('container').removeClass(APP_OPEN);
+            this.views['errorView'].instance.hide();
         },
 
         /**
@@ -282,18 +274,6 @@ YUI.add('ez-editorialapp', function (Y) {
             },
 
             /**
-             * CSS selector of a container for the error view
-             *
-             * @attribute errorViewContainer
-             * @default ""
-             * @type string
-             * @required
-             */
-            errorViewContainer: {
-                value: ""
-            },
-
-            /**
              * Loading state. Tells whether the application is waiting for
              * something to be loaded
              *
@@ -304,18 +284,6 @@ YUI.add('ez-editorialapp', function (Y) {
             loading: {
                 validator: L.isBoolean,
                 value: false
-            },
-
-
-            /**
-             * Error view of the application
-             *
-             * @attribute errorView
-             * @default new Y.eZ.ErrorView()
-             * @type Y.eZ.ErrorView
-             */
-            errorView: {
-                value: new Y.eZ.ErrorView()
             },
 
             /**

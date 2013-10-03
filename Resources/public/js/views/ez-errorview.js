@@ -9,7 +9,7 @@ YUI.add('ez-errorview', function (Y) {
     Y.namespace('eZ');
 
     var IS_HIDDEN_CLASS = 'is-hidden',
-        ERROR_SEL = '.ez-error-content',
+        ERROR_DIALOG_SEL = '.ez-error-dialog',
         ESCAPE_KEY = 27;
 
     /**
@@ -24,7 +24,7 @@ YUI.add('ez-errorview', function (Y) {
         events: {
             '.ez-close-app': {'tap': '_closeApp'},
             '.ez-retry': {'tap': '_retry'},
-            '.ez-error-content': {
+            '.ez-error-dialog': {
                 'keyup': '_handleKeyboard'
             }
         },
@@ -40,7 +40,7 @@ YUI.add('ez-errorview', function (Y) {
                 additionalInfo: this.get('additionalInfo')
             }));
 
-            this.get('container').get('parentNode').removeClass(IS_HIDDEN_CLASS);
+            this.get('container').removeClass(IS_HIDDEN_CLASS);
 
             return this;
         },
@@ -51,7 +51,7 @@ YUI.add('ez-errorview', function (Y) {
          * @method hide
          */
         hide: function () {
-            this.get('container').get('parentNode').addClass(IS_HIDDEN_CLASS);
+            this.get('container').addClass(IS_HIDDEN_CLASS);
         },
 
         /**
@@ -60,7 +60,7 @@ YUI.add('ez-errorview', function (Y) {
          * @method setFocus
          */
         setFocus: function () {
-            this.get('container').one(ERROR_SEL).focus();
+            this.get('container').one(ERROR_DIALOG_SEL).focus();
         },
 
         /**
@@ -93,6 +93,7 @@ YUI.add('ez-errorview', function (Y) {
              * Fired when "retry the operation" link is clicked
              *
              * @event retryAction
+             * @parameter {Object} object describing action interrupted by the error
              */
             this.hide();
             this.fire('retryAction', this.get('retryAction'));

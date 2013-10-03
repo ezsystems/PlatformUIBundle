@@ -6,35 +6,45 @@
     right: 0;
     top: 0;
     z-index: 1050;
+
     -webkit-transform: translateX(0);
-    transform: translateX(0);
-    transition: transform 0.4s;
+       -moz-transform: translateX(0);
+        -ms-transform: translateX(0);
+         -o-transform: translateX(0);
+            transform: translateX(0);
+
     -webkit-transition: -webkit-transform 0.4s;
-    -webkit-transform-style: preserve-3d /* increasing performance on mobile devices */
+       -moz-transition: -moz-transform 0.4s;
+        -ms-transition: -ms-transform 0.4s;
+         -o-transition: -o-transform 0.4s;
+            transition: transform 0.4s;
+
+    -webkit-transform-style: preserve-3d; /* increasing performance on mobile devices */
+       -moz-transform-style: preserve-3d;
+            transform-style: preserve-3d;
 }
 
 .ez-errorview-container.is-hidden {
     width: 1000px;
     right: auto;
     -webkit-transform: translateX(200%);
-    transform: translateX(200%);
-    transition: transform 0.4s;
-    -webkit-transition: -webkit-transform 0.4s;
-    -webkit-transform-style: preserve-3d /* increasing performance on mobile devices */
+       -moz-transform: translateX(200%);
+        -ms-transform: translateX(200%);
+         -o-transform: translateX(200%);
+            transform: translateX(200%);
 }
 
-.ez-view-errorview {
+.ez-errorview-container .ez-error-content {
+    height: 100%;
     padding: 5% 20%;
-}
-
-.ez-view-errorview .ez-error-content {
-    padding: 2em;
     text-align: center;
 }
 
-.ez-error-content button {
-    display: inline-block;
-    font-size: 120%;
+.ez-errorview-container .ez-error-dialog{
     padding: 2em;
-    margin: 1em;
+}
+
+.ez-errorview-container .ez-error-dialog button {
+    padding: 2em;
+    margin: 0.5em;
 }

@@ -125,7 +125,6 @@ YUI().use('ez-editorialapp', function (Y) {
     var app = new Y.eZ.EditorialApp({
             container: '.ez-editorial-app',
             viewContainer: '.ez-view-container',
-            errorViewContainer: '.ez-errorview-container',
             capi: new Y.eZ.CAPI(
                 "{{ app.request.uriForPath('/')|trim('/') }}",
                 new Y.eZ.SessionAuthAgent({
@@ -142,16 +141,18 @@ YUI().use('ez-editorialapp', function (Y) {
 {% verbatim %}
 
 <script type="text/x-handlebars-template" id="errorview-ez-template">
-    <div class="ez-error-content" tabindex="0">
-        <h2>Oh oh, an error has occured</h2>
-            <p class="additional-info">
-                {{#if additionalInfo.errorText}}
-                    {{ additionalInfo.errorText }}
-                {{/if}}
-            </p>
-        <button class="ez-close-app" data-icon="&#xe000;">Close the application</button>
-        <button class="ez-retry" data-icon="&#xe00f;">Retry the operation</button>
-    </div>
+        <div class="ez-error-content">
+            <div class="ez-error-dialog" tabindex="0">
+                <h2>Oh oh, an error has occurred</h2>
+                    <p class="additional-info">
+                        {{#if additionalInfo.errorText}}
+                            {{ additionalInfo.errorText }}
+                        {{/if}}
+                    </p>
+                <button class="pure-button ez-close-app" data-icon="&#xe000;">Close the application</button>
+                <button class="pure-button ez-retry" data-icon="&#xe00f;">Retry the operation</button>
+            </div>
+        </div>
 </script>
 
 <script type="text/x-handlebars-template" id="contenteditview-ez-template">

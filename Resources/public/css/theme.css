@@ -205,17 +205,11 @@
 }
 
 /* error view */
-.ez-view-errorview .ez-error-content {
+.ez-errorview-container .ez-error-dialog {
     background: #f3f3f3;
     border-radius: 10px;
 }
 
-.ez-error-content button {
-    background-color: #c6c6c6;
-    padding: 2em;
-    margin: 0.5em;
-}
-
-.ez-error-content button:hover {
-    background-color: #c0c0c0;
+.ez-error-dialog button {
+    font-size: 120%;
 }
