@@ -17,7 +17,7 @@ YUI.add('ez-previewactionview', function (Y) {
      * @namespace eZ
      * @class PreviewActionView
      * @constructor
-     * @extends Y.eZ.ButtonActionView
+     * @extends eZ.ButtonActionView
      */
     Y.eZ.PreviewActionView = Y.Base.create('previewActionView',  Y.eZ.ButtonActionView, [], {
 
@@ -63,6 +63,7 @@ YUI.add('ez-previewactionview', function (Y) {
          * Handles tap on one of the view's action buttons
          *
          * _handleActionClick
+         * @method _handleActionClick
          * @param e {Object} event facade
          * @protected
          */
@@ -82,7 +83,7 @@ YUI.add('ez-previewactionview', function (Y) {
         /**
          * Makes changes to UI once editPreview is hidden (removes preview selection)
          *
-         * @method render
+         * @method _handleEditPreviewHide
          * @return {eZ.EditActionBar} the view itself
          * @protected
          */

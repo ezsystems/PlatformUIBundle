@@ -14,7 +14,7 @@ YUI.add('ez-buttonactionview', function (Y) {
      * @namespace eZ
      * @class ButtonActionView
      * @constructor
-     * @extends Y.TemplateBasedView
+     * @extends eZ.TemplateBasedView
      */
     Y.eZ.ButtonActionView = Y.Base.create('buttonActionView',  Y.eZ.TemplateBasedView, [], {
         events: {
@@ -50,10 +50,7 @@ YUI.add('ez-buttonactionview', function (Y) {
          * @private
          */
         _handleActionClick: function (e) {
-            console.log(e);
-
-            var actionId = this.get('actionId');
-            this.fire('action' + actionId.charAt(0).toUpperCase() + actionId.slice(1));
+            this.fire(this.get('actionId') + 'Action');
         }
 
     }, {
@@ -122,7 +119,7 @@ YUI.add('ez-buttonactionview', function (Y) {
              * Content which is currently loaded in content edit view
              *
              * @attribute content
-             * @type Y.eZ.Content
+             * @type eZ.Content
              * @default {}
              * @required
              */

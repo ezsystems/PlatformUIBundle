@@ -45,8 +45,6 @@ YUI.add('ez-contenteditview', function (Y) {
 
             this.get('formView').addTarget(this);
             this.get('actionBar').addTarget(this);
-
-            this.on('*:action', this._dispatchAction, this);
         },
 
         /**

@@ -4,21 +4,33 @@
     right: 0;
     top: 0;
     z-index: 1010;
+
     -webkit-transform: translateX(0);
-    transform: translateX(0);
-    transition: transform 0.4s;
+       -moz-transform: translateX(0);
+        -ms-transform: translateX(0);
+         -o-transform: translateX(0);
+            transform: translateX(0);
+
     -webkit-transition: -webkit-transform 0.4s;
-    -webkit-transform-style: preserve-3d /* increasing performance on mobile devices */
+       -moz-transition: -moz-transform 0.4s;
+        -ms-transition: -ms-transform 0.4s;
+         -o-transition: -o-transform 0.4s;
+            transition: transform 0.4s;
+
+    -webkit-transform-style: preserve-3d; /* increasing performance on mobile devices */
+       -moz-transform-style: preserve-3d;
+            transform-style: preserve-3d;
 }
 
 .ez-editpreviewview-container.is-hidden {
     width: 1000px;
     right: auto;
+
     -webkit-transform: translateX(200%);
+    -moz-transform: translateX(200%);
+    -ms-transform: translateX(200%);
+    -o-transform: translateX(200%);
     transform: translateX(200%);
-    transition: transform 0.4s;
-    -webkit-transition: -webkit-transform 0.4s;
-    -webkit-transform-style: preserve-3d /* increasing performance on mobile devices */
 }
 
 .ez-view-editpreviewview {

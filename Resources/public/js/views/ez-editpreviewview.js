@@ -21,7 +21,7 @@ YUI.add('ez-editpreviewview', function (Y) {
      */
     Y.eZ.EditPreviewView = Y.Base.create('editPreviewView', Y.eZ.TemplateBasedView, [], {
         events: {
-            '.ez-preview-hide': {'tap': 'editPreviewHide'}
+            '.ez-preview-hide': {'tap': '_editPreviewHide'}
         },
 
         /**
@@ -69,10 +69,11 @@ YUI.add('ez-editpreviewview', function (Y) {
          * Event event handler for the "close preview" link in the edit preview
          * Hiding the edit preview with a nice transition
          *
-         * @method hide
+         * @method _editPreviewHide
+         * @protected
          * @param {Object} e event facade of the tap event
          */
-        editPreviewHide: function (e) {
+        _editPreviewHide: function (e) {
             e.preventDefault();
             this.get('container').get('parentNode').addClass(IS_HIDDEN_CLASS);
             this.fire('editPreviewHide');
