@@ -7,6 +7,7 @@
 
 <div class="app">
     <div class="view-container"></div>
+    <div class="ez-errorview-container is-hidden"></div>
 </div>
 
 
@@ -32,11 +33,18 @@
             "ez-editorialapp": {
                 requires: [
                     'app', 'app-transitions', 'node-screen', 'event-tap', 'transition',
-                    'fake-models'
+                    'fake-models', 'ez-errorview'
                 ],
                 fullpath: "../../../Resources/public/js/apps/ez-editorialapp.js"
             },
-
+            "ez-errorview": {
+                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-errorview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['view', 'handlebars'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            }
         }
     }).use('ez-editorialapp-tests', function (Y) {
         Y.Test.Runner.run();

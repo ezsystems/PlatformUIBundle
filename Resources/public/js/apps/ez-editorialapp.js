@@ -86,7 +86,7 @@ YUI.add('ez-editorialapp', function (Y) {
             });
 
             // Listening for events fired on child views
-            this.views['errorView'].instance.addTarget(this);
+            this.views.errorView.instance.addTarget(this);
         },
 
         /**
@@ -98,7 +98,7 @@ YUI.add('ez-editorialapp', function (Y) {
          */
         _handleError: function (errorInfo) {
 
-            var errorView = this.views['errorView'].instance;
+            var errorView = this.views.errorView.instance;
 
             errorView.setAttrs({
                 'retryAction': errorInfo.retryAction,
@@ -236,7 +236,7 @@ YUI.add('ez-editorialapp', function (Y) {
         close: function () {
             this.showView('dummyView');
             this.get('container').removeClass(APP_OPEN);
-            this.views['errorView'].instance.hide();
+            this.views.errorView.instance.hide();
         },
 
         /**

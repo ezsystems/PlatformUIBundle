@@ -123,7 +123,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             Y.Mock.expect(contentMock, {
                 method: 'get',
                 args: [
-                    'resources',
+                    'resources'
                 ],
                 returns: resources
             });
@@ -251,9 +251,10 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
         "Should show the error view, when catching 'fatalError' event": function () {
             var rendered = false, initialized = false, focused = false,
+                newErrorViewAttrs,
                 errorInfo = {'retryAction:': {}, 'additionalInfo': 1};
 
-            app.views.errorView.type = Y.Base.create('testView', Y.View, [], {
+            app.views.errorView.instance = Y.Base.create('testView', Y.View, [], {
                 initializer: function () {
                     initialized = true;
                 },
@@ -268,6 +269,10 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
                 setFocus: function () {
                     focused = true;
+                },
+
+                setAttrs: function (newAttrs) {
+                    newErrorViewAttrs = newAttrs;
                 }
             });
 
