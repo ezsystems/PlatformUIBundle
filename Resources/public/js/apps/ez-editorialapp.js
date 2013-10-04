@@ -14,7 +14,7 @@ YUI.add('ez-editorialapp', function (Y) {
         ERROR_VIEW_CONTAINER = '.ez-errorview-container',
 
         /**
-         * Fired when
+         * Fired whenever a fatal error occurs and application is not able to continue current action
          *
          * @event fatalError
          * @param retryAction {Object} Object describing the action which was interrupted by error, and could be retried
