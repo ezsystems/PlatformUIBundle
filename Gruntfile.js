@@ -74,7 +74,7 @@ module.exports = function(grunt) {
                 }
             },
             groverCoverage: {
-                command: '  grover --server --coverage --coverdir "' + reportDir + '" -S "?filter=coverage" Tests/js/*/*.html Tests/js/*/*/*.html',
+                command: 'grover --server --coverage --coverdir "' + reportDir + '" -S "?filter=coverage" Tests/js/*/*.html Tests/js/*/*/*.html',
                 options: {
                     stdout: true,
                     stderr: true

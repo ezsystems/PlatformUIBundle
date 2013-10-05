@@ -36,12 +36,24 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
 
         "Should close the application": function () {
+            var errorViewHidden = false,
+                testErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
+                    hide: function () {
+                        errorViewHidden = true;
+                    }
+                });
+            app.views.errorView.instance = new testErrorViewConstructor();
+
             app.close();
 
             this.wait(function () {
                 Y.assert(
                     !container.hasClass('is-app-open'),
                     "The app container should not have the class is-app-open"
+                );
+                Y.assert(
+                    errorViewHidden,
+                    "The error view should have been hidden"
                 );
             }, 400);
         },
@@ -58,7 +70,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         "Should close the application when contentEditView:close event is fired": function () {
             app.open();
 
-            app.fire('contentEditView:closeApp');
+            app.fire('contentEditView:close');
 
             this.wait(function () {
                 Y.assert(
@@ -251,30 +263,26 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
         "Should show the error view, when catching 'fatalError' event": function () {
             var rendered = false, initialized = false, focused = false,
-                newErrorViewAttrs,
-                errorInfo = {'retryAction:': {}, 'additionalInfo': 1};
+                errorInfo = {'retryAction:': {}, 'additionalInfo': 1},
+                testErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
+                    initializer: function () {
+                        initialized = true;
+                    },
 
-            app.views.errorView.instance = Y.Base.create('testView', Y.View, [], {
-                initializer: function () {
-                    initialized = true;
-                },
+                    render: function () {
+                        rendered = true;
+                        Y.Assert.areEqual(
+                            this.get('additionalInfo'), errorInfo.additionalInfo,
+                            "The view attributes should be updated with the app variables attribute"
+                        );
+                    },
 
-                render: function () {
-                    rendered = true;
-                    Y.Assert.areEqual(
-                        this.get('additionalInfo'), errorInfo.additionalInfo,
-                        "The view attributes should be updated with the app variables attribute"
-                    );
-                },
+                    setFocus: function () {
+                        focused = true;
+                    }
+                });
 
-                setFocus: function () {
-                    focused = true;
-                },
-
-                setAttrs: function (newAttrs) {
-                    newErrorViewAttrs = newAttrs;
-                }
-            });
+            app.views.errorView.instance = new testErrorViewConstructor();
 
             app.fire('contentEditView:fatalError', errorInfo);
 
@@ -284,8 +292,116 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 Y.assert(!app.get('loading'), "The app should not be in loading mode");
                 Y.assert(focused, "The error view should have input focus");
             }, 500);
-        }
+        },
 
+        "Should fire 'fatalError' event, when encountering an error during content loading": function () {
+            var undefinedContentId = "undefined",
+                fatalErrorFired = false,
+                contentMock = new Y.Mock(),
+                testErrorViewConstructor;
+
+            // We have to reinitialize the App, so our previous changes to app.views.errorView.instance will not have effect
+            app = new Y.eZ.EditorialApp({
+                container: '.app',
+                viewContainer: '.view-container',
+                capi: capiMock
+            });
+            app.render();
+
+            testErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
+                setFocus: function () {}
+            });
+            app.views.errorView.instance = new testErrorViewConstructor();
+
+            Y.Mock.expect(contentMock, {
+                method: 'set',
+                args: [
+                    'id',
+                    "/api/ezp/v2/content/objects/" + undefinedContentId
+                ]
+            });
+            Y.Mock.expect(contentMock, {
+                method: 'load',
+                args: [
+                    Y.Mock.Value.Object,
+                    Y.Mock.Value.Function
+                ],
+                run: function(options, callback) {
+                    // just return an error
+                    callback(true);
+                }
+            });
+
+            app.on('fatalError', function () {
+                fatalErrorFired = true;
+            });
+
+            app.set('contentEditViewVariables', {
+                content: contentMock,
+                owner: {},
+                contentType: {},
+                mainLocation: {}
+            });
+
+            app.loadContentForEdit({params: {id: undefinedContentId}}, {}, function () {});
+
+            Y.assert(
+                fatalErrorFired,
+                "'fatalError' event should have been fired"
+            );
+            Y.Mock.verify(contentMock);
+        },
+
+        "Should recieve 'retryAction' event fired on errorView": function () {
+            var retryActionReceived = false;
+
+            // We have to reinitialize the App, so our previous changes to app.views.errorView.instance will not have effect
+            app = new Y.eZ.EditorialApp({
+                container: '.app',
+                viewContainer: '.view-container',
+                capi: capiMock
+            });
+            app.render();
+
+            app.on('errorView:retryAction', function (retryAction) {
+                retryActionReceived = true;
+            });
+
+            app.views.errorView.instance.fire('retryAction',{
+                run: function () {},
+                args: [],
+                context: null
+            });
+
+            Y.assert(
+                retryActionReceived,
+                "The app should have received 'retryAction' event"
+            );
+        },
+
+        "Should correctly retry an action with  '_retryAction' method": function () {
+            var makeMeTheContext = {},
+                testArgumentInput1 = "abc",
+                testArgumentInput2 = "xyz",
+                actionRetried = false,
+                retryMe = function (testArgument1, testArgument2) {
+                    Y.Assert.areEqual(testArgumentInput1, testArgument1);
+                    Y.Assert.areEqual(testArgumentInput2, testArgument2);
+                    Y.Assert.areSame(this, makeMeTheContext);
+                    actionRetried = true;
+                }
+
+            app.fire('whatever:retryAction', {
+                run: retryMe,
+                args: [testArgumentInput1, testArgumentInput2],
+                context: makeMeTheContext
+            });
+
+            Y.assert(
+                actionRetried,
+                "Test action should have been retried"
+            );
+        }
 
     });
 

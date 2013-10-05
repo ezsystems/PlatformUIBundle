@@ -174,14 +174,14 @@ YUI.add('ez-editorialapp', function (Y) {
                     }
                 };
 
-
             app.set('loading', true);
             content.set('id', "/api/ezp/v2/content/objects/" + req.params.id);
             content.load(loadOptions, function (error) {
                 var tasks,
-                    resources = content.get('resources');
+                    resources;
 
                 if (!errorHandling(error, "Could not load the content with id '" + req.params.id + "'")) {
+                    resources = content.get('resources');
 
                     // parallel loading of owner, mainLocation and contentType
                     tasks = new Y.Parallel();
