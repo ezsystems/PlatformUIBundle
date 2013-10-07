@@ -210,6 +210,7 @@
     border-radius: 10px;
 }
 
-.ez-error-dialog button {
-    font-size: 120%;
+.ez-errorview-container .ez-error-dialog h2 {
+    font-size: 160%;
+    border-bottom: 2px solid #bf3e33;
 }

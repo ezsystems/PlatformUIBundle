@@ -6,6 +6,7 @@
     right: 0;
     top: 0;
     z-index: 1050;
+    background: rgba(0, 0, 0, 0.4);
 
     -webkit-transform: translateX(0);
        -moz-transform: translateX(0);
@@ -25,8 +26,6 @@
 }
 
 .ez-errorview-container.is-hidden {
-    width: 1000px;
-    right: auto;
     -webkit-transform: translateX(200%);
        -moz-transform: translateX(200%);
         -ms-transform: translateX(200%);
@@ -36,15 +35,29 @@
 
 .ez-errorview-container .ez-error-content {
     height: 100%;
-    padding: 5% 20%;
     text-align: center;
 }
 
 .ez-errorview-container .ez-error-dialog {
-    padding: 2em;
+    display: inline-block;
+    margin-top: 5em;
+    padding: 1em;
+    text-align: left;
 }
 
-.ez-errorview-container .ez-error-dialog button {
-    padding: 2em;
+.ez-errorview-container .ez-error-dialog h2 {
+    margin-top: 0;
+}
+
+.ez-error-dialog .ez-buttons-container {
+    text-align: center;
+}
+
+.ez-error-dialog button {
+    padding: 0.7em;
     margin: 0.5em;
+}
+
+.ez-error-dialog button:before {
+    margin-right: 0.5em;
 }
