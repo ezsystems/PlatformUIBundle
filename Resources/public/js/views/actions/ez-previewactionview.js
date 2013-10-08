@@ -50,7 +50,7 @@ YUI.add('ez-previewactionview', function (Y) {
             }));
 
             //Do NOT render preview yet (to reduce loading time for main UI parts)
-            Y.one(EDIT_PREVIEW_CONTAINER).append(this.get('editPreview').get('container'));
+            container.one(EDIT_PREVIEW_CONTAINER).append(this.get('editPreview').get('container'));
 
             return this;
         },
@@ -62,7 +62,6 @@ YUI.add('ez-previewactionview', function (Y) {
         /**
          * Handles tap on one of the view's action buttons
          *
-         * _handleActionClick
          * @method _handleActionClick
          * @param e {Object} event facade
          * @protected

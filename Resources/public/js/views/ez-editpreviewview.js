@@ -56,14 +56,27 @@ YUI.add('ez-editpreviewview', function (Y) {
 
         /**
          * Showing the edit preview with a nice transition
+         * Positioning
          *
          * @method show
          */
         show: function () {
-            this.get('container').get('parentNode').removeClass(IS_HIDDEN_CLASS);
+            var previewContainer = this.get('container').get('parentNode'),
+                previewActionContainer,
+                previewWidth;
+
+            if (previewContainer.hasClass(IS_HIDDEN_CLASS)) {
+                previewActionContainer = previewContainer.get('parentNode');
+                previewWidth = previewActionContainer.getX();
+
+                previewContainer.setStyle('width', previewWidth + 'px');
+                previewContainer.setXY([previewWidth * 2, 0]);
+
+                previewContainer.removeClass(IS_HIDDEN_CLASS);
+            }
+
             this.render();
         },
-
 
         /**
          * Event event handler for the "close preview" link in the edit preview

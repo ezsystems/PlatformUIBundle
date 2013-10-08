@@ -1,8 +1,5 @@
 .ez-editpreviewview-container {
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
     z-index: 1010;
 
     -webkit-transform: translateX(0);
@@ -23,9 +20,6 @@
 }
 
 .ez-editpreviewview-container.is-hidden {
-    width: 1000px;
-    right: auto;
-
     -webkit-transform: translateX(200%);
     -moz-transform: translateX(200%);
     -ms-transform: translateX(200%);
@@ -56,6 +50,11 @@
     padding: 0.5em;
     background: none;
     border: none;
+}
+
+.ez-preview-content .ez-preview-hide:after {
+    font-size: 90%;
+    padding-left: 0.5em;
 }
 
 .ez-preview-content .preview-device {

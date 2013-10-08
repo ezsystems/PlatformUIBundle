@@ -35,52 +35,31 @@ YUI.add('ez-editactionbarview', function (Y) {
          */
         initializer: function () {
             this._sortActions();
-            Y.on("windowresize", Y.bind(this.render, this));
+            Y.on("windowresize", Y.bind(this.handleWindowResize, this));
         },
 
         /**
-         * Renders the edit action bar.
-         * Height responsive - we are filling-in main (ACTIVE_MENU_CLASS) menu, until container becomes higher than the screen bounds,
-         * after that we are filling hidden (VIEW_MORE_MENU_CLASS) menu.
+         * Renders the edit action bar (non-height-responsive version).
          *
          * @method render
          * @return {eZ.EditActionBarView} the view itself
          */
         render: function () {
             var container = this.get('container'),
-                screenHeight = container.get('winHeight'),
-                viewMoreTrigger,
-                barHeight,
-                showViewMore = false;
+                activeMenu,
+                viewMoreTrigger;
 
             container.setHTML(this.template({
                 viewMoreText : this.get('viewMoreText')
             }));
 
+            activeMenu = container.one(ACTIVE_MENU_CLASS);
             viewMoreTrigger = container.one('.view-more-button');
             viewMoreTrigger.removeClass(IS_SHOWN_CLASS);
 
+
             Y.Array.each(this.get('actionsList'), function(actionView){
-
-                if (!showViewMore) {
-
-                    container.one(ACTIVE_MENU_CLASS).append(actionView.render().get('container'));
-                    barHeight = container.get('scrollHeight');
-
-                    if (barHeight > screenHeight) {
-                        // set a flag, that .view-more-actions menu should be filled from now on, until the end of the actionsList
-                        showViewMore = true;
-                        viewMoreTrigger.addClass(IS_SHOWN_CLASS);
-
-                        // move the last actionView into .view-more-actions menu
-                        actionView.get('container').remove();
-                        container.one(VIEW_MORE_MENU_CLASS).append(actionView.render().get('container'));
-                    }
-
-                } else {
-                    container.one(VIEW_MORE_MENU_CLASS).prepend(actionView.render().get('container'));
-                }
-
+                activeMenu.append(actionView.render().get('container'));
             });
 
             return this;
@@ -120,6 +99,53 @@ YUI.add('ez-editactionbarview', function (Y) {
             }
 
             return false;
+        },
+
+        /**
+         * Handle windows resizing by rearranging the actions between menus
+         * Height responsive - we are filling-in main (ACTIVE_MENU_CLASS) menu, until container becomes higher than the screen bounds,
+         * after that we are filling hidden (VIEW_MORE_MENU_CLASS) menu.
+         *
+         * @method handleWindowResize
+         * @param {Object} e event facade of the resize event
+         */
+        handleWindowResize: function (e) {
+            var container = this.get('container'),
+                screenHeight = container.get('winHeight'),
+                activeMenu = container.one(ACTIVE_MENU_CLASS),
+                viewMoreMenu = container.one(VIEW_MORE_MENU_CLASS),
+                viewMoreTrigger = container.one('.view-more-button'),
+                barHeight,
+                showViewMore = false;
+
+            viewMoreTrigger.removeClass(IS_SHOWN_CLASS);
+
+            // Emptying all the menus
+            Y.Array.each(this.get('actionsList'), function(actionView){
+                actionView.get('container').remove();
+            });
+
+            // Composing height responsive bar
+            Y.Array.each(this.get('actionsList'), function(actionView){
+                if (!showViewMore) {
+
+                    activeMenu.append(actionView.render().get('container'));
+                    barHeight = container.get('scrollHeight');
+
+                    if (barHeight > screenHeight) {
+                        // set a flag, that .view-more-actions menu should be filled from now on, until the end of the actionsList
+                        showViewMore = true;
+                        viewMoreTrigger.addClass(IS_SHOWN_CLASS);
+
+                        // move the last actionView into .view-more-actions menu
+                        actionView.get('container').remove();
+                        viewMoreMenu.append(actionView.render().get('container'));
+                    }
+
+                } else {
+                    viewMoreMenu.prepend(actionView.render().get('container'));
+                }
+            });
         },
 
         /**
@@ -169,6 +195,7 @@ YUI.add('ez-editactionbarview', function (Y) {
              */
 
             actionsList: {
+                cloneDefaultValue: false,
                 value: [
                     new Y.eZ.ButtonActionView({
                         actionId : "publish",

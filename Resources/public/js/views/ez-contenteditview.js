@@ -77,9 +77,9 @@ YUI.add('ez-contenteditview', function (Y) {
 
             container.one(FORM_CONTAINER).append(this.get('formView').render().get('container'));
 
-            // Do not render action bar here, but window resize event will be triggered from app
-            // after content edit view loading, (to draw responsive height version)
-            container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').get('container'));
+            // Note: render() is drawing non-height-responsive version of the action bar
+            // but handleWindowResize() event will be triggered from app.handleContentEdit(), when everything is loaded to draw the responsive version
+            container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').render().get('container'));
 
             return this;
         },

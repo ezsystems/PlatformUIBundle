@@ -2,7 +2,6 @@
     overflow: hidden;
     height: 100%;
     padding-right: 230px;
-    position: relative;
 }
 
 @media (min-width: 980px) {

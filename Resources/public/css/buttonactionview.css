@@ -1,5 +1,4 @@
 .ez-view-editactionbarview .actions-list .action {
-    position: relative;
     padding-left: 1em;
     padding-top: 1em;
     cursor: pointer;
@@ -15,7 +14,7 @@
 }
 
 .ez-view-editactionbarview .action .action-icon:before {
-    position: absolute;
+    float: left;
 }
 
 .ez-view-editactionbarview .actions-list .action-label {
