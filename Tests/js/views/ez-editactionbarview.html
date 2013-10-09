@@ -9,44 +9,41 @@
 
 <script type="text/x-handlebars-template" id="editactionbarview-ez-template">
     <menu class="actions-list active-actions" tabindex="0">
-        {{{ actions }}}
-        {{#if viewMoreActions.length}}
-        <button class="view-more-button">{{ viewMoreText }}</button>
-        <menu class="actions-list view-more-actions">
-            {{{ viewMoreActions }}}
-        </menu>
-        {{/if}}
+    </menu>
+    <button class="view-more-button is-hidden">{{ viewMoreText }}</button>
+    <menu class="actions-list view-more-actions is-hidden">
     </menu>
 </script>
 
 <script type="text/x-handlebars-template" id="buttonactionview-ez-template">
-    <li class="action {{#if disabled}}is-disabled{{else}}{{#if actionId}}action-trigger{{/if}}{{/if}}" data-action="{{ actionId }}">
+    <button class="action {{#if disabled}}is-disabled{{else}}{{#if actionId}}action-trigger{{/if}}{{/if}}" data-action="{{ actionId }}">
         <div class="font-icon action-icon">
             <p class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</p>
             {{#if hint}}
             <p class="action-hint">{{ hint }}</p>
             {{/if}}
         </div>
-    </li>
+    </button>
 </script>
 
 <script type="text/x-handlebars-template" id="previewactionview-ez-template">
-    <li class="action {{#if disabled}}is-disabled{{else}}{{#if action}}action-trigger{{/if}}{{/if}}" data-action="{{ actionId }}">
+    <div class="action {{#if disabled}}is-disabled{{/if}}" data-action="{{ actionId }}">
         <div class="font-icon action-icon">
             <p class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</p>
             {{#if hint}}
             <p class="action-hint">{{ hint }}</p>
             {{/if}}
-            <div class="action-widget">
+            <menu class="preview-modes">
                 {{#each buttons}}
-                <span class="action-widget-button action-trigger font-icon" data-action="{{ ../actionId }}" {{#if option}}data-action-option="{{ option }}"{{/if}} ></span>
+                <button class="preview-mode-button action-trigger font-icon" data-action="{{ ../actionId }}" {{#if option}}data-action-option="{{ option }}"{{/if}} ></button>
                 {{/each}}
-            </div>
+            </menu>
         </div>
-    </li>
+        <div class="ez-editpreviewview-container is-hidden"></div>
+    </div>
 </script>
 
-<script type="text/javascript" src="http://yui.yahooapis.com/3.12.0/build/yui/yui.js"></script>
+<script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-editactionbarview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
@@ -73,10 +70,13 @@
                 fullpath: "../../../Resources/public/js/views/actions/ez-buttonactionview.js"
             },
             "ez-previewactionview": {
-                requires: ['ez-buttonactionview'],
+                requires: ['ez-buttonactionview', 'ez-editpreviewview'],
                 fullpath: "../../../Resources/public/js/views/actions/ez-previewactionview.js"
             },
-
+            "ez-editpreviewview": {
+                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-editpreviewview.js"
+            },
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"

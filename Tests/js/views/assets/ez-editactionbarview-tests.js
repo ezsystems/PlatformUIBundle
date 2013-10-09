@@ -69,25 +69,11 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             origTpl = this.view.template;
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(3, Y.Object.keys(variables).length, "The template should receive 2 variables");
+                Y.Assert.areEqual(1, Y.Object.keys(variables).length, "The template should receive 1 variable");
                 Y.Assert.isString(variables.viewMoreText, "View more text label should be available in the template and should be a string");
-                Y.Assert.isString(variables.actions, "actions List should be available in the template and should be a string");
-                Y.Assert.isString(variables.viewMoreActions, "viewMoreActions List should be available in the template and should be a string");
                 return origTpl.apply(this, arguments);
             };
             this.view.render();
-        },
-
-        "Test available variable in template while _renderFull() call": function () {
-            origTpl = this.view.template;
-            this.view.template = function (variables) {
-                Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(2, Y.Object.keys(variables).length, "The template should receive 2 variables");
-                Y.Assert.isString(variables.actions, "actions List should be available in the template and should be a string");
-                Y.Assert.isString(variables.viewMoreText, "View more text label should be available in the template and should be a string");
-                return origTpl.apply(this, arguments);
-            };
-            this.view._renderFull();
         },
 
         "Should sort actions by priority in descending order": function () {
@@ -110,14 +96,14 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         "Should remove actions from actions list": function () {
             this.view.removeAction("save");
 
-            Y.assert( this.view.get('actionsList').length == 2, "New action should have been added to list" );
+            Y.assert( this.view.get('actionsList').length == 2, "The target action should have been removed from list" );
         },
 
-        "Should not show 'View more' button, when all the actions fit on the screen": function () {
-            Y.assert( Y.one('.view-more-button') === null, "Button should not be present in DOM" );
+        "'View more' button should NOT be visible, when all the actions fit on the screen": function () {
+            Y.assert( Y.one('.view-more-button').hasClass('is-hidden'), "Button should NOT be visible" );
         },
 
-        "Should show 'View more' button, when all the actions don't fit on the screen": function () {
+        "'View more' button should be visible, when all the actions don't fit on the screen": function () {
             var counter;
 
             for (counter = 0; counter < 30; counter++) {
@@ -130,7 +116,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             }
 
             this.view.handleWindowResize();
-            Y.assert( Y.one('.view-more-button') !== null, "Button should be present in DOM" );
+            Y.assert( !Y.one('.view-more-button').hasClass('is-hidden'), "Button should be visible" );
         },
 
         "Should open additional menu when tapping 'View more' button": function () {
@@ -149,7 +135,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             viewMoreButton = Y.one('.view-more-button');
             viewMoreMenu = Y.one('.view-more-actions');
 
-            Y.assert( !viewMoreMenu.hasClass('is-shown'), "Additional menu should NOT be visible before the tap" );
+            Y.assert(viewMoreMenu.hasClass('is-hidden'), "Additional menu should NOT be visible before the tap" );
 
             viewMoreButton.tap({
                 target: viewMoreButton,
@@ -268,140 +254,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
                 ]
             });
 
-            Y.assert( viewMoreMenu.hasClass('is-shown'), "Additional menu should be visible after the tap" );
-        },
-
-
-        "Should fire an action once any of the action labels are tapped": function () {
-            var publishActionLabel,
-                actionFired = false;
-
-            this.view.on('action', function () {
-                actionFired = true;
-            });
-
-            this.view.render();
-
-            publishActionLabel = this.view.get('container').one('[data-action="publish"]');
-
-            publishActionLabel.tap({
-                target: publishActionLabel,
-                type: GESTURE_MAP.start,
-                bubbles: true,            // boolean
-                cancelable: true,         // boolean
-                view: window,               // DOMWindow
-                detail: 0,
-                pageX: 5,
-                pageY:5,            // long
-                screenX: 5,
-                screenY: 5,  // long
-                clientX: 5,
-                clientY: 5,   // long
-                ctrlKey: false,
-                altKey: false,
-                shiftKey:false,
-                metaKey: false, // boolean
-                touches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: publishActionLabel
-                    }
-                ],            // TouchList
-                targetTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: publishActionLabel
-                    }
-                ],      // TouchList
-                changedTouches: []     // TouchList
-            }, {
-                target: publishActionLabel,
-                type: GESTURE_MAP.end,
-                bubbles: true,            // boolean
-                cancelable: true,         // boolean
-                view: window,               // DOMWindow
-                detail: 0,
-                pageX: 5,
-                pageY:5,            // long
-                screenX: 5,
-                screenY: 5,  // long
-                clientX: 5,
-                clientY: 5,   // long
-                ctrlKey: false,
-                altKey: false,
-                shiftKey:false,
-                metaKey: false, // boolean
-                touches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: publishActionLabel
-                    }
-                ],            // TouchList
-                targetTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: publishActionLabel
-                    }
-                ],      // TouchList
-                changedTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: publishActionLabel
-                    }
-                ]
-            });
-
-            Y.assert(actionFired, "Action event should have been fired");
+            Y.assert( !viewMoreMenu.hasClass('is-hidden'), "Additional menu should be visible after the tap" );
         }
 
     });
