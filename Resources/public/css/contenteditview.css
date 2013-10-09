@@ -12,7 +12,6 @@
 
 .ez-view-contenteditview .ez-main-content {
     min-height: 800px; /* temporary, until we get enough content */
-    position: relative; /* to absolutely position editPreview inside */
 }
 
 .ez-view-contenteditview header {
