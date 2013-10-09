@@ -7,11 +7,10 @@
 .ez-view-editactionbarview .view-more-button {
     margin: 0.5em;
     padding: 0.5em 2em;
-    visibility: hidden;
 }
 
-.ez-view-editactionbarview .view-more-button.is-shown {
-    visibility: visible;
+.ez-view-editactionbarview .view-more-button.is-hidden {
+    visibility: hidden;
 }
 
 .ez-view-editactionbarview .view-more-actions {
@@ -20,11 +19,10 @@
     width: 230px;
     right: 230px;
     z-index: 1015;
-    display: none;
 }
 
-.ez-view-editactionbarview .view-more-actions.is-shown {
-    display: block;
+.ez-view-editactionbarview .view-more-actions.is-hidden {
+    display: none;
 }
 
 .ez-view-editactionbarview .actions-list .action.is-disabled,

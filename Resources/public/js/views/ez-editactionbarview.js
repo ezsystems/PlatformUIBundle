@@ -8,9 +8,10 @@ YUI.add('ez-editactionbarview', function (Y) {
 
     Y.namespace('eZ');
 
-    var IS_SHOWN_CLASS = "is-shown",
+    var IS_HIDDEN_CLASS = "is-hidden",
         ACTIVE_MENU_CLASS = ".active-actions",
-        VIEW_MORE_MENU_CLASS = ".view-more-actions";
+        VIEW_MORE_MENU_CLASS = ".view-more-actions",
+        VIEW_MORE_BUTTON_CLASS = ".view-more-button";
 
     /**
      * The edit action bar
@@ -54,9 +55,7 @@ YUI.add('ez-editactionbarview', function (Y) {
             }));
 
             activeMenu = container.one(ACTIVE_MENU_CLASS);
-            viewMoreTrigger = container.one('.view-more-button');
-            viewMoreTrigger.removeClass(IS_SHOWN_CLASS);
-
+            viewMoreTrigger = container.one(VIEW_MORE_BUTTON_CLASS);
 
             Y.Array.each(this.get('actionsList'), function(actionView){
                 activeMenu.append(actionView.render().get('container'));
@@ -114,11 +113,11 @@ YUI.add('ez-editactionbarview', function (Y) {
                 screenHeight = container.get('winHeight'),
                 activeMenu = container.one(ACTIVE_MENU_CLASS),
                 viewMoreMenu = container.one(VIEW_MORE_MENU_CLASS),
-                viewMoreTrigger = container.one('.view-more-button'),
+                viewMoreTrigger = container.one(VIEW_MORE_BUTTON_CLASS),
                 barHeight,
                 showViewMore = false;
 
-            viewMoreTrigger.removeClass(IS_SHOWN_CLASS);
+            viewMoreTrigger.addClass(IS_HIDDEN_CLASS);
 
             // Emptying all the menus
             Y.Array.each(this.get('actionsList'), function(actionView){
@@ -135,7 +134,7 @@ YUI.add('ez-editactionbarview', function (Y) {
                     if (barHeight > screenHeight) {
                         // set a flag, that .view-more-actions menu should be filled from now on, until the end of the actionsList
                         showViewMore = true;
-                        viewMoreTrigger.addClass(IS_SHOWN_CLASS);
+                        viewMoreTrigger.removeClass(IS_HIDDEN_CLASS);
 
                         // move the last actionView into .view-more-actions menu
                         actionView.get('container').remove();
@@ -172,12 +171,12 @@ YUI.add('ez-editactionbarview', function (Y) {
          */
         _toggleViewMore: function (e) {
             var container = this.get('container'),
-                viewMoreTrigger = container.one('.view-more-button'),
-                viewMoreActionsNode = container.one('.view-more-actions');
+                viewMoreTrigger = container.one(VIEW_MORE_BUTTON_CLASS),
+                viewMoreActionsNode = container.one(VIEW_MORE_MENU_CLASS);
 
-            viewMoreActionsNode.toggleClass(IS_SHOWN_CLASS);
+            viewMoreActionsNode.toggleClass(IS_HIDDEN_CLASS);
 
-            if (viewMoreActionsNode.hasClass(IS_SHOWN_CLASS)) {
+            if (!viewMoreActionsNode.hasClass(IS_HIDDEN_CLASS)) {
                 viewMoreTrigger.setHTML(this.get('viewLessText'));
             } else {
                 viewMoreTrigger.setHTML(this.get('viewMoreText'));
