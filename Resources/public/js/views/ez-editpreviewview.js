@@ -9,10 +9,11 @@ YUI.add('ez-editpreviewview', function (Y) {
     Y.namespace('eZ');
 
     var IS_HIDDEN_CLASS = 'is-hidden',
-        IS_LOADING_CLASS = 'is-loading';
+        IS_LOADING_CLASS = 'is-loading',
+        LOADER_NODE = '.ez-loader';
 
     /**
-     * The edit action bar
+     * The edit preview view
      *
      * @namespace eZ
      * @class EditPreviewView
@@ -43,7 +44,7 @@ YUI.add('ez-editpreviewview', function (Y) {
             }));
 
             // loader node for the iframe
-            loader = container.one('.loader');
+            loader = container.one(LOADER_NODE);
             loader.addClass(IS_LOADING_CLASS);
 
             container.one('.preview-iframe').on('load', function () {
@@ -55,22 +56,17 @@ YUI.add('ez-editpreviewview', function (Y) {
 
 
         /**
-         * Showing the edit preview with a nice transition
-         * Positioning
+         * Showing the edit preview view with a nice transition
          *
          * @method show
          */
-        show: function () {
-            var previewContainer = this.get('container').get('parentNode'),
-                previewActionContainer,
-                previewWidth;
+        show: function (newWidth) {
+            var previewContainer = this.get('container').get('parentNode');
 
             if (previewContainer.hasClass(IS_HIDDEN_CLASS)) {
-                previewActionContainer = previewContainer.get('parentNode');
-                previewWidth = previewActionContainer.getX();
 
-                previewContainer.setStyle('width', previewWidth + 'px');
-                previewContainer.setXY([previewWidth * 2, 0]);
+                previewContainer.setStyle('width', newWidth + 'px');
+                previewContainer.setXY([newWidth * 2, 0]);
 
                 previewContainer.removeClass(IS_HIDDEN_CLASS);
             }

@@ -36,7 +36,7 @@ YUI.add('ez-editactionbarview', function (Y) {
          */
         initializer: function () {
             this._sortActions();
-            Y.on("windowresize", Y.bind(this.handleWindowResize, this));
+            Y.on("windowresize", Y.bind(this.handleHeightUpdate, this));
         },
 
         /**
@@ -56,6 +56,7 @@ YUI.add('ez-editactionbarview', function (Y) {
 
             activeMenu = container.one(ACTIVE_MENU_CLASS);
             viewMoreTrigger = container.one(VIEW_MORE_BUTTON_CLASS);
+            viewMoreTrigger.addClass(IS_HIDDEN_CLASS);
 
             Y.Array.each(this.get('actionsList'), function(actionView){
                 activeMenu.append(actionView.render().get('container'));
@@ -101,54 +102,80 @@ YUI.add('ez-editactionbarview', function (Y) {
         },
 
         /**
-         * Handle windows resizing by rearranging the actions between menus
-         * Height responsive - we are filling-in main (ACTIVE_MENU_CLASS) menu, until container becomes higher than the screen bounds,
+         * Handles container height update by rearranging the actions between menus
+         * We are filling-in main (ACTIVE_MENU_CLASS) menu, until container becomes higher than the screen bounds,
          * after that we are filling hidden (VIEW_MORE_MENU_CLASS) menu.
          *
-         * @method handleWindowResize
+         * @method handleHeightUpdate
          * @param {Object} e event facade of the resize event
          */
-        handleWindowResize: function (e) {
+        handleHeightUpdate: function (e) {
             var container = this.get('container'),
                 screenHeight = container.get('winHeight'),
                 activeMenu = container.one(ACTIVE_MENU_CLASS),
                 viewMoreMenu = container.one(VIEW_MORE_MENU_CLASS),
                 viewMoreTrigger = container.one(VIEW_MORE_BUTTON_CLASS),
                 barHeight,
-                showViewMore = false;
-
-            viewMoreTrigger.addClass(IS_HIDDEN_CLASS);
-
-            // Emptying all the menus
-            Y.Array.each(this.get('actionsList'), function(actionView){
-                actionView.get('container').remove();
-            });
-
-            // Composing height responsive bar
-            Y.Array.each(this.get('actionsList'), function(actionView){
-                if (!showViewMore) {
-
-                    activeMenu.append(actionView.render().get('container'));
-                    barHeight = container.get('scrollHeight');
-
-                    if (barHeight > screenHeight) {
-                        // set a flag, that .view-more-actions menu should be filled from now on, until the end of the actionsList
-                        showViewMore = true;
-                        viewMoreTrigger.removeClass(IS_HIDDEN_CLASS);
-
-                        // move the last actionView into .view-more-actions menu
-                        actionView.get('container').remove();
-                        viewMoreMenu.append(actionView.render().get('container'));
+                activeMenuHasActions,
+                viewMoreMenuHasActions,
+                pushLastActionToViewMore = function () {
+                    var actionViewNode = activeMenu.get('children').slice(-1).item(0);
+                    if (actionViewNode) {
+                        actionViewNode.remove();
+                        viewMoreMenu.append(actionViewNode);
+                        checkViewMoreTrigger();
                     }
+                },
+                pullFirstActionFromViewMore = function () {
+                    var actionViewNode = viewMoreMenu.get('children').slice(-1).item(0);
+                    if (actionViewNode) {
+                        actionViewNode.remove();
+                        activeMenu.append(actionViewNode);
+                        checkViewMoreTrigger();
+                    }
+                },
+                checkViewMoreTrigger = function () {
+                    if (viewMoreMenu.get('children').isEmpty()) {
+                        viewMoreTrigger.addClass(IS_HIDDEN_CLASS);
+                    } else {
+                        viewMoreTrigger.removeClass(IS_HIDDEN_CLASS);
+                    }
+                };
 
-                } else {
-                    viewMoreMenu.prepend(actionView.render().get('container'));
+            barHeight = container.get('scrollHeight');
+            if (barHeight > screenHeight) {
+
+                activeMenuHasActions = !activeMenu.get('children').isEmpty();
+                if (activeMenuHasActions) {
+                    // push actions into view more menu until the main menu is not overflowed any more or we are out of actions in the main menu
+                    while (barHeight > screenHeight && activeMenuHasActions) {
+                        pushLastActionToViewMore();
+                        barHeight = container.get('scrollHeight');
+                        activeMenuHasActions = !activeMenu.get('children').isEmpty();
+                    }
                 }
-            });
+
+            } else {
+                // Do we have to pull some actions from view more menu back to active menu?
+                viewMoreMenuHasActions = !viewMoreMenu.get('children').isEmpty();
+                if (viewMoreMenuHasActions) {
+                    // pull actions from view more menu until the main menu is overflowed or we are out of actions in view more menu
+                    while ( (barHeight <= screenHeight) && viewMoreMenuHasActions ) {
+                        pullFirstActionFromViewMore();
+                        barHeight = container.get('scrollHeight');
+                        viewMoreMenuHasActions = !viewMoreMenu.get('children').isEmpty();
+                    }
+                    // if we stopped because the main menu is overflowed, then return last action back to view more menu.
+                    if (barHeight > screenHeight) {
+                        pushLastActionToViewMore();
+                    }
+                }
+            }
+
         },
 
         /**
-         * Sorts the main actions list by the actions priority (desc)
+         * Sorts the actions list by priority
          *
          * @method _sortActions
          * @protected
@@ -189,7 +216,7 @@ YUI.add('ez-editactionbarview', function (Y) {
              * The actions list
              *
              * @attribute actionsList
-             * @default Preset array on ActionViews
+             * @default Preset array of action views
              * @required
              */
 
@@ -206,8 +233,7 @@ YUI.add('ez-editactionbarview', function (Y) {
                         actionId : "save",
                         disabled : true,
                         label : "Save",
-                        priority : 190,
-                        hint : "the test hint"
+                        priority : 190
                     }),
                     new Y.eZ.ButtonActionView({
                         actionId : "discard",

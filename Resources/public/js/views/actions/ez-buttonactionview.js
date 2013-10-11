@@ -1,7 +1,7 @@
 YUI.add('ez-buttonactionview', function (Y) {
     "use strict";
     /**
-     * Provides the Button Action View model class
+     * Provides the button action view class
      *
      * @module ez-buttonactionview
      */
@@ -45,9 +45,9 @@ YUI.add('ez-buttonactionview', function (Y) {
         /**
          * Handles tap on the view's action button
          *
-         * _handleActionClick
+         * @method _handleActionClick
          * @param e {Object} event facade
-         * @private
+         * @protected
          */
         _handleActionClick: function (e) {
             this.fire(this.get('actionId') + 'Action');
@@ -60,12 +60,12 @@ YUI.add('ez-buttonactionview', function (Y) {
              * If priority is equal, actions are ordered in the order they are added to list
              *
              * @attribute priority
-             * @default 0
+             * @default 100
              * @type int
              * @required
              */
             priority: {
-                value: 0
+                value: 100
             },
 
             /**

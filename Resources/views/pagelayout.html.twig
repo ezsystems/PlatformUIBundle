@@ -1,6 +1,6 @@
 {% extends "eZDemoBundle::pagelayout.html.twig" %}
 
-{% block footerScript %}
+{% block footer %}
 <p style="position: absolute; top: 0; left: 200px;">
     <a href="#/edit/59" class="btn btn-warning">Edit "Getting started"</a>
     <a href="#/edit/109" class="btn btn-warning">Test field edit views</a>
@@ -208,26 +208,26 @@ YUI().use('ez-editorialapp', function (Y) {
 <script type="text/x-handlebars-template" id="contenteditformview-ez-template">
     <form class="ez-form-content">
         {{#each fieldGroups}}
-        <fieldset class="ez-fieldgroup ez-fieldgroup-{{ fieldGroupName }}">
-            <legend class="fieldgroup-name font-icon">{{fieldGroupName}}</legend>
-            <div class="fieldgroup-fields"></div>
-        </fieldset>
+            <fieldset class="ez-fieldgroup ez-fieldgroup-{{ fieldGroupName }}">
+                <legend class="fieldgroup-name font-icon">{{fieldGroupName}}</legend>
+                <div class="fieldgroup-fields"></div>
+            </fieldset>
         {{/each}}
     </form>
 </script>
 
 <script type="text/x-handlebars-template" id="editactionbarview-ez-template">
-    <menu class="actions-list active-actions" tabindex="0">
+    <menu class="ez-actions-list active-actions" tabindex="0">
     </menu>
     <button class="view-more-button is-hidden">{{ viewMoreText }}</button>
-    <menu class="actions-list view-more-actions is-hidden">
+    <menu class="ez-actions-list view-more-actions is-hidden">
     </menu>
 </script>
 
 <script type="text/x-handlebars-template" id="buttonactionview-ez-template">
-    <button class="action {{#if disabled}}is-disabled{{else}}{{#if actionId}}action-trigger{{/if}}{{/if}}" data-action="{{ actionId }}">
+    <button class="ez-action {{#if disabled}}is-disabled {{else}}{{#if actionId}}action-trigger {{/if}}{{/if}}{{#if hint}}with-hint{{/if}}" data-action="{{ actionId }}">
         <div class="font-icon action-icon">
-            <p class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</p>
+            <p class="action-label">{{ label }}</p>
             {{#if hint}}
             <p class="action-hint">{{ hint }}</p>
             {{/if}}
@@ -236,9 +236,9 @@ YUI().use('ez-editorialapp', function (Y) {
 </script>
 
 <script type="text/x-handlebars-template" id="previewactionview-ez-template">
-    <div class="action {{#if disabled}}is-disabled{{/if}}" data-action="{{ actionId }}">
+    <div class="ez-action {{#if disabled}}is-disabled {{/if}}{{#if hint}}with-hint{{/if}}"  data-action="{{ actionId }}">
         <div class="font-icon action-icon">
-            <p class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</p>
+            <p class="action-label">{{ label }}</p>
             {{#if hint}}
             <p class="action-hint">{{ hint }}</p>
             {{/if}}
@@ -285,7 +285,7 @@ YUI().use('ez-editorialapp', function (Y) {
         </header>
         <div class="preview-device loading {{ mode.id }}">
             <div class="iframe-wrapper">
-            <div class="loader is-loading"></div>
+            <div class="ez-loader is-loading"></div>
             <iframe class="preview-iframe" width="{{ mode.width }}" height="{{ mode.height }}" src="{{ source }}" frameBorder="0" marginwidth="0"></iframe>
             </div>
         </div>

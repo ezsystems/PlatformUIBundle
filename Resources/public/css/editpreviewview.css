@@ -1,6 +1,5 @@
 .ez-editpreviewview-container {
     position: absolute;
-    z-index: 1010;
 
     -webkit-transform: translateX(0);
        -moz-transform: translateX(0);
@@ -21,10 +20,10 @@
 
 .ez-editpreviewview-container.is-hidden {
     -webkit-transform: translateX(200%);
-    -moz-transform: translateX(200%);
-    -ms-transform: translateX(200%);
-    -o-transform: translateX(200%);
-    transform: translateX(200%);
+       -moz-transform: translateX(200%);
+        -ms-transform: translateX(200%);
+         -o-transform: translateX(200%);
+            transform: translateX(200%);
 }
 
 .ez-view-editpreviewview {
@@ -71,7 +70,7 @@
     width: 769px;
 }
 
-.ez-preview-content .loader.is-loading {
+.ez-preview-content .ez-loader.is-loading {
     position: absolute;
     left: 0;
     right: 0;

@@ -1,6 +1,7 @@
 YUI.add('ez-editactionbarview-tests', function (Y) {
 
     var viewContainer = Y.one('.container'),
+        content = {}
         GESTURE_MAP = Y.Event._GESTURE_MAP;
 
     // trick to simulate a tap event
@@ -25,6 +26,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
 
             this.view = new Y.eZ.EditActionBarView({
                 container: viewContainer,
+                content: content,
                 actionsList: [
                     new Y.eZ.ButtonActionView({
                         actionId : "publish",
@@ -76,9 +78,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             this.view.render();
         },
 
-        "Should sort actions by priority in descending order": function () {
-            this.view._sortActions();
-
+        "During initialization should sort actions by priority in descending order": function () {
             Y.assert( this.view.get('actionsList')[0].get('actionId') == "discard", "Discard action should become first according to it's priority after sorting");
         },
 
@@ -93,17 +93,18 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             Y.assert( this.view.get('actionsList').length == 4, "New action should have been added to list" );
         },
 
-        "Should remove actions from actions list": function () {
+        "Should remove actions from actions list if they exist and return false otherwise": function () {
             this.view.removeAction("save");
-
             Y.assert( this.view.get('actionsList').length == 2, "The target action should have been removed from list" );
+
+            Y.assert( this.view.removeAction("imnotthere") === false, "The view should return false if action is not found" );
         },
 
         "'View more' button should NOT be visible, when all the actions fit on the screen": function () {
             Y.assert( Y.one('.view-more-button').hasClass('is-hidden'), "Button should NOT be visible" );
         },
 
-        "'View more' button should be visible, when all the actions don't fit on the screen": function () {
+        "'View more' button should become visible, when all the actions don't fit on the screen": function () {
             var counter;
 
             for (counter = 0; counter < 30; counter++) {
@@ -115,7 +116,8 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
                 }));
             }
 
-            this.view.handleWindowResize();
+            this.view.render();
+            this.view.handleHeightUpdate();
             Y.assert( !Y.one('.view-more-button').hasClass('is-hidden'), "Button should be visible" );
         },
 
@@ -130,7 +132,9 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
                     hint : "the test hint"
                 }));
             }
-            this.view.handleWindowResize();
+
+            this.view.render();
+            this.view.handleHeightUpdate();
 
             viewMoreButton = Y.one('.view-more-button');
             viewMoreMenu = Y.one('.view-more-actions');

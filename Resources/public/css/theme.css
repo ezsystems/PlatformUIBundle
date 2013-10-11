@@ -124,7 +124,6 @@
 .ez-view-contenteditformview .fieldgroup-name {
     background-color: #f9f9f9;
     color: #333333;
-    font-size: 100%;
     font-weight: bold;
     text-transform: capitalize;
 }
@@ -218,109 +217,105 @@
 }
 
 /* edit action bar */
-.ez-view-editactionbarview .actions-list {
+.ez-view-editactionbarview .ez-actions-list {
     background: #333333;
 }
 
-.ez-view-editactionbarview .actions-list li {
+.ez-view-editactionbarview .view-more-button {
+    color: #808080;
+    background: none;
+    border: none;
+}
+
+.ez-view-editactionbarview .view-more-button:hover {
+    color: #d8fcff;
+}
+
+.ez-view-editactionbarview .ez-actions-list .ez-action {
     border-top: 1px solid #424242;
     border-bottom: 1px solid #242424;
 }
 
-.ez-view-editactionbarview .actions-list .action-icon {
+.ez-action .action-icon {
     color: #e3e3e3;
     font-size: 140%;
     text-shadow: 0 2px 2px black;
 }
 
-/* default action icon */
-.action .action-icon:before {
-    content: "\E001";
-}
-
-/* actual actions icons */
-.action[data-action="publish"] .action-icon:before {
-    content: "\E00c";
-}
-
-.action[data-action="save"] .action-icon:before {
-    content: "\E00e";
-}
-
-.action[data-action="discard"] .action-icon:before {
-    content: "\E000";
-}
-
-.action[data-action="collaborate"] .action-icon:before {
-    content: "\E00b";
-}
-
-.action[data-action="preview"] .action-icon:before {
-    content: "\E007";
-}
-
-.action[data-action="preview"] .action-trigger[data-action-option="desktop"]:before {
-    content: "\E008";
-}
-
-.action[data-action="preview"] .action-trigger[data-action-option="tablet"]:before {
-    content: "\E009";
-}
-
-.action[data-action="preview"] .action-trigger[data-action-option="mobile"]:before {
-    content: "\E00a";
-}
-
-/* action bar */
-.ez-view-editactionbarview .actions-list .action-label {
+.ez-action .action-label {
     color: #fff;
+    font-weight: bold;
 }
 
-.ez-view-editactionbarview .actions-list .action:hover .action-icon, .ez-view-editactionbarview .actions-list .action:hover .action-label {
-    color: #d8fcff;
-}
-
-.ez-view-editactionbarview .action.is-disabled .action-icon,
-.ez-view-editactionbarview .action.is-disabled .action-label,
-.ez-view-editactionbarview .action.is-disabled .action-hint,
-.ez-view-editactionbarview .action.is-disabled:hover .action-icon,
-.ez-view-editactionbarview .action.is-disabled:hover .action-label {
-    color: #808080;
-}
-
-.ez-view-editactionbarview .actions-list .action-hint {
+.ez-action .action-hint {
     color: #9eaa8f;
     font-size: 60%;
 }
 
-.ez-view-editactionbarview .actions-list .preview-modes .preview-mode-button:before {
-    border-radius: 2px;
-    background: #242328;
-    color: white;
-    font-size: 80%;
+.ez-action.is-disabled .action-icon,
+.ez-action.is-disabled .action-label,
+.ez-action.is-disabled .action-hint {
+    color: #808080;
 }
 
-.ez-view-editactionbarview .actions-list .preview-modes .preview-mode-button:hover {
+/* default action icon */
+.ez-action .action-icon:before {
+    content: "\E001";
+}
+
+/* actual actions icons */
+.ez-action[data-action="publish"] .action-icon:before {
+    content: "\E00c";
+}
+
+.ez-action[data-action="save"] .action-icon:before {
+    content: "\E00e";
+}
+
+.ez-action[data-action="discard"] .action-icon:before {
+    content: "\E000";
+}
+
+.ez-action[data-action="collaborate"] .action-icon:before {
+    content: "\E00b";
+}
+
+.ez-action[data-action="preview"] .action-icon:before {
+    content: "\E007";
+}
+
+.ez-action[data-action="preview"] .action-trigger[data-action-option="desktop"]:before {
+    content: "\E008";
+}
+
+.ez-action[data-action="preview"] .action-trigger[data-action-option="tablet"]:before {
+    content: "\E009";
+}
+
+.ez-action[data-action="preview"] .action-trigger[data-action-option="mobile"]:before {
+    content: "\E00a";
+}
+
+/* preview action view */
+.ez-view-previewactionview .preview-modes .preview-mode-button {
+    background: #000;
+}
+
+.ez-view-previewactionview .preview-modes .preview-mode-button:before {
+    border-radius: 2px;
+    color: white;
+    font-size: 90%;
+}
+
+.ez-view-previewactionview .preview-modes .preview-mode-button:hover {
     background: #486235;
 }
 
-.ez-view-editactionbarview .actions-list .preview-modes .preview-mode-button.is-selected {
+.ez-view-previewactionview .preview-modes .preview-mode-button.is-selected {
     background: #256213;
 }
 
-
-
-.ez-view-editactionbarview .actions-list .view-more-button {
-    color: white;
-    background: none;
-    border: none;
-    margin: 0;
-}
-
-.ez-view-editactionbarview .actions-list .view-more-button:hover {
-    color: #d8fcff;
-}
-
+/* edit preview */
 .ez-view-editpreviewview {
     background: #f3f3f3;
 }
@@ -329,7 +324,7 @@
     color: #555;
 }
 
-.ez-preview-content .loader.is-loading {
+.ez-preview-content .ez-loader.is-loading {
     background: rgba(0, 0, 0, 0.8);
 }
 

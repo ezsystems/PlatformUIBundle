@@ -1,4 +1,4 @@
-.ez-view-editactionbarview .actions-list {
+.ez-view-editactionbarview .ez-actions-list {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -25,7 +25,7 @@
     display: none;
 }
 
-.ez-view-editactionbarview .actions-list .action.is-disabled,
-.ez-view-editactionbarview .actions-list .action.is-disabled .action-label {
+.ez-view-editactionbarview .ez-actions-list .ez-action.is-disabled,
+.ez-view-editactionbarview .ez-actions-list .ez-action.is-disabled .action-label {
     cursor: default;
 }

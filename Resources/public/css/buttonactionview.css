@@ -1,28 +1,43 @@
-.ez-view-editactionbarview .actions-list .action {
-    padding-left: 1em;
-    padding-top: 1em;
+.ez-view-buttonactionview .ez-action {
+    display: block;
+    width: 100%;
     cursor: pointer;
     background: none;
     border: none;
-    display: block;
     text-align: left;
+    padding: 1em 0;
 }
 
-.ez-view-editactionbarview .action p {
-    padding: 0 3em;
-    margin: 0;
+.ez-view-buttonactionview .ez-action .action-icon {
+    padding-left: 20px;
 }
 
-.ez-view-editactionbarview .action .action-icon:before {
+.ez-view-buttonactionview .ez-action .action-icon:before {
     float: left;
 }
 
-.ez-view-editactionbarview .actions-list .action-label {
+.ez-view-buttonactionview .ez-action p {
+    padding-left: 40px;
+    margin: 0;
+}
+
+.ez-view-buttonactionview .ez-action.with-hint .action-icon {
+    margin-bottom: -1em;
+}
+
+.ez-view-buttonactionview .ez-action.with-hint .action-label {
+    position:relative;
+    top: -0.8em;
+}
+
+.ez-view-buttonactionview .ez-action.with-hint .action-hint {
+    position:relative;
+    top: -0.8em;
+}
+
+.ez-view-buttonactionview .ez-action .action-label {
     display: block;
     margin-top: 2px;
     cursor: pointer;
 }
 
-.ez-view-editactionbarview .actions-list .action-label.with-hint {
-    margin-top: -5px;
-}

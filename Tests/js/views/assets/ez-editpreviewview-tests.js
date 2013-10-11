@@ -69,10 +69,12 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
 
         "Should show itself when needed": function () {
 
-            var previewNode = this.view.get('container').get('parentNode');
+            var previewNode = this.view.get('container').get('parentNode'),
+                newWidth = 600;
 
-            this.view.show();
+            this.view.show(newWidth);
 
+            Y.Assert.areEqual(parseInt(previewNode.getComputedStyle('width'),10), newWidth);
             Y.assert(!previewNode.hasClass(IS_HIDDEN_CLASS), "Container's parent node should NOT have certain class" );
         },
 
@@ -81,7 +83,7 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
             var loader;
 
             this.view.render();
-            loader = this.view.get('container').one('.loader');
+            loader = this.view.get('container').one('.ez-loader');
 
             Y.assert(loader.hasClass(IS_LOADING_CLASS), "Right after rendering, iframe loader should have certain class");
 
@@ -93,7 +95,7 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
             var loader;
 
             this.view.render();
-            loader = this.view.get('container').one('.loader');
+            loader = this.view.get('container').one('.ez-loader');
 
             this.wait(function () {
                 Y.assert(!loader.hasClass(IS_LOADING_CLASS), "After iframe is done loading, iframe loader should NOT have certain class");

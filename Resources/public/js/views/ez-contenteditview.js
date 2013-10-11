@@ -37,7 +37,6 @@ YUI.add('ez-contenteditview', function (Y) {
         /**
          * Initializer is called upon view's init
          * Creating and managing child views inside it
-         * Also setting event dispatchers
          *
          * @method initializer
          */
@@ -78,7 +77,7 @@ YUI.add('ez-contenteditview', function (Y) {
             container.one(FORM_CONTAINER).append(this.get('formView').render().get('container'));
 
             // Note: render() is drawing non-height-responsive version of the action bar
-            // but handleWindowResize() event will be triggered from app.handleContentEdit(), when everything is loaded to draw the responsive version
+            // but handleHeightUpdate() event will be triggered from app.handleContentEdit(), when everything is loaded to draw the responsive version
             container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').render().get('container'));
 
             return this;

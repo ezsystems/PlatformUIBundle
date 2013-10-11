@@ -72,7 +72,7 @@ YUI.add('ez-previewactionview', function (Y) {
                 option = actionTrigger.getAttribute('data-action-option');
 
             this.get('editPreview').set('currentModeId', option);
-            this.get('editPreview').show();
+            this.get('editPreview').show(this.get('container').getX());
 
             // UI changes
             this.get('container').all('[data-action="preview"]').removeClass(IS_SELECTED_CLASS);
@@ -83,7 +83,6 @@ YUI.add('ez-previewactionview', function (Y) {
          * Makes changes to UI once editPreview is hidden (removes preview selection)
          *
          * @method _handleEditPreviewHide
-         * @return {eZ.EditActionBar} the view itself
          * @protected
          */
         _handleEditPreviewHide : function () {

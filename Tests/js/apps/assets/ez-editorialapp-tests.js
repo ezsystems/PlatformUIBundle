@@ -5,7 +5,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         container = Y.one('.app'),
         mockActionBar = {};
 
-    mockActionBar.handleWindowResize = function () {};
+    mockActionBar.handleHeightUpdate = function () {};
     Y.Handlebars = {};
     Y.Handlebars.registerPartial = function () {};
 

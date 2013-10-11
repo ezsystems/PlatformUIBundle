@@ -1,7 +1,6 @@
 .ez-view-contenteditview {
     overflow: hidden;
     height: 100%;
-    padding-right: 230px;
 }
 
 @media (min-width: 980px) {
@@ -12,6 +11,7 @@
 
 .ez-view-contenteditview .ez-main-content {
     min-height: 800px; /* temporary, until we get enough content */
+    margin-right: 230px;
 }
 
 .ez-view-contenteditview header {
@@ -63,6 +63,9 @@
     position: fixed;
     right: 0;
     top: 0;
+    bottom: 0;
     width: 230px;
     height: 100%;
+    background: #333;
+    z-index: 1025;
 }

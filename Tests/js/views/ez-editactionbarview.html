@@ -8,17 +8,17 @@
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="editactionbarview-ez-template">
-    <menu class="actions-list active-actions" tabindex="0">
+    <menu class="ez-actions-list active-actions" tabindex="0">
     </menu>
     <button class="view-more-button is-hidden">{{ viewMoreText }}</button>
-    <menu class="actions-list view-more-actions is-hidden">
+    <menu class="ez-actions-list view-more-actions is-hidden">
     </menu>
 </script>
 
 <script type="text/x-handlebars-template" id="buttonactionview-ez-template">
-    <button class="action {{#if disabled}}is-disabled{{else}}{{#if actionId}}action-trigger{{/if}}{{/if}}" data-action="{{ actionId }}">
+    <button class="ez-action {{#if disabled}}is-disabled {{else}}{{#if actionId}}action-trigger {{/if}}{{/if}}{{#if hint}}with-hint{{/if}}" data-action="{{ actionId }}">
         <div class="font-icon action-icon">
-            <p class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</p>
+            <p class="action-label">{{ label }}</p>
             {{#if hint}}
             <p class="action-hint">{{ hint }}</p>
             {{/if}}
@@ -27,9 +27,9 @@
 </script>
 
 <script type="text/x-handlebars-template" id="previewactionview-ez-template">
-    <div class="action {{#if disabled}}is-disabled{{/if}}" data-action="{{ actionId }}">
+    <div class="ez-action {{#if disabled}}is-disabled {{/if}}{{#if hint}}with-hint{{/if}}"  data-action="{{ actionId }}">
         <div class="font-icon action-icon">
-            <p class="action-label {{#if hint}}with-hint{{/if}}">{{ label }}</p>
+            <p class="action-label">{{ label }}</p>
             {{#if hint}}
             <p class="action-hint">{{ hint }}</p>
             {{/if}}
@@ -83,8 +83,8 @@
             }
         }
     }).use('ez-editactionbarview-tests', function (Y) {
-                Y.Test.Runner.run();
-            });
+        Y.Test.Runner.run();
+    });
 
 </script>
 </body>

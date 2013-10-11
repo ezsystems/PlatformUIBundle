@@ -19,7 +19,9 @@ YUI.add('ez-previewactionview-tests', function (Y) {
 
         _should: {
             ignore: {
-                "Should show editPreview once one of the preview modes buttons is tapped (and correctly show it in the UI)" : (Y.UA.phantomjs) // tap trick does not work in phantomjs
+                "Should show editPreview once 'desktop mode' button is tapped, and change the preview mode once 'tablet mode' is tapped (and correctly show it in the UI)" : (Y.UA.phantomjs), // tap trick does not work in phantomjs
+                "Should show editPreview once 'tablet mode' button is tapped (and correctly show it in the UI)" : (Y.UA.phantomjs), // tap trick does not work in phantomjs
+                "Should show editPreview once 'mobile mode' button is tapped (and correctly show it in the UI)" : (Y.UA.phantomjs) // tap trick does not work in phantomjs
             }
         },
 
@@ -40,7 +42,7 @@ YUI.add('ez-previewactionview-tests', function (Y) {
             this.view = new Y.eZ.PreviewActionView({
                 container: container,
                 content: contentMock,
-                actionId: "test",
+                actionId: "preview",
                 hint: "Test hint",
                 label: "Test label",
                 buttons: [{
@@ -58,18 +60,24 @@ YUI.add('ez-previewactionview-tests', function (Y) {
             this.view.destroy();
         },
 
-        "Should show editPreview once one of the preview modes buttons is tapped (and correctly show it in the UI)": function () {
-            var previewTrigger,
-                otherTriggers,
+        "Should show editPreview once 'desktop mode' button is tapped, and change the preview mode once 'tablet mode' is tapped (and correctly show it in the UI)": function () {
+            var desktopPreviewTrigger, tabletPreviewTrigger,
                 previewShown = false,
+                currentMode,
                 container = this.view.get('container');
 
             Y.Mock.expect(editPreview, {
                 method: 'set',
-                args: ['currentModeId', 'desktop']
+                callCount: 2,
+                args: ['currentModeId', Y.Mock.Value.String],
+                run: function (option, value) {
+                    currentMode = value;
+                }
             });
             Y.Mock.expect(editPreview, {
                 method: 'show',
+                args: [container.getX()],
+                callCount: 2,
                 run: function () {
                     previewShown = true;
                 }
@@ -78,14 +86,19 @@ YUI.add('ez-previewactionview-tests', function (Y) {
             this.view.render();
 
             // Checking UI status
-            container.all('[data-action="preview"]').each(function (trigger) {
-                Y.assert(!trigger.hasClass("is-selected"), "Each of the preview mode buttons should NOT be highlighted");
-            });
+            Y.assert(
+                container.all('.is-selected[data-action="preview"]').isEmpty(),
+                "Each of the preview mode buttons should NOT be highlighted"
+            );
 
-            previewTrigger = container.one('[data-action-option="desktop"]');
+            desktopPreviewTrigger = container.one('[data-action-option="desktop"]');
+            tabletPreviewTrigger = container.one('[data-action-option="tablet"]');
 
-            previewTrigger.tap({
-                target: previewTrigger,
+            // ***
+            // DESKTOP trigger
+
+            desktopPreviewTrigger.tap({
+                target: desktopPreviewTrigger,
                 type: GESTURE_MAP.start,
                 bubbles: true,            // boolean
                 cancelable: true,         // boolean
@@ -114,7 +127,7 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                         radiusY: 15,
                         rotationAngle: 0,
                         force: 0.5,
-                        target: previewTrigger
+                        target: desktopPreviewTrigger
                     }
                 ],            // TouchList
                 targetTouches: [
@@ -130,12 +143,12 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                         radiusY: 15,
                         rotationAngle: 0,
                         force: 0.5,
-                        target: previewTrigger
+                        target: desktopPreviewTrigger
                     }
                 ],      // TouchList
                 changedTouches: []     // TouchList
             }, {
-                target: previewTrigger,
+                target: desktopPreviewTrigger,
                 type: GESTURE_MAP.end,
                 bubbles: true,            // boolean
                 cancelable: true,         // boolean
@@ -164,7 +177,7 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                         radiusY: 15,
                         rotationAngle: 0,
                         force: 0.5,
-                        target: previewTrigger
+                        target: desktopPreviewTrigger
                     }
                 ],            // TouchList
                 targetTouches: [
@@ -180,7 +193,7 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                         radiusY: 15,
                         rotationAngle: 0,
                         force: 0.5,
-                        target: previewTrigger
+                        target: desktopPreviewTrigger
                     }
                 ],      // TouchList
                 changedTouches: [
@@ -196,18 +209,471 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                         radiusY: 15,
                         rotationAngle: 0,
                         force: 0.5,
-                        target: previewTrigger
+                        target: desktopPreviewTrigger
                     }
                 ]
             });
 
             Y.assert(previewShown, "Preview should have been shown");
+            Y.assert(currentMode === 'desktop', "Preview mode should have been changed");
+
             // Checking UI changes as well
-            Y.assert(previewTrigger.hasClass("is-selected"), "Active preview mode button should be highlighted");
-            container.all('[data-action="preview"]:not([data-action-option="desktop"])').each(function (trigger) {
-                Y.assert(!trigger.hasClass("is-selected"), "Each of the other preview mode buttons should NOT be highlighted");
+            Y.assert(desktopPreviewTrigger.hasClass("is-selected"), "Active preview mode button should be highlighted");
+            Y.assert(
+                container.all('.is-selected[data-action="preview"]:not([data-action-option="desktop"])').isEmpty(),
+                "Each of the other preview mode buttons should NOT be highlighted"
+            );
+
+            // ***
+            // TABLET trigger
+
+            tabletPreviewTrigger.tap({
+                target: tabletPreviewTrigger,
+                type: GESTURE_MAP.start,
+                bubbles: true,            // boolean
+                cancelable: true,         // boolean
+                view: window,               // DOMWindow
+                detail: 0,
+                pageX: 5,
+                pageY:5,            // long
+                screenX: 5,
+                screenY: 5,  // long
+                clientX: 5,
+                clientY: 5,   // long
+                ctrlKey: false,
+                altKey: false,
+                shiftKey:false,
+                metaKey: false, // boolean
+                touches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: tabletPreviewTrigger
+                    }
+                ],            // TouchList
+                targetTouches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: tabletPreviewTrigger
+                    }
+                ],      // TouchList
+                changedTouches: []     // TouchList
+            }, {
+                target: tabletPreviewTrigger,
+                type: GESTURE_MAP.end,
+                bubbles: true,            // boolean
+                cancelable: true,         // boolean
+                view: window,               // DOMWindow
+                detail: 0,
+                pageX: 5,
+                pageY:5,            // long
+                screenX: 5,
+                screenY: 5,  // long
+                clientX: 5,
+                clientY: 5,   // long
+                ctrlKey: false,
+                altKey: false,
+                shiftKey:false,
+                metaKey: false, // boolean
+                touches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: tabletPreviewTrigger
+                    }
+                ],            // TouchList
+                targetTouches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: tabletPreviewTrigger
+                    }
+                ],      // TouchList
+                changedTouches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: tabletPreviewTrigger
+                    }
+                ]
             });
 
+            Y.assert(currentMode === 'tablet', "Preview mode should have been changed");
+
+            // Checking UI changes as well
+            Y.assert(tabletPreviewTrigger.hasClass("is-selected"), "Active preview mode button should be highlighted");
+            Y.assert(
+                container.all('.is-selected[data-action="preview"]:not([data-action-option="tablet"])').isEmpty(),
+                "Each of the other preview mode buttons should NOT be highlighted"
+            );
+
+            Y.Mock.verify(editPreview);
+        },
+
+        "Should show editPreview once 'tablet mode' button is tapped (and correctly show it in the UI)": function () {
+            var tabletPreviewTrigger,
+                previewShown = false,
+                currentMode,
+                container = this.view.get('container');
+
+            Y.Mock.expect(editPreview, {
+                method: 'set',
+                args: ['currentModeId', Y.Mock.Value.String],
+                run: function (option, value) {
+                    currentMode = value;
+                }
+            });
+            Y.Mock.expect(editPreview, {
+                method: 'show',
+                args: [container.getX()],
+                run: function () {
+                    previewShown = true;
+                }
+            });
+
+            this.view.render();
+
+            // Checking UI status
+            Y.assert(
+                container.all('.is-selected[data-action="preview"]').isEmpty(),
+                "Each of the preview mode buttons should NOT be highlighted"
+            );
+
+            tabletPreviewTrigger = container.one('[data-action-option="tablet"]');
+
+            tabletPreviewTrigger.tap({
+                target: tabletPreviewTrigger,
+                type: GESTURE_MAP.start,
+                bubbles: true,            // boolean
+                cancelable: true,         // boolean
+                view: window,               // DOMWindow
+                detail: 0,
+                pageX: 5,
+                pageY:5,            // long
+                screenX: 5,
+                screenY: 5,  // long
+                clientX: 5,
+                clientY: 5,   // long
+                ctrlKey: false,
+                altKey: false,
+                shiftKey:false,
+                metaKey: false, // boolean
+                touches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: tabletPreviewTrigger
+                    }
+                ],            // TouchList
+                targetTouches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: tabletPreviewTrigger
+                    }
+                ],      // TouchList
+                changedTouches: []     // TouchList
+            }, {
+                target: tabletPreviewTrigger,
+                type: GESTURE_MAP.end,
+                bubbles: true,            // boolean
+                cancelable: true,         // boolean
+                view: window,               // DOMWindow
+                detail: 0,
+                pageX: 5,
+                pageY:5,            // long
+                screenX: 5,
+                screenY: 5,  // long
+                clientX: 5,
+                clientY: 5,   // long
+                ctrlKey: false,
+                altKey: false,
+                shiftKey:false,
+                metaKey: false, // boolean
+                touches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: tabletPreviewTrigger
+                    }
+                ],            // TouchList
+                targetTouches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: tabletPreviewTrigger
+                    }
+                ],      // TouchList
+                changedTouches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: tabletPreviewTrigger
+                    }
+                ]
+            });
+
+            Y.assert(previewShown, "Preview should have been shown");
+            Y.assert(currentMode === 'tablet', "Preview mode should have been changed");
+
+            // Checking UI changes as well
+            Y.assert(tabletPreviewTrigger.hasClass("is-selected"), "Active preview mode button should be highlighted");
+            Y.assert(
+                container.all('.is-selected[data-action="preview"]:not([data-action-option="tablet"])').isEmpty(),
+                "Each of the other preview mode buttons should NOT be highlighted"
+            );
+
+            Y.Mock.verify(editPreview);
+        },
+
+        "Should show editPreview once 'mobile mode' button is tapped (and correctly show it in the UI)": function () {
+            var mobilePreviewTrigger,
+                previewShown = false,
+                currentMode,
+                container = this.view.get('container');
+
+            Y.Mock.expect(editPreview, {
+                method: 'set',
+                args: ['currentModeId', Y.Mock.Value.String],
+                run: function (option, value) {
+                    currentMode = value;
+                }
+            });
+            Y.Mock.expect(editPreview, {
+                method: 'show',
+                args: [container.getX()],
+                run: function () {
+                    previewShown = true;
+                }
+            });
+
+            this.view.render();
+
+            // Checking UI status
+            Y.assert(
+                container.all('.is-selected[data-action="preview"]').isEmpty(),
+                "Each of the preview mode buttons should NOT be highlighted"
+            );
+
+            mobilePreviewTrigger = container.one('[data-action-option="mobile"]');
+
+            mobilePreviewTrigger.tap({
+                target: mobilePreviewTrigger,
+                type: GESTURE_MAP.start,
+                bubbles: true,            // boolean
+                cancelable: true,         // boolean
+                view: window,               // DOMWindow
+                detail: 0,
+                pageX: 5,
+                pageY:5,            // long
+                screenX: 5,
+                screenY: 5,  // long
+                clientX: 5,
+                clientY: 5,   // long
+                ctrlKey: false,
+                altKey: false,
+                shiftKey:false,
+                metaKey: false, // boolean
+                touches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: mobilePreviewTrigger
+                    }
+                ],            // TouchList
+                targetTouches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: mobilePreviewTrigger
+                    }
+                ],      // TouchList
+                changedTouches: []     // TouchList
+            }, {
+                target: mobilePreviewTrigger,
+                type: GESTURE_MAP.end,
+                bubbles: true,            // boolean
+                cancelable: true,         // boolean
+                view: window,               // DOMWindow
+                detail: 0,
+                pageX: 5,
+                pageY:5,            // long
+                screenX: 5,
+                screenY: 5,  // long
+                clientX: 5,
+                clientY: 5,   // long
+                ctrlKey: false,
+                altKey: false,
+                shiftKey:false,
+                metaKey: false, // boolean
+                touches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: mobilePreviewTrigger
+                    }
+                ],            // TouchList
+                targetTouches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: mobilePreviewTrigger
+                    }
+                ],      // TouchList
+                changedTouches: [
+                    {
+                        identifier: 'foo',
+                        screenX: 5,
+                        screenY: 5,
+                        clientX: 5,
+                        clientY: 5,
+                        pageX: 5,
+                        pageY: 5,
+                        radiusX: 15,
+                        radiusY: 15,
+                        rotationAngle: 0,
+                        force: 0.5,
+                        target: mobilePreviewTrigger
+                    }
+                ]
+            });
+
+            Y.assert(previewShown, "Preview should have been shown");
+            Y.assert(currentMode === 'mobile', "Preview mode should have been changed");
+
+            // Checking UI changes as well
+            Y.assert(mobilePreviewTrigger.hasClass("is-selected"), "Active preview mode button should be highlighted");
+            Y.assert(
+                container.all('.is-selected[data-action="preview"]:not([data-action-option="mobile"])').isEmpty(),
+                "Each of the other preview mode buttons should NOT be highlighted"
+            );
 
             Y.Mock.verify(editPreview);
         },
