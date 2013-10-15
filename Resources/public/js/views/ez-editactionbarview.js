@@ -112,66 +112,127 @@ YUI.add('ez-editactionbarview', function (Y) {
         handleHeightUpdate: function (e) {
             var container = this.get('container'),
                 screenHeight = container.get('winHeight'),
-                activeMenu = container.one(ACTIVE_MENU_CLASS),
-                viewMoreMenu = container.one(VIEW_MORE_MENU_CLASS),
-                viewMoreTrigger = container.one(VIEW_MORE_BUTTON_CLASS),
                 barHeight,
                 activeMenuHasActions,
-                viewMoreMenuHasActions,
-                pushLastActionToViewMore = function () {
-                    var actionViewNode = activeMenu.get('children').slice(-1).item(0);
-                    if (actionViewNode) {
-                        actionViewNode.remove();
-                        viewMoreMenu.append(actionViewNode);
-                        checkViewMoreTrigger();
-                    }
-                },
-                pullFirstActionFromViewMore = function () {
-                    var actionViewNode = viewMoreMenu.get('children').slice(-1).item(0);
-                    if (actionViewNode) {
-                        actionViewNode.remove();
-                        activeMenu.append(actionViewNode);
-                        checkViewMoreTrigger();
-                    }
-                },
-                checkViewMoreTrigger = function () {
-                    if (viewMoreMenu.get('children').isEmpty()) {
-                        viewMoreTrigger.addClass(IS_HIDDEN_CLASS);
-                    } else {
-                        viewMoreTrigger.removeClass(IS_HIDDEN_CLASS);
-                    }
-                };
+                viewMoreMenuHasActions;
 
-            barHeight = container.get('scrollHeight');
+            barHeight = this._getHeight();
             if (barHeight > screenHeight) {
 
-                activeMenuHasActions = !activeMenu.get('children').isEmpty();
+                activeMenuHasActions = this._hasActiveActions();
                 if (activeMenuHasActions) {
                     // push actions into view more menu until the main menu is not overflowed any more or we are out of actions in the main menu
                     while (barHeight > screenHeight && activeMenuHasActions) {
-                        pushLastActionToViewMore();
-                        barHeight = container.get('scrollHeight');
-                        activeMenuHasActions = !activeMenu.get('children').isEmpty();
+                        this._pushLastActionToViewMore();
+                        barHeight = this._getHeight();
+                        activeMenuHasActions = this._hasActiveActions();
                     }
                 }
 
             } else {
                 // Do we have to pull some actions from view more menu back to active menu?
-                viewMoreMenuHasActions = !viewMoreMenu.get('children').isEmpty();
+                viewMoreMenuHasActions = this._hasViewMoreActions();
                 if (viewMoreMenuHasActions) {
                     // pull actions from view more menu until the main menu is overflowed or we are out of actions in view more menu
                     while ( (barHeight <= screenHeight) && viewMoreMenuHasActions ) {
-                        pullFirstActionFromViewMore();
-                        barHeight = container.get('scrollHeight');
-                        viewMoreMenuHasActions = !viewMoreMenu.get('children').isEmpty();
+                        this._pullFirstActionFromViewMore();
+                        barHeight = this._getHeight();
+                        viewMoreMenuHasActions = this._hasViewMoreActions();
                     }
                     // if we stopped because the main menu is overflowed, then return last action back to view more menu.
                     if (barHeight > screenHeight) {
-                        pushLastActionToViewMore();
+                        this._pushLastActionToViewMore();
                     }
                 }
             }
 
+        },
+
+
+        /**
+         * Push last action from the ACTIVE_MENU_CLASS menu to the VIEW_MORE_MENU_CLASS menu
+         *
+         * @method _pushLastActionToViewMore
+         * @protected
+         */
+        _pushLastActionToViewMore: function () {
+            var container = this.get('container'),
+                activeMenu = container.one(ACTIVE_MENU_CLASS),
+                viewMoreMenu = container.one(VIEW_MORE_MENU_CLASS),
+                actionViewNode = activeMenu.get('children').slice(-1).item(0);
+
+            if (actionViewNode) {
+                actionViewNode.remove();
+                viewMoreMenu.append(actionViewNode);
+                this._checkViewMoreTrigger();
+            }
+        },
+
+        /**
+         * Pull first available action from the VIEW_MORE_MENU_CLASS menu to the ACTIVE_MENU_CLASS menu
+         *
+         * @method _pullFirstActionFromViewMore
+         * @protected
+         */
+        _pullFirstActionFromViewMore: function () {
+            var container = this.get('container'),
+                activeMenu = container.one(ACTIVE_MENU_CLASS),
+                viewMoreMenu = container.one(VIEW_MORE_MENU_CLASS),
+                actionViewNode = viewMoreMenu.get('children').slice(-1).item(0);
+
+            if (actionViewNode) {
+                actionViewNode.remove();
+                activeMenu.append(actionViewNode);
+                this._checkViewMoreTrigger();
+            }
+        },
+
+        /**
+         * Check do we need to show "View More" link. Do it, if needed.
+         *
+         * @method _checkViewMoreTrigger
+         * @protected
+         */
+        _checkViewMoreTrigger: function () {
+            var container = this.get('container'),
+                viewMoreTrigger = container.one(VIEW_MORE_BUTTON_CLASS),
+                viewMoreMenu = container.one(VIEW_MORE_MENU_CLASS);
+
+            if (viewMoreMenu.get('children').isEmpty()) {
+                viewMoreTrigger.addClass(IS_HIDDEN_CLASS);
+            } else {
+                viewMoreTrigger.removeClass(IS_HIDDEN_CLASS);
+            }
+        },
+
+        /**
+         * Returns scroll height of the action bar view container
+         *
+         * @return {Int} Scroll height of the action bar view container
+         * @protected
+         */
+        _getHeight: function () {
+            return this.get('container').get('scrollHeight');
+        },
+
+        /**
+         * Indicates if there are some actions in ACTIVE_MENU_CLASS menu
+         *
+         * @return {boolean} true if there are some actions in ACTIVE_MENU_CLASS menu, false otherwise.
+         * @protected
+         */
+        _hasActiveActions: function () {
+            return !this.get('container').one(ACTIVE_MENU_CLASS).get('children').isEmpty();
+        },
+
+        /**
+         * Indicates if there are some actions in VIEW_MORE_MENU_CLASS menu
+         *
+         * @return {boolean} true if there are some actions in VIEW_MORE_MENU_CLASS menu, false otherwise.
+         * @protected
+         */
+        _hasViewMoreActions: function () {
+            return !this.get('container').one(VIEW_MORE_MENU_CLASS).get('children').isEmpty();
         },
 
         /**

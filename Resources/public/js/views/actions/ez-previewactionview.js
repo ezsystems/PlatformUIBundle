@@ -20,6 +20,11 @@ YUI.add('ez-previewactionview', function (Y) {
      * @extends eZ.ButtonActionView
      */
     Y.eZ.PreviewActionView = Y.Base.create('previewActionView',  Y.eZ.ButtonActionView, [], {
+        events: {
+            '.action-trigger': {
+                'tap': 'previewAction'
+            }
+        },
 
         /**
          * Initializer is called upon view's init
@@ -60,13 +65,12 @@ YUI.add('ez-previewactionview', function (Y) {
         },
 
         /**
-         * Handles tap on one of the view's action buttons
+         * Handles tap on any of the preview mode action buttons
          *
-         * @method _handleActionClick
+         * @method previewAction
          * @param e {Object} event facade
-         * @protected
          */
-        _handleActionClick: function (e) {
+        previewAction: function (e) {
 
             var actionTrigger = e.currentTarget,
                 option = actionTrigger.getAttribute('data-action-option');
@@ -98,8 +102,8 @@ YUI.add('ez-previewactionview', function (Y) {
              * @type Array
              * @default []
              */
-            buttons : {
-                value : []
+            buttons: {
+                value: []
             },
 
             /**

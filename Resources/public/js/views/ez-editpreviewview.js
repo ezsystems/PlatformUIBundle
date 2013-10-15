@@ -85,6 +85,11 @@ YUI.add('ez-editpreviewview', function (Y) {
         _editPreviewHide: function (e) {
             e.preventDefault();
             this.get('container').get('parentNode').addClass(IS_HIDDEN_CLASS);
+            /**
+             * Fired when the "close preview" link is clicked
+             *
+             * @event editPreviewHide
+             */
             this.fire('editPreviewHide');
         }
 
@@ -100,17 +105,17 @@ YUI.add('ez-editpreviewview', function (Y) {
              */
             previewModes: {
                 value: {
-                    "desktop" : {
+                    "desktop": {
                         id: "desktop",
                         width: 1100,
                         height: 700
                     },
-                    "tablet" : {
+                    "tablet": {
                         id: "tablet",
                         width: 769, /* preview-tablet.png image has such a strange dimensions */
                         height: 1025 /* preview-tablet.png image has such a strange dimensions */
                     },
-                    "mobile" : {
+                    "mobile": {
                         id: "mobile",
                         width: 321, /* preview-mobile.png image has such a strange dimensions */
                         height: 481 /* preview-mobile.png image has such a strange dimensions */

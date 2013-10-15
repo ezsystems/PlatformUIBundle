@@ -8,6 +8,8 @@ YUI.add('ez-buttonactionview', function (Y) {
 
     Y.namespace('eZ');
 
+    var ACTION_SUFFIX = 'Action';
+
     /**
      * Button Action View
      *
@@ -50,7 +52,14 @@ YUI.add('ez-buttonactionview', function (Y) {
          * @protected
          */
         _handleActionClick: function (e) {
-            this.fire(this.get('actionId') + 'Action');
+
+            /**
+             * Fired when the action button is clicked. Name of the event consists of the action view's 'actionId' attribute and 'Action' suffix.
+             * For example for a view with actionId = "publish", the event fired will be named "publishAction".
+             *
+             * @event xxxxxxAction
+             */
+            this.fire(this.get('actionId') + ACTION_SUFFIX);
         }
 
     }, {
@@ -60,12 +69,11 @@ YUI.add('ez-buttonactionview', function (Y) {
              * If priority is equal, actions are ordered in the order they are added to list
              *
              * @attribute priority
-             * @default 100
+             * @default 0
              * @type int
-             * @required
              */
             priority: {
-                value: 100
+                value: 0
             },
 
             /**
