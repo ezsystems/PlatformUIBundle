@@ -734,4 +734,4 @@ YUI.add('ez-previewactionview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Preview Action View tests");
     Y.Test.Runner.add(viewTest);
 
-}, '0.0.1', {requires: ['test', 'ez-previewactionview', 'event-tap']});
+}, '0.0.1', {requires: ['test', 'ez-previewactionview', 'event-tap', 'node-screen']});

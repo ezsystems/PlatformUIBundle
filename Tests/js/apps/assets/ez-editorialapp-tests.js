@@ -80,7 +80,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     !container.hasClass('is-app-open'),
                     "The app container should not have the class is-app-open"
                 );
-            }, 400);
+            }, 500);
         },
 
         "Should set/unset the app in loading mode": function () {
