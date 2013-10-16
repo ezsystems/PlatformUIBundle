@@ -108,6 +108,12 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
 
         tearDown: function () {
+            Y.Mock.expect(formView, {
+                method: 'destroy'
+            });
+            Y.Mock.expect(actionBar, {
+                method: 'destroy'
+            });
             this.view.destroy();
         },
 
