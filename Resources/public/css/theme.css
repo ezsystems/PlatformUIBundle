@@ -236,6 +236,12 @@
     border-bottom: 1px solid #242424;
 }
 
+.ez-view-editactionbarview .ez-actions-list .ez-action:last-child {
+    -webkit-box-shadow: 0 1px 0 0 #424242;
+    -moz-box-shadow: 0 1px 0 0 #424242;
+    box-shadow: 0 1px 0 0 #424242;
+}
+
 .ez-action .action-icon {
     color: #e3e3e3;
     font-size: 140%;
@@ -298,11 +304,16 @@
 
 /* preview action view */
 .ez-view-previewactionview .preview-modes .preview-mode-button {
-    background: #232327;
     border-radius: 4px;
     -webkit-box-shadow: inset 1px 1px 2px 1px #000;
        -moz-box-shadow: inset 1px 1px 2px 1px #000;
             box-shadow: inset 1px 1px 2px 1px #000;
+    background: #232327;
+    background: -moz-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background: -webkit-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background: -o-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background: -ms-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background: linear-gradient(180deg, #232327 0%, #26252a 100%);
 }
 
 .ez-view-previewactionview .preview-modes .preview-mode-button:before {

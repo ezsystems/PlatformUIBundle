@@ -57,7 +57,7 @@ YUI.add('ez-buttonactionview', function (Y) {
              * Fired when the action button is clicked. Name of the event consists of the action view's 'actionId' attribute and 'Action' suffix.
              * For example for a view with actionId = "publish", the event fired will be named "publishAction".
              *
-             * @event xxxxxxAction
+             * @event <actionId>Action
              */
             this.fire(this.get('actionId') + ACTION_SUFFIX);
         }
