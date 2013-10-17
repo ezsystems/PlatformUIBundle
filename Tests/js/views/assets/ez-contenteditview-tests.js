@@ -75,6 +75,9 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 method: 'render',
                 returns: formView
             });
+            Y.Mock.expect(formView, {
+                method: 'destroy'
+            });
 
             Y.Mock.expect(actionBar, {
                 method: 'get',
@@ -94,6 +97,9 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 method: 'render',
                 returns: actionBar
             });
+            Y.Mock.expect(actionBar, {
+                method: 'destroy'
+            });
 
             this.view = new Y.eZ.ContentEditView({
                 container: container,
@@ -108,12 +114,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
 
         tearDown: function () {
-            Y.Mock.expect(formView, {
-                method: 'destroy'
-            });
-            Y.Mock.expect(actionBar, {
-                method: 'destroy'
-            });
             this.view.destroy();
         },
 
@@ -129,6 +129,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             this.view.render();
             Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
             Y.Assert.areNotEqual("", container.getHTML(), "View container should contain the result of the this.view");
+            this.view.destroy();
             Y.Mock.verify(formView);
             Y.Mock.verify(actionBar);
         },
@@ -147,6 +148,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                         '<div class="ez-editactionbar-container"></div>';
             };
             this.view.render();
+            this.view.destroy();
             Y.Mock.verify(formView);
             Y.Mock.verify(actionBar);
         },
@@ -156,6 +158,8 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
             Y.Assert.areEqual(formContents, container.one('.ez-contenteditformview-container').getHTML(), "mock formContents is rendered in container");
             Y.Assert.areEqual(actionBarContents, container.one('.ez-editactionbar-container').getHTML(), "mock formContents is rendered in container");
+
+            this.view.destroy();
             Y.Mock.verify(formView);
             Y.Mock.verify(actionBar);
         },
