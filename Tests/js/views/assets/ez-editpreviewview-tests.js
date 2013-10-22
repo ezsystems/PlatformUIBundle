@@ -70,11 +70,17 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         "Should show itself when needed": function () {
 
             var previewNode = this.view.get('container').get('parentNode'),
-                newWidth = 600;
+                newWidth = 600,
+                oneMoreWidth = 700;
 
             this.view.show(newWidth);
 
             Y.Assert.areEqual(parseInt(previewNode.getComputedStyle('width'),10), newWidth);
+            Y.assert(!previewNode.hasClass(IS_HIDDEN_CLASS), "Container's parent node should NOT have certain class" );
+
+            this.view.show(oneMoreWidth);
+
+            Y.assert(parseInt(previewNode.getComputedStyle('width'),10) == newWidth, "Should correctly interpret 'show' command even if already visible");
             Y.assert(!previewNode.hasClass(IS_HIDDEN_CLASS), "Container's parent node should NOT have certain class" );
         },
 

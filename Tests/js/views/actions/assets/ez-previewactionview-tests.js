@@ -60,6 +60,26 @@ YUI.add('ez-previewactionview-tests', function (Y) {
             this.view.destroy();
         },
 
+        "Should set Content attribute for the PreviewView, once setting it for itself": function () {
+            var previewContent;
+            Y.Mock.expect(editPreview, {
+                method: 'set',
+                callCount: 2,
+                args: [Y.Mock.Value.String, Y.Mock.Value.Object],
+                run: function (param, value) {
+                    previewContent = value;
+                }
+            });
+            Y.Mock.expect(editPreview, {
+                method: 'get',
+                callCount: 0
+            });
+
+            this.view.set('content', contentMock);
+            Y.Assert.areSame( previewContent, contentMock, "editPreview should set correct content attribute" );
+            Y.Mock.verify(editPreview);
+        },
+
         "Should show editPreview once 'desktop mode' button is tapped, and change the preview mode once 'tablet mode' is tapped (and correctly show it in the UI)": function () {
             var desktopPreviewTrigger, tabletPreviewTrigger,
                 previewShown = false,

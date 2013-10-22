@@ -22,7 +22,7 @@ YUI.add('ez-previewactionview', function (Y) {
     Y.eZ.PreviewActionView = Y.Base.create('previewActionView',  Y.eZ.ButtonActionView, [], {
         events: {
             '.action-trigger': {
-                'tap': 'previewAction'
+                'tap': '_previewAction'
             }
         },
 
@@ -69,8 +69,9 @@ YUI.add('ez-previewactionview', function (Y) {
          *
          * @method previewAction
          * @param e {Object} event facade
+         * @protected
          */
-        previewAction: function (e) {
+        _previewAction: function (e) {
 
             var actionTrigger = e.currentTarget,
                 option = actionTrigger.getAttribute('data-action-option');
@@ -122,7 +123,7 @@ YUI.add('ez-previewactionview', function (Y) {
              * Content which is currently loaded in content edit view
              *
              * @attribute content
-             * @type Y.eZ.Content
+             * @type eZ.Content
              * @default {}
              * @required
              */

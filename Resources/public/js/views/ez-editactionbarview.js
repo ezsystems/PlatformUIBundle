@@ -149,9 +149,10 @@ YUI.add('ez-editactionbarview', function (Y) {
             var container = this.get('container'),
                 activeMenu = container.one(ACTIVE_MENU_CLASS),
                 viewMoreMenu = container.one(VIEW_MORE_MENU_CLASS),
-                actionViewNode = activeMenu.get('childNodes').pop();
+                actionViewNode = activeMenu.get('children').slice(-1).item(0);
 
             if (actionViewNode) {
+                actionViewNode.remove();
                 viewMoreMenu.append(actionViewNode);
                 this._checkViewMoreTrigger();
             }
@@ -167,9 +168,10 @@ YUI.add('ez-editactionbarview', function (Y) {
             var container = this.get('container'),
                 activeMenu = container.one(ACTIVE_MENU_CLASS),
                 viewMoreMenu = container.one(VIEW_MORE_MENU_CLASS),
-                actionViewNode = viewMoreMenu.get('childNodes').pop();
+                actionViewNode = viewMoreMenu.get('children').slice(-1).item(0);
 
             if (actionViewNode) {
+                actionViewNode.remove();
                 activeMenu.append(actionViewNode);
                 this._checkViewMoreTrigger();
             }
@@ -196,6 +198,7 @@ YUI.add('ez-editactionbarview', function (Y) {
         /**
          * Returns scroll height of the action bar view container
          *
+         * @method _getHeight
          * @return {Int} Scroll height of the action bar view container
          * @private
          */
@@ -206,6 +209,7 @@ YUI.add('ez-editactionbarview', function (Y) {
         /**
          * Indicates if there are some actions in ACTIVE_MENU_CLASS menu
          *
+         * @method _hasActiveActions
          * @return {boolean} true if there are some actions in ACTIVE_MENU_CLASS menu, false otherwise.
          * @private
          */
@@ -216,6 +220,7 @@ YUI.add('ez-editactionbarview', function (Y) {
         /**
          * Indicates if there are some actions in VIEW_MORE_MENU_CLASS menu
          *
+         * @method _hasViewMoreActions
          * @return {boolean} true if there are some actions in VIEW_MORE_MENU_CLASS menu, false otherwise.
          * @private
          */

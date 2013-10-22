@@ -1,8 +1,10 @@
 YUI.add('ez-editactionbarview-tests', function (Y) {
 
     var viewContainer = Y.one('.container'),
-        content = {}
-        GESTURE_MAP = Y.Event._GESTURE_MAP;
+        content = {},
+        GESTURE_MAP = Y.Event._GESTURE_MAP,
+        VIEW_MORE_MENU_CLASS = ".view-more-actions",
+        ACTIVE_MENU_CLASS = '.active-actions';
 
     // trick to simulate a tap event
     // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -82,6 +84,14 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             Y.assert( this.view.get('actionsList')[0].get('actionId') == "discard", "Discard action should become first according to it's priority after sorting");
         },
 
+        "Should set Content attribute for each of the actionViews, once setting it for itself": function () {
+            this.view.set('content', content);
+
+            Y.Array.each(this.view.get('actionsList'), function(actionView){
+                Y.Assert.areSame( actionView.get('content'), content, "Each of the action views should set correct content attribute" );
+            });
+        },
+
         "Should add actions to actions list": function () {
             this.view.addAction(new Y.eZ.ButtonActionView({
                 actionId : "test",
@@ -101,6 +111,8 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         },
 
         "'View more' button should NOT be visible, when all the actions fit on the screen": function () {
+            this.view.render();
+            this.view.handleHeightUpdate();
             Y.assert( Y.one('.view-more-button').hasClass('is-hidden'), "Button should NOT be visible" );
         },
 
@@ -120,6 +132,84 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             this.view.handleHeightUpdate();
             Y.assert( !Y.one('.view-more-button').hasClass('is-hidden'), "Button should be visible" );
         },
+
+        "Should pull actions from viewMore menu when main menu is shorter than the screen size": function () {
+            var container = this.view.get('container'),
+                activeMenu;
+
+            this.view.render();
+            this.view.handleHeightUpdate();
+
+            activeMenu = container.one(ACTIVE_MENU_CLASS);
+
+            Y.Assert.areEqual( 3, activeMenu.get('children').size(), "There should be 3 actions in activeMenu initially" );
+
+            // Cheating here, but no other way around, since we are not able to resize the screen from script
+            this.view._pushLastActionToViewMore();
+
+            Y.Assert.areEqual( 2, activeMenu.get('children').size(), "There should become 2 actions in activeMenu" );
+
+            this.view.handleHeightUpdate();
+
+            Y.Assert.areEqual( 3, activeMenu.get('children').size(), "There should become 3 actions in activeMenu" );
+        },
+
+        "When pushing actions to viewMore menu, nothing should happen, when out of active actions": function () {
+            var container = this.view.get('container'),
+                activeMenu,
+                viewMoreMenu;
+
+            this.view.render();
+            activeMenu = container.one(ACTIVE_MENU_CLASS);
+            viewMoreMenu = container.one(VIEW_MORE_MENU_CLASS);
+
+            Y.Assert.areEqual( 3, activeMenu.get('children').size(), "There should be 3 actions in activeMenu initially" );
+
+            this.view._pushLastActionToViewMore();
+            this.view._pushLastActionToViewMore();
+            this.view._pushLastActionToViewMore();
+
+            Y.Assert.areEqual( 0, activeMenu.get('children').size(), "There should become 0 actions in activeMenu" );
+            Y.Assert.areEqual( 3, viewMoreMenu.get('children').size(), "There should become 3 actions in viewMoreMenu" );
+
+            this.view._pushLastActionToViewMore();
+
+            Y.Assert.areEqual( 0, activeMenu.get('children').size(), "There should remain 0 actions in activeMenu" );
+            Y.Assert.areEqual( 3, viewMoreMenu.get('children').size(), "There should remain 3 actions in viewMoreMenu" );
+        },
+
+        "When pulling actions from viewMore menu, nothing should happen, when out of viewMore actions": function () {
+            var container = this.view.get('container'),
+                activeMenu,
+                viewMoreMenu;
+
+            this.view.render();
+            activeMenu = container.one(ACTIVE_MENU_CLASS);
+            viewMoreMenu = container.one(VIEW_MORE_MENU_CLASS);
+
+            Y.Assert.areEqual( 3, activeMenu.get('children').size(), "There should be 3 actions in activeMenu initially" );
+
+            this.view._pushLastActionToViewMore();
+            this.view._pushLastActionToViewMore();
+            this.view._pushLastActionToViewMore();
+
+            Y.Assert.areEqual( 0, activeMenu.get('children').size(), "There should become 0 actions in activeMenu" );
+            Y.Assert.areEqual( 3, viewMoreMenu.get('children').size(), "There should become 3 actions in viewMoreMenu" );
+
+            this.view._pullFirstActionFromViewMore();
+            this.view._pullFirstActionFromViewMore();
+            this.view._pullFirstActionFromViewMore();
+
+            Y.Assert.areEqual( 3, activeMenu.get('children').size(), "There should become 0 actions in activeMenu" );
+            Y.Assert.areEqual( 0, viewMoreMenu.get('children').size(), "There should become 3 actions in viewMoreMenu" );
+
+            this.view._pullFirstActionFromViewMore();
+
+            Y.Assert.areEqual( 3, activeMenu.get('children').size(), "There should remain 0 actions in activeMenu" );
+            Y.Assert.areEqual( 0, viewMoreMenu.get('children').size(), "There should remain 3 actions in viewMoreMenu" );
+        },
+
+
 
         "Should open additional menu when tapping 'View more' button": function () {
             var viewMoreButton, viewMoreMenu, counter;

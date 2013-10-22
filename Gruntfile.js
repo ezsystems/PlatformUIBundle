@@ -83,7 +83,7 @@ module.exports = function(grunt) {
                 }
             },
             livedoc: {
-                command: 'yuidoc --server',
+                command: 'yuidoc --server 3000 --config yuidoc.json',
                 options: {
                     stdout: true,
                     stderr: true
