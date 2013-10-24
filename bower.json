@@ -15,6 +15,7 @@
     "Tests"
   ],
   "dependencies": {
-    "pure": "~0.3.0"
+    "pure": "~0.3.0",
+    "ez-js-rest-client": "ezsystems/ez-js-rest-client"
   }
 }

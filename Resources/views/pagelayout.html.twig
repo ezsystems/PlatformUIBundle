@@ -26,7 +26,7 @@
 YUI.GlobalConfig = {
     modules: {
         "ez-capi": {
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/lib/CAPI.js' %}
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/vendors/ez-js-rest-client/dist/CAPI.js' %}
             fullpath: "{{ asset_url }}",
             {% endjavascripts %}
         },
@@ -113,8 +113,8 @@ YUI.GlobalConfig = {
             if ( e.data[i] === 'ez-capi' ) {
                 YUI.add('ez-capi', function (Y) {
                     Y.namespace('eZ');
-                    Y.eZ.CAPI = CAPI;
-                    Y.eZ.SessionAuthAgent = SessionAuthAgent;
+                    Y.eZ.CAPI = eZ.CAPI;
+                    Y.eZ.SessionAuthAgent = eZ.SessionAuthAgent;
                 });
             }
         }
