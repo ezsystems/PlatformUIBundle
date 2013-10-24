@@ -3,3 +3,4 @@ Tests/report/
 *-coverage.js
 Tests/instrument/
 node_modules/
+Resources/public/vendors/
