@@ -114,11 +114,9 @@ YUI.add('ez-editactionbarview', function (Y) {
 
             if (this._getHeight() > screenHeight) {
 
-                if (this._hasActiveActions()) {
-                    // push actions into view more menu until the main menu is not overflowed any more or we are out of actions in the main menu
-                    while (this._getHeight() > screenHeight && this._hasActiveActions()) {
-                        this._pushLastActionToViewMore();
-                    }
+                // push actions into view more menu until the main menu is not overflowed any more or we are out of actions in the main menu
+                while (this._getHeight() > screenHeight && this._hasActiveActions()) {
+                    this._pushLastActionToViewMore();
                 }
 
             } else {
@@ -126,12 +124,8 @@ YUI.add('ez-editactionbarview', function (Y) {
                 // Do we have to pull some actions from view more menu back to active menu?
                 if (this._hasViewMoreActions()) {
                     // pull actions from view more menu until the main menu is overflowed or we are out of actions in view more menu
-                    while ( (this._getHeight() <= screenHeight) && this._hasViewMoreActions() ) {
+                    while ( this._hasViewMoreActions() && (this._getHeight() + this._getFirstViewMoreActionHeight() <= screenHeight) ) {
                         this._pullFirstActionFromViewMore();
-                    }
-                    // if we stopped because the main menu is overflowed, then return last action back to view more menu.
-                    if (this._getHeight() > screenHeight) {
-                        this._pushLastActionToViewMore();
                     }
                 }
 
@@ -204,6 +198,17 @@ YUI.add('ez-editactionbarview', function (Y) {
          */
         _getHeight: function () {
             return this.get('container').get('scrollHeight');
+        },
+
+        /**
+         * Returns scroll height of the first action in VIEW_MORE_MENU_CLASS menu
+         *
+         * @method _getFirstViewMoreActionHeight
+         * @return {Int} Scroll height of the action
+         * @private
+         */
+        _getFirstViewMoreActionHeight: function () {
+            return this.get('container').one(VIEW_MORE_MENU_CLASS).get('children').slice(-1).item(0).get('scrollHeight');
         },
 
         /**
