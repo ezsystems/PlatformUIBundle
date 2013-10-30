@@ -30,6 +30,7 @@
     -webkit-font-smoothing: antialiased;
 }
 
+/*csslint vendor-prefix: false */
 @-moz-keyframes spin {
   0% {
     -moz-transform: rotate(0deg);
@@ -52,14 +53,6 @@
   }
   100% {
     -o-transform: rotate(359deg);
-  }
-}
-@-ms-keyframes spin {
-  0% {
-    -ms-transform: rotate(0deg);
-  }
-  100% {
-    -ms-transform: rotate(359deg);
   }
 }
 @keyframes spin {
