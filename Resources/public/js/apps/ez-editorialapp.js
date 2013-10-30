@@ -12,6 +12,7 @@ YUI.add('ez-editorialapp', function (Y) {
         APP_OPEN = 'is-app-open',
         APP_LOADING = 'is-app-loading',
         ERROR_VIEW_CONTAINER = '.ez-errorview-container',
+        testunused,
 
         /**
          * Fired whenever a fatal error occurs and application is not able to continue current action
