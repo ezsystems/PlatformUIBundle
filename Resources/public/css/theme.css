@@ -57,9 +57,21 @@
 .ez-editorial-app .is-error input[type=password],
 .ez-editorial-app .is-error textarea {
     border: 1px solid #BF3E33;
-    outline: none;
     box-shadow: none;
     background: #FEECEA;
+}
+
+.ez-editorial-app .is-error input[type=text]:focus,
+.ez-editorial-app .is-error input[type=email]:focus,
+.ez-editorial-app .is-error input[type=search]:focus,
+.ez-editorial-app .is-error input[type=password]:focus,
+.ez-editorial-app .is-error textarea:focus {
+    outline: none;
+    -webkit-box-shadow: inset 0 0 6px #e76;
+       -moz-box-shadow: inset 0 0 6px #e76;
+        -ms-box-shadow: inset 0 0 6px #e76;
+         -o-box-shadow: inset 0 0 6px #e76;
+            box-shadow: inset 0 0 6px #e76;
 }
 
 .ez-editorial-app h1,
