@@ -1,5 +1,6 @@
 YUI.add('ez-errorview-tests', function (Y) {
     var container = Y.one('.container'),
+        viewTest,
         testErrorText = "Not Found",
         testRetryAction = {
             run: function () {},

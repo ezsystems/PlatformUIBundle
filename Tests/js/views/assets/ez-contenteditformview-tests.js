@@ -1,5 +1,5 @@
 YUI.add('ez-contenteditformview-tests', function (Y) {
-    var viewTest, fieldeditViewsTest,
+    var viewTest,
         container = Y.one('.container'),
         contentType, content,
         Test1FieldEditView, Test2FieldEditView,
@@ -116,7 +116,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
         },
 
         "Test available variable in template": function () {
-            origTpl = this.view.template;
+            var origTpl = this.view.template;
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
                 Y.Assert.areEqual(1, Y.Object.keys(variables).length, "The template should receive 1 variable");
@@ -376,7 +376,10 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 });
 
                 this.wait(function () {
-                    Y.assert(parseInt(fieldGroupFields.getComputedStyle('height'), 10) !== 0, "On second tap field group should get an automatic height");
+                    Y.assert(
+                        parseInt(fieldGroupFields.getComputedStyle('height'), 10) !== 0,
+                        "On second tap field group should get an automatic height"
+                    );
                 }, 500);
 
             }, 500);
