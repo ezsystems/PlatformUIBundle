@@ -93,7 +93,7 @@ YUI.add('ez-errorview', function (Y) {
              * Fired when "retry the operation" link is clicked
              *
              * @event retryAction
-             * @parameter {Object} object describing action interrupted by the error
+             * @param {Object} object describing action interrupted by the error
              */
             this.hide();
             this.fire('retryAction', this.get('retryAction'));

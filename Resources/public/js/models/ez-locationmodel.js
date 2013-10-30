@@ -84,7 +84,7 @@ YUI.add('ez-locationmodel', function (Y) {
              * The location's invisible flag
              *
              * @attribute invisible
-             * @defaylt false
+             * @default false
              * @type boolean
              */
             invisible: {
