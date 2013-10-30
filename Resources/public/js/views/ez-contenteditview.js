@@ -11,7 +11,8 @@ YUI.add('ez-contenteditview', function (Y) {
     var DETAILS_SEL = '.ez-technical-infos',
         CONTENT_SEL = '.ez-main-content',
         ESCAPE_KEY = 27,
-        FORM_CONTAINER = '.ez-contenteditformview-container';
+        FORM_CONTAINER = '.ez-contenteditformview-container',
+        ACTION_BAR_CONTAINER = '.ez-editactionbar-container';
 
     /**
      * The content edit view
@@ -40,7 +41,9 @@ YUI.add('ez-contenteditview', function (Y) {
          * @method initializer
          */
         initializer: function () {
+
             this.get('formView').addTarget(this);
+            this.get('actionBar').addTarget(this);
         },
 
         /**
@@ -51,6 +54,7 @@ YUI.add('ez-contenteditview', function (Y) {
          */
         destructor: function () {
             this.get('formView').destroy();
+            this.get('actionBar').destroy();
         },
 
         /**
@@ -71,6 +75,10 @@ YUI.add('ez-contenteditview', function (Y) {
             }));
 
             container.one(FORM_CONTAINER).append(this.get('formView').render().get('container'));
+
+            // Note: render() is drawing non-height-responsive version of the action bar
+            // but handleHeightUpdate() event will be triggered from app.handleContentEdit(), when everything is loaded to draw the responsive version
+            container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').render().get('container'));
 
             return this;
         },
@@ -171,6 +179,7 @@ YUI.add('ez-contenteditview', function (Y) {
                 value: {},
                 setter: function (val, name) {
                     this.get('formView').set('content', val);
+                    this.get('actionBar').set('content', val);
                     return val;
                 }
             },
@@ -216,12 +225,24 @@ YUI.add('ez-contenteditview', function (Y) {
              * The ContentEditFormView (by default) instance which will be used to render form
              *
              * @attribute formView
-             * @default {}
+             * @default new Y.eZ.ContentEditFormView()
              * @type {eZ.ContentEditFormView}
              * @required
              */
             formView: {
                 value: new Y.eZ.ContentEditFormView()
+            },
+
+            /**
+             * The EditActionBarView (by default) instance
+             *
+             * @attribute actionBar
+             * @default new Y.eZ.EditActionBarView()
+             * @type {eZ.EditActionBarView}
+             * @required
+             */
+            actionBar: {
+                value: new Y.eZ.EditActionBarView()
             }
         }
     });

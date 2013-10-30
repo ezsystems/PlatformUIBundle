@@ -133,6 +133,7 @@ YUI.add('ez-editorialapp', function (Y) {
                 render: true,
                 callback: function (view) {
                     this.set('loading', false);
+                    view.get('actionBar').handleHeightUpdate();
                     view.setFocus();
                 }
             });
@@ -229,7 +230,7 @@ YUI.add('ez-editorialapp', function (Y) {
         },
 
         /**
-         * Changes the application sate to be close
+         * Changes the application state to be closed
          *
          * @method close
          */
