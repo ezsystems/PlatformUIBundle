@@ -264,6 +264,7 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
                 fieldDefinitions.page.descriptions["eng-GB"]
             );
 
+            /* jshint camelcase: false */
             Y.Assert.areEqual(
                 "Layout",
                 fieldDefinitions.page_meta.names["eng-GB"]
@@ -272,6 +273,7 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
                 "",
                 fieldDefinitions.page_meta.descriptions["eng-GB"]
             );
+            /* jshint camelcase: true */
         }
 
     });

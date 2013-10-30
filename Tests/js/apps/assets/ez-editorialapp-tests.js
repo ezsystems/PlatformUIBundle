@@ -37,12 +37,12 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
         "Should close the application": function () {
             var errorViewHidden = false,
-                testErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
+                TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
                     hide: function () {
                         errorViewHidden = true;
                     }
                 });
-            app.views.errorView.instance = new testErrorViewConstructor();
+            app.views.errorView.instance = new TestErrorViewConstructor();
 
             app.close();
 
@@ -115,8 +115,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     Y.Assert.areSame(options.api, capiMock, "The 'api' property should be the CAPI");
 
                     callback(false);
-                },
-                vars;
+                };
 
             contentMock = new Y.Mock();
             userMock = new Y.Mock();
@@ -262,7 +261,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         "Should show the error view, when catching 'fatalError' event": function () {
             var rendered = false, initialized = false, focused = false,
                 errorInfo = {'retryAction:': {}, 'additionalInfo': 1},
-                testErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
+                TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
                     initializer: function () {
                         initialized = true;
                     },
@@ -280,7 +279,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     }
                 });
 
-            app.views.errorView.instance = new testErrorViewConstructor();
+            app.views.errorView.instance = new TestErrorViewConstructor();
 
             app.fire('contentEditView:fatalError', errorInfo);
 
@@ -296,7 +295,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             var undefinedContentId = "undefined",
                 fatalErrorFired = false,
                 contentMock = new Y.Mock(),
-                testErrorViewConstructor;
+                TestErrorViewConstructor;
 
             // We have to reinitialize the App, so our previous changes to app.views.errorView.instance will not have effect
             app = new Y.eZ.EditorialApp({
@@ -306,10 +305,10 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             });
             app.render();
 
-            testErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
+            TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
                 setFocus: function () {}
             });
-            app.views.errorView.instance = new testErrorViewConstructor();
+            app.views.errorView.instance = new TestErrorViewConstructor();
 
             Y.Mock.expect(contentMock, {
                 method: 'set',
@@ -357,7 +356,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 userMock = new Y.Mock(),
                 locationMock = new Y.Mock(),
                 typeMock = new Y.Mock(),
-                testErrorViewConstructor,
+                TestErrorViewConstructor,
                 resources = {
                     'Owner': '/api/ezp/v2/user/users/undefined',
                     'MainLocation': '/api/ezp/v2/content/locations/1/2/61',
@@ -375,10 +374,10 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             });
             app.render();
 
-            testErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
+            TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
                 setFocus: function () {}
             });
-            app.views.errorView.instance = new testErrorViewConstructor();
+            app.views.errorView.instance = new TestErrorViewConstructor();
 
             // Content Mock
             Y.Mock.expect(contentMock, {
@@ -490,7 +489,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 userMock = new Y.Mock(),
                 locationMock = new Y.Mock(),
                 typeMock = new Y.Mock(),
-                testErrorViewConstructor,
+                TestErrorViewConstructor,
                 resources = {
                     'Owner': '/api/ezp/v2/user/users/14',
                     'MainLocation': '/api/ezp/v2/content/locations/undefined',
@@ -508,10 +507,10 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             });
             app.render();
 
-            testErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
+            TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
                 setFocus: function () {}
             });
-            app.views.errorView.instance = new testErrorViewConstructor();
+            app.views.errorView.instance = new TestErrorViewConstructor();
 
             // Content Mock
             Y.Mock.expect(contentMock, {
@@ -623,7 +622,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 userMock = new Y.Mock(),
                 locationMock = new Y.Mock(),
                 typeMock = new Y.Mock(),
-                testErrorViewConstructor,
+                TestErrorViewConstructor,
                 resources = {
                     'Owner': '/api/ezp/v2/user/users/14',
                     'MainLocation': '/api/ezp/v2/content/locations/1/2/61',
@@ -641,10 +640,10 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             });
             app.render();
 
-            testErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
+            TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
                 setFocus: function () {}
             });
-            app.views.errorView.instance = new testErrorViewConstructor();
+            app.views.errorView.instance = new TestErrorViewConstructor();
 
             // Content Mock
             Y.Mock.expect(contentMock, {
@@ -786,7 +785,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     Y.Assert.areSame(testArgumentInput2, testArgument2);
                     Y.Assert.areSame(this, makeMeTheContext);
                     actionRetried = true;
-                }
+                };
 
             app.fire('whatever:retryAction', {
                 run: retryMe,

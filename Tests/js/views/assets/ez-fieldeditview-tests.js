@@ -220,7 +220,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             Y.eZ.FieldEditView.registerFieldEditView(identifier, editView);
             try {
                 Y.Assert.areSame(
-                    editView, 
+                    editView,
                     Y.eZ.FieldEditView.getFieldEditView(identifier),
                     "Should return the constructor function of the edit view"
                 );

@@ -155,7 +155,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                 response = {
                     body: Y.JSON.stringify(this.loadResponse)
                 },
-                fields;
+                fields, res;
 
             res = m .parse(response);
             fields = res.fields;

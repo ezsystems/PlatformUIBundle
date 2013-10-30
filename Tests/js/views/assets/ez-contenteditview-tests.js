@@ -33,8 +33,10 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
         _should: {
             ignore: {
-                "Should fire a close event when tapping 'close' link": (Y.UA.phantomjs), // tap trick does not work in phantomjs
-                "Should focus on the content element using special method": (Y.UA.phantomjs) // not changing document.activeElement property in phantomjs
+                // tap trick does not work in phantomjs
+                "Should fire a close event when tapping 'close' link": (Y.UA.phantomjs),
+                 // not changing document.activeElement property in phantomjs
+                "Should focus on the content element using special method": (Y.UA.phantomjs)
             }
         },
 
@@ -122,7 +124,11 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         "Should render formView in designated container": function () {
             this.view.render();
 
-            Y.Assert.areEqual(formContents, container.one('.ez-contenteditformview-container').getHTML(), "mock formContents is rendered in container");
+            Y.Assert.areEqual(
+                formContents,
+                container.one('.ez-contenteditformview-container').getHTML(),
+                "mock formContents is rendered in container"
+            );
             Y.Mock.verify(formView);
         },
 
@@ -139,11 +145,11 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         "Should recieve events fired on it's child formView": function () {
             // We need another (not as in "setUp") view initialization sequence to test that
             var view = new Y.eZ.ContentEditView({
-                container: container,
-                content: content,
-                contentType: contentType,
-                mainLocation: mainLocation,
-                owner: owner,
+                    container: container,
+                    content: content,
+                    contentType: contentType,
+                    mainLocation: mainLocation,
+                    owner: owner,
                 }),
                 testEventReceived = false;
 
