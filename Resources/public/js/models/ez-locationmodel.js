@@ -40,9 +40,9 @@ YUI.add('ez-locationmodel', function (Y) {
             }
         }
     }, {
-        REST_STRUCT_ROOT: "Location",
+REST_STRUCT_ROOT: "Location",
         ATTRS_REST_MAP: [
-            'childCount', 'depth', 'hidden', 'invisible', 'pathString',
+'childCount', 'depth', 'hidden', 'invisible', 'pathString',
             'priority', 'remoteId', 'sortField', 'sortOrder',
             {'id': 'locationId'}
         ],

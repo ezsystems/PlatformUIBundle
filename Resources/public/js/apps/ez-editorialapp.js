@@ -12,11 +12,11 @@ YUI.add('ez-editorialapp', function (Y) {
         APP_OPEN = 'is-app-open',
         APP_LOADING = 'is-app-loading',
         ERROR_VIEW_CONTAINER = '.ez-errorview-container',
+        testunused,
 
         /**
          * Fired whenever a fatal error occurs and application is not able to continue current action
          *
-         * @event fatalError
          * @param retryAction {Object} Object describing the action which was interrupted by error, and could be retried
          * @param additionalInfo {Object} Object containing additional information about the error
          * @example
@@ -31,7 +31,7 @@ YUI.add('ez-editorialapp', function (Y) {
          *         }
          *     });
          */
-        EVT_FATALERROR = 'fatalError';
+        EVT_FATALERROR = 'fatalError'
 
     /**
      * Editorial Application
@@ -92,7 +92,6 @@ YUI.add('ez-editorialapp', function (Y) {
         /**
          * Display the error view
          *
-         * @method _handleError
          * @param errorInfo {Object} Object containing additional info about the error
          * @protected
          */
@@ -251,7 +250,7 @@ YUI.add('ez-editorialapp', function (Y) {
             if ( e.newVal ) {
                 this.get('container').addClass(APP_LOADING);
             } else {
-                this.get('container').removeClass(APP_LOADING);
+                this.get('container').removeClass(APP_LOADING)
             }
         }
 
