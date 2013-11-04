@@ -93,7 +93,6 @@ YUI.add('ez-editorialapp', function (Y) {
         /**
          * Display the error view
          *
-         * @method _handleError
          * @param errorInfo {Object} Object containing additional info about the error
          * @protected
          */
