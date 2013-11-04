@@ -34,7 +34,7 @@ This bundle provides the (future) Editorial Interface for eZ Publish.
   ```
 * Install global dependencies (usually you need to be root):
   ```
-  # npm install -g grunt-cli yuidoc bower grover
+  # npm install -g grunt-cli yuidocjs bower grover
   ```
 * Install frontend dependencies:
   ```
