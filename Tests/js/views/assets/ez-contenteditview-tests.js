@@ -333,7 +333,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         "opacity of technical infos should vary if the device is not a touch device": function () {
             var header;
 
-            this.view._isTouch = function () { return false };
+            this.view._isTouch = function () { return false; };
             this.view.render();
 
             header = this.view.get('container').one('header');
