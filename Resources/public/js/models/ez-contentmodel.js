@@ -6,7 +6,7 @@ YUI.add('ez-contentmodel', function (Y) {
      * @module ez-contentmodel
      */
 
-    Y.namespace('eZ');
+    Y.namespace('eZ')
 
     /**
      * Content model
