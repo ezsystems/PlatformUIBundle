@@ -182,7 +182,7 @@ YUI.add('ez-restmodel-tests', function (Y) {
                 "Link3 should not be imported"
             );
         }
-        
+
 
     });
 

@@ -43,7 +43,7 @@ YUI.add('model-tests', function (Y) {
             m.sync('create', {api: this.capiMock}, callback);
             Y.assert(called, "The callback should have been called");
         },
-        
+
         "parse should return null and fire the error event on JSON parse error": function () {
             var m = this.model,
                 response, res = false,

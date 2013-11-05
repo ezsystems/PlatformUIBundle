@@ -60,7 +60,7 @@ YUI.add('ez-restmodel', function (Y) {
         /**
          * Setter function for the localized attribute.
          * It transforms any value like
-         *   
+         *
          *     {
          *        value: [{
          *            '_languageCode': 'fre-FR',
@@ -196,7 +196,7 @@ YUI.add('ez-restmodel', function (Y) {
          *     {"name": "my name", "myId": 42}
          *
          * when parsed in the _parseStruct method.
-         * 
+         *
          * @static
          * @property ATTRS_REST_MAP
          * @type Array
