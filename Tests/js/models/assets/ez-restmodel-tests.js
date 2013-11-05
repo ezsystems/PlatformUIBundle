@@ -3,7 +3,6 @@ YUI.add('ez-restmodel-tests', function (Y) {
         Model;
 
     Model = Y.Base.create('testModel', Y.eZ.RestModel, [], {
-
     }, {
         ATTRS: {
             name: {
@@ -182,7 +181,6 @@ YUI.add('ez-restmodel-tests', function (Y) {
                 "Link3 should not be imported"
             );
         }
-
 
     });
 

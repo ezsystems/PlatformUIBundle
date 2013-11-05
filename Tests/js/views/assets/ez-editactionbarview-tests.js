@@ -1,5 +1,4 @@
 YUI.add('ez-editactionbarview-tests', function (Y) {
-
     var viewContainer = Y.one('.container'),
         content = {},
         GESTURE_MAP = Y.Event._GESTURE_MAP,
@@ -25,7 +24,6 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         },
 
         setUp: function () {
-
             this.view = new Y.eZ.EditActionBarView({
                 container: viewContainer,
                 content: content,
@@ -208,8 +206,6 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             Y.Assert.areEqual( 3, activeMenu.get('children').size(), "There should remain 0 actions in activeMenu" );
             Y.Assert.areEqual( 0, viewMoreMenu.get('children').size(), "There should remain 3 actions in viewMoreMenu" );
         },
-
-
 
         "Should open additional menu when tapping 'View more' button": function () {
             var viewMoreButton, viewMoreMenu, counter;

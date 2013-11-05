@@ -20,7 +20,6 @@ YUI.add('ez-fieldeditview', function (Y) {
      * @extends eZ.TemplateBasedView
      */
     Y.eZ.FieldEditView = Y.Base.create('fieldEditView', Y.eZ.TemplateBasedView, [], {
-
         /**
          * Contains the default content of the error message placeholder. It
          * is used to restore the error placeholder when the view switches

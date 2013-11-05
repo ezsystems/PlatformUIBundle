@@ -113,14 +113,12 @@ YUI.add('ez-editactionbarview', function (Y) {
             var screenHeight = this.get('container').get('winHeight');
 
             if (this._getHeight() > screenHeight) {
-
                 // push actions into view more menu until the main menu is not overflowed any more or we are out of actions in the main menu
                 while (this._getHeight() > screenHeight && this._hasActiveActions()) {
                     this._pushLastActionToViewMore();
                 }
 
             } else {
-
                 // Do we have to pull some actions from view more menu back to active menu?
                 if (this._hasViewMoreActions()) {
                     // pull actions from view more menu until the main menu is overflowed or we are out of actions in view more menu
@@ -128,10 +126,8 @@ YUI.add('ez-editactionbarview', function (Y) {
                         this._pullFirstActionFromViewMore();
                     }
                 }
-
             }
         },
-
 
         /**
          * Push last action from the ACTIVE_MENU_CLASS menu to the VIEW_MORE_MENU_CLASS menu
@@ -355,8 +351,6 @@ YUI.add('ez-editactionbarview', function (Y) {
                     return val;
                 }
             }
-
         }
     });
-
 });

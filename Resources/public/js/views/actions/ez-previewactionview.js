@@ -72,7 +72,6 @@ YUI.add('ez-previewactionview', function (Y) {
          * @protected
          */
         _previewAction: function (e) {
-
             var actionTrigger = e.currentTarget,
                 option = actionTrigger.getAttribute('data-action-option');
 
@@ -134,8 +133,6 @@ YUI.add('ez-previewactionview', function (Y) {
                     return val;
                 }
             }
-
         }
     });
-
 });

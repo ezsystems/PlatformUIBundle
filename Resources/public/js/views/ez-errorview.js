@@ -108,11 +108,9 @@ YUI.add('ez-errorview', function (Y) {
          * @param {Object} e event facade of the keyboard event
          */
         _handleKeyboard: function (e) {
-
             if (e.keyCode === ESCAPE_KEY) {
                 this._closeApp(e);
             }
-
         }
 
     }, {
@@ -147,5 +145,4 @@ YUI.add('ez-errorview', function (Y) {
             }
         }
     });
-
 });

@@ -41,7 +41,6 @@ YUI.add('ez-contenteditview', function (Y) {
          * @method initializer
          */
         initializer: function () {
-
             this.get('formView').addTarget(this);
             this.get('actionBar').addTarget(this);
         },
@@ -149,7 +148,6 @@ YUI.add('ez-contenteditview', function (Y) {
          * @param {Object} e event facade of the keyboard event
          */
         _handleKeyboard: function (e) {
-
             if (e.keyCode === ESCAPE_KEY) {
                 this._closeView(e);
             }

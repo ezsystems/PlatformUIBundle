@@ -1,5 +1,4 @@
 YUI.add('ez-buttonactionview-tests', function (Y) {
-
     var container = Y.one('.container'),
         GESTURE_MAP = Y.Event._GESTURE_MAP;
 
@@ -21,7 +20,6 @@ YUI.add('ez-buttonactionview-tests', function (Y) {
         },
 
         setUp: function () {
-
             this.view = new Y.eZ.ButtonActionView({
                 container: container,
                 actionId: "test",

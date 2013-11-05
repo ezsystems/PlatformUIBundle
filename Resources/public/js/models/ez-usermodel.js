@@ -17,7 +17,6 @@ YUI.add('ez-usermodel', function (Y) {
      * @extends eZ.RestModel
      */
     Y.eZ.User = Y.Base.create('userModel', Y.eZ.RestModel, [], {
-
         /**
          * sync implementation that relies on the JS REST client.
          * For now, it only supports the 'read' action. The callback is
@@ -47,7 +46,6 @@ YUI.add('ez-usermodel', function (Y) {
             {'_remoteId': 'remoteId'}
         ],
         ATTRS: {
-
             /**
              * The user's email
              *
@@ -105,5 +103,4 @@ YUI.add('ez-usermodel', function (Y) {
             }
         }
     });
-
 });

@@ -104,7 +104,6 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
 
         },
 
-
         "Test error message handling": function () {
             var msg = 'Error message',
                 defaultContent = 'default content';

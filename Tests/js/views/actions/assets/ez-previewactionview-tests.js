@@ -1,5 +1,4 @@
 YUI.add('ez-previewactionview-tests', function (Y) {
-
     var container = Y.one('.container'),
         editPreview,
         previewContents = "<div></div>",
@@ -740,7 +739,6 @@ YUI.add('ez-previewactionview-tests', function (Y) {
         },
 
         "Should change the UI when catching event editPreviewHide is hidden": function () {
-
             this.view.render();
 
             this.view.fire('editPreviewView:editPreviewHide');

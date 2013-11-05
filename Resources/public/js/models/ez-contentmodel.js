@@ -17,7 +17,6 @@ YUI.add('ez-contentmodel', function (Y) {
      * @extends eZ.RestModel
      */
     Y.eZ.Content = Y.Base.create('contentModel', Y.eZ.RestModel, [], {
-
         /**
          * Override of the eZ.RestModel _parseStruct method to also read the
          * fields of the current version
@@ -87,7 +86,6 @@ YUI.add('ez-contentmodel', function (Y) {
             'Owner', 'MainLocation', 'ContentType'
         ],
         ATTRS: {
-
             /**
              * The content id of the content in the eZ Publish repository
              *
@@ -181,5 +179,4 @@ YUI.add('ez-contentmodel', function (Y) {
             }
         }
     });
-
 });

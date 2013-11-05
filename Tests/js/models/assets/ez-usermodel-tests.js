@@ -1,5 +1,4 @@
 YUI.add('ez-usermodel-tests', function (Y) {
-
     var modelTest;
 
     modelTest = new Y.eZ.ModelTest({

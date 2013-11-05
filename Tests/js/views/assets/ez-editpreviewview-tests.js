@@ -1,5 +1,4 @@
 YUI.add('ez-editpreviewview-tests', function (Y) {
-
     var viewContainer = Y.one('.container'),
         GESTURE_MAP = Y.Event._GESTURE_MAP,
         IS_HIDDEN_CLASS = 'is-hidden',
@@ -8,7 +7,6 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         contentId: 59,
         name: "Test name"
     });
-
 
     // trick to simulate a tap event
     // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -28,7 +26,6 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         },
 
         setUp: function () {
-
             this.view = new Y.eZ.EditPreviewView({
                 container: viewContainer,
                 content: mockContent
@@ -68,7 +65,6 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         },
 
         "Should show itself when needed": function () {
-
             var previewNode = this.view.get('container').get('parentNode'),
                 newWidth = 600,
                 oneMoreWidth = 700;
@@ -85,7 +81,6 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         },
 
         "Should show iframe loader once it begins to load": function () {
-
             var loader;
 
             this.view.render();
@@ -95,9 +90,7 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
 
         },
 
-
         "Should hide iframe loader once it is done loading": function () {
-
             var loader;
 
             this.view.render();
@@ -234,7 +227,6 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
             });
 
             Y.assert(previewNode.hasClass(IS_HIDDEN_CLASS), "After 'Close preview' tap, certain class should be added to container's parent node");
-
         }
 
     });
