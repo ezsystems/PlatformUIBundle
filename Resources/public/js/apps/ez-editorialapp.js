@@ -23,8 +23,8 @@ YUI.add('ez-editorialapp', function (Y) {
          *     app.fire(EVT_FATALERROR, {
          *         retryAction: {
          *             run: app.loadContentForEdit,
-          *            args: [req, res, next],
-          *            context: app
+         *             args: [req, res, next],
+         *             context: app
          *         },
          *         additionalInfo: {
          *             errorText: " Could not load the content with id '" + req.params.id + "'"

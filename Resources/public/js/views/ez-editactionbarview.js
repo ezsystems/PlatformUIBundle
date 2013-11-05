@@ -301,13 +301,9 @@ YUI.add('ez-editactionbarview', function (Y) {
                         label: "Preview",
                         priority: 170,
                         buttons: [
-                            {
-                                option: "desktop"
-                            }, {
-                                option: "tablet"
-                            }, {
-                                option: "mobile"
-                            }
+                            {option: "desktop"},
+                            {option: "tablet"},
+                            {option: "mobile"}
                         ]
                     })
                 ]
