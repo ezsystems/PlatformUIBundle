@@ -335,7 +335,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     Y.Mock.Value.Object,
                     Y.Mock.Value.Function
                 ],
-                run: function(options, callback) {
+                run: function (options, callback) {
                     // just return an error
                     callback(true);
                 }
@@ -412,7 +412,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     Y.Mock.Value.Object,
                     Y.Mock.Value.Function
                 ],
-                run: function(options, callback) {
+                run: function (options, callback) {
                     callback(false);
                 }
             });
@@ -545,7 +545,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     Y.Mock.Value.Object,
                     Y.Mock.Value.Function
                 ],
-                run: function(options, callback) {
+                run: function (options, callback) {
                     callback(false);
                 }
             });
@@ -678,7 +678,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     Y.Mock.Value.Object,
                     Y.Mock.Value.Function
                 ],
-                run: function(options, callback) {
+                run: function (options, callback) {
                     callback(false);
                 }
             });

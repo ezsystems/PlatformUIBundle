@@ -130,7 +130,7 @@ YUI.add('ez-contenteditformview', function (Y) {
 
             if (fieldSet.hasClass(COLLAPSED_CLASS)) {
                 fields.transition({
-                    height: function(node) {
+                    height: function (node) {
                         return node.get('scrollHeight') + 'px';
                     },
                     duration: TRANSITION_DURATION,

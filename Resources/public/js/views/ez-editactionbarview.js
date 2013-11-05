@@ -58,7 +58,7 @@ YUI.add('ez-editactionbarview', function (Y) {
             viewMoreTrigger = container.one(VIEW_MORE_BUTTON_CLASS);
             viewMoreTrigger.addClass(IS_HIDDEN_CLASS);
 
-            Y.Array.each(this.get('actionsList'), function(actionView){
+            Y.Array.each(this.get('actionsList'), function (actionView) {
                 activeMenu.append(actionView.render().get('container'));
             });
 
@@ -348,7 +348,7 @@ YUI.add('ez-editactionbarview', function (Y) {
             content: {
                 value: {},
                 setter: function (val, name) {
-                    Y.Array.each(this.get('actionsList'), function(actionView){
+                    Y.Array.each(this.get('actionsList'), function (actionView) {
                         actionView.set('content', val);
                     });
 

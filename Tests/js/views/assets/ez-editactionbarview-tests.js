@@ -87,7 +87,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         "Should set Content attribute for each of the actionViews, once setting it for itself": function () {
             this.view.set('content', content);
 
-            Y.Array.each(this.view.get('actionsList'), function(actionView){
+            Y.Array.each(this.view.get('actionsList'), function (actionView) {
                 Y.Assert.areSame( actionView.get('content'), content, "Each of the action views should set correct content attribute" );
             });
         },
