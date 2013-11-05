@@ -1,5 +1,4 @@
 YUI.add('ez-editorialapp-tests', function (Y) {
-
     var app, appTest,
         capiMock,
         container = Y.one('.app'),
@@ -64,7 +63,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         "Should open again the application": function () {
             this["Should open the application"]();
         },
-
 
         "Should close again the application": function () {
             this["Should close the application"]();
@@ -240,7 +238,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 }
             }, {
                 ATTRS: {
-                    actionBar : {
+                    actionBar: {
                         value: mockActionBar
                     }
                 }
@@ -335,7 +333,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     Y.Mock.Value.Object,
                     Y.Mock.Value.Function
                 ],
-                run: function(options, callback) {
+                run: function (options, callback) {
                     // just return an error
                     callback(true);
                 }
@@ -412,7 +410,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     Y.Mock.Value.Object,
                     Y.Mock.Value.Function
                 ],
-                run: function(options, callback) {
+                run: function (options, callback) {
                     callback(false);
                 }
             });
@@ -545,7 +543,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     Y.Mock.Value.Object,
                     Y.Mock.Value.Function
                 ],
-                run: function(options, callback) {
+                run: function (options, callback) {
                     callback(false);
                 }
             });
@@ -678,7 +676,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     Y.Mock.Value.Object,
                     Y.Mock.Value.Function
                 ],
-                run: function(options, callback) {
+                run: function (options, callback) {
                     callback(false);
                 }
             });
@@ -815,6 +813,5 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Editorial App tests");
     Y.Test.Runner.add(appTest);
-
 
 }, '0.0.1', {requires: ['test', 'ez-editorialapp', 'json', 'parallel']});

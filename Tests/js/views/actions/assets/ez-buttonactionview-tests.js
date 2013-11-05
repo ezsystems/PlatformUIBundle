@@ -1,7 +1,7 @@
 YUI.add('ez-buttonactionview-tests', function (Y) {
-
     var container = Y.one('.container'),
-        GESTURE_MAP = Y.Event._GESTURE_MAP;
+        GESTURE_MAP = Y.Event._GESTURE_MAP,
+        viewTest;
 
     // trick to simulate a tap event
     // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -16,12 +16,11 @@ YUI.add('ez-buttonactionview-tests', function (Y) {
 
         _should: {
             ignore: {
-                "Should fire an action once the action button is tapped" : (Y.UA.phantomjs) // tap trick does not work in phantomjs
+                "Should fire an action once the action button is tapped": (Y.UA.phantomjs) // tap trick does not work in phantomjs
             }
         },
 
         setUp: function () {
-
             this.view = new Y.eZ.ButtonActionView({
                 container: container,
                 actionId: "test",

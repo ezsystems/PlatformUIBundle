@@ -1,5 +1,4 @@
 YUI.add('ez-contenttypemodel-tests', function (Y) {
-
     var modelTest;
 
     modelTest = new Y.eZ.ModelTest({
@@ -177,7 +176,7 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
             delete this.model;
         },
 
-        "Should create correct field groups for the FormEditView from the REST data" : function () {
+        "Should create correct field groups for the FormEditView from the REST data": function () {
             var m = this.model,
                 mockResponse = {},
                 fieldGroups;

@@ -1,5 +1,4 @@
 YUI.add('ez-textline-editview-tests', function (Y) {
-
     var viewTest, registerTest,
         container = Y.one('.container'),
         content, contentType,

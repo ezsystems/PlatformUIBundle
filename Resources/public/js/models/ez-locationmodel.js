@@ -158,5 +158,4 @@ YUI.add('ez-locationmodel', function (Y) {
             }
         }
     });
-
 });

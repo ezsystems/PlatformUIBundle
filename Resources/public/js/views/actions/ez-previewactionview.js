@@ -47,11 +47,11 @@ YUI.add('ez-previewactionview', function (Y) {
             var container = this.get('container');
 
             container.setHTML(this.template({
-                actionId : this.get('actionId'),
-                disabled : this.get('disabled'),
-                label : this.get('label'),
-                hint : this.get('hint'),
-                buttons : this.get('buttons')
+                actionId: this.get('actionId'),
+                disabled: this.get('disabled'),
+                label: this.get('label'),
+                hint: this.get('hint'),
+                buttons: this.get('buttons')
             }));
 
             //Do NOT render preview yet (to reduce loading time for main UI parts)
@@ -72,7 +72,6 @@ YUI.add('ez-previewactionview', function (Y) {
          * @protected
          */
         _previewAction: function (e) {
-
             var actionTrigger = e.currentTarget,
                 option = actionTrigger.getAttribute('data-action-option');
 
@@ -90,7 +89,7 @@ YUI.add('ez-previewactionview', function (Y) {
          * @method _handleEditPreviewHide
          * @protected
          */
-        _handleEditPreviewHide : function () {
+        _handleEditPreviewHide: function () {
             this.get('container').all('[data-action="preview"]').removeClass(IS_SELECTED_CLASS);
         }
 
@@ -134,8 +133,6 @@ YUI.add('ez-previewactionview', function (Y) {
                     return val;
                 }
             }
-
         }
     });
-
 });

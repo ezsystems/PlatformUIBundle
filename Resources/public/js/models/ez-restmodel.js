@@ -22,7 +22,6 @@ YUI.add('ez-restmodel', function (Y) {
      * @extends Model
      */
     Y.eZ.RestModel = Y.Base.create('restModel', Y.Model, [], {
-
         /**
          * Setter function for the boolean attribute.
          * Makes sure the string "true" is tranformed to true,
@@ -60,7 +59,7 @@ YUI.add('ez-restmodel', function (Y) {
         /**
          * Setter function for the localized attribute.
          * It transforms any value like
-         *   
+         *
          *     {
          *        value: [{
          *            '_languageCode': 'fre-FR',
@@ -162,7 +161,6 @@ YUI.add('ez-restmodel', function (Y) {
             return this._parseStruct(root ? content[root] : content);
         }
 
-
     }, {
         /**
          * Root element in the REST API response where the data is located.
@@ -173,7 +171,6 @@ YUI.add('ez-restmodel', function (Y) {
          * @default ""
          */
         REST_STRUCT_ROOT: "",
-
 
         /**
          * Mapping between properties in a hash structure
@@ -196,7 +193,7 @@ YUI.add('ez-restmodel', function (Y) {
          *     {"name": "my name", "myId": 42}
          *
          * when parsed in the _parseStruct method.
-         * 
+         *
          * @static
          * @property ATTRS_REST_MAP
          * @type Array
@@ -235,5 +232,4 @@ YUI.add('ez-restmodel', function (Y) {
             }
         }
     });
-
 });

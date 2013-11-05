@@ -2,7 +2,7 @@ YUI.add('ez-templatebasedview', function (Y) {
     "use strict";
     /**
      * Provides the Template Based view
-     * 
+     *
      * @module ez-templatebasedview
      */
 
@@ -20,7 +20,6 @@ YUI.add('ez-templatebasedview', function (Y) {
      * @extends View
      */
     Y.eZ.TemplateBasedView = Y.Base.create('templateBasedView', Y.View, [], {
-
         /**
          * Initializes the template based view object:
          *
@@ -47,5 +46,4 @@ YUI.add('ez-templatebasedview', function (Y) {
         }
 
     });
-
 });

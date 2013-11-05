@@ -31,9 +31,9 @@ YUI.add('ez-errorview-tests', function (Y) {
         setUp: function () {
             this.view = new Y.eZ.ErrorView({
                 container: container,
-                retryAction : testRetryAction,
-                additionalInfo : {
-                    errorText : testErrorText
+                retryAction: testRetryAction,
+                additionalInfo: {
+                    errorText: testErrorText
                 }
             });
         },

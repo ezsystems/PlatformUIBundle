@@ -17,7 +17,6 @@ YUI.add('ez-contenttypemodel', function (Y) {
      * @extends eZ.RestModel
      */
     Y.eZ.ContentType = Y.Base.create('contentTypeModel', Y.eZ.RestModel, [], {
-
         /**
          * sync implementation that relies on the JS REST client.
          * For now, it only supports the 'read' action. The callback is
@@ -312,5 +311,4 @@ YUI.add('ez-contenttypemodel', function (Y) {
             }
         }
     });
-
 });

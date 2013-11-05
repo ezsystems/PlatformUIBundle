@@ -23,8 +23,8 @@ YUI.add('ez-editorialapp', function (Y) {
          *     app.fire(EVT_FATALERROR, {
          *         retryAction: {
          *             run: app.loadContentForEdit,
-          *            args: [req, res, next],
-          *            context: app
+         *             args: [req, res, next],
+         *             context: app
          *         },
          *         additionalInfo: {
          *             errorText: " Could not load the content with id '" + req.params.id + "'"
@@ -42,7 +42,6 @@ YUI.add('ez-editorialapp', function (Y) {
      * @extends App
      */
     Y.eZ.EditorialApp = Y.Base.create('editorialApp', Y.App, [], {
-
         views: {
             contentEditView: {
                 type: Y.eZ.ContentEditView,
@@ -66,7 +65,6 @@ YUI.add('ez-editorialapp', function (Y) {
          * @method initializer
          */
         initializer: function () {
-
             // Setting events handlers
             this.on('contentEditView:close', function (e) {
                 // For now just closing the application
@@ -97,7 +95,6 @@ YUI.add('ez-editorialapp', function (Y) {
          * @protected
          */
         _handleError: function (errorInfo) {
-
             var errorView = this.views.errorView.instance;
 
             errorView.setAttrs({

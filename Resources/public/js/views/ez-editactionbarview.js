@@ -51,14 +51,14 @@ YUI.add('ez-editactionbarview', function (Y) {
                 viewMoreTrigger;
 
             container.setHTML(this.template({
-                viewMoreText : this.get('viewMoreText')
+                viewMoreText: this.get('viewMoreText')
             }));
 
             activeMenu = container.one(ACTIVE_MENU_CLASS);
             viewMoreTrigger = container.one(VIEW_MORE_BUTTON_CLASS);
             viewMoreTrigger.addClass(IS_HIDDEN_CLASS);
 
-            Y.Array.each(this.get('actionsList'), function(actionView){
+            Y.Array.each(this.get('actionsList'), function (actionView) {
                 activeMenu.append(actionView.render().get('container'));
             });
 
@@ -113,14 +113,12 @@ YUI.add('ez-editactionbarview', function (Y) {
             var screenHeight = this.get('container').get('winHeight');
 
             if (this._getHeight() > screenHeight) {
-
                 // push actions into view more menu until the main menu is not overflowed any more or we are out of actions in the main menu
                 while (this._getHeight() > screenHeight && this._hasActiveActions()) {
                     this._pushLastActionToViewMore();
                 }
 
             } else {
-
                 // Do we have to pull some actions from view more menu back to active menu?
                 if (this._hasViewMoreActions()) {
                     // pull actions from view more menu until the main menu is overflowed or we are out of actions in view more menu
@@ -128,10 +126,8 @@ YUI.add('ez-editactionbarview', function (Y) {
                         this._pullFirstActionFromViewMore();
                     }
                 }
-
             }
         },
-
 
         /**
          * Push last action from the ACTIVE_MENU_CLASS menu to the VIEW_MORE_MENU_CLASS menu
@@ -283,35 +279,31 @@ YUI.add('ez-editactionbarview', function (Y) {
                 cloneDefaultValue: false,
                 value: [
                     new Y.eZ.ButtonActionView({
-                        actionId : "publish",
-                        disabled : true,
-                        label : "Publish",
-                        priority : 200
+                        actionId: "publish",
+                        disabled: true,
+                        label: "Publish",
+                        priority: 200
                     }),
                     new Y.eZ.ButtonActionView({
-                        actionId : "save",
-                        disabled : true,
-                        label : "Save",
-                        priority : 190
+                        actionId: "save",
+                        disabled: true,
+                        label: "Save",
+                        priority: 190
                     }),
                     new Y.eZ.ButtonActionView({
-                        actionId : "discard",
-                        disabled : true,
-                        label : "Discard changes",
-                        priority : 180
+                        actionId: "discard",
+                        disabled: true,
+                        label: "Discard changes",
+                        priority: 180
                     }),
                     new Y.eZ.PreviewActionView({
-                        actionId : "preview",
-                        label : "Preview",
-                        priority : 170,
-                        buttons : [
-                            {
-                                option : "desktop"
-                            }, {
-                                option : "tablet"
-                            }, {
-                                option : "mobile"
-                            }
+                        actionId: "preview",
+                        label: "Preview",
+                        priority: 170,
+                        buttons: [
+                            {option: "desktop"},
+                            {option: "tablet"},
+                            {option: "mobile"}
                         ]
                     })
                 ]
@@ -348,15 +340,13 @@ YUI.add('ez-editactionbarview', function (Y) {
             content: {
                 value: {},
                 setter: function (val, name) {
-                    Y.Array.each(this.get('actionsList'), function(actionView){
+                    Y.Array.each(this.get('actionsList'), function (actionView) {
                         actionView.set('content', val);
                     });
 
                     return val;
                 }
             }
-
         }
     });
-
 });

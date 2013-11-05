@@ -35,10 +35,10 @@ YUI.add('ez-buttonactionview', function (Y) {
             var container = this.get('container');
 
             container.setHTML(this.template({
-                actionId : this.get('actionId'),
-                disabled : this.get('disabled'),
-                label : this.get('label'),
-                hint : this.get('hint')
+                actionId: this.get('actionId'),
+                disabled: this.get('disabled'),
+                label: this.get('label'),
+                hint: this.get('hint')
             }));
 
             return this;
@@ -52,7 +52,6 @@ YUI.add('ez-buttonactionview', function (Y) {
          * @protected
          */
         _handleActionClick: function (e) {
-
             /**
              * Fired when the action button is clicked. Name of the event consists of the action view's 'actionId' attribute and 'Action' suffix.
              * For example for a view with actionId = "publish", the event fired will be named "publishAction".
@@ -100,7 +99,6 @@ YUI.add('ez-buttonactionview', function (Y) {
                 value: ''
             },
 
-
             /**
              * Action hint (shown in small font below the label)
              *
@@ -136,5 +134,4 @@ YUI.add('ez-buttonactionview', function (Y) {
             }
         }
     });
-
 });

@@ -218,6 +218,11 @@
 }
 
 /* error view */
+.ez-errorview-container {
+    background: #000;
+    background: rgba(0, 0, 0, 0.4);
+}
+
 .ez-errorview-container .ez-error-dialog {
     background: #f3f3f3;
     border-radius: 10px;
@@ -325,13 +330,14 @@
     background: -webkit-linear-gradient(90deg, #232327 0%, #26252a 100%);
     background: -o-linear-gradient(90deg, #232327 0%, #26252a 100%);
     background: -ms-linear-gradient(90deg, #232327 0%, #26252a 100%);
-    background: linear-gradient(180deg, #232327 0%, #26252a 100%);
+    background: linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background: -webkit-gradient(linear, top, bottom, color-stop(0%, #232327), color-stop(100%, #26252a));
 }
 
 .ez-view-previewactionview .preview-modes .preview-mode-button:before {
     color: #fff;
     font-size: 90%;
-    text-shadow: 0px 2px 1px #000;
+    text-shadow: 0 2px 1px #000;
 }
 
 .ez-view-previewactionview .preview-modes .preview-mode-button:hover {
@@ -355,6 +361,7 @@
 }
 
 .ez-preview-content .ez-loader.is-loading {
+    background: #000;
     background: rgba(0, 0, 0, 0.8);
 }
 

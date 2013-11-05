@@ -1,5 +1,4 @@
 YUI.add('ez-contentmodel-tests', function (Y) {
-
     var modelTest;
 
     modelTest = new Y.eZ.ModelTest({

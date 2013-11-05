@@ -252,9 +252,6 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 ]
             });
 
-
-
-
             this.wait(function () {
                 Y.assert(parseInt(fieldGroupFields.getComputedStyle('height'), 10) === 0, "On first tap field group fields should collapse");
 

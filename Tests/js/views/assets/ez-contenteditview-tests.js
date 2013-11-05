@@ -29,7 +29,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
     };
     Y.NodeList.importMethod(Y.Node.prototype, 'tap');
 
-
     viewTest = new Y.Test.Case({
         name: "eZ Content Edit View test",
 
@@ -43,7 +42,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
 
         setUp: function () {
-
             formView = new Y.Mock();
             actionBar = new Y.Mock();
 
@@ -190,15 +188,15 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
         "Should recieve events fired on it's child formView": function () {
             // We need another (not as in "setUp") view initialization sequence to test that
-            var view = new Y.eZ.ContentEditView({
-                container: container,
-                content: content,
-                contentType: contentType,
-                mainLocation: mainLocation,
-                owner: owner,
-                actionBar: actionBar
-                }),
-                testEventReceived = false;
+            var testEventReceived = false,
+                view = new Y.eZ.ContentEditView({
+                    container: container,
+                    content: content,
+                    contentType: contentType,
+                    mainLocation: mainLocation,
+                    owner: owner,
+                    actionBar: actionBar
+                });
 
             view.on('contentEditFormView:testEvent', function () {
                 testEventReceived = true;
@@ -229,7 +227,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
             Y.assert(testEventReceived, "Should have recieved the 'testEvent' from child editActionBarView");
         },
-
 
         "Should fire a close event when tapping 'close' link": function () {
             var closeFired = false,
@@ -398,7 +395,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             Y.assert(focused, "Main content node of the view should get the focus");
         },
 
-
         "opacity of technical infos should vary if the device is not a touch device": function () {
             var header;
 
@@ -414,7 +410,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                     "Opacity should be 1"
                 );
             }, 300);
-
 
             header.simulate('mouseout');
             this.wait(function () {
@@ -434,7 +429,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             header = this.view.get('container').one('header');
             header.simulate('mouseover');
 
-
             Y.assert(
                 header.one('.ez-technical-infos').getStyle('opacity') == 1,
                 "Opacity should be 1"
@@ -445,7 +439,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                     "Opacity should be 1"
                 );
             }, 300);
-
 
             header.simulate('mouseout');
             Y.assert(
@@ -464,6 +457,5 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Content Edit View tests");
     Y.Test.Runner.add(viewTest);
-
 
 }, '0.0.1', {requires: ['test', 'event-tap', 'node-event-simulate', 'ez-contenteditview']});

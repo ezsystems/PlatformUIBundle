@@ -1,10 +1,10 @@
 YUI.add('ez-previewactionview-tests', function (Y) {
-
     var container = Y.one('.container'),
         editPreview,
         previewContents = "<div></div>",
         contentMock = new Y.Mock(),
-        GESTURE_MAP = Y.Event._GESTURE_MAP;
+        GESTURE_MAP = Y.Event._GESTURE_MAP,
+        viewTest;
 
     // trick to simulate a tap event
     // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -18,10 +18,10 @@ YUI.add('ez-previewactionview-tests', function (Y) {
         name: "eZ Preview Action View test",
 
         _should: {
-            ignore: {
-                "Should show editPreview once 'desktop mode' button is tapped, and change the preview mode once 'tablet mode' is tapped (and correctly show it in the UI)" : (Y.UA.phantomjs), // tap trick does not work in phantomjs
-                "Should show editPreview once 'tablet mode' button is tapped (and correctly show it in the UI)" : (Y.UA.phantomjs), // tap trick does not work in phantomjs
-                "Should show editPreview once 'mobile mode' button is tapped (and correctly show it in the UI)" : (Y.UA.phantomjs) // tap trick does not work in phantomjs
+            ignore: { // tap trick does not work in phantomjs
+                "Should show preview once 'desktop mode' button is tapped, and change the mode (with correct UI response)": (Y.UA.phantomjs),
+                "Should show editPreview once 'tablet mode' button is tapped (and correctly show it in the UI)": (Y.UA.phantomjs),
+                "Should show editPreview once 'mobile mode' button is tapped (and correctly show it in the UI)": (Y.UA.phantomjs)
             }
         },
 
@@ -46,11 +46,11 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                 hint: "Test hint",
                 label: "Test label",
                 buttons: [{
-                    option : "desktop"
+                    option: "desktop"
                 }, {
-                    option : "tablet"
+                    option: "tablet"
                 }, {
-                    option : "mobile"
+                    option: "mobile"
                 }],
                 editPreview: editPreview
             });
@@ -80,7 +80,7 @@ YUI.add('ez-previewactionview-tests', function (Y) {
             Y.Mock.verify(editPreview);
         },
 
-        "Should show editPreview once 'desktop mode' button is tapped, and change the preview mode once 'tablet mode' is tapped (and correctly show it in the UI)": function () {
+        "Should show preview once 'desktop mode' button is tapped, and change the mode (with correct UI response)": function () {
             var desktopPreviewTrigger, tabletPreviewTrigger,
                 previewShown = false,
                 currentMode,
@@ -740,7 +740,6 @@ YUI.add('ez-previewactionview-tests', function (Y) {
         },
 
         "Should change the UI when catching event editPreviewHide is hidden": function () {
-
             this.view.render();
 
             this.view.fire('editPreviewView:editPreviewHide');

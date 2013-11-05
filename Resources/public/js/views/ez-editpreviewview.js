@@ -32,15 +32,14 @@ YUI.add('ez-editpreviewview', function (Y) {
          * @return {eZ.EditPreview} the view itself
          */
         render: function () {
-
             var container = this.get('container'),
                 content = this.get('content'),
                 loader;
 
             container.setHTML(this.template({
-                mode : this.get('previewModes')[this.get('currentModeId')],
-                source : '/content/versionview/' + content.get('contentId') + '/1/eng-GB',
-                legend : content.get('name')
+                mode: this.get('previewModes')[this.get('currentModeId')],
+                source: '/content/versionview/' + content.get('contentId') + '/1/eng-GB',
+                legend: content.get('name')
             }));
 
             // loader node for the iframe
@@ -54,7 +53,6 @@ YUI.add('ez-editpreviewview', function (Y) {
             return this;
         },
 
-
         /**
          * Showing the edit preview view with a nice transition
          *
@@ -64,7 +62,6 @@ YUI.add('ez-editpreviewview', function (Y) {
             var previewContainer = this.get('container').get('parentNode');
 
             if (previewContainer.hasClass(IS_HIDDEN_CLASS)) {
-
                 previewContainer.setStyle('width', newWidth + 'px');
                 previewContainer.setXY([newWidth * 2, 0]);
 
@@ -95,7 +92,6 @@ YUI.add('ez-editpreviewview', function (Y) {
 
     }, {
         ATTRS: {
-
             /**
              * Preview parameters for different modes
              *
@@ -147,5 +143,4 @@ YUI.add('ez-editpreviewview', function (Y) {
             }
         }
     });
-
 });

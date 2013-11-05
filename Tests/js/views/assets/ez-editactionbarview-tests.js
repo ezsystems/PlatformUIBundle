@@ -1,10 +1,10 @@
 YUI.add('ez-editactionbarview-tests', function (Y) {
-
     var viewContainer = Y.one('.container'),
         content = {},
         GESTURE_MAP = Y.Event._GESTURE_MAP,
         VIEW_MORE_MENU_CLASS = ".view-more-actions",
-        ACTIVE_MENU_CLASS = '.active-actions';
+        ACTIVE_MENU_CLASS = '.active-actions',
+        viewTest;
 
     // trick to simulate a tap event
     // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -25,26 +25,25 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         },
 
         setUp: function () {
-
             this.view = new Y.eZ.EditActionBarView({
                 container: viewContainer,
                 content: content,
                 actionsList: [
                     new Y.eZ.ButtonActionView({
-                        actionId : "publish",
-                        label : "Publish",
-                        priority : 0
+                        actionId: "publish",
+                        label: "Publish",
+                        priority: 0
                     }),
                     new Y.eZ.ButtonActionView({
-                        actionId : "save",
-                        label : "Save",
-                        priority : 100,
-                        hint : "the test hint"
+                        actionId: "save",
+                        label: "Save",
+                        priority: 100,
+                        hint: "the test hint"
                     }),
                     new Y.eZ.ButtonActionView({
-                        actionId : "discard",
-                        label : "Discard changes",
-                        priority : 200
+                        actionId: "discard",
+                        label: "Discard changes",
+                        priority: 200
                     })
                 ]
             });
@@ -70,7 +69,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         },
 
         "Test available variable in template while render() call": function () {
-            origTpl = this.view.template;
+            var origTpl = this.view.template;
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
                 Y.Assert.areEqual(1, Y.Object.keys(variables).length, "The template should receive 1 variable");
@@ -81,23 +80,26 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         },
 
         "During initialization should sort actions by priority in descending order": function () {
-            Y.assert( this.view.get('actionsList')[0].get('actionId') == "discard", "Discard action should become first according to it's priority after sorting");
+            Y.assert(
+                this.view.get('actionsList')[0].get('actionId') == "discard",
+                "Discard action should become first according to it's priority after sorting"
+            );
         },
 
         "Should set Content attribute for each of the actionViews, once setting it for itself": function () {
             this.view.set('content', content);
 
-            Y.Array.each(this.view.get('actionsList'), function(actionView){
+            Y.Array.each(this.view.get('actionsList'), function (actionView) {
                 Y.Assert.areSame( actionView.get('content'), content, "Each of the action views should set correct content attribute" );
             });
         },
 
         "Should add actions to actions list": function () {
             this.view.addAction(new Y.eZ.ButtonActionView({
-                actionId : "test",
-                label : "Test",
-                priority : 150,
-                hint : "the test hint"
+                actionId: "test",
+                label: "Test",
+                priority: 150,
+                hint: "the test hint"
             }));
 
             Y.assert( this.view.get('actionsList').length == 4, "New action should have been added to list" );
@@ -121,10 +123,10 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
 
             for (counter = 0; counter < 30; counter++) {
                 this.view.addAction(new Y.eZ.ButtonActionView({
-                    actionId : "test" + counter,
-                    label : "Test",
-                    priority : 100,
-                    hint : "the test hint"
+                    actionId: "test" + counter,
+                    label: "Test",
+                    priority: 100,
+                    hint: "the test hint"
                 }));
             }
 
@@ -209,17 +211,15 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             Y.Assert.areEqual( 0, viewMoreMenu.get('children').size(), "There should remain 3 actions in viewMoreMenu" );
         },
 
-
-
         "Should open additional menu when tapping 'View more' button": function () {
             var viewMoreButton, viewMoreMenu, counter;
 
             for (counter = 0; counter < 30; counter++) {
                 this.view.addAction(new Y.eZ.ButtonActionView({
-                    actionId : "test" + counter,
-                    label : "Test",
-                    priority : 100,
-                    hint : "the test hint"
+                    actionId: "test" + counter,
+                    label: "Test",
+                    priority: 100,
+                    hint: "the test hint"
                 }));
             }
 
