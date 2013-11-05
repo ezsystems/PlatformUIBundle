@@ -10,6 +10,10 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/actions/*.js", "!./Resources/public/js/views/actions/*-min.js",
             "./Resources/public/js/models/*.js", "!./Resources/public/js/models/*-min.js"
         ],
+        testFiles = [
+            "./Tests/js/*/*/*.js",
+            "./Tests/js/*/*/*/*.js"
+        ],
         trashFiles = [
             "./Resources/public/js/apps/*-min.js",
             "./Resources/public/js/views/*-min.js",
@@ -25,7 +29,7 @@ module.exports = function(grunt) {
             options: {
                 jshintrc: 'jshint.json'
             },
-            all: sourceFiles
+            all: [sourceFiles, testFiles]
         },
         uglify: {
             all: {

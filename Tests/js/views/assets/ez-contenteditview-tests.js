@@ -188,15 +188,15 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
         "Should recieve events fired on it's child formView": function () {
             // We need another (not as in "setUp") view initialization sequence to test that
-            var view = new Y.eZ.ContentEditView({
-                container: container,
-                content: content,
-                contentType: contentType,
-                mainLocation: mainLocation,
-                owner: owner,
-                actionBar: actionBar
-                }),
-                testEventReceived = false;
+            var testEventReceived = false,
+                view = new Y.eZ.ContentEditView({
+                    container: container,
+                    content: content,
+                    contentType: contentType,
+                    mainLocation: mainLocation,
+                    owner: owner,
+                    actionBar: actionBar
+                });
 
             view.on('contentEditFormView:testEvent', function () {
                 testEventReceived = true;

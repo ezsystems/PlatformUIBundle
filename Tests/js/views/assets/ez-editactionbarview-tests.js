@@ -3,7 +3,8 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         content = {},
         GESTURE_MAP = Y.Event._GESTURE_MAP,
         VIEW_MORE_MENU_CLASS = ".view-more-actions",
-        ACTIVE_MENU_CLASS = '.active-actions';
+        ACTIVE_MENU_CLASS = '.active-actions',
+        viewTest;
 
     // trick to simulate a tap event
     // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -68,7 +69,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         },
 
         "Test available variable in template while render() call": function () {
-            origTpl = this.view.template;
+            var origTpl = this.view.template;
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
                 Y.Assert.areEqual(1, Y.Object.keys(variables).length, "The template should receive 1 variable");
@@ -79,7 +80,10 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         },
 
         "During initialization should sort actions by priority in descending order": function () {
-            Y.assert( this.view.get('actionsList')[0].get('actionId') == "discard", "Discard action should become first according to it's priority after sorting");
+            Y.assert(
+                this.view.get('actionsList')[0].get('actionId') == "discard",
+                "Discard action should become first according to it's priority after sorting"
+            );
         },
 
         "Should set Content attribute for each of the actionViews, once setting it for itself": function () {

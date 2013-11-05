@@ -2,11 +2,12 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
     var viewContainer = Y.one('.container'),
         GESTURE_MAP = Y.Event._GESTURE_MAP,
         IS_HIDDEN_CLASS = 'is-hidden',
-        IS_LOADING_CLASS = 'is-loading';
-    mockContent = new Y.eZ.Content({
-        contentId: 59,
-        name: "Test name"
-    });
+        IS_LOADING_CLASS = 'is-loading',
+        mockContent = new Y.eZ.Content({
+            contentId: 59,
+            name: "Test name"
+        }),
+        viewTest;
 
     // trick to simulate a tap event
     // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
@@ -52,7 +53,7 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         },
 
         "Test available variable in template": function () {
-            origTpl = this.view.template;
+            var origTpl = this.view.template;
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
                 Y.Assert.areEqual(3, Y.Object.keys(variables).length, "The template should receive 3 variables");
@@ -76,7 +77,10 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
 
             this.view.show(oneMoreWidth);
 
-            Y.assert(parseInt(previewNode.getComputedStyle('width'),10) == newWidth, "Should correctly interpret 'show' command even if already visible");
+            Y.assert(
+                parseInt(previewNode.getComputedStyle('width'),10) == newWidth,
+                "Should correctly interpret 'show' command even if already visible"
+            );
             Y.assert(!previewNode.hasClass(IS_HIDDEN_CLASS), "Container's parent node should NOT have certain class" );
         },
 

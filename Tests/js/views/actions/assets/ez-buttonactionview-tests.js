@@ -1,6 +1,7 @@
 YUI.add('ez-buttonactionview-tests', function (Y) {
     var container = Y.one('.container'),
-        GESTURE_MAP = Y.Event._GESTURE_MAP;
+        GESTURE_MAP = Y.Event._GESTURE_MAP,
+        viewTest;
 
     // trick to simulate a tap event
     // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js

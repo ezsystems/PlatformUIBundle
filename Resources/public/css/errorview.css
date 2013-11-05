@@ -6,6 +6,7 @@
     right: 0;
     top: 0;
     z-index: 1050;
+    background: rgb(0, 0, 0);
     background: rgba(0, 0, 0, 0.4);
 
     -webkit-transform: translateX(0);
