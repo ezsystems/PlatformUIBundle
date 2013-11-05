@@ -240,7 +240,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 }
             }, {
                 ATTRS: {
-                    actionBar : {
+                    actionBar: {
                         value: mockActionBar
                     }
                 }

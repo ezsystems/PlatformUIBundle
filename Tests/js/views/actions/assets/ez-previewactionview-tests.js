@@ -19,9 +19,9 @@ YUI.add('ez-previewactionview-tests', function (Y) {
 
         _should: {
             ignore: {
-                "Should show editPreview once 'desktop mode' button is tapped, and change the preview mode once 'tablet mode' is tapped (and correctly show it in the UI)" : (Y.UA.phantomjs), // tap trick does not work in phantomjs
-                "Should show editPreview once 'tablet mode' button is tapped (and correctly show it in the UI)" : (Y.UA.phantomjs), // tap trick does not work in phantomjs
-                "Should show editPreview once 'mobile mode' button is tapped (and correctly show it in the UI)" : (Y.UA.phantomjs) // tap trick does not work in phantomjs
+                "Should show editPreview once 'desktop mode' button is tapped, and change the preview mode once 'tablet mode' is tapped (and correctly show it in the UI)": (Y.UA.phantomjs), // tap trick does not work in phantomjs
+                "Should show editPreview once 'tablet mode' button is tapped (and correctly show it in the UI)": (Y.UA.phantomjs), // tap trick does not work in phantomjs
+                "Should show editPreview once 'mobile mode' button is tapped (and correctly show it in the UI)": (Y.UA.phantomjs) // tap trick does not work in phantomjs
             }
         },
 
@@ -46,11 +46,11 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                 hint: "Test hint",
                 label: "Test label",
                 buttons: [{
-                    option : "desktop"
+                    option: "desktop"
                 }, {
-                    option : "tablet"
+                    option: "tablet"
                 }, {
-                    option : "mobile"
+                    option: "mobile"
                 }],
                 editPreview: editPreview
             });

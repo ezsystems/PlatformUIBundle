@@ -38,9 +38,9 @@ YUI.add('ez-editpreviewview', function (Y) {
                 loader;
 
             container.setHTML(this.template({
-                mode : this.get('previewModes')[this.get('currentModeId')],
-                source : '/content/versionview/' + content.get('contentId') + '/1/eng-GB',
-                legend : content.get('name')
+                mode: this.get('previewModes')[this.get('currentModeId')],
+                source: '/content/versionview/' + content.get('contentId') + '/1/eng-GB',
+                legend: content.get('name')
             }));
 
             // loader node for the iframe

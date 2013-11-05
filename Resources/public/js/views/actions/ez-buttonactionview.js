@@ -35,10 +35,10 @@ YUI.add('ez-buttonactionview', function (Y) {
             var container = this.get('container');
 
             container.setHTML(this.template({
-                actionId : this.get('actionId'),
-                disabled : this.get('disabled'),
-                label : this.get('label'),
-                hint : this.get('hint')
+                actionId: this.get('actionId'),
+                disabled: this.get('disabled'),
+                label: this.get('label'),
+                hint: this.get('hint')
             }));
 
             return this;

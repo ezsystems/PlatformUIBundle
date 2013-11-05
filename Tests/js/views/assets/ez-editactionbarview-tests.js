@@ -31,20 +31,20 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
                 content: content,
                 actionsList: [
                     new Y.eZ.ButtonActionView({
-                        actionId : "publish",
-                        label : "Publish",
-                        priority : 0
+                        actionId: "publish",
+                        label: "Publish",
+                        priority: 0
                     }),
                     new Y.eZ.ButtonActionView({
-                        actionId : "save",
-                        label : "Save",
-                        priority : 100,
-                        hint : "the test hint"
+                        actionId: "save",
+                        label: "Save",
+                        priority: 100,
+                        hint: "the test hint"
                     }),
                     new Y.eZ.ButtonActionView({
-                        actionId : "discard",
-                        label : "Discard changes",
-                        priority : 200
+                        actionId: "discard",
+                        label: "Discard changes",
+                        priority: 200
                     })
                 ]
             });
@@ -94,10 +94,10 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
 
         "Should add actions to actions list": function () {
             this.view.addAction(new Y.eZ.ButtonActionView({
-                actionId : "test",
-                label : "Test",
-                priority : 150,
-                hint : "the test hint"
+                actionId: "test",
+                label: "Test",
+                priority: 150,
+                hint: "the test hint"
             }));
 
             Y.assert( this.view.get('actionsList').length == 4, "New action should have been added to list" );
@@ -121,10 +121,10 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
 
             for (counter = 0; counter < 30; counter++) {
                 this.view.addAction(new Y.eZ.ButtonActionView({
-                    actionId : "test" + counter,
-                    label : "Test",
-                    priority : 100,
-                    hint : "the test hint"
+                    actionId: "test" + counter,
+                    label: "Test",
+                    priority: 100,
+                    hint: "the test hint"
                 }));
             }
 
@@ -216,10 +216,10 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
 
             for (counter = 0; counter < 30; counter++) {
                 this.view.addAction(new Y.eZ.ButtonActionView({
-                    actionId : "test" + counter,
-                    label : "Test",
-                    priority : 100,
-                    hint : "the test hint"
+                    actionId: "test" + counter,
+                    label: "Test",
+                    priority: 100,
+                    hint: "the test hint"
                 }));
             }
 

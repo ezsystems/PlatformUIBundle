@@ -51,7 +51,7 @@ YUI.add('ez-editactionbarview', function (Y) {
                 viewMoreTrigger;
 
             container.setHTML(this.template({
-                viewMoreText : this.get('viewMoreText')
+                viewMoreText: this.get('viewMoreText')
             }));
 
             activeMenu = container.one(ACTIVE_MENU_CLASS);
@@ -283,34 +283,34 @@ YUI.add('ez-editactionbarview', function (Y) {
                 cloneDefaultValue: false,
                 value: [
                     new Y.eZ.ButtonActionView({
-                        actionId : "publish",
-                        disabled : true,
-                        label : "Publish",
-                        priority : 200
+                        actionId: "publish",
+                        disabled: true,
+                        label: "Publish",
+                        priority: 200
                     }),
                     new Y.eZ.ButtonActionView({
-                        actionId : "save",
-                        disabled : true,
-                        label : "Save",
-                        priority : 190
+                        actionId: "save",
+                        disabled: true,
+                        label: "Save",
+                        priority: 190
                     }),
                     new Y.eZ.ButtonActionView({
-                        actionId : "discard",
-                        disabled : true,
-                        label : "Discard changes",
-                        priority : 180
+                        actionId: "discard",
+                        disabled: true,
+                        label: "Discard changes",
+                        priority: 180
                     }),
                     new Y.eZ.PreviewActionView({
-                        actionId : "preview",
-                        label : "Preview",
-                        priority : 170,
-                        buttons : [
+                        actionId: "preview",
+                        label: "Preview",
+                        priority: 170,
+                        buttons: [
                             {
-                                option : "desktop"
+                                option: "desktop"
                             }, {
-                                option : "tablet"
+                                option: "tablet"
                             }, {
-                                option : "mobile"
+                                option: "mobile"
                             }
                         ]
                     })

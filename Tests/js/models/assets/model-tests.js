@@ -133,7 +133,7 @@ YUI.add('model-tests', function (Y) {
             Y.Assert.isFalse(errorFired, "The error event should not have been fired");
 
 
-            linksMap = this.model.constructor.LINKS_MAP ? this.model.constructor.LINKS_MAP : [];
+            linksMap = this.model.constructor.LINKS_MAP ? this.model.constructor.LINKS_MAP: [];
             Y.Assert.areEqual(Y.Object.size(res.resources), linksMap.length, "resources length");
             for (i = 0, len = linksMap.length; i != len; ++i) {
                 key = linksMap[i];

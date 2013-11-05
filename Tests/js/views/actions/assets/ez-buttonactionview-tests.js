@@ -16,7 +16,7 @@ YUI.add('ez-buttonactionview-tests', function (Y) {
 
         _should: {
             ignore: {
-                "Should fire an action once the action button is tapped" : (Y.UA.phantomjs) // tap trick does not work in phantomjs
+                "Should fire an action once the action button is tapped": (Y.UA.phantomjs) // tap trick does not work in phantomjs
             }
         },
 

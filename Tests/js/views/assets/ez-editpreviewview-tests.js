@@ -5,8 +5,8 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         IS_HIDDEN_CLASS = 'is-hidden',
         IS_LOADING_CLASS = 'is-loading';
     mockContent = new Y.eZ.Content({
-        contentId : 59,
-        name : "Test name"
+        contentId: 59,
+        name: "Test name"
     });
 
 
