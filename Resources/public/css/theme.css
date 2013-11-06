@@ -218,6 +218,11 @@
 }
 
 /* error view */
+.ez-errorview-container {
+    background: #000;
+    background: rgba(0, 0, 0, 0.4);
+}
+
 .ez-errorview-container .ez-error-dialog {
     background: #f3f3f3;
     border-radius: 10px;
@@ -356,7 +361,7 @@
 }
 
 .ez-preview-content .ez-loader.is-loading {
-    background: rgb(0, 0, 0);
+    background: #000;
     background: rgba(0, 0, 0, 0.8);
 }
 
