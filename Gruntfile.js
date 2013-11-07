@@ -73,17 +73,19 @@ module.exports = function(grunt) {
         },
         shell: {
             grover: {
-                command: 'grover --server Tests/js/*/*.html Tests/js/*/*/*.html',
+                command: 'grover --server -o "' + reportDir + '/junit.xml" --junit Tests/js/*/*.html Tests/js/*/*/*.html',
                 options: {
                     stdout: true,
-                    stderr: true
+                    stderr: true,
+                    failOnError: true
                 }
             },
             groverCoverage: {
                 command: 'grover --server --coverage --coverdir "' + reportDir + '" -S "?filter=coverage" Tests/js/*/*.html Tests/js/*/*/*.html',
                 options: {
                     stdout: true,
-                    stderr: true
+                    stderr: true,
+                    failOnError: true
                 }
             },
             livedoc: {
