@@ -37,7 +37,7 @@ YUI.add('ez-restmodel', function (Y) {
             if ( L.isBoolean(val) ) {
                 return val;
             }
-            return val === 'true';
+            return false;
         },
 
         /**
