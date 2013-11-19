@@ -1,0 +1,73 @@
+parameters:
+    yui:
+        modules:
+            ez-capi:
+                path: vendors/ez-js-rest-client/dist/CAPI.js
+            ez-editorialapp:
+                requires:
+                    - 'app'
+                    - 'app-transitions'
+                    - 'node-screen'
+                    - 'json'
+                    - 'parallel'
+                    - 'ez-capi'
+                    - 'ez-contenteditview'
+                    - 'ez-contenteditformview'
+                    - 'ez-editactionbarview'
+                    - 'ez-editpreviewview'
+                    - 'ez-textline-editview'
+                    - 'ez-errorview'
+                    - 'ez-buttonactionview'
+                    - 'ez-previewactionview'
+                    - 'ez-restmodel'
+                    - 'ez-contentmodel'
+                    - 'ez-locationmodel'
+                    - 'ez-usermodel'
+                    - 'ez-contenttypemodel'
+                path: js/apps/ez-editorialapp.js
+            ez-templatebasedview:
+                requires: ['view', 'handlebars']
+                path: js/views/ez-templatebasedview.js
+            ez-contenteditview:
+                requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'transition', 'event-tap']
+                path: js/views/ez-contenteditview.js
+            ez-contenteditformview:
+                requires: ['ez-templatebasedview', 'transition', 'event-tap']
+                path: js/views/ez-contenteditformview.js
+            ez-errorview:
+                requires: ['ez-templatebasedview', 'transition', 'event-tap']
+                path: js/views/ez-errorview.js
+            ez-fieldeditview:
+                requires: ['ez-templatebasedview']
+                path: js/views/ez-fieldeditview.js
+            ez-textline-editview:
+                requires: ['ez-fieldeditview', 'event-valuechange']
+                path: js/views/fields/ez-textline-editview.js
+            ez-restmodel:
+                requires: ['model']
+                path: js/models/ez-restmodel.js
+            ez-contentmodel:
+                requires: ['ez-restmodel']
+                path: js/models/ez-contentmodel.js
+            ez-locationmodel:
+                requires: ['ez-restmodel']
+                path: js/models/ez-locationmodel.js
+            ez-usermodel:
+                requires: ['ez-restmodel']
+                path: js/models/ez-usermodel.js
+            ez-contenttypemodel:
+                requires: ['ez-restmodel']
+                path: js/models/ez-contenttypemodel.js
+            ez-editactionbarview:
+                requires: ['ez-templatebasedview', 'ez-buttonactionview', 'ez-previewactionview', 'transition', 'event-tap', 'event-resize']
+                path: js/views/ez-editactionbarview.js
+            ez-buttonactionview:
+                requires: ['ez-templatebasedview']
+                path: js/views/actions/ez-buttonactionview.js
+            ez-previewactionview:
+                requires: ['ez-buttonactionview', 'ez-editpreviewview']
+                path: js/views/actions/ez-previewactionview.js
+            ez-editpreviewview:
+                requires: ['ez-templatebasedview', 'transition', 'event-tap']
+                path: js/views/ez-editpreviewview.js
+        filter: min

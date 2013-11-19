@@ -10,143 +10,32 @@
     <div class="ez-errorview-container is-hidden"></div>
 </div>
 {% stylesheets
-    '@EzSystemsEditorialBundle/Resources/public/vendors/pure/base-context-min.css'
-    '@EzSystemsEditorialBundle/Resources/public/vendors/pure/grids-min.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/layout.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/contenteditview.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/contenteditformview.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/editactionbarview.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/buttonactionview.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/previewactionview.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/editpreviewview.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/fieldeditview.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/textline-editview.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/errorview.css'
-    '@EzSystemsEditorialBundle/Resources/public/css/theme.css'
+    '@eZEditorialBundle/Resources/public/vendors/pure/base-context-min.css'
+    '@eZEditorialBundle/Resources/public/vendors/pure/grids-min.css'
+    '@eZEditorialBundle/Resources/public/css/layout.css'
+    '@eZEditorialBundle/Resources/public/css/contenteditview.css'
+    '@eZEditorialBundle/Resources/public/css/contenteditformview.css'
+    '@eZEditorialBundle/Resources/public/css/editactionbarview.css'
+    '@eZEditorialBundle/Resources/public/css/buttonactionview.css'
+    '@eZEditorialBundle/Resources/public/css/previewactionview.css'
+    '@eZEditorialBundle/Resources/public/css/editpreviewview.css'
+    '@eZEditorialBundle/Resources/public/css/fieldeditview.css'
+    '@eZEditorialBundle/Resources/public/css/textline-editview.css'
+    '@eZEditorialBundle/Resources/public/css/errorview.css'
+    '@eZEditorialBundle/Resources/public/css/theme.css'
 %}
 <link rel="stylesheet" href="{{ asset_url }}" />
 {% endstylesheets %}
 <script>
-YUI.GlobalConfig = {
-    modules: {
-        "ez-capi": {
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/vendors/ez-js-rest-client/dist/CAPI.js' %}
-            fullpath: "{{ asset_url }}",
-            {% endjavascripts %}
-        },
-        "ez-editorialapp": {
-            requires: [
-                'app', 'app-transitions', 'node-screen', 'json', 'parallel',
-                'ez-capi', 'ez-contenteditview', 'ez-contenteditformview', 'ez-editactionbarview', 'ez-editpreviewview',
-                'ez-textline-editview', 'ez-errorview', 'ez-buttonactionview', 'ez-previewactionview',
-                'ez-restmodel', 'ez-contentmodel', 'ez-locationmodel', 'ez-usermodel', 'ez-contenttypemodel'
-            ],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/apps/ez-editorialapp.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-templatebasedview": {
-            requires: ['view', 'handlebars'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-templatebasedview.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-contenteditview": {
-            requires: [ 'ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview',
-                        'transition', 'event-tap'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-contenteditview.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-contenteditformview": {
-            requires: ['ez-templatebasedview', 'transition', 'event-tap'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-contenteditformview.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-errorview": {
-            requires: ['ez-templatebasedview', 'transition', 'event-tap'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-errorview.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-fieldeditview": {
-            requires: ['ez-templatebasedview'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-fieldeditview.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-textline-editview": {
-            requires: ['ez-fieldeditview', 'event-valuechange'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/fields/ez-textline-editview.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-editactionbarview": {
-            requires: ['ez-templatebasedview', 'ez-buttonactionview', 'ez-previewactionview', 'transition', 'event-tap', 'event-resize'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-editactionbarview.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-buttonactionview": {
-            requires: ['ez-templatebasedview'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/actions/ez-buttonactionview.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-previewactionview": {
-            requires: ['ez-buttonactionview', 'ez-editpreviewview'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/actions/ez-previewactionview.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-editpreviewview": {
-            requires: ['ez-templatebasedview', 'transition', 'event-tap'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/ez-editpreviewview.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-
-        "ez-restmodel": {
-            requires: ['model'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/models/ez-restmodel.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-contentmodel": {
-            requires: ['ez-restmodel'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/models/ez-contentmodel.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-locationmodel": {
-            requires: ['ez-restmodel'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/models/ez-locationmodel.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-usermodel": {
-            requires: ['ez-restmodel'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/models/ez-usermodel.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        },
-        "ez-contenttypemodel": {
-            requires: ['ez-restmodel'],
-            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/models/ez-contenttypemodel.js' %}
-            fullpath: "{{ asset_url }}"
-            {% endjavascripts %}
-        }
-    },
-    onSuccess: function (e) {
-        for (var i = 0, len = e.data.length; i < len; ++i) {
-            if ( e.data[i] === 'ez-capi' ) {
-                YUI.add('ez-capi', function (Y) {
-                    Y.namespace('eZ');
-                    Y.eZ.CAPI = eZ.CAPI;
-                    Y.eZ.SessionAuthAgent = eZ.SessionAuthAgent;
-                });
-            }
+{{ ez_editorial_yui_config( "YUI.GlobalConfig" ) }}
+YUI.GlobalConfig.onSuccess = function (e) {
+    for (var i = 0, len = e.data.length; i < len; ++i) {
+        if ( e.data[i] === 'ez-capi' ) {
+            YUI.add('ez-capi', function (Y) {
+                Y.namespace('eZ');
+                Y.eZ.CAPI = eZ.CAPI;
+                Y.eZ.SessionAuthAgent = eZ.SessionAuthAgent;
+            });
         }
     }
 };
