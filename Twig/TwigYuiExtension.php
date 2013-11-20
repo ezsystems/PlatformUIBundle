@@ -41,7 +41,7 @@ class TwigYuiExtension extends Twig_Extension
         return array(
             new Twig_SimpleFunction(
                 "ez_editorial_yui_config",
-                array( $this, "yuiFunction" ),
+                array( $this, "yuiConfigLoaderFunction" ),
                 array( "is_safe" => array( "html" ) )
             )
         );
@@ -68,7 +68,7 @@ class TwigYuiExtension extends Twig_Extension
      *
      * @return string
      */
-    public function yuiFunction( $configObject )
+    public function yuiConfigLoaderFunction( $configObject = '' )
     {
         foreach ( $this->yui['modules'] as $key => $value )
         {
@@ -77,7 +77,12 @@ class TwigYuiExtension extends Twig_Extension
             unset( $this->yui['modules'][$key]['path'] );
             $this->yui['modules'][$key]['fullpath'] = $this->asset( $fullpath );
         }
-        return $configObject . " = " . json_encode( $this->yui, JSON_UNESCAPED_SLASHES ) . ";";
+        $res = '';
+        if ( $configObject != '' )
+        {
+            $res = $configObject . ' = ';
+        }
+        return $res . json_encode( $this->yui, JSON_UNESCAPED_SLASHES ) . ";";
     }
 
     /**

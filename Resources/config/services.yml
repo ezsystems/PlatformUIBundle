@@ -5,6 +5,7 @@ parameters:
     ezpublish_legacy.eng.view_default_layout: eZEditorialBundle::pagelayout.html.twig
 
     ezsystems.editorial.twig.yui_extension.class: EzSystems\EditorialBundle\Twig\TwigYuiExtension
+    ezsystems.editorial.test.twig.yui_extension.class: EzSystems\EditorialBundle\Test\Twig\TwigYuiExtensionTest
 
 services:
     ezsystems.editorial.twig.yui_extension:
