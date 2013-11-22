@@ -126,6 +126,7 @@ YUI.add('ez-editorialapp', function (Y) {
          */
         handleContentEdit: function (req, res, next) {
             this.showView('contentEditView', this.get('contentEditViewVariables'), {
+                transition: false,
                 update: true,
                 render: true,
                 callback: function (view) {
