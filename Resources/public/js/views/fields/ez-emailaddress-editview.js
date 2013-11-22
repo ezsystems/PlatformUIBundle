@@ -8,8 +8,7 @@ YUI.add('ez-emailaddress-editview', function (Y) {
 
     Y.namespace('eZ');
 
-    var L = Y.Lang,
-        FIELDTYPE_IDENTIFIER = 'ezemail';
+    var FIELDTYPE_IDENTIFIER = 'ezemail';
 
     /**
      * Email Address edit view
