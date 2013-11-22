@@ -176,6 +176,7 @@
     background: #fff;
 }
 
+/* field edit inputs errors handling */
 .ez-editfield-infos .ez-editfield-error-message {
     font-size: 85%;
     font-style: italic;
@@ -196,8 +197,7 @@
     color: #BF3E33;
 }
 
-/* text line edit view */
-.ez-view-textlineeditview .ez-textline-input-ui:before {
+.ez-default-error-style .ez-editfield-input:before {
     content: "!";
     background: #BF3E33;
     color: #fff;
@@ -213,7 +213,7 @@
             transition: all 0.30s ease-in-out;
 }
 
-.ez-view-textlineeditview.is-error .ez-textline-input-ui:before {
+.is-error .ez-default-error-style .ez-editfield-input:before {
     opacity: 1;
 }
 
