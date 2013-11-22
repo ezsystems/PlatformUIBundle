@@ -17,7 +17,7 @@ YUI.add('ez-textline-editview-tests', function (Y) {
     });
 
     viewTest = new Y.Test.Case({
-        name: "eZ Text Line View register test",
+        name: "eZ Text Line View test",
 
         _getFieldDefinition: function (required, minLength, maxLength) {
             return {
@@ -205,27 +205,18 @@ YUI.add('ez-textline-editview-tests', function (Y) {
                 this.view.isValid(),
                 "An empty string is invalid"
             );
-        },
-    });
-
-    registerTest = new Y.Test.Case({
-        name: "eZ Text Line View register test",
-
-        "Should autoregister": function () {
-            try {
-                Y.Assert.areSame(
-                    Y.eZ.TextLineEditView,
-                    Y.eZ.FieldEditView.getFieldEditView("ezstring"),
-                    "The constructor of Y.eZ.TextLineEditView should be registered under ezstring key"
-                );
-            } catch (e) {
-                Y.Assert.fail("Y.eZ.TextLineEditView is not registered under ezstring key");
-            }
         }
     });
 
     Y.Test.Runner.setName("eZ Text Line Edit View tests");
-    Y.Test.Runner.add(registerTest);
     Y.Test.Runner.add(viewTest);
 
-}, '0.0.1', {requires: ['test', 'ez-textline-editview']});
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+
+    registerTest.name = "Text Line Edit View registration test";
+    registerTest.viewType = Y.eZ.TextLineEditView;
+    registerTest.viewKey = "ezstring";
+
+    Y.Test.Runner.add(registerTest);
+
+}, '0.0.1', {requires: ['test', 'editviewregister-tests', 'ez-textline-editview']});
