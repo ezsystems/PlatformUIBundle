@@ -26,7 +26,6 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
         },
 
         setUp: function () {
-
             this.view = new Y.eZ.EmailAddressEditView({
                 container: container,
                 field: field,
