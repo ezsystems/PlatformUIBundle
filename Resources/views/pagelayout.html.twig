@@ -21,6 +21,7 @@
     '@EzSystemsEditorialBundle/Resources/public/css/editpreviewview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/fieldeditview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/textline-editview.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/emailaddress-editview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/errorview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/theme.css'
 %}
@@ -38,7 +39,7 @@ YUI.GlobalConfig = {
             requires: [
                 'app', 'app-transitions', 'node-screen', 'json', 'parallel',
                 'ez-capi', 'ez-contenteditview', 'ez-contenteditformview', 'ez-editactionbarview', 'ez-editpreviewview',
-                'ez-textline-editview', 'ez-errorview', 'ez-buttonactionview', 'ez-previewactionview',
+                'ez-textline-editview', 'ez-emailaddress-editview', 'ez-errorview', 'ez-buttonactionview', 'ez-previewactionview',
                 'ez-restmodel', 'ez-contentmodel', 'ez-locationmodel', 'ez-usermodel', 'ez-contenttypemodel'
             ],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/apps/ez-editorialapp.js' %}
@@ -79,6 +80,12 @@ YUI.GlobalConfig = {
         "ez-textline-editview": {
             requires: ['ez-fieldeditview', 'event-valuechange'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/fields/ez-textline-editview.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
+        "ez-emailaddress-editview": {
+            requires: ['ez-fieldeditview', 'event-valuechange'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/fields/ez-emailaddress-editview.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         },
@@ -272,6 +279,29 @@ YUI().use('ez-editorialapp', function (Y) {
                     {{#if isRequired}} required{{/if}}
                     {{#if maxLength}} maxlength="{{ maxLength }}"{{/if}}
                     {{#if minLengthPattern}} pattern="{{ minLengthPattern }}"{{/if}}
+                ></div></div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="emailaddresseditview-ez-template">
+    <div class="pure-g ez-editfield-row">
+        <div class="pure-u ez-editfield-infos">
+            <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+                <p class="ez-fielddefinition-name">
+                    {{#if fieldDefinition.descriptions.[eng-GB]}}
+                    <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
+                    {{/if}}
+                    {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+                </p>
+                <p class="ez-editfield-error-message">&nbsp;</p>
+            </label>
+        </div>
+        <div class="pure-u ez-editfield-input-area">
+            <div class="ez-editfield-input"><div class="ez-emailaddress-input-ui"><input type="email"
+                    value="{{ field.fieldValue }}"
+                    id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+                    {{#if isRequired}} required{{/if}}
                 ></div></div>
         </div>
     </div>
