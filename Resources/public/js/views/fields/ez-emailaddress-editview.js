@@ -35,7 +35,7 @@ YUI.add('ez-emailaddress-editview', function (Y) {
             var validity = this._getInputValidity();
 
             if ( validity.typeMismatch ) {
-                this.set('errorStatus', 'The value should be an email address');
+                this.set('errorStatus', 'The value should be a valid email address');
             } else if ( validity.valueMissing ) {
                 this.set('errorStatus', 'This field is required');
             } else {
@@ -64,8 +64,7 @@ YUI.add('ez-emailaddress-editview', function (Y) {
          *
          * @protected
          * @method _variables
-         * @return {Object} containing isRequired, maxLength and minLength
-         * entries
+         * @return {Object} containing isRequired entry
          */
         _variables: function () {
             return {
