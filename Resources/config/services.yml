@@ -3,7 +3,6 @@ parameters:
     # Remove this as soon as we have a proper design/theme system
     ezpublish_legacy.ezdemo_site_user.view_default_layout: eZEditorialBundle::pagelayout.html.twig
     ezpublish_legacy.eng.view_default_layout: eZEditorialBundle::pagelayout.html.twig
-
     ezsystems.editorial.twig.yui_extension.class: EzSystems\EditorialBundle\Twig\TwigYuiExtension
     ezsystems.editorial.test.twig.yui_extension.class: EzSystems\EditorialBundle\Test\Twig\TwigYuiExtensionTest
 

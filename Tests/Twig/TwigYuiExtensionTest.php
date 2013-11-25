@@ -50,21 +50,21 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
      */
     protected function getEnvironmentMock()
     {
-        $mock = $this->getMock( 'Twig_Environment' );
-        $mock2 = $this->getMock( 'Twig_Function' );
-        $mock->expects( $this->any() )->method( 'getFunction' )->will( $this->returnValue( $mock2 ) );
-        $mock2
+        $envMock = $this->getMock( 'Twig_Environment' );
+        $functionMock = $this->getMock( 'Twig_Function' );
+        $envMock->expects( $this->any() )->method( 'getFunction' )->will( $this->returnValue( $functionMock ) );
+        $functionMock
             ->expects( $this->any() )
             ->method( 'getCallable' )
             ->will(
                 $this->returnValue(
                     function ( $path )
                     {
-                        return self::PREFIX.$path;
+                        return self::PREFIX . $path;
                     }
                 )
             );
-        return $mock;
+        return $envMock;
     }
 
     public function dataProviderConfig()
@@ -95,7 +95,7 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                     ),
                     'filter' => 'min'
                 ),
-                '{"modules":{"ez-test":{"fullpath":"' . self::PREFIX . 'bundles/ezeditorial/js/test.js"},"ez-test2":{"fullpath":"' .self::PREFIX . 'bundles/ezeditorial/js/test2.js"}},"filter":"min"};'
+                '{"modules":{"ez-test":{"fullpath":"' . self::PREFIX . 'bundles/ezeditorial/js/test.js"},"ez-test2":{"fullpath":"' . self::PREFIX . 'bundles/ezeditorial/js/test2.js"}},"filter":"min"};'
             )
         );
     }
