@@ -24,7 +24,7 @@ This bundle provides the (future) Editorial Interface for eZ Publish.
 
     ```yml
     assetic:
-        bundles: [ eZDemoBundle, EzSystemsEditorialBundle ]
+        bundles: [ eZDemoBundle, eZEditorialBundle ]
     ```
 * Install [nodejs](http://nodejs.org/)
 * Install [phantomjs](http://phantomjs.org)

@@ -4,3 +4,6 @@ Tests/report/
 Tests/instrument/
 node_modules/
 Resources/public/vendors/
+/vendor/
+composer.lock
+
