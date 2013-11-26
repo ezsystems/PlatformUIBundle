@@ -1,5 +1,5 @@
 YUI.add('ez-emailaddress-editview-tests', function (Y) {
-    var viewTest, registerTest,
+    var viewTest,
         container = Y.one('.container'),
         content, contentType,
         jsonContent = {}, jsonContentType = {},
@@ -16,8 +16,8 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
         returns: jsonContentType
     });
 
-    viewTest = new Y.Test.Case({
-        name: "eZ Email Address View register test",
+    viewTest = new Y.eZ.EditViewTest({
+        name: "eZ Email Address View test",
 
         _getFieldDefinition: function (required) {
             return {
@@ -26,6 +26,11 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
         },
 
         setUp: function () {
+
+            // Supplying parent view with information for registration test
+            this.viewType = Y.eZ.EmailAddressEditView;
+            this.viewKey = "ezemail";
+
             this.view = new Y.eZ.EmailAddressEditView({
                 container: container,
                 field: field,
@@ -113,24 +118,7 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
 
     });
 
-    registerTest = new Y.Test.Case({
-        name: "eZ Email Address View register test",
-
-        "Should autoregister": function () {
-            try {
-                Y.Assert.areSame(
-                    Y.eZ.EmailAddressEditView,
-                    Y.eZ.FieldEditView.getFieldEditView("ezemail"),
-                    "The constructor of Y.eZ.EmailAddressEditView should be registered under ezemail key"
-                );
-            } catch (e) {
-                Y.Assert.fail("Y.eZ.EmailAddressEditView is not registered under ezemail key");
-            }
-        }
-    });
-
     Y.Test.Runner.setName("eZ Email Address Edit View tests");
-    Y.Test.Runner.add(registerTest);
     Y.Test.Runner.add(viewTest);
 
-}, '0.0.1', {requires: ['node-event-simulate', 'test', 'ez-emailaddress-editview']});
+}, '0.0.1', {requires: ['test', 'editview-tests', 'ez-emailaddress-editview']});

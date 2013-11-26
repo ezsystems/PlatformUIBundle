@@ -1,5 +1,5 @@
 YUI.add('ez-textline-editview-tests', function (Y) {
-    var viewTest, registerTest,
+    var viewTest,
         container = Y.one('.container'),
         content, contentType,
         jsonContent = {}, jsonContentType = {},
@@ -16,8 +16,8 @@ YUI.add('ez-textline-editview-tests', function (Y) {
         returns: jsonContentType
     });
 
-    viewTest = new Y.Test.Case({
-        name: "eZ Text Line View register test",
+    viewTest = new Y.eZ.EditViewTest({
+        name: "eZ Text Line View test",
 
         _getFieldDefinition: function (required, minLength, maxLength) {
             return {
@@ -32,6 +32,11 @@ YUI.add('ez-textline-editview-tests', function (Y) {
         },
 
         setUp: function () {
+
+            // Supplying parent view with information for registration test
+            this.viewType = Y.eZ.TextLineEditView;
+            this.viewKey = "ezstring";
+
             this.view = new Y.eZ.TextLineEditView({
                 container: container,
                 field: field,
@@ -205,27 +210,10 @@ YUI.add('ez-textline-editview-tests', function (Y) {
                 this.view.isValid(),
                 "An empty string is invalid"
             );
-        },
-    });
-
-    registerTest = new Y.Test.Case({
-        name: "eZ Text Line View register test",
-
-        "Should autoregister": function () {
-            try {
-                Y.Assert.areSame(
-                    Y.eZ.TextLineEditView,
-                    Y.eZ.FieldEditView.getFieldEditView("ezstring"),
-                    "The constructor of Y.eZ.TextLineEditView should be registered under ezstring key"
-                );
-            } catch (e) {
-                Y.Assert.fail("Y.eZ.TextLineEditView is not registered under ezstring key");
-            }
         }
     });
 
     Y.Test.Runner.setName("eZ Text Line Edit View tests");
-    Y.Test.Runner.add(registerTest);
     Y.Test.Runner.add(viewTest);
 
-}, '0.0.1', {requires: ['test', 'ez-textline-editview']});
+}, '0.0.1', {requires: ['test', 'editview-tests', 'ez-textline-editview']});

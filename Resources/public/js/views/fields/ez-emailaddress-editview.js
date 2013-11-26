@@ -51,9 +51,10 @@ YUI.add('ez-emailaddress-editview', function (Y) {
          * corrected.
          *
          * @method _validateIfNotValid
+         * @protected
          */
         _validateIfNotValid: function () {
-            if (this.get('errorStatus')) {
+            if (!this.isValid()) {
                 this.validate();
             }
         },
