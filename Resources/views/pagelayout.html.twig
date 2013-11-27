@@ -22,7 +22,8 @@
     '@eZEditorialBundle/Resources/public/css/fieldeditview.css'
     '@eZEditorialBundle/Resources/public/css/fields/textline-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/emailaddress-editview.css'
-    '@eZEditorialBundle/Resources/public/css/fields/float-editview.css'    
+    '@eZEditorialBundle/Resources/public/css/fields/float-editview.css'
+    '@eZEditorialBundle/Resources/public/css/fields/integer-editview.css'
     '@eZEditorialBundle/Resources/public/css/errorview.css'
     '@eZEditorialBundle/Resources/public/css/theme.css'
 %}
@@ -214,6 +215,31 @@ YUI().use('ez-editorialapp', function (Y) {
         </div>
     </div>
 </script>
+
+<script type="text/x-handlebars-template" id="integereditview-ez-template">
+    <div class="pure-g ez-editfield-row">
+        <div class="pure-u ez-editfield-infos">
+            <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+                <p class="ez-fielddefinition-name">
+                    {{#if fieldDefinition.descriptions.[eng-GB]}}
+                    <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
+                    {{/if}}
+                    {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+                </p>
+                <p class="ez-editfield-error-message">&nbsp;</p>
+            </label>
+        </div>
+        <div class="pure-u ez-editfield-input-area ez-default-error-style">
+            <div class="ez-editfield-input"><div class="ez-integer-input-ui"><input type="text"
+                    value="{{ field.fieldValue }}"
+                    id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+                    {{#if isRequired}} required{{/if}}
+                    {{#if integerPattern}} pattern="{{ integerPattern }}"{{/if}}
+                    ></div></div>
+        </div>
+    </div>
+</script>
+
 
 <script type="text/x-handlebars-template" id="editpreviewview-ez-template">
     <div class="ez-preview-content" tabindex="0">
