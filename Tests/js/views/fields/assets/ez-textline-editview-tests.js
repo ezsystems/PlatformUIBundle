@@ -16,7 +16,7 @@ YUI.add('ez-textline-editview-tests', function (Y) {
         returns: jsonContentType
     });
 
-    viewTest = new Y.eZ.EditViewTest({
+    viewTest = new Y.Test.Case({
         name: "eZ Text Line View test",
 
         _getFieldDefinition: function (required, minLength, maxLength) {
@@ -32,10 +32,6 @@ YUI.add('ez-textline-editview-tests', function (Y) {
         },
 
         setUp: function () {
-
-            // Supplying parent view with information for registration test
-            this.viewType = Y.eZ.TextLineEditView;
-            this.viewKey = "ezstring";
 
             this.view = new Y.eZ.TextLineEditView({
                 container: container,
@@ -215,5 +211,11 @@ YUI.add('ez-textline-editview-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Text Line Edit View tests");
     Y.Test.Runner.add(viewTest);
+
+    Y.eZ.EditViewRegisterTest.viewType = Y.eZ.TextLineEditView;
+    Y.eZ.EditViewRegisterTest.viewKey = "ezstring";
+
+    Y.Test.Runner.add(Y.eZ.EditViewRegisterTest);
+
 
 }, '0.0.1', {requires: ['test', 'editview-tests', 'ez-textline-editview']});

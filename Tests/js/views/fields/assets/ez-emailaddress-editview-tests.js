@@ -16,7 +16,7 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
         returns: jsonContentType
     });
 
-    viewTest = new Y.eZ.EditViewTest({
+    viewTest = new Y.Test.Case({
         name: "eZ Email Address View test",
 
         _getFieldDefinition: function (required) {
@@ -26,10 +26,6 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
         },
 
         setUp: function () {
-
-            // Supplying parent view with information for registration test
-            this.viewType = Y.eZ.EmailAddressEditView;
-            this.viewKey = "ezemail";
 
             this.view = new Y.eZ.EmailAddressEditView({
                 container: container,
@@ -120,5 +116,10 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Email Address Edit View tests");
     Y.Test.Runner.add(viewTest);
+
+    Y.eZ.EditViewRegisterTest.viewType = Y.eZ.EmailAddressEditView;
+    Y.eZ.EditViewRegisterTest.viewKey = "ezemail";
+
+    Y.Test.Runner.add(Y.eZ.EditViewRegisterTest);
 
 }, '0.0.1', {requires: ['test', 'editview-tests', 'ez-emailaddress-editview']});
