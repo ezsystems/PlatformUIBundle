@@ -16,6 +16,7 @@
 
 .ez-editorial-app input[type=text],
 .ez-editorial-app input[type=email],
+.ez-editorial-app input[type=number],
 .ez-editorial-app input[type=search],
 .ez-editorial-app input[type=password],
 .ez-editorial-app textarea {
@@ -38,6 +39,7 @@
 
 .ez-editorial-app input[type=text]:focus,
 .ez-editorial-app input[type=email]:focus,
+.ez-editorial-app input[type=number]:focus,
 .ez-editorial-app input[type=search]:focus,
 .ez-editorial-app input[type=password]:focus,
 .ez-editorial-app textarea:focus {
@@ -53,6 +55,7 @@
 
 .ez-editorial-app .is-error input[type=text],
 .ez-editorial-app .is-error input[type=email],
+.ez-editorial-app .is-error input[type=number],
 .ez-editorial-app .is-error input[type=search],
 .ez-editorial-app .is-error input[type=password],
 .ez-editorial-app .is-error textarea {
@@ -63,6 +66,7 @@
 
 .ez-editorial-app .is-error input[type=text]:focus,
 .ez-editorial-app .is-error input[type=email]:focus,
+.ez-editorial-app .is-error input[type=number]:focus,
 .ez-editorial-app .is-error input[type=search]:focus,
 .ez-editorial-app .is-error input[type=password]:focus,
 .ez-editorial-app .is-error textarea:focus {

@@ -22,6 +22,8 @@
     '@EzSystemsEditorialBundle/Resources/public/css/fieldeditview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/fields/textline-editview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/fields/emailaddress-editview.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/fields/float-editview.css'
+    '@EzSystemsEditorialBundle/Resources/public/css/fields/integer-editview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/errorview.css'
     '@EzSystemsEditorialBundle/Resources/public/css/theme.css'
 %}
@@ -39,7 +41,7 @@ YUI.GlobalConfig = {
             requires: [
                 'app', 'app-transitions', 'node-screen', 'json', 'parallel',
                 'ez-capi', 'ez-contenteditview', 'ez-contenteditformview', 'ez-editactionbarview', 'ez-editpreviewview',
-                'ez-textline-editview', 'ez-emailaddress-editview', 'ez-errorview', 'ez-buttonactionview', 'ez-previewactionview',
+                'ez-textline-editview', 'ez-emailaddress-editview', 'ez-float-editview', 'ez-integer-editview', 'ez-errorview', 'ez-buttonactionview', 'ez-previewactionview',
                 'ez-restmodel', 'ez-contentmodel', 'ez-locationmodel', 'ez-usermodel', 'ez-contenttypemodel'
             ],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/apps/ez-editorialapp.js' %}
@@ -86,6 +88,18 @@ YUI.GlobalConfig = {
         "ez-emailaddress-editview": {
             requires: ['ez-fieldeditview', 'event-valuechange'],
             {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/fields/ez-emailaddress-editview.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
+        "ez-float-editview": {
+            requires: ['ez-fieldeditview', 'event-valuechange'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/fields/ez-float-editview.js' %}
+            fullpath: "{{ asset_url }}"
+            {% endjavascripts %}
+        },
+        "ez-integer-editview": {
+            requires: ['ez-fieldeditview', 'event-valuechange'],
+            {% javascripts '@EzSystemsEditorialBundle/Resources/public/js/views/fields/ez-integer-editview.js' %}
             fullpath: "{{ asset_url }}"
             {% endjavascripts %}
         },
@@ -306,6 +320,58 @@ YUI().use('ez-editorialapp', function (Y) {
         </div>
     </div>
 </script>
+
+<script type="text/x-handlebars-template" id="floateditview-ez-template">
+    <div class="pure-g ez-editfield-row">
+        <div class="pure-u ez-editfield-infos">
+            <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+                <p class="ez-fielddefinition-name">
+                    {{#if fieldDefinition.descriptions.[eng-GB]}}
+                    <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
+                    {{/if}}
+                    {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+                </p>
+                <p class="ez-editfield-error-message">&nbsp;</p>
+            </label>
+        </div>
+        <div class="pure-u ez-editfield-input-area ez-default-error-style">
+            <div class="ez-editfield-input"><div class="ez-float-input-ui"><input type="number"
+                        value="{{ field.fieldValue }}"
+                        id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+                        {{#if isRequired}} required{{/if}}
+                        {{#if minFloatValue}} min="{{ minFloatValue }}"{{/if}}
+                        {{#if maxFloatValue}} max="{{ maxFloatValue }}"{{/if}}
+                    ></div></div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="integereditview-ez-template">
+    <div class="pure-g ez-editfield-row">
+        <div class="pure-u ez-editfield-infos">
+            <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+                <p class="ez-fielddefinition-name">
+                    {{#if fieldDefinition.descriptions.[eng-GB]}}
+                    <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
+                    {{/if}}
+                    {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+                </p>
+                <p class="ez-editfield-error-message">&nbsp;</p>
+            </label>
+        </div>
+        <div class="pure-u ez-editfield-input-area ez-default-error-style">
+            <div class="ez-editfield-input"><div class="ez-integer-input-ui"><input type="number"
+                    value="{{ field.fieldValue }}"
+                    id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+                    {{#if isRequired}} required{{/if}}
+                    {{#if minIntegerValue}} min="{{ minIntegerValue }}"{{/if}}
+                    {{#if maxIntegerValue}} max="{{ maxIntegerValue }}"{{/if}}
+                    step="1"
+                    ></div></div>
+        </div>
+    </div>
+</script>
+
 
 <script type="text/x-handlebars-template" id="editpreviewview-ez-template">
     <div class="ez-preview-content" tabindex="0">
