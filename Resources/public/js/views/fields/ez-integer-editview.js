@@ -34,8 +34,10 @@ YUI.add('ez-integer-editview', function (Y) {
          */
         validate: function () {
             var validity = this._getInputValidity(),
-                config = this._variables();
+                config = this._variables(),
+                inputValue = this.get('container').one('.ez-integer-input-ui input').get('value');
 
+            // HTML5 validation
             if ( validity.badInput || validity.stepMismatch ) {
                 this.set(
                     'errorStatus',
@@ -44,15 +46,24 @@ YUI.add('ez-integer-editview', function (Y) {
             } else if ( validity.rangeOverflow ) {
                 this.set(
                     'errorStatus',
-                    L.sub('The value should be less than {maxIntegerValue}', config)
+                    L.sub('The value should be less than or equal to {maxIntegerValue}', config)
                 );
             } else if ( validity.rangeUnderflow ) {
                 this.set(
                     'errorStatus',
-                    L.sub('The value should be more than {minIntegerValue}', config)
+                    L.sub('The value should be more than or equal to {minIntegerValue}', config)
                 );
             } else if ( validity.valueMissing ) {
                 this.set('errorStatus', 'This field is required');
+
+            // Custom validation (IE compatibility)
+            } else if ( !/^\-*\d*$/.test(inputValue) ) {
+                this.set(
+                    'errorStatus',
+                    'The value should be a valid integer number'
+                );
+
+            // No errors
             } else {
                 this.set('errorStatus', false);
             }
