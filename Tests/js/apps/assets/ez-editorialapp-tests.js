@@ -112,7 +112,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     'ContentType': '/api/ezp/v2/content/types/23'
                 },
                 nextCalled = false,
-                contentId = 59,
+                contentId = "/api/ezp/v2/content/objects/59",
                 runLoadCallback = function (options, callback) {
                     Y.Assert.isObject(options.api, "The load options should an 'api' property");
                     Y.Assert.areSame(options.api, capiMock, "The 'api' property should be the CAPI");
@@ -129,7 +129,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 method: 'set',
                 args: [
                     'id',
-                    "/api/ezp/v2/content/objects/" + contentId
+                    contentId
                 ]
             });
             Y.Mock.expect(contentMock, {
@@ -302,7 +302,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
 
         "Should fire 'fatalError' event, when encountering an error during content loading": function () {
-            var undefinedContentId = "undefined",
+            var undefinedContentId = "/api/ezp/v2/content/objects/undefined",
                 fatalErrorFired = false,
                 contentMock = new Y.Mock(),
                 TestErrorViewConstructor;
@@ -324,7 +324,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 method: 'set',
                 args: [
                     'id',
-                    "/api/ezp/v2/content/objects/" + undefinedContentId
+                    undefinedContentId
                 ]
             });
             Y.Mock.expect(contentMock, {
@@ -360,7 +360,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
 
         "Should fire 'fatalError' event, when encountering an error during user loading": function () {
-            var contentId = 59,
+            var contentId = "/api/ezp/v2/content/objects/59",
                 fatalErrorFired = false,
                 contentMock = new Y.Mock(),
                 userMock = new Y.Mock(),
@@ -394,7 +394,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 method: 'set',
                 args: [
                     'id',
-                    "/api/ezp/v2/content/objects/" + contentId
+                    contentId
                 ]
             });
             Y.Mock.expect(contentMock, {
@@ -493,7 +493,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
 
         "Should fire 'fatalError' event, when encountering an error during location loading": function () {
-            var contentId = 59,
+            var contentId = "/api/ezp/v2/content/objects/59",
                 fatalErrorFired = false,
                 contentMock = new Y.Mock(),
                 userMock = new Y.Mock(),
@@ -527,7 +527,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 method: 'set',
                 args: [
                     'id',
-                    "/api/ezp/v2/content/objects/" + contentId
+                    contentId
                 ]
             });
             Y.Mock.expect(contentMock, {
@@ -626,7 +626,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
 
         "Should fire 'fatalError' event, when encountering an error during type loading": function () {
-            var contentId = 59,
+            var contentId = "/api/ezp/v2/content/objects/59",
                 fatalErrorFired = false,
                 contentMock = new Y.Mock(),
                 userMock = new Y.Mock(),
@@ -660,7 +660,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 method: 'set',
                 args: [
                     'id',
-                    "/api/ezp/v2/content/objects/" + contentId
+                    contentId
                 ]
             });
             Y.Mock.expect(contentMock, {

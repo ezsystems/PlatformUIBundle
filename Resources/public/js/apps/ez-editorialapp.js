@@ -173,7 +173,7 @@ YUI.add('ez-editorialapp', function (Y) {
                 };
 
             app.set('loading', true);
-            content.set('id', "/api/ezp/v2/content/objects/" + req.params.id);
+            content.set('id', req.params.id);
             content.load(loadOptions, function (error) {
                 var tasks,
                     resources;

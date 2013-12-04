@@ -2,8 +2,8 @@
 
 {% block footerScript %}
 <p style="position: absolute; top: 0; left: 200px;">
-    <a href="#/edit/59" class="btn btn-warning">Edit "Getting started"</a>
-    <a href="#/edit/109" class="btn btn-warning">Test field edit views</a>
+    <a href="#/edit/{{ '/api/ezp/v2/content/objects/59'|url_encode }}" class="btn btn-warning">Edit "Getting started"</a>
+    <a href="#/edit/{{ '/api/ezp/v2/content/objects/109'|url_encode }}" class="btn btn-warning">Test field edit views</a>
 </p>
 <div class="ez-editorial-app pure">
     <div class="ez-view-container"></div>
