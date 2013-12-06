@@ -125,83 +125,13 @@ YUI.add('ez-editorialapp', function (Y) {
          * @param {Function} next the function to pass control to the next route callback
          */
         handleContentEdit: function (req, res, next) {
-            this.showView('contentEditView', this.get('contentEditViewVariables'), {
+            this.showView('contentEditView', res.variables, {
                 update: true,
                 render: true,
                 callback: function (view) {
                     this.set('loading', false);
                     view.get('actionBar').handleHeightUpdate();
                     view.setFocus();
-                }
-            });
-        },
-
-        /**
-         * Loads the content and the associated entities to edit it
-         *
-         * @method loadContentForEdit
-         * @param {Object} req the request object
-         * @param {Function} res the response object
-         * @param {Function} next the function to pass control to the next route callback
-         */
-        loadContentForEdit: function (req, res, next) {
-            var app = this,
-                loadOptions = {
-                    api: this.get('capi')
-                },
-                vars = this.get('contentEditViewVariables'),
-                content = vars.content,
-                mainLocation = vars.mainLocation,
-                type = vars.contentType,
-                owner = vars.owner,
-                errorHandling = function (error, errorMessage) {
-                    if (error) {
-                        app.fire(EVT_FATALERROR, {
-                            retryAction: {
-                                run: app.loadContentForEdit,
-                                args: [req, res, next],
-                                context: app
-                            },
-                            additionalInfo: {
-                                errorText: errorMessage
-                            }
-                        });
-                        return true;
-                    } else {
-                        return false;
-                    }
-                };
-
-            app.set('loading', true);
-            content.set('id', req.params.id);
-            content.load(loadOptions, function (error) {
-                var tasks,
-                    resources;
-
-                if (!errorHandling(error, "Could not load the content with id '" + req.params.id + "'")) {
-                    resources = content.get('resources');
-
-                    // parallel loading of owner, mainLocation and contentType
-                    tasks = new Y.Parallel();
-
-                    owner.set('id', resources.Owner);
-                    owner.load(loadOptions, tasks.add(function (error) {
-                        errorHandling(error, "Could not load the user with id '" + resources.Owner + "'");
-                    }));
-
-                    mainLocation.set('id', resources.MainLocation);
-                    mainLocation.load(loadOptions, tasks.add(function (error) {
-                        errorHandling(error, "Could not load the location with id '" + resources.MainLocation + "'");
-                    }));
-
-                    type.set('id', resources.ContentType);
-                    type.load(loadOptions, tasks.add(function (error) {
-                        errorHandling(error, "Could not load the content type with id '" + resources.ContentType + "'");
-                    }));
-
-                    tasks.done(function () {
-                        next();
-                    });
                 }
             });
         },
@@ -224,6 +154,44 @@ YUI.add('ez-editorialapp', function (Y) {
             if ( L.isFunction(next) ) {
                 next();
             }
+        },
+
+        /**
+         * The run view loader configured in the currently evaluated route
+         * If no view loader is defined for this route, just pass to the next
+         * middleware
+         *
+         * @method runLoader
+         * @param {Object} req
+         * @param {Object} res
+         * @param {Function} next
+         */
+        runLoader: function (req, res, next) {
+            var loader, app = this;
+
+            if ( !req.route.loader ) {
+                next();
+                return;
+            }
+            this.set('loading', true);
+            loader = new req.route.loader({
+                capi: this.get('capi'),
+                request: req,
+                response: res
+            });
+            loader.on('error', function (e) {
+                app.fire(EVT_FATALERROR, {
+                    retryAction: {
+                        run: app.runLoader,
+                        args: [req, res, next],
+                        context: app
+                    },
+                    additionalInfo: {
+                        errorText: e.message
+                    }
+                });
+            });
+            loader.load(next);
         },
 
         /**
@@ -255,10 +223,27 @@ YUI.add('ez-editorialapp', function (Y) {
 
     }, {
         ATTRS: {
+            /**
+             * Stores the available routes for the application.
+             *
+             * In addition to what is described in the {{#crossLink "App"}}YUI
+             * App documentation{{/crossLink}}, each route can have a `loader`
+             * entry which is supposed to contain a constructor function that
+             * extends {{#crossLink
+             * "eZ.ViewLoader"}}eZ.ViewLoader{{/crossLink}}. The {{#crossLink
+             * "eZ.EditorialApp/runLoader:method"}}`runLoader`{{/crossLink}}
+             * middleware is responsible for using this function to build the
+             * view loader which can be used to inject custom variables in the
+             * top level view triggered by the route.
+             *
+             * @attribute routes
+             */
             routes: {
-                value: [
-                    {path: '/edit/:id', callback: ['open', 'loadContentForEdit', 'handleContentEdit']}
-                ]
+                value: [{
+                    path: '/edit/:id',
+                    loader: Y.eZ.ContentEditViewLoader,
+                    callbacks: ['open', 'runLoader', 'handleContentEdit']
+                }]
             },
             serverRouting: {
                 value: false
@@ -296,22 +281,6 @@ YUI.add('ez-editorialapp', function (Y) {
             capi: {
                 writeOnce: "initOnly",
                 value: null
-            },
-
-            /**
-             * The variables needed by the content edit view
-             *
-             * @attribute contentEditViewVariables
-             * @default
-             */
-            contentEditViewVariables: {
-                cloneDefaultValue: false,
-                value: {
-                    content: new Y.eZ.Content(),
-                    contentType: new Y.eZ.ContentType(),
-                    mainLocation: new Y.eZ.Location(),
-                    owner: new Y.eZ.User()
-                }
             }
         }
     });

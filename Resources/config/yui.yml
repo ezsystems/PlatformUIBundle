@@ -11,6 +11,7 @@ parameters:
                     - 'json'
                     - 'parallel'
                     - 'ez-capi'
+                    - 'ez-contenteditviewloader'
                     - 'ez-contenteditview'
                     - 'ez-contenteditformview'
                     - 'ez-editactionbarview'
@@ -22,12 +23,13 @@ parameters:
                     - 'ez-errorview'
                     - 'ez-buttonactionview'
                     - 'ez-previewactionview'
-                    - 'ez-restmodel'
-                    - 'ez-contentmodel'
-                    - 'ez-locationmodel'
-                    - 'ez-usermodel'
-                    - 'ez-contenttypemodel'
                 path: js/apps/ez-editorialapp.js
+            ez-viewloader:
+                requires: ['base']
+                path: js/views/loaders/ez-viewloader.js
+            ez-contenteditviewloader:
+                requires: ['parallel', 'ez-viewloader', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel']
+                path: js/views/loaders/ez-contenteditviewloader.js
             ez-templatebasedview:
                 requires: ['view', 'handlebars']
                 path: js/views/ez-templatebasedview.js
