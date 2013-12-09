@@ -113,7 +113,6 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
 
         "Test validation triggering on change when not valid": function () {
             var fieldDefinition = this._getFieldDefinition(true),
-                test = this,
                 validateCalled = false,
                 input;
 
@@ -139,7 +138,6 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
 
         "Test validation NOT triggering on change when is valid": function () {
             var fieldDefinition = this._getFieldDefinition(true),
-                test = this,
                 validateCalled = false,
                 input;
 
