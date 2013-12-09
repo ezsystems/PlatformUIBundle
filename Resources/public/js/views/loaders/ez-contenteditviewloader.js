@@ -8,14 +8,6 @@ YUI.add('ez-contenteditviewloader', function (Y) {
     Y.namespace('eZ');
 
     /**
-     * Fired when a loading error occurs
-     *
-     * @event error
-     * @param {String} message the error message
-     */
-    var EVT_ERROR = 'error';
-
-    /**
      * Content edit view loader.
      *
      * Loads the models needed by the content edit view
@@ -26,18 +18,6 @@ YUI.add('ez-contenteditviewloader', function (Y) {
      * @extends eZ.ViewLoader
      */
     Y.eZ.ContentEditViewLoader = Y.Base.create('contentEditViewLoader', Y.eZ.ViewLoader, [], {
-        /**
-         * Triggers the error event when the message parameter in the event
-         * facade
-         *
-         * @method _error
-         * @protected
-         * @param {String} msg
-         */
-        _error: function (msg) {
-            this.fire(EVT_ERROR, {message: msg});
-        },
-
         /**
          * Loads the content, the main location, the content type and the owner
          * of the currently edited content

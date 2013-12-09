@@ -35,6 +35,30 @@ YUI.add('ez-viewloader-tests', function (Y) {
                 loader.get('response').variables.album, result.album,
                 "The response variable property should be filled with the result of load"
             );
+        },
+
+        "An error should fire an 'error' event": function () {
+            var errorMsg = 'This is an error',
+                errorCalled = false,
+                TestLoader = Y.Base.create('testLoader', Y.eZ.ViewLoader, [], {
+                    load: function (cb) {
+                        this._error(errorMsg);
+                        cb();
+                    }
+                }),
+                loader;
+
+            loader = new TestLoader();
+            loader.on('error', function (e) {
+                errorCalled = true;
+                Y.Assert.areSame(
+                    errorMsg, e.message,
+                    "The error event facade should contain the error message"
+                );
+            });
+            loader.load(function() {});
+
+            Y.Assert.isTrue(errorCalled, "An error event should have been fired");
         }
     });
 
