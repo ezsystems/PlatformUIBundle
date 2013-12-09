@@ -109,7 +109,57 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
                 !!this.view.get('errorStatus'),
                 "An empty input is NOT valid"
             );
+        },
 
+        "Test validation triggering on change when not valid": function () {
+            var fieldDefinition = this._getFieldDefinition(true),
+                test = this,
+                validateCalled = false,
+                input;
+
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.render();
+
+            input = Y.one('.container input');
+            input.set('value', 'foobar@');
+            this.view.validate();
+
+            this.view.validate = function () {
+                validateCalled = true;
+            };
+
+            input.simulate('focus');
+            input.set('value', 'foooooobar@');
+
+            this.wait(function () {
+                Y.Assert.isTrue(validateCalled, 'View validation should have been called');
+            }, 200);
+
+        },
+
+        "Test validation NOT triggering on change when is valid": function () {
+            var fieldDefinition = this._getFieldDefinition(true),
+                test = this,
+                validateCalled = false,
+                input;
+
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.render();
+
+            input = Y.one('.container input');
+            input.set('value', 'foobar@something.com');
+            this.view.validate();
+
+            this.view.validate = function () {
+                validateCalled = true;
+            };
+
+            input.simulate('focus');
+            input.set('value', 'foooooobar@');
+
+            this.wait(function () {
+                Y.Assert.isFalse(validateCalled, 'View validation should NOT have been called');
+            }, 200);
         }
 
     });
@@ -124,4 +174,4 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'editviewregister-tests', 'ez-emailaddress-editview']});
+}, '0.0.1', {requires: ['test', 'event-valuechange', 'node-event-simulate', 'editviewregister-tests', 'ez-emailaddress-editview']});
