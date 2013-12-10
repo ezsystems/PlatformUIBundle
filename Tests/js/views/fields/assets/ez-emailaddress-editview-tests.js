@@ -113,7 +113,7 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
 
         "Test validation triggering on change when not valid": function () {
             var fieldDefinition = this._getFieldDefinition(true),
-                validateCalled = false,
+                test = this,
                 input;
 
             this.view.set('fieldDefinition', fieldDefinition);
@@ -124,15 +124,15 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
             this.view.validate();
 
             this.view.validate = function () {
-                validateCalled = true;
+                test.resume(function () {
+                    Y.Assert.pass();
+                });
             };
 
             input.simulate('focus');
             input.set('value', 'foooooobar@');
 
-            this.wait(function () {
-                Y.Assert.isTrue(validateCalled, 'View validation should have been called');
-            }, 200);
+            this.wait();
 
         },
 
