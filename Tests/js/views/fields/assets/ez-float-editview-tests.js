@@ -108,7 +108,7 @@ YUI.add('ez-float-editview-tests', function (Y) {
             this.view.validate();
             Y.Assert.isFalse(
                 this.view.isValid(),
-                "And error if float is required but NOT present"
+                "An error if float is required but NOT present"
             );
 
             input.set('value', '1s33');
