@@ -57,13 +57,12 @@ YUI.add('ez-float-editview', function (Y) {
                 this.set('errorStatus', 'This field is required');
 
             // Custom validation (IE compatibility)
-            } else if ( !/^\-*\d*[.|,]*\d*$/.test(inputValue) ) {
+            } else if ( isNaN(parseFloat(inputValue)) || !isFinite(inputValue) ) {
                 this.set(
                     'errorStatus',
                     'The value should be a valid float number'
                 );
 
-            // No errors
             } else {
                 this.set('errorStatus', false);
             }
