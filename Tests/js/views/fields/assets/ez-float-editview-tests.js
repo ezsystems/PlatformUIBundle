@@ -19,6 +19,13 @@ YUI.add('ez-float-editview-tests', function (Y) {
     viewTest = new Y.Test.Case({
         name: "eZ Float View test",
 
+        _should: {
+            ignore: {
+                // custom validation does not work in phantomjs
+                "Test custom validation cases (mostly IE related)": (Y.UA.phantomjs)
+            }
+        },
+
         _getFieldDefinition: function (required, minFloatValue, maxFloatValue) {
             return {
                 isRequired: required,
@@ -95,7 +102,7 @@ YUI.add('ez-float-editview-tests', function (Y) {
             this._testAvailableVariables(false, -10, 10, false, -10, 10);
         },
 
-        "Test float validation": function () {
+        "Test simple float validation cases": function () {
             var fieldDefinition = this._getFieldDefinition(true, -10, 10),
                 input;
 
@@ -151,6 +158,85 @@ YUI.add('ez-float-editview-tests', function (Y) {
             Y.Assert.isTrue(
                 this.view.isValid(),
                 "A valid float is valid"
+            );
+
+        },
+
+        "Test 'badInput' validation cases (mostly IE related)": function () {
+            var fieldDefinition = this._getFieldDefinition(true, -10, 10),
+                input;
+
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.render();
+
+            input = Y.one('.container input');
+
+            this.view._getInputValidity = function () {
+                return {
+                    badInput: true,
+                    rangeOverflow: false,
+                    rangeUnderflow: false,
+                    valueMissing: false
+                };
+            };
+            this.view.validate();
+            Y.Assert.isFalse(
+                this.view.isValid(),
+                "Bad input should be NOT valid"
+            );
+        },
+
+        "Test custom validation cases (mostly IE related)": function () {
+            var fieldDefinition = this._getFieldDefinition(true, -10, 10),
+                input;
+
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.render();
+
+            input = Y.one('.container input');
+
+            this.view._getInputValidity = function () {
+                return {
+                    badInput: false,
+                    rangeOverflow: false,
+                    rangeUnderflow: false,
+                    valueMissing: false
+                };
+            };
+
+            input.set('value', '1.aaaa');
+            this.view.validate();
+            Y.Assert.isFalse(
+                this.view.isValid(),
+                "Not valid float (-1.aaaa) should be detected as NOT valid by custom validation rule"
+            );
+
+            input.set('value', 'aa1.1');
+            this.view.validate();
+            Y.Assert.isFalse(
+                this.view.isValid(),
+                "Not valid float (aa1.1) should be detected as NOT valid by custom validation rule"
+            );
+
+            input.set('value', '1.1');
+            this.view.validate();
+            Y.Assert.isTrue(
+                this.view.isValid(),
+                "Valid float should be detected as valid by custom validation rule"
+            );
+
+            input.set('value', '1');
+            this.view.validate();
+            Y.Assert.isTrue(
+                this.view.isValid(),
+                "Valid integer should be detected as valid by custom validation rule"
+            );
+
+            input.set('value', '-1');
+            this.view.validate();
+            Y.Assert.isTrue(
+                this.view.isValid(),
+                "Valid integer below zero should be detected as valid by custom validation rule"
             );
 
         }
