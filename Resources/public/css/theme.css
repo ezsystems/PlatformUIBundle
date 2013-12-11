@@ -110,6 +110,11 @@
     border-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
 }
 
+/* location view view */
+.ez-view-locationviewview {
+    background: #fff;
+}
+
 /* content edit view */
 .ez-view-contenteditview {
     color: #444;

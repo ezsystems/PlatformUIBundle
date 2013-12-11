@@ -13,6 +13,8 @@ parameters:
                     - 'ez-capi'
                     - 'ez-contenteditviewloader'
                     - 'ez-contenteditview'
+                    - 'ez-locationviewview'
+                    - 'ez-locationviewviewloader'
                     - 'ez-contenteditformview'
                     - 'ez-editactionbarview'
                     - 'ez-editpreviewview'
@@ -23,6 +25,7 @@ parameters:
                     - 'ez-errorview'
                     - 'ez-buttonactionview'
                     - 'ez-previewactionview'
+                    - 'ez-texthelper'
                 path: js/apps/ez-editorialapp.js
             ez-viewloader:
                 requires: ['base']
@@ -30,9 +33,15 @@ parameters:
             ez-contenteditviewloader:
                 requires: ['parallel', 'ez-viewloader', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel']
                 path: js/views/loaders/ez-contenteditviewloader.js
+            ez-locationviewviewloader:
+                requires: ['parallel', 'ez-viewloader', 'ez-locationmodel', 'ez-contentmodel']
+                path: js/views/loaders/ez-locationviewviewloader.js
             ez-templatebasedview:
                 requires: ['view', 'handlebars']
                 path: js/views/ez-templatebasedview.js
+            ez-locationviewview:
+                requires: ['ez-templatebasedview']
+                path: js/views/ez-locationviewview.js
             ez-contenteditview:
                 requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'transition', 'event-tap']
                 path: js/views/ez-contenteditview.js
@@ -84,4 +93,7 @@ parameters:
             ez-editpreviewview:
                 requires: ['ez-templatebasedview', 'transition', 'event-tap']
                 path: js/views/ez-editpreviewview.js
+            ez-texthelper:
+                requires: ['handlebars']
+                path: js/helpers/ez-texthelper.js
         filter: min

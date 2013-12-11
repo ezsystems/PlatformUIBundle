@@ -47,6 +47,9 @@ YUI.add('ez-editorialapp', function (Y) {
                 type: Y.eZ.ContentEditView,
                 preserve: true
             },
+            locationViewView: {
+                type: Y.eZ.LocationViewView
+            },
             dummyView: {
                 type: Y.View
             },
@@ -132,6 +135,24 @@ YUI.add('ez-editorialapp', function (Y) {
                     this.set('loading', false);
                     view.get('actionBar').handleHeightUpdate();
                     view.setFocus();
+                }
+            });
+        },
+
+        /**
+         * Displays the location view
+         *
+         * @method handleLocationView
+         * @param {Object} req the request object
+         * @param {Function} res the response object
+         * @param {Function} next the function to pass control to the next route callback
+         */
+        handleLocationView: function (req, res, next) {
+            this.showView('locationViewView', res.variables, {
+                update: true,
+                render: true,
+                callback: function (view) {
+                    this.set('loading', false);
                 }
             });
         },
@@ -243,7 +264,11 @@ YUI.add('ez-editorialapp', function (Y) {
                     path: '/edit/:id',
                     loader: Y.eZ.ContentEditViewLoader,
                     callbacks: ['open', 'runLoader', 'handleContentEdit']
-                }]
+                }, {
+                    path: '/view/:id',
+                    loader: Y.eZ.LocationViewViewLoader,
+                    callbacks: ['open', 'runLoader', 'handleLocationView']
+                }],
             },
             serverRouting: {
                 value: false

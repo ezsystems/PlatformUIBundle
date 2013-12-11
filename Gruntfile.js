@@ -9,7 +9,8 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/fields/*.js", "!./Resources/public/js/views/fields/*-min.js",
             "./Resources/public/js/views/actions/*.js", "!./Resources/public/js/views/actions/*-min.js",
             "./Resources/public/js/views/loaders/*.js", "!./Resources/public/js/views/loaders/*-min.js",
-            "./Resources/public/js/models/*.js", "!./Resources/public/js/models/*-min.js"
+            "./Resources/public/js/models/*.js", "!./Resources/public/js/models/*-min.js",
+            "./Resources/public/js/helpers/*.js", "!./Resources/public/js/helpers/*-min.js"
         ],
         testFiles = [
             "./Tests/js/*/*/*.js",
@@ -21,6 +22,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/fields/*-min.js",
             "./Resources/public/js/views/loaders/*-min.js",
             "./Resources/public/js/models/*-min.js",
+            "./Resources/public/js/helpers/*-min.js",
             "./Resources/public/js/views/actions/*-min.js",
             instrumentDir,
             reportDir
@@ -67,7 +69,8 @@ module.exports = function(grunt) {
                     paths: [
                         "./Resources/public/js/apps",
                         "./Resources/public/js/views",
-                        "./Resources/public/js/models"
+                        "./Resources/public/js/models",
+                        "./Resources/public/js/helpers"
                     ],
                     outdir: 'api/'
                 }

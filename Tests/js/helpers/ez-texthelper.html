@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Text Helper tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-texthelper-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-texthelper'],
+        filter: loaderFilter,
+        modules: {
+            "ez-texthelper": {
+                requires: ['handlebars'],
+                fullpath: "../../../Resources/public/js/helpers/ez-texthelper.js"
+            }
+        }
+    }).use('ez-texthelper-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

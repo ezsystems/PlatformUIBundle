@@ -46,6 +46,7 @@ YUI.add('ez-locationmodel', function (Y) {
             'priority', 'remoteId', 'sortField', 'sortOrder',
             {'id': 'locationId'}
         ],
+        LINKS_MAP: ['ParentLocation', 'Content'],
         ATTRS: {
             /**
              * The location's number of child
