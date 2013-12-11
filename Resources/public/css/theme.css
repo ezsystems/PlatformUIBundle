@@ -112,7 +112,16 @@
 
 /* location view view */
 .ez-view-locationviewview {
-    background: #fff;
+    background: #f5f4f2;
+}
+
+.ez-view-locationviewview .ez-breadcrumbs a {
+    color: #528036;
+}
+
+.ez-view-locationviewview .ez-breadcrumbs a:hover {
+    color: #444;
+    text-decoration: underline;
 }
 
 /* content edit view */

@@ -261,13 +261,13 @@ YUI().use('ez-editorialapp', function (Y) {
 <script type="text/x-handlebars-template" id="locationviewview-ez-template">
     <div class="ez-locationview-content">
         <header>
-            <ul>
+            <ul class="ez-breadcrumbs">
             {{#each path}}
                 <li><a href="#/view/{{urlEncode location.id}}">{{ content.name }}</a></li>
             {{/each}}
                 <li>{{ content.name }}</li>
             </ul>
-            <h1>{{ content.name }}</h1>
+            <h1 class="ez-content-name" data-icon="&#xe001;">{{ content.name }}</h1>
         </header>
     </div>
 </script>

@@ -1,3 +1,32 @@
 .ez-view-locationviewview {
     height: 100%;
 }
+
+.ez-view-locationviewview header {
+    padding: 2em 1.5em 2em 1.5em;
+}
+
+.ez-view-locationviewview .ez-content-name:before {
+    padding-right: 0.3em;
+}
+
+.ez-view-locationviewview .ez-breadcrumbs {
+    font-size: 90%;
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 0.5em;
+}
+
+.ez-view-locationviewview .ez-breadcrumbs li:after {
+    content: "/";
+    padding: 0 0.3em 0 0.5em;
+}
+
+.ez-view-locationviewview .ez-breadcrumbs li:last-of-type:after {
+    content: "";
+    padding: 0;
+}
+
+.ez-view-locationviewview .ez-breadcrumbs li {
+    display: inline;
+}
