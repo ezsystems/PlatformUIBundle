@@ -98,10 +98,10 @@
 }
 
 .is-app-loading .ez-view-container:before {
-    -moz-animation: spin 0.5s infinite linear;
-    -o-animation: spin 0.5s infinite linear;
     -webkit-animation: spin 0.5s infinite linear;
-    animation: spin 0.5s infinite linear;
+       -moz-animation: spin 0.5s infinite linear;
+         -o-animation: spin 0.5s infinite linear;
+            animation: spin 0.5s infinite linear;
     box-sizing: border-box;
     border-radius: 2em;
     border-width: 0.5em;
@@ -152,7 +152,6 @@
     font-weight: bold;
     text-transform: capitalize;
 }
-
 
 .ez-view-contenteditformview .fieldgroup-name:after {
     content: "\E002";
@@ -268,8 +267,8 @@
 
 .ez-view-editactionbarview .ez-actions-list .ez-action:last-child {
     -webkit-box-shadow: 0 1px 0 0 #424242;
-    -moz-box-shadow: 0 1px 0 0 #424242;
-    box-shadow: 0 1px 0 0 #424242;
+       -moz-box-shadow: 0 1px 0 0 #424242;
+            box-shadow: 0 1px 0 0 #424242;
 }
 
 .ez-action .action-icon {
@@ -340,11 +339,11 @@
        -moz-box-shadow: inset 1px 1px 2px 1px #000;
             box-shadow: inset 1px 1px 2px 1px #000;
     background: #232327;
-    background: -moz-linear-gradient(90deg, #232327 0%, #26252a 100%);
     background: -webkit-linear-gradient(90deg, #232327 0%, #26252a 100%);
-    background: -o-linear-gradient(90deg, #232327 0%, #26252a 100%);
-    background: -ms-linear-gradient(90deg, #232327 0%, #26252a 100%);
-    background: linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background:    -moz-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background:     -ms-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background:      -o-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background:         linear-gradient(90deg, #232327 0%, #26252a 100%);
     background: -webkit-gradient(linear, top, bottom, color-stop(0%, #232327), color-stop(100%, #26252a));
 }
 
