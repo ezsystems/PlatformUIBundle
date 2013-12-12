@@ -2,8 +2,6 @@ YUI.add('editviewregister-tests', function (Y) {
     Y.namespace('eZ');
 
     Y.eZ.EditViewRegisterTest = {
-        name: "Generic eZ Edit View registration test",
-
         "Should autoregister": function () {
             var ViewType = this.viewType,
                 viewKey = this.viewKey,

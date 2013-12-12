@@ -213,6 +213,7 @@ YUI.add('ez-textline-editview-tests', function (Y) {
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
 
+    registerTest.name = "Text Line Edit View registration test";
     registerTest.viewType = Y.eZ.TextLineEditView;
     registerTest.viewKey = "ezstring";
 

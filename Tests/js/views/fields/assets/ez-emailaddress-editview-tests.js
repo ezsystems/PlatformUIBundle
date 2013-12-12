@@ -167,6 +167,7 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
 
+    registerTest.name = "Email Address Edit View registration test";
     registerTest.viewType = Y.eZ.EmailAddressEditView;
     registerTest.viewKey = "ezemail";
 
