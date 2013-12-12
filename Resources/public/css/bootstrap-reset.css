@@ -1,0 +1,13 @@
+.ez-editorial-app legend {
+    width: auto;
+    font-size: 100%;
+}
+
+.ez-editorial-app h1,
+.ez-editorial-app h2,
+.ez-editorial-app h3,
+.ez-editorial-app h4,
+.ez-editorial-app h5,
+.ez-editorial-app h6 {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
