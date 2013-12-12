@@ -1,3 +1,25 @@
+/* basic elements styles */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    min-height: 5em;
+}
+
+a {
+    text-decoration: none;
+}
+
+p {
+    font-size: 70%;
+    line-height: 21px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+}
+
 /* application styles */
 @font-face {
     font-family: 'ez-editorial-icomoon';
