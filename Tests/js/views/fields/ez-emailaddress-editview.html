@@ -1,26 +1,25 @@
 <!doctype html>
 <html>
 <head>
-<title>eZ Text Line Edit view tests</title>
+<title>eZ Email Address Edit view tests</title>
 </head>
 <body>
 
 <div class="container"></div>
 
-<script type="text/x-handlebars-template" id="textlineeditview-ez-template">
-    <p class="ez-textline-input-ui">
-        <input type="text"
-            {{#if isRequired}}required{{/if}}
-            {{#if minLength}}pattern="{{minLengthPattern}}"{{/if}}
-            {{#if maxLength}}maxlength="{{maxLength}}"{{/if}}
+<script type="text/x-handlebars-template" id="emailaddresseditview-ez-template">
+    <div class="ez-emailaddress-input-ui">
+        <input type="email"
+            {{#if isRequired}} required{{/if}}
         >
-    </p>
+    </div>
     <p class="ez-editfield-error-message"></p>
 </script>
 
 <script type="text/javascript" src="../../../../node_modules/yui/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
-<script type="text/javascript" src="./assets/ez-textline-editview-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-emailaddress-editview-tests.js"></script>
+
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -35,12 +34,12 @@
     }
 
     YUI({
-        coverage: ['ez-textline-editview'],
+        coverage: ['ez-emailaddress-editview'],
         filter: loaderFilter,
         modules: {
-            "ez-textline-editview": {
+            "ez-emailaddress-editview": {
                 requires: ['ez-fieldeditview'],
-                fullpath: "../../../../Resources/public/js/views/fields/ez-textline-editview.js"
+                fullpath: "../../../../Resources/public/js/views/fields/ez-emailaddress-editview.js"
             },
             "ez-fieldeditview": {
                 requires: ['ez-templatebasedview'],
@@ -51,7 +50,7 @@
                 fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
             }
         }
-    }).use('ez-textline-editview-tests', function (Y) {
+    }).use('ez-emailaddress-editview-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>

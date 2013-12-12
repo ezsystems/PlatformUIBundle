@@ -16,6 +16,8 @@ parameters:
                     - 'ez-editactionbarview'
                     - 'ez-editpreviewview'
                     - 'ez-textline-editview'
+                    - 'ez-emailaddress-editview'
+                    - 'ez-float-editview'
                     - 'ez-errorview'
                     - 'ez-buttonactionview'
                     - 'ez-previewactionview'
@@ -43,6 +45,12 @@ parameters:
             ez-textline-editview:
                 requires: ['ez-fieldeditview', 'event-valuechange']
                 path: js/views/fields/ez-textline-editview.js
+            ez-emailaddress-editview:
+                requires: ['ez-fieldeditview', 'event-valuechange']
+                path: js/views/fields/ez-emailaddress-editview.js
+            ez-float-editview:
+                requires: ['ez-fieldeditview', 'event-valuechange']
+                path: js/views/fields/ez-float-editview.js
             ez-restmodel:
                 requires: ['model']
                 path: js/models/ez-restmodel.js
