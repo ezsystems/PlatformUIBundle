@@ -9,7 +9,8 @@ YUI.add('ez-float-editview', function (Y) {
     Y.namespace('eZ');
 
     var L = Y.Lang,
-        FIELDTYPE_IDENTIFIER = 'ezfloat';
+        FIELDTYPE_IDENTIFIER = 'ezfloat',
+        FLOAT_PATTERN = "\\-?\\d*\\.?\\d+"; // WARNING: each backslash is doubled, because it is escaped on output otherwise
 
     /**
      * Float edit view
@@ -52,12 +53,12 @@ YUI.add('ez-float-editview', function (Y) {
                     'The value should be a valid float number'
                 );
             // Range validation
-            } else if ( inputValue > config.maxFloatValue ) {
+            } else if ( config.maxFloatValue && inputValue > config.maxFloatValue ) {
                 this.set(
                     'errorStatus',
                     L.sub('The value should be less than or equal to {maxFloatValue}', config)
                 );
-            } else if ( inputValue < config.minFloatValue ) {
+            } else if ( config.minFloatValue && inputValue < config.minFloatValue ) {
                 this.set(
                     'errorStatus',
                     L.sub('The value should be more than or equal to {minFloatValue}', config)
@@ -91,7 +92,7 @@ YUI.add('ez-float-editview', function (Y) {
 
             return {
                 "isRequired": def.isRequired,
-                "floatPattern": "\\-?\\d*\\.?\\d+", // WARNING each backslash is doubled, because it is escaped on output otherwise
+                "floatPattern": FLOAT_PATTERN,
                 "minFloatValue": minFloatValue,
                 "maxFloatValue": maxFloatValue
             };

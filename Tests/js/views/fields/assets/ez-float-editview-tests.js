@@ -3,7 +3,8 @@ YUI.add('ez-float-editview-tests', function (Y) {
         container = Y.one('.container'),
         content, contentType,
         jsonContent = {}, jsonContentType = {},
-        field = {};
+        field = {},
+        FLOAT_TEST_PATTERN = "\\-?\\d*\\.?\\d+";
 
     content = new Y.Mock();
     contentType = new Y.Mock();
@@ -44,6 +45,17 @@ YUI.add('ez-float-editview-tests', function (Y) {
                 {value: 's1.33', valid: false},
                 {value: '1.33s', valid: false},
                 {value: '1.3s3', valid: false},
+                {value: '-1s33', valid: false},
+                {value: '-s1.33', valid: false},
+                {value: '-1.33s', valid: false},
+                {value: '-1.3s3', valid: false},
+
+                {value: 's1,33', valid: false},
+                {value: '1,33s', valid: false},
+                {value: '1,3s3', valid: false},
+                {value: '-s1,33', valid: false},
+                {value: '-1,33s', valid: false},
+                {value: '-1,3s3', valid: false},
 
                 {value: '1.33', valid: true},
                 {value: '-1.44', valid: true},
@@ -116,14 +128,26 @@ YUI.add('ez-float-editview-tests', function (Y) {
         },
 
         "Test not required field": function () {
-            this._testAvailableVariables(false, false, "\\-?\\d*\\.?\\d+");
+            this._testAvailableVariables(false, false, FLOAT_TEST_PATTERN);
         },
 
         "Test required field": function () {
-            this._testAvailableVariables(true, true, "\\-?\\d*\\.?\\d+");
+            this._testAvailableVariables(true, true, FLOAT_TEST_PATTERN);
         },
 
         "Test simple float validation cases": function () {
+            var fieldDefinition = this._getFieldDefinition(false, false, false),
+                input;
+
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.render();
+
+            input = Y.one('.container input');
+
+            this._runGenericFloatTestCases();
+        },
+
+        "Test float validation cases with range and required constraints": function () {
             var fieldDefinition = this._getFieldDefinition(true, -10, 10),
                 input;
 
