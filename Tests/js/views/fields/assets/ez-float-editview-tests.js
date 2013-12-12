@@ -38,20 +38,35 @@ YUI.add('ez-float-editview-tests', function (Y) {
                 content: content,
                 contentType: contentType
             });
+
+            this.provider = [
+                {value: '1s33', valid: false},
+                {value: 's1.33', valid: false},
+                {value: '1.33s', valid: false},
+                {value: '1.3s3', valid: false},
+
+                {value: '1.33', valid: true},
+                {value: '-1.44', valid: true},
+                {value: '1', valid: true},
+                {value: '-1', valid: true},
+
+                {value: '1,33', valid: true},
+                {value: '-1,44', valid: true}
+            ];
         },
 
         tearDown: function () {
             this.view.destroy();
         },
 
-        _testAvailableVariables: function (required, minFloatValue, maxFloatValue, expectRequired, expectMinFloatValue, expectMaxFloatValue) {
-            var fieldDefinition = this._getFieldDefinition(required, minFloatValue, maxFloatValue);
+        _testAvailableVariables: function (required, expectRequired, expectFloatPattern) {
+            var fieldDefinition = this._getFieldDefinition(required, -10, 10);
 
             this.view.set('fieldDefinition', fieldDefinition);
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 7 variables");
+                Y.Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
 
                 Y.Assert.areSame(
                      jsonContent, variables.content,
@@ -71,8 +86,7 @@ YUI.add('ez-float-editview-tests', function (Y) {
                 );
 
                 Y.Assert.areSame(expectRequired, variables.isRequired);
-                Y.Assert.areSame(expectMinFloatValue, variables.minFloatValue);
-                Y.Assert.areSame(expectMaxFloatValue, variables.maxFloatValue);
+                Y.Assert.areSame(expectFloatPattern, variables.floatPattern);
 
                 return '';
             };
@@ -81,67 +95,32 @@ YUI.add('ez-float-editview-tests', function (Y) {
 
         // Should be triggered only after view rendering!
         _runGenericFloatTestCases: function () {
-            var input = Y.one('.container input');
+            var input = Y.one('.container input'),
+                test = this;
 
-            input.set('value', '1s33');
-            this.view.validate();
-            Y.Assert.isFalse(
-                this.view.isValid(),
-                "An invalid float (1s33) is NOT valid"
-            );
-            input.set('value', 's1.33');
-            this.view.validate();
-            Y.Assert.isFalse(
-                this.view.isValid(),
-                "An invalid float is NOT valid"
-            );
-            input.set('value', '1.33s');
-            this.view.validate();
-            Y.Assert.isFalse(
-                this.view.isValid(),
-                "An invalid float is NOT valid"
-            );
-            input.set('value', '1.3s3');
-            this.view.validate();
-            Y.Assert.isFalse(
-                this.view.isValid(),
-                "An invalid float is NOT valid"
-            );
-
-            input.set('value', '1.33');
-            this.view.validate();
-            Y.Assert.isTrue(
-                this.view.isValid(),
-                "A valid float is valid"
-            );
-            input.set('value', '-1.44');
-            this.view.validate();
-            Y.Assert.isTrue(
-                this.view.isValid(),
-                "A valid float below zero is valid"
-            );
-            input.set('value', '-1');
-            this.view.validate();
-            Y.Assert.isTrue(
-                this.view.isValid(),
-                "A valid integer below zero is valid"
-            );
+            Y.Array.each(this.provider, function (testData) {
+                input.set('value', testData.value);
+                test.view.validate();
+                if ( testData.valid === true ) {
+                    Y.Assert.isTrue(
+                        test.view.isValid(),
+                        testData.value + ' should be considered as a valid input'
+                    );
+                } else {
+                    Y.Assert.isFalse(
+                        test.view.isValid(),
+                        testData.value + ' should NOT be considered as a valid input'
+                    );
+                }
+            });
         },
 
-        "Test not required field with no other constrains": function () {
-            this._testAvailableVariables(false, false, false, false, false, false);
+        "Test not required field": function () {
+            this._testAvailableVariables(false, false, "\\-?\\d*\\.?\\d+");
         },
 
-        "Test required field with no other constrains": function () {
-            this._testAvailableVariables(true, false, false, true, false, false);
-        },
-
-        "Test required field with constrains": function () {
-            this._testAvailableVariables(true, -10, 10, true, -10, 10);
-        },
-
-        "Test not required field with constrains": function () {
-            this._testAvailableVariables(false, -10, 10, false, -10, 10);
+        "Test required field": function () {
+            this._testAvailableVariables(true, true, "\\-?\\d*\\.?\\d+");
         },
 
         "Test simple float validation cases": function () {
@@ -175,7 +154,6 @@ YUI.add('ez-float-editview-tests', function (Y) {
                 this.view.isValid(),
                 "Underflowing value is NOT valid"
             );
-
         },
 
         "Test float validation cases with float min/max constraints": function () {
@@ -216,52 +194,7 @@ YUI.add('ez-float-editview-tests', function (Y) {
                 this.view.isValid(),
                 "Underflowing value is NOT valid"
             );
-
-        },
-
-        "Test 'badInput' validation cases (mostly IE related)": function () {
-            var fieldDefinition = this._getFieldDefinition(true, -10, 10);
-
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
-
-            this.view._getInputValidity = function () {
-                return {
-                    badInput: true,
-                    rangeOverflow: false,
-                    rangeUnderflow: false,
-                    valueMissing: false
-                };
-            };
-            this.view.validate();
-            Y.Assert.isFalse(
-                this.view.isValid(),
-                "Bad input should be NOT valid"
-            );
-        },
-
-        "Test custom validation cases (mostly IE related)": function () {
-            var fieldDefinition = this._getFieldDefinition(true, -10, 10),
-                input;
-
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
-
-            input = Y.one('.container input');
-
-            this.view._getInputValidity = function () {
-                return {
-                    badInput: false,
-                    rangeOverflow: false,
-                    rangeUnderflow: false,
-                    valueMissing: false
-                };
-            };
-
-            this._runGenericFloatTestCases();
-
         }
-
     });
 
     Y.Test.Runner.setName("eZ Float Edit View tests");

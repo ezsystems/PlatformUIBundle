@@ -205,12 +205,11 @@ YUI().use('ez-editorialapp', function (Y) {
             </label>
         </div>
         <div class="pure-u ez-editfield-input-area ez-default-error-style">
-            <div class="ez-editfield-input"><div class="ez-float-input-ui"><input type="number"
+            <div class="ez-editfield-input"><div class="ez-float-input-ui"><input type="text"
                         value="{{ field.fieldValue }}"
                         id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
                         {{#if isRequired}} required{{/if}}
-                        {{#if minFloatValue}} min="{{ minFloatValue }}"{{/if}}
-                        {{#if maxFloatValue}} max="{{ maxFloatValue }}"{{/if}}
+                        {{#if floatPattern}} pattern="{{{floatPattern}}}"{{/if}}
                     ></div></div>
         </div>
     </div>

@@ -10,10 +10,9 @@
 <script type="text/x-handlebars-template" id="floateditview-ez-template">
 
     <div class="ez-float-input-ui">
-       <input type="number"
+       <input type="text"
         {{#if isRequired}} required{{/if}}
-        {{#if minFloatValue}} min="{{ minFloatValue }}"{{/if}}
-        {{#if maxFloatValue}} max="{{ maxFloatValue }}"{{/if}}
+        {{#if floatPattern}} pattern="{{{floatPattern}}}"{{/if}}
         >
     </div>
 

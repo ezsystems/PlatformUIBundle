@@ -33,34 +33,34 @@ YUI.add('ez-float-editview', function (Y) {
          * @method validate
          */
         validate: function () {
-            var validity = this._getInputValidity(),
+            var validity,
                 config = this._variables(),
-                inputValue = this.get('container').one('.ez-float-input-ui input').get('value');
+                input = this.get('container').one('.ez-float-input-ui input'),
+                inputValue = input.get('value');
 
-            // HTML5 validation
-            if ( validity.badInput ) {
+            // Auto-correction value, if comma is present
+            input.set('value', inputValue.replace(",", "."));
+
+            validity = this._getInputValidity();
+
+            if ( validity.valueMissing ) {
+                this.set('errorStatus', 'This field is required');
+            // Float pattern validation
+            } else if ( validity.patternMismatch ) {
                 this.set(
                     'errorStatus',
                     'The value should be a valid float number'
                 );
-            } else if ( validity.rangeOverflow ) {
+            // Range validation
+            } else if ( inputValue > config.maxFloatValue ) {
                 this.set(
                     'errorStatus',
                     L.sub('The value should be less than or equal to {maxFloatValue}', config)
                 );
-            } else if ( validity.rangeUnderflow ) {
+            } else if ( inputValue < config.minFloatValue ) {
                 this.set(
                     'errorStatus',
                     L.sub('The value should be more than or equal to {minFloatValue}', config)
-                );
-            } else if ( validity.valueMissing ) {
-                this.set('errorStatus', 'This field is required');
-
-            // Custom validation (IE compatibility)
-            } else if ( !/^\-?\d*[.|,]?\d+$/.test(inputValue) ) {
-                this.set(
-                    'errorStatus',
-                    'The value should be a valid float number'
                 );
 
             } else {
@@ -91,6 +91,7 @@ YUI.add('ez-float-editview', function (Y) {
 
             return {
                 "isRequired": def.isRequired,
+                "floatPattern": "\\-?\\d*\\.?\\d+", // WARNING each backslash is doubled, because it is escaped on output otherwise
                 "minFloatValue": minFloatValue,
                 "maxFloatValue": maxFloatValue
             };
