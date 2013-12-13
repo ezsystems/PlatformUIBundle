@@ -121,7 +121,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     rendered = true;
                     Y.Assert.areEqual(
                         this.get('content'), resp.variables.content,
-                        "The view attributes should be updated with the app contentEditViewVariables attribute"
+                        "The view attributes should be updated with the result of the loader"
                     );
                 },
 
@@ -145,7 +145,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             this.wait(function () {
                 Y.assert(!app.get('loading'), "The app should not be in loading mode");
                 Y.assert(focused, "The content edit view should have input focus");
-            }, 500);
+            }, 800);
 
             rendered = false;
             resp.variables.content++;
