@@ -226,6 +226,7 @@ YUI.add('ez-float-editview-tests', function (Y) {
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
 
+    registerTest.name = "Float Edit View registration test";
     registerTest.viewType = Y.eZ.FloatEditView;
     registerTest.viewKey = "ezfloat";
 
