@@ -2,8 +2,9 @@
 
 {% block footerScript %}
 <p style="position: absolute; top: 0; left: 200px;">
-    <a href="#/edit/{{ '/api/ezp/v2/content/objects/59'|url_encode }}" class="btn btn-warning">Edit "Getting started"</a>
-    <a href="#/edit/{{ '/api/ezp/v2/content/objects/109'|url_encode }}" class="btn btn-warning">Test field edit views</a>
+    <a href="#/edit/{{ '/api/ezp/v2/content/objects/109'|url_encode }}" class="btn btn-warning">Edit</a>
+    <a href="#/view/{{ '/api/ezp/v2/content/locations/1/2/61/68/73'|url_encode }}" class="btn btn-warning">View "Getting started with eZ Publish 5"</a>
+    <a href="#/view/{{ '/api/ezp/v2/content/locations/1/2/111'|url_encode }}" class="btn btn-warning">View Test field edit views</a>
 </p>
 <div class="ez-editorial-app pure">
     <div class="ez-view-container"></div>
@@ -12,6 +13,7 @@
 {% stylesheets
     '@eZEditorialBundle/Resources/public/vendors/pure/base-context-min.css'
     '@eZEditorialBundle/Resources/public/vendors/pure/grids-min.css'
+    '@eZEditorialBundle/Resources/public/vendors/pure/buttons-min.css'
     '@eZEditorialBundle/Resources/public/css/bootstrap-reset.css'
     '@eZEditorialBundle/Resources/public/css/layout.css'
     '@eZEditorialBundle/Resources/public/css/contenteditview.css'
@@ -268,6 +270,8 @@ YUI().use('ez-editorialapp', function (Y) {
                 <li>{{ content.name }}</li>
             </ul>
             <h1 class="ez-content-name" data-icon="&#xe001;">{{ content.name }}</h1>
+
+            <a href="#/edit/{{ urlEncode content.id }}" class="pure-button pure-button-primary">Edit "{{ content.name }}"</a>
         </header>
     </div>
 </script>
