@@ -158,6 +158,46 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             }, 500);
         },
 
+        "Should show the location view": function () {
+            var rendered = false, initialized = false,
+                req = {}, resp = {};
+
+            resp.variables = {'content': 1, 'path': [], 'location': {}};
+
+            app.views.locationViewView.type = Y.Base.create('testView', Y.View, [], {
+                initializer: function () {
+                    initialized = true;
+                },
+
+                render: function () {
+                    rendered = true;
+                    Y.Assert.areEqual(
+                        this.get('content'), resp.variables.content,
+                        "The view attributes should be updated with the result of the loader"
+                    );
+                }
+            });
+
+            app.set('loading', true);
+            app.handleLocationView(req, resp);
+
+            Y.assert(initialized, "The location view view should have been initialized");
+            Y.assert(rendered, "The location view should have been rendered");
+            this.wait(function () {
+                Y.assert(!app.get('loading'), "The app should not be in loading mode");
+            }, 800);
+
+            rendered = false;
+            resp.variables.content++;
+            app.set('loading', true);
+            app.handleLocationView(req, resp);
+
+            Y.assert(rendered, "The location view view should have been rerendered");
+            this.wait(function () {
+                Y.assert(!app.get('loading'), "The app should not be in loading mode");
+            }, 500);
+        },
+
         "Should show the error view, when catching 'fatalError' event": function () {
             var rendered = false, initialized = false, focused = false,
                 errorInfo = {'retryAction:': {}, 'additionalInfo': 1},
