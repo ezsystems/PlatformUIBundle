@@ -51,6 +51,13 @@ YUI.add('ez-integer-editview-tests', function (Y) {
                 {value: '-10s', valid: false},
                 {value: '-1s0', valid: false},
                 {value: '-s10', valid: false},
+                {value: 'ss1ss', valid: false},
+                {value: 'foo', valid: false},
+
+                {value: '1.33', valid: false},
+                {value: '1,33', valid: false},
+                {value: '-1.33', valid: false},
+                {value: '-1,33', valid: false},
 
                 {value: '1', valid: true},
                 {value: '-1', valid: true},
