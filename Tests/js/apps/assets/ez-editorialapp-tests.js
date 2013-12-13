@@ -68,17 +68,19 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             this["Should close the application"]();
         },
 
-        "Should close the application when contentEditView:close event is fired": function () {
+        "Should go back in the history when contentEditView:closeView event is fired": function () {
+            var origBack = Y.config.win.history.back, backCalled = false;
+
             app.open();
 
-            app.fire('contentEditView:close');
+            Y.config.win.history.back = function () {
+                backCalled = true;
+            };
 
-            this.wait(function () {
-                Y.assert(
-                    !container.hasClass('is-app-open'),
-                    "The app container should not have the class is-app-open"
-                );
-            }, 500);
+            app.fire('contentEditView:closeView');
+
+            Y.Assert.isTrue(backCalled, "history.back should have been called");
+            Y.config.win.history.back = origBack;
         },
 
         "Should set/unset the app in loading mode": function () {

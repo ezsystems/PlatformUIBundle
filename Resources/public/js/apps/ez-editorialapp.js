@@ -48,7 +48,8 @@ YUI.add('ez-editorialapp', function (Y) {
                 preserve: true
             },
             locationViewView: {
-                type: Y.eZ.LocationViewView
+                type: Y.eZ.LocationViewView,
+                parent: 'contentEditView'
             },
             dummyView: {
                 type: Y.View
@@ -69,9 +70,8 @@ YUI.add('ez-editorialapp', function (Y) {
          */
         initializer: function () {
             // Setting events handlers
-            this.on('contentEditView:close', function (e) {
-                // For now just closing the application
-                this.close();
+            this.on('*:closeView', function (e) {
+                Y.config.win.history.back();
             });
 
             this.on('*:closeApp', this.close);
