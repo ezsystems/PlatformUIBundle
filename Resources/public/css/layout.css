@@ -82,6 +82,14 @@
             transition: opacity 0.2s ease, left 0.3s ease;
 }
 
+.ez-editorial-app p {
+    line-height: 21px;
+}
+
+.ez-editorial-app header {
+    min-height: 5em;
+}
+
 .is-app-open {
     left: 0;
     z-index: 1000;
