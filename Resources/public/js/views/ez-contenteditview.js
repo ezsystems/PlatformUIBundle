@@ -134,9 +134,9 @@ YUI.add('ez-contenteditview', function (Y) {
             /**
              * Fired when the close link is clicked
              *
-             * @event close
+             * @event closeView
              */
-            this.fire('close');
+            this.fire('closeView');
             e.preventDefault();
         },
 

@@ -68,17 +68,19 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             this["Should close the application"]();
         },
 
-        "Should close the application when contentEditView:close event is fired": function () {
+        "Should go back in the history when contentEditView:closeView event is fired": function () {
+            var origBack = Y.config.win.history.back, backCalled = false;
+
             app.open();
 
-            app.fire('contentEditView:close');
+            Y.config.win.history.back = function () {
+                backCalled = true;
+            };
 
-            this.wait(function () {
-                Y.assert(
-                    !container.hasClass('is-app-open'),
-                    "The app container should not have the class is-app-open"
-                );
-            }, 500);
+            app.fire('contentEditView:closeView');
+
+            Y.Assert.isTrue(backCalled, "history.back should have been called");
+            Y.config.win.history.back = origBack;
         },
 
         "Should set/unset the app in loading mode": function () {
@@ -104,121 +106,11 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             app.set('loading', false);
         },
 
-        "Should load the content, the location, the owner and the content type": function () {
-            var contentMock, userMock, locationMock, typeMock,
-                resources = {
-                    'Owner': '/api/ezp/v2/user/users/14',
-                    'MainLocation': '/api/ezp/v2/content/locations/1/2/61',
-                    'ContentType': '/api/ezp/v2/content/types/23'
-                },
-                nextCalled = false,
-                contentId = 59,
-                runLoadCallback = function (options, callback) {
-                    Y.Assert.isObject(options.api, "The load options should an 'api' property");
-                    Y.Assert.areSame(options.api, capiMock, "The 'api' property should be the CAPI");
-
-                    callback(false);
-                };
-
-            contentMock = new Y.Mock();
-            userMock = new Y.Mock();
-            locationMock = new Y.Mock();
-            typeMock = new Y.Mock();
-
-            Y.Mock.expect(contentMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    "/api/ezp/v2/content/objects/" + contentId
-                ]
-            });
-            Y.Mock.expect(contentMock, {
-                method: 'get',
-                args: [
-                    'resources'
-                ],
-                returns: resources
-            });
-
-            Y.Mock.expect(userMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    resources.Owner
-                ]
-            });
-            Y.Mock.expect(locationMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    resources.MainLocation
-                ]
-            });
-            Y.Mock.expect(typeMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    resources.ContentType
-                ]
-            });
-
-            Y.Mock.expect(contentMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: runLoadCallback
-            });
-            Y.Mock.expect(userMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: runLoadCallback
-            });
-            Y.Mock.expect(typeMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: runLoadCallback
-            });
-            Y.Mock.expect(locationMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: runLoadCallback
-            });
-
-            app.set('contentEditViewVariables', {
-                content: contentMock,
-                owner: userMock,
-                contentType: typeMock,
-                mainLocation: locationMock
-            });
-
-            app.loadContentForEdit({params: {id: contentId}}, {}, function () {
-                nextCalled = true;
-            });
-
-            Y.assert(nextCalled, 'Next middleware should have been called');
-
-            Y.Mock.verify(contentMock);
-            Y.Mock.verify(userMock);
-            Y.Mock.verify(locationMock);
-            Y.Mock.verify(typeMock);
-
-            Y.assert(app.get('loading'), "The app should be in loading mode");
-        },
-
         "Should show the content edit view": function () {
             var rendered = false, initialized = false, focused = false,
-                vars = {'content': 1, 'contentType': {}, 'mainLocation': {}, 'owner': {}};
+                req = {}, resp = {};
+
+            resp.variables = {'content': 1, 'contentType': {}, 'mainLocation': {}, 'owner': {}};
 
             app.views.contentEditView.type = Y.Base.create('testView', Y.View, [], {
                 initializer: function () {
@@ -228,8 +120,8 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 render: function () {
                     rendered = true;
                     Y.Assert.areEqual(
-                        this.get('content'), vars.content,
-                        "The view attributes should be updated with the app contentEditViewVariables attribute"
+                        this.get('content'), resp.variables.content,
+                        "The view attributes should be updated with the result of the loader"
                     );
                 },
 
@@ -246,23 +138,61 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             });
 
             app.set('loading', true);
-            app.set('contentEditViewVariables', vars);
-            app.handleContentEdit();
+            app.handleContentEdit(req, resp);
 
             Y.assert(initialized, "The content edit view should have been initialized");
             Y.assert(rendered, "The content edit view should have been rendered");
             this.wait(function () {
                 Y.assert(!app.get('loading'), "The app should not be in loading mode");
                 Y.assert(focused, "The content edit view should have input focus");
-            }, 500);
+            }, 800);
 
             rendered = false;
-            vars.content++;
+            resp.variables.content++;
             app.set('loading', true);
-            app.set('contentEditViewVariables', vars);
-            app.handleContentEdit();
+            app.handleContentEdit(req, resp);
 
             Y.assert(rendered, "The content edit view should have been rerendered");
+            this.wait(function () {
+                Y.assert(!app.get('loading'), "The app should not be in loading mode");
+            }, 500);
+        },
+
+        "Should show the location view": function () {
+            var rendered = false, initialized = false,
+                req = {}, resp = {};
+
+            resp.variables = {'content': 1, 'path': [], 'location': {}};
+
+            app.views.locationViewView.type = Y.Base.create('testView', Y.View, [], {
+                initializer: function () {
+                    initialized = true;
+                },
+
+                render: function () {
+                    rendered = true;
+                    Y.Assert.areEqual(
+                        this.get('content'), resp.variables.content,
+                        "The view attributes should be updated with the result of the loader"
+                    );
+                }
+            });
+
+            app.set('loading', true);
+            app.handleLocationView(req, resp);
+
+            Y.assert(initialized, "The location view view should have been initialized");
+            Y.assert(rendered, "The location view should have been rendered");
+            this.wait(function () {
+                Y.assert(!app.get('loading'), "The app should not be in loading mode");
+            }, 800);
+
+            rendered = false;
+            resp.variables.content++;
+            app.set('loading', true);
+            app.handleLocationView(req, resp);
+
+            Y.assert(rendered, "The location view view should have been rerendered");
             this.wait(function () {
                 Y.assert(!app.get('loading'), "The app should not be in loading mode");
             }, 500);
@@ -271,6 +201,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         "Should show the error view, when catching 'fatalError' event": function () {
             var rendered = false, initialized = false, focused = false,
                 errorInfo = {'retryAction:': {}, 'additionalInfo': 1},
+                originalErroView,
                 TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
                     initializer: function () {
                         initialized = true;
@@ -289,6 +220,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     }
                 });
 
+            originalErroView = app.views.errorView.instance;
             app.views.errorView.instance = new TestErrorViewConstructor();
 
             app.fire('contentEditView:fatalError', errorInfo);
@@ -298,464 +230,9 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             this.wait(function () {
                 Y.assert(!app.get('loading'), "The app should not be in loading mode");
                 Y.assert(focused, "The error view should have input focus");
+
+                app.views.errorView.instance = originalErroView;
             }, 500);
-        },
-
-        "Should fire 'fatalError' event, when encountering an error during content loading": function () {
-            var undefinedContentId = "undefined",
-                fatalErrorFired = false,
-                contentMock = new Y.Mock(),
-                TestErrorViewConstructor;
-
-            // We have to reinitialize the App, so our previous changes to app.views.errorView.instance will not have effect
-            app = new Y.eZ.EditorialApp({
-                container: '.app',
-                viewContainer: '.view-container',
-                capi: capiMock
-            });
-            app.render();
-
-            TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
-                setFocus: function () {}
-            });
-            app.views.errorView.instance = new TestErrorViewConstructor();
-
-            Y.Mock.expect(contentMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    "/api/ezp/v2/content/objects/" + undefinedContentId
-                ]
-            });
-            Y.Mock.expect(contentMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: function (options, callback) {
-                    // just return an error
-                    callback(true);
-                }
-            });
-
-            app.on('fatalError', function () {
-                fatalErrorFired = true;
-            });
-
-            app.set('contentEditViewVariables', {
-                content: contentMock,
-                owner: {},
-                contentType: {},
-                mainLocation: {}
-            });
-
-            app.loadContentForEdit({params: {id: undefinedContentId}}, {}, function () {});
-
-            Y.assert(
-                fatalErrorFired,
-                "'fatalError' event should have been fired"
-            );
-            Y.Mock.verify(contentMock);
-        },
-
-        "Should fire 'fatalError' event, when encountering an error during user loading": function () {
-            var contentId = 59,
-                fatalErrorFired = false,
-                contentMock = new Y.Mock(),
-                userMock = new Y.Mock(),
-                locationMock = new Y.Mock(),
-                typeMock = new Y.Mock(),
-                TestErrorViewConstructor,
-                resources = {
-                    'Owner': '/api/ezp/v2/user/users/undefined',
-                    'MainLocation': '/api/ezp/v2/content/locations/1/2/61',
-                    'ContentType': '/api/ezp/v2/content/types/23'
-                },
-                runLoadCallback = function (options, callback) {
-                    callback(false);
-                };
-
-            // We have to reinitialize the App, so our previous changes to app.views.errorView.instance will not have effect
-            app = new Y.eZ.EditorialApp({
-                container: '.app',
-                viewContainer: '.view-container',
-                capi: capiMock
-            });
-            app.render();
-
-            TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
-                setFocus: function () {}
-            });
-            app.views.errorView.instance = new TestErrorViewConstructor();
-
-            // Content Mock
-            Y.Mock.expect(contentMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    "/api/ezp/v2/content/objects/" + contentId
-                ]
-            });
-            Y.Mock.expect(contentMock, {
-                method: 'get',
-                args: [
-                    'resources'
-                ],
-                returns: resources
-            });
-            Y.Mock.expect(contentMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: function (options, callback) {
-                    callback(false);
-                }
-            });
-
-            // userMock
-            Y.Mock.expect(userMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    resources.Owner
-                ]
-            });
-            Y.Mock.expect(userMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: function (options, callback) {
-                    // Throwing error
-                    callback(true);
-                }
-            });
-
-            // locationMock
-            Y.Mock.expect(locationMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    resources.MainLocation
-                ]
-            });
-            Y.Mock.expect(locationMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: runLoadCallback
-            });
-
-            // typeMock
-            Y.Mock.expect(typeMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    resources.ContentType
-                ]
-            });
-            Y.Mock.expect(typeMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: runLoadCallback
-            });
-
-            app.on('fatalError', function () {
-                fatalErrorFired = true;
-            });
-
-            app.set('contentEditViewVariables', {
-                content: contentMock,
-                owner: userMock,
-                contentType: typeMock,
-                mainLocation: locationMock
-            });
-
-            app.loadContentForEdit({params: {id: contentId}}, {}, function () {});
-
-            Y.assert(
-                fatalErrorFired,
-                "'fatalError' event should have been fired"
-            );
-            Y.Mock.verify(contentMock);
-            Y.Mock.verify(userMock);
-            Y.Mock.verify(locationMock);
-            Y.Mock.verify(typeMock);
-        },
-
-        "Should fire 'fatalError' event, when encountering an error during location loading": function () {
-            var contentId = 59,
-                fatalErrorFired = false,
-                contentMock = new Y.Mock(),
-                userMock = new Y.Mock(),
-                locationMock = new Y.Mock(),
-                typeMock = new Y.Mock(),
-                TestErrorViewConstructor,
-                resources = {
-                    'Owner': '/api/ezp/v2/user/users/14',
-                    'MainLocation': '/api/ezp/v2/content/locations/undefined',
-                    'ContentType': '/api/ezp/v2/content/types/23'
-                },
-                runLoadCallback = function (options, callback) {
-                    callback(false);
-                };
-
-            // We have to reinitialize the App, so our previous changes to app.views.errorView.instance will not have effect
-            app = new Y.eZ.EditorialApp({
-                container: '.app',
-                viewContainer: '.view-container',
-                capi: capiMock
-            });
-            app.render();
-
-            TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
-                setFocus: function () {}
-            });
-            app.views.errorView.instance = new TestErrorViewConstructor();
-
-            // Content Mock
-            Y.Mock.expect(contentMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    "/api/ezp/v2/content/objects/" + contentId
-                ]
-            });
-            Y.Mock.expect(contentMock, {
-                method: 'get',
-                args: [
-                    'resources'
-                ],
-                returns: resources
-            });
-            Y.Mock.expect(contentMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: function (options, callback) {
-                    callback(false);
-                }
-            });
-
-            // userMock
-            Y.Mock.expect(userMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    resources.Owner
-                ]
-            });
-            Y.Mock.expect(userMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: runLoadCallback
-            });
-
-            // locationMock
-            Y.Mock.expect(locationMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    resources.MainLocation
-                ]
-            });
-            Y.Mock.expect(locationMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: function (options, callback) {
-                    // Throwing error
-                    callback(true);
-                }
-            });
-
-            // typeMock
-            Y.Mock.expect(typeMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    resources.ContentType
-                ]
-            });
-            Y.Mock.expect(typeMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: runLoadCallback
-            });
-
-            app.on('fatalError', function () {
-                fatalErrorFired = true;
-            });
-
-            app.set('contentEditViewVariables', {
-                content: contentMock,
-                owner: userMock,
-                contentType: typeMock,
-                mainLocation: locationMock
-            });
-
-            app.loadContentForEdit({params: {id: contentId}}, {}, function () {});
-
-            Y.assert(
-                fatalErrorFired,
-                "'fatalError' event should have been fired"
-            );
-            Y.Mock.verify(contentMock);
-            Y.Mock.verify(userMock);
-            Y.Mock.verify(locationMock);
-            Y.Mock.verify(typeMock);
-        },
-
-        "Should fire 'fatalError' event, when encountering an error during type loading": function () {
-            var contentId = 59,
-                fatalErrorFired = false,
-                contentMock = new Y.Mock(),
-                userMock = new Y.Mock(),
-                locationMock = new Y.Mock(),
-                typeMock = new Y.Mock(),
-                TestErrorViewConstructor,
-                resources = {
-                    'Owner': '/api/ezp/v2/user/users/14',
-                    'MainLocation': '/api/ezp/v2/content/locations/1/2/61',
-                    'ContentType': '/api/ezp/v2/content/types/undefined'
-                },
-                runLoadCallback = function (options, callback) {
-                    callback(false);
-                };
-
-            // We have to reinitialize the App, so our previous changes to app.views.errorView.instance will not have effect
-            app = new Y.eZ.EditorialApp({
-                container: '.app',
-                viewContainer: '.view-container',
-                capi: capiMock
-            });
-            app.render();
-
-            TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
-                setFocus: function () {}
-            });
-            app.views.errorView.instance = new TestErrorViewConstructor();
-
-            // Content Mock
-            Y.Mock.expect(contentMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    "/api/ezp/v2/content/objects/" + contentId
-                ]
-            });
-            Y.Mock.expect(contentMock, {
-                method: 'get',
-                args: [
-                    'resources'
-                ],
-                returns: resources
-            });
-            Y.Mock.expect(contentMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: function (options, callback) {
-                    callback(false);
-                }
-            });
-
-            // userMock
-            Y.Mock.expect(userMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    resources.Owner
-                ]
-            });
-            Y.Mock.expect(userMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: runLoadCallback
-            });
-
-            // locationMock
-            Y.Mock.expect(locationMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    resources.MainLocation
-                ]
-            });
-            Y.Mock.expect(locationMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: runLoadCallback
-            });
-
-            // typeMock
-            Y.Mock.expect(typeMock, {
-                method: 'set',
-                args: [
-                    'id',
-                    resources.ContentType
-                ]
-            });
-            Y.Mock.expect(typeMock, {
-                method: 'load',
-                args: [
-                    Y.Mock.Value.Object,
-                    Y.Mock.Value.Function
-                ],
-                run: function (options, callback) {
-                    // Throwing error
-                    callback(true);
-                }
-            });
-
-            app.on('fatalError', function () {
-                fatalErrorFired = true;
-            });
-
-            app.set('contentEditViewVariables', {
-                content: contentMock,
-                owner: userMock,
-                contentType: typeMock,
-                mainLocation: locationMock
-            });
-
-            app.loadContentForEdit({params: {id: contentId}}, {}, function () {});
-
-            Y.assert(
-                fatalErrorFired,
-                "'fatalError' event should have been fired"
-            );
-            Y.Mock.verify(contentMock);
-            Y.Mock.verify(userMock);
-            Y.Mock.verify(locationMock);
-            Y.Mock.verify(typeMock);
         },
 
         "Should receive 'retryAction' event fired on the errorView": function () {
@@ -807,8 +284,135 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 actionRetried,
                 "Test action should have been retried"
             );
-        }
+        },
 
+        "runLoader should call the next middleware if no loader is defined": function () {
+            var url = '/the_killers/sam_s_town',
+                test = this,
+                next = function () {
+                    test.resume(function () {
+                        Y.Assert.pass();
+                    });
+                };
+
+            app.route({
+                path: url,
+                callbacks: ['runLoader', next]
+            });
+            app.navigate(url);
+            this.wait();
+        },
+
+        "runLoader should call the view loader": function () {
+            var url = '/the_killers/the_dustland_fairytale',
+                reqStamp = 'A Dustland fairytale beginning',
+                respStamp = 'Is there still magic in the midnight sun',
+                stampReqResp = function (req, resp, next) {
+                    // to make sure the loader receives the correct request and
+                    // response
+                    req.stamp = reqStamp;
+                    resp.stamp = respStamp;
+                    next();
+                },
+                next = function () {
+                    Y.Assert.isTrue(this.get('loading'), "The application should be in loading mode");
+                },
+                ViewLoader;
+
+            ViewLoader = Y.Base.create('testViewLoader', Y.eZ.ViewLoader, [], {
+                load: function (cb) {
+                    Y.Assert.areSame(
+                        capiMock, this.get('capi'),
+                        "The view loader should receive the capi"
+                    );
+                    Y.Assert.isObject(
+                        this.get('request'),
+                        "The view loader should receive the request"
+                    );
+                    Y.Assert.areSame(
+                        reqStamp, this.get('request').stamp,
+                        "The view loader should receive the request"
+                    );
+                    Y.Assert.isObject(
+                        this.get('response'),
+                        "The view loader should receive the response"
+                    );
+                    Y.Assert.areSame(
+                        respStamp, this.get('response').stamp,
+                        "The view loader should receive the response"
+                    );
+                    Y.Assert.pass();
+                    cb();
+                }
+            });
+
+            app.route({
+                path: url,
+                loader: ViewLoader,
+                callbacks: [stampReqResp, 'runLoader', next]
+            });
+            app.navigate(url);
+        },
+
+        "runLoader should catch the view loader error and throw an app fatal error": function () {
+            var url = '/the_killers/deadlines_and_commitments',
+                errorMsg = 'Late',
+                stamps = ['deadlines', 'and', 'commitments'],
+                test = this, ViewLoader,
+                stampReqRespNext = function (req, resp, next) {
+                    // to make sure the fatal error event receives the correct
+                    // retry action arguments
+                    req.stamp = stamps[0];
+                    resp.stamp = stamps[1];
+                    next.stamp = stamps[2];
+                    next();
+                },
+                TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.eZ.ErrorView, [], {
+                    render: function () {},
+                    setFocus: function () {}
+                });
+
+
+            app.views.errorView.instance = new TestErrorViewConstructor();
+
+            ViewLoader = Y.Base.create('testViewLoader', Y.eZ.ViewLoader, [], {
+                load: function () {
+                    this.fire('error', {message: errorMsg});
+                }
+            });
+
+            app.route({
+                path: url,
+                loader: ViewLoader,
+                callbacks: [stampReqRespNext, 'runLoader']
+            });
+            app.on('fatalError', function (e) {
+                test.resume(function () {
+                    Y.Assert.areSame(
+                        e.additionalInfo.errorText, errorMsg,
+                        "The fatal error message should be the same as the error message"
+                    );
+
+                    Y.Assert.areSame(
+                        app.runLoader, e.retryAction.run,
+                        "The retry action method should be runLoader"
+                    );
+
+                    for (var i = 0; i != e.retryAction.args.length; ++i) {
+                        Y.Assert.areSame(
+                            e.retryAction.args[i].stamp, stamps[i]
+                        );
+                    }
+
+                    Y.Assert.areSame(
+                        e.retryAction.context, app,
+                        "The retry action context should be set to the app"
+                    );
+                });
+            });
+            app.navigate(url);
+            this.wait();
+        }
     });
 
     Y.Test.Runner.setName("eZ Editorial App tests");

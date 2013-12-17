@@ -1,11 +1,11 @@
 /* application styles */
 @font-face {
     font-family: 'ez-editorial-icomoon';
-    src:url('../bundles/ezsystemseditorial/fonts/icomoon.eot');
-    src:url('../bundles/ezsystemseditorial/fonts/icomoon.eot?#iefix') format('embedded-opentype'),
-        url('../bundles/ezsystemseditorial/fonts/icomoon.woff') format('woff'),
-        url('../bundles/ezsystemseditorial/fonts/icomoon.ttf') format('truetype'),
-        url('../bundles/ezsystemseditorial/fonts/icomoon.svg#icomoon') format('svg');
+    src:url('../bundles/ezeditorial/fonts/icomoon.eot');
+    src:url('../bundles/ezeditorial/fonts/icomoon.eot?#iefix') format('embedded-opentype'),
+        url('../bundles/ezeditorial/fonts/icomoon.woff') format('woff'),
+        url('../bundles/ezeditorial/fonts/icomoon.ttf') format('truetype'),
+        url('../bundles/ezeditorial/fonts/icomoon.svg#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -98,16 +98,30 @@
 }
 
 .is-app-loading .ez-view-container:before {
-    -moz-animation: spin 0.5s infinite linear;
-    -o-animation: spin 0.5s infinite linear;
     -webkit-animation: spin 0.5s infinite linear;
-    animation: spin 0.5s infinite linear;
+       -moz-animation: spin 0.5s infinite linear;
+         -o-animation: spin 0.5s infinite linear;
+            animation: spin 0.5s infinite linear;
     box-sizing: border-box;
     border-radius: 2em;
     border-width: 0.5em;
     border-style: solid;
     border-color: #aaa #aaa #aaa #fff;
     border-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+}
+
+/* location view view */
+.ez-view-locationviewview {
+    background: #f5f4f2;
+}
+
+.ez-view-locationviewview .ez-breadcrumbs a {
+    color: #528036;
+}
+
+.ez-view-locationviewview .ez-breadcrumbs a:hover {
+    color: #444;
+    text-decoration: underline;
 }
 
 /* content edit view */
@@ -147,7 +161,6 @@
     font-weight: bold;
     text-transform: capitalize;
 }
-
 
 .ez-view-contenteditformview .fieldgroup-name:after {
     content: "\E002";
@@ -263,8 +276,8 @@
 
 .ez-view-editactionbarview .ez-actions-list .ez-action:last-child {
     -webkit-box-shadow: 0 1px 0 0 #424242;
-    -moz-box-shadow: 0 1px 0 0 #424242;
-    box-shadow: 0 1px 0 0 #424242;
+       -moz-box-shadow: 0 1px 0 0 #424242;
+            box-shadow: 0 1px 0 0 #424242;
 }
 
 .ez-action .action-icon {
@@ -335,11 +348,11 @@
        -moz-box-shadow: inset 1px 1px 2px 1px #000;
             box-shadow: inset 1px 1px 2px 1px #000;
     background: #232327;
-    background: -moz-linear-gradient(90deg, #232327 0%, #26252a 100%);
     background: -webkit-linear-gradient(90deg, #232327 0%, #26252a 100%);
-    background: -o-linear-gradient(90deg, #232327 0%, #26252a 100%);
-    background: -ms-linear-gradient(90deg, #232327 0%, #26252a 100%);
-    background: linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background:    -moz-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background:     -ms-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background:      -o-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background:         linear-gradient(90deg, #232327 0%, #26252a 100%);
     background: -webkit-gradient(linear, top, bottom, color-stop(0%, #232327), color-stop(100%, #26252a));
 }
 
@@ -378,14 +391,14 @@
     width: 322px;
     height: 478px;
     padding: 118px 30px 118px 31px;
-    background: transparent url('../bundles/ezsystemseditorial/img/preview-mobile.png') top left no-repeat;
+    background: transparent url('../bundles/ezeditorial/img/preview-mobile.png') top left no-repeat;
 }
 
 .ez-preview-content .preview-device.tablet {
     width: 872px;
     height: 1263px;
     padding: 119px 0 0 103px;
-    background: transparent url('../bundles/ezsystemseditorial/img/preview-tablet.png') top left no-repeat;
+    background: transparent url('../bundles/ezeditorial/img/preview-tablet.png') top left no-repeat;
 }
 
 .ez-preview-content .preview-device.desktop {

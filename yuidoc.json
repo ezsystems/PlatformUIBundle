@@ -10,7 +10,8 @@
         "paths": [
             "./Resources/public/js/apps",
             "./Resources/public/js/views",
-            "./Resources/public/js/models"
+            "./Resources/public/js/models",
+            "./Resources/public/js/helpers"
         ]
     }
 }

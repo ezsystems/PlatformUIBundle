@@ -35,7 +35,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         _should: {
             ignore: {
                 // tap trick does not work in phantomjs
-                "Should fire a close event when tapping 'close' link": (Y.UA.phantomjs),
+                "Should fire a closeView event when tapping 'close' link": (Y.UA.phantomjs),
                  // not changing document.activeElement property in phantomjs
                 "Should focus on the content element using special method": (Y.UA.phantomjs)
             }
@@ -228,13 +228,13 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             Y.assert(testEventReceived, "Should have recieved the 'testEvent' from child editActionBarView");
         },
 
-        "Should fire a close event when tapping 'close' link": function () {
+        "Should fire a closeView event when tapping 'close' link": function () {
             var closeFired = false,
                 close;
 
             this.view.render();
 
-            this.view.on('close', function (e) {
+            this.view.on('closeView', function (e) {
                 closeFired = true;
             });
 
@@ -358,10 +358,10 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             Y.assert(closeFired, "The close event should have been fired");
         },
 
-        "Should fire a close event when 'escape' hotkey is pressed": function () {
+        "Should fire a closeView event when 'escape' hotkey is pressed": function () {
             var closeFired = false;
 
-            this.view.on('close', function (e) {
+            this.view.on('closeView', function (e) {
                 closeFired = true;
             });
 
@@ -370,10 +370,10 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             Y.assert(closeFired, "The close event should have been fired");
         },
 
-        "Should NOT fire a close event when any hotkey other than 'escape' is pressed": function () {
+        "Should NOT fire a closeView event when any hotkey other than 'escape' is pressed": function () {
             var closeFired = false;
 
-            this.view.on('close', function (e) {
+            this.view.on('closeView', function (e) {
                 closeFired = true;
             });
 
