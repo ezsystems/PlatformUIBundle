@@ -10,4 +10,18 @@
 .ez-editorial-app h5,
 .ez-editorial-app h6 {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    color: inherit;
+}
+
+.ez-editorial-app header {
+    background: none;
+}
+
+.ez-editorial-app input[type=text],
+.ez-editorial-app input[type=email],
+.ez-editorial-app input[type=number],
+.ez-editorial-app input[type=search],
+.ez-editorial-app input[type=password],
+.ez-editorial-app textarea {
+    border-radius: 0;
 }
