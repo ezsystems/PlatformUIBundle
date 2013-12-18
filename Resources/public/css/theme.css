@@ -134,16 +134,8 @@
     border-bottom-left-radius: 10px;
 }
 
-.ez-view-contenteditview header {
-    background: #f3f3f3;
-}
-
 .ez-view-contenteditview .ez-view-close {
     color: #555;
-}
-
-.ez-view-contenteditview .ez-content-name {
-    color: #222;
 }
 
 /* content edit form view */
