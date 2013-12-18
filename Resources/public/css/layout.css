@@ -96,9 +96,14 @@
     opacity: 1;
 }
 
-.ez-view-container {
+.is-app-open .ez-view-container {
+    display: block;
     width: 100%;
     min-height: 100%;
+}
+
+.ez-view-container {
+    display: none;
 }
 
 .is-app-loading .ez-view-container:before {
