@@ -1,0 +1,11 @@
+.ez-textblock-input-ui {
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.ez-editorial-app .ez-textblock-input-ui textarea {
+    width: 100%;
+    height: 3.6em;
+    resize: vertical;
+}

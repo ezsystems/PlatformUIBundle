@@ -16,7 +16,12 @@
     margin: 1em 2em;
 }
 
-.ez-editfield-input:before {
+.ez-editfield-textarea {
+    margin: 1em 2em;
+}
+
+.ez-editfield-input:before,
+.ez-editfield-textarea:before {
     width: 2em;
     margin-left: -2em;
     display: inline-block;
@@ -28,7 +33,6 @@
     -ms-box-sizing: border-box;
     -o-box-sizing: border-box;
     box-sizing: border-box;
-
 }
 
 .ez-editfield-infos .ez-fielddefinition-name, .ez-editfield-infos .ez-editfield-error-message {

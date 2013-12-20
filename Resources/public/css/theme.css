@@ -210,7 +210,8 @@
     color: #BF3E33;
 }
 
-.ez-default-error-style .ez-editfield-input:before {
+.ez-default-error-style .ez-editfield-input:before,
+.ez-default-error-style .ez-editfield-textarea:before {
     content: "!";
     background: #BF3E33;
     color: #fff;
@@ -226,7 +227,8 @@
             transition: all 0.30s ease-in-out;
 }
 
-.is-error .ez-default-error-style .ez-editfield-input:before {
+.is-error .ez-default-error-style .ez-editfield-input:before,
+.is-error .ez-default-error-style .ez-editfield-textarea:before {
     opacity: 1;
 }
 
