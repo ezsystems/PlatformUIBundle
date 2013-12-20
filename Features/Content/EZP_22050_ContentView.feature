@@ -1,86 +1,67 @@
-@editorial @ezp-22050 @javascript #mandatory?
-Feature: Test content view page for the Editorial Interface
-    In order to view content in Editorial interface
-    As a Editor
-    I want to view my content data with the new look and feel
+@editorial @ezp-22050
+Feature: Test Content View page for the Editorial Interface
+            As an Editor I want to have a Content View In order to view Content in Editorial interface
+            
+    Scenario: Verify that all page elements are present on Content Zone
+        Given I am logged in as "Editor"
+        When I am on the "Reaching for the stars" page 
+        Then I see "Content Zone" element 
+        And I see "Content Tab" element
+        And I see "Content <??>" element 
+        And I see "Sub Items" element
 
-    #https://jira.ez.no/browse/EZP-22050
-    #check if all visual elements are present and
-    
-
-    # This is need to have editor user available for the next text
-    Scenario: Create editor user for editorial bundle tests
-        Given I am logged in as "admin"
-        When I am on "user-accounts"
-        And I create a user named "editor" with password "123456"
-        Then On "user-accounts/editors" i see "editor"
-
-
-    Scenario Outline: Verify that all of interface areas are correctly rendered
-        Given I am logged in as "editor" with password "123456"
-        When I am on "/" #todo check path to a content view
-        Then I see <page_element> element #todo check existing elements of 
+    Scenario Outline: Use breadcrumbs in Content Zone to navigate
+        Given I am logged in as "Editor"
+        When I am on the "Reaching for the stars" page 
+        And I see "Content Zone" element
+        And I see "breadcrumb" element
+        And On "breadcrumb" I click <element>  
+        Then I see <element_url> page 
 
         Examples: 
-            | page_element      |
-            | header            |
-            | breadcrumb        |
-            | navigation-hub    |
-            | side-bar-left     |
-            | sied-bar-right    |
-            | content           |
-            | subitem-list      |
-            | footer            |
-      
-    Scenario Outline: Verify that header is present with the default elements  
-        Given I am logged in as "editor" with password "123456"
-        When I am on "/"
-        Then I see <header_element> element
+            | element                   | element_url                   |
+            | Home                      | HomePage                      |
+            | Getting Started           | Getting Started Page          |
+            | Selected Features         | Selected Features Page        |
+            | Reaching for the Stars    | Reaching for the Stars Page   |
 
-        Examples: 
-            | header_element    |
-            | ezlogo            |
-            | create            |
-            | deliver           |
-            | optimize          |
-            | eZ Exchange       |
-            | Settings          |
-            | User Info         |
-
-    Scenario Outline: Verify that content view menu is correctly shown
-        Given I am logged in as "editor" with password "123456"
-        When I am on "/"
-        And I see "content-view" element
-        Then On "content-view-menu" I see <link> links
-        
-        Examples: 
-            | link          |
-            | View          |
-            | Details       |
-            | Activity      |
-            | Analytics     |
-
-    Scenario Outline: Verify that the object fields are present
-        Given I am logged in as "editor" with password "123456"
-        When I am on "/"
-        And I see "content-view" element
-        Then Then On "conent-view-body" I see <fields> text
-        
-        Examples:
-            | fields        |
-            | Name          |
-            | Short-name    |
-            | Copy          |
-            | Media         |
-
-    Scenario Outline: Verify that breadcrumb works as expected
-        Given I am logged in as "editor" with password "123456"
-        When I am on <url> #possibly this wont work, use click instead?
+    Scenario Outline: Check that breadcrumbs are correctly updated
+        Given I am logged in as "Editor"
+        When I am on the <page_url> page
         Then On "breadcrumb" I see <breadcrumb> text
+    
+        Examples:
+            | page_url                      | breadcrumb                        |
+            | HomePage                      | HomePage Breadcrumb               |  
+            | Getting Started Page          | Getting Started Breadcrumb        |
+            | Selected Features Page        | Selected Features Breadcrumb      |
+            | Reaching for the Stars Page   | Reaching for the Stars Breadcrumb |
+
+    Scenario Outline: Verify that the Content fields are present in Content Zone
+        Given I am logged in as "Editor"
+        When I am on the "Reaching for the stars" page
+        And I see "Content <??>" element
+        And I see <field_group> element
+        Then On <field_group> I see <fields> text
+        And On <fields> I see <field_value> text 
 
         Examples:
-            | url                                                           | breadcrumb                                                            |
-            | Home                                                          | Home                                                                  |
-            | Home/Getting Started                                          | Home / Getting Started                                                |
-            | Home/Getting Started/Selected Features                        | Home / Getting Started / Selected Feature                             |
-            | Home/Getting Started/Selected Features/Reaching for the Stars | Home / Getting Started / Selected Features / Reaching for the Stars   |
+            | field_group   |  fields       | field_value                           |
+            | texts         | Name          | Reaching for the stars Name           |
+            | texts         | Short-name    | Reaching for the stars Short-name     |
+            | texts         | Copy          | Reaching for the stars Copy           |
+            | media         | Article Image | Reaching for the stars Article Image  |
+
+    Scenario Outline: Verify that the Content fields are collapsable
+        Given I am logged in as "Editor"
+        When I am on the "Reaching for the stars" page
+        And On <element_group> I click <collapse> button
+        Then On <element_group> I check visibility <value>
+
+        Examples:
+            | element_group | collapse  | value     |
+            | texts         | collapse  | collapsed |
+            | texts         | expand    | expanded  |
+            | media         | collapse  | collapsed |
+            | media         | expand    | expanded  |
+        
