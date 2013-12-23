@@ -191,7 +191,7 @@ YUI().use('ez-editorialapp', function (Y) {
             <div class="ez-editfield-textarea"><div class="ez-textblock-input-ui">
                 <textarea
                 id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
-                {{#if isRequired}} required{{/if}}></textarea>
+                {{#if isRequired}} required{{/if}}>{{ field.fieldValue }}</textarea>
             </div></div>
         </div>
     </div>
