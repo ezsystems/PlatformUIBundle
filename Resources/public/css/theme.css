@@ -67,23 +67,25 @@
     background: #fff;
 }
 
-.ez-editorial-app .is-error input[type=text],
-.ez-editorial-app .is-error input[type=email],
-.ez-editorial-app .is-error input[type=number],
-.ez-editorial-app .is-error input[type=search],
-.ez-editorial-app .is-error input[type=password],
-.ez-editorial-app .is-error textarea {
+.ez-editorial-app .is-error .ez-editfield-input input[type=text],
+.ez-editorial-app .is-error .ez-editfield-input input[type=email],
+.ez-editorial-app .is-error .ez-editfield-input input[type=number],
+.ez-editorial-app .is-error .ez-editfield-input input[type=search],
+.ez-editorial-app .is-error .ez-editfield-input input[type=password],
+.ez-editorial-app .is-error .ez-editfield-input textarea,
+.ez-editorial-app .is-error .ez-editfield-widget .ez-widget-primary-input input[type=text] {
     border: 1px solid #BF3E33;
     box-shadow: none;
     background: #FEECEA;
 }
 
-.ez-editorial-app .is-error input[type=text]:focus,
-.ez-editorial-app .is-error input[type=email]:focus,
-.ez-editorial-app .is-error input[type=number]:focus,
-.ez-editorial-app .is-error input[type=search]:focus,
-.ez-editorial-app .is-error input[type=password]:focus,
-.ez-editorial-app .is-error textarea:focus {
+.ez-editorial-app .is-error .ez-editfield-input input[type=text]:focus,
+.ez-editorial-app .is-error .ez-editfield-input input[type=email]:focus,
+.ez-editorial-app .is-error .ez-editfield-input input[type=number]:focus,
+.ez-editorial-app .is-error .ez-editfield-input input[type=search]:focus,
+.ez-editorial-app .is-error .ez-editfield-input input[type=password]:focus,
+.ez-editorial-app .is-error .ez-editfield-input textarea:focus,
+.ez-editorial-app .is-error .ez-editfield-widget .ez-widget-primary-input input[type=text]:focus{
     outline: none;
     -webkit-box-shadow: inset 0 0 6px #e76;
        -moz-box-shadow: inset 0 0 6px #e76;
@@ -210,7 +212,8 @@
     color: #BF3E33;
 }
 
-.ez-default-error-style .ez-editfield-input:before {
+.ez-default-error-style .ez-editfield-input:before,
+.ez-default-error-style .ez-editfield-widget .ez-widget-primary-input:before {
     content: "!";
     background: #BF3E33;
     color: #fff;
@@ -226,7 +229,8 @@
             transition: all 0.30s ease-in-out;
 }
 
-.is-error .ez-default-error-style .ez-editfield-input:before {
+.is-error .ez-default-error-style .ez-editfield-input:before,
+.is-error .ez-default-error-style .ez-editfield-widget .ez-widget-primary-input:before {
     opacity: 1;
 }
 

@@ -12,11 +12,20 @@
 }
 
 .ez-editfield-input {
-    height: 1.8em;
     margin: 1em 2em;
 }
 
-.ez-editfield-input:before {
+.ez-editfield-widget {
+    margin: 1em 0;
+}
+
+.ez-editfield-widget .ez-widget-input,
+.ez-editfield-widget label {
+    margin: 0 2em;
+}
+
+.ez-editfield-input:before,
+.ez-editfield-widget .ez-widget-primary-input:before{
     width: 2em;
     margin-left: -2em;
     display: inline-block;

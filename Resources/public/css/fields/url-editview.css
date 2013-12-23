@@ -1,0 +1,13 @@
+.ez-url-input-ui {
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.ez-url-input-ui input {
+    width: 33%;
+}
+
+.ez-url-input-ui .ez-widget-primary-input {
+    margin-bottom: 1em;
+}
