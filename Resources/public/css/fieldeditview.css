@@ -12,16 +12,10 @@
 }
 
 .ez-editfield-input {
-    height: 1.8em;
     margin: 1em 2em;
 }
 
-.ez-editfield-textarea {
-    margin: 1em 2em;
-}
-
-.ez-editfield-input:before,
-.ez-editfield-textarea:before {
+.ez-editfield-input:before {
     width: 2em;
     margin-left: -2em;
     display: inline-block;
