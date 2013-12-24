@@ -55,6 +55,7 @@ parameters:
                     - 'ez-textline-editview'
                     - 'ez-textblock-editview'
                     - 'ez-emailaddress-editview'
+                    - 'ez-maplocation-editview'
                     - 'ez-url-editview'
                     - 'ez-float-editview'
                     - 'ez-integer-editview'
@@ -88,6 +89,9 @@ parameters:
             ez-integer-editview:
                 requires: ['ez-fieldeditview', 'event-valuechange']
                 path: js/views/fields/ez-integer-editview.js
+            ez-maplocation-editview:
+                requires: ['ez-fieldeditview', 'jsonp', 'jsonp-url']
+                path: js/views/fields/ez-maplocation-editview.js
             ez-restmodel:
                 requires: ['model', 'json']
                 path: js/models/ez-restmodel.js

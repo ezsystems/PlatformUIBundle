@@ -34,3 +34,11 @@
 .ez-editorial-app textarea {
     line-height: normal;
 }
+
+.ez-editorial-app .gm-style {
+    line-height: normal;
+}
+
+.ez-editorial-app .gm-style img {
+    max-width: none;
+}

@@ -5,7 +5,7 @@ YUI.add('editviewregister-tests', function (Y) {
         "Should autoregister": function () {
             var ViewType = this.viewType,
                 viewKey = this.viewKey,
-                viewName = new ViewType().constructor.NAME;
+                viewName = ViewType.NAME;
 
             try {
                 Y.Assert.areSame(

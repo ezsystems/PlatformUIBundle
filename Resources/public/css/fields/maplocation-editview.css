@@ -1,0 +1,55 @@
+.ez-view-maplocationeditview label {
+    margin-bottom: 0.3em;
+}
+
+.ez-view-maplocationeditview ul {
+    list-style: none;
+}
+
+.ez-view-maplocationeditview .ez-field-sublabel:first-of-type {
+    padding-top: 1.5em;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-input-area {
+    padding: 0 2em;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-address-label {
+    display: inline-block;
+    margin-left: 0;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-find-address-input input  {
+    width: 100%;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-find-address-button {
+    height: 1.8em;
+    padding: 0 1.5em;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-errors,
+.ez-view-maplocationeditview .ez-maplocation-locate-me-errors {
+    margin: 0.5em 0 0 0;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-map-container {
+    width: 100%;
+    margin-top: 1em;
+    height: 300px;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-coordinates {
+    margin: 1em 0 1em 1em;
+    padding: 1em 0.5em;
+    text-align: left;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-coordinates ul {
+    padding: 0 0.3em;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-locate-me-button {
+    display: block;
+    margin: 0 auto;
+}
