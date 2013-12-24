@@ -24,6 +24,10 @@
     margin: 0 2em;
 }
 
+.ez-editfield-widget label:after {
+    content: ":";
+}
+
 .ez-editfield-input:before,
 .ez-editfield-widget .ez-widget-primary-input:before{
     width: 2em;
