@@ -244,6 +244,40 @@ YUI().use('ez-editorialapp', function (Y) {
     </div>
 </script>
 
+<script type="text/x-handlebars-template" id="maplocationeditview-ez-template">
+    <div class="pure-g ez-editfield-row">
+        <div class="pure-u ez-editfield-infos">
+            <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+                <p class="ez-fielddefinition-name">
+                    {{#if fieldDefinition.descriptions.[eng-GB]}}
+                    <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
+                    {{/if}}
+                    {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+                </p>
+                <p class="ez-editfield-error-message">&nbsp;</p>
+            </label>
+        </div>
+        <div class="pure-u ez-editfield-input-area ez-default-error-style">
+            <div class="ez-editfield-widget">
+                <label>Address</label>
+                <div class="ez-widget-input ez-maplocation-find-address-input">
+                    <input type="text">
+                    <button class="ez-maplocation-find-address-button">Locate Address</button>
+                </div>
+                <div class="ez-maplocation-map-container"></div>
+                <div class="ez-maplocation-dashboard">
+                    <div class="ez-maplocation-coordinates">
+                        <label>Longtitude</label>
+                        <label>Latitude</label>
+                    </div>
+                    <button class="ez-maplocation-locate-me-button">Locate Me</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</script>
 
 <script type="text/x-handlebars-template" id="editpreviewview-ez-template">
     <div class="ez-preview-content" tabindex="0">
