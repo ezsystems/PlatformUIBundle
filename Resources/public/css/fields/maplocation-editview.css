@@ -1,0 +1,41 @@
+.ez-maplocation-widget {
+    margin: 0 2em;
+}
+
+.ez-maplocation-widget .ez-maplocation-find-address-input input  {
+    width: 40%;
+}
+
+.ez-maplocation-widget .ez-maplocation-find-address-button {
+    width: 20%;
+}
+
+.ez-maplocation-widget .ez-maplocation-map-container {
+    float: left;
+    width: 40%;
+    margin-top: 1em;
+    height: 20em;
+}
+
+.ez-maplocation-widget .ez-maplocation-dashboard {
+    float: left;
+    width: 20%;
+    padding: 1em;
+    text-align: center;
+}
+
+.ez-maplocation-widget .ez-maplocation-coordinates {
+    width: 100%;
+    padding: 1em 0.5em;
+    margin-bottom: 1em;
+}
+
+.ez-maplocation-widget .ez-maplocation-coordinates label {
+    display: inline-block;
+}
+
+.ez-maplocation-widget .ez-maplocation-coordinates label:after {
+    content: ":\00a0";
+}
+
+

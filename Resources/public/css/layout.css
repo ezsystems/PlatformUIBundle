@@ -122,3 +122,7 @@
     height: 2em;
     font-size: 200%;
 }
+
+.ez-clear {
+    clear: both;
+}
