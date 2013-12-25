@@ -33,7 +33,8 @@
 .ez-editorial-app input[type=number],
 .ez-editorial-app input[type=search],
 .ez-editorial-app input[type=password],
-.ez-editorial-app textarea {
+.ez-editorial-app textarea,
+.ez-editorial-app .ez-simple-button{
     line-height: 1.8em;
     height: 1.8em;
     padding: 0 0.4em;
@@ -90,6 +91,17 @@
         -ms-box-shadow: inset 0 0 6px #e76;
          -o-box-shadow: inset 0 0 6px #e76;
             box-shadow: inset 0 0 6px #e76;
+}
+
+.ez-editorial-app .ez-simple-button {
+    font-weight: bold;
+    background: #fefefe;
+    background: -webkit-linear-gradient(180deg, #fff 0%, #e6e6e6 100%);
+    background:    -moz-linear-gradient(180deg, #fff 0%, #e6e6e6 100%);
+    background:     -ms-linear-gradient(180deg, #fff 0%, #e6e6e6 100%);
+    background:      -o-linear-gradient(180deg, #fff 0%, #e6e6e6 100%);
+    background:         linear-gradient(180deg, #fff 0%, #e6e6e6 100%);
+    background: -webkit-gradient(linear, top, bottom, color-stop(0%, #fff), color-stop(100%, #e6e6e6));
 }
 
 .is-app-open {
@@ -410,10 +422,15 @@
     border: 1px solid #ccc;
 }
 
+.ez-maplocation-widget .ez-maplocation-find-address-button {
+    border-left: none;
+}
+
 .ez-maplocation-widget .ez-maplocation-coordinates {
     background-color: #c0c0c0;
 }
 
-.ez-maplocation-widget .ez-maplocation-find-address-errors {
+.ez-maplocation-widget .ez-maplocation-find-address-errors,
+.ez-maplocation-widget .ez-maplocation-locate-me-errors {
     color: #BF3E33;
 }

@@ -90,6 +90,13 @@
     min-height: 5em;
 }
 
+.ez-editorial-app input,
+.ez-editorial-app select,
+.ez-editorial-app textarea,
+.ez-editorial-app .ez-simple-button {
+    vertical-align: middle;
+}
+
 .is-app-open {
     left: 0;
     z-index: 1000;

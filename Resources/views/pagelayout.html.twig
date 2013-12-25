@@ -265,8 +265,8 @@ YUI().use('ez-editorialapp', function (Y) {
                 <div class="ez-widget-input ez-maplocation-find-address-input">
                     <input type="text"
                      id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-address"
-                     value="{{ field.fieldValue.address }}">
-                    <button class="ez-maplocation-find-address-button">Locate Address <span class="ez-loader"></span></button>
+                     value="{{ field.fieldValue.address }}"
+                    ><button class="ez-simple-button ez-maplocation-find-address-button">Locate Address <span class="ez-loader"></span></button>
                     <p class="ez-maplocation-find-address-errors"></p>
                 </div>
                 <div class="ez-maplocation-map-container"></div>
@@ -276,7 +276,7 @@ YUI().use('ez-editorialapp', function (Y) {
                         <br/>
                         <label>Latitude</label><span class="ez-maplocation-latitude">{{ field.fieldValue.latitude }}</span>
                     </div>
-                    <button class="ez-maplocation-locate-me-button">Locate Me <span class="ez-loader"></span></button>
+                    <button class="ez-simple-button ez-maplocation-locate-me-button">Locate Me <span class="ez-loader"></span></button>
                     <p class="ez-maplocation-locate-me-errors"></p>
                 </div>
                 <br class="ez-clear"/>
