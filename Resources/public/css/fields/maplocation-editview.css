@@ -10,6 +10,10 @@
     width: 20%;
 }
 
+.ez-maplocation-widget .ez-maplocation-find-address-errors {
+    margin: 0.5em 0 0 0;
+}
+
 .ez-maplocation-widget .ez-maplocation-map-container {
     float: left;
     width: 40%;
@@ -37,5 +41,3 @@
 .ez-maplocation-widget .ez-maplocation-coordinates label:after {
     content: ":\00a0";
 }
-
-

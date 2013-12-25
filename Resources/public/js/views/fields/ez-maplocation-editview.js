@@ -16,8 +16,14 @@ YUI.add('ez-maplocation-editview', function (Y) {
         MARKER_TITLE = "Current location",
         CONTROL_MAP_TYPE = false,
         CONTROL_STREET_VIEW = false,
-        LATITUDE_SPAN_CLASS = ".ez-maplocation-latitude",
-        LONGITUDE_SPAN_CLASS = ".ez-maplocation-longitude";
+        FIND_ADDRESS_BUTTON_SEL = ".ez-maplocation-find-address-button",
+        FIND_ADDRESS_INPUT_SEL = ".ez-maplocation-find-address-input input",
+        FIND_ADDRESS_ERRORS_SEL = ".ez-maplocation-find-address-errors",
+        LATITUDE_SPAN_SEL = ".ez-maplocation-latitude",
+        LONGITUDE_SPAN_SEL = ".ez-maplocation-longitude",
+        IS_LOADING_CLASS = "is-loading",
+        IS_ERROR_CLASS = "is-error",
+        ENTER_KEY = 13;
 
     /**
      * Map Location edit view
@@ -31,6 +37,9 @@ YUI.add('ez-maplocation-editview', function (Y) {
         events: {
             '.ez-maplocation-find-address-button': {
                 'click': '_findAddress'
+            },
+            '.ez-maplocation-find-address-input input': {
+                'keyup': '_findAddressInputKeyUp'
             },
             '.ez-maplocation-locate-me-button': {
                 'click': '_locateMe'
@@ -95,13 +104,61 @@ YUI.add('ez-maplocation-editview', function (Y) {
         },
 
         /**
-         * Attempts to find location of the address in the address input
+         * Attempts to find location of the address in the address input and
+         * change coordinates and marker position accordingly
          *
          * @protected
          * @method _findAddress
          */
         _findAddress: function () {
-            console.log("Find Address!");
+            if (typeof google === 'object' || typeof google.maps === 'object') {
+                var that = this,
+                    geocoder = new google.maps.Geocoder(),
+                    container = this.get('container'),
+                    button = container.one(FIND_ADDRESS_BUTTON_SEL),
+                    addressInput = container.one(FIND_ADDRESS_INPUT_SEL),
+                    errorsOutput = container.one(FIND_ADDRESS_ERRORS_SEL);
+
+                errorsOutput.empty();
+                addressInput.get('parentNode').removeClass(IS_ERROR_CLASS);
+                button.addClass(IS_LOADING_CLASS);
+
+                geocoder.geocode(
+                    {'address': addressInput.get('value')},
+                    function(results, status) {
+                        button.removeClass(IS_LOADING_CLASS);
+                        if (status == google.maps.GeocoderStatus.OK) {
+                            that.set('latitude', results[0].geometry.location.lat());
+                            that.set('longitude', results[0].geometry.location.lng());
+                            that._updateCoordinates();
+                            that._updateMarkerPosition();
+                            that._updateMapCenter();
+                        } else {
+                            addressInput.get('parentNode').addClass(IS_ERROR_CLASS);
+                            if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+                                errorsOutput.setHTML('Unable to find this address');
+                            } else {
+                                errorsOutput.setHTML('An error occurred during the geocoding request for this address');
+                            }
+                        }
+                    }
+                );
+            } else {
+                console.log("Throw fatal error here!");
+            }
+        },
+
+        /**
+         * Catches "Enter" key press and triggers geolocation if it is pressed
+         *
+         * @protected
+         * @method _findAddressInputKeyUp
+         * @param {Object} e event facade of the keyboard event
+         */
+        _findAddressInputKeyUp: function (e) {
+            if (e.keyCode === ENTER_KEY) {
+                this._findAddress();
+            }
         },
 
         /**
@@ -122,8 +179,8 @@ YUI.add('ez-maplocation-editview', function (Y) {
          */
         _updateCoordinates: function () {
             var container = this.get('container');
-            container.one(LATITUDE_SPAN_CLASS).setHTML(this.get('latitude').toFixed(6));
-            container.one(LONGITUDE_SPAN_CLASS).setHTML(this.get('longitude').toFixed(6));
+            container.one(LATITUDE_SPAN_SEL).setHTML(this.get('latitude').toFixed(6));
+            container.one(LONGITUDE_SPAN_SEL).setHTML(this.get('longitude').toFixed(6));
         },
 
         /**
@@ -133,8 +190,22 @@ YUI.add('ez-maplocation-editview', function (Y) {
          * @method _updateMarkerPosition
          */
         _updateMarkerPosition: function () {
-            var marker = this.get('marker');
-            marker.setPosition(
+            this.get('marker').setPosition(
+                new google.maps.LatLng(
+                    this.get('latitude'),
+                    this.get('longitude')
+                )
+            );
+        },
+
+        /**
+         * Centers the map on the current location's position
+         *
+         * @protected
+         * @method _updateMapCenter
+         */
+        _updateMapCenter: function () {
+            this.get('map').setCenter(
                 new google.maps.LatLng(
                     this.get('latitude'),
                     this.get('longitude')

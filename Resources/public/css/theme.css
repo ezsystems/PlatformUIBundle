@@ -110,6 +110,11 @@
     border-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
 }
 
+.ez-editorial-app .ez-loader {
+    background: url('../bundles/ezeditorial/img/ajax-loader.gif');
+}
+
+
 /* location view view */
 .ez-view-locationviewview {
     background: #f5f4f2;
@@ -407,4 +412,8 @@
 
 .ez-maplocation-widget .ez-maplocation-coordinates {
     background-color: #c0c0c0;
+}
+
+.ez-maplocation-widget .ez-maplocation-find-address-errors {
+    color: #BF3E33;
 }
