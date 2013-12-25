@@ -21,6 +21,8 @@ YUI.add('ez-maplocation-editview', function (Y) {
         FIND_ADDRESS_ERRORS_SEL = ".ez-maplocation-find-address-errors",
         LATITUDE_SPAN_SEL = ".ez-maplocation-latitude",
         LONGITUDE_SPAN_SEL = ".ez-maplocation-longitude",
+        LOCATE_ME_BUTTON_SEL = ".ez-maplocation-locate-me-button",
+        LOCATE_ME_ERRORS_SEL = ".ez-maplocation-locate-me-errors",
         IS_LOADING_CLASS = "is-loading",
         IS_ERROR_CLASS = "is-error",
         ENTER_KEY = 13;
@@ -111,13 +113,14 @@ YUI.add('ez-maplocation-editview', function (Y) {
          * @method _findAddress
          */
         _findAddress: function () {
+            var that = this,
+                geocoder = new google.maps.Geocoder(),
+                container = this.get('container'),
+                button = container.one(FIND_ADDRESS_BUTTON_SEL),
+                addressInput = container.one(FIND_ADDRESS_INPUT_SEL),
+                errorsOutput = container.one(FIND_ADDRESS_ERRORS_SEL);
+
             if (typeof google === 'object' || typeof google.maps === 'object') {
-                var that = this,
-                    geocoder = new google.maps.Geocoder(),
-                    container = this.get('container'),
-                    button = container.one(FIND_ADDRESS_BUTTON_SEL),
-                    addressInput = container.one(FIND_ADDRESS_INPUT_SEL),
-                    errorsOutput = container.one(FIND_ADDRESS_ERRORS_SEL);
 
                 errorsOutput.empty();
                 addressInput.get('parentNode').removeClass(IS_ERROR_CLASS);
@@ -144,12 +147,12 @@ YUI.add('ez-maplocation-editview', function (Y) {
                     }
                 );
             } else {
-                console.log("Throw fatal error here!");
+                errorsOutput.setHTML('Google maps are not loaded correctly, try reloading the page');
             }
         },
 
         /**
-         * Catches "Enter" key press and triggers geolocation if it is pressed
+         * Catches "Enter" key strokes and triggers location finding process
          *
          * @protected
          * @method _findAddressInputKeyUp
@@ -162,13 +165,42 @@ YUI.add('ez-maplocation-editview', function (Y) {
         },
 
         /**
-         * Attempts to locate the current user's device position using Geolocation API
+         * Attempts to locate the current user's device position using
+         * HTML5 Geolocation API
          *
          * @protected
          * @method _locateMe
          */
         _locateMe: function () {
-            console.log("Locate Me!");
+            var that = this,
+                container = this.get('container'),
+                button = container.one(LOCATE_ME_BUTTON_SEL),
+                errorsOutput = container.one(LOCATE_ME_ERRORS_SEL);
+
+            errorsOutput.empty();
+            button.addClass(IS_LOADING_CLASS);
+
+            if (navigator && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    // Request success
+                    function(myPosition) {
+                        button.removeClass(IS_LOADING_CLASS);
+
+                        that.set('latitude', myPosition.coords.latitude);
+                        that.set('longitude', myPosition.coords.longitude);
+
+                        that._updateCoordinates();
+                        that._updateMarkerPosition();
+                        that._updateMapCenter();
+                    },
+                    // Request failure
+                    function() {
+                        button.removeClass(IS_LOADING_CLASS);
+                        errorsOutput.setHTML('An error occured during geolocation request of your current position');
+                    });
+            } else {
+                errorsOutput.setHTML('Your browser does not support HTML5 Geolocation API');
+            }
         },
 
         /**
