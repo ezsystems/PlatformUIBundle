@@ -427,7 +427,11 @@
 }
 
 .ez-maplocation-widget .ez-maplocation-coordinates {
-    background-color: #c0c0c0;
+    background-color: #ddd;
+}
+
+.ez-maplocation-widget .ez-maplocation-coordinates span {
+    font-weight: bold;
 }
 
 .ez-maplocation-widget .ez-maplocation-find-address-errors,
