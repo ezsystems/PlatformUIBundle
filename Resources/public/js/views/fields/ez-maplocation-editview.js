@@ -62,6 +62,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
                  load we have to create a queue workflow, so the google maps API
                  will be loaded only once and at the same time each map will be
                  initialized after the API retrieval */
+                window.eZ = window.eZ || {};
                 if (window.eZ.mapLocationEditViewQueue) {
                     window.eZ.mapLocationEditViewQueue.push({
                         run: this.initMap,
