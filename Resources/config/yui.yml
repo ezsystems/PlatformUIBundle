@@ -40,7 +40,7 @@ parameters:
                 requires: ['view', 'handlebars']
                 path: js/views/ez-templatebasedview.js
             ez-locationviewview:
-                requires: ['ez-templatebasedview']
+                requires: ['ez-templatebasedview', 'event-tap']
                 path: js/views/ez-locationviewview.js
             ez-contenteditview:
                 requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'transition', 'event-tap']
