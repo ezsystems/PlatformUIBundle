@@ -3,7 +3,7 @@
 }
 
 .ez-maplocation-widget .ez-maplocation-find-address-input input  {
-    width: 40%;
+    width: 100%;
 }
 
 .ez-maplocation-widget .ez-maplocation-find-address-errors,
@@ -12,14 +12,12 @@
 }
 
 .ez-maplocation-widget .ez-maplocation-map-container {
-    float: left;
-    width: 40%;
+    width: 100%;
     margin-top: 1em;
-    height: 20em;
+    height: 250px;
 }
 
 .ez-maplocation-widget .ez-maplocation-dashboard {
-    float: left;
     padding: 1em;
     text-align: center;
 }

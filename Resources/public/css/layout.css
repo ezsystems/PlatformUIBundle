@@ -130,17 +130,13 @@
     font-size: 200%;
 }
 
-.ez-editorial-app .ez-clear {
-    clear: both;
-}
-
-.ez-editorial-app .ez-loader {
+.ez-editorial-app .ez-button-loader {
     vertical-align: bottom;
     height: 16px;
     width: 16px;
     display: none;
 }
 
-.ez-editorial-app .is-loading > .ez-loader {
+.ez-editorial-app .is-loading > .ez-button-loader {
     display: inline-block;
 }
