@@ -32,8 +32,6 @@ YUI.add('ez-textblock-editview', function (Y) {
          * @method validate
          */
         validate: function () {
-            console.log(this._getInputValidity());
-
             if ( this._getInputValidity().valueMissing ) {
                 this.set('errorStatus', 'This field is required');
             } else {
