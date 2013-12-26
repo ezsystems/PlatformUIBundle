@@ -9,7 +9,21 @@ YUI.add('ez-fieldeditview', function (Y) {
     Y.namespace('eZ');
 
     var L = Y.Lang,
-        ERROR_CLASS = 'is-error';
+        FIELD_INFO_ICON_SEL = '.ez-editfield-i',
+        TOOLTIP_SEL = '.ez-fielddefinition-tooltip',
+        TOOLTIP_TAIL_UP_CLASS = 'ez-tail-up-tooltip',
+        TOOLTIP_TAIL_DOWN_CLASS = 'ez-tail-down-tooltip',
+        IS_DISPLAYED_CLASS = 'is-displayed',
+        IS_VISIBLE_CLASS = 'is-visible',
+        ERROR_CLASS = 'is-error',
+        _events= {
+            ".ez-editfield-i": {
+                "tap": "_showTooltip"
+            },
+            ".ez-fielddefinition-tooltip-close": {
+                "tap": "_handleCloseTooltipTap"
+            }
+        };
 
     /**
      * Field Edit View. This is an *abstract* class, so it's not supposed to be
@@ -102,6 +116,99 @@ YUI.add('ez-fieldeditview', function (Y) {
         },
 
         /**
+         * Show the tooltip taking into account distance between it's supposed
+         * position and bottom of the screen
+         *
+         * @method _showTooltip
+         * @protected
+         */
+        _showTooltip: function () {
+            var container = this.get('container'),
+                tooltip = container.one(TOOLTIP_SEL),
+                infoIcon = container.one(FIELD_INFO_ICON_SEL),
+                tooltipHeight;
+
+            tooltip.addClass(IS_DISPLAYED_CLASS);
+
+            if (this._tooltipFitsTailUp()) {
+                // making sure, that the default tail state is in place
+                // and removing changes to the tooltip position (if any)
+                if (tooltip.hasClass(TOOLTIP_TAIL_DOWN_CLASS)) {
+                    tooltip.addClass(TOOLTIP_TAIL_UP_CLASS);
+                    tooltip.removeClass(TOOLTIP_TAIL_DOWN_CLASS);
+                    tooltip.setStyle('top', 'auto');
+                }
+            } else {
+                // switching tooltip to the tail-down state
+                tooltip.addClass(TOOLTIP_TAIL_DOWN_CLASS);
+                tooltip.removeClass(TOOLTIP_TAIL_UP_CLASS);
+                tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
+                tooltip.setY(infoIcon.getY() - tooltipHeight);
+            }
+            tooltip.addClass(IS_VISIBLE_CLASS);
+            tooltip.on('clickoutside', Y.bind(this._handleClickOutside, this));
+        },
+
+        /**
+         * Hides the tooltip
+         *
+         * @method _hideTooltip
+         * @protected
+         */
+        _hideTooltip: function () {
+            var tooltip = this.get('container').one(TOOLTIP_SEL);
+
+            tooltip.removeClass(IS_VISIBLE_CLASS);
+            tooltip.removeClass(IS_DISPLAYED_CLASS);
+            tooltip.detach('clickoutside');
+        },
+
+        /**
+         * Considers tooltip's height and position on the screen to decide if it
+         * fits on the screen in current conditions
+         *
+         * @method _tooltipFitsTailUp
+         * @protected
+         * @return {boolean} true, if the tooltip fits in tail-up state
+         */
+        _tooltipFitsTailUp: function () {
+            var container = this.get('container'),
+                tooltip = container.one(TOOLTIP_SEL),
+                infoIcon = container.one(FIELD_INFO_ICON_SEL),
+                screenHeight = container.get('winHeight'),
+                scrollHeight = container.get('docScrollY'),
+                tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10),
+                infoIconHeight = parseInt(infoIcon.getComputedStyle('height'), 10);
+
+            return (infoIcon.getY() - scrollHeight + infoIconHeight + tooltipHeight < screenHeight);
+        },
+
+        /**
+         * Event handler for a tap on the "close" link of a tooltip
+         *
+         * @method _handleCloseTooltipTap
+         * @param e {Object} Event facade object
+         * @protected
+         */
+        _handleCloseTooltipTap: function (e) {
+            e.preventDefault();
+            this._hideTooltip();
+        },
+
+        /**
+         * Event handler for a click anywhere outside of the tooltip
+         *
+         * @method _handleClickOutside
+         * @param e {Object} Event facade object
+         * @protected
+         */
+        _handleClickOutside: function (e) {
+            if (e.target.generateID() != this.get('container').one(FIELD_INFO_ICON_SEL).generateID()) {
+                this._hideTooltip();
+            }
+        },
+
+        /**
          * Custom initializer method, it sets the event handling on the
          * errorStatusChange event
          *
@@ -109,6 +216,8 @@ YUI.add('ez-fieldeditview', function (Y) {
          */
         initializer: function () {
             this.after('errorStatusChange', this._errorUI);
+
+            this.events = Y.merge(_events, this.events);
         },
 
         /**

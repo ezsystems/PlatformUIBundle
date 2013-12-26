@@ -154,11 +154,9 @@ YUI().use('ez-editorialapp', function (Y) {
 <script type="text/x-handlebars-template" id="textlineeditview-ez-template">
     <div class="pure-g ez-editfield-row">
         <div class="pure-u ez-editfield-infos">
+            {{> ez_fieldinfo_tooltip }}
             <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
                 <p class="ez-fielddefinition-name">
-                    {{#if fieldDefinition.descriptions.[eng-GB]}}
-                        <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
-                    {{/if}}
                     {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
                 </p>
                 <p class="ez-editfield-error-message">&nbsp;</p>
@@ -179,11 +177,9 @@ YUI().use('ez-editorialapp', function (Y) {
 <script type="text/x-handlebars-template" id="textblockeditview-ez-template">
     <div class="pure-g ez-editfield-row">
         <div class="pure-u ez-editfield-infos">
+            {{> ez_fieldinfo_tooltip }}
             <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
                 <p class="ez-fielddefinition-name">
-                    {{#if fieldDefinition.descriptions.[eng-GB]}}
-                    <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
-                    {{/if}}
                     {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
                 </p>
                 <p class="ez-editfield-error-message">&nbsp;</p>
@@ -203,11 +199,9 @@ YUI().use('ez-editorialapp', function (Y) {
 <script type="text/x-handlebars-template" id="emailaddresseditview-ez-template">
     <div class="pure-g ez-editfield-row">
         <div class="pure-u ez-editfield-infos">
+            {{> ez_fieldinfo_tooltip }}
             <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
                 <p class="ez-fielddefinition-name">
-                    {{#if fieldDefinition.descriptions.[eng-GB]}}
-                    <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
-                    {{/if}}
                     {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
                 </p>
                 <p class="ez-editfield-error-message">&nbsp;</p>
@@ -226,11 +220,9 @@ YUI().use('ez-editorialapp', function (Y) {
 <script type="text/x-handlebars-template" id="urleditview-ez-template">
     <div class="pure-g ez-editfield-row">
         <div class="pure-u ez-editfield-infos">
+            {{> ez_fieldinfo_tooltip }}
             <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-link">
                 <p class="ez-fielddefinition-name">
-                    {{#if fieldDefinition.descriptions.[eng-GB]}}
-                    <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
-                    {{/if}}
                     {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
                 </p>
                 <p class="ez-editfield-error-message">&nbsp;</p>
@@ -260,11 +252,9 @@ YUI().use('ez-editorialapp', function (Y) {
 <script type="text/x-handlebars-template" id="floateditview-ez-template">
     <div class="pure-g ez-editfield-row">
         <div class="pure-u ez-editfield-infos">
+            {{> ez_fieldinfo_tooltip }}
             <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
                 <p class="ez-fielddefinition-name">
-                    {{#if fieldDefinition.descriptions.[eng-GB]}}
-                    <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
-                    {{/if}}
                     {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
                 </p>
                 <p class="ez-editfield-error-message">&nbsp;</p>
@@ -284,11 +274,9 @@ YUI().use('ez-editorialapp', function (Y) {
 <script type="text/x-handlebars-template" id="integereditview-ez-template">
     <div class="pure-g ez-editfield-row">
         <div class="pure-u ez-editfield-infos">
+            {{> ez_fieldinfo_tooltip }}
             <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
                 <p class="ez-fielddefinition-name">
-                    {{#if fieldDefinition.descriptions.[eng-GB]}}
-                    <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
-                    {{/if}}
                     {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
                 </p>
                 <p class="ez-editfield-error-message">&nbsp;</p>
@@ -360,6 +348,18 @@ YUI().use('ez-editorialapp', function (Y) {
             </div>
         </section>
     </div>
+</script>
+
+<script type="text/x-handlebars-template" class="ez-editorial-app-partial" id="ez_fieldinfo_tooltip">
+    {{#if fieldDefinition.descriptions.[eng-GB]}}
+        <span class="ez-editfield-i">?</span>
+        <div class="ez-fielddefinition-tooltip ez-tail-up-tooltip">
+            <p class="ez-fielddefinition-tooltip-text">
+                <a class="ez-fielddefinition-tooltip-close" href="#close-tooltip" title="Close tooltip" data-icon="&#xe000;"></a>
+                {{ fieldDefinition.descriptions.[eng-GB] }}
+            </p>
+        </div>
+    {{/if}}
 </script>
 
 {% endverbatim %}
