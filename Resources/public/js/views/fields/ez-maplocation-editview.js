@@ -1,3 +1,4 @@
+/* global google */
 YUI.add('ez-maplocation-editview', function (Y) {
     "use strict";
     /**
@@ -49,60 +50,108 @@ YUI.add('ez-maplocation-editview', function (Y) {
         },
 
         /**
-         * Custom initializer method, it initializes google maps (if needed)
+         * Custom initializer method, it initializes google maps API (if needed)
          *
          * @method initializer
          */
         initializer: function () {
             var that = this;
-
             if (typeof google != 'object' || typeof google.maps != 'object') {
-                Y.jsonp('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}', {
-                    on: {
-                        success: function () {
-                            var mapOptions = {
-                                    streetViewControl: CONTROL_STREET_VIEW,
-                                    mapTypeControl: CONTROL_MAP_TYPE
-                                },
-                                map,
-                                marker,
-                                field = that.get('field');
 
-                            // If some location is already defined preparing to
-                            // show it on the map
-                            if (field.fieldValue) {
-                                mapOptions.zoom = DEFAULT_ZOOM;
-                                mapOptions.center = new google.maps.LatLng(field.fieldValue.latitude, field.fieldValue.longitude);
-                            } else {
-                                // Empty location
-                                mapOptions.zoom = DEFAULT_ZOOM_WITHOUT_LOCATION;
-                                mapOptions.center = new google.maps.LatLng(DEFAULT_LATITUDE_WITHOUT_LOCATION, DEFAULT_LONGITUDE_WITHOUT_LOCATION);
+                /* For a case when 2 or more similar editviews are trying to
+                 load we have to create a queue workflow, so the google maps API
+                 will be loaded only once and at the same time each map will be
+                 initialized after the API retrieval */
+                if (window.eZ.mapLocationEditViewQueue) {
+                    window.eZ.mapLocationEditViewQueue.push({
+                        run: this.initMap,
+                        context: this
+                    });
+                } else {
+                    window.eZ.mapLocationEditViewQueue = [];
+                    window.eZ.mapLocationEditViewQueue.push({
+                        run: this.initMap,
+                        context: this
+                    });
+
+                    Y.jsonp('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}', {
+                        on: {
+                            success: function () {
+                                var mapInitializer;
+
+                                // Emptying the queue
+                                while (!!(mapInitializer = window.eZ.mapLocationEditViewQueue.shift())) {
+                                    mapInitializer.run.apply(mapInitializer.context);
+                                }
+                            },
+                            failure: function () {
+                                that.fire('fatalError', {
+                                    retryAction: {
+                                        run: that.initializer,
+                                        args: [],
+                                        context: that
+                                    },
+                                    additionalInfo: {
+                                        errorText: "Failed to retrieve Google Maps API"
+                                    }
+                                });
                             }
-
-                            map = new google.maps.Map(
-                                that.get('container').one('.ez-maplocation-map-container').getDOMNode(),
-                                mapOptions
-                            );
-                            that.set('map', map);
-
-                            marker = new google.maps.Marker({
-                                position: mapOptions.center,
-                                map: map,
-                                draggable: true,
-                                title: MARKER_TITLE
-                            });
-                            that.set('marker', marker);
-
-                            google.maps.event.addListener(marker, 'drag', Y.bind(that._markerDrag, that) );
-                            google.maps.event.addListener(map, 'click', Y.bind(that._mapClick, that) );
-
-                        },
-                        failure: function () {
-                            console.log("Throw fatal error here!");
                         }
-                    }
-                });
+                    });
+                }
+            } else {
+                // Google maps API is already loaded
+                this.initMap();
             }
+        },
+
+        /**
+         * Initializes the map instance, adds a marker to the map, taking
+         * into account default values (if any)
+         *
+         * @method initMap
+         */
+        initMap: function () {
+            var mapOptions = {
+                    streetViewControl: CONTROL_STREET_VIEW,
+                    mapTypeControl: CONTROL_MAP_TYPE
+                },
+                map,
+                marker,
+                field = this.get('field');
+
+            // If some location is already defined preparing to
+            // show it on the map
+            if (field.fieldValue) {
+                mapOptions.zoom = DEFAULT_ZOOM;
+                mapOptions.center = new google.maps.LatLng(field.fieldValue.latitude, field.fieldValue.longitude);
+            } else {
+                // Empty location
+                mapOptions.zoom = DEFAULT_ZOOM_WITHOUT_LOCATION;
+                mapOptions.center = new google.maps.LatLng(DEFAULT_LATITUDE_WITHOUT_LOCATION, DEFAULT_LONGITUDE_WITHOUT_LOCATION);
+            }
+
+            // Saving coordinates into view attributes for the future use
+            this.set('latitude', mapOptions.center.lat());
+            this.set('longitude', mapOptions.center.lng());
+
+            map = new google.maps.Map(
+                this.get('container').one('.ez-maplocation-map-container').getDOMNode(),
+                mapOptions
+            );
+            this.set('map', map);
+
+            // Adding a marker
+            marker = new google.maps.Marker({
+                position: mapOptions.center,
+                map: map,
+                draggable: true,
+                title: MARKER_TITLE
+            });
+            this.set('marker', marker);
+
+            google.maps.event.addListener(marker, 'drag', Y.bind(this._markerDrag, this) );
+            google.maps.event.addListener(map, 'click', Y.bind(this._mapClick, this) );
         },
 
         /**
