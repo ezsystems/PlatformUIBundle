@@ -62,3 +62,30 @@
     line-height: 1.2em;
     min-height: 2.4em;
 }
+
+.ez-editfield-infos .ez-fielddefinition-tooltip {
+    position: absolute;
+    display: none;
+    opacity: 0;
+    width: 200px;
+    z-index: 10;
+}
+
+.ez-editfield-infos .ez-fielddefinition-tooltip.is-displayed {
+    display: block;
+}
+
+.ez-editfield-infos .ez-fielddefinition-tooltip.is-visible {
+    opacity: 1;
+    -webkit-transition: opacity 1s;
+       -moz-transition: opacity 1s;
+        -ms-transition: opacity 1s;
+         -o-transition: opacity 1s;
+            transition: opacity 1s;
+}
+
+.ez-editfield-infos .ez-fielddefinition-tooltip-text {
+    padding-left: 20px;
+    padding-top: 5px;
+    text-align: center;
+}

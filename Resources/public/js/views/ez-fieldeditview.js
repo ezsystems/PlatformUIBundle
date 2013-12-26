@@ -9,7 +9,26 @@ YUI.add('ez-fieldeditview', function (Y) {
     Y.namespace('eZ');
 
     var L = Y.Lang,
-        ERROR_CLASS = 'is-error';
+        FIELD_NAME_SEL = '.ez-fielddefinition-name',
+        FIELD_INFO_SEL = '.ez-editfield-i',
+        TOOLTIP_SEL = '.ez-fielddefinition-tooltip',
+        TOOLTIP_CLASS = 'ez-fielddefinition-tooltip',
+        TOOLTIP_TEXT_CLASS = 'ez-fielddefinition-tooltip-text',
+        TOOLTIP_TAIL_UP_CLASS = 'ez-tail-up-tooltip',
+        TOOLTIP_TAIL_DOWN_CLASS = 'ez-tail-down-tooltip',
+        TOOLTIP_CLOSE_CLASS = 'ez-fielddefinition-tooltip-close',
+        TOOLTIP_CLOSE_TEXT = 'Close',
+        IS_DISPLAYED_CLASS = 'is-displayed',
+        IS_VISIBLE_CLASS = 'is-visible',
+        ERROR_CLASS = 'is-error',
+        _events= {
+            ".ez-editfield-i": {
+                tap: "_handleInfoTap"
+            },
+            ".ez-fielddefinition-tooltip-close": {
+                tap: "_handleCloseTooltipTap"
+            }
+        };
 
     /**
      * Field Edit View. This is an *abstract* class, so it's not supposed to be
@@ -102,6 +121,144 @@ YUI.add('ez-fieldeditview', function (Y) {
         },
 
         /**
+         * Dynamically creates tooltip node
+         *
+         * @method _createTooltipNode
+         * @protected
+         */
+        _createTooltipNode: function () {
+            var description = this.get('fieldDefinition').descriptions['eng-GB'],
+                fieldNameNode = this.get('container').one(FIELD_NAME_SEL),
+                tooltipNode;
+
+            if (description) {
+                tooltipNode = Y.Node.create([
+                    '<div class="' + TOOLTIP_CLASS + ' ' + TOOLTIP_TAIL_UP_CLASS + '">',
+                    '<div class="' + TOOLTIP_TEXT_CLASS + '">',
+                    description,
+                    '<br/>',
+                    '<a class="' + TOOLTIP_CLOSE_CLASS + '" href="#close-tooltip">',
+                    TOOLTIP_CLOSE_TEXT,
+                    '</a></div></div>'
+                ].join(''));
+
+                fieldNameNode.appendChild(tooltipNode);
+            }
+        },
+
+        /**
+         * Show the tooltip taking into account distance between it's supposed
+         * position and bottom of the screen
+         *
+         * @method _showTooltip
+         * @protected
+         */
+        _showTooltip: function () {
+            var container = this.get('container'),
+                tooltip = container.one(TOOLTIP_SEL),
+                infoIcon = container.one(FIELD_INFO_SEL),
+                screenHeight = container.get('winHeight'),
+                tooltipHeight,
+                infoIconHeight;
+
+            if (tooltip) {
+                // First, displaying the tooltip but with zero opacity to check
+                // if it fits on the screen.
+                // By the way 'getComputedStyle' method flushes all pending
+                // style changes and forces the layout engine to compute our
+                // <div>’s current state, so opacity transition works even for
+                // newly created DOM element: http://timtaubert.de/blog/2012/09/css-transitions-for-dynamically-created-dom-elements/
+                tooltip.addClass(IS_DISPLAYED_CLASS);
+                tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
+                infoIconHeight = parseInt(infoIcon.getComputedStyle('height'), 10);
+
+                if (infoIcon.getY() + infoIconHeight + tooltipHeight > screenHeight) {
+                    // When tooltip does not fit on the screen changing it's
+                    // tail and position
+                    tooltip.addClass(TOOLTIP_TAIL_DOWN_CLASS);
+                    tooltip.removeClass(TOOLTIP_TAIL_UP_CLASS);
+                    tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
+                    tooltip.setY(infoIcon.getY() - tooltipHeight);
+                } else {
+                    // Otherwise making sure, that the default tail is in place
+                    // and removing changes to the tooltip position (if any)
+                    if (tooltip.hasClass(TOOLTIP_TAIL_DOWN_CLASS)) {
+                        tooltip.addClass(TOOLTIP_TAIL_UP_CLASS);
+                        tooltip.removeClass(TOOLTIP_TAIL_DOWN_CLASS);
+                        tooltip.setStyle('top', 'auto');
+                    }
+                }
+
+                // Changing opacity to 1 with transition (tooltip goes visible)
+                tooltip.addClass(IS_VISIBLE_CLASS);
+
+                // Clicks anywhere outside of the tooltip should close it
+                Y.on('contentEditViewTap', Y.bind(this._handleContentEditViewTap, this));
+            }
+        },
+
+        /**
+         * Hides the tooltip
+         *
+         * @method _hideTooltip
+         * @protected
+         */
+        _hideTooltip: function () {
+            var tooltip = this.get('container').one(TOOLTIP_SEL);
+
+            if (tooltip) {
+                tooltip.removeClass(IS_VISIBLE_CLASS);
+                tooltip.removeClass(IS_DISPLAYED_CLASS);
+
+                // Detaching subscription to any clicks outside of the tooltip
+                Y.detach('contentEditViewTap');
+            }
+        },
+
+        /**
+         * Event handler for click on the field definition description icon
+         *
+         * @method _handleInfoTap
+         * @protected
+         */
+        _handleInfoTap: function () {
+            if (!this.get('container').one(TOOLTIP_SEL)) {
+                this._createTooltipNode();
+            }
+
+            this._showTooltip();
+
+        },
+
+        /**
+         * Event handler for a click on the "close" link of a tooltip
+         *
+         * @method _handleCloseTooltipTap
+         * @param e {Object} Event facade object
+         * @protected
+         */
+        _handleCloseTooltipTap: function (e) {
+            e.preventDefault();
+            this._hideTooltip();
+        },
+
+        /**
+         * Event handler for a tap anywhere inside the ContentEditView
+         * If tooltip is shown, and it is not the tap's target, tooltip should
+         * be closed.
+         *
+         * @method _handleContentEditViewTap
+         * @param e {Object} Event facade object
+         * @protected
+         */
+        _handleContentEditViewTap: function (e) {
+            var container = this.get('container');
+            if (e.target.get('parentNode') != container.one(TOOLTIP_SEL) && e.target != container.one(FIELD_INFO_SEL)) {
+                this._hideTooltip();
+            }
+        },
+
+        /**
          * Custom initializer method, it sets the event handling on the
          * errorStatusChange event
          *
@@ -109,6 +266,8 @@ YUI.add('ez-fieldeditview', function (Y) {
          */
         initializer: function () {
             this.after('errorStatusChange', this._errorUI);
+
+            this.events = Y.merge(_events, this.events || {});
         },
 
         /**
