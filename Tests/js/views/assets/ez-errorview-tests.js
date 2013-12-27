@@ -7,26 +7,10 @@ YUI.add('ez-errorview-tests', function (Y) {
             args: [],
             context: null
         },
-        IS_HIDDEN_CLASS = 'is-hidden',
-        GESTURE_MAP = Y.Event._GESTURE_MAP;
-
-    // trick to simulate a tap event
-    // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
-    Y.Node.prototype.tap = function (startOpts, endOpts) {
-        Y.Event.simulate(this._node, GESTURE_MAP.start, startOpts);
-        Y.Event.simulate(this._node, GESTURE_MAP.end, endOpts);
-    };
-    Y.NodeList.importMethod(Y.Node.prototype, 'tap');
+        IS_HIDDEN_CLASS = 'is-hidden';
 
     viewTest = new Y.Test.Case({
         name: "eZ Error View test",
-
-        _should: {
-            ignore: {
-                "Should fire the 'closeApp' event when tapping 'close' link": (Y.UA.phantomjs), // tap trick does not work in phantomjs
-                "Should fire the 'retry' event when tapping 'retry' link": (Y.UA.phantomjs) // tap trick does not work in phantomjs
-            }
-        },
 
         setUp: function () {
             this.view = new Y.eZ.ErrorView({
@@ -68,8 +52,7 @@ YUI.add('ez-errorview-tests', function (Y) {
         },
 
         "Should fire the 'closeApp' event when tapping 'close' link": function () {
-            var closeFired = false,
-                close;
+            var closeFired = false, that = this;
 
             this.view.render();
 
@@ -77,129 +60,16 @@ YUI.add('ez-errorview-tests', function (Y) {
                 closeFired = true;
             });
 
-            close = Y.one('.ez-close-app');
-            close.tap({
-                target: close,
-                type: GESTURE_MAP.start,
-                bubbles: true,            // boolean
-                cancelable: true,         // boolean
-                view: window,               // DOMWindow
-                detail: 0,
-                pageX: 5,
-                pageY:5,            // long
-                screenX: 5,
-                screenY: 5,  // long
-                clientX: 5,
-                clientY: 5,   // long
-                ctrlKey: false,
-                altKey: false,
-                shiftKey:false,
-                metaKey: false, // boolean
-                touches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: close
-                    }
-                ],            // TouchList
-                targetTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: close
-                    }
-                ],      // TouchList
-                changedTouches: []     // TouchList
-            }, {
-                target: close,
-                type: GESTURE_MAP.end,
-                bubbles: true,            // boolean
-                cancelable: true,         // boolean
-                view: window,               // DOMWindow
-                detail: 0,
-                pageX: 5,
-                pageY:5,            // long
-                screenX: 5,
-                screenY: 5,  // long
-                clientX: 5,
-                clientY: 5,   // long
-                ctrlKey: false,
-                altKey: false,
-                shiftKey:false,
-                metaKey: false, // boolean
-                touches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: close
-                    }
-                ],            // TouchList
-                targetTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: close
-                    }
-                ],      // TouchList
-                changedTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: close
-                    }
-                ]
+            Y.one('.ez-close-app').simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.assert(closeFired, "The close event should have been fired");
+                });
             });
-            Y.assert(closeFired, "The close event should have been fired");
+            this.wait();
         },
 
         "Should fire the 'retry' event when tapping 'retry' link": function () {
-            var retryFired = false,
-                retry;
+            var retryFired = false, that = this;
 
             this.view.render();
 
@@ -210,124 +80,12 @@ YUI.add('ez-errorview-tests', function (Y) {
                 retryFired = true;
             });
 
-            retry = Y.one('.ez-retry');
-            retry.tap({
-                target: retry,
-                type: GESTURE_MAP.start,
-                bubbles: true,            // boolean
-                cancelable: true,         // boolean
-                view: window,               // DOMWindow
-                detail: 0,
-                pageX: 5,
-                pageY:5,            // long
-                screenX: 5,
-                screenY: 5,  // long
-                clientX: 5,
-                clientY: 5,   // long
-                ctrlKey: false,
-                altKey: false,
-                shiftKey:false,
-                metaKey: false, // boolean
-                touches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: retry
-                    }
-                ],            // TouchList
-                targetTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: retry
-                    }
-                ],      // TouchList
-                changedTouches: []     // TouchList
-            }, {
-                target: retry,
-                type: GESTURE_MAP.end,
-                bubbles: true,            // boolean
-                cancelable: true,         // boolean
-                view: window,               // DOMWindow
-                detail: 0,
-                pageX: 5,
-                pageY:5,            // long
-                screenX: 5,
-                screenY: 5,  // long
-                clientX: 5,
-                clientY: 5,   // long
-                ctrlKey: false,
-                altKey: false,
-                shiftKey:false,
-                metaKey: false, // boolean
-                touches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: retry
-                    }
-                ],            // TouchList
-                targetTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: retry
-                    }
-                ],      // TouchList
-                changedTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: retry
-                    }
-                ]
+            Y.one('.ez-retry').simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.assert(retryFired, "The retry event should have been fired");
+                });
             });
-            Y.assert(retryFired, "The retry event should have been fired");
+            this.wait();
         },
 
         "Should fire a close event when 'escape' hotkey is pressed": function () {
@@ -388,4 +146,4 @@ YUI.add('ez-errorview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Error View tests");
     Y.Test.Runner.add(viewTest);
 
-}, '0.0.1', {requires: ['test', 'event-tap', 'node-event-simulate', 'ez-errorview']});
+}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-errorview']});
