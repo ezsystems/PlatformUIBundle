@@ -56,6 +56,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
          */
         initializer: function () {
             var that = this;
+
             if (typeof google != 'object' || typeof google.maps != 'object') {
 
                 /* For a case when 2 or more similar editviews are trying to
@@ -115,7 +116,9 @@ YUI.add('ez-maplocation-editview', function (Y) {
         initMap: function () {
             var mapOptions = {
                     streetViewControl: CONTROL_STREET_VIEW,
-                    mapTypeControl: CONTROL_MAP_TYPE
+                    mapTypeControl: CONTROL_MAP_TYPE,
+                    zoom: DEFAULT_ZOOM_WITHOUT_LOCATION,
+                    center: new google.maps.LatLng(DEFAULT_LATITUDE_WITHOUT_LOCATION, DEFAULT_LONGITUDE_WITHOUT_LOCATION)
                 },
                 map,
                 marker,
@@ -126,16 +129,12 @@ YUI.add('ez-maplocation-editview', function (Y) {
             if (field.fieldValue) {
                 mapOptions.zoom = DEFAULT_ZOOM;
                 mapOptions.center = new google.maps.LatLng(field.fieldValue.latitude, field.fieldValue.longitude);
-            } else {
-                // Empty location
-                mapOptions.zoom = DEFAULT_ZOOM_WITHOUT_LOCATION;
-                mapOptions.center = new google.maps.LatLng(DEFAULT_LATITUDE_WITHOUT_LOCATION, DEFAULT_LONGITUDE_WITHOUT_LOCATION);
             }
 
-            // Saving coordinates into view attributes for the future use
-            this.set('latitude', mapOptions.center.lat());
-            this.set('longitude', mapOptions.center.lng());
+            // Saving location into view attribute for the future use
+            this.set('location', mapOptions.center);
 
+            // Creating a map
             map = new google.maps.Map(
                 this.get('container').one('.ez-maplocation-map-container').getDOMNode(),
                 mapOptions
@@ -151,8 +150,9 @@ YUI.add('ez-maplocation-editview', function (Y) {
             });
             this.set('marker', marker);
 
-            google.maps.event.addListener(marker, 'drag', Y.bind(this._markerDrag, this) );
-            google.maps.event.addListener(map, 'click', Y.bind(this._mapClick, this) );
+            google.maps.event.addListener(marker, 'drag', Y.bind(this._markerDrag, this));
+            google.maps.event.addListener(map, 'click', Y.bind(this._mapClick, this));
+            this.after('locationChange', Y.bind(this._locationChange, this))
         },
 
         /**
@@ -181,9 +181,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
                     function(results, status) {
                         button.removeClass(IS_LOADING_CLASS);
                         if (status == google.maps.GeocoderStatus.OK) {
-                            that.set('latitude', results[0].geometry.location.lat());
-                            that.set('longitude', results[0].geometry.location.lng());
-                            that._updateCoordinates();
+                            that.set('location', results[0].geometry.location);
                             that._updateMarkerPosition();
                             that._updateMapCenter();
                         } else {
@@ -236,10 +234,13 @@ YUI.add('ez-maplocation-editview', function (Y) {
                     function(myPosition) {
                         button.removeClass(IS_LOADING_CLASS);
 
-                        that.set('latitude', myPosition.coords.latitude);
-                        that.set('longitude', myPosition.coords.longitude);
-
-                        that._updateCoordinates();
+                        that.set(
+                            'location',
+                            new google.maps.LatLng(
+                                myPosition.coords.latitude,
+                                myPosition.coords.longitude
+                            )
+                        );
                         that._updateMarkerPosition();
                         that._updateMapCenter();
                     },
@@ -254,15 +255,20 @@ YUI.add('ez-maplocation-editview', function (Y) {
         },
 
         /**
-         * Updates the coordinates which are shown to the user in the "dashboard"
+         * Callback which is called upon any change of the 'location' attribute
+         * For now only updates the coordinates which are shown to the user
+         * in the "dashboard"
          *
          * @protected
-         * @method _updateCoordinates
+         * @method _locationChange
          */
-        _updateCoordinates: function () {
-            var container = this.get('container');
-            container.one(LATITUDE_SPAN_SEL).setHTML(this.get('latitude').toFixed(6));
-            container.one(LONGITUDE_SPAN_SEL).setHTML(this.get('longitude').toFixed(6));
+        _locationChange: function () {
+            var container = this.get('container'),
+                location = this.get('location');
+            if (location) {
+                container.one(LATITUDE_SPAN_SEL).setHTML(location.lat().toFixed(6));
+                container.one(LONGITUDE_SPAN_SEL).setHTML(location.lng().toFixed(6));
+            }
         },
 
         /**
@@ -272,12 +278,12 @@ YUI.add('ez-maplocation-editview', function (Y) {
          * @method _updateMarkerPosition
          */
         _updateMarkerPosition: function () {
-            this.get('marker').setPosition(
-                new google.maps.LatLng(
-                    this.get('latitude'),
-                    this.get('longitude')
-                )
-            );
+            var location = this.get('location');
+            if (location) {
+                this.get('marker').setPosition(
+                    location
+                );
+            }
         },
 
         /**
@@ -287,12 +293,12 @@ YUI.add('ez-maplocation-editview', function (Y) {
          * @method _updateMapCenter
          */
         _updateMapCenter: function () {
-            this.get('map').setCenter(
-                new google.maps.LatLng(
-                    this.get('latitude'),
-                    this.get('longitude')
-                )
-            );
+            var location = this.get('location');
+            if (location) {
+                this.get('map').setCenter(
+                    location
+                );
+            }
         },
 
         /**
@@ -303,10 +309,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
          * @param {Object} e the event object of the marker drag event
          */
         _markerDrag: function (e) {
-            this.set('latitude', e.latLng.lat());
-            this.set('longitude', e.latLng.lng());
-
-            this._updateCoordinates();
+            this.set('location', e.latLng);
         },
 
         /**
@@ -317,10 +320,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
          * @param {Object} e the event object of the map click event
          */
         _mapClick: function (e) {
-            this.set('latitude', e.latLng.lat());
-            this.set('longitude', e.latLng.lng());
-
-            this._updateCoordinates();
+            this.set('location', e.latLng);
             this._updateMarkerPosition();
         },
 
@@ -363,25 +363,14 @@ YUI.add('ez-maplocation-editview', function (Y) {
             },
 
             /**
-             * Latitude of the current location
+             * Current location
              *
-             * @attribute latitude
-             * @type {Float}
-             * @default 0
+             * @attribute location
+             * @type {google.maps.LatLng}
+             * @default null
              */
-            latitude: {
-                value: 0
-            },
-
-            /**
-             * Longitude of the current location
-             *
-             * @attribute longitude
-             * @type {Float}
-             * @default 0
-             */
-            longitude: {
-                value: 0
+            location: {
+                value: null
             }
         }
     });

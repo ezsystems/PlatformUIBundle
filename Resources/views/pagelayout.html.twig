@@ -259,30 +259,31 @@ YUI().use('ez-editorialapp', function (Y) {
             </label>
         </div>
         <div class="pure-u ez-editfield-input-area ez-default-error-style">
-            <div class="ez-editfield-widget ez-maplocation-widget">
-                <label
-                 for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-address">Address</label>
+            <div class="ez-maplocation-input-area">
+                <label class="ez-maplocation-address-label" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-address">
+                    Address:
+                </label>
+                <span class="ez-maplocation-find-address-errors"></span>
                 <div class="ez-widget-input ez-maplocation-find-address-input pure-g">
-                    <div class="pure-u-3-8">
-                        <input type="text"
+                    <div class="pure-u-5-8"><input type="text"
                          id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-address"
-                         value="{{ field.fieldValue.address }}">
-                        <p class="ez-maplocation-find-address-errors"></p>
-                    </div>
-                    <div class="pure-u-1-4">
+                         value="{{ field.fieldValue.address }}"
+                    ></div>
+                    <div class="pure-u-3-8">
                         <button class="pure-button ez-maplocation-find-address-button">Locate Address <span class="ez-button-loader"></span></button>
                     </div>
                 </div>
                 <div class="pure-g">
-                    <div class="pure-u-3-8">
+                    <div class="pure-u-5-8">
                         <div class="ez-maplocation-map-container"></div>
                     </div>
-                    <div class="pure-u-1-4">
+                    <div class="pure-u-3-8">
                         <div class="ez-maplocation-dashboard">
                             <div class="ez-maplocation-coordinates">
-                                <label>Longitude</label><span class="ez-maplocation-longitude">{{ field.fieldValue.longitude }}</span>
-                                <br/>
-                                <label>Latitude</label><span class="ez-maplocation-latitude">{{ field.fieldValue.latitude }}</span>
+                                <ul>
+                                    <li>Longitude: <strong class="ez-maplocation-longitude">{{ field.fieldValue.longitude }}</strong></li>
+                                    <li>Latitude: <strong class="ez-maplocation-latitude">{{ field.fieldValue.latitude }}</strong></li>
+                                </ul>
                             </div>
                             <button class="pure-button ez-maplocation-locate-me-button">Locate Me <span class="ez-button-loader"></span></button>
                             <p class="ez-maplocation-locate-me-errors"></p>

@@ -1,37 +1,46 @@
-.ez-maplocation-widget {
-    margin: 1.5em 2em;
+.ez-view-maplocationeditview .ez-maplocation-input-area {
+    padding: 1.5em 2em;
 }
 
-.ez-maplocation-widget .ez-maplocation-find-address-input input  {
+.ez-view-maplocationeditview .ez-maplocation-address-label {
+    display: inline-block;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-find-address-input input  {
     width: 100%;
 }
 
-.ez-maplocation-widget .ez-maplocation-find-address-errors,
-.ez-maplocation-widget .ez-maplocation-locate-me-errors {
+.ez-view-maplocationeditview .ez-maplocation-find-address-errors,
+.ez-view-maplocationeditview .ez-maplocation-locate-me-errors {
     margin: 0.5em 0 0 0;
 }
 
-.ez-maplocation-widget .ez-maplocation-map-container {
+.ez-view-maplocationeditview .ez-maplocation-map-container {
     width: 100%;
     margin-top: 1em;
     height: 250px;
 }
 
-.ez-maplocation-widget .ez-maplocation-dashboard {
+.ez-view-maplocationeditview .ez-maplocation-dashboard {
     padding: 1em;
     text-align: center;
 }
 
-.ez-maplocation-widget .ez-maplocation-coordinates {
+.ez-view-maplocationeditview .ez-maplocation-coordinates {
     width: 100%;
     padding: 1em 0.5em;
     margin-bottom: 1em;
+    text-align: left;
 }
 
-.ez-maplocation-widget .ez-maplocation-coordinates label {
+.ez-view-maplocationeditview .ez-maplocation-coordinates ul {
+    padding: 0 0.3em;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-coordinates label {
     display: inline-block;
 }
 
-.ez-maplocation-widget .ez-maplocation-coordinates label:after {
+.ez-view-maplocationeditview .ez-maplocation-coordinates label:after {
     content: ":\00a0";
 }

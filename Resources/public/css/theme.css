@@ -406,23 +406,20 @@
 }
 
 /* map location edit view */
-.ez-maplocation-widget .ez-maplocation-map-container {
+.ez-view-maplocationeditview .ez-maplocation-map-container {
     border: 1px solid #ccc;
 }
 
-.ez-maplocation-widget .ez-maplocation-find-address-button {
-    border-left: none;
+.ez-view-maplocationeditview .ez-maplocation-find-address-button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
-.ez-maplocation-widget .ez-maplocation-coordinates {
-    background-color: #ddd;
+.ez-view-maplocationeditview .ez-maplocation-coordinates {
+    background-color: #e8e8e8;
 }
 
-.ez-maplocation-widget .ez-maplocation-coordinates span {
-    font-weight: bold;
-}
-
-.ez-maplocation-widget .ez-maplocation-find-address-errors,
-.ez-maplocation-widget .ez-maplocation-locate-me-errors {
+.ez-view-maplocationeditview .ez-maplocation-find-address-errors,
+.ez-view-maplocationeditview .ez-maplocation-locate-me-errors {
     color: #BF3E33;
 }
