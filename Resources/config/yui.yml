@@ -104,4 +104,5 @@ parameters:
             ez-texthelper:
                 requires: ['handlebars']
                 path: js/helpers/ez-texthelper.js
+        base: extension/ezjscore/design/standard/lib/yui/3.14.0/build/
         filter: min
