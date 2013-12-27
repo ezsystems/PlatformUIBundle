@@ -8,7 +8,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             method: 'toJSON',
             returns: {}
         },
-        GESTURE_MAP = Y.Event._GESTURE_MAP,
         viewTest;
 
     content = new Y.Mock();
@@ -21,21 +20,11 @@ YUI.add('ez-contenteditview-tests', function (Y) {
     Y.Mock.expect(owner, mockConf);
     Y.Mock.expect(mainLocation, mockConf);
 
-    // trick to simulate a tap event
-    // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
-    Y.Node.prototype.tap = function (startOpts, endOpts) {
-        Y.Event.simulate(this._node, GESTURE_MAP.start, startOpts);
-        Y.Event.simulate(this._node, GESTURE_MAP.end, endOpts);
-    };
-    Y.NodeList.importMethod(Y.Node.prototype, 'tap');
-
     viewTest = new Y.Test.Case({
         name: "eZ Content Edit View test",
 
         _should: {
             ignore: {
-                // tap trick does not work in phantomjs
-                "Should fire a closeView event when tapping 'close' link": (Y.UA.phantomjs),
                  // not changing document.activeElement property in phantomjs
                 "Should focus on the content element using special method": (Y.UA.phantomjs)
             }
@@ -229,8 +218,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
 
         "Should fire a closeView event when tapping 'close' link": function () {
-            var closeFired = false,
-                close;
+            var closeFired = false, that = this;
 
             this.view.render();
 
@@ -238,124 +226,12 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 closeFired = true;
             });
 
-            close = Y.one('.ez-view-close');
-            close.tap({
-                target: close,
-                type: GESTURE_MAP.start,
-                bubbles: true,            // boolean
-                cancelable: true,         // boolean
-                view: window,               // DOMWindow
-                detail: 0,
-                pageX: 5,
-                pageY:5,            // long
-                screenX: 5,
-                screenY: 5,  // long
-                clientX: 5,
-                clientY: 5,   // long
-                ctrlKey: false,
-                altKey: false,
-                shiftKey:false,
-                metaKey: false, // boolean
-                touches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: close
-                    }
-                ],            // TouchList
-                targetTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: close
-                    }
-                ],      // TouchList
-                changedTouches: []     // TouchList
-            }, {
-                target: close,
-                type: GESTURE_MAP.end,
-                bubbles: true,            // boolean
-                cancelable: true,         // boolean
-                view: window,               // DOMWindow
-                detail: 0,
-                pageX: 5,
-                pageY:5,            // long
-                screenX: 5,
-                screenY: 5,  // long
-                clientX: 5,
-                clientY: 5,   // long
-                ctrlKey: false,
-                altKey: false,
-                shiftKey:false,
-                metaKey: false, // boolean
-                touches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: close
-                    }
-                ],            // TouchList
-                targetTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: close
-                    }
-                ],      // TouchList
-                changedTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: close
-                    }
-                ]
+            Y.one('.ez-view-close').simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.assert(closeFired, "The close event should have been fired");
+                });
             });
-            Y.assert(closeFired, "The close event should have been fired");
+            this.wait();
         },
 
         "Should fire a closeView event when 'escape' hotkey is pressed": function () {
@@ -458,4 +334,4 @@ YUI.add('ez-contenteditview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Content Edit View tests");
     Y.Test.Runner.add(viewTest);
 
-}, '0.0.1', {requires: ['test', 'event-tap', 'node-event-simulate', 'ez-contenteditview']});
+}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-contenteditview']});

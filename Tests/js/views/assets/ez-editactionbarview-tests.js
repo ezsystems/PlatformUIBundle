@@ -1,28 +1,12 @@
 YUI.add('ez-editactionbarview-tests', function (Y) {
     var viewContainer = Y.one('.container'),
         content = {},
-        GESTURE_MAP = Y.Event._GESTURE_MAP,
         VIEW_MORE_MENU_CLASS = ".view-more-actions",
         ACTIVE_MENU_CLASS = '.active-actions',
         viewTest;
 
-    // trick to simulate a tap event
-    // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
-    Y.Node.prototype.tap = function (startOpts, endOpts) {
-        Y.Event.simulate(this._node, GESTURE_MAP.start, startOpts);
-        Y.Event.simulate(this._node, GESTURE_MAP.end, endOpts);
-    };
-    Y.NodeList.importMethod(Y.Node.prototype, 'tap');
-
     viewTest = new Y.Test.Case({
         name: "eZ Action Bar test",
-
-        _should: {
-            ignore: {
-                "Should fire an action once any of the action labels are tapped": (Y.UA.phantomjs), // tap trick does not work in phantomjs
-                "Should open additional menu when tapping 'View more' button": (Y.UA.phantomjs) // tap trick does not work in phantomjs
-            }
-        },
 
         setUp: function () {
             this.view = new Y.eZ.EditActionBarView({
@@ -212,7 +196,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         },
 
         "Should open additional menu when tapping 'View more' button": function () {
-            var viewMoreButton, viewMoreMenu, counter;
+            var viewMoreButton, viewMoreMenu, counter, that = this;
 
             for (counter = 0; counter < 30; counter++) {
                 this.view.addAction(new Y.eZ.ButtonActionView({
@@ -231,124 +215,16 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
 
             Y.assert(viewMoreMenu.hasClass('is-hidden'), "Additional menu should NOT be visible before the tap" );
 
-            viewMoreButton.tap({
-                target: viewMoreButton,
-                type: GESTURE_MAP.start,
-                bubbles: true,            // boolean
-                cancelable: true,         // boolean
-                view: window,               // DOMWindow
-                detail: 0,
-                pageX: 5,
-                pageY:5,            // long
-                screenX: 5,
-                screenY: 5,  // long
-                clientX: 5,
-                clientY: 5,   // long
-                ctrlKey: false,
-                altKey: false,
-                shiftKey:false,
-                metaKey: false, // boolean
-                touches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: viewMoreButton
-                    }
-                ],            // TouchList
-                targetTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: viewMoreButton
-                    }
-                ],      // TouchList
-                changedTouches: []     // TouchList
-            }, {
-                target: viewMoreButton,
-                type: GESTURE_MAP.end,
-                bubbles: true,            // boolean
-                cancelable: true,         // boolean
-                view: window,               // DOMWindow
-                detail: 0,
-                pageX: 5,
-                pageY:5,            // long
-                screenX: 5,
-                screenY: 5,  // long
-                clientX: 5,
-                clientY: 5,   // long
-                ctrlKey: false,
-                altKey: false,
-                shiftKey:false,
-                metaKey: false, // boolean
-                touches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: viewMoreButton
-                    }
-                ],            // TouchList
-                targetTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: viewMoreButton
-                    }
-                ],      // TouchList
-                changedTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: viewMoreButton
-                    }
-                ]
+            viewMoreButton.simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.assert(
+                        !viewMoreMenu.hasClass('is-hidden'),
+                        "Additional menu should be visible after the tap"
+                    );
+                });
             });
 
-            Y.assert( !viewMoreMenu.hasClass('is-hidden'), "Additional menu should be visible after the tap" );
+            this.wait();
         }
 
     });
@@ -356,4 +232,4 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Action Bar tests");
     Y.Test.Runner.add(viewTest);
 
-}, '0.0.1', {requires: ['test', 'event-tap', 'node-event-simulate', 'ez-editactionbarview', 'ez-buttonactionview', 'ez-previewactionview']});
+}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-editactionbarview']});

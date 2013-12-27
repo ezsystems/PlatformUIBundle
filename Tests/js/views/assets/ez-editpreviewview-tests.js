@@ -1,6 +1,5 @@
 YUI.add('ez-editpreviewview-tests', function (Y) {
     var viewContainer = Y.one('.container'),
-        GESTURE_MAP = Y.Event._GESTURE_MAP,
         IS_HIDDEN_CLASS = 'is-hidden',
         IS_LOADING_CLASS = 'is-loading',
         mockContent = new Y.eZ.Content({
@@ -9,22 +8,8 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         }),
         viewTest;
 
-    // trick to simulate a tap event
-    // taken from https://github.com/yui/yui3/blob/master/src/event/tests/unit/assets/event-tap-functional-tests.js
-    Y.Node.prototype.tap = function (startOpts, endOpts) {
-        Y.Event.simulate(this._node, GESTURE_MAP.start, startOpts);
-        Y.Event.simulate(this._node, GESTURE_MAP.end, endOpts);
-    };
-    Y.NodeList.importMethod(Y.Node.prototype, 'tap');
-
     viewTest = new Y.Test.Case({
         name: "eZ Edit Preview View test",
-
-        _should: {
-            ignore: {
-                "Should hide itself once 'Close preview' link is tapped": (Y.UA.phantomjs) // tap trick does not work in phantomjs
-            }
-        },
 
         setUp: function () {
             this.view = new Y.eZ.EditPreviewView({
@@ -106,136 +91,24 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         },
 
         "Should hide itself once 'Close preview' link is tapped": function () {
-            var hidePreview, previewNode;
+            var previewNode, that = this;
 
             this.view.render();
 
             previewNode = this.view.get('container').get('parentNode');
-            hidePreview = previewNode.one('.ez-preview-hide');
-
-            hidePreview.tap({
-                target: hidePreview,
-                type: GESTURE_MAP.start,
-                bubbles: true,            // boolean
-                cancelable: true,         // boolean
-                view: window,               // DOMWindow
-                detail: 0,
-                pageX: 5,
-                pageY:5,            // long
-                screenX: 5,
-                screenY: 5,  // long
-                clientX: 5,
-                clientY: 5,   // long
-                ctrlKey: false,
-                altKey: false,
-                shiftKey:false,
-                metaKey: false, // boolean
-                touches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: hidePreview
-                    }
-                ],            // TouchList
-                targetTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: hidePreview
-                    }
-                ],      // TouchList
-                changedTouches: []     // TouchList
-            }, {
-                target: hidePreview,
-                type: GESTURE_MAP.end,
-                bubbles: true,            // boolean
-                cancelable: true,         // boolean
-                view: window,               // DOMWindow
-                detail: 0,
-                pageX: 5,
-                pageY:5,            // long
-                screenX: 5,
-                screenY: 5,  // long
-                clientX: 5,
-                clientY: 5,   // long
-                ctrlKey: false,
-                altKey: false,
-                shiftKey:false,
-                metaKey: false, // boolean
-                touches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: hidePreview
-                    }
-                ],            // TouchList
-                targetTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: hidePreview
-                    }
-                ],      // TouchList
-                changedTouches: [
-                    {
-                        identifier: 'foo',
-                        screenX: 5,
-                        screenY: 5,
-                        clientX: 5,
-                        clientY: 5,
-                        pageX: 5,
-                        pageY: 5,
-                        radiusX: 15,
-                        radiusY: 15,
-                        rotationAngle: 0,
-                        force: 0.5,
-                        target: hidePreview
-                    }
-                ]
+            previewNode.one('.ez-preview-hide').simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.assert(
+                        previewNode.hasClass(IS_HIDDEN_CLASS),
+                        "After tapping 'Close preview' tap, the preview should be hidden"
+                    );
+                });
             });
-
-            Y.assert(previewNode.hasClass(IS_HIDDEN_CLASS), "After 'Close preview' tap, certain class should be added to container's parent node");
+            this.wait();
         }
-
     });
 
     Y.Test.Runner.setName("eZ Edit Preview View tests");
     Y.Test.Runner.add(viewTest);
 
-}, '0.0.1', {requires: ['test', 'event-tap', 'node-event-simulate', 'ez-editpreviewview', 'ez-contentmodel']});
+}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-editpreviewview', 'ez-contentmodel']});
