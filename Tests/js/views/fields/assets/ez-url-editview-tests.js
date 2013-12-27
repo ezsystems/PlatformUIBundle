@@ -75,11 +75,11 @@ YUI.add('ez-url-editview-tests', function (Y) {
             this._testAvailableVariables(false, false);
         },
 
-        "Test variables for required field": function () {
+        "Test variables for required URL field": function () {
             this._testAvailableVariables(true, true);
         },
 
-        "Test validation without constraints": function () {
+        "Test validation for not required URL field": function () {
             var fieldDefinition = this._getFieldDefinition(false),
                 input;
 
@@ -92,22 +92,25 @@ YUI.add('ez-url-editview-tests', function (Y) {
                 "An empty input is valid"
             );
 
-            input = Y.one('.container input');
+            input = Y.one('.container .ez-url-field-value');
             input.set('value', 'foobar');
+            this.view.validate();
             Y.Assert.isFalse(
                 this.view.get('errorStatus'),
                 "A non empty input is valid"
             );
         },
 
-        "Test validation for a required field": function () {
+        "Test validation for required URL field": function () {
             var fieldDefinition = this._getFieldDefinition(true),
-                input;
+                input,
+                titleInput;
 
             this.view.set('fieldDefinition', fieldDefinition);
             this.view.render();
 
-            input = Y.one('.container input');
+            input = Y.one('.container .ez-url-field-value');
+            titleInput = Y.one('.container .ez-url-title-value');
 
             input.set('value', 'foobar');
             this.view.validate();
@@ -121,6 +124,14 @@ YUI.add('ez-url-editview-tests', function (Y) {
             Y.Assert.isTrue(
                 !!this.view.get('errorStatus'),
                 "An empty input is invalid"
+            );
+
+            input.set('value', '');
+            titleInput.set('value', 'Some title');
+            this.view.validate();
+            Y.Assert.isTrue(
+                !!this.view.get('errorStatus'),
+                "An empty input is invalid, even when URL title is filled in"
             );
         }
     });

@@ -1,7 +1,7 @@
 YUI.add('ez-url-editview', function (Y) {
     "use strict";
     /**
-     * Provides the field edit view for the Url (ezstring) fields
+     * Provides the field edit view for the Url (ezurl) fields
      *
      * @module ez-url-editview
      */
@@ -20,7 +20,7 @@ YUI.add('ez-url-editview', function (Y) {
      */
     Y.eZ.UrlEditView = Y.Base.create('urlEditView', Y.eZ.FieldEditView, [], {
         events: {
-            '.ez-widget-primary-input input': {
+            '.ez-url-field-value': {
                 'blur': 'validate',
                 'valuechange': 'validate'
             }
@@ -64,7 +64,7 @@ YUI.add('ez-url-editview', function (Y) {
          * @return {ValidityState}
          */
         _getInputValidity: function () {
-            return this.get('container').one('.ez-widget-primary-input input').get('validity');
+            return this.get('container').one('.ez-url-field-value').get('validity');
         }
     });
 

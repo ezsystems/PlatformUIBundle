@@ -28,8 +28,7 @@
     content: ":";
 }
 
-.ez-editfield-input:before,
-.ez-editfield-widget .ez-widget-primary-input:before{
+.ez-editfield-input:before {
     width: 2em;
     margin-left: -2em;
     display: inline-block;

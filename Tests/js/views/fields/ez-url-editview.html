@@ -8,10 +8,9 @@
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="urleditview-ez-template">
-    <p class="ez-widget-primary-input">
-        <input type="text"
-            {{#if isRequired}}required{{/if}}
-        >
+    <p class="ez-editfield-input-area">
+        <input type="text" class="ez-url-field-value" {{#if isRequired}}required{{/if}}>
+        <input type="text" class="ez-url-title-value">
     </p>
     <p class="ez-editfield-error-message"></p>
 </script>

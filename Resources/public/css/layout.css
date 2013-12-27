@@ -122,3 +122,12 @@
     height: 2em;
     font-size: 200%;
 }
+
+.ez-editfield-input-area .ez-field-sublabel {
+    display: block;
+    margin: 0 2em;
+}
+
+.ez-editfield-input-area .ez-field-sublabel.ez-first-sublabel {
+    padding-top: 1.4em; /* Not 1.5em because we are compensating for normal font-weight */
+}
