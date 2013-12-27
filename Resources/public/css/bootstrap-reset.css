@@ -25,3 +25,7 @@
 .ez-editorial-app textarea {
     border-radius: 0;
 }
+
+label, input, button, select, textarea {
+    line-height: normal;
+}

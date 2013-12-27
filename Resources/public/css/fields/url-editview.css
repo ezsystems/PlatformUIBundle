@@ -1,6 +1,6 @@
 .ez-view-urleditview .ez-editfield-input,
 .ez-view-urleditview .ez-editfield-input-no-validation {
-    margin: 0 2em 1em 2em;
+    margin-top: 0.3em;
 }
 
 .ez-url-input-ui {
@@ -9,5 +9,5 @@
 }
 
 .ez-url-input-ui input {
-    width: 33%;
+    width: 100%;
 }
