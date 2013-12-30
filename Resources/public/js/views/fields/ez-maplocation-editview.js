@@ -1,6 +1,7 @@
 /* global google */
 YUI.add('ez-maplocation-editview', function (Y) {
     "use strict";
+
     /**
      * Provides the field edit view for the Map Location (ezstring) fields
      *
@@ -28,7 +29,78 @@ YUI.add('ez-maplocation-editview', function (Y) {
         IS_LOADING_CLASS = "is-loading",
         IS_ERROR_CLASS = "is-error",
         IS_BUTTON_DISABLED_CLASS = "pure-button-disabled",
-        ENTER_KEY = 13;
+        ENTER_KEY = 13,
+        GOOGLE_MAP_API_READY = 'googleMapAPIReady',
+        GOOGLE_MAP_API_FAILED = 'googleMapAPIFailed',
+        gMapLoader;
+
+    /**
+     * A Component with one specific task - try to load Google Maps API and fire
+     * the GOOGLE_MAP_API_READY event in case of success or
+     * GOOGLE_MAP_API_FAILED event in case of problems encountered
+     *
+     * @class GoogleMapAPILoader
+     * @constructor
+     */
+    function GoogleMapAPILoader() {
+        this.publish(GOOGLE_MAP_API_READY, {
+                fireOnce: true
+            }
+        );
+        this.publish(GOOGLE_MAP_API_FAILED, {
+                fireOnce: true
+            }
+        );
+    }
+
+    GoogleMapAPILoader.prototype = {
+        /**
+         * Trying to load Google Maps API via JSONP firing an event with results
+         *
+         * @method load
+         */
+        load: function () {
+            var that = this;
+
+            if (this._isLoading) {
+                // Avoiding concurrent loading
+                return;
+            }
+
+            if (typeof google == 'object' && typeof google.maps == 'object') {
+                // Google maps API is already loaded
+                this.fire(GOOGLE_MAP_API_READY);
+            } else {
+                this._isLoading = true;
+                Y.jsonp('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}', {
+                    on: {
+                        success: function () {
+                            that._isLoading = false;
+                            that.fire(GOOGLE_MAP_API_READY);
+                        },
+                        failure: function () {
+                            that._isLoading = false;
+                            that.fire(GOOGLE_MAP_API_FAILED);
+                        }
+                    }
+                });
+            }
+        },
+
+        /**
+         * Flag indicating if the loader is currently in progress of loading.
+         * Needed to avoid concurrent loading.
+         *
+         * @property _isLoading = false
+         * @type boolean
+         * @protected
+         */
+        _isLoading: false
+    };
+
+    Y.augment(GoogleMapAPILoader, Y.EventTarget);
+
+    gMapLoader = new GoogleMapAPILoader();
 
     /**
      * Map Location edit view
@@ -52,54 +124,27 @@ YUI.add('ez-maplocation-editview', function (Y) {
         },
 
         /**
-         * Custom initializer method, it initializes google maps API (if needed)
+         * Custom initializer method, it initializes maps API loader and
+         * initializes the map in case of success, or shows an error message in
+         * case of failure
          *
          * @method initializer
          */
         initializer: function () {
-            var that = this;
+            var that = this,
+                mapLoader = this.get('mapAPILoader');
 
-            if (typeof google != 'object' || typeof google.maps != 'object') {
+            mapLoader.on(GOOGLE_MAP_API_READY, function () {
+                that.initMap();
+            });
 
-                /* For a case when 2 or more similar editviews are trying to
-                 load we have to create a queue workflow, so the google maps API
-                 will be loaded only once and at the same time each map will be
-                 initialized after the API retrieval */
-                window.eZ = window.eZ || {};
-                if (window.eZ.mapLocationEditViewQueue) {
-                    window.eZ.mapLocationEditViewQueue.push({
-                        run: this.initMap,
-                        context: this
-                    });
-                } else {
-                    window.eZ.mapLocationEditViewQueue = [];
-                    window.eZ.mapLocationEditViewQueue.push({
-                        run: this.initMap,
-                        context: this
-                    });
+            mapLoader.on(GOOGLE_MAP_API_FAILED, function () {
+                var container = that.get('container');
+                container.one(ERRORS_SEL).setHTML('Failed to retrieve Google Maps API');
+                container.all(COORDINATES_SEL).removeClass(IS_LOADING_CLASS);
+            });
 
-                    Y.jsonp('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}', {
-                        on: {
-                            success: function () {
-                                var mapInitializer;
-
-                                // Emptying the queue
-                                while (!!(mapInitializer = window.eZ.mapLocationEditViewQueue.shift())) {
-                                    mapInitializer.run.apply(mapInitializer.context);
-                                }
-                            },
-                            failure: function () {
-                                var container = that.get('container');
-                                container.one(ERRORS_SEL).setHTML('Failed to retrieve Google Maps API');
-                                container.all(COORDINATES_SEL).removeClass(IS_LOADING_CLASS);
-                            }
-                        }
-                    });
-                }
-            } else {
-                // Google maps API is already loaded
-                this.initMap();
-            }
+            mapLoader.load();
         },
 
         /**
@@ -386,6 +431,20 @@ YUI.add('ez-maplocation-editview', function (Y) {
              */
             location: {
                 value: null
+            },
+
+            /**
+             * Instance of a map API loader component which is shared
+             * between all the MapLocationEditView's instances
+             *
+             * @attribute mapAPILoader
+             * @type {Object} instance of a map loader component (for now only GoogleMapAPILoader supported)
+             * @default null
+             */
+            mapAPILoader: {
+                value: gMapLoader,
+                cloneDefaultValue: false, // important so that all the MapLocationEditView instances have the same loader instance
+                readOnly: true
             }
         }
     });
@@ -393,4 +452,8 @@ YUI.add('ez-maplocation-editview', function (Y) {
     Y.eZ.FieldEditView.registerFieldEditView(
         FIELDTYPE_IDENTIFIER, Y.eZ.MapLocationEditView
     );
+
+    // exposing the GoogleMapAPILoader component so it can be unit tested
+    Y.eZ.MapLocationEditView.GoogleMapAPILoader = GoogleMapAPILoader;
+
 });
