@@ -3,6 +3,10 @@
     margin-top: 0.3em;
 }
 
+.ez-view-urleditview .ez-field-sublabel:first-of-type {
+    padding-top: 1.5em;
+}
+
 .ez-url-input-ui {
     width: 100%;
     display: inline-block;
