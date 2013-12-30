@@ -1,16 +1,17 @@
 .ez-view-maplocationeditview .ez-maplocation-input-area {
-    padding: 1.5em 2em;
+    padding: 0 2em;
 }
 
 .ez-view-maplocationeditview .ez-maplocation-address-label {
     display: inline-block;
+    margin-left: 0;
 }
 
 .ez-view-maplocationeditview .ez-maplocation-find-address-input input  {
     width: 100%;
 }
 
-.ez-view-maplocationeditview .ez-maplocation-find-address-errors,
+.ez-view-maplocationeditview .ez-maplocation-errors,
 .ez-view-maplocationeditview .ez-maplocation-locate-me-errors {
     margin: 0.5em 0 0 0;
 }

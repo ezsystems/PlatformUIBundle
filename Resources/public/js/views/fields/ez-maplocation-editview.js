@@ -19,13 +19,15 @@ YUI.add('ez-maplocation-editview', function (Y) {
         CONTROL_STREET_VIEW = false,
         FIND_ADDRESS_BUTTON_SEL = ".ez-maplocation-find-address-button",
         FIND_ADDRESS_INPUT_SEL = ".ez-maplocation-find-address-input input",
-        FIND_ADDRESS_ERRORS_SEL = ".ez-maplocation-find-address-errors",
+        ERRORS_SEL = ".ez-maplocation-errors",
         LATITUDE_SPAN_SEL = ".ez-maplocation-latitude",
         LONGITUDE_SPAN_SEL = ".ez-maplocation-longitude",
         LOCATE_ME_BUTTON_SEL = ".ez-maplocation-locate-me-button",
         LOCATE_ME_ERRORS_SEL = ".ez-maplocation-locate-me-errors",
+        COORDINATES_SEL = ".ez-maplocation-coordinates li",
         IS_LOADING_CLASS = "is-loading",
         IS_ERROR_CLASS = "is-error",
+        IS_BUTTON_DISABLED_CLASS = "pure-button-disabled",
         ENTER_KEY = 13;
 
     /**
@@ -87,16 +89,9 @@ YUI.add('ez-maplocation-editview', function (Y) {
                                 }
                             },
                             failure: function () {
-                                that.fire('fatalError', {
-                                    retryAction: {
-                                        run: that.initializer,
-                                        args: [],
-                                        context: that
-                                    },
-                                    additionalInfo: {
-                                        errorText: "Failed to retrieve Google Maps API"
-                                    }
-                                });
+                                var container = that.get('container');
+                                container.one(ERRORS_SEL).setHTML('Failed to retrieve Google Maps API');
+                                container.all(COORDINATES_SEL).removeClass(IS_LOADING_CLASS);
                             }
                         }
                     });
@@ -132,6 +127,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
             }
 
             // Saving location into view attribute for the future use
+            this.after('locationChange', Y.bind(this._locationChange, this));
             this.set('location', mapOptions.center);
 
             // Creating a map
@@ -152,7 +148,26 @@ YUI.add('ez-maplocation-editview', function (Y) {
 
             google.maps.event.addListener(marker, 'drag', Y.bind(this._markerDrag, this));
             google.maps.event.addListener(map, 'click', Y.bind(this._mapClick, this));
-            this.after('locationChange', Y.bind(this._locationChange, this))
+            google.maps.event.addListenerOnce(map, 'idle', Y.bind(this._mapFirstLoad, this));
+        },
+
+        /**
+         * Event which is triggered only the first time the map is fully loaded
+         * (http://stackoverflow.com/questions/832692/how-to-check-if-google-maps-is-fully-loaded)
+         * For now enabling buttons (if needed) and switching off loaders
+         *
+         * @protected
+         * @method _mapFirstLoad
+         */
+        _mapFirstLoad: function () {
+            var container = this.get('container');
+
+            container.one(FIND_ADDRESS_BUTTON_SEL).removeClass(IS_BUTTON_DISABLED_CLASS);
+            container.all(COORDINATES_SEL).removeClass(IS_LOADING_CLASS);
+
+            if (navigator && navigator.geolocation) {
+                container.one(LOCATE_ME_BUTTON_SEL).removeClass(IS_BUTTON_DISABLED_CLASS);
+            }
         },
 
         /**
@@ -168,7 +183,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
                 container = this.get('container'),
                 button = container.one(FIND_ADDRESS_BUTTON_SEL),
                 addressInput = container.one(FIND_ADDRESS_INPUT_SEL),
-                errorsOutput = container.one(FIND_ADDRESS_ERRORS_SEL);
+                errorsOutput = container.one(ERRORS_SEL);
 
             if (typeof google === 'object' || typeof google.maps === 'object') {
 

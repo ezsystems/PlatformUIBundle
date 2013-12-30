@@ -11,6 +11,15 @@
     width: 100%;
 }
 
+.ez-editfield-input-area .ez-field-sublabel {
+    display: block;
+    margin: 0 2em 0.3em 2em;
+}
+
+.ez-editfield-input-area .ez-field-sublabel.ez-first-sublabel {
+    padding-top: 1.5em;
+}
+
 .ez-editfield-input {
     height: 1.8em;
     margin: 1em 2em;

@@ -90,16 +90,13 @@
     min-height: 5em;
 }
 
-.ez-editorial-app input,
-.ez-editorial-app select,
-.ez-editorial-app textarea,
-.ez-editorial-app .ez-simple-button {
-    vertical-align: middle;
-}
-
 .ez-editorial-app .pure-button {
     height: 1.8em;
     padding: 0 1.5em;
+}
+
+.ez-editorial-app label {
+    margin-bottom: 0.3em;
 }
 
 .is-app-open {
@@ -144,14 +141,13 @@
     padding-top: 1.4em; /* Not 1.5em because we are compensating for normal font-weight */
 }
 
-.ez-editorial-app .ez-button-loader {
-    vertical-align: bottom;
+.ez-editorial-app .ez-inline-loader {
     height: 16px;
     width: 16px;
     display: none;
 }
 
-.ez-editorial-app .is-loading > .ez-button-loader {
+.ez-editorial-app .is-loading > .ez-inline-loader {
     display: inline-block;
 }
 
