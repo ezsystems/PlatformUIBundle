@@ -23,10 +23,10 @@ YUI.add('ez-fieldeditview', function (Y) {
         ERROR_CLASS = 'is-error',
         _events= {
             ".ez-editfield-i": {
-                tap: "_handleInfoTap"
+                "tap": "_handleInfoTap"
             },
             ".ez-fielddefinition-tooltip-close": {
-                tap: "_handleCloseTooltipTap"
+                "tap": "_handleCloseTooltipTap"
             }
         };
 
@@ -127,15 +127,15 @@ YUI.add('ez-fieldeditview', function (Y) {
          * @protected
          */
         _createTooltipNode: function () {
-            var description = this.get('fieldDefinition').descriptions['eng-GB'],
-                fieldNameNode = this.get('container').one(FIELD_NAME_SEL),
+            var fieldNameNode = this.get('container').one(FIELD_NAME_SEL),
+                fieldDefinition = this.get('fieldDefinition'),
                 tooltipNode;
 
-            if (description) {
+            if (fieldDefinition && fieldDefinition.descriptions &&  fieldDefinition.descriptions['eng-GB']) {
                 tooltipNode = Y.Node.create([
                     '<div class="' + TOOLTIP_CLASS + ' ' + TOOLTIP_TAIL_UP_CLASS + '">',
                     '<div class="' + TOOLTIP_TEXT_CLASS + '">',
-                    description,
+                    fieldDefinition.descriptions['eng-GB'],
                     '<br/>',
                     '<a class="' + TOOLTIP_CLOSE_CLASS + '" href="#close-tooltip">',
                     TOOLTIP_CLOSE_TEXT,

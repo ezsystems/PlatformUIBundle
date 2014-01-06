@@ -5,9 +5,14 @@
 </head>
 <body>
 
-<div class="container"></div>
-
-<script type="text/x-handlebars-template" id="fieldeditview-ez-template"><p class="ez-editfield-error-message">default content</p></script>
+<script type="text/x-handlebars-template" id="fieldeditview-ez-template">
+    <div>
+        <div class="ez-fielddefinition-name">
+            <div class="ez-editfield-i">?</div>
+        </div>
+        <div class="ez-editfield-error-message">default content</div>
+    </div>
+</script>
 
 
 <script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
@@ -30,7 +35,7 @@
         filter: loaderFilter,
         modules: {
             "ez-fieldeditview": {
-                requires: ['ez-templatebasedview'],
+                requires: ['ez-templatebasedview', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-fieldeditview.js"
             },
             "ez-templatebasedview": {
