@@ -108,15 +108,15 @@ YUI.add('ez-textline-editview-tests', function (Y) {
             this.view.render();
 
             this.view.validate();
-            Y.Assert.isFalse(
-                this.view.get('errorStatus'),
+            Y.Assert.isTrue(
+                this.view.isValid(),
                 "An empty input is valid"
             );
 
             input = Y.one('.container input');
             input.set('value', 'foobar');
-            Y.Assert.isFalse(
-                this.view.get('errorStatus'),
+            Y.Assert.isTrue(
+                this.view.isValid(),
                 "A non empty input is valid"
             );
         },
@@ -132,15 +132,15 @@ YUI.add('ez-textline-editview-tests', function (Y) {
 
             input.set('value', 'foobar');
             this.view.validate();
-            Y.Assert.isFalse(
-                this.view.get('errorStatus'),
+            Y.Assert.isTrue(
+                this.view.isValid(),
                 "A non empty input is valid"
             );
 
             input.set('value', '');
             this.view.validate();
-            Y.Assert.isTrue(
-                !!this.view.get('errorStatus'),
+            Y.Assert.isFalse(
+                this.view.isValid(),
                 "An empty input is invalid"
             );
         },

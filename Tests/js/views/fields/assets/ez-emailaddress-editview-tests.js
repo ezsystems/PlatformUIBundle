@@ -90,22 +90,22 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
 
             input.set('value', 'foobar@');
             this.view.validate();
-            Y.Assert.isTrue(
-                !!this.view.get('errorStatus'),
+            Y.Assert.isFalse(
+                this.view.isValid(),
                 "An invalid email is NOT valid"
             );
 
             input.set('value', 'foobar@foobar.com');
             this.view.validate();
-            Y.Assert.isFalse(
-                this.view.get('errorStatus'),
+            Y.Assert.isTrue(
+                this.view.isValid(),
                 "A valid email is valid"
             );
 
             input.set('value', '');
             this.view.validate();
-            Y.Assert.isTrue(
-                !!this.view.get('errorStatus'),
+            Y.Assert.isFalse(
+                this.view.isValid(),
                 "An empty input is NOT valid"
             );
         },
