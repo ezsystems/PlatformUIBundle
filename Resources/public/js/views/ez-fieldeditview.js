@@ -131,40 +131,32 @@ YUI.add('ez-fieldeditview', function (Y) {
                 tooltipHeight,
                 infoIconHeight;
 
-            if (tooltip) {
-                // First, displaying the tooltip but with zero opacity to check
-                // if it fits on the screen.
-                // By the way 'getComputedStyle' method flushes all pending
-                // style changes and forces the layout engine to compute our
-                // <div>’s current state, so opacity transition works even for
-                // newly created DOM element: http://timtaubert.de/blog/2012/09/css-transitions-for-dynamically-created-dom-elements/
-                tooltip.addClass(IS_DISPLAYED_CLASS);
+            tooltip.addClass(IS_DISPLAYED_CLASS);
+            tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
+            infoIconHeight = parseInt(infoIcon.getComputedStyle('height'), 10);
+
+            if (infoIcon.getY() - scrollHeight + infoIconHeight + tooltipHeight > screenHeight) {
+                // When tooltip does not fit on the screen changing it's
+                // tail and position
+                tooltip.addClass(TOOLTIP_TAIL_DOWN_CLASS);
+                tooltip.removeClass(TOOLTIP_TAIL_UP_CLASS);
                 tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
-                infoIconHeight = parseInt(infoIcon.getComputedStyle('height'), 10);
-
-                if (infoIcon.getY() - scrollHeight + infoIconHeight + tooltipHeight > screenHeight) {
-                    // When tooltip does not fit on the screen changing it's
-                    // tail and position
-                    tooltip.addClass(TOOLTIP_TAIL_DOWN_CLASS);
-                    tooltip.removeClass(TOOLTIP_TAIL_UP_CLASS);
-                    tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
-                    tooltip.setY(infoIcon.getY() - tooltipHeight);
-                } else {
-                    // Otherwise making sure, that the default tail is in place
-                    // and removing changes to the tooltip position (if any)
-                    if (tooltip.hasClass(TOOLTIP_TAIL_DOWN_CLASS)) {
-                        tooltip.addClass(TOOLTIP_TAIL_UP_CLASS);
-                        tooltip.removeClass(TOOLTIP_TAIL_DOWN_CLASS);
-                        tooltip.setStyle('top', 'auto');
-                    }
+                tooltip.setY(infoIcon.getY() - tooltipHeight);
+            } else {
+                // Otherwise making sure, that the default tail is in place
+                // and removing changes to the tooltip position (if any)
+                if (tooltip.hasClass(TOOLTIP_TAIL_DOWN_CLASS)) {
+                    tooltip.addClass(TOOLTIP_TAIL_UP_CLASS);
+                    tooltip.removeClass(TOOLTIP_TAIL_DOWN_CLASS);
+                    tooltip.setStyle('top', 'auto');
                 }
-
-                // Changing opacity to 1 with transition (tooltip goes visible)
-                tooltip.addClass(IS_VISIBLE_CLASS);
-
-                // Clicks anywhere outside of the tooltip should close it
-                tooltip.on('clickoutside', Y.bind(this._handleClickOutside, this));
             }
+
+            // Changing opacity to 1 with transition (tooltip goes visible)
+            tooltip.addClass(IS_VISIBLE_CLASS);
+
+            // Clicks anywhere outside of the tooltip should close it
+            tooltip.on('clickoutside', Y.bind(this._handleClickOutside, this));
         },
 
         /**
@@ -176,13 +168,11 @@ YUI.add('ez-fieldeditview', function (Y) {
         _hideTooltip: function () {
             var tooltip = this.get('container').one(TOOLTIP_SEL);
 
-            if (tooltip) {
-                tooltip.removeClass(IS_VISIBLE_CLASS);
-                tooltip.removeClass(IS_DISPLAYED_CLASS);
+            tooltip.removeClass(IS_VISIBLE_CLASS);
+            tooltip.removeClass(IS_DISPLAYED_CLASS);
 
-                // Detaching subscription to any clicks outside of the tooltip
-                tooltip.detach('clickoutside');
-            }
+            // Detaching subscription to any clicks outside of the tooltip
+            tooltip.detach('clickoutside');
         },
 
         /**
