@@ -25,6 +25,7 @@
     '@eZEditorialBundle/Resources/public/css/editpreviewview.css'
     '@eZEditorialBundle/Resources/public/css/fieldeditview.css'
     '@eZEditorialBundle/Resources/public/css/fields/textline-editview.css'
+    '@eZEditorialBundle/Resources/public/css/fields/textblock-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/emailaddress-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/float-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/integer-editview.css'
@@ -170,6 +171,30 @@ YUI().use('ez-editorialapp', function (Y) {
                     {{#if maxLength}} maxlength="{{ maxLength }}"{{/if}}
                     {{#if minLengthPattern}} pattern="{{ minLengthPattern }}"{{/if}}
                 ></div></div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="textblockeditview-ez-template">
+    <div class="pure-g ez-editfield-row">
+        <div class="pure-u ez-editfield-infos">
+            <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+                <p class="ez-fielddefinition-name">
+                    {{#if fieldDefinition.descriptions.[eng-GB]}}
+                    <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
+                    {{/if}}
+                    {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+                </p>
+                <p class="ez-editfield-error-message">&nbsp;</p>
+            </label>
+        </div>
+        <div class="pure-u ez-editfield-input-area ez-default-error-style">
+            <div class="ez-editfield-input"><div class="ez-textblock-input-ui">
+                <textarea
+                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+                rows="{{ fieldDefinition.fieldSettings.textRows }}"
+                {{#if isRequired}} required{{/if}}>{{ field.fieldValue }}</textarea>
+            </div></div>
         </div>
     </div>
 </script>
