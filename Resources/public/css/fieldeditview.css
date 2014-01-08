@@ -11,8 +11,13 @@
     width: 100%;
 }
 
-.ez-editfield-input {
-    height: 1.8em;
+.ez-editfield-input-area .ez-field-sublabel {
+    display: block;
+    margin: 0 2em;
+}
+
+.ez-editfield-input,
+.ez-editfield-input-no-validation {
     margin: 1em 2em;
 }
 

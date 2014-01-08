@@ -26,6 +26,7 @@
     '@eZEditorialBundle/Resources/public/css/fieldeditview.css'
     '@eZEditorialBundle/Resources/public/css/fields/textline-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/emailaddress-editview.css'
+    '@eZEditorialBundle/Resources/public/css/fields/url-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/float-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/integer-editview.css'
     '@eZEditorialBundle/Resources/public/css/errorview.css'
@@ -193,6 +194,40 @@ YUI().use('ez-editorialapp', function (Y) {
                     id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
                     {{#if isRequired}} required{{/if}}
                 ></div></div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="urleditview-ez-template">
+    <div class="pure-g ez-editfield-row">
+        <div class="pure-u ez-editfield-infos">
+            <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-link">
+                <p class="ez-fielddefinition-name">
+                    {{#if fieldDefinition.descriptions.[eng-GB]}}
+                    <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
+                    {{/if}}
+                    {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+                </p>
+                <p class="ez-editfield-error-message">&nbsp;</p>
+            </label>
+        </div>
+        <div class="pure-u ez-editfield-input-area ez-default-error-style">
+            <label class="ez-field-sublabel ez-first-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-link">
+                URL{{#if isRequired}}*{{/if}}:
+            </label>
+            <div class="ez-editfield-input"><div class="ez-url-input-ui"><input type="text"
+                class="ez-url-field-value"
+                value="{{ field.fieldValue.link }}"
+                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-link"
+                {{#if isRequired}} required{{/if}}
+            ></div></div>
+            <label class="ez-field-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-text">
+                Text:
+            </label>
+            <div class="ez-editfield-input-no-validation"><div class="ez-url-input-ui"><input type="text"
+                value="{{ field.fieldValue.text }}"
+                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-text"
+            ></div></div>
         </div>
     </div>
 </script>
