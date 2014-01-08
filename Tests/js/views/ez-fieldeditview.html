@@ -7,13 +7,26 @@
 
 <script type="text/x-handlebars-template" id="fieldeditview-ez-template">
     <div>
+        {{#if fieldDefinition.descriptions.[eng-GB]}}
+        {{> ezFieldinfoTooltip }}
+        {{/if}}
         <div class="ez-fielddefinition-name">
-            <div class="ez-editfield-i">?</div>
         </div>
         <div class="ez-editfield-error-message">default content</div>
     </div>
 </script>
 
+<script type="text/x-handlebars-template" class="ez-editorial-app-partial" id="ezFieldinfoTooltip">
+    <div class="ez-editfield-i">?</div>
+    <div class="ez-fielddefinition-tooltip ez-tail-up-tooltip">
+        <div class="ez-fielddefinition-tooltip-text">
+            <a class="ez-fielddefinition-tooltip-close" href="#close-tooltip" data-icon="&#xe000;">
+                Close
+            </a><br/>
+            {{ fieldDefinition.descriptions.[eng-GB] }}
+        </div>
+    </div>
+</script>
 
 <script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-fieldeditview-tests.js"></script>

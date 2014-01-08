@@ -9,21 +9,16 @@ YUI.add('ez-fieldeditview', function (Y) {
     Y.namespace('eZ');
 
     var L = Y.Lang,
-        FIELD_NAME_SEL = '.ez-fielddefinition-name',
-        FIELD_INFO_SEL = '.ez-editfield-i',
+        FIELD_INFO_ICON_SEL = '.ez-editfield-i',
         TOOLTIP_SEL = '.ez-fielddefinition-tooltip',
-        TOOLTIP_CLASS = 'ez-fielddefinition-tooltip',
-        TOOLTIP_TEXT_CLASS = 'ez-fielddefinition-tooltip-text',
         TOOLTIP_TAIL_UP_CLASS = 'ez-tail-up-tooltip',
         TOOLTIP_TAIL_DOWN_CLASS = 'ez-tail-down-tooltip',
-        TOOLTIP_CLOSE_CLASS = 'ez-fielddefinition-tooltip-close',
-        TOOLTIP_CLOSE_TEXT = 'Close',
         IS_DISPLAYED_CLASS = 'is-displayed',
         IS_VISIBLE_CLASS = 'is-visible',
         ERROR_CLASS = 'is-error',
         _events= {
             ".ez-editfield-i": {
-                "tap": "_handleInfoTap"
+                "tap": "_showTooltip"
             },
             ".ez-fielddefinition-tooltip-close": {
                 "tap": "_handleCloseTooltipTap"
@@ -121,32 +116,6 @@ YUI.add('ez-fieldeditview', function (Y) {
         },
 
         /**
-         * Dynamically creates tooltip node
-         *
-         * @method _createTooltipNode
-         * @protected
-         */
-        _createTooltipNode: function () {
-            var fieldNameNode = this.get('container').one(FIELD_NAME_SEL),
-                fieldDefinition = this.get('fieldDefinition'),
-                tooltipNode;
-
-            if (fieldDefinition && fieldDefinition.descriptions &&  fieldDefinition.descriptions['eng-GB']) {
-                tooltipNode = Y.Node.create([
-                    '<div class="' + TOOLTIP_CLASS + ' ' + TOOLTIP_TAIL_UP_CLASS + '">',
-                    '<div class="' + TOOLTIP_TEXT_CLASS + '">',
-                    fieldDefinition.descriptions['eng-GB'],
-                    '<br/>',
-                    '<a class="' + TOOLTIP_CLOSE_CLASS + '" href="#close-tooltip">',
-                    TOOLTIP_CLOSE_TEXT,
-                    '</a></div></div>'
-                ].join(''));
-
-                fieldNameNode.appendChild(tooltipNode);
-            }
-        },
-
-        /**
          * Show the tooltip taking into account distance between it's supposed
          * position and bottom of the screen
          *
@@ -156,8 +125,9 @@ YUI.add('ez-fieldeditview', function (Y) {
         _showTooltip: function () {
             var container = this.get('container'),
                 tooltip = container.one(TOOLTIP_SEL),
-                infoIcon = container.one(FIELD_INFO_SEL),
+                infoIcon = container.one(FIELD_INFO_ICON_SEL),
                 screenHeight = container.get('winHeight'),
+                scrollHeight = container.get('docScrollY'),
                 tooltipHeight,
                 infoIconHeight;
 
@@ -172,7 +142,7 @@ YUI.add('ez-fieldeditview', function (Y) {
                 tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
                 infoIconHeight = parseInt(infoIcon.getComputedStyle('height'), 10);
 
-                if (infoIcon.getY() + infoIconHeight + tooltipHeight > screenHeight) {
+                if (infoIcon.getY() - scrollHeight + infoIconHeight + tooltipHeight > screenHeight) {
                     // When tooltip does not fit on the screen changing it's
                     // tail and position
                     tooltip.addClass(TOOLTIP_TAIL_DOWN_CLASS);
@@ -193,7 +163,7 @@ YUI.add('ez-fieldeditview', function (Y) {
                 tooltip.addClass(IS_VISIBLE_CLASS);
 
                 // Clicks anywhere outside of the tooltip should close it
-                Y.on('contentEditViewTap', Y.bind(this._handleContentEditViewTap, this));
+                tooltip.on('clickoutside', Y.bind(this._handleClickOutside, this));
             }
         },
 
@@ -211,23 +181,8 @@ YUI.add('ez-fieldeditview', function (Y) {
                 tooltip.removeClass(IS_DISPLAYED_CLASS);
 
                 // Detaching subscription to any clicks outside of the tooltip
-                Y.detach('contentEditViewTap');
+                tooltip.detach('clickoutside');
             }
-        },
-
-        /**
-         * Event handler for click on the field definition description icon
-         *
-         * @method _handleInfoTap
-         * @protected
-         */
-        _handleInfoTap: function () {
-            if (!this.get('container').one(TOOLTIP_SEL)) {
-                this._createTooltipNode();
-            }
-
-            this._showTooltip();
-
         },
 
         /**
@@ -243,17 +198,14 @@ YUI.add('ez-fieldeditview', function (Y) {
         },
 
         /**
-         * Event handler for a tap anywhere inside the ContentEditView
-         * If tooltip is shown, and it is not the tap's target, tooltip should
-         * be closed.
+         * Event handler for a click anywhere outside of the tooltip
          *
-         * @method _handleContentEditViewTap
+         * @method _handleClickOutside
          * @param e {Object} Event facade object
          * @protected
          */
-        _handleContentEditViewTap: function (e) {
-            var container = this.get('container');
-            if (e.target.get('parentNode') != container.one(TOOLTIP_SEL) && e.target != container.one(FIELD_INFO_SEL)) {
+        _handleClickOutside: function (e) {
+            if (e.target != this.get('container').one(FIELD_INFO_ICON_SEL)) {
                 this._hideTooltip();
             }
         },

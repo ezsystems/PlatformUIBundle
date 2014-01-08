@@ -183,13 +183,13 @@
 
 .ez-editfield-infos .ez-fielddefinition-tooltip-text {
     background: #fff;
-    -webkit-box-shadow: 2px 2px 8px 0 #424242;
-       -moz-box-shadow: 2px 2px 8px 0 #424242;
-            box-shadow: 2px 2px 8px 0 #424242;
+    -webkit-box-shadow: 0 2px 4px 0  #ddd;
+       -moz-box-shadow: 0 2px 4px 0  #ddd;
+            box-shadow: 0 2px 4px 0  #ddd;
     border-radius: 4px;
     border: 1px solid #ccc;
     font-weight: normal;
-    font-size: 12px;
+    font-size: 80%;
 }
 
 .ez-editfield-infos .ez-fielddefinition-tooltip-close {
@@ -197,18 +197,22 @@
 }
 
 /* Tooltip tail styling */
-.ez-editfield-infos .ez-tail-up-tooltip:before {
+.ez-editfield-infos .ez-tail-up-tooltip:before,
+.ez-editfield-infos .ez-tail-down-tooltip:after {
     content: "";
     display: block;
     width: 16px;
     height: 16px;
-    margin-top:-5px;
-    margin-left: 4px;
     background: #fff;
     -webkit-transform: rotate(-45deg);
        -moz-transform: rotate(-45deg);
          -o-transform: rotate(-45deg);
             transform: rotate(-45deg);
+}
+
+.ez-editfield-infos .ez-tail-up-tooltip:before {
+    margin-top:-5px;
+    margin-left: 4px;
     border-top: 1px solid #ccc;
     border-right: 1px solid #ccc;
 }
@@ -218,17 +222,8 @@
 }
 
 .ez-editfield-infos .ez-tail-down-tooltip:after {
-    content: "";
-    display: block;
-    width: 16px;
-    height: 16px;
     margin-top:-9px;
     margin-left: 4px;
-    background: #fff;
-    -webkit-transform: rotate(-45deg);
-    -moz-transform: rotate(-45deg);
-    -o-transform: rotate(-45deg);
-    transform: rotate(-45deg);
     border-left: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
 }

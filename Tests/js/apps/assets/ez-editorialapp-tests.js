@@ -5,8 +5,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         mockActionBar = {};
 
     mockActionBar.handleHeightUpdate = function () {};
-    Y.Handlebars = {};
-    Y.Handlebars.registerPartial = function () {};
 
     capiMock = new Y.Mock();
     app = new Y.eZ.EditorialApp({
@@ -412,6 +410,16 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             });
             app.navigate(url);
             this.wait();
+        },
+
+        "Should register partials found inside the DOM": function () {
+            var template = Y.Handlebars.compile('Test partial should be here: {{> ezTestPartial}}');
+
+            Y.Assert.isFunction(template);
+            Y.Assert.areEqual(
+                "Test partial should be here: I'm a test partial!",
+                template()
+            );
         }
     });
 

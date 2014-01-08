@@ -6,8 +6,6 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                 "eng-GB": "Test description"
             }
         },
-        fieldDefinitionWithBuggyDescription = {
-        },
         field = {
             descriptions: {}
         },
@@ -23,6 +21,8 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         method: 'toJSON',
         returns: jsonContentType
     });
+
+    Y.Handlebars.registerPartial('ezFieldinfoTooltip', Y.one('#ezFieldinfoTooltip').getHTML());
 
     viewTest = new Y.Test.Case({
         name: "eZ Field Edit View test",
@@ -158,7 +158,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             Y.Assert.isFalse(this.view.isValid(), "isValid should return false");
         },
 
-        "Test tooltip node creation after tapping on the info icon": function () {
+        "Test tooltip appearing after tapping on the info icon and hiding after tapping somewhere outside of the tooltip": function () {
             var that = this,
                 container = this.view.get('container');
 
@@ -167,15 +167,24 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             container.one('.ez-editfield-i').simulateGesture('tap', function () {
                 that.resume(function () {
                     var tooltip = container.one('.ez-fielddefinition-tooltip');
-                    Y.Assert.isObject(tooltip, "Tooltip node should have been created");
-                    Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should be visible");
-                    Y.Assert.isTrue(tooltip.hasClass("is-displayed"), "Tooltip node should be displayed inside DOM");
+
+                    Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should be visible before the tap");
+                    Y.Assert.isTrue(tooltip.hasClass("is-displayed"), "Tooltip node should be displayed inside DOM before the tap");
+
+                    container.simulateGesture('tap', function () {
+                        that.resume(function () {
+                            Y.Assert.isFalse(tooltip.hasClass("is-visible"), "Tooltip node should NOT be visible after the tap");
+                            Y.Assert.isFalse(tooltip.hasClass("is-displayed"), "Tooltip node should NOT be displayed inside DOM after the tap");
+                        });
+                    });
+
+                    that.wait();
                 });
             });
             this.wait();
         },
 
-        "Test tooltip hiding after receiving globally broadcasted 'contentEditViewTap' event": function () {
+        "Test tooltip NOT hiding after tapping on the tooltip itself or the info element": function () {
             var that = this,
                 container = this.view.get('container');
 
@@ -184,52 +193,29 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             container.one('.ez-editfield-i').simulateGesture('tap', function () {
                 that.resume(function () {
                     var tooltip = container.one('.ez-fielddefinition-tooltip'),
-                        tapEvent = {target: container};
+                        infoElement = container.one('.ez-editfield-i');
 
-                    Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should be visible before receiving the event");
-                    Y.Assert.isTrue(tooltip.hasClass("is-displayed"), "Tooltip node should be displayed inside DOM before receiving the event");
-                    Y.fire('contentEditViewTap', tapEvent);
-                    Y.Assert.isFalse(tooltip.hasClass("is-visible"), "Tooltip node should NOT be visible after receiving the event");
-                    Y.Assert.isFalse(tooltip.hasClass("is-displayed"), "Tooltip node should NOT be displayed inside DOM after receiving the event");
+                    Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should be visible before tapping");
+                    Y.Assert.isTrue(tooltip.hasClass("is-displayed"), "Tooltip node should be displayed inside DOM before tapping");
+
+                    tooltip.simulateGesture('tap', function () {
+                        that.resume(function () {
+                            Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should remain visible");
+                            Y.Assert.isTrue(tooltip.hasClass("is-displayed"), "Tooltip node should remain displayed inside DOM");
+
+                            infoElement.simulateGesture('tap', {point: [5, 5]}, function () {
+                                that.resume(function () {
+                                    Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should remain visible");
+                                    Y.Assert.isTrue(tooltip.hasClass("is-displayed"), "Tooltip node should remain displayed inside DOM");
+                                });
+                            });
+                            that.wait();
+                        });
+                    });
+                    that.wait();
                 });
             });
             this.wait();
-        },
-
-        "Test tooltip NOT hiding after receiving 'contentEditViewTap' which targets the tooltip itself or the info element": function () {
-            var that = this,
-                container = this.view.get('container');
-
-            this.view.render();
-
-            container.one('.ez-editfield-i').simulateGesture('tap', function () {
-                that.resume(function () {
-                    var tooltip = container.one('.ez-fielddefinition-tooltip'),
-                        tapEvent = {target: tooltip.one('.ez-fielddefinition-tooltip-text')};
-
-                    Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should be visible before receiving the event");
-                    Y.Assert.isTrue(tooltip.hasClass("is-displayed"), "Tooltip node should be displayed inside DOM before receiving the event");
-
-                    Y.fire('contentEditViewTap', tapEvent);
-                    Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should remain visible");
-                    Y.Assert.isTrue(tooltip.hasClass("is-displayed"), "Tooltip node should remain displayed inside DOM");
-
-                    tapEvent = {target: container.one('.ez-editfield-i')};
-                    Y.fire('contentEditViewTap', tapEvent);
-                    Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should remain visible");
-                    Y.Assert.isTrue(tooltip.hasClass("is-displayed"), "Tooltip node should remain displayed inside DOM");
-                });
-            });
-            this.wait();
-        },
-
-        "Test tooltip is handling 'contentEditViewTap' event correctly even if tooltip is not visible": function () {
-            var tapEvent = {target: this.view.get('container')};
-
-            this.view.render();
-            Y.fire('contentEditViewTap', tapEvent);
-
-            Y.Assert.isTrue(true, "No errors should have been thrown");
         },
 
         "Test tooltip hiding after clicking on the tooltip's 'Close' element": function () {
@@ -295,7 +281,6 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             var that = this,
                 container = this.view.get('container');
 
-            console.log('view', this.view);
             this.view.render();
 
             container.setY(800);
@@ -317,27 +302,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                 });
             });
             that.wait();
-        },
-
-
-        "Test that tooltip is not created, when no description is received from the field definition": function () {
-            var that = this,
-                container = this.view.get('container'),
-                tooltip;
-
-            this.view.set('fieldDefinition', fieldDefinitionWithBuggyDescription);
-            this.view.render();
-
-            container.one('.ez-editfield-i').simulateGesture('tap', function () {
-                that.resume(function () {
-                    tooltip = container.one('.ez-fielddefinition-tooltip');
-                    Y.Assert.isNull(tooltip, "Tooltip node should not have been created");
-                });
-            });
-            this.wait();
         }
-
-
 
     });
 
@@ -462,4 +427,4 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
     Y.Test.Runner.add(customViewTest);
     Y.Test.Runner.add(registryTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'node-style', 'ez-fieldeditview']});
+}, '0.0.1', {requires: ['test', 'node-event-simulate', 'event-tap', 'event-outside', 'node-style', 'ez-fieldeditview']});

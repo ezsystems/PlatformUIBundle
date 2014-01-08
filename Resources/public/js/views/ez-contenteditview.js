@@ -31,9 +31,6 @@ YUI.add('ez-contenteditview', function (Y) {
             },
             '.ez-main-content': {
                 'keyup': '_handleKeyboard'
-            },
-            '.ez-view-contenteditview': {
-                'tap': '_onContentEditViewTap'
             }
         },
 
@@ -166,17 +163,6 @@ YUI.add('ez-contenteditview', function (Y) {
          */
         _isTouch: function () {
             return Y.UA.touchEnabled;
-        },
-
-        /**
-         * Event handler for any tap event inside the content edit view
-         *
-         * @method _onContentEditViewTap
-         * @param e {Object} Event facade object
-         * @protected
-         */
-        _onContentEditViewTap: function (e) {
-            Y.fire('contentEditViewTap', e);
         }
     }, {
         ATTRS: {

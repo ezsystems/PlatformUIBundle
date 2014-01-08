@@ -51,7 +51,8 @@
     line-height: 2ex;
     text-align: center;
     float: left;
-    margin-left: 0.5em;
+    margin-left: 1em;
+    margin-top: 2em;
 }
 
 .ez-editfield-infos .ez-editfield-i:hover {
@@ -67,6 +68,8 @@
     position: absolute;
     display: none;
     opacity: 0;
+    margin-top: 3em;
+    margin-left: 0.5em;
     width: 200px;
     z-index: 10;
 }
@@ -85,7 +88,7 @@
 }
 
 .ez-editfield-infos .ez-fielddefinition-tooltip-text {
-    padding-left: 20px;
-    padding-top: 5px;
-    text-align: center;
+    margin-left: -13px;
+    padding: 8px;
+    text-align: left;
 }

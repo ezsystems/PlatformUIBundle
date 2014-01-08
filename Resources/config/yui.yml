@@ -52,7 +52,7 @@ parameters:
                 requires: ['ez-templatebasedview', 'transition', 'event-tap']
                 path: js/views/ez-errorview.js
             ez-fieldeditview:
-                requires: ['ez-templatebasedview']
+                requires: ['ez-templatebasedview', 'event-tap', 'event-outside']
                 path: js/views/ez-fieldeditview.js
             ez-textline-editview:
                 requires: ['ez-fieldeditview', 'event-valuechange']

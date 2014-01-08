@@ -151,11 +151,11 @@ YUI().use('ez-editorialapp', function (Y) {
 <script type="text/x-handlebars-template" id="textlineeditview-ez-template">
     <div class="pure-g ez-editfield-row">
         <div class="pure-u ez-editfield-infos">
+            {{#if fieldDefinition.descriptions.[eng-GB]}}
+                {{> ezFieldinfoTooltip }}
+            {{/if}}
             <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
                 <p class="ez-fielddefinition-name">
-                    {{#if fieldDefinition.descriptions.[eng-GB]}}
-                        <span class="ez-editfield-i" title="{{ fieldDefinition.descriptions.[eng-GB] }}">?</span>
-                    {{/if}}
                     {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
                 </p>
                 <p class="ez-editfield-error-message">&nbsp;</p>
@@ -273,6 +273,18 @@ YUI().use('ez-editorialapp', function (Y) {
 
             <a href="#/edit/{{ urlEncode content.id }}" class="pure-button pure-button-primary">Edit "{{ content.name }}"</a>
         </header>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" class="ez-editorial-app-partial" id="ezFieldinfoTooltip">
+    <span class="ez-editfield-i">?</span>
+    <div class="ez-fielddefinition-tooltip ez-tail-up-tooltip">
+        <div class="ez-fielddefinition-tooltip-text">
+            <a class="ez-fielddefinition-tooltip-close" href="#close-tooltip" data-icon="&#xe000;">
+                Close
+            </a><br/>
+            {{ fieldDefinition.descriptions.[eng-GB] }}
+        </div>
     </div>
 </script>
 
