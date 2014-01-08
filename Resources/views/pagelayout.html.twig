@@ -29,6 +29,7 @@
     '@eZEditorialBundle/Resources/public/css/fields/float-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/integer-editview.css'
     '@eZEditorialBundle/Resources/public/css/errorview.css'
+    '@eZEditorialBundle/Resources/public/css/tabs.css'
     '@eZEditorialBundle/Resources/public/css/theme.css'
 %}
 <link rel="stylesheet" href="{{ asset_url }}" />
@@ -271,8 +272,33 @@ YUI().use('ez-editorialapp', function (Y) {
             </ul>
             <h1 class="ez-content-name" data-icon="&#xe001;">{{ content.name }}</h1>
 
-            <a href="#/edit/{{ urlEncode content.id }}" class="pure-button pure-button-primary">Edit "{{ content.name }}"</a>
         </header>
+        <section class="ez-tabs">
+            <ul class="ez-tabs-list">
+                <li class="ez-tabs-label is-tab-selected"><a href="#ez-tabs-view">View</a></li>
+                <li class="ez-tabs-label"><a href="#ez-tabs-details">Details</a></li>
+                <li class="ez-tabs-label"><a href="#ez-tabs-activity">Activity</a></li>
+                <li class="ez-tabs-label"><a href="#ez-tabs-analytics">Analytics</a></li>
+            </ul>
+            <div class="ez-tabs-panels">
+                <div class="ez-tabs-panel is-tab-selected" id="ez-tabs-view">
+                    <h2>Fields</h2>
+                    <ul>{{#each content.fields}}<li>{{ fieldDefinitionIdentifier }}</li>{{/each}}</ul>
+
+                    <p><a href="#/edit/{{ urlEncode content.id }}" class="pure-button pure-button-primary">Edit "{{ content.name }}"</a></p>
+
+                </div>
+                <div class="ez-tabs-panel" id="ez-tabs-details">
+                    <ul>
+                        <li><strong>Hidden</strong> : {{ location.hidden }}</li>
+                        <li><strong>Depth</strong> : {{ location.depth }}</li>
+                        <li><strong>Child count</strong> : {{ location.childCount }}</li>
+                    </ul>
+                </div>
+                <div class="ez-tabs-panel" id="ez-tabs-activity">Activity content</div>
+                <div class="ez-tabs-panel" id="ez-tabs-analytics">Analytics content</div>
+            </div>
+        </section>
     </div>
 </script>
 
