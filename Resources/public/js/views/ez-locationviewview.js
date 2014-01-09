@@ -9,6 +9,14 @@ YUI.add('ez-locationviewview', function (Y) {
 
     var TAB_IS_SELECTED = 'is-tab-selected';
 
+    /**
+     * The location view view
+     *
+     * @namespace eZ
+     * @class LocationViewView
+     * @constructor
+     * @extends eZ.TemplateBasedView
+     */
     Y.eZ.LocationViewView = Y.Base.create('locationViewView', Y.eZ.TemplateBasedView, [], {
         events: {
             '.ez-tabs .ez-tabs-label a': {
