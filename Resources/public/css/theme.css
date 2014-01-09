@@ -195,6 +195,10 @@
     color: #444;
 }
 
+.ez-view-contenteditview .ez-editactionbar-container {
+    background: #333;
+}
+
 .ez-view-contenteditview .ez-main-content {
     background: #f3f3f3;
     border-bottom-left-radius: 10px;
