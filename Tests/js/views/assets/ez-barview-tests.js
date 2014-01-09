@@ -3,7 +3,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         content = {},
         VIEW_MORE_MENU_CLASS = ".view-more-actions",
         ACTIVE_MENU_CLASS = '.active-actions',
-        viewTest;
+        viewTest, sameTemplateTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Bar View test",
@@ -303,6 +303,31 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         }
     });
 
+    sameTemplateTest = new Y.Test.Case({
+        name: "Class based on eZ Bar View use the same template",
+
+        setUp: function () {
+            var Extended = Y.Base.create('extendedBarView', Y.eZ.BarView, [], {});
+
+            this.barView = new Y.eZ.BarView();
+            this.extendedView = new Extended();
+        },
+
+        tearDown: function () {
+            this.barView.destroy();
+            this.extendedView.destroy();
+        },
+
+        "Views extending BarView should use the same template as BarView": function () {
+            Y.Assert.areEqual(
+                this.barView.render().get('container').get('innerHTML'),
+                this.extendedView.render().get('container').get('innerHTML'),
+                "The compiled template should be the same"
+            );
+        }
+    });
+
     Y.Test.Runner.setName("eZ Bar View tests");
     Y.Test.Runner.add(viewTest);
+    Y.Test.Runner.add(sameTemplateTest);
 }, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-barview', 'ez-buttonactionview']});
