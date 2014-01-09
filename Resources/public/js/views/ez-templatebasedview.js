@@ -21,6 +21,18 @@ YUI.add('ez-templatebasedview', function (Y) {
      */
     Y.eZ.TemplateBasedView = Y.Base.create('templateBasedView', Y.View, [], {
         /**
+         * Returns the name of the class. This name is used to retrieve the
+         * correct template
+         *
+         * @method _getName
+         * @protected
+         * @return String
+         */
+        _getName: function () {
+            return this.constructor.NAME;
+        },
+
+        /**
          * Initializes the template based view object:
          *
          *   * the template property is filled with the content of the element
@@ -33,7 +45,7 @@ YUI.add('ez-templatebasedview', function (Y) {
          * @method initializer
          */
         initializer: function () {
-            var name = this.constructor.NAME,
+            var name = this._getName(),
                 tplEl = Y.one('#' + name.toLowerCase() + TPL_ELEM_SUFFIX);
 
             this.template = function () { return ''; };
