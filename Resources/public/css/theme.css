@@ -28,10 +28,6 @@
     font-weight: 500;
 }
 
-.ez-editorial-app h1 {
-    line-height: 1em;
-}
-
 .ez-editorial-app input[type=text],
 .ez-editorial-app input[type=email],
 .ez-editorial-app input[type=number],
@@ -100,10 +96,6 @@
     border: 1px solid #ccc;
 }
 
-.ez-editorial-app ul {
-    list-style: none;
-}
-
 .is-app-open {
     background: #000;
     background: rgba(0, 0, 0, 0.8);
@@ -124,8 +116,8 @@
 
 .ez-editorial-app .ez-inline-loader {
     -webkit-animation: spin 0.5s infinite linear;
-    -moz-animation: spin 0.5s infinite linear;
-    -o-animation: spin 0.5s infinite linear;
+       -moz-animation: spin 0.5s infinite linear;
+         -o-animation: spin 0.5s infinite linear;
     animation: spin 0.5s infinite linear;
     box-sizing: border-box;
     border-radius: 100%;

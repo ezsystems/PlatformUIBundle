@@ -3,7 +3,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
     "use strict";
 
     /**
-     * Provides the field edit view for the Map Location (ezstring) fields
+     * Provides the field edit view for the Map Location (ezgmaplocation) fields
      *
      * @module ez-maplocation-editview
      */
@@ -30,24 +30,36 @@ YUI.add('ez-maplocation-editview', function (Y) {
         IS_ERROR_CLASS = "is-error",
         IS_BUTTON_DISABLED_CLASS = "pure-button-disabled",
         ENTER_KEY = 13,
-        GOOGLE_MAP_API_READY = 'googleMapAPIReady',
-        GOOGLE_MAP_API_FAILED = 'googleMapAPIFailed',
+        EVENT_MAP_API_READY = 'mapAPIReady',
+        EVENT_MAP_API_FAILED = 'mapAPIFailed',
         gMapLoader;
 
     /**
      * A Component with one specific task - try to load Google Maps API and fire
-     * the GOOGLE_MAP_API_READY event in case of success or
-     * GOOGLE_MAP_API_FAILED event in case of problems encountered
+     * the EVENT_MAP_API_READY event in case of success or
+     * EVENT_MAP_API_FAILED event in case of problems encountered
      *
      * @class GoogleMapAPILoader
+     * @namespace eZ.MapLocationEditView
      * @constructor
      */
     function GoogleMapAPILoader() {
-        this.publish(GOOGLE_MAP_API_READY, {
+        /**
+         * Flag indicating if the loader is currently in progress of loading.
+         * Needed to avoid concurrent loading.
+         *
+         * @property _isLoading
+         * @type boolean
+         * @default false
+         * @protected
+         */
+        this._isLoading = false;
+
+        this.publish(EVENT_MAP_API_READY, {
                 fireOnce: true
             }
         );
-        this.publish(GOOGLE_MAP_API_FAILED, {
+        this.publish(EVENT_MAP_API_FAILED, {
                 fireOnce: true
             }
         );
@@ -55,7 +67,8 @@ YUI.add('ez-maplocation-editview', function (Y) {
 
     GoogleMapAPILoader.prototype = {
         /**
-         * Trying to load Google Maps API via JSONP firing an event with results
+         * Trying to load Google Maps API via JSONP and firing either
+         * EVENT_MAP_API_READY or EVENT_MAP_API_FAILED depending on results
          *
          * @method load
          */
@@ -67,20 +80,19 @@ YUI.add('ez-maplocation-editview', function (Y) {
                 return;
             }
 
-            if (typeof google == 'object' && typeof google.maps == 'object') {
-                // Google maps API is already loaded
-                this.fire(GOOGLE_MAP_API_READY);
+            if (this.isAPILoaded()) {
+                this.fire(EVENT_MAP_API_READY);
             } else {
                 this._isLoading = true;
                 Y.jsonp('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}', {
                     on: {
                         success: function () {
                             that._isLoading = false;
-                            that.fire(GOOGLE_MAP_API_READY);
+                            that.fire(EVENT_MAP_API_READY);
                         },
                         failure: function () {
                             that._isLoading = false;
-                            that.fire(GOOGLE_MAP_API_FAILED);
+                            that.fire(EVENT_MAP_API_FAILED);
                         }
                     }
                 });
@@ -88,14 +100,14 @@ YUI.add('ez-maplocation-editview', function (Y) {
         },
 
         /**
-         * Flag indicating if the loader is currently in progress of loading.
-         * Needed to avoid concurrent loading.
+         * Checking if the map API is loaded already
          *
-         * @property _isLoading = false
-         * @type boolean
-         * @protected
+         * @method isAPILoaded
+         * @return {boolean} true if map API was loaded, false if not
          */
-        _isLoading: false
+        isAPILoaded: function () {
+            return(typeof google === 'object' && typeof google.maps === 'object');
+        }
     };
 
     Y.augment(GoogleMapAPILoader, Y.EventTarget);
@@ -113,13 +125,13 @@ YUI.add('ez-maplocation-editview', function (Y) {
     Y.eZ.MapLocationEditView = Y.Base.create('mapLocationEditView', Y.eZ.FieldEditView, [], {
         events: {
             '.ez-maplocation-find-address-button': {
-                'click': '_findAddress'
+                'tap': '_findAddress'
             },
             '.ez-maplocation-find-address-input input': {
                 'keyup': '_findAddressInputKeyUp'
             },
             '.ez-maplocation-locate-me-button': {
-                'click': '_locateMe'
+                'tap': '_locateMe'
             }
         },
 
@@ -134,15 +146,19 @@ YUI.add('ez-maplocation-editview', function (Y) {
             var that = this,
                 mapLoader = this.get('mapAPILoader');
 
-            mapLoader.on(GOOGLE_MAP_API_READY, function () {
-                that.initMap();
+            mapLoader.on(EVENT_MAP_API_READY, function () {
+                that._initMap();
             });
 
-            mapLoader.on(GOOGLE_MAP_API_FAILED, function () {
+//            mapLoader.on(EVENT_MAP_API_READY, Y.bind(this._initMap(), this));
+
+            mapLoader.on(EVENT_MAP_API_FAILED, function () {
                 var container = that.get('container');
                 container.one(ERRORS_SEL).setHTML('Failed to retrieve Google Maps API');
                 container.all(COORDINATES_SEL).removeClass(IS_LOADING_CLASS);
             });
+
+
 
             mapLoader.load();
         },
@@ -151,9 +167,10 @@ YUI.add('ez-maplocation-editview', function (Y) {
          * Initializes the map instance, adds a marker to the map, taking
          * into account default values (if any)
          *
-         * @method initMap
+         * @method _initMap
+         * @protected
          */
-        initMap: function () {
+        _initMap: function () {
             var mapOptions = {
                     streetViewControl: CONTROL_STREET_VIEW,
                     mapTypeControl: CONTROL_MAP_TYPE,
@@ -210,7 +227,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
             container.one(FIND_ADDRESS_BUTTON_SEL).removeClass(IS_BUTTON_DISABLED_CLASS);
             container.all(COORDINATES_SEL).removeClass(IS_LOADING_CLASS);
 
-            if (navigator && navigator.geolocation) {
+            if (this._geolocationAvailable) {
                 container.one(LOCATE_ME_BUTTON_SEL).removeClass(IS_BUTTON_DISABLED_CLASS);
             }
         },
@@ -230,7 +247,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
                 addressInput = container.one(FIND_ADDRESS_INPUT_SEL),
                 errorsOutput = container.one(ERRORS_SEL);
 
-            if (typeof google === 'object' || typeof google.maps === 'object') {
+            if (this.get('mapAPILoader').isAPILoaded()) {
 
                 errorsOutput.empty();
                 addressInput.get('parentNode').removeClass(IS_ERROR_CLASS);
@@ -238,15 +255,15 @@ YUI.add('ez-maplocation-editview', function (Y) {
 
                 geocoder.geocode(
                     {'address': addressInput.get('value')},
-                    function(results, status) {
+                    function (results, status) {
                         button.removeClass(IS_LOADING_CLASS);
-                        if (status == google.maps.GeocoderStatus.OK) {
+                        if (status === google.maps.GeocoderStatus.OK) {
                             that.set('location', results[0].geometry.location);
                             that._updateMarkerPosition();
                             that._updateMapCenter();
                         } else {
                             addressInput.get('parentNode').addClass(IS_ERROR_CLASS);
-                            if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+                            if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {
                                 errorsOutput.setHTML('Unable to find this address');
                             } else {
                                 errorsOutput.setHTML('An error occurred during the geocoding request for this address');
@@ -288,10 +305,10 @@ YUI.add('ez-maplocation-editview', function (Y) {
             errorsOutput.empty();
             button.addClass(IS_LOADING_CLASS);
 
-            if (navigator && navigator.geolocation) {
+            if (this._geolocationAvailable()) {
                 navigator.geolocation.getCurrentPosition(
                     // Request success
-                    function(myPosition) {
+                    function (myPosition) {
                         button.removeClass(IS_LOADING_CLASS);
 
                         that.set(
@@ -305,7 +322,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
                         that._updateMapCenter();
                     },
                     // Request failure
-                    function() {
+                    function () {
                         button.removeClass(IS_LOADING_CLASS);
                         errorsOutput.setHTML('An error occured during geolocation request of your current position');
                     });
@@ -385,13 +402,23 @@ YUI.add('ez-maplocation-editview', function (Y) {
         },
 
         /**
+         * Checking if the geolocation API is available
+         * 
+         * @method _geolocationAvailable 
+         * @private
+         * @return {boolean} true, if geolocation API is available 
+         */
+        _geolocationAvailable: function () {
+            return (navigator && navigator.geolocation);
+        },
+        
+        /**
          * Defines the variables to imported in the field edit template for text
          * line.
          *
          * @protected
          * @method _variables
-         * @return {Object} containing isRequired, maxLength and minLength
-         * entries
+         * @return {Object} containing isRequired entry
          */
         _variables: function () {
             return {
@@ -453,7 +480,6 @@ YUI.add('ez-maplocation-editview', function (Y) {
         FIELDTYPE_IDENTIFIER, Y.eZ.MapLocationEditView
     );
 
-    // exposing the GoogleMapAPILoader component so it can be unit tested
     Y.eZ.MapLocationEditView.GoogleMapAPILoader = GoogleMapAPILoader;
 
 });

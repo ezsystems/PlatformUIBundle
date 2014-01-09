@@ -1,11 +1,3 @@
-.ez-editorial-app {
-    line-height: normal;
-}
-
-.ez-editorial-app img {
-    max-width: none;
-}
-
 .ez-editorial-app legend {
     width: auto;
     font-size: 100%;
@@ -41,4 +33,12 @@
 .ez-editorial-app select,
 .ez-editorial-app textarea {
     line-height: normal;
+}
+
+.ez-editorial-app .gm-style {
+    line-height: normal;
+}
+
+.ez-editorial-app .gm-style img {
+    max-width: none;
 }

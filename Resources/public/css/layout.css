@@ -90,15 +90,6 @@
     min-height: 5em;
 }
 
-.ez-editorial-app .pure-button {
-    height: 1.8em;
-    padding: 0 1.5em;
-}
-
-.ez-editorial-app label {
-    margin-bottom: 0.3em;
-}
-
 .is-app-open {
     left: 0;
     z-index: 1000;
@@ -135,10 +126,6 @@
 .ez-editfield-input-area .ez-field-sublabel {
     display: block;
     margin: 0 2em;
-}
-
-.ez-editfield-input-area .ez-field-sublabel.ez-first-sublabel {
-    padding-top: 1.4em; /* Not 1.5em because we are compensating for normal font-weight */
 }
 
 .ez-editorial-app .ez-inline-loader {
