@@ -136,26 +136,14 @@ YUI.add('ez-fieldeditview', function (Y) {
             infoIconHeight = parseInt(infoIcon.getComputedStyle('height'), 10);
 
             if (infoIcon.getY() - scrollHeight + infoIconHeight + tooltipHeight > screenHeight) {
-                // When tooltip does not fit on the screen changing it's
-                // tail and position
-                tooltip.addClass(TOOLTIP_TAIL_DOWN_CLASS);
-                tooltip.removeClass(TOOLTIP_TAIL_UP_CLASS);
-                tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
-                tooltip.setY(infoIcon.getY() - tooltipHeight);
+                this._flipTooltipTailDown();
             } else {
-                // Otherwise making sure, that the default tail is in place
-                // and removing changes to the tooltip position (if any)
                 if (tooltip.hasClass(TOOLTIP_TAIL_DOWN_CLASS)) {
-                    tooltip.addClass(TOOLTIP_TAIL_UP_CLASS);
-                    tooltip.removeClass(TOOLTIP_TAIL_DOWN_CLASS);
-                    tooltip.setStyle('top', 'auto');
+                    this._flipTooltipTailUp();
                 }
             }
 
-            // Changing opacity to 1 with transition (tooltip goes visible)
             tooltip.addClass(IS_VISIBLE_CLASS);
-
-            // Clicks anywhere outside of the tooltip should close it
             tooltip.on('clickoutside', Y.bind(this._handleClickOutside, this));
         },
 
@@ -170,13 +158,45 @@ YUI.add('ez-fieldeditview', function (Y) {
 
             tooltip.removeClass(IS_VISIBLE_CLASS);
             tooltip.removeClass(IS_DISPLAYED_CLASS);
-
-            // Detaching subscription to any clicks outside of the tooltip
             tooltip.detach('clickoutside');
         },
 
         /**
-         * Event handler for a click on the "close" link of a tooltip
+         * Change tooltip into tail-up type and alter it's Y position related
+         * to the info element
+         *
+         * @method _flipTooltipTailUp
+         * @protected
+         */
+        _flipTooltipTailUp: function () {
+            var tooltip = this.get('container').one(TOOLTIP_SEL);
+
+            tooltip.addClass(TOOLTIP_TAIL_UP_CLASS);
+            tooltip.removeClass(TOOLTIP_TAIL_DOWN_CLASS);
+            tooltip.setStyle('top', 'auto');
+        },
+
+        /**
+         * Change tooltip into tail-down type and alter it's position related
+         * to the info element
+         *
+         * @method _flipTooltipTailDown
+         * @protected
+         */
+        _flipTooltipTailDown: function () {
+            var container = this.get('container'),
+                tooltip = container.one(TOOLTIP_SEL),
+                infoIcon = container.one(FIELD_INFO_ICON_SEL),
+                tooltipHeight;
+
+            tooltip.addClass(TOOLTIP_TAIL_DOWN_CLASS);
+            tooltip.removeClass(TOOLTIP_TAIL_UP_CLASS);
+            tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
+            tooltip.setY(infoIcon.getY() - tooltipHeight);
+        },
+
+        /**
+         * Event handler for a tap on the "close" link of a tooltip
          *
          * @method _handleCloseTooltipTap
          * @param e {Object} Event facade object
@@ -195,7 +215,7 @@ YUI.add('ez-fieldeditview', function (Y) {
          * @protected
          */
         _handleClickOutside: function (e) {
-            if (e.target != this.get('container').one(FIELD_INFO_ICON_SEL)) {
+            if (e.target.generateID() != this.get('container').one(FIELD_INFO_ICON_SEL).generateID()) {
                 this._hideTooltip();
             }
         },
@@ -209,7 +229,7 @@ YUI.add('ez-fieldeditview', function (Y) {
         initializer: function () {
             this.after('errorStatusChange', this._errorUI);
 
-            this.events = Y.merge(_events, this.events || {});
+            this.events = Y.merge(_events, this.events);
         },
 
         /**

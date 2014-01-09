@@ -9,7 +9,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         field = {
             descriptions: {}
         },
-        viewTest, customViewTest, registryTest;
+        viewTest, tooltipTest, customViewTest, registryTest;
 
     content = new Y.Mock();
     contentType = new Y.Mock();
@@ -156,6 +156,29 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
 
             this.view.set('errorStatus', "Error message");
             Y.Assert.isFalse(this.view.isValid(), "isValid should return false");
+        },
+
+    });
+
+    tooltipTest = new Y.Test.Case({
+        name: "eZ Field Edit View tooltip test",
+
+        setUp: function () {
+
+            Y.one('body').append('<div class="container"></div>');
+            container = Y.one('.container');
+
+            this.view = new Y.eZ.FieldEditView({
+                container: container,
+                fieldDefinition: fieldDefinition,
+                field: field,
+                content: content,
+                contentType: contentType
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy({remove: true});
         },
 
         "Test tooltip appearing after tapping on the info icon and hiding after tapping somewhere outside of the tooltip": function () {
@@ -424,7 +447,8 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Field Edit View tests");
     Y.Test.Runner.add(viewTest);
+    Y.Test.Runner.add(tooltipTest);
     Y.Test.Runner.add(customViewTest);
     Y.Test.Runner.add(registryTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'event-tap', 'event-outside', 'node-style', 'ez-fieldeditview']});
+}, '0.0.1', {requires: ['test', 'node-event-simulate', 'event-tap', 'ez-fieldeditview']});

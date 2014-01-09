@@ -189,11 +189,12 @@
     border-radius: 4px;
     border: 1px solid #ccc;
     font-weight: normal;
-    font-size: 80%;
+    font-size: 85%;
 }
 
 .ez-editfield-infos .ez-fielddefinition-tooltip-close {
     font-weight: bold;
+    color: #999;
 }
 
 /* Tooltip tail styling */

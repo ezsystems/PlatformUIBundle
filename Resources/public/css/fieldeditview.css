@@ -66,16 +66,21 @@
 
 .ez-editfield-infos .ez-fielddefinition-tooltip {
     position: absolute;
-    display: none;
+    height: 0;
     opacity: 0;
     margin-top: 3em;
     margin-left: 0.5em;
-    width: 200px;
+    width: 180px;
     z-index: 10;
+    -webkit-transition: opacity 1s;
+       -moz-transition: opacity 1s;
+        -ms-transition: opacity 1s;
+         -o-transition: opacity 1s;
+            transition: opacity 1s;
 }
 
 .ez-editfield-infos .ez-fielddefinition-tooltip.is-displayed {
-    display: block;
+    height: auto;
 }
 
 .ez-editfield-infos .ez-fielddefinition-tooltip.is-visible {
@@ -88,7 +93,12 @@
 }
 
 .ez-editfield-infos .ez-fielddefinition-tooltip-text {
-    margin-left: -13px;
+    display: block;
+    margin: 0 0 0 -13px;
     padding: 8px;
     text-align: left;
+}
+
+.ez-editfield-infos .ez-fielddefinition-tooltip-close {
+    float:right;
 }

@@ -254,9 +254,7 @@ YUI.add('ez-editorialapp', function (Y) {
          * @protected
          */
         _registerPartials: function () {
-            var partials = Y.all(PARTIALS_SEL);
-
-            partials.each(function (partial) {
+            Y.all(PARTIALS_SEL).each(function (partial) {
                 Y.Handlebars.registerPartial(partial.get('id'), partial.getHTML());
             });
         }
