@@ -451,4 +451,4 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
     Y.Test.Runner.add(customViewTest);
     Y.Test.Runner.add(registryTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'event-tap', 'ez-fieldeditview']});
+}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-fieldeditview']});

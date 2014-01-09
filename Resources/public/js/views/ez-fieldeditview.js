@@ -126,23 +126,25 @@ YUI.add('ez-fieldeditview', function (Y) {
             var container = this.get('container'),
                 tooltip = container.one(TOOLTIP_SEL),
                 infoIcon = container.one(FIELD_INFO_ICON_SEL),
-                screenHeight = container.get('winHeight'),
-                scrollHeight = container.get('docScrollY'),
-                tooltipHeight,
-                infoIconHeight;
+                tooltipHeight;
 
             tooltip.addClass(IS_DISPLAYED_CLASS);
-            tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
-            infoIconHeight = parseInt(infoIcon.getComputedStyle('height'), 10);
 
-            if (infoIcon.getY() - scrollHeight + infoIconHeight + tooltipHeight > screenHeight) {
-                this._flipTooltipTailDown();
-            } else {
+            if (this._tooltipFitsTailUp()) {
+                // making sure, that the default tail state is in place
+                // and removing changes to the tooltip position (if any)
                 if (tooltip.hasClass(TOOLTIP_TAIL_DOWN_CLASS)) {
-                    this._flipTooltipTailUp();
+                    tooltip.addClass(TOOLTIP_TAIL_UP_CLASS);
+                    tooltip.removeClass(TOOLTIP_TAIL_DOWN_CLASS);
+                    tooltip.setStyle('top', 'auto');
                 }
+            } else {
+                // switching tooltip to the tail-down state
+                tooltip.addClass(TOOLTIP_TAIL_DOWN_CLASS);
+                tooltip.removeClass(TOOLTIP_TAIL_UP_CLASS);
+                tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
+                tooltip.setY(infoIcon.getY() - tooltipHeight);
             }
-
             tooltip.addClass(IS_VISIBLE_CLASS);
             tooltip.on('clickoutside', Y.bind(this._handleClickOutside, this));
         },
@@ -162,37 +164,23 @@ YUI.add('ez-fieldeditview', function (Y) {
         },
 
         /**
-         * Change tooltip into tail-up type and alter it's Y position related
-         * to the info element
+         * Considers tooltip's height and position on the screen to decide if it
+         * fits on the screen in current conditions
          *
-         * @method _flipTooltipTailUp
+         * @method _tooltipFitsTailUp
          * @protected
+         * @return {boolean} true, if the tooltip fits in tail-up state
          */
-        _flipTooltipTailUp: function () {
-            var tooltip = this.get('container').one(TOOLTIP_SEL);
-
-            tooltip.addClass(TOOLTIP_TAIL_UP_CLASS);
-            tooltip.removeClass(TOOLTIP_TAIL_DOWN_CLASS);
-            tooltip.setStyle('top', 'auto');
-        },
-
-        /**
-         * Change tooltip into tail-down type and alter it's position related
-         * to the info element
-         *
-         * @method _flipTooltipTailDown
-         * @protected
-         */
-        _flipTooltipTailDown: function () {
+        _tooltipFitsTailUp: function () {
             var container = this.get('container'),
                 tooltip = container.one(TOOLTIP_SEL),
                 infoIcon = container.one(FIELD_INFO_ICON_SEL),
-                tooltipHeight;
+                screenHeight = container.get('winHeight'),
+                scrollHeight = container.get('docScrollY'),
+                tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10),
+                infoIconHeight = parseInt(infoIcon.getComputedStyle('height'), 10);
 
-            tooltip.addClass(TOOLTIP_TAIL_DOWN_CLASS);
-            tooltip.removeClass(TOOLTIP_TAIL_UP_CLASS);
-            tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
-            tooltip.setY(infoIcon.getY() - tooltipHeight);
+            return (infoIcon.getY() - scrollHeight + infoIconHeight + tooltipHeight < screenHeight);
         },
 
         /**

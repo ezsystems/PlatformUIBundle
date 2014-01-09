@@ -72,11 +72,11 @@
     margin-left: 0.5em;
     width: 180px;
     z-index: 10;
-    -webkit-transition: opacity 1s;
-       -moz-transition: opacity 1s;
-        -ms-transition: opacity 1s;
-         -o-transition: opacity 1s;
-            transition: opacity 1s;
+    -webkit-transition: opacity 0.1s;
+       -moz-transition: opacity 0.1s;
+        -ms-transition: opacity 0.1s;
+         -o-transition: opacity 0.1s;
+            transition: opacity 0.1s;
 }
 
 .ez-editfield-infos .ez-fielddefinition-tooltip.is-displayed {
@@ -85,11 +85,11 @@
 
 .ez-editfield-infos .ez-fielddefinition-tooltip.is-visible {
     opacity: 1;
-    -webkit-transition: opacity 1s;
-       -moz-transition: opacity 1s;
-        -ms-transition: opacity 1s;
-         -o-transition: opacity 1s;
-            transition: opacity 1s;
+    -webkit-transition: opacity 0.1s;
+       -moz-transition: opacity 0.1s;
+        -ms-transition: opacity 0.1s;
+         -o-transition: opacity 0.1s;
+            transition: opacity 0.1s;
 }
 
 .ez-editfield-infos .ez-fielddefinition-tooltip-text {
@@ -101,4 +101,5 @@
 
 .ez-editfield-infos .ez-fielddefinition-tooltip-close {
     float:right;
+    font-size: 80%;
 }
