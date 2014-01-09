@@ -2,6 +2,10 @@
     height: 100%;
 }
 
+.ez-view-locationviewview .ez-locationview-content {
+    margin-right: 230px;
+}
+
 .ez-view-locationviewview header {
     padding: 2em 1.5em 1em 1.5em;
 }
@@ -29,4 +33,12 @@
 
 .ez-view-locationviewview .ez-breadcrumbs li {
     display: inline;
+}
+
+.ez-view-locationviewview .ez-actionbar-container {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 230px;
+    height: 100%;
 }

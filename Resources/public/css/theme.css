@@ -115,6 +115,10 @@
     background: #fff;
 }
 
+.ez-view-locationviewview .ez-actionbar-container {
+    background: #333;
+}
+
 .ez-view-locationviewview header {
     background: #f5f4f2;
 }
@@ -364,27 +368,27 @@
     border-bottom: 2px solid #bf3e33;
 }
 
-/* edit action bar */
-.ez-view-editactionbarview .ez-actions-list {
+/* bar view */
+.ez-view-barview .ez-actions-list {
     background: #333333;
 }
 
-.ez-view-editactionbarview .view-more-button {
+.ez-view-barview .view-more-button {
     color: #808080;
     background: none;
     border: none;
 }
 
-.ez-view-editactionbarview .view-more-button:hover {
+.ez-view-barview .view-more-button:hover {
     color: #d8fcff;
 }
 
-.ez-view-editactionbarview .ez-actions-list .ez-action {
+.ez-view-barview .ez-actions-list .ez-action {
     border-top: 1px solid #424242;
     border-bottom: 1px solid #242424;
 }
 
-.ez-view-editactionbarview .ez-actions-list .ez-action:last-child {
+.ez-view-barview .ez-actions-list .ez-action:last-child {
     -webkit-box-shadow: 0 1px 0 0 #424242;
        -moz-box-shadow: 0 1px 0 0 #424242;
             box-shadow: 0 1px 0 0 #424242;
@@ -419,6 +423,10 @@
 }
 
 /* actual actions icons */
+.ez-action[data-action="edit"] .action-icon:before {
+    content: "\E006";
+}
+
 .ez-action[data-action="publish"] .action-icon:before {
     content: "\E00c";
 }

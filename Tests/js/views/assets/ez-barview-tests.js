@@ -6,10 +6,10 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         viewTest;
 
     viewTest = new Y.Test.Case({
-        name: "eZ Action Bar test",
+        name: "eZ Bar View test",
 
         setUp: function () {
-            this.view = new Y.eZ.EditActionBarView({
+            this.view = new Y.eZ.BarView({
                 container: viewContainer,
                 content: content,
                 actionsList: [
@@ -229,7 +229,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
 
     });
 
-    Y.Test.Runner.setName("eZ Action Bar tests");
+    Y.Test.Runner.setName("eZ Bar View tests");
     Y.Test.Runner.add(viewTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-editactionbarview']});
+}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-barview', 'ez-buttonactionview']});

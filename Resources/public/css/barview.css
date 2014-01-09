@@ -1,0 +1,31 @@
+.ez-view-barview .ez-actions-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ez-view-barview .view-more-button {
+    margin: 0.5em;
+    padding: 0.5em 2em;
+}
+
+.ez-view-barview .view-more-button.is-hidden {
+    visibility: hidden;
+}
+
+.ez-view-barview .view-more-actions {
+    position: fixed;
+    bottom: 0;
+    width: 230px;
+    right: 230px;
+    z-index: 1015;
+}
+
+.ez-view-view .view-more-actions.is-hidden {
+    right: -230px;
+}
+
+.ez-view-barview .ez-actions-list .ez-action.is-disabled,
+.ez-view-barview .ez-actions-list .ez-action.is-disabled .action-label {
+    cursor: default;
+}

@@ -19,7 +19,7 @@
     '@eZEditorialBundle/Resources/public/css/contenteditview.css'
     '@eZEditorialBundle/Resources/public/css/locationviewview.css'
     '@eZEditorialBundle/Resources/public/css/contenteditformview.css'
-    '@eZEditorialBundle/Resources/public/css/editactionbarview.css'
+    '@eZEditorialBundle/Resources/public/css/barview.css'
     '@eZEditorialBundle/Resources/public/css/buttonactionview.css'
     '@eZEditorialBundle/Resources/public/css/previewactionview.css'
     '@eZEditorialBundle/Resources/public/css/editpreviewview.css'
@@ -115,7 +115,7 @@ YUI().use('ez-editorialapp', function (Y) {
     </form>
 </script>
 
-<script type="text/x-handlebars-template" id="editactionbarview-ez-template">
+<script type="text/x-handlebars-template" id="barview-ez-template">
     <menu class="ez-actions-list active-actions" tabindex="0">
     </menu>
     <button class="view-more-button is-hidden">{{ viewMoreText }}</button>
@@ -348,6 +348,7 @@ YUI().use('ez-editorialapp', function (Y) {
             </div>
         </section>
     </div>
+    <div class="ez-actionbar-container"></div>
 </script>
 
 <script type="text/x-handlebars-template" class="ez-editorial-app-partial" id="ez_fieldinfo_tooltip">

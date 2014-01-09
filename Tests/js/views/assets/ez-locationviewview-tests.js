@@ -52,6 +52,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             var plainLocation = {}, plainContent = {}, path = [],
                 plainLocations = [{}, {}, {}],
                 plainContents = [{}, {}, {}],
+                origTpl = this.view.template,
                 location = _getModelMock(plainLocation),
                 content = _getModelMock(plainContent);
 
@@ -86,7 +87,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                     variables.content, plainContent,
                     "content.toJSON() should be passed to the template"
                 );
-                return '';
+                return origTpl.apply(this, arguments);
             };
             this.view.setAttrs({
                 location: location,

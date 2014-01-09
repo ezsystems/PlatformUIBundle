@@ -47,12 +47,14 @@ YUI.add('ez-locationviewview', function (Y) {
         },
 
         /**
-         * Renders the location view
+         * Converts each location and content model in the path to a plain
+         * object representation
          *
-         * @method render
-         * @return {eZ.LocationViewView} the view itself
+         * @method _pathToJSON
+         * @private
+         * @return Array
          */
-        render: function () {
+        _pathToJSON: function () {
             var path = [];
 
             Y.Array.each(this.get('path'), function (struct, key) {
@@ -61,11 +63,27 @@ YUI.add('ez-locationviewview', function (Y) {
                     content: struct.content.toJSON()
                 };
             });
-            this.get('container').setHTML(this.template({
+            return path;
+        },
+
+        /**
+         * Renders the location view
+         *
+         * @method render
+         * @return {eZ.LocationViewView} the view itself
+         */
+        render: function () {
+            var container = this.get('container');
+
+            container.setHTML(this.template({
                 location: this.get('location').toJSON(),
                 content: this.get('content').toJSON(),
-                path: path
+                path: this._pathToJSON()
             }));
+
+            container.one('.ez-actionbar-container').append(
+                this.get('actionBar').render().get('container')
+            );
             return this;
         }
     }, {
@@ -84,7 +102,12 @@ YUI.add('ez-locationviewview', function (Y) {
              * @attribute content
              * @type Y.eZ.Content
              */
-            content: {},
+            content: {
+                setter: function (val, name) {
+                    this.get('actionBar').set('content', val);
+                    return val;
+                }
+            },
 
             /**
              * The path from the root location to the current location. Each
@@ -94,7 +117,18 @@ YUI.add('ez-locationviewview', function (Y) {
              * @attribute path
              * @type Array
              */
-            path: {}
+            path: {},
+
+            /**
+             * The action bar instance, by default an instance {{#crossLink
+             * "eZ.ActionBarView"}}eZ.ActionBarView{{/crossLink}}
+             *
+             * @attribute actionBar
+             * @type eZ.BarView
+             */
+            actionBar: {
+                value: new Y.eZ.ActionBarView()
+            }
         }
     });
 });
