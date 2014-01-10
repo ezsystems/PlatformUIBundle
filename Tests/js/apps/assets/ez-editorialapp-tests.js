@@ -1,5 +1,5 @@
 YUI.add('ez-editorialapp-tests', function (Y) {
-    var app, appTest,
+    var app, appTest, reverseRoutingTest,
         capiMock,
         container = Y.one('.app'),
         mockActionBar = {};
@@ -420,10 +420,129 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 "Test partial should be here: I'm a test partial!",
                 template()
             );
-        }
+        },
+
+        "Should navigate to the content edit when receiving an editAction event": function () {
+            var contentMock, contentId = 'aContentId';
+
+            contentMock = new Y.Test.Mock();
+            Y.Mock.expect(contentMock, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId
+            });
+
+            app.fire('whatever:editAction', {content: contentMock});
+            Y.Assert.areEqual(
+                app.routeUri('editContent', {id: contentId}), app.getPath(),
+                "The current path should be the edit content route for the content '" + contentId + "'"
+            );
+        },
+    });
+
+    reverseRoutingTest = new Y.Test.Case({
+        name: "eZ Editorial App reverse routing tests",
+
+        setUp: function () {
+            var routes = [
+                {path: '/simple', name: "simple"},
+                {path: '/noname'},
+                {path: '/:param', name: "oneParam"},
+                {path: '/:param/:PARAM2', name: "twoParams"},
+                {path: '/sTr1ng/:param/m1X3d/:PARAM2', name: "complex"},
+            ];
+            this.app = new Y.eZ.EditorialApp({
+                container: '.app',
+                viewContainer: '.view-container',
+                capi: capiMock
+            });
+            Y.Array.each(routes, function (route) {
+                reverseRoutingTest.app.route(route, function () {});
+            });
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+        },
+
+        _testRoute: function (routeName, params, expected, msg) {
+            Y.Assert.areSame(expected, this.app.routeUri(routeName, params), msg);
+        },
+
+        "Route does not exist": function () {
+            this._testRoute(
+                "do not exist", {}, null,
+                "The URI of an inexistent route should be null"
+            );
+        },
+
+        "Route without parameter": function () {
+            this._testRoute(
+                "simple", {not: "used"}, "/simple",
+                "The route path should be left intact"
+            );
+        },
+
+        "Route with one parameter only and a matching parameters": function () {
+            this._testRoute(
+                "oneParam", {param: "repl aced"}, "/repl%20aced",
+                "The parameter should be replaced by the correct value"
+            );
+        },
+
+        "Route with one parameter only and no matching parameter": function () {
+            this._testRoute(
+                "oneParam", {doesnotmatch: "repl aced"}, "/",
+                "The parameter should just be removed"
+            );
+        },
+
+        "Route with 2 parameters only and 2 matching parameters": function () {
+            this._testRoute(
+                "twoParams", {param: "repl aced", PARAM2: "ag ain"}, "/repl%20aced/ag%20ain",
+                "The parameters should be replaced by the correct value"
+            );
+        },
+
+        "Route with 2 parameters only and 1 matching parameter": function () {
+            this._testRoute(
+                "twoParams", {param: "repl aced", not: "again"}, "/repl%20aced/",
+                "The parameter should be replaced by the correct value and the other not matching by an empty string"
+            );
+        },
+
+        "Route with 2 parameters only and no matching parameter": function () {
+            this._testRoute(
+                "twoParams", {}, "//",
+                "The parameters should be removed"
+            );
+        },
+
+        "Complex route with 2 parameters only and 2 matching parameters": function () {
+            this._testRoute(
+                "complex", {param: "repl aced", PARAM2: "ag ain"}, "/sTr1ng/repl%20aced/m1X3d/ag%20ain",
+                "The parameters should be replaced by the correct value"
+            );
+        },
+
+        "Complex route with 2 parameters only and 1 matching parameter": function () {
+            this._testRoute(
+                "complex", {param: "repl aced", not: "again"}, "/sTr1ng/repl%20aced/m1X3d/",
+                "The parameter should be replaced by the correct value and the other not matching by an empty string"
+            );
+        },
+
+        "Complex route with 2 parameters only and no matching parameter": function () {
+            this._testRoute(
+                "complex", {}, "/sTr1ng//m1X3d/",
+                "The parameters should be removed"
+            );
+        },
+>>>>>>> Fixed EZP-22137: Implemented the edit button in the action bar
     });
 
     Y.Test.Runner.setName("eZ Editorial App tests");
     Y.Test.Runner.add(appTest);
+    Y.Test.Runner.add(reverseRoutingTest);
 
 }, '0.0.1', {requires: ['test', 'ez-editorialapp', 'json', 'parallel']});

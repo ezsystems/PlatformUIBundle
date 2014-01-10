@@ -57,8 +57,11 @@ YUI.add('ez-buttonactionview', function (Y) {
              * For example for a view with actionId = "publish", the event fired will be named "publishAction".
              *
              * @event <actionId>Action
+             * @param {eZ.Content} the content model object
              */
-            this.fire(this.get('actionId') + ACTION_SUFFIX);
+            this.fire(this.get('actionId') + ACTION_SUFFIX, {
+                content: this.get('content')
+            });
         }
 
     }, {
