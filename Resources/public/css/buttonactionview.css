@@ -5,38 +5,19 @@
     background: none;
     border: none;
     text-align: left;
-    padding: 1em 0;
-}
-
-.ez-view-buttonactionview .ez-action .action-icon {
-    padding-left: 20px;
+    padding: 1em 1.2em;
 }
 
 .ez-view-buttonactionview .ez-action .action-icon:before {
+    margin-right: 0.8em;
     float: left;
 }
 
-.ez-view-buttonactionview .ez-action p {
-    padding-left: 40px;
-    margin: 0;
+.ez-view-buttonactionview .with-hint .action-icon:before {
+    margin-top: 0.2em;
 }
 
-.ez-view-buttonactionview .ez-action.with-hint .action-icon {
-    margin-bottom: -1em;
-}
-
-.ez-view-buttonactionview .ez-action.with-hint .action-label {
-    position:relative;
-    top: -0.8em;
-}
-
-.ez-view-buttonactionview .ez-action.with-hint .action-hint {
-    position:relative;
-    top: -0.8em;
-}
-
-.ez-view-buttonactionview .ez-action .action-label {
-    display: block;
-    margin-top: 2px;
-    cursor: pointer;
+.is-actionbar-minimized .ez-view-buttonactionview .active-actions .action-label,
+.is-actionbar-minimized .ez-view-buttonactionview .active-actions .action-hint {
+    display: none;
 }

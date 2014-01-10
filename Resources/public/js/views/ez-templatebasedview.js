@@ -33,6 +33,18 @@ YUI.add('ez-templatebasedview', function (Y) {
         },
 
         /**
+         * Generates the class name of a view from its name
+         *
+         * @method _generateViewClassName
+         * @protected
+         * @param {String} name
+         * @return String
+         */
+        _generateViewClassName: function (name) {
+            return VIEW_PREFIX + name.toLowerCase();
+        },
+
+        /**
          * Initializes the template based view object:
          *
          *   * the template property is filled with the content of the element
@@ -54,7 +66,7 @@ YUI.add('ez-templatebasedview', function (Y) {
                     tplEl.getHTML()
                 );
             }
-            this.containerTemplate = '<div class="' + VIEW_PREFIX + name.toLowerCase() + '"/>';
+            this.containerTemplate = '<div class="' + this._generateViewClassName(name) + '"/>';
         }
 
     });

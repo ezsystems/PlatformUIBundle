@@ -10,7 +10,7 @@
 }
 
 .ez-view-barview .view-more-button.is-hidden {
-    visibility: hidden;
+    display: none;
 }
 
 .ez-view-barview .view-more-actions {
@@ -25,7 +25,6 @@
     right: -230px;
 }
 
-.ez-view-barview .ez-actions-list .ez-action.is-disabled,
-.ez-view-barview .ez-actions-list .ez-action.is-disabled .action-label {
+.ez-view-barview .ez-actions-list .ez-action.is-disabled {
     cursor: default;
 }

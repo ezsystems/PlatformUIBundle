@@ -7,7 +7,8 @@ YUI.add('ez-locationviewview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var TAB_IS_SELECTED = 'is-tab-selected';
+    var TAB_IS_SELECTED = 'is-tab-selected',
+        MINIMIZE_ACTION_BAR_CLASS = 'is-actionbar-minimized';
 
     /**
      * The location view view
@@ -44,6 +45,16 @@ YUI.add('ez-locationviewview', function (Y) {
             this.get('container').all('.' + TAB_IS_SELECTED).removeClass(TAB_IS_SELECTED);
             this.get('container').one(targetId).addClass(TAB_IS_SELECTED);
             tabLabel.addClass(TAB_IS_SELECTED);
+        },
+
+        initializer: function () {
+            this.get('actionBar').addTarget(this);
+
+            this.on('*:minimizeActionBarAction', this._handleMinimizeActionBar);
+        },
+
+        _handleMinimizeActionBar: function () {
+            this.get('container').toggleClass(MINIMIZE_ACTION_BAR_CLASS);
         },
 
         /**

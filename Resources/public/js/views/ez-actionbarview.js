@@ -30,6 +30,12 @@ YUI.add('ez-actionbarview', function (Y) {
                 cloneDefaultValue: false,
                 value: [
                     new Y.eZ.ButtonActionView({
+                        actionId: "minimizeActionBar",
+                        disabled: false,
+                        label: "Minimize",
+                        priority: 1000
+                    }),
+                    new Y.eZ.ButtonActionView({
                         actionId: "edit",
                         disabled: false,
                         label: "Edit",

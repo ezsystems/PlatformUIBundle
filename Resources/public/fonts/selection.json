@@ -406,6 +406,29 @@
 				"name": "refresh",
 				"ligatures": ""
 			}
+		},
+		{
+			"icon": {
+				"paths": [
+					"M64 192h896v192h-896zM64 448h896v192h-896zM64 704h896v192h-896z"
+				],
+				"tags": [
+					"menu",
+					"list",
+					"items",
+					"lines",
+					"options"
+				],
+				"grid": 16
+			},
+			"properties": {
+				"id": 184,
+				"order": 19,
+				"prevSize": 32,
+				"code": 58880,
+				"name": "menu",
+				"ligatures": ""
+			}
 		}
 	],
 	"height": 1024,

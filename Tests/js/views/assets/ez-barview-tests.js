@@ -3,7 +3,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         content = {},
         VIEW_MORE_MENU_CLASS = ".view-more-actions",
         ACTIVE_MENU_CLASS = '.active-actions',
-        viewTest, sameTemplateTest;
+        viewTest, sameTemplateTest, eventsTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Bar View test",
@@ -327,7 +327,64 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         }
     });
 
+    eventsTest = new Y.Test.Case({
+        name: "Events bubbling",
+
+        setUp: function () {
+            this.button = new Y.eZ.ButtonActionView({actionId: "publish"});
+            this.view = new Y.eZ.BarView({
+                actionsList: [this.button]
+            });
+        },
+
+        tearDown: function () {
+            this.button.destroy();
+            this.view.destroy();
+        },
+
+        "Events from the button should bubble to the bar view": function () {
+            var bubbled = false;
+
+            this.view.on('*:publishAction', function () {
+                bubbled = true;
+            });
+
+            this.button.fire('publishAction');
+            Y.Assert.isTrue(
+                bubbled,
+                "The button action view event should bubble to its bar view"
+            );
+        },
+
+        "Events from the button should bubble to the bar view after being added": function () {
+            var bubbled = false,
+                button = new Y.eZ.ButtonActionView({actionId: "added"});
+
+            this.view.addAction(button);
+            this.view.on('*:addedAction', function () {
+                bubbled = true;
+            });
+
+            this.button.fire('addedAction');
+            Y.Assert.isTrue(
+                bubbled,
+                "The button action view event should bubble to its bar view"
+            );
+        },
+
+        "Events from the button should NOT bubble to the bar view after being removed": function () {
+            this.view.removeAction('publish');
+            this.view.on('*:publishAction', function () {
+                Y.Assert.fail(
+                    "The event should not bubbled since the button was removed from the bar view"
+                );
+            });
+            this.button.fire('publishAction');
+        },
+    });
+
     Y.Test.Runner.setName("eZ Bar View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(sameTemplateTest);
+    Y.Test.Runner.add(eventsTest);
 }, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-barview', 'ez-buttonactionview']});

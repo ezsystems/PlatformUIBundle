@@ -48,7 +48,12 @@ YUI.add('ez-barview', function (Y) {
          * @method initializer
          */
         initializer: function () {
+            var that = this;
+
             this._sortActions();
+            Y.Array.each(this.get('actionsList'), function (action) {
+                action.addTarget(that);
+            });
             Y.on("windowresize", Y.bind(this.handleHeightUpdate, this));
         },
 
@@ -87,6 +92,7 @@ YUI.add('ez-barview', function (Y) {
         addAction: function (action) {
             var actionsList = this.get('actionsList');
 
+            action.addTarget(this);
             actionsList.push(action);
             this.set('actionsList', actionsList);
             this._sortActions();
@@ -106,6 +112,7 @@ YUI.add('ez-barview', function (Y) {
 
             for (index = 0, length = actionsList.length; index < length; index++) {
                 if (actionsList[index].get('actionId') == actionId) {
+                    actionsList[index].removeTarget(this);
                     actionsList.splice(index, 1);
                     return true;
                 }
