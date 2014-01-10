@@ -22,6 +22,16 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             this.view.destroy();
         },
 
+        "Should set the content of the action bar": function () {
+            var content = {};
+
+            this.view.set('content', content);
+            Y.Assert.areSame(
+                content, this.view.get('actionBar').get('content'),
+                "The content also have been set on the action bar"
+            );
+        },
+
         "Test render": function () {
             var templateCalled = false,
                 origTpl,
