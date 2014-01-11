@@ -15,7 +15,7 @@ Feature: Test the validations done on fields from Editorial Interface
         And I have a "field A" of type "Email"
         And "field A" is not mandatory
         And I am on "field A"
-        And I fill the "field A" with the following data <email>
+        And on "field A" I fill with <email>
         When I exit the "field A"
         Then I see no label message with an error
 
@@ -91,7 +91,8 @@ Feature: Test the validations done on fields from Editorial Interface
         Given I am logged in as "Admin"
         And I have a "field A" of type "Integer"
         And "field A" is not mandatory
-        And I fill the "field A" with the following <integer>
+        And I am on "field A"
+        And on "field A" I fill with <integer>
         When I exit the "field A"
         Then I see no label message with an error
 
@@ -109,8 +110,9 @@ Feature: Test the validations done on fields from Editorial Interface
     Scenario Outline: Validate IntegerEditView when exiting the field using invalid integer
         Given I am logged in as "Admin"
         And I have a "field A" of type "Integer"
-        And I fill the "field A" with the following <integer>
         And "field A" is mandatory
+        And I am on "field A"
+        And on "field A" I fill with <integer>
         When I exit the "field A"
         Then I see a label message with an error
 
@@ -131,7 +133,8 @@ Feature: Test the validations done on fields from Editorial Interface
         And I have a "field A" of type "IntegerEditView"
         And I defined an inferior and superior range for "field A"
             | 1 | 10 |
-        And I fill the "field A" with the following data <integer>
+        And I am on "field A"
+        And on "field A" I fill with <integer>
         When I exit the "field A"
         Then I see no label message with an error
 
@@ -149,7 +152,8 @@ Feature: Test the validations done on fields from Editorial Interface
         And I have a "field A" of type "IntegerEditView"
         And I defined an inferior and superior range for "field A"
             | 1 | 10 |
-        And I fill the "field A" with the following data <integer>
+        And I am on "field A"
+        And on "field A" I fill with <integer>
         When I exit the "field A"
         Then I see a label message with an error
     
@@ -188,7 +192,8 @@ Feature: Test the validations done on fields from Editorial Interface
         Given I am logged in as "Admin"
         And I have a "field A" of type "float"
         And "field A" is not mandatory
-        When I fill the "field A" with the following <float>
+        And I am on "field A"
+        And on "field A" I fill with <float>
         Then I see no label message with an error
 
         Examples:
@@ -205,7 +210,8 @@ Feature: Test the validations done on fields from Editorial Interface
     Scenario Outline: Validate float when exiting the field using invalid float
         Given I am logged in as "Admin"
         And I have a "field A" of type "float"
-        And I fill the "field A" with the following <float>
+        And I am on "field A"
+        And on "field A" I fill with <float>
         Then I see a label message with an error
 
         Examples:
@@ -217,7 +223,8 @@ Feature: Test the validations done on fields from Editorial Interface
     Scenario Outline: Validate float when exiting the field using invalid float
         Given I am logged in as "Admin"
         And I have a "field A" of type "float"
-        And I fill the "field A" with the following <float>
+        And I am on "field A"
+        And on "field A" I fill with <float>
         And "field A" is mandatory
         When I exit the "field A"
         Then I see a label message with an error
@@ -234,7 +241,8 @@ Feature: Test the validations done on fields from Editorial Interface
         And I have a "field A" of type "float"
         And I defined an inferior and superior range for "field A"
             | 1 | 10 |
-        And I fill the "field A" with the following data <float>
+        And I am on "field A"
+        And on "field A" I fill with <float>
         When I exit the "field A"
         Then I see no label message with an error
 
@@ -255,7 +263,8 @@ Feature: Test the validations done on fields from Editorial Interface
         And I have a "field A" of type "float"
         And I defined an inferior and superior range for "field A"
             | 1 | 10 |
-        And I fill the "field A" with the following data <float>
+        And I am on "field A"
+        And on "field A" I fill with <float>
         When I exit the "field A"
         Then I see a label message with an error
 
