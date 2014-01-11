@@ -285,3 +285,101 @@ Feature: Test the validations done on fields from Editorial Interface
         When I update the field A
         And I see a label L with message M2
         And message M2 is different from message M1
+
+    #https://confluence.ez.no/display/DEV/UrlEditView
+    #URL - Create content with valid url
+    @javascript @ezp-22108
+    Scenario Outline: Create content with valid url
+        Given I am logged in as "Admin"
+        And I have a "field A" of type "URL"
+        And I am on "field A"
+        And on "URL" I fill with <URL>
+        And on "Name" I fill with <name>
+        When I exit the "field A"
+        Then I see no label message with an error
+
+        Examples:
+            | URL              | name |
+            | http://www.ez.no | eZ   |
+            | www.ez.no        |      |
+            |                  | eZ   |
+            |                  |      |
+
+    #URL - Create content with invalid url
+    @javascript @ezp-22108
+    Scenario Outline: Create content with invalid url
+        Given I am logged in as "Admin"
+        And I have a "field A" of type "URL"
+        And I am on "field A"
+        And on "URL" I fill with <URL>
+        And on "Name" I fill with <name>
+        When I exit the "field A"
+        Then I see a label message with an error
+
+        Examples:
+            | URL              | name |
+            | ez.no            | eZ   |
+            | www ez.no        |      |
+            | 123.123.123      | eZ   |
+
+    #URL - check whether the input is filled (if the Field is set required): when the field is required, only the actual URL field is mandatory, the name stays non required
+    @javascript @ezp-22108
+    Scenario Outline: Validate url when exiting the field using valid url
+        Given I am logged in as "Admin"
+        And I have a "field A" of type "URL"
+        And "field A" is mandatory
+        And I am on "field A"
+        And on "URL" I fill with <URL>
+        And on "Name" I fill with <name>
+        When I exit the "field A"
+        Then I see no label message with an error
+
+        Examples:
+            | URL              | name |
+            | http://www.ez.no |      |
+
+    #URL - check whether the input is filled (if the Field is set required): when the field is required, only the actual URL field is mandatory, the name stays non required
+    @javascript @ezp-22108
+    Scenario Outline: Validate url when exiting the field using invalid url
+        Given I am logged in as "Admin"
+        And I have a "field A" of type "URL"
+        And "field A" is mandatory
+        And I am on "field A"
+        And on "URL" I fill with <URL>
+        And on "Name" I fill with <name>
+        When I exit the "field A"
+        Then I see a label message with an error
+
+        Examples:
+            | URL              | name |
+            |                  | eZ   |
+            |                  |      |
+            
+    #URL -  A click on the label gives the focus to the input field
+    #The label containing the field name and the input "field A"re connected with the id and the for attributes so that a click on the label gives the focus to the URL input field.
+    @javascript @ezp-22108
+    Scenario: Verify that a click on the label gives the focus to the input field
+        Given I am logged in as "Admin"
+        And I have a "field A" of type "URL"
+        And I have a label "L" with message "M1"
+        When I click on label "L"
+        Then I goto "field A"
+
+    #URL - When the field is mandatory, a star is added after the URL label for the actual url input field.
+    @javascript @ezp-22108
+    Scenario: Verify that a star is added after the URL label if the field is mandatory
+        Given I am logged in as "Admin"
+        And I have a "field A" of type "URL"
+        When "field A" is mandatory
+        Then I see a "star" after the "URL" label
+        
+    #URL - Change the label when the user changes something
+    #change when the user changes something
+    @javascript @ezp-22108
+    Scenario: Change the label when the user changes something
+        Given I am logged in as "Admin"
+        And I have a "field A" of type "URL"
+        And I have a label "L" with message "M1"
+        When I update the "field A"
+        And I see a label "L" with message "M2"
+        And message "M2" is different from message "M1"
