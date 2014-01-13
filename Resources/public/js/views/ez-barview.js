@@ -54,7 +54,7 @@ YUI.add('ez-barview', function (Y) {
             Y.Array.each(this.get('actionsList'), function (action) {
                 action.addTarget(that);
             });
-            Y.on("windowresize", Y.bind(this.handleHeightUpdate, this));
+            Y.on("windowresize", Y.bind(this._handleHeightUpdate, this));
         },
 
         /**
@@ -122,14 +122,23 @@ YUI.add('ez-barview', function (Y) {
         },
 
         /**
+         * Active callback for the eZ.BarView. It makes sure the bar
+         * view fits on the screen and builds the view more menu if needed
+         */
+        activeCallback: function () {
+            this._handleHeightUpdate();
+        },
+
+        /**
          * Handles container height update by rearranging the actions between menus
          * We are filling-in main (ACTIVE_MENU_CLASS) menu, until container becomes higher than the screen bounds,
          * after that we are filling hidden (VIEW_MORE_MENU_CLASS) menu.
          *
-         * @method handleHeightUpdate
+         * @method _handleHeightUpdate
+         * @protected
          * @param {Object} e event facade of the resize event
          */
-        handleHeightUpdate: function (e) {
+        _handleHeightUpdate: function (e) {
             var screenHeight = this.get('container').get('winHeight');
 
             if (this._getHeight() > screenHeight) {

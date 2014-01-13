@@ -117,7 +117,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
 
         "'View more' button should NOT be visible, when all the actions fit on the screen": function () {
             this.view.render();
-            this.view.handleHeightUpdate();
+            this.view.activeCallback();
             Y.Assert.isTrue(
                 Y.one('.view-more-button').hasClass('is-hidden'),
                 "Button should NOT be visible"
@@ -139,7 +139,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             }
 
             this.view.render();
-            this.view.handleHeightUpdate();
+            this.view.activeCallback();
             Y.Assert.isFalse(
                 Y.one('.view-more-button').hasClass('is-hidden'),
                 "Button should be visible"
@@ -151,7 +151,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
                 activeMenu;
 
             this.view.render();
-            this.view.handleHeightUpdate();
+            this.view.activeCallback();
 
             activeMenu = container.one(ACTIVE_MENU_CLASS);
 
@@ -168,7 +168,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
                 "There should become 2 actions in activeMenu"
             );
 
-            this.view.handleHeightUpdate();
+            this.view.activeCallback();
 
             Y.Assert.areEqual(
                 3, activeMenu.get('children').size(),
@@ -280,7 +280,7 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             }
 
             this.view.render();
-            this.view.handleHeightUpdate();
+            this.view.activeCallback();
 
             viewMoreButton = Y.one('.view-more-button');
             viewMoreMenu = Y.one('.view-more-actions');

@@ -180,11 +180,6 @@ YUI.add('ez-editorialapp', function (Y) {
             this.showView('contentEditView', res.variables, {
                 update: true,
                 render: true,
-                callback: function (view) {
-                    this.set('loading', false);
-                    view.get('actionBar').handleHeightUpdate();
-                    view.setFocus();
-                }
             });
         },
 
@@ -200,9 +195,6 @@ YUI.add('ez-editorialapp', function (Y) {
             this.showView('locationViewView', res.variables, {
                 update: true,
                 render: true,
-                callback: function (view) {
-                    this.set('loading', false);
-                }
             });
         },
 
@@ -302,8 +294,43 @@ YUI.add('ez-editorialapp', function (Y) {
             Y.all(PARTIALS_SEL).each(function (partial) {
                 Y.Handlebars.registerPartial(partial.get('id'), partial.getHTML());
             });
-        }
+        },
 
+        /*
+         * Overrides the default implementation to make sure the view
+         * activeCallback callback is called after the view is attached to the
+         * DOM. It also sets the loading flag to false.
+         *
+         * @param {Object} e activeViewChange event facade
+         */
+        _afterActiveViewChange: function (e) {
+            var cb;
+
+            if ( e.options.callback ) {
+                cb = e.options.callback;
+                e.options.callback = function (view) {
+                    cb(e.newVal);
+                    this._viewActiveCallback(view);
+                };
+            } else {
+                e.options.callback = this._viewActiveCallback;
+            }
+
+            Y.eZ.EditorialApp.superclass._afterActiveViewChange.call(this, e);
+            this.set('loading', false);
+        },
+
+        /**
+         * Calls the view activation callback if it exists
+         *
+         * @method _viewActiveCallback
+         * @param {Y.View} view
+         */
+        _viewActiveCallback: function (view) {
+            if ( typeof view.activeCallback === 'function' ) {
+                view.activeCallback.call(view);
+            }
+        }
     }, {
         ATTRS: {
             /**

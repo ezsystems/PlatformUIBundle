@@ -104,8 +104,49 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             app.set('loading', false);
         },
 
+        "View change should trigger the activeCallback callback and set loading to false": function () {
+            var activeCallbackCalled = false, showViewCallbackCalled = false;
+
+            app.views.simpleView = {
+                type: Y.View
+            };
+            app.views.viewWithCallback = {
+                type: Y.Base.create('testView', Y.View, [], {
+                    activeCallback: function () {
+                        activeCallbackCalled = true;
+                    }
+                })
+            };
+
+            app.showView('simpleView', {},
+                function () {
+                    showViewCallbackCalled = true;
+                }
+            );
+            this.wait(function () {
+                Y.Assert.isTrue(
+                    showViewCallbackCalled,
+                    "The showview callback should have been called"
+                );
+                Y.Assert.isFalse(app.get('loading'), "The app should not be in loading mode");
+
+                app.set('loading', true);
+                app.showView('viewWithCallback');
+                this.wait(function () {
+                    Y.Assert.isTrue(
+                        activeCallbackCalled, "The active callback should have been called"
+                    );
+                    Y.Assert.isFalse(app.get('loading'), "The app should not be in loading mode");
+
+                    delete app.views.simpleView;
+                    delete app.views.viewWithCallback;
+                }, 800);
+
+            }, 800);
+        },
+
         "Should show the content edit view": function () {
-            var rendered = false, initialized = false, focused = false,
+            var rendered = false, initialized = false,
                 req = {}, resp = {};
 
             resp.variables = {'content': 1, 'contentType': {}, 'mainLocation': {}, 'owner': {}};
@@ -121,10 +162,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                         this.get('content'), resp.variables.content,
                         "The view attributes should be updated with the result of the loader"
                     );
-                },
-
-                setFocus: function () {
-                    focused = true;
                 }
             }, {
                 ATTRS: {
@@ -140,10 +177,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
             Y.assert(initialized, "The content edit view should have been initialized");
             Y.assert(rendered, "The content edit view should have been rendered");
-            this.wait(function () {
-                Y.assert(!app.get('loading'), "The app should not be in loading mode");
-                Y.assert(focused, "The content edit view should have input focus");
-            }, 800);
 
             rendered = false;
             resp.variables.content++;
@@ -151,9 +184,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             app.handleContentEdit(req, resp);
 
             Y.assert(rendered, "The content edit view should have been rerendered");
-            this.wait(function () {
-                Y.assert(!app.get('loading'), "The app should not be in loading mode");
-            }, 500);
         },
 
         "Should show the location view": function () {
@@ -181,9 +211,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
             Y.assert(initialized, "The location view view should have been initialized");
             Y.assert(rendered, "The location view should have been rendered");
-            this.wait(function () {
-                Y.assert(!app.get('loading'), "The app should not be in loading mode");
-            }, 800);
 
             rendered = false;
             resp.variables.content++;
@@ -191,9 +218,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             app.handleLocationView(req, resp);
 
             Y.assert(rendered, "The location view view should have been rerendered");
-            this.wait(function () {
-                Y.assert(!app.get('loading'), "The app should not be in loading mode");
-            }, 500);
         },
 
         "Should show the error view, when catching 'fatalError' event": function () {
