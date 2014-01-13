@@ -301,6 +301,7 @@ YUI.add('ez-editorialapp', function (Y) {
          * activeCallback callback is called after the view is attached to the
          * DOM. It also sets the loading flag to false.
          *
+         * @method _afterActiveViewChange
          * @param {Object} e activeViewChange event facade
          */
         _afterActiveViewChange: function (e) {
