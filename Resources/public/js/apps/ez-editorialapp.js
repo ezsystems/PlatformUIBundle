@@ -302,6 +302,7 @@ YUI.add('ez-editorialapp', function (Y) {
          * DOM. It also sets the loading flag to false.
          *
          * @method _afterActiveViewChange
+         * @protected
          * @param {Object} e activeViewChange event facade
          */
         _afterActiveViewChange: function (e) {
@@ -325,6 +326,7 @@ YUI.add('ez-editorialapp', function (Y) {
          * Calls the view activation callback if it exists
          *
          * @method _viewActiveCallback
+         * @protected
          * @param {Y.View} view
          */
         _viewActiveCallback: function (view) {
