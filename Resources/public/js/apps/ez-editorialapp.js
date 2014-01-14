@@ -154,7 +154,7 @@ YUI.add('ez-editorialapp', function (Y) {
                 'additionalInfo': errorInfo.additionalInfo
             });
             errorView.render();
-            errorView.setFocus();
+            errorView.activeCallback();
         },
 
         /**

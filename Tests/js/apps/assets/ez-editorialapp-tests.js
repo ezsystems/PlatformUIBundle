@@ -221,7 +221,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
 
         "Should show the error view, when catching 'fatalError' event": function () {
-            var rendered = false, initialized = false, focused = false,
+            var rendered = false, initialized = false, activeCallbackCalled = false,
                 errorInfo = {'retryAction:': {}, 'additionalInfo': 1},
                 originalErroView,
                 TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
@@ -237,8 +237,8 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                         );
                     },
 
-                    setFocus: function () {
-                        focused = true;
+                    activeCallback: function () {
+                        activeCallbackCalled = true;
                     }
                 });
 
@@ -249,12 +249,10 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
             Y.assert(initialized, "The error view should have been initialized");
             Y.assert(rendered, "The error view should have been rendered");
-            this.wait(function () {
-                Y.assert(!app.get('loading'), "The app should not be in loading mode");
-                Y.assert(focused, "The error view should have input focus");
+            Y.assert(!app.get('loading'), "The app should not be in loading mode");
+            Y.assert(activeCallbackCalled, "The error view should have input focus");
 
-                app.views.errorView.instance = originalErroView;
-            }, 500);
+            app.views.errorView.instance = originalErroView;
         },
 
         "Should receive 'retryAction' event fired on the errorView": function () {
@@ -391,7 +389,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 },
                 TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.eZ.ErrorView, [], {
                     render: function () {},
-                    setFocus: function () {}
+                    activeCallback: function () {}
                 });
 
 
