@@ -18,9 +18,12 @@
 }
 
 .ez-view-locationviewview .ez-actionbar-container {
+    position: fixed;
+    top: 0;
     width: 230px;
     margin-right: -230px;
     height: 100%;
+    z-index: 1025;
 }
 
 .ez-view-locationviewview.is-actionbar-minimized .ez-actionbar-container {
