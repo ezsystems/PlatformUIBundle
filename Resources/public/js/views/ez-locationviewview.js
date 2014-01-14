@@ -53,6 +53,12 @@ YUI.add('ez-locationviewview', function (Y) {
             this.on('*:minimizeActionBarAction', this._handleMinimizeActionBar);
         },
 
+        /**
+         * Event handler for the minimizeActionBarAction event
+         *
+         * @protected
+         * @method _handleMinimizeActionBar
+         */
         _handleMinimizeActionBar: function () {
             this.get('container').toggleClass(MINIMIZE_ACTION_BAR_CLASS);
         },
