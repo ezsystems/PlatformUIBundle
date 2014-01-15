@@ -178,6 +178,7 @@ YUI.add('ez-editorialapp', function (Y) {
         _handleError: function (errorInfo) {
             var errorView = this.views.errorView.instance;
 
+            this.set('loading', false);
             errorView.setAttrs({
                 'retryAction': errorInfo.retryAction,
                 'additionalInfo': errorInfo.additionalInfo

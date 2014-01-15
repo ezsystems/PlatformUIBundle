@@ -245,6 +245,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             originalErroView = app.views.errorView.instance;
             app.views.errorView.instance = new TestErrorViewConstructor();
 
+            app.set('loading', false);
             app.fire('contentEditView:fatalError', errorInfo);
 
             Y.assert(initialized, "The error view should have been initialized");
