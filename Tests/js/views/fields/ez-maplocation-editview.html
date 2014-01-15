@@ -5,12 +5,14 @@
 </head>
 <body>
 
+<div class="container"></div>
+
 <script type="text/x-handlebars-template" id="maplocationeditview-ez-template">
     <div class="ez-maplocation-input-area">
         <span class="ez-maplocation-errors"></span>
         <div class="ez-maplocation-find-address-input pure-g">
            <input type="text"
-            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-address"
+            id="ez-field-maplocation-address"
             value="{{ field.fieldValue.address }}"
            ><button class="pure-button pure-button-disabled ez-maplocation-find-address-button">Locate Address <span class="ez-inline-loader"></span></button>
         </div>
@@ -52,8 +54,12 @@
         filter: loaderFilter,
         modules: {
             "ez-maplocation-editview": {
-                requires: ['ez-fieldeditview'],
+                requires: ['ez-fieldeditview', 'event-tap'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-maplocation-editview.js"
+            },
+            "ez-textline-editview": {
+                requires: ['ez-fieldeditview'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-textline-editview.js"
             },
             "ez-fieldeditview": {
                 requires: ['ez-templatebasedview'],
