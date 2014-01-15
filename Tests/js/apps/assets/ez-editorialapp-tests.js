@@ -560,7 +560,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 "The parameters should be removed"
             );
         },
->>>>>>> Fixed EZP-22137: Implemented the edit button in the action bar
     });
 
     Y.Test.Runner.setName("eZ Editorial App tests");
