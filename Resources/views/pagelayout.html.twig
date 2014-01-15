@@ -6,9 +6,13 @@
     <a href="#/view/{{ '/api/ezp/v2/content/locations/1/2/61/68/73'|url_encode }}" class="btn btn-warning">View "Getting started with eZ Publish 5"</a>
     <a href="#/view/{{ '/api/ezp/v2/content/locations/1/2/111'|url_encode }}" class="btn btn-warning">View Test field edit views</a>
 </p>
-<div class="ez-editorial-app pure">
-    <div class="ez-view-container"></div>
-    <div class="ez-errorview-container is-hidden"></div>
+<div class="ez-editorial-app pure is-menu-hidden is-navigation-hidden">
+    <div class="ez-navigation-container"></div>
+    <div class="ez-mainviews pure-g">
+        <div class="ez-menu-container pure-u"></div>
+        <div class="ez-view-container pure-u"></div>
+    </div>
+    <div class="ez-errorview-container is-hidden pure-u"></div>
 </div>
 {% stylesheets
     '@eZEditorialBundle/Resources/public/vendors/pure/base-context-min.css'
@@ -353,6 +357,10 @@ YUI().use('ez-editorialapp', function (Y) {
         </div>
         <div class="ez-actionbar-container pure-u"></div>
     </div>
+</script>
+
+<script type="text/x-handlebars-template" id="navigationhubview-ez-template">
+    Navigation hub!
 </script>
 
 <script type="text/x-handlebars-template" class="ez-editorial-app-partial" id="ez_fieldinfo_tooltip">

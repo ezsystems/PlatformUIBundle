@@ -3,10 +3,9 @@
     height: 100%;
 }
 
-@media (min-width: 980px) {
-    .ez-view-contenteditview {
-        padding-left: 10%;
-    }
+.ez-view-contenteditview > .pure-g {
+    height: 100%;
+    padding-right: 230px;
 }
 
 .ez-view-contenteditview > .pure-g {

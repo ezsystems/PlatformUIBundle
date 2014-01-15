@@ -98,12 +98,40 @@
 
 .is-app-open .ez-view-container {
     display: block;
-    width: 100%;
     min-height: 100%;
 }
 
 .ez-view-container {
     display: none;
+    width: 100%;
+}
+
+.is-menu-hidden .ez-mainviews {
+    padding-left: 0;
+}
+
+.is-menu-hidden .ez-menu-container {
+    width: 0;
+    margin-left: 0;
+    opacity: 0;
+}
+
+.ez-mainviews {
+    padding-left: 230px;
+}
+
+.ez-menu-container {
+    width: 230px;
+    margin-left: -230px;
+}
+
+.is-navigation-hidden .ez-navigation-container {
+    height: 0;
+    opacity: 0;
+}
+
+.ez-navigation-container {
+    height: 4em;
 }
 
 .is-app-loading .ez-view-container:before {

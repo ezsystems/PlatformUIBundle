@@ -93,8 +93,23 @@
 }
 
 .is-app-open {
-    background: #000;
-    background: rgba(0, 0, 0, 0.8);
+    background: #fff;
+}
+
+.ez-view-container {
+    -webkit-transition: opacity 0.2s ease-in-out;
+       -moz-transition: opacity 0.2s ease-in-out;
+        -ms-transition: opacity 0.2s ease-in-out;
+         -o-transition: opacity 0.2s ease-in-out;
+            transition: opacity 0.2s ease-in-out;
+}
+
+.is-app-loading .ez-view-container {
+    opacity: 0.6;
+}
+
+.ez-view-container:before {
+    opacity: 0;
 }
 
 .is-app-loading .ez-view-container:before {
@@ -106,8 +121,29 @@
     border-radius: 2em;
     border-width: 0.5em;
     border-style: solid;
-    border-color: #aaa #aaa #aaa #fff;
-    border-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+    border-color: rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.1);
+    opacity: 1;
+    z-index: 10000;
+}
+
+.ez-navigation-container {
+    text-align: center;
+    background: #fff;
+}
+
+.ez-menu-container {
+    background: #333;
+    color: #fff;
+}
+
+.ez-mainviews,
+.ez-menu-container,
+.ez-navigation-container {
+    -webkit-transition: all 0.2s ease;
+       -moz-transition: all 0.2s ease;
+        -ms-transition: all 0.2s ease;
+         -o-transition: all 0.2s ease;
+            transition: all 0.2s ease;
 }
 
 /* location view view */

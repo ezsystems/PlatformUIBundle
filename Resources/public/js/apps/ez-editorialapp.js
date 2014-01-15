@@ -43,14 +43,43 @@ YUI.add('ez-editorialapp', function (Y) {
      * @extends App
      */
     Y.eZ.EditorialApp = Y.Base.create('editorialApp', Y.App, [], {
+        /**
+         * The list of available sides views. Each side view is an entry in this
+         * hash which contains the following properties:
+         *
+         *   * `type`: a reference to the constructor of a view
+         *   * `container`: a selector to the node that will receive the
+         *      rendered view
+         *   * `hideClass`: a class to add on the application container to hide
+         *     the rendered side view when it's not needed.
+         *
+         * The lifecycle of the side views is handled by the `handleSideViews`
+         * method based on the meta information available in the route.
+         *
+         * @property sideViews
+         * @type {Object}
+         */
+        sideViews: {
+            discoveryBar: {
+                type: Y.eZ.DiscoveryBarView,
+                container: '.ez-menu-container',
+                hideClass: 'is-menu-hidden'
+            },
+            navigationHub: {
+                type: Y.eZ.NavigationHubView,
+                container: '.ez-navigation-container',
+                hideClass: 'is-navigation-hidden'
+            }
+        },
+
         views: {
             contentEditView: {
                 type: Y.eZ.ContentEditView,
+                parent: 'locationViewView',
                 preserve: true
             },
             locationViewView: {
                 type: Y.eZ.LocationViewView,
-                parent: 'contentEditView'
             },
             dummyView: {
                 type: Y.View
@@ -212,7 +241,6 @@ YUI.add('ez-editorialapp', function (Y) {
 
             container.addClass(APP_OPEN);
             viewContainer.setStyle('height', container.get('docHeight') + 'px');
-            this.showView('dummyView');
             if ( L.isFunction(next) ) {
                 next();
             }
@@ -254,6 +282,46 @@ YUI.add('ez-editorialapp', function (Y) {
                 });
             });
             loader.load(next);
+        },
+
+        /**
+         * Middleware to handle the *side views* configured for the given route.
+         * Depending on the configuration, it will apply the CSS class to
+         * show/hide the side views. If a side view is not explicitely
+         * configured to be displayed, it is hidden.
+         *
+         * @method handleSideViews
+         * @param {Object} req
+         * @param {Object} res
+         * @param {Function} next
+         */
+        handleSideViews: function (req, res, next) {
+            var container = this.get('container'),
+                routeSideViews = req.route.sideViews;
+
+            Y.Object.each(this.sideViews, function (viewInfo, key) {
+                var cl = viewInfo.hideClass;
+
+                if ( routeSideViews && routeSideViews[key] ) {
+                    if ( !viewInfo.instance ) {
+                        viewInfo.instance = new viewInfo.type();
+                        viewInfo.instance.render();
+                    }
+                    this.get('container').one(viewInfo.container).append(
+                        viewInfo.instance.get('container')
+                    );
+                    container.removeClass(cl);
+                    viewInfo.instance.addTarget(this);
+                    this._viewActiveCallback(viewInfo.instance);
+                } else {
+                    container.addClass(cl);
+                    if ( viewInfo.instance ) {
+                        viewInfo.instance.remove();
+                        viewInfo.instance.removeTarget(this);
+                    }
+                }
+            }, this);
+            next();
         },
 
         /**
@@ -340,17 +408,21 @@ YUI.add('ez-editorialapp', function (Y) {
              * Stores the available routes for the application.
              *
              * In addition to what is described in the {{#crossLink "App"}}YUI
-             * App documentation{{/crossLink}}, each route can have a `loader`
-             * entry which is supposed to contain a constructor function that
-             * extends {{#crossLink
-             * "eZ.ViewLoader"}}eZ.ViewLoader{{/crossLink}}. The {{#crossLink
-             * "eZ.EditorialApp/runLoader:method"}}`runLoader`{{/crossLink}}
-             * middleware is responsible for using this function to build the
-             * view loader which can be used to inject custom variables in the
-             * top level view triggered by the route.
-             * Each route can also have a name which is useful to generate an
-             * URI with {{#crossLink
-             * "eZ.EditorialApp/routeUri:method"}}Y.eZ.EditorialApp.routeUri{{/crossLink}}
+             * App documentation{{/crossLink}}, each route can have several
+             * metadata (all optional):
+             *
+             *   * `loader`: contains a reference to a constructor function that
+             *     extends {{#crossLink "eZ.ViewLoader"}}eZ.ViewLoader{{/crossLink}}.
+             *     The {{#crossLink "eZ.EditorialApp/runLoader:method"}}`runLoader`{{/crossLink}}
+             *     middleware is responsible for using this function to build the
+             *     view loader which can be used to inject custom variables in the
+             *     top level view triggered by the route.
+             *   * `name`: name of the route which is useful to generate an URI
+             *     with {{#crossLink
+             *     "eZ.EditorialApp/routeUri:method"}}Y.eZ.EditorialApp.routeUri{{/crossLink}}
+             *   * `sideViews`: a hash which keys are the side view keys in the
+             *     sideViews property. A truthy value means that the
+             *     corresponding side view should be visible.
              *
              * @attribute routes
              */
@@ -359,12 +431,14 @@ YUI.add('ez-editorialapp', function (Y) {
                     name: "editContent",
                     path: '/edit/:id',
                     loader: Y.eZ.ContentEditViewLoader,
-                    callbacks: ['open', 'runLoader', 'handleContentEdit']
+                    sideViews: {},
+                    callbacks: ['open', 'handleSideViews', 'runLoader', 'handleContentEdit']
                 }, {
                     name: "viewLocation",
                     path: '/view/:id',
                     loader: Y.eZ.LocationViewViewLoader,
-                    callbacks: ['open', 'runLoader', 'handleLocationView']
+                    sideViews: {'discoveryBar': true, 'navigationHub': true},
+                    callbacks: ['open', 'handleSideViews', 'runLoader', 'handleLocationView']
                 }],
             },
             serverRouting: {
