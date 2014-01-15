@@ -56,7 +56,7 @@ YUI.add('ez-locationviewviewloader', function (Y) {
                 });
 
                 endLoadPath = tasks.add();
-                contentService.loadRoot('/api/ezp/v2/', function (error, response) {
+                contentService.loadRoot(function (error, response) {
                     var rootLocationId;
 
                     if ( error ) {
