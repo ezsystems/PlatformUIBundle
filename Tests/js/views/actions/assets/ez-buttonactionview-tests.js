@@ -51,8 +51,12 @@ YUI.add('ez-buttonactionview-tests', function (Y) {
                 actionFired = false;
 
             // 'testAction' is composed of actionId + 'Action'
-            this.view.on('testAction', function () {
+            this.view.on('testAction', function (e) {
                 actionFired = true;
+                Y.Assert.areSame(
+                    that.view.get('content'), e.content,
+                    "The event facade object should provide the content"
+                );
             });
 
             this.view.render();

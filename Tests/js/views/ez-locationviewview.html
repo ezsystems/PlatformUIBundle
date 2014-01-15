@@ -22,8 +22,16 @@
             <div class="ez-tabs-panel" id="ez-tabs-analytics"></div>
         </div>
     </div>
+    <div class="ez-actionbar-container"></div>
 </script>
 
+<script type="text/x-handlebars-template" id="barview-ez-template">
+    <menu class="ez-actions-list active-actions" tabindex="0">
+    </menu>
+    <button class="view-more-button is-hidden">{{ viewMoreText }}</button>
+    <menu class="ez-actions-list view-more-actions is-hidden">
+    </menu>
+</script>
 
 <script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-locationviewview-tests.js"></script>
@@ -44,8 +52,20 @@
         filter: loaderFilter,
         modules: {
             "ez-locationviewview": {
-                requires: ['ez-templatebasedview', 'event-tap'],
+                requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-buttonactionview', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-locationviewview.js"
+            },
+            "ez-actionbarview": {
+                requires: ['ez-barview', 'ez-buttonactionview'],
+                fullpath: "../../../Resources/public/js/views/ez-actionbarview.js"
+            },
+            "ez-buttonactionview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../Resources/public/js/views/actions/ez-buttonactionview.js"
+            },
+            "ez-barview": {
+                requires: ['ez-templatebasedview', 'event-tap', 'event-resize'],
+                fullpath: "../../../Resources/public/js/views/ez-barview.js"
             },
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],

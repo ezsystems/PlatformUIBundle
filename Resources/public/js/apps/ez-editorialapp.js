@@ -87,11 +87,56 @@ YUI.add('ez-editorialapp', function (Y) {
                 this.set('loading', true);
             });
 
+            this.on('*:editAction', this._editContent);
+
             // Listening for events fired on child views
             this.views.errorView.instance.addTarget(this);
 
             // Registering handlebars partials
             this._registerPartials();
+        },
+
+        /**
+         * editAction event handler, makes the application navigate to edit the
+         * content available in the event facade
+         *
+         * @method _editContent
+         * @protected
+         * @param {Object} e event facade of the editAction event
+         */
+        _editContent: function (e) {
+            this.navigate(this.routeUri('editContent', {id: e.content.get('id')}));
+        },
+
+        /**
+         * Generates the URI for a route identified by its name. All
+         * placeholders are replaced by the value found in the `params`
+         * parameters, if a value is not found in this object, the placeholder
+         * is replaced by an empty string.
+         *
+         * @method routeUri
+         * @param {String} routeName the name of the route to look for
+         * @param {Object} params an object containing the key/value to replace
+         *                 in the route path
+         * @return {String} or null if the route was not found
+         */
+        routeUri: function (routeName, params) {
+            var route = Y.Array.find(this.get('routes'), function (elt) {
+                    return (elt.name === routeName);
+                });
+
+            if ( !route ) {
+                return null;
+            }
+
+            return route.path.replace(/(:[a-z0-9]+)/gi, function (matched, placeholder) {
+                var paramName = placeholder.substr(1);
+
+                if ( !params[paramName] ) {
+                    return '';
+                }
+                return Y.config.win.encodeURIComponent(params[paramName]);
+            });
         },
 
         /**
@@ -109,7 +154,7 @@ YUI.add('ez-editorialapp', function (Y) {
                 'additionalInfo': errorInfo.additionalInfo
             });
             errorView.render();
-            errorView.setFocus();
+            errorView.activeCallback();
         },
 
         /**
@@ -135,11 +180,6 @@ YUI.add('ez-editorialapp', function (Y) {
             this.showView('contentEditView', res.variables, {
                 update: true,
                 render: true,
-                callback: function (view) {
-                    this.set('loading', false);
-                    view.get('actionBar').handleHeightUpdate();
-                    view.setFocus();
-                }
             });
         },
 
@@ -155,9 +195,6 @@ YUI.add('ez-editorialapp', function (Y) {
             this.showView('locationViewView', res.variables, {
                 update: true,
                 render: true,
-                callback: function (view) {
-                    this.set('loading', false);
-                }
             });
         },
 
@@ -257,8 +294,46 @@ YUI.add('ez-editorialapp', function (Y) {
             Y.all(PARTIALS_SEL).each(function (partial) {
                 Y.Handlebars.registerPartial(partial.get('id'), partial.getHTML());
             });
-        }
+        },
 
+        /*
+         * Overrides the default implementation to make sure the view
+         * activeCallback callback is called after the view is attached to the
+         * DOM. It also sets the loading flag to false.
+         *
+         * @method _afterActiveViewChange
+         * @protected
+         * @param {Object} e activeViewChange event facade
+         */
+        _afterActiveViewChange: function (e) {
+            var cb;
+
+            if ( e.options.callback ) {
+                cb = e.options.callback;
+                e.options.callback = function (view) {
+                    cb(e.newVal);
+                    this._viewActiveCallback(view);
+                };
+            } else {
+                e.options.callback = this._viewActiveCallback;
+            }
+
+            Y.eZ.EditorialApp.superclass._afterActiveViewChange.call(this, e);
+            this.set('loading', false);
+        },
+
+        /**
+         * Calls the view activation callback if it exists
+         *
+         * @method _viewActiveCallback
+         * @protected
+         * @param {Y.View} view
+         */
+        _viewActiveCallback: function (view) {
+            if ( typeof view.activeCallback === 'function' ) {
+                view.activeCallback.call(view);
+            }
+        }
     }, {
         ATTRS: {
             /**
@@ -273,15 +348,20 @@ YUI.add('ez-editorialapp', function (Y) {
              * middleware is responsible for using this function to build the
              * view loader which can be used to inject custom variables in the
              * top level view triggered by the route.
+             * Each route can also have a name which is useful to generate an
+             * URI with {{#crossLink
+             * "eZ.EditorialApp/routeUri:method"}}Y.eZ.EditorialApp.routeUri{{/crossLink}}
              *
              * @attribute routes
              */
             routes: {
                 value: [{
+                    name: "editContent",
                     path: '/edit/:id',
                     loader: Y.eZ.ContentEditViewLoader,
                     callbacks: ['open', 'runLoader', 'handleContentEdit']
                 }, {
+                    name: "viewLocation",
                     path: '/view/:id',
                     loader: Y.eZ.LocationViewViewLoader,
                     callbacks: ['open', 'runLoader', 'handleLocationView']

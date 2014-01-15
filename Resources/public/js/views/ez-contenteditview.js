@@ -82,12 +82,25 @@ YUI.add('ez-contenteditview', function (Y) {
             return this;
         },
 
+
+        /**
+         * Active callback for the content edit view to make sure it
+         * has the focus after being displayed.
+         *
+         * @method activeCallback
+         */
+        activeCallback: function () {
+            this._subViewsPostActivation();
+            this._setFocus();
+        },
+
         /**
          * Set current input focus on the view
          *
          * @method setFocus
+         * @protected
          */
-        setFocus: function () {
+        _setFocus: function () {
             this.get('container').one(CONTENT_SEL).focus();
         },
 

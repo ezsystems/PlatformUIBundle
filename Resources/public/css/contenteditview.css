@@ -9,9 +9,14 @@
     }
 }
 
+.ez-view-contenteditview > .pure-g {
+    height: 100%;
+    padding-right: 230px;
+}
+
 .ez-view-contenteditview .ez-main-content {
     min-height: 800px; /* temporary, until we get enough content */
-    margin-right: 230px;
+    width: 100%;
 }
 
 .ez-view-contenteditview header {
@@ -61,11 +66,9 @@
 
 .ez-view-contenteditview .ez-editactionbar-container {
     position: fixed;
-    right: 0;
     top: 0;
-    bottom: 0;
     width: 230px;
+    margin-right: -230px;
     height: 100%;
-    background: #333;
     z-index: 1025;
 }

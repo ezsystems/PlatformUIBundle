@@ -120,7 +120,7 @@ YUI.add('ez-errorview-tests', function (Y) {
                 focused = true;
             });
 
-            this.view.setFocus();
+            this.view.activeCallback();
 
             Y.assert(focused, "Main content node of the view should get the focus");
         },

@@ -57,10 +57,21 @@ YUI.add('ez-errorview', function (Y) {
         /**
          * Set current input focus on the view
          *
-         * @method setFocus
+         * @method _setFocus
+         * @protected
          */
-        setFocus: function () {
+        _setFocus: function () {
             this.get('container').one(ERROR_DIALOG_SEL).focus();
+        },
+
+        /**
+         * Active callback for the error view to make sure it has the focus
+         * after being displayed
+         *
+         * @method activeCallback
+         */
+        activeCallback: function () {
+            this._setFocus();
         },
 
         /**

@@ -1,51 +1,10 @@
-.ez-view-previewactionview .ez-action {
-    display: block;
-    width: 100%;
-    background: none;
-    border: none;
-    text-align: left;
-    padding: 1em 0;
-}
-
-.ez-view-previewactionview .ez-action .action-icon {
-    padding-left: 20px;
-}
-
-.ez-view-previewactionview .ez-action .action-icon:before {
-    float: left;
-}
-
-.ez-view-previewactionview .ez-action p {
-    padding-left: 40px;
-    margin: 0;
-}
-
-.ez-view-previewactionview .ez-action .action-label {
-    display: block;
-    margin-top: 2px;
-}
-
 .ez-view-previewactionview .preview-modes {
     margin: 0;
-    padding: 0.5em 0 0 2em;
+    padding: 0.5em 0 0 1.8em;
 }
 
 .ez-view-previewactionview .preview-modes .preview-mode-button {
     padding-top: 0.2em;
     margin-right: 0.1em;
     border: none;
-}
-
-.ez-view-previewactionview .ez-action.with-hint .action-icon {
-    margin-bottom: -1em;
-}
-
-.ez-view-previewactionview .ez-action.with-hint .action-label {
-    position:relative;
-    top: -0.8em;
-}
-
-.ez-view-previewactionview .ez-action.with-hint .action-hint {
-    position:relative;
-    top: -0.8em;
 }

@@ -7,8 +7,17 @@ YUI.add('ez-locationviewview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var TAB_IS_SELECTED = 'is-tab-selected';
+    var TAB_IS_SELECTED = 'is-tab-selected',
+        MINIMIZE_ACTION_BAR_CLASS = 'is-actionbar-minimized';
 
+    /**
+     * The location view view
+     *
+     * @namespace eZ
+     * @class LocationViewView
+     * @constructor
+     * @extends eZ.TemplateBasedView
+     */
     Y.eZ.LocationViewView = Y.Base.create('locationViewView', Y.eZ.TemplateBasedView, [], {
         events: {
             '.ez-tabs .ez-tabs-label a': {
@@ -38,13 +47,31 @@ YUI.add('ez-locationviewview', function (Y) {
             tabLabel.addClass(TAB_IS_SELECTED);
         },
 
+        initializer: function () {
+            this.get('actionBar').addTarget(this);
+
+            this.on('*:minimizeActionBarAction', this._handleMinimizeActionBar);
+        },
+
         /**
-         * Renders the location view
+         * Event handler for the minimizeActionBarAction event
          *
-         * @method render
-         * @return {eZ.LocationViewView} the view itself
+         * @protected
+         * @method _handleMinimizeActionBar
          */
-        render: function () {
+        _handleMinimizeActionBar: function () {
+            this.get('container').toggleClass(MINIMIZE_ACTION_BAR_CLASS);
+        },
+
+        /**
+         * Converts each location and content model in the path to a plain
+         * object representation
+         *
+         * @method _pathToJSON
+         * @private
+         * @return Array
+         */
+        _pathToJSON: function () {
             var path = [];
 
             Y.Array.each(this.get('path'), function (struct, key) {
@@ -53,11 +80,27 @@ YUI.add('ez-locationviewview', function (Y) {
                     content: struct.content.toJSON()
                 };
             });
-            this.get('container').setHTML(this.template({
+            return path;
+        },
+
+        /**
+         * Renders the location view
+         *
+         * @method render
+         * @return {eZ.LocationViewView} the view itself
+         */
+        render: function () {
+            var container = this.get('container');
+
+            container.setHTML(this.template({
                 location: this.get('location').toJSON(),
                 content: this.get('content').toJSON(),
-                path: path
+                path: this._pathToJSON()
             }));
+
+            container.one('.ez-actionbar-container').append(
+                this.get('actionBar').render().get('container')
+            );
             return this;
         }
     }, {
@@ -76,7 +119,12 @@ YUI.add('ez-locationviewview', function (Y) {
              * @attribute content
              * @type Y.eZ.Content
              */
-            content: {},
+            content: {
+                setter: function (val, name) {
+                    this.get('actionBar').set('content', val);
+                    return val;
+                }
+            },
 
             /**
              * The path from the root location to the current location. Each
@@ -86,7 +134,18 @@ YUI.add('ez-locationviewview', function (Y) {
              * @attribute path
              * @type Array
              */
-            path: {}
+            path: {},
+
+            /**
+             * The action bar instance, by default an instance {{#crossLink
+             * "eZ.ActionBarView"}}eZ.ActionBarView{{/crossLink}}
+             *
+             * @attribute actionBar
+             * @type eZ.BarView
+             */
+            actionBar: {
+                value: new Y.eZ.ActionBarView()
+            }
         }
     });
 });

@@ -1,5 +1,5 @@
 YUI.add('ez-editorialapp-tests', function (Y) {
-    var app, appTest,
+    var app, appTest, reverseRoutingTest,
         capiMock,
         container = Y.one('.app'),
         mockActionBar = {};
@@ -104,8 +104,49 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             app.set('loading', false);
         },
 
+        "View change should trigger the activeCallback callback and set loading to false": function () {
+            var activeCallbackCalled = false, showViewCallbackCalled = false;
+
+            app.views.simpleView = {
+                type: Y.View
+            };
+            app.views.viewWithCallback = {
+                type: Y.Base.create('testView', Y.View, [], {
+                    activeCallback: function () {
+                        activeCallbackCalled = true;
+                    }
+                })
+            };
+
+            app.showView('simpleView', {},
+                function () {
+                    showViewCallbackCalled = true;
+                }
+            );
+            this.wait(function () {
+                Y.Assert.isTrue(
+                    showViewCallbackCalled,
+                    "The showview callback should have been called"
+                );
+                Y.Assert.isFalse(app.get('loading'), "The app should not be in loading mode");
+
+                app.set('loading', true);
+                app.showView('viewWithCallback');
+                this.wait(function () {
+                    Y.Assert.isTrue(
+                        activeCallbackCalled, "The active callback should have been called"
+                    );
+                    Y.Assert.isFalse(app.get('loading'), "The app should not be in loading mode");
+
+                    delete app.views.simpleView;
+                    delete app.views.viewWithCallback;
+                }, 800);
+
+            }, 800);
+        },
+
         "Should show the content edit view": function () {
-            var rendered = false, initialized = false, focused = false,
+            var rendered = false, initialized = false,
                 req = {}, resp = {};
 
             resp.variables = {'content': 1, 'contentType': {}, 'mainLocation': {}, 'owner': {}};
@@ -121,10 +162,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                         this.get('content'), resp.variables.content,
                         "The view attributes should be updated with the result of the loader"
                     );
-                },
-
-                setFocus: function () {
-                    focused = true;
                 }
             }, {
                 ATTRS: {
@@ -140,10 +177,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
             Y.assert(initialized, "The content edit view should have been initialized");
             Y.assert(rendered, "The content edit view should have been rendered");
-            this.wait(function () {
-                Y.assert(!app.get('loading'), "The app should not be in loading mode");
-                Y.assert(focused, "The content edit view should have input focus");
-            }, 800);
 
             rendered = false;
             resp.variables.content++;
@@ -151,9 +184,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             app.handleContentEdit(req, resp);
 
             Y.assert(rendered, "The content edit view should have been rerendered");
-            this.wait(function () {
-                Y.assert(!app.get('loading'), "The app should not be in loading mode");
-            }, 500);
         },
 
         "Should show the location view": function () {
@@ -181,9 +211,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
             Y.assert(initialized, "The location view view should have been initialized");
             Y.assert(rendered, "The location view should have been rendered");
-            this.wait(function () {
-                Y.assert(!app.get('loading'), "The app should not be in loading mode");
-            }, 800);
 
             rendered = false;
             resp.variables.content++;
@@ -191,13 +218,10 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             app.handleLocationView(req, resp);
 
             Y.assert(rendered, "The location view view should have been rerendered");
-            this.wait(function () {
-                Y.assert(!app.get('loading'), "The app should not be in loading mode");
-            }, 500);
         },
 
         "Should show the error view, when catching 'fatalError' event": function () {
-            var rendered = false, initialized = false, focused = false,
+            var rendered = false, initialized = false, activeCallbackCalled = false,
                 errorInfo = {'retryAction:': {}, 'additionalInfo': 1},
                 originalErroView,
                 TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
@@ -213,8 +237,8 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                         );
                     },
 
-                    setFocus: function () {
-                        focused = true;
+                    activeCallback: function () {
+                        activeCallbackCalled = true;
                     }
                 });
 
@@ -225,12 +249,10 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
             Y.assert(initialized, "The error view should have been initialized");
             Y.assert(rendered, "The error view should have been rendered");
-            this.wait(function () {
-                Y.assert(!app.get('loading'), "The app should not be in loading mode");
-                Y.assert(focused, "The error view should have input focus");
+            Y.assert(!app.get('loading'), "The app should not be in loading mode");
+            Y.assert(activeCallbackCalled, "The error view should have input focus");
 
-                app.views.errorView.instance = originalErroView;
-            }, 500);
+            app.views.errorView.instance = originalErroView;
         },
 
         "Should receive 'retryAction' event fired on the errorView": function () {
@@ -367,7 +389,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 },
                 TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.eZ.ErrorView, [], {
                     render: function () {},
-                    setFocus: function () {}
+                    activeCallback: function () {}
                 });
 
 
@@ -420,10 +442,129 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 "Test partial should be here: I'm a test partial!",
                 template()
             );
-        }
+        },
+
+        "Should navigate to the content edit when receiving an editAction event": function () {
+            var contentMock, contentId = 'aContentId';
+
+            contentMock = new Y.Test.Mock();
+            Y.Mock.expect(contentMock, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId
+            });
+
+            app.fire('whatever:editAction', {content: contentMock});
+            Y.Assert.areEqual(
+                app.routeUri('editContent', {id: contentId}), app.getPath(),
+                "The current path should be the edit content route for the content '" + contentId + "'"
+            );
+        },
+    });
+
+    reverseRoutingTest = new Y.Test.Case({
+        name: "eZ Editorial App reverse routing tests",
+
+        setUp: function () {
+            var routes = [
+                {path: '/simple', name: "simple"},
+                {path: '/noname'},
+                {path: '/:param', name: "oneParam"},
+                {path: '/:param/:PARAM2', name: "twoParams"},
+                {path: '/sTr1ng/:param/m1X3d/:PARAM2', name: "complex"},
+            ];
+            this.app = new Y.eZ.EditorialApp({
+                container: '.app',
+                viewContainer: '.view-container',
+                capi: capiMock
+            });
+            Y.Array.each(routes, function (route) {
+                reverseRoutingTest.app.route(route, function () {});
+            });
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+        },
+
+        _testRoute: function (routeName, params, expected, msg) {
+            Y.Assert.areSame(expected, this.app.routeUri(routeName, params), msg);
+        },
+
+        "Route does not exist": function () {
+            this._testRoute(
+                "do not exist", {}, null,
+                "The URI of an inexistent route should be null"
+            );
+        },
+
+        "Route without parameter": function () {
+            this._testRoute(
+                "simple", {not: "used"}, "/simple",
+                "The route path should be left intact"
+            );
+        },
+
+        "Route with one parameter only and a matching parameters": function () {
+            this._testRoute(
+                "oneParam", {param: "repl aced"}, "/repl%20aced",
+                "The parameter should be replaced by the correct value"
+            );
+        },
+
+        "Route with one parameter only and no matching parameter": function () {
+            this._testRoute(
+                "oneParam", {doesnotmatch: "repl aced"}, "/",
+                "The parameter should just be removed"
+            );
+        },
+
+        "Route with 2 parameters only and 2 matching parameters": function () {
+            this._testRoute(
+                "twoParams", {param: "repl aced", PARAM2: "ag ain"}, "/repl%20aced/ag%20ain",
+                "The parameters should be replaced by the correct value"
+            );
+        },
+
+        "Route with 2 parameters only and 1 matching parameter": function () {
+            this._testRoute(
+                "twoParams", {param: "repl aced", not: "again"}, "/repl%20aced/",
+                "The parameter should be replaced by the correct value and the other not matching by an empty string"
+            );
+        },
+
+        "Route with 2 parameters only and no matching parameter": function () {
+            this._testRoute(
+                "twoParams", {}, "//",
+                "The parameters should be removed"
+            );
+        },
+
+        "Complex route with 2 parameters only and 2 matching parameters": function () {
+            this._testRoute(
+                "complex", {param: "repl aced", PARAM2: "ag ain"}, "/sTr1ng/repl%20aced/m1X3d/ag%20ain",
+                "The parameters should be replaced by the correct value"
+            );
+        },
+
+        "Complex route with 2 parameters only and 1 matching parameter": function () {
+            this._testRoute(
+                "complex", {param: "repl aced", not: "again"}, "/sTr1ng/repl%20aced/m1X3d/",
+                "The parameter should be replaced by the correct value and the other not matching by an empty string"
+            );
+        },
+
+        "Complex route with 2 parameters only and no matching parameter": function () {
+            this._testRoute(
+                "complex", {}, "/sTr1ng//m1X3d/",
+                "The parameters should be removed"
+            );
+        },
+>>>>>>> Fixed EZP-22137: Implemented the edit button in the action bar
     });
 
     Y.Test.Runner.setName("eZ Editorial App tests");
     Y.Test.Runner.add(appTest);
+    Y.Test.Runner.add(reverseRoutingTest);
 
 }, '0.0.1', {requires: ['test', 'ez-editorialapp', 'json', 'parallel']});

@@ -21,6 +21,30 @@ YUI.add('ez-templatebasedview', function (Y) {
      */
     Y.eZ.TemplateBasedView = Y.Base.create('templateBasedView', Y.View, [], {
         /**
+         * Returns the name of the class. This name is used to retrieve the
+         * correct template
+         *
+         * @method _getName
+         * @protected
+         * @return String
+         */
+        _getName: function () {
+            return this.constructor.NAME;
+        },
+
+        /**
+         * Generates the class name of a view from its name
+         *
+         * @method _generateViewClassName
+         * @protected
+         * @param {String} name
+         * @return String
+         */
+        _generateViewClassName: function (name) {
+            return VIEW_PREFIX + name.toLowerCase();
+        },
+
+        /**
          * Initializes the template based view object:
          *
          *   * the template property is filled with the content of the element
@@ -33,7 +57,7 @@ YUI.add('ez-templatebasedview', function (Y) {
          * @method initializer
          */
         initializer: function () {
-            var name = this.constructor.NAME,
+            var name = this._getName(),
                 tplEl = Y.one('#' + name.toLowerCase() + TPL_ELEM_SUFFIX);
 
             this.template = function () { return ''; };
@@ -42,8 +66,35 @@ YUI.add('ez-templatebasedview', function (Y) {
                     tplEl.getHTML()
                 );
             }
-            this.containerTemplate = '<div class="' + VIEW_PREFIX + name.toLowerCase() + '"/>';
-        }
+            this.containerTemplate = '<div class="' + this._generateViewClassName(name) + '"/>';
+        },
 
+        /**
+         * Activate callback for the view. This method will be called after the
+         * view has been attached to the DOM. The default implementation just
+         * forwards the call to the sub views.
+         *
+         * @method activeCallback
+         */
+        activeCallback: function () {
+            this._subViewsPostActivation();
+        },
+
+        /**
+         * Iterates over the attributes to find the sub views and calls the
+         * activeCallback callback on them
+         *
+         * @method _subViewsPostActivation
+         * @protected
+         */
+        _subViewsPostActivation: function () {
+            Y.Object.each(this._getAttrCfgs(), function (attrCfg, name) {
+                var attr = this.get(name);
+
+                if ( attr instanceof Y.View && typeof attr.activeCallback === 'function' ) {
+                    attr.activeCallback();
+                }
+            }, this);
+        }
     });
 });

@@ -42,8 +42,11 @@ parameters:
                 requires: ['view', 'handlebars']
                 path: js/views/ez-templatebasedview.js
             ez-locationviewview:
-                requires: ['ez-templatebasedview', 'event-tap']
+                requires: ['ez-templatebasedview', 'ez-actionbarview', 'event-tap']
                 path: js/views/ez-locationviewview.js
+            ez-actionbarview:
+                requires: ['ez-barview', 'ez-buttonactionview']
+                path: js/views/ez-actionbarview.js
             ez-contenteditview:
                 requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'transition', 'event-tap']
                 path: js/views/ez-contenteditview.js
@@ -90,7 +93,7 @@ parameters:
                 requires: ['ez-restmodel']
                 path: js/models/ez-contenttypemodel.js
             ez-editactionbarview:
-                requires: ['ez-templatebasedview', 'ez-buttonactionview', 'ez-previewactionview', 'transition', 'event-tap', 'event-resize']
+                requires: ['ez-barview', 'ez-buttonactionview', 'ez-previewactionview']
                 path: js/views/ez-editactionbarview.js
             ez-buttonactionview:
                 requires: ['ez-templatebasedview']
@@ -101,6 +104,9 @@ parameters:
             ez-editpreviewview:
                 requires: ['ez-templatebasedview', 'transition', 'event-tap']
                 path: js/views/ez-editpreviewview.js
+            ez-barview:
+                requires: ['ez-templatebasedview', 'event-tap', 'event-resize']
+                path: js/views/ez-barview.js
             ez-texthelper:
                 requires: ['handlebars']
                 path: js/helpers/ez-texthelper.js

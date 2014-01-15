@@ -2,6 +2,39 @@
     height: 100%;
 }
 
+.ez-view-locationviewview > .pure-g {
+    height: 100%;
+    padding-right: 230px;
+
+    -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+         -o-transition: all 0.30s ease-in-out;
+            transition: all 0.30s ease-in-out;
+}
+
+.ez-view-locationviewview.is-actionbar-minimized > .pure-g {
+    padding-right: 4em;
+}
+
+.ez-view-locationviewview .ez-actionbar-container {
+    position: fixed;
+    top: 0;
+    width: 230px;
+    margin-right: -230px;
+    height: 100%;
+    z-index: 1025;
+}
+
+.ez-view-locationviewview.is-actionbar-minimized .ez-actionbar-container {
+    width: 4em;
+    margin-right: -4em;
+}
+
+.ez-view-locationviewview .ez-locationview-content {
+    width: 100%;
+}
+
 .ez-view-locationviewview header {
     padding: 2em 1.5em 1em 1.5em;
 }

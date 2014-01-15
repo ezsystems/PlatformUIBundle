@@ -45,6 +45,25 @@ YUI.add('ez-previewactionview-tests', function (Y) {
             this.view.destroy();
         },
 
+        "Should set the button action view class name on the view container": function () {
+            var container = this.view.get('container');
+
+            Y.Mock.expect(editPreview, {
+                method: 'set',
+                args: [Y.Mock.Value.Any, Y.Mock.Value.Any]
+            });
+            Y.Mock.expect(editPreview, {
+                method: 'show',
+                args: [Y.Mock.Value.Any]
+            });
+
+            this.view.render();
+            Y.Assert.isTrue(
+                container.hasClass('ez-view-buttonactionview'),
+                "The container should have the view class name from the button action view"
+            );
+        },
+
         "Should set Content attribute for the PreviewView, once setting it for itself": function () {
             var previewContent;
             Y.Mock.expect(editPreview, {

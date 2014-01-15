@@ -115,6 +115,16 @@
     background: #fff;
 }
 
+.ez-view-locationviewview .ez-actionbar-container {
+    background: #333;
+
+    -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+         -o-transition: all 0.30s ease-in-out;
+            transition: all 0.30s ease-in-out;
+}
+
 .ez-view-locationviewview header {
     background: #f5f4f2;
 }
@@ -193,6 +203,10 @@
 /* content edit view */
 .ez-view-contenteditview {
     color: #444;
+}
+
+.ez-view-contenteditview .ez-editactionbar-container {
+    background: #333;
 }
 
 .ez-view-contenteditview .ez-main-content {
@@ -360,90 +374,125 @@
     border-bottom: 2px solid #bf3e33;
 }
 
-/* edit action bar */
-.ez-view-editactionbarview .ez-actions-list {
+/* bar view */
+.ez-view-barview .ez-actions-list {
     background: #333333;
 }
 
-.ez-view-editactionbarview .view-more-button {
+.ez-view-barview .view-more-button {
     color: #808080;
     background: none;
     border: none;
 }
 
-.ez-view-editactionbarview .view-more-button:hover {
+.ez-view-barview .view-more-button:hover {
     color: #d8fcff;
 }
 
-.ez-view-editactionbarview .ez-actions-list .ez-action {
+.ez-view-barview .ez-actions-list .ez-action {
     border-top: 1px solid #424242;
     border-bottom: 1px solid #242424;
 }
 
-.ez-view-editactionbarview .ez-actions-list .ez-action:last-child {
+.ez-view-barview .ez-actions-list .ez-action:last-child {
     -webkit-box-shadow: 0 1px 0 0 #424242;
        -moz-box-shadow: 0 1px 0 0 #424242;
             box-shadow: 0 1px 0 0 #424242;
 }
 
-.ez-action .action-icon {
+.ez-view-barview .view-more-actions {
+    -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+         -o-transition: all 0.30s ease-in-out;
+            transition: all 0.30s ease-in-out;
+    box-shadow: 7px 0 7px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* button action view */
+.ez-view-buttonactionview .action-icon {
     color: #e3e3e3;
     font-size: 140%;
     text-shadow: 0 2px 2px #000;
 }
 
-.ez-action .action-label {
+.ez-view-buttonactionview .action-label {
     color: #fff;
     font-weight: bold;
     font-size: 70%;
 }
 
-.ez-action .action-hint {
+.ez-view-buttonactionview .action-hint {
     color: #9eaa8f;
     font-size: 60%;
 }
 
-.ez-action.is-disabled .action-icon,
-.ez-action.is-disabled .action-label,
-.ez-action.is-disabled .action-hint {
+.ez-view-buttonactionview .is-disabled .action-icon,
+.ez-view-buttonactionview .is-disabled .action-label,
+.ez-view-buttonactionview .is-disabled .action-hint {
     color: #808080;
 }
 
-/* default action icon */
-.ez-action .action-icon:before {
+.ez-view-buttonactionview .action-label,
+.ez-view-buttonactionview .action-hint {
+    margin: 0;
+    opacity: 1;
+
+    -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+         -o-transition: all 0.30s ease-in-out;
+            transition: all 0.30s ease-in-out;
+}
+
+.is-actionbar-minimized .active-actions .ez-view-buttonactionview .action-label,
+.is-actionbar-minimized .active-actions .ez-view-buttonactionview .action-hint {
+    display: block;
+    font-size: 0;
+    opacity: 0;
+}
+
+.ez-view-buttonactionview .ez-action .action-icon:before {
     content: "\E001";
 }
 
-/* actual actions icons */
-.ez-action[data-action="publish"] .action-icon:before {
+.ez-view-buttonactionview .ez-action[data-action="edit"] .action-icon:before {
+    content: "\E006";
+}
+
+.ez-view-buttonactionview .ez-action[data-action="minimizeActionBar"] .action-icon:before {
+    content: "\E600";
+}
+
+.ez-view-buttonactionview .ez-action[data-action="publish"] .action-icon:before {
     content: "\E00c";
 }
 
-.ez-action[data-action="save"] .action-icon:before {
+.ez-view-buttonactionview .ez-action[data-action="save"] .action-icon:before {
     content: "\E00e";
 }
 
-.ez-action[data-action="discard"] .action-icon:before {
+.ez-view-buttonactionview .ez-action[data-action="discard"] .action-icon:before {
     content: "\E000";
 }
 
-.ez-action[data-action="collaborate"] .action-icon:before {
+.ez-view-buttonactionview .ez-action[data-action="collaborate"] .action-icon:before {
     content: "\E00b";
 }
 
-.ez-action[data-action="preview"] .action-icon:before {
+.ez-view-buttonactionview .ez-action[data-action="preview"] .action-icon:before {
     content: "\E007";
 }
 
-.ez-action[data-action="preview"] .action-trigger[data-action-option="desktop"]:before {
+.ez-view-buttonactionview .ez-action[data-action="preview"] .action-trigger[data-action-option="desktop"]:before {
     content: "\E008";
 }
 
-.ez-action[data-action="preview"] .action-trigger[data-action-option="tablet"]:before {
+.ez-view-buttonactionview .ez-action[data-action="preview"] .action-trigger[data-action-option="tablet"]:before {
     content: "\E009";
 }
 
-.ez-action[data-action="preview"] .action-trigger[data-action-option="mobile"]:before {
+.ez-view-buttonactionview .ez-action[data-action="preview"] .action-trigger[data-action-option="mobile"]:before {
     content: "\E00a";
 }
 

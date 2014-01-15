@@ -38,6 +38,21 @@ YUI.add('ez-previewactionview', function (Y) {
         },
 
         /**
+         * Adds the parent class name to the container of the view, so that we
+         * can reuse its CSS styles
+         *
+         * @protected
+         * @method _addParentClassName
+         */
+        _addParentClassName: function () {
+            var classes = this._getClasses();
+
+            this.get('container').addClass(
+                this._generateViewClassName(classes[0].superclass.constructor.NAME)
+            );
+        },
+
+        /**
          * Renders the action
          *
          * @method render
@@ -46,6 +61,7 @@ YUI.add('ez-previewactionview', function (Y) {
         render: function () {
             var container = this.get('container');
 
+            this._addParentClassName();
             container.setHTML(this.template({
                 actionId: this.get('actionId'),
                 disabled: this.get('disabled'),

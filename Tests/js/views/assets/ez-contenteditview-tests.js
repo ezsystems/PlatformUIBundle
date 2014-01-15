@@ -260,13 +260,11 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
         "Should focus on the content element using special method": function () {
             var focused = false;
-            this.view.render();
 
+            this.view.render().activeCallback();
             container.one('.ez-main-content').on('focus', function () {
                 focused = true;
             });
-
-            this.view.setFocus();
 
             Y.assert(focused, "Main content node of the view should get the focus");
         },

@@ -1,5 +1,5 @@
 YUI.add('ez-locationviewview-tests', function (Y) {
-    var test, tabsTest,
+    var test, tabsTest, eventsTest,
 
         _getModelMock = function (serialized) {
             var mock = new Y.Test.Mock();
@@ -20,6 +20,16 @@ YUI.add('ez-locationviewview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+        },
+
+        "Should set the content of the action bar": function () {
+            var content = {};
+
+            this.view.set('content', content);
+            Y.Assert.areSame(
+                content, this.view.get('actionBar').get('content'),
+                "The content also have been set on the action bar"
+            );
         },
 
         "Test render": function () {
@@ -52,6 +62,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             var plainLocation = {}, plainContent = {}, path = [],
                 plainLocations = [{}, {}, {}],
                 plainContents = [{}, {}, {}],
+                origTpl = this.view.template,
                 location = _getModelMock(plainLocation),
                 content = _getModelMock(plainContent);
 
@@ -86,7 +97,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                     variables.content, plainContent,
                     "content.toJSON() should be passed to the template"
                 );
-                return '';
+                return origTpl.apply(this, arguments);
             };
             this.view.setAttrs({
                 location: location,
@@ -162,7 +173,48 @@ YUI.add('ez-locationviewview-tests', function (Y) {
 
     });
 
+    eventsTest = new Y.Test.Case({
+        name: "eZ Location view view events handling tests",
+
+        setUp: function () {
+            this.view = new Y.eZ.LocationViewView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Events from the action bar should bubble to the location view": function () {
+            var bubbled = false;
+
+            this.view.on('*:somethingHappened', function () {
+                bubbled = true;
+            });
+            this.view.get('actionBar').fire('somethingHappened');
+            Y.Assert.isTrue(
+                bubbled,
+                "The event should have bubbled to the location view"
+            );
+        },
+
+        "The action bar minimized class should be toggled by the minimizeActionBarAction event": function () {
+            var container = this.view.get('container');
+
+            this.view.get('actionBar').fire('minimizeActionBarAction');
+            Y.Assert.isTrue(
+                container.hasClass('is-actionbar-minimized'),
+                "The location view container should get the action bar minimized class"
+            );
+            this.view.get('actionBar').fire('minimizeActionBarAction');
+            Y.Assert.isFalse(
+                container.hasClass('is-actionbar-minimized'),
+                "The location view container should NOT get the action bar minimized class"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location View view tests");
     Y.Test.Runner.add(test);
     Y.Test.Runner.add(tabsTest);
+    Y.Test.Runner.add(eventsTest);
 }, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-locationviewview']});
