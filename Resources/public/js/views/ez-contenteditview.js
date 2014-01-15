@@ -85,7 +85,7 @@ YUI.add('ez-contenteditview', function (Y) {
 
         /**
          * Active callback for the content edit view to make sure it
-         * has the focus after being the displayed.
+         * has the focus after being displayed.
          *
          * @method activeCallback
          */
