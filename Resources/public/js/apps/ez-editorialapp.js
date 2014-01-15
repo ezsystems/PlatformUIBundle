@@ -11,6 +11,7 @@ YUI.add('ez-editorialapp', function (Y) {
     var L = Y.Lang,
         APP_OPEN = 'is-app-open',
         APP_LOADING = 'is-app-loading',
+        MINIMIZE_DISCOVERY_BAR_CLASS = 'is-discoverybar-minimized',
         ERROR_VIEW_CONTAINER = '.ez-errorview-container',
         PARTIALS_SEL = '.ez-editorial-app-partial',
 
@@ -117,6 +118,7 @@ YUI.add('ez-editorialapp', function (Y) {
             });
 
             this.on('*:editAction', this._editContent);
+            this.on('*:minimizeDiscoveryBarAction', this._minimizeDiscoveryBar);
 
             // Listening for events fired on child views
             this.views.errorView.instance.addTarget(this);
@@ -135,6 +137,19 @@ YUI.add('ez-editorialapp', function (Y) {
          */
         _editContent: function (e) {
             this.navigate(this.routeUri('editContent', {id: e.content.get('id')}));
+        },
+
+        /**
+         * minimizeDiscoveryBarAction event handler, toggles the discovery bar
+         * mininized class on the app container to minimize/maximize the
+         * discovery bar
+         *
+         * @method _minimizeDiscoveryBar
+         * @protected
+         * @param {Object} e event facade of the minimizeDiscoveryBarAction
+         */
+        _minimizeDiscoveryBar: function (e) {
+            this.get('container').toggleClass(MINIMIZE_DISCOVERY_BAR_CLASS);
         },
 
         /**

@@ -445,6 +445,21 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             );
         },
 
+        "Should toggle the discovery bar minimized class on minimizeDiscoveryBarAction event": function () {
+            var container = app.get('container');
+
+            app.fire('whatever:minimizeDiscoveryBarAction');
+            Y.Assert.isTrue(
+                container.hasClass('is-discoverybar-minimized'),
+                "The app container should have the discovery bar minimized class"
+            );
+            app.fire('whatever:minimizeDiscoveryBarAction');
+            Y.Assert.isFalse(
+                container.hasClass('is-discoverybar-minimized'),
+                "The app container should have the discovery bar minimized class"
+            );
+        },
+
         "Should navigate to the content edit when receiving an editAction event": function () {
             var contentMock, contentId = 'aContentId';
 

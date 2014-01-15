@@ -30,16 +30,23 @@ YUI.add('ez-discoverybarview', function (Y) {
                 cloneDefaultValue: false,
                 value: [
                     new Y.eZ.ButtonActionView({
+                        actionId: "minimizeDiscoveryBar",
+                        disabled: false,
+                        label: "Minimize",
+                        priority: 1000
+                    }),
+                    new Y.eZ.ButtonActionView({
                         actionId: "doSomething",
                         disabled: false,
                         label: "Do something",
-                        priority: 1000
+                        hint: "And that's useful",
+                        priority: 200
                     }),
                     new Y.eZ.ButtonActionView({
                         actionId: "doSomethingElse",
                         disabled: false,
                         label: "Do something else",
-                        priority: 1000
+                        priority: 200
                     }),
                 ]
             },

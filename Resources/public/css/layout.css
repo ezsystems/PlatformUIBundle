@@ -116,8 +116,17 @@
     opacity: 0;
 }
 
+.is-discoverybar-minimized .ez-mainviews {
+    padding-left: 4em;
+}
+
 .ez-mainviews {
     padding-left: 230px;
+}
+
+.is-discoverybar-minimized .ez-menu-container {
+    width: 4em;
+    margin-left: -4em;
 }
 
 .ez-menu-container {

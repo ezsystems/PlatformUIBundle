@@ -139,11 +139,11 @@
 .ez-mainviews,
 .ez-menu-container,
 .ez-navigation-container {
-    -webkit-transition: all 0.2s ease;
-       -moz-transition: all 0.2s ease;
-        -ms-transition: all 0.2s ease;
-         -o-transition: all 0.2s ease;
-            transition: all 0.2s ease;
+    -webkit-transition: all 0.3s ease;
+       -moz-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+         -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
 }
 
 /* location view view */
@@ -474,13 +474,15 @@
     margin: 0;
     opacity: 1;
 
-    -webkit-transition: all 0.30s ease-in-out;
-       -moz-transition: all 0.30s ease-in-out;
-        -ms-transition: all 0.30s ease-in-out;
-         -o-transition: all 0.30s ease-in-out;
-            transition: all 0.30s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+       -moz-transition: all 0.2s ease-in-out;
+        -ms-transition: all 0.2s ease-in-out;
+         -o-transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out;
 }
 
+.is-discoverybar-minimized .ez-menu-container .active-actions .ez-view-buttonactionview .action-label,
+.is-discoverybar-minimized  .ez-menu-container .active-actions .ez-view-buttonactionview .action-hint,
 .is-actionbar-minimized .active-actions .ez-view-buttonactionview .action-label,
 .is-actionbar-minimized .active-actions .ez-view-buttonactionview .action-hint {
     display: block;
@@ -496,7 +498,8 @@
     content: "\E006";
 }
 
-.ez-view-buttonactionview .ez-action[data-action="minimizeActionBar"] .action-icon:before {
+.ez-view-buttonactionview .ez-action[data-action="minimizeActionBar"] .action-icon:before,
+.ez-view-buttonactionview .ez-action[data-action="minimizeDiscoveryBar"] .action-icon:before {
     content: "\E600";
 }
 
