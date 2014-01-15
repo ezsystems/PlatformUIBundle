@@ -34,8 +34,8 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
         _initContentService: function (fail) {
             Y.Mock.expect(this.contentServiceMock, {
                 method: 'loadRoot',
-                args: ['/api/ezp/v2/', Y.Mock.Value.Function],
-                run: function (path, callback) {
+                args: [Y.Mock.Value.Function],
+                run: function (callback) {
                     callback(
                         fail ? true : false,
                         {document: {Root: {rootLocation: {_href: functionalTest.rootLocationId}}}}
