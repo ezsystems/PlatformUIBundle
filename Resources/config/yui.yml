@@ -18,6 +18,7 @@ parameters:
                     - 'ez-contenteditformview'
                     - 'ez-editactionbarview'
                     - 'ez-editpreviewview'
+                    - 'ez-checkbox-editview'
                     - 'ez-textline-editview'
                     - 'ez-textblock-editview'
                     - 'ez-emailaddress-editview'
@@ -56,6 +57,9 @@ parameters:
             ez-fieldeditview:
                 requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'node-style']
                 path: js/views/ez-fieldeditview.js
+            ez-checkbox-editview:
+                requires: ['ez-fieldeditview']
+                path: js/views/fields/ez-checkbox-editview.js
             ez-textline-editview:
                 requires: ['ez-fieldeditview', 'event-valuechange']
                 path: js/views/fields/ez-textline-editview.js

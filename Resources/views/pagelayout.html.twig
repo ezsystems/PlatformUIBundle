@@ -24,6 +24,7 @@
     '@eZEditorialBundle/Resources/public/css/previewactionview.css'
     '@eZEditorialBundle/Resources/public/css/editpreviewview.css'
     '@eZEditorialBundle/Resources/public/css/fieldeditview.css'
+    '@eZEditorialBundle/Resources/public/css/fields/checkbox-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/textline-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/textblock-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/emailaddress-editview.css'
@@ -148,6 +149,28 @@ YUI().use('ez-editorialapp', function (Y) {
             </menu>
         </div>
         <div class="ez-editpreviewview-container is-hidden"></div>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="checkboxeditview-ez-template">
+    <div class="pure-g ez-editfield-row">
+        <div class="pure-u ez-editfield-infos">
+            <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+                <p class="ez-fielddefinition-name">
+                    {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+                </p>
+                <p class="ez-editfield-error-message">&nbsp;</p>
+            </label>
+        </div>
+        <div class="pure-u ez-editfield-input-area">
+            <div class="ez-editfield-input"><div class="ez-checkbox-input-ui"><input type="checkbox"
+                    id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+                    {{#if defaultValue}}checked="checked"{{/if}}/>
+                <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+                    {{ fieldDefinition.descriptions.[eng-GB] }}
+                </label>
+            </div></div>
+        </div>
     </div>
 </script>
 
