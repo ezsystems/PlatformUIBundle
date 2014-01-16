@@ -1,0 +1,9 @@
+.ez-view-checkboxeditview .ez-editfield-input {
+    margin: 1.5em 2em;
+}
+
+.ez-checkbox-input-ui input,
+.ez-checkbox-input-ui label {
+    display: inline-block;
+    line-height: 1.4em;
+}
