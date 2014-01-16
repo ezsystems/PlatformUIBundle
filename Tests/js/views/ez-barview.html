@@ -43,7 +43,7 @@
     }
 
     YUI({
-        coverage: ['ez-editactionbarview'],
+        coverage: ['ez-barview'],
         filter: loaderFilter,
         modules: {
             "ez-barview": {
@@ -59,7 +59,7 @@
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
             }
         }
-    }).use('ez-editactionbarview-tests', function (Y) {
+    }).use('ez-barview-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>
