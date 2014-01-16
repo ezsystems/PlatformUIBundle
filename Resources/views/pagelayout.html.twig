@@ -2,6 +2,7 @@
 
 {% block footerScript %}
 <p style="position: absolute; top: 0; left: 200px;">
+    <a href="#/dashboard">Dashboard</a>
     <a href="#/edit/{{ '/api/ezp/v2/content/objects/109'|url_encode }}" class="btn btn-warning">Edit</a>
     <a href="#/view/{{ '/api/ezp/v2/content/locations/1/2/61/68/73'|url_encode }}" class="btn btn-warning">View "Getting started with eZ Publish 5"</a>
     <a href="#/view/{{ '/api/ezp/v2/content/locations/1/2/111'|url_encode }}" class="btn btn-warning">View Test field edit views</a>
@@ -89,6 +90,13 @@ YUI().use('ez-editorialapp', function (Y) {
                 </div>
             </div>
         </div>
+</script>
+
+
+<script type="text/x-handlebars-template" id="dashboardview-ez-template">
+    <h1>Welcome to eZ Publish</h1>
+
+    <a href="#/view/{{urlEncode '/api/ezp/v2/content/locations/1/2'}}">Root location</a>
 </script>
 
 <script type="text/x-handlebars-template" id="contenteditview-ez-template">
@@ -361,7 +369,7 @@ YUI().use('ez-editorialapp', function (Y) {
 </script>
 
 <script type="text/x-handlebars-template" id="navigationhubview-ez-template">
-    Navigation hub!
+    Navigation hub! - <a href="#/dashboard">Dashboard</a>
 </script>
 
 <script type="text/x-handlebars-template" class="ez-editorial-app-partial" id="ez_fieldinfo_tooltip">

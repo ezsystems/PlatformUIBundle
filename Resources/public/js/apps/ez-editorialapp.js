@@ -74,6 +74,9 @@ YUI.add('ez-editorialapp', function (Y) {
         },
 
         views: {
+            dashboardView: {
+                type: Y.eZ.DashboardView,
+            },
             contentEditView: {
                 type: Y.eZ.ContentEditView,
                 parent: 'locationViewView',
@@ -81,6 +84,7 @@ YUI.add('ez-editorialapp', function (Y) {
             },
             locationViewView: {
                 type: Y.eZ.LocationViewView,
+                parent: 'dashboardView'
             },
             dummyView: {
                 type: Y.View
@@ -238,6 +242,21 @@ YUI.add('ez-editorialapp', function (Y) {
          */
         handleLocationView: function (req, res, next) {
             this.showView('locationViewView', res.variables, {
+                update: true,
+                render: true,
+            });
+        },
+
+        /**
+         * Displays the dashboard view
+         *
+         * @method handleDashboard
+         * @param {Object} req the request object
+         * @param {Function} res the response object
+         * @param {Function} next the function to pass control to the next route callback
+         */
+        handleDashboard: function (req, res, next) {
+            this.showView('dashboardView', {}, {
                 update: true,
                 render: true,
             });
@@ -443,6 +462,11 @@ YUI.add('ez-editorialapp', function (Y) {
              */
             routes: {
                 value: [{
+                    name: "dashboard",
+                    path: "/dashboard",
+                    sideViews: {'navigationHub': true},
+                    callbacks: ['open', 'handleSideViews', 'handleDashboard']
+                }, {
                     name: "editContent",
                     path: '/edit/:id',
                     loader: Y.eZ.ContentEditViewLoader,

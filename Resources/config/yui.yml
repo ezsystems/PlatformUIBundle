@@ -11,6 +11,7 @@ parameters:
                     - 'json'
                     - 'parallel'
                     - 'ez-capi'
+                    - 'ez-dashboardview'
                     - 'ez-contenteditviewloader'
                     - 'ez-contenteditview'
                     - 'ez-locationviewview'
@@ -43,6 +44,9 @@ parameters:
             ez-templatebasedview:
                 requires: ['view', 'handlebars']
                 path: js/views/ez-templatebasedview.js
+            ez-dashboardview:
+                requires: ['ez-templatebasedview']
+                path: js/views/ez-dashboardview.js
             ez-locationviewview:
                 requires: ['ez-templatebasedview', 'ez-actionbarview', 'event-tap']
                 path: js/views/ez-locationviewview.js
