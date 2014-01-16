@@ -8,7 +8,7 @@ YUI.add('ez-editpreviewview', function (Y) {
 
     Y.namespace('eZ');
 
-    var IS_HIDDEN_CLASS = 'is-hidden',
+    var IS_HIDDEN_CLASS = 'is-editpreview-hidden',
         IS_LOADING_CLASS = 'is-loading',
         LOADER_NODE = '.ez-loader';
 

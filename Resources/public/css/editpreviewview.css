@@ -18,7 +18,7 @@
             transform-style: preserve-3d;
 }
 
-.ez-editpreviewview-container.is-hidden {
+.ez-editpreviewview-container.is-editpreview-hidden {
     -webkit-transform: translateX(200%);
        -moz-transform: translateX(200%);
         -ms-transform: translateX(200%);
