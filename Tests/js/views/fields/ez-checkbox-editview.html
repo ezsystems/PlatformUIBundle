@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Checkbox Edit view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="checkboxeditview-ez-template">
+    <p class="ez-checkbox-input-ui">
+        <input type="checkbox" id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+        {{#if defaultValue}}checked="checked"{{/if}}/>
+        {{ fieldDefinition.descriptions.[eng-GB] }}
+    </p>
+</script>
+
+<script type="text/javascript" src="../../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-checkbox-editview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-checkbox-editview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-checkbox-editview": {
+                requires: ['ez-fieldeditview'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-checkbox-editview.js"
+            },
+            "ez-fieldeditview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/ez-fieldeditview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['view', 'handlebars'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            }
+        }
+    }).use('ez-checkbox-editview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
