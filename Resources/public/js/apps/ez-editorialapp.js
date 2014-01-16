@@ -252,11 +252,10 @@ YUI.add('ez-editorialapp', function (Y) {
          * @param {Function} next the function to pass control to the next route callback
          */
         open: function (req, res, next) {
-            var container = this.get('container'),
-                viewContainer = this.get('viewContainer');
+            var container = this.get('container');
 
             container.addClass(APP_OPEN);
-            viewContainer.setStyle('height', container.get('docHeight') + 'px');
+            container.setStyle('height', container.get('docHeight') + 'px');
             if ( L.isFunction(next) ) {
                 next();
             }
@@ -326,9 +325,9 @@ YUI.add('ez-editorialapp', function (Y) {
                     this.get('container').one(viewInfo.container).append(
                         viewInfo.instance.get('container')
                     );
+                    this._viewActiveCallback(viewInfo.instance);
                     container.removeClass(cl);
                     viewInfo.instance.addTarget(this);
-                    this._viewActiveCallback(viewInfo.instance);
                 } else {
                     container.addClass(cl);
                     if ( viewInfo.instance ) {

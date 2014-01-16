@@ -98,7 +98,7 @@
 
 .is-app-open .ez-view-container {
     display: block;
-    min-height: 100%;
+    height: 100%;
 }
 
 .ez-view-container {
@@ -106,22 +106,28 @@
     width: 100%;
 }
 
+.is-discoverybar-minimized .ez-mainviews {
+    padding-left: 4em;
+}
+
 .is-menu-hidden .ez-mainviews {
     padding-left: 0;
 }
 
 .is-menu-hidden .ez-menu-container {
-    width: 0;
     margin-left: 0;
     opacity: 0;
-}
 
-.is-discoverybar-minimized .ez-mainviews {
-    padding-left: 4em;
+    -webkit-transform: translateX(-230px);
+       -moz-transform: translateX(-230px);
+        -ms-transform: translateX(-230px);
+         -o-transform: translateX(-230px);
+            transform: translateX(-230px);
 }
 
 .ez-mainviews {
     padding-left: 230px;
+    height: 100%;
 }
 
 .is-discoverybar-minimized .ez-menu-container {
@@ -132,6 +138,10 @@
 .ez-menu-container {
     width: 230px;
     margin-left: -230px;
+    height: 100%;
+    position: fixed;
+    top: 4em;
+    z-index: 1015;
 }
 
 .is-navigation-hidden .ez-navigation-container {
@@ -141,6 +151,7 @@
 
 .ez-navigation-container {
     height: 4em;
+    width: 100%;
 }
 
 .is-app-loading .ez-view-container:before {

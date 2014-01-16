@@ -31,9 +31,9 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 "The app container should have the class is-app-open"
             );
             Y.Assert.areEqual(
-                app.get('viewContainer').getStyle('height').replace('px', ''),
+                app.get('container').getStyle('height').replace('px', ''),
                 docHeight,
-                "The view container should have the same height as the document"
+                "The app container should have the same height as the document"
             );
         },
 
