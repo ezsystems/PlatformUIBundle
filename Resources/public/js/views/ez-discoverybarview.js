@@ -17,6 +17,16 @@ YUI.add('ez-discoverybarview', function (Y) {
      * @extends eZ.BarView
      */
     Y.eZ.DiscoveryBarView = Y.Base.create('discoveryBarView', Y.eZ.BarView, [], {
+        /**
+         * Renders the discovery bar view
+         *
+         * @method render
+         * @return {eZ.DiscoveryBarView} the view it self
+         */
+        render: function () {
+            this.get('container').addClass('ez-view-discoverybarview');
+            return Y.eZ.DiscoveryBarView.superclass.render.call(this);
+        }
     }, {
         ATTRS: {
             /**

@@ -481,8 +481,8 @@
             transition: all 0.2s ease-in-out;
 }
 
-.is-discoverybar-minimized .ez-menu-container .active-actions .ez-view-buttonactionview .action-label,
-.is-discoverybar-minimized  .ez-menu-container .active-actions .ez-view-buttonactionview .action-hint,
+.is-discoverybar-minimized .ez-view-discoverybarview .active-actions .ez-view-buttonactionview .action-label,
+.is-discoverybar-minimized  .ez-view-discoverybarview .active-actions .ez-view-buttonactionview .action-hint,
 .is-actionbar-minimized .active-actions .ez-view-buttonactionview .action-label,
 .is-actionbar-minimized .active-actions .ez-view-buttonactionview .action-hint {
     display: block;
