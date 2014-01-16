@@ -1,0 +1,44 @@
+.ez-view-authoreditview .ez-authors-controls-wrapper {
+    padding: 0 2em;
+}
+
+.ez-view-authoreditview .ez-single-author-controls:first-of-type {
+    padding-top: 1.5em;
+}
+
+.ez-view-authoreditview .ez-editfield-input {
+    margin-top: 0.3em;
+    margin-left: 0;
+}
+
+.ez-view-authoreditview .ez-field-sublabel {
+    margin-left: 0;
+}
+
+.ez-view-authoreditview .ez-author-input-ui {
+    width: 100%;
+    display: inline-block;
+}
+
+.ez-author-input-ui input {
+    width: 100%;
+}
+
+.ez-view-authoreditview .ez-author-remove-button {
+    font-size: 80%;
+    margin-top: 1.8em;
+}
+
+.ez-view-authoreditview .ez-author-add-button {
+    font-size: 80%;
+    margin: 1em 0 1.5em 0;
+}
+
+.ez-view-authoreditview .ez-author-remove-button:before,
+.ez-view-authoreditview .ez-author-add-button:before {
+    margin-right: 0.5em;
+}
+
+.ez-view-authoreditview hr {
+    margin: 0.5em 0;
+}
