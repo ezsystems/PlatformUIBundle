@@ -1,6 +1,6 @@
 YUI.add('ez-editpreviewview-tests', function (Y) {
     var viewContainer = Y.one('.container'),
-        IS_HIDDEN_CLASS = 'is-hidden',
+        IS_HIDDEN_CLASS = 'is-editpreview-hidden',
         IS_LOADING_CLASS = 'is-loading',
         mockContent = new Y.eZ.Content({
             contentId: 59,
