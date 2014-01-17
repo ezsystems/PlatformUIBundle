@@ -1,6 +1,6 @@
 YUI.add('ez-maplocation-editview-tests', function (Y) {
     var container = Y.one('.container'),
-        viewTest, APILoadingTest, mapLoaderTest, mapLocationViewRegisterTest,
+        viewTest, APILoadingTest, mapLoaderTest, registerTest,
         content, contentType,
         mapLoaderLoadingSuccess, mapLoaderLoadingFailure,
         mapLoaderAPILoaded, mapLoaderAPINotLoaded,
@@ -773,29 +773,17 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
     });
 
-    mapLocationViewRegisterTest = new Y.Test.Case({
-        name: "eZ Map Location View Registration test",
-
-        "Should autoregister": function () {
-
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingFailure;
-
-            try {
-                Y.Assert.areSame(
-                    Y.eZ.MapLocationEditView,
-                    Y.eZ.FieldEditView.getFieldEditView("ezgmaplocation"),
-                    "The constructor of eZ Map Location View should be registered under ezgmaplocation key"
-                );
-            } catch (e) {
-                Y.Assert.fail("eZ Map Location View is not registered under ezgmaplocation key");
-            }
-        }
-    });
-
     Y.Test.Runner.setName("eZ Map Location Edit View tests");
     Y.Test.Runner.add(mapLoaderTest);
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(APILoadingTest);
-    Y.Test.Runner.add(mapLocationViewRegisterTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-maplocation-editview']});
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+
+    registerTest.name = "Map Location Edit View registration test";
+    registerTest.viewType = Y.eZ.MapLocationEditView;
+    registerTest.viewKey = "ezgmaplocation";
+
+    Y.Test.Runner.add(registerTest);
+
+}, '0.0.1', {requires: ['test', 'editviewregister-tests', 'node-event-simulate', 'ez-maplocation-editview']});

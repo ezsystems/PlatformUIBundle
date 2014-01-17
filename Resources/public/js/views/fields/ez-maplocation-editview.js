@@ -56,10 +56,21 @@ YUI.add('ez-maplocation-editview', function (Y) {
          */
         this._isLoading = false;
 
+        /**
+         * Fired once map API is correctly loaded
+         *
+         * @event EVENT_MAP_API_READY
+         */
         this.publish(EVENT_MAP_API_READY, {
                 fireOnce: true
             }
         );
+
+        /**
+         * Fired once map API have failed to load
+         *
+         * @event EVENT_MAP_API_FAILED
+         */
         this.publish(EVENT_MAP_API_FAILED, {
                 fireOnce: true
             }
@@ -107,7 +118,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
          * @return {boolean} true if map API was loaded, false if not
          */
         isAPILoaded: function () {
-            return(typeof google === 'object' && typeof google.maps === 'object');
+            return (typeof google === 'object' && typeof google.maps === 'object');
         }
     };
 
@@ -209,8 +220,8 @@ YUI.add('ez-maplocation-editview', function (Y) {
         },
 
         /**
-         * Event which is triggered only the first time the map is fully loaded
-         * (http://stackoverflow.com/questions/832692/how-to-check-if-google-maps-is-fully-loaded)
+         * Event handler which is triggered only the first time the map is fully
+         * loaded (http://stackoverflow.com/questions/832692/how-to-check-if-google-maps-is-fully-loaded)
          * For now enabling buttons (if needed) and switching off loaders
          *
          * @protected
@@ -325,7 +336,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
         /**
          * Callback which is called upon any change of the 'location' attribute
          * For now only updates the coordinates which are shown to the user
-         * in the "dashboard"
+         * in the "dashboard" and updates the marker position
          *
          * @protected
          * @method _locationChange
@@ -470,6 +481,9 @@ YUI.add('ez-maplocation-editview', function (Y) {
                 value: {
                     latitude: 0,
                     longitude: 0
+                },
+                setter: function (newLocation) {
+
                 }
             },
 

@@ -4,17 +4,16 @@ YUI.add('editviewregister-tests', function (Y) {
     Y.eZ.EditViewRegisterTest = {
         "Should autoregister": function () {
             var ViewType = this.viewType,
-                viewKey = this.viewKey,
-                viewName = new ViewType().constructor.NAME;
+                viewKey = this.viewKey;
 
             try {
                 Y.Assert.areSame(
                     ViewType,
                     Y.eZ.FieldEditView.getFieldEditView(viewKey),
-                    "The constructor of " + viewName + " should be registered under " + viewKey + " key"
+                    "The constructor should be registered under " + viewKey + " key"
                 );
             } catch (e) {
-                Y.Assert.fail(viewName + " is not registered under " + viewKey + " key");
+                Y.Assert.fail("The view is not registered under " + viewKey + " key");
             }
         }
     };

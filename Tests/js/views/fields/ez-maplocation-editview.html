@@ -57,10 +57,6 @@
                 requires: ['ez-fieldeditview', 'event-tap'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-maplocation-editview.js"
             },
-            "ez-textline-editview": {
-                requires: ['ez-fieldeditview'],
-                fullpath: "../../../../Resources/public/js/views/fields/ez-textline-editview.js"
-            },
             "ez-fieldeditview": {
                 requires: ['ez-templatebasedview'],
                 fullpath: "../../../../Resources/public/js/views/ez-fieldeditview.js"
@@ -71,8 +67,8 @@
             }
         }
     }).use('ez-maplocation-editview-tests', function (Y) {
-                Y.Test.Runner.run();
-            });
+        Y.Test.Runner.run();
+    });
 </script>
 </body>
 </html>
