@@ -1,5 +1,5 @@
 YUI.add('ez-editorialapp-tests', function (Y) {
-    var app, appTest, reverseRoutingTest,
+    var app, appTest, reverseRoutingTest, sideViewsTest,
         capiMock,
         container = Y.one('.app'),
         mockActionBar = {};
@@ -31,9 +31,9 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 "The app container should have the class is-app-open"
             );
             Y.Assert.areEqual(
-                app.get('viewContainer').getStyle('height').replace('px', ''),
+                app.get('container').getStyle('height').replace('px', ''),
                 docHeight,
-                "The view container should have the same height as the document"
+                "The app container should have the same height as the document"
             );
         },
 
@@ -245,6 +245,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             originalErroView = app.views.errorView.instance;
             app.views.errorView.instance = new TestErrorViewConstructor();
 
+            app.set('loading', false);
             app.fire('contentEditView:fatalError', errorInfo);
 
             Y.assert(initialized, "The error view should have been initialized");
@@ -444,6 +445,21 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             );
         },
 
+        "Should toggle the discovery bar minimized class on minimizeDiscoveryBarAction event": function () {
+            var container = app.get('container');
+
+            app.fire('whatever:minimizeDiscoveryBarAction');
+            Y.Assert.isTrue(
+                container.hasClass('is-discoverybar-minimized'),
+                "The app container should have the discovery bar minimized class"
+            );
+            app.fire('whatever:minimizeDiscoveryBarAction');
+            Y.Assert.isFalse(
+                container.hasClass('is-discoverybar-minimized'),
+                "The app container should have the discovery bar minimized class"
+            );
+        },
+
         "Should navigate to the content edit when receiving an editAction event": function () {
             var contentMock, contentId = 'aContentId';
 
@@ -459,6 +475,234 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 app.routeUri('editContent', {id: contentId}), app.getPath(),
                 "The current path should be the edit content route for the content '" + contentId + "'"
             );
+        },
+    });
+
+    sideViewsTest = new Y.Test.Case({
+        name: "Side views management",
+
+        setUp: function () {
+            this.sideView1Hidden = "is-sideview1-hidden";
+            this.sideView2Hidden = "is-sideview2-hidden";
+            this.app = new Y.eZ.EditorialApp({
+                container: '.app-sideviews',
+                viewContainer: '.view-container'
+            });
+            this.app.sideViews = {
+                sideView1: {
+                    hideClass: this.sideView1Hidden,
+                    type: Y.View,
+                    container: '.sideview1'
+                },
+                sideView2: {
+                    hideClass: this.sideView2Hidden,
+                    type: Y.View,
+                    container: '.sideview2'
+                }
+            };
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+        },
+
+        "Should hide all the side views using a route without sideViews": function () {
+            var container = this.app.get('container'),
+                nextCalled = false;
+
+            this.app.handleSideViews({route: {}}, {}, function () {
+                nextCalled = true;
+            });
+
+            Y.Assert.isTrue(
+                container.hasClass(this.sideView1Hidden),
+                "The side view 1 should be hidden"
+            );
+            Y.Assert.isTrue(
+                container.hasClass(this.sideView2Hidden),
+                "The side view 2 should be hidden"
+            );
+            Y.Assert.isTrue(nextCalled, "The next callback should have been called");
+        },
+
+        "Should hide all the side views using a route with sideViews containing falsy value": function () {
+            var container = this.app.get('container'),
+                req = {
+                    route: {
+                        sideViews: {
+                            sideView1: 0,
+                            sideView2: false,
+                        }
+                    }
+                },
+                nextCalled = false;
+
+            this.app.handleSideViews(req, {}, function () {
+                nextCalled = true;
+            });
+
+            Y.Assert.isTrue(
+                container.hasClass(this.sideView1Hidden),
+                "The side view 1 should be hidden"
+            );
+            Y.Assert.isTrue(
+                container.hasClass(this.sideView2Hidden),
+                "The side view 2 should be hidden"
+            );
+            Y.Assert.isTrue(nextCalled, "The next callback should have been called");
+        },
+
+        "Should show the side views using a route with sideViews": function () {
+            var container = this.app.get('container'),
+                req = {
+                    route: {
+                        sideViews: {
+                            sideView1: true,
+                        }
+                    }
+                },
+                initialized = false, rendered = false, bubble = false,
+                activeCallbackCalled = false, nextCalled = false;
+
+
+            this.app.sideViews.sideView1.type = Y.Base.create('sideView1', Y.View, [], {
+                render: function () {
+                    rendered = true;
+                    this.get('container').setHTML(this.name);
+                    return this;
+                },
+
+                initializer: function () {
+                    initialized = true;
+                },
+
+                activeCallback: function () {
+                    activeCallbackCalled = true;
+                }
+            });
+
+            this.app.on('sideView1:testEvent', function () {
+                bubble = true;
+            });
+
+            this.app.handleSideViews(req, {}, function () {
+                nextCalled = true;
+            });
+            this.app.sideViews.sideView1.instance.fire('testEvent');
+            Y.Assert.isFalse(
+                container.hasClass(this.sideView1Hidden),
+                "The side view 1 should be hidden"
+            );
+
+            Y.Assert.isTrue(
+                container.hasClass(this.sideView2Hidden),
+                "The side view 2 should be hidden"
+            );
+
+            Y.Assert.isTrue(initialized, "The side view should have been build");
+            Y.Assert.isTrue(rendered, "The side view should have been rendered");
+            Y.Assert.isTrue(activeCallbackCalled, "The active callback should have been called");
+            Y.Assert.isTrue(bubble, "The event from the side view should bubble to the app");
+            Y.Assert.isTrue(nextCalled, "The next callback should have been called");
+            Y.Assert.isTrue(
+                Y.one(this.app.sideViews.sideView1.container).contains(
+                    this.app.sideViews.sideView1.instance.get('container')
+                )
+            );
+        },
+
+        "Should reuse the same instance of a sideview": function () {
+            var container = this.app.get('container'),
+                req = {
+                    route: {
+                        sideViews: {
+                            sideView1: true,
+                        }
+                    }
+                },
+                initialized = 0, rendered = 0, bubble = 0,
+                activeCallbackCalled = 0, nextCalls = 0;
+
+
+            this.app.sideViews.sideView1.type = Y.Base.create('sideView1', Y.View, [], {
+                render: function () {
+                    rendered++;
+                    this.get('container').setHTML(this.name);
+                    return this;
+                },
+
+                initializer: function () {
+                    initialized++;
+                },
+
+                activeCallback: function () {
+                    activeCallbackCalled++;
+                }
+            });
+
+            this.app.on('sideView1:testEvent', function () {
+                bubble = true;
+            });
+
+            this.app.handleSideViews(req, {}, function () {
+                nextCalls++;
+            });
+            this.app.handleSideViews(req, {}, function () {
+                nextCalls++;
+            });
+
+            this.app.sideViews.sideView1.instance.fire('testEvent');
+            Y.Assert.isFalse(
+                container.hasClass(this.sideView1Hidden),
+                "The side view 1 should be hidden"
+            );
+
+            Y.Assert.isTrue(
+                container.hasClass(this.sideView2Hidden),
+                "The side view 2 should be hidden"
+            );
+
+            Y.Assert.isTrue(initialized === 1, "The side view should have been build one time");
+            Y.Assert.isTrue(rendered === 1, "The side view should have been rendered one time");
+            Y.Assert.isTrue(activeCallbackCalled === 2, "The active callback should have been called two times");
+            Y.Assert.isTrue(bubble, "The event from the side view should bubble to the app");
+            Y.Assert.isTrue(nextCalls === 2, "The next callback should have been called two times");
+            Y.Assert.isTrue(
+                Y.one(this.app.sideViews.sideView1.container).contains(
+                    this.app.sideViews.sideView1.instance.get('container')
+                )
+            );
+        },
+
+        "Should remove the side view instance": function () {
+            var req = {
+                    route: {
+                        sideViews: {
+                            sideView1: true,
+                        }
+                    }
+                },
+                removed = false, nextCalled = false;
+
+
+            this.app.sideViews.sideView1.type = Y.Base.create('sideView1', Y.View, [], {
+                remove: function () {
+                    removed = true;
+                }
+            });
+
+            this.app.on('sideView1:testEvent', function () {
+                Y.Assert.fail("The side view event should not bubble");
+            });
+
+            this.app.handleSideViews(req, {}, function () {});
+            this.app.handleSideViews({route: {}}, {}, function () {
+                nextCalled = true;
+            });
+
+            this.app.sideViews.sideView1.instance.fire('testEvent');
+            Y.Assert.isTrue(removed, "The side view should have been removed");
+            Y.Assert.isTrue(nextCalled, "The next callback should have been called");
         },
     });
 
@@ -564,6 +808,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Editorial App tests");
     Y.Test.Runner.add(appTest);
+    Y.Test.Runner.add(sideViewsTest);
     Y.Test.Runner.add(reverseRoutingTest);
 
 }, '0.0.1', {requires: ['test', 'ez-editorialapp', 'json', 'parallel']});

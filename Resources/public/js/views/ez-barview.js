@@ -132,28 +132,31 @@ YUI.add('ez-barview', function (Y) {
         },
 
         /**
-         * Handles container height update by rearranging the actions between menus
-         * We are filling-in main (ACTIVE_MENU_CLASS) menu, until container becomes higher than the screen bounds,
-         * after that we are filling hidden (VIEW_MORE_MENU_CLASS) menu.
+         * Handles container height update by rearranging the actions between
+         * menus. We are filling-in the active menu, until the container becomes
+         * higher than the available height, after that we are filling the
+         * hidden menu.
          *
          * @method _handleHeightUpdate
          * @protected
          * @param {Object} e event facade of the resize event
          */
         _handleHeightUpdate: function (e) {
-            var screenHeight = this.get('container').get('winHeight');
+            var availHeight = this.get('container').get('winHeight') - this.get('container').getY();
 
-            if (this._getHeight() > screenHeight) {
-                // push actions into view more menu until the main menu is not overflowed any more or we are out of actions in the main menu
-                while (this._getHeight() > screenHeight && this._hasActiveActions()) {
+            if (this._getHeight() > availHeight) {
+                // push actions into view more menu until the main menu is not
+                // overflowed any more or we are out of actions in the main menu
+                while (this._getHeight() > availHeight && this._hasActiveActions()) {
                     this._pushLastActionToViewMore();
                 }
 
             } else {
                 // Do we have to pull some actions from view more menu back to active menu?
                 if (this._hasViewMoreActions()) {
-                    // pull actions from view more menu until the main menu is overflowed or we are out of actions in view more menu
-                    while ( this._hasViewMoreActions() && (this._getHeight() + this._getFirstViewMoreActionHeight() <= screenHeight) ) {
+                    // pull actions from view more menu until the main menu is
+                    // overflowed or we are out of actions in view more menu
+                    while ( this._hasViewMoreActions() && (this._getHeight() + this._getFirstViewMoreActionHeight() <= availHeight) ) {
                         this._pullFirstActionFromViewMore();
                     }
                 }

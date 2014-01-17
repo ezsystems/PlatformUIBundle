@@ -1,0 +1,37 @@
+.ez-view-discoverybarview {
+    width: 230px;
+}
+
+.is-discoverybar-minimized .ez-view-discoverybarview {
+    width: 4em;
+}
+
+.is-discoverybar-minimized .ez-view-discoverybarview .view-more-button {
+    padding: 0.5em 0;
+}
+
+.ez-view-discoverybarview .view-more-actions.is-hidden {
+    left: -230px;
+    opacity: 0;
+    display: block;
+}
+
+.ez-view-discoverybarview .view-more-actions {
+    position: fixed;
+    bottom: 0;
+    width: 230px;
+    left: 230px;
+    z-index: 1015;
+}
+
+.is-discoverybar-minimized .ez-view-discoverybarview .view-more-actions.is-hidden {
+    left: 4em;
+}
+
+.is-discoverybar-minimized .ez-view-discoverybarview .view-more-button {
+    padding: 0.5em 0;
+}
+
+.is-discoverybar-minimized .ez-view-discoverybarview .view-more-actions {
+    left: 4em;
+}

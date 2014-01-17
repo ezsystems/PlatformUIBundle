@@ -1,4 +1,4 @@
-YUI.add('ez-editactionbarview-tests', function (Y) {
+YUI.add('ez-barview-tests', function (Y) {
     var viewContainer = Y.one('.container'),
         content = {},
         VIEW_MORE_MENU_CLASS = ".view-more-actions",

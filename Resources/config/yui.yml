@@ -11,10 +11,13 @@ parameters:
                     - 'json'
                     - 'parallel'
                     - 'ez-capi'
+                    - 'ez-dashboardview'
                     - 'ez-contenteditviewloader'
                     - 'ez-contenteditview'
                     - 'ez-locationviewview'
                     - 'ez-locationviewviewloader'
+                    - 'ez-navigationhubview'
+                    - 'ez-discoverybarview'
                     - 'ez-contenteditformview'
                     - 'ez-editactionbarview'
                     - 'ez-editpreviewview'
@@ -42,9 +45,18 @@ parameters:
             ez-templatebasedview:
                 requires: ['view', 'handlebars']
                 path: js/views/ez-templatebasedview.js
+            ez-dashboardview:
+                requires: ['ez-templatebasedview']
+                path: js/views/ez-dashboardview.js
             ez-locationviewview:
                 requires: ['ez-templatebasedview', 'ez-actionbarview', 'event-tap']
                 path: js/views/ez-locationviewview.js
+            ez-navigationhubview:
+                requires: ['ez-templatebasedview']
+                path: js/views/ez-navigationhubview.js
+            ez-discoverybarview:
+                requires: ['ez-barview', 'ez-buttonactionview']
+                path: js/views/ez-discoverybarview.js
             ez-actionbarview:
                 requires: ['ez-barview', 'ez-buttonactionview']
                 path: js/views/ez-actionbarview.js

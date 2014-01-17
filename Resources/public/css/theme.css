@@ -93,8 +93,23 @@
 }
 
 .is-app-open {
-    background: #000;
-    background: rgba(0, 0, 0, 0.8);
+    background: #fff;
+}
+
+.ez-view-container {
+    -webkit-transition: opacity 0.2s ease-in-out;
+       -moz-transition: opacity 0.2s ease-in-out;
+        -ms-transition: opacity 0.2s ease-in-out;
+         -o-transition: opacity 0.2s ease-in-out;
+            transition: opacity 0.2s ease-in-out;
+}
+
+.is-app-loading .ez-view-container {
+    opacity: 0.6;
+}
+
+.ez-view-container:before {
+    opacity: 0;
 }
 
 .is-app-loading .ez-view-container:before {
@@ -106,8 +121,29 @@
     border-radius: 2em;
     border-width: 0.5em;
     border-style: solid;
-    border-color: #aaa #aaa #aaa #fff;
-    border-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.1);
+    border-color: rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.1);
+    opacity: 1;
+    z-index: 10000;
+}
+
+.ez-navigation-container {
+    text-align: center;
+    background: #ddd;
+}
+
+.ez-menu-container {
+    background: #333;
+    color: #fff;
+}
+
+.ez-mainviews,
+.ez-menu-container,
+.ez-navigation-container {
+    -webkit-transition: all 0.3s ease;
+       -moz-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+         -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
 }
 
 /* location view view */
@@ -409,6 +445,24 @@
     box-shadow: 7px 0 7px 0 rgba(0, 0, 0, 0.5);
 }
 
+/* discovery bar view */
+.ez-view-discoverybarview {
+    -webkit-transition: all 0.3s ease;
+       -moz-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+         -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+}
+
+.ez-view-discoverybarview .view-more-actions {
+    -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+         -o-transition: all 0.30s ease-in-out;
+            transition: all 0.30s ease-in-out;
+    box-shadow: -7px 0 7px 0 rgba(0, 0, 0, 0.5);
+}
+
 /* button action view */
 .ez-view-buttonactionview .action-icon {
     color: #e3e3e3;
@@ -438,13 +492,15 @@
     margin: 0;
     opacity: 1;
 
-    -webkit-transition: all 0.30s ease-in-out;
-       -moz-transition: all 0.30s ease-in-out;
-        -ms-transition: all 0.30s ease-in-out;
-         -o-transition: all 0.30s ease-in-out;
-            transition: all 0.30s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+       -moz-transition: all 0.2s ease-in-out;
+        -ms-transition: all 0.2s ease-in-out;
+         -o-transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out;
 }
 
+.is-discoverybar-minimized .ez-view-discoverybarview .active-actions .ez-view-buttonactionview .action-label,
+.is-discoverybar-minimized  .ez-view-discoverybarview .active-actions .ez-view-buttonactionview .action-hint,
 .is-actionbar-minimized .active-actions .ez-view-buttonactionview .action-label,
 .is-actionbar-minimized .active-actions .ez-view-buttonactionview .action-hint {
     display: block;
@@ -460,7 +516,8 @@
     content: "\E006";
 }
 
-.ez-view-buttonactionview .ez-action[data-action="minimizeActionBar"] .action-icon:before {
+.ez-view-buttonactionview .ez-action[data-action="minimizeActionBar"] .action-icon:before,
+.ez-view-buttonactionview .ez-action[data-action="minimizeDiscoveryBar"] .action-icon:before {
     content: "\E600";
 }
 

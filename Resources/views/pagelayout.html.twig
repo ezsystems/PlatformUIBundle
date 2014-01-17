@@ -2,13 +2,18 @@
 
 {% block footerScript %}
 <p style="position: absolute; top: 0; left: 200px;">
+    <a href="#/dashboard">Dashboard</a>
     <a href="#/edit/{{ '/api/ezp/v2/content/objects/109'|url_encode }}" class="btn btn-warning">Edit</a>
     <a href="#/view/{{ '/api/ezp/v2/content/locations/1/2/61/68/73'|url_encode }}" class="btn btn-warning">View "Getting started with eZ Publish 5"</a>
     <a href="#/view/{{ '/api/ezp/v2/content/locations/1/2/111'|url_encode }}" class="btn btn-warning">View Test field edit views</a>
 </p>
-<div class="ez-editorial-app pure">
-    <div class="ez-view-container"></div>
-    <div class="ez-errorview-container is-hidden"></div>
+<div class="ez-editorial-app pure is-menu-hidden is-navigation-hidden">
+    <div class="ez-navigation-container"></div>
+    <div class="ez-mainviews pure-g">
+        <div class="ez-menu-container pure-u"></div>
+        <div class="ez-view-container pure-u"></div>
+    </div>
+    <div class="ez-errorview-container is-hidden pure-u"></div>
 </div>
 {% stylesheets
     '@eZEditorialBundle/Resources/public/vendors/pure/base-context-min.css'
@@ -20,6 +25,7 @@
     '@eZEditorialBundle/Resources/public/css/locationviewview.css'
     '@eZEditorialBundle/Resources/public/css/contenteditformview.css'
     '@eZEditorialBundle/Resources/public/css/barview.css'
+    '@eZEditorialBundle/Resources/public/css/discoverybarview.css'
     '@eZEditorialBundle/Resources/public/css/buttonactionview.css'
     '@eZEditorialBundle/Resources/public/css/previewactionview.css'
     '@eZEditorialBundle/Resources/public/css/editpreviewview.css'
@@ -85,6 +91,13 @@ YUI().use('ez-editorialapp', function (Y) {
                 </div>
             </div>
         </div>
+</script>
+
+
+<script type="text/x-handlebars-template" id="dashboardview-ez-template">
+    <h1>Welcome to eZ Publish</h1>
+
+    <a href="#/view/{{urlEncode '/api/ezp/v2/content/locations/1/2'}}">Root location</a>
 </script>
 
 <script type="text/x-handlebars-template" id="contenteditview-ez-template">
@@ -376,6 +389,10 @@ YUI().use('ez-editorialapp', function (Y) {
         </div>
         <div class="ez-actionbar-container pure-u"></div>
     </div>
+</script>
+
+<script type="text/x-handlebars-template" id="navigationhubview-ez-template">
+    Navigation hub! - <a href="#/dashboard">Dashboard</a>
 </script>
 
 <script type="text/x-handlebars-template" class="ez-editorial-app-partial" id="ez_fieldinfo_tooltip">
