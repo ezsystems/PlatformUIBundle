@@ -402,7 +402,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
          * 
          * @method _geolocationAvailable 
          * @protected
-         * @returns {boolean} true, if geolocation API is available
+         * @return {boolean} true, if geolocation API is available
          */
         _geolocationAvailable: function () {
             return (navigator && navigator.geolocation);
@@ -413,7 +413,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
          *
          * @method _getLocationAsLatLng
          * @protected
-         * @returns {google.maps.LatLng}
+         * @return {google.maps.LatLng}
          */
         _getLocationAsLatLng: function () {
             var location = this.get('location');
