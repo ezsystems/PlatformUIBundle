@@ -799,4 +799,4 @@ YUI.add('ez-editorialapp-tests', function (Y) {
     Y.Test.Runner.add(sideViewsTest);
     Y.Test.Runner.add(reverseRoutingTest);
 
-}, '0.0.1', {requires: ['test', 'ez-editorialapp', 'json', 'parallel']});
+}, '0.0.1', {requires: ['test', 'ez-editorialapp', 'ez-viewloader']});
