@@ -86,9 +86,6 @@ YUI.add('ez-editorialapp', function (Y) {
                 type: Y.eZ.LocationViewView,
                 parent: 'dashboardView'
             },
-            dummyView: {
-                type: Y.View
-            },
             errorView: {
                 instance: new Y.eZ.ErrorView({
                     container: ERROR_VIEW_CONTAINER
@@ -364,7 +361,6 @@ YUI.add('ez-editorialapp', function (Y) {
          * @method close
          */
         close: function () {
-            this.showView('dummyView');
             this.get('container').removeClass(APP_OPEN);
             this.views.errorView.instance.hide();
         },
