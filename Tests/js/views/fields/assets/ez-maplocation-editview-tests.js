@@ -1,10 +1,9 @@
 YUI.add('ez-maplocation-editview-tests', function (Y) {
     var container = Y.one('.container'),
-        viewTest, APILoadingTest, mapLoaderTest, registerTest,
+        viewTest, APILoadingTest, mapLoaderTest, noInitialValuesTest,
+        findAddressTest, locateMeTest, registerTest,
         content, contentType,
-        mapLoaderLoadingSuccess, mapLoaderLoadingFailure,
-        mapLoaderAPILoaded, mapLoaderAPINotLoaded,
-        geocodeSuccess, geocodeFailureZeroResults, geocodeFailure,
+        mapLoaderLoadingSuccess,
         testAddress = "London",
         googleStub, geocoderInput,
         jsonContent = {}, jsonContentType = {},
@@ -42,47 +41,6 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             that.fire('mapAPIReady');
         }, 0);
     };
-    mapLoaderLoadingFailure = function () {
-        var that = this;
-        // setTimeout (even with 0 value) will be needed here because we are
-        // going to use a node, which is not yet in the DOM
-        setTimeout(function () {
-            that.fire('mapAPIFailed');
-        }, 0);
-    };
-    mapLoaderAPILoaded = function () {
-        return true;
-    };
-    mapLoaderAPINotLoaded = function () {
-        return false;
-    };
-    geocodeSuccess = function (input, callback) {
-        geocoderInput = input;
-        callback([{
-                geometry: {
-                    location: {
-                        lat: function () {return testAddressLatitude;},
-                        lng: function () {return testAddressLongitude;}
-                    }
-                }
-            }],
-            "geocoderStatusOk"
-        );
-    };
-    geocodeFailureZeroResults = function (input, callback) {
-        geocoderInput = input;
-        callback(
-            false,
-            "geocoderStatusZeroResults"
-        );
-    };
-    geocodeFailure = function (input, callback) {
-        geocoderInput = input;
-        callback(
-            false,
-            "geocoderStatusSomeOtherError"
-        );
-    };
 
     // Composing google maps stub
     googleStub = {
@@ -113,7 +71,19 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             },
             Geocoder: function () {
                 return {
-                    geocode: geocodeSuccess
+                    geocode: function (input, callback) {
+                        geocoderInput = input;
+                        callback([{
+                                geometry: {
+                                    location: {
+                                        lat: function () {return testAddressLatitude;},
+                                        lng: function () {return testAddressLongitude;}
+                                    }
+                                }
+                            }],
+                            "geocoderStatusOk"
+                        );
+                    }
                 };
             },
             GeocoderStatus: {
@@ -126,27 +96,138 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
     mapLoaderTest = new Y.Test.Case({
         name: "GoogleMapAPILoader tests",
 
+        setUp: function () {
+            this.mapLoader = new Y.eZ.MapLocationEditView.GoogleMapAPILoader();
+            window.google = {};
+        },
+
+        tearDown: function () {
+            delete this.mapLoader;
+        },
+
         "Should correctly detect presence of the google maps API": function () {
-            var mapLoader = new Y.eZ.MapLocationEditView.GoogleMapAPILoader();
             window.google = {
                 maps: {}
             };
 
             Y.Assert.isTrue(
-                mapLoader.isAPILoaded(),
+                this.mapLoader.isAPILoaded(),
                 "GoogleMapAPILoader.isAPILoaded() method should return true, when maps API is present"
             );
         },
 
         "Should correctly detect absence of the google maps API": function () {
-            var mapLoader = new Y.eZ.MapLocationEditView.GoogleMapAPILoader();
             window.google = {};
 
             Y.Assert.isFalse(
-                mapLoader.isAPILoaded(),
+                this.mapLoader.isAPILoaded(),
                 "GoogleMapAPILoader.isAPILoaded() method should return false, when maps API is not present"
             );
+        },
+
+        "Should fire 'mapAPIready' when trying to load maps API, but it is already loaded": function () {
+            var mapLoadedFired = false,
+                JSONPStub = function () {};
+
+            window.google = {
+                maps: {}
+            };
+
+            this.mapLoader.on('mapAPIReady', function () {
+                mapLoadedFired = true;
+            });
+
+            this.mapLoader.load(JSONPStub);
+
+            Y.Assert.isTrue(
+                mapLoadedFired,
+                "'mapAPIready' should have been fired during loading, when maps API is present"
+            );
+        },
+
+        "Should call JSONRequestConstructor with correct arguments while trying to load map API": function () {
+            var JSONRequestUrl = "",
+                JSONRequestConfig = {},
+                JSONPStub = function (requestUrl, requestConfig) {
+                    JSONRequestUrl = requestUrl;
+                    JSONRequestConfig = requestConfig;
+                };
+
+            this.mapLoader.load(JSONPStub);
+
+            Y.Assert.areEqual(
+                JSONRequestUrl,
+                "https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}",
+                "Url argument should be correct"
+            );
+
+            Y.Assert.isObject(
+                JSONRequestConfig.on.success,
+                "Config argument should contain 'on.success' entry"
+            );
+
+            Y.Assert.isObject(
+                JSONRequestConfig.on.failure,
+                "Config argument should contain 'on.failure' entry"
+            );
+        },
+
+        "Should fire 'mapAPIReady' when map API was loaded successfully": function () {
+            var mapLoadedFired = false,
+                JSONPStub = function (requestUrl, requestConfig) {
+                    requestConfig.on.success();
+                };
+
+            this.mapLoader.on('mapAPIReady', function () {
+                mapLoadedFired = true;
+            });
+
+            this.mapLoader.load(JSONPStub);
+
+            Y.Assert.isTrue(
+                mapLoadedFired,
+                "'mapAPIready' should have been fired on successfull maps API load"
+            );
+        },
+
+        "Should fire 'mapAPIFailed' when map API loading have failed": function () {
+            var mapFailedFired = false,
+                JSONPStub = function (requestUrl, requestConfig) {
+                    requestConfig.on.failure();
+                };
+
+            this.mapLoader.on('mapAPIFailed', function () {
+                mapFailedFired = true;
+            });
+
+            this.mapLoader.load(JSONPStub);
+
+            Y.Assert.isTrue(
+                mapFailedFired,
+                "'mapAPIailed' should have been fired on maps API loading failure"
+            );
+        },
+
+        "Should avoid concurrent loading": function () {
+            var mapLoadedFired = false,
+                JSONPStub = function (requestUrl, requestConfig) {
+                    requestConfig.on.success();
+                };
+
+            this.mapLoader.on('mapAPIReady', function () {
+                mapLoadedFired = true;
+            });
+
+            this.mapLoader._isLoading = true;
+            this.mapLoader.load(JSONPStub);
+
+            Y.Assert.isFalse(
+                mapLoadedFired,
+                "Loading should have been stopped if the '_isLoading' flag is set to true"
+            );
         }
+
+
     });
 
     viewTest = new Y.Test.Case({
@@ -159,8 +240,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         setUp: function () {
+            this.mapLoaderLoad = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load;
             Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
-            geocoderInput = {};
             window.google = googleStub;
 
             this.view = new Y.eZ.MapLocationEditView({
@@ -173,10 +254,12 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
         },
 
         _testAvailableVariables: function (required, expectRequired) {
-            var fieldDefinition = this._getFieldDefinition(required);
+            var fieldDefinition = this._getFieldDefinition(required),
+                origTpl = this.view.template;
             this.view.set('fieldDefinition', fieldDefinition);
 
             this.view.template = function (variables) {
@@ -202,44 +285,10 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
                 Y.Assert.areSame(expectRequired, variables.isRequired);
 
-                return '<div class="ez-maplocation-map-container"></div>' +
-                    '<ul>' +
-                    '<li class="is-loading">Longitude: <strong class="ez-maplocation-longitude"></strong>' +
-                    '<span class="ez-inline-loader"></span>' +
-                    '</li>' +
-                    '<li class="is-loading">Latitude: <strong class="ez-maplocation-latitude"></strong>' +
-                    '<span class="ez-inline-loader"></span>' +
-                    '</li>' +
-                    '</ul>';
+                return origTpl.apply(this, arguments);
             };
 
             this.view.render();
-        },
-
-        _testMapWasCenteredOnPoint: function (latitude, longitude) {
-            Y.Assert.areEqual(
-                currentMapCenterLat,
-                latitude,
-                "Map center should have provided latitude"
-            );
-            Y.Assert.areEqual(
-                currentMapCenterLng,
-                longitude,
-                "Map center should have provided longitude"
-            );
-        },
-
-        _testMarkerWasMovedIntoPoint: function (latitude, longitude) {
-            Y.Assert.areEqual(
-                currentMarkerLat,
-                latitude,
-                "Marker should have provided latitude"
-            );
-            Y.Assert.areEqual(
-                currentMarkerLng,
-                longitude,
-                "Marker should have provided longitude"
-            );
         },
 
         "Test variables for required field": function () {
@@ -275,6 +324,128 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 "",
                 "Errors output should be empty"
             );
+        }
+    });
+
+    noInitialValuesTest = new Y.Test.Case({
+        name: "eZ Map Location Edit View no initial values test",
+
+        setUp: function () {
+            this.mapLoaderLoad = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load;
+            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
+            window.google = googleStub;
+        },
+
+        tearDown: function () {
+            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
+
+        },
+
+        _getFieldDefinition: function (required) {
+            return {
+                isRequired: required
+            };
+        },
+
+        "Test correct map initialization without initial values": function () {
+            var fieldDefinition = this._getFieldDefinition(false);
+
+            field = {};
+
+            this.view = new Y.eZ.MapLocationEditView({
+                container: container,
+                field: field,
+                content: content,
+                contentType: contentType
+            });
+
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.render();
+
+            Y.Assert.isObject(this.view.get('map'));
+            Y.Assert.isObject(this.view.get('marker'));
+
+            Y.Assert.areEqual(
+                container.one('.ez-maplocation-longitude').getHTML(),
+                0,
+                "Template should be updated with default longitude value"
+            );
+            Y.Assert.areEqual(
+                container.one('.ez-maplocation-latitude').getHTML(),
+                0,
+                "Template should be updated with default latitude value"
+            );
+
+            Y.Assert.areEqual(
+                container.one(".ez-maplocation-errors").getHTML(),
+                "",
+                "Errors output should be empty"
+            );
+
+            this.view.destroy();
+        }
+
+
+        });
+
+    findAddressTest = new Y.Test.Case({
+        name: "eZ Map Location Edit View 'Find Address' feature test",
+
+        _getFieldDefinition: function (required) {
+            return {
+                isRequired: required
+            };
+        },
+
+        setUp: function () {
+            this.mapLoaderLoad = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load;
+            this.mapLoaderIsAPILoaded = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded;
+
+            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
+            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded = function () {
+                return true;
+            };
+            geocoderInput = {};
+            window.google = googleStub;
+
+            this.view = new Y.eZ.MapLocationEditView({
+                container: container,
+                field: field,
+                content: content,
+                contentType: contentType
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
+            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded = this.mapLoaderIsAPILoaded;
+        },
+
+        _testMapWasCenteredOnPoint: function (latitude, longitude) {
+            Y.Assert.areEqual(
+                currentMapCenterLat,
+                latitude,
+                "Map center should have provided latitude"
+            );
+            Y.Assert.areEqual(
+                currentMapCenterLng,
+                longitude,
+                "Map center should have provided longitude"
+            );
+        },
+
+        _testMarkerWasMovedIntoPoint: function (latitude, longitude) {
+            Y.Assert.areEqual(
+                currentMarkerLat,
+                latitude,
+                "Marker should have provided latitude"
+            );
+            Y.Assert.areEqual(
+                currentMarkerLng,
+                longitude,
+                "Marker should have provided longitude"
+            );
         },
 
         "Test 'Find Address' feature is calling the geocoder with correct params and map is updated accordingly on success": function () {
@@ -296,8 +467,6 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 "", findAddressErrors.getHTML(),
                 "Find address errors container is empty before the search attempt"
             );
-
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded = mapLoaderAPILoaded;
 
             findAddressButton.simulateGesture('tap', function () {
                 that.resume(function () {
@@ -337,8 +506,6 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 "", findAddressErrors.getHTML(),
                 "Find address errors container is empty before the search attempt"
             );
-
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded = mapLoaderAPILoaded;
 
             findAddressInput.simulate("keyup", { charCode: 14 }); // Not "Enter" key
             // The search should not have been started by some other key
@@ -386,10 +553,15 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
             window.google.maps.Geocoder = function () {
                 return {
-                    geocode: geocodeFailureZeroResults
+                    geocode: function (input, callback) {
+                        geocoderInput = input;
+                        callback(
+                            false,
+                            "geocoderStatusZeroResults"
+                        );
+                    }
                 };
             };
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded = mapLoaderAPILoaded;
 
             findAddressButton.simulateGesture('tap', function () {
                 that.resume(function () {
@@ -422,10 +594,15 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
             window.google.maps.Geocoder = function () {
                 return {
-                    geocode: geocodeFailure
+                    geocode: function (input, callback) {
+                        geocoderInput = input;
+                        callback(
+                            false,
+                            "geocoderStatusSomeOtherError"
+                        );
+                    }
                 };
             };
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded = mapLoaderAPILoaded;
 
             findAddressButton.simulateGesture('tap', function () {
                 that.resume(function () {
@@ -456,12 +633,9 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 "Find address errors container is empty before the search attempt"
             );
 
-            window.google.maps.Geocoder = function () {
-                return {
-                    geocode: geocodeSuccess
-                };
+            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded = function () {
+                return false;
             };
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded = mapLoaderAPINotLoaded;
 
             findAddressButton.simulateGesture('tap', function () {
                 that.resume(function () {
@@ -472,6 +646,60 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 });
             });
             this.wait();
+        }
+    });
+
+    locateMeTest = new Y.Test.Case({
+        name: "eZ Map Location View 'Locate me' feature test",
+
+        _getFieldDefinition: function (required) {
+            return {
+                isRequired: required
+            };
+        },
+
+        setUp: function () {
+            this.mapLoaderLoad = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load;
+            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
+            window.google = googleStub;
+
+            this.view = new Y.eZ.MapLocationEditView({
+                container: container,
+                field: field,
+                content: content,
+                contentType: contentType
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
+        },
+
+        _testMapWasCenteredOnPoint: function (latitude, longitude) {
+            Y.Assert.areEqual(
+                currentMapCenterLat,
+                latitude,
+                "Map center should have provided latitude"
+            );
+            Y.Assert.areEqual(
+                currentMapCenterLng,
+                longitude,
+                "Map center should have provided longitude"
+            );
+        },
+
+        _testMarkerWasMovedIntoPoint: function (latitude, longitude) {
+            Y.Assert.areEqual(
+                currentMarkerLat,
+                latitude,
+                "Marker should have provided latitude"
+            );
+            Y.Assert.areEqual(
+                currentMarkerLng,
+                longitude,
+                "Marker should have provided longitude"
+            );
         },
 
         "Test 'Locate me' feature is handling received results correctly on success": function () {
@@ -612,9 +840,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 });
             });
             this.wait();
-        },
-
-
+        }
     });
 
     APILoadingTest = new Y.Test.Case({
@@ -627,12 +853,13 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         setUp: function () {
+            this.mapLoaderLoad = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load;
             Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
             window.google = googleStub;
         },
 
         tearDown: function () {
-            this.view.destroy();
+            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
         },
 
         "Test view showing loaders, until the map is loaded for the very first time": function () {
@@ -663,6 +890,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                     "Coordinates output node should hide the loader after successfull API loading"
                 );
             });
+
+            this.view.destroy();
         },
 
         "Test view disabling 'Find address' button, until the map is loaded for the very first time": function () {
@@ -689,6 +918,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 container.one('.ez-maplocation-find-address-button').hasClass('pure-button-disabled'),
                 "'Find address' button should become enabled once the map is fully loaded"
             );
+
+            this.view.destroy();
         },
 
         "Test view disabling 'Locate me' button, until the map is loaded and the browser supports geolocation API": function () {
@@ -719,6 +950,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 container.one('.ez-maplocation-locate-me-button').hasClass('pure-button-disabled'),
                 "'Locate me' button should become enabled once the map is fully loaded and browser supports geolocation API"
             );
+
+            this.view.destroy();
         },
 
         "Test view leaves 'Locate me' button disabled, when the map is loaded, but the browser does NOT support geolocation API": function () {
@@ -747,10 +980,19 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 container.one('.ez-maplocation-locate-me-button').hasClass('pure-button-disabled'),
                 "'Locate me' button should remain disabled if the browser does not support geolocation API"
             );
+
+            this.view.destroy();
         },
 
         "Test view is handling errors correctly if map API is not loaded properly": function () {
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingFailure;
+            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = function () {
+                var that = this;
+                // setTimeout (even with 0 value) will be needed here because we are
+                // going to use a node, which is not yet in the DOM
+                setTimeout(function () {
+                    that.fire('mapAPIFailed');
+                }, 0);
+            };
 
             this.view = new Y.eZ.MapLocationEditView({
                 container: container,
@@ -768,14 +1010,19 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                     "", container.one('.ez-maplocation-errors').getHTML(),
                     "Errors container is not empty when the maps API did not load."
                 );
+
+                this.view.destroy();
             }, 200);
-        },
+        }
 
     });
 
     Y.Test.Runner.setName("eZ Map Location Edit View tests");
     Y.Test.Runner.add(mapLoaderTest);
     Y.Test.Runner.add(viewTest);
+    Y.Test.Runner.add(noInitialValuesTest);
+    Y.Test.Runner.add(findAddressTest);
+    Y.Test.Runner.add(locateMeTest);
     Y.Test.Runner.add(APILoadingTest);
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);

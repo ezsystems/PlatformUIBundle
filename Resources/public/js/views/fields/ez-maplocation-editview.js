@@ -84,7 +84,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
          *
          * @method load
          */
-        load: function () {
+        load: function (JSONRequestConstructor) {
             var that = this;
 
             if (this._isLoading) {
@@ -95,8 +95,11 @@ YUI.add('ez-maplocation-editview', function (Y) {
             if (this.isAPILoaded()) {
                 this.fire(EVENT_MAP_API_READY);
             } else {
+                if (!JSONRequestConstructor) {
+                    JSONRequestConstructor = Y.jsonp;
+                }
                 this._isLoading = true;
-                Y.jsonp('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}', {
+                JSONRequestConstructor('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}', {
                     on: {
                         success: function () {
                             that._isLoading = false;
@@ -196,7 +199,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
 
             // Saving location into view attribute for the future use
             this.after('locationChange', Y.bind(this._locationChange, this));
-            this.set('locationAsLatLng', mapOptions.center);
+            this.set('location', mapOptions.center);
 
             // Creating a map
             map = new google.maps.Map(
@@ -264,7 +267,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
                     function (results, status) {
                         button.removeClass(IS_LOADING_CLASS);
                         if (status === google.maps.GeocoderStatus.OK) {
-                            that.set('locationAsLatLng', results[0].geometry.location);
+                            that.set('location', results[0].geometry.location);
                             that._updateMapCenter();
                         } else {
                             addressInput.get('parentNode').addClass(IS_ERROR_CLASS);
@@ -344,7 +347,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
         _locationChange: function () {
             var container = this.get('container'),
                 location = this.get('location'),
-                locationLatLng = this.get('locationAsLatLng'),
+                locationLatLng = this._getLocationAsLatLng(),
                 marker = this.get('marker');
 
             container.one(LATITUDE_SPAN_SEL).setHTML(location.latitude.toFixed(6));
@@ -364,7 +367,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
          * @method _updateMapCenter
          */
         _updateMapCenter: function () {
-            var location = this.get('locationAsLatLng');
+            var location = this._getLocationAsLatLng();
             if (location) {
                 this.get('map').setCenter(
                     location
@@ -380,29 +383,44 @@ YUI.add('ez-maplocation-editview', function (Y) {
          * @param {Object} e the event object of the marker drag event
          */
         _markerDrag: function (e) {
-            this.set('locationAsLatLng', e.latLng);
+            this.set('location', e.latLng);
         },
 
         /**
          * Marker dragging event handler
          *
-         * @protected
          * @method _markerDrag
+         * @protected
          * @param {Object} e the event object of the map click event
          */
         _mapClick: function (e) {
-            this.set('locationAsLatLng', e.latLng);
+            this.set('location', e.latLng);
         },
 
         /**
          * Checking if the geolocation API is available
          * 
          * @method _geolocationAvailable 
-         * @private
+         * @protected
          * @return {boolean} true, if geolocation API is available 
          */
         _geolocationAvailable: function () {
             return (navigator && navigator.geolocation);
+        },
+
+        /**
+         * Returns current location as a Google LatLng object
+         *
+         * @method _getLocationAsLatLng
+         * @protected
+         * @returns {google.maps.LatLng}
+         */
+        _getLocationAsLatLng: function () {
+            var location = this.get('location');
+            return new google.maps.LatLng(
+                location.latitude,
+                location.longitude
+            );
         },
         
         /**
@@ -443,31 +461,6 @@ YUI.add('ez-maplocation-editview', function (Y) {
             },
 
             /**
-             * Current location object represented as a google LatLng object
-             *
-             * @attribute locationAsLatLng
-             * @type {google.maps.LatLng}
-             */
-            locationAsLatLng: {
-                value: null,
-                getter: function () {
-                    var location = this.get('location');
-                    return new google.maps.LatLng(
-                        location.latitude,
-                        location.longitude
-                    );
-                },
-                setter: function (latLngLocation) {
-                    if (latLngLocation) {
-                        this.set('location', {
-                            latitude: latLngLocation.lat(),
-                            longitude: latLngLocation.lng()
-                        });
-                    }
-                }
-            },
-
-            /**
              * Current location object
              *
              * @attribute location
@@ -483,7 +476,15 @@ YUI.add('ez-maplocation-editview', function (Y) {
                     longitude: 0
                 },
                 setter: function (newLocation) {
-
+                    // In case if google.maps.LatLng is passed
+                    if (newLocation.lat && newLocation.lng) {
+                        return {
+                            latitude: newLocation.lat(),
+                            longitude: newLocation.lng(),
+                        }
+                    } else {
+                        return newLocation;
+                    }
                 }
             },
 
