@@ -8,8 +8,6 @@ parameters:
                     - 'app'
                     - 'app-transitions'
                     - 'node-screen'
-                    - 'json'
-                    - 'parallel'
                     - 'ez-capi'
                     - 'ez-dashboardview'
                     - 'ez-contenteditviewloader'
@@ -18,20 +16,7 @@ parameters:
                     - 'ez-locationviewviewloader'
                     - 'ez-navigationhubview'
                     - 'ez-discoverybarview'
-                    - 'ez-contenteditformview'
-                    - 'ez-editactionbarview'
-                    - 'ez-editpreviewview'
-                    - 'ez-checkbox-editview'
-                    - 'ez-textline-editview'
-                    - 'ez-textblock-editview'
-                    - 'ez-emailaddress-editview'
-                    - 'ez-url-editview'
-                    - 'ez-float-editview'
-                    - 'ez-integer-editview'
                     - 'ez-errorview'
-                    - 'ez-buttonactionview'
-                    - 'ez-previewactionview'
-                    - 'ez-texthelper'
                 path: js/apps/ez-editorialapp.js
             ez-viewloader:
                 requires: ['base']
@@ -43,7 +28,7 @@ parameters:
                 requires: ['parallel', 'ez-viewloader', 'ez-locationmodel', 'ez-contentmodel']
                 path: js/views/loaders/ez-locationviewviewloader.js
             ez-templatebasedview:
-                requires: ['view', 'handlebars']
+                requires: ['ez-texthelper', 'view', 'handlebars']
                 path: js/views/ez-templatebasedview.js
             ez-dashboardview:
                 requires: ['ez-templatebasedview']
@@ -61,13 +46,23 @@ parameters:
                 requires: ['ez-barview', 'ez-buttonactionview']
                 path: js/views/ez-actionbarview.js
             ez-contenteditview:
-                requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'transition', 'event-tap']
+                requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'event-tap']
                 path: js/views/ez-contenteditview.js
             ez-contenteditformview:
-                requires: ['ez-templatebasedview', 'transition', 'event-tap']
+                requires:
+                    - 'ez-templatebasedview'
+                    - 'ez-checkbox-editview'
+                    - 'ez-textline-editview'
+                    - 'ez-textblock-editview'
+                    - 'ez-emailaddress-editview'
+                    - 'ez-url-editview'
+                    - 'ez-float-editview'
+                    - 'ez-integer-editview'
+                    - 'transition'
+                    - 'event-tap'
                 path: js/views/ez-contenteditformview.js
             ez-errorview:
-                requires: ['ez-templatebasedview', 'transition', 'event-tap']
+                requires: ['ez-templatebasedview', 'event-tap']
                 path: js/views/ez-errorview.js
             ez-fieldeditview:
                 requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'node-style']
@@ -94,7 +89,7 @@ parameters:
                 requires: ['ez-fieldeditview', 'event-valuechange']
                 path: js/views/fields/ez-integer-editview.js
             ez-restmodel:
-                requires: ['model']
+                requires: ['model', 'json']
                 path: js/models/ez-restmodel.js
             ez-contentmodel:
                 requires: ['ez-restmodel']
@@ -118,7 +113,7 @@ parameters:
                 requires: ['ez-buttonactionview', 'ez-editpreviewview']
                 path: js/views/actions/ez-previewactionview.js
             ez-editpreviewview:
-                requires: ['ez-templatebasedview', 'transition', 'event-tap']
+                requires: ['ez-templatebasedview', 'event-tap']
                 path: js/views/ez-editpreviewview.js
             ez-barview:
                 requires: ['ez-templatebasedview', 'event-tap', 'event-resize']
