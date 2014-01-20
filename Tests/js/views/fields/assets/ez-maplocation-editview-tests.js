@@ -386,7 +386,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         }
 
 
-        });
+    });
 
     findAddressTest = new Y.Test.Case({
         name: "eZ Map Location Edit View 'Find Address' feature test",

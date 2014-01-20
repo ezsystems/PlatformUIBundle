@@ -84,7 +84,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
          *
          * @method load
          */
-        load: function (JSONRequestConstructor) {
+        load: function (jsonRequestConstructor) {
             var that = this;
 
             if (this._isLoading) {
@@ -95,11 +95,11 @@ YUI.add('ez-maplocation-editview', function (Y) {
             if (this.isAPILoaded()) {
                 this.fire(EVENT_MAP_API_READY);
             } else {
-                if (!JSONRequestConstructor) {
-                    JSONRequestConstructor = Y.jsonp;
+                if (!jsonRequestConstructor) {
+                    jsonRequestConstructor = Y.jsonp;
                 }
                 this._isLoading = true;
-                JSONRequestConstructor('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}', {
+                jsonRequestConstructor('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}', {
                     on: {
                         success: function () {
                             that._isLoading = false;
@@ -402,7 +402,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
          * 
          * @method _geolocationAvailable 
          * @protected
-         * @return {boolean} true, if geolocation API is available 
+         * @returns {boolean} true, if geolocation API is available
          */
         _geolocationAvailable: function () {
             return (navigator && navigator.geolocation);
@@ -481,7 +481,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
                         return {
                             latitude: newLocation.lat(),
                             longitude: newLocation.lng(),
-                        }
+                        };
                     } else {
                         return newLocation;
                     }
