@@ -84,8 +84,8 @@ YUI.add('ez-maplocation-editview', function (Y) {
          *
          * @method load
          */
-        load: function (jsonRequestConstructor) {
-            var that = this;
+        load: function (JSONRequestConstructor) {
+            var request;
 
             if (this._isLoading) {
                 // Avoiding concurrent loading
@@ -95,22 +95,17 @@ YUI.add('ez-maplocation-editview', function (Y) {
             if (this.isAPILoaded()) {
                 this.fire(EVENT_MAP_API_READY);
             } else {
-                if (!jsonRequestConstructor) {
-                    jsonRequestConstructor = Y.jsonp;
+                if (!JSONRequestConstructor) {
+                    JSONRequestConstructor = Y.JSONPRequest;
                 }
                 this._isLoading = true;
-                jsonRequestConstructor('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}', {
+                request = new JSONRequestConstructor('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}', {
                     on: {
-                        success: function () {
-                            that._isLoading = false;
-                            that.fire(EVENT_MAP_API_READY);
-                        },
-                        failure: function () {
-                            that._isLoading = false;
-                            that.fire(EVENT_MAP_API_FAILED);
-                        }
+                        success: Y.bind(this._mapReady, this),
+                        failure: Y.bind(this._mapFailed, this)
                     }
                 });
+                request.send();
             }
         },
 
@@ -122,6 +117,28 @@ YUI.add('ez-maplocation-editview', function (Y) {
          */
         isAPILoaded: function () {
             return (typeof google === 'object' && typeof google.maps === 'object');
+        },
+
+        /**
+         * Method handling successfull maps API loading
+         *
+         * @method _mapReady
+         * @protected
+         */
+        _mapReady: function () {
+            this._isLoading = false;
+            this.fire(EVENT_MAP_API_READY);
+        },
+
+        /**
+         * Method handling failures during maps API loading
+         *
+         * @method _mapFailed
+         * @protected
+         */
+        _mapFailed: function () {
+            this._isLoading = false;
+            this.fire(EVENT_MAP_API_FAILED);
         }
     };
 
@@ -424,8 +441,8 @@ YUI.add('ez-maplocation-editview', function (Y) {
         },
         
         /**
-         * Defines the variables to imported in the field edit template for text
-         * line.
+         * Defines the variables to import in the field edit template for the
+         * map location
          *
          * @protected
          * @method _variables

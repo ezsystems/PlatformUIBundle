@@ -103,6 +103,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
         tearDown: function () {
             delete this.mapLoader;
+            delete window.google;
         },
 
         "Should correctly detect presence of the google maps API": function () {
@@ -117,8 +118,6 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         "Should correctly detect absence of the google maps API": function () {
-            window.google = {};
-
             Y.Assert.isFalse(
                 this.mapLoader.isAPILoaded(),
                 "GoogleMapAPILoader.isAPILoaded() method should return false, when maps API is not present"
@@ -149,6 +148,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             var JSONRequestUrl = "",
                 JSONRequestConfig = {},
                 JSONPStub = function (requestUrl, requestConfig) {
+                    this.send = function () {};
                     JSONRequestUrl = requestUrl;
                     JSONRequestConfig = requestConfig;
                 };
@@ -175,6 +175,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         "Should fire 'mapAPIReady' when map API was loaded successfully": function () {
             var mapLoadedFired = false,
                 JSONPStub = function (requestUrl, requestConfig) {
+                    this.send = function () {};
                     requestConfig.on.success();
                 };
 
@@ -193,6 +194,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         "Should fire 'mapAPIFailed' when map API loading have failed": function () {
             var mapFailedFired = false,
                 JSONPStub = function (requestUrl, requestConfig) {
+                    this.send = function () {};
                     requestConfig.on.failure();
                 };
 
@@ -255,6 +257,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         tearDown: function () {
             this.view.destroy();
             Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
+            delete window.google;
         },
 
         _testAvailableVariables: function (required, expectRequired) {
@@ -305,8 +308,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             this.view.set('fieldDefinition', fieldDefinition);
             this.view.render();
 
-            Y.Assert.isObject(this.view.get('map'));
-            Y.Assert.isObject(this.view.get('marker'));
+            Y.Assert.isObject(this.view.get('map'), "Map should be created");
+            Y.Assert.isObject(this.view.get('marker'), "Marker should be created");
 
             Y.Assert.areEqual(
                 container.one('.ez-maplocation-longitude').getHTML(),
@@ -338,7 +341,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
         tearDown: function () {
             Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
-
+            delete window.google;
         },
 
         _getFieldDefinition: function (required) {
@@ -348,22 +351,23 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         "Test correct map initialization without initial values": function () {
-            var fieldDefinition = this._getFieldDefinition(false);
+            var fieldDefinition = this._getFieldDefinition(false),
+                view;
 
             field = {};
 
-            this.view = new Y.eZ.MapLocationEditView({
+            view = new Y.eZ.MapLocationEditView({
                 container: container,
                 field: field,
                 content: content,
                 contentType: contentType
             });
 
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
+            view.set('fieldDefinition', fieldDefinition);
+            view.render();
 
-            Y.Assert.isObject(this.view.get('map'));
-            Y.Assert.isObject(this.view.get('marker'));
+            Y.Assert.isObject(view.get('map'), "Map should be created");
+            Y.Assert.isObject(view.get('marker'), "Marker should be created");
 
             Y.Assert.areEqual(
                 container.one('.ez-maplocation-longitude').getHTML(),
@@ -382,7 +386,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 "Errors output should be empty"
             );
 
-            this.view.destroy();
+            view.destroy();
         }
 
 
@@ -398,6 +402,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         setUp: function () {
+            var fieldDefinition = this._getFieldDefinition(false);
+
             this.mapLoaderLoad = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load;
             this.mapLoaderIsAPILoaded = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded;
 
@@ -414,12 +420,20 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 content: content,
                 contentType: contentType
             });
+
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.render();
+
+            this.findAddressInput = container.one('.ez-maplocation-find-address-input input');
+            this.findAddressButton = container.one('.ez-maplocation-find-address-button');
+            this.findAddressErrors = container.one('.ez-maplocation-errors');
         },
 
         tearDown: function () {
             this.view.destroy();
             Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
             Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded = this.mapLoaderIsAPILoaded;
+            delete window.google;
         },
 
         _testMapWasCenteredOnPoint: function (latitude, longitude) {
@@ -449,26 +463,17 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         "Test 'Find Address' feature is calling the geocoder with correct params and map is updated accordingly on success": function () {
-            var that = this,
-                fieldDefinition = this._getFieldDefinition(false),
-                container, findAddressInput, findAddressButton, findAddressErrors;
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
+            var that = this;
 
-            container = this.view.get('container');
-            findAddressInput = container.one('.ez-maplocation-find-address-input input');
-            findAddressButton = container.one('.ez-maplocation-find-address-button');
-            findAddressErrors = container.one('.ez-maplocation-errors');
-
-            findAddressInput.set('value', testAddress);
+            this.findAddressInput.set('value', testAddress);
             this.view._mapFirstLoad();
 
             Y.Assert.areEqual(
-                "", findAddressErrors.getHTML(),
+                "", this.findAddressErrors.getHTML(),
                 "Find address errors container is empty before the search attempt"
             );
 
-            findAddressButton.simulateGesture('tap', function () {
+            this.findAddressButton.simulateGesture('tap', function () {
                 that.resume(function () {
                     Y.Assert.areEqual(
                         geocoderInput.address,
@@ -480,7 +485,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                     this._testMarkerWasMovedIntoPoint(testAddressLatitude, testAddressLongitude);
 
                     Y.Assert.areEqual(
-                        "", findAddressErrors.getHTML(),
+                        "", this.findAddressErrors.getHTML(),
                         "Find address errors container is empty after the successfull search"
                     );
                 });
@@ -489,25 +494,16 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         "Test 'Find Address' feature is also called on pressing the 'Enter' key in the address input": function () {
-            var fieldDefinition = this._getFieldDefinition(false),
-                container, findAddressInput, findAddressButton, findAddressErrors;
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
 
-            container = this.view.get('container');
-            findAddressInput = container.one('.ez-maplocation-find-address-input input');
-            findAddressButton = container.one('.ez-maplocation-find-address-button');
-            findAddressErrors = container.one('.ez-maplocation-errors');
-
-            findAddressInput.set('value', testAddress);
+            this.findAddressInput.set('value', testAddress);
             this.view._mapFirstLoad();
 
             Y.Assert.areEqual(
-                "", findAddressErrors.getHTML(),
+                "", this.findAddressErrors.getHTML(),
                 "Find address errors container is empty before the search attempt"
             );
 
-            findAddressInput.simulate("keyup", { charCode: 14 }); // Not "Enter" key
+            this.findAddressInput.simulate("keyup", { charCode: 14 }); // Not "Enter" key
             // The search should not have been started by some other key
             Y.Assert.areNotEqual(
                 geocoderInput.address,
@@ -515,7 +511,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 "Test address should not have been passed to the geocoder"
             );
 
-            findAddressInput.simulate("keyup", { charCode: 13 }); //"Enter" key
+            this.findAddressInput.simulate("keyup", { charCode: 13 }); //"Enter" key
 
             Y.Assert.areEqual(
                 geocoderInput.address,
@@ -527,27 +523,19 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             this._testMarkerWasMovedIntoPoint(testAddressLatitude, testAddressLongitude);
 
             Y.Assert.areEqual(
-                "", findAddressErrors.getHTML(),
+                "", this.findAddressErrors.getHTML(),
                 "Find address errors container is empty after the successfull search"
             );
         },
 
 
         "Test 'Find Address' feature errors handling on ZERO_RESULTS error": function () {
-            var that = this,
-                fieldDefinition = this._getFieldDefinition(false),
-                container, findAddressButton, findAddressErrors;
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
-
-            container = this.view.get('container');
-            findAddressButton = container.one('.ez-maplocation-find-address-button');
-            findAddressErrors = container.one('.ez-maplocation-errors');
+            var that = this;
 
             this.view._mapFirstLoad();
 
             Y.Assert.areEqual(
-                "", findAddressErrors.getHTML(),
+                "", this.findAddressErrors.getHTML(),
                 "Find address errors container is empty before the search attempt"
             );
 
@@ -563,10 +551,10 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 };
             };
 
-            findAddressButton.simulateGesture('tap', function () {
+            this.findAddressButton.simulateGesture('tap', function () {
                 that.resume(function () {
                     Y.Assert.areNotEqual(
-                        "", findAddressErrors.getHTML(),
+                        "", this.findAddressErrors.getHTML(),
                         "Find address errors container is not empty"
                     );
                 });
@@ -575,20 +563,12 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         "Test geocoder errors handling on other errors": function () {
-            var that = this,
-                fieldDefinition = this._getFieldDefinition(false),
-                container, findAddressButton, findAddressErrors;
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
-
-            container = this.view.get('container');
-            findAddressButton = container.one('.ez-maplocation-find-address-button');
-            findAddressErrors = container.one('.ez-maplocation-errors');
+            var that = this;
 
             this.view._mapFirstLoad();
 
             Y.Assert.areEqual(
-                "", findAddressErrors.getHTML(),
+                "", this.findAddressErrors.getHTML(),
                 "Find address errors container is empty before the search attempt"
             );
 
@@ -604,10 +584,10 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 };
             };
 
-            findAddressButton.simulateGesture('tap', function () {
+            this.findAddressButton.simulateGesture('tap', function () {
                 that.resume(function () {
                     Y.Assert.areNotEqual(
-                        "", findAddressErrors.getHTML(),
+                        "", this.findAddressErrors.getHTML(),
                         "Find address errors container is not empty"
                     );
                 });
@@ -616,20 +596,12 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         "Test geocoder errors handling when maps API is not loaded": function () {
-            var that = this,
-                fieldDefinition = this._getFieldDefinition(false),
-                container, findAddressButton, findAddressErrors;
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
-
-            container = this.view.get('container');
-            findAddressButton = container.one('.ez-maplocation-find-address-button');
-            findAddressErrors = container.one('.ez-maplocation-errors');
+            var that = this;
 
             this.view._mapFirstLoad();
 
             Y.Assert.areEqual(
-                "", findAddressErrors.getHTML(),
+                "", this.findAddressErrors.getHTML(),
                 "Find address errors container is empty before the search attempt"
             );
 
@@ -637,10 +609,10 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 return false;
             };
 
-            findAddressButton.simulateGesture('tap', function () {
+            this.findAddressButton.simulateGesture('tap', function () {
                 that.resume(function () {
                     Y.Assert.areNotEqual(
-                        "", findAddressErrors.getHTML(),
+                        "", this.findAddressErrors.getHTML(),
                         "Find address errors container is not empty"
                     );
                 });
@@ -659,6 +631,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         setUp: function () {
+            var fieldDefinition = this._getFieldDefinition(false);
+
             this.mapLoaderLoad = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load;
             Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
             window.google = googleStub;
@@ -669,11 +643,18 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 content: content,
                 contentType: contentType
             });
+
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.render();
+
+            this.locateMeButton = container.one('.ez-maplocation-locate-me-button');
+            this.locateMeErrors = container.one('.ez-maplocation-locate-me-errors');
         },
 
         tearDown: function () {
             this.view.destroy();
             Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
+            delete window.google;
         },
 
         _testMapWasCenteredOnPoint: function (latitude, longitude) {
@@ -703,9 +684,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         "Test 'Locate me' feature is handling received results correctly on success": function () {
-            var that = this,
-                fieldDefinition = this._getFieldDefinition(false),
-                container, locateMeButton, locateMeErrors;
+            var that = this;
 
             window.navigator = {
                 geolocation: {
@@ -723,34 +702,31 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 }
             };
 
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
-
             container = this.view.get('container');
-            locateMeButton = container.one('.ez-maplocation-locate-me-button');
-            locateMeErrors = container.one('.ez-maplocation-locate-me-errors');
+            this.locateMeButton = container.one('.ez-maplocation-locate-me-button');
+            this.locateMeErrors = container.one('.ez-maplocation-locate-me-errors');
 
             this.view._mapFirstLoad();
 
             Y.Assert.areEqual(
-                "", locateMeErrors.getHTML(),
+                "", this.locateMeErrors.getHTML(),
                 "Locate Me errors container is empty before the geolocation attempt"
             );
 
-            locateMeButton.simulateGesture('tap', function () {
+            this.locateMeButton.simulateGesture('tap', function () {
                 that.resume(function () {
 
-                    Y.Assert.isTrue(locateMeButton.hasClass('is-loading'), "'Locate Me' button should show a loader");
+                    Y.Assert.isTrue(this.locateMeButton.hasClass('is-loading'), "'Locate Me' button should show a loader");
 
                     this.wait(function () {
 
-                        Y.Assert.isFalse(locateMeButton.hasClass('is-loading'), "'Locate Me' button should have hidden the loader");
+                        Y.Assert.isFalse(this.locateMeButton.hasClass('is-loading'), "'Locate Me' button should have hidden the loader");
 
                         this._testMapWasCenteredOnPoint(testLocateMeLatitude, testLocateMeLongitude);
                         this._testMarkerWasMovedIntoPoint(testLocateMeLatitude, testLocateMeLongitude);
 
                         Y.Assert.areEqual(
-                            "", locateMeErrors.getHTML(),
+                            "", this.locateMeErrors.getHTML(),
                             "Find address errors container is empty after the successfull geolocation"
                         );
 
@@ -762,9 +738,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         "Test 'Locate me' feature is handling received errors correctly": function () {
-            var that = this,
-                fieldDefinition = this._getFieldDefinition(false),
-                container, locateMeButton, locateMeErrors;
+            var that = this;
 
             window.navigator = {
                 geolocation: {
@@ -777,31 +751,28 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 }
             };
 
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
-
             container = this.view.get('container');
-            locateMeButton = container.one('.ez-maplocation-locate-me-button');
-            locateMeErrors = container.one('.ez-maplocation-locate-me-errors');
+            this.locateMeButton = container.one('.ez-maplocation-locate-me-button');
+            this.locateMeErrors = container.one('.ez-maplocation-locate-me-errors');
 
             this.view._mapFirstLoad();
 
             Y.Assert.areEqual(
-                "", locateMeErrors.getHTML(),
+                "", this.locateMeErrors.getHTML(),
                 "Locate Me errors container is empty before the geolocation attempt"
             );
 
-            locateMeButton.simulateGesture('tap', function () {
+            this.locateMeButton.simulateGesture('tap', function () {
                 that.resume(function () {
 
-                    Y.Assert.isTrue(locateMeButton.hasClass('is-loading'), "'Locate Me' button should show a loader");
+                    Y.Assert.isTrue(this.locateMeButton.hasClass('is-loading'), "'Locate Me' button should show a loader");
 
                     this.wait(function () {
 
-                        Y.Assert.isFalse(locateMeButton.hasClass('is-loading'), "'Locate Me' button should have hidden the loader");
+                        Y.Assert.isFalse(this.locateMeButton.hasClass('is-loading'), "'Locate Me' button should have hidden the loader");
 
                         Y.Assert.areNotEqual(
-                            "", locateMeErrors.getHTML(),
+                            "", this.locateMeErrors.getHTML(),
                             "Find address errors container shold not be empty after the geolocation failure"
                         );
                     }, 300);
@@ -811,30 +782,20 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         "Test 'Locate me' feature is handling browser incompatibility correctly": function () {
-            var that = this,
-                fieldDefinition = this._getFieldDefinition(false),
-                container, locateMeButton, locateMeErrors;
+            var that = this;
 
             window.navigator = {};
-
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
-
-            container = this.view.get('container');
-            locateMeButton = container.one('.ez-maplocation-locate-me-button');
-            locateMeErrors = container.one('.ez-maplocation-locate-me-errors');
-
             this.view._mapFirstLoad();
 
             Y.Assert.areEqual(
-                "", locateMeErrors.getHTML(),
+                "", this.locateMeErrors.getHTML(),
                 "Locate Me errors container is empty before the geolocation attempt"
             );
 
-            locateMeButton.simulateGesture('tap', function () {
+            this.locateMeButton.simulateGesture('tap', function () {
                 that.resume(function () {
                     Y.Assert.areNotEqual(
-                        "", locateMeErrors.getHTML(),
+                        "", this.locateMeErrors.getHTML(),
                         "Find address errors container should not be empty if browser is incompatible"
                     );
                 });
@@ -860,6 +821,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
         tearDown: function () {
             Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
+            delete window.google;
         },
 
         "Test view showing loaders, until the map is loaded for the very first time": function () {
