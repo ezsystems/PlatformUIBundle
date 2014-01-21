@@ -35,6 +35,7 @@
     '@eZEditorialBundle/Resources/public/css/fields/textblock-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/emailaddress-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/url-editview.css'
+    '@eZEditorialBundle/Resources/public/css/fields/author-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/float-editview.css'
     '@eZEditorialBundle/Resources/public/css/fields/integer-editview.css'
     '@eZEditorialBundle/Resources/public/css/errorview.css'
@@ -286,6 +287,58 @@ YUI().use('ez-editorialapp', function (Y) {
         </div>
     </div>
 </script>
+
+<script type="text/x-handlebars-template" id="authoreditview-ez-template">
+    <div class="pure-g ez-editfield-row">
+        <div class="pure-u ez-editfield-infos">
+            {{> ez_fieldinfo_tooltip }}
+            <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-0-name">
+                <p class="ez-fielddefinition-name">
+                    {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+                </p>
+                <p class="ez-editfield-error-message">&nbsp;</p>
+            </label>
+        </div>
+        <div class="pure-u ez-editfield-input-area ez-default-error-style">
+            <div class="ez-authors-controls-wrapper">
+                {{#authorsList}}
+                    <div class="ez-single-author-controls" data-author-id="{{ id }}">
+                        <div class="pure-g">
+                            <div class="pure-u-1-2">
+                                <label class="ez-field-sublabel" for="ez-field-{{ ../content.contentId }}-{{ ../fieldDefinition.identifier }}-{{ id }}-name">
+                                    Name:
+                                </label>
+                                <div class="ez-editfield-input"><div class="ez-author-input-ui"><input type="text"
+                                    class="ez-author-name"
+                                    data-author-id="{{ id }}"
+                                    value="{{name}}"
+                                    id="ez-field-{{ ../content.contentId }}-{{ ../fieldDefinition.identifier }}-{{ id }}-name"
+                                    {{#if ../isRequired}} required{{/if}}
+                                ></div></div>
+                                <label class="ez-field-sublabel" for="ez-field-{{ ../content.contentId }}-{{ ../fieldDefinition.identifier }}-{{ id }}-email">
+                                    Email:
+                                </label>
+                                <div class="ez-editfield-input"><div class="ez-author-input-ui"><input type="email"
+                                    class="ez-author-email"
+                                    data-author-id="{{ id }}"
+                                    value="{{email}}"
+                                    id="ez-field-{{ ../content.contentId }}-{{ ../fieldDefinition.identifier }}-{{ id }}-email"
+                                    {{#if ../isRequired}} required{{/if}}
+                                ></div></div>
+                            </div>
+                            <div class="pure-u-1-4">
+                                <button class="pure-button ez-author-remove-button" data-icon="&#xe603;" data-author-id="{{ id }}">Remove author</button>
+                            </div>
+                        </div>
+                        <hr/>
+                    </div>
+                {{/authorsList}}
+                <button class="pure-button ez-author-add-button" data-icon="&#xe601;">Add author</button>
+            </div>
+        </div>
+    </div>
+</script>
+
 
 <script type="text/x-handlebars-template" id="floateditview-ez-template">
     <div class="pure-g ez-editfield-row">
