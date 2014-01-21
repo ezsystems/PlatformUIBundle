@@ -37,13 +37,13 @@ YUI.add('ez-author-editview', function (Y) {
         },
 
         /**
-         * Initializer, which Validates current input and checks state of inputs
+         * Initializer, which is saving default field value into the
+         * 'authorsList' attribute for future use
          *
-         * @method initialize
+         * @method initializer
          */
-        initialize: function () {
-            this.validate();
-            this._checkState();
+        initializer: function () {
+            this.set('authorsList', this.get('field').fieldValue);
         },
 
         /**
@@ -72,7 +72,8 @@ YUI.add('ez-author-editview', function (Y) {
          */
         _variables: function () {
             return {
-                "isRequired": this.get('fieldDefinition').isRequired
+                "isRequired": this.get('fieldDefinition').isRequired,
+                "authorsList": this.get('authorsList')
             };
         },
 
@@ -80,10 +81,10 @@ YUI.add('ez-author-editview', function (Y) {
          * Checks state of "Remove author" button. It should be disabled when
          * only one author inputs set is present
          *
-         * @method _checkState
+         * @method _handleRemoveAuthorButton
          * @protected
          */
-        _checkState: function () {
+        _handleRemoveAuthorButton: function () {
             var container = this.get('container');
             
             if (container.all(SINGLE_AUTHOR_CONTROLS_SEL).size() === 1) {
@@ -95,28 +96,26 @@ YUI.add('ez-author-editview', function (Y) {
         },
 
         /**
-         * Saves current authors list into the 'field' attribute
+         * Saves current authors list into the 'authorsList' attribute
          *
-         * @method _saveData
+         * @method _saveAuthors
          * @protected
          */
-        _saveData: function () {
-            var field = this.get('field'),
-                newAuthor;
-
-            field.fieldValue = [];
+        _saveAuthors: function () {
+            var authorsList = [],
+                author;
 
             this.get('container').all(SINGLE_AUTHOR_CONTROLS_SEL).each(function (authorControls) {
-                newAuthor = {};
+                author = {};
 
-                newAuthor.name = authorControls.one('.ez-author-name').get('value');
-                newAuthor.email = authorControls.one('.ez-author-email').get('value');
-                newAuthor.id = authorControls.getAttribute('data-author-id');
+                author.name = authorControls.one('.ez-author-name').get('value');
+                author.email = authorControls.one('.ez-author-email').get('value');
+                author.id = authorControls.getAttribute('data-author-id');
 
-                field.fieldValue.push(newAuthor);
+                authorsList.push(author);
             });
 
-            this.set('field', field);
+            this.set('authorsList', authorsList);
         },
 
         /**
@@ -150,23 +149,23 @@ YUI.add('ez-author-editview', function (Y) {
          * @protected
          */
         _handleAddAuthorTap: function (e) {
-            var field = this.get('field'),
-                lastId = field.fieldValue[field.fieldValue.length - 1].id,
+            var authorsList = this.get('authorsList'),
+                lastId = authorsList[authorsList.length - 1].id,
                 newAuthor = {};
 
             e.preventDefault();
-            this._saveData();
+            this._saveAuthors();
 
             newAuthor.id = lastId + 1;
             newAuthor.email = "";
             newAuthor.name = "";
 
-            field.fieldValue.push(newAuthor);
-            this.set('field', field);
+            authorsList.push(newAuthor);
+            this.set('authorsList', authorsList);
 
             this.render();
             this.validate();
-            this._checkState();
+            this._handleRemoveAuthorButton();
         },
 
         /**
@@ -179,22 +178,37 @@ YUI.add('ez-author-editview', function (Y) {
         _handleRemoveAuthorTap: function (e) {
             var button = e.currentTarget,
                 authorId = button.getAttribute('data-author-id'),
-                field = this.get('field');
+                authorsList = this.get('authorsList');
 
             e.preventDefault();
-            this._saveData();
+            this._saveAuthors();
 
             if (!button.hasClass(BUTTON_DISABLED_CLASS) && window.confirm(MSG_CONFIRM_AUTHOR_DELETE)) {
-                field.fieldValue.some(function (currentAuthor, index) {
+                authorsList.some(function (currentAuthor, index) {
                     if (currentAuthor.id === authorId) {
-                        field.fieldValue.splice(index, 1);
+                        authorsList.splice(index, 1);
                         return true;
                     }
                 });
 
+                this.set('authorsList', authorsList);
+
                 this.render();
                 this.validate();
-                this._checkState();
+                this._handleRemoveAuthorButton();
+            }
+        }
+    }, {
+        ATTRS: {
+            /**
+             * The array of objects which stores current authors list
+             *
+             * @attribute authorsList
+             * @type {Array}
+             * @default []
+             */
+            authorsList: {
+                value: []
             }
         }
     });
