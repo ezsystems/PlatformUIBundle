@@ -497,7 +497,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
                     if (newLocation.lat && newLocation.lng) {
                         return {
                             latitude: newLocation.lat(),
-                            longitude: newLocation.lng(),
+                            longitude: newLocation.lng()
                         };
                     } else {
                         return newLocation;

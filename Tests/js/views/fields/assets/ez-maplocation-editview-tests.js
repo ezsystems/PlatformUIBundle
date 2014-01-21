@@ -257,7 +257,6 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         tearDown: function () {
             this.view.destroy();
             Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
-            delete window.google;
         },
 
         _testAvailableVariables: function (required, expectRequired) {
@@ -813,6 +812,20 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             };
         },
 
+        _createAndRenderView: function () {
+            var fieldDefinition = this._getFieldDefinition(false);
+
+            this.view = new Y.eZ.MapLocationEditView({
+                container: container,
+                field: field,
+                content: content,
+                contentType: contentType
+            });
+
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.render();
+        },
+
         setUp: function () {
             this.mapLoaderLoad = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load;
             Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
@@ -825,16 +838,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         "Test view showing loaders, until the map is loaded for the very first time": function () {
-            this.view = new Y.eZ.MapLocationEditView({
-                container: container,
-                field: field,
-                content: content,
-                contentType: contentType
-            });
-
-            var fieldDefinition = this._getFieldDefinition(false);
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
+            this._createAndRenderView();
 
             container.all('.ez-maplocation-coordinates li').each(function (coordinateNode) {
                 Y.Assert.isTrue(
@@ -857,16 +861,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         "Test view disabling 'Find address' button, until the map is loaded for the very first time": function () {
-            this.view = new Y.eZ.MapLocationEditView({
-                container: container,
-                field: field,
-                content: content,
-                contentType: contentType
-            });
-
-            var fieldDefinition = this._getFieldDefinition(false);
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
+            this._createAndRenderView();
 
             Y.Assert.isTrue(
                 container.one('.ez-maplocation-find-address-button').hasClass('pure-button-disabled'),
@@ -889,16 +884,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 geolocation: {}
             };
 
-            this.view = new Y.eZ.MapLocationEditView({
-                container: container,
-                field: field,
-                content: content,
-                contentType: contentType
-            });
-
-            var fieldDefinition = this._getFieldDefinition(false);
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
+            this._createAndRenderView();
 
             Y.Assert.isTrue(
                 container.one('.ez-maplocation-locate-me-button').hasClass('pure-button-disabled'),
@@ -919,16 +905,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         "Test view leaves 'Locate me' button disabled, when the map is loaded, but the browser does NOT support geolocation API": function () {
             window.navigator = {};
 
-            this.view = new Y.eZ.MapLocationEditView({
-                container: container,
-                field: field,
-                content: content,
-                contentType: contentType
-            });
-
-            var fieldDefinition = this._getFieldDefinition(false);
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
+            this._createAndRenderView();
 
             Y.Assert.isTrue(
                 container.one('.ez-maplocation-locate-me-button').hasClass('pure-button-disabled'),
@@ -956,16 +933,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 }, 0);
             };
 
-            this.view = new Y.eZ.MapLocationEditView({
-                container: container,
-                field: field,
-                content: content,
-                contentType: contentType
-            });
-
-            var fieldDefinition = this._getFieldDefinition(false);
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
+            this._createAndRenderView();
 
             this.wait(function () {
                 Y.Assert.areNotEqual(
