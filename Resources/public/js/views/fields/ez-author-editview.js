@@ -12,7 +12,8 @@ YUI.add('ez-author-editview', function (Y) {
         MSG_CONFIRM_AUTHOR_DELETE = 'Are you sure you want to delete this author?',
         SINGLE_AUTHOR_CONTROLS_SEL = '.ez-single-author-controls',
         BUTTON_AUTHOR_REMOVE_SEL = '.ez-author-remove-button',
-        BUTTON_DISABLED_CLASS = 'pure-button-disabled';
+        BUTTON_DISABLED_CLASS = 'pure-button-disabled',
+        IS_ERROR_CLASS = 'is-error';
 
     /**
      * Author edit view
@@ -44,6 +45,7 @@ YUI.add('ez-author-editview', function (Y) {
          */
         initializer: function () {
             this.set('authorsList', this.get('field').fieldValue);
+            this.set('applyErrorClassToContainer', false);
         },
 
         /**
@@ -52,12 +54,43 @@ YUI.add('ez-author-editview', function (Y) {
          * @method validate
          */
         validate: function () {
-            if (this._authorsAreValid() === true) {
+            var authorsValidity = this._getAuthorsValidity(),
+                authorsValidityList = authorsValidity.authorsValidityList,
+                allAuthorsAreInvalid = !authorsValidity.atLeastOneAuthorIsPresent,
+                allAuthorsAreValid = true,
+                container = this.get('container');
+
+            container.all('.ez-editfield-input').removeClass(IS_ERROR_CLASS);
+
+            Y.Array.each(authorsValidityList, function (authorValidity) {
+                var input;
+
+                if (!authorValidity.valid) {
+                    allAuthorsAreValid = false;
+
+                    if (!authorValidity.nameValidity.valid) {
+                        input = container.one('.ez-author-name[data-author-id="' + authorValidity.id + '"]');
+                        input.get('parentNode').get('parentNode').addClass(IS_ERROR_CLASS);
+                    }
+
+                    if (!authorValidity.emailValidity.valid) {
+                        input = container.one('.ez-author-email[data-author-id="' + authorValidity.id + '"]');
+                        input.get('parentNode').get('parentNode').addClass(IS_ERROR_CLASS);
+                    }
+                }
+            });
+
+            if (allAuthorsAreValid) {
                 this.set('errorStatus', false);
-            } else {
+            } else if (allAuthorsAreInvalid) {
                 this.set(
                     'errorStatus',
                     'At least one author should be filled in'
+                );
+            } else {
+                this.set(
+                    'errorStatus',
+                    'One or more authors in the list are not valid'
                 );
             }
         },
@@ -119,26 +152,44 @@ YUI.add('ez-author-editview', function (Y) {
         },
 
         /**
-         * Returns true, if at least on of the authors is valid and false
-         * otherwise
+         * Returns object pointing if there are any valid authors in the list
+         * and providing an array of validity states for each author inputs set
          *
          * See https://developer.mozilla.org/en-US/docs/Web/API/ValidityState
          *
-         * @method _authorsAreValid
-         * @return {Array}
+         * @method _getAuthorsValidity
+         * @return {Object}
          * @protected
          */
-        _authorsAreValid: function () {
-            var atLeastOneAuthorIsValid = false;
+        _getAuthorsValidity: function () {
+            var atLeastOneAuthorIsPresent = false,
+                authorsValidityList = [];
 
-            this.get('container').all(SINGLE_AUTHOR_CONTROLS_SEL).some(function (authorControls) {
-                if (authorControls.one('.ez-author-name').get('validity').valid && authorControls.one('.ez-author-email').get('validity').valid) {
-                    atLeastOneAuthorIsValid = true;
-                    return true;
+            this.get('container').all(SINGLE_AUTHOR_CONTROLS_SEL).each(function (authorControls) {
+                var nameValidity = authorControls.one('.ez-author-name').get('validity'),
+                    emailValidity = authorControls.one('.ez-author-email').get('validity'),
+                    authorValidity = {
+                        valid: false
+                    };
+
+                if (nameValidity.valid && emailValidity.valid) {
+                    authorValidity.valid = true;
+                    atLeastOneAuthorIsPresent = true;
+                } else if (nameValidity.valueMissing && emailValidity.valueMissing) {
+                    authorValidity.valid = true;
+                } else {
+                    authorValidity.nameValidity = nameValidity;
+                    authorValidity.emailValidity = emailValidity;
+                    authorValidity.id = authorControls.one('.ez-author-name').getAttribute('data-author-id');
                 }
+
+                authorsValidityList.push(authorValidity);
             });
 
-            return atLeastOneAuthorIsValid;
+            return {
+                atLeastOneAuthorIsPresent: atLeastOneAuthorIsPresent,
+                authorsValidityList: authorsValidityList
+            };
         },
 
         /**
@@ -149,12 +200,14 @@ YUI.add('ez-author-editview', function (Y) {
          * @protected
          */
         _handleAddAuthorTap: function (e) {
-            var authorsList = this.get('authorsList'),
-                lastId = authorsList[authorsList.length - 1].id,
+            var authorsList,
+                lastId,
                 newAuthor = {};
 
             e.preventDefault();
             this._saveAuthors();
+            authorsList = this.get('authorsList');
+            lastId = authorsList[authorsList.length - 1].id;
 
             newAuthor.id = lastId + 1;
             newAuthor.email = "";
@@ -178,10 +231,11 @@ YUI.add('ez-author-editview', function (Y) {
         _handleRemoveAuthorTap: function (e) {
             var button = e.currentTarget,
                 authorId = button.getAttribute('data-author-id'),
-                authorsList = this.get('authorsList');
+                authorsList;
 
             e.preventDefault();
             this._saveAuthors();
+            authorsList = this.get('authorsList');
 
             if (!button.hasClass(BUTTON_DISABLED_CLASS) && window.confirm(MSG_CONFIRM_AUTHOR_DELETE)) {
                 authorsList.some(function (currentAuthor, index) {

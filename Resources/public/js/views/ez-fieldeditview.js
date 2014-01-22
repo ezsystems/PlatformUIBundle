@@ -9,6 +9,7 @@ YUI.add('ez-fieldeditview', function (Y) {
     Y.namespace('eZ');
 
     var L = Y.Lang,
+        FIELD_INFO_SEL = '.ez-editfield-infos',
         FIELD_INFO_ICON_SEL = '.ez-editfield-i',
         TOOLTIP_SEL = '.ez-fielddefinition-tooltip',
         TOOLTIP_TAIL_UP_CLASS = 'ez-tail-up-tooltip',
@@ -64,6 +65,9 @@ YUI.add('ez-fieldeditview', function (Y) {
             this.get('container').setHTML(
                 this.template(Y.mix(this._variables(), defaultVariables, true))
             );
+
+            this._errorUI();
+
             return this;
         },
 
@@ -81,25 +85,50 @@ YUI.add('ez-fieldeditview', function (Y) {
         },
 
         /**
-         * Reflects in the UI the errorStatus change
+         * Reflects in the UI current errorStatus
          *
          * @method _errorUI
          * @protected
-         * @param {Object} e the event facade of the errorStatusChange event
          */
-        _errorUI: function (e) {
-            var container = this.get('container');
+        _errorUI: function () {
+            var errorStatus = this.get('errorStatus');
 
-            if ( e.newVal ) {
-                container.addClass(ERROR_CLASS);
-                if ( L.isString(e.newVal) ) {
-                    this._errorDefaultContent = container.one('.ez-editfield-error-message').getContent();
-                    this._setErrorMessage(e.newVal);
+            if (errorStatus) {
+                this._switchErrorClass(true);
+                if ( L.isString(errorStatus) ) {
+                    this._setErrorMessage(errorStatus);
                 }
             } else {
-                container.removeClass(ERROR_CLASS);
-                if ( this._errorDefaultContent ) {
-                    this._setErrorMessage(this._errorDefaultContent);
+                this._switchErrorClass(false);
+                this._setErrorMessage(this.get('errorDefaultContent'));
+            }
+        },
+
+        /**
+         * Adds or removes error CSS class to the view's nodes depending on the
+         * passed parameter
+         *
+         * @method _switchErrorClass
+         * @param add {boolean} if true, we should add the error CSS class,
+         * remove the class otherwise
+         * @protected
+         */
+        _switchErrorClass: function (add) {
+            var container = this.get('container'),
+                fieldInfo = container.one(FIELD_INFO_SEL),
+                applyErrorClassToContainer = this.get('applyErrorClassToContainer');
+
+            if (add) {
+                if (applyErrorClassToContainer) {
+                    container.addClass(ERROR_CLASS);
+                } else {
+                    fieldInfo.addClass(ERROR_CLASS);
+                }
+            } else {
+                if (applyErrorClassToContainer) {
+                    container.removeClass(ERROR_CLASS);
+                } else {
+                    fieldInfo.removeClass(ERROR_CLASS);
                 }
             }
         },
@@ -287,6 +316,29 @@ YUI.add('ez-fieldeditview', function (Y) {
              */
             contentType: {
                 value: null
+            },
+
+            /**
+             * Flag indicating whether  on error we should apply error CSS class
+             * to the whole container or only to the field info part.
+             * (In latter case error class handling for inputs is
+             * handled by the child view itself)
+             *
+             * @attribute applyErrorClassToContainer
+             * @default true
+             */
+            applyErrorClassToContainer: {
+                value: true
+            },
+
+            /**
+             * Default content of an error message
+             *
+             * @attribute errorDefaultContent
+             * @default ""
+             */
+            errorDefaultContent: {
+                value: ""
             }
         },
 
