@@ -1,37 +1,38 @@
 YUI.add('ez-editorialapp-tests', function (Y) {
-    var app, appTest, reverseRoutingTest, sideViewsTest,
-        capiMock,
-        container = Y.one('.app'),
-        mockActionBar = {};
-
-    mockActionBar.handleHeightUpdate = function () {};
-
-    capiMock = new Y.Mock();
-    app = new Y.eZ.EditorialApp({
-        container: '.app',
-        viewContainer: '.view-container',
-        capi: capiMock
-    });
-    app.render();
+    var appTest, reverseRoutingTest, sideViewsTest,
+        runLoaderTest;
 
     appTest = new Y.Test.Case({
         name: "eZ Editorial App tests",
 
+        setUp: function () {
+            this.app = new Y.eZ.EditorialApp({
+                container: '.app',
+                viewContainer: '.view-container'
+            });
+            this.app.render();
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
         "Should open the application": function () {
             var nextCalled = false,
-                 docHeight = container.get('docHeight');
+                 docHeight = this.app.get('container').get('docHeight');
 
-            app.open({}, {}, function () {
+            this.app.open({}, {}, function () {
                 nextCalled = true;
             });
 
             Y.assert(nextCalled, "Next middleware should have been called");
             Y.assert(
-                container.hasClass('is-app-open'),
+                this.app.get('container').hasClass('is-app-open'),
                 "The app container should have the class is-app-open"
             );
             Y.Assert.areEqual(
-                app.get('container').getStyle('height').replace('px', ''),
+                this.app.get('container').getStyle('height').replace('px', ''),
                 docHeight,
                 "The app container should have the same height as the document"
             );
@@ -44,12 +45,12 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                         errorViewHidden = true;
                     }
                 });
-            app.views.errorView.instance = new TestErrorViewConstructor();
+            this.app.views.errorView.instance = new TestErrorViewConstructor();
 
-            app.close();
+            this.app.close();
 
             Y.assert(
-                !container.hasClass('is-app-open'),
+                !this.app.get('container').hasClass('is-app-open'),
                 "The app container should not have the class is-app-open"
             );
             Y.assert(
@@ -58,91 +59,78 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             );
         },
 
-        "Should open again the application": function () {
-            this["Should open the application"]();
-        },
-
-        "Should close again the application": function () {
-            this["Should close the application"]();
-        },
-
         "Should go back in the history when contentEditView:closeView event is fired": function () {
             var origBack = Y.config.win.history.back, backCalled = false;
 
-            app.open();
+            this.app.open();
 
             Y.config.win.history.back = function () {
                 backCalled = true;
             };
 
-            app.fire('contentEditView:closeView');
+            this.app.fire('contentEditView:closeView');
 
             Y.Assert.isTrue(backCalled, "history.back should have been called");
             Y.config.win.history.back = origBack;
         },
 
         "Should set/unset the app in loading mode": function () {
-            app.set('loading', true);
+            this.app.set('loading', true);
             Y.assert(
-                container.hasClass('is-app-loading'),
+                this.app.get('container').hasClass('is-app-loading'),
                 "The application container should get the is-app-loading class"
             );
-            app.set('loading', false);
+            this.app.set('loading', false);
             Y.assert(
-                !container.hasClass('is-app-loading'),
+                !this.app.get('container').hasClass('is-app-loading'),
                 "The application container should not get the is-app-loading class"
             );
         },
 
         "Navigate event should change the loading attribute": function () {
-            app.set('loading', false);
-            app.fire('navigate');
+            this.app.set('loading', false);
+            this.app.fire('navigate');
             Y.assert(
-                app.get('loading'),
+                this.app.get('loading'),
                 "The application should be in loading mode"
             );
-            app.set('loading', false);
         },
 
         "View change should trigger the activeCallback callback and set loading to false": function () {
-            var activeCallbackCalled = false, showViewCallbackCalled = false;
+            var that = this;
 
-            app.views.simpleView = {
+            this.app.views.simpleView = {
                 type: Y.View
             };
-            app.views.viewWithCallback = {
+            this.app.views.viewWithCallback = {
                 type: Y.Base.create('testView', Y.View, [], {
                     activeCallback: function () {
-                        activeCallbackCalled = true;
+                        that.resume(function () {
+                            Y.Assert.isFalse(
+                                this.app.get('loading'),
+                                "The app should not be in loading mode"
+                            );
+                        });
                     }
                 })
             };
 
-            app.showView('simpleView', {},
+            this.app.set('loading', true);
+            this.app.showView('simpleView', {},
                 function () {
-                    showViewCallbackCalled = true;
+                    that.resume(function () {
+                        Y.Assert.isFalse(
+                            this.app.get('loading'),
+                            "The app should not be in loading mode"
+                        );
+
+                        this.app.set('loading', true);
+                        this.app.showView('viewWithCallback');
+                        this.wait();
+                    });
                 }
             );
-            this.wait(function () {
-                Y.Assert.isTrue(
-                    showViewCallbackCalled,
-                    "The showview callback should have been called"
-                );
-                Y.Assert.isFalse(app.get('loading'), "The app should not be in loading mode");
-
-                app.set('loading', true);
-                app.showView('viewWithCallback');
-                this.wait(function () {
-                    Y.Assert.isTrue(
-                        activeCallbackCalled, "The active callback should have been called"
-                    );
-                    Y.Assert.isFalse(app.get('loading'), "The app should not be in loading mode");
-
-                    delete app.views.simpleView;
-                    delete app.views.viewWithCallback;
-                }, 800);
-
-            }, 800);
+            this.wait();
         },
 
         "Should show the content edit view": function () {
@@ -151,7 +139,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
             resp.variables = {'content': 1, 'contentType': {}, 'mainLocation': {}, 'owner': {}};
 
-            app.views.contentEditView.type = Y.Base.create('testView', Y.View, [], {
+            this.app.views.contentEditView.type = Y.Base.create('testView', Y.View, [], {
                 initializer: function () {
                     initialized = true;
                 },
@@ -163,25 +151,18 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                         "The view attributes should be updated with the result of the loader"
                     );
                 }
-            }, {
-                ATTRS: {
-                    actionBar: {
-                        value: mockActionBar
-                    }
-                }
-
             });
 
-            app.set('loading', true);
-            app.handleContentEdit(req, resp);
+            this.app.set('loading', true);
+            this.app.handleContentEdit(req, resp);
 
             Y.assert(initialized, "The content edit view should have been initialized");
             Y.assert(rendered, "The content edit view should have been rendered");
 
             rendered = false;
             resp.variables.content++;
-            app.set('loading', true);
-            app.handleContentEdit(req, resp);
+            this.app.set('loading', true);
+            this.app.handleContentEdit(req, resp);
 
             Y.assert(rendered, "The content edit view should have been rerendered");
         },
@@ -192,7 +173,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
             resp.variables = {'content': 1, 'path': [], 'location': {}};
 
-            app.views.locationViewView.type = Y.Base.create('testView', Y.View, [], {
+            this.app.views.locationViewView.type = Y.Base.create('testView', Y.View, [], {
                 initializer: function () {
                     initialized = true;
                 },
@@ -206,16 +187,16 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 }
             });
 
-            app.set('loading', true);
-            app.handleLocationView(req, resp);
+            this.app.set('loading', true);
+            this.app.handleLocationView(req, resp);
 
             Y.assert(initialized, "The location view view should have been initialized");
             Y.assert(rendered, "The location view should have been rendered");
 
             rendered = false;
             resp.variables.content++;
-            app.set('loading', true);
-            app.handleLocationView(req, resp);
+            this.app.set('loading', true);
+            this.app.handleLocationView(req, resp);
 
             Y.assert(rendered, "The location view view should have been rerendered");
         },
@@ -223,7 +204,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         "Should show the error view, when catching 'fatalError' event": function () {
             var rendered = false, initialized = false, activeCallbackCalled = false,
                 errorInfo = {'retryAction:': {}, 'additionalInfo': 1},
-                originalErroView,
                 TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
                     initializer: function () {
                         initialized = true;
@@ -242,36 +222,25 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     }
                 });
 
-            originalErroView = app.views.errorView.instance;
-            app.views.errorView.instance = new TestErrorViewConstructor();
+            this.app.views.errorView.instance = new TestErrorViewConstructor();
 
-            app.set('loading', false);
-            app.fire('contentEditView:fatalError', errorInfo);
+            this.app.set('loading', false);
+            this.app.fire('contentEditView:fatalError', errorInfo);
 
             Y.assert(initialized, "The error view should have been initialized");
             Y.assert(rendered, "The error view should have been rendered");
-            Y.assert(!app.get('loading'), "The app should not be in loading mode");
+            Y.assert(!this.app.get('loading'), "The app should not be in loading mode");
             Y.assert(activeCallbackCalled, "The error view should have input focus");
-
-            app.views.errorView.instance = originalErroView;
         },
 
         "Should receive 'retryAction' event fired on the errorView": function () {
             var retryActionReceived = false;
 
-            // We have to reinitialize the App, so our previous changes to app.views.errorView.instance will not have effect
-            app = new Y.eZ.EditorialApp({
-                container: '.app',
-                viewContainer: '.view-container',
-                capi: capiMock
-            });
-            app.render();
-
-            app.on('errorView:retryAction', function (retryAction) {
+            this.app.on('errorView:retryAction', function (retryAction) {
                 retryActionReceived = true;
             });
 
-            app.views.errorView.instance.fire('retryAction',{
+            this.app.views.errorView.instance.fire('retryAction',{
                 run: function () {},
                 args: [],
                 context: null
@@ -295,7 +264,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     actionRetried = true;
                 };
 
-            app.fire('whatever:retryAction', {
+            this.app.fire('whatever:retryAction', {
                 run: retryMe,
                 args: [testArgumentInput1, testArgumentInput2],
                 context: makeMeTheContext
@@ -307,6 +276,66 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             );
         },
 
+        "Should register partials found inside the DOM": function () {
+            var template = Y.Handlebars.compile('Test partial should be here: {{> ezTestPartial}}');
+
+            Y.Assert.isFunction(template);
+            Y.Assert.areEqual(
+                "Test partial should be here: I'm a test partial!",
+                template()
+            );
+        },
+
+        "Should toggle the discovery bar minimized class on minimizeDiscoveryBarAction event": function () {
+            var container = this.app.get('container');
+
+            this.app.fire('whatever:minimizeDiscoveryBarAction');
+            Y.Assert.isTrue(
+                container.hasClass('is-discoverybar-minimized'),
+                "The app container should have the discovery bar minimized class"
+            );
+            this.app.fire('whatever:minimizeDiscoveryBarAction');
+            Y.Assert.isFalse(
+                container.hasClass('is-discoverybar-minimized'),
+                "The app container should have the discovery bar minimized class"
+            );
+        },
+
+        "Should navigate to the content edit when receiving an editAction event": function () {
+            var contentMock, contentId = 'aContentId';
+
+            contentMock = new Y.Test.Mock();
+            Y.Mock.expect(contentMock, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId
+            });
+
+            this.app.fire('whatever:editAction', {content: contentMock});
+            Y.Assert.areEqual(
+                this.app.routeUri('editContent', {id: contentId}), this.app.getPath(),
+                "The current path should be the edit content route for the content '" + contentId + "'"
+            );
+        },
+    });
+
+    runLoaderTest = new Y.Test.Case({
+        name: "runLoader app tests",
+
+        setUp: function () {
+            this.capiMock = new Y.Mock();
+            this.app = new Y.eZ.EditorialApp({
+                container: '.app',
+                viewContainer: '.view-container',
+                capi: this.capiMock
+            });
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
         "runLoader should call the next middleware if no loader is defined": function () {
             var url = '/the_killers/sam_s_town',
                 test = this,
@@ -316,11 +345,11 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     });
                 };
 
-            app.route({
+            this.app.route({
                 path: url,
                 callbacks: ['runLoader', next]
             });
-            app.navigate(url);
+            this.app.navigate(url);
             this.wait();
         },
 
@@ -338,12 +367,12 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 next = function () {
                     Y.Assert.isTrue(this.get('loading'), "The application should be in loading mode");
                 },
-                ViewLoader;
+                ViewLoader, that = this;
 
             ViewLoader = Y.Base.create('testViewLoader', Y.eZ.ViewLoader, [], {
                 load: function (cb) {
                     Y.Assert.areSame(
-                        capiMock, this.get('capi'),
+                        that.capiMock, this.get('capi'),
                         "The view loader should receive the capi"
                     );
                     Y.Assert.isObject(
@@ -367,12 +396,12 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 }
             });
 
-            app.route({
+            this.app.route({
                 path: url,
                 loader: ViewLoader,
                 callbacks: [stampReqResp, 'runLoader', next]
             });
-            app.navigate(url);
+            this.app.navigate(url);
         },
 
         "runLoader should catch the view loader error and throw an app fatal error": function () {
@@ -394,7 +423,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 });
 
 
-            app.views.errorView.instance = new TestErrorViewConstructor();
+            this.app.views.errorView.instance = new TestErrorViewConstructor();
 
             ViewLoader = Y.Base.create('testViewLoader', Y.eZ.ViewLoader, [], {
                 load: function () {
@@ -402,12 +431,12 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 }
             });
 
-            app.route({
+            this.app.route({
                 path: url,
                 loader: ViewLoader,
                 callbacks: [stampReqRespNext, 'runLoader']
             });
-            app.on('fatalError', function (e) {
+            this.app.on('fatalError', function (e) {
                 test.resume(function () {
                     Y.Assert.areSame(
                         e.additionalInfo.errorText, errorMsg,
@@ -415,7 +444,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     );
 
                     Y.Assert.areSame(
-                        app.runLoader, e.retryAction.run,
+                        this.app.runLoader, e.retryAction.run,
                         "The retry action method should be runLoader"
                     );
 
@@ -426,57 +455,16 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     }
 
                     Y.Assert.areSame(
-                        e.retryAction.context, app,
+                        e.retryAction.context, this.app,
                         "The retry action context should be set to the app"
                     );
                 });
             });
-            app.navigate(url);
+            this.app.navigate(url);
             this.wait();
         },
-
-        "Should register partials found inside the DOM": function () {
-            var template = Y.Handlebars.compile('Test partial should be here: {{> ezTestPartial}}');
-
-            Y.Assert.isFunction(template);
-            Y.Assert.areEqual(
-                "Test partial should be here: I'm a test partial!",
-                template()
-            );
-        },
-
-        "Should toggle the discovery bar minimized class on minimizeDiscoveryBarAction event": function () {
-            var container = app.get('container');
-
-            app.fire('whatever:minimizeDiscoveryBarAction');
-            Y.Assert.isTrue(
-                container.hasClass('is-discoverybar-minimized'),
-                "The app container should have the discovery bar minimized class"
-            );
-            app.fire('whatever:minimizeDiscoveryBarAction');
-            Y.Assert.isFalse(
-                container.hasClass('is-discoverybar-minimized'),
-                "The app container should have the discovery bar minimized class"
-            );
-        },
-
-        "Should navigate to the content edit when receiving an editAction event": function () {
-            var contentMock, contentId = 'aContentId';
-
-            contentMock = new Y.Test.Mock();
-            Y.Mock.expect(contentMock, {
-                method: 'get',
-                args: ['id'],
-                returns: contentId
-            });
-
-            app.fire('whatever:editAction', {content: contentMock});
-            Y.Assert.areEqual(
-                app.routeUri('editContent', {id: contentId}), app.getPath(),
-                "The current path should be the edit content route for the content '" + contentId + "'"
-            );
-        },
     });
+
 
     sideViewsTest = new Y.Test.Case({
         name: "Side views management",
@@ -719,8 +707,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             ];
             this.app = new Y.eZ.EditorialApp({
                 container: '.app',
-                viewContainer: '.view-container',
-                capi: capiMock
+                viewContainer: '.view-container'
             });
             Y.Array.each(routes, function (route) {
                 reverseRoutingTest.app.route(route, function () {});
@@ -808,7 +795,8 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Editorial App tests");
     Y.Test.Runner.add(appTest);
+    Y.Test.Runner.add(runLoaderTest);
     Y.Test.Runner.add(sideViewsTest);
     Y.Test.Runner.add(reverseRoutingTest);
 
-}, '0.0.1', {requires: ['test', 'ez-editorialapp', 'json', 'parallel']});
+}, '0.0.1', {requires: ['test', 'ez-editorialapp', 'ez-viewloader']});
