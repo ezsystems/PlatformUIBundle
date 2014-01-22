@@ -277,7 +277,7 @@ YUI().use('ez-editorialapp', function (Y) {
                                     data-author-id="{{ id }}"
                                     value="{{name}}"
                                     id="ez-field-{{ ../content.contentId }}-{{ ../fieldDefinition.identifier }}-{{ id }}-name"
-                                    {{#if ../isRequired}} required{{/if}}
+                                    required
                                 ></div></div>
                                 <label class="ez-field-sublabel" for="ez-field-{{ ../content.contentId }}-{{ ../fieldDefinition.identifier }}-{{ id }}-email">
                                     Email:
@@ -287,7 +287,7 @@ YUI().use('ez-editorialapp', function (Y) {
                                     data-author-id="{{ id }}"
                                     value="{{email}}"
                                     id="ez-field-{{ ../content.contentId }}-{{ ../fieldDefinition.identifier }}-{{ id }}-email"
-                                    {{#if ../isRequired}} required{{/if}}
+                                    required
                                 ></div></div>
                             </div>
                             <div class="pure-u-1-4">

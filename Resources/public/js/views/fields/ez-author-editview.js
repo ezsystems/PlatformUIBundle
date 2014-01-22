@@ -56,9 +56,8 @@ YUI.add('ez-author-editview', function (Y) {
         validate: function () {
             var authorsValidity = this._getAuthorsValidity(),
                 authorsValidityList = authorsValidity.authorsValidityList,
-                allAuthorsAreInvalid = !authorsValidity.atLeastOneAuthorIsPresent,
-                allAuthorsAreValid = true,
-                container = this.get('container');
+                container = this.get('container'),
+                isRequired = this.get('fieldDefinition').isRequired;
 
             container.all('.ez-editfield-input').removeClass(IS_ERROR_CLASS);
 
@@ -66,8 +65,6 @@ YUI.add('ez-author-editview', function (Y) {
                 var input;
 
                 if (!authorValidity.valid) {
-                    allAuthorsAreValid = false;
-
                     if (!authorValidity.nameValidity.valid) {
                         input = container.one('.ez-author-name[data-author-id="' + authorValidity.id + '"]');
                         input.get('parentNode').get('parentNode').addClass(IS_ERROR_CLASS);
@@ -80,9 +77,9 @@ YUI.add('ez-author-editview', function (Y) {
                 }
             });
 
-            if (allAuthorsAreValid) {
+            if (authorsValidity.allAuthorsAreValid && (!isRequired || !authorsValidity.noAuthorIsPresent)) {
                 this.set('errorStatus', false);
-            } else if (allAuthorsAreInvalid) {
+            } else if (isRequired && (!authorsValidity.atLeastOneAuthorIsPresent || authorsValidity.noAuthorIsPresent)) {
                 this.set(
                     'errorStatus',
                     'At least one author should be filled in'
@@ -119,6 +116,8 @@ YUI.add('ez-author-editview', function (Y) {
          */
         _handleRemoveAuthorButton: function () {
             var container = this.get('container');
+
+            console.log(container);
             
             if (container.all(SINGLE_AUTHOR_CONTROLS_SEL).size() === 1) {
                 container.one(BUTTON_AUTHOR_REMOVE_SEL).addClass(BUTTON_DISABLED_CLASS);
@@ -163,6 +162,8 @@ YUI.add('ez-author-editview', function (Y) {
          */
         _getAuthorsValidity: function () {
             var atLeastOneAuthorIsPresent = false,
+                noAuthorIsPresent = true,
+                allAuthorsAreValid = true,
                 authorsValidityList = [];
 
             this.get('container').all(SINGLE_AUTHOR_CONTROLS_SEL).each(function (authorControls) {
@@ -175,6 +176,7 @@ YUI.add('ez-author-editview', function (Y) {
                 if (nameValidity.valid && emailValidity.valid) {
                     authorValidity.valid = true;
                     atLeastOneAuthorIsPresent = true;
+                    noAuthorIsPresent = false;
                 } else if (nameValidity.valueMissing && emailValidity.valueMissing) {
                     authorValidity.valid = true;
                 } else {
@@ -183,10 +185,16 @@ YUI.add('ez-author-editview', function (Y) {
                     authorValidity.id = authorControls.one('.ez-author-name').getAttribute('data-author-id');
                 }
 
+                if (!authorValidity.valid) {
+                    allAuthorsAreValid = false;
+                }
+
                 authorsValidityList.push(authorValidity);
             });
 
             return {
+                allAuthorsAreValid: allAuthorsAreValid,
+                noAuthorIsPresent: noAuthorIsPresent,
                 atLeastOneAuthorIsPresent: atLeastOneAuthorIsPresent,
                 authorsValidityList: authorsValidityList
             };
