@@ -39,7 +39,7 @@ Feature: Test Content View page for the Editorial Interface
       | /getting-started                                          | Home / Getting Started                                              |
       | /getting-started/selected-features                        | Home / Getting Started / Selected Features                          |
       | /getting-started/selected-features/reaching-for-the-stars | Home / Getting Started / Selected Featires / Reaching for the Stars |
-  
+
   @ezp-22050 @qa-197 @javascript
   Scenario Outline: Verify that the Content fields are present in Content Zone
     Given I am logged in as "Editor"
@@ -82,3 +82,28 @@ Feature: Test Content View page for the Editorial Interface
       | collapse | value     |
       | collapse | collapsed |
       | expand   | expanded  |
+
+  @ezp-22107 @qa-197 @javascript
+  Scenario: Verify that all tabs are present
+    Given I am logged in as "Editor"
+    When I am on the "Reaching for the starts" page
+    Then I see tabs:
+      | tab_names |
+      | View      |
+      | Details   |
+      | Activity  |
+      | Analytics |
+
+  @ezp-22107 @qa-197 @javascript
+  Scenario Outline: Verify that all tabs show the correct content
+    Given I am logged in as "Editor"
+    When I am on the "Reaching for the starts" page
+    And I click <tab_name>
+    Then on "Content Zone" I see <tab_content> content
+
+    Examples: 
+      | tab_name  | tab_content       |
+      | View      | View Content      |
+      | Details   | Details Content   |
+      | Activity  | Activity Content  |
+      | Analytics | Analytics Content |
