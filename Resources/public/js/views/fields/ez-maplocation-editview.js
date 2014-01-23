@@ -274,7 +274,9 @@ YUI.add('ez-maplocation-editview', function (Y) {
                 addressInput = container.one(FIND_ADDRESS_INPUT_SEL),
                 errorsOutput = container.one(ERRORS_SEL);
 
-            e.preventDefault();
+            if (e) {
+                e.preventDefault();
+            }
 
             if (this.get('mapAPILoader').isAPILoaded()) {
 
