@@ -38,14 +38,20 @@ YUI.add('ez-author-editview', function (Y) {
         },
 
         /**
-         * Initializer, which is saving default field value into the
-         * 'authorsList' attribute for future use
+         * Custom initializer, which is:
+         *  - saving default field value into the 'authorsList' attribute
+         *  for future use
+         *  - changing 'applyErrorClassToContainer' attribute to false which
+         *  allows input-by-input custom validation
+         *  - subscribing to the custom 'viewRendered' event of the field edit
+         *  view, so the 'Remove Author' button will have correct state
          *
          * @method initializer
          */
         initializer: function () {
             this.set('authorsList', this.get('field').fieldValue);
             this.set('applyErrorClassToContainer', false);
+            this.on('viewRendered', Y.bind(this._handleRemoveAuthorButton, this));
         },
 
         /**
@@ -117,8 +123,6 @@ YUI.add('ez-author-editview', function (Y) {
         _handleRemoveAuthorButton: function () {
             var container = this.get('container');
 
-            console.log(container);
-            
             if (container.all(SINGLE_AUTHOR_CONTROLS_SEL).size() === 1) {
                 container.one(BUTTON_AUTHOR_REMOVE_SEL).addClass(BUTTON_DISABLED_CLASS);
             } else {

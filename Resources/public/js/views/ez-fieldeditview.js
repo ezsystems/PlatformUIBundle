@@ -66,6 +66,14 @@ YUI.add('ez-fieldeditview', function (Y) {
                 this.template(Y.mix(this._variables(), defaultVariables, true))
             );
 
+            /**
+             * Fired on final rendering of the view, handy when you need to
+             * apply some changes right after that from a child view
+             *
+             * @event viewRendered
+             */
+            this.fire('viewRendered');
+
             this._errorUI();
 
             return this;
