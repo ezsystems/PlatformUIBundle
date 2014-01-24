@@ -24,7 +24,7 @@
         filter: loaderFilter,
         modules: {
             "ez-locationviewviewloader": {
-                requires: ['ez-viewloader', 'parallel', 'ez-locationmodel', 'ez-contentmodel'],
+                requires: ['ez-viewloader', 'parallel', 'ez-locationmodel', 'ez-contentmodel', 'ez-contenttypemodel'],
                 fullpath: "../../../../Resources/public/js/views/loaders/ez-locationviewviewloader.js"
             },
             "ez-viewloader": {
@@ -34,6 +34,10 @@
             "ez-contentmodel": {
                 requires: ['ez-restmodel'],
                 fullpath: "../../../../Resources/public/js/models/ez-contentmodel.js"
+            },
+            "ez-contenttypemodel": {
+                requires: ['ez-restmodel'],
+                fullpath: "../../../../Resources/public/js/models/ez-contenttypemodel.js"
             },
             "ez-locationmodel": {
                 requires: ['ez-restmodel'],

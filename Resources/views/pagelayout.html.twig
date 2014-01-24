@@ -23,6 +23,8 @@
     '@eZEditorialBundle/Resources/public/css/layout.css'
     '@eZEditorialBundle/Resources/public/css/contenteditview.css'
     '@eZEditorialBundle/Resources/public/css/locationviewview.css'
+    '@eZEditorialBundle/Resources/public/css/rawcontentview.css'
+    '@eZEditorialBundle/Resources/public/css/fieldview.css'
     '@eZEditorialBundle/Resources/public/css/contenteditformview.css'
     '@eZEditorialBundle/Resources/public/css/barview.css'
     '@eZEditorialBundle/Resources/public/css/discoverybarview.css'
@@ -405,7 +407,6 @@ YUI().use('ez-editorialapp', function (Y) {
                     <li>{{ content.name }}</li>
                 </ul>
                 <h1 class="ez-content-name" data-icon="&#xe001;">{{ content.name }}</h1>
-
             </header>
             <section class="ez-tabs">
                 <ul class="ez-tabs-list">
@@ -415,13 +416,7 @@ YUI().use('ez-editorialapp', function (Y) {
                     <li class="ez-tabs-label"><a href="#ez-tabs-analytics">Analytics</a></li>
                 </ul>
                 <div class="ez-tabs-panels">
-                    <div class="ez-tabs-panel is-tab-selected" id="ez-tabs-view">
-                        <h2>Fields</h2>
-                        <ul>{{#each content.fields}}<li>{{ fieldDefinitionIdentifier }}</li>{{/each}}</ul>
-
-                        <p><a href="#/edit/{{ urlEncode content.id }}" class="pure-button pure-button-primary">Edit "{{ content.name }}"</a></p>
-
-                    </div>
+                    <div class="ez-tabs-panel is-tab-selected" id="ez-tabs-view"></div>
                     <div class="ez-tabs-panel" id="ez-tabs-details">
                         <ul>
                             <li><strong>Hidden</strong> : {{ location.hidden }}</li>
@@ -435,6 +430,26 @@ YUI().use('ez-editorialapp', function (Y) {
             </section>
         </div>
         <div class="ez-actionbar-container pure-u"></div>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="rawcontentview-ez-template">
+    <h2 class="ez-raw-content-title"><a href="#">Content</a></h2>
+    <div class="ez-fieldgroups">
+    {{#each fieldGroups}}
+        <h3 class="ez-fieldgroup-name"><a href="#">{{ fieldGroupName }}</a></h3>
+        <section class="ez-fieldgroup ez-fieldgroup-{{ fieldGroupName }}">
+        </section>
+    {{/each}}
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="fieldview-ez-template">
+    <div class="ez-fieldview-row pure-g">
+        <div class="ez-fieldview-label pure-u">
+            <p class="ez-fieldview-name"><strong>{{ fieldDefinition.names.[eng-GB] }}</strong></p>
+        </div>
+        <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">{{ value }}</div></div>
     </div>
 </script>
 
