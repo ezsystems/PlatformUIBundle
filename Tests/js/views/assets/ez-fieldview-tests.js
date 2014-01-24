@@ -1,72 +1,41 @@
 YUI.add('ez-fieldview-tests', function (Y) {
     var viewTest, registerTest;
 
-    viewTest = new Y.Test.Case({
-        name: "eZ Field View test",
+    viewTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.FieldViewTestCases, {
+            name: "eZ Field View test",
 
-        setUp: function () {
-            this.fieldDefinition = {fieldType: 'SomeThing'};
-            this.field = {fieldValue: 'ze value'};
+            setUp: function () {
+                this.fieldDefinition = {fieldType: 'SomeThing'};
+                this.field = {fieldValue: 'ze value'};
+                this.templateVariablesCount = 3;
 
-            this.view = new Y.eZ.FieldView({
-                container: '.container',
-                fieldDefinition: this.fieldDefinition,
-                field: this.field,
-            });
-        },
+                this.view = new Y.eZ.FieldView({
+                    container: '.container',
+                    fieldDefinition: this.fieldDefinition,
+                    field: this.field,
+                });
+            },
 
-        "Test class on the view container": function () {
-            this["Test render"]();
-            Y.Assert.isTrue(
-                this.view.get('container').hasClass(
-                    'ez-fieldview-' + this.fieldDefinition.fieldType.toLowerCase()
-                ),
-                "The view container should have a class build with the field type"
-            );
-        },
+            "Test value in template": function () {
+                var origTpl = this.view.template,
+                    that = this;
 
-        "Test render": function () {
-            var templateCalled = false,
-                origTpl;
+                this.view.template = function (variables) {
+                    Y.Assert.areSame(
+                        that.field.fieldValue, variables.value,
+                        "The field value should be available in the field edit view template"
+                    );
+                    return origTpl.apply(this, arguments);
+                };
+                this.view.render();
+            },
 
-            origTpl = this.view.template;
-            this.view.template = function () {
-                templateCalled = true;
-                return origTpl.apply(this, arguments);
-            };
-            this.view.render();
-            Y.Assert.isTrue(templateCalled, "The template has not been used");
-        },
-
-        "Test available variable in template": function () {
-            var origTpl = this.view.template,
-                that = this;
-
-            this.view.template = function (variables) {
-                Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(3, Y.Object.keys(variables).length, "The template should receive 3 variables");
-
-                Y.Assert.areSame(
-                     that.fieldDefinition, variables.fieldDefinition,
-                    "The fieldDefinition should be available in the field edit view template"
-                );
-                Y.Assert.areSame(
-                    that.field, variables.field,
-                    "The field should be available in the field edit view template"
-                );
-                Y.Assert.areSame(
-                    that.field.fieldValue, variables.value,
-                    "The field value should be available in the field edit view template"
-                );
-                return origTpl.apply(this, arguments);
-            };
-            this.view.render();
-        },
-
-        tearDown: function () {
-            this.view.destroy();
-        }
-    });
+            tearDown: function () {
+                this.view.destroy();
+            }
+        })
+    );
 
     registerTest = new Y.Test.Case({
         name: "eZ Field View registry test",
@@ -98,4 +67,4 @@ YUI.add('ez-fieldview-tests', function (Y) {
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'ez-fieldview']});
+}, '0.0.1', {requires: ['test', 'ez-genericfieldview-tests', 'ez-fieldview']});
