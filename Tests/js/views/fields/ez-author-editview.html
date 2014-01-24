@@ -8,9 +8,30 @@
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="authoreditview-ez-template">
-
-
-
+<div class="ez-editfield-infos">
+    <div class="ez-editfield-error-message"></div>
+</div>
+{{#authorsList}}
+<div class="ez-single-author-controls" data-author-id="{{ id }}">
+    <div class="ez-editfield-input"><div class="ez-author-input-ui"><input type="text"
+        class="ez-author-name"
+        data-author-id="{{ id }}"
+        value="{{name}}"
+        id="ez-field-{{ ../content.contentId }}-{{ ../fieldDefinition.identifier }}-{{ id }}-name"
+        required
+    ></div></div>
+    <div class="ez-editfield-input"><div class="ez-author-input-ui"><input type="email"
+        class="ez-author-email"
+        data-author-id="{{ id }}"
+        value="{{email}}"
+        id="ez-field-{{ ../content.contentId }}-{{ ../fieldDefinition.identifier }}-{{ id }}-email"
+        required
+    ></div></div>
+    <button class="pure-button ez-author-remove-button" data-author-id="{{ id }}">Remove author</button>
+    <hr/>
+</div>
+{{/authorsList}}
+<button class="pure-button ez-author-add-button">Add author</button>
 </script>
 
 <script type="text/javascript" src="../../../../node_modules/yui/yui/yui.js"></script>
@@ -34,7 +55,7 @@
         filter: loaderFilter,
         modules: {
             "ez-author-editview": {
-                requires: ['ez-fieldeditview'],
+                requires: ['ez-fieldeditview', 'event-tap'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-author-editview.js"
             },
             "ez-fieldeditview": {
