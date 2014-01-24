@@ -98,6 +98,10 @@ YUI.add('ez-locationviewview', function (Y) {
                 path: this._pathToJSON()
             }));
 
+            container.one('.ez-tabs-panel').append(
+                this.get('rawContentView').render().get('container')
+            );
+
             container.one('.ez-actionbar-container').append(
                 this.get('actionBar').render().get('container')
             );
@@ -120,8 +124,24 @@ YUI.add('ez-locationviewview', function (Y) {
              * @type Y.eZ.Content
              */
             content: {
+                lazyAdd: false,
                 setter: function (val, name) {
                     this.get('actionBar').set('content', val);
+                    this.get('rawContentView').set('content', val);
+                    return val;
+                }
+            },
+
+            /**
+             * The content type of the content at the current location
+             *
+             * @attribute contentType
+             * @type Y.eZ.ContentType
+             */
+            contentType: {
+                lazyAdd: false,
+                setter: function (val, name) {
+                    this.get('rawContentView').set('contentType', val);
                     return val;
                 }
             },
@@ -145,6 +165,16 @@ YUI.add('ez-locationviewview', function (Y) {
              */
             actionBar: {
                 value: new Y.eZ.ActionBarView()
+            },
+
+            /**
+             * The raw content view instance
+             *
+             * @attribute rawContentView
+             * @type eZ.RawContentView
+             */
+            rawContentView: {
+                value: new Y.eZ.RawContentView()
             }
         }
     });

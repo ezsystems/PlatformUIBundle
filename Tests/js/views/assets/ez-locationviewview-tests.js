@@ -22,6 +22,29 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             this.view.destroy();
         },
 
+        _mockView: function () {
+            var view = new Y.Mock();
+
+            Y.Mock.expect(view, {
+                method: 'render',
+                run: function () {
+                    return view;
+                }
+            });
+            Y.Mock.expect(view, {
+                method: 'get',
+                args: ['container'],
+                run: function () {
+                    return Y.Node.create('<div/>');
+                }
+            });
+            Y.Mock.expect(view, {
+                method: 'set',
+                args: [Y.Mock.Value.Any, Y.Mock.Value.Any]
+            });
+            return view;
+        },
+
         "Should set the content of the action bar": function () {
             var content = {};
 
@@ -30,6 +53,31 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 content, this.view.get('actionBar').get('content'),
                 "The content also have been set on the action bar"
             );
+        },
+
+
+        "Should set the content of the raw content view": function () {
+            var content = {};
+
+            this.view.set('content', content);
+            Y.Assert.areSame(
+                content, this.view.get('rawContentView').get('content'),
+                "The content also have been set on the raw content view"
+            );
+        },
+
+        "Should set the content type of the raw content view": function () {
+            var contentType = {},
+                rawView = new Y.Mock();
+
+            Y.Mock.expect(rawView, {
+                method: 'set',
+                args: ['contentType', contentType]
+            });
+
+            this.view.set('rawContentView', rawView);
+            this.view.set('contentType', contentType);
+            Y.Mock.verify(rawView);
         },
 
         "Test render": function () {
@@ -43,6 +91,8 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 return origTpl.apply(this, arguments);
             };
             this.view.setAttrs({
+                actionBar: this._mockView(),
+                rawContentView: this._mockView(),
                 location: _getModelMock(plainLocation),
                 content: _getModelMock(plainContent),
                 path: path
@@ -50,12 +100,15 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             this.view.render();
             Y.Assert.isTrue(
                 templateCalled,
-                "The template should have used to render the this.view"
+                "The template should have used to render the view"
             );
             Y.Assert.areNotEqual(
                 "", this.view.get('container').getHTML(),
                 "View container should contain the result of the view"
             );
+
+            Y.Mock.verify(this.view.get('rawContentView'));
+            Y.Mock.verify(this.view.get('actionBar'));
         },
 
         "Test available variables in the template": function () {
@@ -102,6 +155,8 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             this.view.setAttrs({
                 location: location,
                 content: content,
+                actionBar: this._mockView(),
+                rawContentView: this._mockView(),
                 path: path
             });
             this.view.render();

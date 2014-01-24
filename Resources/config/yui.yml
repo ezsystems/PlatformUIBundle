@@ -34,7 +34,7 @@ parameters:
                 requires: ['ez-templatebasedview']
                 path: js/views/ez-dashboardview.js
             ez-locationviewview:
-                requires: ['ez-templatebasedview', 'ez-actionbarview', 'event-tap']
+                requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'event-tap']
                 path: js/views/ez-locationviewview.js
             ez-navigationhubview:
                 requires: ['ez-templatebasedview']
@@ -45,6 +45,9 @@ parameters:
             ez-actionbarview:
                 requires: ['ez-barview', 'ez-buttonactionview']
                 path: js/views/ez-actionbarview.js
+            ez-rawcontentview:
+                requires: ['ez-templatebasedview', 'ez-fieldview', 'ez-contentmodel', 'ez-contenttypemodel', 'transition', 'event-tap']
+                path: js/views/ez-rawcontentview.js
             ez-contenteditview:
                 requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'event-tap']
                 path: js/views/ez-contenteditview.js
@@ -68,6 +71,9 @@ parameters:
             ez-fieldeditview:
                 requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'node-style']
                 path: js/views/ez-fieldeditview.js
+            ez-fieldview:
+                requires: ['ez-templatebasedview']
+                path: js/views/ez-fieldview.js
             ez-checkbox-editview:
                 requires: ['ez-fieldeditview']
                 path: js/views/fields/ez-checkbox-editview.js

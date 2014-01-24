@@ -12,3 +12,7 @@
     display: block;
     padding: 0.5em 1.2em;
 }
+
+.ez-tabs .ez-tabs-panel {
+    width: 100%;
+}

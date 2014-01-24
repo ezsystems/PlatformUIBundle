@@ -242,6 +242,7 @@
     top: 0;
     left: 0;
     opacity: 0;
+    z-index: 50;
     -webkit-transition: opacity 0.2s ease-in-out;
        -moz-transition: opacity 0.2s ease-in-out;
         -ms-transition: opacity 0.2s ease-in-out;
@@ -251,6 +252,75 @@
 
 .ez-view-locationviewview .ez-tabs .ez-tabs-panel.is-tab-selected {
     opacity: 1;
+    z-index: 500;
+}
+
+/* raw content view */
+.ez-view-rawcontentview {
+    border: 1px solid #ccc;
+    background: #F5F4F2;
+}
+
+.ez-view-rawcontentview .ez-raw-content-title {
+    background: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+}
+
+.ez-view-rawcontentview .ez-fieldgroups {
+    overflow: hidden;
+}
+
+.ez-view-rawcontentview .ez-raw-content-title a:after,
+.ez-view-rawcontentview .ez-fieldgroup-name a:after {
+    display: inline-block;
+    content: "\E002";
+    font-family: 'ez-editorial-icomoon';
+    color: #999;
+    padding-left: 0.3em;
+    vertical-align: bottom;
+}
+
+.ez-view-rawcontentview.is-raw-content-view-collapsed .ez-raw-content-title a:after,
+.ez-view-rawcontentview .ez-fieldgroup-name.is-field-group-collapsed a:after {
+    content: "\E004";
+}
+
+.ez-view-rawcontentview .ez-raw-content-title a,
+.ez-view-rawcontentview .ez-fieldgroup-name a {
+    color: #333;
+}
+
+.ez-view-rawcontentview .ez-raw-content-title a:hover,
+.ez-view-rawcontentview .ez-fieldgroup-name a:hover {
+    color: #528036;
+}
+
+.ez-view-rawcontentview .ez-fieldgroup {
+    background: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 2px #ccc;
+    overflow: hidden;
+}
+
+.ez-view-rawcontentview .ez-fieldgroup-name {
+    height: 1.4em;
+    font-size: 1em;
+    font-weight: bold;
+    background: #fafafa;
+}
+
+/* field view */
+.ez-view-fieldview .ez-fieldview-row {
+    padding-left: 161px; /* 140 +1 to compensate the border */
+}
+
+.ez-view-fieldview .ez-fieldview-label {
+    background: #fafafa;
+    color: #333;
+    border-right: 1px solid #ccc;
+    margin-left: -161px; /* 140 + 1 to compensate the border */
 }
 
 /* content edit view */

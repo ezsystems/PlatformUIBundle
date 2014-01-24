@@ -1,0 +1,27 @@
+.ez-view-fieldview .ez-fieldview-row {
+    padding-left: 160px;
+}
+
+.ez-view-fieldview .ez-fieldview-label,
+.ez-view-fieldview .ez-fieldview-value {
+    padding: 0.8em 0 0.8em 0;
+    line-height: 1.4em;
+}
+
+.ez-view-fieldview .ez-fieldview-value {
+    width: 100%;
+}
+
+.ez-view-fieldview .ez-fieldview-label {
+    margin-left: -160px;
+    width: 160px;
+    text-align: right;
+}
+
+.ez-view-fieldview .ez-fieldview-label .ez-fieldview-name {
+    margin: 0 0.5em 0 0;
+}
+
+.ez-view-fieldview .ez-fieldview-value-content {
+    margin: 0 1em;
+}
