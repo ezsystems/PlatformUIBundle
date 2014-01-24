@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-<title>eZ Field view tests</title>
+<title>eZ Checkbox view tests</title>
 </head>
 <body>
 
@@ -9,9 +9,9 @@
 
 <script type="text/x-handlebars-template" id="fieldview-ez-template">template</script>
 
-<script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
-<script type="text/javascript" src="./assets/genericfieldview-tests.js"></script>
-<script type="text/javascript" src="./assets/ez-fieldview-tests.js"></script>
+<script type="text/javascript" src="../../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="../assets/genericfieldview-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-checkbox-view-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -26,19 +26,23 @@
     }
 
     YUI({
-        coverage: ['ez-fieldview'],
+        coverage: ['ez-checkbox-view'],
         filter: loaderFilter,
         modules: {
+            "ez-checkbox-view": {
+                requires: ['ez-fieldview'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-checkbox-view.js"
+            },
             "ez-fieldview": {
                 requires: ['ez-templatebasedview'],
-                fullpath: "../../../Resources/public/js/views/ez-fieldview.js"
+                fullpath: "../../../../Resources/public/js/views/ez-fieldview.js"
             },
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],
-                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
             }
         }
-    }).use('ez-fieldview-tests', function (Y) {
+    }).use('ez-checkbox-view-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>
