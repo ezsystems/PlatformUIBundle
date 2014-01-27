@@ -10,6 +10,20 @@ YUI.add('ez-genericfieldview-tests', function (Y) {
     // in the template
     // * this.fieldDefinition contains the field definition
     Y.eZ.Test.FieldViewTestCases = {
+        _testValue: function (fieldValue, templateValue, msg, assertFunc) {
+            var origTpl = this.view.template;
+
+            if ( !assertFunc ) {
+                assertFunc = Y.Assert.areSame;
+            }
+            this.view.set('field', {fieldValue: fieldValue});
+            this.view.template = function (variables) {
+                assertFunc(templateValue, variables.value, msg);
+                return origTpl.apply(this, arguments);
+            };
+            this.view.render();
+        },
+
         "Test render": function () {
             var templateCalled = false,
                 origTpl;

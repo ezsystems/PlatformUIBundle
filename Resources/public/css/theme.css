@@ -311,6 +311,10 @@
     background: #fafafa;
 }
 
+.ez-view-rawcontentview .ez-fieldview-value-content a {
+    color: #009;
+}
+
 /* field view */
 .ez-view-fieldview .ez-fieldview-row {
     padding-left: 161px; /* 140 +1 to compensate the border */
@@ -321,6 +325,14 @@
     color: #333;
     border-right: 1px solid #ccc;
     margin-left: -161px; /* 140 + 1 to compensate the border */
+}
+
+/* url field view */
+.ez-fieldview-ezurl .ez-fieldview-value-content a:after {
+    font-family: 'ez-editorial-icomoon';
+    content: "\E601";
+    padding-left: 0.3em;
+    font-size: 90%;
 }
 
 /* content edit view */
