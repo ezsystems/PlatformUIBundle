@@ -31,8 +31,23 @@
 %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
 {% endstylesheets %}
+    <style>
+        .ez-loading-message {
+            display: none;
+        }
+
+        .yui3-js-enabled .ez-loading-message {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 40px;
+            margin-top: 50px;
+            text-align: center;
+            display: block;
+            color: #888;
+        }
+    </style>
 </head>
 <body>
+    <div class="ez-loading-message"><em>{{ 'Loading the application...'|trans }}</em></div>
     <div class="ez-editorial-app pure is-menu-hidden is-navigation-hidden">
         <div class="ez-navigation-container"></div>
         <div class="ez-mainviews pure-g">
