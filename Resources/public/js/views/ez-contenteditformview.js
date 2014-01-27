@@ -146,31 +146,27 @@ YUI.add('ez-contenteditformview', function (Y) {
 
             fieldSet.toggleClass(COLLAPSED_CLASS);
         }
-    });
-}, {
-    ATTRS: {
-        /**
-         * The content type instance, which we use to build correct Field Groups
-         *
-         * @attribute contentType
-         * @default {}
-         * @type {eZ.ContentType}
-         * @required
-         */
-        contentType: {
-            value: {}
-        },
+    }, {
+        ATTRS: {
+            /**
+             * The content type instance, which we use to build correct Field Groups
+             *
+             * @attribute contentType
+             * @default {}
+             * @type {eZ.ContentType}
+             * @required
+             */
+            contentType: {},
 
-        /**
-         * The content instance
-         *
-         * @attribute content
-         * @default {}
-         * @type {eZ.Content}
-         * @required
-         */
-        content: {
-            value: {}
+            /**
+             * The content instance
+             *
+             * @attribute content
+             * @default {}
+             * @type {eZ.Content}
+             * @required
+             */
+            content: {}
         }
-    }
+    });
 });
