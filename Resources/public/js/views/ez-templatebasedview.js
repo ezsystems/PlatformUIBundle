@@ -8,8 +8,7 @@ YUI.add('ez-templatebasedview', function (Y) {
 
     Y.namespace('eZ');
 
-    var TPL_ELEM_SUFFIX = "-ez-template",
-        VIEW_PREFIX = "ez-view-";
+    var TPL_ELEM_SUFFIX = "-ez-template";
 
     /**
      * Template based view. An abstract class that provides helpers to deal with
@@ -41,7 +40,7 @@ YUI.add('ez-templatebasedview', function (Y) {
          * @return String
          */
         _generateViewClassName: function (name) {
-            return VIEW_PREFIX + name.toLowerCase();
+            return Y.eZ.TemplateBasedView.VIEW_PREFIX + name.toLowerCase();
         },
 
         /**
@@ -96,5 +95,14 @@ YUI.add('ez-templatebasedview', function (Y) {
                 }
             }, this);
         }
+    }, {
+        /**
+         * the prefix to generate the view class name
+         *
+         * @property VIEW_PREFIX
+         * @static
+         * @protected
+         */
+        VIEW_PREFIX: "ez-view-"
     });
 });

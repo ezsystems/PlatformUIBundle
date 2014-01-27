@@ -42,7 +42,22 @@ YUI.add('ez-fieldview', function (Y) {
         },
 
         /**
-         * Returns the value to displayed
+         * Overrides the eZ.TemplateBasedView implementation to be make sure the
+         * all field views have the correct class on the container even when
+         * using a custom template.
+         * Note: the render method adds a class based on the field type being
+         * handled allowing to style the field views per field type.
+         *
+         * @method _generateViewClassName
+         * @protected
+         * @return {String}
+         */
+        _generateViewClassName: function (name) {
+            return Y.eZ.TemplateBasedView.VIEW_PREFIX + Y.eZ.FieldView.NAME.toLowerCase();
+        },
+
+        /**
+         * Returns the value to display
          *
          * @method _getFieldValue
          * @protected
