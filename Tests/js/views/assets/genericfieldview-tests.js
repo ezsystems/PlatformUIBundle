@@ -23,13 +23,12 @@ YUI.add('ez-genericfieldview-tests', function (Y) {
             Y.Assert.isTrue(templateCalled, "The template has not been used");
         },
 
-        "Test class on the view container": function () {
-            this["Test render"]();
+        "Test default field view class on the view container": function () {
+            this.view.render();
+
             Y.Assert.isTrue(
-                this.view.get('container').hasClass(
-                    'ez-fieldview-' + this.fieldDefinition.fieldType.toLowerCase()
-                ),
-                "The view container should have a class build with the field type"
+                this.view.get('container').hasClass('ez-view-fieldview'),
+                "The view container should have the default fieldview class"
             );
         },
 

@@ -11,7 +11,6 @@ YUI.add('ez-fieldview-tests', function (Y) {
                 this.templateVariablesCount = 3;
 
                 this.view = new Y.eZ.FieldView({
-                    container: '.container',
                     fieldDefinition: this.fieldDefinition,
                     field: this.field,
                 });
@@ -29,6 +28,16 @@ YUI.add('ez-fieldview-tests', function (Y) {
                     return origTpl.apply(this, arguments);
                 };
                 this.view.render();
+            },
+
+            "Test class on the view container": function () {
+                var container = this.view.get('container');
+
+                this.view.render();
+                Y.Assert.isTrue(
+                    container.hasClass('ez-fieldview-' + this.fieldDefinition.fieldType.toLowerCase()),
+                    "The view container should have a class based on the field type"
+                );
             },
 
             tearDown: function () {
