@@ -168,13 +168,14 @@ YUI.add('ez-editorialapp', function (Y) {
         routeUri: function (routeName, params) {
             var route = Y.Array.find(this.get('routes'), function (elt) {
                     return (elt.name === routeName);
-                });
+                }),
+                prefix = this.get('root') + '#';
 
             if ( !route ) {
                 return null;
             }
 
-            return route.path.replace(/(:[a-z0-9]+)/gi, function (matched, placeholder) {
+            return prefix + route.path.replace(/(:[a-z0-9]+)/gi, function (matched, placeholder) {
                 var paramName = placeholder.substr(1);
 
                 if ( !params[paramName] ) {

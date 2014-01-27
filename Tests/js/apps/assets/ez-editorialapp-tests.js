@@ -6,9 +6,11 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         name: "eZ Editorial App tests",
 
         setUp: function () {
+            this.root = '/shell';
             this.app = new Y.eZ.EditorialApp({
                 container: '.app',
-                viewContainer: '.view-container'
+                viewContainer: '.view-container',
+                root: this.root
             });
             this.app.render();
         },
@@ -312,8 +314,11 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             });
 
             this.app.fire('whatever:editAction', {content: contentMock});
+            // .replace() calls are necessary because app.getPath() does not
+            // take into account serverRouting set to false
             Y.Assert.areEqual(
-                this.app.routeUri('editContent', {id: contentId}), this.app.getPath(),
+                this.app.routeUri('editContent', {id: contentId}).replace(this.root + '#'),
+                this.app.getPath().replace(this.root),
                 "The current path should be the edit content route for the content '" + contentId + "'"
             );
         },
@@ -705,7 +710,9 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 {path: '/:param/:PARAM2', name: "twoParams"},
                 {path: '/sTr1ng/:param/m1X3d/:PARAM2', name: "complex"},
             ];
+            this.root = '/this/is/the/root/';
             this.app = new Y.eZ.EditorialApp({
+                root: this.root,
                 container: '.app',
                 viewContainer: '.view-container'
             });
@@ -731,63 +738,63 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
         "Route without parameter": function () {
             this._testRoute(
-                "simple", {not: "used"}, "/simple",
+                "simple", {not: "used"}, this.root + "#/simple",
                 "The route path should be left intact"
             );
         },
 
         "Route with one parameter only and a matching parameters": function () {
             this._testRoute(
-                "oneParam", {param: "repl aced"}, "/repl%20aced",
+                "oneParam", {param: "repl aced"}, this.root + "#/repl%20aced",
                 "The parameter should be replaced by the correct value"
             );
         },
 
         "Route with one parameter only and no matching parameter": function () {
             this._testRoute(
-                "oneParam", {doesnotmatch: "repl aced"}, "/",
+                "oneParam", {doesnotmatch: "repl aced"}, this.root + "#/",
                 "The parameter should just be removed"
             );
         },
 
         "Route with 2 parameters only and 2 matching parameters": function () {
             this._testRoute(
-                "twoParams", {param: "repl aced", PARAM2: "ag ain"}, "/repl%20aced/ag%20ain",
+                "twoParams", {param: "repl aced", PARAM2: "ag ain"}, this.root + "#/repl%20aced/ag%20ain",
                 "The parameters should be replaced by the correct value"
             );
         },
 
         "Route with 2 parameters only and 1 matching parameter": function () {
             this._testRoute(
-                "twoParams", {param: "repl aced", not: "again"}, "/repl%20aced/",
+                "twoParams", {param: "repl aced", not: "again"}, this.root + "#/repl%20aced/",
                 "The parameter should be replaced by the correct value and the other not matching by an empty string"
             );
         },
 
         "Route with 2 parameters only and no matching parameter": function () {
             this._testRoute(
-                "twoParams", {}, "//",
+                "twoParams", {}, this.root + "#//",
                 "The parameters should be removed"
             );
         },
 
         "Complex route with 2 parameters only and 2 matching parameters": function () {
             this._testRoute(
-                "complex", {param: "repl aced", PARAM2: "ag ain"}, "/sTr1ng/repl%20aced/m1X3d/ag%20ain",
+                "complex", {param: "repl aced", PARAM2: "ag ain"}, this.root + "#/sTr1ng/repl%20aced/m1X3d/ag%20ain",
                 "The parameters should be replaced by the correct value"
             );
         },
 
         "Complex route with 2 parameters only and 1 matching parameter": function () {
             this._testRoute(
-                "complex", {param: "repl aced", not: "again"}, "/sTr1ng/repl%20aced/m1X3d/",
+                "complex", {param: "repl aced", not: "again"}, this.root + "#/sTr1ng/repl%20aced/m1X3d/",
                 "The parameter should be replaced by the correct value and the other not matching by an empty string"
             );
         },
 
         "Complex route with 2 parameters only and no matching parameter": function () {
             this._testRoute(
-                "complex", {}, "/sTr1ng//m1X3d/",
+                "complex", {}, this.root + "#/sTr1ng//m1X3d/",
                 "The parameters should be removed"
             );
         },
