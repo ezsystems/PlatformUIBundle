@@ -72,7 +72,8 @@ YUI.add('ez-float-editview-tests', function (Y) {
         },
 
         _testAvailableVariables: function (required, expectRequired, expectFloatPattern) {
-            var fieldDefinition = this._getFieldDefinition(required, -10, 10);
+            var fieldDefinition = this._getFieldDefinition(required, -10, 10),
+                origTpl = this.view.template;
 
             this.view.set('fieldDefinition', fieldDefinition);
 
@@ -100,7 +101,7 @@ YUI.add('ez-float-editview-tests', function (Y) {
                 Y.Assert.areSame(expectRequired, variables.isRequired);
                 Y.Assert.areSame(expectFloatPattern, variables.floatPattern);
 
-                return '';
+                return origTpl.apply(this, arguments);
             };
             this.view.render();
         },

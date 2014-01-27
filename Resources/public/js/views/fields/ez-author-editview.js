@@ -219,7 +219,7 @@ YUI.add('ez-author-editview', function (Y) {
             e.preventDefault();
             this._saveAuthors();
             authorsList = this.get('authorsList');
-            lastId = authorsList[authorsList.length - 1].id;
+            lastId = parseInt(authorsList[authorsList.length - 1].id, 10);
 
             newAuthor.id = lastId + 1;
             newAuthor.email = "";

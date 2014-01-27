@@ -39,7 +39,8 @@ YUI.add('ez-textblock-editview-tests', function (Y) {
         },
 
         _testAvailableVariables: function (required, expectRequired) {
-            var fieldDefinition = this._getFieldDefinition(required);
+            var fieldDefinition = this._getFieldDefinition(required),
+                origTpl = this.view.template;
 
             this.view.set('fieldDefinition', fieldDefinition);
 
@@ -66,7 +67,7 @@ YUI.add('ez-textblock-editview-tests', function (Y) {
 
                 Y.Assert.areSame(expectRequired, variables.isRequired);
 
-                return '';
+                return origTpl.apply(this, arguments);
             };
             this.view.render();
         },

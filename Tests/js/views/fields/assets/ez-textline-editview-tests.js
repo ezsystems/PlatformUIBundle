@@ -45,7 +45,8 @@ YUI.add('ez-textline-editview-tests', function (Y) {
         },
 
         _testAvailableVariables: function (required, minLength, maxLength, expectRequired, expectMinLength, expectMinLengthPattern, expectMaxLength) {
-            var fieldDefinition = this._getFieldDefinition(required, minLength, maxLength);
+            var fieldDefinition = this._getFieldDefinition(required, minLength, maxLength),
+                origTpl = this.view.template;
 
             this.view.set('fieldDefinition', fieldDefinition);
 
@@ -75,7 +76,7 @@ YUI.add('ez-textline-editview-tests', function (Y) {
                 Y.Assert.areSame(expectMinLengthPattern, variables.minLengthPattern);
                 Y.Assert.areSame(expectMaxLength, variables.maxLength);
 
-                return '';
+                return origTpl.apply(this, arguments);
             };
             this.view.render();
         },

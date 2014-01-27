@@ -71,7 +71,8 @@ YUI.add('ez-integer-editview-tests', function (Y) {
         },
 
         _testAvailableVariables: function (required, expectRequired, expectIntegerPattern) {
-            var fieldDefinition = this._getFieldDefinition(required, -10, 10);
+            var fieldDefinition = this._getFieldDefinition(required, -10, 10),
+                origTpl = this.view.template;
 
             this.view.set('fieldDefinition', fieldDefinition);
 
@@ -99,7 +100,7 @@ YUI.add('ez-integer-editview-tests', function (Y) {
                 Y.Assert.areSame(expectRequired, variables.isRequired);
                 Y.Assert.areSame(expectIntegerPattern, variables.integerPattern);
 
-                return '';
+                return origTpl.apply(this, arguments);
             };
             this.view.render();
         },

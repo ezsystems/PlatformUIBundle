@@ -61,6 +61,8 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         },
 
         "Test available variable in template": function () {
+            var origTpl = this.view.template;
+
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
                 Y.Assert.areEqual(4, Y.Object.keys(variables).length, "The template should receive 4 variables");
@@ -81,13 +83,16 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                     field, variables.field,
                     "The field should be available in the field edit view template"
                 );
-                return '';
+                return origTpl.apply(this, arguments);
             };
             this.view.render();
         },
 
         "Test error handling": function () {
-            var defaultContent = 'default content';
+            var defaultContent;
+
+            this.view.set('errorDefaultContent', 'default content');
+            defaultContent = this.view.get('errorDefaultContent');
 
             this.view.render();
             this.view.set('errorStatus', true);
@@ -117,7 +122,10 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
 
         "Test error message handling": function () {
             var msg = 'Error message',
-                defaultContent = 'default content';
+                defaultContent;
+
+            this.view.set('errorDefaultContent', 'default content');
+            defaultContent = this.view.get('errorDefaultContent');
 
             this.view.render();
             this.view.set('errorStatus', msg);
@@ -156,7 +164,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
 
             this.view.set('errorStatus', "Error message");
             Y.Assert.isFalse(this.view.isValid(), "isValid should return false");
-        },
+        }
 
     });
 
@@ -387,7 +395,8 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                     'publish', variables.ez,
                     "The ez variable should be available"
                 );
-                return '';
+
+                return '<div class="ez-editfield-error-message"></div>';
             };
             this.view.render();
         }
