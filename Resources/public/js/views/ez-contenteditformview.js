@@ -11,8 +11,7 @@ YUI.add('ez-contenteditformview', function (Y) {
     var COLLAPSED_CLASS = 'is-collapsed',
         FIELDSET_FIELDS_CLASS = '.fieldgroup-fields',
         TRANSITION_DURATION = 0.4,
-        TRANSITION_EASE_IN = 'ease-in',
-        TRANSITION_EASE_OUT = 'ease-out';
+        TRANSITION_EASING = 'ease-in-out';
 
     /**
      * The form view
@@ -22,7 +21,7 @@ YUI.add('ez-contenteditformview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.ContentEditFormView = Y.Base.create('contentEditFormView', Y.eZ.TemplateBasedView, [], {
+    Y.eZ.ContentEditFormView = Y.Base.create('contentEditFormView', Y.eZ.TemplateBasedView, [Y.eZ.AccordionElement], {
         events: {
             '.fieldgroup-name': {'tap': '_toggleFieldsetCollapse'}
         },
@@ -125,26 +124,15 @@ YUI.add('ez-contenteditformview', function (Y) {
          * @protected
          */
         _toggleFieldsetCollapse: function (e) {
-            var fieldSet = e.currentTarget.get('parentNode'),
-                fields = fieldSet.one(FIELDSET_FIELDS_CLASS);
+            var fieldset = e.currentTarget.get('parentNode');
 
-            if (fieldSet.hasClass(COLLAPSED_CLASS)) {
-                fields.transition({
-                    height: function (node) {
-                        return node.get('scrollHeight') + 'px';
-                    },
-                    duration: TRANSITION_DURATION,
-                    easing: TRANSITION_EASE_OUT
-                });
-            } else {
-                fields.transition({
-                    height: 0,
-                    duration: TRANSITION_DURATION,
-                    easing: TRANSITION_EASE_IN
-                });
-            }
-
-            fieldSet.toggleClass(COLLAPSED_CLASS);
+            this._collapse({
+                collapsedClass: COLLAPSED_CLASS,
+                detectElement: fieldset,
+                duration: TRANSITION_DURATION,
+                easing: TRANSITION_EASING,
+                collapseElement: fieldset.one(FIELDSET_FIELDS_CLASS)
+            });
         }
     }, {
         ATTRS: {

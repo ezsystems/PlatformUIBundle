@@ -19,7 +19,6 @@ YUI.add('ez-checkbox-editview', function (Y) {
      * @extends eZ.FieldEditView
      */
     Y.eZ.CheckboxEditView = Y.Base.create('checkboxEditView', Y.eZ.FieldEditView, [], {
-
         /**
          * Defines the variables to imported in the field edit template for
          * the checkbox.

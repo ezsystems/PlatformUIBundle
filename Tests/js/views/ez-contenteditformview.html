@@ -38,7 +38,7 @@
         filter: loaderFilter,
         modules: {
             "ez-contenteditformview": {
-                requires: ['ez-templatebasedview', 'ez-fieldeditview', 'transition', 'event-tap'],
+                requires: ['ez-templatebasedview', 'ez-fieldeditview', 'ez-accordion-element', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-contenteditformview.js"
             },
             "ez-templatebasedview": {
@@ -48,7 +48,11 @@
             "ez-fieldeditview": {
                 requires: ['ez-templatebasedview'],
                 fullpath: "../../../Resources/public/js/views/ez-fieldeditview.js"
-            }
+            },
+            "ez-accordion-element": {
+                requires: ['transition'],
+                fullpath: "../../../Resources/public/js/extensions/ez-accordion-element.js"
+            },
         }
     }).use('ez-contenteditformview-tests', function (Y) {
         Y.Test.Runner.run();

@@ -48,12 +48,12 @@ parameters:
             ez-rawcontentview:
                 requires: 
                     - 'ez-templatebasedview'
+                    - 'ez-accordion-element'
                     - 'ez-fieldview'
                     - 'ez-contentmodel'
                     - 'ez-contenttypemodel'
                     - 'ez-checkbox-view'
                     - 'ez-url-view'
-                    - 'transition'
                     - 'event-tap'
                 path: js/views/ez-rawcontentview.js
             ez-contenteditview:
@@ -62,6 +62,7 @@ parameters:
             ez-contenteditformview:
                 requires:
                     - 'ez-templatebasedview'
+                    - 'ez-accordion-element'
                     - 'ez-checkbox-editview'
                     - 'ez-textline-editview'
                     - 'ez-textblock-editview'
@@ -70,7 +71,6 @@ parameters:
                     - 'ez-url-editview'
                     - 'ez-float-editview'
                     - 'ez-integer-editview'
-                    - 'transition'
                     - 'event-tap'
                 path: js/views/ez-contenteditformview.js
             ez-errorview:
@@ -145,5 +145,8 @@ parameters:
             ez-texthelper:
                 requires: ['handlebars']
                 path: js/helpers/ez-texthelper.js
+            ez-accordion-element:
+                requires: ['transition']
+                path: js/extensions/ez-accordion-element.js
         base: extension/ezjscore/design/standard/lib/yui/3.14.0/build/
         filter: min
