@@ -1,0 +1,4 @@
+
+shell:
+    pattern: /shell
+    defaults: { _controller: eZEditorialBundle:Editorial:shell }
