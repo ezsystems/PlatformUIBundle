@@ -42,6 +42,10 @@
         <div class="ez-errorview-container is-hidden pure-u"></div>
     </div>
 
+    <noscript>
+        <p>{{ 'JavaScript is disabled in your browser but it is required to run the editorial application.'|trans }}</p>
+        <p><strong>{{ 'Please enable JavaScript to use the editorial application.'|trans }}</strong></p>
+    </noscript>
     <script src="{{ asset( "extension/ezjscore/design/standard/lib/yui/3.14.0/build/yui/yui-min.js" ) }}"></script>
     <script>
         {{ ez_editorial_yui_config( "YUI.GlobalConfig" ) }}
