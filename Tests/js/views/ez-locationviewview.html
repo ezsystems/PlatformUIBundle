@@ -52,12 +52,16 @@
         filter: loaderFilter,
         modules: {
             "ez-locationviewview": {
-                requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-buttonactionview', 'event-tap'],
+                requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'ez-buttonactionview', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-locationviewview.js"
             },
             "ez-actionbarview": {
                 requires: ['ez-barview', 'ez-buttonactionview'],
                 fullpath: "../../../Resources/public/js/views/ez-actionbarview.js"
+            },
+            "ez-rawcontentview": {
+                requires: ['ez-templatebasedview', 'ez-accordion-element'],
+                fullpath: "../../../Resources/public/js/views/ez-rawcontentview.js"
             },
             "ez-buttonactionview": {
                 requires: ['ez-templatebasedview'],
@@ -70,7 +74,11 @@
             "ez-templatebasedview": {
                 requires: ['view', 'handlebars'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
-            }
+            },
+            "ez-accordion-element": {
+                requires: ['transition'],
+                fullpath: "../../../Resources/public/js/extensions/ez-accordion-element.js"
+            },
         }
     }).use('ez-locationviewview-tests', function (Y) {
         Y.Test.Runner.run();

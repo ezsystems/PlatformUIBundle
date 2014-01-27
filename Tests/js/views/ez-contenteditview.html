@@ -46,7 +46,7 @@
                 fullpath: "../../../Resources/public/js/views/ez-contenteditview.js"
             },
             "ez-contenteditformview": {
-                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                requires: ['ez-templatebasedview', 'ez-accordion-element', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-contenteditformview.js"
             },
             "ez-editactionbarview": {
@@ -73,6 +73,10 @@
             "ez-barview": {
                 requires: ['ez-templatebasedview', 'event-tap', 'event-resize'],
                 fullpath: "../../../Resources/public/js/views/ez-barview.js"
+            },
+            "ez-accordion-element": {
+                requires: ['transition'],
+                fullpath: "../../../Resources/public/js/extensions/ez-accordion-element.js"
             },
         }
     }).use('ez-contenteditview-tests', function (Y) {

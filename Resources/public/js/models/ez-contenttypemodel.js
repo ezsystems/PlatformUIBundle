@@ -73,10 +73,12 @@ YUI.add('ez-contenttypemodel', function (Y) {
         },
 
         /**
-         * Returns array of FieldGroups ready to use by ContentEditFormView
+         * Returns the field definitions organized by field group. Each element
+         * of the array is a hash containing the `fieldGroupName` (string) and
+         * the `fieldDefinitions` (array of field definition) entries.
          *
          * @method getFieldGroups
-         * @return {Array} array of fieldGroups to be used by ContentEditFormView
+         * @return {Array}
          */
         getFieldGroups: function () {
             var fieldDefinitions = this.get('fieldDefinitions'),

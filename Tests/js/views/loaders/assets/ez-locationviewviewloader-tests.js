@@ -7,12 +7,18 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
         setUp: function () {
             this.rootLocationId = '/api/ezp/v2/content/locations/1/2';
             this.leafLocationId = '/api/ezp/v2/content/locations/1/2/67/68/111';
+            this.contentTypeId = '/api/ezp/v2/content/types/38';
             this.request = {};
             this.capiMock = new Y.Test.Mock();
             this.contentServiceMock = new Y.Test.Mock();
+            this.contentTypeServiceMock = new Y.Test.Mock();
             Y.Mock.expect(this.capiMock, {
                 method: 'getContentService',
                 returns: this.contentServiceMock
+            });
+            Y.Mock.expect(this.capiMock, {
+                method: 'getContentTypeService',
+                returns: this.contentTypeServiceMock
             });
 
             this.locationIds = [
@@ -40,6 +46,16 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
                         fail ? true : false,
                         {document: {Root: {rootLocation: {_href: functionalTest.rootLocationId}}}}
                     );
+                }
+            });
+        },
+
+        _initContentTypeService: function (fail) {
+            Y.Mock.expect(this.contentTypeServiceMock, {
+                method: 'loadContentType',
+                args: [this.contenTypeId, Y.Mock.Value.Function],
+                run: function (typeId, callback) {
+                    callback(fail ? true : false, {});
                 }
             });
         },
@@ -72,7 +88,12 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
                     }
                 });
                 functionalTest.contents[contentId] = new Y.Test.Mock(
-                    new Y.eZ.Content({id: contentId})
+                    new Y.eZ.Content({
+                        id: contentId,
+                        resources: {
+                            ContenType: functionalTest.contentTypeId
+                        }
+                    })
                 );
                 Y.Mock.expect(functionalTest.contents[contentId], {
                     method: 'load',
@@ -96,6 +117,7 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
                 location, content;
 
             this._initContentService();
+            this._initContentTypeService();
             this._initTree();
             this.request = {params: {id: locationId}};
 
@@ -164,12 +186,13 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
             Y.Mock.verify(this.contentServiceMock);
         },
 
-        _errorLoading: function (locationId, contentServiceError, locationIdError, contentIdError) {
+        _errorLoading: function (locationId, contentServiceError, locationIdError, contentIdError, contentTypeError) {
             var loader, errorCalled = false,
                 response = {},
                 location, content;
 
             this._initContentService(contentServiceError);
+            this._initContentTypeService(contentTypeError);
             this._initTree(locationIdError, contentIdError);
             this.request = {params: {id: locationId}};
 
@@ -238,6 +261,10 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
 
         "Should handle error on the main content loading (2)": function () {
             this._errorLoading(this.leafLocationId, false, false, this.contentIds[this.leafLocationId]);
+        },
+
+        "Should handle error on the content type loading": function () {
+            this._errorLoading(this.rootLocationId, false, false, false, true);
         },
 
         "Should handle error on the leaf content loading": function () {

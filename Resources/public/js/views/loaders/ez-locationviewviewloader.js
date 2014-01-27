@@ -32,6 +32,7 @@ YUI.add('ez-locationviewviewloader', function (Y) {
                 request = this.get('request'),
                 loader = this,
                 location = this.get('location'), content = this.get('content'),
+                type = this.get('contentType'),
                 contentService = this.get('capi').getContentService();
 
             location.set('id', request.params.id);
@@ -52,7 +53,14 @@ YUI.add('ez-locationviewviewloader', function (Y) {
                         loader._error("Failed to load the content " + content.get('id'));
                         return;
                     }
-                    endMainContentLoad();
+                    type.set('id', content.get('resources').ContentType);
+                    type.load(loadOptions, function (error) {
+                        if ( error ) {
+                            loader._error("Failed to load the content type " + type.get('id'));
+                            return;
+                        }
+                        endMainContentLoad();
+                    });
                 });
 
                 endLoadPath = tasks.add();
@@ -76,6 +84,7 @@ YUI.add('ez-locationviewviewloader', function (Y) {
                     loader._setResponseVariables({
                         location: location,
                         content: content,
+                        contentType: type,
                         path: loader.get('path')
                     });
                     next();
@@ -202,6 +211,17 @@ YUI.add('ez-locationviewviewloader', function (Y) {
             content: {
                 cloneDefaultValue: false,
                 value: new Y.eZ.Content()
+            },
+
+            /**
+             * The content type of the content
+             *
+             * @attribute contentType
+             * @type Y.eZ.Content
+             */
+            contentType: {
+                cloneDefaultValue: false,
+                value: new Y.eZ.ContentType()
             },
 
             /**

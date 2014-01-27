@@ -34,7 +34,7 @@ parameters:
                 requires: ['ez-templatebasedview']
                 path: js/views/ez-dashboardview.js
             ez-locationviewview:
-                requires: ['ez-templatebasedview', 'ez-actionbarview', 'event-tap']
+                requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'event-tap']
                 path: js/views/ez-locationviewview.js
             ez-navigationhubview:
                 requires: ['ez-templatebasedview']
@@ -45,12 +45,24 @@ parameters:
             ez-actionbarview:
                 requires: ['ez-barview', 'ez-buttonactionview']
                 path: js/views/ez-actionbarview.js
+            ez-rawcontentview:
+                requires: 
+                    - 'ez-templatebasedview'
+                    - 'ez-accordion-element'
+                    - 'ez-fieldview'
+                    - 'ez-contentmodel'
+                    - 'ez-contenttypemodel'
+                    - 'ez-checkbox-view'
+                    - 'ez-url-view'
+                    - 'event-tap'
+                path: js/views/ez-rawcontentview.js
             ez-contenteditview:
                 requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'event-tap']
                 path: js/views/ez-contenteditview.js
             ez-contenteditformview:
                 requires:
                     - 'ez-templatebasedview'
+                    - 'ez-accordion-element'
                     - 'ez-checkbox-editview'
                     - 'ez-textline-editview'
                     - 'ez-textblock-editview'
@@ -59,7 +71,6 @@ parameters:
                     - 'ez-url-editview'
                     - 'ez-float-editview'
                     - 'ez-integer-editview'
-                    - 'transition'
                     - 'event-tap'
                 path: js/views/ez-contenteditformview.js
             ez-errorview:
@@ -68,6 +79,12 @@ parameters:
             ez-fieldeditview:
                 requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'node-style']
                 path: js/views/ez-fieldeditview.js
+            ez-fieldview:
+                requires: ['ez-templatebasedview']
+                path: js/views/ez-fieldview.js
+            ez-checkbox-view:
+                requires: ['ez-fieldview']
+                path: js/views/fields/ez-checkbox-view.js
             ez-checkbox-editview:
                 requires: ['ez-fieldeditview']
                 path: js/views/fields/ez-checkbox-editview.js
@@ -80,6 +97,9 @@ parameters:
             ez-emailaddress-editview:
                 requires: ['ez-fieldeditview', 'event-valuechange']
                 path: js/views/fields/ez-emailaddress-editview.js
+            ez-url-view:
+                requires: ['ez-fieldview']
+                path: js/views/fields/ez-url-view.js
             ez-url-editview:
                 requires: ['ez-fieldeditview', 'event-valuechange']
                 path: js/views/fields/ez-url-editview.js
@@ -125,5 +145,8 @@ parameters:
             ez-texthelper:
                 requires: ['handlebars']
                 path: js/helpers/ez-texthelper.js
+            ez-accordion-element:
+                requires: ['transition']
+                path: js/extensions/ez-accordion-element.js
         base: extension/ezjscore/design/standard/lib/yui/3.14.0/build/
         filter: min
