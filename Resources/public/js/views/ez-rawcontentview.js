@@ -9,10 +9,7 @@ YUI.add('ez-rawcontentview', function (Y) {
 
     var COLLAPSED_RAW_VIEW = 'is-raw-content-view-collapsed',
         COLLAPSED_GROUP = 'is-field-group-collapsed',
-        COLLAPSED_GROUP_HEIGHT = '1em',
-        COLLAPSED_GROUPS_HEIGHT = 0,
-        TRANSITION_DURATION = 0.3,
-        TRANSITION_EASING = 'ease';
+        COLLAPSED_GROUP_HEIGHT = '1em';
 
     /**
      * The raw content view
@@ -22,7 +19,7 @@ YUI.add('ez-rawcontentview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.RawContentView = Y.Base.create('rawContentView', Y.eZ.TemplateBasedView, [], {
+    Y.eZ.RawContentView = Y.Base.create('rawContentView', Y.eZ.TemplateBasedView, [Y.eZ.AccordionElement], {
         events: {
             '.ez-raw-content-title': {
                 'tap': '_collapseView'
@@ -40,45 +37,6 @@ YUI.add('ez-rawcontentview', function (Y) {
         },
 
         /**
-         * Collapses the `collapseElt` element  with a nice transition on its height.
-         * To detect the state, the `collapsedClass` is checked against the
-         * `collapsedClassElt`. Once the transition is finished, the callback is
-         * called.
-         *
-         * @method _collapse
-         * @private
-         * @param {String} collapsedClass the class to check to get the current
-         * state
-         * @param {String} collapsedHeight the height when in collapsed state
-         * @param {Node} collapsedClassElt the node on which to check the state
-         * @param {collapseElt} the node to collapse
-         * @param {Function} [callback] an optionnal callback
-         */
-        _collapse: function (collapsedClass, collapsedHeight, collapsedClassElt, collapseElt, callback) {
-            var collapsed = collapsedClassElt.hasClass(collapsedClass);
-
-            collapseElt.transition({
-                height: function () {
-                    if ( collapsed ) {
-                        return collapseElt.get('scrollHeight') + 'px';
-                    } else {
-                        return collapsedHeight;
-                    }
-                },
-                duration: TRANSITION_DURATION,
-                easing: TRANSITION_EASING,
-            }, function () {
-                if ( collapsed ) {
-                    collapseElt.removeAttribute('style');
-                }
-                collapsedClassElt.toggleClass(collapsedClass);
-                if ( callback ) {
-                    callback();
-                }
-            });
-        },
-
-        /**
          * Tap event handler to collapse/uncollapse the raw content view
          *
          * @method _collapseView
@@ -89,10 +47,11 @@ YUI.add('ez-rawcontentview', function (Y) {
             var container = this.get('container');
 
             e.preventDefault();
-            this._collapse(
-                COLLAPSED_RAW_VIEW, COLLAPSED_GROUPS_HEIGHT,
-                container, container.one('.ez-fieldgroups')
-            );
+            this._collapse({
+                collapsedClass: COLLAPSED_RAW_VIEW,
+                detectElement: container,
+                collapseElement: container.one('.ez-fieldgroups')
+            });
         },
 
         /**
@@ -106,12 +65,14 @@ YUI.add('ez-rawcontentview', function (Y) {
             var group = e.currentTarget.next('.ez-fieldgroup');
 
             e.preventDefault();
-            this._collapse(
-                COLLAPSED_GROUP, COLLAPSED_GROUP_HEIGHT,
-                group, group, function () {
+            this._collapse({
+                collapsedClass: COLLAPSED_GROUP,
+                collapsedHeight: COLLAPSED_GROUP_HEIGHT,
+                collapseElement: group,
+                callback: function () {
                     e.currentTarget.toggleClass(COLLAPSED_GROUP);
                 }
-            );
+            });
         },
 
         /**

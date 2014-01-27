@@ -11,6 +11,7 @@
             "./Resources/public/js/apps",
             "./Resources/public/js/views",
             "./Resources/public/js/models",
+            "./Resources/public/js/extensions",
             "./Resources/public/js/helpers"
         ]
     }
