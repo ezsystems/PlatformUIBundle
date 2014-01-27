@@ -107,3 +107,63 @@ Feature: Test Content View page for the Editorial Interface
       | Details   | Details Content   |
       | Activity  | Activity Content  |
       | Analytics | Analytics Content |
+
+  @ezp-21181 @qa-197 @javascript
+  Scenario: Verify that Content Edit View is shown on edit button click
+    Given I am logged in as "Admin"
+    And I am on the "Getting Started" page
+    When I click on "edit" button
+    Then I see "Content Edit View" element
+    And on "Content Edit View" I see "Title" element
+    And on "Title" I see "Getting Started" text
+
+  @ezp-21181 @qa-197 @javascript
+  Scenario: Verify that the technical details of the content are revealed when the mouse pointer is over the title
+    Given I am logged in as "Admin"
+    When I edit "Getting Started" content
+    And I hover on "Title" element
+    Then I see "Content Details" element
+
+  @ezp-21181 @qa-197 @javascript
+  Scenario: Verify that content edit interface is closed with the close button
+    Given I am logged in as "Admin"
+    And I edit "Getting Started" content
+    When I click on "close" button
+    Then I do not see "Content Edit View" element
+
+ # TODO: This table will need updates since cotent is not yet available the xpath are incorrect 
+ @ezp-21181 @qa-197 @javascript
+  Scenario: Verify that content edit interface form and elements are present with the correct content
+    Given I am logged in as "Admin"
+    When I edit "Reaching for the stars poster" content
+    Then on "Content Edit View" element I see "Form View" element
+    And on Form View element I see Content Fields:
+      | field_group | field       | field_xpath                          | field_content                               |
+      | Texts       | Title       | //[@class='title-text']/text()       | Reaching for the stars poster               |
+      | Texts       | Short Title | //[@class='short-title-text']/text() | Selling Feature                             |
+      | Texts       | Body        | //[@class='body-text']/text()        | Animation reveals the coronal ejections ... |
+      | Media       | Image       | //[@class=’image-smth’]/@src         | /var/storage/images/image-1.jpg             |
+      | Meta        | Tags        | //[@class='meta-tags']               | poster                                      |
+
+   @ez-21181 @qa-197 @javascript
+  Scenario Outline: Verify that content edit field groups are collapsible
+    Given I am logged in as "Admin"
+    When I edit "Getting Started" content
+    When on <field_group_name> I click <visibility_button>
+    Then on <field_group_name> I check visibility <visibility_value>
+
+    Examples: 
+      | field_group_name | visiblility_button | visibility_value |
+      | Texts            | collapse           | collapsed        |
+      | Texts            | expand             | expanded         |
+      | Media            | collapse           | collapsed        |
+      | Media            | expand             | expanded         |
+      | Meta             | collapse           | collapsed        |
+      | Meta             | expand             | expanded         |
+
+  @ezp-21311 @qa-197 @javascript
+  Scenario: Verify that content edit interface is closed by pressing Escape Key
+    Given I am logged in as "Admin"
+    And I edit "Getting Started" content
+    When I press "Escape" key
+    Then I do not see "Content Edit View" element
