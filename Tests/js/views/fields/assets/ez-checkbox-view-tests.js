@@ -15,19 +15,6 @@ YUI.add('ez-checkbox-view-tests', function (Y) {
                 });
             },
 
-            _testValue: function (fieldValue, templateValue, msg) {
-                var origTpl = this.view.template;
-
-                this.view.set('field', {fieldValue: fieldValue});
-                this.view.template = function (variables) {
-                    Y.Assert.areSame(
-                        templateValue, variables.value, msg
-                    );
-                    return origTpl.apply(this, arguments);
-                };
-                this.view.render();
-            },
-
             "Test true value in template": function () {
                 this._testValue(true, "Yes", "The value in the template should be 'Yes'");
             },
