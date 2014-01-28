@@ -6,8 +6,8 @@
 # https://confluence.ez.no/display/PR/n01+Basic+Edit+via+tree+navigation+-+explanations
 # https://docs.google.com/a/ez.no/document/d/1iiF9X1gYdSNV0c_fYD_SejQIIfSTdddKNJ-3Oz4eD7g/edit#
 @ezp-22050 @qa-197 @javascript @editorial
-Feature: Test Content View page for the Editorial Interface
-    As an Editor I want to have a Content View In order to view Content in Editorial interface
+Feature: Test Content View and Edit in the new Editorial Interface
+    As an Editor I want to View and Edit Content using the Editorial Interface    
 
     Scenario: All page elements are present on Content Zone
         Given I am logged in as "Editor"
