@@ -1,0 +1,8 @@
+<button class="ez-action {{#if disabled}}is-disabled {{else}}{{#if actionId}}action-trigger {{/if}}{{/if}}{{#if hint}}with-hint{{/if}}" data-action="{{ actionId }}">
+    <div class="font-icon action-icon">
+        <p class="action-label">{{ label }}</p>
+        {{#if hint}}
+        <p class="action-hint">{{ hint }}</p>
+        {{/if}}
+    </div>
+</button>

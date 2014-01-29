@@ -26,6 +26,12 @@ This bundle provides the (future) Editorial Interface for eZ Publish.
     assetic:
         bundles: [ eZDemoBundle, eZEditorialBundle ]
     ```
+* In `ezpublish/config/routing.yml` include the eZEditorialBundle routing
+  configuration:
+    ```yml
+    _ezpublishEditorialRoutes:
+    resource: "@eZEditorialBundle/Resources/config/routing.yml"
+    ```
 * Install [nodejs](http://nodejs.org/)
 * Install [phantomjs](http://phantomjs.org)
 * Install local npm dependencies, from the bundle root, run:
@@ -40,6 +46,9 @@ This bundle provides the (future) Editorial Interface for eZ Publish.
   ```
   $ bower install
   ```
+
+Once this is done, you can go to http://<uri_of_ez>/shell to run the editorial
+application.
 
 ## Tests
 
