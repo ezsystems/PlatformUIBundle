@@ -127,7 +127,6 @@
 
 .ez-mainviews {
     padding-left: 230px;
-    height: 100%;
 }
 
 .is-discoverybar-minimized .ez-menu-container {
@@ -140,17 +139,16 @@
     margin-left: -230px;
     height: 100%;
     position: fixed;
-    top: 4em;
     z-index: 1015;
 }
 
 .is-navigation-hidden .ez-navigation-container {
-    height: 0;
+    max-height: 0;
     opacity: 0;
 }
 
 .ez-navigation-container {
-    height: 4em;
+    max-height: 20em;
     width: 100%;
 }
 

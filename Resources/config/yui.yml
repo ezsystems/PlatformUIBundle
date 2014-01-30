@@ -40,7 +40,7 @@ parameters:
                 requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'event-tap']
                 path: js/views/ez-locationviewview.js
             ez-navigationhubview:
-                requires: ['ez-templatebasedview']
+                requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside']
                 path: js/views/ez-navigationhubview.js
             ez-discoverybarview:
                 requires: ['ez-barview', 'ez-buttonactionview']

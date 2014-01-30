@@ -143,14 +143,10 @@
     border-color: rgba(237, 144, 54, 0.28) rgba(237, 144, 54, 0.29) rgba(237, 144, 54, 0.29) rgba(237, 144, 54, 0.9);
 }
 
-.ez-navigation-container {
-    text-align: center;
-    background: #ddd;
-}
-
 .ez-menu-container {
     background: #333;
     color: #fff;
+    margin-top: -1px; /* to align with the bottom border of the navigation hub */
 }
 
 .ez-mainviews,
@@ -163,6 +159,165 @@
             transition: all 0.3s ease;
 }
 
+/* navigation hub */
+.ez-view-navigationhubview {
+    background: #fff;
+    border-top: 4px solid #000;
+}
+
+.ez-view-navigationhubview .ez-zones-navigation {
+    margin-bottom: -1px; /* for the highlight effect on the active zone */
+}
+
+.ez-view-navigationhubview .ez-zone {
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+
+    -webkit-transition: all 0.2s ease;
+       -moz-transition: all 0.2s ease;
+        -ms-transition: all 0.2s ease;
+         -o-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.ez-view-navigationhubview .is-zone-active {
+    background: #fff;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+.ez-view-navigationhubview .ez-navigation {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #bbb;
+
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.30);
+
+    background: #f5f5f5;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #F5F5F5), color-stop(1, #FFFFFF));
+    background-image: -webkit-linear-gradient(top, #F5F5F5 0%, #FFFFFF 100%);
+    background-image:    -moz-linear-gradient(top, #F5F5F5 0%, #FFFFFF 100%);
+    background-image:     -ms-linear-gradient(top, #F5F5F5 0%, #FFFFFF 100%);
+    background-image:      -o-linear-gradient(top, #F5F5F5 0%, #FFFFFF 100%);
+    background-image:         linear-gradient(to top, #F5F5F5 0%, #FFFFFF 100%);
+    font-size: 90%;
+}
+
+.ez-view-navigationhubview.is-navigation-fixed .ez-navigation {
+    border-top: 4px solid #000;
+}
+
+.ez-view-navigationhubview .ez-zone:hover {
+    cursor: pointer;
+}
+
+.ez-view-navigationhubview .ez-zone:before {
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
+    margin: 0;
+    background: #528036;
+    color: #fff;
+    display: inline-block;
+    border-radius: 3px;
+    float: left;
+    text-align: center;
+    font-family: 'ez-editorial-icomoon';
+    font-size: 150%;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ez-view-navigationhubview .ez-create-zone:before {
+    content: "\E010";
+}
+
+.ez-view-navigationhubview .ez-optimize-zone:before {
+    content: "\E011";
+}
+
+.ez-view-navigationhubview .ez-deliver-zone:before {
+    content: "\E00c";
+}
+
+.ez-view-navigationhubview .ez-exchange:after,
+.ez-view-navigationhubview .ez-settings:after {
+    padding-left: 0.5em;
+    vertical-align: middle;
+}
+
+.ez-view-navigationhubview .ez-navigation .ez-navigation-item,
+.ez-view-navigationhubview .ez-zone-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.ez-view-navigationhubview .ez-navigation .ez-logo {
+    opacity: 0;
+    visibility: visible;
+    -webkit-transition: all 0.4s ease;
+       -moz-transition: all 0.4s ease;
+        -ms-transition: all 0.4s ease;
+         -o-transition: all 0.4s ease;
+            transition: all 0.4s ease;
+}
+
+.ez-view-navigationhubview.is-navigation-fixed .ez-navigation .ez-logo {
+    opacity: 1;
+    visibility: visible;
+}
+
+.ez-view-navigationhubview .ez-navigation .ez-navigation-item {
+    vertical-align: middle;
+}
+
+.ez-view-navigationhubview .ez-sub-menu-link > .ez-navigation-item:after {
+    font-family: 'ez-editorial-icomoon';
+    content: "\E002";
+    color: #888;
+    font-size: 90%;
+}
+
+.ez-view-navigationhubview .ez-sub-menu-link:hover {
+    background: #fff;
+}
+
+.ez-view-navigationhubview .ez-sub-menu {
+    background: #fff;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.15);
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+.ez-view-navigationhubview .ez-sub-menu li:hover {
+    background: #f0f0f0;
+}
+
+.ez-view-navigationhubview li {
+    border-bottom: 3px solid transparent;
+}
+
+.ez-view-navigationhubview .ez-navigation-active {
+    border-bottom: 3px solid #528036;
+}
+
+.ez-view-navigationhubview .ez-zone-hint {
+    color: #777;
+    font-size: 80%;
+}
+
+.ez-view-navigationhubview .ez-link a {
+    color: #333;
+    font-size: 85%;
+    font-weight: bold;
+    margin-bottom: 1em;
+    display: inline-block;
+}
+
+.ez-view-navigationhubview .ez-navigation .ez-navigation-item:hover,
+.ez-view-navigationhubview .ez-link a:hover {
+    color: #528036;
+}
+
 /* location view view */
 .ez-view-locationviewview {
     background: #fff;
@@ -170,6 +325,7 @@
 
 .ez-view-locationviewview .ez-actionbar-container {
     background: #333;
+    margin-top: -1px; /* to align the action bar with bottom border of navigation hub */
 
     -webkit-transition: all 0.30s ease-in-out;
        -moz-transition: all 0.30s ease-in-out;
