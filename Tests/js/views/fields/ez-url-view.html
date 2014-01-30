@@ -36,9 +36,13 @@
                 fullpath: "../../../../Resources/public/js/views/ez-fieldview.js"
             },
             "ez-templatebasedview": {
-                requires: ['view', 'handlebars'],
+                requires: ['ez-view', 'handlebars'],
                 fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
-            }
+            },
+            "ez-view": {
+                requires: ['view'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
         }
     }).use('ez-url-view-tests', function (Y) {
         Y.Test.Runner.run();

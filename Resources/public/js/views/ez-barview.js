@@ -54,6 +54,11 @@ YUI.add('ez-barview', function (Y) {
             Y.Array.each(this.get('actionsList'), function (action) {
                 action.addTarget(that);
             });
+            this.after('activeChange', function (e) {
+                if ( e.newVal ) {
+                    this._handleHeightUpdate();
+                }
+            });
         },
 
         /**
@@ -120,16 +125,6 @@ YUI.add('ez-barview', function (Y) {
             }
 
             return false;
-        },
-
-        /**
-         * Active callback for the eZ.BarView. It makes sure the bar
-         * view fits on the screen and builds the view more menu if needed
-         *
-         * @method activeCallback
-         */
-        activeCallback: function () {
-            this._handleHeightUpdate();
         },
 
         /**

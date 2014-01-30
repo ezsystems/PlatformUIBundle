@@ -18,7 +18,7 @@ YUI.add('ez-templatebasedview', function (Y) {
      * @class TemplateBasedView
      * @extends View
      */
-    Y.eZ.TemplateBasedView = Y.Base.create('templateBasedView', Y.View, [], {
+    Y.eZ.TemplateBasedView = Y.Base.create('templateBasedView', Y.eZ.View, [], {
         /**
          * Returns the name of the class. This name is used to retrieve the
          * correct template
@@ -67,34 +67,6 @@ YUI.add('ez-templatebasedview', function (Y) {
             }
             this.containerTemplate = '<div class="' + this._generateViewClassName(name) + '"/>';
         },
-
-        /**
-         * Activate callback for the view. This method will be called after the
-         * view has been attached to the DOM. The default implementation just
-         * forwards the call to the sub views.
-         *
-         * @method activeCallback
-         */
-        activeCallback: function () {
-            this._subViewsPostActivation();
-        },
-
-        /**
-         * Iterates over the attributes to find the sub views and calls the
-         * activeCallback callback on them
-         *
-         * @method _subViewsPostActivation
-         * @protected
-         */
-        _subViewsPostActivation: function () {
-            Y.Object.each(this._getAttrCfgs(), function (attrCfg, name) {
-                var attr = this.get(name);
-
-                if ( attr instanceof Y.View && typeof attr.activeCallback === 'function' ) {
-                    attr.activeCallback();
-                }
-            }, this);
-        }
     }, {
         /**
          * the prefix to generate the view class name

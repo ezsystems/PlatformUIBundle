@@ -27,8 +27,11 @@ parameters:
             ez-locationviewviewloader:
                 requires: ['parallel', 'ez-viewloader', 'ez-locationmodel', 'ez-contentmodel']
                 path: js/views/loaders/ez-locationviewviewloader.js
+            ez-view:
+                requires: ['view']
+                path: js/views/ez-view.js
             ez-templatebasedview:
-                requires: ['ez-texthelper', 'view', 'handlebars']
+                requires: ['ez-texthelper', 'ez-view', 'handlebars']
                 path: js/views/ez-templatebasedview.js
             ez-dashboardview:
                 requires: ['ez-templatebasedview']

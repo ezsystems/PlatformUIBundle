@@ -98,20 +98,19 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             );
         },
 
-        "View change should trigger the activeCallback callback and set loading to false": function () {
+        "View change should set the view 'active' attribute to true and set loading to false": function () {
             var that = this;
 
             this.app.views.simpleView = {
-                type: Y.View
-            };
-            this.app.views.viewWithCallback = {
-                type: Y.Base.create('testView', Y.View, [], {
-                    activeCallback: function () {
-                        that.resume(function () {
-                            Y.Assert.isFalse(
-                                this.app.get('loading'),
-                                "The app should not be in loading mode"
-                            );
+                type: Y.Base.create('simpleView', Y.eZ.View, [], {
+                    initializer: function () {
+                        this.after('activeChange', function () {
+                            that.resume(function () {
+                                Y.Assert.isTrue(
+                                    that.app.get('activeView').get('active'),
+                                    "The active attribute of the view should be set to true"
+                                );
+                            });
                         });
                     }
                 })
@@ -125,9 +124,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                             this.app.get('loading'),
                             "The app should not be in loading mode"
                         );
-
-                        this.app.set('loading', true);
-                        this.app.showView('viewWithCallback');
                         this.wait();
                     });
                 }
@@ -204,7 +200,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
 
         "Should show the error view, when catching 'fatalError' event": function () {
-            var rendered = false, initialized = false, activeCallbackCalled = false,
+            var rendered = false, initialized = false,
                 errorInfo = {'retryAction:': {}, 'additionalInfo': 1},
                 TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
                     initializer: function () {
@@ -218,10 +214,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                             "The view attributes should be updated with the app variables attribute"
                         );
                     },
-
-                    activeCallback: function () {
-                        activeCallbackCalled = true;
-                    }
                 });
 
             this.app.views.errorView.instance = new TestErrorViewConstructor();
@@ -232,7 +224,10 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             Y.assert(initialized, "The error view should have been initialized");
             Y.assert(rendered, "The error view should have been rendered");
             Y.assert(!this.app.get('loading'), "The app should not be in loading mode");
-            Y.assert(activeCallbackCalled, "The error view should have input focus");
+            Y.Assert.isTrue(
+                this.app.views.errorView.instance.get('active'),
+                "The error view should be active"
+            );
         },
 
         "Should receive 'retryAction' event fired on the errorView": function () {
@@ -424,7 +419,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 },
                 TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.eZ.ErrorView, [], {
                     render: function () {},
-                    activeCallback: function () {}
                 });
 
 
@@ -555,7 +549,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     }
                 },
                 initialized = false, rendered = false, bubble = false,
-                activeCallbackCalled = false, nextCalled = false;
+                nextCalled = false;
 
 
             this.app.sideViews.sideView1.type = Y.Base.create('sideView1', Y.View, [], {
@@ -568,10 +562,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 initializer: function () {
                     initialized = true;
                 },
-
-                activeCallback: function () {
-                    activeCallbackCalled = true;
-                }
             });
 
             this.app.on('sideView1:testEvent', function () {
@@ -594,7 +584,10 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
             Y.Assert.isTrue(initialized, "The side view should have been build");
             Y.Assert.isTrue(rendered, "The side view should have been rendered");
-            Y.Assert.isTrue(activeCallbackCalled, "The active callback should have been called");
+            Y.Assert.isTrue(
+                this.app.sideViews.sideView1.instance.get('active'),
+                "The side view 'active' attribute should been set to 'true'"
+            );
             Y.Assert.isTrue(bubble, "The event from the side view should bubble to the app");
             Y.Assert.isTrue(nextCalled, "The next callback should have been called");
             Y.Assert.isTrue(
@@ -614,7 +607,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     }
                 },
                 initialized = 0, rendered = 0, bubble = 0,
-                activeCallbackCalled = 0, nextCalls = 0;
+                activeSet = 0, nextCalls = 0;
 
 
             this.app.sideViews.sideView1.type = Y.Base.create('sideView1', Y.View, [], {
@@ -626,11 +619,12 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
                 initializer: function () {
                     initialized++;
+                    this.after('activeChange', function (e) {
+                        if ( e.newVal ) {
+                            activeSet++;
+                        }
+                    });
                 },
-
-                activeCallback: function () {
-                    activeCallbackCalled++;
-                }
             });
 
             this.app.on('sideView1:testEvent', function () {
@@ -640,6 +634,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             this.app.handleSideViews(req, {}, function () {
                 nextCalls++;
             });
+            this.app.handleSideViews({route: {}}, {}, function () {});
             this.app.handleSideViews(req, {}, function () {
                 nextCalls++;
             });
@@ -657,7 +652,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
             Y.Assert.isTrue(initialized === 1, "The side view should have been build one time");
             Y.Assert.isTrue(rendered === 1, "The side view should have been rendered one time");
-            Y.Assert.isTrue(activeCallbackCalled === 2, "The active callback should have been called two times");
+            Y.Assert.isTrue(activeSet === 2, "The active flag should have been set two times " + activeSet);
             Y.Assert.isTrue(bubble, "The event from the side view should bubble to the app");
             Y.Assert.isTrue(nextCalls === 2, "The next callback should have been called two times");
             Y.Assert.isTrue(

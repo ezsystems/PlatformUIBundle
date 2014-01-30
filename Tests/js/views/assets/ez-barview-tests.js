@@ -117,7 +117,7 @@ YUI.add('ez-barview-tests', function (Y) {
 
         "'View more' button should NOT be visible, when all the actions fit on the screen": function () {
             this.view.render();
-            this.view.activeCallback();
+            this.view.set('active', true);
             Y.Assert.isTrue(
                 Y.one('.view-more-button').hasClass('is-hidden'),
                 "Button should NOT be visible"
@@ -139,7 +139,7 @@ YUI.add('ez-barview-tests', function (Y) {
             }
 
             this.view.render();
-            this.view.activeCallback();
+            this.view.set('active', true);
             Y.Assert.isFalse(
                 Y.one('.view-more-button').hasClass('is-hidden'),
                 "Button should be visible"
@@ -151,7 +151,6 @@ YUI.add('ez-barview-tests', function (Y) {
                 activeMenu;
 
             this.view.render();
-            this.view.activeCallback();
 
             activeMenu = container.one(ACTIVE_MENU_CLASS);
 
@@ -165,14 +164,14 @@ YUI.add('ez-barview-tests', function (Y) {
 
             Y.Assert.areEqual(
                 2, activeMenu.get('children').size(),
-                "There should become 2 actions in activeMenu"
+                "There should be 2 actions in activeMenu"
             );
 
-            this.view.activeCallback();
+            this.view.set('active', true);
 
             Y.Assert.areEqual(
                 3, activeMenu.get('children').size(),
-                "There should become 3 actions in activeMenu"
+                "There should be 3 actions in activeMenu"
             );
         },
 
@@ -280,7 +279,7 @@ YUI.add('ez-barview-tests', function (Y) {
             }
 
             this.view.render();
-            this.view.activeCallback();
+            this.view.set('active', true);
 
             viewMoreButton = Y.one('.view-more-button');
             viewMoreMenu = Y.one('.view-more-actions');

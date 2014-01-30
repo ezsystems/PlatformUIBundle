@@ -201,7 +201,7 @@ YUI.add('ez-editorialapp', function (Y) {
                 'additionalInfo': errorInfo.additionalInfo
             });
             errorView.render();
-            errorView.activeCallback();
+            errorView.set('active', true);
         },
 
         /**
@@ -212,6 +212,7 @@ YUI.add('ez-editorialapp', function (Y) {
          * @protected
          */
         _retryAction: function (retryAction) {
+            this.views.errorView.instance.set('active', false);
             retryAction.run.apply(retryAction.context, retryAction.args);
         },
 
@@ -342,12 +343,13 @@ YUI.add('ez-editorialapp', function (Y) {
                     this.get('container').one(viewInfo.container).append(
                         viewInfo.instance.get('container')
                     );
-                    this._viewActiveCallback(viewInfo.instance);
+                    viewInfo.instance.set('active', true);
                     container.removeClass(cl);
                     viewInfo.instance.addTarget(this);
                 } else {
                     container.addClass(cl);
                     if ( viewInfo.instance ) {
+                        viewInfo.instance.set('active', false);
                         viewInfo.instance.remove();
                         viewInfo.instance.removeTarget(this);
                     }
@@ -396,8 +398,8 @@ YUI.add('ez-editorialapp', function (Y) {
         },
 
         /*
-         * Overrides the default implementation to make sure the view
-         * activeCallback callback is called after the view is attached to the
+         * Overrides the default implementation to make sure the view `active`
+         * attribute is set to true  after the view is attached to the
          * DOM. It also sets the loading flag to false.
          *
          * @method _afterActiveViewChange
@@ -405,34 +407,27 @@ YUI.add('ez-editorialapp', function (Y) {
          * @param {Object} e activeViewChange event facade
          */
         _afterActiveViewChange: function (e) {
-            var cb;
+            var cb, prevView = e.prevVal,
+                handleActive = function (view) {
+                    if ( prevView ) {
+                        prevView.set('active', false);
+                    }
+                    view.set('active', true);
+                };
 
             if ( e.options.callback ) {
                 cb = e.options.callback;
                 e.options.callback = function (view) {
                     cb(e.newVal);
-                    this._viewActiveCallback(view);
+                    handleActive(view);
                 };
             } else {
-                e.options.callback = this._viewActiveCallback;
+                e.options.callback = handleActive;
             }
 
             Y.eZ.EditorialApp.superclass._afterActiveViewChange.call(this, e);
             this.set('loading', false);
         },
-
-        /**
-         * Calls the view activation callback if it exists
-         *
-         * @method _viewActiveCallback
-         * @protected
-         * @param {Y.View} view
-         */
-        _viewActiveCallback: function (view) {
-            if ( typeof view.activeCallback === 'function' ) {
-                view.activeCallback.call(view);
-            }
-        }
     }, {
         ATTRS: {
             /**

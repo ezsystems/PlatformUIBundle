@@ -49,13 +49,17 @@
                 fullpath: "../../../Resources/public/js/views/ez-errorview.js"
             },
             "ez-templatebasedview": {
-                requires: ['view', 'handlebars'],
+                requires: ['ez-view', 'handlebars'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
             },
             "ez-viewloader": {
                 requires: ['base'],
                 fullpath: "../../../Resources/public/js/views/loaders/ez-viewloader.js"
-            }
+            },
+            "ez-view": {
+                requires: ['view'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
         }
     }).use('ez-editorialapp-tests', function (Y) {
         Y.Test.Runner.run();

@@ -43,6 +43,12 @@ YUI.add('ez-contenteditview', function (Y) {
         initializer: function () {
             this.get('formView').addTarget(this);
             this.get('actionBar').addTarget(this);
+
+            this.after('activeChange', function (e) {
+                if ( e.newVal ) {
+                    this._setFocus();
+                }
+            });
         },
 
         /**
@@ -80,18 +86,6 @@ YUI.add('ez-contenteditview', function (Y) {
             container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').render().get('container'));
 
             return this;
-        },
-
-
-        /**
-         * Active callback for the content edit view to make sure it
-         * has the focus after being displayed.
-         *
-         * @method activeCallback
-         */
-        activeCallback: function () {
-            this._subViewsPostActivation();
-            this._setFocus();
         },
 
         /**
