@@ -25,10 +25,6 @@
     display: inline-block;
 }
 
-.ez-view-navigationhubview .ez-logo {
-    width: 9em;
-}
-
 .ez-view-navigationhubview .ez-zone-name,
 .ez-view-navigationhubview .ez-zone-hint {
     margin: 0 0 0 2.6rem;
@@ -36,6 +32,7 @@
 
 .ez-view-navigationhubview .ez-logo {
     text-align: center;
+    width: 9em;
 }
 
 .ez-view-navigationhubview .ez-zone,
@@ -120,4 +117,30 @@
 
 .ez-view-navigationhubview .is-sub-menu-open .ez-sub-menu li {
     display: block;
+}
+
+@media (max-width:60em) {
+    .ez-view-navigationhubview .ez-zones-navigation .ez-exchange {
+        display: none;
+    }
+}
+
+@media (max-width:52em) {
+    .ez-view-navigationhubview .ez-logo {
+        width: 6em;
+        vertical-align: middle;
+    }
+
+    .ez-view-navigationhubview .ez-zone-hint {
+        display: none;
+    }
+
+    .ez-view-navigationhubview .ez-zone-name {
+        margin: 0.2em 0 0 1.9rem;
+        font-size: 90%;
+    }
+
+    .ez-view-navigationhubview .ez-zones-navigation .ez-settings a {
+        margin-bottom: 0.4em;
+    }
 }

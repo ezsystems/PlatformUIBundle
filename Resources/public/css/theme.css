@@ -226,6 +226,15 @@
     -webkit-font-smoothing: antialiased;
 }
 
+@media (max-width: 52em) {
+    .ez-view-navigationhubview .ez-zone:before {
+        font-size: 120%;
+        width: 1.4em;
+        height: 1.4em;
+        line-height: 1.4em;
+    }
+}
+
 .ez-view-navigationhubview .ez-create-zone:before {
     content: "\E010";
 }
@@ -238,8 +247,7 @@
     content: "\E00c";
 }
 
-.ez-view-navigationhubview .ez-exchange:after,
-.ez-view-navigationhubview .ez-settings:after {
+.ez-view-navigationhubview .ez-link a:after {
     padding-left: 0.5em;
     vertical-align: middle;
 }
