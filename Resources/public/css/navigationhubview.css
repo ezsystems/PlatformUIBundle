@@ -92,6 +92,7 @@
 
 .ez-view-navigationhubview .ez-sub-menu {
     display: none;
+    position: absolute;
 
     margin: 0;
     padding: 0;
@@ -107,7 +108,6 @@
 
 .ez-view-navigationhubview .is-sub-menu-open .ez-sub-menu {
     display: block;
-    position: absolute;
     z-index:10001;
 }
 
