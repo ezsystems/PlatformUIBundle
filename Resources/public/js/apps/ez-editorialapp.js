@@ -121,11 +121,30 @@ YUI.add('ez-editorialapp', function (Y) {
             this.on('*:editAction', this._editContent);
             this.on('*:minimizeDiscoveryBarAction', this._minimizeDiscoveryBar);
 
+            this.on('*:navigationModeChange', this._uiSetNavigationModeClass);
+
             // Listening for events fired on child views
             this.views.errorView.instance.addTarget(this);
 
             // Registering handlebars partials
             this._registerPartials();
+        },
+
+        /**
+         * navigationModeChange event handler, it sets or unsets the navigation
+         * mode class provided in the event facade to handle the fact that the
+         * navigation hub can be fixed or not.
+         *
+         * @method _uiSetNavigationModeClass
+         * @protected
+         * @param {Object} e navigation mode event facade
+         */
+        _uiSetNavigationModeClass: function (e) {
+            if ( e.navigation.value ) {
+                this.get('container').addClass(e.navigation.modeClass);
+            } else {
+                this.get('container').removeClass(e.navigation.modeClass);
+            }
         },
 
         /**
@@ -273,7 +292,6 @@ YUI.add('ez-editorialapp', function (Y) {
             var container = this.get('container');
 
             container.addClass(APP_OPEN);
-            container.setStyle('height', container.get('docHeight') + 'px');
             if ( L.isFunction(next) ) {
                 next();
             }
@@ -413,16 +431,25 @@ YUI.add('ez-editorialapp', function (Y) {
                         prevView.set('active', false);
                     }
                     view.set('active', true);
+                },
+                removeContainerTransformStyle = function (view) {
+                    // removing transform style so that position fixed works
+                    // as intended see https://jira.ez.no/browse/EZP-21895
+                    view.get('container').setStyle('transform', 'none');
                 };
 
             if ( e.options.callback ) {
                 cb = e.options.callback;
                 e.options.callback = function (view) {
                     cb(e.newVal);
+                    removeContainerTransformStyle(view);
                     handleActive(view);
                 };
             } else {
-                e.options.callback = handleActive;
+                e.options.callback = function (view) {
+                    removeContainerTransformStyle(view);
+                    handleActive(view);
+                };
             }
 
             Y.eZ.EditorialApp.superclass._afterActiveViewChange.call(this, e);

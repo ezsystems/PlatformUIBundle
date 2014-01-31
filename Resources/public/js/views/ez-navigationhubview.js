@@ -107,6 +107,23 @@ YUI.add('ez-navigationhubview', function (Y) {
             } else {
                 container.removeClass(FIXED_NAVIGATION);
             }
+            /**
+             * event fired when the navigation mode change so that the rest of
+             * the application can also change if needed. For the navigation
+             * hub, the navigation mode is either true or false. True when the
+             * navigation is fixed and false otherwise.
+             *
+             * @event navigationModeChange
+             * @param navigation navigation mode info
+             * @param navigation.modeClass the class to add on the app container
+             * @param navigation.value the new value of the navigation mode
+             */
+            this.fire('navigationModeChange', {
+                navigation: {
+                    modeClass: 'is-navigationhubview-fixed',
+                    value: e.newVal
+                }
+            });
         },
 
         /**

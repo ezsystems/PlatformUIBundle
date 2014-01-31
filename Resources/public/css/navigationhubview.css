@@ -70,7 +70,9 @@
 
 .ez-view-navigationhubview .ez-navigation-item {
     display: inline-block;
-    padding: 0.7em 1.2em 0.6em 1.2em;
+    padding: 0 1.2em 0 1.2em;
+    height: 2.3rem;
+    line-height: 2.3rem;
 }
 
 .ez-view-navigationhubview .ez-more {
@@ -104,6 +106,8 @@
 
 .ez-view-navigationhubview .ez-sub-menu .ez-navigation-item {
     padding: 0.3em 1.2em;
+    line-height: 1.3em;
+    height: auto;
 }
 
 .ez-view-navigationhubview .is-sub-menu-open .ez-sub-menu {
@@ -115,7 +119,7 @@
     position: fixed;
 }
 
-.ez-view-navigationhubview .is-sub-menu-open .ez-sub-menu li {
+.ez-view-navigationhubview .ez-sub-menu li {
     display: block;
 }
 

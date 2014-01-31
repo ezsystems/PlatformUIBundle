@@ -10,6 +10,10 @@
     font-style: normal;
 }
 
+.ez-editorial-app-page body {
+    background: #333;
+}
+
 .ez-editorial-app {
     font-size: 15px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -94,10 +98,6 @@
 
 .ez-editorial-app .ez-view-contenteditformview .pure-button {
     border: 1px solid #ccc;
-}
-
-.is-app-open {
-    background: #fff;
 }
 
 .ez-view-container {
@@ -421,27 +421,17 @@
     border-top: 3px solid #528036;
 }
 
-.ez-view-locationviewview .ez-tabs .ez-tabs-panels {
-    /* to position absolutely the panel to have an opacity transition without any JS code */
-    position:relative;
-}
-
 .ez-view-locationviewview .ez-tabs .ez-tabs-panel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    z-index: 50;
-    -webkit-transition: opacity 0.2s ease-in-out;
-       -moz-transition: opacity 0.2s ease-in-out;
-        -ms-transition: opacity 0.2s ease-in-out;
-         -o-transition: opacity 0.2s ease-in-out;
-            transition: opacity 0.2s ease-in-out;
+    display: none;
 }
 
 .ez-view-locationviewview .ez-tabs .ez-tabs-panel.is-tab-selected {
-    opacity: 1;
-    z-index: 500;
+    display: block;
+
+    -webkit-animation: fadeIn 0.3s;
+       -moz-animation: fadeIn 0.3s;
+         -o-animation: fadeIn 0.3s;
+            animation: fadeIn 0.3s;
 }
 
 /* raw content view */
@@ -698,6 +688,13 @@
     border-bottom: 2px solid #bf3e33;
 }
 
+/* dashboard view */
+.ez-view-dashboardview {
+    /* for test purpose */
+    padding: 2em 0 10em 0;
+    background: #fff;
+}
+
 /* bar view */
 .ez-view-barview .ez-actions-list {
     background: #333333;
@@ -731,6 +728,10 @@
          -o-transition: all 0.30s ease-in-out;
             transition: all 0.30s ease-in-out;
     box-shadow: 7px 0 7px 0 rgba(0, 0, 0, 0.5);
+}
+
+.is-navigationhubview-fixed .ez-view-barview {
+    top: calc(2.3rem + 4px); /* height of the navigation menu + borders */
 }
 
 /* discovery bar view */

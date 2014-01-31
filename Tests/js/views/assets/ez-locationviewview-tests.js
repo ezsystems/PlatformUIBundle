@@ -83,7 +83,8 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         "Test render": function () {
             var templateCalled = false,
                 origTpl,
-                plainLocation = {}, plainContent = {}, path = [];
+                plainLocation = {}, plainContent = {}, path = [],
+                container = this.view.get('container');
 
             origTpl = this.view.template;
             this.view.template = function () {
@@ -106,6 +107,12 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 "", this.view.get('container').getHTML(),
                 "View container should contain the result of the view"
             );
+
+            Y.Assert.areEqual(
+                container.one('.ez-locationview-content').getStyle('min-height'),
+                container.get('winHeight') + 'px'
+            );
+
 
             Y.Mock.verify(this.view.get('rawContentView'));
             Y.Mock.verify(this.view.get('actionBar'));
@@ -161,7 +168,6 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             });
             this.view.render();
         },
-
     });
 
     tabsTest = new Y.Test.Case({

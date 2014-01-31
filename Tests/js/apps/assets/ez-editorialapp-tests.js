@@ -21,8 +21,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
 
         "Should open the application": function () {
-            var nextCalled = false,
-                 docHeight = this.app.get('container').get('docHeight');
+            var nextCalled = false;
 
             this.app.open({}, {}, function () {
                 nextCalled = true;
@@ -32,11 +31,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             Y.assert(
                 this.app.get('container').hasClass('is-app-open'),
                 "The app container should have the class is-app-open"
-            );
-            Y.Assert.areEqual(
-                this.app.get('container').getStyle('height').replace('px', ''),
-                docHeight,
-                "The app container should have the same height as the document"
             );
         },
 
@@ -128,6 +122,33 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                     });
                 }
             );
+            this.wait();
+        },
+
+        "After the view has changed, the view container should not have any transformation": function () {
+            // test case for https://jira.ez.no/browse/EZP-21895
+            var that = this;
+
+            this.app.views.simpleView = {
+                type: Y.Base.create('simpleView', Y.eZ.View, [], {
+                    initializer: function () {
+                        this.after('activeChange', function () {
+                            that.resume(
+                                Y.bind(function () {
+                                    console.log(this.get('container').getAttribute('style'));
+                                    Y.Assert.areEqual(
+                                        "none",
+                                        this.get('container').getStyle('transform'),
+                                        "The view container should not have any transform style"
+                                    );
+                                }, this)
+                            );
+                        });
+                    }
+                })
+            };
+
+            this.app.showView('simpleView');
             this.wait();
         },
 
@@ -315,6 +336,34 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 this.app.routeUri('editContent', {id: contentId}).replace(this.root + '#'),
                 this.app.getPath().replace(this.root),
                 "The current path should be the edit content route for the content '" + contentId + "'"
+            );
+        },
+
+        "Should set a class on the app container when receiving a 'navigationModeChange' event": function () {
+            var container = this.app.get('container'),
+                testClass = 'test-class';
+
+            this.app.fire('whatever:navigationModeChange', {
+                navigation: {
+                    modeClass: testClass,
+                    value: true
+                }
+            });
+
+            Y.Assert.isTrue(
+                container.hasClass(testClass),
+                "The container should have the class '" + testClass + "'"
+            );
+
+            this.app.fire('whatever:navigationModeChange', {
+                navigation: {
+                    modeClass: testClass,
+                    value: false
+                }
+            });
+            Y.Assert.isFalse(
+                container.hasClass(testClass),
+                "The container should not have the class '" + testClass + "'"
             );
         },
     });

@@ -254,6 +254,25 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         },
 
         "Should fix/unfix the navigation menu": function () {
+            var eventFired = 0,
+                view = this.view;
+
+            this.view.on('navigationModeChange', function (e) {
+                eventFired++;
+
+                Y.Assert.areSame(
+                    view.get('navigationFixed'),
+                    e.navigation.value,
+                    "The event facade should container the navigation fixed attribute value"
+                );
+
+                Y.Assert.areEqual(
+                    'is-navigationhubview-fixed',
+                    e.navigation.modeClass,
+                    "The event facade should contain the class 'is-navigationhubview-fixed'"
+                );
+            });
+
             this.view.set('navigationFixed', true);
             Y.Assert.isTrue(
                 this.view.get('container').hasClass('is-navigation-fixed'),
@@ -264,6 +283,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 this.view.get('container').hasClass('is-navigation-fixed'),
                 "The view container should not have the 'is-navigation-fixed' class"
             );
+
+            Y.Assert.areEqual(2, eventFired, "The 'navigationModeChange' event should be been fire twice");
         },
 
         "Should put some elements in the more sub menu": function () {

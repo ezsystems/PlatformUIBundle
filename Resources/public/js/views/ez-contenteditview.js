@@ -84,8 +84,21 @@ YUI.add('ez-contenteditview', function (Y) {
             // Note: render() is drawing non-height-responsive version of the action bar
             // but handleHeightUpdate() event will be triggered from app.handleContentEdit(), when everything is loaded to draw the responsive version
             container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').render().get('container'));
+            this._uiSetMinHeight();
 
             return this;
+        },
+
+        /**
+         * Sets the minimum height of the view
+         *
+         * @private
+         * @method _uiSetMinHeight
+         */
+        _uiSetMinHeight: function () {
+            var container = this.get('container');
+
+            container.one(CONTENT_SEL).setStyle('minHeight', container.get('winHeight') + 'px');
         },
 
         /**

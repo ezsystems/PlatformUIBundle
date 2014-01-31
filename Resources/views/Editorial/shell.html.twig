@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app.request.locale }}">
+<html lang="{{ app.request.locale }}" class="ez-editorial-app-page">
 <head>
     <title>Editorial application</title>
     <meta name="viewport" content="width=device-width"/>
@@ -48,9 +48,12 @@
             display: block;
             color: #888;
         }
+        .ez-editorial-app-ready .ez-loading-message {
+            display: none;
+        }
     </style>
 </head>
-<body>
+<body class="ez-editorial-app-body">
     <div class="ez-loading-message"><em>{{ 'Loading the application...'|trans }}</em></div>
     <div class="ez-editorial-app pure is-menu-hidden is-navigation-hidden">
         <div class="ez-navigation-container"></div>
@@ -94,7 +97,9 @@
                         })
                     )
                 });
-
+            app.on('ready', function () {
+                Y.one(Y.config.doc.documentElement).addClass('ez-editorial-app-ready');
+            });
             app.render().dispatch();
 
             // for now redirecting to the dashboard to boot the application
