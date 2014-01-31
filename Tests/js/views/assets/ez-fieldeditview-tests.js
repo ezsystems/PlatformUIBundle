@@ -42,7 +42,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         },
 
         tearDown: function () {
-            this.view.destroy({remove: true});
+            this.view.destroy();
         },
 
         "Test render": function () {
@@ -178,7 +178,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         },
 
         tearDown: function () {
-            this.view.destroy({remove: true});
+            this.view.destroy();
         },
 
         "Test tooltip appearing after tapping on the info icon and hiding after tapping somewhere outside of the tooltip": function () {
@@ -354,7 +354,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         },
 
         tearDown: function () {
-            this.view.destroy({remove: true});
+            this.view.destroy();
         },
 
         "Test available variable in template": function () {
