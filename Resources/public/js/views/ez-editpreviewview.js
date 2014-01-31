@@ -46,9 +46,9 @@ YUI.add('ez-editpreviewview', function (Y) {
             loader = container.one(LOADER_NODE);
             loader.addClass(IS_LOADING_CLASS);
 
-            container.one('.preview-iframe').on('load', function () {
+            this._attachedViewEvents.push(container.one('.preview-iframe').on('load', function () {
                 loader.removeClass(IS_LOADING_CLASS);
-            });
+            }));
 
             return this;
         },

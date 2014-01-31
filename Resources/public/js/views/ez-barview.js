@@ -54,7 +54,6 @@ YUI.add('ez-barview', function (Y) {
             Y.Array.each(this.get('actionsList'), function (action) {
                 action.addTarget(that);
             });
-            Y.on("windowresize", Y.bind(this._handleHeightUpdate, this));
         },
 
         /**
@@ -71,6 +70,8 @@ YUI.add('ez-barview', function (Y) {
             container.setHTML(this.template({
                 viewMoreText: this.get('viewMoreText')
             }));
+
+            this._attachedViewEvents.push(Y.on("windowresize", Y.bind(this._handleHeightUpdate, this)));
 
             activeMenu = container.one(ACTIVE_MENU_CLASS);
             viewMoreTrigger = container.one(VIEW_MORE_BUTTON_CLASS);

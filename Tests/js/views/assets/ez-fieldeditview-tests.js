@@ -1,5 +1,6 @@
 YUI.add('ez-fieldeditview-tests', function (Y) {
-    var container, content, contentType,
+    var container = Y.one('.container'),
+        content, contentType,
         jsonContent = {}, jsonContentType = {},
         fieldDefinition = {
             descriptions: {
@@ -28,10 +29,6 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         name: "eZ Field Edit View test",
 
         setUp: function () {
-
-            Y.one('body').append('<div class="container"></div>');
-            container = Y.one('.container');
-
             this.view = new Y.eZ.FieldEditView({
                 container: container,
                 fieldDefinition: fieldDefinition,
@@ -42,7 +39,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         },
 
         tearDown: function () {
-            this.view.destroy({remove: true});
+            this.view.destroy();
         },
 
         "Test render": function () {
@@ -164,10 +161,6 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         name: "eZ Field Edit View tooltip test",
 
         setUp: function () {
-
-            Y.one('body').append('<div class="container"></div>');
-            container = Y.one('.container');
-
             this.view = new Y.eZ.FieldEditView({
                 container: container,
                 fieldDefinition: fieldDefinition,
@@ -178,7 +171,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         },
 
         tearDown: function () {
-            this.view.destroy({remove: true});
+            this.view.destroy();
         },
 
         "Test tooltip appearing after tapping on the info icon and hiding after tapping somewhere outside of the tooltip": function () {
@@ -333,9 +326,6 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         name: "Custom eZ Field Edit View test",
 
         setUp: function () {
-            Y.one('body').append('<div class="container"></div>');
-            container = Y.one('.container');
-
             var CustomView = Y.Base.create('customView', Y.eZ.FieldEditView, [], {
                 _variables: function () {
                     return {
@@ -354,7 +344,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         },
 
         tearDown: function () {
-            this.view.destroy({remove: true});
+            this.view.destroy();
         },
 
         "Test available variable in template": function () {
