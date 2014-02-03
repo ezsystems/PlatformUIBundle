@@ -19,6 +19,12 @@
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.ez-editorial-app .pure-g [class *= "pure-u"],
+.ez-editorial-app .pure-g-r [class *= "pure-u"],
+.ez-editorial-app button {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 .ez-editorial-app a {
     text-decoration: none;
 }
