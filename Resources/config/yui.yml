@@ -8,6 +8,7 @@ parameters:
                     - 'app'
                     - 'app-transitions'
                     - 'node-screen'
+                    - 'handlebars'
                     - 'ez-capi'
                     - 'ez-dashboardview'
                     - 'ez-contenteditviewloader'

@@ -1,6 +1,6 @@
 YUI.add('ez-editorialapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest,
-        runLoaderTest;
+        runLoaderTest, tplTest;
 
     appTest = new Y.Test.Case({
         name: "eZ Editorial App tests",
@@ -260,16 +260,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             );
         },
 
-        "Should register partials found inside the DOM": function () {
-            var template = Y.Handlebars.compile('Test partial should be here: {{> ezTestPartial}}');
-
-            Y.Assert.isFunction(template);
-            Y.Assert.areEqual(
-                "Test partial should be here: I'm a test partial!",
-                template()
-            );
-        },
-
         "Should toggle the discovery bar minimized class on minimizeDiscoveryBarAction event": function () {
             var container = this.app.get('container');
 
@@ -330,6 +320,102 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             Y.Assert.isFalse(
                 container.hasClass(testClass),
                 "The container should not have the class '" + testClass + "'"
+            );
+        },
+    });
+
+    tplTest = new Y.Test.Case({
+        name: "runLoader app tests",
+
+        setUp: function () {
+            this.capiMock = new Y.Mock();
+            this.webRootDir = "/webroot/dir/";
+            this.app = new Y.eZ.EditorialApp({
+                container: '.app',
+                viewContainer: '.view-container',
+                assetRoot: this.webRootDir,
+                capi: this.capiMock
+            });
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
+        _assetHelperRegistered: function (name) {
+            Y.Assert.isFunction(
+                Y.Handlebars.helpers[name],
+                "The helper '" + name + "' should be registered"
+            );
+        },
+
+        "Should register the 'path' helper": function () {
+            this._assetHelperRegistered('path');
+        },
+
+        "Test 'path' helper": function () {
+            var name = 'testRouteName', params = {'id': 1},
+                resUri = '#/uri/1/42';
+
+            this.app.routeUri = function (routeName, p) {
+                Y.Assert.areSame(
+                    routeName, name,
+                    "The route name parameter of 'path' should be passed to routeUri"
+                );
+
+                Y.Assert.areSame(
+                    params, p,
+                    "The 'params' parameter of 'path' should be passed to routeUri"
+                );
+                return resUri;
+            };
+
+            Y.Assert.areEqual(
+                resUri,
+                Y.Handlebars.helpers.path(name, {hash: params}),
+                "'path' should return the routeUri result"
+            );
+        },
+
+        "Should register the 'asset' helper": function () {
+            this._assetHelperRegistered('asset');
+        },
+
+        "Test 'asset' helper": function () {
+            Y.Assert.areEqual(
+                this.webRootDir,
+                Y.Handlebars.helpers.asset("")
+            );
+
+            Y.Assert.areEqual(
+                this.webRootDir + "img.png",
+                Y.Handlebars.helpers.asset("///img.png"),
+                "asset should trim the slashes from the asset URI"
+            );
+
+            this.app.set('assetRoot', '/webroot/dir/////');
+            Y.Assert.areEqual(
+                this.webRootDir + "img.png",
+                Y.Handlebars.helpers.asset("img.png"),
+                "asset should trim the slashes from the asset root"
+            );
+
+            this.app.set('assetRoot', '/webroot/dir');
+            Y.Assert.areEqual(
+                this.webRootDir + "img.png",
+                Y.Handlebars.helpers.asset("img.png"),
+                "asset should add the slash"
+            );
+        },
+
+        "Should register partials found inside the DOM": function () {
+            var template = Y.Handlebars.compile('Test partial should be here: {{> ezTestPartial}}');
+
+            Y.Assert.isFunction(template);
+            Y.Assert.areEqual(
+                "Test partial should be here: I'm a test partial!",
+                template()
             );
         },
     });
@@ -812,6 +898,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Editorial App tests");
     Y.Test.Runner.add(appTest);
+    Y.Test.Runner.add(tplTest);
     Y.Test.Runner.add(runLoaderTest);
     Y.Test.Runner.add(sideViewsTest);
     Y.Test.Runner.add(reverseRoutingTest);

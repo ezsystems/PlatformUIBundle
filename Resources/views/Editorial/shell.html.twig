@@ -89,6 +89,7 @@
                     container: '.ez-editorial-app',
                     viewContainer: '.ez-view-container',
                     root: "{{ app.request.attributes.get( 'semanticPathinfo' ) }}",
+                    assetRoot: "{{ asset( '/' ) }}",
                     capi: new Y.eZ.CAPI(
                         "{{ app.request.uriForPath('/')|trim('/') }}",
                         new Y.eZ.SessionAuthAgent({

@@ -3,7 +3,7 @@
         <header>
             <ul class="ez-breadcrumbs">
             {{#each path}}
-                <li><a href="#/view/{{urlEncode location.id}}">{{ content.name }}</a></li>
+                <li><a href="{{ path "viewLocation" id=location.id }}">{{ content.name }}</a></li>
             {{/each}}
                 <li>{{ content.name }}</li>
             </ul>
