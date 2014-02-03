@@ -4,42 +4,6 @@
 		{
 			"icon": {
 				"paths": [
-					"M0 0l1024 1024h-1024z"
-				],
-				"width": 0,
-				"defaultCode": 61441,
-				"grid": 0
-			},
-			"properties": {
-				"id": 0,
-				"order": 1,
-				"prevSize": 32,
-				"code": 61441,
-				"name": "uniF001",
-				"ligatures": ""
-			}
-		},
-		{
-			"icon": {
-				"paths": [
-					"M0 0l1024 1024h-1024z"
-				],
-				"width": 0,
-				"defaultCode": 61440,
-				"grid": 0
-			},
-			"properties": {
-				"id": 1,
-				"order": 2,
-				"prevSize": 32,
-				"code": 61440,
-				"name": "uniF000",
-				"ligatures": ""
-			}
-		},
-		{
-			"icon": {
-				"paths": [
 					"M1014.662 822.661c-0.005-0.005-0.008-0.008-0.011-0.010l-310.645-310.651 310.645-310.65c0.005-0.005 0.008-0.006 0.011-0.010 3.344-3.346 5.762-7.254 7.312-11.416 4.246-11.376 1.824-24.682-7.323-33.83l-146.747-146.746c-9.147-9.146-22.45-11.566-33.829-7.32-4.16 1.55-8.070 3.968-11.418 7.31 0 0.005-0.005 0.006-0.008 0.010l-310.648 310.651-310.648-310.65c-0.005-0.005-0.006-0.006-0.010-0.010-3.346-3.342-7.254-5.76-11.414-7.31-11.381-4.248-24.682-1.826-33.83 7.32l-146.747 146.747c-9.147 9.147-11.568 22.453-7.322 33.829 1.552 4.16 3.97 8.072 7.312 11.416 0.005 0.002 0.006 0.006 0.010 0.010l310.65 310.648-310.65 310.653c-0.002 0.005-0.006 0.006-0.008 0.010-3.342 3.346-5.76 7.254-7.314 11.414-4.248 11.376-1.826 24.682 7.322 33.83l146.749 146.746c9.15 9.147 22.453 11.568 33.83 7.322 4.16-1.552 8.070-3.97 11.416-7.312 0.002-0.005 0.006-0.006 0.010-0.010l310.648-310.65 310.648 310.65c0.005 0.002 0.008 0.006 0.011 0.008 3.347 3.344 7.254 5.762 11.414 7.314 11.378 4.246 24.685 1.826 33.829-7.322l146.746-146.749c9.147-9.147 11.57-22.454 7.323-33.83-1.552-4.16-3.97-8.067-7.314-11.413z"
 				],
 				"tags": [
@@ -50,13 +14,13 @@
 					"cross"
 				],
 				"defaultCode": 57344,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 2,
-				"order": 3,
+				"order": 1,
 				"prevSize": 32,
-				"code": 57344,
+				"code": 58880,
 				"name": "close",
 				"ligatures": ""
 			}
@@ -76,13 +40,13 @@
 					"document"
 				],
 				"defaultCode": 57345,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 3,
-				"order": 4,
+				"order": 2,
 				"prevSize": 32,
-				"code": 57345,
+				"code": 58881,
 				"name": "file",
 				"ligatures": ""
 			}
@@ -99,13 +63,13 @@
 					"bottom"
 				],
 				"defaultCode": 57346,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 4,
-				"order": 5,
+				"order": 3,
 				"prevSize": 32,
-				"code": 57346,
+				"code": 58882,
 				"name": "arrow-down",
 				"ligatures": ""
 			}
@@ -122,13 +86,13 @@
 					"top"
 				],
 				"defaultCode": 57347,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 5,
-				"order": 6,
+				"order": 4,
 				"prevSize": 32,
-				"code": 57347,
+				"code": 58883,
 				"name": "arrow-up",
 				"ligatures": ""
 			}
@@ -145,13 +109,13 @@
 					"previous"
 				],
 				"defaultCode": 57348,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 6,
-				"order": 7,
+				"order": 5,
 				"prevSize": 32,
-				"code": 57348,
+				"code": 58884,
 				"name": "arrow-left",
 				"ligatures": ""
 			}
@@ -168,13 +132,13 @@
 					"next"
 				],
 				"defaultCode": 57349,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 7,
-				"order": 8,
+				"order": 6,
 				"prevSize": 32,
-				"code": 57349,
+				"code": 58885,
 				"name": "arrow-right",
 				"ligatures": ""
 			}
@@ -192,13 +156,13 @@
 					"note"
 				],
 				"defaultCode": 57350,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 8,
-				"order": 9,
+				"order": 7,
 				"prevSize": 32,
-				"code": 57350,
+				"code": 58886,
 				"name": "pencil",
 				"ligatures": ""
 			}
@@ -213,13 +177,13 @@
 					"views"
 				],
 				"defaultCode": 57351,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 9,
-				"order": 10,
+				"order": 8,
 				"prevSize": 32,
-				"code": 57351,
+				"code": 58887,
 				"name": "eye",
 				"ligatures": ""
 			}
@@ -237,13 +201,13 @@
 					"desktop"
 				],
 				"defaultCode": 57352,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 10,
-				"order": 11,
+				"order": 9,
 				"prevSize": 32,
-				"code": 57352,
+				"code": 58888,
 				"name": "screen",
 				"ligatures": ""
 			}
@@ -258,13 +222,13 @@
 					"mobile"
 				],
 				"defaultCode": 57353,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 11,
-				"order": 12,
+				"order": 10,
 				"prevSize": 32,
-				"code": 57353,
+				"code": 58889,
 				"name": "tablet",
 				"ligatures": ""
 			}
@@ -280,13 +244,13 @@
 					"handheld"
 				],
 				"defaultCode": 57354,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 12,
-				"order": 13,
+				"order": 11,
 				"prevSize": 32,
-				"code": 57354,
+				"code": 58890,
 				"name": "mobile",
 				"ligatures": ""
 			}
@@ -304,13 +268,13 @@
 					"talk"
 				],
 				"defaultCode": 57355,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 13,
-				"order": 14,
+				"order": 12,
 				"prevSize": 32,
-				"code": 57355,
+				"code": 58891,
 				"name": "bubbles",
 				"ligatures": ""
 			}
@@ -328,13 +292,13 @@
 					"options"
 				],
 				"defaultCode": 57357,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 14,
-				"order": 15,
+				"order": 13,
 				"prevSize": 32,
-				"code": 57357,
+				"code": 58892,
 				"name": "menu",
 				"ligatures": ""
 			}
@@ -352,13 +316,13 @@
 					"fast"
 				],
 				"defaultCode": 57356,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 15,
-				"order": 16,
+				"order": 14,
 				"prevSize": 32,
-				"code": 57356,
+				"code": 58893,
 				"name": "rocket",
 				"ligatures": ""
 			}
@@ -375,13 +339,13 @@
 					"store"
 				],
 				"defaultCode": 57358,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 16,
-				"order": 17,
+				"order": 15,
 				"prevSize": 32,
-				"code": 57358,
+				"code": 58894,
 				"name": "floppy",
 				"ligatures": ""
 			}
@@ -396,37 +360,14 @@
 					"reload"
 				],
 				"defaultCode": 57359,
-				"grid": 0
+				"grid": 32
 			},
 			"properties": {
 				"id": 17,
-				"order": 18,
+				"order": 16,
 				"prevSize": 32,
-				"code": 57359,
+				"code": 58895,
 				"name": "refresh",
-				"ligatures": ""
-			}
-		},
-		{
-			"icon": {
-				"paths": [
-					"M64 192h896v192h-896zM64 448h896v192h-896zM64 704h896v192h-896z"
-				],
-				"tags": [
-					"menu",
-					"list",
-					"items",
-					"lines",
-					"options"
-				],
-				"grid": 16
-			},
-			"properties": {
-				"id": 184,
-				"order": 19,
-				"prevSize": 32,
-				"code": 58880,
-				"name": "menu2",
 				"ligatures": ""
 			}
 		},
@@ -443,13 +384,13 @@
 					"link",
 					"blank"
 				],
-				"grid": 16
+				"grid": 32
 			},
 			"properties": {
 				"id": 346,
-				"order": 20,
+				"order": 17,
 				"prevSize": 32,
-				"code": 58881,
+				"code": 58896,
 				"name": "new-tab",
 				"ligatures": ""
 			}
@@ -464,13 +405,13 @@
 					"magic",
 					"wizard"
 				],
-				"grid": 16
+				"grid": 32
 			},
 			"properties": {
 				"id": 146,
-				"order": 21,
+				"order": 18,
 				"prevSize": 32,
-				"code": 57360,
+				"code": 58897,
 				"name": "wand",
 				"ligatures": ""
 			}
@@ -487,13 +428,13 @@
 					"statistics",
 					"chart"
 				],
-				"grid": 16
+				"grid": 32
 			},
 			"properties": {
 				"id": 150,
-				"order": 22,
+				"order": 19,
 				"prevSize": 32,
-				"code": 57361,
+				"code": 58898,
 				"name": "stats",
 				"ligatures": ""
 			}
@@ -512,13 +453,13 @@
 					"control",
 					"options"
 				],
-				"grid": 16
+				"grid": 32
 			},
 			"properties": {
 				"id": 144,
-				"order": 23,
+				"order": 20,
 				"prevSize": 32,
-				"code": 57362,
+				"code": 58899,
 				"name": "cog",
 				"ligatures": ""
 			}
@@ -533,13 +474,13 @@
 					"media control",
 					"random"
 				],
-				"grid": 16
+				"grid": 32
 			},
 			"properties": {
 				"id": 286,
-				"order": 24,
+				"order": 21,
 				"prevSize": 32,
-				"code": 57363,
+				"code": 58900,
 				"name": "shuffle",
 				"ligatures": ""
 			}
@@ -547,13 +488,23 @@
 	],
 	"height": 1024,
 	"metadata": {
-		"name": "icomoon"
+		"name": "icomoon",
+		"url": "",
+		"designer": "",
+		"designerURL": "",
+		"licenseURL": ""
 	},
 	"preferences": {
 		"fontPref": {
 			"prefix": "icon-",
 			"metadata": {
-				"fontFamily": "icomoon"
+				"fontFamily": "icomoon",
+				"majorVersion": 1,
+				"minorVersion": 0,
+				"designerURL": "",
+				"designer": "",
+				"licenseURL": "",
+				"fontURL": ""
 			},
 			"showGlyphs": true,
 			"metrics": {
@@ -565,7 +516,9 @@
 			"showQuickUse": true,
 			"quickUsageToken": false,
 			"showMetrics": true,
-			"showMetadata": false
+			"showMetadata": true,
+			"postfix": "",
+			"showVersion": true
 		},
 		"imagePref": {
 			"color": 0,

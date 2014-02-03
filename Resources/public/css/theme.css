@@ -242,15 +242,15 @@
 }
 
 .ez-view-navigationhubview .ez-create-zone:before {
-    content: "\E010";
+    content: "\E611";
 }
 
 .ez-view-navigationhubview .ez-optimize-zone:before {
-    content: "\E011";
+    content: "\E612";
 }
 
 .ez-view-navigationhubview .ez-deliver-zone:before {
-    content: "\E00c";
+    content: "\E60D";
 }
 
 .ez-view-navigationhubview .ez-link a:after {
@@ -285,7 +285,7 @@
 
 .ez-view-navigationhubview .ez-sub-menu-link > .ez-navigation-item:after {
     font-family: 'ez-editorial-icomoon';
-    content: "\E002";
+    content: "\E602";
     color: #888;
     font-size: 90%;
 }
@@ -460,7 +460,7 @@
 .ez-view-rawcontentview .ez-raw-content-title a:after,
 .ez-view-rawcontentview .ez-fieldgroup-name a:after {
     display: inline-block;
-    content: "\E002";
+    content: "\E602";
     font-family: 'ez-editorial-icomoon';
     color: #999;
     padding-left: 0.3em;
@@ -469,7 +469,7 @@
 
 .ez-view-rawcontentview.is-raw-content-view-collapsed .ez-raw-content-title a:after,
 .ez-view-rawcontentview .ez-fieldgroup-name.is-field-group-collapsed a:after {
-    content: "\E004";
+    content: "\E604";
 }
 
 .ez-view-rawcontentview .ez-raw-content-title a,
@@ -515,7 +515,7 @@
 /* url field view */
 .ez-fieldview-ezurl .ez-fieldview-value-content a:after {
     font-family: 'ez-editorial-icomoon';
-    content: "\E601";
+    content: "\E610";
     padding-left: 0.3em;
     font-size: 90%;
 }
@@ -555,11 +555,11 @@
 }
 
 .ez-view-contenteditformview .fieldgroup-name:after {
-    content: "\E002";
+    content: "\E602";
 }
 
 .ez-view-contenteditformview .is-collapsed .fieldgroup-name:after {
-    content: "\E004";
+    content: "\E604";
 }
 
 /* field edit view */
@@ -804,48 +804,48 @@
 }
 
 .ez-view-buttonactionview .ez-action .action-icon:before {
-    content: "\E001";
+    content: "\E601";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="edit"] .action-icon:before {
-    content: "\E006";
+    content: "\E606";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="minimizeActionBar"] .action-icon:before,
 .ez-view-buttonactionview .ez-action[data-action="minimizeDiscoveryBar"] .action-icon:before {
-    content: "\E600";
+    content: "\E60c";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="publish"] .action-icon:before {
-    content: "\E00c";
+    content: "\E60d";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="save"] .action-icon:before {
-    content: "\E00e";
+    content: "\E60e";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="discard"] .action-icon:before {
-    content: "\E000";
+    content: "\E600";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="collaborate"] .action-icon:before {
-    content: "\E00b";
+    content: "\E60b";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="preview"] .action-icon:before {
-    content: "\E007";
+    content: "\E607";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="preview"] .action-trigger[data-action-option="desktop"]:before {
-    content: "\E008";
+    content: "\E608";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="preview"] .action-trigger[data-action-option="tablet"]:before {
-    content: "\E009";
+    content: "\E609";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="preview"] .action-trigger[data-action-option="mobile"]:before {
-    content: "\E00a";
+    content: "\E60a";
 }
 
 /* preview action view */
