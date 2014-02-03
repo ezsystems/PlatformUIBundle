@@ -362,7 +362,7 @@ YUI.add('ez-editorialapp', function (Y) {
          * is-app-loading class on the application container.
          *
          * @method _loading
-         * @method protected
+         * @protected
          * @param {Object} e the event facade object of the loadingChange event
          */
         _loading: function (e) {
