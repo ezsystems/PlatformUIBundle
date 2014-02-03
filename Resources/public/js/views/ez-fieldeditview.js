@@ -146,7 +146,7 @@ YUI.add('ez-fieldeditview', function (Y) {
                 tooltip.setY(infoIcon.getY() - tooltipHeight);
             }
             tooltip.addClass(IS_VISIBLE_CLASS);
-            tooltip.on('clickoutside', Y.bind(this._handleClickOutside, this));
+            this._attachedViewEvents.push(tooltip.on('clickoutside', Y.bind(this._handleClickOutside, this)));
         },
 
         /**
