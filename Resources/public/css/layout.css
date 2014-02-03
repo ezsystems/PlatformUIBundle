@@ -145,12 +145,7 @@
     min-height: 100%;
 }
 
-.is-app-open .ez-view-container {
-    display: block;
-}
-
 .ez-view-container {
-    display: none;
     width: 100%;
 }
 
