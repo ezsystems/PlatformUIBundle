@@ -217,9 +217,9 @@
 }
 
 .ez-view-navigationhubview .ez-zone:before {
-    width: 2rem;
-    height: 2rem;
-    line-height: 2rem;
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5em;
     margin: 0;
     background: #528036;
     color: #fff;
