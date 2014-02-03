@@ -262,7 +262,7 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @return Boolean
          */
         _navigationOverflowed: function () {
-            return this._navigationMenu.get('scrollWidth') > this._navigationMenu.get('docWidth');
+            return this._navigationMenu.get('scrollWidth') > this._navigationMenu.get('offsetWidth');
         },
 
         /**
@@ -273,7 +273,7 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @return Boolean
          */
         _navigationUnderflowed: function () {
-            return this._navigationMenu.get('scrollWidth') <= this._navigationMenu.get('docWidth');
+            return this._navigationMenu.get('scrollWidth') <= this._navigationMenu.get('offsetWidth');
         },
 
         /**
