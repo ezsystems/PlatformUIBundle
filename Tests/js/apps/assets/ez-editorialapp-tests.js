@@ -152,70 +152,36 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             this.wait();
         },
 
-        "Should show the content edit view": function () {
+        "Should show the view which identifier is in the route metadata": function () {
             var rendered = false, initialized = false,
-                req = {}, resp = {};
+                req = {route: {view: 'myView'}}, resp = {variables: {'myVar': 1}};
 
-            resp.variables = {'content': 1, 'contentType': {}, 'mainLocation': {}, 'owner': {}};
+            this.app.views.myView = {
+                type: Y.Base.create('myView', Y.View, [], {
+                    initializer: function () {
+                        initialized = true;
+                    },
 
-            this.app.views.contentEditView.type = Y.Base.create('testView', Y.View, [], {
-                initializer: function () {
-                    initialized = true;
-                },
-
-                render: function () {
-                    rendered = true;
-                    Y.Assert.areEqual(
-                        this.get('content'), resp.variables.content,
-                        "The view attributes should be updated with the result of the loader"
-                    );
-                }
-            });
+                    render: function () {
+                        rendered = true;
+                        Y.Assert.areEqual(
+                            this.get('myVar'), resp.variables.myVar,
+                            "The view attributes should be updated with the result of the loader"
+                        );
+                    }
+                })
+            };
 
             this.app.set('loading', true);
-            this.app.handleContentEdit(req, resp);
+            this.app.handleMainView(req, resp);
 
-            Y.assert(initialized, "The content edit view should have been initialized");
-            Y.assert(rendered, "The content edit view should have been rendered");
+            Y.assert(initialized, "The view should have been initialized");
+            Y.assert(rendered, "The view should have been rendered");
 
             rendered = false;
-            resp.variables.content++;
+            resp.variables.myVar++;
             this.app.set('loading', true);
-            this.app.handleContentEdit(req, resp);
-
-            Y.assert(rendered, "The content edit view should have been rerendered");
-        },
-
-        "Should show the location view": function () {
-            var rendered = false, initialized = false,
-                req = {}, resp = {};
-
-            resp.variables = {'content': 1, 'path': [], 'location': {}};
-
-            this.app.views.locationViewView.type = Y.Base.create('testView', Y.View, [], {
-                initializer: function () {
-                    initialized = true;
-                },
-
-                render: function () {
-                    rendered = true;
-                    Y.Assert.areEqual(
-                        this.get('content'), resp.variables.content,
-                        "The view attributes should be updated with the result of the loader"
-                    );
-                }
-            });
-
-            this.app.set('loading', true);
-            this.app.handleLocationView(req, resp);
-
-            Y.assert(initialized, "The location view view should have been initialized");
-            Y.assert(rendered, "The location view should have been rendered");
-
-            rendered = false;
-            resp.variables.content++;
-            this.app.set('loading', true);
-            this.app.handleLocationView(req, resp);
+            this.app.handleMainView(req, resp);
 
             Y.assert(rendered, "The location view view should have been rerendered");
         },

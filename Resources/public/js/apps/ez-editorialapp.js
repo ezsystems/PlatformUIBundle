@@ -236,51 +236,6 @@ YUI.add('ez-editorialapp', function (Y) {
         },
 
         /**
-         * Display the content edit view
-         *
-         * @method handleContentEdit
-         * @param {Object} req the request object
-         * @param {Function} res the response object
-         * @param {Function} next the function to pass control to the next route callback
-         */
-        handleContentEdit: function (req, res, next) {
-            this.showView('contentEditView', res.variables, {
-                update: true,
-                render: true,
-            });
-        },
-
-        /**
-         * Displays the location view
-         *
-         * @method handleLocationView
-         * @param {Object} req the request object
-         * @param {Function} res the response object
-         * @param {Function} next the function to pass control to the next route callback
-         */
-        handleLocationView: function (req, res, next) {
-            this.showView('locationViewView', res.variables, {
-                update: true,
-                render: true,
-            });
-        },
-
-        /**
-         * Displays the dashboard view
-         *
-         * @method handleDashboard
-         * @param {Object} req the request object
-         * @param {Function} res the response object
-         * @param {Function} next the function to pass control to the next route callback
-         */
-        handleDashboard: function (req, res, next) {
-            this.showView('dashboardView', {}, {
-                update: true,
-                render: true,
-            });
-        },
-
-        /**
          * Changes the application state to be open
          *
          * @method open
@@ -374,6 +329,22 @@ YUI.add('ez-editorialapp', function (Y) {
                 }
             }, this);
             next();
+        },
+
+        /**
+         * Middleware to display the main view which identifier is in the route
+         * metadata
+         *
+         * @method handleMainView
+         * @param {Object} req
+         * @param {Object} res
+         * @param {Function} next
+         */
+        handleMainView: function (req, res, next) {
+            this.showView(req.route.view, res.variables, {
+                update: true,
+                render: true
+            });
         },
 
         /**
@@ -473,6 +444,8 @@ YUI.add('ez-editorialapp', function (Y) {
              *   * `name`: name of the route which is useful to generate an URI
              *     with {{#crossLink
              *     "eZ.EditorialApp/routeUri:method"}}Y.eZ.EditorialApp.routeUri{{/crossLink}}
+             *   * `view`: the identifier of the view in the `views` hash to
+             *     display. This is handled by the `handleMainView` middleware.
              *   * `sideViews`: a hash which keys are the side view keys in the
              *     sideViews property. A truthy value means that the
              *     corresponding side view should be visible.
@@ -484,19 +457,22 @@ YUI.add('ez-editorialapp', function (Y) {
                     name: "dashboard",
                     path: "/dashboard",
                     sideViews: {'navigationHub': true},
-                    callbacks: ['open', 'handleSideViews', 'handleDashboard']
+                    view: 'dashboardView',
+                    callbacks: ['open', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "editContent",
                     path: '/edit/:id',
                     loader: Y.eZ.ContentEditViewLoader,
                     sideViews: {},
-                    callbacks: ['open', 'handleSideViews', 'runLoader', 'handleContentEdit']
+                    view: 'contentEditView',
+                    callbacks: ['open', 'handleSideViews', 'runLoader', 'handleMainView']
                 }, {
                     name: "viewLocation",
                     path: '/view/:id',
                     loader: Y.eZ.LocationViewViewLoader,
                     sideViews: {'discoveryBar': true, 'navigationHub': true},
-                    callbacks: ['open', 'handleSideViews', 'runLoader', 'handleLocationView']
+                    view: 'locationViewView',
+                    callbacks: ['open', 'handleSideViews', 'runLoader', 'handleMainView']
                 }],
             },
             serverRouting: {
