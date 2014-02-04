@@ -277,18 +277,17 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             header.simulate('mouseover');
 
             this.wait(function () {
-                Y.assert(
-                    header.one('.ez-technical-infos').getStyle('opacity') == 1,
+                Y.Assert.areEqual(
+                    1, header.one('.ez-technical-infos').getStyle('opacity'),
                     "Opacity should be 1"
                 );
-            }, 300);
-
-            header.simulate('mouseout');
-            this.wait(function () {
-                Y.assert(
-                    header.one('.ez-technical-infos').getStyle('opacity') === 0,
-                    "Opacity should be 0"
-                );
+                header.simulate('mouseout');
+                this.wait(function () {
+                    Y.Assert.areEqual(
+                        0, header.one('.ez-technical-infos').getStyle('opacity'),
+                        "Opacity should be 0"
+                    );
+                }, 300);
             }, 300);
         },
 
@@ -305,23 +304,19 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 header.one('.ez-technical-infos').getStyle('opacity') == 1,
                 "Opacity should be 1"
             );
-            this.wait(function () {
-                Y.assert(
-                    header.one('.ez-technical-infos').getStyle('opacity') == 1,
-                    "Opacity should be 1"
-                );
-            }, 300);
 
-            header.simulate('mouseout');
-            Y.assert(
-                header.one('.ez-technical-infos').getStyle('opacity') == 1,
-                "Opacity should be 1"
-            );
             this.wait(function () {
-                Y.assert(
-                    header.one('.ez-technical-infos').getStyle('opacity') == 1,
+                Y.Assert.areEqual(
+                    1, header.one('.ez-technical-infos').getStyle('opacity'),
                     "Opacity should be 1"
                 );
+                header.simulate('mouseout');
+                this.wait(function () {
+                    Y.Assert.areEqual(
+                        1, header.one('.ez-technical-infos').getStyle('opacity'),
+                        "Opacity should be 1"
+                    );
+                }, 300);
             }, 300);
         }
 
