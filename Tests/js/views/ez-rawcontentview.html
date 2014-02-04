@@ -42,8 +42,12 @@
                 fullpath: "../../../Resources/public/js/views/ez-rawcontentview.js"
             },
             "ez-templatebasedview": {
-                requires: ['view', 'handlebars'],
+                requires: ['ez-view', 'handlebars'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
             },
             "ez-fieldview": {
                 requires: ['ez-templatebasedview'],

@@ -67,7 +67,7 @@
                 fullpath: "../../../Resources/public/js/views/ez-editpreviewview.js"
             },
             "ez-templatebasedview": {
-                requires: ['view', 'handlebars'],
+                requires: ['ez-view', 'handlebars'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
             },
             "ez-barview": {
@@ -77,6 +77,10 @@
             "ez-accordion-element": {
                 requires: ['transition'],
                 fullpath: "../../../Resources/public/js/extensions/ez-accordion-element.js"
+            },
+            "ez-view": {
+                requires: ['view'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
             },
         }
     }).use('ez-contenteditview-tests', function (Y) {

@@ -42,7 +42,7 @@
                 fullpath: "../../../Resources/public/js/views/ez-contenteditformview.js"
             },
             "ez-templatebasedview": {
-                requires: ['view', 'handlebars'],
+                requires: ['ez-view', 'handlebars'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
             },
             "ez-fieldeditview": {
@@ -53,6 +53,10 @@
                 requires: ['transition'],
                 fullpath: "../../../Resources/public/js/extensions/ez-accordion-element.js"
             },
+            "ez-view": {
+                requires: ['view'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
+            }
         }
     }).use('ez-contenteditformview-tests', function (Y) {
         Y.Test.Runner.run();

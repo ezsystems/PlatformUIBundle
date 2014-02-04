@@ -10,8 +10,18 @@
     font-style: normal;
 }
 
+.ez-editorial-app-page body {
+    background: #333;
+}
+
 .ez-editorial-app {
     font-size: 15px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.ez-editorial-app .pure-g [class *= "pure-u"],
+.ez-editorial-app .pure-g-r [class *= "pure-u"],
+.ez-editorial-app button {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -96,10 +106,6 @@
     border: 1px solid #ccc;
 }
 
-.is-app-open {
-    background: #fff;
-}
-
 .ez-view-container {
     -webkit-transition: opacity 0.2s ease-in-out;
        -moz-transition: opacity 0.2s ease-in-out;
@@ -143,14 +149,10 @@
     border-color: rgba(237, 144, 54, 0.28) rgba(237, 144, 54, 0.29) rgba(237, 144, 54, 0.29) rgba(237, 144, 54, 0.9);
 }
 
-.ez-navigation-container {
-    text-align: center;
-    background: #ddd;
-}
-
 .ez-menu-container {
     background: #333;
     color: #fff;
+    margin-top: -1px; /* to align with the bottom border of the navigation hub */
 }
 
 .ez-mainviews,
@@ -163,13 +165,206 @@
             transition: all 0.3s ease;
 }
 
+/* navigation hub */
+.ez-view-navigationhubview {
+    background: #fff;
+    border-top: 4px solid #000;
+}
+
+.ez-view-navigationhubview .ez-zones-navigation {
+    margin-bottom: -1px; /* for the highlight effect on the active zone */
+}
+
+.ez-view-navigationhubview .ez-zone {
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+
+    -webkit-transition: all 0.2s ease;
+       -moz-transition: all 0.2s ease;
+        -ms-transition: all 0.2s ease;
+         -o-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.ez-view-navigationhubview .is-zone-active {
+    background: #fff;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+.ez-view-navigationhubview .ez-navigation {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #bbb;
+
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.30);
+
+    background: #f5f5f5;
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #F5F5F5), color-stop(1, #FFFFFF));
+    background-image: -webkit-linear-gradient(top, #F5F5F5 0%, #FFFFFF 100%);
+    background-image:    -moz-linear-gradient(top, #F5F5F5 0%, #FFFFFF 100%);
+    background-image:     -ms-linear-gradient(top, #F5F5F5 0%, #FFFFFF 100%);
+    background-image:      -o-linear-gradient(top, #F5F5F5 0%, #FFFFFF 100%);
+    background-image:         linear-gradient(to top, #F5F5F5 0%, #FFFFFF 100%);
+    font-size: 90%;
+}
+
+.ez-view-navigationhubview.is-navigation-fixed .ez-navigation {
+    border-top: 4px solid #000;
+}
+
+.ez-view-navigationhubview .ez-zone:hover {
+    cursor: pointer;
+}
+
+.ez-view-navigationhubview .ez-zone:before {
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5em;
+    margin: 0;
+    background: #528036;
+    color: #fff;
+    display: inline-block;
+    border-radius: 3px;
+    float: left;
+    text-align: center;
+    font-family: 'ez-editorial-icomoon';
+    font-size: 150%;
+    -webkit-font-smoothing: antialiased;
+}
+
+@media (max-width: 52em) {
+    .ez-view-navigationhubview .ez-zone:before {
+        font-size: 120%;
+        width: 1.4em;
+        height: 1.4em;
+        line-height: 1.4em;
+    }
+}
+
+.ez-view-navigationhubview .ez-create-zone:before {
+    content: "\E611";
+}
+
+.ez-view-navigationhubview .ez-optimize-zone:before {
+    content: "\E612";
+}
+
+.ez-view-navigationhubview .ez-deliver-zone:before {
+    content: "\E60D";
+}
+
+.ez-view-navigationhubview .ez-link a:after {
+    padding-left: 0.5em;
+    vertical-align: middle;
+}
+
+.ez-view-navigationhubview .ez-navigation .ez-navigation-item,
+.ez-view-navigationhubview .ez-zone-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.ez-view-navigationhubview .ez-navigation .ez-logo {
+    opacity: 0;
+    visibility: visible;
+    -webkit-transition: all 0.4s ease;
+       -moz-transition: all 0.4s ease;
+        -ms-transition: all 0.4s ease;
+         -o-transition: all 0.4s ease;
+            transition: all 0.4s ease;
+}
+
+.ez-view-navigationhubview.is-navigation-fixed .ez-navigation .ez-logo {
+    opacity: 1;
+    visibility: visible;
+}
+
+.ez-view-navigationhubview .ez-navigation .ez-navigation-item {
+    vertical-align: middle;
+}
+
+.ez-view-navigationhubview .ez-sub-menu-link > .ez-navigation-item:after {
+    font-family: 'ez-editorial-icomoon';
+    content: "\E602";
+    color: #888;
+    font-size: 90%;
+}
+
+.ez-view-navigationhubview .ez-sub-menu-link:hover {
+    background: #fff;
+}
+
+.ez-view-navigationhubview .ez-sub-menu {
+    display: block;
+    background: #fff;
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.15);
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+
+    -webkit-transform: scaleY(0);
+       -moz-transform: scaleY(0);
+        -ms-transform: scaleY(0);
+         -o-transform: scaleY(0);
+            transform: scaleY(0);
+    -webkit-transform-origin: 50% 0;
+       -moz-transform-origin: 50% 0;
+        -ms-transform-origin: 50% 0;
+         -o-transform-origin: 50% 0;
+            transform-origin: 50% 0;
+    -webkit-transition: -webkit-transform 0.1s ease;
+       -moz-transition: -moz-transform 0.1s ease;
+        -ms-transition: -ms-transform 0.1s ease;
+         -o-transition: -o-transform 0.1s ease;
+            transition: transform 0.1s ease;
+}
+
+.ez-view-navigationhubview .is-sub-menu-open .ez-sub-menu {
+    -webkit-transform: scaleY(1);
+       -moz-transform: scaleY(1);
+        -ms-transform: scaleY(1);
+         -o-transform: scaleY(1);
+            transform: scaleY(1);
+}
+
+.ez-view-navigationhubview .ez-sub-menu li:hover {
+    background: #f0f0f0;
+}
+
+.ez-view-navigationhubview li {
+    border-bottom: 3px solid transparent;
+}
+
+.ez-view-navigationhubview .ez-navigation-active {
+    border-bottom: 3px solid #528036;
+}
+
+.ez-view-navigationhubview .ez-zone-hint {
+    color: #777;
+    font-size: 80%;
+}
+
+.ez-view-navigationhubview .ez-link a {
+    color: #333;
+    font-size: 85%;
+    font-weight: bold;
+    margin-bottom: 1em;
+    display: inline-block;
+}
+
+.ez-view-navigationhubview .ez-navigation .ez-navigation-item:hover,
+.ez-view-navigationhubview .ez-link a:hover {
+    color: #528036;
+}
+
 /* location view view */
-.ez-view-locationviewview {
+.ez-locationview-content {
     background: #fff;
 }
 
 .ez-view-locationviewview .ez-actionbar-container {
     background: #333;
+    margin-top: -1px; /* to align the action bar with bottom border of navigation hub */
 
     -webkit-transition: all 0.30s ease-in-out;
        -moz-transition: all 0.30s ease-in-out;
@@ -232,27 +427,17 @@
     border-top: 3px solid #528036;
 }
 
-.ez-view-locationviewview .ez-tabs .ez-tabs-panels {
-    /* to position absolutely the panel to have an opacity transition without any JS code */
-    position:relative;
-}
-
 .ez-view-locationviewview .ez-tabs .ez-tabs-panel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    z-index: 50;
-    -webkit-transition: opacity 0.2s ease-in-out;
-       -moz-transition: opacity 0.2s ease-in-out;
-        -ms-transition: opacity 0.2s ease-in-out;
-         -o-transition: opacity 0.2s ease-in-out;
-            transition: opacity 0.2s ease-in-out;
+    display: none;
 }
 
 .ez-view-locationviewview .ez-tabs .ez-tabs-panel.is-tab-selected {
-    opacity: 1;
-    z-index: 500;
+    display: block;
+
+    -webkit-animation: fadeIn 0.3s;
+       -moz-animation: fadeIn 0.3s;
+         -o-animation: fadeIn 0.3s;
+            animation: fadeIn 0.3s;
 }
 
 /* raw content view */
@@ -275,7 +460,7 @@
 .ez-view-rawcontentview .ez-raw-content-title a:after,
 .ez-view-rawcontentview .ez-fieldgroup-name a:after {
     display: inline-block;
-    content: "\E002";
+    content: "\E602";
     font-family: 'ez-editorial-icomoon';
     color: #999;
     padding-left: 0.3em;
@@ -284,7 +469,7 @@
 
 .ez-view-rawcontentview.is-raw-content-view-collapsed .ez-raw-content-title a:after,
 .ez-view-rawcontentview .ez-fieldgroup-name.is-field-group-collapsed a:after {
-    content: "\E004";
+    content: "\E604";
 }
 
 .ez-view-rawcontentview .ez-raw-content-title a,
@@ -330,7 +515,7 @@
 /* url field view */
 .ez-fieldview-ezurl .ez-fieldview-value-content a:after {
     font-family: 'ez-editorial-icomoon';
-    content: "\E601";
+    content: "\E610";
     padding-left: 0.3em;
     font-size: 90%;
 }
@@ -370,11 +555,11 @@
 }
 
 .ez-view-contenteditformview .fieldgroup-name:after {
-    content: "\E002";
+    content: "\E602";
 }
 
 .ez-view-contenteditformview .is-collapsed .fieldgroup-name:after {
-    content: "\E004";
+    content: "\E604";
 }
 
 /* field edit view */
@@ -509,6 +694,13 @@
     border-bottom: 2px solid #bf3e33;
 }
 
+/* dashboard view */
+.ez-view-dashboardview {
+    /* for test purpose */
+    padding: 2em 0 10em 0;
+    background: #fff;
+}
+
 /* bar view */
 .ez-view-barview .ez-actions-list {
     background: #333333;
@@ -542,6 +734,10 @@
          -o-transition: all 0.30s ease-in-out;
             transition: all 0.30s ease-in-out;
     box-shadow: 7px 0 7px 0 rgba(0, 0, 0, 0.5);
+}
+
+.is-navigationhubview-fixed .ez-view-barview {
+    top: calc(2.3rem + 4px); /* height of the navigation menu + borders */
 }
 
 /* discovery bar view */
@@ -608,48 +804,48 @@
 }
 
 .ez-view-buttonactionview .ez-action .action-icon:before {
-    content: "\E001";
+    content: "\E601";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="edit"] .action-icon:before {
-    content: "\E006";
+    content: "\E606";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="minimizeActionBar"] .action-icon:before,
 .ez-view-buttonactionview .ez-action[data-action="minimizeDiscoveryBar"] .action-icon:before {
-    content: "\E600";
+    content: "\E60c";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="publish"] .action-icon:before {
-    content: "\E00c";
+    content: "\E60d";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="save"] .action-icon:before {
-    content: "\E00e";
+    content: "\E60e";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="discard"] .action-icon:before {
-    content: "\E000";
+    content: "\E600";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="collaborate"] .action-icon:before {
-    content: "\E00b";
+    content: "\E60b";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="preview"] .action-icon:before {
-    content: "\E007";
+    content: "\E607";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="preview"] .action-trigger[data-action-option="desktop"]:before {
-    content: "\E008";
+    content: "\E608";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="preview"] .action-trigger[data-action-option="tablet"]:before {
-    content: "\E009";
+    content: "\E609";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="preview"] .action-trigger[data-action-option="mobile"]:before {
-    content: "\E00a";
+    content: "\E60a";
 }
 
 /* preview action view */

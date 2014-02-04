@@ -1,6 +1,6 @@
 <h1>Welcome to eZ Publish</h1>
 
 <ul>
-    <li><a href="#/view/{{urlEncode '/api/ezp/v2/content/locations/1/2'}}">Root location</a></li>
-    <li><a href="#/view/{{urlEncode '/api/ezp/v2/content/locations/1/2/111'}}">Test content</a></li>
+    <li><a href="{{ path "viewLocation" id="/api/ezp/v2/content/locations/1/2" }}">Root location</a></li>
+    <li><a href="{{ path "viewLocation" id="/api/ezp/v2/content/locations/1/2/111" }}">Test content</a></li>
 </ul>

@@ -42,3 +42,10 @@
 .is-actionbar-minimized .ez-view-barview .view-more-actions {
     right: 4em;
 }
+
+.is-navigationhubview-fixed .ez-view-barview {
+    position: fixed;
+    top: 2.3rem;
+    z-index: 1000;
+    width: 230px;
+}

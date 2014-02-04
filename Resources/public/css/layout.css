@@ -64,15 +64,56 @@
   }
 }
 
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.ez-editorial-app-page {
+    height: 100%;
+}
+
+.ez-editorial-app-page body {
+    height: 100%;
+    margin: 0;
+}
+
 .ez-editorial-app a:hover {
     text-decoration: none;
 }
 
 .ez-editorial-app {
-    position:absolute;
-    top: 0;
-    left: 100%;
-    width: 100%;
     opacity: 0;
 
     -webkit-transition: opacity 0.2s ease, left 0.3s ease;
@@ -91,18 +132,11 @@
 }
 
 .is-app-open {
-    left: 0;
-    z-index: 1000;
     opacity: 1;
-}
-
-.is-app-open .ez-view-container {
-    display: block;
-    height: 100%;
+    min-height: 100%;
 }
 
 .ez-view-container {
-    display: none;
     width: 100%;
 }
 
@@ -123,11 +157,11 @@
         -ms-transform: translateX(-230px);
          -o-transform: translateX(-230px);
             transform: translateX(-230px);
+    display: none;
 }
 
 .ez-mainviews {
     padding-left: 230px;
-    height: 100%;
 }
 
 .is-discoverybar-minimized .ez-menu-container {
@@ -138,19 +172,15 @@
 .ez-menu-container {
     width: 230px;
     margin-left: -230px;
-    height: 100%;
-    position: fixed;
-    top: 4em;
-    z-index: 1015;
 }
 
 .is-navigation-hidden .ez-navigation-container {
-    height: 0;
+    max-height: 0;
     opacity: 0;
 }
 
 .ez-navigation-container {
-    height: 4em;
+    max-height: 20em;
     width: 100%;
 }
 

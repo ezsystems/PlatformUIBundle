@@ -105,7 +105,23 @@ YUI.add('ez-locationviewview', function (Y) {
             container.one('.ez-actionbar-container').append(
                 this.get('actionBar').render().get('container')
             );
+
+            this._uiSetMinHeight();
             return this;
+        },
+
+        /**
+         * Sets the minimum height of the view
+         *
+         * @private
+         * @method _uiSetMinHeight
+         */
+        _uiSetMinHeight: function () {
+            var container = this.get('container');
+
+            container.one('.ez-locationview-content').setStyle(
+                'minHeight', container.get('winHeight') + 'px'
+            );
         }
     }, {
         ATTRS: {

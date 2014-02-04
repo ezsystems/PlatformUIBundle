@@ -55,9 +55,13 @@
                 fullpath: "../../../../Resources/public/js/views/actions/ez-buttonactionview.js"
             },
             "ez-templatebasedview": {
-                requires: ['view', 'handlebars'],
+                requires: ['ez-view', 'handlebars'],
                 fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
-            }
+            },
+            "ez-view": {
+                requires: ['view'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
         }
     }).use('ez-previewactionview-tests', function (Y) {
 

@@ -29,6 +29,14 @@ YUI.add('ez-errorview', function (Y) {
             }
         },
 
+        initializer: function () {
+            this.after('activeChange', function (e) {
+                if ( e.newVal ) {
+                    this._setFocus();
+                }
+            });
+        },
+
         /**
          * Renders the error view (with transition)
          *
@@ -62,16 +70,6 @@ YUI.add('ez-errorview', function (Y) {
          */
         _setFocus: function () {
             this.get('container').one(ERROR_DIALOG_SEL).focus();
-        },
-
-        /**
-         * Active callback for the error view to make sure it has the focus
-         * after being displayed
-         *
-         * @method activeCallback
-         */
-        activeCallback: function () {
-            this._setFocus();
         },
 
         /**

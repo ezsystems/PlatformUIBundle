@@ -1,0 +1,151 @@
+.ez-view-navigationhubview .ez-zones-navigation,
+.ez-view-navigationhubview .ez-navigation-create,
+.ez-view-navigationhubview .ez-navigation-deliver,
+.ez-view-navigationhubview .ez-navigation-optimize {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.ez-view-navigationhubview .ez-zones-navigation li {
+    display: inline-block;
+}
+
+.ez-view-navigationhubview .ez-zones-navigation .ez-link {
+    vertical-align: bottom;
+}
+
+.ez-view-navigationhubview .ez-navigation > ul,
+.ez-view-navigationhubview .ez-zones-navigation {
+    width: 100%;
+    white-space: nowrap;
+}
+
+.ez-view-navigationhubview .ez-navigation li {
+    display: inline-block;
+}
+
+.ez-view-navigationhubview .ez-zone-name,
+.ez-view-navigationhubview .ez-zone-hint {
+    margin: 0 0 0 2.6rem;
+}
+
+.ez-view-navigationhubview .ez-logo {
+    text-align: center;
+    width: 9em;
+}
+
+.ez-view-navigationhubview .ez-zone,
+.ez-view-navigationhubview .ez-link {
+    padding: 1em;
+}
+
+.ez-view-navigationhubview .ez-navigation .ez-logo {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.ez-view-navigationhubview .ez-navigation .ez-logo img {
+    height: 1.3em;
+    padding-top: 0.8em;
+}
+
+.ez-view-navigationhubview .ez-navigation {
+    width: 100%;
+    overflow: hidden;
+}
+
+.ez-view-navigationhubview.is-navigation-fixed .ez-navigation {
+    position: fixed;
+    top: 0;
+    z-index: 10000;
+}
+
+.ez-view-navigationhubview.is-navigation-fixed .ez-navigation .ez-logo {
+    visibility: visible;
+}
+
+.ez-view-navigationhubview .ez-navigation .is-navigation-hidden {
+    display: none;
+}
+
+.ez-view-navigationhubview .ez-navigation-item {
+    display: inline-block;
+    padding: 0 1.2em 0 1.2em;
+    height: 2.3rem;
+    line-height: 2.3rem;
+}
+
+.ez-view-navigationhubview .ez-more {
+    display: none;
+    margin-right: 1em;
+}
+
+.ez-view-navigationhubview .ez-logo .ez-navigation-item {
+    padding: 0 1.2em;
+}
+
+.ez-view-navigationhubview .ez-navigation .ez-more {
+    display: none;
+}
+
+.ez-view-navigationhubview .has-more .ez-more {
+    display: inline-block;
+}
+
+.ez-view-navigationhubview .ez-sub-menu {
+    display: none;
+    position: absolute;
+
+    margin: 0;
+    padding: 0;
+}
+
+.ez-view-navigationhubview .ez-sub-menu li {
+    padding: 0;
+}
+
+.ez-view-navigationhubview .ez-sub-menu .ez-navigation-item {
+    padding: 0.3em 1.2em;
+    line-height: 1.3em;
+    height: auto;
+}
+
+.ez-view-navigationhubview .is-sub-menu-open .ez-sub-menu {
+    display: block;
+    z-index:10001;
+}
+
+.ez-view-navigationhubview.is-navigation-fixed .is-sub-menu-open .ez-sub-menu {
+    position: fixed;
+}
+
+.ez-view-navigationhubview .ez-sub-menu li {
+    display: block;
+}
+
+@media (max-width:60em) {
+    .ez-view-navigationhubview .ez-zones-navigation .ez-exchange {
+        display: none;
+    }
+}
+
+@media (max-width:52em) {
+    .ez-view-navigationhubview .ez-logo {
+        width: 6em;
+        vertical-align: middle;
+    }
+
+    .ez-view-navigationhubview .ez-zone-hint {
+        display: none;
+    }
+
+    .ez-view-navigationhubview .ez-zone-name {
+        margin: 0.2em 0 0 1.9rem;
+        font-size: 90%;
+    }
+
+    .ez-view-navigationhubview .ez-zones-navigation .ez-settings a {
+        margin-bottom: 0.4em;
+    }
+}

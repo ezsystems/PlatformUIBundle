@@ -118,12 +118,20 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             this.view.render();
             Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
             Y.Assert.areNotEqual("", container.getHTML(), "View container should contain the result of the this.view");
+
+            Y.Assert.areEqual(
+                container.one('.ez-main-content').getStyle('min-height'),
+                container.get('winHeight') + 'px'
+            );
+
             this.view.destroy();
             Y.Mock.verify(formView);
             Y.Mock.verify(actionBar);
         },
 
         "Test available variable in template": function () {
+            var origTpl = this.view.template;
+
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
                 Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variables");
@@ -133,8 +141,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 Y.Assert.isObject(variables.mainLocation, "mainLocation should be available in the template and should be an object");
                 Y.Assert.isObject(variables.owner, "owner should be available in the template and should be an object");
 
-                return  '<div class="ez-contenteditformview-container"></div>' +
-                        '<div class="ez-editactionbar-container"></div>';
+                return  origTpl.call(this, variables);
             };
             this.view.render();
             this.view.destroy();
@@ -261,7 +268,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         "Should focus on the content element using special method": function () {
             var focused = false;
 
-            this.view.render().activeCallback();
+            this.view.render().set('active', true);
             container.one('.ez-main-content').on('focus', function () {
                 focused = true;
             });

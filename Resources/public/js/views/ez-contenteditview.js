@@ -43,6 +43,12 @@ YUI.add('ez-contenteditview', function (Y) {
         initializer: function () {
             this.get('formView').addTarget(this);
             this.get('actionBar').addTarget(this);
+
+            this.after('activeChange', function (e) {
+                if ( e.newVal ) {
+                    this._setFocus();
+                }
+            });
         },
 
         /**
@@ -78,20 +84,21 @@ YUI.add('ez-contenteditview', function (Y) {
             // Note: render() is drawing non-height-responsive version of the action bar
             // but handleHeightUpdate() event will be triggered from app.handleContentEdit(), when everything is loaded to draw the responsive version
             container.one(ACTION_BAR_CONTAINER).append(this.get('actionBar').render().get('container'));
+            this._uiSetMinHeight();
 
             return this;
         },
 
-
         /**
-         * Active callback for the content edit view to make sure it
-         * has the focus after being displayed.
+         * Sets the minimum height of the view
          *
-         * @method activeCallback
+         * @private
+         * @method _uiSetMinHeight
          */
-        activeCallback: function () {
-            this._subViewsPostActivation();
-            this._setFocus();
+        _uiSetMinHeight: function () {
+            var container = this.get('container');
+
+            container.one(CONTENT_SEL).setStyle('minHeight', container.get('winHeight') + 'px');
         },
 
         /**

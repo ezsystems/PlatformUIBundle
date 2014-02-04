@@ -14,7 +14,6 @@
 }
 
 .ez-view-contenteditview .ez-main-content {
-    min-height: 800px; /* temporary, until we get enough content */
     width: 100%;
 }
 
@@ -64,10 +63,13 @@
 }
 
 .ez-view-contenteditview .ez-editactionbar-container {
-    position: fixed;
-    top: 0;
     width: 230px;
     margin-right: -230px;
-    height: 100%;
+}
+
+.is-navigation-hidden .ez-view-contenteditview .ez-editactionbar-container {
+    position: fixed;
+    top: 0;
     z-index: 1025;
+    height: 100%;
 }

@@ -121,11 +121,31 @@ YUI.add('ez-editorialapp', function (Y) {
             this.on('*:editAction', this._editContent);
             this.on('*:minimizeDiscoveryBarAction', this._minimizeDiscoveryBar);
 
+            this.on('*:navigationModeChange', this._uiSetNavigationModeClass);
+
             // Listening for events fired on child views
             this.views.errorView.instance.addTarget(this);
 
             // Registering handlebars partials
             this._registerPartials();
+            this._registerUrlHelpers();
+        },
+
+        /**
+         * navigationModeChange event handler, it sets or unsets the navigation
+         * mode class provided in the event facade to handle the fact that the
+         * navigation hub can be fixed or not.
+         *
+         * @method _uiSetNavigationModeClass
+         * @protected
+         * @param {Object} e navigation mode event facade
+         */
+        _uiSetNavigationModeClass: function (e) {
+            if ( e.navigation.value ) {
+                this.get('container').addClass(e.navigation.modeClass);
+            } else {
+                this.get('container').removeClass(e.navigation.modeClass);
+            }
         },
 
         /**
@@ -201,7 +221,7 @@ YUI.add('ez-editorialapp', function (Y) {
                 'additionalInfo': errorInfo.additionalInfo
             });
             errorView.render();
-            errorView.activeCallback();
+            errorView.set('active', true);
         },
 
         /**
@@ -212,52 +232,8 @@ YUI.add('ez-editorialapp', function (Y) {
          * @protected
          */
         _retryAction: function (retryAction) {
+            this.views.errorView.instance.set('active', false);
             retryAction.run.apply(retryAction.context, retryAction.args);
-        },
-
-        /**
-         * Display the content edit view
-         *
-         * @method handleContentEdit
-         * @param {Object} req the request object
-         * @param {Function} res the response object
-         * @param {Function} next the function to pass control to the next route callback
-         */
-        handleContentEdit: function (req, res, next) {
-            this.showView('contentEditView', res.variables, {
-                update: true,
-                render: true,
-            });
-        },
-
-        /**
-         * Displays the location view
-         *
-         * @method handleLocationView
-         * @param {Object} req the request object
-         * @param {Function} res the response object
-         * @param {Function} next the function to pass control to the next route callback
-         */
-        handleLocationView: function (req, res, next) {
-            this.showView('locationViewView', res.variables, {
-                update: true,
-                render: true,
-            });
-        },
-
-        /**
-         * Displays the dashboard view
-         *
-         * @method handleDashboard
-         * @param {Object} req the request object
-         * @param {Function} res the response object
-         * @param {Function} next the function to pass control to the next route callback
-         */
-        handleDashboard: function (req, res, next) {
-            this.showView('dashboardView', {}, {
-                update: true,
-                render: true,
-            });
         },
 
         /**
@@ -272,7 +248,6 @@ YUI.add('ez-editorialapp', function (Y) {
             var container = this.get('container');
 
             container.addClass(APP_OPEN);
-            container.setStyle('height', container.get('docHeight') + 'px');
             if ( L.isFunction(next) ) {
                 next();
             }
@@ -342,18 +317,35 @@ YUI.add('ez-editorialapp', function (Y) {
                     this.get('container').one(viewInfo.container).append(
                         viewInfo.instance.get('container')
                     );
-                    this._viewActiveCallback(viewInfo.instance);
+                    viewInfo.instance.set('active', true);
                     container.removeClass(cl);
                     viewInfo.instance.addTarget(this);
                 } else {
                     container.addClass(cl);
                     if ( viewInfo.instance ) {
+                        viewInfo.instance.set('active', false);
                         viewInfo.instance.remove();
                         viewInfo.instance.removeTarget(this);
                     }
                 }
             }, this);
             next();
+        },
+
+        /**
+         * Middleware to display the main view which identifier is in the route
+         * metadata
+         *
+         * @method handleMainView
+         * @param {Object} req
+         * @param {Object} res
+         * @param {Function} next
+         */
+        handleMainView: function (req, res, next) {
+            this.showView(req.route.view, res.variables, {
+                update: true,
+                render: true
+            });
         },
 
         /**
@@ -371,7 +363,7 @@ YUI.add('ez-editorialapp', function (Y) {
          * is-app-loading class on the application container.
          *
          * @method _loading
-         * @method protected
+         * @protected
          * @param {Object} e the event facade object of the loadingChange event
          */
         _loading: function (e) {
@@ -395,9 +387,31 @@ YUI.add('ez-editorialapp', function (Y) {
             });
         },
 
+        /**
+         * Registers the URL related handlebars helpers, ie:
+         *
+         *   * `path`: to generate an URL from its name and its parameters
+         *   * `asset` : to generate the URL to an asset available in the
+         *   `assetRoot` directory
+         *
+         * @method _registerUrlHelpers
+         * @protected
+         */
+        _registerUrlHelpers: function () {
+            var that = this;
+
+            Y.Handlebars.registerHelper('path', function (routeName, options) {
+                return that.routeUri(routeName, options.hash);
+            });
+
+            Y.Handlebars.registerHelper('asset', function (uri) {
+                return that.get('assetRoot').replace(/\/+$/, '') + '/' + uri.replace(/^\/+/, '');
+            });
+        },
+
         /*
-         * Overrides the default implementation to make sure the view
-         * activeCallback callback is called after the view is attached to the
+         * Overrides the default implementation to make sure the view `active`
+         * attribute is set to true  after the view is attached to the
          * DOM. It also sets the loading flag to false.
          *
          * @method _afterActiveViewChange
@@ -405,34 +419,36 @@ YUI.add('ez-editorialapp', function (Y) {
          * @param {Object} e activeViewChange event facade
          */
         _afterActiveViewChange: function (e) {
-            var cb;
+            var cb, prevView = e.prevVal,
+                handleActive = function (view) {
+                    if ( prevView ) {
+                        prevView.set('active', false);
+                    }
+                    view.set('active', true);
+                },
+                removeContainerTransformStyle = function (view) {
+                    // removing transform style so that position fixed works
+                    // as intended see https://jira.ez.no/browse/EZP-21895
+                    view.get('container').setStyle('transform', 'none');
+                };
 
             if ( e.options.callback ) {
                 cb = e.options.callback;
                 e.options.callback = function (view) {
                     cb(e.newVal);
-                    this._viewActiveCallback(view);
+                    removeContainerTransformStyle(view);
+                    handleActive(view);
                 };
             } else {
-                e.options.callback = this._viewActiveCallback;
+                e.options.callback = function (view) {
+                    removeContainerTransformStyle(view);
+                    handleActive(view);
+                };
             }
 
             Y.eZ.EditorialApp.superclass._afterActiveViewChange.call(this, e);
             this.set('loading', false);
         },
-
-        /**
-         * Calls the view activation callback if it exists
-         *
-         * @method _viewActiveCallback
-         * @protected
-         * @param {Y.View} view
-         */
-        _viewActiveCallback: function (view) {
-            if ( typeof view.activeCallback === 'function' ) {
-                view.activeCallback.call(view);
-            }
-        }
     }, {
         ATTRS: {
             /**
@@ -451,6 +467,8 @@ YUI.add('ez-editorialapp', function (Y) {
              *   * `name`: name of the route which is useful to generate an URI
              *     with {{#crossLink
              *     "eZ.EditorialApp/routeUri:method"}}Y.eZ.EditorialApp.routeUri{{/crossLink}}
+             *   * `view`: the identifier of the view in the `views` hash to
+             *     display. This is handled by the `handleMainView` middleware.
              *   * `sideViews`: a hash which keys are the side view keys in the
              *     sideViews property. A truthy value means that the
              *     corresponding side view should be visible.
@@ -462,19 +480,22 @@ YUI.add('ez-editorialapp', function (Y) {
                     name: "dashboard",
                     path: "/dashboard",
                     sideViews: {'navigationHub': true},
-                    callbacks: ['open', 'handleSideViews', 'handleDashboard']
+                    view: 'dashboardView',
+                    callbacks: ['open', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "editContent",
                     path: '/edit/:id',
                     loader: Y.eZ.ContentEditViewLoader,
                     sideViews: {},
-                    callbacks: ['open', 'handleSideViews', 'runLoader', 'handleContentEdit']
+                    view: 'contentEditView',
+                    callbacks: ['open', 'handleSideViews', 'runLoader', 'handleMainView']
                 }, {
                     name: "viewLocation",
                     path: '/view/:id',
                     loader: Y.eZ.LocationViewViewLoader,
                     sideViews: {'discoveryBar': true, 'navigationHub': true},
-                    callbacks: ['open', 'handleSideViews', 'runLoader', 'handleLocationView']
+                    view: 'locationViewView',
+                    callbacks: ['open', 'handleSideViews', 'runLoader', 'handleMainView']
                 }],
             },
             serverRouting: {
@@ -486,6 +507,17 @@ YUI.add('ez-editorialapp', function (Y) {
                     toChild: 'slideLeft',
                     toParent: 'slideRight'
                 }
+            },
+
+            /**
+             * The root directory where to find the assets.
+             *
+             * @attribute assetRoot
+             * @default "/"
+             * @type String
+             */
+            assetRoot: {
+                value: "/"
             },
 
             /**
