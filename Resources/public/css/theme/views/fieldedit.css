@@ -1,0 +1,114 @@
+.ez-editfield-infos {
+    background: #FAFAFA;
+    border-right: 1px solid #ccc;
+    margin-left: -201px; /* 200 + 1 to compensate the border */
+}
+
+.ez-editfield-row {
+    background: #FFF;
+}
+
+.ez-editfield-infos .ez-editfield-i {
+    color: #fff;
+    border-radius: 50%;
+    background: #888;
+    font-size: 80%;
+    font-weight: bold;
+}
+
+.ez-editfield-infos .ez-fielddefinition-tooltip-text {
+    background: #fff;
+    -webkit-box-shadow: 0 2px 4px 0  #ddd;
+       -moz-box-shadow: 0 2px 4px 0  #ddd;
+            box-shadow: 0 2px 4px 0  #ddd;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-weight: normal;
+    font-size: 85%;
+}
+
+.ez-editfield-infos .ez-fielddefinition-tooltip-close {
+    font-weight: bold;
+    color: #999;
+}
+
+/* Tooltip tail styling */
+.ez-editfield-infos .ez-tail-up-tooltip:before,
+.ez-editfield-infos .ez-tail-down-tooltip:after {
+    content: "";
+    display: block;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    -webkit-transform: rotate(-45deg);
+       -moz-transform: rotate(-45deg);
+         -o-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+}
+
+.ez-editfield-infos .ez-tail-up-tooltip:before {
+    margin-top:-5px;
+    margin-left: 4px;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+}
+
+.ez-editfield-infos .ez-tail-up-tooltip .ez-fielddefinition-tooltip-text {
+    margin-top: -8px;
+}
+
+.ez-editfield-infos .ez-tail-down-tooltip:after {
+    margin-top:-9px;
+    margin-left: 4px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.ez-editfield-infos .ez-fielddefinition-name {
+    font-weight: bold;
+}
+
+.ez-editfield-input-area {
+    background: #fff;
+}
+
+/* field edit inputs errors handling */
+.ez-editfield-infos .ez-editfield-error-message {
+    font-size: 85%;
+    font-style: italic;
+    color: #BF3E33;
+    opacity: 0;
+    -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+         -o-transition: all 0.30s ease-in-out;
+            transition: all 0.30s ease-in-out;
+}
+
+.is-error .ez-editfield-infos .ez-editfield-error-message {
+    opacity: 1;
+}
+
+.is-error .ez-fielddefinition-name {
+    color: #BF3E33;
+}
+
+.ez-default-error-style .ez-editfield-input:before {
+    content: "!";
+    background: #BF3E33;
+    color: #fff;
+    font-weight: bold;
+    opacity: 0;
+    border: 1px solid #BF3E33;
+    border-left: 0;
+    border-right: 0;
+    -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+         -o-transition: all 0.30s ease-in-out;
+            transition: all 0.30s ease-in-out;
+}
+
+.is-error .ez-default-error-style .ez-editfield-input:before {
+    opacity: 1;
+}

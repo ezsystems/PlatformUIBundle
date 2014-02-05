@@ -1,0 +1,22 @@
+.ez-view-contenteditformview .ez-fieldgroup {
+    border: 0;
+}
+
+.ez-view-contenteditformview .fieldgroup-fields {
+    border: 1px solid #CCCCCC;
+}
+
+.ez-view-contenteditformview .fieldgroup-name {
+    background-color: #f9f9f9;
+    color: #333333;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.ez-view-contenteditformview .fieldgroup-name:after {
+    content: "\E602";
+}
+
+.ez-view-contenteditformview .is-collapsed .fieldgroup-name:after {
+    content: "\E604";
+}

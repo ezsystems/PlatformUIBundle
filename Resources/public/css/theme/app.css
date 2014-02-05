@@ -1,0 +1,165 @@
+@font-face {
+    font-family: 'ez-editorial-icomoon';
+    src:url('../bundles/ezeditorial/fonts/icomoon.eot');
+    src:url('../bundles/ezeditorial/fonts/icomoon.eot?#iefix') format('embedded-opentype'),
+        url('../bundles/ezeditorial/fonts/icomoon.woff') format('woff'),
+        url('../bundles/ezeditorial/fonts/icomoon.ttf') format('truetype'),
+        url('../bundles/ezeditorial/fonts/icomoon.svg#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.ez-editorial-app-page body {
+    background: #333;
+}
+
+.ez-editorial-app {
+    font-size: 15px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.ez-editorial-app .pure-g [class *= "pure-u"],
+.ez-editorial-app .pure-g-r [class *= "pure-u"],
+.ez-editorial-app button {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.ez-editorial-app a {
+    text-decoration: none;
+}
+
+.ez-editorial-app h1,
+.ez-editorial-app h2,
+.ez-editorial-app h3,
+.ez-editorial-app h4,
+.ez-editorial-app h5,
+.ez-editorial-app h6 {
+    font-weight: 500;
+}
+
+.ez-editorial-app input[type=text],
+.ez-editorial-app input[type=email],
+.ez-editorial-app input[type=number],
+.ez-editorial-app input[type=search],
+.ez-editorial-app input[type=password],
+.ez-editorial-app textarea {
+    line-height: 1.8em;
+    height: 1.8em;
+    padding: 0 0.4em;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+         -o-box-sizing: border-box;
+            box-sizing: border-box;
+    border: 1px solid #ccc;
+    background: #fdfdfd;
+    -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+         -o-transition: all 0.30s ease-in-out;
+            transition: all 0.30s ease-in-out;
+}
+
+.ez-editorial-app input[type=text]:focus,
+.ez-editorial-app input[type=email]:focus,
+.ez-editorial-app input[type=number]:focus,
+.ez-editorial-app input[type=search]:focus,
+.ez-editorial-app input[type=password]:focus,
+.ez-editorial-app textarea:focus {
+    -webkit-box-shadow: inset 0 0 6px #ccc;
+       -moz-box-shadow: inset 0 0 6px #ccc;
+        -ms-box-shadow: inset 0 0 6px #ccc;
+         -o-box-shadow: inset 0 0 6px #ccc;
+            box-shadow: inset 0 0 6px #ccc;
+    border: 1px solid #ccc;
+    outline: none;
+    background: #fff;
+}
+
+.ez-editorial-app .is-error .ez-editfield-input input[type=text],
+.ez-editorial-app .is-error .ez-editfield-input input[type=email],
+.ez-editorial-app .is-error .ez-editfield-input input[type=number],
+.ez-editorial-app .is-error .ez-editfield-input input[type=search],
+.ez-editorial-app .is-error .ez-editfield-input input[type=password],
+.ez-editorial-app .is-error .ez-editfield-input textarea {
+    border: 1px solid #BF3E33;
+    box-shadow: none;
+    background: #FEECEA;
+}
+
+.ez-editorial-app .is-error .ez-editfield-input input[type=text]:focus,
+.ez-editorial-app .is-error .ez-editfield-input input[type=email]:focus,
+.ez-editorial-app .is-error .ez-editfield-input input[type=number]:focus,
+.ez-editorial-app .is-error .ez-editfield-input input[type=search]:focus,
+.ez-editorial-app .is-error .ez-editfield-input input[type=password]:focus,
+.ez-editorial-app .is-error .ez-editfield-input textarea:focus {
+    outline: none;
+    -webkit-box-shadow: inset 0 0 6px #e76;
+       -moz-box-shadow: inset 0 0 6px #e76;
+        -ms-box-shadow: inset 0 0 6px #e76;
+         -o-box-shadow: inset 0 0 6px #e76;
+            box-shadow: inset 0 0 6px #e76;
+}
+
+.ez-editorial-app .ez-view-contenteditformview .pure-button {
+    border: 1px solid #ccc;
+}
+
+.ez-view-container {
+    -webkit-transition: opacity 0.2s ease-in-out;
+       -moz-transition: opacity 0.2s ease-in-out;
+        -ms-transition: opacity 0.2s ease-in-out;
+         -o-transition: opacity 0.2s ease-in-out;
+            transition: opacity 0.2s ease-in-out;
+}
+
+.is-app-loading .ez-view-container {
+    opacity: 0.6;
+}
+
+.ez-view-container:before {
+    opacity: 0;
+}
+
+.is-app-loading .ez-view-container:before {
+    -webkit-animation: spin 0.5s infinite linear;
+       -moz-animation: spin 0.5s infinite linear;
+         -o-animation: spin 0.5s infinite linear;
+            animation: spin 0.5s infinite linear;
+    box-sizing: border-box;
+    border-radius: 2em;
+    border-width: 0.5em;
+    border-style: solid;
+    border-color: rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.1);
+    opacity: 1;
+    z-index: 10000;
+}
+
+.ez-editorial-app .ez-inline-loader {
+    -webkit-animation: spin 0.5s infinite linear;
+       -moz-animation: spin 0.5s infinite linear;
+         -o-animation: spin 0.5s infinite linear;
+    animation: spin 0.5s infinite linear;
+    box-sizing: border-box;
+    border-radius: 100%;
+    border-width: 4px;
+    border-style: solid;
+    border-color: #ED9036 #ED9036 #ED9036 #fff;
+    border-color: rgba(237, 144, 54, 0.28) rgba(237, 144, 54, 0.29) rgba(237, 144, 54, 0.29) rgba(237, 144, 54, 0.9);
+}
+
+.ez-menu-container {
+    background: #333;
+    color: #fff;
+    margin-top: -1px; /* to align with the bottom border of the navigation hub */
+}
+
+.ez-mainviews,
+.ez-menu-container,
+.ez-navigation-container {
+    -webkit-transition: all 0.3s ease;
+       -moz-transition: all 0.3s ease;
+        -ms-transition: all 0.3s ease;
+         -o-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+}

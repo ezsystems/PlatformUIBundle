@@ -1,0 +1,30 @@
+.ez-view-previewactionview .preview-modes .preview-mode-button {
+    border-radius: 4px;
+    -webkit-box-shadow: inset 1px 1px 2px 1px #000;
+       -moz-box-shadow: inset 1px 1px 2px 1px #000;
+            box-shadow: inset 1px 1px 2px 1px #000;
+    background: #232327;
+    background: -webkit-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background:    -moz-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background:     -ms-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background:      -o-linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background:         linear-gradient(90deg, #232327 0%, #26252a 100%);
+    background: -webkit-gradient(linear, top, bottom, color-stop(0%, #232327), color-stop(100%, #26252a));
+}
+
+.ez-view-previewactionview .preview-modes .preview-mode-button:before {
+    color: #fff;
+    font-size: 90%;
+    text-shadow: 0 2px 1px #000;
+}
+
+.ez-view-previewactionview .preview-modes .preview-mode-button:hover {
+    background: #486235;
+    -webkit-box-shadow: none;
+       -moz-box-shadow: none;
+            box-shadow: none;
+}
+
+.ez-view-previewactionview .preview-modes .preview-mode-button.is-selected {
+    background: #256213;
+}

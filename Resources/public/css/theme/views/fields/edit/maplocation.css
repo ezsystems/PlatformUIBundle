@@ -1,0 +1,18 @@
+.ez-view-maplocationeditview .ez-maplocation-map-container {
+    border: 1px solid #ccc;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-find-address-button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: none;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-coordinates {
+    background-color: #f0f0f0;
+}
+
+.ez-view-maplocationeditview .ez-maplocation-errors,
+.ez-view-maplocationeditview .ez-maplocation-locate-me-errors {
+    color: #BF3E33;
+}

@@ -1,0 +1,10 @@
+.ez-view-fieldview .ez-fieldview-row {
+    padding-left: 161px; /* 140 +1 to compensate the border */
+}
+
+.ez-view-fieldview .ez-fieldview-label {
+    background: #fafafa;
+    color: #333;
+    border-right: 1px solid #ccc;
+    margin-left: -161px; /* 140 + 1 to compensate the border */
+}

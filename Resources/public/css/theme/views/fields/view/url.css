@@ -1,0 +1,6 @@
+.ez-fieldview-ezurl .ez-fieldview-value-content a:after {
+    font-family: 'ez-editorial-icomoon';
+    content: "\E610";
+    padding-left: 0.3em;
+    font-size: 90%;
+}
