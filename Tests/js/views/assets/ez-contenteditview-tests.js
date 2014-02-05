@@ -23,13 +23,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
     viewTest = new Y.Test.Case({
         name: "eZ Content Edit View test",
 
-        _should: {
-            ignore: {
-                 // not changing document.activeElement property in phantomjs
-                "Should focus on the content element using special method": (Y.UA.phantomjs)
-            }
-        },
-
         setUp: function () {
             formView = new Y.Mock();
             actionBar = new Y.Mock();
@@ -265,15 +258,13 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             Y.assert(!closeFired, "The close event should NOT have been fired");
         },
 
-        "Should focus on the content element using special method": function () {
-            var focused = false;
-
+        "Should focus on the content element when the view becomes active": function () {
             this.view.render().set('active', true);
-            container.one('.ez-main-content').on('focus', function () {
-                focused = true;
-            });
-
-            Y.assert(focused, "Main content node of the view should get the focus");
+            Y.Assert.areSame(
+                Y.config.doc.activeElement,
+                container.one('.ez-main-content').getDOMNode(),
+                "The main content should get the focus"
+            );
         },
 
         "opacity of technical infos should vary if the device is not a touch device": function () {
@@ -286,18 +277,17 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             header.simulate('mouseover');
 
             this.wait(function () {
-                Y.assert(
-                    header.one('.ez-technical-infos').getStyle('opacity') == 1,
+                Y.Assert.areEqual(
+                    1, header.one('.ez-technical-infos').getStyle('opacity'),
                     "Opacity should be 1"
                 );
-            }, 300);
-
-            header.simulate('mouseout');
-            this.wait(function () {
-                Y.assert(
-                    header.one('.ez-technical-infos').getStyle('opacity') === 0,
-                    "Opacity should be 0"
-                );
+                header.simulate('mouseout');
+                this.wait(function () {
+                    Y.Assert.areEqual(
+                        0, header.one('.ez-technical-infos').getStyle('opacity'),
+                        "Opacity should be 0"
+                    );
+                }, 300);
             }, 300);
         },
 
@@ -314,23 +304,19 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 header.one('.ez-technical-infos').getStyle('opacity') == 1,
                 "Opacity should be 1"
             );
-            this.wait(function () {
-                Y.assert(
-                    header.one('.ez-technical-infos').getStyle('opacity') == 1,
-                    "Opacity should be 1"
-                );
-            }, 300);
 
-            header.simulate('mouseout');
-            Y.assert(
-                header.one('.ez-technical-infos').getStyle('opacity') == 1,
-                "Opacity should be 1"
-            );
             this.wait(function () {
-                Y.assert(
-                    header.one('.ez-technical-infos').getStyle('opacity') == 1,
+                Y.Assert.areEqual(
+                    1, header.one('.ez-technical-infos').getStyle('opacity'),
                     "Opacity should be 1"
                 );
+                header.simulate('mouseout');
+                this.wait(function () {
+                    Y.Assert.areEqual(
+                        1, header.one('.ez-technical-infos').getStyle('opacity'),
+                        "Opacity should be 1"
+                    );
+                }, 300);
             }, 300);
         }
 
