@@ -34,3 +34,4 @@ class FeatureContext extends BrowserContext
     }
 
 }
+
