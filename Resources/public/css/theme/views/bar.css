@@ -1,0 +1,37 @@
+.ez-view-barview .ez-actions-list {
+    background: #333333;
+}
+
+.ez-view-barview .view-more-button {
+    color: #808080;
+    background: none;
+    border: none;
+}
+
+.ez-view-barview .view-more-button:hover {
+    color: #d8fcff;
+}
+
+.ez-view-barview .ez-actions-list .ez-action {
+    border-top: 1px solid #424242;
+    border-bottom: 1px solid #242424;
+}
+
+.ez-view-barview .ez-actions-list .ez-action:last-child {
+    -webkit-box-shadow: 0 1px 0 0 #424242;
+       -moz-box-shadow: 0 1px 0 0 #424242;
+            box-shadow: 0 1px 0 0 #424242;
+}
+
+.ez-view-barview .view-more-actions {
+    -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+         -o-transition: all 0.30s ease-in-out;
+            transition: all 0.30s ease-in-out;
+    box-shadow: 7px 0 7px 0 rgba(0, 0, 0, 0.5);
+}
+
+.is-navigationhubview-fixed .ez-view-barview {
+    top: calc(2.3rem + 4px); /* height of the navigation menu + borders */
+}

@@ -1,0 +1,81 @@
+.ez-locationview-content {
+    background: #fff;
+}
+
+.ez-view-locationviewview .ez-actionbar-container {
+    background: #333;
+    margin-top: -1px; /* to align the action bar with bottom border of navigation hub */
+
+    -webkit-transition: all 0.30s ease-in-out;
+       -moz-transition: all 0.30s ease-in-out;
+        -ms-transition: all 0.30s ease-in-out;
+         -o-transition: all 0.30s ease-in-out;
+            transition: all 0.30s ease-in-out;
+}
+
+.ez-view-locationviewview header {
+    background: #f5f4f2;
+}
+
+.ez-view-locationviewview .ez-breadcrumbs a {
+    color: #528036;
+}
+
+.ez-view-locationviewview .ez-breadcrumbs a:hover {
+    color: #444;
+    text-decoration: underline;
+}
+
+.ez-view-locationviewview .ez-tabs-list {
+    background: #f5f4f2;
+    border-bottom: 1px solid #ccc;
+}
+
+.ez-view-locationviewview .ez-tabs-label a {
+    font-weight: bold;
+    color: #222;
+}
+
+.ez-view-locationviewview .ez-tabs-label a:hover {
+    color: #528036;
+}
+
+.ez-view-locationviewview .ez-tabs-label.is-tab-selected a:hover {
+    color: #222;
+    cursor: default;
+}
+
+.ez-view-locationviewview .ez-tabs-list .ez-tabs-label {
+    background: #f5f4f2;
+    border: 1px solid #f5f4f2;
+    border-top: 3px solid #f5f4f2;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: -1px;
+
+    -webkit-transition: all 0.2s ease-in-out;
+       -moz-transition: all 0.2s ease-in-out;
+        -ms-transition: all 0.2s ease-in-out;
+         -o-transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out;
+}
+
+.ez-view-locationviewview .ez-tabs-list .is-tab-selected {
+    background: #fff;
+    border-bottom: 1px solid #fff;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-top: 3px solid #528036;
+}
+
+.ez-view-locationviewview .ez-tabs .ez-tabs-panel {
+    display: none;
+}
+
+.ez-view-locationviewview .ez-tabs .ez-tabs-panel.is-tab-selected {
+    display: block;
+
+    -webkit-animation: fadeIn 0.3s;
+       -moz-animation: fadeIn 0.3s;
+         -o-animation: fadeIn 0.3s;
+            animation: fadeIn 0.3s;
+}
