@@ -15,7 +15,6 @@ YUI.add('ez-fieldeditview', function (Y) {
         TOOLTIP_TAIL_DOWN_CLASS = 'ez-tail-down-tooltip',
         IS_DISPLAYED_CLASS = 'is-displayed',
         IS_VISIBLE_CLASS = 'is-visible',
-        ERROR_CLASS = 'is-error',
         _events= {
             ".ez-editfield-i": {
                 "tap": "_showTooltip"
@@ -44,6 +43,17 @@ YUI.add('ez-fieldeditview', function (Y) {
          * @type string
          */
         _errorDefaultContent: '',
+
+        /**
+         * Contains the class to add/remove on/from the container when an error
+         * is detected.
+         *
+         * @property _errorClass
+         * @protected
+         * @type string
+         * @default 'is-error'
+         */
+        _errorClass: 'is-error',
 
         /**
          * Default implementation of the field edit view render. By default, it
@@ -91,13 +101,13 @@ YUI.add('ez-fieldeditview', function (Y) {
             var container = this.get('container');
 
             if ( e.newVal ) {
-                container.addClass(ERROR_CLASS);
+                container.addClass(this._errorClass);
                 if ( L.isString(e.newVal) ) {
                     this._errorDefaultContent = container.one('.ez-editfield-error-message').getContent();
                     this._setErrorMessage(e.newVal);
                 }
             } else {
-                container.removeClass(ERROR_CLASS);
+                container.removeClass(this._errorClass);
                 if ( this._errorDefaultContent ) {
                     this._setErrorMessage(this._errorDefaultContent);
                 }
