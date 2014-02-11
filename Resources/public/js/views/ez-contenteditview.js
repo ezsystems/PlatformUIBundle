@@ -102,6 +102,17 @@ YUI.add('ez-contenteditview', function (Y) {
         },
 
         /**
+         * Returns the title of the page when the content edit view is the
+         * active view
+         *
+         * @method getTitle
+         * @return String
+         */
+        getTitle: function () {
+            return 'Editing "' + this.get('content').get('name') + '"';
+        },
+
+        /**
          * Set current input focus on the view
          *
          * @method setFocus

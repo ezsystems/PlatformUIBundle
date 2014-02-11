@@ -168,6 +168,44 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             });
             this.view.render();
         },
+
+        "Should build the title from the content and the path": function () {
+            var contentName = 'Ryan Gosling',
+                contentPathNames = ['Hot', 'Male', 'Actors'],
+                path = [],
+                content = new Y.Mock();
+
+            Y.Array.each(contentPathNames, function (val) {
+                var content = new Y.Mock();
+
+                Y.Mock.expect(content, {
+                    method: 'get',
+                    args: ['name'],
+                    returns: val
+                });
+                path.push({
+                    location: {},
+                    content: content
+                });
+            });
+
+            Y.Mock.expect(content, {
+                method: 'get',
+                args: ['name'],
+                returns: contentName
+            });
+
+            this.view.setAttrs({
+                content: content,
+                path: path
+            });
+
+            Y.Assert.areEqual(
+                contentName + ' / ' + contentPathNames.join(' / '),
+                this.view.getTitle(),
+                "The title should be build with the content and the path"
+            );
+        },
     });
 
     tabsTest = new Y.Test.Case({
