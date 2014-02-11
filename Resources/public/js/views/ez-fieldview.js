@@ -7,7 +7,8 @@ YUI.add('ez-fieldview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var CONTAINER_CLASS_PREFIX = 'ez-fieldview-';
+    var CONTAINER_CLASS_PREFIX = 'ez-fieldview-',
+        FIELD_EMPTY_CLASS = CONTAINER_CLASS_PREFIX + 'is-empty';
 
     /**
      * The field view
@@ -28,13 +29,18 @@ YUI.add('ez-fieldview', function (Y) {
         render: function () {
             var container = this.get('container'),
                 def = this.get('fieldDefinition'),
+                isEmpty = this._isFieldEmpty(),
                 defaultVariables = {
                     fieldDefinition: def,
                     field: this.get('field'),
                     value: this._getFieldValue(),
+                    isEmpty: isEmpty,
                 };
             
             container.addClass(CONTAINER_CLASS_PREFIX + def.fieldType.toLowerCase());
+            if ( isEmpty ) {
+                container.addClass(FIELD_EMPTY_CLASS);
+            }
             container.setHTML(
                 this.template(Y.mix(this._variables(), defaultVariables, true))
             );
@@ -65,6 +71,17 @@ YUI.add('ez-fieldview', function (Y) {
          */
         _getFieldValue: function () {
             return this.get('field').fieldValue;
+        },
+
+        /**
+         * Checks whether the field value is empty
+         *
+         * @method _isFieldEmpty
+         * @protected
+         * @return {Boolean}
+         */
+        _isFieldEmpty: function () {
+            return !this._getFieldValue();
         },
 
         /**

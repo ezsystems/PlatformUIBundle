@@ -24,6 +24,31 @@ YUI.add('ez-genericfieldview-tests', function (Y) {
             this.view.render();
         },
 
+        _testIsEmpty: function (field, expectedIsEmpty, msg) {
+            var origTpl = this.view.template;
+
+            this.view.template = function (variables) {
+                Y.Assert.areSame(
+                    expectedIsEmpty, variables.isEmpty, msg
+                );
+                return origTpl.apply(this, arguments);
+            };
+            this.view.set('field', field);
+            this.view.render();
+
+            if ( expectedIsEmpty ) {
+                Y.Assert.isTrue(
+                    this.view.get('container').hasClass('ez-fieldview-is-empty'),
+                    "The view container should have the class 'ez-fieldview-is-empty'"
+                );
+            } else {
+                Y.Assert.isFalse(
+                    this.view.get('container').hasClass('ez-fieldview-is-empty'),
+                    "The view container should NOT have the class 'ez-fieldview-is-empty'"
+                );
+            }
+        },
+
         "Test render": function () {
             var templateCalled = false,
                 origTpl;
@@ -64,6 +89,11 @@ YUI.add('ez-genericfieldview-tests', function (Y) {
                 Y.Assert.areSame(
                     that.field, variables.field,
                     "The field should be available in the field edit view template"
+                );
+
+                Y.Assert.areSame(
+                    that.isEmpty, variables.isEmpty,
+                    "The 'isEmpty' variable should be available in the template"
                 );
                 return origTpl.apply(this, arguments);
             };
