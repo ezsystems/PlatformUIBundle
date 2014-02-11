@@ -6,9 +6,10 @@ YUI.add('ez-checkbox-view-tests', function (Y) {
             name: "eZ Checkbox View test",
 
             setUp: function () {
-                this.templateVariablesCount = 3;
+                this.templateVariablesCount = 4;
                 this.fieldDefinition = {fieldType: 'ezboolean'};
                 this.field = {fieldValue: true};
+                this.isEmpty = false;
                 this.view = new Y.eZ.CheckboxView({
                     fieldDefinition: this.fieldDefinition,
                     field: this.field
@@ -21,6 +22,20 @@ YUI.add('ez-checkbox-view-tests', function (Y) {
 
             "Test false value in template": function () {
                 this._testValue(false, "No", "The value in the template should be 'No'");
+            },
+
+            "Test isEmpty with false in field value": function () {
+                this._testIsEmpty(
+                    {fieldValue: false}, false,
+                    "The checkbox can not be empty"
+                );
+            },
+
+            "Test isEmpty with true in field value": function () {
+                this._testIsEmpty(
+                    {fieldValue: true}, false,
+                    "The checkbox can not be empty"
+                );
             },
 
             tearDown: function () {

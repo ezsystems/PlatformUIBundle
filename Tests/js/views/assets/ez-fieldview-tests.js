@@ -8,7 +8,8 @@ YUI.add('ez-fieldview-tests', function (Y) {
             setUp: function () {
                 this.fieldDefinition = {fieldType: 'SomeThing'};
                 this.field = {fieldValue: 'ze value'};
-                this.templateVariablesCount = 3;
+                this.isEmpty = false;
+                this.templateVariablesCount = 4;
 
                 this.view = new Y.eZ.FieldView({
                     fieldDefinition: this.fieldDefinition,
@@ -37,6 +38,20 @@ YUI.add('ez-fieldview-tests', function (Y) {
                 Y.Assert.isTrue(
                     container.hasClass('ez-fieldview-' + this.fieldDefinition.fieldType.toLowerCase()),
                     "The view container should have a class based on the field type"
+                );
+            },
+
+            "Test isEmpty variable": function () {
+                this._testIsEmpty(
+                    {fieldValue: ""}, true,
+                    "The 'isEmpty' variable should be true"
+                );
+            },
+
+            "Test isEmpty variable (2)": function () {
+                this._testIsEmpty(
+                    {fieldValue: "42"}, false,
+                    "The 'isEmpty' variable should be false"
                 );
             },
 

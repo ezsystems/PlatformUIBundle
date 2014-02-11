@@ -2,5 +2,5 @@
     <div class="ez-fieldview-label pure-u">
         <p class="ez-fieldview-name"><strong>{{ fieldDefinition.names.[eng-GB] }}</strong></p>
     </div>
-    <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">{{ value }}</div></div>
+    <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">{{#if isEmpty}}This field is empty{{else}}{{ value }}{{/if}}</div></div>
 </div>

@@ -3,7 +3,9 @@
         <p class="ez-fieldview-name"><strong>{{ fieldDefinition.names.[eng-GB] }}</strong></p>
     </div>
     <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
-        {{#if value }}
+        {{#if isEmpty }}
+        This field is empty
+        {{else}}
         <a href="{{ value.link }}" target="_blank">{{ value.text }}</a>
         {{/if}}
     </div></div>
