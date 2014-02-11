@@ -5,7 +5,8 @@ YUI.add('ez-googlemapapiloader', function (Y) {
     Y.namespace('eZ');
 
     var EVENT_MAP_API_READY = 'mapAPIReady',
-        EVENT_MAP_API_FAILED = 'mapAPIFailed';
+        EVENT_MAP_API_FAILED = 'mapAPIFailed',
+        GMAP_JSONP_URI = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}';
 
     /**
      * A Component with one specific task - try to load Google Maps API and fire
@@ -15,8 +16,19 @@ YUI.add('ez-googlemapapiloader', function (Y) {
      * @class GoogleMapAPILoader
      * @namespace eZ
      * @constructor
+     * @param {Function} [JSONPRequest] constructor function of an object
+     *                   havving the same behaviour as Y.JSONPRequest
      */
-    function GoogleMapAPILoader() {
+    function GoogleMapAPILoader(JSONPRequest) {
+        /**
+         * Constructor function of the object used to load the Google Map API
+         *
+         * @property _JSONPRequest
+         * @type Function
+         * @default Y.JSONPRequest
+         */
+        this._JSONPRequest = JSONPRequest || Y.JSONPRequest;
+
         /**
          * Flag indicating if the loader is currently in progress of loading.
          * Needed to avoid concurrent loading.
@@ -50,7 +62,7 @@ YUI.add('ez-googlemapapiloader', function (Y) {
          *
          * @method load
          */
-        load: function (JSONRequestConstructor) {
+        load: function () {
             var request;
 
             if (this._isLoading) {
@@ -61,11 +73,8 @@ YUI.add('ez-googlemapapiloader', function (Y) {
             if (this.isAPILoaded()) {
                 this.fire(EVENT_MAP_API_READY);
             } else {
-                if (!JSONRequestConstructor) {
-                    JSONRequestConstructor = Y.JSONPRequest;
-                }
                 this._isLoading = true;
-                request = new JSONRequestConstructor('https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}', {
+                request = new this._JSONPRequest(GMAP_JSONP_URI, {
                     on: {
                         success: Y.bind(this._mapReady, this),
                         failure: Y.bind(this._mapFailed, this)

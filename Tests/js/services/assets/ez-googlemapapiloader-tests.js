@@ -33,18 +33,18 @@ YUI.add('ez-googlemapapiloader-tests', function (Y) {
         },
 
         "Should fire 'mapAPIready' when trying to load maps API, but it is already loaded": function () {
-            var mapLoadedFired = false,
-                JSONPStub = function () {};
+            var mapLoadedFired = false;
 
             window.google = {
                 maps: {}
             };
 
+            this.mapLoader = new Y.eZ.GoogleMapAPILoader();
             this.mapLoader.on('mapAPIReady', function () {
                 mapLoadedFired = true;
             });
 
-            this.mapLoader.load(JSONPStub);
+            this.mapLoader.load();
 
             Y.Assert.isTrue(
                 mapLoadedFired,
@@ -61,7 +61,8 @@ YUI.add('ez-googlemapapiloader-tests', function (Y) {
                     JSONRequestConfig = requestConfig;
                 };
 
-            this.mapLoader.load(JSONPStub);
+            this.mapLoader = new Y.eZ.GoogleMapAPILoader(JSONPStub);
+            this.mapLoader.load();
 
             Y.Assert.areEqual(
                 JSONRequestUrl,
@@ -87,11 +88,12 @@ YUI.add('ez-googlemapapiloader-tests', function (Y) {
                     requestConfig.on.success();
                 };
 
+            this.mapLoader = new Y.eZ.GoogleMapAPILoader(JSONPStub);
             this.mapLoader.on('mapAPIReady', function () {
                 mapLoadedFired = true;
             });
 
-            this.mapLoader.load(JSONPStub);
+            this.mapLoader.load();
 
             Y.Assert.isTrue(
                 mapLoadedFired,
@@ -106,11 +108,12 @@ YUI.add('ez-googlemapapiloader-tests', function (Y) {
                     requestConfig.on.failure();
                 };
 
+            this.mapLoader = new Y.eZ.GoogleMapAPILoader(JSONPStub);
             this.mapLoader.on('mapAPIFailed', function () {
                 mapFailedFired = true;
             });
 
-            this.mapLoader.load(JSONPStub);
+            this.mapLoader.load();
 
             Y.Assert.isTrue(
                 mapFailedFired,
@@ -124,12 +127,13 @@ YUI.add('ez-googlemapapiloader-tests', function (Y) {
                     requestConfig.on.success();
                 };
 
+            this.mapLoader = new Y.eZ.GoogleMapAPILoader(JSONPStub);
             this.mapLoader.on('mapAPIReady', function () {
                 mapLoadedFired = true;
             });
 
             this.mapLoader._isLoading = true;
-            this.mapLoader.load(JSONPStub);
+            this.mapLoader.load();
 
             Y.Assert.isFalse(
                 mapLoadedFired,

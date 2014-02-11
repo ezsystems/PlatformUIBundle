@@ -150,7 +150,7 @@ parameters:
                 requires: ['handlebars']
                 path: js/helpers/ez-texthelper.js
             ez-googlemapapiloader:
-                requires: ['jsonp', 'jsonp-url', 'event-target']
+                requires: ['jsonp', 'jsonp-url', 'event-custom']
                 path: js/services/ez-googlemapapiloader.js
             ez-accordion-element:
                 requires: ['transition']
