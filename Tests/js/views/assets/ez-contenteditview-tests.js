@@ -44,7 +44,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                         ( attribute === 'contentType' && value !== contentType ) ||
                         ( attribute !== 'content' && attribute !== 'contentType' )
                     ) {
-                        Y.Asset.fail('Expecting to set either the content or contentType on the formView');
+                        Y.Assert.fail('Expecting to set either the content or contentType on the formView');
                     }
                 }
             });
