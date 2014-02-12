@@ -187,7 +187,22 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 "",
                 "Errors output should be empty"
             );
-        }
+        },
+
+        "Test map API loader service usage": function () {
+            Y.Assert.areSame(
+                Y.eZ.services.mapAPILoader,
+                this.view.get('mapAPILoader'),
+                "The mapAPILoader attribute should be initialized with mapAPILoader service"
+            );
+
+            this.view.set('mapAPILoader', '');
+            Y.Assert.areSame(
+                Y.eZ.services.mapAPILoader,
+                this.view.get('mapAPILoader'),
+                "The mapAPILoader attribute should be readonly"
+            );
+        },
     });
 
     noInitialValuesTest = new Y.Test.Case({

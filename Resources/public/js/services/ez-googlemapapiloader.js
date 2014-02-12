@@ -120,4 +120,7 @@ YUI.add('ez-googlemapapiloader', function (Y) {
     Y.augment(GoogleMapAPILoader, Y.EventTarget);
 
     Y.eZ.GoogleMapAPILoader = GoogleMapAPILoader;
+
+    Y.namespace('eZ.services');
+    Y.eZ.services.mapAPILoader = new GoogleMapAPILoader();
 });

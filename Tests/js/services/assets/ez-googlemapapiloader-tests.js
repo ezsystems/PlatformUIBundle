@@ -14,6 +14,14 @@ YUI.add('ez-googlemapapiloader-tests', function (Y) {
             delete window.google;
         },
 
+        "Should export an instance under the Y.eZ.services namespace": function () {
+            Y.Assert.isInstanceOf(
+                Y.eZ.GoogleMapAPILoader,
+                Y.eZ.services.mapAPILoader,
+                "The ez-googlemapapiloader module should create an instance"
+            );
+        },
+
         "Should correctly detect presence of the google maps API": function () {
             window.google = {
                 maps: {}

@@ -30,10 +30,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
         IS_LOADING_CLASS = "is-loading",
         IS_ERROR_CLASS = "is-error",
         IS_BUTTON_DISABLED_CLASS = "pure-button-disabled",
-        ENTER_KEY = 13,
-        gMapLoader;
-
-    gMapLoader = new Y.eZ.GoogleMapAPILoader();
+        ENTER_KEY = 13;
 
     /**
      * Map Location edit view
@@ -409,7 +406,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
              * @readonly
              */
             mapAPILoader: {
-                value: gMapLoader,
+                value: Y.eZ.services.mapAPILoader,
                 cloneDefaultValue: false, // important so that all the MapLocationEditView instances have the same loader instance
                 readOnly: true
             }
