@@ -402,12 +402,11 @@ YUI.add('ez-maplocation-editview', function (Y) {
             },
 
             /**
-             * Instance of a map API loader component which is shared
-             * between all the MapLocationEditView's instances
+             * Instance of a map API loader component.
              *
              * @attribute mapAPILoader
-             * @type {Object} instance of a map loader component (for now only GoogleMapAPILoader supported)
-             * @default null
+             * @type {Object} instance of a map API loader
+             * @readonly
              */
             mapAPILoader: {
                 value: gMapLoader,
