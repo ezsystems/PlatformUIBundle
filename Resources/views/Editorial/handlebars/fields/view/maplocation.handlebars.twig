@@ -1,0 +1,21 @@
+<div class="ez-fieldview-row pure-g">
+    <div class="ez-fieldview-label pure-u">
+        <p class="ez-fieldview-name"><strong>{{ fieldDefinition.names.[eng-GB] }}</strong></p>
+        <p class="ez-maplocation-message">The map is loading...</p>
+    </div>
+    <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
+    {{#if isEmpty }}
+        This field is empty
+    {{else}}
+        <div class="ez-maplocation-map">
+            <ul class="ez-maplocation-data">
+            {{#if value.address }}
+                <li class="ez-maplocation-item ez-maplocation-address">{{ value.address }}</li>
+            {{/if}}
+                <li class="ez-maplocation-item">Latitude: {{ value.latitude }}</li>
+                <li class="ez-maplocation-item">Longitude: {{ value.longitude }}</li>
+            </ul>
+        </div>
+    {{/if}}
+    </div></div>
+</div>

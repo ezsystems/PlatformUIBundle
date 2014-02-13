@@ -58,6 +58,7 @@ parameters:
                     - 'ez-contenttypemodel'
                     - 'ez-checkbox-view'
                     - 'ez-url-view'
+                    - 'ez-maplocation-view'
                     - 'event-tap'
                 path: js/views/ez-rawcontentview.js
             ez-contenteditview:
@@ -113,6 +114,9 @@ parameters:
             ez-integer-editview:
                 requires: ['ez-fieldeditview', 'event-valuechange']
                 path: js/views/fields/ez-integer-editview.js
+            ez-maplocation-view:
+                requires: ['ez-fieldview', 'ez-googlemapapiloader']
+                path: js/views/fields/ez-maplocation-view.js
             ez-maplocation-editview:
                 requires: ['ez-fieldeditview', 'ez-googlemapapiloader']
                 path: js/views/fields/ez-maplocation-editview.js
