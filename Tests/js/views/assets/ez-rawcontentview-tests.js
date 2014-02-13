@@ -29,7 +29,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
         },
 
         tearDown: function () {
-            //this.view.destroy();
+            this.view.destroy();
         },
 
         _getContentMock: function () {
@@ -111,9 +111,44 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             container.all('.ez-fieldgroup').each(function (group) {
                 Y.Assert.areEqual(
                     group.all('.ez-view-fieldview').size(), 1,
-                    "Each group should container one field view"
+                    "Each group should contain one field view"
                 );
             });
+        },
+
+        "Should forward the active flag to the field sub views": function () {
+            var called = 0;
+
+            Y.Array.each(this.fieldDefinitions, function (def) {
+                Y.eZ.FieldView.registerFieldView(
+                    def.fieldType,
+                    Y.Base.create(def.fieldType + 'TestView', Y.View, [], {
+                        initializer: function () {
+                            this.after('activeChange', function (e) {
+                                called++;
+                                Y.Assert.isTrue(
+                                    e.newVal,
+                                    "The field view should be activated"
+                                );
+                            });
+                        }
+                    })
+                );
+            });
+
+            this.view = new Y.eZ.RawContentView({
+                container: '.container',
+                content: this.content,
+                contentType: this.contentType
+            });
+
+            this.view.set('active', true);
+
+            Y.Assert.areEqual(
+                this.fieldDefinitions.length,
+                called,
+                "Each field view should have been activated"
+            );
         },
 
         "Should collapse/uncollapse the raw content view": function () {

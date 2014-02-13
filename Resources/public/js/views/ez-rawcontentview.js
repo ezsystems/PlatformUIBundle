@@ -34,6 +34,11 @@ YUI.add('ez-rawcontentview', function (Y) {
             if ( this.get('contentType') ) {
                 this._setFieldViews();
             }
+            this.after('activeChange', function (e) {
+                Y.Array.each(this._fieldViews, function (v) {
+                    v.set('active', e.newVal);
+                });
+            });
         },
 
         /**
