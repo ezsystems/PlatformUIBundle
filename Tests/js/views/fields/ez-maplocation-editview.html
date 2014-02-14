@@ -54,7 +54,7 @@
         filter: loaderFilter,
         modules: {
             "ez-maplocation-editview": {
-                requires: ['ez-fieldeditview', 'event-tap'],
+                requires: ['ez-fieldeditview', 'ez-googlemapapiloader', 'event-tap'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-maplocation-editview.js"
             },
             "ez-fieldeditview": {
@@ -68,6 +68,10 @@
             "ez-view": {
                 requires: ['view'],
                 fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-googlemapapiloader": {
+                requires: ['jsonp', 'jsonp-url', 'event-target'],
+                fullpath: "../../../../Resources/public/js/services/ez-googlemapapiloader.js"
             },
         }
     }).use('ez-maplocation-editview-tests', function (Y) {

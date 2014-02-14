@@ -1,0 +1,30 @@
+.ez-fieldview-ezgmaplocation .ez-maplocation-data {
+    margin: 0;
+}
+
+.ez-fieldview-ezgmaplocation .gm-style .ez-maplocation-data {
+    line-height: 1.3em;
+    padding: 0;
+    list-style-type: none;
+    /* workaround for the infowindow size, otherwise the window,
+     * has a bad height...
+     */
+    font-size: 0.8rem;
+}
+
+.ez-fieldview-ezgmaplocation .gm-style .ez-maplocation-address {
+    font-weight: bold;
+}
+
+.ez-fieldview-ezgmaplocation.is-maplocationview-loading .ez-maplocation-map,
+.ez-fieldview-ezgmaplocation.is-maplocationview-loading-failed .ez-maplocation-map {
+    height: auto;
+}
+
+.ez-fieldview-ezgmaplocation .ez-maplocation-map {
+    height: 300px;
+}
+
+.ez-fieldview-ezgmaplocation.ez-fieldview-is-empty .ez-maplocation-message {
+    display: none;
+}

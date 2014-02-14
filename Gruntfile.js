@@ -11,6 +11,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/loaders/*.js", "!./Resources/public/js/views/loaders/*-min.js",
             "./Resources/public/js/models/*.js", "!./Resources/public/js/models/*-min.js",
             "./Resources/public/js/extensions/*.js", "!./Resources/public/js/extensions/*-min.js",
+            "./Resources/public/js/services/*.js", "!./Resources/public/js/services/*-min.js",
             "./Resources/public/js/helpers/*.js", "!./Resources/public/js/helpers/*-min.js"
         ],
         testFiles = [
@@ -24,6 +25,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/loaders/*-min.js",
             "./Resources/public/js/models/*-min.js",
             "./Resources/public/js/extensions/*-min.js",
+            "./Resources/public/js/services/*-min.js",
             "./Resources/public/js/helpers/*-min.js",
             "./Resources/public/js/views/actions/*-min.js",
             instrumentDir,
@@ -73,6 +75,7 @@ module.exports = function(grunt) {
                         "./Resources/public/js/views",
                         "./Resources/public/js/models",
                         "./Resources/public/js/extensions",
+                        "./Resources/public/js/services",
                         "./Resources/public/js/helpers"
                     ],
                     outdir: 'api/'

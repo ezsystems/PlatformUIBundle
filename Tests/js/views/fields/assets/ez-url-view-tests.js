@@ -6,9 +6,10 @@ YUI.add('ez-url-view-tests', function (Y) {
             name: "eZ Url View test",
 
             setUp: function () {
-                this.templateVariablesCount = 3;
+                this.templateVariablesCount = 4;
                 this.fieldDefinition = {fieldType: 'ezurl'};
                 this.field = {fieldValue: {link: ''}};
+                this.isEmpty = true;
                 this.view = new Y.eZ.UrlView({
                     fieldDefinition: this.fieldDefinition,
                     field: this.field
@@ -53,6 +54,27 @@ YUI.add('ez-url-view-tests', function (Y) {
                     {link: url, text: text}, {link: url, text: text},
                     "The value in the template should have the link and text properties",
                     fieldValueAssert
+                );
+            },
+
+            "Test isEmpty with an empty link": function () {
+                this._testIsEmpty(
+                    {fieldValue: {link: ""}}, true,
+                    "The URL {link: ''} should be considered empty"
+                );
+            },
+
+            "Test isEmpty with a non empty link": function () {
+                this._testIsEmpty(
+                    {fieldValue: {link: "http://ez.no"}}, false,
+                    "The URL {link: 'http://ez.no'} should be considered empty"
+                );
+            },
+
+            "Test isEmpty with an empty field value": function () {
+                this._testIsEmpty(
+                    {fieldValue: {}}, true,
+                    "The URL {} should be considered empty"
                 );
             },
 

@@ -58,6 +58,7 @@ parameters:
                     - 'ez-contenttypemodel'
                     - 'ez-checkbox-view'
                     - 'ez-url-view'
+                    - 'ez-maplocation-view'
                     - 'event-tap'
                 path: js/views/ez-rawcontentview.js
             ez-contenteditview:
@@ -117,8 +118,11 @@ parameters:
             ez-integer-editview:
                 requires: ['ez-fieldeditview', 'event-valuechange']
                 path: js/views/fields/ez-integer-editview.js
+            ez-maplocation-view:
+                requires: ['ez-fieldview', 'ez-googlemapapiloader']
+                path: js/views/fields/ez-maplocation-view.js
             ez-maplocation-editview:
-                requires: ['ez-fieldeditview', 'jsonp', 'jsonp-url']
+                requires: ['ez-fieldeditview', 'ez-googlemapapiloader']
                 path: js/views/fields/ez-maplocation-editview.js
             ez-restmodel:
                 requires: ['model', 'json']
@@ -153,6 +157,9 @@ parameters:
             ez-texthelper:
                 requires: ['handlebars']
                 path: js/helpers/ez-texthelper.js
+            ez-googlemapapiloader:
+                requires: ['jsonp', 'jsonp-url', 'event-custom']
+                path: js/services/ez-googlemapapiloader.js
             ez-accordion-element:
                 requires: ['transition']
                 path: js/extensions/ez-accordion-element.js

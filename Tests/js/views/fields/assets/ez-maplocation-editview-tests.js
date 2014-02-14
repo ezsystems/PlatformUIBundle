@@ -1,6 +1,6 @@
 YUI.add('ez-maplocation-editview-tests', function (Y) {
     var container = Y.one('.container'),
-        viewTest, APILoadingTest, mapLoaderTest, noInitialValuesTest,
+        viewTest, APILoadingTest, noInitialValuesTest,
         findAddressTest, locateMeTest, registerTest,
         content, contentType,
         mapLoaderLoadingSuccess,
@@ -93,145 +93,6 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         }
     };
 
-    mapLoaderTest = new Y.Test.Case({
-        name: "GoogleMapAPILoader tests",
-
-        setUp: function () {
-            this.mapLoader = new Y.eZ.MapLocationEditView.GoogleMapAPILoader();
-            window.google = {};
-        },
-
-        tearDown: function () {
-            delete this.mapLoader;
-            delete window.google;
-        },
-
-        "Should correctly detect presence of the google maps API": function () {
-            window.google = {
-                maps: {}
-            };
-
-            Y.Assert.isTrue(
-                this.mapLoader.isAPILoaded(),
-                "GoogleMapAPILoader.isAPILoaded() method should return true, when maps API is present"
-            );
-        },
-
-        "Should correctly detect absence of the google maps API": function () {
-            Y.Assert.isFalse(
-                this.mapLoader.isAPILoaded(),
-                "GoogleMapAPILoader.isAPILoaded() method should return false, when maps API is not present"
-            );
-        },
-
-        "Should fire 'mapAPIready' when trying to load maps API, but it is already loaded": function () {
-            var mapLoadedFired = false,
-                JSONPStub = function () {};
-
-            window.google = {
-                maps: {}
-            };
-
-            this.mapLoader.on('mapAPIReady', function () {
-                mapLoadedFired = true;
-            });
-
-            this.mapLoader.load(JSONPStub);
-
-            Y.Assert.isTrue(
-                mapLoadedFired,
-                "'mapAPIready' should have been fired during loading, when maps API is present"
-            );
-        },
-
-        "Should call JSONRequestConstructor with correct arguments while trying to load map API": function () {
-            var JSONRequestUrl = "",
-                JSONRequestConfig = {},
-                JSONPStub = function (requestUrl, requestConfig) {
-                    this.send = function () {};
-                    JSONRequestUrl = requestUrl;
-                    JSONRequestConfig = requestConfig;
-                };
-
-            this.mapLoader.load(JSONPStub);
-
-            Y.Assert.areEqual(
-                JSONRequestUrl,
-                "https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}",
-                "Url argument should be correct"
-            );
-
-            Y.Assert.isObject(
-                JSONRequestConfig.on.success,
-                "Config argument should contain 'on.success' entry"
-            );
-
-            Y.Assert.isObject(
-                JSONRequestConfig.on.failure,
-                "Config argument should contain 'on.failure' entry"
-            );
-        },
-
-        "Should fire 'mapAPIReady' when map API was loaded successfully": function () {
-            var mapLoadedFired = false,
-                JSONPStub = function (requestUrl, requestConfig) {
-                    this.send = function () {};
-                    requestConfig.on.success();
-                };
-
-            this.mapLoader.on('mapAPIReady', function () {
-                mapLoadedFired = true;
-            });
-
-            this.mapLoader.load(JSONPStub);
-
-            Y.Assert.isTrue(
-                mapLoadedFired,
-                "'mapAPIready' should have been fired on successfull maps API load"
-            );
-        },
-
-        "Should fire 'mapAPIFailed' when map API loading have failed": function () {
-            var mapFailedFired = false,
-                JSONPStub = function (requestUrl, requestConfig) {
-                    this.send = function () {};
-                    requestConfig.on.failure();
-                };
-
-            this.mapLoader.on('mapAPIFailed', function () {
-                mapFailedFired = true;
-            });
-
-            this.mapLoader.load(JSONPStub);
-
-            Y.Assert.isTrue(
-                mapFailedFired,
-                "'mapAPIailed' should have been fired on maps API loading failure"
-            );
-        },
-
-        "Should avoid concurrent loading": function () {
-            var mapLoadedFired = false,
-                JSONPStub = function (requestUrl, requestConfig) {
-                    requestConfig.on.success();
-                };
-
-            this.mapLoader.on('mapAPIReady', function () {
-                mapLoadedFired = true;
-            });
-
-            this.mapLoader._isLoading = true;
-            this.mapLoader.load(JSONPStub);
-
-            Y.Assert.isFalse(
-                mapLoadedFired,
-                "Loading should have been stopped if the '_isLoading' flag is set to true"
-            );
-        }
-
-
-    });
-
     viewTest = new Y.Test.Case({
         name: "eZ Map Location View test",
 
@@ -242,8 +103,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         setUp: function () {
-            this.mapLoaderLoad = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load;
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
+            this.mapLoaderLoad = Y.eZ.GoogleMapAPILoader.prototype.load;
+            Y.eZ.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
             window.google = googleStub;
 
             this.view = new Y.eZ.MapLocationEditView({
@@ -256,7 +117,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
+            Y.eZ.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
         },
 
         _testAvailableVariables: function (required, expectRequired) {
@@ -326,20 +187,35 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 "",
                 "Errors output should be empty"
             );
-        }
+        },
+
+        "Test map API loader service usage": function () {
+            Y.Assert.areSame(
+                Y.eZ.services.mapAPILoader,
+                this.view.get('mapAPILoader'),
+                "The mapAPILoader attribute should be initialized with mapAPILoader service"
+            );
+
+            this.view.set('mapAPILoader', '');
+            Y.Assert.areSame(
+                Y.eZ.services.mapAPILoader,
+                this.view.get('mapAPILoader'),
+                "The mapAPILoader attribute should be readonly"
+            );
+        },
     });
 
     noInitialValuesTest = new Y.Test.Case({
         name: "eZ Map Location Edit View no initial values test",
 
         setUp: function () {
-            this.mapLoaderLoad = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load;
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
+            this.mapLoaderLoad = Y.eZ.GoogleMapAPILoader.prototype.load;
+            Y.eZ.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
             window.google = googleStub;
         },
 
         tearDown: function () {
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
+            Y.eZ.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
             delete window.google;
         },
 
@@ -403,11 +279,11 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         setUp: function () {
             var fieldDefinition = this._getFieldDefinition(false);
 
-            this.mapLoaderLoad = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load;
-            this.mapLoaderIsAPILoaded = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded;
+            this.mapLoaderLoad = Y.eZ.GoogleMapAPILoader.prototype.load;
+            this.mapLoaderIsAPILoaded = Y.eZ.GoogleMapAPILoader.prototype.isAPILoaded;
 
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded = function () {
+            Y.eZ.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
+            Y.eZ.GoogleMapAPILoader.prototype.isAPILoaded = function () {
                 return true;
             };
             geocoderInput = {};
@@ -430,8 +306,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded = this.mapLoaderIsAPILoaded;
+            Y.eZ.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
+            Y.eZ.GoogleMapAPILoader.prototype.isAPILoaded = this.mapLoaderIsAPILoaded;
             delete window.google;
         },
 
@@ -604,7 +480,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 "Find address errors container is empty before the search attempt"
             );
 
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.isAPILoaded = function () {
+            Y.eZ.GoogleMapAPILoader.prototype.isAPILoaded = function () {
                 return false;
             };
 
@@ -632,8 +508,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         setUp: function () {
             var fieldDefinition = this._getFieldDefinition(false);
 
-            this.mapLoaderLoad = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load;
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
+            this.mapLoaderLoad = Y.eZ.GoogleMapAPILoader.prototype.load;
+            Y.eZ.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
             window.google = googleStub;
 
             this.view = new Y.eZ.MapLocationEditView({
@@ -652,7 +528,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
+            Y.eZ.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
             delete window.google;
         },
 
@@ -827,13 +703,13 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         setUp: function () {
-            this.mapLoaderLoad = Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load;
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
+            this.mapLoaderLoad = Y.eZ.GoogleMapAPILoader.prototype.load;
+            Y.eZ.GoogleMapAPILoader.prototype.load = mapLoaderLoadingSuccess;
             window.google = googleStub;
         },
 
         tearDown: function () {
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
+            Y.eZ.GoogleMapAPILoader.prototype.load = this.mapLoaderLoad;
             delete window.google;
         },
 
@@ -924,7 +800,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         },
 
         "Test view is handling errors correctly if map API is not loaded properly": function () {
-            Y.eZ.MapLocationEditView.GoogleMapAPILoader.prototype.load = function () {
+            Y.eZ.GoogleMapAPILoader.prototype.load = function () {
                 var that = this;
                 // setTimeout (even with 0 value) will be needed here because we are
                 // going to use a node, which is not yet in the DOM
@@ -948,7 +824,6 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
     });
 
     Y.Test.Runner.setName("eZ Map Location Edit View tests");
-    Y.Test.Runner.add(mapLoaderTest);
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(noInitialValuesTest);
     Y.Test.Runner.add(findAddressTest);
