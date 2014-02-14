@@ -1,0 +1,40 @@
+.ez-view-authoreditview .is-email-error .ez-editfield-input-email:before,
+.ez-view-authoreditview .is-name-error .ez-editfield-input-name:before {
+    opacity: 1;
+}
+
+.ez-view-authoreditview .is-email-error .ez-editfield-input-email input[type=email],
+.ez-view-authoreditview .is-name-error .ez-editfield-input-name input[type=text] {
+    border: 1px solid #BF3E33;
+    box-shadow: none;
+    background: #FEECEA;
+}
+
+.ez-view-authoreditview .is-email-error .ez-editfield-input-email input[type=email]:focus,
+.ez-view-authoreditview .is-name-error .ez-editfield-input-name input[type=text]:focus {
+    outline: none;
+    box-shadow: inset 0 0 6px #e76;
+}
+
+.ez-view-authoreditview .is-author-error .ez-editfield-infos .ez-editfield-error-message {
+    opacity: 1;
+}
+
+.ez-view-authoreditview .is-author-error .ez-fielddefinition-name {
+    color: #BF3E33;
+}
+
+.ez-view-authoreditview .ez-field-author-remove:before,
+.ez-view-authoreditview .ez-field-author-add:before {
+    font-family: "ez-editorial-icomoon";
+    padding-right: 0.3em;
+    font-size: 90%;
+}
+
+.ez-view-authoreditview .ez-field-author-remove:before {
+    content: "\E615";
+}
+
+.ez-view-authoreditview .ez-field-author-add:before {
+    content: "\E616";
+}

@@ -1,0 +1,50 @@
+.ez-view-authoreditview .ez-editfield-input,
+.ez-view-authoreditview .ez-editfield-input-no-validation {
+    margin-top: 0.3em;
+}
+
+.ez-view-authoreditview .ez-field-sublabel:first-of-type {
+    padding-top: 1.5em;
+}
+
+.ez-view-authoreditview .ez-author-input-ui {
+    width: 100%;
+    display: inline-block;
+}
+
+.ez-view-authoreditview .ez-author-input-ui input {
+    width: 100%;
+}
+
+.ez-view-authoreditview .ez-author-secondary .ez-fielddefinition-name,
+.ez-view-authoreditview .ez-author-secondary .ez-fielddefinition-tooltip,
+.ez-view-authoreditview .ez-author-secondary .ez-editfield-i {
+    visibility: hidden;
+}
+
+.ez-view-authoreditview .ez-editfield-infos {
+    position: relative;
+}
+
+.ez-view-authoreditview .ez-editfield-infos .ez-editfield-error-name {
+    position: absolute;
+    right: 0.5em;
+    top: 3.8em;
+}
+
+.ez-view-authoreditview .ez-editfield-infos .ez-editfield-error-email {
+    position: absolute;
+    right: 0.5em;
+    top: 9em;
+}
+
+.ez-view-authoreditview .ez-field-author-add,
+.ez-view-authoreditview .ez-field-author-remove {
+    padding: 0.5em 0.7em;
+}
+
+.ez-view-authoreditview .ez-field-author-remove {
+    padding: 0.5em 1em;
+    display: block;
+    margin-top: 2.6em;
+}

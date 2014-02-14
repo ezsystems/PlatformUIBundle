@@ -1,0 +1,37 @@
+<div class="pure-g ez-editfield-row">
+    <div class="pure-u ez-editfield-infos">
+        {{> ez_fieldinfo_tooltip }}
+        <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-name">
+            <p class="ez-fielddefinition-name">
+                {{ fieldDefinition.names.[eng-GB] }}{{#if fieldDefinition.isRequired}}*{{/if}}:
+            </p>
+            <p class="ez-editfield-error-message ez-editfield-error-name">&nbsp;</p>
+            <p class="ez-editfield-error-message ez-editfield-error-email">&nbsp;</p>
+        </label>
+    </div>
+    <div class="pure-u ez-editfield-input-area ez-default-error-style">
+        <div class="pure-g">
+            <div class="pure-u-3-5">
+                <label class="ez-field-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-name">
+                    Name:
+                </label>
+                <div class="ez-editfield-input ez-editfield-input-name"><div class="ez-author-input-ui"><input type="text"
+                    class="ez-field-author-name"
+                    value="{{ author.name }}"
+                    id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-name"
+                ></div></div>
+                <label class="ez-field-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-email">
+                    Email:
+                </label>
+                <div class="ez-editfield-input ez-editfield-input-email"><div class="ez-author-input-ui"><input type="email"
+                    class="ez-field-author-email"
+                    value="{{ author.email }}"
+                    id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-email"
+                ></div></div>
+            </div>
+            <div class="pure-u-2-5">
+                <button class="ez-field-author-remove pure-button"{{#unless canRemove }} disabled="disabled"{{/unless}}>Remove this author</button>
+            </div>
+        </div>
+    </div>
+</div>

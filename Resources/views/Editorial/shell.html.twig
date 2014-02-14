@@ -31,6 +31,7 @@
     '@eZEditorialBundle/Resources/public/css/views/fields/edit/float.css'
     '@eZEditorialBundle/Resources/public/css/views/fields/edit/integer.css'
     '@eZEditorialBundle/Resources/public/css/views/fields/edit/maplocation.css'
+    '@eZEditorialBundle/Resources/public/css/views/fields/edit/author.css'
     '@eZEditorialBundle/Resources/public/css/modules/tabs.css'
 
     '@eZEditorialBundle/Resources/public/css/theme/app.css'
@@ -50,6 +51,7 @@
     '@eZEditorialBundle/Resources/public/css/theme/views/editpreview.css'
     '@eZEditorialBundle/Resources/public/css/theme/views/fieldedit.css'
     '@eZEditorialBundle/Resources/public/css/theme/views/fields/edit/maplocation.css'
+    '@eZEditorialBundle/Resources/public/css/theme/views/fields/edit/author.css'
 %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
 {% endstylesheets %}
@@ -168,6 +170,8 @@
 {{ handlebars.include( 'fields/edit/float.handlebars', 'floateditview' ) }}
 {{ handlebars.include( 'fields/edit/integer.handlebars', 'integereditview' ) }}
 {{ handlebars.include( 'fields/edit/maplocation.handlebars', 'maplocationeditview' ) }}
+{{ handlebars.include( 'fields/edit/author.handlebars', 'authoreditview' ) }}
+{{ handlebars.include( 'fields/edit/authorinput.handlebars', 'authorinputview' ) }}
 
 {{ handlebars.include( 'errorview.handlebars', 'errorview' ) }}
 

@@ -1,0 +1,373 @@
+YUI.add('ez-author-editview-tests', function (Y) {
+    "use strict";
+    var registerTest, removeButtonTests, validationTests;
+
+    removeButtonTests = new Y.Test.Case({
+        name: "eZ Author Edit view remove button handling",
+
+        setUp: function () {
+            this.authors = [
+                {id: "0", name: "Angel", email: "angel@example.com"},
+                {id: "1", name: "Sandy", email: "sandy@example.com"},
+                {id: "2", name: "Summer", email: "summer@example.com"},
+            ];
+            this.fieldDefinition = {isRequired: true};
+
+            this.content = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: {}
+            });
+
+            this.contentType = new Y.Mock();
+            Y.Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: {}
+            });
+        },
+
+        tearDown: function () {
+            if ( this.view ) {
+                this.view.get('container').setContent('');
+                this.view.destroy();
+            }
+        },
+
+        _getView: function (authors) {
+            return new Y.eZ.AuthorEditView({
+                container: '.container',
+                field: {fieldValue: authors},
+                fieldDefinition: this.fieldDefinition,
+                content: this.content,
+                contentType: this.contentType,
+            });
+        },
+
+        "Should be disabled by default": function () {
+            var view = this.view = this._getView([]);
+
+            view.render();
+            Y.Assert.isTrue(
+                view.get('container').one('.ez-field-author-remove').get('disabled'),
+                "The remove button should be disabled"
+            );
+        },
+
+        "Should be enabled with several authors": function () {
+            var view = this.view = this._getView(this.authors);
+
+            view.render();
+            view.get('container').all('.ez-field-author-remove').each(function (button) {
+                Y.Assert.isFalse(
+                    button.get('disabled'),
+                    "The remove button should be enabled"
+                );
+            });
+        },
+
+        "Should be disabled with one author": function () {
+            var view = this.view = this._getView([this.authors[0]]);
+
+            view.render();
+            Y.Assert.isTrue(
+                view.get('container').one('.ez-field-author-remove').get('disabled'),
+                "The remove button should be disabled"
+            );
+        },
+
+        "Should become enabled when adding a second author": function () {
+            var view = this.view = this._getView([this.authors[0]]),
+                container = view.get('container'),
+                that = this;
+
+            view.render();
+            container.one('.ez-field-author-add').simulateGesture('tap', function () {
+                that.resume(function () {
+                    view.get('container').all('.ez-field-author-remove').each(function (button) {
+                        Y.Assert.isFalse(
+                            button.get('disabled'),
+                            "The remove button should be enabled"
+                        );
+                    });
+                });
+            });
+            this.wait();
+        },
+
+        "Should stay enabled when several authors are left": function () {
+            var view = this.view = this._getView(this.authors),
+                container = view.get('container'),
+                that = this;
+
+            view.render();
+            container.one('.ez-field-author-remove').simulateGesture('tap', function () {
+                that.resume(function () {
+                    var remove = view.get('container').all('.ez-field-author-remove');
+
+                    Y.Assert.areEqual(
+                        2, remove.size(),
+                        "Two authors UI should be left"
+                    );
+                    remove.each(function (button) {
+                        Y.Assert.isFalse(
+                            button.get('disabled'),
+                            "The left remove buttons should be enabled"
+                        );
+                    });
+                });
+            });
+            this.wait();
+        },
+
+
+        "Should become disabled when only one author is left": function () {
+            var view = this.view = this._getView([this.authors[0], this.authors[1]]),
+                container = view.get('container'),
+                that = this;
+
+            view.render();
+            container.one('.ez-field-author-remove').simulateGesture('tap', function () {
+                that.resume(function () {
+                    var remove = view.get('container').all('.ez-field-author-remove');
+
+                    Y.Assert.areEqual(
+                        1, remove.size(),
+                        "One author UI should be left"
+                    );
+                    Y.Assert.isTrue(
+                        remove.item(0).get('disabled'),
+                        "The left remove button should be disabled"
+                    );
+                });
+            });
+            this.wait();
+        },
+    });
+
+    validationTests = new Y.Test.Case({
+        name: 'eZ Author Edit view validation test',
+
+        setUp: function () {
+            this.authors = [
+                {id: "0", name: "Angel", email: "angel@example.com"},
+            ];
+
+            this.content = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: {}
+            });
+
+            this.contentType = new Y.Mock();
+            Y.Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: {}
+            });
+        },
+
+        tearDown: function () {
+            if ( this.view ) {
+                this.view.get('container').setContent('');
+                this.view.destroy();
+            }
+        },
+
+        _getView: function (authors, required) {
+            return new Y.eZ.AuthorEditView({
+                container: '.container',
+                field: {fieldValue: authors},
+                fieldDefinition: {isRequired: required},
+                content: this.content,
+                contentType: this.contentType,
+            });
+        },
+
+        _fillInput: function (selector, value) {
+            var container = this.view.get('container'),
+                elt = container.one(selector);
+
+            elt.set('value', value);
+            elt.simulate('blur');
+        },
+
+        _assertEmailError: function () {
+            var container = this.view.get('container');
+
+            Y.Assert.isTrue(
+                container.one('.ez-view-authorinputview').hasClass('is-email-error'),
+                "An error on the email should have been detected"
+            );
+            Y.Assert.areNotEqual(
+                "", container.one(".ez-editfield-error-email").getContent(),
+                "The error message related to the email should be displayed"
+            );
+        },
+
+        _assertNoEmailError: function () {
+            var container = this.view.get('container');
+
+            Y.Assert.isFalse(
+                container.one('.ez-view-authorinputview').hasClass('is-email-error'),
+                "No error should be detected on the email"
+            );
+            Y.Assert.areEqual(
+                "", container.one(".ez-editfield-error-email").getContent(),
+                "The error message related to the email should be empty"
+            );
+        },
+
+        _assertNameError: function () {
+            var container = this.view.get('container');
+
+            Y.Assert.isTrue(
+                container.one('.ez-view-authorinputview').hasClass('is-name-error'),
+                "An error on the name should have been detected"
+            );
+            Y.Assert.areNotEqual(
+                "", container.one(".ez-editfield-error-name").getContent(),
+                "The error message related to the name should be displayed"
+            );
+        },
+
+        _assertNoNameError: function () {
+            var container = this.view.get('container');
+
+            Y.Assert.isFalse(
+                container.one('.ez-view-authorinputview').hasClass('is-name-error'),
+                "No error should be detected on the name"
+            );
+            Y.Assert.areEqual(
+                "", container.one(".ez-editfield-error-name").getContent(),
+                "The error message related to the name should be empty"
+            );
+        },
+
+        _assertFieldError: function () {
+            var container = this.view.get('container');
+
+            Y.Assert.isTrue(
+                container.hasClass('is-author-error'),
+                "The container should have the class 'is-author-error' " + container.getAttribute('class')
+            );
+        },
+
+        _assertNoFieldError: function () {
+            var container = this.view.get('container');
+
+            Y.Assert.isFalse(
+                container.hasClass('is-author-error'),
+                "The container should not have the class 'is-author-error'"
+            );
+        },
+
+        "Fill the name and the email": function () {
+            var view = this.view = this._getView([], false);
+
+            view.render();
+            this._fillInput('.ez-field-author-name', 'Angel');
+            this._fillInput('.ez-field-author-email', 'angel@example.com');
+
+            this._assertNoEmailError();
+            this._assertNoNameError();
+            this._assertNoFieldError();
+            Y.Assert.isTrue(view.isValid(), "The input is valid");
+        },
+
+        "Fill the name only": function () {
+            var view = this.view = this._getView([], false);
+
+            view.render();
+            this._fillInput('.ez-field-author-name', 'Angel');
+
+            this._assertNoNameError();
+            this._assertEmailError();
+            this._assertFieldError();
+            Y.Assert.isFalse(view.isValid(), "The input is not valid");
+        },
+
+        "Fill the email only": function () {
+            var view = this.view = this._getView([], false);
+
+            view.render();
+            this._fillInput('.ez-field-author-email', 'angel@example.com');
+
+            this._assertNameError();
+            this._assertNoEmailError();
+            this._assertFieldError();
+            Y.Assert.isFalse(view.isValid(), "The input is not valid");
+        },
+
+        "Fill an invalid email only": function () {
+            var view = this.view = this._getView([], false);
+
+            view.render();
+            this._fillInput('.ez-field-author-email', '@angel');
+
+            this._assertNameError();
+            this._assertEmailError();
+            this._assertFieldError();
+            Y.Assert.isFalse(view.isValid(), "The input is not valid");
+        },
+
+        "Fill a name and an invalid email": function () {
+            var view = this.view = this._getView([], false);
+
+            view.render();
+            this._fillInput('.ez-field-author-name', 'Angel');
+            this._fillInput('.ez-field-author-email', '@angel');
+
+            this._assertNoNameError();
+            this._assertEmailError();
+            this._assertFieldError();
+            Y.Assert.isFalse(view.isValid(), "The input is not valid");
+        },
+
+        "Fill the second author in a required field": function () {
+            var view = this.view = this._getView([], true),
+                container = view.get('container'), that = this;
+
+            view.render();
+
+            container.simulateGesture('tap', function () {
+                that.resume(function () {
+                    this._fillInput('.ez-view-authorinputview:last-of-type .ez-field-author-name', 'Sandy');
+                    this._fillInput('.ez-field-author-email:last-of-type', 'sandy@example.com');
+
+                    // no error on the first name/email fields
+                    this._assertNoNameError();
+                    this._assertNoEmailError();
+                    this._assertNoFieldError();
+                    Y.Assert.isTrue(view.isValid(), "The input is not valid");
+                });
+            });
+            this.wait();
+        },
+
+        "Not fill a required author": function () {
+            var view = this.view = this._getView([], true);
+
+            view.render();
+            this._fillInput('.ez-view-authorinputview .ez-field-author-name', '');
+            this._fillInput('.ez-field-author-email', '');
+
+            this._assertNameError();
+            this._assertEmailError();
+            this._assertFieldError();
+
+            Y.Assert.isFalse(view.isValid(), "The input is not valid");
+        },
+    });
+
+    Y.Test.Runner.setName("eZ Author Edit View tests");
+    Y.Test.Runner.add(removeButtonTests);
+    Y.Test.Runner.add(validationTests);
+
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+
+    registerTest.name = "Author Edit View registration test";
+    registerTest.viewType = Y.eZ.AuthorEditView;
+    registerTest.viewKey = "ezauthor";
+
+    Y.Test.Runner.add(registerTest);
+
+}, '0.0.1', {requires: ['test', 'node-event-simulate', 'editviewregister-tests', 'ez-author-editview']});
