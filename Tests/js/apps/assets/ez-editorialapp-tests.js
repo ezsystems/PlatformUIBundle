@@ -1,6 +1,6 @@
 YUI.add('ez-editorialapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest,
-        runLoaderTest, tplTest;
+        runLoaderTest, tplTest, titleTest;
 
     appTest = new Y.Test.Case({
         name: "eZ Editorial App tests",
@@ -321,6 +321,64 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 container.hasClass(testClass),
                 "The container should not have the class '" + testClass + "'"
             );
+        },
+    });
+
+    titleTest = new Y.Test.Case({
+        name: "Title tests",
+
+        setUp: function () {
+            this.initialTitle = Y.config.doc.title;
+
+            this.app = new Y.eZ.EditorialApp({
+                container: '.app',
+                viewContainer: '.view-container'
+            });
+        },
+
+        tearDown: function () {
+            Y.config.doc.title = this.initialTitle;
+        },
+
+        "Should set the title with the title returned by the active view": function () {
+            var viewTitle = 'awesome view title', that = this;
+
+            this.app.views.testTitleView = {
+                type: Y.Base.create('testTitleView', Y.View, [], {
+                    getTitle: function () {
+                        return viewTitle;
+                    }
+                })
+            };
+            this.app.showView('testTitleView', {}, function () {
+                that.resume(function () {
+                    Y.Assert.areEqual(
+                        viewTitle + ' - ' + this.initialTitle,
+                        Y.config.doc.title,
+                        "The title of the page should be build with the view title and the initial page title"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should restore the initial page title if the view does not implement getTitle": function () {
+            var that = this;
+
+            Y.config.doc.title = 'Changed title!';
+            this.app.views.testNoTitleView = {
+                type: Y.View
+            };
+            this.app.showView('testNoTitleView', {}, function () {
+                that.resume(function () {
+                    Y.Assert.areEqual(
+                        this.initialTitle,
+                        Y.config.doc.title,
+                        "The title of the page should be build with the view title and the initial page title"
+                    );
+                });
+            });
+            this.wait();
         },
     });
 
@@ -898,6 +956,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Editorial App tests");
     Y.Test.Runner.add(appTest);
+    Y.Test.Runner.add(titleTest);
     Y.Test.Runner.add(tplTest);
     Y.Test.Runner.add(runLoaderTest);
     Y.Test.Runner.add(sideViewsTest);

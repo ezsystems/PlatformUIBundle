@@ -8,7 +8,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             method: 'toJSON',
             returns: {}
         },
-        viewTest;
+        viewTest, titleTest;
 
     content = new Y.Mock();
     contentType = new Y.Mock();
@@ -318,11 +318,39 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                     );
                 }, 300);
             }, 300);
-        }
+        },
+    });
 
+    titleTest = new Y.Test.Case({
+        name: "View title test",
+
+        setUp: function () {
+            this.view = new Y.eZ.ContentEditView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should build the title with the content name": function () {
+            var content = new Y.Mock(),
+                contentName = 'Ryan Gosling';
+
+            Y.Mock.expect(content, {
+                method: 'get',
+                args: ['name'],
+                returns: contentName
+            });
+            this.view.set('content', content);
+            Y.Assert.isTrue(
+                this.view.getTitle().indexOf(contentName) != -1,
+                "The title of the view should contain the content name"
+            );
+        },
     });
 
     Y.Test.Runner.setName("eZ Content Edit View tests");
     Y.Test.Runner.add(viewTest);
+    Y.Test.Runner.add(titleTest);
 
 }, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-contenteditview']});

@@ -111,6 +111,21 @@ YUI.add('ez-locationviewview', function (Y) {
         },
 
         /**
+         * Returns the title of the page when the location view is the active
+         * view.
+         *
+         * @method getTitle
+         * @return String
+         */
+        getTitle: function () {
+            var title = this.get('content').get('name');
+
+            return Y.Array.reduce(this.get('path'), title, function (title, val) {
+                return title + ' / ' + val.content.get('name');
+            });
+        },
+
+        /**
          * Sets the minimum height of the view
          *
          * @private

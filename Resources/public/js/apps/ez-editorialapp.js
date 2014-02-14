@@ -101,6 +101,16 @@ YUI.add('ez-editorialapp', function (Y) {
          * @method initializer
          */
         initializer: function () {
+            /**
+             * Stores the initial title of the page so it can be used when
+             * generating the title depending on the active view
+             *
+             * @property _initialTitle
+             * @protected
+             * @default the actual page title
+             */
+            this._initialTitle = Y.config.doc.title;
+
             // Setting events handlers
             this.on('*:closeView', function (e) {
                 Y.config.win.history.back();
@@ -412,14 +422,15 @@ YUI.add('ez-editorialapp', function (Y) {
         /*
          * Overrides the default implementation to make sure the view `active`
          * attribute is set to true  after the view is attached to the
-         * DOM. It also sets the loading flag to false.
+         * DOM. It also sets the loading flag to false and make sure the title
+         * of the page is correct after changing the active view.
          *
          * @method _afterActiveViewChange
          * @protected
          * @param {Object} e activeViewChange event facade
          */
         _afterActiveViewChange: function (e) {
-            var cb, prevView = e.prevVal,
+            var cb, prevView = e.prevVal, that = this,
                 handleActive = function (view) {
                     if ( prevView ) {
                         prevView.set('active', false);
@@ -435,12 +446,14 @@ YUI.add('ez-editorialapp', function (Y) {
             if ( e.options.callback ) {
                 cb = e.options.callback;
                 e.options.callback = function (view) {
+                    that._setTitle(view);
                     cb(e.newVal);
                     removeContainerTransformStyle(view);
                     handleActive(view);
                 };
             } else {
                 e.options.callback = function (view) {
+                    that._setTitle(view);
                     removeContainerTransformStyle(view);
                     handleActive(view);
                 };
@@ -449,6 +462,23 @@ YUI.add('ez-editorialapp', function (Y) {
             Y.eZ.EditorialApp.superclass._afterActiveViewChange.call(this, e);
             this.set('loading', false);
         },
+
+        /**
+         * Sets the title of the page using the new active view `getTitle`
+         * method if it exists, otherwise, it just restores the initial page
+         * title.
+         *
+         * @method _setTitle
+         * @protected
+         * @param {View} the active view
+         */
+        _setTitle: function (view) {
+            if ( typeof view.getTitle === 'function' ) {
+                Y.config.doc.title = view.getTitle() + ' - ' + this._initialTitle;
+            } else {
+                Y.config.doc.title = this._initialTitle;
+            }
+        }
     }, {
         ATTRS: {
             /**
