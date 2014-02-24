@@ -1,6 +1,6 @@
 YUI.add('ez-editorialapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest,
-        runLoaderTest, tplTest, titleTest;
+        handleMainViewTest, tplTest, titleTest;
 
     appTest = new Y.Test.Case({
         name: "eZ Editorial App tests",
@@ -152,39 +152,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             this.wait();
         },
 
-        "Should show the view which identifier is in the route metadata": function () {
-            var rendered = false, initialized = false,
-                req = {route: {view: 'myView'}}, resp = {variables: {'myVar': 1}};
-
-            this.app.views.myView = {
-                type: Y.Base.create('myView', Y.View, [], {
-                    initializer: function () {
-                        initialized = true;
-                    },
-
-                    render: function () {
-                        rendered = true;
-                        Y.Assert.areEqual(
-                            this.get('myVar'), resp.variables.myVar,
-                            "The view attributes should be updated with the result of the loader"
-                        );
-                    }
-                })
-            };
-
-            this.app.set('loading', true);
-            this.app.handleMainView(req, resp);
-
-            Y.assert(initialized, "The view should have been initialized");
-            Y.assert(rendered, "The view should have been rendered");
-
-            rendered = false;
-            resp.variables.myVar++;
-            this.app.set('loading', true);
-            this.app.handleMainView(req, resp);
-
-            Y.assert(rendered, "The location view view should have been rerendered");
-        },
 
         "Should show the error view, when catching 'fatalError' event": function () {
             var rendered = false, initialized = false,
@@ -383,7 +350,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
     });
 
     tplTest = new Y.Test.Case({
-        name: "runLoader app tests",
+        name: "Handlebars app tests",
 
         setUp: function () {
             this.capiMock = new Y.Mock();
@@ -478,8 +445,8 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
     });
 
-    runLoaderTest = new Y.Test.Case({
-        name: "runLoader app tests",
+    handleMainViewTest = new Y.Test.Case({
+        name: "handleMainView app tests",
 
         setUp: function () {
             this.capiMock = new Y.Mock();
@@ -495,131 +462,222 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             delete this.app;
         },
 
-        "runLoader should call the next middleware if no loader is defined": function () {
-            var url = '/the_killers/sam_s_town',
+        "Should show the view without a defined view service": function () {
+            var req = {route: {view: 'testView'}},
+                rendered = false;
+
+            this.app.views.testView = {
+                type: Y.Base.create('testView', Y.View, [], {
+                    render: function () {
+                        rendered = true;
+                        return this;
+                    }
+                })
+            };
+
+            this.app.handleMainView(req);
+            Y.Assert.isTrue(rendered, "The view should be rendered");
+
+            rendered = false;
+            this.app.handleMainView(req);
+            Y.Assert.isTrue(rendered, "The view should be rerendered");
+        },
+
+        "Should show the view after using the view service": function () {
+            var rendered = false,
+                serviceInit = false, serviceLoad = false,
+                viewParameters = {'myVar': 1},
                 test = this,
-                next = function () {
-                    test.resume(function () {
-                        Y.Assert.pass();
-                    });
-                };
-
-            this.app.route({
-                path: url,
-                callbacks: ['runLoader', next]
-            });
-            this.app.navigate(url);
-            this.wait();
-        },
-
-        "runLoader should call the view loader": function () {
-            var url = '/the_killers/the_dustland_fairytale',
-                reqStamp = 'A Dustland fairytale beginning',
-                respStamp = 'Is there still magic in the midnight sun',
-                stampReqResp = function (req, resp, next) {
-                    // to make sure the loader receives the correct request and
-                    // response
-                    req.stamp = reqStamp;
-                    resp.stamp = respStamp;
-                    next();
-                },
-                next = function () {
-                    Y.Assert.isTrue(this.get('loading'), "The application should be in loading mode");
-                },
-                ViewLoader, that = this;
-
-            ViewLoader = Y.Base.create('testViewLoader', Y.eZ.ViewLoader, [], {
-                load: function (cb) {
-                    Y.Assert.areSame(
-                        that.capiMock, this.get('capi'),
-                        "The view loader should receive the capi"
-                    );
-                    Y.Assert.isObject(
-                        this.get('request'),
-                        "The view loader should receive the request"
-                    );
-                    Y.Assert.areSame(
-                        reqStamp, this.get('request').stamp,
-                        "The view loader should receive the request"
-                    );
-                    Y.Assert.isObject(
-                        this.get('response'),
-                        "The view loader should receive the response"
-                    );
-                    Y.Assert.areSame(
-                        respStamp, this.get('response').stamp,
-                        "The view loader should receive the response"
-                    );
-                    Y.Assert.pass();
-                    cb();
-                }
-            });
-
-            this.app.route({
-                path: url,
-                loader: ViewLoader,
-                callbacks: [stampReqResp, 'runLoader', next]
-            });
-            this.app.navigate(url);
-        },
-
-        "runLoader should catch the view loader error and throw an app fatal error": function () {
-            var url = '/the_killers/deadlines_and_commitments',
-                errorMsg = 'Late',
-                stamps = ['deadlines', 'and', 'commitments'],
-                test = this, ViewLoader,
-                stampReqRespNext = function (req, resp, next) {
-                    // to make sure the fatal error event receives the correct
-                    // retry action arguments
-                    req.stamp = stamps[0];
-                    resp.stamp = stamps[1];
-                    next.stamp = stamps[2];
-                    next();
-                },
-                TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.eZ.ErrorView, [], {
-                    render: function () {},
-                });
-
-
-            this.app.views.errorView.instance = new TestErrorViewConstructor();
-
-            ViewLoader = Y.Base.create('testViewLoader', Y.eZ.ViewLoader, [], {
-                load: function () {
-                    this.fire('error', {message: errorMsg});
-                }
-            });
-
-            this.app.route({
-                path: url,
-                loader: ViewLoader,
-                callbacks: [stampReqRespNext, 'runLoader']
-            });
-            this.app.on('fatalError', function (e) {
-                test.resume(function () {
-                    Y.Assert.areSame(
-                        e.additionalInfo.errorText, errorMsg,
-                        "The fatal error message should be the same as the error message"
-                    );
-
-                    Y.Assert.areSame(
-                        this.app.runLoader, e.retryAction.run,
-                        "The retry action method should be runLoader"
-                    );
-
-                    for (var i = 0; i != e.retryAction.args.length; ++i) {
+                TestService = Y.Base.create('testService', Y.eZ.ViewService, [], {
+                    initializer: function () {
                         Y.Assert.areSame(
-                            e.retryAction.args[i].stamp, stamps[i]
+                            test.capiMock, this.get('capi'),
+                            "The CAPI should be passed to the service"
+                        );
+                        Y.Assert.areSame(
+                            test.app, this.get('app'),
+                            "The app should be passed to the service"
+                        );
+                        Y.Assert.areSame(
+                            req, this.get('request'),
+                            "The request object should be passed to the service"
+                        );
+                        Y.Assert.areSame(
+                            res, this.get('response'),
+                            "The response object should be passed to the service"
+                        );
+                        serviceInit = true;
+                    },
+
+                    load: function (callback) {
+                        serviceLoad = true;
+                        callback(this);
+                    },
+
+                    getViewParameters: function () {
+                        return viewParameters;
+                    }
+                }),
+                req = {
+                    route: {
+                        view: 'myView',
+                        service: TestService,
+                    },
+                },
+                res = {};
+
+            this.app.views.myView = {
+                type: Y.Base.create('myView', Y.View, [], {
+                    render: function () {
+                        rendered = true;
+                        Y.Assert.areEqual(
+                            this.get('myVar'), viewParameters.myVar,
+                            "The view attributes should be updated with the result of the loader"
                         );
                     }
+                })
+            };
 
-                    Y.Assert.areSame(
-                        e.retryAction.context, this.app,
-                        "The retry action context should be set to the app"
-                    );
+            this.app.handleMainView(req, res);
+
+            Y.Assert.isTrue(rendered, "The view should have been rendered");
+            Y.Assert.isTrue(serviceInit, "The service should have been created");
+            Y.Assert.isTrue(serviceLoad, "The service load method should been called");
+        },
+
+        "With a service, the view events should bubble to the app through the service": function () {
+            var TestService = Y.Base.create('testService', Y.eZ.ViewService, [], {
+                    initializer: function () {
+                        this.on('*:testEvent', function (e) {
+                            bubbleService = true;
+                        });
+                    }
+                }),
+                req = {
+                    route: {
+                        view: 'myView',
+                        service: TestService,
+                    },
+                },
+                bubbleApp = false, bubbleService = false,
+                test = this;
+
+            this.app.on('*:testEvent', function (e) {
+                bubbleApp = true;
+            });
+            this.app.views.myView = {
+                type: Y.eZ.View
+            };
+
+            this.app.handleMainView(req, {}, function () {
+                test.resume(function () {
+                    test.app.get('activeView').fire('testEvent');
+                    Y.Assert.isTrue(bubbleService, "The service should have received the view event");
+                    Y.Assert.isTrue(bubbleApp, "The app should have received the view event");
                 });
             });
-            this.app.navigate(url);
             this.wait();
+        },
+
+        "Should reuse the view service if available": function () {
+            var serviceInit = 0, serviceLoad = 0,
+                updatedRequest = false, updatedResponse = false,
+                TestService = Y.Base.create('testService', Y.eZ.ViewService, [], {
+                    initializer: function (){
+                        serviceInit++;
+                        this.on('responseChange', function () { updatedResponse = true; });
+                        this.on('requestChange', function () { updatedRequest = true; });
+                    },
+                    load: function(cb) { serviceLoad++; cb(this); }
+                }),
+                req = {
+                    route: {
+                        view: 'myView',
+                        service: TestService,
+                    },
+                },
+                test = this;
+
+            this.app.views.myView = {
+                type: Y.eZ.View
+            };
+
+            this.app.handleMainView(req, {}, function () {
+                test.resume(function () {
+                    this.app.handleMainView(req, {}, function () {
+                        test.resume(function () {
+                            Y.Assert.areEqual(
+                                1, serviceInit,
+                                "The service should have been build once"
+                            );
+                            Y.Assert.areEqual(
+                                2, serviceLoad,
+                                "load should have been called twice"
+                            );
+                            Y.Assert.isTrue(
+                                updatedRequest,
+                                "The request should have been updated"
+                            );
+                            Y.Assert.isTrue(
+                                updatedResponse,
+                                "The response should have been updated"
+                            );
+                        });
+                    });
+                    test.wait();
+                });
+            });
+            this.wait();
+        },
+
+        "Should catch the view service error and throw an app fatal error": function () {
+            var msg = 'test message',
+                fatalErrorTriggered = false,
+                TestService = Y.Base.create('testService', Y.eZ.ViewService, [], {
+                    load: function (callback) {
+                        this.fire('error', {message: msg});
+                    }
+                }),
+                next = function () { },
+                req = {route: {service: TestService, view: 'testView'}},
+                res = {};
+
+            this.app.views.errorView.instance.destroy();
+            this.app.views.testView = {
+                type: Y.View
+            };
+            this.app.on('fatalError', function (e) {
+                fatalErrorTriggered = true;
+                Y.Assert.areSame(
+                    e.additionalInfo.errorText, msg,
+                    "The fatal error message should be the same as the error message"
+                );
+
+                Y.Assert.areSame(
+                    this.handleMainView, e.retryAction.run,
+                    "The retry action method should be runLoader"
+                );
+
+                Y.Assert.areSame(
+                    req, e.retryAction.args[0],
+                    "The request should be passed in the error facade"
+                );
+                Y.Assert.areSame(
+                    res, e.retryAction.args[1],
+                    "The response should be passed in the error facade"
+                );
+                Y.Assert.areSame(
+                    next, e.retryAction.args[2],
+                    "The next callback should be passed in the error facade"
+                );
+
+                Y.Assert.areSame(
+                    this, e.retryAction.context,
+                    "The retry action context should be set to the app"
+                );
+            });
+            this.app.handleMainView(req, res, next);
+            Y.Assert.isTrue(fatalErrorTriggered, "A fatal error should have been triggered");
         },
     });
 
@@ -958,8 +1016,8 @@ YUI.add('ez-editorialapp-tests', function (Y) {
     Y.Test.Runner.add(appTest);
     Y.Test.Runner.add(titleTest);
     Y.Test.Runner.add(tplTest);
-    Y.Test.Runner.add(runLoaderTest);
+    Y.Test.Runner.add(handleMainViewTest);
     Y.Test.Runner.add(sideViewsTest);
     Y.Test.Runner.add(reverseRoutingTest);
 
-}, '0.0.1', {requires: ['test', 'ez-editorialapp', 'ez-viewloader']});
+}, '0.0.1', {requires: ['test', 'ez-editorialapp', 'ez-viewservice']});

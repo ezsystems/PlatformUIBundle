@@ -1,12 +1,12 @@
 <!doctype html>
 <html>
 <head>
-<title>eZ Content Edit View Loader tests</title>
+<title>eZ Content Edit View Service tests</title>
 </head>
 <body>
 
 <script type="text/javascript" src="../../../../node_modules/yui/yui/yui.js"></script>
-<script type="text/javascript" src="./assets/ez-contenteditviewloader-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-contenteditviewservice-tests.js"></script>
 <script type="text/javascript" src="./assets/fake-models.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
@@ -21,19 +21,19 @@
     }
 
     YUI({
-        coverage: ['ez-contenteditviewloader'],
+        coverage: ['ez-contenteditviewservice'],
         filter: loaderFilter,
         modules: {
-            "ez-contenteditviewloader": {
-                requires: ['ez-viewloader', 'parallel', 'fake-models'],
-                fullpath: "../../../../Resources/public/js/views/loaders/ez-contenteditviewloader.js"
+            "ez-contenteditviewservice": {
+                requires: ['ez-viewservice', 'parallel', 'fake-models'],
+                fullpath: "../../../../Resources/public/js/views/services/ez-contenteditviewservice.js"
             },
-            "ez-viewloader": {
+            "ez-viewservice": {
                 requires: ['view'],
-                fullpath: "../../../../Resources/public/js/views/loaders/ez-viewloader.js"
+                fullpath: "../../../../Resources/public/js/views/services/ez-viewservice.js"
             }
         }
-    }).use('ez-contenteditviewloader-tests', function (Y) {
+    }).use('ez-contenteditviewservice-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>
