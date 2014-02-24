@@ -92,6 +92,14 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 formView: formView,
                 actionBar: actionBar
             });
+            Y.Mock.expect(actionBar, {
+                method: 'removeTarget',
+                args: [this.view]
+            });
+            Y.Mock.expect(formView, {
+                method: 'removeTarget',
+                args: [this.view]
+            });
 
         },
 

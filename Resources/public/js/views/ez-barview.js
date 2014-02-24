@@ -274,6 +274,13 @@ YUI.add('ez-barview', function (Y) {
             this.set('actionsList', actionsList);
         },
 
+        destructor: function () {
+            Y.Array.each(this.get('actionsList'), function (view) {
+                view.removeTarget(this);
+                view.destroy();
+            }, this);
+        },
+
         /**
          * Event event handler for clicks on "View More" link
          *

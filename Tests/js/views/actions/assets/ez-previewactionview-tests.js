@@ -192,6 +192,10 @@ YUI.add('ez-previewactionview-tests', function (Y) {
 
         "Should destroy editPreview when destroying itself": function () {
             Y.Mock.expect(editPreview, {
+                method: 'removeTarget',
+                args: [this.view]
+            });
+            Y.Mock.expect(editPreview, {
                 method: 'destroy'
             });
 

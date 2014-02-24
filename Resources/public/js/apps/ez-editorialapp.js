@@ -80,7 +80,6 @@ YUI.add('ez-editorialapp', function (Y) {
             contentEditView: {
                 type: Y.eZ.ContentEditView,
                 parent: 'locationViewView',
-                preserve: true
             },
             locationViewView: {
                 type: Y.eZ.LocationViewView,

@@ -137,6 +137,14 @@ YUI.add('ez-locationviewview', function (Y) {
             container.one('.ez-locationview-content').setStyle(
                 'minHeight', container.get('winHeight') + 'px'
             );
+        },
+
+        destructor: function () {
+            var bar = this.get('actionBar');
+
+            this.get('rawContentView').destroy();
+            bar.removeTarget(this);
+            bar.destroy();
         }
     }, {
         ATTRS: {
@@ -195,7 +203,9 @@ YUI.add('ez-locationviewview', function (Y) {
              * @type eZ.BarView
              */
             actionBar: {
-                value: new Y.eZ.ActionBarView()
+                valueFn: function () {
+                    return new Y.eZ.ActionBarView();
+                }
             },
 
             /**
@@ -205,7 +215,9 @@ YUI.add('ez-locationviewview', function (Y) {
              * @type eZ.RawContentView
              */
             rawContentView: {
-                value: new Y.eZ.RawContentView()
+                valueFn: function () {
+                    return new Y.eZ.RawContentView();
+                }
             }
         }
     });

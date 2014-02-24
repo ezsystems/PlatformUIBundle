@@ -1,5 +1,21 @@
 YUI.add('ez-rawcontentview-tests', function (Y) {
-    var viewTest;
+    var viewTest, destroyTest,
+
+        _getContentTypeMock = function (fieldDefinitions, fieldGroups) {
+            var mock = new Y.Test.Mock();
+
+            Y.Mock.expect(mock, {
+                method: 'get',
+                args: ['fieldDefinitions'],
+                returns: fieldDefinitions,
+            });
+            Y.Mock.expect(mock, {
+                method: 'getFieldGroups',
+                returns: fieldGroups,
+            });
+            return mock;
+        };
+
 
     viewTest = new Y.Test.Case({
         name: "eZ Raw Content View test",
@@ -50,18 +66,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
         },
 
         _getContentTypeMock: function () {
-            var mock = new Y.Test.Mock();
-
-            Y.Mock.expect(mock, {
-                method: 'get',
-                args: ['fieldDefinitions'],
-                returns: this.fieldDefinitions,
-            });
-            Y.Mock.expect(mock, {
-                method: 'getFieldGroups',
-                returns: this.fieldGroups,
-            });
-            return mock;
+            return _getContentTypeMock(this.fieldDefinitions, this.fieldGroups);
         },
 
         "Test render": function () {
@@ -246,7 +251,60 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
         },
     });
 
+    destroyTest = new Y.Test.Case({
+        name: "eZ Raw Content View destroy test",
+
+        setUp: function () {
+            this.fieldDefinitions = [{
+                fieldGroup: 'content',
+                fieldType: 'something',
+                identifier: 'id1',
+            }, {
+                fieldGroup: 'meta',
+                fieldType: 'somethingelse',
+                identifier: 'id2',
+            }];
+            this.fieldGroups = [{fieldGroupName: 'content'}, {fieldGroupName: 'meta'}];
+
+        },
+
+        "Should destroy the field views": function () {
+            var somethingDestroyed = false,
+                somethingElseDestroyed = false,
+                content = new Y.Mock();
+
+            Y.eZ.FieldView.registerFieldView('something', Y.Base.create('somethingView', Y.eZ.FieldView, [], {
+                destructor: function () {
+                    somethingDestroyed = true;
+                }
+            }));
+            Y.eZ.FieldView.registerFieldView('somethingelse', Y.Base.create('somethingElseView', Y.eZ.FieldView, [], {
+                destructor: function () {
+                    somethingElseDestroyed = true;
+                }
+            }));
+
+            Y.Mock.expect(content, {
+                method: 'getField',
+                args: [Y.Mock.Value.String]
+            });
+
+            this.view = new Y.eZ.RawContentView({
+                content: content,
+                contentType: _getContentTypeMock(this.fieldDefinitions, this.fieldGroups)
+            });
+            this.view.destroy();
+
+            Y.Assert.isTrue(somethingDestroyed);
+            Y.Assert.isTrue(somethingElseDestroyed);
+
+            Y.eZ.FieldView.registerFieldView('something', undefined);
+            Y.eZ.FieldView.registerFieldView('somethingelse', undefined);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Raw Content View tests");
     Y.Test.Runner.add(viewTest);
+    Y.Test.Runner.add(destroyTest);
 
 }, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-rawcontentview']});
