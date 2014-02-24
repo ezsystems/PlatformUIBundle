@@ -128,7 +128,6 @@ YUI.add('ez-editorialapp', function (Y) {
                 this.set('loading', true);
             });
 
-            this.on('*:editAction', this._editContent);
             this.on('*:minimizeDiscoveryBarAction', this._minimizeDiscoveryBar);
 
             this.on('*:navigationModeChange', this._uiSetNavigationModeClass);
@@ -156,18 +155,6 @@ YUI.add('ez-editorialapp', function (Y) {
             } else {
                 this.get('container').removeClass(e.navigation.modeClass);
             }
-        },
-
-        /**
-         * editAction event handler, makes the application navigate to edit the
-         * content available in the event facade
-         *
-         * @method _editContent
-         * @protected
-         * @param {Object} e event facade of the editAction event
-         */
-        _editContent: function (e) {
-            this.navigate(this.routeUri('editContent', {id: e.content.get('id')}));
         },
 
         /**

@@ -18,6 +18,26 @@ YUI.add('ez-locationviewviewservice', function (Y) {
      * @extends eZ.ViewService
      */
     Y.eZ.LocationViewViewService = Y.Base.create('locationViewViewService', Y.eZ.ViewService, [], {
+        initializer: function () {
+            this.on('*:editAction', this._editContent);
+        },
+
+        /**
+         * editAction event handler, makes the application navigate to edit the
+         * content available in the event facade
+         *
+         * @method _editContent
+         * @protected
+         * @param {Object} e event facade of the editAction event
+         */
+        _editContent: function (e) {
+            var app = this.get('app');
+
+            app.navigate(
+                app.routeUri('editContent', {id: e.content.get('id')})
+            );
+        },
+
         /**
          * Loads the location, the content and the path for the location id
          * available in the request and calls the next callback once it's done.

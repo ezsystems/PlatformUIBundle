@@ -242,26 +242,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
             );
         },
 
-        "Should navigate to the content edit when receiving an editAction event": function () {
-            var contentMock, contentId = 'aContentId';
-
-            contentMock = new Y.Test.Mock();
-            Y.Mock.expect(contentMock, {
-                method: 'get',
-                args: ['id'],
-                returns: contentId
-            });
-
-            this.app.fire('whatever:editAction', {content: contentMock});
-            // .replace() calls are necessary because app.getPath() does not
-            // take into account serverRouting set to false
-            Y.Assert.areEqual(
-                this.app.routeUri('editContent', {id: contentId}).replace(this.root + '#'),
-                this.app.getPath().replace(this.root),
-                "The current path should be the edit content route for the content '" + contentId + "'"
-            );
-        },
-
         "Should set a class on the app container when receiving a 'navigationModeChange' event": function () {
             var container = this.app.get('container'),
                 testClass = 'test-class';

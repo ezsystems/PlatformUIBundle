@@ -1,5 +1,5 @@
 YUI.add('ez-locationviewviewservice-tests', function (Y) {
-    var functionalTest, unitTest;
+    var functionalTest, unitTest, eventTest;
 
     functionalTest = new Y.Test.Case({
         name: "eZ Location View View Service 'functional' tests",
@@ -352,8 +352,65 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         }
     });
 
+    eventTest = new Y.Test.Case({
+        name: "eZ Location View View Service event tests",
+
+        setUp: function () {
+            this.app = new Y.Mock();
+            this.service = new Y.eZ.LocationViewViewService({
+                app: this.app
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+            delete this.app;
+        },
+
+        "Should navigate to the content edit when receiving an editAction event": function () {
+            var contentMock, contentId = 'aContentId',
+                editUri = '/i/want/to/edit/aContentId',
+                app = this.app;
+
+            contentMock = new Y.Test.Mock();
+            Y.Mock.expect(contentMock, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId
+            });
+
+            Y.Mock.expect(app, {
+                method: 'routeUri',
+                args: ['editContent', Y.Mock.Value.Object],
+                run: function (routeName, params) {
+                    Y.Assert.isObject(
+                        params,
+                        "routeUri should be called with an object in parameter"
+                    );
+                    Y.Assert.areEqual(
+                        params.id,
+                        contentId,
+                        "routeUri should receive the content id in parameter"
+                    );
+                    return editUri;
+                }
+            });
+
+            Y.Mock.expect(app, {
+                method: 'navigate',
+                args: [editUri]
+            });
+
+            this.service.fire('whatever:editAction', {content: contentMock});
+            Y.Mock.verify(app);
+            Y.Mock.verify(contentMock);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location View View Service tests");
     Y.Test.Runner.add(unitTest);
     Y.Test.Runner.add(functionalTest);
+    Y.Test.Runner.add(eventTest);
 
 }, '0.0.1', {requires: ['test', 'ez-locationviewviewservice']});
