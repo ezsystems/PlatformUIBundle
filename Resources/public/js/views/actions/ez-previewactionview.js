@@ -132,7 +132,9 @@ YUI.add('ez-previewactionview', function (Y) {
              * @required
              */
             editPreview: {
-                value: new Y.eZ.EditPreviewView()
+                valueFn: function () {
+                    return new Y.eZ.EditPreviewView();
+                }
             },
 
             /**

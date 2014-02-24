@@ -262,7 +262,9 @@ YUI.add('ez-contenteditview', function (Y) {
              * @required
              */
             formView: {
-                value: new Y.eZ.ContentEditFormView()
+                valueFn: function () {
+                    return new Y.eZ.ContentEditFormView();
+                }
             },
 
             /**
@@ -274,7 +276,9 @@ YUI.add('ez-contenteditview', function (Y) {
              * @required
              */
             actionBar: {
-                value: new Y.eZ.EditActionBarView()
+                valueFn: function () {
+                    return new Y.eZ.EditActionBarView();
+                }
             }
         }
     });

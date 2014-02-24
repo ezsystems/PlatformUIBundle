@@ -27,22 +27,23 @@ YUI.add('ez-actionbarview', function (Y) {
              * @type Array
              */
             actionsList: {
-                cloneDefaultValue: false,
-                value: [
-                    new Y.eZ.ButtonActionView({
-                        actionId: "minimizeActionBar",
-                        disabled: false,
-                        label: "Minimize",
-                        priority: 1000
-                    }),
-                    new Y.eZ.ButtonActionView({
-                        actionId: "edit",
-                        disabled: false,
-                        label: "Edit",
-                        hint: "Edit this content",
-                        priority: 200
-                    })
-                ]
+                valueFn: function () {
+                    return [
+                        new Y.eZ.ButtonActionView({
+                            actionId: "minimizeActionBar",
+                            disabled: false,
+                            label: "Minimize",
+                            priority: 1000
+                        }),
+                        new Y.eZ.ButtonActionView({
+                            actionId: "edit",
+                            disabled: false,
+                            label: "Edit",
+                            hint: "Edit this content",
+                            priority: 200
+                        })
+                    ];
+                }
             },
         }
     });
