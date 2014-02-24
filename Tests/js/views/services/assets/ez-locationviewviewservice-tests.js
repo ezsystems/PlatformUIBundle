@@ -1,8 +1,8 @@
-YUI.add('ez-locationviewviewloader-tests', function (Y) {
-    var functionalTest, unitTest;
+YUI.add('ez-locationviewviewservice-tests', function (Y) {
+    var functionalTest, unitTest, eventTest;
 
     functionalTest = new Y.Test.Case({
-        name: "eZ Location View View Loader 'functional' tests",
+        name: "eZ Location View View Service 'functional' tests",
 
         setUp: function () {
             this.rootLocationId = '/api/ezp/v2/content/locations/1/2';
@@ -112,7 +112,7 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
         },
 
         _normalLoading: function (locationId) {
-            var loader, callbackCalled = false,
+            var service, callbackCalled = false,
                 response = {},
                 location, content;
 
@@ -123,40 +123,46 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
 
             location = this.locations[this.request.params.id];
             content = this.contents[location.get('resources').Content];
-            loader = new Y.eZ.LocationViewViewLoader({
+            service = new Y.eZ.LocationViewViewService({
                 capi: this.capiMock,
                 location: location,
                 content: content,
                 response: response,
                 request: this.request
             });
-            loader._newLocation = function (params) {
+            service._newLocation = function (params) {
                 return functionalTest.locations[params.id];
             };
-            loader._newContent = function (params) {
+            service._newContent = function (params) {
                 return functionalTest.contents[params.id];
             };
-            loader.load(function () {
-                var depth, prevLocation;
+            service.load(function (param) {
+                var depth, prevLocation,
+                    variables = service.getViewParameters();
 
                 callbackCalled = true;
                 Y.Assert.areSame(
-                    location, response.variables.location,
-                    "The response.variables should get the location"
+                    service, param,
+                    "The service should be available in the parameter of the load callback"
+                );
+
+                Y.Assert.areSame(
+                    location, variables.location,
+                    "The variables should get the location"
                 );
                 Y.Assert.areSame(
-                    content, response.variables.content,
-                    "The response.variables should get the content"
+                    content, variables.content,
+                    "The variables should get the content"
                 );
                 Y.Assert.isArray(
-                    response.variables.path, "The path should be an array"
+                    variables.path, "The path should be an array"
                 );
                 depth = location.get('id').split('/').length - functionalTest.rootLocationId.split('/').length;
                 Y.Assert.areSame(
-                    depth, response.variables.path.length,
+                    depth, variables.path.length,
                     "The path should have " + depth + " entries"
                 );
-                Y.Array.each(response.variables.path, function (entry) {
+                Y.Array.each(variables.path, function (entry) {
                     Y.Assert.isInstanceOf(
                         Y.eZ.Content, entry.content,
                         "Each path entry should have Y.eZ.Content instance"
@@ -187,7 +193,7 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
         },
 
         _errorLoading: function (locationId, contentServiceError, locationIdError, contentIdError, contentTypeError) {
-            var loader, errorCalled = false,
+            var service, errorCalled = false,
                 response = {},
                 location, content;
 
@@ -198,25 +204,25 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
 
             location = this.locations[this.request.params.id];
             content = this.contents[location.get('resources').Content];
-            loader = new Y.eZ.LocationViewViewLoader({
+            service = new Y.eZ.LocationViewViewService({
                 capi: this.capiMock,
                 location: location,
                 content: content,
                 response: response,
                 request: this.request
             });
-            loader._newLocation = function (params) {
+            service._newLocation = function (params) {
                 return functionalTest.locations[params.id];
             };
-            loader._newContent = function (params) {
+            service._newContent = function (params) {
                 return functionalTest.contents[params.id];
             };
-            loader.on('error', function (e) {
+            service.on('error', function (e) {
                 Y.Assert.isObject(e, "An event facade should be provided");
                 Y.Assert.isString(e.message, "The message property should be filled");
                 errorCalled = true;
             });
-            loader.load(function () {
+            service.load(function () {
                 Y.Assert.fail("The load callback should not be called");
             });
 
@@ -277,10 +283,10 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
     });
 
     unitTest = new Y.Test.Case({
-        name: "eZ Location View View Loader unit test",
+        name: "eZ Location View View Service unit test",
 
         "Should sort path by location depth": function () {
-            var loader,
+            var service,
                 pathInput = [], pathOut, i;
 
             pathInput.push({
@@ -300,9 +306,9 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
                 content: {}
             });
 
-            loader = new Y.eZ.LocationViewViewLoader();
-            loader.set('path', pathInput);
-            pathOut = loader.get('path');
+            service = new Y.eZ.LocationViewViewService();
+            service.set('path', pathInput);
+            pathOut = service.get('path');
 
             Y.Assert.areSame(
                 pathInput.length, pathOut.length,
@@ -318,36 +324,93 @@ YUI.add('ez-locationviewviewloader-tests', function (Y) {
         },
 
         "Should create a location": function () {
-            var TestLoader, loader, id = 'myid';
+            var TestService, service, id = 'myid';
 
-            TestLoader = Y.Base.create('testLoader', Y.eZ.LocationViewViewLoader, [], {
+            TestService = Y.Base.create('testService', Y.eZ.LocationViewViewService, [], {
                 testNewLocation: function (conf) {
                     return this._newLocation(conf);
                 }
             });
 
-            loader = new TestLoader();
-            Y.Assert.isInstanceOf(Y.eZ.Location, loader.testNewLocation());
-            Y.Assert.areSame(id, loader.testNewLocation({'id': id}).get('id'));
+            service = new TestService();
+            Y.Assert.isInstanceOf(Y.eZ.Location, service.testNewLocation());
+            Y.Assert.areSame(id, service.testNewLocation({'id': id}).get('id'));
         },
 
         "Should create a content": function () {
-            var TestLoader, loader, id = 'myid';
+            var TestService, service, id = 'myid';
 
-            TestLoader = Y.Base.create('testLoader', Y.eZ.LocationViewViewLoader, [], {
+            TestService = Y.Base.create('testService', Y.eZ.LocationViewViewService, [], {
                 testNewContent: function (conf) {
                     return this._newContent(conf);
                 }
             });
 
-            loader = new TestLoader();
-            Y.Assert.isInstanceOf(Y.eZ.Content, loader.testNewContent());
-            Y.Assert.areSame(id, loader.testNewContent({'id': id}).get('id'));
+            service = new TestService();
+            Y.Assert.isInstanceOf(Y.eZ.Content, service.testNewContent());
+            Y.Assert.areSame(id, service.testNewContent({'id': id}).get('id'));
         }
     });
 
-    Y.Test.Runner.setName("eZ Location View View Loader tests");
+    eventTest = new Y.Test.Case({
+        name: "eZ Location View View Service event tests",
+
+        setUp: function () {
+            this.app = new Y.Mock();
+            this.service = new Y.eZ.LocationViewViewService({
+                app: this.app
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+            delete this.app;
+        },
+
+        "Should navigate to the content edit when receiving an editAction event": function () {
+            var contentMock, contentId = 'aContentId',
+                editUri = '/i/want/to/edit/aContentId',
+                app = this.app;
+
+            contentMock = new Y.Test.Mock();
+            Y.Mock.expect(contentMock, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId
+            });
+
+            Y.Mock.expect(app, {
+                method: 'routeUri',
+                args: ['editContent', Y.Mock.Value.Object],
+                run: function (routeName, params) {
+                    Y.Assert.isObject(
+                        params,
+                        "routeUri should be called with an object in parameter"
+                    );
+                    Y.Assert.areEqual(
+                        params.id,
+                        contentId,
+                        "routeUri should receive the content id in parameter"
+                    );
+                    return editUri;
+                }
+            });
+
+            Y.Mock.expect(app, {
+                method: 'navigate',
+                args: [editUri]
+            });
+
+            this.service.fire('whatever:editAction', {content: contentMock});
+            Y.Mock.verify(app);
+            Y.Mock.verify(contentMock);
+        },
+    });
+
+    Y.Test.Runner.setName("eZ Location View View Service tests");
     Y.Test.Runner.add(unitTest);
     Y.Test.Runner.add(functionalTest);
+    Y.Test.Runner.add(eventTest);
 
-}, '0.0.1', {requires: ['test', 'ez-locationviewviewloader']});
+}, '0.0.1', {requires: ['test', 'ez-locationviewviewservice']});

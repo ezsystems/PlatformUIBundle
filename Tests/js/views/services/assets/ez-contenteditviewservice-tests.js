@@ -1,8 +1,8 @@
-YUI.add('ez-contenteditviewloader-tests', function (Y) {
+YUI.add('ez-contenteditviewservice-tests', function (Y) {
     var cevlTest;
 
     cevlTest = new Y.Test.Case({
-        name: "eZ Content Edit View Loader tests",
+        name: "eZ Content Edit View Service tests",
 
         setUp: function () {
             this.request = {params: {id: "/api/ezp/v2/content/objects/59"}};
@@ -21,7 +21,7 @@ YUI.add('ez-contenteditviewloader-tests', function (Y) {
         },
 
         "Should load the content, the location, the content type and the owner": function () {
-            var response = {}, loader, callback,
+            var response = {}, service, callback,
                 callbackCalled = false,
                 runLoadCallback = function (options, callback) {
                     Y.Assert.areSame(
@@ -57,12 +57,18 @@ YUI.add('ez-contenteditviewloader-tests', function (Y) {
                 });
             });
 
-            callback = function () {
-                Y.Assert.areSame(response.variables.content, cevlTest.content);
+            callback = function (param) {
+                var variables = service.getViewParameters();
+
+                Y.Assert.areSame(
+                    service, param,
+                    "The service should be available in the parameter of the load callback"
+                );
+                Y.Assert.areSame(variables.content, cevlTest.content);
                 callbackCalled = true;
             };
 
-            loader = new Y.eZ.ContentEditViewLoader({
+            service = new Y.eZ.ContentEditViewService({
                 capi: this.capiMock,
                 request: this.request,
                 response: response,
@@ -73,7 +79,7 @@ YUI.add('ez-contenteditviewloader-tests', function (Y) {
                 owner: this.owner
             });
 
-            loader.load(callback);
+            service.load(callback);
 
             Y.Mock.verify(this.content);
             Y.Mock.verify(this.mainLocation);
@@ -84,7 +90,7 @@ YUI.add('ez-contenteditviewloader-tests', function (Y) {
         },
 
         "Should fire the 'error' event when the content loading fails": function () {
-            var loader, callback, errorTriggered = false;
+            var service, callback, errorTriggered = false;
 
             Y.Mock.expect(this.content, {
                 method: 'set',
@@ -103,18 +109,18 @@ YUI.add('ez-contenteditviewloader-tests', function (Y) {
                 Y.Assert.fail("The load callback should not be called");
             };
 
-            loader = new Y.eZ.ContentEditViewLoader({
+            service = new Y.eZ.ContentEditViewService({
                 capi: this.capiMock,
                 request: this.request,
 
                 content: this.content
             });
 
-            loader.on('error', function (e) {
+            service.on('error', function (e) {
                 errorTriggered = true;
             });
 
-            loader.load(callback);
+            service.load(callback);
 
             Y.Mock.verify(this.content);
             Y.Assert.isTrue(errorTriggered, "The error event should have been triggered");
@@ -124,7 +130,7 @@ YUI.add('ez-contenteditviewloader-tests', function (Y) {
          * @param {String} fail one of the value in this.mocks
          */
         _testSubloadError: function (fail) {
-            var response = {}, loader, callback,
+            var response = {}, service, callback,
                 errorTriggered = false,
                 runLoadCallbackSuccess = function (options, callback) {
                     callback(false);
@@ -163,7 +169,7 @@ YUI.add('ez-contenteditviewloader-tests', function (Y) {
                 Y.Assert.fail("The load callback should not be called");
             };
 
-            loader = new Y.eZ.ContentEditViewLoader({
+            service = new Y.eZ.ContentEditViewService({
                 capi: this.capiMock,
                 request: this.request,
                 response: response,
@@ -175,11 +181,11 @@ YUI.add('ez-contenteditviewloader-tests', function (Y) {
             });
 
 
-            loader.on('error', function (e) {
+            service.on('error', function (e) {
                 errorTriggered = true;
             });
 
-            loader.load(callback);
+            service.load(callback);
 
             Y.Mock.verify(this.content);
             Y.Mock.verify(this.mainLocation);
@@ -202,7 +208,7 @@ YUI.add('ez-contenteditviewloader-tests', function (Y) {
         }
     });
 
-    Y.Test.Runner.setName("eZ Content Edit View Loader tests");
+    Y.Test.Runner.setName("eZ Content Edit View Service tests");
     Y.Test.Runner.add(cevlTest);
 
-}, '0.0.1', {requires: ['test', 'ez-contenteditviewloader']});
+}, '0.0.1', {requires: ['test', 'ez-contenteditviewservice']});

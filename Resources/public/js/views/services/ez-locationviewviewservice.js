@@ -1,23 +1,43 @@
-YUI.add('ez-locationviewviewloader', function (Y) {
+YUI.add('ez-locationviewviewservice', function (Y) {
     "user strict";
     /**
-     * Provides the view loader component for the location view
+     * Provides the view service component for the location view
      *
-     * @module ez-locationviewviewloader
+     * @module ez-locationviewviewservice
      */
     Y.namespace('eZ');
 
     /**
-     * Location view view loader.
+     * Location view view service.
      *
      * Loads the models needed by the location view
      *
      * @namespace eZ
-     * @class LocationViewViewLoader
+     * @class LocationViewViewService
      * @constructor
-     * @extends eZ.ViewLoader
+     * @extends eZ.ViewService
      */
-    Y.eZ.LocationViewViewLoader = Y.Base.create('locationViewViewLoader', Y.eZ.ViewLoader, [], {
+    Y.eZ.LocationViewViewService = Y.Base.create('locationViewViewService', Y.eZ.ViewService, [], {
+        initializer: function () {
+            this.on('*:editAction', this._editContent);
+        },
+
+        /**
+         * editAction event handler, makes the application navigate to edit the
+         * content available in the event facade
+         *
+         * @method _editContent
+         * @protected
+         * @param {Object} e event facade of the editAction event
+         */
+        _editContent: function (e) {
+            var app = this.get('app');
+
+            app.navigate(
+                app.routeUri('editContent', {id: e.content.get('id')})
+            );
+        },
+
         /**
          * Loads the location, the content and the path for the location id
          * available in the request and calls the next callback once it's done.
@@ -30,7 +50,7 @@ YUI.add('ez-locationviewviewloader', function (Y) {
                     api: this.get('capi')
                 },
                 request = this.get('request'),
-                loader = this,
+                service = this,
                 location = this.get('location'), content = this.get('content'),
                 type = this.get('contentType'),
                 contentService = this.get('capi').getContentService();
@@ -40,7 +60,7 @@ YUI.add('ez-locationviewviewloader', function (Y) {
                 var tasks, endLoadPath, endMainContentLoad;
 
                 if ( error ) {
-                    loader._error("Failed to load the location " + location.get('id'));
+                    service._error("Failed to load the location " + location.get('id'));
                     return;
                 }
 
@@ -50,13 +70,13 @@ YUI.add('ez-locationviewviewloader', function (Y) {
                 content.set('id', location.get('resources').Content);
                 content.load(loadOptions, function (error) {
                     if ( error ) {
-                        loader._error("Failed to load the content " + content.get('id'));
+                        service._error("Failed to load the content " + content.get('id'));
                         return;
                     }
                     type.set('id', content.get('resources').ContentType);
                     type.load(loadOptions, function (error) {
                         if ( error ) {
-                            loader._error("Failed to load the content type " + type.get('id'));
+                            service._error("Failed to load the content type " + type.get('id'));
                             return;
                         }
                         endMainContentLoad();
@@ -68,7 +88,7 @@ YUI.add('ez-locationviewviewloader', function (Y) {
                     var rootLocationId;
 
                     if ( error ) {
-                        loader._error("Failed to contact the REST API");
+                        service._error("Failed to contact the REST API");
                         return;
                     }
 
@@ -77,17 +97,11 @@ YUI.add('ez-locationviewviewloader', function (Y) {
                         endLoadPath();
                         return;
                     }
-                    loader._loadPath(rootLocationId, endLoadPath);
+                    service._loadPath(rootLocationId, endLoadPath);
                 });
 
                 tasks.done(function () {
-                    loader._setResponseVariables({
-                        location: location,
-                        content: content,
-                        contentType: type,
-                        path: loader.get('path')
-                    });
-                    next();
+                    next(service);
                 });
             });
         },
@@ -101,20 +115,20 @@ YUI.add('ez-locationviewviewloader', function (Y) {
          * @param {Function} end the callback to call when the just is done
          */
         _loadPath: function (rootLocationId, end) {
-            var loader = this,
+            var service = this,
                 loadParentCallback,
                 path = [];
 
             loadParentCallback = function (error, parentStruct) {
                 if ( error ) {
-                    loader._error("Fail to load the path");
+                    service._error("Fail to load the path");
                     return;
                 }
                 path.push(parentStruct);
                 if ( rootLocationId !== parentStruct.location.get('id') ) {
-                    loader._loadParent(parentStruct.location, loadParentCallback);
+                    service._loadParent(parentStruct.location, loadParentCallback);
                 } else {
-                    loader.set('path', path);
+                    service.set('path', path);
                     end();
                 }
             };
@@ -164,6 +178,15 @@ YUI.add('ez-locationviewviewloader', function (Y) {
                     });
                 });
             });
+        },
+
+        getViewParameters: function () {
+            return {
+                content: this.get('content'),
+                contentType: this.get('contentType'),
+                location: this.get('location'),
+                path: this.get('path'),
+            };
         },
 
         /**

@@ -11,23 +11,23 @@ parameters:
                     - 'handlebars'
                     - 'ez-capi'
                     - 'ez-dashboardview'
-                    - 'ez-contenteditviewloader'
+                    - 'ez-contenteditviewservice'
                     - 'ez-contenteditview'
                     - 'ez-locationviewview'
-                    - 'ez-locationviewviewloader'
+                    - 'ez-locationviewviewservice'
                     - 'ez-navigationhubview'
                     - 'ez-discoverybarview'
                     - 'ez-errorview'
                 path: js/apps/ez-editorialapp.js
-            ez-viewloader:
+            ez-viewservice:
                 requires: ['base']
-                path: js/views/loaders/ez-viewloader.js
-            ez-contenteditviewloader:
-                requires: ['parallel', 'ez-viewloader', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel']
-                path: js/views/loaders/ez-contenteditviewloader.js
-            ez-locationviewviewloader:
-                requires: ['parallel', 'ez-viewloader', 'ez-locationmodel', 'ez-contentmodel']
-                path: js/views/loaders/ez-locationviewviewloader.js
+                path: js/views/services/ez-viewservice.js
+            ez-contenteditviewservice:
+                requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel']
+                path: js/views/services/ez-contenteditviewservice.js
+            ez-locationviewviewservice:
+                requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel']
+                path: js/views/services/ez-locationviewviewservice.js
             ez-view:
                 requires: ['view']
                 path: js/views/ez-view.js

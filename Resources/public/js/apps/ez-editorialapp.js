@@ -128,7 +128,6 @@ YUI.add('ez-editorialapp', function (Y) {
                 this.set('loading', true);
             });
 
-            this.on('*:editAction', this._editContent);
             this.on('*:minimizeDiscoveryBarAction', this._minimizeDiscoveryBar);
 
             this.on('*:navigationModeChange', this._uiSetNavigationModeClass);
@@ -156,18 +155,6 @@ YUI.add('ez-editorialapp', function (Y) {
             } else {
                 this.get('container').removeClass(e.navigation.modeClass);
             }
-        },
-
-        /**
-         * editAction event handler, makes the application navigate to edit the
-         * content available in the event facade
-         *
-         * @method _editContent
-         * @protected
-         * @param {Object} e event facade of the editAction event
-         */
-        _editContent: function (e) {
-            this.navigate(this.routeUri('editContent', {id: e.content.get('id')}));
         },
 
         /**
@@ -264,44 +251,6 @@ YUI.add('ez-editorialapp', function (Y) {
         },
 
         /**
-         * The run view loader configured in the currently evaluated route
-         * If no view loader is defined for this route, just pass to the next
-         * middleware
-         *
-         * @method runLoader
-         * @param {Object} req
-         * @param {Object} res
-         * @param {Function} next
-         */
-        runLoader: function (req, res, next) {
-            var loader, app = this;
-
-            if ( !req.route.loader ) {
-                next();
-                return;
-            }
-            this.set('loading', true);
-            loader = new req.route.loader({
-                capi: this.get('capi'),
-                request: req,
-                response: res
-            });
-            loader.on('error', function (e) {
-                app.fire(EVT_FATALERROR, {
-                    retryAction: {
-                        run: app.runLoader,
-                        args: [req, res, next],
-                        context: app
-                    },
-                    additionalInfo: {
-                        errorText: e.message
-                    }
-                });
-            });
-            loader.load(next);
-        },
-
-        /**
          * Middleware to handle the *side views* configured for the given route.
          * Depending on the configuration, it will apply the CSS class to
          * show/hide the side views. If a side view is not explicitely
@@ -352,10 +301,60 @@ YUI.add('ez-editorialapp', function (Y) {
          * @param {Function} next
          */
         handleMainView: function (req, res, next) {
-            this.showView(req.route.view, res.variables, {
-                update: true,
-                render: true
-            });
+            var app = this,
+                viewInfo = this.getViewInfo(req.route.view),
+                showView = function (service) {
+                    var parameters = service ? service.getViewParameters() : {};
+
+                    if ( service ) {
+                        app.once('activeViewChange', function (e) {
+                            var view = e.newVal;
+
+                            view.removeTarget(app);
+                            view.addTarget(service);
+                            service.addTarget(app);
+                        });
+                    }
+
+                    app.showView(req.route.view, parameters, {
+                        update: true,
+                        render: true
+                    }, function (view) {
+                        if ( typeof next === 'function' ) {
+                            next();
+                        }
+                    });
+                };
+
+            if ( req.route.service && viewInfo.service ) {
+                this.set('loading', true);
+                viewInfo.service.set('request', req);
+                viewInfo.service.set('response', res);
+                viewInfo.service.load(showView);
+            } else if ( req.route.service ) {
+                this.set('loading', true);
+                viewInfo.service = new req.route.service({
+                    app: this,
+                    capi: this.get('capi'),
+                    request: req,
+                    response: res
+                });
+
+                viewInfo.service.on('error', function (e) {
+                    app.fire(EVT_FATALERROR, {
+                        retryAction: {
+                            run: app.handleMainView,
+                            args: [req, res, next],
+                            context: app
+                        },
+                        additionalInfo: {errorText: e.message}
+                    });
+                });
+
+                viewInfo.service.load(showView);
+            } else {
+                showView();
+            }
         },
 
         /**
@@ -515,17 +514,17 @@ YUI.add('ez-editorialapp', function (Y) {
                 }, {
                     name: "editContent",
                     path: '/edit/:id',
-                    loader: Y.eZ.ContentEditViewLoader,
+                    service: Y.eZ.ContentEditViewService,
                     sideViews: {},
                     view: 'contentEditView',
-                    callbacks: ['open', 'handleSideViews', 'runLoader', 'handleMainView']
+                    callbacks: ['open', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "viewLocation",
                     path: '/view/:id',
-                    loader: Y.eZ.LocationViewViewLoader,
+                    service: Y.eZ.LocationViewViewService,
                     sideViews: {'discoveryBar': true, 'navigationHub': true},
                     view: 'locationViewView',
-                    callbacks: ['open', 'handleSideViews', 'runLoader', 'handleMainView']
+                    callbacks: ['open', 'handleSideViews', 'handleMainView']
                 }],
             },
             serverRouting: {

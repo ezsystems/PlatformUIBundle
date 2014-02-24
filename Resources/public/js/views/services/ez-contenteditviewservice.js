@@ -1,23 +1,23 @@
-YUI.add('ez-contenteditviewloader', function (Y) {
+YUI.add('ez-contenteditviewservice', function (Y) {
     "user strict";
     /**
-     * Provides the view loader component for the content edit view
+     * Provides the view service component for the content edit view
      *
-     * @module ez-contenteditviewloader
+     * @module ez-contenteditviewservice
      */
     Y.namespace('eZ');
 
     /**
-     * Content edit view loader.
+     * Content edit view service.
      *
      * Loads the models needed by the content edit view
      *
      * @namespace eZ
-     * @class ContentEditViewLoader
+     * @class ContentEditViewService
      * @constructor
-     * @extends eZ.ViewLoader
+     * @extends eZ.ViewService
      */
-    Y.eZ.ContentEditViewLoader = Y.Base.create('contentEditViewLoader', Y.eZ.ViewLoader, [], {
+    Y.eZ.ContentEditViewService = Y.Base.create('contentEditViewService', Y.eZ.ViewService, [], {
         /**
          * Loads the content, the main location, the content type and the owner
          * of the currently edited content
@@ -31,7 +31,7 @@ YUI.add('ez-contenteditviewloader', function (Y) {
                 },
                 request = this.get('request'),
                 hasError = false,
-                loader = this;
+                service = this;
 
             this.get('content').set('id', request.params.id);
             this.get('content').load(loadOptions, function (error) {
@@ -39,52 +39,55 @@ YUI.add('ez-contenteditviewloader', function (Y) {
                     resources;
 
                 if ( error ) {
-                    loader._error("Could not load the content with id '" + request.params.id + "'");
+                    service._error("Could not load the content with id '" + request.params.id + "'");
                     return;
                 }
 
-                resources = loader.get('content').get('resources');
+                resources = service.get('content').get('resources');
 
                 // parallel loading of owner, mainLocation and contentType
                 tasks = new Y.Parallel();
 
-                loader.get('owner').set('id', resources.Owner);
-                loader.get('owner').load(loadOptions, tasks.add(function (error) {
+                service.get('owner').set('id', resources.Owner);
+                service.get('owner').load(loadOptions, tasks.add(function (error) {
                     if ( error ) {
-                        loader._error("Could not load the user with id '" + resources.Owner + "'");
                         hasError = true;
+                        service._error("Could not load the user with id '" + resources.Owner + "'");
                     }
                 }));
 
-                loader.get('location').set('id', resources.MainLocation);
-                loader.get('location').load(loadOptions, tasks.add(function (error) {
+                service.get('location').set('id', resources.MainLocation);
+                service.get('location').load(loadOptions, tasks.add(function (error) {
                     if ( error ) {
-                        loader._error("Could not load the location with id '" + resources.MainLocation + "'");
                         hasError = true;
+                        service._error("Could not load the location with id '" + resources.MainLocation + "'");
                     }
                 }));
 
-                loader.get('contentType').set('id', resources.ContentType);
-                loader.get('contentType').load(loadOptions, tasks.add(function (error) {
+                service.get('contentType').set('id', resources.ContentType);
+                service.get('contentType').load(loadOptions, tasks.add(function (error) {
                     if ( error ) {
-                        loader._error("Could not load the content type with id '" + resources.ContentType + "'");
                         hasError = true;
+                        service._error("Could not load the content type with id '" + resources.ContentType + "'");
                     }
                 }));
 
                 tasks.done(function () {
                     if ( !hasError ) {
-                        loader._setResponseVariables({
-                            content: loader.get('content'),
-                            mainLocation: loader.get('location'),
-                            contentType: loader.get('contentType'),
-                            owner: loader.get('owner')
-                        });
-                        next();
+                        next(service);
                     }
                 });
             });
-        }
+        },
+
+        getViewParameters: function () {
+            return {
+                content: this.get('content'),
+                mainLocation: this.get('location'),
+                contentType: this.get('contentType'),
+                owner: this.get('owner')
+            };
+        },
     }, {
         ATTRS: {
             /**

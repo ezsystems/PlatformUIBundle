@@ -1,8 +1,8 @@
-YUI.add('ez-viewloader', function (Y) {
+YUI.add('ez-viewservice', function (Y) {
     "use strict";
     /**
-     * Provides the view loader base class
-     * @module ez-viewloader
+     * Provides the view service base class
+     * @module ez-viewservice
      */
     Y.namespace('eZ');
 
@@ -15,17 +15,17 @@ YUI.add('ez-viewloader', function (Y) {
     var EVT_ERROR = 'error';
 
     /**
-     * View loader base class.
+     * View service base class.
      * The classes extending this one are supposed to be used in the route
      * definition, see {{#crossLink "eZ.EditorialApp"}}the route
      * attribute of eZ.EditorialApp{{/crossLink}}
      *
      * @namespace eZ
-     * @class ViewLoader
+     * @class ViewService
      * @constructor
      * @extends Base
      */
-    Y.eZ.ViewLoader = Y.Base.create('viewLoader', Y.Base, [], {
+    Y.eZ.ViewService = Y.Base.create('viewService', Y.Base, [], {
         /**
          * Triggers the error event when the message parameter in the event
          * facade
@@ -46,21 +46,12 @@ YUI.add('ez-viewloader', function (Y) {
          * @param {Function} callback
          */
         load: function (callback) {
-            callback();
+            callback(this);
         },
 
-        /**
-         * Sets the results of the view loader in the response object
-         *
-         * @protected
-         * @method _setResponseVariables
-         * @param {Object} hash
-         */
-        _setResponseVariables: function (hash) {
-            var response = this.get('response');
-
-            response.variables = hash;
-        }
+        getViewParameters: function () {
+            return {};
+        },
     }, {
         ATTRS: {
             /**
@@ -77,19 +68,23 @@ YUI.add('ez-viewloader', function (Y) {
              * The request object currently handled
              *
              * @attribute request
-             * @initOnly
              */
-            request: {
-                writeOnce: "initOnly"
-            },
+            request: {},
 
             /**
              * The response object
              *
              * @attribute response
+             */
+            response: {},
+
+            /**
+             * The application object
+             *
+             * @attribute app
              * @initOnly
              */
-            response: {
+            app: {
                 writeOnce: "initOnly"
             }
         }
