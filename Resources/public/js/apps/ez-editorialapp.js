@@ -309,9 +309,9 @@ YUI.add('ez-editorialapp', function (Y) {
                         app.once('activeViewChange', function (e) {
                             var view = e.newVal;
 
-                            view.removeTarget(app);
                             view.addTarget(service);
                             service.addTarget(app);
+                            view.removeTarget(app);
                         });
                     }
 
