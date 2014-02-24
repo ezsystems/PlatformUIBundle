@@ -148,6 +148,12 @@ YUI.add('ez-rawcontentview', function (Y) {
                 );
             });
         },
+
+        destructor: function () {
+            Y.Array.each(this._fieldViews, function (view) {
+                view.destroy();
+            });
+        },
     }, {
         ATTRS: {
             /**

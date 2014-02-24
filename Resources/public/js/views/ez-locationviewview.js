@@ -137,6 +137,14 @@ YUI.add('ez-locationviewview', function (Y) {
             container.one('.ez-locationview-content').setStyle(
                 'minHeight', container.get('winHeight') + 'px'
             );
+        },
+
+        destructor: function () {
+            var bar = this.get('actionBar');
+
+            this.get('rawContentView').destroy();
+            bar.removeTarget(this);
+            bar.destroy();
         }
     }, {
         ATTRS: {

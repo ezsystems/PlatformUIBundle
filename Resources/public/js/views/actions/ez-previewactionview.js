@@ -77,6 +77,7 @@ YUI.add('ez-previewactionview', function (Y) {
         },
 
         destructor: function () {
+            this.get('editPreview').removeTarget(this);
             this.get('editPreview').destroy();
         },
 

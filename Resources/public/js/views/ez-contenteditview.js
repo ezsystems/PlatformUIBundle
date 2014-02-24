@@ -58,7 +58,10 @@ YUI.add('ez-contenteditview', function (Y) {
          * @method destructor
          */
         destructor: function () {
+            this.get('formView').removeTarget(this);
             this.get('formView').destroy();
+
+            this.get('actionBar').removeTarget(this);
             this.get('actionBar').destroy();
         },
 

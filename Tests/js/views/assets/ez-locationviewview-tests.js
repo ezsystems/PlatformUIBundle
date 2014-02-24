@@ -1,5 +1,5 @@
 YUI.add('ez-locationviewview-tests', function (Y) {
-    var test, tabsTest, eventsTest,
+    var test, tabsTest, eventsTest, destroyTest,
 
         _getModelMock = function (serialized) {
             var mock = new Y.Test.Mock();
@@ -312,8 +312,46 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         },
     });
 
+    destroyTest = new Y.Test.Case({
+        name: "eZ Location view view destructor test",
+
+        "Should destroy the raw content view and the actionbar": function () {
+            var bar, raw, view;
+
+            bar = new Y.Mock();
+            Y.Mock.expect(bar, {
+                method: 'addTarget',
+                args: [Y.Mock.Value.Object]
+            });
+
+            raw = new Y.Mock();
+
+            view = new Y.eZ.LocationViewView({
+                rawContentView: raw,
+                actionBar: bar
+            });
+
+            Y.Mock.expect(bar, {
+                method: 'destroy'
+            });
+            Y.Mock.expect(bar, {
+                method: 'removeTarget',
+                args: [view]
+            });
+            Y.Mock.expect(raw, {
+                method: 'destroy'
+            });
+
+            view.destroy();
+            Y.Mock.verify(bar);
+            Y.Mock.verify(raw);
+        }
+
+    });
+
     Y.Test.Runner.setName("eZ Location View view tests");
     Y.Test.Runner.add(test);
     Y.Test.Runner.add(tabsTest);
     Y.Test.Runner.add(eventsTest);
+    Y.Test.Runner.add(destroyTest);
 }, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-locationviewview']});

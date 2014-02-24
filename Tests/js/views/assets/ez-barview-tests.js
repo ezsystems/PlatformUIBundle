@@ -3,7 +3,7 @@ YUI.add('ez-barview-tests', function (Y) {
         content = {},
         VIEW_MORE_MENU_CLASS = ".view-more-actions",
         ACTIVE_MENU_CLASS = '.active-actions',
-        viewTest, sameTemplateTest, eventsTest;
+        viewTest, sameTemplateTest, eventsTest, destroyTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Bar View test",
@@ -382,8 +382,58 @@ YUI.add('ez-barview-tests', function (Y) {
         },
     });
 
+    destroyTest = new Y.Test.Case({
+        name: "eZ Bar View destroy test",
+
+        setUp: function () {
+            this.view = new Y.eZ.BarView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        _getButtonMock: function () {
+            var button;
+
+            button = new Y.Mock();
+            Y.Mock.expect(button, {
+                method: 'addTarget',
+                args: [this.view]
+            });
+            Y.Mock.expect(button, {
+                method: 'get',
+                args: ['priority'],
+                returns: 0
+            });
+            Y.Mock.expect(button, {
+                method: 'removeTarget',
+                args: [this.view]
+            });
+            Y.Mock.expect(button, {
+                method: 'destroy'
+            });
+            return button;
+        },
+
+        "Should destroy the button action views": function () {
+            var button1 = this._getButtonMock(),
+                button2 = this._getButtonMock();
+
+
+            this.view.addAction(button1);
+            this.view.addAction(button2);
+
+            this.view.destroy();
+            Y.Mock.verify(button1);
+            Y.Mock.verify(button2);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Bar View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(sameTemplateTest);
     Y.Test.Runner.add(eventsTest);
+    Y.Test.Runner.add(destroyTest);
 }, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-barview', 'ez-buttonactionview']});
