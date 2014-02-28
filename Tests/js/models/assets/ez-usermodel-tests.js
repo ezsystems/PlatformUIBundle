@@ -1,7 +1,7 @@
 YUI.add('ez-usermodel-tests', function (Y) {
     var modelTest;
 
-    modelTest = new Y.eZ.ModelTest({
+    modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
         name: "eZ User Model tests",
 
         init: function () {
@@ -38,7 +38,7 @@ YUI.add('ez-usermodel-tests', function (Y) {
             delete this.model;
         }
 
-    });
+    }));
 
     Y.Test.Runner.setName("eZ User Model tests");
     Y.Test.Runner.add(modelTest);

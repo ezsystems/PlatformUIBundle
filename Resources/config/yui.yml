@@ -130,6 +130,9 @@ parameters:
             ez-contentmodel:
                 requires: ['ez-restmodel']
                 path: js/models/ez-contentmodel.js
+            ez-versionmodel:
+                requires: ['ez-restmodel']
+                path: js/models/ez-versionmodel.js
             ez-locationmodel:
                 requires: ['ez-restmodel']
                 path: js/models/ez-locationmodel.js
