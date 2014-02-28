@@ -94,6 +94,17 @@ YUI.add('ez-textline-editview', function (Y) {
          */
         _getInputValidity: function () {
             return this.get('container').one('.ez-textline-input-ui input').get('validity');
+        },
+
+        /**
+         * Returns the currently filled text line value
+         *
+         * @protected
+         * @method _getFieldValue
+         * @return String
+         */
+        _getFieldValue: function () {
+            return this.get('container').one('.ez-textline-input-ui input').get('value');
         }
     });
 

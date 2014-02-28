@@ -380,6 +380,19 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                 return '';
             };
             this.view.render();
+        },
+
+        "getField should return a clone value with 'undefined' as a value": function () {
+            var updatedField = this.view.getField();
+
+            Y.Assert.areNotSame(
+                field, updatedField,
+                "getField should 'clone' the field"
+            );
+            Y.Assert.isUndefined(
+                updatedField.fieldValue,
+                "The field value should be undefined"
+            );
         }
     });
 

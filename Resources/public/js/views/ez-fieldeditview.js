@@ -238,8 +238,38 @@ YUI.add('ez-fieldeditview', function (Y) {
          */
         isValid: function () {
             return this.get('errorStatus') === false;
-        }
+        },
 
+        /**
+         * Returns the value of the field from the current user input. This
+         * method should be implemented in each field edit view.
+         *
+         * The default implementation returns undefined.
+         *
+         * @method _getFieldValue
+         * @protected
+         * @return mixed
+         */
+        _getFieldValue: function () {
+            console.error(
+                'Error: _getFieldValue() is not implemented in ' + this.constructor.NAME
+            );
+            return undefined;
+        },
+
+        /**
+         * Returns an updated version of the field containing a field value
+         * reflecting the current user input
+         *
+         * @method getField
+         * @return Object
+         */
+        getField: function () {
+            var field = Y.clone(this.get('field'));
+
+            field.fieldValue = this._getFieldValue();
+            return field;
+        },
     }, {
         ATTRS: {
             /**

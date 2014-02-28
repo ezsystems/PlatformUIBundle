@@ -33,7 +33,20 @@ YUI.add('ez-checkbox-editview', function (Y) {
                 "isRequired": def.isRequired,
                 "defaultValue": def.defaultValue
             };
-        }
+        },
+
+        /**
+         * Returns the current value of the field.
+         *
+         * @protected
+         * @method _getFieldValue
+         * @return Boolean
+         */
+        _getFieldValue: function () {
+            var input = this.get('container').one('.ez-checkbox-input-ui input');
+
+            return !!input.get('value');
+        },
     });
 
     Y.eZ.FieldEditView.registerFieldEditView(

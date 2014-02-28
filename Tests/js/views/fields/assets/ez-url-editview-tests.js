@@ -1,5 +1,5 @@
 YUI.add('ez-url-editview-tests', function (Y) {
-    var viewTest, registerTest,
+    var viewTest, registerTest, getFieldTest,
         container = Y.one('.container'),
         content, contentType,
         jsonContent = {}, jsonContentType = {},
@@ -139,12 +139,29 @@ YUI.add('ez-url-editview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Url Edit View tests");
     Y.Test.Runner.add(viewTest);
 
-    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+    getFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false},
+            ViewConstructor: Y.eZ.UrlEditView,
+            newValue: {link: "http://ez.no", text: "eZ.no"},
 
+            _setNewValue: function () {
+                this.view.get('container').one('.ez-url-field-value').set('value', this.newValue.link);
+                this.view.get('container').one('.ez-url-title-value').set('value', this.newValue.text);
+            },
+
+            _assertCorrectFieldValue: function (fieldValue, msg) {
+                Y.Assert.areEqual(this.newValue.link, fieldValue.link, msg);
+                Y.Assert.areEqual(this.newValue.link, fieldValue.link, msg);
+            },
+        })
+    );
+    Y.Test.Runner.add(getFieldTest);
+
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Url Edit View registration test";
     registerTest.viewType = Y.eZ.UrlEditView;
     registerTest.viewKey = "ezurl";
-
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'editviewregister-tests', 'ez-url-editview']});
+}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-url-editview']});

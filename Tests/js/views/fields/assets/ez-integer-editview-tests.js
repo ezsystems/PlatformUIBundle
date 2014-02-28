@@ -1,5 +1,5 @@
 YUI.add('ez-integer-editview-tests', function (Y) {
-    var viewTest, registerTest,
+    var viewTest, registerTest, getFieldTest,
         container = Y.one('.container'),
         content, contentType,
         jsonContent = {}, jsonContentType = {},
@@ -217,18 +217,27 @@ YUI.add('ez-integer-editview-tests', function (Y) {
                 this.view.isValid(),
                 "Underflowing value is NOT valid"
             );
-        }
+        },
+
     });
 
     Y.Test.Runner.setName("eZ Integer Edit View tests");
     Y.Test.Runner.add(viewTest);
 
-    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+    getFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false, validatorConfiguration: {IntegerValueValidator: {}}},
+            ViewConstructor: Y.eZ.IntegerEditView,
+            newValue: 42,
+        })
+    );
+    Y.Test.Runner.add(getFieldTest);
 
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Integer Edit View registration test";
     registerTest.viewType = Y.eZ.IntegerEditView;
     registerTest.viewKey = "ezinteger";
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'editviewregister-tests', 'ez-integer-editview']});
+}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-integer-editview']});

@@ -1,6 +1,6 @@
 YUI.add('ez-author-editview-tests', function (Y) {
     "use strict";
-    var registerTest, removeButtonTests, validationTests;
+    var registerTest, removeButtonTests, validationTests, getFieldTest;
 
     removeButtonTests = new Y.Test.Case({
         name: "eZ Author Edit view remove button handling",
@@ -27,10 +27,9 @@ YUI.add('ez-author-editview-tests', function (Y) {
         },
 
         tearDown: function () {
-            if ( this.view ) {
-                this.view.get('container').setContent('');
-                this.view.destroy();
-            }
+            this.view.destroy();
+            this.view.get('container').setContent('');
+            delete this.view;
         },
 
         _getView: function (authors) {
@@ -166,10 +165,9 @@ YUI.add('ez-author-editview-tests', function (Y) {
         },
 
         tearDown: function () {
-            if ( this.view ) {
-                this.view.get('container').setContent('');
-                this.view.destroy();
-            }
+            this.view.destroy();
+            this.view.get('container').setContent('');
+            delete this.view;
         },
 
         _getView: function (authors, required) {
@@ -357,17 +355,90 @@ YUI.add('ez-author-editview-tests', function (Y) {
             Y.Assert.isFalse(view.isValid(), "The input is not valid");
         },
     });
-
     Y.Test.Runner.setName("eZ Author Edit View tests");
     Y.Test.Runner.add(removeButtonTests);
     Y.Test.Runner.add(validationTests);
 
-    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+    getFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false},
+            ViewConstructor: Y.eZ.AuthorEditView,
+            newValue: [
+                {email: 'damien@example.com', name: 'Damien'},
+                {email: 'invalid', name: 'Name'},
+                {email: 'author@example.com', name: 'Author'},
+            ],
 
+            "Test getField": function () {
+                var container = this.view.get('container'),
+                    that = this;
+
+                this.view.render();
+                container.one('.ez-field-author-add').simulateGesture('tap', function () {
+                    container.one('.ez-field-author-add').simulateGesture('tap', function () {
+                        that.resume(function () {
+                            var updatedField;
+
+                            Y.Array.each(this.newValue, function (author, i) {
+                                this._fillAuthor(author, i);
+                            }, this);
+
+
+                            updatedField = this.view.getField();
+
+                            Y.Assert.areNotSame(
+                                this.view.get('field'), updatedField,
+                                "getField should 'clone' the original field"
+                            );
+
+                            Y.Object.each(this.view.get('field'), function (val, key) {
+                                if ( key !== 'fieldValue' ) {
+                                    Y.Assert.areEqual(
+                                        val, updatedField[key],
+                                        "The property " + key + " should be kept"
+                                    );
+                                } else {
+                                    this._assertCorrectFieldValue(
+                                        updatedField.fieldValue,
+                                        "The new value should be available in the fieldValue"
+                                    );
+                                }
+                            }, this);
+                        });
+                    });
+                });
+
+                this.wait();
+            },
+
+            _fillAuthor: function (author, i) {
+                var container = this.view.get('container');
+
+                container.all('.ez-field-author-name').item(i).set('value', author.name);
+                container.all('.ez-field-author-name').item(i).simulate('blur');
+                container.all('.ez-field-author-email').item(i).set('value', author.email);
+                container.all('.ez-field-author-email').item(i).simulate('blur');
+            },
+
+            _assertCorrectFieldValue: function (fieldValue, msg) {
+                Y.Assert.areEqual(
+                    2, fieldValue.length,
+                    "The field value should contain only the valid author"
+                );
+                Y.Assert.areEqual(this.newValue[0].email, fieldValue[0].email, msg);
+                Y.Assert.areEqual(this.newValue[0].name, fieldValue[0].name, msg);
+
+                Y.Assert.areEqual(this.newValue[2].email, fieldValue[1].email, msg);
+                Y.Assert.areEqual(this.newValue[2].name, fieldValue[1].name, msg);
+            },
+        })
+    );
+    Y.Test.Runner.add(getFieldTest);
+
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Author Edit View registration test";
     registerTest.viewType = Y.eZ.AuthorEditView;
     registerTest.viewKey = "ezauthor";
-
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'editviewregister-tests', 'ez-author-editview']});
+}, '0.0.1', {requires: ['test', 'node-event-simulate', 'getfield-tests', 'editviewregister-tests', 'ez-author-editview']});

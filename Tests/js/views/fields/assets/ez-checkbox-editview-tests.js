@@ -1,5 +1,5 @@
 YUI.add('ez-checkbox-editview-tests', function (Y) {
-    var viewTest, registerTest,
+    var viewTest, registerTest, getFieldTest,
         container = Y.one('.container'),
         content, contentType,
         jsonContent = {}, jsonContentType = {},
@@ -93,12 +93,20 @@ YUI.add('ez-checkbox-editview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Checkbox Edit View tests");
     Y.Test.Runner.add(viewTest);
 
-    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+    getFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false},
+            ViewConstructor: Y.eZ.CheckboxEditView,
+            newValue: true,
+        })
+    );
+    Y.Test.Runner.add(getFieldTest);
 
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Checkbox Edit View registration test";
     registerTest.viewType = Y.eZ.CheckboxEditView;
     registerTest.viewKey = "ezboolean";
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'editviewregister-tests', 'ez-checkbox-editview']});
+}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-checkbox-editview']});

@@ -1,7 +1,7 @@
 YUI.add('ez-maplocation-editview-tests', function (Y) {
     var container = Y.one('.container'),
         viewTest, APILoadingTest, noInitialValuesTest,
-        findAddressTest, locateMeTest, registerTest,
+        findAddressTest, locateMeTest, registerTest, getFieldTest,
         content, contentType,
         mapLoaderLoadingSuccess,
         testAddress = "London",
@@ -824,18 +824,63 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
     });
 
     Y.Test.Runner.setName("eZ Map Location Edit View tests");
+
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(noInitialValuesTest);
     Y.Test.Runner.add(findAddressTest);
     Y.Test.Runner.add(locateMeTest);
     Y.Test.Runner.add(APILoadingTest);
 
-    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+    getFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false},
+            ViewConstructor: Y.eZ.MapLocationEditView,
+            newValue: {address: 'St Paul de Varax', latitude: 46.099353, longitude: 5.12896},
 
+            init: function () {
+                this.mapAPILoader = Y.eZ.services.mapAPILoader;
+                Y.eZ.services.mapAPILoader = new Y.Mock();
+                Y.Mock.expect(Y.eZ.services.mapAPILoader, {
+                    method: 'load',
+                });
+                Y.Mock.expect(Y.eZ.services.mapAPILoader, {
+                    method: 'on',
+                    args: [Y.Mock.Value.String, Y.Mock.Value.Function],
+                });
+            },
+
+            destroy: function () {
+                Y.eZ.services.mapAPILoader = this.mapAPILoader;
+            },
+
+            _setNewValue: function () {
+                this.view.get('container').one('#ez-field-maplocation-address').set('value', this.newValue.address);
+                this.view.set('location', {
+                    latitude: this.newValue.latitude,
+                    longitude: this.newValue.longitude
+                });
+            },
+
+            _assertCorrectFieldValue: function (fieldValue, msg) {
+                Y.Assert.areEqual(
+                    Y.Object.keys(this.newValue).length,
+                    Y.Object.keys(fieldValue).length,
+                    msg
+                );
+                Y.Object.each(this.newValue, function (val, key) {
+                    Y.Assert.areEqual(
+                        val, fieldValue[key], msg
+                    );
+                });
+            }
+        })
+    );
+    Y.Test.Runner.add(getFieldTest);
+
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Map Location Edit View registration test";
     registerTest.viewType = Y.eZ.MapLocationEditView;
     registerTest.viewKey = "ezgmaplocation";
-
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'editviewregister-tests', 'node-event-simulate', 'ez-maplocation-editview']});
+}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'node-event-simulate', 'ez-maplocation-editview']});

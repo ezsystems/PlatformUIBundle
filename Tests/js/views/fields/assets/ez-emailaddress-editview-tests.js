@@ -1,5 +1,5 @@
 YUI.add('ez-emailaddress-editview-tests', function (Y) {
-    var viewTest, registerTest,
+    var viewTest, registerTest, getFieldTest,
         container = Y.one('.container'),
         content, contentType,
         jsonContent = {}, jsonContentType = {},
@@ -164,12 +164,20 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Email Address Edit View tests");
     Y.Test.Runner.add(viewTest);
 
-    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+    getFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false},
+            ViewConstructor: Y.eZ.EmailAddressEditView,
+            newValue: 'damien@example.com',
+        })
+    );
+    Y.Test.Runner.add(getFieldTest);
 
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Email Address Edit View registration test";
     registerTest.viewType = Y.eZ.EmailAddressEditView;
     registerTest.viewKey = "ezemail";
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'event-valuechange', 'node-event-simulate', 'editviewregister-tests', 'ez-emailaddress-editview']});
+}, '0.0.1', {requires: ['test', 'event-valuechange', 'node-event-simulate', 'getfield-tests', 'editviewregister-tests', 'ez-emailaddress-editview']});

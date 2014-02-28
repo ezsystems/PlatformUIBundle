@@ -1,5 +1,5 @@
 YUI.add('ez-float-editview-tests', function (Y) {
-    var viewTest, registerTest,
+    var viewTest, registerTest, getFieldTest,
         container = Y.one('.container'),
         content, contentType,
         jsonContent = {}, jsonContentType = {},
@@ -224,12 +224,20 @@ YUI.add('ez-float-editview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Float Edit View tests");
     Y.Test.Runner.add(viewTest);
 
-    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+    getFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false, validatorConfiguration: {FloatValueValidator: {}}},
+            ViewConstructor: Y.eZ.FloatEditView,
+            newValue: 42.2,
+        })
+    );
+    Y.Test.Runner.add(getFieldTest);
 
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Float Edit View registration test";
     registerTest.viewType = Y.eZ.FloatEditView;
     registerTest.viewKey = "ezfloat";
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'editviewregister-tests', 'ez-float-editview']});
+}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-float-editview']});

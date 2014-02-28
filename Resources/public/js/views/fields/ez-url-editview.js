@@ -65,7 +65,24 @@ YUI.add('ez-url-editview', function (Y) {
          */
         _getInputValidity: function () {
             return this.get('container').one('.ez-url-field-value').get('validity');
-        }
+        },
+
+        /**
+         * Returns the currently filled value as an object containing the link
+         * and the text.
+         *
+         * @protected
+         * @method _getFieldValue
+         * @return Object
+         */
+        _getFieldValue: function () {
+            var container = this.get('container');
+
+            return {
+                link: container.one('.ez-url-field-value').get('value'),
+                text: container.one('.ez-url-title-value').get('value')
+            };
+        },
     });
 
     Y.eZ.FieldEditView.registerFieldEditView(

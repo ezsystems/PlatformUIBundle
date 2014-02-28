@@ -393,6 +393,17 @@ YUI.add('ez-author-editview', function (Y) {
             this.after('*:errorStatusChange', this._setErrorStatus);
         },
 
+        destructor: function () {
+            this._rendered = false;
+            this._authorList.destroy();
+
+            Y.Array.each(this._authorInputs, function (input) {
+                input.destroy();
+            });
+            this._authorInputs = [];
+            this._authorList.add({id: 0});
+        },
+
         /**
          * Fills the author list property based on the author available in the
          * field value
@@ -407,9 +418,14 @@ YUI.add('ez-author-editview', function (Y) {
                 this._authorList.add({id: 0});
             } else {
                 Y.Array.each(authors, function (author) {
-                    author.id = parseInt(author.id, 10);
-                    author.emailValid = true;
-                    this._authorList.add(author);
+                    var a = {
+                        id: parseInt(author.id, 10),
+                        name: author.name,
+                        email: author.email,
+                        emailValid: true
+                    };
+
+                    this._authorList.add(a);
                 }, this);
             }
         },
@@ -620,6 +636,28 @@ YUI.add('ez-author-editview', function (Y) {
          */
         _variables: function () {
             return {};
+        },
+
+        /**
+         * Returns an array of the author based on the current user input. Only
+         * the valid authors are listed.
+         *
+         * @method _getFieldValue
+         * @protected
+         * @return Array
+         */
+        _getFieldValue: function () {
+            var value = [];
+
+            this._authorList.each(function (author) {
+                var a = author.toJSON();
+
+                if ( a.emailValid ) {
+                    delete a.emailValid;
+                    value.push(a);
+                }
+            });
+            return value;
         },
     });
 
