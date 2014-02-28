@@ -232,6 +232,18 @@ YUI.add('ez-fieldeditview', function (Y) {
         },
 
         /**
+         * Checks whether the current user input is valid or not. This methood
+         * should be implemented by each field edit view and is supposed to
+         * set the `errorStatus` attribute.
+         *
+         * The default implementation does nothing.
+         *
+         * @method validate
+         */
+        validate: function () {
+        },
+
+        /**
          * Returns whether the view is currently in a valid state
          *
          * @method isValid

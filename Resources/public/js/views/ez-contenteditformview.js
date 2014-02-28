@@ -90,6 +90,34 @@ YUI.add('ez-contenteditformview', function (Y) {
         },
 
         /**
+         * Checks whether the form is valid or not
+         *
+         * @method isValid
+         * @return Boolean
+         */
+        isValid: function () {
+            return Y.Array.every(this._fieldEditViews, function (view) {
+                view.validate();
+                return view.isValid();
+            });
+        },
+
+        /**
+         * Returns an array containing the field updated with the user input
+         *
+         * @method getFields
+         * @return Array
+         */
+        getFields: function () {
+            var res = [];
+
+            Y.Array.each(this._fieldEditViews, function (val) {
+                res.push(val.getField());
+            });
+            return res;
+        },
+
+        /**
          * Makes sure the field edit views are correctly destroyed
          *
          * @method destructor

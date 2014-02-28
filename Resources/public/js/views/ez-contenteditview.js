@@ -49,6 +49,24 @@ YUI.add('ez-contenteditview', function (Y) {
                     this._setFocus();
                 }
             });
+
+            this.on(['*:saveAction', '*:publishAction'], this._handleSavePublish);
+        },
+
+        /**
+         * Event handler for the saveAction and publishAction events. It
+         * enriches the event facade with the updated fields and the form
+         * validity
+         *
+         * @method _handleSavePublish
+         * @protected
+         * @param {Object} e event facade
+         */
+        _handleSavePublish: function (e) {
+            var form = this.get('formView');
+
+            e.fields = form.getFields();
+            e.formIsValid = form.isValid();
         },
 
         /**

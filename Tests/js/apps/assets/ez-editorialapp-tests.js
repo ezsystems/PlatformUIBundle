@@ -135,7 +135,6 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                         this.after('activeChange', function () {
                             that.resume(
                                 Y.bind(function () {
-                                    console.log(this.get('container').getAttribute('style'));
                                     Y.Assert.areEqual(
                                         "none",
                                         this.get('container').getStyle('transform'),

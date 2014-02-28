@@ -54,13 +54,13 @@ YUI.add('ez-editactionbarview', function (Y) {
                     return [
                         new Y.eZ.ButtonActionView({
                             actionId: "publish",
-                            disabled: true,
+                            disabled: false,
                             label: "Publish",
                             priority: 200
                         }),
                         new Y.eZ.ButtonActionView({
                             actionId: "save",
-                            disabled: true,
+                            disabled: false,
                             label: "Save",
                             priority: 190
                         }),

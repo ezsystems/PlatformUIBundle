@@ -1,5 +1,5 @@
 YUI.add('ez-contenteditviewservice-tests', function (Y) {
-    var cevlTest;
+    var cevlTest, eventTest;
 
     cevlTest = new Y.Test.Case({
         name: "eZ Content Edit View Service tests",
@@ -235,10 +235,147 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         "Should fire the error event when the version creation fails":  function () {
             this._testSubloadError('version');
         },
+    });
+
+    eventTest = new Y.Test.Case({
+        name: "eZ Content Edit View Service events tests",
+
+        setUp: function () {
+            this.version = new Y.Mock();
+            this.location = new Y.Mock();
+            this.capi = new Y.Mock();
+            this.app = new Y.Mock();
+            this.service = new Y.eZ.ContentEditViewService({
+                app: this.app,
+                capi: this.capi,
+                version: this.version,
+                location: this.location
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+        },
+
+        "Should not store the draft": function () {
+            Y.Mock.expect(this.version, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function () {
+                    Y.Assert.fail("The version should not be saved");
+                }
+            });
+            this.service.fire('whatever:saveAction', {
+                formIsValid: false
+            });
+        },
+
+        "Should store the draft": function () {
+            var fields = [{}, {}];
+
+            Y.Mock.expect(this.version, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Y.Assert.areSame(
+                        eventTest.capi,
+                        options.api,
+                        "The save options should contain the CAPI"
+                    );
+                    Y.Assert.areSame(
+                        fields,
+                        options.fields,
+                        "The fields from the event facade should be passed in the save options"
+                    );
+                    callback();
+                }
+            });
+            this.service.fire('whatever:saveAction', {
+                formIsValid: true,
+                fields: fields
+            });
+
+            Y.Mock.verify(this.version);
+        },
+
+        "Should publish the draft": function () {
+            var fields = [{}, {}],
+                locationId = 'something',
+                viewLocationRoute = '/view/something';
+
+            Y.Mock.expect(this.version, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Y.Assert.areSame(
+                        eventTest.capi,
+                        options.api,
+                        "The save options should contain the CAPI"
+                    );
+                    Y.Assert.areSame(
+                        fields,
+                        options.fields,
+                        "The fields from the event facade should be passed in the save options"
+                    );
+                    Y.Assert.isTrue(
+                        options.publish,
+                        "The publish option should be set true"
+                    );
+                    callback();
+                }
+            });
+            Y.Mock.expect(this.location, {
+                method: 'get',
+                args: ['id'],
+                returns: locationId
+            });
+            Y.Mock.expect(this.app, {
+                method: 'set',
+                args: ['loading', true]
+            });
+            Y.Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['viewLocation', Y.Mock.Value.Object],
+                run: function (route, params) {
+                    Y.Assert.areEqual(
+                        locationId,
+                        params.id
+                    );
+                    return viewLocationRoute;
+                }
+            });
+            Y.Mock.expect(this.app, {
+                method: 'navigate',
+                args: [viewLocationRoute]
+            });
+
+            this.service.fire('whatever:publishAction', {
+                formIsValid: true,
+                fields: fields
+            });
+
+            Y.Mock.verify(this.version);
+            Y.Mock.verify(this.app);
+        },
+
+        "Should not publish the draft": function () {
+            Y.Mock.expect(this.version, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function () {
+                    Y.Assert.fail("The version should not be saved");
+                }
+            });
+            this.service.fire('whatever:publishAction', {
+                formIsValid: false
+            });
+        }
 
     });
 
     Y.Test.Runner.setName("eZ Content Edit View Service tests");
     Y.Test.Runner.add(cevlTest);
+    Y.Test.Runner.add(eventTest);
 
 }, '0.0.1', {requires: ['test', 'ez-contenteditviewservice']});

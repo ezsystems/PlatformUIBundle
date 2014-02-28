@@ -18,6 +18,60 @@ YUI.add('ez-contenteditviewservice', function (Y) {
      * @extends eZ.ViewService
      */
     Y.eZ.ContentEditViewService = Y.Base.create('contentEditViewService', Y.eZ.ViewService, [], {
+        initializer: function () {
+            this.on('*:saveAction', this._saveDraft);
+            this.on('*:publishAction', this._publishDraft);
+        },
+
+        /**
+         * Event handler for the saveAction event. It stores the version if the
+         * form is valid
+         *
+         * @method _saveDraft
+         * @protected
+         * @param {Object} e saveAction event facade
+         */
+        _saveDraft: function (e) {
+            var version = this.get('version');
+
+            if ( e.formIsValid ) {
+                version.save({
+                    api: this.get('capi'),
+                    fields: e.fields
+                }, function (error, response) {});
+            }
+        },
+
+        /**
+         * Event handler for the publishAction event. It publishes the version
+         * if the form is valid and redirect the user to the corresponding
+         * location view.
+         *
+         * @method _publishDraft
+         * @protected
+         * @param {Object} e publishAction event facade
+         */
+        _publishDraft: function (e) {
+            var version = this.get('version'),
+                app = this.get('app'),
+                that = this;
+
+            if ( e.formIsValid ) {
+                app.set('loading', true);
+                version.save({
+                    api: this.get('capi'),
+                    fields: e.fields,
+                    publish: true
+                }, function (error, response) {
+                    app.navigate(
+                        app.routeUri('viewLocation', {
+                            id: that.get('location').get('id')
+                        })
+                    );
+                });
+            }
+        },
+
         /**
          * Loads the content, the main location, the content type and the owner
          * of the currently edited content

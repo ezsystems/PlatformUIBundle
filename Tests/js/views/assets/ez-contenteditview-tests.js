@@ -8,7 +8,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             method: 'toJSON',
             returns: {}
         },
-        viewTest, titleTest;
+        viewTest, titleTest, eventTest;
 
     content = new Y.Mock();
     contentType = new Y.Mock();
@@ -372,8 +372,76 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
     });
 
+    eventTest = new Y.Test.Case({
+        name: "eZ Content Edit View event tests",
+
+        setUp: function () {
+            this.formView = new Y.Mock();
+            this.actionBar = new Y.Mock();
+
+            this._configureSubViewMock(this.formView);
+            this._configureSubViewMock(this.actionBar);
+
+            this.view = new Y.eZ.ContentEditView({
+                actionBar: this.actionBar,
+                formView: this.formView
+            });
+        },
+
+        _configureSubViewMock: function (view) {
+            Y.Mock.expect(view, {
+                method: 'addTarget',
+                args: [Y.Mock.Value.Object]
+            });
+            Y.Mock.expect(view, {
+                method: 'set',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Any]
+            });
+        },
+
+        tearDown: function () {
+            delete this.view;
+        },
+
+        _testAddDataActionEvent: function (evt) {
+            var fields = [], valid = true;
+
+            Y.Mock.expect(this.formView, {
+                method: 'getFields',
+                returns: fields
+            });
+            Y.Mock.expect(this.formView, {
+                method: 'isValid',
+                returns: valid
+            });
+
+            this.view.on('*:' + evt, function (e) {
+                Y.Assert.areSame(
+                    fields,
+                    e.fields,
+                    "The fields should be availabled in the event facade"
+                );
+                Y.Assert.areSame(
+                    valid,
+                    e.formIsValid,
+                    "The form validity should be available in the event facade"
+                );
+            });
+            this.view.fire('whatever:' + evt);
+        },
+
+        "Should add data to the saveAction event facade": function () {
+            this._testAddDataActionEvent('saveAction');
+        },
+
+        "Should add data to the publishAction event facade": function () {
+            this._testAddDataActionEvent('publishAction');
+        }
+    });
+
     Y.Test.Runner.setName("eZ Content Edit View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(titleTest);
+    Y.Test.Runner.add(eventTest);
 
 }, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-contenteditview']});
