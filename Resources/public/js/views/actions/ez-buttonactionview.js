@@ -134,6 +134,17 @@ YUI.add('ez-buttonactionview', function (Y) {
              */
             content: {
                 value: {}
+            },
+
+            /**
+             * Version currently being edited (if used in the edit context)
+             *
+             * @attribute version
+             * @type eZ.Version
+             * @default {}
+             */
+            version: {
+                value: {}
             }
         }
     });

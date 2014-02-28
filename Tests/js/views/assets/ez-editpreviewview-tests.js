@@ -6,6 +6,10 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
             contentId: 59,
             name: "Test name"
         }),
+        mockVersion = new Y.eZ.Version({
+            versionNo: 42,
+            names: {value: [{'_languageCode': 'eng-GB', '#text': 'Test name'}]}
+        }),
         viewTest;
 
     viewTest = new Y.Test.Case({
@@ -14,7 +18,8 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         setUp: function () {
             this.view = new Y.eZ.EditPreviewView({
                 container: viewContainer,
-                content: mockContent
+                content: mockContent,
+                version: mockVersion
             });
 
         },
@@ -111,4 +116,4 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Edit Preview View tests");
     Y.Test.Runner.add(viewTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-editpreviewview', 'ez-contentmodel']});
+}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-editpreviewview', 'ez-contentmodel', 'ez-versionmodel']});

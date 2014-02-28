@@ -448,6 +448,7 @@ YUI.add('ez-author-editview', function (Y) {
                 author: e.model,
                 canRemove: canRemove,
                 content: this.get('content'),
+                version: this.get('version'),
                 contentType: this.get('contentType'),
                 fieldDefinition: this.get('fieldDefinition'),
                 showInfos: showInfos,

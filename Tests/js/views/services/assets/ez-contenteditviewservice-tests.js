@@ -18,11 +18,13 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             this.mainLocation = new Y.Test.Mock();
             this.contentType = new Y.Test.Mock();
             this.owner = new Y.Test.Mock();
+            this.version = new Y.Test.Mock();
         },
 
-        "Should load the content, the location, the content type and the owner": function () {
+        "Should create a new version and load the content, the location, the content type and the owner": function () {
             var response = {}, service, callback,
                 callbackCalled = false,
+                that = this,
                 runLoadCallback = function (options, callback) {
                     Y.Assert.areSame(
                         options.api, cevlTest.capiMock,
@@ -57,6 +59,19 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 });
             });
 
+            Y.Mock.expect(this.version, {
+                method: 'loadNew',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Y.Assert.areEqual(
+                        that.request.params.id,
+                        options.contentId,
+                        "The content id should passed to the loadNew method"
+                    );
+                    runLoadCallback(options, callback);
+                }
+            });
+
             callback = function (param) {
                 var variables = service.getViewParameters();
 
@@ -76,7 +91,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 content: this.content,
                 location: this.mainLocation,
                 contentType: this.contentType,
-                owner: this.owner
+                owner: this.owner,
+                version: this.version
             });
 
             service.load(callback);
@@ -85,6 +101,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             Y.Mock.verify(this.mainLocation);
             Y.Mock.verify(this.contentType);
             Y.Mock.verify(this.owner);
+            Y.Mock.verify(this.version);
 
             Y.Assert.isTrue(callbackCalled, "The load callback should have been called");
         },
@@ -165,6 +182,12 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 });
             });
 
+            Y.Mock.expect(this.version, {
+                method: 'loadNew',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: fail === 'version' ? runLoadCallbackFail : runLoadCallbackSuccess
+            });
+
             callback = function () {
                 Y.Assert.fail("The load callback should not be called");
             };
@@ -177,7 +200,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 content: this.content,
                 location: this.mainLocation,
                 contentType: this.contentType,
-                owner: this.owner
+                owner: this.owner,
+                version: this.version
             });
 
 
@@ -191,6 +215,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             Y.Mock.verify(this.mainLocation);
             Y.Mock.verify(this.contentType);
             Y.Mock.verify(this.owner);
+            Y.Mock.verify(this.version);
 
             Y.Assert.isTrue(errorTriggered, "The error event should have been triggered");
         },
@@ -205,7 +230,12 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
 
         "Should fire the error event when the owner loading fails":  function () {
             this._testSubloadError('owner');
-        }
+        },
+
+        "Should fire the error event when the version creation fails":  function () {
+            this._testSubloadError('version');
+        },
+
     });
 
     Y.Test.Runner.setName("eZ Content Edit View Service tests");

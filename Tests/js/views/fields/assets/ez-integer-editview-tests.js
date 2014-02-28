@@ -1,16 +1,21 @@
 YUI.add('ez-integer-editview-tests', function (Y) {
     var viewTest, registerTest, getFieldTest,
         container = Y.one('.container'),
-        content, contentType,
-        jsonContent = {}, jsonContentType = {},
+        content, contentType, version,
+        jsonContent = {}, jsonContentType = {}, jsonVersion = {},
         field = {},
         INTEGER_TEST_PATTERN = "\\-?\\d*";
 
     content = new Y.Mock();
+    version = new Y.Mock();
     contentType = new Y.Mock();
     Y.Mock.expect(content, {
         method: 'toJSON',
         returns: jsonContent
+    });
+    Y.Mock.expect(version, {
+        method: 'toJSON',
+        returns: jsonVersion
     });
     Y.Mock.expect(contentType, {
         method: 'toJSON',
@@ -36,6 +41,7 @@ YUI.add('ez-integer-editview-tests', function (Y) {
             this.view = new Y.eZ.IntegerEditView({
                 container: container,
                 field: field,
+                version: version,
                 content: content,
                 contentType: contentType
             });
@@ -77,11 +83,15 @@ YUI.add('ez-integer-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
+                Y.Assert.areEqual(9, Y.Object.keys(variables).length, "The template should receive 9 variables");
 
                 Y.Assert.areSame(
                      jsonContent, variables.content,
                     "The content should be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                     jsonVersion, variables.version,
+                    "The version should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
                     jsonContentType, variables.contentType,

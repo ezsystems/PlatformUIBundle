@@ -24,6 +24,12 @@ YUI.add('ez-author-editview-tests', function (Y) {
                 method: 'toJSON',
                 returns: {}
             });
+
+            this.version = new Y.Mock();
+            Y.Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: {}
+            });
         },
 
         tearDown: function () {
@@ -38,6 +44,7 @@ YUI.add('ez-author-editview-tests', function (Y) {
                 field: {fieldValue: authors},
                 fieldDefinition: this.fieldDefinition,
                 content: this.content,
+                version: this.version,
                 contentType: this.contentType,
             });
         },
@@ -157,6 +164,12 @@ YUI.add('ez-author-editview-tests', function (Y) {
                 returns: {}
             });
 
+            this.version = new Y.Mock();
+            Y.Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: {}
+            });
+
             this.contentType = new Y.Mock();
             Y.Mock.expect(this.contentType, {
                 method: 'toJSON',
@@ -175,6 +188,7 @@ YUI.add('ez-author-editview-tests', function (Y) {
                 container: '.container',
                 field: {fieldValue: authors},
                 fieldDefinition: {isRequired: required},
+                version: this.version,
                 content: this.content,
                 contentType: this.contentType,
             });

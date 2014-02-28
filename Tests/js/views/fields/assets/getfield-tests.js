@@ -5,15 +5,20 @@ YUI.add('getfield-tests', function (Y) {
         name: "getField Tests",
 
         setUp: function () {
-            var content, contentType;
+            var content, contentType, version;
 
             content = new Y.Mock();
             contentType = new Y.Mock();
+            version = new Y.Mock();
             Y.Mock.expect(content, {
                 method: 'toJSON',
                 returns: {}
             });
             Y.Mock.expect(contentType, {
+                method: 'toJSON',
+                returns: {}
+            });
+            Y.Mock.expect(version, {
                 method: 'toJSON',
                 returns: {}
             });
@@ -28,6 +33,7 @@ YUI.add('getfield-tests', function (Y) {
                 },
                 fieldDefinition: this.fieldDefinition,
                 content: content,
+                version: version,
                 contentType: contentType
             });
         },

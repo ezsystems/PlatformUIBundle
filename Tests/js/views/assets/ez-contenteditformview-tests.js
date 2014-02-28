@@ -1,11 +1,12 @@
 YUI.add('ez-contenteditformview-tests', function (Y) {
     var viewTest,
         container = Y.one('.container'),
-        contentType, content,
+        contentType, content, version,
         Test1FieldEditView, Test2FieldEditView;
 
     contentType = new Y.Mock();
     content = new Y.Mock();
+    version = new Y.Mock();
     Y.Mock.expect(contentType, {
         method: 'getFieldGroups',
         returns: [{
@@ -36,7 +37,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
         }
     });
 
-    Y.Mock.expect(content, {
+    Y.Mock.expect(version, {
         method: 'getField',
         args: [Y.Mock.Value.String],
         run: function (id) {
@@ -70,7 +71,8 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.view = new Y.eZ.ContentEditFormView({
                 container: container,
                 contentType: contentType,
-                content: content
+                content: content,
+                version: version
             });
         },
 
@@ -88,7 +90,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 return origTpl.apply(this, arguments);
             };
             this.view.render();
-            Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
+            Y.Assert.isTrue(templateCalled, "The template should have used to render the view");
 
             Y.Assert.isTrue(
                 container.getContent().indexOf('test1 rendered') !== -1,

@@ -41,6 +41,7 @@ YUI.add('ez-contenteditformview', function (Y) {
          */
         _setFieldEditViews: function () {
             var content = this.get('content'),
+                version = this.get('version'),
                 contentType = this.get('contentType'),
                 fieldDefinitions = contentType.get('fieldDefinitions'),
                 views = [];
@@ -53,9 +54,10 @@ YUI.add('ez-contenteditformview', function (Y) {
                     views.push(
                         new EditView({
                             content: content,
+                            version: version,
                             contentType: contentType,
                             fieldDefinition: def,
-                            field: content.getField(def.identifier)
+                            field: version.getField(def.identifier)
                         })
                     );
                 } catch (e) {
@@ -154,7 +156,17 @@ YUI.add('ez-contenteditformview', function (Y) {
              * @type {eZ.Content}
              * @required
              */
-            content: {}
+            content: {},
+
+            /**
+             * The version handled in the form view
+             *
+             * @attribute version
+             * @default {}
+             * @type {eZ.Version}
+             * @required
+             */
+            version: {},
         }
     });
 });

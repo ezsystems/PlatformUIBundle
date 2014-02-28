@@ -77,6 +77,7 @@ YUI.add('ez-contenteditview', function (Y) {
             container.setHTML(this.template({
                 isTouch: this._isTouch(),
                 content: this.get('content').toJSON(),
+                version: this.get('version').toJSON(),
                 mainLocation: this.get('mainLocation').toJSON(),
                 contentType: this.get('contentType').toJSON(),
                 owner: this.get('owner').toJSON()
@@ -212,6 +213,22 @@ YUI.add('ez-contenteditview', function (Y) {
                 setter: function (val, name) {
                     this.get('formView').set('content', val);
                     this.get('actionBar').set('content', val);
+                    return val;
+                }
+            },
+
+            /**
+             * The version being edited
+             *
+             * @attribute content
+             * @default {}
+             * @required
+             */
+            version: {
+                value: {},
+                setter: function (val, name) {
+                    this.get('formView').set('version', val);
+                    this.get('actionBar').set('version', val);
                     return val;
                 }
             },

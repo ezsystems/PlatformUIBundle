@@ -68,6 +68,7 @@ YUI.add('ez-fieldeditview', function (Y) {
                     fieldDefinition: this.get('fieldDefinition'),
                     field: this.get('field'),
                     content: this.get('content').toJSON(),
+                    version: this.get('version').toJSON(),
                     contentType: this.get('contentType').toJSON()
                 };
 
@@ -315,6 +316,17 @@ YUI.add('ez-fieldeditview', function (Y) {
              * @default null
              */
             content: {
+                value: null
+            },
+
+            /**
+             * The version the field to edit belongs to
+             *
+             * @attribute version
+             * @type {eZ.Version}
+             * @default null
+             */
+            version: {
                 value: null
             },
 

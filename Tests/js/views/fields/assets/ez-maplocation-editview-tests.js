@@ -2,11 +2,11 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
     var container = Y.one('.container'),
         viewTest, APILoadingTest, noInitialValuesTest,
         findAddressTest, locateMeTest, registerTest, getFieldTest,
-        content, contentType,
+        content, contentType, version,
         mapLoaderLoadingSuccess,
         testAddress = "London",
         googleStub, geocoderInput,
-        jsonContent = {}, jsonContentType = {},
+        jsonContent = {}, jsonContentType = {}, jsonVersion = {},
         testDefaultLatitude = 20.00000000001,
         testDefaultLongitude = 40.0000000000001,
         testAddressLatitude = 50.00000001,
@@ -23,10 +23,15 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         };
 
     content = new Y.Mock();
+    version = new Y.Mock();
     contentType = new Y.Mock();
     Y.Mock.expect(content, {
         method: 'toJSON',
         returns: jsonContent
+    });
+    Y.Mock.expect(version, {
+        method: 'toJSON',
+        returns: jsonVersion
     });
     Y.Mock.expect(contentType, {
         method: 'toJSON',
@@ -110,6 +115,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             this.view = new Y.eZ.MapLocationEditView({
                 container: container,
                 field: field,
+                version: version,
                 content: content,
                 contentType: contentType
             });
@@ -127,11 +133,15 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variables");
+                Y.Assert.areEqual(6, Y.Object.keys(variables).length, "The template should receive 6 variables");
 
                 Y.Assert.areSame(
                     jsonContent, variables.content,
                     "The content should be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                    jsonVersion, variables.version,
+                    "The version should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
                     jsonContentType, variables.contentType,
@@ -234,6 +244,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             view = new Y.eZ.MapLocationEditView({
                 container: container,
                 field: field,
+                version: version,
                 content: content,
                 contentType: contentType
             });
@@ -292,6 +303,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             this.view = new Y.eZ.MapLocationEditView({
                 container: container,
                 field: field,
+                version: version,
                 content: content,
                 contentType: contentType
             });
@@ -515,6 +527,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             this.view = new Y.eZ.MapLocationEditView({
                 container: container,
                 field: field,
+                version: version,
                 content: content,
                 contentType: contentType
             });
@@ -694,6 +707,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             this.view = new Y.eZ.MapLocationEditView({
                 container: container,
                 field: field,
+                version: version,
                 content: content,
                 contentType: contentType
             });

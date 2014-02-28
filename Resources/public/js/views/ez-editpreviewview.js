@@ -34,12 +34,13 @@ YUI.add('ez-editpreviewview', function (Y) {
         render: function () {
             var container = this.get('container'),
                 content = this.get('content'),
+                version = this.get('version'),
                 loader;
 
             container.setHTML(this.template({
                 mode: this.get('previewModes')[this.get('currentModeId')],
-                source: '/content/versionview/' + content.get('contentId') + '/1/eng-GB',
-                legend: content.get('name')
+                source: '/content/versionview/' + content.get('contentId') + '/' + version.get('versionNo') + '/eng-GB',
+                legend: version.get('names')['eng-GB']
             }));
 
             // loader node for the iframe
@@ -139,6 +140,18 @@ YUI.add('ez-editpreviewview', function (Y) {
              * @required
              */
             content: {
+                value: {}
+            },
+
+            /**
+             * The version which should be previewed
+             *
+             * @attribute version
+             * @type eZ.Version
+             * @default {}
+             * @required
+             */
+            version: {
                 value: {}
             }
         }
