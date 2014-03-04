@@ -66,7 +66,7 @@ YUI.add('ez-editactionbarview', function (Y) {
                         }),
                         new Y.eZ.ButtonActionView({
                             actionId: "discard",
-                            disabled: true,
+                            disabled: false,
                             label: "Discard changes",
                             priority: 180
                         }),

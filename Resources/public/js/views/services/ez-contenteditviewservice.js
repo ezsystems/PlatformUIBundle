@@ -21,6 +21,33 @@ YUI.add('ez-contenteditviewservice', function (Y) {
         initializer: function () {
             this.on('*:saveAction', this._saveDraft);
             this.on('*:publishAction', this._publishDraft);
+            this.on('*:discardAction', this._discardDraft);
+        },
+
+        /**
+         * Event handler for the discardAction event. It deletes the version
+         * from the repositry and redirect the user to the location view
+         *
+         * @method _discardDraft
+         * @protected
+         * @param {Object} e event facade
+         */
+        _discardDraft: function (e) {
+            var version = this.get('version'),
+                that = this,
+                app = this.get('app');
+
+            app.set('loading', true);
+            version.destroy({
+                remove: true,
+                api: this.get('capi')
+            }, function () {
+                app.navigate(
+                    app.routeUri('viewLocation', {
+                        id: that.get('location').get('id')
+                    })
+                );
+            });
         },
 
         /**

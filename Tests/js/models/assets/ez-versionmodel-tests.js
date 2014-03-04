@@ -1,5 +1,5 @@
 YUI.add('ez-versionmodel-tests', function (Y) {
-    var modelTest, loadNewTest, updateTest,
+    var modelTest, loadNewTest, updateTest, removeTest,
         restResponse = {
             "Version": {
                 "_media-type": "application/vnd.ez.api.Version+json",
@@ -82,8 +82,8 @@ YUI.add('ez-versionmodel-tests', function (Y) {
             delete this.model;
         },
 
-        "'delete' sync operation is not supported": function () {
-            this._testUnsupportedSyncOperation('delete');
+        "'xxxx' sync operation is not supported": function () {
+            this._testUnsupportedSyncOperation('xxxx');
         },
 
         "Should read the fields": function () {
@@ -230,6 +230,85 @@ YUI.add('ez-versionmodel-tests', function (Y) {
             });
         },
 
+    });
+
+    removeTest = new Y.Test.Case({
+        name: "eZ Version Model remove tests",
+
+        setUp: function () {
+            this.contentId = "/ezp/api/content/objects/4242";
+            this.versionId = "42";
+            this.version = new Y.eZ.Version();
+            this.version.setAttrs({
+                id: this.contentId + "/version/2",
+                versionId: this.versionId,
+                versionNo: 2
+            });
+            this.capiMock = new Y.Mock();
+            this.contentService = new Y.Mock();
+
+            Y.Mock.expect(this.capiMock, {
+                method: 'getContentService',
+                returns: this.contentService,
+            });
+        },
+
+        tearDown: function () {
+            this.version.destroy();
+            delete this.version;
+        },
+
+        "Should delete the version in the repository": function () {
+            var version = this.version;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'deleteVersion',
+                args: [this.version.get('id'), Y.Mock.Value.Function],
+                run: function (id, callback) {
+                    callback();
+                }
+            });
+
+            this.version.destroy({
+                remove: true,
+                api: this.capiMock
+            }, function (error) {
+                Y.Assert.isFalse(!!error, "The destroy callback should be called without error");
+                Y.Assert.areEqual(
+                    "", version.get('versionId'),
+                    "The version object should reseted"
+                );
+            });
+
+            Y.Mock.verify(this.contentService);
+        },
+
+        "Should handle the error while deleting the version": function () {
+            var version = this.version,
+                versionId = this.versionId;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'deleteVersion',
+                args: [this.version.get('id'), Y.Mock.Value.Function],
+                run: function (id, callback) {
+                    callback(true);
+                }
+            });
+
+            this.version.destroy({
+                remove: true,
+                api: this.capiMock
+            }, function (error) {
+                Y.Assert.isTrue(!!error, "The destroy callback should be called with an error");
+
+                Y.Assert.areEqual(
+                    versionId, version.get('versionId'),
+                    "The version object should be left intact"
+                );
+            });
+
+            Y.Mock.verify(this.contentService);
+        },
     });
 
     updateTest = new Y.Test.Case({
@@ -456,5 +535,6 @@ YUI.add('ez-versionmodel-tests', function (Y) {
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(loadNewTest);
     Y.Test.Runner.add(updateTest);
+    Y.Test.Runner.add(removeTest);
 
 }, '0.0.1', {requires: ['test', 'json', 'model-tests', 'ez-versionmodel', 'ez-restmodel']});

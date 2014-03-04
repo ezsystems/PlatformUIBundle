@@ -20,10 +20,11 @@ YUI.add('ez-versionmodel', function (Y) {
         /**
          * sync implementation for the Version. For now, it supports reading a
          * version from its id, creating a new one based on the content current
-         * version and updating it. The update can also publish the version
+         * version, updating it and deleting it. The update can also publish the
+         * version
          *
          * @method sync
-         * @param {String} action the action, read, create and update are
+         * @param {String} action the action, read, create, update, delete are
          * supported
          * @param {Object} options the options for the sync.
          * @param {Object} options.api the JS REST client instance
@@ -39,6 +40,8 @@ YUI.add('ez-versionmodel', function (Y) {
                 contentService.createContentDraft(options.contentId, callback);
             } else if ( action === 'update' ) {
                 this._updateVersion(options, callback);
+            } else if ( action === 'delete' ) {
+                this._deleteVersion(options, callback);
             } else {
                 callback(action + " not supported");
             }
@@ -65,6 +68,29 @@ YUI.add('ez-versionmodel', function (Y) {
                     version.undo();
                 }
                 callback(error);
+            });
+        },
+
+        /**
+         * Deletes the version in the repository.
+         *
+         * @protected
+         * @method _deleteVersion
+         * @param {Object} options
+         * @param {Object} options.api the JS REST client instance
+         * @param {Function} callback
+         */
+        _deleteVersion: function (options, callback) {
+            var contentService = options.api.getContentService(),
+                version = this;
+
+            contentService.deleteVersion(this.get('id'), function (error, response) {
+                if ( error ) {
+                    callback(error);
+                    return;
+                }
+                version.reset();
+                callback();
             });
         },
 

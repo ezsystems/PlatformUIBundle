@@ -258,6 +258,55 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             delete this.service;
         },
 
+        "Should discard the draft": function () {
+            var viewLocationRoute = '/view/something',
+                locationId = 'something';
+
+            Y.Mock.expect(this.app, {
+                method: 'set',
+                args: ['loading', true]
+            });
+            Y.Mock.expect(this.location, {
+                method: 'get',
+                args: ['id'],
+                returns: locationId
+            });
+            Y.Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['viewLocation', Y.Mock.Value.Object],
+                run: function (route, params) {
+                    Y.Assert.areEqual(
+                        locationId,
+                        params.id
+                    );
+                    return viewLocationRoute;
+                }
+            });
+            Y.Mock.expect(this.app, {
+                method: 'navigate',
+                args: [viewLocationRoute]
+            });
+
+            Y.Mock.expect(this.version, {
+                method: 'destroy',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Y.Assert.areSame(
+                        options.api,
+                        eventTest.capi,
+                        "The destroy options should contain the CAPI"
+                    );
+                    Y.Assert.isTrue(
+                        options.remove,
+                        "The remove option should be set to true"
+                    );
+                    callback();
+                }
+            });
+
+            this.service.fire('whatever:discardAction');
+        },
+
         "Should not store the draft": function () {
             Y.Mock.expect(this.version, {
                 method: 'save',
