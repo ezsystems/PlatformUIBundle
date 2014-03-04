@@ -538,8 +538,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                         service: TestService,
                     },
                 },
-                bubbleApp = false, bubbleService = false,
-                test = this;
+                bubbleApp = false, bubbleService = false;
 
             this.app.on('*:testEvent', function (e) {
                 bubbleApp = true;
@@ -548,14 +547,15 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 type: Y.eZ.View
             };
 
-            this.app.handleMainView(req, {}, function () {
-                test.resume(function () {
-                    test.app.get('activeView').fire('testEvent');
-                    Y.Assert.isTrue(bubbleService, "The service should have received the view event");
-                    Y.Assert.isTrue(bubbleApp, "The app should have received the view event");
-                });
+            this.app.after('activeViewChange', function () {
+                this.get('activeView').fire('testEvent');
+                Y.Assert.isTrue(bubbleService, "The service should have received the view event");
+                Y.Assert.isTrue(bubbleApp, "The app should have received the view event");
+
             });
-            this.wait();
+
+
+            this.app.handleMainView(req, {});
         },
 
         "Should reuse the view service if available": function () {
@@ -567,46 +567,43 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                         this.on('responseChange', function () { updatedResponse = true; });
                         this.on('requestChange', function () { updatedRequest = true; });
                     },
-                    load: function(cb) { serviceLoad++; cb(this); }
+                    load: function(cb) {
+                        serviceLoad++;
+                        cb(this);
+                    }
                 }),
                 req = {
                     route: {
                         view: 'myView',
                         service: TestService,
                     },
-                },
-                test = this;
+                };
 
             this.app.views.myView = {
-                type: Y.eZ.View
+                type: Y.eZ.View,
+                service: new TestService()
             };
 
-            this.app.handleMainView(req, {}, function () {
-                test.resume(function () {
-                    this.app.handleMainView(req, {}, function () {
-                        test.resume(function () {
-                            Y.Assert.areEqual(
-                                1, serviceInit,
-                                "The service should have been build once"
-                            );
-                            Y.Assert.areEqual(
-                                2, serviceLoad,
-                                "load should have been called twice"
-                            );
-                            Y.Assert.isTrue(
-                                updatedRequest,
-                                "The request should have been updated"
-                            );
-                            Y.Assert.isTrue(
-                                updatedResponse,
-                                "The response should have been updated"
-                            );
-                        });
-                    });
-                    test.wait();
-                });
+            this.app.after('activeViewChange', function () {
+                Y.Assert.areEqual(
+                    1, serviceInit,
+                    "The service should have been build once"
+                );
+                Y.Assert.areEqual(
+                    1, serviceLoad,
+                    "load should have been called"
+                );
+                Y.Assert.isTrue(
+                    updatedRequest,
+                    "The request should have been updated"
+                );
+                Y.Assert.isTrue(
+                    updatedResponse,
+                    "The response should have been updated"
+                );
             });
-            this.wait();
+
+            this.app.handleMainView(req, {});
         },
 
         "Should catch the view service error and throw an app fatal error": function () {
