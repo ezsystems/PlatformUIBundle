@@ -31,6 +31,12 @@ YUI.add('ez-contenteditformview', function (Y) {
             if ( this.get('contentType') ) {
                 this._setFieldEditViews();
             }
+
+            this.after('activeChange', function (e) {
+                Y.Array.each(this._fieldEditViews, function (view) {
+                    view.set('active', e.newVal);
+                });
+            });
         },
 
         /**
