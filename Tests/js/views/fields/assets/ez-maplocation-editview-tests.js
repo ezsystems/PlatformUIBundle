@@ -58,20 +58,19 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 this.lat = function () {return latitude;};
                 this.lng = function () {return longitude;};
             },
-            Map: function() {
-                return {
-                    setCenter: function (location) {
-                        currentMapCenterLat = location.lat();
-                        currentMapCenterLng = location.lng();
-                    }
+            Map: function(domNode, mapOptions) {
+                this.mapOptions = mapOptions;
+                this.setCenter = function (location) {
+                    currentMapCenterLat = location.lat();
+                    currentMapCenterLng = location.lng();
                 };
             },
-            Marker: function() {
-                return {
-                    setPosition: function (location) {
-                        currentMarkerLat = location.lat();
-                        currentMarkerLng = location.lng();
-                    }
+            Marker: function(options) {
+                this.position = options.position;
+                this.map = options.map;
+                this.setPosition = function (location) {
+                    currentMarkerLat = location.lat();
+                    currentMarkerLng = location.lng();
                 };
             },
             Geocoder: function () {
@@ -174,22 +173,41 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
         "Test correct map initialization on successfull maps API loading": function () {
             var fieldDefinition = this._getFieldDefinition(false),
-                container = this.view.get('container');
+                container = this.view.get('container'),
+                map, marker;
+
             this.view.set('fieldDefinition', fieldDefinition);
             this.view.render();
+            this.view.set('active', true);
 
-            Y.Assert.isObject(this.view.get('map'), "Map should be created");
-            Y.Assert.isObject(this.view.get('marker'), "Marker should be created");
+            map = this.view.get('map');
+            marker = this.view.get('marker');
+            Y.Assert.isObject(map, "Map should be created");
+            Y.Assert.isObject(marker, "Marker should be created");
 
             Y.Assert.areEqual(
-                container.one('.ez-maplocation-longitude').getHTML(),
-                testDefaultLongitude,
-                "Template should be updated with initial longitude value"
+                8, map.mapOptions.zoom,
+                "The zoom of the map should be set to 8"
+            );
+
+            Y.Assert.areEqual(
+                this.view.get('field').fieldValue.latitude,
+                map.mapOptions.center.lat(),
+                "The map should be centered on the point given by the field (latitude)"
             );
             Y.Assert.areEqual(
-                container.one('.ez-maplocation-latitude').getHTML(),
-                testDefaultLatitude,
-                "Template should be updated with initial latitude value"
+                this.view.get('field').fieldValue.longitude,
+                map.mapOptions.center.lng(),
+                "The map should be centered on the point given by the field (longitude)"
+            );
+
+            Y.Assert.areSame(
+                map, marker.map,
+                "A marker should be added to the map"
+            );
+            Y.Assert.areSame(
+                map.mapOptions.center, marker.position,
+                "The marker should be set on the map center"
             );
 
             Y.Assert.areEqual(
@@ -251,6 +269,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
             view.set('fieldDefinition', fieldDefinition);
             view.render();
+            view.set('active', true);
 
             Y.Assert.isObject(view.get('map'), "Map should be created");
             Y.Assert.isObject(view.get('marker'), "Marker should be created");
@@ -310,6 +329,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
             this.view.set('fieldDefinition', fieldDefinition);
             this.view.render();
+            this.view.set('active', true);
 
             this.findAddressInput = container.one('.ez-maplocation-find-address-input input');
             this.findAddressButton = container.one('.ez-maplocation-find-address-button');
@@ -534,6 +554,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
             this.view.set('fieldDefinition', fieldDefinition);
             this.view.render();
+            this.view.set('active', true);
 
             this.locateMeButton = container.one('.ez-maplocation-locate-me-button');
             this.locateMeErrors = container.one('.ez-maplocation-locate-me-errors');
@@ -714,6 +735,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
             this.view.set('fieldDefinition', fieldDefinition);
             this.view.render();
+            this.view.set('active', true);
         },
 
         setUp: function () {
