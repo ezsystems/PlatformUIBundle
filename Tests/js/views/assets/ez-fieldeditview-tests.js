@@ -1,7 +1,7 @@
 YUI.add('ez-fieldeditview-tests', function (Y) {
     var container = Y.one('.container'),
-        content, contentType,
-        jsonContent = {}, jsonContentType = {},
+        content, contentType, version,
+        jsonContent = {}, jsonContentType = {}, jsonVersion = {},
         fieldDefinition = {
             descriptions: {
                 "eng-GB": "Test description"
@@ -14,6 +14,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
 
     content = new Y.Mock();
     contentType = new Y.Mock();
+    version = new Y.Mock();
     Y.Mock.expect(content, {
         method: 'toJSON',
         returns: jsonContent
@@ -21,6 +22,10 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
     Y.Mock.expect(contentType, {
         method: 'toJSON',
         returns: jsonContentType
+    });
+    Y.Mock.expect(version, {
+        method: 'toJSON',
+        returns: jsonVersion
     });
 
     Y.Handlebars.registerPartial('ezFieldinfoTooltip', Y.one('#ezFieldinfoTooltip').getHTML());
@@ -34,6 +39,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                 fieldDefinition: fieldDefinition,
                 field: field,
                 content: content,
+                version: version,
                 contentType: contentType
             });
         },
@@ -55,16 +61,21 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             Y.Assert.isTrue(templateCalled, "The template has not been used");
             Y.Mock.verify(content);
             Y.Mock.verify(contentType);
+            Y.Mock.verify(version);
         },
 
         "Test available variable in template": function () {
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(4, Y.Object.keys(variables).length, "The template should receive 4 variables");
+                Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variables");
 
                 Y.Assert.areSame(
                      jsonContent, variables.content,
                     "The content should be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                     jsonVersion, variables.version,
+                    "The version should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
                     jsonContentType, variables.contentType,
@@ -166,6 +177,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                 fieldDefinition: fieldDefinition,
                 field: field,
                 content: content,
+                version: version,
                 contentType: contentType
             });
         },
@@ -339,6 +351,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                 fieldDefinition: fieldDefinition,
                 field: field,
                 content: content,
+                version: version,
                 contentType: contentType
             });
         },
@@ -350,11 +363,15 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         "Test available variable in template": function () {
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(6, Y.Object.keys(variables).length, "The template should receive 6 variables");
+                Y.Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 7 variables");
 
                 Y.Assert.areSame(
                      jsonContent, variables.content,
                     "The content should be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                     jsonVersion, variables.version,
+                    "The version should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
                     jsonContentType, variables.contentType,
@@ -380,6 +397,19 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                 return '';
             };
             this.view.render();
+        },
+
+        "getField should return a clone value with 'undefined' as a value": function () {
+            var updatedField = this.view.getField();
+
+            Y.Assert.areNotSame(
+                field, updatedField,
+                "getField should 'clone' the field"
+            );
+            Y.Assert.isUndefined(
+                updatedField.fieldValue,
+                "The field value should be undefined"
+            );
         }
     });
 

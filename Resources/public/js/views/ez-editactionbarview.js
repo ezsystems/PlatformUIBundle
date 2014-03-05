@@ -17,6 +17,29 @@ YUI.add('ez-editactionbarview', function (Y) {
      * @extends eZ.BarView
      */
     Y.eZ.EditActionBarView = Y.Base.create('editActionBarView', Y.eZ.BarView, [], {
+        /**
+         * Makes sure for that new action gets and updated version of the version
+         *
+         * @method initializer
+         */
+        initializer: function () {
+            this.after('actionsListChange', function (e) {
+                this._setVersion(this.get('version'));
+            });
+        },
+
+        /**
+         * Sets the version on all the action list
+         *
+         * @protected
+         * @method _setVersion
+         * @param {eZ.Version} version
+         */
+        _setVersion: function (version) {
+            Y.Array.each(this.get('actionsList'), function (action) {
+                action.set('version', version);
+            });
+        },
     }, {
         ATTRS: {
             /**
@@ -31,19 +54,19 @@ YUI.add('ez-editactionbarview', function (Y) {
                     return [
                         new Y.eZ.ButtonActionView({
                             actionId: "publish",
-                            disabled: true,
+                            disabled: false,
                             label: "Publish",
                             priority: 200
                         }),
                         new Y.eZ.ButtonActionView({
                             actionId: "save",
-                            disabled: true,
+                            disabled: false,
                             label: "Save",
                             priority: 190
                         }),
                         new Y.eZ.ButtonActionView({
                             actionId: "discard",
-                            disabled: true,
+                            disabled: false,
                             label: "Discard changes",
                             priority: 180
                         }),
@@ -60,6 +83,21 @@ YUI.add('ez-editactionbarview', function (Y) {
                     ];
                 }
             },
+
+            /**
+             * The version currently being edited
+             *
+             * @attribute version
+             * @type {eZ.Version}
+             * @default {}
+             */
+            version: {
+                value: {},
+                setter: function (val, name) {
+                    this._setVersion(val);
+                }
+            }
+
         }
     });
 });

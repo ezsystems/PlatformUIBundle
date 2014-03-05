@@ -1,12 +1,12 @@
 YUI.add('ez-maplocation-editview-tests', function (Y) {
     var container = Y.one('.container'),
         viewTest, APILoadingTest, noInitialValuesTest,
-        findAddressTest, locateMeTest, registerTest,
-        content, contentType,
+        findAddressTest, locateMeTest, registerTest, getFieldTest,
+        content, contentType, version,
         mapLoaderLoadingSuccess,
         testAddress = "London",
         googleStub, geocoderInput,
-        jsonContent = {}, jsonContentType = {},
+        jsonContent = {}, jsonContentType = {}, jsonVersion = {},
         testDefaultLatitude = 20.00000000001,
         testDefaultLongitude = 40.0000000000001,
         testAddressLatitude = 50.00000001,
@@ -23,10 +23,15 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
         };
 
     content = new Y.Mock();
+    version = new Y.Mock();
     contentType = new Y.Mock();
     Y.Mock.expect(content, {
         method: 'toJSON',
         returns: jsonContent
+    });
+    Y.Mock.expect(version, {
+        method: 'toJSON',
+        returns: jsonVersion
     });
     Y.Mock.expect(contentType, {
         method: 'toJSON',
@@ -110,6 +115,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             this.view = new Y.eZ.MapLocationEditView({
                 container: container,
                 field: field,
+                version: version,
                 content: content,
                 contentType: contentType
             });
@@ -127,11 +133,15 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variables");
+                Y.Assert.areEqual(6, Y.Object.keys(variables).length, "The template should receive 6 variables");
 
                 Y.Assert.areSame(
                     jsonContent, variables.content,
                     "The content should be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                    jsonVersion, variables.version,
+                    "The version should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
                     jsonContentType, variables.contentType,
@@ -234,6 +244,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             view = new Y.eZ.MapLocationEditView({
                 container: container,
                 field: field,
+                version: version,
                 content: content,
                 contentType: contentType
             });
@@ -292,6 +303,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             this.view = new Y.eZ.MapLocationEditView({
                 container: container,
                 field: field,
+                version: version,
                 content: content,
                 contentType: contentType
             });
@@ -515,6 +527,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             this.view = new Y.eZ.MapLocationEditView({
                 container: container,
                 field: field,
+                version: version,
                 content: content,
                 contentType: contentType
             });
@@ -694,6 +707,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
             this.view = new Y.eZ.MapLocationEditView({
                 container: container,
                 field: field,
+                version: version,
                 content: content,
                 contentType: contentType
             });
@@ -824,18 +838,63 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
     });
 
     Y.Test.Runner.setName("eZ Map Location Edit View tests");
+
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(noInitialValuesTest);
     Y.Test.Runner.add(findAddressTest);
     Y.Test.Runner.add(locateMeTest);
     Y.Test.Runner.add(APILoadingTest);
 
-    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+    getFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false},
+            ViewConstructor: Y.eZ.MapLocationEditView,
+            newValue: {address: 'St Paul de Varax', latitude: 46.099353, longitude: 5.12896},
 
+            init: function () {
+                this.mapAPILoader = Y.eZ.services.mapAPILoader;
+                Y.eZ.services.mapAPILoader = new Y.Mock();
+                Y.Mock.expect(Y.eZ.services.mapAPILoader, {
+                    method: 'load',
+                });
+                Y.Mock.expect(Y.eZ.services.mapAPILoader, {
+                    method: 'on',
+                    args: [Y.Mock.Value.String, Y.Mock.Value.Function],
+                });
+            },
+
+            destroy: function () {
+                Y.eZ.services.mapAPILoader = this.mapAPILoader;
+            },
+
+            _setNewValue: function () {
+                this.view.get('container').one('#ez-field-maplocation-address').set('value', this.newValue.address);
+                this.view.set('location', {
+                    latitude: this.newValue.latitude,
+                    longitude: this.newValue.longitude
+                });
+            },
+
+            _assertCorrectFieldValue: function (fieldValue, msg) {
+                Y.Assert.areEqual(
+                    Y.Object.keys(this.newValue).length,
+                    Y.Object.keys(fieldValue).length,
+                    msg
+                );
+                Y.Object.each(this.newValue, function (val, key) {
+                    Y.Assert.areEqual(
+                        val, fieldValue[key], msg
+                    );
+                });
+            }
+        })
+    );
+    Y.Test.Runner.add(getFieldTest);
+
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Map Location Edit View registration test";
     registerTest.viewType = Y.eZ.MapLocationEditView;
     registerTest.viewKey = "ezgmaplocation";
-
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'editviewregister-tests', 'node-event-simulate', 'ez-maplocation-editview']});
+}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'node-event-simulate', 'ez-maplocation-editview']});

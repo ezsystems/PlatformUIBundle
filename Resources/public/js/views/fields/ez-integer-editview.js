@@ -104,7 +104,18 @@ YUI.add('ez-integer-editview', function (Y) {
          */
         _getInputValidity: function () {
             return this.get('container').one('.ez-integer-input-ui input').get('validity');
-        }
+        },
+
+        /**
+         * Returns the currently filled value
+         *
+         * @protected
+         * @method _getFieldValue
+         * @return Number
+         */
+        _getFieldValue: function () {
+            return parseInt(this.get('container').one('.ez-integer-input-ui input').get('value'), 10);
+        },
     });
 
     Y.eZ.FieldEditView.registerFieldEditView(

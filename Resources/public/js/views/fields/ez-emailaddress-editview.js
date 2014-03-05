@@ -85,7 +85,18 @@ YUI.add('ez-emailaddress-editview', function (Y) {
          */
         _getInputValidity: function () {
             return this.get('container').one('.ez-emailaddress-input-ui input').get('validity');
-        }
+        },
+
+        /**
+         * Returns the currently filled email
+         *
+         * @protected
+         * @method _getFieldValue
+         * @return String
+         */
+        _getFieldValue: function () {
+            return this.get('container').one('.ez-emailaddress-input-ui input').get('value');
+        },
     });
 
     Y.eZ.FieldEditView.registerFieldEditView(

@@ -101,9 +101,10 @@ YUI.add('ez-restmodel', function (Y) {
          * @protected
          * @method _parseStruct
          * @param {Object} struct the struct to transform
+         * @param {Object} doc The complete object
          * @return {Object}
          */
-        _parseStruct: function (struct) {
+        _parseStruct: function (struct, doc) {
             var attrs = {},
                 links = {};
 
@@ -158,12 +159,18 @@ YUI.add('ez-restmodel', function (Y) {
                 });
                 return null;
             }
-            return this._parseStruct(root ? content[root] : content);
+            if ( root ) {
+                Y.Array.each(root.split('.'), function (val) {
+                    content = content[val];
+                });
+            }
+            return this._parseStruct(content, response.document);
         }
 
     }, {
         /**
          * Root element in the REST API response where the data is located.
+         * It can contains points to target a deep structure.
          *
          * @static
          * @property REST_STRUCT_ROOT

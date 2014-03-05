@@ -1,7 +1,7 @@
 YUI.add('ez-contenttypemodel-tests', function (Y) {
     var modelTest;
 
-    modelTest = new Y.eZ.ModelTest({
+    modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
         name: "eZ ContentType Model tests",
 
         init: function () {
@@ -275,7 +275,7 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
             /* jshint camelcase: true */
         }
 
-    });
+    }));
 
     Y.Test.Runner.setName("eZ ContentType Model tests");
     Y.Test.Runner.add(modelTest);

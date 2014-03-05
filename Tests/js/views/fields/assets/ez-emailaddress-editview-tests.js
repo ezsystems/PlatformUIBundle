@@ -1,15 +1,20 @@
 YUI.add('ez-emailaddress-editview-tests', function (Y) {
-    var viewTest, registerTest,
+    var viewTest, registerTest, getFieldTest,
         container = Y.one('.container'),
-        content, contentType,
-        jsonContent = {}, jsonContentType = {},
+        content, contentType, version,
+        jsonContent = {}, jsonContentType = {}, jsonVersion = {},
         field = {};
 
     content = new Y.Mock();
+    version = new Y.Mock();
     contentType = new Y.Mock();
     Y.Mock.expect(content, {
         method: 'toJSON',
         returns: jsonContent
+    });
+    Y.Mock.expect(version, {
+        method: 'toJSON',
+        returns: jsonVersion
     });
     Y.Mock.expect(contentType, {
         method: 'toJSON',
@@ -29,6 +34,7 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
             this.view = new Y.eZ.EmailAddressEditView({
                 container: container,
                 field: field,
+                version: version,
                 content: content,
                 contentType: contentType
             });
@@ -45,11 +51,15 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variable");
+                Y.Assert.areEqual(6, Y.Object.keys(variables).length, "The template should receive 6 variables");
 
                 Y.Assert.areSame(
                      jsonContent, variables.content,
                     "The content should be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                     jsonVersion, variables.version,
+                    "The version should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
                     jsonContentType, variables.contentType,
@@ -164,12 +174,20 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Email Address Edit View tests");
     Y.Test.Runner.add(viewTest);
 
-    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+    getFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false},
+            ViewConstructor: Y.eZ.EmailAddressEditView,
+            newValue: 'damien@example.com',
+        })
+    );
+    Y.Test.Runner.add(getFieldTest);
 
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Email Address Edit View registration test";
     registerTest.viewType = Y.eZ.EmailAddressEditView;
     registerTest.viewKey = "ezemail";
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'event-valuechange', 'node-event-simulate', 'editviewregister-tests', 'ez-emailaddress-editview']});
+}, '0.0.1', {requires: ['test', 'event-valuechange', 'node-event-simulate', 'getfield-tests', 'editviewregister-tests', 'ez-emailaddress-editview']});

@@ -1,10 +1,20 @@
 YUI.add('model-tests', function (Y) {
-    Y.namespace('eZ');
+    Y.namespace('eZ.Test');
 
     /**
      * Test methods used by the all model tests
      */
     var modelTests = {
+        _getRootStructure: function () {
+            var props = this.rootProperty.split("."),
+                root = this.loadResponse, i = 0;
+
+            for (i = 0; i != props.length; i++) {
+                root = root[props[i]];
+            }
+            return root;
+        },
+
         "Sync 'read' should load the content with CAPI": function () {
             var m = this.model,
                 modelId = "/api/v2/ezp/model/mid",
@@ -32,15 +42,19 @@ YUI.add('model-tests', function (Y) {
             Y.Mock.verify(this.serviceMock);
         },
 
-        "Sync action other than 'read' are not supported": function () {
+        _testUnsupportedSyncOperation: function (operation) {
             var m = this.model, called = false,
                 callback = function (err) {
                     called = true;
                     Y.assert(err, "The 'err' param of the callback should be set to a truthy value");
                 };
 
-            m.sync('create', {api: this.capiMock}, callback);
+            m.sync(operation, {api: this.capiMock}, callback);
             Y.assert(called, "The callback should have been called");
+        },
+
+        "Sync action other than 'read' are not supported": function () {
+            this._testUnsupportedSyncOperation('create');
         },
 
         "parse should return null and fire the error event on JSON parse error": function () {
@@ -72,7 +86,8 @@ YUI.add('model-tests', function (Y) {
                 errorFired = false, key, identifier, i, len;
 
             response = {
-                body: Y.JSON.stringify(this.loadResponse)
+                body: Y.JSON.stringify(this.loadResponse),
+                document: this.loadResponse
             };
 
             m.on('error', function (e) {
@@ -93,22 +108,22 @@ YUI.add('model-tests', function (Y) {
                     identifier = Y.Object.keys(key)[0];
                     key = key[identifier];
                 }
-                if ( Y.Lang.isObject(res[identifier]) ) {
+                if ( Y.Lang.isObject(res[key]) ) {
                     // this not very clean but in this case this working as
                     // expect since we are testing a JSON parse method
                     Y.Assert.areEqual(
-                        Y.JSON.stringify(res[identifier]),
-                        Y.JSON.stringify(this.loadResponse[this.rootProperty][key]),
-                        identifier + " should have been set to the value of this.loadResponse." +
-                            this.rootProperty + "." + key
+                        Y.JSON.stringify(res[key]),
+                        Y.JSON.stringify(this._getRootStructure()[identifier]),
+                        key + " should have been set to the value of this.loadResponse." +
+                            this.rootProperty + "." + identifier
                     );
                 } else {
                     Y.Assert.areEqual(
-                        res[identifier],
-                        this.loadResponse[this.rootProperty][key],
-                        identifier + " should have been set to the value of this.loadResponse." +
-                            this.rootProperty + "." + key + "('" +
-                            this.loadResponse[this.rootProperty][key]  +"')"
+                        res[key],
+                        this._getRootStructure()[identifier],
+                        key + " should have been set to the value of this.loadResponse." +
+                            this.rootProperty + "." + identifier + "('" +
+                            this._getRootStructure()[identifier]  +"')"
                     );
                 }
             }
@@ -120,7 +135,8 @@ YUI.add('model-tests', function (Y) {
                 errorFired = false, key, i, len, linksMap;
 
             response = {
-                body: Y.JSON.stringify(this.loadResponse)
+                body: Y.JSON.stringify(this.loadResponse),
+                document: this.loadResponse
             };
 
             m.on('error', function (e) {
@@ -137,12 +153,12 @@ YUI.add('model-tests', function (Y) {
                 key = linksMap[i];
                 Y.Assert.areEqual(
                     res.resources[key],
-                    this.loadResponse[this.rootProperty][key]._href
+                    this._getRootStructure()[key]._href
                 );
             }
         }
     };
 
-    Y.eZ.ModelTest  = Y.mix(Y.Test.Case, modelTests, false, undefined, 4, true);
+    Y.eZ.Test.ModelTests = modelTests;
 
 });

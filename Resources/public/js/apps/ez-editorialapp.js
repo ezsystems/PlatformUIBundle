@@ -291,6 +291,28 @@ YUI.add('ez-editorialapp', function (Y) {
         },
 
         /**
+         * Overrides the default implementation to set the view service as a
+         * bubble target of the view and the app as a bubble target of the view
+         * service.
+         *
+         * @protected
+         * @method _attachView
+         * @param {View} view
+         * @param {Boolean} preprend
+         */
+        _attachView: function (view, prepend) {
+            var viewInfo = this.getViewInfo(view);
+
+            this.constructor.superclass._attachView.apply(this, arguments);
+
+            if ( viewInfo && viewInfo.service ) {
+                view.removeTarget(this);
+                view.addTarget(viewInfo.service);
+                viewInfo.service.addTarget(this);
+            }
+        },
+
+        /**
          * Middleware to display the main view which identifier is in the route
          * metadata
          *
@@ -305,23 +327,9 @@ YUI.add('ez-editorialapp', function (Y) {
                 showView = function (service) {
                     var parameters = service ? service.getViewParameters() : {};
 
-                    if ( service ) {
-                        app.once('activeViewChange', function (e) {
-                            var view = e.newVal;
-
-                            view.removeTarget(app);
-                            view.addTarget(service);
-                            service.addTarget(app);
-                        });
-                    }
-
                     app.showView(req.route.view, parameters, {
                         update: true,
                         render: true
-                    }, function (view) {
-                        if ( typeof next === 'function' ) {
-                            next();
-                        }
                     });
                 };
 

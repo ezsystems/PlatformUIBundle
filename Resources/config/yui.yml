@@ -23,7 +23,7 @@ parameters:
                 requires: ['base']
                 path: js/views/services/ez-viewservice.js
             ez-contenteditviewservice:
-                requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel']
+                requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel', 'ez-versionmodel']
                 path: js/views/services/ez-contenteditviewservice.js
             ez-locationviewviewservice:
                 requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel']
@@ -130,6 +130,9 @@ parameters:
             ez-contentmodel:
                 requires: ['ez-restmodel']
                 path: js/models/ez-contentmodel.js
+            ez-versionmodel:
+                requires: ['ez-restmodel']
+                path: js/models/ez-versionmodel.js
             ez-locationmodel:
                 requires: ['ez-restmodel']
                 path: js/models/ez-locationmodel.js

@@ -68,6 +68,7 @@ YUI.add('ez-fieldeditview', function (Y) {
                     fieldDefinition: this.get('fieldDefinition'),
                     field: this.get('field'),
                     content: this.get('content').toJSON(),
+                    version: this.get('version').toJSON(),
                     contentType: this.get('contentType').toJSON()
                 };
 
@@ -231,6 +232,18 @@ YUI.add('ez-fieldeditview', function (Y) {
         },
 
         /**
+         * Checks whether the current user input is valid or not. This methood
+         * should be implemented by each field edit view and is supposed to
+         * set the `errorStatus` attribute.
+         *
+         * The default implementation does nothing.
+         *
+         * @method validate
+         */
+        validate: function () {
+        },
+
+        /**
          * Returns whether the view is currently in a valid state
          *
          * @method isValid
@@ -238,8 +251,38 @@ YUI.add('ez-fieldeditview', function (Y) {
          */
         isValid: function () {
             return this.get('errorStatus') === false;
-        }
+        },
 
+        /**
+         * Returns the value of the field from the current user input. This
+         * method should be implemented in each field edit view.
+         *
+         * The default implementation returns undefined.
+         *
+         * @method _getFieldValue
+         * @protected
+         * @return mixed
+         */
+        _getFieldValue: function () {
+            console.error(
+                'Error: _getFieldValue() is not implemented in ' + this.constructor.NAME
+            );
+            return undefined;
+        },
+
+        /**
+         * Returns an updated version of the field containing a field value
+         * reflecting the current user input
+         *
+         * @method getField
+         * @return Object
+         */
+        getField: function () {
+            var field = Y.clone(this.get('field'));
+
+            field.fieldValue = this._getFieldValue();
+            return field;
+        },
     }, {
         ATTRS: {
             /**
@@ -285,6 +328,17 @@ YUI.add('ez-fieldeditview', function (Y) {
              * @default null
              */
             content: {
+                value: null
+            },
+
+            /**
+             * The version the field to edit belongs to
+             *
+             * @attribute version
+             * @type {eZ.Version}
+             * @default null
+             */
+            version: {
                 value: null
             },
 

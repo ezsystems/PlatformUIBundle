@@ -110,6 +110,17 @@ YUI.add('ez-float-editview', function (Y) {
          */
         _getInputValidity: function () {
             return this.get('container').one('.ez-float-input-ui input').get('validity');
+        },
+
+        /**
+         * Returns the currently filled float value
+         *
+         * @protected
+         * @method _getFieldValue
+         * @return Number
+         */
+        _getFieldValue: function () {
+            return parseFloat(this.get('container').one('.ez-float-input-ui input').get('value'));
         }
     });
 

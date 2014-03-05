@@ -1,24 +1,26 @@
 YUI.add('ez-contenteditview-tests', function (Y) {
     var container = Y.one('.container'),
         formContents = "<form></form>",
-        content, contentType, owner, mainLocation, formView,
+        content, contentType, owner, mainLocation, version, formView,
         actionBar,
         actionBarContents = "<menu></menu>",
         mockConf = {
             method: 'toJSON',
             returns: {}
         },
-        viewTest, titleTest;
+        viewTest, titleTest, eventTest;
 
     content = new Y.Mock();
     contentType = new Y.Mock();
     owner = new Y.Mock();
     mainLocation = new Y.Mock();
+    version = new Y.Mock();
 
     Y.Mock.expect(content, mockConf);
     Y.Mock.expect(contentType, mockConf);
     Y.Mock.expect(owner, mockConf);
     Y.Mock.expect(mainLocation, mockConf);
+    Y.Mock.expect(version, mockConf);
 
     viewTest = new Y.Test.Case({
         name: "eZ Content Edit View test",
@@ -34,7 +36,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             });
             Y.Mock.expect(formView, {
                 method: 'set',
-                callCount: 2,
+                callCount: 3,
                 args: [Y.Mock.Value.String, Y.Mock.Value.Object],
                 run: function (attribute, value) {
                     // fails if attribute and value are not consistent
@@ -42,9 +44,10 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                     if (
                         ( attribute === 'content' && value !== content ) ||
                         ( attribute === 'contentType' && value !== contentType ) ||
-                        ( attribute !== 'content' && attribute !== 'contentType' )
+                        ( attribute === 'version' && value !== version ) ||
+                        ( attribute !== 'content' && attribute !== 'contentType' && attribute !== 'version' )
                     ) {
-                        Y.Assert.fail('Expecting to set either the content or contentType on the formView');
+                        Y.Assert.fail('Expecting to set either the content, the contentType or the version on the formView');
                     }
                 }
             });
@@ -68,7 +71,17 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             });
             Y.Mock.expect(actionBar, {
                 method: 'set',
-                args: ['content', content]
+                callCount: 2,
+                args: [Y.Mock.Value.String, Y.Mock.Value.Object],
+                run: function (attr, value) {
+                    if ( attr === 'content' ) {
+                        Y.Assert.areSame(value, content, "Expecting the content");
+                    } else if ( attr === 'version' ) {
+                        Y.Assert.areSame(value, version, "Expected the version");
+                    } else {
+                        Y.Assert.fail("Expecting to set either the version or content");
+                    }
+                }
             });
             Y.Mock.expect(actionBar, {
                 method: 'addTarget',
@@ -88,6 +101,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 content: content,
                 contentType: contentType,
                 mainLocation: mainLocation,
+                version: version,
                 owner: owner,
                 formView: formView,
                 actionBar: actionBar
@@ -135,12 +149,13 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variables");
+                Y.Assert.areEqual(6, Y.Object.keys(variables).length, "The template should receive 5 variables");
                 Y.Assert.isBoolean(variables.isTouch, "isTouch should be available in the template and should be boolean");
                 Y.Assert.isObject(variables.content, "content should be available in the template and should be an object");
                 Y.Assert.isObject(variables.contentType, "contentType should be available in the template and should be an object");
                 Y.Assert.isObject(variables.mainLocation, "mainLocation should be available in the template and should be an object");
                 Y.Assert.isObject(variables.owner, "owner should be available in the template and should be an object");
+                Y.Assert.isObject(variables.version, "version should be available in the template and should be an object");
 
                 return  origTpl.call(this, variables);
             };
@@ -357,8 +372,76 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
     });
 
+    eventTest = new Y.Test.Case({
+        name: "eZ Content Edit View event tests",
+
+        setUp: function () {
+            this.formView = new Y.Mock();
+            this.actionBar = new Y.Mock();
+
+            this._configureSubViewMock(this.formView);
+            this._configureSubViewMock(this.actionBar);
+
+            this.view = new Y.eZ.ContentEditView({
+                actionBar: this.actionBar,
+                formView: this.formView
+            });
+        },
+
+        _configureSubViewMock: function (view) {
+            Y.Mock.expect(view, {
+                method: 'addTarget',
+                args: [Y.Mock.Value.Object]
+            });
+            Y.Mock.expect(view, {
+                method: 'set',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Any]
+            });
+        },
+
+        tearDown: function () {
+            delete this.view;
+        },
+
+        _testAddDataActionEvent: function (evt) {
+            var fields = [], valid = true;
+
+            Y.Mock.expect(this.formView, {
+                method: 'getFields',
+                returns: fields
+            });
+            Y.Mock.expect(this.formView, {
+                method: 'isValid',
+                returns: valid
+            });
+
+            this.view.on('*:' + evt, function (e) {
+                Y.Assert.areSame(
+                    fields,
+                    e.fields,
+                    "The fields should be availabled in the event facade"
+                );
+                Y.Assert.areSame(
+                    valid,
+                    e.formIsValid,
+                    "The form validity should be available in the event facade"
+                );
+            });
+            this.view.fire('whatever:' + evt);
+        },
+
+        "Should add data to the saveAction event facade": function () {
+            this._testAddDataActionEvent('saveAction');
+        },
+
+        "Should add data to the publishAction event facade": function () {
+            this._testAddDataActionEvent('publishAction');
+        }
+    });
+
     Y.Test.Runner.setName("eZ Content Edit View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(titleTest);
+    Y.Test.Runner.add(eventTest);
 
 }, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-contenteditview']});

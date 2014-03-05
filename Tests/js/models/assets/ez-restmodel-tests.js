@@ -1,6 +1,6 @@
 YUI.add('ez-restmodel-tests', function (Y) {
     var modelTest,
-        Model;
+        Model, DeepModel;
 
     Model = Y.Base.create('testModel', Y.eZ.RestModel, [], {
     }, {
@@ -32,11 +32,43 @@ YUI.add('ez-restmodel-tests', function (Y) {
         ]
     });
 
+    DeepModel = Y.Base.create('testDeepModel', Y.eZ.RestModel, [], {
+    }, {
+        ATTRS: {
+            name: {
+                value: ""
+            },
+            newIdName: {
+                value: 0
+            },
+            bool: {
+                setter: '_setterBoolean',
+                value: false
+            },
+            date: {
+                setter: '_setterDate',
+                value: new Date(0)
+            },
+            localized: {
+                setter: '_setterLocalizedValue',
+                value: {}
+            }
+        },
+        ATTRS_REST_MAP: [
+            "name", {"restId": "newIdName"}
+        ],
+        LINKS_MAP: [
+            'Link1', 'Link2'
+        ],
+        REST_STRUCT_ROOT: "Very.Deep.Struct"
+    });
+
     modelTest = new Y.Test.Case({
         name: "eZ Rest Model tests",
 
         setUp: function () {
             this.model = new Model();
+            this.deepModel = new DeepModel();
         },
 
         tearDown: function () {
@@ -180,7 +212,90 @@ YUI.add('ez-restmodel-tests', function (Y) {
                 m.get('resources').Link3,
                 "Link3 should not be imported"
             );
+        },
+
+        "Should map the rest struct with a deep structure": function () {
+            var m = this.deepModel,
+                struct = {
+                    "Very": {
+                        "Deep": {
+                            "Struct": {
+                                "name": "My name",
+                                "restId": 42,
+                                "notParsed": false
+                            }
+                        }
+                    }
+                },
+                response = {
+                    body: Y.JSON.stringify(struct),
+                    document: struct
+                };
+
+            m.setAttrs(m.parse(response));
+            Y.Assert.isUndefined(
+                m.get('notParsed'),
+                "'notParsed' property should not be parsed/imported"
+            );
+            Y.Assert.areSame(
+                m.get('name'),
+                struct.Very.Deep.Struct.name,
+                "'name' should be imported"
+            );
+            Y.Assert.areSame(
+                m.get('newIdName'),
+                struct.Very.Deep.Struct.restId,
+                "'restId' should be imported as newIdName"
+            );
+        },
+
+        "Should import the links with a deep structure": function () {
+            var m = this.deepModel,
+                struct = {
+                    "Very": {
+                        "Deep": {
+                            "Struct": {
+                                Link1: {
+                                    _href: "/link1"
+                                },
+                                Link2: {
+                                    _href: "/link2"
+                                },
+                                Link3: {
+                                    _href: "/link3"
+                                }
+                            }
+                        }
+                    }
+                },
+                response = {
+                    body: Y.JSON.stringify(struct),
+                    document: struct
+                };
+
+            m.setAttrs(m.parse(response));
+
+            Y.Assert.areEqual(
+                DeepModel.LINKS_MAP.length,
+                Y.Object.size(m.get('resources')),
+                "Should have " + Model.LINKS_MAP.length + " resources"
+            );
+            Y.Assert.areEqual(
+                "/link1",
+                m.get('resources').Link1,
+                "Link1 does not have the correct value (/links1)"
+            );
+            Y.Assert.areEqual(
+                "/link2",
+                m.get('resources').Link2,
+                "Link2 does not have the correct value (/links2)"
+            );
+            Y.Assert.isUndefined(
+                m.get('resources').Link3,
+                "Link3 should not be imported"
+            );
         }
+
 
     });
 

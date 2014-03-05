@@ -65,6 +65,17 @@ YUI.add('ez-textblock-editview', function (Y) {
          */
         _getInputValidity: function () {
             return this.get('container').one('.ez-textblock-input-ui textarea').get('validity');
+        },
+
+        /**
+         * Returns the currently filled value of the text block field
+         *
+         * @method _getFieldValue
+         * @protected
+         * @return String
+         */
+        _getFieldValue: function () {
+            return this.get('container').one('.ez-textblock-input-ui textarea').get('value');
         }
     });
 

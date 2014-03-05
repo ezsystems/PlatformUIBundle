@@ -345,7 +345,22 @@ YUI.add('ez-maplocation-editview', function (Y) {
             return {
                 "isRequired": this.get('fieldDefinition').isRequired
             };
-        }
+        },
+
+        /**
+         * Returns the currently filled location. The location contains the
+         * latitude, the longitude and an address if it is filled by the user.
+         *
+         * @protected
+         * @method _getFieldValue
+         * @return Object
+         */
+        _getFieldValue: function () {
+            var value = Y.clone(this.get('location'));
+
+            value.address = this.get('container').one(FIND_ADDRESS_INPUT_SEL).get('value');
+            return value;
+        },
     }, {
         ATTRS: {
             /**
@@ -406,7 +421,9 @@ YUI.add('ez-maplocation-editview', function (Y) {
              * @readonly
              */
             mapAPILoader: {
-                value: Y.eZ.services.mapAPILoader,
+                valueFn: function () {
+                    return Y.eZ.services.mapAPILoader;
+                },
                 cloneDefaultValue: false, // important so that all the MapLocationEditView instances have the same loader instance
                 readOnly: true
             }

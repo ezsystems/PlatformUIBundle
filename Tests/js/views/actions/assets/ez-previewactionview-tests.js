@@ -22,9 +22,11 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                 returns: true
             });
 
+            this.version = {};
             this.view = new Y.eZ.PreviewActionView({
                 container: container,
                 content: contentMock,
+                version: this.version,
                 actionId: "preview",
                 hint: "Test hint",
                 label: "Test label",
@@ -42,6 +44,13 @@ YUI.add('ez-previewactionview-tests', function (Y) {
         },
 
         tearDown: function () {
+            Y.Mock.expect(editPreview, {
+                method: 'destroy'
+            });
+            Y.Mock.expect(editPreview, {
+                method: 'removeTarget',
+                args: [this.view]
+            });
             this.view.destroy();
         },
 
@@ -81,6 +90,31 @@ YUI.add('ez-previewactionview-tests', function (Y) {
 
             this.view.set('content', contentMock);
             Y.Assert.areSame( previewContent, contentMock, "editPreview should set correct content attribute" );
+            Y.Mock.verify(editPreview);
+        },
+
+        "Should set the version to the preview view": function () {
+            var version = {};
+
+            // make sure the initial config of the version attribute is taken
+            // into account (effect of the lazyAdd: true on the attribute)
+            Y.Mock.expect(editPreview, {
+                method: 'set',
+                args: ['version', this.version]
+            });
+            this.view.get('version');
+
+            Y.Mock.expect(editPreview, {
+                method: 'set',
+                args: ['version', version]
+            });
+
+            Y.Mock.expect(editPreview, {
+                method: 'get',
+                callCount: 0
+            });
+
+            this.view.set('version', version);
             Y.Mock.verify(editPreview);
         },
 

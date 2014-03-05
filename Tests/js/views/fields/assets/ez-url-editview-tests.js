@@ -1,15 +1,20 @@
 YUI.add('ez-url-editview-tests', function (Y) {
-    var viewTest, registerTest,
+    var viewTest, registerTest, getFieldTest,
         container = Y.one('.container'),
-        content, contentType,
-        jsonContent = {}, jsonContentType = {},
+        content, contentType, version,
+        jsonContent = {}, jsonContentType = {}, jsonVersion = {},
         field = {};
 
     content = new Y.Mock();
+    version = new Y.Mock();
     contentType = new Y.Mock();
     Y.Mock.expect(content, {
         method: 'toJSON',
         returns: jsonContent
+    });
+    Y.Mock.expect(version, {
+        method: 'toJSON',
+        returns: jsonVersion
     });
     Y.Mock.expect(contentType, {
         method: 'toJSON',
@@ -30,6 +35,7 @@ YUI.add('ez-url-editview-tests', function (Y) {
                 container: container,
                 field: field,
                 content: content,
+                version: version,
                 contentType: contentType
             });
         },
@@ -45,11 +51,15 @@ YUI.add('ez-url-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variables");
+                Y.Assert.areEqual(6, Y.Object.keys(variables).length, "The template should receive 6 variables");
 
                 Y.Assert.areSame(
                     jsonContent, variables.content,
                     "The content should be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                    jsonVersion, variables.version,
+                    "The version should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
                     jsonContentType, variables.contentType,
@@ -139,12 +149,29 @@ YUI.add('ez-url-editview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Url Edit View tests");
     Y.Test.Runner.add(viewTest);
 
-    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+    getFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false},
+            ViewConstructor: Y.eZ.UrlEditView,
+            newValue: {link: "http://ez.no", text: "eZ.no"},
 
+            _setNewValue: function () {
+                this.view.get('container').one('.ez-url-field-value').set('value', this.newValue.link);
+                this.view.get('container').one('.ez-url-title-value').set('value', this.newValue.text);
+            },
+
+            _assertCorrectFieldValue: function (fieldValue, msg) {
+                Y.Assert.areEqual(this.newValue.link, fieldValue.link, msg);
+                Y.Assert.areEqual(this.newValue.link, fieldValue.link, msg);
+            },
+        })
+    );
+    Y.Test.Runner.add(getFieldTest);
+
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Url Edit View registration test";
     registerTest.viewType = Y.eZ.UrlEditView;
     registerTest.viewKey = "ezurl";
-
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'editviewregister-tests', 'ez-url-editview']});
+}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-url-editview']});

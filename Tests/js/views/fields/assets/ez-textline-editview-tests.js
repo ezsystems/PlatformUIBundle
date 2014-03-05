@@ -1,15 +1,20 @@
 YUI.add('ez-textline-editview-tests', function (Y) {
-    var viewTest, registerTest,
+    var viewTest, registerTest, getFieldTest,
         container = Y.one('.container'),
-        content, contentType,
-        jsonContent = {}, jsonContentType = {},
+        content, contentType, version,
+        jsonContent = {}, jsonContentType = {}, jsonVersion = {},
         field = {};
 
     content = new Y.Mock();
+    version = new Y.Mock();
     contentType = new Y.Mock();
     Y.Mock.expect(content, {
         method: 'toJSON',
         returns: jsonContent
+    });
+    Y.Mock.expect(version, {
+        method: 'toJSON',
+        returns: jsonVersion
     });
     Y.Mock.expect(contentType, {
         method: 'toJSON',
@@ -36,6 +41,7 @@ YUI.add('ez-textline-editview-tests', function (Y) {
                 container: container,
                 field: field,
                 content: content,
+                version: version,
                 contentType: contentType
             });
         },
@@ -51,11 +57,15 @@ YUI.add('ez-textline-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
+                Y.Assert.areEqual(9, Y.Object.keys(variables).length, "The template should receive 9 variables");
 
                 Y.Assert.areSame(
                      jsonContent, variables.content,
                     "The content should be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                     jsonVersion, variables.version,
+                    "The version should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
                     jsonContentType, variables.contentType,
@@ -211,12 +221,18 @@ YUI.add('ez-textline-editview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Text Line Edit View tests");
     Y.Test.Runner.add(viewTest);
 
-    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
+    getFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false, validatorConfiguration: {StringLengthValidator: {}}},
+            ViewConstructor: Y.eZ.TextLineEditView,
+            newValue: 'Led Zeppelin',
+        })
+    );
+    Y.Test.Runner.add(getFieldTest);
 
+    registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Text Line Edit View registration test";
     registerTest.viewType = Y.eZ.TextLineEditView;
     registerTest.viewKey = "ezstring";
-
     Y.Test.Runner.add(registerTest);
-
-}, '0.0.1', {requires: ['test', 'editviewregister-tests', 'ez-textline-editview']});
+}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-textline-editview']});

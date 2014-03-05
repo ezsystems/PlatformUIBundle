@@ -151,6 +151,21 @@ YUI.add('ez-previewactionview', function (Y) {
                     this.get('editPreview').set('content', val);
                     return val;
                 }
+            },
+
+            /**
+             * The version
+             *
+             * @attribute version
+             * @type eZ.Version
+             * @default {}
+             */
+            version: {
+                value: {},
+                setter: function (val, name) {
+                    this.get('editPreview').set('version', val);
+                    return val;
+                }
             }
         }
     });

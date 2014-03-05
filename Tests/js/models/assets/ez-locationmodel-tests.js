@@ -1,7 +1,7 @@
 YUI.add('ez-locationmodel-tests', function (Y) {
     var modelTest;
 
-    modelTest = new Y.eZ.ModelTest({
+    modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
         name: "eZ Location Model tests",
 
         init: function () {
@@ -50,7 +50,7 @@ YUI.add('ez-locationmodel-tests', function (Y) {
             delete this.model;
         }
 
-    });
+    }));
 
     Y.Test.Runner.setName("eZ Location Model tests");
     Y.Test.Runner.add(modelTest);
