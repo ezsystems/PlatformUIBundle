@@ -1,23 +1,20 @@
 YUI.add('ez-errorview-tests', function (Y) {
-    var container = Y.one('.container'),
-        viewTest,
-        testErrorText = "Not Found",
-        testRetryAction = {
-            run: function () {},
-            args: [],
-            context: null
-        },
-        IS_HIDDEN_CLASS = 'is-hidden';
+    var viewTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Error View test",
 
         setUp: function () {
+            this.retryAction = {
+                run: function () {},
+                args: [],
+                context: null
+            };
             this.view = new Y.eZ.ErrorView({
-                container: container,
-                retryAction: testRetryAction,
+                container: '.container',
+                retryAction: this.retryAction,
                 additionalInfo: {
-                    errorText: testErrorText
+                    errorText: "Not Found"
                 }
             });
         },
@@ -37,7 +34,7 @@ YUI.add('ez-errorview-tests', function (Y) {
             };
             this.view.render();
             Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
-            Y.Assert.areNotEqual("", container.getHTML(), "View container should contain the result of the this.view");
+            Y.Assert.areNotEqual("", this.view.get('container').getHTML(), "View container should contain the result of the this.view");
         },
 
         "Test available variable in template": function () {
@@ -74,9 +71,9 @@ YUI.add('ez-errorview-tests', function (Y) {
             this.view.render();
 
             this.view.on('retryAction', function (retryAction) {
-                Y.Assert.areSame(retryAction.run, testRetryAction.run);
-                Y.Assert.areSame(retryAction.args, testRetryAction.args);
-                Y.Assert.areSame(retryAction.context, testRetryAction.context);
+                Y.Assert.areSame(retryAction.run, that.retryAction.run);
+                Y.Assert.areSame(retryAction.args, that.retryAction.args);
+                Y.Assert.areSame(retryAction.context, that.retryAction.context);
                 retryFired = true;
             });
 
@@ -96,7 +93,7 @@ YUI.add('ez-errorview-tests', function (Y) {
             });
 
             this.view.render();
-            container.one('.ez-error-dialog').simulate("keyup", { charCode: 27 }); // Sending "escape" key code
+            this.view.get('container').one('.ez-error-dialog').simulate("keyup", { charCode: 27 }); // Sending "escape" key code
             Y.assert(closeFired, "The close event should have been fired");
         },
 
@@ -108,7 +105,7 @@ YUI.add('ez-errorview-tests', function (Y) {
             });
 
             this.view.render();
-            container.one('.ez-error-dialog').simulate("keyup", { charCode: 28 }); // Sending some other key code
+            this.view.get('container').one('.ez-error-dialog').simulate("keyup", { charCode: 28 }); // Sending some other key code
             Y.assert(!closeFired, "The close event should NOT have been fired");
         },
 
@@ -116,7 +113,7 @@ YUI.add('ez-errorview-tests', function (Y) {
             var focused = false;
             this.view.render();
 
-            container.one('.ez-error-dialog').on('focus', function () {
+            this.view.get('container').one('.ez-error-dialog').on('focus', function () {
                 focused = true;
             });
 
@@ -129,14 +126,14 @@ YUI.add('ez-errorview-tests', function (Y) {
             this.view.render();
 
             Y.assert(
-                !this.view.get('container').hasClass(IS_HIDDEN_CLASS),
+                !this.view.get('container').hasClass('is-hidden'),
                 "The view should not be hidden after rendering"
             );
 
             this.view.hide();
 
             Y.assert(
-                this.view.get('container').hasClass(IS_HIDDEN_CLASS),
+                this.view.get('container').hasClass('is-hidden'),
                 "The view should have been hidden"
             );
         }
