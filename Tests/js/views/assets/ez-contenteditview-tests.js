@@ -1,40 +1,32 @@
 YUI.add('ez-contenteditview-tests', function (Y) {
-    var container = Y.one('.container'),
-        formContents = "<form></form>",
-        content, contentType, owner, mainLocation, version, formView,
-        actionBar,
-        actionBarContents = "<menu></menu>",
-        mockConf = {
-            method: 'toJSON',
-            returns: {}
-        },
-        viewTest, titleTest, eventTest;
-
-    content = new Y.Mock();
-    contentType = new Y.Mock();
-    owner = new Y.Mock();
-    mainLocation = new Y.Mock();
-    version = new Y.Mock();
-
-    Y.Mock.expect(content, mockConf);
-    Y.Mock.expect(contentType, mockConf);
-    Y.Mock.expect(owner, mockConf);
-    Y.Mock.expect(mainLocation, mockConf);
-    Y.Mock.expect(version, mockConf);
+    var viewTest, titleTest, eventTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Content Edit View test",
 
         setUp: function () {
-            formView = new Y.Mock();
-            actionBar = new Y.Mock();
+            var that = this,
+                mockConf = {
+                    method: 'toJSON',
+                    returns: {}
+                };
 
-            Y.Mock.expect(formView, {
+            Y.Array.each(['content', 'contentType', 'owner', 'mainLocation', 'version'], function (mock) {
+                this[mock] = new Y.Mock();
+                Y.Mock.expect(this[mock], mockConf);
+            }, this);
+
+            this.formView = new Y.Mock();
+            this.formViewContents = '<form></form>';
+            this.actionBar = new Y.Mock();
+            this.actionBarContents = '<menu></menu>';
+
+            Y.Mock.expect(this.formView, {
                 method: 'get',
                 args: ['container'],
-                returns: formContents
+                returns: this.formViewContents
             });
-            Y.Mock.expect(formView, {
+            Y.Mock.expect(this.formView, {
                 method: 'set',
                 callCount: 3,
                 args: [Y.Mock.Value.String, Y.Mock.Value.Object],
@@ -42,75 +34,75 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                     // fails if attribute and value are not consistent
                     // or if we set something else than content or contentType
                     if (
-                        ( attribute === 'content' && value !== content ) ||
-                        ( attribute === 'contentType' && value !== contentType ) ||
-                        ( attribute === 'version' && value !== version ) ||
+                        ( attribute === 'content' && value !== that.content ) ||
+                        ( attribute === 'contentType' && value !== that.contentType ) ||
+                        ( attribute === 'version' && value !== that.version ) ||
                         ( attribute !== 'content' && attribute !== 'contentType' && attribute !== 'version' )
                     ) {
-                        Y.Assert.fail('Expecting to set either the content, the contentType or the version on the formView');
+                        Y.Assert.fail('Expecting to set either the content, the contentType or the version on the this.formView');
                     }
                 }
             });
-            Y.Mock.expect(formView, {
+            Y.Mock.expect(this.formView, {
                 method: 'addTarget',
                 args: [Y.Mock.Value.Object],
                 returns: true
             });
-            Y.Mock.expect(formView, {
+            Y.Mock.expect(this.formView, {
                 method: 'render',
-                returns: formView
+                returns: this.formView
             });
-            Y.Mock.expect(formView, {
+            Y.Mock.expect(this.formView, {
                 method: 'destroy'
             });
 
-            Y.Mock.expect(actionBar, {
+            Y.Mock.expect(this.actionBar, {
                 method: 'get',
                 args: ['container'],
-                returns: actionBarContents
+                returns: this.actionBarContents
             });
-            Y.Mock.expect(actionBar, {
+            Y.Mock.expect(this.actionBar, {
                 method: 'set',
                 callCount: 2,
                 args: [Y.Mock.Value.String, Y.Mock.Value.Object],
                 run: function (attr, value) {
                     if ( attr === 'content' ) {
-                        Y.Assert.areSame(value, content, "Expecting the content");
+                        Y.Assert.areSame(value, that.content, "Expecting the content");
                     } else if ( attr === 'version' ) {
-                        Y.Assert.areSame(value, version, "Expected the version");
+                        Y.Assert.areSame(value, that.version, "Expected the version");
                     } else {
                         Y.Assert.fail("Expecting to set either the version or content");
                     }
                 }
             });
-            Y.Mock.expect(actionBar, {
+            Y.Mock.expect(this.actionBar, {
                 method: 'addTarget',
                 args: [Y.Mock.Value.Object],
                 returns: true
             });
-            Y.Mock.expect(actionBar, {
+            Y.Mock.expect(this.actionBar, {
                 method: 'render',
-                returns: actionBar
+                returns: this.actionBar
             });
-            Y.Mock.expect(actionBar, {
+            Y.Mock.expect(this.actionBar, {
                 method: 'destroy'
             });
 
             this.view = new Y.eZ.ContentEditView({
-                container: container,
-                content: content,
-                contentType: contentType,
-                mainLocation: mainLocation,
-                version: version,
-                owner: owner,
-                formView: formView,
-                actionBar: actionBar
+                container: '.container',
+                content: this.content,
+                contentType: this.contentType,
+                mainLocation: this.mainLocation,
+                version: this.version,
+                owner: this.owner,
+                formView: this.formView,
+                actionBar: this.actionBar
             });
-            Y.Mock.expect(actionBar, {
+            Y.Mock.expect(this.actionBar, {
                 method: 'removeTarget',
                 args: [this.view]
             });
-            Y.Mock.expect(formView, {
+            Y.Mock.expect(this.formView, {
                 method: 'removeTarget',
                 args: [this.view]
             });
@@ -123,7 +115,8 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
         "Test render": function () {
             var templateCalled = false,
-                origTpl;
+                origTpl,
+                container = this.view.get('container');
 
             origTpl = this.view.template;
             this.view.template = function () {
@@ -140,8 +133,8 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             );
 
             this.view.destroy();
-            Y.Mock.verify(formView);
-            Y.Mock.verify(actionBar);
+            Y.Mock.verify(this.formView);
+            Y.Mock.verify(this.actionBar);
         },
 
         "Test available variable in template": function () {
@@ -161,53 +154,55 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             };
             this.view.render();
             this.view.destroy();
-            Y.Mock.verify(formView);
-            Y.Mock.verify(actionBar);
+            Y.Mock.verify(this.formView);
+            Y.Mock.verify(this.actionBar);
         },
 
         "Should render formView and actionBar in designated containers": function () {
+            var container = this.view.get('container');
+
             this.view.render();
 
             Y.Assert.areEqual(
-                formContents,
+                this.formViewContents,
                 container.one('.ez-contenteditformview-container').getHTML(),
-                "mock formContents is rendered in container"
+                "mock formContents is not rendered in its container"
             );
             Y.Assert.areEqual(
-                actionBarContents,
+                this.actionBarContents,
                 container.one('.ez-editactionbar-container').getHTML(),
-                "mock actionBarContents is rendered in container"
+                "mock actionBarContents is not rendered in its container"
             );
 
             this.view.destroy();
-            Y.Mock.verify(formView);
-            Y.Mock.verify(actionBar);
+            Y.Mock.verify(this.formView);
+            Y.Mock.verify(this.actionBar);
         },
 
         "Should destroy formView and ActionBar when destroying itself": function () {
-            Y.Mock.expect(formView, {
+            Y.Mock.expect(this.formView, {
                 method: 'destroy'
             });
-            Y.Mock.expect(actionBar, {
+            Y.Mock.expect(this.actionBar, {
                 method: 'destroy'
             });
 
             this.view.render();
             this.view.destroy();
-            Y.Mock.verify(formView);
-            Y.Mock.verify(actionBar);
+            Y.Mock.verify(this.formView);
+            Y.Mock.verify(this.actionBar);
         },
 
-        "Should recieve events fired on it's child formView": function () {
+        "Should receive events fired on it's child formView": function () {
             // We need another (not as in "setUp") view initialization sequence to test that
             var testEventReceived = false,
                 view = new Y.eZ.ContentEditView({
-                    container: container,
-                    content: content,
-                    contentType: contentType,
-                    mainLocation: mainLocation,
-                    owner: owner,
-                    actionBar: actionBar
+                    container: '.container',
+                    content: this.content,
+                    contentType: this.contentType,
+                    mainLocation: this.mainLocation,
+                    owner: this.owner,
+                    actionBar: this.actionBar
                 });
 
             view.on('contentEditFormView:testEvent', function () {
@@ -219,15 +214,15 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             Y.assert(testEventReceived, "Should have recieved the 'testEvent' from child contentEditFormView");
         },
 
-        "Should recieve events fired on it's child actionBar": function () {
+        "Should receive events fired on it's child actionBar": function () {
             // We need another (not as in "setUp") view initialization sequence to test that
             var view = new Y.eZ.ContentEditView({
-                    container: container,
-                    content: content,
-                    contentType: contentType,
-                    mainLocation: mainLocation,
-                    owner: owner,
-                    formView: formView
+                    container: '.container',
+                    content: this.content,
+                    contentType: this.contentType,
+                    mainLocation: this.mainLocation,
+                    owner: this.owner,
+                    formView: this.formView
                 }),
                 testEventReceived = false;
 
@@ -258,7 +253,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
 
         "Should fire a closeView event when 'escape' hotkey is pressed": function () {
-            var closeFired = false;
+            var closeFired = false, container = this.view.get('container');
 
             this.view.on('closeView', function (e) {
                 closeFired = true;
@@ -270,7 +265,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
 
         "Should NOT fire a closeView event when any hotkey other than 'escape' is pressed": function () {
-            var closeFired = false;
+            var closeFired = false, container = this.view.get('container');
 
             this.view.on('closeView', function (e) {
                 closeFired = true;
@@ -282,6 +277,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
 
         "Should focus on the content element when the view becomes active": function () {
+            var container = this.view.get('container');
             this.view.render().set('active', true);
             Y.Assert.areSame(
                 Y.config.doc.activeElement,
