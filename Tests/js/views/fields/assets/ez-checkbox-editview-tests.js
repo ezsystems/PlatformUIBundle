@@ -1,25 +1,5 @@
 YUI.add('ez-checkbox-editview-tests', function (Y) {
-    var viewTest, registerTest, getFieldTest,
-        container = Y.one('.container'),
-        content, contentType, version,
-        jsonContent = {}, jsonContentType = {}, jsonVersion = {},
-        field = {};
-
-    content = new Y.Mock();
-    contentType = new Y.Mock();
-    version = new Y.Mock();
-    Y.Mock.expect(content, {
-        method: 'toJSON',
-        returns: jsonContent
-    });
-    Y.Mock.expect(contentType, {
-        method: 'toJSON',
-        returns: jsonContentType
-    });
-    Y.Mock.expect(version, {
-        method: 'toJSON',
-        returns: jsonVersion
-    });
+    var viewTest, registerTest, getFieldTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Checkbox View test",
@@ -32,12 +12,32 @@ YUI.add('ez-checkbox-editview-tests', function (Y) {
         },
 
         setUp: function () {
+            this.field = {};
+            this.jsonContent = {};
+            this.jsonContentType = {};
+            this.jsonVersion = {};
+            this.content = new Y.Mock();
+            this.contentType = new Y.Mock();
+            this.version = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: this.jsonContent
+            });
+            Y.Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: this.jsonContentType
+            });
+            Y.Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: this.jsonVersion
+            });
+
             this.view = new Y.eZ.CheckboxEditView({
-                container: container,
-                field: field,
-                content: content,
-                version: version,
-                contentType: contentType
+                container: '.container',
+                field: this.field,
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType
             });
         },
 
@@ -46,7 +46,8 @@ YUI.add('ez-checkbox-editview-tests', function (Y) {
         },
 
         _testAvailableVariables: function (required, defaultValue, expectRequired, expectDefaultValue) {
-            var fieldDefinition = this._getFieldDefinition(required, defaultValue);
+            var fieldDefinition = this._getFieldDefinition(required, defaultValue),
+                that = this;
 
             this.view.set('fieldDefinition', fieldDefinition);
 
@@ -55,15 +56,15 @@ YUI.add('ez-checkbox-editview-tests', function (Y) {
                 Y.Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 7 variables");
 
                 Y.Assert.areSame(
-                     jsonContent, variables.content,
+                     that.jsonContent, variables.content,
                     "The content should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                     jsonVersion, variables.version,
+                     that.jsonVersion, variables.version,
                     "The version should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                    jsonContentType, variables.contentType,
+                    that.jsonContentType, variables.contentType,
                     "The contentType should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
@@ -71,7 +72,7 @@ YUI.add('ez-checkbox-editview-tests', function (Y) {
                     "The fieldDefinition should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                    field, variables.field,
+                    that.field, variables.field,
                     "The field should be available in the field edit view template"
                 );
 
