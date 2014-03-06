@@ -1,32 +1,5 @@
 YUI.add('ez-fieldeditview-tests', function (Y) {
-    var container = Y.one('.container'),
-        content, contentType, version,
-        jsonContent = {}, jsonContentType = {}, jsonVersion = {},
-        fieldDefinition = {
-            descriptions: {
-                "eng-GB": "Test description"
-            }
-        },
-        field = {
-            descriptions: {}
-        },
-        viewTest, tooltipTest, customViewTest, registryTest;
-
-    content = new Y.Mock();
-    contentType = new Y.Mock();
-    version = new Y.Mock();
-    Y.Mock.expect(content, {
-        method: 'toJSON',
-        returns: jsonContent
-    });
-    Y.Mock.expect(contentType, {
-        method: 'toJSON',
-        returns: jsonContentType
-    });
-    Y.Mock.expect(version, {
-        method: 'toJSON',
-        returns: jsonVersion
-    });
+    var viewTest, tooltipTest, customViewTest, registryTest;
 
     Y.Handlebars.registerPartial('ezFieldinfoTooltip', Y.one('#ezFieldinfoTooltip').getHTML());
 
@@ -34,13 +7,35 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         name: "eZ Field Edit View test",
 
         setUp: function () {
+            this.jsonContent = {};
+            this.jsonContentType = {};
+            this.jsonVersion = {};
+            this.content = new Y.Mock();
+            this.contentType = new Y.Mock();
+            this.version = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: this.jsonContent
+            });
+            Y.Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: this.jsonContentType
+            });
+            Y.Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: this.jsonVersion
+            });
+
+            this.fieldDefinition = {descriptions: {"eng-GB": "Test description"}};
+            this.field = {descriptions: {}};
+
             this.view = new Y.eZ.FieldEditView({
-                container: container,
-                fieldDefinition: fieldDefinition,
-                field: field,
-                content: content,
-                version: version,
-                contentType: contentType
+                container: '.container',
+                fieldDefinition: this.fieldDefinition,
+                field: this.field,
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType
             });
         },
 
@@ -59,34 +54,35 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             };
             this.view.render();
             Y.Assert.isTrue(templateCalled, "The template has not been used");
-            Y.Mock.verify(content);
-            Y.Mock.verify(contentType);
-            Y.Mock.verify(version);
+            Y.Mock.verify(this.content);
+            Y.Mock.verify(this.contentType);
+            Y.Mock.verify(this.version);
         },
 
         "Test available variable in template": function () {
+            var that = this;
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
                 Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variables");
 
                 Y.Assert.areSame(
-                     jsonContent, variables.content,
+                     that.jsonContent, variables.content,
                     "The content should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                     jsonVersion, variables.version,
+                     that.jsonVersion, variables.version,
                     "The version should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                    jsonContentType, variables.contentType,
+                    that.jsonContentType, variables.contentType,
                     "The contentType should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                    fieldDefinition, variables.fieldDefinition,
+                    that.fieldDefinition, variables.fieldDefinition,
                     "The fieldDefinition should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                    field, variables.field,
+                    that.field, variables.field,
                     "The field should be available in the field edit view template"
                 );
                 return '';
@@ -95,7 +91,8 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         },
 
         "Test error handling": function () {
-            var defaultContent = 'default content';
+            var defaultContent = 'default content',
+                container = this.view.get('container');
 
             this.view.render();
             this.view.set('errorStatus', true);
@@ -125,6 +122,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
 
         "Test error message handling": function () {
             var msg = 'Error message',
+                container = this.view.get('container'),
                 defaultContent = 'default content';
 
             this.view.render();
@@ -172,13 +170,35 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         name: "eZ Field Edit View tooltip test",
 
         setUp: function () {
+            this.jsonContent = {};
+            this.jsonContentType = {};
+            this.jsonVersion = {};
+            this.content = new Y.Mock();
+            this.contentType = new Y.Mock();
+            this.version = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: this.jsonContent
+            });
+            Y.Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: this.jsonContentType
+            });
+            Y.Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: this.jsonVersion
+            });
+
+            this.fieldDefinition = {descriptions: {"eng-GB": "Test description"}};
+            this.field = {descriptions: {}};
+
             this.view = new Y.eZ.FieldEditView({
-                container: container,
-                fieldDefinition: fieldDefinition,
-                field: field,
-                content: content,
-                version: version,
-                contentType: contentType
+                container: '.container',
+                fieldDefinition: this.fieldDefinition,
+                field: this.field,
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType
             });
         },
 
@@ -346,13 +366,36 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                     };
                 }
             });
+
+            this.jsonContent = {};
+            this.jsonContentType = {};
+            this.jsonVersion = {};
+            this.content = new Y.Mock();
+            this.contentType = new Y.Mock();
+            this.version = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: this.jsonContent
+            });
+            Y.Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: this.jsonContentType
+            });
+            Y.Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: this.jsonVersion
+            });
+
+            this.fieldDefinition = {descriptions: {"eng-GB": "Test description"}};
+            this.field = {descriptions: {}};
+
             this.view = new CustomView({
-                container: container,
-                fieldDefinition: fieldDefinition,
-                field: field,
-                content: content,
-                version: version,
-                contentType: contentType
+                container: '.container',
+                fieldDefinition: this.fieldDefinition,
+                field: this.field,
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType
             });
         },
 
@@ -361,28 +404,30 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         },
 
         "Test available variable in template": function () {
+            var that = this;
+
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
                 Y.Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 7 variables");
 
                 Y.Assert.areSame(
-                     jsonContent, variables.content,
+                     that.jsonContent, variables.content,
                     "The content should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                     jsonVersion, variables.version,
+                     that.jsonVersion, variables.version,
                     "The version should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                    jsonContentType, variables.contentType,
+                    that.jsonContentType, variables.contentType,
                     "The contentType should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                    fieldDefinition, variables.fieldDefinition,
+                    that.fieldDefinition, variables.fieldDefinition,
                     "The fieldDefinition should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                    field, variables.field,
+                    that.field, variables.field,
                     "The field should be available in the field edit view template"
                 );
 
@@ -403,7 +448,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             var updatedField = this.view.getField();
 
             Y.Assert.areNotSame(
-                field, updatedField,
+                this.field, updatedField,
                 "getField should 'clone' the field"
             );
             Y.Assert.isUndefined(
