@@ -1,25 +1,5 @@
 YUI.add('ez-textline-editview-tests', function (Y) {
-    var viewTest, registerTest, getFieldTest,
-        container = Y.one('.container'),
-        content, contentType, version,
-        jsonContent = {}, jsonContentType = {}, jsonVersion = {},
-        field = {};
-
-    content = new Y.Mock();
-    version = new Y.Mock();
-    contentType = new Y.Mock();
-    Y.Mock.expect(content, {
-        method: 'toJSON',
-        returns: jsonContent
-    });
-    Y.Mock.expect(version, {
-        method: 'toJSON',
-        returns: jsonVersion
-    });
-    Y.Mock.expect(contentType, {
-        method: 'toJSON',
-        returns: jsonContentType
-    });
+    var viewTest, registerTest, getFieldTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Text Line View test",
@@ -37,12 +17,32 @@ YUI.add('ez-textline-editview-tests', function (Y) {
         },
 
         setUp: function () {
+            this.field = {};
+            this.jsonContent = {};
+            this.jsonContentType = {};
+            this.jsonVersion = {};
+            this.content = new Y.Mock();
+            this.version = new Y.Mock();
+            this.contentType = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: this.jsonContent
+            });
+            Y.Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: this.jsonVersion
+            });
+            Y.Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: this.jsonContentType
+            });
+
             this.view = new Y.eZ.TextLineEditView({
-                container: container,
-                field: field,
-                content: content,
-                version: version,
-                contentType: contentType
+                container: '.container',
+                field: this.field,
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType
             });
         },
 
@@ -51,7 +51,8 @@ YUI.add('ez-textline-editview-tests', function (Y) {
         },
 
         _testAvailableVariables: function (required, minLength, maxLength, expectRequired, expectMinLength, expectMinLengthPattern, expectMaxLength) {
-            var fieldDefinition = this._getFieldDefinition(required, minLength, maxLength);
+            var fieldDefinition = this._getFieldDefinition(required, minLength, maxLength),
+                that = this;
 
             this.view.set('fieldDefinition', fieldDefinition);
 
@@ -60,15 +61,15 @@ YUI.add('ez-textline-editview-tests', function (Y) {
                 Y.Assert.areEqual(9, Y.Object.keys(variables).length, "The template should receive 9 variables");
 
                 Y.Assert.areSame(
-                     jsonContent, variables.content,
+                     that.jsonContent, variables.content,
                     "The content should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                     jsonVersion, variables.version,
+                     that.jsonVersion, variables.version,
                     "The version should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                    jsonContentType, variables.contentType,
+                    that.jsonContentType, variables.contentType,
                     "The contentType should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
@@ -76,7 +77,7 @@ YUI.add('ez-textline-editview-tests', function (Y) {
                     "The fieldDefinition should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                    field, variables.field,
+                    that.field, variables.field,
                     "The field should be available in the field edit view template"
                 );
 
