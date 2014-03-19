@@ -1,83 +1,80 @@
 YUI.add('ez-contenteditformview-tests', function (Y) {
-    var viewTest, isValidTest, getFieldsTest,
-        container = Y.one('.container'),
-        contentType, content, version,
-        Test1FieldEditView, Test2FieldEditView;
-
-    contentType = new Y.Mock();
-    content = new Y.Mock();
-    version = new Y.Mock();
-    Y.Mock.expect(contentType, {
-        method: 'getFieldGroups',
-        returns: [{
-            fieldGroupName: "testfieldgroup",
-            fieldDefinitions: []
-        }]
-    });
-
-    Y.Mock.expect(contentType, {
-        method: 'get',
-        args: ['fieldDefinitions'],
-        returns: {
-            'id1': {
-                'identifier': 'id1',
-                'fieldType': 'test1',
-                'fieldGroup': 'testfieldgroup',
-            },
-            'id2': {
-                'identifier': 'id2',
-                'fieldType': 'test2',
-                'fieldGroup': 'testfieldgroup',
-            },
-            'id3': {
-                'identifier': 'id3',
-                'fieldType': 'unsupported',
-                'fieldGroup': 'testfieldgroup',
-            }
-        }
-    });
-
-    Y.Mock.expect(version, {
-        method: 'getField',
-        args: [Y.Mock.Value.String],
-        run: function (id) {
-            return {
-                'identifier': id
-            };
-        }
-    });
-
-    Test1FieldEditView = Y.Base.create('test1FieldEditView', Y.View, [], {
-        render: function () {
-            this.get('container').setContent('test1 rendered');
-            return this;
-        }
-    });
-
-    Test2FieldEditView = Y.Base.create('test2FieldEditView', Y.View, [], {
-        render: function () {
-            this.get('container').setContent('test2 rendered');
-            return this;
-        }
-    });
-
-    Y.eZ.FieldEditView.registerFieldEditView('test1', Test1FieldEditView);
-    Y.eZ.FieldEditView.registerFieldEditView('test2', Test2FieldEditView);
+    var viewTest, isValidTest, getFieldsTest, activeFlagTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Content Edit Form View test",
 
         setUp: function () {
+
+            Y.eZ.FieldEditView.registerFieldEditView('test1', Y.Base.create('test1FieldEditView', Y.View, [], {
+                render: function () {
+                    this.get('container').setContent('test1 rendered');
+                    return this;
+                }
+            }));
+
+            Y.eZ.FieldEditView.registerFieldEditView('test2', Y.Base.create('test2FieldEditView', Y.View, [], {
+                render: function () {
+                    this.get('container').setContent('test2 rendered');
+                    return this;
+                }
+            }));
+
+            this.contentType = new Y.Mock();
+            this.content = new Y.Mock();
+            this.version = new Y.Mock();
+            Y.Mock.expect(this.contentType, {
+                method: 'getFieldGroups',
+                returns: [{
+                    fieldGroupName: "testfieldgroup",
+                    fieldDefinitions: []
+                }]
+            });
+
+            Y.Mock.expect(this.contentType, {
+                method: 'get',
+                args: ['fieldDefinitions'],
+                returns: {
+                    'id1': {
+                        'identifier': 'id1',
+                        'fieldType': 'test1',
+                        'fieldGroup': 'testfieldgroup',
+                    },
+                    'id2': {
+                        'identifier': 'id2',
+                        'fieldType': 'test2',
+                        'fieldGroup': 'testfieldgroup',
+                    },
+                    'id3': {
+                        'identifier': 'id3',
+                        'fieldType': 'unsupported',
+                        'fieldGroup': 'testfieldgroup',
+                    }
+                }
+            });
+
+            Y.Mock.expect(this.version, {
+                method: 'getField',
+                args: [Y.Mock.Value.String],
+                run: function (id) {
+                    return {
+                        'identifier': id
+                    };
+                }
+            });
+
             this.view = new Y.eZ.ContentEditFormView({
-                container: container,
-                contentType: contentType,
-                content: content,
-                version: version
+                container: '.container',
+                contentType: this.contentType,
+                content: this.content,
+                version: this.version
             });
         },
 
         tearDown: function () {
             this.view.destroy();
+            Y.eZ.FieldEditView.registerFieldEditView('test1', undefined);
+            Y.eZ.FieldEditView.registerFieldEditView('test2', undefined);
         },
 
         "Test render": function () {
@@ -93,11 +90,11 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             Y.Assert.isTrue(templateCalled, "The template should have used to render the view");
 
             Y.Assert.isTrue(
-                container.getContent().indexOf('test1 rendered') !== -1,
+                this.view.get('container').getContent().indexOf('test1 rendered') !== -1,
                 "Test1FieldEditView should have been rendered"
             );
             Y.Assert.isTrue(
-                container.getContent().indexOf('test2 rendered') !== -1,
+                this.view.get('container').getContent().indexOf('test2 rendered') !== -1,
                 "Test2FieldEditView should have been rendered"
             );
         },
@@ -326,9 +323,88 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
         },
     });
 
+    activeFlagTest = new Y.Test.Case({
+        name: "eZ Content Edit Form View active flag tests",
+
+        setUp: function () {
+            var that = this;
+
+            this.contentType = new Y.Mock();
+            this.version = new Y.Mock();
+
+            Y.Mock.expect(this.contentType, {
+                method: 'get',
+                args: ['fieldDefinitions'],
+                returns: {
+                    'id1': {
+                        'identifier': 'id1',
+                        'fieldType': 'test1',
+                        'fieldGroup': 'testfieldgroup',
+                    },
+                    'id2': {
+                        'identifier': 'id2',
+                        'fieldType': 'test2',
+                        'fieldGroup': 'testfieldgroup',
+                    }
+                }
+            });
+
+            Y.Mock.expect(this.version, {
+                method: 'getField',
+                args: [Y.Mock.Value.String],
+                run: function (id) {
+                    return {
+                        'identifier': id
+                    };
+                }
+            });
+
+            Y.eZ.FieldEditView.registerFieldEditView('test1', Y.Base.create('fieldEdit1', Y.eZ.FieldEditView, [], {
+                initializer: function () {
+                    this.after('activeChange', function (e) {
+                        that.test1Active = e.newVal;
+                    });
+                }
+            }));
+            Y.eZ.FieldEditView.registerFieldEditView('test2', Y.Base.create('fieldEdit2', Y.eZ.FieldEditView, [], {
+                initializer: function () {
+                    this.after('activeChange', function (e) {
+                        that.test2Active = e.newVal;
+                    });
+                }
+            }));
+
+            this.view = new Y.eZ.ContentEditFormView({
+                contentType: this.contentType,
+                version: this.version
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+            Y.eZ.FieldEditView.registerFieldEditView('test1', undefined);
+            Y.eZ.FieldEditView.registerFieldEditView('test2', undefined);
+        },
+
+        "Should forward the active flag to the field edit views": function () {
+            this.view.set('active', true);
+
+            Y.Assert.isTrue(
+                this.test1Active,
+                "The field should be flagged as active"
+            );
+            Y.Assert.isTrue(
+                this.test2Active,
+                "The field should be flagged as active"
+            );
+        }
+    });
+
     Y.Test.Runner.setName("eZ Content Edit Form View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(isValidTest);
     Y.Test.Runner.add(getFieldsTest);
+    Y.Test.Runner.add(activeFlagTest);
 
 }, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-contenteditformview']});

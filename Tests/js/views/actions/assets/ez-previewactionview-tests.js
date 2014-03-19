@@ -1,22 +1,19 @@
 YUI.add('ez-previewactionview-tests', function (Y) {
-    var container = Y.one('.container'),
-        editPreview,
-        previewContents = "<div></div>",
-        contentMock = new Y.Mock(),
-        viewTest;
+    var viewTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Preview Action View test",
 
         setUp: function () {
-            editPreview = new Y.Mock();
+            this.editPreview = new Y.Mock();
+            this.contentMock = new Y.Mock();
 
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'get',
                 args: ['container'],
-                returns: previewContents
+                returns: '<div></div>'
             });
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'addTarget',
                 args: [Y.Mock.Value.Object],
                 returns: true
@@ -24,8 +21,8 @@ YUI.add('ez-previewactionview-tests', function (Y) {
 
             this.version = {};
             this.view = new Y.eZ.PreviewActionView({
-                container: container,
-                content: contentMock,
+                container: '.container',
+                content: this.contentMock,
                 version: this.version,
                 actionId: "preview",
                 hint: "Test hint",
@@ -39,15 +36,15 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                 }, {
                     option: "tv"
                 }],
-                editPreview: editPreview
+                editPreview: this.editPreview
             });
         },
 
         tearDown: function () {
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'destroy'
             });
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'removeTarget',
                 args: [this.view]
             });
@@ -57,11 +54,11 @@ YUI.add('ez-previewactionview-tests', function (Y) {
         "Should set the button action view class name on the view container": function () {
             var container = this.view.get('container');
 
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'set',
                 args: [Y.Mock.Value.Any, Y.Mock.Value.Any]
             });
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'show',
                 args: [Y.Mock.Value.Any]
             });
@@ -75,7 +72,7 @@ YUI.add('ez-previewactionview-tests', function (Y) {
 
         "Should set Content attribute for the PreviewView, once setting it for itself": function () {
             var previewContent;
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'set',
                 callCount: 2,
                 args: [Y.Mock.Value.String, Y.Mock.Value.Object],
@@ -83,14 +80,14 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                     previewContent = value;
                 }
             });
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'get',
                 callCount: 0
             });
 
-            this.view.set('content', contentMock);
-            Y.Assert.areSame( previewContent, contentMock, "editPreview should set correct content attribute" );
-            Y.Mock.verify(editPreview);
+            this.view.set('content', this.contentMock);
+            Y.Assert.areSame(previewContent, this.contentMock, "editPreview should set correct content attribute");
+            Y.Mock.verify(this.editPreview);
         },
 
         "Should set the version to the preview view": function () {
@@ -98,24 +95,24 @@ YUI.add('ez-previewactionview-tests', function (Y) {
 
             // make sure the initial config of the version attribute is taken
             // into account (effect of the lazyAdd: true on the attribute)
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'set',
                 args: ['version', this.version]
             });
             this.view.get('version');
 
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'set',
                 args: ['version', version]
             });
 
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'get',
                 callCount: 0
             });
 
             this.view.set('version', version);
-            Y.Mock.verify(editPreview);
+            Y.Mock.verify(this.editPreview);
         },
 
         _showPreviewMode: function (mode) {
@@ -125,14 +122,14 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                 that = this,
                 container = this.view.get('container');
 
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'set',
                 args: ['currentModeId', Y.Mock.Value.String],
                 run: function (option, value) {
                     currentMode = value;
                 }
             });
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'show',
                 args: [container.getX()],
                 run: function () {
@@ -170,7 +167,7 @@ YUI.add('ez-previewactionview-tests', function (Y) {
             });
             this.wait();
 
-            Y.Mock.verify(editPreview);
+            Y.Mock.verify(this.editPreview);
         },
 
         "Should show the 'desktop'preview": function () {
@@ -204,8 +201,8 @@ YUI.add('ez-previewactionview-tests', function (Y) {
             };
             this.view.render();
             Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
-            Y.Assert.areNotEqual("", container.getHTML(), "View container should contain the result of the this.view");
-            Y.Mock.verify(editPreview);
+            Y.Assert.areNotEqual("", this.view.get('container').getHTML(), "View container should contain the result of the this.view");
+            Y.Mock.verify(this.editPreview);
         },
 
         "Test available variable in template": function () {
@@ -221,21 +218,21 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                 return  '<div class="ez-editpreviewview-container"></div>';
             };
             this.view.render();
-            Y.Mock.verify(editPreview);
+            Y.Mock.verify(this.editPreview);
         },
 
         "Should destroy editPreview when destroying itself": function () {
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'removeTarget',
                 args: [this.view]
             });
-            Y.Mock.expect(editPreview, {
+            Y.Mock.expect(this.editPreview, {
                 method: 'destroy'
             });
 
             this.view.render();
             this.view.destroy();
-            Y.Mock.verify(editPreview);
+            Y.Mock.verify(this.editPreview);
         },
 
         "Should change the UI when catching event editPreviewHide is hidden": function () {

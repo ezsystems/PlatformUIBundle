@@ -1,17 +1,14 @@
 YUI.add('ez-barview-tests', function (Y) {
-    var viewContainer = Y.one('.container'),
-        content = {},
-        VIEW_MORE_MENU_CLASS = ".view-more-actions",
-        ACTIVE_MENU_CLASS = '.active-actions',
-        viewTest, sameTemplateTest, eventsTest, destroyTest;
+    var viewTest, sameTemplateTest, eventsTest, destroyTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Bar View test",
 
         setUp: function () {
+            this.content = {};
             this.view = new Y.eZ.BarView({
-                container: viewContainer,
-                content: content,
+                container: '.container',
+                content: this.content,
                 actionsList: [
                     new Y.eZ.ButtonActionView({
                         actionId: "publish",
@@ -49,7 +46,7 @@ YUI.add('ez-barview-tests', function (Y) {
             this.view.render();
             Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
             Y.Assert.areNotEqual(
-                "", viewContainer.getHTML(),
+                "", this.view.get('container').getHTML(),
                 "View container should contain the result of the this.view"
             );
         },
@@ -76,14 +73,14 @@ YUI.add('ez-barview-tests', function (Y) {
         },
 
         "Should set Content attribute for each of the actionViews, once setting it for itself": function () {
-            this.view.set('content', content);
+            this.view.set('content', this.content);
 
             Y.Array.each(this.view.get('actionsList'), function (actionView) {
                 Y.Assert.areSame(
-                    actionView.get('content'), content,
+                    actionView.get('content'), this.content,
                     "Each of the action views should set correct content attribute"
                 );
-            });
+            }, this);
         },
 
         "Should add actions to actions list": function () {
@@ -152,7 +149,7 @@ YUI.add('ez-barview-tests', function (Y) {
 
             this.view.render();
 
-            activeMenu = container.one(ACTIVE_MENU_CLASS);
+            activeMenu = container.one('.active-actions');
 
             Y.Assert.areEqual(
                 3, activeMenu.get('children').size(),
@@ -181,8 +178,8 @@ YUI.add('ez-barview-tests', function (Y) {
                 viewMoreMenu;
 
             this.view.render();
-            activeMenu = container.one(ACTIVE_MENU_CLASS);
-            viewMoreMenu = container.one(VIEW_MORE_MENU_CLASS);
+            activeMenu = container.one('.active-actions');
+            viewMoreMenu = container.one('.view-more-actions');
 
             Y.Assert.areEqual(
                 3, activeMenu.get('children').size(),
@@ -220,8 +217,8 @@ YUI.add('ez-barview-tests', function (Y) {
                 viewMoreMenu;
 
             this.view.render();
-            activeMenu = container.one(ACTIVE_MENU_CLASS);
-            viewMoreMenu = container.one(VIEW_MORE_MENU_CLASS);
+            activeMenu = container.one('.active-actions');
+            viewMoreMenu = container.one('.view-more-actions');
 
             Y.Assert.areEqual(
                 3, activeMenu.get('children').size(),

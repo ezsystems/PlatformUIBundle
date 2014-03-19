@@ -61,18 +61,23 @@ YUI.add('ez-maplocation-editview', function (Y) {
          * @method initializer
          */
         initializer: function () {
-            var that = this,
-                mapLoader = this.get('mapAPILoader');
-
-            mapLoader.on('mapAPIReady', Y.bind(this._initMap, this));
-
-            mapLoader.on('mapAPIFailed', function () {
-                var container = that.get('container');
-                container.one(ERRORS_SEL).setHTML('Failed to retrieve Google Maps API');
-                container.all(COORDINATES_SEL).removeClass(IS_LOADING_CLASS);
-            });
+            var mapLoader = this.get('mapAPILoader');
 
             mapLoader.load();
+
+            this.after('activeChange', function (e) {
+                var that = this;
+
+                if ( e.newVal ) {
+                    mapLoader.on('mapAPIReady', Y.bind(this._initMap, this));
+
+                    mapLoader.on('mapAPIFailed', function () {
+                        var container = that.get('container');
+                        container.one(ERRORS_SEL).setHTML('Failed to retrieve Google Maps API');
+                        container.all(COORDINATES_SEL).removeClass(IS_LOADING_CLASS);
+                    });
+                }
+            });
         },
 
         /**

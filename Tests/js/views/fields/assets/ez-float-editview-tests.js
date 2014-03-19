@@ -1,26 +1,6 @@
 YUI.add('ez-float-editview-tests', function (Y) {
     var viewTest, registerTest, getFieldTest,
-        container = Y.one('.container'),
-        content, contentType, version,
-        jsonContent = {}, jsonContentType = {}, jsonVersion = {},
-        field = {},
         FLOAT_TEST_PATTERN = "\\-?\\d*\\.?\\d+";
-
-    content = new Y.Mock();
-    version = new Y.Mock();
-    contentType = new Y.Mock();
-    Y.Mock.expect(content, {
-        method: 'toJSON',
-        returns: jsonContent
-    });
-    Y.Mock.expect(version, {
-        method: 'toJSON',
-        returns: jsonVersion
-    });
-    Y.Mock.expect(contentType, {
-        method: 'toJSON',
-        returns: jsonContentType
-    });
 
     viewTest = new Y.Test.Case({
         name: "eZ Float View test",
@@ -38,12 +18,33 @@ YUI.add('ez-float-editview-tests', function (Y) {
         },
 
         setUp: function () {
+            this.field = {};
+            this.jsonContent = {};
+            this.jsonContentType = {};
+            this.jsonVersion = {};
+            this.content = new Y.Mock();
+            this.version = new Y.Mock();
+            this.contentType = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: this.jsonContent
+            });
+            Y.Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: this.jsonVersion
+            });
+            Y.Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: this.jsonContentType
+            });
+
+
             this.view = new Y.eZ.FloatEditView({
-                container: container,
-                field: field,
-                version: version,
-                content: content,
-                contentType: contentType
+                container: '.container',
+                field: this.field,
+                version: this.version,
+                content: this.content,
+                contentType: this.contentType
             });
 
             this.provider = [
@@ -78,7 +79,8 @@ YUI.add('ez-float-editview-tests', function (Y) {
         },
 
         _testAvailableVariables: function (required, expectRequired, expectFloatPattern) {
-            var fieldDefinition = this._getFieldDefinition(required, -10, 10);
+            var fieldDefinition = this._getFieldDefinition(required, -10, 10),
+                that = this;
 
             this.view.set('fieldDefinition', fieldDefinition);
 
@@ -87,15 +89,15 @@ YUI.add('ez-float-editview-tests', function (Y) {
                 Y.Assert.areEqual(9, Y.Object.keys(variables).length, "The template should receive 9 variables");
 
                 Y.Assert.areSame(
-                     jsonContent, variables.content,
+                     that.jsonContent, variables.content,
                     "The content should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                     jsonVersion, variables.version,
+                     that.jsonVersion, variables.version,
                     "The version should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                    jsonContentType, variables.contentType,
+                    that.jsonContentType, variables.contentType,
                     "The contentType should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
@@ -103,7 +105,7 @@ YUI.add('ez-float-editview-tests', function (Y) {
                     "The fieldDefinition should be available in the field edit view template"
                 );
                 Y.Assert.areSame(
-                    field, variables.field,
+                    that.field, variables.field,
                     "The field should be available in the field edit view template"
                 );
 
