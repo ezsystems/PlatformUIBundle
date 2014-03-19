@@ -1,13 +1,12 @@
 YUI.add('ez-buttonactionview-tests', function (Y) {
-    var container = Y.one('.container'),
-        viewTest;
+    var viewTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Button Action View test",
 
         setUp: function () {
             this.view = new Y.eZ.ButtonActionView({
-                container: container,
+                container: '.container',
                 actionId: "test",
                 hint: "Test hint",
                 label: "Test label"
@@ -29,7 +28,7 @@ YUI.add('ez-buttonactionview-tests', function (Y) {
             };
             this.view.render();
             Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
-            Y.Assert.areNotEqual("", container.getHTML(), "View container should contain the result of the this.view");
+            Y.Assert.areNotEqual("", this.view.get('container').getHTML(), "View container should contain the result of the this.view");
         },
 
         "Test available variable in template": function () {

@@ -1,27 +1,26 @@
 YUI.add('ez-editpreviewview-tests', function (Y) {
-    var viewContainer = Y.one('.container'),
-        IS_HIDDEN_CLASS = 'is-editpreview-hidden',
+    var IS_HIDDEN_CLASS = 'is-editpreview-hidden',
         IS_LOADING_CLASS = 'is-loading',
-        mockContent = new Y.eZ.Content({
-            contentId: 59,
-            name: "Test name"
-        }),
-        mockVersion = new Y.eZ.Version({
-            versionNo: 42,
-            names: {value: [{'_languageCode': 'eng-GB', '#text': 'Test name'}]}
-        }),
         viewTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Edit Preview View test",
 
         setUp: function () {
-            this.view = new Y.eZ.EditPreviewView({
-                container: viewContainer,
-                content: mockContent,
-                version: mockVersion
+            this.mockContent = new Y.eZ.Content({
+                contentId: 59,
+                name: "Test name"
+            });
+            this.mockVersion = new Y.eZ.Version({
+                versionNo: 42,
+                names: {value: [{'_languageCode': 'eng-GB', '#text': 'Test name'}]}
             });
 
+            this.view = new Y.eZ.EditPreviewView({
+                container: '.container',
+                content: this.mockContent,
+                version: this.mockVersion
+            });
         },
 
         tearDown: function () {
@@ -39,7 +38,7 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
             };
             this.view.render();
             Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
-            Y.Assert.areNotEqual("", viewContainer.getHTML(), "View container should contain the result of the this.view");
+            Y.Assert.areNotEqual("", this.view.get('container').getHTML(), "View container should contain the result of the this.view");
         },
 
         "Test available variable in template": function () {
