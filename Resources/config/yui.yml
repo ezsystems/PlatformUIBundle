@@ -166,5 +166,5 @@ parameters:
             ez-accordion-element:
                 requires: ['transition']
                 path: js/extensions/ez-accordion-element.js
-        base: extension/ezjscore/design/standard/lib/yui/3.14.0/build/
+        base: extension/ezjscore/design/standard/lib/yui/3.15.0/build/
         filter: min
