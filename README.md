@@ -28,6 +28,7 @@ This bundle provides the (future) Editorial Interface for eZ Publish.
     ```
 * In `ezpublish/config/routing.yml` include the eZEditorialBundle routing
   configuration:
+
     ```yml
     _ezpublishEditorialRoutes:
     resource: "@eZEditorialBundle/Resources/config/routing.yml"
@@ -35,17 +36,20 @@ This bundle provides the (future) Editorial Interface for eZ Publish.
 * Install [nodejs](http://nodejs.org/)
 * Install [phantomjs](http://phantomjs.org)
 * Install local npm dependencies, from the bundle root, run:
-  ```
-  $ npm install
-  ```
+
+    ```
+    $ npm install
+    ```
 * Install global dependencies (usually you need to be root):
-  ```
-  # npm install -g grunt-cli yuidocjs bower grover
-  ```
+
+    ```
+    # npm install -g grunt-cli yuidocjs bower grover
+    ```
 * Install frontend dependencies:
-  ```
-  $ bower install
-  ```
+
+    ```
+    $ bower install
+    ```
 
 Once this is done, you can go to http://<uri_of_ez>/shell to run the editorial
 application.
