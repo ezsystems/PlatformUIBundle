@@ -1,0 +1,22 @@
+.ez-selection-filter .ez-selection-filter-list {
+    margin: 0.3em 0 0 0;
+    padding: 0;
+    list-style-position: inside;
+    max-height: 9em;
+    overflow-y: auto;
+}
+
+.ez-selection-filter .ez-selection-filter-off {
+    display: none;
+}
+
+.ez-selection-filter .ez-selection-filter-item {
+    line-height: 1.8em;
+    padding-left: 0.5em;
+}
+
+.ez-selection-filter .ez-selection-filter-on {
+    margin: 0.3em auto;
+    width: 95%;
+    display: block;
+}

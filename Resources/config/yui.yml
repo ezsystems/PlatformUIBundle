@@ -124,6 +124,9 @@ parameters:
             ez-maplocation-editview:
                 requires: ['ez-fieldeditview', 'ez-googlemapapiloader']
                 path: js/views/fields/ez-maplocation-editview.js
+            ez-selectionfilterview:
+                requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view']
+                path: js/views/ez-selectionfilterview.js
             ez-restmodel:
                 requires: ['model', 'json']
                 path: js/models/ez-restmodel.js

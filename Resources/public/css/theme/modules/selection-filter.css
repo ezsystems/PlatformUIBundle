@@ -1,0 +1,16 @@
+.ez-selection-filter .ez-selection-filter-list {
+    list-style-type: square;
+}
+
+.ez-selection-filter .ez-selection-filter-item:hover {
+    cursor: pointer;
+}
+
+.ez-selection-filter .ez-selection-filter-item-active {
+    background: #e0e0e0;
+}
+
+.ez-selection-filter .ez-selection-filter-item-selected {
+    background: #528036;
+    color: #fff;
+}
