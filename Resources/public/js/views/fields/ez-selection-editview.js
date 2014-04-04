@@ -1,0 +1,369 @@
+YUI.add('ez-selection-editview', function (Y) {
+    "use strict";
+    /**
+     * Provides the field edit view for the Selection (ezselection) fields
+     *
+     * @module ez-selection-editview
+     */
+
+    Y.namespace('eZ');
+
+    var FIELDTYPE_IDENTIFIER = 'ezselection',
+        IS_LIST_HIDDEN = 'is-list-hidden';
+
+    /**
+     * Selection edit view. It uses the SelectionFilterView to provide a rich UI
+     * to help selecting one or several items over a long list.
+     *
+     * @namespace eZ
+     * @class SelectionEditView
+     * @constructor
+     * @extends eZ.FieldEditView
+     */
+    Y.eZ.SelectionEditView = Y.Base.create('selectionEditView', Y.eZ.FieldEditView, [], {
+        VALUES_TPL: '<li class="ez-selection-value" />',
+
+        events: {
+            '.ez-selection-values': {
+                'tap': '_toggleShowSelectionUI',
+            },
+            '.ez-selection-value': {
+                'tap': '_removeValue'
+            },
+        },
+
+        /**
+         * Initializes the selection edit view.
+         *
+         * @method initializer
+         */
+        initializer: function () {
+            /**
+             * The selection filter view instance. It is created when the view
+             * is set as active.
+             *
+             * @property _selectionFilter
+             * @protected
+             * @type eZ.SelectionFilterView
+             */
+            this._selectionFilter = null;
+
+            this.after('activeChange', function (e) {
+                if ( e.newVal ) {
+                    this._initSelectionFilter();
+                }
+            });
+
+            this._set('values', this._getSelectedTextValues());
+
+            this.after('fieldChange', function (e) {
+                this._set('values', this._getSelectedTextValues());
+            });
+            this.after('valuesChange', this._uiSyncSelectionValues);
+            this.after('showSelectionUIChange', this._uiShowSelectionList);
+        },
+
+        /**
+         * Renders the selection edit view.
+         *
+         * @method render
+         */
+        render: function () {
+            this.get('container').addClass(IS_LIST_HIDDEN);
+            return this.constructor.superclass.render.apply(this);
+        },
+
+        /**
+         * Initializes and the selection filter view for the current
+         * field/fieldDefinition. Once created, it is render right away.
+         *
+         * @method _initSelectionFilter
+         * @protected
+         */
+        _initSelectionFilter: function () {
+            var container = this.get('container'),
+                selected = this._getSelectedTextValues(),
+                input = container.one('.ez-selection-filter-input'),
+                source = this.get('fieldDefinition').fieldSettings.options;
+
+            this._selectionFilter = new Y.eZ.SelectionFilterView({
+                container: input.get('parentNode'),
+                inputNode: input,
+                listNode: this.get('container').one('.ez-selection-options'),
+                selected: selected,
+                source: source,
+                filter: (source.length > 5),
+                resultFilters: 'startsWith',
+                resultHighlighter: 'startsWith',
+                isMultiple: this.get('isMultiple'),
+            });
+
+            this._selectionFilter.on('select', Y.bind(function (e) {
+                this._addSelection(e.text);
+                if ( !this.get('isMultiple') ) {
+                    this.set('showSelectionUI', false);
+                }
+            }, this));
+
+            this._selectionFilter.on('unselect', Y.bind(function (e) {
+                this._removeSelection(e.text);
+            }, this));
+
+            this._selectionFilter.render();
+
+            this._attachedViewEvents.push(
+                container.one('.ez-selection-input-ui').on(
+                    'clickoutside', Y.bind(function (e) {
+                        this.set('showSelectionUI', false);
+                    }, this)
+                )
+            );
+        },
+
+        /**
+         * Returns an array of the values stored by the field being edited.
+         *
+         * @method _getSelectedTextValues
+         * @protected
+         * @return {Array}
+         */
+        _getSelectedTextValues: function () {
+            var field = this.get('field'),
+                fieldDefinition = this.get('fieldDefinition'),
+                valueIndexes = [],
+                options = [],
+                res = [];
+
+            if ( field && field.fieldValue ) {
+                valueIndexes = field.fieldValue;
+            }
+            if ( fieldDefinition && fieldDefinition.fieldSettings.options ) {
+                options = fieldDefinition.fieldSettings.options;
+            }
+
+            Y.Array.each(valueIndexes, function (index) {
+                res.push(options[index]);
+            });
+            return res;
+        },
+
+        /**
+         * Adds the value to list of the currently selected values
+         *
+         * @method _addSelection
+         * @protected
+         * @param {String} value
+         */
+        _addSelection: function (value) {
+            var values = this.get('values');
+
+            values.push(value);
+            this._set('values', values, {"added": value});
+        },
+
+        /**
+         * Removes the value from the list of the currently selected values
+         *
+         * @method _removeSelection
+         * @protected
+         * @param {String} value
+         * @param {Node} [node] the node storing the value in the list
+         */
+        _removeSelection: function (value, node) {
+            var values = this.get('values');
+
+            values = Y.Array.reject(values, function (val) {
+                return (val === value);
+            });
+            this._selectionFilter.unselect(value);
+            this._set('values', values, {
+                "removed": value,
+                "node": node || null
+            });
+        },
+
+        /**
+         * Event handler for the tap event on a selected value. It removes the
+         * tapped value from the selected list
+         *
+         * @param {Object} e event facade
+         * @method _removeValue
+         * @protected
+         */
+        _removeValue: function (e) {
+            var text = e.target.getContent();
+
+            this._removeSelection(text, e.target);
+            this.validate();
+        },
+
+        destructor: function () {
+            if ( this._selectionFilter ) {
+                this._selectionFilter.destroy();
+                delete this._selectionFilter;
+            }
+        },
+
+        /**
+         * Event handler for the tap event on selection UI to display/hide the
+         * selection filter
+         *
+         * @param {Object} e event facade
+         * @method _toggleShowSelectionUI
+         * @protected
+         */
+        _toggleShowSelectionUI: function (e) {
+            if ( !e.target || !e.target.hasClass('ez-selection-value') ) {
+                this.set('showSelectionUI', !this.get('showSelectionUI'));
+            }
+        },
+
+        /**
+         * Event handler for the showSelectionUIChange event. It displays/hides
+         * the selection fitler depending on the new value of the
+         * showSelectionUI attribute.
+         *
+         * @method _uiShowSelectionList
+         * @protected
+         * @param {Object} event facade
+         */
+        _uiShowSelectionList: function (e) {
+            var container = this.get('container');
+
+            if ( e.newVal ) {
+                container.removeClass(IS_LIST_HIDDEN);
+                this._selectionFilter.resetFilter();
+                this._selectionFilter.focus();
+            } else {
+                container.addClass(IS_LIST_HIDDEN);
+            }
+            this.validate();
+        },
+
+        /**
+         * Event handler for the valuesChange event. It makes sure the displayed
+         * selected values are in sync where the actual selection.
+         *
+         * @method _uiSyncSelectionValues
+         * @protected
+         * @param {Object} e event facade
+         */
+        _uiSyncSelectionValues: function (e) {
+            var selectionValues = this.get('container').one('.ez-selection-values'),
+                node;
+
+            if ( e.added ) {
+                node = Y.Node.create(this.VALUES_TPL).setContent(e.added);
+                node.setAttribute('data-text', e.added);
+                selectionValues.append(node);
+            } else if ( e.removed ) {
+                if ( e.node ) {
+                    node = e.node;
+                } else {
+                    node = selectionValues.one('.ez-selection-value[data-text="' + e.removed + '"]');
+                }
+                node.remove(true);
+            }
+        },
+
+        /**
+         * Validates the current state of the selection. A selection is invalid
+         * if it's required and empty.
+         *
+         * @method validate
+         */
+        validate: function () {
+            if (
+                this.get('fieldDefinition').isRequired
+                && this.get('values').length === 0
+            ) {
+                this.set('errorStatus', 'This field is required');
+            } else {
+                this.set('errorStatus', false);
+            }
+        },
+
+        /**
+         * Defines the variables to imported in the field edit template.
+         *
+         * @protected
+         * @method _variables
+         * @return {Object} containing isRequired, isMultiple and selected
+         * entries
+         */
+        _variables: function () {
+            var def = this.get('fieldDefinition');
+
+            return {
+                "isRequired": def.isRequired,
+                "selected": this.get('values'),
+                "isMultiple": this.get('isMultiple'),
+            };
+        },
+
+        /**
+         * Returns the field value. The selection field value is an array
+         * containing the indexes of the selected values in the field definition
+         * options field settings.
+         *
+         * @protected
+         * @method _getFieldValue
+         * @return Array
+         */
+        _getFieldValue: function () {
+            var values = this.get('values'),
+                options =  this.get('fieldDefinition').fieldSettings.options,
+                res = [];
+
+            Y.Array.each(values, function (val) {
+                res.push(options.indexOf(val));
+            }, this);
+
+            return res;
+        }
+    }, {
+        ATTRS: {
+            /**
+             * The text values of the selected options
+             *
+             * @attribute values
+             * @readonly
+             * @default []
+             * @type Array
+             */
+            values: {
+                readOnly: true,
+                value: []
+            },
+
+            /**
+             * Whether the selection filter should be shown
+             *
+             * @attribute showSelectionUI
+             * @type boolean
+             * @default false
+             */
+            showSelectionUI: {
+                value: false,
+            },
+
+            /**
+             * Whether the field accepts several values
+             *
+             * @attribute isMultiple
+             * @readonly
+             * @type boolean
+             */
+            isMultiple: {
+                readOnly: true,
+                getter: function () {
+                    return this.get('fieldDefinition').fieldSettings.isMultiple;
+                },
+            }
+        }
+    });
+
+    Y.eZ.FieldEditView.registerFieldEditView(
+        FIELDTYPE_IDENTIFIER, Y.eZ.SelectionEditView
+    );
+});
