@@ -9,7 +9,8 @@ YUI.add('ez-selection-editview', function (Y) {
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'ezselection',
-        IS_LIST_HIDDEN = 'is-list-hidden';
+        IS_LIST_HIDDEN = 'is-list-hidden',
+        IS_TOP_LIST = 'is-top-list';
 
     /**
      * Selection edit view. It uses the SelectionFilterView to provide a rich UI
@@ -219,6 +220,22 @@ YUI.add('ez-selection-editview', function (Y) {
         },
 
         /**
+         * Returns true if the selection filter list should appear on top of the
+         * selection
+         *
+         * @method _isTopList
+         * @private
+         * @return Boolean
+         */
+        _isTopList: function () {
+            var c = this._selectionFilter.get('container'),
+                bottomSpace;
+
+            bottomSpace = c.get('winHeight') + c.get('docScrollY') - Math.round(c.getY());
+            return c.get('offsetHeight') > bottomSpace;
+        },
+
+        /**
          * Event handler for the showSelectionUIChange event. It displays/hides
          * the selection fitler depending on the new value of the
          * showSelectionUI attribute.
@@ -231,6 +248,11 @@ YUI.add('ez-selection-editview', function (Y) {
             var container = this.get('container');
 
             if ( e.newVal ) {
+                if ( this._isTopList() ) {
+                    container.addClass(IS_TOP_LIST);
+                } else {
+                    container.removeClass(IS_TOP_LIST);
+                }
                 container.removeClass(IS_LIST_HIDDEN);
                 this._selectionFilter.resetFilter();
                 this._selectionFilter.focus();

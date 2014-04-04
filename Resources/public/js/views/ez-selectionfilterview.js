@@ -279,14 +279,8 @@ YUI.add('ez-selectionfilterview', function (Y) {
          * @method resetFilter
          */
         resetFilter: function () {
-            var selected = this.get('selected');
-
             this.get('inputNode').set('value', '');
             this._uiSetDefaultList();
-
-            if ( selected.length ) {
-                this._getListNode(selected[0]).scrollIntoView();
-            }
         },
 
         /**

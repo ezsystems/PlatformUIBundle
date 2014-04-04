@@ -9,6 +9,11 @@
             box-sizing: border-box;
 }
 
+.ez-view-selectioneditview.is-top-list .ez-selection-values {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ccc;
+}
+
 .ez-view-selectioneditview.is-error .ez-selection-values {
     border: 1px solid #BF3E33;
     background: #FEECEA;
@@ -46,6 +51,8 @@
     background: #fff;
     border: 1px solid #ccc;
     border-top: 0;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 
     -webkit-box-sizing: border-box;
        -moz-box-sizing: border-box;
@@ -62,16 +69,40 @@
         -ms-transform: scaleY(1);
          -o-transform: scaleY(1);
             transform: scaleY(1);
-    -webkit-transform-origin: 50% 0;
-       -moz-transform-origin: 50% 0;
-        -ms-transform-origin: 50% 0;
-         -o-transform-origin: 50% 0;
-            transform-origin: 50% 0;
+
+    -webkit-transform-origin: center top;
+       -moz-transform-origin: center top;
+        -ms-transform-origin: center top;
+         -o-transform-origin: center top;
+            transform-origin: center top;
+
     -webkit-transition: -webkit-transform 0.2s ease;
        -moz-transition: -moz-transform 0.2s ease;
         -ms-transition: -ms-transform 0.2s ease;
          -o-transition: -o-transform 0.2s ease;
             transition: transform 0.2s ease;
+}
+
+.ez-view-selectioneditview.is-top-list .ez-selection-list {
+    border: 1px solid #ccc;
+    border-bottom: 0;
+    border-radius: 0;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+
+    -webkit-box-shadow: none;
+       -moz-box-shadow: none;
+            box-shadow: none;
+
+    -webkit-box-shadow: 3px 0 3px 0px rgba(120, 120, 120, 0.75);
+       -moz-box-shadow: 3px 0 3px 0px rgba(120, 120, 120, 0.75);
+            box-shadow: 3px 0 3px 0px rgba(120, 120, 120, 0.75);
+
+    -webkit-transform-origin: center bottom;
+       -moz-transform-origin: center bottom;
+        -ms-transform-origin: center bottom;
+         -o-transform-origin: center bottom;
+            transform-origin: center bottom;
 }
 
 .ez-view-selectioneditview.is-list-hidden .ez-selection-list {
@@ -84,7 +115,7 @@
 }
 
 .ez-view-selectioneditview.is-list-hidden .ez-selection-values {
-    border-bottom: 1px solid #ccc;
+    border: 1px solid #ccc;
 }
 
 .ez-view-selectioneditview.is-list-hidden.is-error .ez-selection-values {

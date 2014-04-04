@@ -126,7 +126,7 @@ parameters:
                 requires: ['ez-fieldeditview', 'ez-googlemapapiloader']
                 path: js/views/fields/ez-maplocation-editview.js
             ez-selection-editview:
-                requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside']
+                requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside', 'node-screen']
                 path: js/views/fields/ez-selection-editview.js
             ez-selectionfilterview:
                 requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view']

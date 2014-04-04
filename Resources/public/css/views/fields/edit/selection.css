@@ -40,6 +40,11 @@
     z-index: 1000;
 }
 
+.ez-view-selectioneditview.is-top-list .ez-selection-list {
+    top: auto;
+    bottom: 100%;
+}
+
 .ez-view-selectioneditview.is-list-hidden .ez-selection-list {
     display: none;
 }

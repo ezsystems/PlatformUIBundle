@@ -337,10 +337,41 @@ YUI.add('ez-selection-editview-tests', function (Y) {
                         container.hasClass('is-list-hidden'),
                         "The selection filter should be visible"
                     );
+
+                    Y.Assert.isFalse(
+                        container.hasClass('is-top-list'),
+                        "The selection filter should appear below the selection UI"
+                    );
                 });
             });
             this.wait();
         },
+
+        "tap on the selection ui display the selection filter view above if there's not enough space": function () {
+            var container = this.view.get('container'),
+                that = this;
+
+            this.view.set('fieldDefinition', this._getFieldDefinition(false, false, options));
+            this.view.render();
+            this.view.set('active', true);
+
+            container.setStyle('margin-top', '720px');
+            container.one('.ez-selection-values').simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.Assert.isFalse(
+                        container.hasClass('is-list-hidden'),
+                        "The selection filter should be visible"
+                    );
+
+                    Y.Assert.isTrue(
+                        container.hasClass('is-top-list'),
+                        "The selection filter should appear below the selection UI"
+                    );
+                });
+            });
+            this.wait();
+        },
+
 
         "tap on the selection filter while visible hides it": function () {
             var container = this.view.get('container'),
@@ -576,4 +607,4 @@ YUI.add('ez-selection-editview-tests', function (Y) {
     registerTest.viewType = Y.eZ.SelectionEditView;
     registerTest.viewKey = "ezselection";
     Y.Test.Runner.add(registerTest);
-}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'node-event-simulate', 'ez-selection-editview']});
+}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'node-style', 'node-event-simulate', 'ez-selection-editview']});
