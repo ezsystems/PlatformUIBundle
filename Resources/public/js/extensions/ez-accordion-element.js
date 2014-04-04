@@ -44,6 +44,7 @@ YUI.add('ez-accordion-element', function (Y) {
             detectElement = Y.one(conf.detectElement ? conf.detectElement : conf.collapseElement),
             collapsed = detectElement.hasClass(conf.collapsedClass);
 
+        collapseElement.setStyle('overflow', 'hidden');
         collapseElement.transition({
             height: function () {
                 if ( collapsed ) {
