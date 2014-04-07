@@ -6,12 +6,12 @@
  * @license http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License v2
  * @version //autogentag//
  */
-namespace EzSystems\EditorialBundle\Twig;
+namespace EzSystems\PlatformUIBundle\Twig;
 
 use Twig_Environment;
 use Twig_Extension;
 use Twig_SimpleFunction;
-use EzSystems\EditorialBundle\EzSystemsEditorialBundle;
+use EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle;
 
 /**
  * Class TwigYuiExtension
@@ -73,7 +73,7 @@ class TwigYuiExtension extends Twig_Extension
         foreach ( $this->yui['modules'] as $key => $value )
         {
             // taken from assets:install script
-            $fullpath = "bundles/" . preg_replace( "/bundle$/", "", strtolower( EzSystemsEditorialBundle::NAME ) ) . "/" . $this->yui['modules'][$key]['path'];
+            $fullpath = "bundles/" . preg_replace( "/bundle$/", "", strtolower( EzSystemsPlatformUIBundle::NAME ) ) . "/" . $this->yui['modules'][$key]['path'];
             unset( $this->yui['modules'][$key]['path'] );
             $this->yui['modules'][$key]['fullpath'] = $this->asset( $fullpath );
         }

@@ -1,4 +1,4 @@
 
 shell:
     pattern: /shell
-    defaults: { _controller: eZEditorialBundle:Editorial:shell }
+    defaults: { _controller: eZPlatformUIBundle:PlatformUI:shell }

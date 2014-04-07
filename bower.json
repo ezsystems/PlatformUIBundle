@@ -1,7 +1,7 @@
 {
-  "name": "eZ Publish Editorial Interface",
+  "name": "eZ Platform UI",
   "version": "0.0.1",
-  "homepage": "https://github.com/ezsystems/EditorialBundle",
+  "homepage": "https://github.com/ezsystems/PlatformUIBundle",
   "authors": [
     "eZ Systems"
   ],

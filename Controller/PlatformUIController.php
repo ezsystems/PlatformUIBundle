@@ -1,17 +1,17 @@
 <?php
 /**
- * File containing the EditorialController class.
+ * File containing the PlatformUIController class.
  *
  * @copyright Copyright (C) 1999-2014 eZ Systems AS. All rights reserved.
  * @license http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License v2
  * @version //autogentag//
  */
 
-namespace EzSystems\EditorialBundle\Controller;
+namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Bundle\EzPublishCoreBundle\Controller;
 
-class EditorialController extends Controller
+class PlatformUIController extends Controller
 {
     /**
      * Renders the "shell" page to run the JavaScript application
@@ -21,7 +21,7 @@ class EditorialController extends Controller
     public function shellAction()
     {
         return $this->render(
-            'eZEditorialBundle:Editorial:shell.html.twig'
+            'eZPlatformUIBundle:PlatformUI:shell.html.twig'
         );
     }
 }

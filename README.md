@@ -1,13 +1,11 @@
-# Editorial Bundle
-
-This bundle provides the (future) Editorial Interface for eZ Publish.
+# Platform UI Bundle
 
 ## Install
 
 * Clone this repository into `src/EzSystems` (create this folder if it does not
   exist)
 * In `ezpublish/EzPublishKernel.php` add an instance of
-  `EzSystemsEditorialBundle` class to the list of registered bundles:
+  `EzSystemsPlatformUIBundle` class to the list of registered bundles:
     ```php
     public function registerBundles()
     {
@@ -15,23 +13,23 @@ This bundle provides the (future) Editorial Interface for eZ Publish.
             // enabled bundles
             // ...
 
-            new EzSystems\EditorialBundle\EzSystemsEditorialBundle(),
+            new EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle(),
         );
     }
     ```
-* In `ezpublish/config/config.yml` add the `EditorialBundle` in the
+* In `ezpublish/config/config.yml` add the `eZPlatformUIBundle` in the
   `assetic.bundles` setting:
 
     ```yml
     assetic:
-        bundles: [ eZDemoBundle, eZEditorialBundle ]
+        bundles: [ eZDemoBundle, eZPlatformUIBundle ]
     ```
-* In `ezpublish/config/routing.yml` include the eZEditorialBundle routing
+* In `ezpublish/config/routing.yml` include the eZPlatformUIBundle routing
   configuration:
 
     ```yml
-    _ezpublishEditorialRoutes:
-    resource: "@eZEditorialBundle/Resources/config/routing.yml"
+    _ezpublishPlatformUIRoutes:
+    resource: "@eZPlatformUIBundle/Resources/config/routing.yml"
     ```
 * Install [nodejs](http://nodejs.org/)
 * Install [phantomjs](http://phantomjs.org)
@@ -51,8 +49,8 @@ This bundle provides the (future) Editorial Interface for eZ Publish.
     $ bower install
     ```
 
-Once this is done, you can go to http://<uri_of_ez>/shell to run the editorial
-application.
+Once this is done, you can go to http://<uri_of_ez>/shell to run the eZ Platform
+UI application.
 
 ## Tests
 

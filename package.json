@@ -1,7 +1,7 @@
 {
-  "name": "EditorialBundle",
-  "repository": "https://github.com/ezsystems/EditorialBundle",
-  "description": "This bundle provides the (future) Editorial Interface for eZ Publish.",
+  "name": "PlatformUIBundle",
+  "repository": "https://github.com/ezsystems/PlatformUIBundle",
+  "description": "eZ Platform UI Bundle",
   "version": "0.0.1",
   "devDependencies": {
     "grunt": "~0.4.1",

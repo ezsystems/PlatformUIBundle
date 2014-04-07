@@ -1,63 +1,63 @@
 <!doctype html>
 <html lang="{{ app.request.locale }}" class="ez-editorial-app-page">
 <head>
-    <title>Editorial application</title>
+    <title>eZ Platform UI</title>
     <meta name="viewport" content="width=device-width"/>
     <meta charset="utf-8"/>
 {% stylesheets
-    '@eZEditorialBundle/Resources/public/vendors/pure/base-context-min.css'
-    '@eZEditorialBundle/Resources/public/vendors/pure/grids-min.css'
-    '@eZEditorialBundle/Resources/public/vendors/pure/buttons-min.css'
+    '@eZPlatformUIBundle/Resources/public/vendors/pure/base-context-min.css'
+    '@eZPlatformUIBundle/Resources/public/vendors/pure/grids-min.css'
+    '@eZPlatformUIBundle/Resources/public/vendors/pure/buttons-min.css'
 
-    '@eZEditorialBundle/Resources/public/css/layout.css'
-    '@eZEditorialBundle/Resources/public/css/views/navigationhub.css'
-    '@eZEditorialBundle/Resources/public/css/views/contentedit.css'
-    '@eZEditorialBundle/Resources/public/css/views/locationview.css'
-    '@eZEditorialBundle/Resources/public/css/views/rawcontent.css'
-    '@eZEditorialBundle/Resources/public/css/views/field.css'
-    '@eZEditorialBundle/Resources/public/css/views/fields/view/maplocation.css'
-    '@eZEditorialBundle/Resources/public/css/views/contenteditform.css'
-    '@eZEditorialBundle/Resources/public/css/views/bar.css'
-    '@eZEditorialBundle/Resources/public/css/views/discoverybar.css'
-    '@eZEditorialBundle/Resources/public/css/views/actions/button.css'
-    '@eZEditorialBundle/Resources/public/css/views/actions/preview.css'
-    '@eZEditorialBundle/Resources/public/css/views/editpreview.css'
-    '@eZEditorialBundle/Resources/public/css/views/fieldedit.css'
-    '@eZEditorialBundle/Resources/public/css/views/error.css'
-    '@eZEditorialBundle/Resources/public/css/views/fields/edit/checkbox.css'
-    '@eZEditorialBundle/Resources/public/css/views/fields/edit/textline.css'
-    '@eZEditorialBundle/Resources/public/css/views/fields/edit/textblock.css'
-    '@eZEditorialBundle/Resources/public/css/views/fields/edit/emailaddress.css'
-    '@eZEditorialBundle/Resources/public/css/views/fields/edit/url.css'
-    '@eZEditorialBundle/Resources/public/css/views/fields/edit/float.css'
-    '@eZEditorialBundle/Resources/public/css/views/fields/edit/integer.css'
-    '@eZEditorialBundle/Resources/public/css/views/fields/edit/maplocation.css'
-    '@eZEditorialBundle/Resources/public/css/views/fields/edit/author.css'
-    '@eZEditorialBundle/Resources/public/css/views/fields/edit/selection.css'
-    '@eZEditorialBundle/Resources/public/css/modules/tabs.css'
-    '@eZEditorialBundle/Resources/public/css/modules/selection-filter.css'
+    '@eZPlatformUIBundle/Resources/public/css/layout.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/navigationhub.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/contentedit.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/locationview.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/rawcontent.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/field.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/view/maplocation.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/contenteditform.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/bar.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/discoverybar.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/actions/button.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/actions/preview.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/editpreview.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fieldedit.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/error.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/checkbox.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/textline.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/textblock.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/emailaddress.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/url.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/float.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/integer.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/maplocation.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/author.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/selection.css'
+    '@eZPlatformUIBundle/Resources/public/css/modules/tabs.css'
+    '@eZPlatformUIBundle/Resources/public/css/modules/selection-filter.css'
 
-    '@eZEditorialBundle/Resources/public/css/theme/app.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/error.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/bar.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/discoverybar.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/actions/button.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/actions/preview.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/dashboard.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/navigationhub.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/locationview.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/rawcontent.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/field.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/fields/view/url.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/fields/view/maplocation.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/contentedit.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/contenteditform.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/editpreview.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/fieldedit.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/fields/edit/maplocation.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/fields/edit/author.css'
-    '@eZEditorialBundle/Resources/public/css/theme/views/fields/edit/selection.css'
-    '@eZEditorialBundle/Resources/public/css/theme/modules/selection-filter.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/app.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/error.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/bar.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/discoverybar.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/actions/button.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/actions/preview.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/dashboard.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/navigationhub.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/locationview.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/rawcontent.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/field.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/view/url.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/view/maplocation.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/contentedit.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/contenteditform.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/editpreview.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/fieldedit.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/maplocation.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/author.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/selection.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/modules/selection-filter.css'
 %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
 {% endstylesheets %}
@@ -91,8 +91,8 @@
     </div>
 
     <noscript>
-        <p>{{ 'JavaScript is disabled in your browser but it is required to run the editorial application.'|trans }}</p>
-        <p><strong>{{ 'Please enable JavaScript to use the editorial application.'|trans }}</strong></p>
+        <p>{{ 'JavaScript is disabled in your browser but it is required to run the eZ Platform User Interface.'|trans }}</p>
+        <p><strong>{{ 'Please enable JavaScript to use the eZ Platform User Interface.'|trans }}</strong></p>
     </noscript>
     <script src="{{ asset( "extension/ezjscore/design/standard/lib/yui/3.15.0/build/yui/yui-min.js" ) }}"></script>
     <script>
@@ -138,13 +138,13 @@
 
 {% macro include(tpl, name) %}
 <script type="text/x-handlebars-template" id="{{ name }}-ez-template">
-{{ source( 'eZEditorialBundle:Editorial/handlebars:' ~ tpl ~ '.twig' ) }}
+{{ source( 'eZPlatformUIBundle:PlatformUI/handlebars:' ~ tpl ~ '.twig' ) }}
 </script>
 {% endmacro %}
 
 {% macro partial(tpl, name) %}
 <script type="text/x-handlebars-template" id="{{ name }}" class="ez-editorial-app-partial">
-{{ source( 'eZEditorialBundle:Editorial/handlebars/partials/:' ~ tpl ~ '.twig' ) }}
+{{ source( 'eZPlatformUIBundle:PlatformUI/handlebars/partials/:' ~ tpl ~ '.twig' ) }}
 </script>
 {% endmacro %}
 
