@@ -1,9 +1,9 @@
-YUI.add('ez-editorialapp', function (Y) {
+YUI.add('ez-platformuiapp', function (Y) {
     "use strict";
     /**
-     * Provides the Editorial Application class
+     * Provides the PlatformUI Application class
      *
-     * @module ez-editorialapp
+     * @module ez-platformuiapp
      */
 
     Y.namespace('eZ');
@@ -13,7 +13,7 @@ YUI.add('ez-editorialapp', function (Y) {
         APP_LOADING = 'is-app-loading',
         MINIMIZE_DISCOVERY_BAR_CLASS = 'is-discoverybar-minimized',
         ERROR_VIEW_CONTAINER = '.ez-errorview-container',
-        PARTIALS_SEL = '.ez-editorial-app-partial',
+        PARTIALS_SEL = '.ez-platformui-app-partial',
 
         /**
          * Fired whenever a fatal error occurs and application is not able to continue current action
@@ -36,14 +36,14 @@ YUI.add('ez-editorialapp', function (Y) {
         EVT_FATALERROR = 'fatalError';
 
     /**
-     * Editorial Application
+     * PlatformUI Application
      *
      * @namespace eZ
-     * @class EditorialApp
+     * @class PlatformUIApp
      * @constructor
      * @extends App
      */
-    Y.eZ.EditorialApp = Y.Base.create('editorialApp', Y.App, [], {
+    Y.eZ.PlatformUIApp = Y.Base.create('platformuiApp', Y.App, [], {
         /**
          * The list of available sides views. Each side view is an entry in this
          * hash which contains the following properties:
@@ -465,7 +465,7 @@ YUI.add('ez-editorialapp', function (Y) {
                 };
             }
 
-            Y.eZ.EditorialApp.superclass._afterActiveViewChange.call(this, e);
+            Y.eZ.PlatformUIApp.superclass._afterActiveViewChange.call(this, e);
             this.set('loading', false);
         },
 
@@ -496,13 +496,13 @@ YUI.add('ez-editorialapp', function (Y) {
              *
              *   * `loader`: contains a reference to a constructor function that
              *     extends {{#crossLink "eZ.ViewLoader"}}eZ.ViewLoader{{/crossLink}}.
-             *     The {{#crossLink "eZ.EditorialApp/runLoader:method"}}`runLoader`{{/crossLink}}
+             *     The {{#crossLink "eZ.PlatformUIApp/runLoader:method"}}`runLoader`{{/crossLink}}
              *     middleware is responsible for using this function to build the
              *     view loader which can be used to inject custom variables in the
              *     top level view triggered by the route.
              *   * `name`: name of the route which is useful to generate an URI
              *     with {{#crossLink
-             *     "eZ.EditorialApp/routeUri:method"}}Y.eZ.EditorialApp.routeUri{{/crossLink}}
+             *     "eZ.PlatformUIApp/routeUri:method"}}Y.eZ.PlatformUIApp.routeUri{{/crossLink}}
              *   * `view`: the identifier of the view in the `views` hash to
              *     display. This is handled by the `handleMainView` middleware.
              *   * `sideViews`: a hash which keys are the side view keys in the

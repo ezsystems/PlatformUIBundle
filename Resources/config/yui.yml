@@ -3,7 +3,7 @@ parameters:
         modules:
             ez-capi:
                 path: vendors/ez-js-rest-client/dist/CAPI.js
-            ez-editorialapp:
+            ez-platformuiapp:
                 requires:
                     - 'app'
                     - 'app-transitions'
@@ -18,7 +18,7 @@ parameters:
                     - 'ez-navigationhubview'
                     - 'ez-discoverybarview'
                     - 'ez-errorview'
-                path: js/apps/ez-editorialapp.js
+                path: js/apps/ez-platformuiapp.js
             ez-viewservice:
                 requires: ['base']
                 path: js/views/services/ez-viewservice.js

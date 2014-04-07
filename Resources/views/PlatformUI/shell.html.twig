@@ -110,8 +110,8 @@
             }
         };
 
-        YUI().use('ez-editorialapp', function (Y) {
-            var app = new Y.eZ.EditorialApp({
+        YUI().use('ez-platformuiapp', function (Y) {
+            var app = new Y.eZ.PlatformUIApp({
                     container: '.ez-editorial-app',
                     viewContainer: '.ez-view-container',
                     root: "{{ app.request.attributes.get( 'semanticPathinfo' ) }}",
@@ -143,7 +143,7 @@
 {% endmacro %}
 
 {% macro partial(tpl, name) %}
-<script type="text/x-handlebars-template" id="{{ name }}" class="ez-editorial-app-partial">
+<script type="text/x-handlebars-template" id="{{ name }}" class="ez-platformui-app-partial">
 {{ source( 'eZPlatformUIBundle:PlatformUI/handlebars/partials/:' ~ tpl ~ '.twig' ) }}
 </script>
 {% endmacro %}
