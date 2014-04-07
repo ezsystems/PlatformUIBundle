@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app.request.locale }}" class="ez-editorial-app-page">
+<html lang="{{ app.request.locale }}" class="ez-platformui-app-page">
 <head>
     <title>eZ Platform UI</title>
     <meta name="viewport" content="width=device-width"/>
@@ -74,14 +74,14 @@
             display: block;
             color: #888;
         }
-        .ez-editorial-app-ready .ez-loading-message {
+        .ez-platformui-app-ready .ez-loading-message {
             display: none;
         }
     </style>
 </head>
-<body class="ez-editorial-app-body">
+<body class="ez-platformui-app-body">
     <div class="ez-loading-message"><em>{{ 'Loading the application...'|trans }}</em></div>
-    <div class="ez-editorial-app pure is-menu-hidden is-navigation-hidden">
+    <div class="ez-platformui-app pure is-menu-hidden is-navigation-hidden">
         <div class="ez-navigation-container"></div>
         <div class="ez-mainviews pure-g">
             <div class="ez-menu-container pure-u"></div>
@@ -112,7 +112,7 @@
 
         YUI().use('ez-platformuiapp', function (Y) {
             var app = new Y.eZ.PlatformUIApp({
-                    container: '.ez-editorial-app',
+                    container: '.ez-platformui-app',
                     viewContainer: '.ez-view-container',
                     root: "{{ app.request.attributes.get( 'semanticPathinfo' ) }}",
                     assetRoot: "{{ asset( '/' ) }}",
@@ -125,7 +125,7 @@
                     )
                 });
             app.on('ready', function () {
-                Y.one(Y.config.doc.documentElement).addClass('ez-editorial-app-ready');
+                Y.one(Y.config.doc.documentElement).addClass('ez-platformui-app-ready');
             });
             app.render().dispatch();
 
