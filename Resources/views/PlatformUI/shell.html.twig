@@ -96,7 +96,7 @@
     </noscript>
     <script src="{{ asset( "extension/ezjscore/design/standard/lib/yui/3.15.0/build/yui/yui-min.js" ) }}"></script>
     <script>
-        {{ ez_editorial_yui_config( "YUI.GlobalConfig" ) }}
+        {{ ez_platformui_yui_config( "YUI.GlobalConfig" ) }}
 
         YUI.GlobalConfig.onSuccess = function (e) {
             for (var i = 0, len = e.data.length; i < len; ++i) {

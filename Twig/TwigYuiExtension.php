@@ -40,7 +40,7 @@ class TwigYuiExtension extends Twig_Extension
     {
         return array(
             new Twig_SimpleFunction(
-                "ez_editorial_yui_config",
+                "ez_platformui_yui_config",
                 array( $this, "yuiConfigLoaderFunction" ),
                 array( "is_safe" => array( "html" ) )
             )
