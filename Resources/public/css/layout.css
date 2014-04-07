@@ -1,5 +1,5 @@
 [data-icon]:before {
-    font-family: 'ez-editorial-icomoon';
+    font-family: 'ez-platformui-icomoon';
     content: attr(data-icon);
     speak: none;
     font-weight: normal;
@@ -10,7 +10,7 @@
 }
 
 [data-icon-after]:after {
-    font-family: 'ez-editorial-icomoon';
+    font-family: 'ez-platformui-icomoon';
     content: attr(data-icon-after);
     speak: none;
     font-weight: normal;
@@ -21,7 +21,7 @@
 }
 
 .font-icon:before, .font-icon:after {
-    font-family: 'ez-editorial-icomoon';
+    font-family: 'ez-platformui-icomoon';
     speak: none;
     font-weight: normal;
     font-variant: normal;
