@@ -77,6 +77,7 @@ parameters:
                     - 'ez-author-editview'
                     - 'ez-float-editview'
                     - 'ez-integer-editview'
+                    - 'ez-selection-editview'
                     - 'event-tap'
                 path: js/views/ez-contenteditformview.js
             ez-errorview:
@@ -124,6 +125,12 @@ parameters:
             ez-maplocation-editview:
                 requires: ['ez-fieldeditview', 'ez-googlemapapiloader']
                 path: js/views/fields/ez-maplocation-editview.js
+            ez-selection-editview:
+                requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside', 'node-screen']
+                path: js/views/fields/ez-selection-editview.js
+            ez-selectionfilterview:
+                requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view']
+                path: js/views/ez-selectionfilterview.js
             ez-restmodel:
                 requires: ['model', 'json']
                 path: js/models/ez-restmodel.js

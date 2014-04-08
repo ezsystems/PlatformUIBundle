@@ -128,6 +128,11 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                             "On first tap field group fields should collapse"
                         );
 
+                        Y.Assert.areEqual(
+                            "hidden", fieldGroupFields.getStyle('overflow'),
+                            "The overflow should be hidden"
+                        );
+
                         fieldGroupName.simulateGesture('tap', function () {
                             that.resume(function () {
                                 that.wait(function () {

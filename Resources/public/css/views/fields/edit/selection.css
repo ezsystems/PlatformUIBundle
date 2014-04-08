@@ -1,0 +1,50 @@
+.ez-view-selectioneditview .ez-selection-input-ui {
+    vertical-align: top;
+    position: relative;
+    display: inline-block;
+    min-width: 50%;
+}
+
+.ez-view-selectioneditview .ez-selection-values {
+    min-height: 1.8em;
+    line-height: 1.7em;
+
+    margin: 0;
+    padding: 0 2em 0 0;
+}
+
+.ez-view-selectioneditview .ez-selection-values:hover {
+    cursor: pointer;
+}
+
+.ez-view-selectioneditview .ez-selection-values:after {
+    position:absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    padding: 0 0.3em;
+    text-align: center;
+}
+
+.ez-view-selectioneditview .ez-selection-value {
+    display: inline-block;
+    padding: 0 0.2em;
+    margin: 0 0.2em;
+}
+
+.ez-view-selectioneditview .ez-selection-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.ez-view-selectioneditview.is-top-list .ez-selection-list {
+    top: auto;
+    bottom: 100%;
+}
+
+.ez-view-selectioneditview.is-list-hidden .ez-selection-list {
+    display: none;
+}

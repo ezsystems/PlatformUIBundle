@@ -9,12 +9,12 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
-        <div class="ez-editfield-input"><div class="ez-textblock-input-ui">
-            <textarea
-            class="ez-validated-input"
-            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
-            rows="{{ fieldDefinition.fieldSettings.textRows }}"
-            {{#if isRequired}} required{{/if}}>{{ field.fieldValue }}</textarea>
+        <div class="ez-editfield-input"><div class="ez-selection-input-ui" id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+            <ul class="ez-selection-values">{{#each selected}}<li class="ez-selection-value" data-text="{{ . }}">{{ . }}</li>{{/each}}</ul>
+            <div class="ez-selection-list">
+                <input type="text" class="ez-selection-filter-input" placeholder="Filter the option list">
+                <ul class="ez-selection-options"></ul>
+            </div>
         </div></div>
     </div>
 </div>
