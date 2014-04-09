@@ -1,6 +1,6 @@
 {
-    "name": "ezsystems/editorial-bundle",
-    "description": "eZ Editorial Bundle",
+    "name": "ezsystems/platform-ui-bundle",
+    "description": "eZ Platform UI Bundle",
     "require": {
         "ezsystems/ezpublish-kernel": "dev-master"
     },
@@ -27,7 +27,7 @@
     },
     "license": "GPL-2.0",
     "autoload": {
-        "psr-0": {"EzSystems\\EditorialBundle": ""}
+        "psr-0": {"EzSystems\\PlatformUIBundle": ""}
     },
-    "target-dir": "EzSystems/EditorialBundle"
+    "target-dir": "EzSystems/PlatformUIBundle"
 }

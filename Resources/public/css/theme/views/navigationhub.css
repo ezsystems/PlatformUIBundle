@@ -59,7 +59,7 @@
     border-radius: 3px;
     float: left;
     text-align: center;
-    font-family: 'ez-editorial-icomoon';
+    font-family: 'ez-platformui-icomoon';
     font-size: 150%;
     -webkit-font-smoothing: antialiased;
 }
@@ -116,7 +116,7 @@
 }
 
 .ez-view-navigationhubview .ez-sub-menu-link > .ez-navigation-item:after {
-    font-family: 'ez-editorial-icomoon';
+    font-family: 'ez-platformui-icomoon';
     content: "\E602";
     color: #888;
     font-size: 90%;

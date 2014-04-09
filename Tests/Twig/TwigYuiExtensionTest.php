@@ -7,15 +7,15 @@
  * @version //autogentag//
  */
 
-namespace EzSystems\EditorialBundle\Tests\Twig;
+namespace EzSystems\PlatformUIBundle\Tests\Twig;
 
 use Twig_Test_IntegrationTestCase;
-use EzSystems\EditorialBundle\Twig\TwigYuiExtension;
+use EzSystems\PlatformUIBundle\Twig\TwigYuiExtension;
 use Twig_Environment;
 
 class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
 {
-    const PREFIX = "ezeditorial";
+    const PREFIX = "ezplatformui";
 
     protected function getExtensions()
     {
@@ -95,7 +95,7 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                     ),
                     'filter' => 'min'
                 ),
-                '{"modules":{"ez-test":{"fullpath":"' . self::PREFIX . 'bundles/ezeditorial/js/test.js"},"ez-test2":{"fullpath":"' . self::PREFIX . 'bundles/ezeditorial/js/test2.js"}},"filter":"min"};'
+                '{"modules":{"ez-test":{"fullpath":"' . self::PREFIX . 'bundles/ezplatformui/js/test.js"},"ez-test2":{"fullpath":"' . self::PREFIX . 'bundles/ezplatformui/js/test2.js"}},"filter":"min"};'
             )
         );
     }

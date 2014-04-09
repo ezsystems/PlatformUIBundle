@@ -1,13 +1,13 @@
-YUI.add('ez-editorialapp-tests', function (Y) {
+YUI.add('ez-platformuiapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest,
         handleMainViewTest, tplTest, titleTest;
 
     appTest = new Y.Test.Case({
-        name: "eZ Editorial App tests",
+        name: "eZ Platform UI App tests",
 
         setUp: function () {
             this.root = '/shell';
-            this.app = new Y.eZ.EditorialApp({
+            this.app = new Y.eZ.PlatformUIApp({
                 container: '.app',
                 viewContainer: '.view-container',
                 root: this.root
@@ -276,7 +276,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         setUp: function () {
             this.initialTitle = Y.config.doc.title;
 
-            this.app = new Y.eZ.EditorialApp({
+            this.app = new Y.eZ.PlatformUIApp({
                 container: '.app',
                 viewContainer: '.view-container'
             });
@@ -334,7 +334,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         setUp: function () {
             this.capiMock = new Y.Mock();
             this.webRootDir = "/webroot/dir/";
-            this.app = new Y.eZ.EditorialApp({
+            this.app = new Y.eZ.PlatformUIApp({
                 container: '.app',
                 viewContainer: '.view-container',
                 assetRoot: this.webRootDir,
@@ -429,7 +429,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
 
         setUp: function () {
             this.capiMock = new Y.Mock();
-            this.app = new Y.eZ.EditorialApp({
+            this.app = new Y.eZ.PlatformUIApp({
                 container: '.app',
                 viewContainer: '.view-container',
                 capi: this.capiMock
@@ -664,7 +664,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         setUp: function () {
             this.sideView1Hidden = "is-sideview1-hidden";
             this.sideView2Hidden = "is-sideview2-hidden";
-            this.app = new Y.eZ.EditorialApp({
+            this.app = new Y.eZ.PlatformUIApp({
                 container: '.app-sideviews',
                 viewContainer: '.view-container'
             });
@@ -888,7 +888,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
     });
 
     reverseRoutingTest = new Y.Test.Case({
-        name: "eZ Editorial App reverse routing tests",
+        name: "eZ Platform UI App reverse routing tests",
 
         setUp: function () {
             var routes = [
@@ -899,7 +899,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
                 {path: '/sTr1ng/:param/m1X3d/:PARAM2', name: "complex"},
             ];
             this.root = '/this/is/the/root/';
-            this.app = new Y.eZ.EditorialApp({
+            this.app = new Y.eZ.PlatformUIApp({
                 root: this.root,
                 container: '.app',
                 viewContainer: '.view-container'
@@ -988,7 +988,7 @@ YUI.add('ez-editorialapp-tests', function (Y) {
         },
     });
 
-    Y.Test.Runner.setName("eZ Editorial App tests");
+    Y.Test.Runner.setName("eZ Platform UI App tests");
     Y.Test.Runner.add(appTest);
     Y.Test.Runner.add(titleTest);
     Y.Test.Runner.add(tplTest);
@@ -996,4 +996,4 @@ YUI.add('ez-editorialapp-tests', function (Y) {
     Y.Test.Runner.add(sideViewsTest);
     Y.Test.Runner.add(reverseRoutingTest);
 
-}, '0.0.1', {requires: ['test', 'ez-editorialapp', 'ez-viewservice']});
+}, '0.0.1', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice']});

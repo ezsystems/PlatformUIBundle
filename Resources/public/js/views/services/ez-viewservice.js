@@ -17,8 +17,8 @@ YUI.add('ez-viewservice', function (Y) {
     /**
      * View service base class.
      * The classes extending this one are supposed to be used in the route
-     * definition, see {{#crossLink "eZ.EditorialApp"}}the route
-     * attribute of eZ.EditorialApp{{/crossLink}}
+     * definition, see {{#crossLink "eZ.PlatformUIApp"}}the route
+     * attribute of eZ.PlatformUIApp{{/crossLink}}
      *
      * @namespace eZ
      * @class ViewService

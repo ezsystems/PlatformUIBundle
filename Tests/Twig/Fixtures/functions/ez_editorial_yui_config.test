@@ -1,9 +1,9 @@
 --TEST--
 "twig" function
 --TEMPLATE--
-{{ ez_editorial_yui_config( YUIConf ) }}
-{{ ez_editorial_yui_config( 'myObj' ) }}
-{{ ez_editorial_yui_config() }}
+{{ ez_platformui_yui_config( YUIConf ) }}
+{{ ez_platformui_yui_config( 'myObj' ) }}
+{{ ez_platformui_yui_config() }}
 --DATA--
 return array('YUIConf' => 'YUI.GlobalConfig')
 --EXPECT--

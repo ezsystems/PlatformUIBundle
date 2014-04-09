@@ -1,44 +1,44 @@
-.ez-editorial-app legend {
+.ez-platformui-app legend {
     width: auto;
     font-size: 100%;
 }
 
-.ez-editorial-app h1,
-.ez-editorial-app h2,
-.ez-editorial-app h3,
-.ez-editorial-app h4,
-.ez-editorial-app h5,
-.ez-editorial-app h6 {
+.ez-platformui-app h1,
+.ez-platformui-app h2,
+.ez-platformui-app h3,
+.ez-platformui-app h4,
+.ez-platformui-app h5,
+.ez-platformui-app h6 {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     color: inherit;
 }
 
-.ez-editorial-app header {
+.ez-platformui-app header {
     background: none;
 }
 
-.ez-editorial-app input[type=text],
-.ez-editorial-app input[type=email],
-.ez-editorial-app input[type=number],
-.ez-editorial-app input[type=search],
-.ez-editorial-app input[type=password],
-.ez-editorial-app textarea {
+.ez-platformui-app input[type=text],
+.ez-platformui-app input[type=email],
+.ez-platformui-app input[type=number],
+.ez-platformui-app input[type=search],
+.ez-platformui-app input[type=password],
+.ez-platformui-app textarea {
     border-radius: 0;
 }
 
-.ez-editorial-app li,
-.ez-editorial-app label,
-.ez-editorial-app input,
-.ez-editorial-app button,
-.ez-editorial-app select,
-.ez-editorial-app textarea {
+.ez-platformui-app li,
+.ez-platformui-app label,
+.ez-platformui-app input,
+.ez-platformui-app button,
+.ez-platformui-app select,
+.ez-platformui-app textarea {
     line-height: normal;
 }
 
-.ez-editorial-app .gm-style {
+.ez-platformui-app .gm-style {
     line-height: normal;
 }
 
-.ez-editorial-app .gm-style img {
+.ez-platformui-app .gm-style img {
     max-width: none;
 }

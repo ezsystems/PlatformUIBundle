@@ -1,5 +1,5 @@
 [data-icon]:before {
-    font-family: 'ez-editorial-icomoon';
+    font-family: 'ez-platformui-icomoon';
     content: attr(data-icon);
     speak: none;
     font-weight: normal;
@@ -10,7 +10,7 @@
 }
 
 [data-icon-after]:after {
-    font-family: 'ez-editorial-icomoon';
+    font-family: 'ez-platformui-icomoon';
     content: attr(data-icon-after);
     speak: none;
     font-weight: normal;
@@ -21,7 +21,7 @@
 }
 
 .font-icon:before, .font-icon:after {
-    font-family: 'ez-editorial-icomoon';
+    font-family: 'ez-platformui-icomoon';
     speak: none;
     font-weight: normal;
     font-variant: normal;
@@ -100,20 +100,20 @@
     }
 }
 
-.ez-editorial-app-page {
+.ez-platformui-app-page {
     height: 100%;
 }
 
-.ez-editorial-app-page body {
+.ez-platformui-app-page body {
     height: 100%;
     margin: 0;
 }
 
-.ez-editorial-app a:hover {
+.ez-platformui-app a:hover {
     text-decoration: none;
 }
 
-.ez-editorial-app {
+.ez-platformui-app {
     opacity: 0;
 
     -webkit-transition: opacity 0.2s ease, left 0.3s ease;
@@ -123,11 +123,11 @@
             transition: opacity 0.2s ease, left 0.3s ease;
 }
 
-.ez-editorial-app p {
+.ez-platformui-app p {
     line-height: 1.4em;
 }
 
-.ez-editorial-app header {
+.ez-platformui-app header {
     min-height: 5em;
 }
 
@@ -206,12 +206,12 @@
     margin: 0 2em;
 }
 
-.ez-editorial-app .ez-inline-loader {
+.ez-platformui-app .ez-inline-loader {
     height: 16px;
     width: 16px;
     display: none;
 }
 
-.ez-editorial-app .is-loading > .ez-inline-loader {
+.ez-platformui-app .is-loading > .ez-inline-loader {
     display: inline-block;
 }

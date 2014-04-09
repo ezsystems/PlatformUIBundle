@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="{{ app.request.locale }}" class="ez-platformui-app-page">
+<head>
+    <title>eZ Platform UI</title>
+    <meta name="viewport" content="width=device-width"/>
+    <meta charset="utf-8"/>
+{% stylesheets
+    '@eZPlatformUIBundle/Resources/public/vendors/pure/base-context-min.css'
+    '@eZPlatformUIBundle/Resources/public/vendors/pure/grids-min.css'
+    '@eZPlatformUIBundle/Resources/public/vendors/pure/buttons-min.css'
+
+    '@eZPlatformUIBundle/Resources/public/css/layout.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/navigationhub.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/contentedit.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/locationview.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/rawcontent.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/field.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/view/maplocation.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/contenteditform.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/bar.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/discoverybar.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/actions/button.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/actions/preview.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/editpreview.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fieldedit.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/error.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/checkbox.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/textline.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/textblock.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/emailaddress.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/url.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/float.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/integer.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/maplocation.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/author.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/selection.css'
+    '@eZPlatformUIBundle/Resources/public/css/modules/tabs.css'
+    '@eZPlatformUIBundle/Resources/public/css/modules/selection-filter.css'
+
+    '@eZPlatformUIBundle/Resources/public/css/theme/app.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/error.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/bar.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/discoverybar.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/actions/button.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/actions/preview.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/dashboard.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/navigationhub.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/locationview.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/rawcontent.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/field.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/view/url.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/view/maplocation.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/contentedit.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/contenteditform.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/editpreview.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/fieldedit.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/maplocation.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/author.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/selection.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/modules/selection-filter.css'
+%}
+    <link rel="stylesheet" href="{{ asset_url }}"/>
+{% endstylesheets %}
+    <style>
+        .ez-loading-message {
+            display: none;
+        }
+
+        .yui3-js-enabled .ez-loading-message {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 40px;
+            margin-top: 50px;
+            text-align: center;
+            display: block;
+            color: #888;
+        }
+        .ez-platformui-app-ready .ez-loading-message {
+            display: none;
+        }
+    </style>
+</head>
+<body class="ez-platformui-app-body">
+    <div class="ez-loading-message"><em>{{ 'Loading the application...'|trans }}</em></div>
+    <div class="ez-platformui-app pure is-menu-hidden is-navigation-hidden">
+        <div class="ez-navigation-container"></div>
+        <div class="ez-mainviews pure-g">
+            <div class="ez-menu-container pure-u"></div>
+            <div class="ez-view-container pure-u"></div>
+        </div>
+        <div class="ez-errorview-container is-hidden pure-u"></div>
+    </div>
+
+    <noscript>
+        <p>{{ 'JavaScript is disabled in your browser but it is required to run the eZ Platform User Interface.'|trans }}</p>
+        <p><strong>{{ 'Please enable JavaScript to use the eZ Platform User Interface.'|trans }}</strong></p>
+    </noscript>
+    <script src="{{ asset( "extension/ezjscore/design/standard/lib/yui/3.15.0/build/yui/yui-min.js" ) }}"></script>
+    <script>
+        {{ ez_platformui_yui_config( "YUI.GlobalConfig" ) }}
+
+        YUI.GlobalConfig.onSuccess = function (e) {
+            for (var i = 0, len = e.data.length; i < len; ++i) {
+                if ( e.data[i] === 'ez-capi' ) {
+                    YUI.add('ez-capi', function (Y) {
+                        Y.namespace('eZ');
+                        Y.eZ.CAPI = eZ.CAPI;
+                        Y.eZ.SessionAuthAgent = eZ.SessionAuthAgent;
+                    });
+                }
+            }
+        };
+
+        YUI().use('ez-platformuiapp', function (Y) {
+            var app = new Y.eZ.PlatformUIApp({
+                    container: '.ez-platformui-app',
+                    viewContainer: '.ez-view-container',
+                    root: "{{ app.request.attributes.get( 'semanticPathinfo' ) }}",
+                    assetRoot: "{{ asset( '/' ) }}",
+                    capi: new Y.eZ.CAPI(
+                        "{{ app.request.uriForPath('/')|trim('/') }}",
+                        new Y.eZ.SessionAuthAgent({
+                            login: "admin",
+                            password: "ezpublish"
+                        })
+                    )
+                });
+            app.on('ready', function () {
+                Y.one(Y.config.doc.documentElement).addClass('ez-platformui-app-ready');
+            });
+            app.render().dispatch();
+
+            // for now redirecting to the dashboard to boot the application
+            if ( !Y.config.doc.location.hash ) {
+                Y.config.doc.location.hash = '#/dashboard';
+            }
+        });
+    </script>
+
+{% macro include(tpl, name) %}
+<script type="text/x-handlebars-template" id="{{ name }}-ez-template">
+{{ source( 'eZPlatformUIBundle:PlatformUI/handlebars:' ~ tpl ~ '.twig' ) }}
+</script>
+{% endmacro %}
+
+{% macro partial(tpl, name) %}
+<script type="text/x-handlebars-template" id="{{ name }}" class="ez-platformui-app-partial">
+{{ source( 'eZPlatformUIBundle:PlatformUI/handlebars/partials/:' ~ tpl ~ '.twig' ) }}
+</script>
+{% endmacro %}
+
+{% import _self as handlebars %}
+
+{{ handlebars.include( 'dashboardview.handlebars', 'dashboardview' ) }}
+
+{{ handlebars.include( 'locationviewview.handlebars', 'locationviewview' ) }}
+{{ handlebars.include( 'rawcontentview.handlebars', 'rawcontentview' ) }}
+
+{{ handlebars.include( 'fields/view/field.handlebars', 'fieldview' ) }}
+{{ handlebars.include( 'fields/view/url.handlebars', 'urlview' ) }}
+{{ handlebars.include( 'fields/view/maplocation.handlebars', 'maplocationview' ) }}
+
+{{ handlebars.include( 'contenteditview.handlebars', 'contenteditview' ) }}
+{{ handlebars.include( 'contenteditformview.handlebars', 'contenteditformview' ) }}
+
+{{ handlebars.include( 'navigationhubview.handlebars', 'navigationhubview' ) }}
+
+{{ handlebars.include( 'barview.handlebars', 'barview' ) }}
+{{ handlebars.include( 'buttonactionview.handlebars', 'buttonactionview' ) }}
+{{ handlebars.include( 'previewactionview.handlebars', 'previewactionview' ) }}
+{{ handlebars.include( 'editpreviewview.handlebars', 'editpreviewview' ) }}
+
+{{ handlebars.include( 'fields/edit/checkbox.handlebars', 'checkboxeditview' ) }}
+{{ handlebars.include( 'fields/edit/textline.handlebars', 'textlineeditview' ) }}
+{{ handlebars.include( 'fields/edit/textblock.handlebars', 'textblockeditview' ) }}
+{{ handlebars.include( 'fields/edit/emailaddress.handlebars', 'emailaddresseditview' ) }}
+{{ handlebars.include( 'fields/edit/url.handlebars', 'urleditview' ) }}
+{{ handlebars.include( 'fields/edit/float.handlebars', 'floateditview' ) }}
+{{ handlebars.include( 'fields/edit/integer.handlebars', 'integereditview' ) }}
+{{ handlebars.include( 'fields/edit/selection.handlebars', 'selectioneditview' ) }}
+{{ handlebars.include( 'fields/edit/maplocation.handlebars', 'maplocationeditview' ) }}
+{{ handlebars.include( 'fields/edit/author.handlebars', 'authoreditview' ) }}
+{{ handlebars.include( 'fields/edit/authorinput.handlebars', 'authorinputview' ) }}
+
+{{ handlebars.include( 'errorview.handlebars', 'errorview' ) }}
+
+{{ handlebars.partial( 'fieldinfo_tooltip.handlebars', 'ez_fieldinfo_tooltip' ) }}
+</body>
+</html>

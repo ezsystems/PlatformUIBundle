@@ -1,10 +1,10 @@
 parameters:
-    ezsystems.editorial.twig.yui_extension.class: EzSystems\EditorialBundle\Twig\TwigYuiExtension
-    ezsystems.editorial.test.twig.yui_extension.class: EzSystems\EditorialBundle\Test\Twig\TwigYuiExtensionTest
+    ezsystems.platformui.twig.yui_extension.class: EzSystems\PlatformUIBundle\Twig\TwigYuiExtension
+    ezsystems.platformui.test.twig.yui_extension.class: EzSystems\PlatformUIBundle\Test\Twig\TwigYuiExtensionTest
 
 services:
-    ezsystems.editorial.twig.yui_extension:
-        class: %ezsystems.editorial.twig.yui_extension.class%
+    ezsystems.platformui.twig.yui_extension:
+        class: %ezsystems.platformui.twig.yui_extension.class%
         arguments: [%yui%]
         tags:
             - { name: twig.extension }
