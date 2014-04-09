@@ -1,6 +1,6 @@
 parameters:
     ezsystems.platformui.twig.yui_extension.class: EzSystems\PlatformUIBundle\Twig\TwigYuiExtension
-    ezsystems.platformui.test.twig.yui_extension.class: EzSystems\PlatformUIBundle\Test\Twig\TwigYuiExtensionTest
+    ezsystems.platformui.controller.dashboard.class: EzSystems\PlatformUIBundle\Controller\DashboardController
 
 services:
     ezsystems.platformui.twig.yui_extension:
@@ -8,3 +8,7 @@ services:
         arguments: [%yui%]
         tags:
             - { name: twig.extension }
+
+    ezsystems.platformui.controller.dashboard:
+        class: %ezsystems.platformui.controller.dashboard.class%
+        parent: ezpublish.controller.base
