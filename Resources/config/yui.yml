@@ -173,5 +173,11 @@ parameters:
             ez-accordion-element:
                 requires: ['transition']
                 path: js/extensions/ez-accordion-element.js
+            ez-app-extension:
+                requires: ['base']
+                path: js/apps/extensions/ez-app-extension.js
+            ez-app-extension-admin:
+                requires: ['ez-serversideview', 'ez-serversideviewservice', 'ez-app-extension']
+                path: js/apps/extensions/ez-app-extension-admin.js
         base: extension/ezjscore/design/standard/lib/yui/3.15.0/build/
         filter: min
