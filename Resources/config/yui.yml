@@ -28,6 +28,9 @@ parameters:
             ez-locationviewviewservice:
                 requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel']
                 path: js/views/services/ez-locationviewviewservice.js
+            ez-serversideviewservice:
+                requires: ['io-base', 'ez-viewservice']
+                path: js/views/services/ez-serversideviewservice.js
             ez-view:
                 requires: ['view']
                 path: js/views/ez-view.js
@@ -164,6 +167,9 @@ parameters:
             ez-barview:
                 requires: ['ez-templatebasedview', 'event-tap', 'event-resize']
                 path: js/views/ez-barview.js
+            ez-serversideview:
+                requires: ['ez-view']
+                path: js/views/ez-serversideview.js
             ez-texthelper:
                 requires: ['handlebars']
                 path: js/helpers/ez-texthelper.js

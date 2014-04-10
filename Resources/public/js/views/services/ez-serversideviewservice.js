@@ -1,0 +1,108 @@
+YUI.add('ez-serversideviewservice', function (Y) {
+    "user strict";
+    /**
+     * Provides the server side view service class
+     *
+     * @method ez-serversideviewservice
+     */
+    Y.namespace('eZ');
+
+    /**
+     * The Server Side View Service class. It is meant to be used to load the
+     * content of a server side view.
+     *
+     * @namespace eZ
+     * @class ServerSideViewService
+     * @constructor
+     * @extends eZ.ViewService
+     */
+    Y.eZ.ServerSideViewService = Y.Base.create('serverSideViewService', Y.eZ.ViewService, [], {
+
+        /**
+         * Load the content and the title of the server side view using a PJAX
+         * like strategy, ie the server is supposed to response with an HTML
+         * like document containing a title and the html code to use. The
+         * loading is done, the next callback is called with the service itself
+         * in parameter. If an error occurs, an error event is triggered.
+         *
+         * @method load
+         * @param {Function} next
+         */
+        load: function (next) {
+            var uri = this.get('app').get('baseUri') + this.get('request').params.uri;
+
+            Y.io(uri, {
+                method: 'GET',
+                on: {
+                    success: function (tId, response) {
+                        this._parseResponse(response);
+                        next(this);
+                    },
+                    failure: function () {
+                        this._error("Failed to load '" + uri + "'");
+                    },
+                },
+                context: this,
+            });
+        },
+
+        /**
+         * Parses the server response
+         *
+         * @method _parseResponse
+         * @protected
+         * @param {Object} response
+         */
+        _parseResponse: function (response) {
+            var frag = Y.Node.create(response.responseText),
+                html, title;
+
+            html = frag.one('[data-name="html"]');
+            title = frag.one('[data-name="title"]');
+
+            if ( html ) {
+                this.set('html', html.getContent());
+            }
+            if ( title ) {
+                this.set('title', title.get('text'));
+            }
+        },
+
+        /**
+         * Returns the title and the html code as an object
+         *
+         * @method getViewParameters
+         * @return {Object}
+         */
+        getViewParameters: function () {
+            return {
+                title: this.get('title'),
+                html: this.get('html'),
+            };
+        }
+    }, {
+        ATTRS: {
+            /**
+             * The title parsed from the pjax response.
+             *
+             * @attribute title
+             * @default ""
+             * @type String
+             */
+            title: {
+                value: "",
+            },
+
+            /**
+             * The html code parsed from the pjax response.
+             *
+             * @attribute html
+             * @default ""
+             * @type String
+             */
+            html: {
+                value: ""
+            },
+        }
+    });
+});
