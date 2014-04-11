@@ -1,5 +1,6 @@
 YUI.add('ez-platformuiapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest,
+        adminExtTest,
         handleMainViewTest, tplTest, titleTest;
 
     appTest = new Y.Test.Case({
@@ -988,6 +989,56 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
+    adminExtTest = new Y.Test.Case({
+        name: "eZ Platform UI App tests",
+
+        setUp: function () {
+            this.root = '/shell';
+            this.app = new Y.eZ.PlatformUIApp({
+                container: '.app',
+                viewContainer: '.view-container',
+                root: this.root
+            });
+            this.app.render();
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
+        "Admin extension should be loaded and called": function () {
+            var load2Called = false;
+
+            this.app.route({
+                path: "/admin/load1",
+                callback: function () {
+                    Y.Assert.areEqual(
+                        1, Y.eZ.AdminAppExtension._called,
+                        "The app should have been extended"
+                    );
+                    Y.config.doc.location.hash = '/admin/load2';
+                }
+            });
+
+            this.app.route({
+                path: "/admin/load2",
+                callback: function () {
+                    load2Called = true;
+                }
+            });
+
+            Y.config.doc.location.hash = '/admin/load1';
+
+            this.waitFor(function () { return load2Called; }, function () {
+                Y.Assert.areEqual(
+                    1, Y.eZ.AdminAppExtension._called,
+                    "The app should have been extended only once"
+                );
+            });
+        }
+    });
+
     Y.Test.Runner.setName("eZ Platform UI App tests");
     Y.Test.Runner.add(appTest);
     Y.Test.Runner.add(titleTest);
@@ -995,5 +1046,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(handleMainViewTest);
     Y.Test.Runner.add(sideViewsTest);
     Y.Test.Runner.add(reverseRoutingTest);
+    Y.Test.Runner.add(adminExtTest);
 
 }, '0.0.1', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice']});

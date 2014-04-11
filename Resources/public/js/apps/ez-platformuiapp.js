@@ -484,7 +484,35 @@ YUI.add('ez-platformuiapp', function (Y) {
             } else {
                 Y.config.doc.title = this._initialTitle;
             }
-        }
+        },
+
+        /**
+         * Middleware that makes sure the admin app extension is loaded and that
+         * the application has been extended with it.
+         *
+         * @method _loadAdminExtension
+         * @protected
+         * @param {Object} req
+         * @param {Object} res
+         * @param {Function} next
+         */
+        _loadAdminExtension: function (req, res, next) {
+            Y.use('ez-app-extension-admin', function (Y, status) {
+                var extension;
+
+                if ( status.data ) {
+                    // first loading of the extension
+                    extension = new Y.eZ.AdminAppExtension();
+                    extension.extend(req.app);
+                    // can not just call next as the routing needs
+                    // to be done from scratch with the addition of
+                    // the app extension
+                    req.app.navigate(req.path);
+                } else {
+                    next();
+                }
+            });
+        },
     }, {
         ATTRS: {
             /**
@@ -532,6 +560,9 @@ YUI.add('ez-platformuiapp', function (Y) {
                     sideViews: {'discoveryBar': true, 'navigationHub': true},
                     view: 'locationViewView',
                     callbacks: ['open', 'handleSideViews', 'handleMainView']
+                }, {
+                    path: '/admin/*',
+                    callback: '_loadAdminExtension'
                 }],
             },
             serverRouting: {
@@ -543,6 +574,17 @@ YUI.add('ez-platformuiapp', function (Y) {
                     toChild: 'slideLeft',
                     toParent: 'slideRight'
                 }
+            },
+
+            /**
+             * The base URI to build the URI of the ajax request
+             *
+             * @attribute baseUri
+             * @default "/"
+             * @type String
+             */
+            baseUri: {
+                value: "/"
             },
 
             /**

@@ -1,0 +1,9 @@
+{#
+ # Generates an HTML like document to be used by the eZ.ServerSideViewService
+ # JavaScript component
+ # Template extending this one should implement two blocks:
+ #   * title: to generate what will be used as the title of the web page
+ #   * content: to generate the HTML code to put in the page
+ #}
+<div data-name="title">{% block title %}{% endblock %}</div>
+<div data-name="html">{% block content %}{% endblock %}</div>

@@ -2,3 +2,9 @@
 shell:
     pattern: /shell
     defaults: { _controller: eZPlatformUIBundle:PlatformUI:shell }
+
+admin_dashboard:
+    pattern: /pjax/dashboard
+    defaults:
+        _controller: ezsystems.platformui.controller.dashboard:dashboardAction
+    methods: [GET]
