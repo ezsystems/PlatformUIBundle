@@ -7,8 +7,7 @@ YUI.add('ez-locationviewview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var TAB_IS_SELECTED = 'is-tab-selected',
-        MINIMIZE_ACTION_BAR_CLASS = 'is-actionbar-minimized';
+    var MINIMIZE_ACTION_BAR_CLASS = 'is-actionbar-minimized';
 
     /**
      * The location view view
@@ -18,33 +17,27 @@ YUI.add('ez-locationviewview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.LocationViewView = Y.Base.create('locationViewView', Y.eZ.TemplateBasedView, [], {
+    Y.eZ.LocationViewView = Y.Base.create('locationViewView', Y.eZ.TemplateBasedView, [Y.eZ.Tabs], {
         events: {
             '.ez-tabs .ez-tabs-label a': {
-                'tap': '_selectTab'
+                'tap': '_uiTab'
             }
         },
 
         /**
          * tap event handler on a tab label
          *
-         * @method _selectTab
+         * @method _uiTab
          * @protected
          * @param {Object} e tap event facade
          */
-        _selectTab: function (e) {
-            var targetId,
-                tabLabel = e.currentTarget.ancestor('.ez-tabs-label');
-
+        _uiTab: function (e) {
             e.preventDefault();
-            if ( tabLabel.hasClass(TAB_IS_SELECTED) ) {
-                return;
-            }
-            targetId = e.currentTarget.getAttribute('href');
-
-            this.get('container').all('.' + TAB_IS_SELECTED).removeClass(TAB_IS_SELECTED);
-            this.get('container').one(targetId).addClass(TAB_IS_SELECTED);
-            tabLabel.addClass(TAB_IS_SELECTED);
+            this._selectTab(
+                e.currentTarget.ancestor('.ez-tabs-label'),
+                e.currentTarget.getAttribute('href'),
+                this.get('container')
+            );
         },
 
         initializer: function () {

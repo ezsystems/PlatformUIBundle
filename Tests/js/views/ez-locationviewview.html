@@ -50,11 +50,14 @@
     }
 
     YUI({
-        coverage: ['ez-locationviewview'],
+        coverage: ['ez-locationviewview', 'ez-tabs'],
         filter: loaderFilter,
         modules: {
             "ez-locationviewview": {
-                requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'ez-buttonactionview', 'event-tap', 'array-extras'],
+                requires: [
+                    'ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'ez-buttonactionview', 'ez-tabs',
+                    'event-tap', 'array-extras'
+                ],
                 fullpath: "../../../Resources/public/js/views/ez-locationviewview.js"
             },
             "ez-actionbarview": {
@@ -80,6 +83,10 @@
             "ez-accordion-element": {
                 requires: ['transition'],
                 fullpath: "../../../Resources/public/js/extensions/ez-accordion-element.js"
+            },
+            "ez-tabs": {
+                requires: ['node'],
+                fullpath: "../../../Resources/public/js/extensions/ez-tabs.js"
             },
             "ez-view": {
                 requires: ['view'],

@@ -41,7 +41,7 @@ parameters:
                 requires: ['ez-templatebasedview']
                 path: js/views/ez-dashboardview.js
             ez-locationviewview:
-                requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'event-tap', 'array-extras']
+                requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'ez-tabs', 'event-tap', 'array-extras']
                 path: js/views/ez-locationviewview.js
             ez-navigationhubview:
                 requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside']
@@ -179,6 +179,9 @@ parameters:
             ez-accordion-element:
                 requires: ['transition']
                 path: js/extensions/ez-accordion-element.js
+            ez-tabs:
+                requires: ['node']
+                path: js/extensions/ez-tabs.js
             ez-app-extension:
                 requires: ['base']
                 path: js/apps/extensions/ez-app-extension.js

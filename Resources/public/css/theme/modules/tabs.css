@@ -1,0 +1,54 @@
+.ez-tabs .ez-tabs-list {
+    background: #f5f4f2;
+    border-bottom: 1px solid #ccc;
+}
+
+.ez-tabs .ez-tabs-label a {
+    font-weight: bold;
+    color: #222;
+}
+
+.ez-tabs .ez-tabs-label a:hover {
+    color: #528036;
+}
+
+.ez-tabs .ez-tabs-label.is-tab-selected a:hover {
+    color: #222;
+    cursor: default;
+}
+
+.ez-tabs .ez-tabs-list .ez-tabs-label {
+    background: #f5f4f2;
+    border: 1px solid #f5f4f2;
+    border-top: 3px solid #f5f4f2;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: -1px;
+
+    -webkit-transition: all 0.2s ease-in-out;
+       -moz-transition: all 0.2s ease-in-out;
+        -ms-transition: all 0.2s ease-in-out;
+         -o-transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out;
+}
+
+.ez-tabs .ez-tabs-list .is-tab-selected {
+    background: #fff;
+    border-bottom: 1px solid #fff;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-top: 3px solid #528036;
+}
+
+.ez-tabs .ez-tabs-panel {
+    background: #fff;
+    display: none;
+}
+
+.ez-tabs .ez-tabs-panel.is-tab-selected {
+    display: block;
+
+    -webkit-animation: fadeIn 0.3s;
+       -moz-animation: fadeIn 0.3s;
+         -o-animation: fadeIn 0.3s;
+            animation: fadeIn 0.3s;
+}
