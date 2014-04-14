@@ -144,13 +144,13 @@
 
 {% macro include(tpl, name) %}
 <script type="text/x-handlebars-template" id="{{ name }}-ez-template">
-{{ source( 'eZPlatformUIBundle:PlatformUI/handlebars:' ~ tpl ~ '.twig' ) }}
+{{ include( 'eZPlatformUIBundle:PlatformUI/handlebars:' ~ tpl ~ '.twig' ) }}
 </script>
 {% endmacro %}
 
 {% macro partial(tpl, name) %}
 <script type="text/x-handlebars-template" id="{{ name }}" class="ez-platformui-app-partial">
-{{ source( 'eZPlatformUIBundle:PlatformUI/handlebars/partials/:' ~ tpl ~ '.twig' ) }}
+{{ include( 'eZPlatformUIBundle:PlatformUI/handlebars/partials/:' ~ tpl ~ '.twig' ) }}
 </script>
 {% endmacro %}
 
