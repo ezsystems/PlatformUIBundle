@@ -1,5 +1,5 @@
 YUI.add('ez-serversideviewservice-tests', function (Y) {
-    var unitTest;
+    var unitTest, rewriteTest;
 
     unitTest = new Y.Test.Case({
         name: "eZ Server Side View Service test",
@@ -127,11 +127,107 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
                 html, params.html,
                 "getViewParameters() result should contain the html code"
             );
-
-
         }
+    });
+
+    rewriteTest = new Y.Test.Case({
+        name: "eZ Server Side View Service rewrite HTML test",
+
+        setUp: function () {
+            this.baseUri = '/Tests/js/views/services/';
+
+            this.app = new Y.Mock();
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['baseUri'],
+                returns: this.baseUri,
+            });
+
+            this.request = {'params': {'uri': ''}};
+        },
+
+        _getPjaxResponse: function (html) {
+            return '<div data-name="title"></div><div data-name="html">' + html + '</div>';
+        },
+
+        tearDown: function () {
+            delete this.app;
+            delete this.request;
+        },
+
+        _normalLoad: function (response, expectedHtml) {
+            var uri = 'echo/get/html/?response='+ Y.config.win.encodeURIComponent(this._getPjaxResponse(response)),
+                service,
+                that = this;
+
+            Y.Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['adminGenericRoute', Y.Mock.Value.Object],
+                run: function (routeName, params) {
+                    Y.Assert.isString(params.uri);
+                    Y.Assert.areNotEqual("", params.uri);
+                    return 'REWRITTEN ' + params.uri;
+                }
+            });
+
+            this.request.params.uri = uri;
+            service = new Y.eZ.ServerSideViewService({
+                request: this.request,
+                app: this.app
+            });
+
+            service.on('error', function () {
+                that.resume(function () {
+                    Y.Assert.fail("No error event should have been triggered");
+                });
+            });
+
+            service.load(function (serv) {
+                that.resume(function () {
+                    Y.Assert.areEqual(
+                        expectedHtml,
+                        service.get('html'),
+                        "The resulted html is incorrect"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should not rewrite anchor links": function () {
+            var html = '<a href="#nowhere">Nowhere</a>';
+            this._normalLoad(html, html);
+        },
+
+        "Should not rewrite targetted links": function () {
+            var html = '<a href="/somewhere" target="_blank">Somewhere</a>';
+            this._normalLoad(html, html);
+        },
+
+        "Should not rewrite absolute http links": function () {
+            var html = '<a href="http://en.wikipedia.org/wiki/Absolute_value">Absolute</a>';
+            this._normalLoad(html, html);
+        },
+
+        "Should not rewrite absolute https links": function () {
+            var html = '<a href="https://en.wikipedia.org/wiki/Absolute_value">Absolute</a>';
+            this._normalLoad(html, html);
+        },
+
+        "Should rewrite links": function () {
+            var html = '<a href="pjax/link">Link</a>',
+                res = '<a href="REWRITTEN pjax/link">Link</a>';
+            this._normalLoad(html, res);
+        },
+
+        "Should rewrite targetted to self links": function () {
+            var html = '<a href="/somewhere" target="_self">Somewhere</a>',
+                res = '<a href="REWRITTEN /somewhere" target="_self">Somewhere</a>';
+            this._normalLoad(html, res);
+        },
     });
 
     Y.Test.Runner.setName("eZ Server Side View Service tests");
     Y.Test.Runner.add(unitTest);
+    Y.Test.Runner.add(rewriteTest);
 }, '0.0.1', {requires: ['test', 'ez-serversideviewservice']});

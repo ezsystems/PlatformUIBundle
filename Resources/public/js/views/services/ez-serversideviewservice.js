@@ -61,11 +61,38 @@ YUI.add('ez-serversideviewservice', function (Y) {
             title = frag.one('[data-name="title"]');
 
             if ( html ) {
-                this.set('html', html.getContent());
+                this.set('html', this._rewrite(html).getContent());
             }
             if ( title ) {
                 this.set('title', title.get('text'));
             }
+        },
+
+        /**
+         * Rewrites the server side generated HTML so that it's browseable in
+         * the PlatformUI application
+         *
+         * @method _rewrite
+         * @protected
+         * @param {Node} node
+         * @return {Node}
+         */
+        _rewrite: function (node) {
+            var app = this.get('app');
+
+            node.all('a[href]').each(function (link) {
+                var href = link.getAttribute('href');
+
+                if (
+                    href.charAt(0) === '#'
+                    || ( link.hasAttribute('target') && link.getAttribute('target') !== '_self' )
+                    || href.match(/^http(s)?:\/\//)
+                ) {
+                    return;
+                }
+                link.setAttribute('href', app.routeUri('adminGenericRoute', {uri: href}));
+            });
+            return node;
         },
 
         /**
