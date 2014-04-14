@@ -17,7 +17,7 @@
     width: 100%;
 }
 
-.ez-view-contenteditview header {
+.ez-view-contenteditview .ez-page-header {
     padding: 2em;
 }
 
@@ -34,13 +34,8 @@
     padding-left: 0.5em;
 }
 
-.ez-view-contenteditview .ez-content-name {
-    color: #222;
+.ez-view-contenteditview .ez-page-header-name {
     margin: 0;
-}
-
-.ez-view-contenteditview .ez-content-name:before {
-    padding-right: 0.3em;
 }
 
 .ez-view-contenteditview .ez-technical-infos {

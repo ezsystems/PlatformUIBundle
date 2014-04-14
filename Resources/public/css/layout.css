@@ -127,10 +127,6 @@
     line-height: 1.4em;
 }
 
-.ez-platformui-app header {
-    min-height: 5em;
-}
-
 .is-app-open {
     opacity: 1;
     min-height: 100%;
