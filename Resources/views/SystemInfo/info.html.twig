@@ -4,25 +4,25 @@
 
 {% block content %}
     <header class="ez-page-header">
-        <h1 class="ez-page-header-name" data-icon="&#xe617">{{ 'System information'|trans }}</h1>
+        <h1 class="ez-page-header-name" data-icon="&#xe617">{{ 'system.information'|trans }}</h1>
     </header>
 
     <section class="ez-tabs ez-serverside-content">
         <ul class="ez-tabs-list">
             <li class="ez-tabs-label is-tab-selected"><a href="#ez-tabs-platform">eZ Platform</a></li>
-            <li class="ez-tabs-label"><a href="#ez-tabs-server">{{ 'Server'|trans }}</a></li>
+            <li class="ez-tabs-label"><a href="#ez-tabs-server">{{ 'server'|trans }}</a></li>
         </ul>
         <div class="ez-tabs-panels">
             <div class="ez-tabs-panel is-tab-selected" id="ez-tabs-platform">
-                <p class="ez-platform-version">{{ 'You are using eZ Platform version'|trans }} <strong>{{ ezplatformInfo.version }}</strong> {{ 'based on Symfony'|trans }} <strong>{{ ezplatformInfo.symfony }}</strong></p>
-                <h2>{{ 'Bundles'|trans }}</h2>
+                <p class="ez-platform-version">{{ 'ez.platform.version'|trans }} <strong>{{ ezplatformInfo.version }}</strong> {{ 'symfony.based'|trans }} <strong>{{ ezplatformInfo.symfony }}</strong></p>
+                <h2>{{ 'bundles'|trans }}</h2>
                 <ul>
                     {% for bundle, ns in ezplatformInfo.bundles %}
                         <li><strong>{{ bundle }}</strong> (<tt>{{ ns }}</tt>)</li>
                     {% endfor %}
                 </ul>
 
-                <h2>{{ 'Legacy extensions'|trans }}</h2>
+                <h2>{{ 'legacy.extensions'|trans }}</h2>
                 <ul>
                     {% for extension in ezplatformInfo.extensions %}
                         <li>{{ extension }}</li>
@@ -31,36 +31,36 @@
             </div>
 
             <div class="ez-tabs-panel" id="ez-tabs-server">
-                <h2>{{ 'Software'|trans }}</h2>
+                <h2>{{ 'software'|trans }}</h2>
                 <dl>
                     <dt>PHP</dt>
                     <dd>
                         {{ systemInfo.phpVersion }}
-                        (<a href="{{ path( 'admin_phpinfo' ) }}" target="_blank">{{ 'PHP info'|trans }}</a>)
+                        (<a href="{{ path( 'admin_phpinfo' ) }}" target="_blank">{{ 'php.info'|trans }}</a>)
                     </dd>
-                    <dt>{{ 'PHP Accelerator'|trans }}</dt>
+                    <dt>{{ 'php.accelerator'|trans }}</dt>
                     <dd>
                     {% if systemInfo.phpAccelerator %}
                         {% if not systemInfo.phpAccelerator.enabled %}
-                            <strong>{{ 'Disabled'|trans }}</strong>
+                            <strong>{{ 'disabled'|trans }}</strong>
                         {% endif %}
                         <a href="{{ systemInfo.phpAccelerator.url }}" target="_blank">{{ systemInfo.phpAccelerator.name }} ({{ systemInfo.phpAccelerator.versionString }})</a>
                     {% else %}
-                        {{ 'No PHP Accelerator found.'|trans }}
+                        {{ 'php.accelerator.not.found'|trans }}
                     {% endif %}
                     </dd>
                 </dl>
 
-                <h2>{{ 'Hardware'|trans }}</h2>
+                <h2>{{ 'hardware'|trans }}</h2>
                 <dl>
-                    <dt>{{ 'CPU'|trans }}</dt>
+                    <dt>{{ 'cpu'|trans }}</dt>
                     <dd>
                         {{ systemInfo.cpuType }}
                         {% if systemInfo.cpuSpeed %}
-                            ({{ systemInfo.cpuCount }}x{{ systemInfo.cpuSpeed }}&nbsp;{{ 'MHz'|trans }})
+                            ({{ systemInfo.cpuCount }}x{{ systemInfo.cpuSpeed }}&nbsp;{{ 'mhz'|trans }})
                         {% endif %}
                     </dd>
-                    <dt>{{ 'Memory'|trans }}</dt>
+                    <dt>{{ 'memory'|trans }}</dt>
                     <dd>{{ systemInfo.memorySize|ez_file_size() }}</dd>
                 </dl>
             </div>
@@ -68,4 +68,4 @@
     </section>
 {% endblock %}
 
-{% block title %}{{'System information'|trans }}{% endblock %}
+{% block title %}{{'system.information'|trans }}{% endblock %}

@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ app.request.locale }}" class="ez-platformui-app-page">
+{% trans_default_domain "general" %}
 <head>
     <title>eZ Platform UI</title>
     <meta name="viewport" content="width=device-width"/>
@@ -86,7 +87,7 @@
     </style>
 </head>
 <body class="ez-platformui-app-body">
-    <div class="ez-loading-message"><em>{{ 'Loading the application...'|trans }}</em></div>
+    <div class="ez-loading-message"><em>{{ 'loading.application'|trans }}</em></div>
     <div class="ez-platformui-app pure is-menu-hidden is-navigation-hidden">
         <div class="ez-navigation-container"></div>
         <div class="ez-mainviews pure-g">
@@ -97,8 +98,8 @@
     </div>
 
     <noscript>
-        <p>{{ 'JavaScript is disabled in your browser but it is required to run the eZ Platform User Interface.'|trans }}</p>
-        <p><strong>{{ 'Please enable JavaScript to use the eZ Platform User Interface.'|trans }}</strong></p>
+        <p>{{ 'javascript.disabled.required'|trans }}</p>
+        <p><strong>{{ 'javascript.enable'|trans }}</strong></p>
     </noscript>
     <script src="{{ asset( "extension/ezjscore/design/standard/lib/yui/3.15.0/build/yui/yui-min.js" ) }}"></script>
     <script>
