@@ -1,0 +1,21 @@
+.ez-serverside-content {
+    background: #fff;
+    border-top: 1px solid #ccc;
+}
+
+.ez-serverside-content ul {
+    list-style-type: square;
+}
+
+.ez-serverside-content h2 {
+    background: #f2f2f2;
+    border-top: 1px solid #ddd;
+}
+
+.ez-serverside-content dt {
+    font-weight: bold;
+}
+
+.ez-serverside-content tt {
+    font-size: 90%;
+}

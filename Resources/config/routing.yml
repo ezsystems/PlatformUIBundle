@@ -8,3 +8,15 @@ admin_dashboard:
     defaults:
         _controller: ezsystems.platformui.controller.dashboard:dashboardAction
     methods: [GET]
+
+admin_systeminfo:
+    pattern: /pjax/systeminfo
+    defaults:
+        _controller: ezsystems.platformui.controller.systeminfo:infoAction
+    methods: [GET]
+
+admin_phpinfo:
+    pattern: /systeminfo/phpinfo
+    defaults:
+        _controller: ezsystems.platformui.controller.systeminfo:phpinfoAction
+    methods: [GET]

@@ -168,7 +168,7 @@ parameters:
                 requires: ['ez-templatebasedview', 'event-tap', 'event-resize']
                 path: js/views/ez-barview.js
             ez-serversideview:
-                requires: ['ez-view']
+                requires: ['ez-view', 'ez-tabs', 'event-tap']
                 path: js/views/ez-serversideview.js
             ez-texthelper:
                 requires: ['handlebars']

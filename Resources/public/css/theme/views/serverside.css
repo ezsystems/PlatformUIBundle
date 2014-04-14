@@ -1,4 +1,11 @@
 .ez-view-serversideview {
-    background: #fff;
-    padding: 2em 0 10em 0; /* just to test before having enough content */
+    background: #F5F4F2;
+}
+
+.ez-view-serversideview .ez-platform-version {
+    font-size: 120%;
+}
+
+.ez-view-serversideview .ez-tabs.ez-serverside-content {
+    border: 0;
 }
