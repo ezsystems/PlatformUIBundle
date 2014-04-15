@@ -63,6 +63,7 @@ YUI.add('ez-serversideview', function (Y) {
         /**
          * Returns the string to use as the page title
          *
+         * @method getTitle
          * @return {String}
          */
         getTitle: function () {
