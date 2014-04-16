@@ -62,6 +62,10 @@
         <source>memory</source>
         <target>Memory</target>
       </trans-unit>
+      <trans-unit id="11e0eed8d3696c0a632f822df385ab3c" resname="database">
+        <source>database</source>
+        <target>Database</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

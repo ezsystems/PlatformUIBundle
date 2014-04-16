@@ -19,6 +19,7 @@ services:
         class: %ezsystems.platformui.helper.systeminfo.class%
         arguments:
             - @ezpublish_legacy.kernel
+            - @database_connection
             - %kernel.bundles%
 
     ezsystems.platformui.controller.systeminfo:

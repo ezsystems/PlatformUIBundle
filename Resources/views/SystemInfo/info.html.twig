@@ -49,6 +49,9 @@
                         {{ 'php.accelerator.not.found'|trans }}
                     {% endif %}
                     </dd>
+                    {%set db = systemInfo.database %}
+                    <dt>{{ 'database'|trans }}</dt>
+                    <dd>{{ db.type }} (<tt>{{ db.type }}://{{ db.username }}@{{ db.host }}/{{ db.name }}</tt>)</dd>
                 </dl>
 
                 <h2>{{ 'hardware'|trans }}</h2>

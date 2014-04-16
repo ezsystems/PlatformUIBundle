@@ -10,6 +10,7 @@
 namespace EzSystems\PlatformUIBundle\Helper;
 
 use Symfony\Component\HttpKernel\Kernel;
+use Doctrine\DBAL\Connection;
 
 use ezcSystemInfo;
 use eZExtension;
@@ -30,10 +31,19 @@ class SystemInfoHelper
      */
     private $bundles;
 
-    public function __construct( \Closure $legacyKernelClosure, array $bundles )
+    /**
+     * The database connection, only used to retrieve some information on the 
+     * database itself.
+     *
+     * @var \Doctrine\DBAL\Connection
+     */
+    private $connection;
+
+    public function __construct( \Closure $legacyKernelClosure, Connection $db, array $bundles )
     {
         $this->legacyKernel = $legacyKernelClosure();
         $this->bundles = $bundles;
+        $this->connection = $db;
     }
 
     /**
@@ -42,6 +52,7 @@ class SystemInfoHelper
      *  - memory size
      *  - php version
      *  - php accelerator info
+     *  - database related info
      *
      * @return array
      */
@@ -65,6 +76,12 @@ class SystemInfoHelper
             'memorySize' => $info->memorySize,
             'phpVersion' => phpversion(),
             'phpAccelerator' => $accelerator,
+            'database' => array(
+                'type' => $this->connection->getDatabasePlatform()->getName(),
+                'name' => $this->connection->getDatabase(),
+                'host' => $this->connection->getHost(),
+                'username' => $this->connection->getUsername(),
+            ),
         );
     }
 
