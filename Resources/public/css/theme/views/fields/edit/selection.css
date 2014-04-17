@@ -25,7 +25,7 @@
     content: "\E602";
     font-size: 120%;
     color: #000;
-    font-family: "ez-editorial-icomoon";
+    font-family: "ez-platformui-icomoon";
 }
 
 .ez-view-selectioneditview.is-error .ez-selection-values:after {
@@ -42,7 +42,7 @@
 .ez-view-selectioneditview .ez-selection-value:after {
     content: "\E600";
     color: #666;
-    font-family: "ez-editorial-icomoon";
+    font-family: "ez-platformui-icomoon";
     font-size: 80%;
     padding-left: 0.5em;
 }
