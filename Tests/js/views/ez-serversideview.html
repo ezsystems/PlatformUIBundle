@@ -5,6 +5,19 @@
 </head>
 <body>
 
+    <div class="tab-test-container">
+        <section class="ez-tabs">
+            <ul class="ez-tabs-list">
+                <li id="first-label" class="ez-tabs-label is-tab-selected"><a href="#tab1">Tab 1</a></li>
+                <li id="last-label" class="ez-tabs-label"><a href="#tab2">Tab 2</a></li>
+            </ul>
+            <div class="ez-tabs-panels">
+                <div id="tab1" class="is-tab-selected">Tab1</div>
+                <div id="tab2">Tab2</div>
+            </div>
+        </section>
+    </div>
+
 <script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-serversideview-tests.js"></script>
 <script>
@@ -25,8 +38,12 @@
         filter: loaderFilter,
         modules: {
             "ez-serversideview": {
-                requires: ['ez-view'],
+                requires: ['ez-view', 'ez-tabs', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-serversideview.js"
+            },
+            "ez-tabs": {
+                requires: ['node'],
+                fullpath: "../../../Resources/public/js/extensions/ez-tabs.js"
             },
             "ez-view": {
                 requires: ['view'],

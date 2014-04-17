@@ -1,0 +1,7 @@
+.ez-page-header {
+    color: #000;
+}
+
+.ez-page-header .ez-page-header-name[data-icon]:before {
+    padding-right: 0.3em;
+}

@@ -1,0 +1,11 @@
+.ez-serverside-content {
+    padding-bottom: 10em; /* just to test before having enough content */
+}
+
+.ez-serverside-content h2 {
+    padding: 0.1em 0.3em;
+}
+
+.ez-serverside-content dd {
+    margin-bottom: 0.5em;
+}

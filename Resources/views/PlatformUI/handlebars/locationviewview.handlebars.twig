@@ -1,13 +1,14 @@
+{% verbatim %}
 <div class="pure-g">
     <div class="ez-locationview-content pure-u">
-        <header>
+        <header class="ez-page-header">
             <ul class="ez-breadcrumbs">
             {{#each path}}
                 <li><a href="{{ path "viewLocation" id=location.id }}">{{ content.name }}</a></li>
             {{/each}}
                 <li>{{ content.name }}</li>
             </ul>
-            <h1 class="ez-content-name" data-icon="&#xe601;">{{ content.name }}</h1>
+            <h1 class="ez-page-header-name" data-icon="&#xe601;">{{ content.name }}</h1>
         </header>
         <section class="ez-tabs">
             <ul class="ez-tabs-list">
@@ -32,3 +33,4 @@
     </div>
     <div class="ez-actionbar-container pure-u"></div>
 </div>
+{% endverbatim %}

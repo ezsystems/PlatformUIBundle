@@ -26,14 +26,6 @@
     width: 100%;
 }
 
-.ez-view-locationviewview header {
-    padding: 2em 1.5em 1em 1.5em;
-}
-
-.ez-view-locationviewview .ez-content-name:before {
-    padding-right: 0.3em;
-}
-
 .ez-view-locationviewview .ez-breadcrumbs {
     font-size: 90%;
     list-style-type: none;

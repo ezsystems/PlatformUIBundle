@@ -1,6 +1,8 @@
 parameters:
     ezsystems.platformui.twig.yui_extension.class: EzSystems\PlatformUIBundle\Twig\TwigYuiExtension
     ezsystems.platformui.controller.dashboard.class: EzSystems\PlatformUIBundle\Controller\DashboardController
+    ezsystems.platformui.helper.systeminfo.class: EzSystems\PlatformUIBundle\Helper\SystemInfoHelper
+    ezsystems.platformui.controller.systeminfo.class: EzSystems\PlatformUIBundle\Controller\SystemInfoController
 
 services:
     ezsystems.platformui.twig.yui_extension:
@@ -11,4 +13,17 @@ services:
 
     ezsystems.platformui.controller.dashboard:
         class: %ezsystems.platformui.controller.dashboard.class%
+        parent: ezpublish.controller.base
+
+    ezsystems.platformui.helper.systeminfo:
+        class: %ezsystems.platformui.helper.systeminfo.class%
+        arguments:
+            - @ezpublish_legacy.kernel
+            - @database_connection
+            - %kernel.bundles%
+
+    ezsystems.platformui.controller.systeminfo:
+        class: %ezsystems.platformui.controller.systeminfo.class%
+        arguments:
+            - @ezsystems.platformui.helper.systeminfo
         parent: ezpublish.controller.base

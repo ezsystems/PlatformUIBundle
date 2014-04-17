@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="{{ app.request.locale }}" class="ez-platformui-app-page">
+{% trans_default_domain "general" %}
 <head>
     <title>eZ Platform UI</title>
     <meta name="viewport" content="width=device-width"/>
@@ -35,6 +36,8 @@
     '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/author.css'
     '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/selection.css'
     '@eZPlatformUIBundle/Resources/public/css/modules/tabs.css'
+    '@eZPlatformUIBundle/Resources/public/css/modules/page-header.css'
+    '@eZPlatformUIBundle/Resources/public/css/modules/serverside-content.css'
     '@eZPlatformUIBundle/Resources/public/css/modules/selection-filter.css'
 
     '@eZPlatformUIBundle/Resources/public/css/theme/app.css'
@@ -58,6 +61,9 @@
     '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/maplocation.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/author.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/selection.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/modules/tabs.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/modules/page-header.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/modules/serverside-content.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/modules/selection-filter.css'
 %}
     <link rel="stylesheet" href="{{ asset_url }}"/>
@@ -81,7 +87,7 @@
     </style>
 </head>
 <body class="ez-platformui-app-body">
-    <div class="ez-loading-message"><em>{{ 'Loading the application...'|trans }}</em></div>
+    <div class="ez-loading-message"><em>{{ 'loading.application'|trans }}</em></div>
     <div class="ez-platformui-app pure is-menu-hidden is-navigation-hidden">
         <div class="ez-navigation-container"></div>
         <div class="ez-mainviews pure-g">
@@ -92,8 +98,8 @@
     </div>
 
     <noscript>
-        <p>{{ 'JavaScript is disabled in your browser but it is required to run the eZ Platform User Interface.'|trans }}</p>
-        <p><strong>{{ 'Please enable JavaScript to use the eZ Platform User Interface.'|trans }}</strong></p>
+        <p>{{ 'javascript.disabled.required'|trans }}</p>
+        <p><strong>{{ 'javascript.enable'|trans }}</strong></p>
     </noscript>
     <script src="{{ asset( "extension/ezjscore/design/standard/lib/yui/3.15.0/build/yui/yui-min.js" ) }}"></script>
     <script>
@@ -139,13 +145,13 @@
 
 {% macro include(tpl, name) %}
 <script type="text/x-handlebars-template" id="{{ name }}-ez-template">
-{{ source( 'eZPlatformUIBundle:PlatformUI/handlebars:' ~ tpl ~ '.twig' ) }}
+{{ include( 'eZPlatformUIBundle:PlatformUI/handlebars:' ~ tpl ~ '.twig' ) }}
 </script>
 {% endmacro %}
 
 {% macro partial(tpl, name) %}
 <script type="text/x-handlebars-template" id="{{ name }}" class="ez-platformui-app-partial">
-{{ source( 'eZPlatformUIBundle:PlatformUI/handlebars/partials/:' ~ tpl ~ '.twig' ) }}
+{{ include( 'eZPlatformUIBundle:PlatformUI/handlebars/partials/:' ~ tpl ~ '.twig' ) }}
 </script>
 {% endmacro %}
 
