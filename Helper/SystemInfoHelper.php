@@ -9,6 +9,7 @@
 
 namespace EzSystems\PlatformUIBundle\Helper;
 
+use EzSystems\PlatformUIBundle\Helper\SystemInfoHelperInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Doctrine\DBAL\Connection;
 
@@ -16,7 +17,7 @@ use ezcSystemInfo;
 use eZExtension;
 use eZPublishSDK;
 
-class SystemInfoHelper
+class SystemInfoHelper implements SystemInfoHelperInterface
 {
     /**
      * @var \eZ\Publish\Core\MVC\Legacy\Kernel

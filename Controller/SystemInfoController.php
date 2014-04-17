@@ -14,16 +14,16 @@ use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute as Authorizatio
 use eZ\Publish\Core\MVC\Symfony\Security\User as CoreUser;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use EzSystems\PlatformUIBundle\Helper\SystemInfoHelper;
+use EzSystems\PlatformUIBundle\Helper\SystemInfoHelperInterface;
 
 class SystemInfoController extends Controller
 {
     /**
-     * @var \EzSystems\PlatformUIBundle\Helper\SystemInfoHelper
+     * @var \EzSystems\PlatformUIBundle\Helper\SystemInfoHelperInterface
      */
     protected $systemInfoHelper;
 
-    public function __construct( SystemInfoHelper $systemInfoHelper )
+    public function __construct( SystemInfoHelperInterface $systemInfoHelper )
     {
         $this->systemInfoHelper = $systemInfoHelper;
     }
