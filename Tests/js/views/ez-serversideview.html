@@ -38,12 +38,16 @@
         filter: loaderFilter,
         modules: {
             "ez-serversideview": {
-                requires: ['ez-view', 'ez-tabs', 'event-tap'],
+                requires: ['ez-view', 'ez-tabs', 'ez-selection-table', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-serversideview.js"
             },
             "ez-tabs": {
                 requires: ['node'],
                 fullpath: "../../../Resources/public/js/extensions/ez-tabs.js"
+            },
+            "ez-selection-table": {
+                requires: ['node'],
+                fullpath: "../../../Resources/public/js/extensions/ez-selection-table.js"
             },
             "ez-view": {
                 requires: ['view'],

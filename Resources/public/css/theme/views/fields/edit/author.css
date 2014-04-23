@@ -23,18 +23,3 @@
 .ez-view-authoreditview .is-author-error .ez-fielddefinition-name {
     color: #BF3E33;
 }
-
-.ez-view-authoreditview .ez-field-author-remove:before,
-.ez-view-authoreditview .ez-field-author-add:before {
-    font-family: "ez-platformui-icomoon";
-    padding-right: 0.3em;
-    font-size: 90%;
-}
-
-.ez-view-authoreditview .ez-field-author-remove:before {
-    content: "\E615";
-}
-
-.ez-view-authoreditview .ez-field-author-add:before {
-    content: "\E616";
-}

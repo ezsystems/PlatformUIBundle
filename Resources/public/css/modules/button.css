@@ -1,0 +1,7 @@
+.ez-button {
+    padding: 0.4em 0.5em;
+}
+
+.ez-button[data-icon]:before {
+    padding-right: 0.5em;
+}

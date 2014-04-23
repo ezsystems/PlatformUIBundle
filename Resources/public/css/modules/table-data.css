@@ -1,0 +1,17 @@
+.ez-table-data {
+    margin: 1em 0;
+}
+
+.is-flexible {
+    text-align: center;
+}
+
+.is-flexible .ez-table-data-container {
+    display: inline-block;
+    text-align: left;
+}
+
+.ez-table-data .ez-table-data-id,
+.ez-table-data .ez-table-data-count {
+    text-align: center;
+}

@@ -9,14 +9,13 @@
 
 namespace EzSystems\PlatformUIBundle\Controller;
 
-use eZ\Bundle\EzPublishCoreBundle\Controller;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute as AuthorizationAttribute;
-use eZ\Publish\Core\MVC\Symfony\Security\User as CoreUser;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use EzSystems\PlatformUIBundle\Controller\PjaxController;
 use EzSystems\PlatformUIBundle\Helper\SystemInfoHelperInterface;
 
-class SystemInfoController extends Controller
+class SystemInfoController extends PjaxController
 {
     /**
      * @var \EzSystems\PlatformUIBundle\Helper\SystemInfoHelperInterface
@@ -38,7 +37,7 @@ class SystemInfoController extends Controller
         $response = new Response();
         if ( !$this->hasAccess() )
         {
-            $response->setStatusCode( $this->isAnonymous() ? 401 : 403 );
+            $response->setStatusCode( $this->getNoAccessStatusCode() );
             return $response;
         }
 
@@ -68,23 +67,6 @@ class SystemInfoController extends Controller
         phpinfo();
         $response = new Response( ob_get_clean() );
         return $response;
-    }
-
-    /**
-     * Checks whether the current user is anonymous
-     *
-     * @return boolean
-     */
-    protected function isAnonymous()
-    {
-        $user = $this->getUser();
-        return (
-            !$user
-            || (
-                $user instanceof CoreUser
-                && $user->id == $this->getConfigResolver()->getParameter( "anonymous_user_id" )
-            )
-        );
     }
 
     /**

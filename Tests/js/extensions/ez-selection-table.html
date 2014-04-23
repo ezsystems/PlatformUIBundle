@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Selection table tests</title>
+</head>
+<body>
+
+    <div class="selection-test-container">
+        <table class="ez-selection-table" data-selection-buttons=".selection-button">
+            <tr class="ez-selection-table-row">
+                <td><input type="checkbox" id="c1" class="ez-selection-table-checkbox" /></td>
+            </tr>
+            <tr class="ez-selection-table-row">
+                <td><input type="checkbox" id="c2" class="ez-selection-table-checkbox" /></td>
+            </tr>
+            <tr class="ez-selection-table-row">
+                <td><input type="checkbox" id="c3" class="ez-selection-table-checkbox" /></td>
+            </tr>
+        </table>
+        <button class="selection-button" disabled="disabled">Button</button>
+    </div>
+
+
+<script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-selection-table-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-selection-table'],
+        filter: loaderFilter,
+        modules: {
+            "ez-selection-table": {
+                requires: ['node'],
+                fullpath: "../../../Resources/public/js/extensions/ez-selection-table.js"
+            },
+        }
+    }).use('ez-selection-table-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

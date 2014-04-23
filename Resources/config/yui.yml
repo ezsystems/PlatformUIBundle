@@ -168,7 +168,7 @@ parameters:
                 requires: ['ez-templatebasedview', 'event-tap', 'event-resize']
                 path: js/views/ez-barview.js
             ez-serversideview:
-                requires: ['ez-view', 'ez-tabs', 'event-tap']
+                requires: ['ez-view', 'ez-tabs', 'ez-selection-table', 'event-tap']
                 path: js/views/ez-serversideview.js
             ez-texthelper:
                 requires: ['handlebars']
@@ -182,6 +182,9 @@ parameters:
             ez-tabs:
                 requires: ['node']
                 path: js/extensions/ez-tabs.js
+            ez-selection-table:
+                requires: ['node']
+                path: js/extensions/ez-selection-table.js
             ez-app-extension:
                 requires: ['base']
                 path: js/apps/extensions/ez-app-extension.js

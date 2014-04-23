@@ -38,13 +38,7 @@
     top: 9em;
 }
 
-.ez-view-authoreditview .ez-field-author-add,
 .ez-view-authoreditview .ez-field-author-remove {
-    padding: 0.5em 0.7em;
-}
-
-.ez-view-authoreditview .ez-field-author-remove {
-    padding: 0.5em 1em;
     display: block;
-    margin-top: 2.6em;
+    margin-top: 3em;
 }
