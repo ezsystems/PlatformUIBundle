@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="36aaf69db32866a9c2dd745ef9f7a643" resname="section.list">
+        <source>section.list</source>
+        <target>Section list</target>
+      </trans-unit>
+      <trans-unit id="d588dd1c265006f31dbb8368dda58226" resname="section.name">
+        <source>section.name</source>
+        <target>Section name</target>
+      </trans-unit>
+      <trans-unit id="6bb9217795bc1c5903f07476a0db6478" resname="section.identifier">
+        <source>section.identifier</source>
+        <target>Section identifier</target>
+      </trans-unit>
+      <trans-unit id="1fdda1fb639ca79024d03e086790198c" resname="section.id">
+        <source>section.id</source>
+        <target>Section ID</target>
+      </trans-unit>
+      <trans-unit id="be3def83a46457e29924c29510691bb9" resname="section.assigned.content">
+        <source>section.assigned.content</source>
+        <target>Assigned contents</target>
+      </trans-unit>
+      <trans-unit id="f11bc03b12fb7dfeaa73529f0154ed6f" resname="section.assigned.to_subtree">
+        <source>section.assigned.to_subtree</source>
+        <target>Assign to a subtree</target>
+      </trans-unit>
+      <trans-unit id="bd9bc055699bd779f27ce1c3b2e0121d" resname="section.edit">
+        <source>section.edit</source>
+        <target>Edit</target>
+      </trans-unit>
+      <trans-unit id="8a0af0dc53d7aae987d698237d39b11a" resname="section.new">
+        <source>section.new</source>
+        <target>Create a new section</target>
+      </trans-unit>
+      <trans-unit id="b2e01fb6617d17c162d59f0fb93da661" resname="section.remove.selected">
+        <source>section.remove.selected</source>
+        <target>Remove the selection</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

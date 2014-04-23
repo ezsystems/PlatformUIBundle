@@ -3,6 +3,8 @@ parameters:
     ezsystems.platformui.controller.dashboard.class: EzSystems\PlatformUIBundle\Controller\DashboardController
     ezsystems.platformui.helper.systeminfo.class: EzSystems\PlatformUIBundle\Helper\SystemInfoHelper
     ezsystems.platformui.controller.systeminfo.class: EzSystems\PlatformUIBundle\Controller\SystemInfoController
+    ezsystems.platformui.helper.section.class: EzSystems\PlatformUIBundle\Helper\SectionHelper
+    ezsystems.platformui.controller.section.class: EzSystems\PlatformUIBundle\Controller\SectionController
 
 services:
     ezsystems.platformui.twig.yui_extension:
@@ -26,4 +28,16 @@ services:
         class: %ezsystems.platformui.controller.systeminfo.class%
         arguments:
             - @ezsystems.platformui.helper.systeminfo
+        parent: ezpublish.controller.base
+
+    ezsystems.platformui.helper.section:
+        class: %ezsystems.platformui.helper.section.class%
+        arguments:
+            - @ezpublish.api.service.section
+            - @security.context
+
+    ezsystems.platformui.controller.section:
+        class: %ezsystems.platformui.controller.section.class%
+        arguments:
+            - @ezsystems.platformui.helper.section
         parent: ezpublish.controller.base

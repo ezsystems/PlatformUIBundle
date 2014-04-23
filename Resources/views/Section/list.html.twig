@@ -1,0 +1,57 @@
+{% extends "eZPlatformUIBundle::pjax.html.twig" %}
+
+{% trans_default_domain "section" %}
+
+{% block content %}
+    <header class="ez-page-header">
+        <h1 class="ez-page-header-name" data-icon="&#xe61a;">{{ 'section.list'|trans }}</h1>
+    </header>
+    <section class="ez-serverside-content">
+        <div class="ez-table-data is-flexible">
+            <form class="ez-table-data-container" method="post" action"">
+                <table class="pure-table pure-table-striped ez-selection-table" data-selection-buttons=".ez-remove-section-button">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>{{ 'section.name'|trans }}</th>
+                            <th>{{ 'section.identifier'|trans }}</th>
+                            <th>{{ 'section.id'|trans }}</th>
+                            <th>{{ 'section.assigned.content'|trans }}</th>
+                            <th colspan="2"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for sectionInfo in sectionInfoList %}
+                        {% set section = sectionInfo.section %}
+                        <tr class="ez-selection-table-row">
+                            <td>
+                                <input type="checkbox" name="RemoveSection[]"
+                                    class="ez-selection-table-checkbox"
+                                    value="{{ section.id }}"
+                                    {% if not sectionInfo.canDelete %}disabled="disabled"{% endif %}
+                                />
+                            </td>
+                            <td><a href="#">{{ section.name }}</a></td>
+                            <td><a href="#">{{ section.identifier }}</a></td>
+                            <td class="ez-table-data-id"><a href="#">{{ section.id }}</a></td>
+                            <td class="ez-table-data-count">{{ sectionInfo.contentCount }}</td>
+                            <td>
+                                <a href="#" class="pure-button ez-button{% if not sectionInfo.canAssign %} pure-button-disabled{% endif %}" data-icon="&#xe619;">{{ 'section.assigned.to_subtree'|trans }}</a>
+                            </td>
+                            <td>
+                                <a href="#" class="pure-button ez-button{% if not sectionInfo.canEdit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'section.edit'|trans }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <p class="ez-table-data-buttons">
+                    <button class="pure-button ez-button ez-remove-section-button" data-icon="&#xe615;" disabled="disabled">{{ 'section.remove.selected'|trans }}</button>
+                    <a href="#" class="pure-button ez-button{% if not canCreate %} pure-button-disabled{% endif %}" data-icon="&#xe616;">{{ 'section.new'|trans }}</a>
+                </p>
+            </form>
+        </div>
+    </section>
+{% endblock %}
+
+{% block title %}{{ 'section.list'|trans }}{% endblock %}

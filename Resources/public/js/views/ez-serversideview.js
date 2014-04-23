@@ -15,11 +15,11 @@ YUI.add('ez-serversideview', function (Y) {
      * @constructor
      * @extends eZ.View
      */
-    Y.eZ.ServerSideView = Y.Base.create('serverSideView', Y.eZ.View, [Y.eZ.Tabs], {
+    Y.eZ.ServerSideView = Y.Base.create('serverSideView', Y.eZ.View, [Y.eZ.Tabs, Y.eZ.SelectionTable], {
         events: {
             '.ez-tabs .ez-tabs-label a': {
                 'tap': '_uiTab'
-            }
+            },
         },
 
         /**

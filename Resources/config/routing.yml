@@ -20,3 +20,9 @@ admin_phpinfo:
     defaults:
         _controller: ezsystems.platformui.controller.systeminfo:phpinfoAction
     methods: [GET]
+
+admin_sectionlist:
+    pattern: /pjax/section/list
+    defaults:
+        _controller: ezsystems.platformui.controller.section:listAction
+    methods: [GET]
