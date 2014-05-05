@@ -11,7 +11,8 @@
     "grunt-contrib-yuidoc": "~0.4.0",
     "grunt-contrib-clean": "~0.5.0",
     "grunt-istanbul": "~0.2.1",
-    "yui": "3.15.0"
+    "yui": "3.15.0",
+    "grunt-contrib-watch": "~0.6.1"
   },
   "scripts": {
     "test": "put something here, so Travis will run it for each build"

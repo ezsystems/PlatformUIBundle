@@ -1,6 +1,4 @@
 module.exports = function(grunt) {
-
-
     var reportDir = "./Tests/report",
         instrumentDir = "./Tests/instrument",
         sourceFiles = [ // Syntax "!<whatever>" means - exclude whatever from the result set
@@ -108,7 +106,16 @@ module.exports = function(grunt) {
                     stderr: true
                 }
             }
-        }
+        },
+        watch: {
+            options: {
+                atBegin: true
+            },
+            test: {
+                files: [sourceFiles, testFiles],
+                tasks: ["shell:grover"]
+            },
+        },
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -117,6 +124,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-istanbul');
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
     grunt.loadNpmTasks('grunt-shell');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('lint', ['jshint']);
     grunt.registerTask('ugly', ['jshint', 'uglify']);
