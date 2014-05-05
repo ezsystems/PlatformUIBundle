@@ -177,7 +177,7 @@ YUI.add('ez-platformuiapp', function (Y) {
          *
          * @method routeUri
          * @param {String} routeName the name of the route to look for
-         * @param {Object} params an object containing the key/value to replace
+         * @param {Object} [params] an object containing the key/value to replace
          *                 in the route path
          * @return {String} or null if the route was not found
          */
@@ -522,12 +522,14 @@ YUI.add('ez-platformuiapp', function (Y) {
              * App documentation{{/crossLink}}, each route can have several
              * metadata (all optional):
              *
-             *   * `loader`: contains a reference to a constructor function that
-             *     extends {{#crossLink "eZ.ViewLoader"}}eZ.ViewLoader{{/crossLink}}.
-             *     The {{#crossLink "eZ.PlatformUIApp/runLoader:method"}}`runLoader`{{/crossLink}}
+             *   * `service`: contains a reference to a constructor function that
+             *     extends {{#crossLink "eZ.ViewService"}}eZ.ViewService{{/crossLink}}.
+             *     The {{#crossLink "eZ.PlatformUIApp/handleMainView:method"}}`handleMainView`{{/crossLink}}
              *     middleware is responsible for using this function to build the
-             *     view loader which can be used to inject custom variables in the
-             *     top level view triggered by the route.
+             *     view service which can be used to inject custom variables in the
+             *     top level view triggered by the route. This view service is
+             *     also made a bubble target of the view so that it can react to
+             *     any custom event fired by the view.
              *   * `name`: name of the route which is useful to generate an URI
              *     with {{#crossLink
              *     "eZ.PlatformUIApp/routeUri:method"}}Y.eZ.PlatformUIApp.routeUri{{/crossLink}}
