@@ -132,10 +132,7 @@
                     assetRoot: "{{ asset( '/' ) }}",
                     capi: new Y.eZ.CAPI(
                         "{{ app.request.uriForPath('/')|trim('/') }}",
-                        new Y.eZ.SessionAuthAgent({
-                            login: "admin",
-                            password: "ezpublish"
-                        })
+                        new Y.eZ.SessionAuthAgent()
                     )
                 });
             app.on('ready', function () {
@@ -143,9 +140,8 @@
             });
             app.render().dispatch();
 
-            // for now redirecting to the dashboard to boot the application
             if ( !Y.config.doc.location.hash ) {
-                Y.config.doc.location.hash = '#/dashboard';
+                Y.config.doc.location.hash = '#/login';
             }
         });
     </script>

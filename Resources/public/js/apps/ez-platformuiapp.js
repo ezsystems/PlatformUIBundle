@@ -74,8 +74,12 @@ YUI.add('ez-platformuiapp', function (Y) {
         },
 
         views: {
+            loginFormView: {
+                type: Y.eZ.LoginFormView,
+            },
             dashboardView: {
                 type: Y.eZ.DashboardView,
+                parent: 'loginFormView',
             },
             contentEditView: {
                 type: Y.eZ.ContentEditView,
@@ -202,6 +206,17 @@ YUI.add('ez-platformuiapp', function (Y) {
         },
 
         /**
+         * Navigates to the given route build with the given parameters
+         *
+         * @method navigateTo
+         * @param {String} routeName
+         * @param {Object} [params]
+         */
+        navigateTo: function (routeName, params) {
+            this.navigate(this.routeUri(routeName, params));
+        },
+
+        /**
          * Display the error view
          *
          * @method _handleError
@@ -230,6 +245,63 @@ YUI.add('ez-platformuiapp', function (Y) {
         _retryAction: function (retryAction) {
             this.views.errorView.instance.set('active', false);
             retryAction.run.apply(retryAction.context, retryAction.args);
+        },
+
+        /**
+         * Logs in a user using the provided the credentials. If the credentials
+         * are wrong, the callback is called with the error and response from
+         * CAPI.logIn. If the credentials are correct, the error and response
+         * arguments are set with the ones from eZ.UserModel.load method. If the
+         * user loading fails, the user is automatically logged out.
+         *
+         * @method logIn
+         * @param credentials {Object} object containing a `login` and a `password`
+         * entries
+         * @param callback {Function}
+         * @param callback.error {false|CAPIError}
+         * @param callback.response {Response}
+         */
+        logIn: function (credentials, callback) {
+            var capi = this.get('capi'),
+                app = this;
+
+            capi.logIn(credentials, function (error, response) {
+                var user;
+
+                if ( error ) {
+                    callback(error, response);
+                    return;
+                }
+
+                user = app.get('user');
+                user.set('id', response.document.Session.User._href);
+                user.load({api: capi}, function (error, result) {
+                    if ( error ) {
+                        app.logOut(function () {
+                            callback(error, result);
+                        });
+                        return;
+                    }
+                    callback(error, result);
+                });
+            });
+        },
+
+        /**
+         * Logs out the current user and resets it
+         *
+         * @method logOut
+         * @param {Function} callback
+         * @param {false|CAPIError} callback.error the error provided by the CAPI
+         * @param {Response} callback.response the response provided by the CAPI
+         */
+        logOut: function (callback) {
+            var user = this.get('user');
+
+            this.get('capi').logOut(function (error, response) {
+                user.reset();
+                callback(error, response);
+            });
         },
 
         /**
@@ -310,6 +382,46 @@ YUI.add('ez-platformuiapp', function (Y) {
                 view.addTarget(viewInfo.service);
                 viewInfo.service.addTarget(this);
             }
+        },
+
+        /**
+         * Checks whether the user is loaded and logged in. If the user object
+         * in the `user` attribute is loaded, the user is considered logged in.
+         * If it's not loaded, the CAPI.isLoggedIn method is called and the user
+         * is loaded if it's logged other, the application user is redirected to
+         * the login form.
+         *
+         * @method checkUser
+         * @param {Object} req
+         * @param {Object} res
+         * @param {Function} next
+         */
+        checkUser: function (req, res, next) {
+            var user = this.get('user'),
+                app = this,
+                capi = this.get('capi');
+
+            if ( user.get('id') ) {
+                next();
+                return;
+            }
+
+            capi.isLoggedIn(function (error, response) {
+                if ( error ) {
+                    app.navigateTo('loginForm');
+                    return;
+                }
+                user.set('id', response.document.Session.User._href);
+                user.load({api: capi}, function (error) {
+                    if ( error ) {
+                        app.logOut(function () {
+                            app.navigateTo('loginForm');
+                        });
+                        return;
+                    }
+                    next();
+                });
+            });
         },
 
         /**
@@ -543,25 +655,32 @@ YUI.add('ez-platformuiapp', function (Y) {
              */
             routes: {
                 value: [{
+                    name: "loginForm",
+                    path: "/login",
+                    service: Y.eZ.LoginFormViewService,
+                    sideViews: {},
+                    view: 'loginFormView',
+                    callbacks: ['open', 'handleSideViews', 'handleMainView']
+                }, {
                     name: "dashboard",
                     path: "/dashboard",
                     sideViews: {'navigationHub': true},
                     view: 'dashboardView',
-                    callbacks: ['open', 'handleSideViews', 'handleMainView']
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "editContent",
                     path: '/edit/:id',
                     service: Y.eZ.ContentEditViewService,
                     sideViews: {},
                     view: 'contentEditView',
-                    callbacks: ['open', 'handleSideViews', 'handleMainView']
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "viewLocation",
                     path: '/view/:id',
                     service: Y.eZ.LocationViewViewService,
                     sideViews: {'discoveryBar': true, 'navigationHub': true},
                     view: 'locationViewView',
-                    callbacks: ['open', 'handleSideViews', 'handleMainView']
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     path: '/admin/*',
                     callback: '_loadAdminExtension'
@@ -625,7 +744,21 @@ YUI.add('ez-platformuiapp', function (Y) {
             capi: {
                 writeOnce: "initOnly",
                 value: null
-            }
+            },
+
+            /**
+             * The logged in user
+             *
+             * @attribute user
+             * @type eZ.User
+             * @readOnly
+             */
+            user: {
+                readOnly: true,
+                valueFn: function () {
+                    return new Y.eZ.User();
+                },
+            },
         }
     });
 });
