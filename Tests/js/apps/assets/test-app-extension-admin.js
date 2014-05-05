@@ -1,7 +1,6 @@
 YUI.add('ez-app-extension-admin', function (Y) {
     Y.namespace('eZ');
 
-    console.log('LOADED');
     function AdminAppExtensionTest() {
     }
 
