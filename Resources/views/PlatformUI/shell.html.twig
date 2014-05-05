@@ -13,6 +13,7 @@
 
     '@eZPlatformUIBundle/Resources/public/css/layout.css'
     '@eZPlatformUIBundle/Resources/public/css/views/navigationhub.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/loginform.css'
     '@eZPlatformUIBundle/Resources/public/css/views/contentedit.css'
     '@eZPlatformUIBundle/Resources/public/css/views/locationview.css'
     '@eZPlatformUIBundle/Resources/public/css/views/rawcontent.css'
@@ -45,6 +46,7 @@
 
     '@eZPlatformUIBundle/Resources/public/css/theme/app.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/error.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/loginform.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/bar.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/discoverybar.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/actions/button.css'
@@ -161,6 +163,8 @@
 {% endmacro %}
 
 {% import _self as handlebars %}
+
+{{ handlebars.include( 'loginformview.handlebars', 'loginformview' ) }}
 
 {{ handlebars.include( 'dashboardview.handlebars', 'dashboardview' ) }}
 

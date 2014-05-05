@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Login Form view tests</title>
+</head>
+<body>
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="loginformview-ez-template">
+    <form action="" class="ez-loginform" method="post">
+        <p class="ez-loginform-message">default message</p>
+
+        <input type="text" name="username" value="" class="ez-loginform-interactive" />
+        <input type="password" name="password" value="" class="ez-loginform-interactive" />
+        <button class="ez-loginform-button ez-loginform-interactive">Login</button>
+    </form>
+</script>
+
+<script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-loginformview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-loginformview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-loginformview": {
+                requires: ['ez-templatebasedview', 'node-style'],
+                fullpath: "../../../Resources/public/js/views/ez-loginformview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+        }
+    }).use('ez-loginformview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

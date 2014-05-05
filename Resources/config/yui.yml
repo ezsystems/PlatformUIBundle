@@ -10,6 +10,7 @@ parameters:
                     - 'node-screen'
                     - 'handlebars'
                     - 'ez-capi'
+                    - 'ez-loginformview'
                     - 'ez-dashboardview'
                     - 'ez-contenteditviewservice'
                     - 'ez-contenteditview'
@@ -37,6 +38,9 @@ parameters:
             ez-templatebasedview:
                 requires: ['ez-texthelper', 'ez-view', 'handlebars']
                 path: js/views/ez-templatebasedview.js
+            ez-loginformview:
+                requires: ['ez-templatebasedview', 'node-style']
+                path: js/views/ez-loginformview.js
             ez-dashboardview:
                 requires: ['ez-templatebasedview']
                 path: js/views/ez-dashboardview.js

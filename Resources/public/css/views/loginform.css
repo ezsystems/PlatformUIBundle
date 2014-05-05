@@ -1,0 +1,57 @@
+.ez-view-loginformview {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+         -o-box-sizing: border-box;
+            box-sizing: border-box;
+
+}
+
+.ez-view-loginformview .ez-loginform-content {
+    text-align: center;
+    padding-top: 5%;
+}
+
+.ez-view-loginformview .ez-loginform {
+    text-align: left;
+    display: inline-block;
+    padding: 2.5em 1.5em 1.5em 1.5em;
+}
+
+.ez-view-loginformview .ez-loginform-label {
+    display: none;
+}
+
+.ez-view-loginformview .ez-loginform-title {
+    text-align: right;
+    margin-bottom: 2em;
+}
+
+.ez-view-loginformview .ez-loginform-line {
+    margin: 2em 0 1em 0;
+    width: 25em;
+    box-sizing: border-box;
+}
+
+.ez-view-loginformview .ez-loginform-message {
+    padding: 0.4em 1em;
+}
+
+.ez-view-loginformview .ez-loginform-input {
+    width: 100%;
+}
+
+.ez-view-loginformview .ez-loginform-button {
+    float: right;
+    margin-top: -0.5em;
+    padding: 0.5em 1.5em;
+}
+
+.ez-view-loginformview .ez-logo {
+    margin-top: -1em;
+    float: left;
+}
+
+.ez-view-loginformview .ez-copyright {
+    margin: 2em 0;
+}
