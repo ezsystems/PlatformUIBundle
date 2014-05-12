@@ -1,11 +1,30 @@
 .ez-button {
     border: 1px solid #bbb;
+    border-radius: 2px;
 
     -webkit-transition: all 0.2s;
        -moz-transition: all 0.2s;
         -ms-transition: all 0.2s;
          -o-transition: all 0.2s;
             transition: all 0.2s;
+
+    background: #e6e6e6;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#e6e6e6));
+    background: -webkit-linear-gradient(top, #fff 0%, #e6e6e6 100%);
+    background:    -moz-linear-gradient(top, #fff 0%, #e6e6e6 100%);
+    background:     -ms-linear-gradient(top, #fff 0%, #e6e6e6 100%);
+    background:      -o-linear-gradient(top, #fff 0%, #e6e6e6 100%);
+    background:         linear-gradient(to bottom, #fff 0%, #e6e6e6 100%);
+}
+
+.ez-button:hover {
+    background: #fff;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e6e6e6), color-stop(100%,#fff));
+    background: -webkit-linear-gradient(top, #e6e6e6 0%, #fff 100%);
+    background:    -moz-linear-gradient(top, #e6e6e6 0%, #fff 100%);
+    background:     -ms-linear-gradient(top, #e6e6e6 0%, #fff 100%);
+    background:      -o-linear-gradient(top, #e6e6e6 0%, #fff 100%);
+    background:         linear-gradient(to bottom, #e6e6e6 0%, #fff 100%);
 }
 
 .ez-button.pure-button-disabled,

@@ -40,7 +40,7 @@
             "ez-platformuiapp": {
                 requires: [
                     'app', 'app-transitions', 'node-screen',
-                    'ez-errorview', 'ez-viewservice', 'handlebars'
+                    'ez-errorview', 'ez-viewservice', 'handlebars', 'ez-usermodel',
                 ],
                 fullpath: "../../../Resources/public/js/apps/ez-platformuiapp.js"
             },
@@ -59,6 +59,14 @@
             "ez-view": {
                 requires: ['view'],
                 fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-usermodel": {
+                requires: ['ez-restmodel'],
+                fullpath: "../../../Resources/public/js/models/ez-usermodel.js"
+            },
+            "ez-restmodel": {
+                requires: ['model'],
+                fullpath: "../../../Resources/public/js/models/ez-restmodel.js"
             },
 
             "ez-app-extension-admin": {

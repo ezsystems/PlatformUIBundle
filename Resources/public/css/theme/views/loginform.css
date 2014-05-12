@@ -1,0 +1,73 @@
+.ez-view-loginformview {
+    background: #f5f4f2;
+    border-top: 3px solid #000;
+}
+
+.ez-view-loginformview .ez-loginform {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: 0px 1px 2px #CCC;
+}
+
+.ez-view-loginformview .ez-loginform-link {
+    font-size: 90%;
+}
+
+.ez-view-loginformview .ez-loginform-input {
+    border-radius: 3px;
+}
+
+.ez-view-loginformview .ez-loginform-title {
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.ez-view-loginformview .ez-loginform-button {
+    font-weight: bold;
+    font-size: 90%;
+    color: #333;
+}
+
+.ez-view-loginformview .ez-copyright {
+    font-size: 85%;
+    color: #666;
+    font-style: italic;
+}
+
+.ez-view-loginformview .ez-loginform-message {
+    color: #fff;
+    border-radius: 3px;
+    background: #528036;
+    padding: 0.4em;
+
+    -webkit-transition: all 0.2s ease-in-out;
+       -moz-transition: all 0.2s ease-in-out;
+        -ms-transition: all 0.2s ease-in-out;
+         -o-transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease-in-out;
+}
+
+.ez-view-loginformview .ez-loginform-message:before {
+    padding-right: 0.5em;
+    content: "\E617";
+    font-family: 'ez-platformui-icomoon';
+    speak: none;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ez-view-loginformview.is-authenticating .ez-loginform-message {
+    background: #333;
+}
+
+.ez-view-loginformview.is-login-error .ez-loginform-message {
+    background: #BF3E33;
+}
+
+.ez-view-loginformview.is-login-error .ez-loginform-message:before {
+    content: "\E61B";
+}

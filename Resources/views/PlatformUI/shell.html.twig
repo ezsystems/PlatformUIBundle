@@ -13,6 +13,7 @@
 
     '@eZPlatformUIBundle/Resources/public/css/layout.css'
     '@eZPlatformUIBundle/Resources/public/css/views/navigationhub.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/loginform.css'
     '@eZPlatformUIBundle/Resources/public/css/views/contentedit.css'
     '@eZPlatformUIBundle/Resources/public/css/views/locationview.css'
     '@eZPlatformUIBundle/Resources/public/css/views/rawcontent.css'
@@ -45,6 +46,7 @@
 
     '@eZPlatformUIBundle/Resources/public/css/theme/app.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/error.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/loginform.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/bar.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/discoverybar.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/actions/button.css'
@@ -130,10 +132,7 @@
                     assetRoot: "{{ asset( '/' ) }}",
                     capi: new Y.eZ.CAPI(
                         "{{ app.request.uriForPath('/')|trim('/') }}",
-                        new Y.eZ.SessionAuthAgent({
-                            login: "admin",
-                            password: "ezpublish"
-                        })
+                        new Y.eZ.SessionAuthAgent()
                     )
                 });
             app.on('ready', function () {
@@ -141,9 +140,8 @@
             });
             app.render().dispatch();
 
-            // for now redirecting to the dashboard to boot the application
             if ( !Y.config.doc.location.hash ) {
-                Y.config.doc.location.hash = '#/dashboard';
+                Y.config.doc.location.hash = '#/login';
             }
         });
     </script>
@@ -161,6 +159,8 @@
 {% endmacro %}
 
 {% import _self as handlebars %}
+
+{{ handlebars.include( 'loginformview.handlebars', 'loginformview' ) }}
 
 {{ handlebars.include( 'dashboardview.handlebars', 'dashboardview' ) }}
 

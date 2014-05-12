@@ -1,6 +1,6 @@
 YUI.add('ez-platformuiapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest,
-        adminExtTest,
+        adminExtTest, loginTest, logoutTest, checkUserTest,
         handleMainViewTest, tplTest, titleTest;
 
     appTest = new Y.Test.Case({
@@ -914,6 +914,27 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.app.destroy();
         },
 
+        "Should navigate to the given route": function () {
+            var navigate = false,
+                that = this;
+
+            this.app.on('navigate', function (e) {
+                e.preventDefault();
+                navigate = true;
+
+                Y.Assert.areEqual(
+                    e.url.split(that.root)[1],
+                    "sTr1ng/string/m1X3d/mixed"
+                );
+            });
+
+            this.app.navigateTo('complex', {param: "string", PARAM2: "mixed"});
+
+            Y.Assert.isTrue(
+                navigate, "The navigate event should have been fired"
+            );
+        },
+
         _testRoute: function (routeName, params, expected, msg) {
             Y.Assert.areSame(expected, this.app.routeUri(routeName, params), msg);
         },
@@ -1039,6 +1060,388 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         }
     });
 
+    loginTest = new Y.Test.Case({
+        name: "Login app tests",
+
+        setUp: function () {
+            this.capiMock = new Y.Mock();
+            this.userMock = new Y.Mock();
+            this.app = new Y.eZ.PlatformUIApp({
+                capi: this.capiMock
+            });
+
+            this.app._set('user', this.userMock);
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+            delete this.capiMock;
+        },
+
+        _configureCapiMockLogIn: function (credentials, error, response) {
+            Y.Mock.expect(this.capiMock, {
+                method: 'logIn',
+                args: [credentials, Y.Mock.Value.Function],
+                run: function (c, callback) {
+                    callback(error, response);
+                }
+            });
+        },
+
+        _configureUserMock: function (userId, error, loadUserResponse) {
+            var that = this;
+
+            Y.Mock.expect(this.userMock, {
+                method: 'set',
+                args: ['id', userId],
+            });
+            Y.Mock.expect(this.userMock, {
+                method: 'load',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Y.Assert.areSame(
+                        that.capiMock, options.api,
+                        "The CAPI should be availabled in the options"
+                    );
+                    callback(error, loadUserResponse);
+                },
+            });
+        },
+
+        "Should load the user on login": function () {
+            var credentials = {
+                    login: "samsam",
+                    password: "heroscosmique"
+                },
+                userId = "/user/samsam",
+                loginError = false,
+                createSession = {
+                    document: {
+                        Session: {
+                            User: {
+                                _href: userId,
+                            }
+                        }
+                    }
+                },
+                loadUser = {},
+                callbackCalled = false;
+
+            this._configureCapiMockLogIn(credentials, loginError, createSession);
+            this._configureUserMock(userId, false, loadUser);
+
+            this.app.logIn(credentials, function (error, result) {
+                callbackCalled = true;
+                Y.Assert.areSame(
+                    loginError, error,
+                    "The error of the failed login should be provided"
+                );
+                Y.Assert.areSame(
+                    loadUser, result,
+                    "The resulf of the user loading should be provided"
+                );
+            });
+            Y.Assert.isTrue(callbackCalled, "The logIn callback should have been called");
+            Y.Mock.verify(this.userMock);
+            Y.Mock.verify(this.capiMock);
+        },
+
+        "Should handle the logIn error": function () {
+            var credentials = {
+                    login: "samsam",
+                    password: "grandheros"
+                },
+                loginError = {},
+                createSessionErrorResponse = {},
+                callbackCalled = false;
+
+            this._configureCapiMockLogIn(credentials, loginError, createSessionErrorResponse);
+
+            this.app.logIn(credentials, function (error, result) {
+                callbackCalled = true;
+                Y.Assert.areSame(
+                    loginError, error,
+                    "The error of the failed login should be provided"
+                );
+                Y.Assert.areSame(
+                    createSessionErrorResponse, result,
+                    "The resulf of the failed login should be provided"
+                );
+            });
+            Y.Assert.isTrue(callbackCalled, "The logIn callback should have been called");
+            Y.Mock.verify(this.capiMock);
+        },
+
+        "Should logout when the user loading fails": function () {
+            var credentials = {
+                    login: "samsam",
+                    password: "heroscosmique"
+                },
+                userId = "/user/samsam",
+                loginError = false,
+                createSession = {
+                    document: {
+                        Session: {
+                            User: {
+                                _href: userId,
+                            }
+                        }
+                    }
+                },
+                loadUserError = {},
+                loadUser = {},
+                callbackCalled = false;
+
+            this._configureCapiMockLogIn(credentials, loginError, createSession);
+            this._configureUserMock(userId, loadUserError, loadUser);
+
+            Y.Mock.expect(this.capiMock, {
+                method: 'logOut',
+                args: [Y.Mock.Value.Function],
+                run: function (cb) {
+                    cb();
+                },
+            });
+            Y.Mock.expect(this.userMock, {
+                method: 'reset'
+            });
+
+            this.app.logIn(credentials, function (error, result) {
+                callbackCalled = true;
+                Y.Assert.areSame(
+                    loadUserError, error,
+                    "The error of the failed user loading should be provided"
+                );
+                Y.Assert.areSame(
+                    loadUser, result,
+                    "The resulf of the failed user loading should be provided"
+                );
+            });
+            Y.Assert.isTrue(callbackCalled, "The logIn callback should have been called");
+            Y.Mock.verify(this.userMock);
+            Y.Mock.verify(this.capiMock);
+        },
+    });
+
+    logoutTest = new Y.Test.Case({
+        name: "Login app tests",
+
+        setUp: function () {
+            this.capiMock = new Y.Mock();
+            this.userMock = new Y.Mock();
+            this.app = new Y.eZ.PlatformUIApp({
+                capi: this.capiMock
+            });
+
+            this.app._set('user', this.userMock);
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+            delete this.capiMock;
+        },
+
+        "Should reset the user and provide the response when logging out": function () {
+            var logOutResponse = {},
+                logOutError = {};
+
+            Y.Mock.expect(this.capiMock, {
+                method: 'logOut',
+                args: [Y.Mock.Value.Function],
+                run: function (cb) {
+                    cb(logOutError, logOutResponse);
+                },
+            });
+            Y.Mock.expect(this.userMock, {
+                method: 'reset',
+            });
+
+            this.app.logOut(function (err, resp) {
+                Y.Assert.areSame(
+                    logOutError, err, "The error of the logout should be provided"
+                );
+                Y.Assert.areSame(
+                    logOutResponse, resp, "The response of the logout should be provided"
+                );
+            });
+
+            Y.Mock.verify(this.userMock);
+            Y.Mock.verify(this.capiMock);
+        },
+    });
+
+    checkUserTest = new Y.Test.Case({
+        name: "Check user app tests",
+
+        setUp: function () {
+            this.capiMock = new Y.Mock();
+            this.userMock = new Y.Mock();
+            this.app = new Y.eZ.PlatformUIApp({
+                capi: this.capiMock
+            });
+
+            this.app._set('user', this.userMock);
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+            delete this.capiMock;
+        },
+
+        _configureUserMockGet: function (userId) {
+            Y.Mock.expect(this.userMock, {
+                method: 'get',
+                args: ['id'],
+                returns: userId,
+            });
+        },
+
+        _configureCapiUserLoad: function (userId, loadError) {
+            var that = this;
+
+            Y.Mock.expect(this.userMock, {
+                method: 'set',
+                args: ['id', userId]
+            });
+
+            Y.Mock.expect(this.userMock, {
+                method: 'load',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, cb) {
+                    Y.Assert.areSame(
+                        that.capiMock, options.api,
+                        "The CAPI should be provided to the load method"
+                    );
+                    cb(loadError);
+                }
+            });
+        },
+
+        _configureCapiMockIsLoggedIn: function (error, response) {
+            Y.Mock.expect(this.capiMock, {
+                method: 'isLoggedIn',
+                args: [Y.Mock.Value.Function],
+                run: function (callback) {
+                    callback(error, response);
+                }
+            });
+        },
+
+        "Should call the next callback if the user is loaded": function () {
+            var userId = '14',
+                nextCalled = false;
+
+            this._configureUserMockGet(userId);
+
+            this.app.checkUser({}, {}, function () {
+                nextCalled = true;
+            });
+
+            Y.Assert.isTrue(nextCalled, "The next callback should have been called");
+            Y.Mock.verify(this.userMock);
+        },
+
+        "Should check if the user is logged in and load the user": function () {
+            var nextCalled = false,
+                userId = '14',
+                isLoggedInResponse = {
+                    document: {
+                        Session: {
+                            User: {
+                                _href: userId
+                            }
+                        }
+                    }
+                };
+
+            this._configureUserMockGet(false);
+            this._configureCapiMockIsLoggedIn(false, isLoggedInResponse);
+            this._configureCapiUserLoad(userId, false);
+
+            this.app.checkUser({}, {}, function () {
+                nextCalled = true;
+            });
+
+            Y.Assert.isTrue(nextCalled, "The next callback should have been called");
+            Y.Mock.verify(this.userMock);
+            Y.Mock.verify(this.capiMock);
+        },
+
+        "Should redirect to the login form if the user not logged in": function () {
+            var navigateToLoginForm = false;
+
+            this.app.navigateTo = function (routeName, params) {
+                Y.Assert.areSame(
+                    'loginForm', routeName,
+                    "The app should navigate to the login form"
+                );
+                Y.Assert.isUndefined(params);
+                navigateToLoginForm = true;
+            };
+
+            this._configureUserMockGet(false);
+            this._configureCapiMockIsLoggedIn(true, {});
+
+            this.app.checkUser({}, {}, function () {
+                Y.Assert.fail("The next callback should not have been called");
+            });
+
+            Y.Assert.isTrue(navigateToLoginForm);
+            Y.Mock.verify(this.userMock);
+            Y.Mock.verify(this.capiMock);
+        },
+
+        "Should redirect to the login form if the user loading fails": function () {
+            var navigateToLoginForm = false,
+                userId = '14',
+                isLoggedInResponse = {
+                    document: {
+                        Session: {
+                            User: {
+                                _href: userId
+                            }
+                        }
+                    }
+                };
+
+            this.app.navigateTo = function (routeName, params) {
+                Y.Assert.areSame(
+                    'loginForm', routeName,
+                    "The app should navigate to the login form"
+                );
+                Y.Assert.isUndefined(params);
+                navigateToLoginForm = true;
+            };
+
+            this._configureUserMockGet(false);
+            this._configureCapiMockIsLoggedIn(false, isLoggedInResponse);
+            this._configureCapiUserLoad(userId, true);
+
+            Y.Mock.expect(this.capiMock, {
+                method: 'logOut',
+                args: [Y.Mock.Value.Function],
+                run: function (cb) {
+                    cb();
+                }
+            });
+            Y.Mock.expect(this.userMock, {
+                method: 'reset'
+            });
+
+            this.app.checkUser({}, {}, function () {
+                Y.Assert.fail("The next callback should not have been called");
+            });
+
+            Y.Assert.isTrue(navigateToLoginForm);
+            Y.Mock.verify(this.userMock);
+            Y.Mock.verify(this.capiMock);
+        },
+    });
+
+
     Y.Test.Runner.setName("eZ Platform UI App tests");
     Y.Test.Runner.add(appTest);
     Y.Test.Runner.add(titleTest);
@@ -1047,5 +1450,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(sideViewsTest);
     Y.Test.Runner.add(reverseRoutingTest);
     Y.Test.Runner.add(adminExtTest);
-
+    Y.Test.Runner.add(loginTest);
+    Y.Test.Runner.add(logoutTest);
+    Y.Test.Runner.add(checkUserTest);
 }, '0.0.1', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice']});
