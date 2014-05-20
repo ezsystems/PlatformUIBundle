@@ -82,7 +82,7 @@ class TwigYuiExtension extends Twig_Extension
         {
             $res = $configObject . ' = ';
         }
-        return $res . json_encode( $this->yui, JSON_UNESCAPED_SLASHES ) . ";";
+        return $res . ( defined( 'JSON_UNESCAPED_SLASHES' ) ? json_encode( $this->yui, JSON_UNESCAPED_SLASHES ) :  json_encode( $this->yui ) ) . ";";
     }
 
     /**
