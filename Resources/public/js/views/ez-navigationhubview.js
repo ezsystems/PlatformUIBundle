@@ -364,7 +364,7 @@ YUI.add('ez-navigationhubview', function (Y) {
          * Sets the _navigationMenu property depending on the val parameter.
          *
          * @method _setNavigationMenu
-         * @privated
+         * @private
          * @param val {String}
          * @return {String} val
          */
