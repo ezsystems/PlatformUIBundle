@@ -1,5 +1,5 @@
 YUI.add('ez-platformuiapp-tests', function (Y) {
-    var appTest, reverseRoutingTest, sideViewsTest,
+    var appTest, reverseRoutingTest, sideViewsTest, sideViewServicesTest,
         adminExtTest, loginTest, logoutTest, checkUserTest,
         handleMainViewTest, tplTest, titleTest;
 
@@ -660,6 +660,171 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
+    sideViewServicesTest = new Y.Test.Case({
+        name: "Side view service test",
+
+        setUp: function () {
+            var that = this;
+
+            this.app = new Y.eZ.PlatformUIApp({
+                container: '.app-sideviews',
+                viewContainer: '.view-container'
+            });
+            this.load1Calls = 0;
+            this.load2Calls = 0;
+            this.load1 = function (next) { setTimeout(function () { that.load1Calls++; next(); }, 100); };
+            this.load2 = function (next) { setTimeout(function () { that.load2Calls++; next(); }, 50); };
+            this.viewParameters1 = {"bike": "Lapierre X-Control 229"};
+            this.viewParameters2 = {"bike": "Sunn Xicrcuit"};
+            this.app.sideViews = {
+                sideView1: {
+                    hideClass: 'sideview1-hidden',
+                    type: Y.Base.create('view1', Y.View, [], {
+                    }),
+                    service: Y.Base.create('viewService1', Y.eZ.ViewService, [], {
+                        load: that.load1,
+                        getViewParameters: function () {
+                            return that.viewParameters1;
+                        }
+                    }),
+                    container: '.sideview1'
+                },
+                sideView2: {
+                    hideClass: 'sideview2-hidden',
+                    type: Y.Base.create('view2', Y.View, [], {
+                    }),
+                    service: Y.Base.create('viewService2', Y.eZ.ViewService, [], {
+                        load: that.load2,
+                        getViewParameters: function () {
+                            return that.viewParameters2;
+                        }
+                    }),
+                    container: '.sideview2'
+                }
+            };
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+        },
+
+        "Should instantiate the view service associated with the view": function () {
+            var that = this,
+                request, response = {};
+
+            request = {
+                route: {
+                    sideViews: {
+                        "sideView1": true,
+                        "sideView2": false,
+                    }
+                }
+            };
+
+            this.app.handleSideViews(request, response, function () {
+                that.resume(function () {
+                    var service = this.app.sideViews.sideView1.serviceInstance,
+                        view = this.app.sideViews.sideView1.instance;
+
+                    Y.Assert.isInstanceOf(
+                        this.app.sideViews.sideView1.service,
+                        service,
+                        "The service instance should be kept"
+                    );
+                    Y.Assert.isUndefined(
+                        this.app.sideViews.sideView2.serviceInstance,
+                        "The service 2 should not be instantiated"
+                    );
+
+                    Y.Assert.areEqual(
+                        1, this.load1Calls, "service 1 load should have been called once"
+                    );
+                    Y.Assert.areEqual(
+                        0, this.load2Calls, "service 2 load should not have been called"
+                    );
+
+                    Y.Assert.areEqual(
+                        view.get('bike'),
+                        this.viewParameters1.bike,
+                        "The side view should receive the view parameters from its service"
+                    );
+                    Y.Assert.isTrue(
+                        view.getTargets().indexOf(service) !== -1,
+                        "The service should be a bubble target of the view"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should call next after all service load are finished": function () {
+            var that = this,
+                request, response = {};
+
+            request = {
+                route: {
+                    sideViews: {
+                        "sideView1": true,
+                        "sideView2": true,
+                    }
+                }
+            };
+
+            this.app.handleSideViews(request, response, function () {
+                that.resume(function () {
+                    Y.Assert.areEqual(
+                        1, this.load1Calls, "service 1 load should have been called once"
+                    );
+                    Y.Assert.areEqual(
+                        1, this.load2Calls, "service 2 load should have been called once"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should remove the app from the bubble target of the service": function () {
+            var that = this,
+                request, response = {}, request2;
+
+            request = {
+                route: {
+                    sideViews: {
+                        "sideView1": true,
+                        "sideView2": true,
+                    }
+                }
+            };
+            request2 = {
+                route: {
+                    sideViews: {
+                        "sideView1": true,
+                        "sideView2": false,
+                    }
+                }
+            };
+
+            this.app.handleSideViews(request, response, function () {
+                that.app.handleSideViews(request2, response, function () {
+                    that.resume(function () {
+                        var service = this.app.sideViews.sideView2.serviceInstance;
+
+                        Y.Assert.areEqual(
+                            2, this.load1Calls, "service 1 load should have been called twice"
+                        );
+                        Y.Assert.areEqual(
+                            1, this.load2Calls, "service 2 load should have been called once"
+                        );
+                        Y.Assert.isTrue(
+                            service.getTargets().indexOf(this.app) === -1,
+                            "The app should not be a bubble target of the service"
+                        );
+                    });
+                });
+            });
+            this.wait();
+        },
+    });
 
     sideViewsTest = new Y.Test.Case({
         name: "Side views management",
@@ -675,11 +840,13 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 sideView1: {
                     hideClass: this.sideView1Hidden,
                     type: Y.View,
+                    service: Y.eZ.ViewService,
                     container: '.sideview1'
                 },
                 sideView2: {
                     hideClass: this.sideView2Hidden,
                     type: Y.View,
+                    service: Y.eZ.ViewService,
                     container: '.sideview2'
                 }
             };
@@ -1098,10 +1265,18 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         _configureUserMock: function (userId, error, loadUserResponse) {
             var that = this;
 
-            Y.Mock.expect(this.userMock, {
-                method: 'set',
-                args: ['id', userId],
-            });
+            if ( !error ) {
+                Y.Mock.expect(this.userMock, {
+                    method: 'set',
+                    args: ['id', userId],
+                });
+            } else {
+                Y.Mock.expect(this.userMock, {
+                    method: 'set',
+                    args: ['id', Y.Mock.Value.Any],
+                    callCount: 2,
+                });
+            }
             Y.Mock.expect(this.userMock, {
                 method: 'load',
                 args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
@@ -1263,6 +1438,10 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             Y.Mock.expect(this.userMock, {
                 method: 'reset',
             });
+            Y.Mock.expect(this.userMock, {
+                method: 'set',
+                args: ['id', undefined]
+            });
 
             this.app.logOut(function (err, resp) {
                 Y.Assert.areSame(
@@ -1308,10 +1487,18 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         _configureCapiUserLoad: function (userId, loadError) {
             var that = this;
 
-            Y.Mock.expect(this.userMock, {
-                method: 'set',
-                args: ['id', userId]
-            });
+            if ( !loadError ) {
+                Y.Mock.expect(this.userMock, {
+                    method: 'set',
+                    args: ['id', userId]
+                });
+            } else {
+                Y.Mock.expect(this.userMock, {
+                    method: 'set',
+                    args: ['id', Y.Mock.Value.Any],
+                    callCount: 2,
+                });
+            }
 
             Y.Mock.expect(this.userMock, {
                 method: 'load',
@@ -1454,6 +1641,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(tplTest);
     Y.Test.Runner.add(handleMainViewTest);
     Y.Test.Runner.add(sideViewsTest);
+    Y.Test.Runner.add(sideViewServicesTest);
     Y.Test.Runner.add(reverseRoutingTest);
     Y.Test.Runner.add(adminExtTest);
     Y.Test.Runner.add(loginTest);

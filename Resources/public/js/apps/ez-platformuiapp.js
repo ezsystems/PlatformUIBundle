@@ -63,11 +63,13 @@ YUI.add('ez-platformuiapp', function (Y) {
         sideViews: {
             discoveryBar: {
                 type: Y.eZ.DiscoveryBarView,
+                service: Y.eZ.DiscoveryBarViewService,
                 container: '.ez-menu-container',
                 hideClass: 'is-menu-hidden'
             },
             navigationHub: {
                 type: Y.eZ.NavigationHubView,
+                service: Y.eZ.NavigationHubViewService,
                 container: '.ez-navigation-container',
                 hideClass: 'is-navigation-hidden'
             }
@@ -300,6 +302,7 @@ YUI.add('ez-platformuiapp', function (Y) {
 
             this.get('capi').logOut(function (error, response) {
                 user.reset();
+                user.set('id', undefined);
                 callback(error, response);
             });
         },
@@ -334,32 +337,56 @@ YUI.add('ez-platformuiapp', function (Y) {
          */
         handleSideViews: function (req, res, next) {
             var container = this.get('container'),
-                routeSideViews = req.route.sideViews;
+                routeSideViews = req.route.sideViews,
+                tasks = new Y.Parallel();
 
             Y.Object.each(this.sideViews, function (viewInfo, key) {
-                var cl = viewInfo.hideClass;
+                var cl = viewInfo.hideClass,
+                    service, view, newView = false;
 
                 if ( routeSideViews && routeSideViews[key] ) {
+                    if ( !viewInfo.serviceInstance ) {
+                        viewInfo.serviceInstance = new viewInfo.service({
+                            app: this,
+                            capi: this.get('capi'),
+                        });
+                    }
+                    service = viewInfo.serviceInstance;
+                    service.setAttrs({
+                        request: req,
+                        response: res,
+                    });
                     if ( !viewInfo.instance ) {
                         viewInfo.instance = new viewInfo.type();
-                        viewInfo.instance.render();
+                        newView = true;
                     }
-                    this.get('container').one(viewInfo.container).append(
-                        viewInfo.instance.get('container')
-                    );
-                    viewInfo.instance.set('active', true);
-                    container.removeClass(cl);
-                    viewInfo.instance.addTarget(this);
+                    view = viewInfo.instance;
+                    view.addTarget(service);
+                    service.addTarget(this);
+                    service.load(tasks.add(function () {
+                        view.setAttrs(service.getViewParameters());
+                        if ( newView ) {
+                            view.render();
+                        }
+                        container.one(viewInfo.container).append(
+                            view.get('container')
+                        );
+                        view.set('active', true);
+                        container.removeClass(cl);
+                    }));
                 } else {
                     container.addClass(cl);
                     if ( viewInfo.instance ) {
-                        viewInfo.instance.set('active', false);
-                        viewInfo.instance.remove();
-                        viewInfo.instance.removeTarget(this);
+                        view = viewInfo.instance;
+                        view.set('active', false);
+                        view.remove();
+                        viewInfo.serviceInstance.removeTarget(this);
                     }
                 }
             }, this);
-            next();
+            tasks.done(function () {
+                next();
+            });
         },
 
         /**

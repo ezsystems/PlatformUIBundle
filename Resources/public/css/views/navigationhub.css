@@ -36,8 +36,22 @@
 }
 
 .ez-view-navigationhubview .ez-zone,
-.ez-view-navigationhubview .ez-link {
+.ez-view-navigationhubview .ez-link,
+.ez-view-navigationhubview .ez-user-info {
     padding: 1em;
+}
+
+.ez-view-navigationhubview .ez-user-info {
+    float: right;
+}
+
+.ez-view-navigationhubview .ez-user-info .ez-user-info-name,
+.ez-view-navigationhubview .ez-user-info .ez-user-info-logout {
+    margin: 0;
+}
+
+.ez-view-navigationhubview .ez-user-info .ez-user-info-logout {
+    text-align: right;
 }
 
 .ez-view-navigationhubview .ez-navigation .ez-logo {

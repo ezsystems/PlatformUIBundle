@@ -8,6 +8,7 @@ parameters:
                     - 'app'
                     - 'app-transitions'
                     - 'node-screen'
+                    - 'parallel'
                     - 'handlebars'
                     - 'ez-capi'
                     - 'ez-loginformviewservice'
@@ -17,7 +18,9 @@ parameters:
                     - 'ez-contenteditview'
                     - 'ez-locationviewview'
                     - 'ez-locationviewviewservice'
+                    - 'ez-navigationhubviewservice'
                     - 'ez-navigationhubview'
+                    - 'ez-discoverybarviewservice'
                     - 'ez-discoverybarview'
                     - 'ez-errorview'
                     - 'ez-usermodel'
@@ -34,6 +37,12 @@ parameters:
             ez-locationviewviewservice:
                 requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel']
                 path: js/views/services/ez-locationviewviewservice.js
+            ez-navigationhubviewservice:
+                requires: ['ez-viewservice']
+                path: js/views/services/ez-navigationhubviewservice.js
+            ez-discoverybarviewservice:
+                requires: ['ez-viewservice']
+                path: js/views/services/ez-discoverybarviewservice.js
             ez-serversideviewservice:
                 requires: ['io-base', 'ez-viewservice']
                 path: js/views/services/ez-serversideviewservice.js
