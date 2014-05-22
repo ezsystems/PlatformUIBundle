@@ -42,15 +42,17 @@
 }
 
 .ez-view-navigationhubview .ez-user-info {
-    float: right;
+    white-space: normal;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding-left: 0;
+    width: 10em;
 }
 
 .ez-view-navigationhubview .ez-user-info .ez-user-info-name,
 .ez-view-navigationhubview .ez-user-info .ez-user-info-logout {
     margin: 0;
-}
-
-.ez-view-navigationhubview .ez-user-info .ez-user-info-logout {
     text-align: right;
 }
 
