@@ -26,7 +26,7 @@ YUI.add('ez-app-extension-admin', function (Y) {
                     sideViews: {'navigationHub': true},
                     service: Y.eZ.ServerSideViewService,
                     view: "serverSideView",
-                    callbacks: ['open', 'handleSideViews', 'handleMainView']
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }]
             },
 

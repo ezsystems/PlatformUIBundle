@@ -1023,6 +1023,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 viewContainer: '.view-container',
                 root: this.root
             });
+            this.app.get('user').set('id', 1);
             this.app.render();
         },
 
