@@ -285,6 +285,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
 
         tearDown: function () {
             Y.config.doc.title = this.initialTitle;
+            this.app.destroy();
+            delete this.app;
         },
 
         "Should set the title with the title returned by the active view": function () {
@@ -1015,6 +1017,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
 
         setUp: function () {
             this.root = '/shell';
+            Y.config.doc.location.hash = '';
             this.app = new Y.eZ.PlatformUIApp({
                 container: '.app',
                 viewContainer: '.view-container',
@@ -1026,6 +1029,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         tearDown: function () {
             this.app.destroy();
             delete this.app;
+            Y.config.doc.location.hash = '';
         },
 
         "Admin extension should be loaded and called": function () {
@@ -1045,6 +1049,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.app.route({
                 path: "/admin/load2",
                 callback: function () {
+                    Y.config.doc.location.hash = '';
                     load2Called = true;
                 }
             });
