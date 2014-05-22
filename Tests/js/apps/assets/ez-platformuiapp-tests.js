@@ -1014,7 +1014,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             );
 
             Y.Assert.isTrue(initialized === 1, "The side view should have been build one time");
-            Y.Assert.isTrue(rendered === 1, "The side view should have been rendered one time");
+            Y.Assert.isTrue(rendered === 2, "The side view should have been rendered twice");
             Y.Assert.isTrue(activeSet === 2, "The active flag should have been set two times " + activeSet);
             Y.Assert.isTrue(bubble, "The event from the side view should bubble to the app");
             Y.Assert.isTrue(nextCalls === 2, "The next callback should have been called two times");

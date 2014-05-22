@@ -342,7 +342,7 @@ YUI.add('ez-platformuiapp', function (Y) {
 
             Y.Object.each(this.sideViews, function (viewInfo, key) {
                 var cl = viewInfo.hideClass,
-                    service, view, newView = false;
+                    service, view;
 
                 if ( routeSideViews && routeSideViews[key] ) {
                     if ( !viewInfo.serviceInstance ) {
@@ -358,16 +358,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                     });
                     if ( !viewInfo.instance ) {
                         viewInfo.instance = new viewInfo.type();
-                        newView = true;
                     }
                     view = viewInfo.instance;
                     view.addTarget(service);
                     service.addTarget(this);
                     service.load(tasks.add(function () {
                         view.setAttrs(service.getViewParameters());
-                        if ( newView ) {
-                            view.render();
-                        }
+                        view.render();
                         container.one(viewInfo.container).append(
                             view.get('container')
                         );
