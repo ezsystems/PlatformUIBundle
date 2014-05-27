@@ -72,6 +72,7 @@ parameters:
                     - 'ez-url-view'
                     - 'ez-selection-view'
                     - 'ez-maplocation-view'
+                    - 'ez-author-view'
                     - 'event-tap'
                 path: js/views/ez-rawcontentview.js
             ez-contenteditview:
@@ -126,6 +127,9 @@ parameters:
             ez-url-editview:
                 requires: ['ez-fieldeditview', 'event-valuechange']
                 path: js/views/fields/ez-url-editview.js
+            ez-author-view:
+                requires: ['ez-fieldview']
+                path: js/views/fields/ez-author-view.js
             ez-author-editview:
                 requires: ['ez-fieldeditview', 'event-valuechange', 'event-tap', 'model', 'model-list']
                 path: js/views/fields/ez-author-editview.js
