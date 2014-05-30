@@ -1,5 +1,9 @@
 {% verbatim %}
 <ul class="ez-zones-navigation">
+    <li class="ez-user-info">
+        <p class="ez-user-info-name">{{ user.name }}</p>
+        <p class="ez-user-info-logout"><a href="#" class="ez-logout">Logout</span></p>
+    </li>
     <li class="ez-logo"><a href="{{ path "dashboard" }}"><img src="{{ asset "bundles/ezplatformui/img/logo.png" }}" alt="Logo eZ" /></a></li>
     <li class="ez-zone ez-create-zone" data-navigation="create">
         <p class="ez-zone-name">Create</p>

@@ -64,7 +64,7 @@
     -webkit-font-smoothing: antialiased;
 }
 
-@media (max-width: 52em) {
+@media (max-width: 62em) {
     .ez-view-navigationhubview .ez-zone:before {
         font-size: 120%;
         width: 1.4em;
@@ -187,4 +187,12 @@
 .ez-view-navigationhubview .ez-navigation .ez-navigation-item:hover,
 .ez-view-navigationhubview .ez-link a:hover {
     color: #528036;
+}
+
+.ez-view-navigationhubview .ez-user-info {
+    font-size: 85%;
+}
+
+.ez-view-navigationhubview .ez-user-info-name {
+    font-weight: bold;
 }

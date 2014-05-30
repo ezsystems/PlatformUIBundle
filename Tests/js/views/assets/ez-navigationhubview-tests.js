@@ -1,12 +1,19 @@
 YUI.add('ez-navigationhubview-tests', function (Y) {
-    var viewTest, eventTest;
+    var viewTest, eventTest, logOutTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Navigation Hub View test",
 
         setUp: function () {
+            this.userMock = new Y.Mock();
+            this.userJson = {};
+            Y.Mock.expect(this.userMock, {
+                method: 'toJSON',
+                returns: this.userJson,
+            });
             this.view = new Y.eZ.NavigationHubView({
                 container: '.container',
+                user: this.userMock,
             });
         },
 
@@ -28,12 +35,20 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         },
 
         "Test available variable in template": function () {
-            var origTpl = this.view.template;
+            var origTpl = this.view.template,
+                that = this;
 
             this.view.template = function (variables) {
-                Y.Assert.isUndefined(variables, "The template should not receive any variable");
+                Y.Assert.areEqual(
+                    1, Y.Object.keys(variables).length,
+                    "The template should receive 1 variable"
+                );
+                Y.Assert.areSame(
+                    that.userJson, variables.user,
+                    "The template should receive the result of toJSON on the user"
+                );
 
-                return origTpl.apply(this, variables);
+                return origTpl.call(this, variables);
             };
             this.view.render();
         },
@@ -43,8 +58,14 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         name: "eZ Navigation Hub View event tests",
 
         setUp: function () {
+            this.userMock = new Y.Mock();
+            Y.Mock.expect(this.userMock, {
+                method: 'toJSON',
+                returns: {},
+            });
             this.view = new Y.eZ.NavigationHubView({
                 container: '.container',
+                user: this.userMock,
             });
             this.view.render();
         },
@@ -357,8 +378,51 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         },
     });
 
+    logOutTest = new Y.Test.Case({
+        name: "eZ Navigation Hub View test",
+
+        setUp: function () {
+            this.userMock = new Y.Mock();
+            Y.Mock.expect(this.userMock, {
+                method: 'toJSON',
+                returns: {},
+            });
+            this.view = new Y.eZ.NavigationHubView({
+                container: '.container',
+                user: this.userMock,
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should fire the logOut event": function () {
+            var link = this.view.get('container').one('.ez-logout'),
+                that = this;
+
+            this.view.on('logOut', function (e) {
+                that.resume(function () {
+                    Y.Assert.areEqual(
+                        'tap', e.originalEvent.type,
+                        "The original DOM event should be provided in the logOut event facade"
+                    );
+                    Y.Assert.isTrue(
+                        !!e.originalEvent.prevented,
+                        "The tap event should have been prevented"
+                    );
+                });
+            });
+            link.simulateGesture('tap');
+            this.wait();
+        },
+    });
+
+
     Y.Test.Runner.setName("eZ Navigation Hub View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(eventTest);
+    Y.Test.Runner.add(logOutTest);
 
 }, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-navigationhubview']});

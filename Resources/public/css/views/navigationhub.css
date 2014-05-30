@@ -36,8 +36,24 @@
 }
 
 .ez-view-navigationhubview .ez-zone,
-.ez-view-navigationhubview .ez-link {
+.ez-view-navigationhubview .ez-link,
+.ez-view-navigationhubview .ez-user-info {
     padding: 1em;
+}
+
+.ez-view-navigationhubview .ez-user-info {
+    white-space: normal;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding-left: 0;
+    width: 10em;
+}
+
+.ez-view-navigationhubview .ez-user-info .ez-user-info-name,
+.ez-view-navigationhubview .ez-user-info .ez-user-info-logout {
+    margin: 0;
+    text-align: right;
 }
 
 .ez-view-navigationhubview .ez-navigation .ez-logo {
@@ -124,13 +140,13 @@
     display: block;
 }
 
-@media (max-width:60em) {
+@media (max-width:70em) {
     .ez-view-navigationhubview .ez-zones-navigation .ez-exchange {
         display: none;
     }
 }
 
-@media (max-width:52em) {
+@media (max-width:62em) {
     .ez-view-navigationhubview .ez-logo {
         width: 6em;
         vertical-align: middle;

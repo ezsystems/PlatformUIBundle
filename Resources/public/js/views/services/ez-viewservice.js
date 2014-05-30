@@ -49,6 +49,12 @@ YUI.add('ez-viewservice', function (Y) {
             callback(this);
         },
 
+        /**
+         * Returns the parameters to pass to the view instance
+         *
+         * @method getViewParameters
+         * @return {Object}
+         */
         getViewParameters: function () {
             return {};
         },

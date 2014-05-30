@@ -34,6 +34,9 @@ YUI.add('ez-navigationhubview', function (Y) {
                 'mouseover': '_uiShowSubMenu',
                 'mouseout': '_uiHideSubMenu',
                 'tap': '_uiToggleSubMenu',
+            },
+            '.ez-logout': {
+                'tap': '_logOut',
             }
         },
 
@@ -151,8 +154,11 @@ YUI.add('ez-navigationhubview', function (Y) {
         render: function () {
             var container = this.get('container');
 
-            container.setHTML(this.template());
-            this.set('activeNavigation', DEFAULT_ACTIVE_NAV); // TODO should depend on the app active view
+            container.setHTML(this.template({
+                user: this.get('user').toJSON(),
+            }));
+            this._setNavigationMenu(this.get('activeNavigation'));
+            this._uiSetActiveNavigation();
             return this;
         },
 
@@ -339,6 +345,35 @@ YUI.add('ez-navigationhubview', function (Y) {
                 this._uiShowSubMenu(e);
             }
         },
+
+        /**
+         * Tap event handler on the logout link
+         *
+         * @method _logOut
+         * @protected
+         * @param e {Object} tap event facade
+         */
+        _logOut: function (e) {
+            e.preventDefault();
+            this.fire('logOut', {
+                originalEvent: e
+            });
+        },
+
+        /**
+         * Sets the _navigationMenu property depending on the val parameter.
+         *
+         * @method _setNavigationMenu
+         * @private
+         * @param val {String}
+         * @return {String} val
+         */
+        _setNavigationMenu: function (val) {
+            this._navigationMenu = this.get('container').one(
+                '.' + L.sub(ACTIVE_NAVIGATION_TPL, {identifier: val})
+            );
+            return val;
+        },
     }, {
         ATTRS: {
             /**
@@ -352,12 +387,8 @@ YUI.add('ez-navigationhubview', function (Y) {
              * @required
              */
             activeNavigation: {
-                setter: function (val, name) {
-                    this._navigationMenu = this.get('container').one(
-                        '.' + L.sub(ACTIVE_NAVIGATION_TPL, {identifier: val})
-                    );
-                    return val;
-                }
+                setter: '_setNavigationMenu',
+                value: DEFAULT_ACTIVE_NAV,
             },
 
             /**
@@ -369,7 +400,16 @@ YUI.add('ez-navigationhubview', function (Y) {
              */
             navigationFixed: {
                 value: false
-            }
+            },
+
+            /**
+             * The currently authenticated user
+             *
+             * @attribute user
+             * @type eZ.User
+             * @required
+             */
+            user: {}
         }
     });
 });
