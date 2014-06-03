@@ -16,6 +16,7 @@
     -webkit-transform-style: preserve-3d; /* increasing performance on mobile devices */
        -moz-transform-style: preserve-3d;
             transform-style: preserve-3d;
+    height: 100%;
 }
 
 .ez-editpreviewview-container.is-editpreview-hidden {
