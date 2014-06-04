@@ -80,6 +80,7 @@ parameters:
                     - 'ez-checkbox-view'
                     - 'ez-url-view'
                     - 'ez-selection-view'
+                    - 'ez-user-view'
                     - 'ez-maplocation-view'
                     - 'ez-author-view'
                     - 'event-tap'
@@ -127,6 +128,9 @@ parameters:
             ez-emailaddress-editview:
                 requires: ['ez-fieldeditview', 'event-valuechange']
                 path: js/views/fields/ez-emailaddress-editview.js
+            ez-user-view:
+                requires: ['ez-fieldview']
+                path: js/views/fields/ez-user-view.js
             ez-selection-view:
                 requires: ['ez-fieldview']
                 path: js/views/fields/ez-selection-view.js
