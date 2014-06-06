@@ -31,6 +31,11 @@
     _ezpublishPlatformUIRoutes:
     resource: "@eZPlatformUIBundle/Resources/config/routing.yml"
     ```
+* [Configure the REST API to use the session based authentication](https://doc.ez.no/display/EZP/REST+API+Authentication).
+* Run the following command:
+    ```
+    $ php ezpublish/console assets:install --symlink
+    ```
 * Install [nodejs](http://nodejs.org/)
 * Install [phantomjs](http://phantomjs.org)
 * Install local npm dependencies, from the bundle root, run:
