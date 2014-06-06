@@ -54,7 +54,7 @@
     $ bower install
     ```
 
-Once this is done, you can go to http://<uri_of_ez>/shell to run the eZ Platform
+Once this is done, you can go to http://[uri\_of\_ez]/shell to run the eZ Platform
 UI application.
 
 ## Tests
