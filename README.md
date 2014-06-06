@@ -29,7 +29,7 @@
 
     ```yml
     _ezpublishPlatformUIRoutes:
-    resource: "@eZPlatformUIBundle/Resources/config/routing.yml"
+        resource: "@eZPlatformUIBundle/Resources/config/routing.yml"
     ```
 * [Configure the REST API to use the session based authentication](https://doc.ez.no/display/EZP/REST+API+Authentication).
 * Run the following command:
