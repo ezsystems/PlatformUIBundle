@@ -1,0 +1,13 @@
+{% extends "eZPlatformUIBundle::pjax.html.twig" %}
+
+{% trans_default_domain "section" %}
+
+{% block content %}
+    <header class="ez-page-header">
+        <h1 class="ez-page-header-name" data-icon="&#xe61a;">{{ 'section.label.edit'|trans }}</h1>
+    </header>
+    {{ form(form) }}
+
+{% endblock %}
+
+{% block title %}{{ 'section.edit'|trans }}{% endblock %}

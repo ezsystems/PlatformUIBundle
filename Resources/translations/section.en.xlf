@@ -62,6 +62,14 @@
         <source>section.id.label</source>
         <target>Section ID:</target>
       </trans-unit>
+      <trans-unit id="5d10c83e4dbb97719df5edd180161d3b" resname="section.create">
+        <source>section.create</source>
+        <target>Section create</target>
+      </trans-unit>
+      <trans-unit id="751bbc52342db46a046c52c4dc0b6b00" resname="section.label.edit">
+        <source>section.label.edit</source>
+        <target>Section edit</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
