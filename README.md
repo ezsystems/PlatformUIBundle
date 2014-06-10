@@ -29,7 +29,12 @@
 
     ```yml
     _ezpublishPlatformUIRoutes:
-    resource: "@eZPlatformUIBundle/Resources/config/routing.yml"
+        resource: "@eZPlatformUIBundle/Resources/config/routing.yml"
+    ```
+* [Configure the REST API to use the session based authentication](https://doc.ez.no/display/EZP/REST+API+Authentication).
+* Run the following command:
+    ```
+    $ php ezpublish/console assets:install --symlink
     ```
 * Install [nodejs](http://nodejs.org/)
 * Install [phantomjs](http://phantomjs.org)
@@ -49,7 +54,7 @@
     $ bower install
     ```
 
-Once this is done, you can go to http://<uri_of_ez>/shell to run the eZ Platform
+Once this is done, you can go to http://[uri\_of\_ez]/shell to run the eZ Platform
 UI application.
 
 ## Tests
