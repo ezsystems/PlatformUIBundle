@@ -90,6 +90,8 @@ YUI.add('ez-serversideviewservice', function (Y) {
                 ) {
                     return;
                 }
+                // Remoove unnecessary slashes
+                href = href.replace(/^\/+/g, '');
                 link.setAttribute('href', app.routeUri('adminGenericRoute', {uri: href}));
             });
             return node;

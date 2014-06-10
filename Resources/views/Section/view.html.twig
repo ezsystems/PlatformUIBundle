@@ -1,0 +1,39 @@
+{% extends "eZPlatformUIBundle::pjax.html.twig" %}
+
+{% trans_default_domain "section" %}
+
+{% block content %}
+    <header class="ez-page-header">
+        <h1 class="ez-page-header-name" data-icon="&#xe61a;">{{ 'section.view.title'|trans }}: {{ section.name }}</h1>
+    </header>
+    <section class="ez-tabs ez-serverside-content">
+        <ul class="ez-tabs-list">
+            <li class="ez-tabs-label is-tab-selected"><a href="#ez-tabs-section-name">{{ section.name }}</a></li>
+            <li class="ez-tabs-label"><a href="#ez-tabs-content">{{ 'section.content.translate'|trans }}</a></li>
+        </ul>
+        <div class="ez-tabs-panel is-tab-selected" id="ez-tabs-section-name">
+            <ul>
+                <li>
+                    <strong>{{ 'section.name.label'|trans }}</strong>
+                    {{ section.name }}
+                </li>
+                <li>
+                    <strong>{{ 'section.identifier.label'|trans }}</strong>
+                    {{ section.identifier }}
+                </li>
+                <li>
+                    <strong>{{ 'section.id.label'|trans }}</strong>
+                    {{ section.id }}
+                </li>
+            </ul>
+            <p>
+                {{ 'section.assigned.contentcount'|trans( {'%contentCount%': contentCount} ) }}
+            </p>
+        </div>
+        <div class="ez-tabs-panel" id="ez-tabs-content">
+            <h2>content</h2>
+        </div>
+    </section>
+{% endblock %}
+
+{% block title %}{{ 'section.view.title'|trans }}: {{ section.name }}{% endblock %}

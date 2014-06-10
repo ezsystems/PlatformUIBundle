@@ -221,8 +221,20 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
         },
 
         "Should rewrite targetted to self links": function () {
-            var html = '<a href="/somewhere" target="_self">Somewhere</a>',
-                res = '<a href="REWRITTEN /somewhere" target="_self">Somewhere</a>';
+            var html = '<a href="somewhere" target="_self">Somewhere</a>',
+                res = '<a href="REWRITTEN somewhere" target="_self">Somewhere</a>';
+            this._normalLoad(html, res);
+        },
+
+        "Should rewrite links when a path starting with a '/'": function () {
+            var html = '<a href="/somewhere">Somewhere</a>',
+                res = '<a href="REWRITTEN somewhere">Somewhere</a>';
+            this._normalLoad(html, res);
+        },
+
+        "Should rewrite links when a path starting with several '/'": function () {
+            var html = '<a href="////somewhere">Somewhere</a>',
+                res = '<a href="REWRITTEN somewhere">Somewhere</a>';
             this._normalLoad(html, res);
         },
     });
