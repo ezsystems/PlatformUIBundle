@@ -1,0 +1,59 @@
+.ez-view-mycontentblockview {
+    border-color: #ccc;
+}
+.ez-view-mycontentblockview .header {
+    background: #fff;
+    -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+    color: #262626;
+}
+.ez-view-mycontentblockview .header .separator.line {
+    background: #ccc;
+}
+.ez-view-mycontentblockview .header .tab a {
+    color: #333;
+}
+.ez-view-mycontentblockview .header .tab.is-tab-selected a {
+    color: #436D29;
+    border-bottom-color: #436d29;
+}
+.ez-view-mycontentblockview .header .arrow.down {
+    border-top-color: #808080;
+}
+.ez-view-mycontentblockview .header .arrow.up {
+    border-bottom-color: #808080;
+}
+.ez-view-mycontentblockview .header .arrow.down.green {
+    border-top-color: #528036;
+}
+.ez-view-mycontentblockview .header .arrow.up.green {
+    border-bottom-color: #528036;
+}
+.ez-view-mycontentblockview .content {
+    background: #f5f4f2;
+    -webkit-box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+}
+.ez-view-mycontentblockview .objects-table th {
+    background: #ebebeb;
+    color: #333;
+}
+.ez-view-mycontentblockview .objects-table td {
+    border-color: #cbcbcb;
+}
+.ez-view-mycontentblockview .objects-table tr:nth-child(odd) {
+    background: #fafafa;
+}
+.ez-view-mycontentblockview .objects-table tr:nth-child(even) {
+    background: #fff;
+}
+.ez-view-mycontentblockview .objects-table td:nth-child(1) {
+    color: #999;
+}
+.ez-view-mycontentblockview .objects-table td:nth-child(2),
+.ez-view-mycontentblockview .objects-table td:nth-child(3) {
+    color: #bbb;
+}
+.ez-view-mycontentblockview .objects-table td:nth-child(4) {
+    color: #88a477;
+}

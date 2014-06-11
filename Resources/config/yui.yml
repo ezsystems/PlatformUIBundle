@@ -14,6 +14,9 @@ parameters:
                     - 'ez-loginformviewservice'
                     - 'ez-loginformview'
                     - 'ez-dashboardview'
+                    - 'ez-dashboardviewservice'
+                    - 'ez-mycontentblockview'
+                    - 'ez-mycontentblockitemview'
                     - 'ez-contenteditviewservice'
                     - 'ez-contenteditview'
                     - 'ez-locationviewview'
@@ -34,6 +37,9 @@ parameters:
             ez-contenteditviewservice:
                 requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel', 'ez-versionmodel']
                 path: js/views/services/ez-contenteditviewservice.js
+            ez-dashboardviewservice:
+                requires: ['ez-viewservice', 'ez-versionmodellist', 'ez-contenttypemodel']
+                path: js/views/services/ez-dashboardviewservice.js
             ez-locationviewviewservice:
                 requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel']
                 path: js/views/services/ez-locationviewviewservice.js
@@ -56,8 +62,19 @@ parameters:
                 requires: ['ez-templatebasedview', 'node-style']
                 path: js/views/ez-loginformview.js
             ez-dashboardview:
-                requires: ['ez-templatebasedview']
+                requires: ['ez-templatebasedview', 'ez-mycontentblockview', 'ez-dashboardviewservice']
                 path: js/views/ez-dashboardview.js
+            ez-mycontentblockview:
+                requires: 
+                    - 'ez-templatebasedview'
+                    - 'ez-mycontentblockitemview'
+                    - 'ez-versionmodellist'
+                    - 'ez-tabs'
+                    - 'ez-accordion-element'
+                path: js/views/ez-mycontentblockview.js
+            ez-mycontentblockitemview:
+                requires: ['ez-templatebasedview', 'datatype-date', 'ez-contenttypemodel']
+                path: js/views/ez-mycontentblockitemview.js
             ez-locationviewview:
                 requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'ez-tabs', 'event-tap', 'array-extras']
                 path: js/views/ez-locationviewview.js
@@ -209,6 +226,9 @@ parameters:
             ez-accordion-element:
                 requires: ['transition']
                 path: js/extensions/ez-accordion-element.js
+            ez-versionmodellist:
+                requires: ['model-list', 'ez-versionmodel']
+                path: js/lists/ez-versionmodellist.js
             ez-tabs:
                 requires: ['node']
                 path: js/extensions/ez-tabs.js

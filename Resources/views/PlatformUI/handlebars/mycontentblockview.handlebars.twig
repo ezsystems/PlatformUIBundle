@@ -1,0 +1,77 @@
+{% verbatim %}
+<div class="my-content-block">
+    <div class="header">
+        <span class="title">My Content (<span>{{ itemsCount }}</span>)</span>
+        <span class="separator line"></span>
+        <ul class="tabs">
+            <li class="tab is-tab-selected" data-tab="drafts">
+                <a href="#">Drafts</a>
+            </li>
+            <li class="tab" data-tab="pending">
+                <a href="#">Pending</a>
+            </li>
+        </ul>
+        <span class="btn-toggle">
+            <span class="arrow green down"></span>
+        </span> 
+        <span class="separator line on-right"></span>
+    </div>
+    
+    <div class="content">
+        <div class="tab-content is-tab-selected" data-tab="drafts">
+            <table class="objects-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Modified</th>
+                        <th colspan="2">Type</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="tab-content" data-tab="pending">
+            <table class="objects-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Modified</th>
+                        <th colspan="2">Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span>In defense of ‘vanity’ metrics: why page views are still important</span></td>
+                        <td>6/6/2014 11:17am</td>
+                        <td>Article</td>
+                        <td>View</td>
+                    </tr>
+                    <tr>
+                        <td>Mars Water-Ice clouds</td>
+                        <td>6/6/2014 11:17am</td>
+                        <td>Article</td>
+                        <td>View</td>
+                    </tr>
+                    <tr>
+                        <td>Mars Water-Ice clouds</td>
+                        <td>6/6/2014 11:17am</td>
+                        <td>Article</td>
+                        <td>View</td>
+                    </tr>
+                    <tr>
+                        <td>Mars Water-Ice clouds</td>
+                        <td>6/6/2014 11:17am</td>
+                        <td>Article</td>
+                        <td>View</td>
+                    </tr>
+                    <tr>
+                        <td>Mars Water-Ice clouds</td>
+                        <td>/6/6/2014 11:17am</td>
+                        <td>Article</td>
+                        <td>View</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endverbatim %}
