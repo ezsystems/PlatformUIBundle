@@ -27,13 +27,23 @@ YUI.add('ez-contentmodel', function (Y) {
          * @return {Object}
          */
         _parseStruct: function (struct) {
-            var attrs, fields = {};
+            var attrs, fields = {}, relations = [];
 
             attrs = this.constructor.superclass._parseStruct.call(this, struct);
+            Y.Array.each(struct.CurrentVersion.Version.Relations.Relation, function (relation) {
+                relations.push({
+                    id: relation._href,
+                    type: relation.RelationType,
+                    destination: relation.DestinationContent._href,
+                    source: relation.SourceContent._href,
+                    fieldDefinitionIdentifier: relation.SourceFieldDefinitionIdentifier
+                });
+            });
 
             Y.Array.each(struct.CurrentVersion.Version.Fields.field, function (field) {
                 fields[field.fieldDefinitionIdentifier] = field;
             });
+            attrs.relations = relations;
             attrs.fields = fields;
             return attrs;
         },
@@ -72,7 +82,35 @@ YUI.add('ez-contentmodel', function (Y) {
         getField: function (identifier) {
             var fields = this.get('fields');
             return fields[identifier];
-        }
+        },
+
+        /**
+         * Filters the relations on this content by type or optionnally by field
+         * definition identifier.
+         *
+         * @method relations
+         * @param {String} type of the relation ('ATTRIBUTE', 'COMMON', 'EMBED', 'LINK')
+         * @param {String} [fieldDefinitionIdentifier]
+         * @return {Array}
+         */
+        relations: function (type, fieldDefinitionIdentifier) {
+            var relations,
+                fieldDefFilter = (typeof fieldDefinitionIdentifier !== "undefined");
+
+            relations = Y.Array.filter(this.get('relations'), function (relation) {
+                if (
+                    fieldDefFilter
+                    && type === relation.type
+                    && fieldDefinitionIdentifier === relation.fieldDefinitionIdentifier
+                ) {
+                    return true;
+                } else if ( !fieldDefFilter && type === relation.type ) {
+                    return true;
+                }
+                return false;
+            });
+            return relations;
+        },
     }, {
         REST_STRUCT_ROOT: "Content",
         ATTRS_REST_MAP: [
@@ -176,7 +214,12 @@ YUI.add('ez-contentmodel', function (Y) {
              */
             fields: {
                 value: {}
+            },
+
+            relations: {
+                value: {}
             }
+
         }
     });
 });

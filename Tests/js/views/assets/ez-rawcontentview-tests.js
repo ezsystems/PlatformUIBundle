@@ -1,6 +1,5 @@
 YUI.add('ez-rawcontentview-tests', function (Y) {
-    var viewTest, destroyTest,
-
+    var viewTest, destroyTest, eventTest,
         _getContentTypeMock = function (fieldDefinitions, fieldGroups) {
             var mock = new Y.Test.Mock();
 
@@ -15,7 +14,6 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             });
             return mock;
         };
-
 
     viewTest = new Y.Test.Case({
         name: "eZ Raw Content View test",
@@ -121,41 +119,6 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             });
         },
 
-        "Should forward the active flag to the field sub views": function () {
-            var called = 0;
-
-            Y.Array.each(this.fieldDefinitions, function (def) {
-                Y.eZ.FieldView.registerFieldView(
-                    def.fieldType,
-                    Y.Base.create(def.fieldType + 'TestView', Y.View, [], {
-                        initializer: function () {
-                            this.after('activeChange', function (e) {
-                                called++;
-                                Y.Assert.isTrue(
-                                    e.newVal,
-                                    "The field view should be activated"
-                                );
-                            });
-                        }
-                    })
-                );
-            });
-
-            this.view = new Y.eZ.RawContentView({
-                container: '.container',
-                content: this.content,
-                contentType: this.contentType
-            });
-
-            this.view.set('active', true);
-
-            Y.Assert.areEqual(
-                this.fieldDefinitions.length,
-                called,
-                "Each field view should have been activated"
-            );
-        },
-
         "Should collapse/uncollapse the raw content view": function () {
             var container = this.view.get('container'),
                 groups = container.one('.ez-fieldgroups'),
@@ -251,6 +214,139 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
         },
     });
 
+    eventTest = new Y.Test.Case({
+        name: "eZ Raw Content View test",
+
+        setUp: function () {
+            var that = this;
+
+            this.contentJson = {};
+            this.fieldDefinitions = [{
+                fieldGroup: 'content',
+                fieldType: 'something',
+                identifier: 'id1',
+            }, {
+                fieldGroup: 'meta',
+                fieldType: 'somethingelse',
+                identifier: 'id2',
+            }];
+            this.fieldGroups = [{fieldGroupName: 'content'}, {fieldGroupName: 'meta'}];
+            this.fields = {'id1': {fieldValue: 'value1'}, 'id2': {fieldValue: 'value2'}};
+
+            this.content = this._getContentMock();
+            this.contentType = this._getContentTypeMock();
+
+            this.view = new Y.eZ.RawContentView({
+                container: '.container',
+                content: this.content,
+                contentType: this.contentType
+            });
+            this.eventFacade = {Something: 'something'};
+            this.activeChangeCalled = 0;
+            this.activeChangeNewVal = null;
+
+            Y.Array.each(this.fieldDefinitions, function (def) {
+                Y.eZ.FieldView.registerFieldView(
+                    def.fieldType ,
+                    Y.Base.create(def.fieldType + 'TestView', Y.View, [], {
+                        render: function () {
+                            this.fire('fireSomething', that.eventFacade);
+                            return this;
+                        },
+                        initializer: function () {
+                            this.after('activeChange', function (e) {
+                                that.activeChangeCalled++;
+                                that.activeChangeNewVal = e.newVal;
+                            });
+                        }
+                    })
+                );
+            });
+        },
+
+        tearDown: function () {
+            this.activeChangeCalled = 0;
+            this.activeChangeNewVal = null;
+            this.view.destroy();
+            Y.Array.each(this.fieldDefinitions, function (def) {
+                Y.eZ.FieldView.registerFieldView(
+                    def.fieldType , undefined
+                );
+            });
+        },
+
+        _initializer :function () {},
+
+        _getContentMock: function () {
+            var mock = new Y.Test.Mock(), that = this;
+
+            Y.Mock.expect(mock, {
+                method: 'toJSON',
+                returns: this.contentJson
+            });
+            Y.Mock.expect(mock, {
+                method: 'getField',
+                args: [Y.Mock.Value.String],
+                run: function (id) {
+                    return that.fields[id];
+                }
+            });
+            return mock;
+        },
+
+        _getContentTypeMock: function () {
+            return _getContentTypeMock(this.fieldDefinitions, this.fieldGroups);
+        },
+
+        "Should catch the fieldView's events": function () {
+            var eventCount = 0, that = this;
+
+            this.view = new Y.eZ.RawContentView({
+                container: '.container',
+                content: this.content,
+                contentType: this.contentType
+            });
+            this.view.on('*:fireSomething', function(e) {
+                eventCount++;
+                Y.Assert.areSame(
+                    that.eventFacade.Something,
+                    e.Something,
+                    "The event fired in the fieldView should be available"
+                );
+            });
+
+            this.view.render();
+
+            Y.Assert.areSame(
+                this.fieldDefinitions.length,
+                eventCount,
+                "Each fieldDefinition should fire an event"
+            );
+        },
+
+        "Should forward the active flag to the field sub views": function () {
+
+            this.view = new Y.eZ.RawContentView({
+                container: '.container',
+                content: this.content,
+                contentType: this.contentType
+            });
+
+            this.view.set('active', true);
+
+            Y.Assert.isTrue(
+                this.activeChangeNewVal,
+                "The field view should be activated"
+            );
+
+            Y.Assert.areEqual(
+                this.fieldDefinitions.length,
+                this.activeChangeCalled,
+                "Each field view should have been activated"
+            );
+        },
+    });
+
     destroyTest = new Y.Test.Case({
         name: "eZ Raw Content View destroy test",
 
@@ -305,6 +401,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Raw Content View tests");
     Y.Test.Runner.add(viewTest);
+    Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(destroyTest);
 
 }, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-rawcontentview']});

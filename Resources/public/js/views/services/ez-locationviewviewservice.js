@@ -20,6 +20,37 @@ YUI.add('ez-locationviewviewservice', function (Y) {
     Y.eZ.LocationViewViewService = Y.Base.create('locationViewViewService', Y.eZ.ViewService, [], {
         initializer: function () {
             this.on('*:editAction', this._editContent);
+            this.on('*:loadAttributeRelatedContent', this._loadAttributeRelatedContent);
+        },
+
+        /**
+         * loadAttributeRelatedContent event handler. It loads the related
+         * content held by the field which field definition identifier is
+         * available in the event facade.
+         *
+         * @method _loadAttributeRelatedContent
+         * @protected
+         * @param {Object} e event facade of the loadContent event
+         */
+        _loadAttributeRelatedContent: function (e) {
+
+            var loadOptions = {
+                    api: this.get('capi')
+                },
+                content = this.get('content'),
+                relatedContent = this._newContent();
+
+            Y.Array.each(content.relations('ATTRIBUTE', e.fieldDefinitionIdentifier), function (contentDestination) {
+                relatedContent.set('id', contentDestination.destination);
+                relatedContent.load(loadOptions, function (error) {
+                    if (error) {
+                        //todo error case
+                    } else {
+                        e.target.set("destinationContent", relatedContent);
+                    }
+                });
+
+            });
         },
 
         /**

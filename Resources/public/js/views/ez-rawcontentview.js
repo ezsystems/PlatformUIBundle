@@ -92,16 +92,18 @@ YUI.add('ez-rawcontentview', function (Y) {
                 views = [];
 
             Y.Object.each(definitions, function (def) {
-                var View;
+                var View, fieldView;
 
                 View = Y.eZ.FieldView.getFieldView(def.fieldType);
+                fieldView = new View({
+                    fieldDefinition: def,
+                    field: content.getField(def.identifier)
+                });
+                fieldView.addTarget(this);
                 views.push(
-                    new View({
-                        fieldDefinition: def,
-                        field: content.getField(def.identifier)
-                    })
+                    fieldView
                 );
-            });
+            }, this);
 
             /**
              * The field views instances for the current content

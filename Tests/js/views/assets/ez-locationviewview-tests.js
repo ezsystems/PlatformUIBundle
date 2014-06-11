@@ -296,6 +296,19 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             );
         },
 
+        "Events from the raw content view should bubble to the location view": function () {
+            var bubbled = false;
+
+            this.view.on('*:somethingElseHappened', function () {
+                bubbled = true;
+            });
+            this.view.get('rawContentView').fire('somethingElseHappened');
+            Y.Assert.isTrue(
+                bubbled,
+                "The event should have bubbled to the location view"
+            );
+        },
+
         "The action bar minimized class should be toggled by the minimizeActionBarAction event": function () {
             var container = this.view.get('container');
 
@@ -325,6 +338,10 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             });
 
             raw = new Y.Mock();
+            Y.Mock.expect(raw, {
+                method: 'addTarget',
+                args: [Y.Mock.Value.Object]
+            });
 
             view = new Y.eZ.LocationViewView({
                 rawContentView: raw,
@@ -335,6 +352,10 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 method: 'destroy'
             });
             Y.Mock.expect(bar, {
+                method: 'removeTarget',
+                args: [view]
+            });
+            Y.Mock.expect(raw, {
                 method: 'removeTarget',
                 args: [view]
             });
