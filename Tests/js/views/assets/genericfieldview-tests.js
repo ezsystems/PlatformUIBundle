@@ -84,11 +84,11 @@ YUI.add('ez-genericfieldview-tests', function (Y) {
 
                 Y.Assert.areSame(
                      that.fieldDefinition, variables.fieldDefinition,
-                    "The fieldDefinition should be available in the field edit view template"
+                    "The fieldDefinition should be available in the field view template"
                 );
                 Y.Assert.areSame(
                     that.field, variables.field,
-                    "The field should be available in the field edit view template"
+                    "The field should be available in the field view template"
                 );
 
                 Y.Assert.areSame(
