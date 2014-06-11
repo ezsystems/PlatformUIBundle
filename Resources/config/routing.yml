@@ -26,3 +26,11 @@ admin_sectionlist:
     defaults:
         _controller: ezsystems.platformui.controller.section:listAction
     methods: [GET]
+
+admin_sectionview:
+    path: /pjax/section/view/{sectionId}
+    defaults:
+        _controller: ezsystems.platformui.controller.section:viewAction
+    methods: [GET]
+    requirements:
+        sectionId: \d+

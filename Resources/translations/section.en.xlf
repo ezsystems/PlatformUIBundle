@@ -38,6 +38,30 @@
         <source>section.remove.selected</source>
         <target>Remove the selection</target>
       </trans-unit>
+      <trans-unit id="a1388bfac224ede1622fd041e51384e0" resname="section.view.title">
+        <source>section.view.title</source>
+        <target>Section</target>
+      </trans-unit>
+      <trans-unit id="c56da0cc0963c5167293932e4409d502" resname="section.assigned.contentcount">
+        <source>section.assigned.contentcount</source>
+        <target>This section is assigned to %contentCount% contents.</target>
+      </trans-unit>
+      <trans-unit id="8a8d0e8570dc63672a52d3aad782ae41" resname="section.content.translate">
+        <source>section.content.translate</source>
+        <target>Contents in this section</target>
+      </trans-unit>
+      <trans-unit id="007cd5845351d36a9ec70173d2b44bb2" resname="section.name.label">
+        <source>section.name.label</source>
+        <target>Section name:</target>
+      </trans-unit>
+      <trans-unit id="3de80c254c9555ad1347b034f93f3095" resname="section.identifier.label">
+        <source>section.identifier.label</source>
+        <target>Section identifier:</target>
+      </trans-unit>
+      <trans-unit id="f066f9960df2f81907c3680c9148cef5" resname="section.id.label">
+        <source>section.id.label</source>
+        <target>Section ID:</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -31,9 +31,9 @@
                                     {% if not sectionInfo.canDelete %}disabled="disabled"{% endif %}
                                 />
                             </td>
-                            <td><a href="#">{{ section.name }}</a></td>
-                            <td><a href="#">{{ section.identifier }}</a></td>
-                            <td class="ez-table-data-id"><a href="#">{{ section.id }}</a></td>
+                            <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.name }}</a></td>
+                            <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.identifier }}</a></td>
+                            <td class="ez-table-data-id"><a href="{{ path( "admin_sectionview", {"sectionId": section.id} ) }}">{{ section.id }}</a></td>
                             <td class="ez-table-data-count">{{ sectionInfo.contentCount }}</td>
                             <td>
                                 <a href="#" class="pure-button ez-button{% if not sectionInfo.canAssign %} pure-button-disabled{% endif %}" data-icon="&#xe619;">{{ 'section.assigned.to_subtree'|trans }}</a>

@@ -9,6 +9,8 @@
 
 namespace EzSystems\PlatformUIBundle\Helper;
 
+use eZ\Publish\API\Repository\Values\Content\Section;
+
 interface SectionHelperInterface
 {
     /**
@@ -30,4 +32,18 @@ interface SectionHelperInterface
      * @return boolean
      */
     public function canCreate();
+
+    /**
+     * Returns a section
+     * @param int $sectionId
+     * @return \eZ\Publish\API\Repository\Values\Content\Section
+     */
+    public function loadSection( $sectionId );
+
+    /**
+     * Returns the number of contents assigned to a given $section
+     * @param \eZ\Publish\API\Repository\Values\Content\Section $section
+     * @return int
+     */
+    public function contentCount( Section $section );
 }

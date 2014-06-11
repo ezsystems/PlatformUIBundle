@@ -13,6 +13,7 @@ use EzSystems\PlatformUIBundle\Helper\SectionHelperInterface;
 use eZ\Publish\API\Repository\SectionService;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute as AuthorizationAttribute;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use eZ\Publish\API\Repository\Values\Content\Section;
 
 class SectionHelper implements SectionHelperInterface
 {
@@ -77,5 +78,21 @@ class SectionHelper implements SectionHelperInterface
                 $function
             )
         );
+    }
+
+    /**
+     * @inherited
+     */
+    public function loadSection( $sectionId )
+    {
+        return $this->sectionService->loadSection( $sectionId );
+    }
+
+    /**
+     * @inherited
+     */
+    public function contentCount( Section $section )
+    {
+        return $this->sectionService->countAssignedContents( $section );
     }
 }

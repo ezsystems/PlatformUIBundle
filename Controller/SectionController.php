@@ -52,4 +52,32 @@ class SectionController extends PjaxController
         }
         return $response;
     }
+
+    /**
+     * Renders the view of a section
+     * @param int $sectionId
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewAction( $sectionId )
+    {
+        $response = new Response();
+        try
+        {
+            $section = $this->sectionHelper->loadSection( $sectionId );
+            $contentCount = $this->sectionHelper->contentCount( $section );
+            return $this->render(
+                "eZPlatformUIBundle:Section:view.html.twig",
+                array(
+                    'section' => $section,
+                    'contentCount' => $contentCount,
+                ),
+                $response
+            );
+        }
+        catch ( UnauthorizedException $e )
+        {
+            $response->setStatusCode( $this->getNoAccessStatusCode() );
+        }
+        return $response;
+    }
 }
