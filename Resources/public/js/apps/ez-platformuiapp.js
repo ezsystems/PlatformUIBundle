@@ -688,6 +688,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                 }, {
                     name: "dashboard",
                     path: "/dashboard",
+                    service: Y.eZ.DashboardViewService,
                     sideViews: {'navigationHub': true},
                     view: 'dashboardView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']

@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ My Content Block view tests</title>
+</head>
+<body>
+<script type="text/x-handlebars-template" id="mycontentblockview-ez-template">
+<div class="my-content-block">
+    <div class="header">
+        <span class="title">My Content (<span>{{ itemsCount }}</span>)</span>
+        <span class="separator line"></span>
+        <ul class="tabs">
+            <li class="tab is-tab-selected" data-tab="drafts">
+                <a href="#">Drafts</a>
+            </li>
+            <li class="tab" data-tab="pending">
+                <a href="#">Pending</a>
+            </li>
+        </ul>
+        <span class="btn-toggle">
+            <span class="arrow green down"></span>
+        </span>
+        <span class="separator line on-right"></span>
+    </div>
+
+    <div class="content">
+        <div class="tab-content is-tab-selected" data-tab="drafts">
+            <table class="objects-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Modified</th>
+                        <th colspan="2">Type</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="tab-content" data-tab="pending">
+            <table class="objects-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Modified</th>
+                        <th colspan="2">Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span>In defense of ‘vanity’ metrics: why page views are still important</span></td>
+                        <td>6/6/2014 11:17am</td>
+                        <td>Article</td>
+                        <td>View</td>
+                    </tr>
+                    <tr>
+                        <td>Mars Water-Ice clouds</td>
+                        <td>6/6/2014 11:17am</td>
+                        <td>Article</td>
+                        <td>View</td>
+                    </tr>
+                    <tr>
+                        <td>Mars Water-Ice clouds</td>
+                        <td>6/6/2014 11:17am</td>
+                        <td>Article</td>
+                        <td>View</td>
+                    </tr>
+                    <tr>
+                        <td>Mars Water-Ice clouds</td>
+                        <td>6/6/2014 11:17am</td>
+                        <td>Article</td>
+                        <td>View</td>
+                    </tr>
+                    <tr>
+                        <td>Mars Water-Ice clouds</td>
+                        <td>/6/6/2014 11:17am</td>
+                        <td>Article</td>
+                        <td>View</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</script>
+<script type="text/x-handlebars-template" id="myblockcontentitemview-ez-template">
+<td><span>{{ title }}</span></td>
+<td>{{ datePublished }}</td>
+<td>{{ type }}</td>
+<td><a href="{{ url }}">View</a></td>
+</script>
+<script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-mycontentblockview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-mycontentblockview'],
+        filter  : loaderFilter,
+        modules : {
+            'ez-mycontentblockview' : {
+                requires : ['ez-templatebasedview', 'ez-mycontentblockitemview', 'ez-tabs', 'ez-accordion-element', 'ez-versionmodellist'],
+                fullpath : '../../../Resources/public/js/views/ez-mycontentblockview.js'
+            },
+            'ez-templatebasedview' : {
+                requires : ['ez-view', 'handlebars'],
+                fullpath : '../../../Resources/public/js/views/ez-templatebasedview.js'
+            },
+            'ez-view' : {
+                requires : ['view'],
+                fullpath : '../../../Resources/public/js/views/ez-view.js'
+            },
+            'ez-dashboardviewservice' : {
+                requires : ['ez-viewservice', 'ez-versionmodellist', 'ez-contenttypemodel'],
+                fullpath : '../../../Resources/public/js/views/services/ez-dashboardviewservice.js'
+            },
+            'ez-viewservice' : {
+                requires : ['base'],
+                fullpath : '../../../Resources/public/js/views/services/ez-viewservice.js'
+            },
+            'ez-versionmodel' : {
+                requires : ['ez-restmodel'],
+                fullpath : '../../../Resources/public/js/models/ez-versionmodel.js'
+            },
+            'ez-contenttypemodel' : {
+                requires : ['ez-restmodel'],
+                fullpath : '../../../Resources/public/js/models/ez-contenttypemodel.js'
+            },
+            'ez-restmodel' : {
+                requires : ['model', 'json'],
+                fullpath : '../../../Resources/public/js/models/ez-restmodel.js'
+            },
+            'ez-versionmodellist' : {
+                requires : ['model-list', 'ez-versionmodel'],
+                fullpath : '../../../Resources/public/js/lists/ez-versionmodellist.js'
+            },
+            'ez-mycontentblockitemview' : {
+                requires : ['ez-templatebasedview', 'datatype-date', 'ez-contenttypemodel'],
+                fullpath : '../../../Resources/public/js/views/ez-mycontentblockitemview.js'
+            },
+            'ez-tabs' : {
+                requires : ['node'],
+                fullpath : '../../../Resources/public/js/extensions/ez-tabs.js'
+            },
+            'ez-accordion-element' : {
+                requires : ['transition'],
+                fullpath : '../../../Resources/public/js/extensions/ez-accordion-element.js'
+            }
+        }
+    }).use('ez-mycontentblockview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
