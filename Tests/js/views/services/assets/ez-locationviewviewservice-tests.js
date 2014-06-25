@@ -1,5 +1,5 @@
 YUI.add('ez-locationviewviewservice-tests', function (Y) {
-    var functionalTest, unitTest, eventTest;
+    var functionalTest, unitTest, eventTest, loadAttributeRelatedContentEventTest;
 
     functionalTest = new Y.Test.Case({
         name: "eZ Location View View Service 'functional' tests",
@@ -352,13 +352,73 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         }
     });
 
+    loadAttributeRelatedContentEventTest = new Y.Test.Case({
+        name: "eZ Location View View Service event tests",
+
+        setUp: function () {
+            this.app = new Y.Mock();
+            this.capi = {};
+            this.service = new Y.eZ.LocationViewViewService({
+                app: this.app,
+                capi: this.capi,
+            });
+            this.view = new Y.View();
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+            delete this.view;
+            delete this.app;
+            delete this.content;
+        },
+
+        "Should load destination when receiving an loadAttributeRelatedContent event": function () {
+            var relatedContent = new Y.Mock(),
+                content = new Y.Mock(),
+                destination = '/api/ezp/v2/content/objects/117',
+                sourceFieldDefinitionIdentifier = 'super_attribut_relation',
+                that = this;
+
+            Y.Mock.expect(content, {
+                method: 'relations',
+                args: ['ATTRIBUTE', 'super_attribut_relation'],
+                returns: [{destination: destination, type: 'ATTRIBUTE', sourceFieldDefinitionIdentifier: sourceFieldDefinitionIdentifier }],
+            });
+
+            Y.Mock.expect(relatedContent, {
+                method: 'set',
+                args: ['id', destination],
+            });
+
+            Y.Mock.expect(relatedContent, {
+                method: 'load',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Y.Assert.areSame(options.api, that.capi, 'loadOptions.api should match capi' );
+                    callback();
+                }
+            });
+
+            this.service._newContent = function () { return relatedContent; };
+
+            this.service.set('content', content);
+            this.view.addTarget(this.service);
+            this.view.fire('loadAttributeRelatedContent', {fieldDefinitionIdentifier: sourceFieldDefinitionIdentifier});
+            Y.Assert.areSame(relatedContent, this.view.get('destinationContent'));
+            Y.Mock.verify(content);
+        },
+
+    });
     eventTest = new Y.Test.Case({
         name: "eZ Location View View Service event tests",
 
         setUp: function () {
             this.app = new Y.Mock();
+            this.capi = {};
             this.service = new Y.eZ.LocationViewViewService({
-                app: this.app
+                app: this.app,
+                capi: this.capi,
             });
         },
 
@@ -366,7 +426,10 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             this.service.destroy();
             delete this.service;
             delete this.app;
+            delete this.content;
         },
+
+
 
         "Should navigate to the content edit when receiving an editAction event": function () {
             var contentMock, contentId = 'aContentId',
@@ -412,5 +475,6 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
     Y.Test.Runner.add(unitTest);
     Y.Test.Runner.add(functionalTest);
     Y.Test.Runner.add(eventTest);
+    Y.Test.Runner.add(loadAttributeRelatedContentEventTest);
 
 }, '0.0.1', {requires: ['test', 'ez-locationviewviewservice']});
