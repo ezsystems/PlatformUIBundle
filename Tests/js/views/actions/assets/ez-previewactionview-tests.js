@@ -27,16 +27,11 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                 actionId: "preview",
                 hint: "Test hint",
                 label: "Test label",
-                buttons: [{
-                    option: "desktop"
-                }, {
-                    option: "tablet"
-                }, {
-                    option: "mobile"
-                }, {
-                    option: "tv"
-                }],
-                editPreview: this.editPreview
+                buttons: [
+                    {option: "desktop"}, {option: "tablet"},
+                    {option: "mobile"}, {option: "tv"},
+                ],
+                editPreview: this.editPreview,
             });
         },
 
@@ -72,6 +67,7 @@ YUI.add('ez-previewactionview-tests', function (Y) {
 
         "Should set Content attribute for the PreviewView, once setting it for itself": function () {
             var previewContent;
+
             Y.Mock.expect(this.editPreview, {
                 method: 'set',
                 callCount: 2,
@@ -170,7 +166,7 @@ YUI.add('ez-previewactionview-tests', function (Y) {
             Y.Mock.verify(this.editPreview);
         },
 
-        "Should show the 'desktop'preview": function () {
+        "Should show the 'desktop' preview": function () {
             this._showPreviewMode('desktop');
         },
 

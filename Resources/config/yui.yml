@@ -71,7 +71,7 @@ parameters:
                 requires: ['ez-barview', 'ez-buttonactionview']
                 path: js/views/ez-actionbarview.js
             ez-rawcontentview:
-                requires: 
+                requires:
                     - 'ez-templatebasedview'
                     - 'ez-accordion-element'
                     - 'ez-fieldview'

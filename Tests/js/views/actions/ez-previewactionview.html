@@ -28,7 +28,7 @@
 <script type="text/javascript" src="./assets/ez-previewactionview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
-            loaderFilter;
+        loaderFilter;
     if (filter == 'coverage'){
         loaderFilter = {
             searchExp : "/Resources/",
@@ -64,9 +64,7 @@
             },
         }
     }).use('ez-previewactionview-tests', function (Y) {
-
         Y.Test.Runner.run();
-
     });
 </script>
 </body>

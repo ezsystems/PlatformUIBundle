@@ -126,7 +126,7 @@ YUI.add('ez-previewactionview', function (Y) {
             /**
              * The EditPreviewView (by default) instance
              *
-             * @attribute editPreviewView
+             * @attribute editPreview
              * @default new Y.eZ.EditPreviewView()
              * @type {eZ.EditPreviewView}
              * @required
