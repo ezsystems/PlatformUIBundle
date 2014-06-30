@@ -45,6 +45,22 @@ YUI.add('ez-buttonactionview', function (Y) {
         },
 
         /**
+         * Adds the button action view class name to the container of the view.
+         * It is meant to be used by child class so that we can reuse the button
+         * action view CSS styles.
+         *
+         * @protected
+         * @method _addParentClassName
+         */
+        _addButtonActionViewClassName: function () {
+            var classes = this._getClasses();
+
+            this.get('container').addClass(
+                this._generateViewClassName(classes[0].superclass.constructor.NAME)
+            );
+        },
+
+        /**
          * Handles tap on the view's action button
          *
          * @method _handleActionClick
