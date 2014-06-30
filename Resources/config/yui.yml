@@ -182,6 +182,9 @@ parameters:
             ez-contenttypemodel:
                 requires: ['ez-restmodel']
                 path: js/models/ez-contenttypemodel.js
+            ez-contenttree:
+                requires: ['tree', 'tree-openable', 'tree-selectable', 'tree-lazy']
+                path: js/models/structs/ez-contenttree.js
             ez-editactionbarview:
                 requires: ['ez-barview', 'ez-buttonactionview', 'ez-previewactionview']
                 path: js/views/ez-editactionbarview.js
