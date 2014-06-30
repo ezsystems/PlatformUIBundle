@@ -296,7 +296,18 @@ YUI.add('ez-barview-tests', function (Y) {
             });
 
             this.wait();
-        }
+        },
+
+        "Should forward the active flag": function () {
+            this.view.set('active', true);
+
+            Y.Array.each(this.view.get('actionsList'), function (action) {
+                Y.Assert.isTrue(
+                    action.get('active'),
+                    "The action view should be active"
+                );
+            });
+        },
     });
 
     sameTemplateTest = new Y.Test.Case({
