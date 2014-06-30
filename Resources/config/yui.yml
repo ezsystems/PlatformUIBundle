@@ -206,6 +206,9 @@ parameters:
             ez-googlemapapiloader:
                 requires: ['jsonp', 'jsonp-url', 'event-custom']
                 path: js/services/ez-googlemapapiloader.js
+            ez-expandable:
+                requires: ['view']
+                path: js/extensions/ez-expandable.js
             ez-accordion-element:
                 requires: ['transition']
                 path: js/extensions/ez-accordion-element.js
