@@ -102,6 +102,11 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 });
 
                 tasks.done(function () {
+                    service.get('response').view = {
+                        path: service.get('path'),
+                        location: service.get('location'),
+                        content: service.get('content'),
+                    };
                     next(service);
                 });
             });
