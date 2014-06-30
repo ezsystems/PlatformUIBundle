@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Tree Action view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+<div id="external-element"></div>
+
+<script type="text/x-handlebars-template" id="treeactionview-ez-template">
+<button class="ez-action {{#if disabled}}is-disabled {{else}}{{#if actionId}}action-trigger {{/if}}{{/if}}{{#if hint}}with-hint{{/if}}" data-action="{{ actionId }}">
+    <div class="font-icon action-icon">
+        <p class="action-label">{{ label }}</p>
+        {{#if hint}}
+        <p class="action-hint">{{ hint }}</p>
+        {{/if}}
+    </div>
+</button>
+<div class="ez-expandable-area">
+    <div class="ez-tree-content"></div>
+</div>
+</script>
+
+<script type="text/x-handlebars-template" id="ez_tree" class="ez-platformui-app-partial">
+<ul class="ez-tree-level">
+{{#each children}}
+    <li class="ez-tree-node{{#if state.leaf}} is-tree-node-leaf{{/if}} {{#if state.open}}is-tree-node-open{{else}}is-tree-node-close{{/if}}" data-node-id="{{id}}">
+        <a href="#" class="ez-tree-node-toggle font-icon"></a><a href="#" class="ez-tree-navigate"></a>
+    </li>
+{{/each}}
+</ul>
+</script>
+
+<script type="text/javascript" src="../../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/genericbuttonactionview-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-treeactionview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-treeactionview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-treeactionview": {
+                requires: ['ez-buttonactionview', 'ez-expandable', 'event-tap', 'event-outside', 'handlebars', 'node-style'],
+                fullpath: "../../../../Resources/public/js/views/actions/ez-treeactionview.js"
+            },
+            "ez-buttonactionview": {
+                requires: ['ez-templatebasedview', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/actions/ez-buttonactionview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-expandable": {
+                requires: ['view'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-expandable.js"
+            },
+        }
+    }).use('ez-treeactionview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
