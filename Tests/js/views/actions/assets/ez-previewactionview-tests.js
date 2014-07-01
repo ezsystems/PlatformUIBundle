@@ -1,5 +1,79 @@
 YUI.add('ez-previewactionview-tests', function (Y) {
-    var viewTest;
+    var viewTest, buttonTest;
+
+    buttonTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.ButtonActionViewTestCases, {
+            _should: {
+                ignore: {
+                    "Should fire an action once the action button is tapped": true,
+                }
+            },
+
+            setUp: function () {
+                this.editPreview = new Y.Mock();
+                this.contentMock = new Y.Mock();
+
+                Y.Mock.expect(this.editPreview, {
+                    method: 'get',
+                    args: ['container'],
+                    returns: '<div></div>'
+                });
+                Y.Mock.expect(this.editPreview, {
+                    method: 'addTarget',
+                    args: [Y.Mock.Value.Object],
+                    returns: true
+                });
+
+                this.version = {};
+
+                this.actionId = "preview";
+                this.hint = "Test hint";
+                this.label = "Test label";
+                this.disabled = true;
+
+                this.view = new Y.eZ.PreviewActionView({
+                    editPreview: this.editPreview,
+                    container: '.container',
+                    content: this.contentMock,
+                    version: this.version,
+                    actionId: this.actionId,
+                    hint: this.hint,
+                    label: this.label,
+                    disabled: this.disabled,
+                    buttons: [
+                        {option: "desktop"}, {option: "tablet"},
+                        {option: "mobile"}, {option: "tv"},
+                    ],
+                });
+
+                this.templateVariablesCount = 5;
+            },
+
+            "Should provide the buttons configuration in the template": function () {
+                var that = this,
+                    origTpl = this.view.template;
+
+                this.view.template = function (variables) {
+                    Y.Assert.areSame(
+                        that.view.get('buttons'),
+                        variables.buttons,
+                        "The preview view buttons are not correctly passed"
+                    );
+
+                    return origTpl.apply(this, arguments);
+                };
+                this.view.render();
+                Y.Mock.verify(this.editPreview);
+            },
+
+            tearDown: function () {
+                this.view.destroy();
+                delete this.view;
+                delete this.editPreview;
+                delete this.contentMock;
+            },
+        })
+    );
 
     viewTest = new Y.Test.Case({
         name: "eZ Preview Action View test",
@@ -27,16 +101,11 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                 actionId: "preview",
                 hint: "Test hint",
                 label: "Test label",
-                buttons: [{
-                    option: "desktop"
-                }, {
-                    option: "tablet"
-                }, {
-                    option: "mobile"
-                }, {
-                    option: "tv"
-                }],
-                editPreview: this.editPreview
+                buttons: [
+                    {option: "desktop"}, {option: "tablet"},
+                    {option: "mobile"}, {option: "tv"},
+                ],
+                editPreview: this.editPreview,
             });
         },
 
@@ -49,6 +118,9 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                 args: [this.view]
             });
             this.view.destroy();
+            delete this.view;
+            delete this.editPreview;
+            delete this.contentMock;
         },
 
         "Should set the button action view class name on the view container": function () {
@@ -72,6 +144,7 @@ YUI.add('ez-previewactionview-tests', function (Y) {
 
         "Should set Content attribute for the PreviewView, once setting it for itself": function () {
             var previewContent;
+
             Y.Mock.expect(this.editPreview, {
                 method: 'set',
                 callCount: 2,
@@ -163,14 +236,13 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                         ).isEmpty(),
                         "Each of the other preview mode buttons should NOT be highlighted"
                     );
+                    Y.Mock.verify(this.editPreview);
                 });
             });
             this.wait();
-
-            Y.Mock.verify(this.editPreview);
         },
 
-        "Should show the 'desktop'preview": function () {
+        "Should show the 'desktop' preview": function () {
             this._showPreviewMode('desktop');
         },
 
@@ -188,37 +260,6 @@ YUI.add('ez-previewactionview-tests', function (Y) {
             this._showPreviewMode('tablet');
             this._showPreviewMode('desktop');
             this._showPreviewMode('tv');
-        },
-
-        "Test render": function () {
-            var templateCalled = false,
-                origTpl;
-
-            origTpl = this.view.template;
-            this.view.template = function () {
-                templateCalled = true;
-                return origTpl.apply(this, arguments);
-            };
-            this.view.render();
-            Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
-            Y.Assert.areNotEqual("", this.view.get('container').getHTML(), "View container should contain the result of the this.view");
-            Y.Mock.verify(this.editPreview);
-        },
-
-        "Test available variable in template": function () {
-            this.view.template = function (variables) {
-                Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 4 variables");
-                Y.Assert.isArray(variables.buttons, "buttons should be available in the template and should be an array");
-                Y.Assert.isBoolean(variables.disabled, "disabled should be available in the template and should be boolean");
-                Y.Assert.isString(variables.actionId, "actionId should be available in the template and should be a string");
-                Y.Assert.isString(variables.label, "label should be available in the template and should be a string");
-                Y.Assert.isString(variables.hint, "hint should be available in the template and should be a string");
-
-                return  '<div class="ez-editpreviewview-container"></div>';
-            };
-            this.view.render();
-            Y.Mock.verify(this.editPreview);
         },
 
         "Should destroy editPreview when destroying itself": function () {
@@ -248,5 +289,5 @@ YUI.add('ez-previewactionview-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Preview Action View tests");
     Y.Test.Runner.add(viewTest);
-
-}, '0.0.1', {requires: ['test', 'ez-previewactionview', 'node-event-simulate']});
+    Y.Test.Runner.add(buttonTest);
+}, '0.0.1', {requires: ['test', 'ez-previewactionview', 'ez-genericbuttonactionview-tests', 'node-event-simulate']});

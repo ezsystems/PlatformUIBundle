@@ -55,6 +55,9 @@ YUI.add('ez-barview', function (Y) {
                 action.addTarget(that);
             });
             this.after('activeChange', function (e) {
+                Y.Array.each(this.get('actionsList'), function (actionView) {
+                    actionView.set('active', e.newVal);
+                });
                 if ( e.newVal ) {
                     this._handleHeightUpdate();
                 }

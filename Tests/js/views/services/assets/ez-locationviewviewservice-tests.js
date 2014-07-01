@@ -138,6 +138,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             };
             service.load(function (param) {
                 var depth, prevLocation,
+                    response = service.get('response'),
                     variables = service.getViewParameters();
 
                 callbackCalled = true;
@@ -185,6 +186,22 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
 
                     prevLocation = entry.location;
                 });
+
+                Y.Assert.areSame(
+                    variables.path,
+                    response.view.path,
+                    "The path should be available in `response.view`"
+                );
+                Y.Assert.areSame(
+                    variables.location,
+                    response.view.location,
+                    "The location should be available in `response.view`"
+                );
+                Y.Assert.areSame(
+                    variables.content,
+                    response.view.content,
+                    "The content should be available in `response.view`"
+                );
             });
 
             Y.Assert.isTrue(callbackCalled, "The load callback should have been called");

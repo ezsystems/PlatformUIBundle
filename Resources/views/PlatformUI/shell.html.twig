@@ -25,6 +25,7 @@
     '@eZPlatformUIBundle/Resources/public/css/views/contenteditform.css'
     '@eZPlatformUIBundle/Resources/public/css/views/bar.css'
     '@eZPlatformUIBundle/Resources/public/css/views/discoverybar.css'
+    '@eZPlatformUIBundle/Resources/public/css/views/actions/tree.css'
     '@eZPlatformUIBundle/Resources/public/css/views/actions/button.css'
     '@eZPlatformUIBundle/Resources/public/css/views/actions/preview.css'
     '@eZPlatformUIBundle/Resources/public/css/views/editpreview.css'
@@ -52,6 +53,7 @@
     '@eZPlatformUIBundle/Resources/public/css/theme/views/loginform.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/bar.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/discoverybar.css'
+    '@eZPlatformUIBundle/Resources/public/css/theme/views/actions/tree.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/actions/button.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/actions/preview.css'
     '@eZPlatformUIBundle/Resources/public/css/theme/views/dashboard.css'
@@ -184,6 +186,7 @@
 
 {{ handlebars.include( 'barview.handlebars', 'barview' ) }}
 {{ handlebars.include( 'buttonactionview.handlebars', 'buttonactionview' ) }}
+{{ handlebars.include( 'treeactionview.handlebars', 'treeactionview' ) }}
 {{ handlebars.include( 'previewactionview.handlebars', 'previewactionview' ) }}
 {{ handlebars.include( 'editpreviewview.handlebars', 'editpreviewview' ) }}
 
@@ -202,5 +205,7 @@
 {{ handlebars.include( 'errorview.handlebars', 'errorview' ) }}
 
 {{ handlebars.partial( 'fieldinfo_tooltip.handlebars', 'ez_fieldinfo_tooltip' ) }}
+
+{{ handlebars.partial( 'tree.handlebars', 'ez_tree' ) }}
 </body>
 </html>

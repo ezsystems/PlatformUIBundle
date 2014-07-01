@@ -26,6 +26,12 @@
     </button>
 </script>
 
+
+<script type="text/x-handlebars-template" id="treeactionview-ez-template">
+tree
+<div class="ez-expandable-area"></div>
+</script>
+
 <script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-discoverybarview-tests.js"></script>
 <script>
@@ -45,7 +51,7 @@
         filter: loaderFilter,
         modules: {
             "ez-discoverybarview": {
-                requires: ['ez-barview', 'ez-buttonactionview'],
+                requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview'],
                 fullpath: "../../../Resources/public/js/views/ez-discoverybarview.js"
             },
             "ez-barview": {
@@ -56,6 +62,10 @@
                 requires: ['ez-templatebasedview'],
                 fullpath: "../../../Resources/public/js/views/actions/ez-buttonactionview.js"
             },
+            "ez-treeactionview": {
+                requires: ['ez-buttonactionview', 'ez-expandable', 'handlebars'],
+                fullpath: "../../../Resources/public/js/views/actions/ez-treeactionview.js"
+            },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
@@ -63,6 +73,10 @@
             "ez-view": {
                 requires: ['view'],
                 fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-expandable": {
+                requires: ['view'],
+                fullpath: "../../../Resources/public/js/extensions/ez-expandable.js"
             },
         }
     }).use('ez-discoverybarview-tests', function (Y) {

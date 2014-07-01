@@ -75,6 +75,10 @@
     content: "\E607";
 }
 
+.ez-view-buttonactionview .ez-action[data-action="tree"] .action-icon:before {
+    content: "\E619";
+}
+
 .ez-view-buttonactionview .ez-action[data-action="preview"] .action-trigger[data-action-option="desktop"]:before {
     content: "\E608";
 }

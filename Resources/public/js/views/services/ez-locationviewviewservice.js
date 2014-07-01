@@ -94,6 +94,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
 
                     rootLocationId = response.document.Root.rootLocation._href;
                     if ( rootLocationId === location.get('id') ) {
+                        service.set('path', []);
                         endLoadPath();
                         return;
                     }
@@ -101,6 +102,11 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 });
 
                 tasks.done(function () {
+                    service.get('response').view = {
+                        path: service.get('path'),
+                        location: service.get('location'),
+                        content: service.get('content'),
+                    };
                     next(service);
                 });
             });
@@ -256,7 +262,6 @@ YUI.add('ez-locationviewviewservice', function (Y) {
              * @type Array
              */
             path: {
-                value: [],
                 getter: function (value) {
                     return value.sort(function (a, b) {
                         return (a.location.get('depth') - b.location.get('depth'));

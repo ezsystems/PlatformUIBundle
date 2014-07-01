@@ -41,7 +41,7 @@ parameters:
                 requires: ['ez-viewservice']
                 path: js/views/services/ez-navigationhubviewservice.js
             ez-discoverybarviewservice:
-                requires: ['ez-viewservice']
+                requires: ['ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-contenttree']
                 path: js/views/services/ez-discoverybarviewservice.js
             ez-serversideviewservice:
                 requires: ['io-base', 'ez-viewservice']
@@ -65,13 +65,13 @@ parameters:
                 requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside']
                 path: js/views/ez-navigationhubview.js
             ez-discoverybarview:
-                requires: ['ez-barview', 'ez-buttonactionview']
+                requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview']
                 path: js/views/ez-discoverybarview.js
             ez-actionbarview:
                 requires: ['ez-barview', 'ez-buttonactionview']
                 path: js/views/ez-actionbarview.js
             ez-rawcontentview:
-                requires: 
+                requires:
                     - 'ez-templatebasedview'
                     - 'ez-accordion-element'
                     - 'ez-fieldview'
@@ -182,6 +182,9 @@ parameters:
             ez-contenttypemodel:
                 requires: ['ez-restmodel']
                 path: js/models/ez-contenttypemodel.js
+            ez-contenttree:
+                requires: ['tree', 'tree-openable', 'tree-selectable', 'tree-lazy']
+                path: js/models/structs/ez-contenttree.js
             ez-editactionbarview:
                 requires: ['ez-barview', 'ez-buttonactionview', 'ez-previewactionview']
                 path: js/views/ez-editactionbarview.js
@@ -191,6 +194,9 @@ parameters:
             ez-previewactionview:
                 requires: ['ez-buttonactionview', 'ez-editpreviewview']
                 path: js/views/actions/ez-previewactionview.js
+            ez-treeactionview:
+                requires: ['ez-buttonactionview', 'ez-expandable', 'event-tap', 'event-outside', 'handlebars', 'node-style']
+                path: js/views/actions/ez-treeactionview.js
             ez-editpreviewview:
                 requires: ['ez-templatebasedview', 'event-tap']
                 path: js/views/ez-editpreviewview.js
@@ -206,6 +212,9 @@ parameters:
             ez-googlemapapiloader:
                 requires: ['jsonp', 'jsonp-url', 'event-custom']
                 path: js/services/ez-googlemapapiloader.js
+            ez-expandable:
+                requires: ['view']
+                path: js/extensions/ez-expandable.js
             ez-accordion-element:
                 requires: ['transition']
                 path: js/extensions/ez-accordion-element.js

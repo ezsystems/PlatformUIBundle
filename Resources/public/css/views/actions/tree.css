@@ -1,0 +1,59 @@
+.ez-view-treeactionview {
+    position: relative;
+    width: 100%;
+}
+
+.ez-view-treeactionview.is-expanded {
+    padding-right: 10px;
+}
+
+.ez-view-treeactionview .ez-expandable-area {
+    position: absolute;
+    top: -80%;
+    right: 0;
+    width: 300px;
+    min-height: 120px;
+    z-index: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    white-space: nowrap;
+    padding: 0.3em 0;
+
+    -webkit-transform: translateX(-100%);
+       -moz-transform: translateX(-100%);
+        -ms-transform: translateX(-100%);
+         -o-transform: translateX(-100%);
+            transform: translateX(-100%);
+
+    box-shadow: 3px 3px 3px 0px #888;
+}
+
+.ez-view-treeactionview.is-expanded .ez-expandable-area {
+    -webkit-transform: translateX(100%);
+       -moz-transform: translateX(100%);
+        -ms-transform: translateX(100%);
+         -o-transform: translateX(100%);
+            transform: translateX(100%);
+}
+
+.ez-view-treeactionview .ez-tree-level .ez-tree-level {
+    padding-left: 1em;
+}
+
+.ez-view-treeactionview .ez-tree-level {
+    padding-left: 0.3em;
+    line-height: 1.6em;
+    margin: 0;
+}
+
+.ez-view-treeactionview .ez-tree-node {
+    padding-left: 0.2em;
+}
+
+.ez-view-treeactionview.is-tree-loaded .ez-tree-loading {
+    display: none;
+}
+
+.ez-view-treeactionview .is-tree-node-close .ez-tree-level {
+    display: none;
+}
