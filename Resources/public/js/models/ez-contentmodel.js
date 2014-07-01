@@ -216,10 +216,16 @@ YUI.add('ez-contentmodel', function (Y) {
                 value: {}
             },
 
+            /**
+             * The relations set by this content
+             *
+             * @attribute relations
+             * @type Object
+             * @default {}
+             */
             relations: {
                 value: {}
             }
-
         }
     });
 });
