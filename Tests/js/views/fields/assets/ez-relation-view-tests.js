@@ -13,30 +13,36 @@ YUI.add('ez-relation-view-tests', function (Y) {
                     returns: this.destinationContentToJSON
                 });
 
-                this.templateVariablesCount = 5;
-                this.fieldDefinition = {fieldType: "ezobjectrelation"};
+                this.templateVariablesCount = 6;
                 this.fieldDefinitionIdentifier= "niceField";
-                this.field = {fieldDefinitionIdentifier: this.fieldDefinitionIdentifier};
+                this.fieldDefinition = {
+                    fieldType: "ezobjectrelation",
+                    identifier: this.fieldDefinitionIdentifier
+                };
+                this.field = {fieldValue: {destinationContentId: 42}};
                 this.isEmpty = false;
                 this.view = new Y.eZ.RelationView({
                     fieldDefinition: this.fieldDefinition,
-                    field: this.field
+                    field: this.field,
                 });
+
+                Y.one('.app').append(this.view.get('container'));
             },
 
             tearDown: function () {
                 this.view.destroy();
+                Y.one('.app').empty();
             },
 
-            "Should sucess load content event with content": function () {
+            "Should fire the loadAttributeRelatedContent event": function () {
                 var loadContentEvent = false,
                     that = this;
 
                 this.view.on('loadAttributeRelatedContent', function (e) {
                     loadContentEvent = true;
                     Y.Assert.areSame(
-                        e.fieldDefinitionIdentifier,
                         that.fieldDefinitionIdentifier,
+                        e.fieldDefinitionIdentifier,
                         "fieldDefinitionIdentifier is not the same than the one in the field"
                     );
 
@@ -46,16 +52,23 @@ YUI.add('ez-relation-view-tests', function (Y) {
                 Y.Assert.isTrue(loadContentEvent, "loadContentEvent should be called when changing active value");
             },
 
-            "Should call render method": function () {
+            "Should render the view when the destinationContent attribute changes": function () {
                 var that = this,
                     templateCalled = false,
                     origTpl = this.view.template;
 
                 this.view.template = function (variables) {
                     templateCalled = true;
-                    Y.Assert.areSame(variables.destinationContent,
+                    Y.Assert.areSame(
                         that.destinationContentToJSON,
-                        'destinationContent should match the destinationContentToJSON value');
+                        variables.destinationContent,
+                        'destinationContent should match the destinationContentToJSON value'
+                    );
+                    Y.Assert.areSame(
+                        that.view.get('loadingError'),
+                        variables.loadingError,
+                        "loadingError should be available in the template"
+                    );
                     return origTpl.apply(this, arguments);
                 };
 
@@ -63,20 +76,67 @@ YUI.add('ez-relation-view-tests', function (Y) {
 
                 Y.Assert.isTrue(templateCalled, "The template has not been used");
             },
+
+            "Should render the view when the loadingError attribute changes": function () {
+                var that = this,
+                    templateCalled = false,
+                    origTpl = this.view.template;
+
+                this.view.template = function (variables) {
+                    templateCalled = true;
+                    Y.Assert.areSame(
+                        that.view.get('loadingError'),
+                        variables.loadingError,
+                        "loadingError should be available in the template"
+                    );
+                    return origTpl.apply(this, arguments);
+                };
+
+                this.view.set('loadingError', true);
+
+                Y.Assert.isTrue(templateCalled, "The template has not been used");
+            },
+
+            "Should try to reload the content when tapping on the retry button": function () {
+                var that = this,
+                    loadAttributeRelatedContent = false;
+
+                this.view.render();
+                this.view.set('active', true);
+                this.view.set('loadingError', true);
+                this.view.on('loadAttributeRelatedContent', function () {
+                    loadAttributeRelatedContent = true;
+                });
+
+                this.view.get('container').one('.ez-relation-retry').simulateGesture('tap', function () {
+                    that.resume(function () {
+                        Y.Assert.isNull(
+                            this.view.get('destinationContent'),
+                            "The `destinationContent` attribute should be resetted to null"
+                        );
+                        Y.Assert.isFalse(
+                            this.view.get('loadingError'),
+                            "The `loadingError` attribute should be resetted to false"
+                        );
+                        Y.Assert.isTrue(
+                            loadAttributeRelatedContent,
+                            "The loadAttributeRelatedContent should have been fired"
+                        );
+                    });
+                });
+                this.wait();
+            },
         })
     );
 
-    Y.Test.Runner.setName("eZ Relation View tests");
-    Y.Test.Runner.add(viewTestWithContent);
-
     viewTestWithoutContent = new Y.Test.Case(
         Y.merge(Y.eZ.Test.FieldViewTestCases, {
-            name: "eZ Relation View tests",
+            name: "eZ Relation View tests (without related content)",
 
             setUp: function () {
-                this.templateVariablesCount = 5;
+                this.templateVariablesCount = 6;
                 this.fieldDefinition = {fieldType: "ezobjectrelation"};
-                this.field = {fieldDefinitionIdentifier: null};
+                this.field = {fieldValue: {destinationContentId: null}};
                 this.isEmpty = true;
                 this.view = new Y.eZ.RelationView({
                     fieldDefinition: this.fieldDefinition,
@@ -88,7 +148,7 @@ YUI.add('ez-relation-view-tests', function (Y) {
                 this.view.destroy();
             },
 
-            "Should fail load content when no content": function () {
+            "Should not fire the loadAttributeRelatedContent event when the relation is empty": function () {
                 this.view.on('loadAttributeRelatedContent', function () {
                     Y.Assert.fail("loadAttributeRelatedContent method should fail");
                 });
@@ -97,15 +157,14 @@ YUI.add('ez-relation-view-tests', function (Y) {
         })
     );
 
-    Y.Test.Runner.setName("eZ Relation View tests");
-    Y.Test.Runner.add(viewTestWithoutContent);
-
     registerTest = new Y.Test.Case(Y.eZ.Test.RegisterFieldViewTestCases);
 
     registerTest.name = "Relation View registration test";
     registerTest.viewType = Y.eZ.RelationView;
     registerTest.viewKey = "ezobjectrelation";
 
+    Y.Test.Runner.setName('eZ Relation view tests');
+    Y.Test.Runner.add(viewTestWithContent);
+    Y.Test.Runner.add(viewTestWithoutContent);
     Y.Test.Runner.add(registerTest);
-
-}, '0.0.1', {requires: ['test', 'ez-relation-view', 'ez-genericfieldview-tests']});
+}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-relation-view', 'ez-genericfieldview-tests']});

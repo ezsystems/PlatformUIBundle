@@ -356,6 +356,18 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         name: "eZ Location View View Service event tests",
 
         setUp: function () {
+            var that = this;
+
+            this.relatedContent = new Y.Mock();
+            this.destination = '/api/ezp/v2/content/objects/117';
+            this.fieldDefinitionIdentifier = 'super_attribut_relation';
+            this.relationId = 42;
+
+            Y.Mock.expect(this.relatedContent, {
+                method: 'set',
+                args: ['id', this.destination],
+            });
+
             this.app = new Y.Mock();
             this.capi = {};
             this.service = new Y.eZ.LocationViewViewService({
@@ -363,53 +375,92 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 capi: this.capi,
             });
             this.view = new Y.View();
+            this.view.set('loadingError', false);
+            this.view.set('destinationContent', null);
+            this.view.addTarget(this.service);
+
+            this.service.get('content').set('relations', [{
+                id: this.relationId,
+                destination: this.destination,
+                type: 'ATTRIBUTE',
+                fieldDefinitionIdentifier: this.fieldDefinitionIdentifier,
+            }]);
+            this.service._newContent = function () {
+                return that.relatedContent;
+            };
         },
 
         tearDown: function () {
             this.service.destroy();
+            this.view.destroy();
             delete this.service;
             delete this.view;
             delete this.app;
-            delete this.content;
+            delete this.capi;
+            delete this.relatedContent;
         },
 
-        "Should load destination when receiving an loadAttributeRelatedContent event": function () {
-            var relatedContent = new Y.Mock(),
-                content = new Y.Mock(),
-                destination = '/api/ezp/v2/content/objects/117',
-                sourceFieldDefinitionIdentifier = 'super_attribut_relation',
-                that = this;
+        "Should load the related content on `loadAttributeRelatedContent` event": function () {
+            var that = this,
+                initialLoadingError = this.view.get('loadingError');
 
-            Y.Mock.expect(content, {
-                method: 'relations',
-                args: ['ATTRIBUTE', 'super_attribut_relation'],
-                returns: [{destination: destination, type: 'ATTRIBUTE', sourceFieldDefinitionIdentifier: sourceFieldDefinitionIdentifier }],
-            });
-
-            Y.Mock.expect(relatedContent, {
-                method: 'set',
-                args: ['id', destination],
-            });
-
-            Y.Mock.expect(relatedContent, {
+            Y.Mock.expect(this.relatedContent, {
                 method: 'load',
                 args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
                 run: function (options, callback) {
-                    Y.Assert.areSame(options.api, that.capi, 'loadOptions.api should match capi' );
+                    Y.Assert.areSame(
+                        that.capi,
+                        options.api,
+                        'the CAPI should be passed in the options'
+                    );
                     callback();
                 }
             });
 
-            this.service._newContent = function () { return relatedContent; };
-
-            this.service.set('content', content);
-            this.view.addTarget(this.service);
-            this.view.fire('loadAttributeRelatedContent', {fieldDefinitionIdentifier: sourceFieldDefinitionIdentifier});
-            Y.Assert.areSame(relatedContent, this.view.get('destinationContent'));
-            Y.Mock.verify(content);
+            this.view.fire(
+                'loadAttributeRelatedContent',
+                {fieldDefinitionIdentifier: this.fieldDefinitionIdentifier}
+            );
+            Y.Assert.areSame(this.relatedContent, this.view.get('destinationContent'));
+            Y.Assert.areSame(
+                    initialLoadingError,
+                this.view.get('loadingError'),
+                "The loadingError should stay the same"
+            );
+            Y.Mock.verify(this.relatedContent);
         },
 
+        "Should handle loading error while loading related content": function () {
+            var that = this,
+                initialDest = this.view.get('destinationContent');
+
+            Y.Mock.expect(this.relatedContent, {
+                method: 'load',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Y.Assert.areSame(
+                        that.capi,
+                        options.api,
+                        'the CAPI should be passed in the options'
+                    );
+                    callback(true);
+                }
+            });
+
+            this.view.fire(
+                'loadAttributeRelatedContent',
+                {fieldDefinitionIdentifier: this.fieldDefinitionIdentifier}
+            );
+            Y.Assert.areSame(
+                initialDest,
+                this.view.get('destinationContent'),
+                "The destinationContent should stay the same"
+            );
+            Y.Assert.isTrue(this.view.get('loadingError'), "The loadingError should be true");
+            Y.Mock.verify(this.relatedContent);
+        },
     });
+
     eventTest = new Y.Test.Case({
         name: "eZ Location View View Service event tests",
 
