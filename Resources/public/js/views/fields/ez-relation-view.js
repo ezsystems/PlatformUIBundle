@@ -24,7 +24,7 @@ YUI.add('ez-relation-view', function (Y) {
 
         initializer: function () {
             if (!this._isFieldEmpty()){
-                this.after('activeChange', this._fireLoadAttributeRelatedContent);
+                this.after('activeChange', this._fireLoadFieldRelatedContent);
             }
             this.after('destinationContentChange', function (e) {
                 this.render();
@@ -47,13 +47,13 @@ YUI.add('ez-relation-view', function (Y) {
         },
 
         /**
-         * Fire the `loadAttributeRelatedContent` event
+         * Fire the `loadFieldRelatedContent` event
          *
-         * @method _fireLoadAttributeRelatedContent
+         * @method _fireLoadFieldRelatedContent
          * @protected
          */
-        _fireLoadAttributeRelatedContent: function () {
-            this.fire('loadAttributeRelatedContent', {
+        _fireLoadFieldRelatedContent: function () {
+            this.fire('loadFieldRelatedContent', {
                 fieldDefinitionIdentifier: this.get('fieldDefinition').identifier
             });
         },
@@ -61,7 +61,7 @@ YUI.add('ez-relation-view', function (Y) {
         /**
          * Tap event handler for the retry button. It resets the
          * `destinationContent` and `loadingError` attributes and fires again the
-         * `loadAttributeRelatedContent` event
+         * `loadFieldRelatedContent` event
          *
          * @method _retryLoading
          * @protected
@@ -72,7 +72,7 @@ YUI.add('ez-relation-view', function (Y) {
                 destinationContent: null,
                 loadingError: false
             });
-            this._fireLoadAttributeRelatedContent();
+            this._fireLoadFieldRelatedContent();
         },
 
         /**

@@ -34,11 +34,11 @@ YUI.add('ez-relation-view-tests', function (Y) {
                 Y.one('.app').empty();
             },
 
-            "Should fire the loadAttributeRelatedContent event": function () {
+            "Should fire the loadFieldRelatedContent event": function () {
                 var loadContentEvent = false,
                     that = this;
 
-                this.view.on('loadAttributeRelatedContent', function (e) {
+                this.view.on('loadFieldRelatedContent', function (e) {
                     loadContentEvent = true;
                     Y.Assert.areSame(
                         that.fieldDefinitionIdentifier,
@@ -99,13 +99,13 @@ YUI.add('ez-relation-view-tests', function (Y) {
 
             "Should try to reload the content when tapping on the retry button": function () {
                 var that = this,
-                    loadAttributeRelatedContent = false;
+                    loadFieldRelatedContent = false;
 
                 this.view.render();
                 this.view.set('active', true);
                 this.view.set('loadingError', true);
-                this.view.on('loadAttributeRelatedContent', function () {
-                    loadAttributeRelatedContent = true;
+                this.view.on('loadFieldRelatedContent', function () {
+                    loadFieldRelatedContent = true;
                 });
 
                 this.view.get('container').one('.ez-relation-retry').simulateGesture('tap', function () {
@@ -119,8 +119,8 @@ YUI.add('ez-relation-view-tests', function (Y) {
                             "The `loadingError` attribute should be resetted to false"
                         );
                         Y.Assert.isTrue(
-                            loadAttributeRelatedContent,
-                            "The loadAttributeRelatedContent should have been fired"
+                            loadFieldRelatedContent,
+                            "The loadFieldRelatedContent should have been fired"
                         );
                     });
                 });
@@ -148,9 +148,9 @@ YUI.add('ez-relation-view-tests', function (Y) {
                 this.view.destroy();
             },
 
-            "Should not fire the loadAttributeRelatedContent event when the relation is empty": function () {
-                this.view.on('loadAttributeRelatedContent', function () {
-                    Y.Assert.fail("loadAttributeRelatedContent method should fail");
+            "Should not fire the loadFieldRelatedContent event when the relation is empty": function () {
+                this.view.on('loadFieldRelatedContent', function () {
+                    Y.Assert.fail("loadFieldRelatedContent method should fail");
                 });
                 this.view.set('active', true);
             }

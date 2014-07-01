@@ -1,5 +1,5 @@
 YUI.add('ez-locationviewviewservice-tests', function (Y) {
-    var functionalTest, unitTest, eventTest, loadAttributeRelatedContentEventTest;
+    var functionalTest, unitTest, eventTest, loadFieldRelatedContentEventTest;
 
     functionalTest = new Y.Test.Case({
         name: "eZ Location View View Service 'functional' tests",
@@ -352,7 +352,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         }
     });
 
-    loadAttributeRelatedContentEventTest = new Y.Test.Case({
+    loadFieldRelatedContentEventTest = new Y.Test.Case({
         name: "eZ Location View View Service event tests",
 
         setUp: function () {
@@ -400,7 +400,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             delete this.relatedContent;
         },
 
-        "Should load the related content on `loadAttributeRelatedContent` event": function () {
+        "Should load the related content on `loadFieldRelatedContent` event": function () {
             var that = this,
                 initialLoadingError = this.view.get('loadingError');
 
@@ -418,7 +418,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             });
 
             this.view.fire(
-                'loadAttributeRelatedContent',
+                'loadFieldRelatedContent',
                 {fieldDefinitionIdentifier: this.fieldDefinitionIdentifier}
             );
             Y.Assert.areSame(this.relatedContent, this.view.get('destinationContent'));
@@ -448,7 +448,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             });
 
             this.view.fire(
-                'loadAttributeRelatedContent',
+                'loadFieldRelatedContent',
                 {fieldDefinitionIdentifier: this.fieldDefinitionIdentifier}
             );
             Y.Assert.areSame(
@@ -524,6 +524,6 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
     Y.Test.Runner.add(unitTest);
     Y.Test.Runner.add(functionalTest);
     Y.Test.Runner.add(eventTest);
-    Y.Test.Runner.add(loadAttributeRelatedContentEventTest);
+    Y.Test.Runner.add(loadFieldRelatedContentEventTest);
 
 }, '0.0.1', {requires: ['test', 'ez-locationviewviewservice']});
