@@ -130,7 +130,7 @@ parameters:
                 requires: ['ez-fieldeditview', 'event-valuechange']
                 path: js/views/fields/ez-emailaddress-editview.js
             ez-relation-view:
-                requires: ['ez-fieldview']
+                requires: ['ez-fieldview', 'event-tap']
                 path: js/views/fields/ez-relation-view.js
             ez-user-view:
                 requires: ['ez-fieldview']

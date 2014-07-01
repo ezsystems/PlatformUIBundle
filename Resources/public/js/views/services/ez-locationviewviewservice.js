@@ -33,23 +33,22 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          * @param {Object} e event facade of the loadContent event
          */
         _loadAttributeRelatedContent: function (e) {
+            var loadOptions = {api: this.get('capi')},
+                relatedContent = this._newContent(),
+                contentDestination = this.get('content').relations(
+                    'ATTRIBUTE', e.fieldDefinitionIdentifier
+                ).shift();
 
-            var loadOptions = {
-                    api: this.get('capi')
-                },
-                content = this.get('content'),
-                relatedContent = this._newContent();
-
-            Y.Array.each(content.relations('ATTRIBUTE', e.fieldDefinitionIdentifier), function (contentDestination) {
-                relatedContent.set('id', contentDestination.destination);
-                relatedContent.load(loadOptions, function (error) {
-                    if (error) {
-                        //todo error case
-                    } else {
-                        e.target.set("destinationContent", relatedContent);
-                    }
-                });
-
+            relatedContent.set('id', contentDestination.destination);
+            relatedContent.load(loadOptions, function (error) {
+                if (error) {
+                    e.target.set("loadingError", true);
+                } else {
+                    e.target.setAttrs({
+                        destinationContent: relatedContent,
+                        loadingError: false,
+                    });
+                }
             });
         },
 

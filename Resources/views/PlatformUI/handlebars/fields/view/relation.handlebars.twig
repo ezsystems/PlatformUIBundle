@@ -10,7 +10,14 @@
                 {{#if destinationContent }}
                     <a class="ez-navigation-item" href="{{path "viewLocation" id=destinationContent.resources.MainLocation}}">{{ destinationContent.name }}</a></li>
                 {{else}}
-                    Loading
+                    {{#if loadingError}}
+                        <p class="ez-relation-error font-icon">
+                            An error occurred while loading the related content.
+                            <button class="ez-relation-retry ez-button font-icon pure-button">Retry</button>
+                        </p>
+                    {{else}}
+                        <p class="font-icon ez-relation-loading">Loading the related content</p>
+                    {{/if}}
                 {{/if}}
             {{/if}}
         </div></div>

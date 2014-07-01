@@ -16,11 +16,21 @@ YUI.add('ez-relation-view', function (Y) {
      * @extends eZ.FieldView
      */
     Y.eZ.RelationView = Y.Base.create('relationView', Y.eZ.FieldView, [], {
+        events: {
+            '.ez-relation-retry': {
+                'tap': '_retryLoading',
+            },
+        },
+
         initializer: function () {
             if (!this._isFieldEmpty()){
                 this.after('activeChange', this._fireLoadAttributeRelatedContent);
             }
             this.after('destinationContentChange', function (e) {
+                this.render();
+            });
+
+            this.after('loadingErrorChange', function (e) {
                 this.render();
             });
         },
@@ -49,6 +59,23 @@ YUI.add('ez-relation-view', function (Y) {
         },
 
         /**
+         * Tap event handler for the retry button. It resets the
+         * `destinationContent` and `loadingError` attributes and fires again the
+         * `loadAttributeRelatedContent` event
+         *
+         * @method _retryLoading
+         * @protected
+         * @param {Object} e
+         */
+        _retryLoading: function (e) {
+            this.setAttrs({
+                destinationContent: null,
+                loadingError: false
+            });
+            this._fireLoadAttributeRelatedContent();
+        },
+
+        /**
          * Returns an object containing the additional variables
          *
          * @method _variables
@@ -56,16 +83,12 @@ YUI.add('ez-relation-view', function (Y) {
          * @return Object
          */
         _variables: function () {
-            if ( this.get('destinationContent') ) {
-                return {
-                    destinationContent: this.get('destinationContent').toJSON()
-                };
-            }
-            else{
-                return {
-                    destinationContent: null
-                };
-            }
+            var dest = this.get('destinationContent');
+
+            return {
+                destinationContent: dest ? dest.toJSON() : null,
+                loadingError: this.get('loadingError'),
+            };
         },
     },{
         ATTRS: {
@@ -75,7 +98,19 @@ YUI.add('ez-relation-view', function (Y) {
              * @attribute content
              * @type Y.eZ.Content
              */
-            destinationContent: {},
+            destinationContent: {
+                value: null,
+            },
+
+            /**
+             * Loading error state
+             *
+             * @attribute loadingError
+             * @type Boolean
+             */
+            loadingError: {
+                value: false,
+            }
         },
     });
 

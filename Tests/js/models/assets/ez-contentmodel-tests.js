@@ -10,7 +10,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             this.serviceMock = new Y.Mock();
             this.serviceLoad = 'loadContentInfoAndCurrentVersion';
             this.rootProperty = "Content";
-            this.parsedAttributeNumber = Y.eZ.Content.ATTRS_REST_MAP.length + 1 + 1; // links + "manually" parsed fields
+            this.parsedAttributeNumber = Y.eZ.Content.ATTRS_REST_MAP.length + 3; // links + fields + relations
             this.loadResponse = {
                 "Content": {
                     "_media-type": "application\/vnd.ez.api.Content+json",
