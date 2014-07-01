@@ -1,0 +1,11 @@
+.ez-fieldview-ezobjectrelation .ez-relation-loading {
+    margin: 0;
+}
+
+.ez-fieldview-ezobjectrelation .ez-relation-error {
+    margin: -0.3em 0 0 0;
+}
+
+.ez-fieldview-ezobjectrelation .ez-relation-retry {
+    padding: 0.3em 0.4em;
+}
