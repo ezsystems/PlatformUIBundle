@@ -1,5 +1,5 @@
 YUI.add('ez-contentmodel-tests', function (Y) {
-    var modelTest;
+    var modelTest, relationsTest;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
         name: "eZ Content Model tests",
@@ -10,7 +10,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             this.serviceMock = new Y.Mock();
             this.serviceLoad = 'loadContentInfoAndCurrentVersion';
             this.rootProperty = "Content";
-            this.parsedAttributeNumber = Y.eZ.Content.ATTRS_REST_MAP.length + 1 + 1; // links + "manually" parsed fields
+            this.parsedAttributeNumber = Y.eZ.Content.ATTRS_REST_MAP.length + 3; // links + fields + relations
             this.loadResponse = {
                 "Content": {
                     "_media-type": "application\/vnd.ez.api.Content+json",
@@ -115,7 +115,48 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                             "Relations": {
                                 "_media-type": "application/vnd.ez.api.RelationList+json",
                                 "_href": "/api/ezp/v2/content/objects/59/versions/1/relations",
-                                "Relation": []
+                                "Relation": [
+                                    {
+                                        "_media-type": "application\/vnd.ez.api.Relation+json",
+                                        "_href": "\/api\/ezp\/v2\/content\/objects\/110\/versions\/33\/relations\/26",
+                                        "SourceContent": {
+                                            "_media-type": "application\/vnd.ez.api.ContentInfo+json",
+                                            "_href": "\/api\/ezp\/v2\/content\/objects\/110"
+                                        },
+                                        "DestinationContent": {
+                                            "_media-type": "application\/vnd.ez.api.ContentInfo+json",
+                                            "_href": "\/api\/ezp\/v2\/content\/objects\/122"
+                                        },
+                                        "SourceFieldDefinitionIdentifier": "relation",
+                                        "RelationType": "ATTRIBUTE"
+                                    },
+                                    {
+                                        "_media-type": "application\/vnd.ez.api.Relation+json",
+                                        "_href": "\/api\/ezp\/v2\/content\/objects\/110\/versions\/33\/relations\/27",
+                                        "SourceContent": {
+                                            "_media-type": "application\/vnd.ez.api.ContentInfo+json",
+                                            "_href": "\/api\/ezp\/v2\/content\/objects\/110"
+                                        },
+                                        "DestinationContent": {
+                                            "_media-type": "application\/vnd.ez.api.ContentInfo+json",
+                                            "_href": "\/api\/ezp\/v2\/content\/objects\/124"
+                                        },
+                                        "RelationType": "COMMON"
+                                    },
+                                    {
+                                        "_media-type": "application\/vnd.ez.api.Relation+json",
+                                        "_href": "\/api\/ezp\/v2\/content\/objects\/110\/versions\/33\/relations\/28",
+                                        "SourceContent": {
+                                            "_media-type": "application\/vnd.ez.api.ContentInfo+json",
+                                            "_href": "\/api\/ezp\/v2\/content\/objects\/110"
+                                        },
+                                        "DestinationContent": {
+                                            "_media-type": "application\/vnd.ez.api.ContentInfo+json",
+                                            "_href": "\/api\/ezp\/v2\/content\/objects\/124"
+                                        },
+                                        "RelationType": "EMBED"
+                                    }
+                                ]
                             }
                         }
                     },
@@ -177,6 +218,32 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             );
         },
 
+        "Should read the relations of the current version": function () {
+            var m = this.model,
+                response = {
+                    body: Y.JSON.stringify(this.loadResponse)
+                },
+                relations, res,
+                respRelation = this.loadResponse.Content.CurrentVersion.Version.Relations.Relation;
+
+            res = m .parse(response);
+            relations = res.relations;
+
+            Y.Assert.areEqual(
+                respRelation.length,
+                relations.length,
+                "The relations should be imported"
+            );
+
+            Y.Array.each(relations, function (relation, i) {
+                Y.Assert.areEqual(
+                    respRelation[i]._href,
+                    relation.id,
+                    "The ordering should be kept"
+                );
+            });
+        },
+
         "Should return the fields": function () {
             var m = this.model,
                 fields = {
@@ -197,10 +264,83 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                 m.getField('doesnotexist')
             );
         }
-
     }));
+
+    relationsTest = new Y.Test.Case({
+        name: "eZ Content Model relations tests",
+
+        setUp: function () {
+            this.model = new Y.eZ.Content();
+
+            this.relationsCommon = [
+                {id: 42, type: "COMMON", destination: 142, source: 242},
+                {id: 43, type: "COMMON", destination: 143, source: 243},
+            ];
+
+            this.relationEmbed = [
+                {id: 44, type: "EMBED", destination: 144, source: 244},
+            ];
+
+            this.relationAttribute1 = [
+                {id: 45, type: "ATTRIBUTE", destination: 145, source: 245, fieldDefinitionIdentifier: "attr1"},
+            ];
+
+            this.relationsAttribute2 = [
+                {id: 46, type: "ATTRIBUTE", destination: 146, source: 246, fieldDefinitionIdentifier: "attr2"},
+                {id: 47, type: "ATTRIBUTE", destination: 147, source: 247, fieldDefinitionIdentifier: "attr2"},
+            ];
+
+            this.relations = this.relationsCommon.concat(
+                this.relationEmbed,
+                this.relationAttribute1,
+                this.relationsAttribute2
+            );
+
+            this.model.set('relations', this.relations);
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        _testRelations: function (expected, type, identifier) {
+            var relations = this.model.relations(type, identifier);
+
+            Y.Assert.areEqual(
+                expected.length,
+                relations.length,
+                "The relations should be filtered"
+            );
+
+            Y.Array.each(relations, function (relation, i) {
+                var elt = expected.shift();
+
+                Y.Assert.areEqual(
+                    elt.id,
+                    relation.id,
+                    "The element " + i + " should be " + elt.id
+                );
+            });
+        },
+
+        "Should filter relations based on the type": function () {
+            this._testRelations(this.relationsCommon, "COMMON");
+        },
+
+        "Should filter ATTRIBUTE relations with a field identifier": function () {
+            this._testRelations(this.relationsAttribute2, "ATTRIBUTE", "attr2");
+        },
+
+        "Should filter ATTRIBUTE relations without a field identifier": function () {
+            this._testRelations(
+                this.relationAttribute1.concat(this.relationsAttribute2), "ATTRIBUTE"
+            );
+        },
+    });
 
     Y.Test.Runner.setName("eZ Content Model tests");
     Y.Test.Runner.add(modelTest);
+    Y.Test.Runner.add(relationsTest);
 
 }, '0.0.1', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

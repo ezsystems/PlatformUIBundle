@@ -42,6 +42,7 @@ YUI.add('ez-locationviewview', function (Y) {
 
         initializer: function () {
             this.get('actionBar').addTarget(this);
+            this.get('rawContentView').addTarget(this);
 
             this.on('*:minimizeActionBarAction', this._handleMinimizeActionBar);
         },
@@ -135,6 +136,7 @@ YUI.add('ez-locationviewview', function (Y) {
         destructor: function () {
             var bar = this.get('actionBar');
 
+            this.get('rawContentView').removeTarget(this);
             this.get('rawContentView').destroy();
             bar.removeTarget(this);
             bar.destroy();
