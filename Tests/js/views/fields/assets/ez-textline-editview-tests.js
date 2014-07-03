@@ -236,4 +236,4 @@ YUI.add('ez-textline-editview-tests', function (Y) {
     registerTest.viewType = Y.eZ.TextLineEditView;
     registerTest.viewKey = "ezstring";
     Y.Test.Runner.add(registerTest);
-}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-textline-editview']});
+}, '', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-textline-editview']});

@@ -100,4 +100,4 @@ YUI.add('ez-app-extension-tests', function (Y) {
     Y.Test.Runner.setName("eZ App Extension tests");
     Y.Test.Runner.add(extTest);
 
-}, '0.0.1', {requires: ['test', 'ez-app-extension']});
+}, '', {requires: ['test', 'ez-app-extension']});

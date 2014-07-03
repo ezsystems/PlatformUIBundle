@@ -33,4 +33,4 @@ YUI.add('ez-author-view-tests', function (Y) {
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'ez-author-view', 'ez-genericfieldview-tests']});
+}, '', {requires: ['test', 'ez-author-view', 'ez-genericfieldview-tests']});

@@ -91,4 +91,4 @@ YUI.add('ez-fieldview-tests', function (Y) {
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'ez-genericfieldview-tests', 'ez-fieldview']});
+}, '', {requires: ['test', 'ez-genericfieldview-tests', 'ez-fieldview']});

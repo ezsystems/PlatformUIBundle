@@ -404,4 +404,4 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(destroyTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-rawcontentview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-rawcontentview']});

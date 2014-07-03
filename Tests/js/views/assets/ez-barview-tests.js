@@ -444,4 +444,4 @@ YUI.add('ez-barview-tests', function (Y) {
     Y.Test.Runner.add(sameTemplateTest);
     Y.Test.Runner.add(eventsTest);
     Y.Test.Runner.add(destroyTest);
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-barview', 'ez-buttonactionview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-barview', 'ez-buttonactionview']});

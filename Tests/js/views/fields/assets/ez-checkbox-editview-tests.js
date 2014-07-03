@@ -120,4 +120,4 @@ YUI.add('ez-checkbox-editview-tests', function (Y) {
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-checkbox-editview']});
+}, '', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-checkbox-editview']});

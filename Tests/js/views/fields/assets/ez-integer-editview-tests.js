@@ -251,4 +251,4 @@ YUI.add('ez-integer-editview-tests', function (Y) {
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-integer-editview']});
+}, '', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-integer-editview']});

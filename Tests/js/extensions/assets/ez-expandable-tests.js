@@ -44,4 +44,4 @@ YUI.add('ez-expandable-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Expandable extension tests");
     Y.Test.Runner.add(viewTest);
-}, '0.0.1', {requires: ['test', 'ez-expandable']});
+}, '', {requires: ['test', 'ez-expandable']});

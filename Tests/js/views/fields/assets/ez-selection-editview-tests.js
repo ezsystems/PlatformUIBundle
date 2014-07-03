@@ -607,4 +607,4 @@ YUI.add('ez-selection-editview-tests', function (Y) {
     registerTest.viewType = Y.eZ.SelectionEditView;
     registerTest.viewKey = "ezselection";
     Y.Test.Runner.add(registerTest);
-}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'node-style', 'node-event-simulate', 'ez-selection-editview']});
+}, '', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'node-style', 'node-event-simulate', 'ez-selection-editview']});

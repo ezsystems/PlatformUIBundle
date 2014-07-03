@@ -64,4 +64,4 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
     Y.Test.Runner.setName("eZ Navigation Hub View Service tests");
     Y.Test.Runner.add(getViewParametersTest);
     Y.Test.Runner.add(logOutEvtTest);
-}, '0.0.1', {requires: ['test', 'ez-navigationhubviewservice']});
+}, '', {requires: ['test', 'ez-navigationhubviewservice']});

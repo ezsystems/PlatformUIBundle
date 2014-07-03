@@ -252,4 +252,4 @@ YUI.add('ez-loginformview-tests', function (Y) {
     Y.Test.Runner.add(submitTest);
     Y.Test.Runner.add(errorTest);
     Y.Test.Runner.add(authTest);
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-loginformview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-loginformview']});

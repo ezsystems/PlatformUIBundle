@@ -410,7 +410,7 @@ YUI.add('ez-treeactionview-tests', function (Y) {
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(treeTest);
     Y.Test.Runner.add(buttonTest);
-}, '0.0.1', {
+}, '', {
     requires: [
         'test', 'node-event-simulate', 'ez-treeactionview',
         'ez-genericbuttonactionview-tests', 'tree', 'tree-selectable',

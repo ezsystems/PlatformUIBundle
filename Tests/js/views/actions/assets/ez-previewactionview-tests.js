@@ -290,4 +290,4 @@ YUI.add('ez-previewactionview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Preview Action View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(buttonTest);
-}, '0.0.1', {requires: ['test', 'ez-previewactionview', 'ez-genericbuttonactionview-tests', 'node-event-simulate']});
+}, '', {requires: ['test', 'ez-previewactionview', 'ez-genericbuttonactionview-tests', 'node-event-simulate']});

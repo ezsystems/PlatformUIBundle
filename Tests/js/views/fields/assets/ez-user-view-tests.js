@@ -33,4 +33,4 @@ YUI.add('ez-user-view-tests', function (Y) {
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'ez-user-view', 'ez-genericfieldview-tests']});
+}, '', {requires: ['test', 'ez-user-view', 'ez-genericfieldview-tests']});

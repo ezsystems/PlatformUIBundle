@@ -114,4 +114,4 @@ YUI.add('ez-discoverybarviewservice-tests', function (Y) {
     Y.Test.Runner.setName("eZ Discovery Bar View Service tests");
     Y.Test.Runner.add(serviceTest);
 
-}, '0.0.1', {requires: ['test', 'ez-discoverybarviewservice']});
+}, '', {requires: ['test', 'ez-discoverybarviewservice']});

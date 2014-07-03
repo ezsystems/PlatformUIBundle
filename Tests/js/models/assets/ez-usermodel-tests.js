@@ -43,4 +43,4 @@ YUI.add('ez-usermodel-tests', function (Y) {
     Y.Test.Runner.setName("eZ User Model tests");
     Y.Test.Runner.add(modelTest);
 
-}, '0.0.1', {requires: ['test', 'model-tests', 'ez-usermodel', 'ez-restmodel']});
+}, '', {requires: ['test', 'model-tests', 'ez-usermodel', 'ez-restmodel']});

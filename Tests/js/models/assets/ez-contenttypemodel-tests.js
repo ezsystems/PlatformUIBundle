@@ -280,4 +280,4 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
     Y.Test.Runner.setName("eZ ContentType Model tests");
     Y.Test.Runner.add(modelTest);
 
-}, '0.0.1', {requires: ['test', 'model-tests', 'ez-contenttypemodel', 'ez-restmodel']});
+}, '', {requires: ['test', 'model-tests', 'ez-contenttypemodel', 'ez-restmodel']});

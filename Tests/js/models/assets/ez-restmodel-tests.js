@@ -302,4 +302,4 @@ YUI.add('ez-restmodel-tests', function (Y) {
     Y.Test.Runner.setName("eZ Rest Model tests");
     Y.Test.Runner.add(modelTest);
 
-}, '0.0.1', {requires: ['test', 'ez-restmodel']});
+}, '', {requires: ['test', 'ez-restmodel']});

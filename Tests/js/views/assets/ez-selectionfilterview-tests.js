@@ -520,4 +520,4 @@ YUI.add('ez-selectionfilterview-tests', function (Y) {
     Y.Test.Runner.add(multipleSelectTest);
     Y.Test.Runner.add(multipleUnselectTest);
     Y.Test.Runner.add(sourceValidationTest);
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-selectionfilterview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-selectionfilterview']});

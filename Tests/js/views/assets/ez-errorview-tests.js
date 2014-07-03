@@ -143,4 +143,4 @@ YUI.add('ez-errorview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Error View tests");
     Y.Test.Runner.add(viewTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-errorview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-errorview']});

@@ -55,4 +55,4 @@ YUI.add('ez-viewservice-tests', function (Y) {
     Y.Test.Runner.setName("eZ View Service tests");
     Y.Test.Runner.add(test);
 
-}, '0.0.1', {requires: ['test', 'ez-viewservice']});
+}, '', {requires: ['test', 'ez-viewservice']});

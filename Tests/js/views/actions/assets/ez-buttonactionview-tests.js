@@ -27,4 +27,4 @@ YUI.add('ez-buttonactionview-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Button Action View tests");
     Y.Test.Runner.add(viewTest);
-}, '0.0.1', {requires: ['test', 'ez-buttonactionview', 'ez-genericbuttonactionview-tests']});
+}, '', {requires: ['test', 'ez-buttonactionview', 'ez-genericbuttonactionview-tests']});

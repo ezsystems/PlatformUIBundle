@@ -45,4 +45,4 @@ YUI.add('ez-discoverybarview-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Discovery Bar View tests");
     Y.Test.Runner.add(viewTest);
-}, '0.0.1', {requires: ['test', 'ez-discoverybarview']});
+}, '', {requires: ['test', 'ez-discoverybarview']});

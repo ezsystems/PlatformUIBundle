@@ -455,4 +455,4 @@ YUI.add('ez-author-editview-tests', function (Y) {
     registerTest.viewKey = "ezauthor";
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'getfield-tests', 'editviewregister-tests', 'ez-author-editview']});
+}, '', {requires: ['test', 'node-event-simulate', 'getfield-tests', 'editviewregister-tests', 'ez-author-editview']});

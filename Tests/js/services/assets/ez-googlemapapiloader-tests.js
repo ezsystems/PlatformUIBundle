@@ -155,4 +155,4 @@ YUI.add('ez-googlemapapiloader-tests', function (Y) {
     Y.Test.Runner.setName("eZ Google Map API Loader tests");
     Y.Test.Runner.add(mapLoaderTest);
 
-}, '0.0.1', {requires: ['test', 'ez-googlemapapiloader']});
+}, '', {requires: ['test', 'ez-googlemapapiloader']});

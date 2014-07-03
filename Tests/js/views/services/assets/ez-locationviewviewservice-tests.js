@@ -543,4 +543,4 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(loadFieldRelatedContentEventTest);
 
-}, '0.0.1', {requires: ['test', 'ez-locationviewviewservice']});
+}, '', {requires: ['test', 'ez-locationviewviewservice']});

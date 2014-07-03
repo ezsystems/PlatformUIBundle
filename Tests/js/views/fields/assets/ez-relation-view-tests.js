@@ -167,4 +167,4 @@ YUI.add('ez-relation-view-tests', function (Y) {
     Y.Test.Runner.add(viewTestWithContent);
     Y.Test.Runner.add(viewTestWithoutContent);
     Y.Test.Runner.add(registerTest);
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-relation-view', 'ez-genericfieldview-tests']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-relation-view', 'ez-genericfieldview-tests']});

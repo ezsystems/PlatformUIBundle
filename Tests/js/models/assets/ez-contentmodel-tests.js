@@ -343,4 +343,4 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
 
-}, '0.0.1', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});
+}, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

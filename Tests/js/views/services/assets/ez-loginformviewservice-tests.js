@@ -180,4 +180,4 @@ YUI.add('ez-loginformviewservice-tests', function (Y) {
     Y.Test.Runner.setName("eZ Login Form View Service tests");
     Y.Test.Runner.add(loadTest);
     Y.Test.Runner.add(authTest);
-}, '0.0.1', {requires: ['test', 'ez-loginformviewservice']});
+}, '', {requires: ['test', 'ez-loginformviewservice']});

@@ -375,4 +375,4 @@ YUI.add('ez-locationviewview-tests', function (Y) {
     Y.Test.Runner.add(tabsTest);
     Y.Test.Runner.add(eventsTest);
     Y.Test.Runner.add(destroyTest);
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-locationviewview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-locationviewview']});

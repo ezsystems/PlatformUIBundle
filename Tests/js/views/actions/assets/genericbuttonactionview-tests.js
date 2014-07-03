@@ -88,4 +88,4 @@ YUI.add('ez-genericbuttonactionview-tests', function (Y) {
             this.wait();
         }
     };
-}, '0.0.1', {requires: ['test', 'node-event-simulate']});
+}, '', {requires: ['test', 'node-event-simulate']});

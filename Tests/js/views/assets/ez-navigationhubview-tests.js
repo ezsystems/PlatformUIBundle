@@ -425,4 +425,4 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(logOutTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-navigationhubview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-navigationhubview']});

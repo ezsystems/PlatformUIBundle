@@ -47,4 +47,4 @@ YUI.add('ez-templatebasedview-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Template Based view tests");
     Y.Test.Runner.add(viewTest);
-}, '0.0.1', {requires: ['test', 'ez-templatebasedview']});
+}, '', {requires: ['test', 'ez-templatebasedview']});

@@ -191,4 +191,4 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'event-valuechange', 'node-event-simulate', 'getfield-tests', 'editviewregister-tests', 'ez-emailaddress-editview']});
+}, '', {requires: ['test', 'event-valuechange', 'node-event-simulate', 'getfield-tests', 'editviewregister-tests', 'ez-emailaddress-editview']});

@@ -412,4 +412,4 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
     Y.Test.Runner.add(getFieldsTest);
     Y.Test.Runner.add(activeFlagTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-contenteditformview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-contenteditformview']});

@@ -427,4 +427,4 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
     Y.Test.Runner.add(cevlTest);
     Y.Test.Runner.add(eventTest);
 
-}, '0.0.1', {requires: ['test', 'ez-contenteditviewservice']});
+}, '', {requires: ['test', 'ez-contenteditviewservice']});

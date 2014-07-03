@@ -355,4 +355,4 @@ YUI.add('ez-maplocation-view-tests', function (Y) {
     registerTest.viewKey = "ezgmaplocation";
 
     Y.Test.Runner.add(registerTest);
-}, '0.0.1', {requires: ['test', 'ez-maplocation-view', 'ez-genericfieldview-tests']});
+}, '', {requires: ['test', 'ez-maplocation-view', 'ez-genericfieldview-tests']});

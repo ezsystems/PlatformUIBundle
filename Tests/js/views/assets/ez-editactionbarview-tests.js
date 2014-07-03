@@ -47,4 +47,4 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Edit Action Bar View tests");
     Y.Test.Runner.add(viewTest);
-}, '0.0.1', {requires: ['test', 'ez-editactionbarview']});
+}, '', {requires: ['test', 'ez-editactionbarview']});

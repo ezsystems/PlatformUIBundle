@@ -93,4 +93,4 @@ YUI.add('ez-selection-table-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Selection Table extension tests");
     Y.Test.Runner.add(selectionTableTest);
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-selection-table', 'view']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-selection-table', 'view']});

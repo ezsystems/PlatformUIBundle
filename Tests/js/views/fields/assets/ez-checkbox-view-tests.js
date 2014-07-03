@@ -55,4 +55,4 @@ YUI.add('ez-checkbox-view-tests', function (Y) {
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'ez-checkbox-view', 'ez-genericfieldview-tests']});
+}, '', {requires: ['test', 'ez-checkbox-view', 'ez-genericfieldview-tests']});

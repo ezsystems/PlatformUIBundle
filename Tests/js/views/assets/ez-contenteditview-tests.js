@@ -440,4 +440,4 @@ YUI.add('ez-contenteditview-tests', function (Y) {
     Y.Test.Runner.add(titleTest);
     Y.Test.Runner.add(eventTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-contenteditview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-contenteditview']});

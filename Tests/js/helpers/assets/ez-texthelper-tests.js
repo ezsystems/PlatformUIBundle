@@ -30,4 +30,4 @@ YUI.add('ez-texthelper-tests', function (Y) {
     Y.Test.Runner.setName("eZ Text Helper tests");
     Y.Test.Runner.add(test);
 
-}, '0.0.1', {requires: ['test', 'ez-texthelper']});
+}, '', {requires: ['test', 'ez-texthelper']});

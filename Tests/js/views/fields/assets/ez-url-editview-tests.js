@@ -175,4 +175,4 @@ YUI.add('ez-url-editview-tests', function (Y) {
     registerTest.viewKey = "ezurl";
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-url-editview']});
+}, '', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-url-editview']});

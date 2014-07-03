@@ -127,4 +127,4 @@ YUI.add('ez-selection-view-tests', function (Y) {
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'ez-selection-view', 'ez-genericfieldview-tests']});
+}, '', {requires: ['test', 'ez-selection-view', 'ez-genericfieldview-tests']});

@@ -115,4 +115,4 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Edit Preview View tests");
     Y.Test.Runner.add(viewTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-editpreviewview', 'ez-contentmodel', 'ez-versionmodel']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-editpreviewview', 'ez-contentmodel', 'ez-versionmodel']});

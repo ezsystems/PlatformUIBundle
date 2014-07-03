@@ -919,4 +919,4 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
     registerTest.viewKey = "ezgmaplocation";
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'node-event-simulate', 'ez-maplocation-editview']});
+}, '', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'node-event-simulate', 'ez-maplocation-editview']});

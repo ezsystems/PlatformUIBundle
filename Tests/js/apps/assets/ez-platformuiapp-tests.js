@@ -1647,4 +1647,4 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(loginTest);
     Y.Test.Runner.add(logoutTest);
     Y.Test.Runner.add(checkUserTest);
-}, '0.0.1', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice']});
+}, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice']});
