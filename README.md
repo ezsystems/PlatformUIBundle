@@ -1,9 +1,19 @@
 # Platform UI Bundle
 
-## Install
+PlatformUIBundle is a bundle for eZ Publish Platform providing a webapp
+application to manage your content and administrate your eZ Publish Platform
+install.
 
-* Clone this repository into `src/EzSystems` (create this folder if it does not
-  exist)
+If you find a bug, please create an issue [in JIRA](https://jira.ez.no/) and
+don't forget to add as much details as you can (steps to reproduce, OS and
+brower(s) versions, ...) and to put *PlatformUI* in the *Component/s* field.
+
+## Installation
+
+* From your eZ Publish 5 installation, run composer:
+    ```
+    $ composer require ezsystems/plaform-ui-bundle:dev-master
+    ```
 * In `ezpublish/EzPublishKernel.php` add an instance of
   `EzSystemsPlatformUIBundle` class to the list of registered bundles:
     ```php
@@ -37,16 +47,10 @@
     $ php ezpublish/console assets:install --symlink
     ```
 * Install [nodejs](http://nodejs.org/)
-* Install [phantomjs](http://phantomjs.org)
-* Install local npm dependencies, from the bundle root, run:
-
+* Install [bower](http://bower.io/) (usually you need to be root to install it
+  globally)
     ```
-    $ npm install
-    ```
-* Install global dependencies (usually you need to be root):
-
-    ```
-    # npm install -g grunt-cli yuidocjs bower grover
+    # npm install -g bower
     ```
 * Install frontend dependencies:
 
@@ -54,55 +58,63 @@
     $ bower install
     ```
 
+If you are running eZ Publish in the `prod` environment, you also need to dump
+the assets for Assetic with:
+
+```
+php ezpublish/console assetic:dump --env=prod
+```
+
 Once this is done, you can go to http://[uri\_of\_ez]/shell to run the eZ Platform
 UI application.
 
-## Tests
+## Developers tasks
 
-### JavaScript components
+Most developer related tasks can be run with [Grunt](http://gruntjs.com/) and
+have several additionnal dependencies:
 
-The unit tests can be executed with:
+* Install Grunt, YUIDoc and Grover globally (usually you need to be root):
+
+    ```
+    # npm install -g grunt-cli yuidocjs grover
+    ```
+* Install [phantomjs](http://phantomjs.org)
+* Install local npm dependencies, from the bundle root, run:
+
+    ```
+    $ npm install
+    ```
+
+Once this is done, you can use any tasks registered in Grunt, the most
+interesting are:
+
+* Running the JavaScript unit tests
+    ```
+    $ grunt test
+    ```
+* Generate a code coverage from those tests:
+    ```
+    $ grunt coverage
+    ```
+  The HTML coverage report is then available in `Tests/report/lcov-report/index.html`.
+* Generate the JavaScript API doc:
+    ```
+    $ grunt doc
+    ```
+* Alternatively, you can run [a live documentation
+  server](http://yui.github.io/yuidoc/args/index.html#server) that will be
+  available at http://127.0.0.1:3000 :
+    ```
+    $ grunt livedoc
+    ```
+
+To run the PHP unit tests, you first need to install the dev dependencies of the
+bundle. To do that, from the bundle root, run:
 ```
-$ grunt test
-``` 
-
-To run the unit tests and generate a coverage report use:
-```
-$ grunt coverage
+$ composer install --prefer-dist
 ```
 
-The HTML coverage report is then available in
-`Tests/report/lcov-report/index.html`.
-
-## Grunt tasks
-
-### API documentation
-
-The JavaScript API documentation can be generated in the `api` directory with:
-
+Then, you can run the unit tests with:
 ```
-$ grunt doc
+$ php vendor/bin/phpunit
 ```
-Alternatively, you can run
-```
-$ grunt livedoc
-```
-to run the [yuidoc documentation
-server](http://yui.github.io/yuidoc/args/index.html#server). The dynamic
-documentation can then be reached at http://127.0.0.1:3000.
-
-### Miscelleanous
-
-* To execute jshint checks run:
-  ```
-   $ grunt lint
-   ```
-* To generate the minified versions of the JavaScript files:
-  ```
-  $ grunt uglify
-  ```
-* Clean up (removes the minified JavaScript files for now):
-  ```
-  $ grunt clean
- ```
-
