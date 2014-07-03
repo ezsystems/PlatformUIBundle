@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 /* global google */
 YUI.add('ez-googlemapapiloader', function (Y) {
     "use strict";

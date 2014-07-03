@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-editpreviewview-tests', function (Y) {
     var IS_HIDDEN_CLASS = 'is-editpreview-hidden',
         IS_LOADING_CLASS = 'is-loading',

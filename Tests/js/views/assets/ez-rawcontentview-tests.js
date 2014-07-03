@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-rawcontentview-tests', function (Y) {
     var viewTest, destroyTest, eventTest,
         _getContentTypeMock = function (fieldDefinitions, fieldGroups) {
