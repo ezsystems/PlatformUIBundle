@@ -27,7 +27,8 @@
     },
     "license": "GPL-2.0",
     "autoload": {
-        "psr-0": {"EzSystems\\PlatformUIBundle": ""}
-    },
-    "target-dir": "EzSystems/PlatformUIBundle"
+        "psr-4": {
+            "EzSystems\\PlatformUIBundle\\": ""
+        }
+    }
 }
