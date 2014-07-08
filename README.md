@@ -15,8 +15,12 @@ brower(s) versions, ...) and to put *PlatformUI* in the *Component/s* field.
 * From your eZ Publish 5 installation, run composer:
 
   ```
-  $ composer require ezsystems/plaform-ui-bundle:dev-master
+  $ composer require ezsystems/platform-ui-bundle:dev-master
   ```
+  Note: The post install scripts are failing because of a missing CSS file, it's
+  [a known issue](https://jira.ez.no/browse/EZP-23128) that will be fixed in the
+  coming weeks.
+
 * In `ezpublish/EzPublishKernel.php` add an instance of
   `EzSystemsPlatformUIBundle` class to the list of registered bundles:
 
