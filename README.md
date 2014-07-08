@@ -1,5 +1,7 @@
 # Platform UI Bundle
 
+[![Build Status](https://travis-ci.org/ezsystems/PlatformUIBundle.svg?branch=master)](https://travis-ci.org/ezsystems/PlatformUIBundle)
+
 PlatformUIBundle is a bundle for eZ Publish Platform providing a webapp
 application to manage your content and administrate your eZ Publish Platform
 install.
