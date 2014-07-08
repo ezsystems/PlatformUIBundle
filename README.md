@@ -13,52 +13,56 @@ brower(s) versions, ...) and to put *PlatformUI* in the *Component/s* field.
 ## Installation
 
 * From your eZ Publish 5 installation, run composer:
-    ```
-    $ composer require ezsystems/plaform-ui-bundle:dev-master
-    ```
+
+  ```
+  $ composer require ezsystems/plaform-ui-bundle:dev-master
+  ```
 * In `ezpublish/EzPublishKernel.php` add an instance of
   `EzSystemsPlatformUIBundle` class to the list of registered bundles:
-    ```php
-    public function registerBundles()
-    {
-        $bundles = array(
-            // enabled bundles
-            // ...
 
-            new EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle(),
-        );
-    }
-    ```
+  ```php
+  public function registerBundles()
+  {
+      $bundles = array(
+          // enabled bundles
+          // ...
+
+          new EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle(),
+      );
+  }
+  ```
 * In `ezpublish/config/config.yml` add the `eZPlatformUIBundle` in the
   `assetic.bundles` setting:
 
-    ```yml
-    assetic:
-        bundles: [ eZDemoBundle, eZPlatformUIBundle ]
-    ```
+  ```yml
+  assetic:
+      bundles: [ eZDemoBundle, eZPlatformUIBundle ]
+  ```
 * In `ezpublish/config/routing.yml` include the eZPlatformUIBundle routing
   configuration:
 
-    ```yml
-    _ezpublishPlatformUIRoutes:
-        resource: "@eZPlatformUIBundle/Resources/config/routing.yml"
-    ```
+  ```yml
+  _ezpublishPlatformUIRoutes:
+      resource: "@eZPlatformUIBundle/Resources/config/routing.yml"
+  ```
 * [Configure the REST API to use the session based authentication](https://doc.ez.no/display/EZP/REST+API+Authentication).
 * Run the following command:
-    ```
-    $ php ezpublish/console assets:install --symlink
-    ```
+
+  ```
+  $ php ezpublish/console assets:install --symlink
+  ```
 * Install [nodejs](http://nodejs.org/)
 * Install [bower](http://bower.io/) (usually you need to be root to install it
   globally)
-    ```
-    # npm install -g bower
-    ```
+
+  ```
+  # npm install -g bower
+  ```
 * Install frontend dependencies:
 
-    ```
-    $ bower install
-    ```
+  ```
+  $ bower install
+  ```
 
 If you are running eZ Publish in the `prod` environment, you also need to dump
 the assets for Assetic with:
@@ -77,46 +81,52 @@ have several additionnal dependencies:
 
 * Install Grunt, YUIDoc and Grover globally (usually you need to be root):
 
-    ```
-    # npm install -g grunt-cli yuidocjs grover
-    ```
+  ```
+  # npm install -g grunt-cli yuidocjs grover
+  ```
 * Install [phantomjs](http://phantomjs.org)
 * Install local npm dependencies, from the bundle root, run:
 
-    ```
-    $ npm install
-    ```
+  ```
+  $ npm install
+  ```
 
 Once this is done, you can use any tasks registered in Grunt, the most
 interesting are:
 
 * Running the JavaScript unit tests
-    ```
-    $ grunt test
-    ```
+
+  ```
+  $ grunt test
+  ```
 * Generate a code coverage from those tests:
-    ```
-    $ grunt coverage
-    ```
+
+  ```
+  $ grunt coverage
+  ```
   The HTML coverage report is then available in `Tests/report/lcov-report/index.html`.
 * Generate the JavaScript API doc:
-    ```
-    $ grunt doc
-    ```
+
+  ```
+  $ grunt doc
+  ```
 * Alternatively, you can run [a live documentation
   server](http://yui.github.io/yuidoc/args/index.html#server) that will be
   available at http://127.0.0.1:3000 :
-    ```
-    $ grunt livedoc
-    ```
+
+  ```
+  $ grunt livedoc
+  ```
 
 To run the PHP unit tests, you first need to install the dev dependencies of the
 bundle. To do that, from the bundle root, run:
+
 ```
 $ composer install --prefer-dist
 ```
 
 Then, you can run the unit tests with:
+
 ```
 $ php vendor/bin/phpunit
 ```
