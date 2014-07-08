@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-textblock-editview-tests', function (Y) {
     var viewTest, registerTest, getFieldTest;
 
@@ -159,4 +163,4 @@ YUI.add('ez-textblock-editview-tests', function (Y) {
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-textblock-editview']});
+}, '', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-textblock-editview']});

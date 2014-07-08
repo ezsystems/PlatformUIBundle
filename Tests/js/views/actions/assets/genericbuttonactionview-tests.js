@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-genericbuttonactionview-tests', function (Y) {
 
     Y.namespace('eZ.Test');
@@ -88,4 +92,4 @@ YUI.add('ez-genericbuttonactionview-tests', function (Y) {
             this.wait();
         }
     };
-}, '0.0.1', {requires: ['test', 'node-event-simulate']});
+}, '', {requires: ['test', 'node-event-simulate']});

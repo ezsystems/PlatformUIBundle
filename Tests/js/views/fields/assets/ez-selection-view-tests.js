@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-selection-view-tests', function (Y) {
     var registerTest, simpleViewTest, multipleViewTest;
 
@@ -127,4 +131,4 @@ YUI.add('ez-selection-view-tests', function (Y) {
 
     Y.Test.Runner.add(registerTest);
 
-}, '0.0.1', {requires: ['test', 'ez-selection-view', 'ez-genericfieldview-tests']});
+}, '', {requires: ['test', 'ez-selection-view', 'ez-genericfieldview-tests']});

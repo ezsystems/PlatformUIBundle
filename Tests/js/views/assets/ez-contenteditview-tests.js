@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-contenteditview-tests', function (Y) {
     var viewTest, titleTest, eventTest;
 
@@ -440,4 +444,4 @@ YUI.add('ez-contenteditview-tests', function (Y) {
     Y.Test.Runner.add(titleTest);
     Y.Test.Runner.add(eventTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-contenteditview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-contenteditview']});

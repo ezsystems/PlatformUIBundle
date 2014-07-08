@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-previewactionview-tests', function (Y) {
     var viewTest, buttonTest;
 
@@ -290,4 +294,4 @@ YUI.add('ez-previewactionview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Preview Action View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(buttonTest);
-}, '0.0.1', {requires: ['test', 'ez-previewactionview', 'ez-genericbuttonactionview-tests', 'node-event-simulate']});
+}, '', {requires: ['test', 'ez-previewactionview', 'ez-genericbuttonactionview-tests', 'node-event-simulate']});

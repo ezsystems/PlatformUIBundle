@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-locationviewviewservice-tests', function (Y) {
     var functionalTest, unitTest, eventTest, loadFieldRelatedContentEventTest;
 
@@ -543,4 +547,4 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(loadFieldRelatedContentEventTest);
 
-}, '0.0.1', {requires: ['test', 'ez-locationviewviewservice']});
+}, '', {requires: ['test', 'ez-locationviewviewservice']});

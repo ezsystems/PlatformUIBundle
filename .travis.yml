@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+    - "0.10"
+env:
+    - CODE="php"
+      BEFORE_GLOBAL="sudo ./bin/travis/setupphp.sh"
+      BEFORE_LOCAL="./bin/travis/composer.sh"
+      TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml"
+    - CODE="js"
+      BEFORE_GLOBAL="npm install -g grunt-cli grover"
+      BEFORE_LOCAL="npm install"
+      TEST_CMD="grunt test"
+
+before_script:
+    - $BEFORE_GLOBAL
+    - $BEFORE_LOCAL
+
+script: $TEST_CMD

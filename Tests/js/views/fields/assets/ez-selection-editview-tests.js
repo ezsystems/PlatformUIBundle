@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-selection-editview-tests', function (Y) {
     var viewTest, registerTest, getFieldTest, uiFunctionalTest,
         options = [
@@ -607,4 +611,4 @@ YUI.add('ez-selection-editview-tests', function (Y) {
     registerTest.viewType = Y.eZ.SelectionEditView;
     registerTest.viewKey = "ezselection";
     Y.Test.Runner.add(registerTest);
-}, '0.0.1', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'node-style', 'node-event-simulate', 'ez-selection-editview']});
+}, '', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'node-style', 'node-event-simulate', 'ez-selection-editview']});

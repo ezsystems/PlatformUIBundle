@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-navigationhubview-tests', function (Y) {
     var viewTest, eventTest, logOutTest;
 
@@ -425,4 +429,4 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(logOutTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-navigationhubview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-navigationhubview']});

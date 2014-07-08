@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-viewservice-tests', function (Y) {
     var test;
 
@@ -55,4 +59,4 @@ YUI.add('ez-viewservice-tests', function (Y) {
     Y.Test.Runner.setName("eZ View Service tests");
     Y.Test.Runner.add(test);
 
-}, '0.0.1', {requires: ['test', 'ez-viewservice']});
+}, '', {requires: ['test', 'ez-viewservice']});

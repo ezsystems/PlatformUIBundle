@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-serversideviewservice-tests', function (Y) {
     var unitTest, rewriteTest;
 
@@ -242,4 +246,4 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
     Y.Test.Runner.setName("eZ Server Side View Service tests");
     Y.Test.Runner.add(unitTest);
     Y.Test.Runner.add(rewriteTest);
-}, '0.0.1', {requires: ['test', 'ez-serversideviewservice']});
+}, '', {requires: ['test', 'ez-serversideviewservice']});

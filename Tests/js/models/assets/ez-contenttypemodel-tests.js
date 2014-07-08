@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-contenttypemodel-tests', function (Y) {
     var modelTest;
 
@@ -280,4 +284,4 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
     Y.Test.Runner.setName("eZ ContentType Model tests");
     Y.Test.Runner.add(modelTest);
 
-}, '0.0.1', {requires: ['test', 'model-tests', 'ez-contenttypemodel', 'ez-restmodel']});
+}, '', {requires: ['test', 'model-tests', 'ez-contenttypemodel', 'ez-restmodel']});

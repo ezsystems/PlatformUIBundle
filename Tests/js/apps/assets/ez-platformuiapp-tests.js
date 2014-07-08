@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-platformuiapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest, sideViewServicesTest,
         adminExtTest, loginTest, logoutTest, checkUserTest,
@@ -1647,4 +1651,4 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(loginTest);
     Y.Test.Runner.add(logoutTest);
     Y.Test.Runner.add(checkUserTest);
-}, '0.0.1', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice']});
+}, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice']});

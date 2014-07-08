@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-fieldeditview-tests', function (Y) {
     var viewTest, tooltipTest, customViewTest, registryTest;
 
@@ -516,4 +520,4 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
     Y.Test.Runner.add(customViewTest);
     Y.Test.Runner.add(registryTest);
 
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-fieldeditview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-fieldeditview']});

@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-selectionfilterview-tests', function (Y) {
     var viewTest, filterDisabledTest, preselectedTest,
         multipleSelectTest, multipleUnselectTest, sourceValidationTest,
@@ -520,4 +524,4 @@ YUI.add('ez-selectionfilterview-tests', function (Y) {
     Y.Test.Runner.add(multipleSelectTest);
     Y.Test.Runner.add(multipleUnselectTest);
     Y.Test.Runner.add(sourceValidationTest);
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-selectionfilterview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-selectionfilterview']});

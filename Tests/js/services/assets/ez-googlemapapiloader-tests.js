@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-googlemapapiloader-tests', function (Y) {
     var mapLoaderTest;
 
@@ -155,4 +159,4 @@ YUI.add('ez-googlemapapiloader-tests', function (Y) {
     Y.Test.Runner.setName("eZ Google Map API Loader tests");
     Y.Test.Runner.add(mapLoaderTest);
 
-}, '0.0.1', {requires: ['test', 'ez-googlemapapiloader']});
+}, '', {requires: ['test', 'ez-googlemapapiloader']});

@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-navigationhubviewservice-tests', function (Y) {
     var getViewParametersTest, logOutEvtTest;
 
@@ -64,4 +68,4 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
     Y.Test.Runner.setName("eZ Navigation Hub View Service tests");
     Y.Test.Runner.add(getViewParametersTest);
     Y.Test.Runner.add(logOutEvtTest);
-}, '0.0.1', {requires: ['test', 'ez-navigationhubviewservice']});
+}, '', {requires: ['test', 'ez-navigationhubviewservice']});

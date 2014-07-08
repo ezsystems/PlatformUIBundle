@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
 .ez-selection-table .is-row-selected td,
 .ez-selection-table .is-row-selected:nth-child(2n-1) td {
     background: #feffbb;

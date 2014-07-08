@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-app-extension-tests', function (Y) {
     var extTest, assertSameObject;
 
@@ -100,4 +104,4 @@ YUI.add('ez-app-extension-tests', function (Y) {
     Y.Test.Runner.setName("eZ App Extension tests");
     Y.Test.Runner.add(extTest);
 
-}, '0.0.1', {requires: ['test', 'ez-app-extension']});
+}, '', {requires: ['test', 'ez-app-extension']});

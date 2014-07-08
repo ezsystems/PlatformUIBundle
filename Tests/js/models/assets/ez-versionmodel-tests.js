@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-versionmodel-tests', function (Y) {
     var modelTest, loadNewTest, updateTest, removeTest,
         restResponse = {
@@ -537,4 +541,4 @@ YUI.add('ez-versionmodel-tests', function (Y) {
     Y.Test.Runner.add(updateTest);
     Y.Test.Runner.add(removeTest);
 
-}, '0.0.1', {requires: ['test', 'json', 'model-tests', 'ez-versionmodel', 'ez-restmodel']});
+}, '', {requires: ['test', 'json', 'model-tests', 'ez-versionmodel', 'ez-restmodel']});

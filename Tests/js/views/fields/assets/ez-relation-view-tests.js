@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-relation-view-tests', function (Y) {
     var registerTest, viewTestWithContent, viewTestWithoutContent;
 
@@ -167,4 +171,4 @@ YUI.add('ez-relation-view-tests', function (Y) {
     Y.Test.Runner.add(viewTestWithContent);
     Y.Test.Runner.add(viewTestWithoutContent);
     Y.Test.Runner.add(registerTest);
-}, '0.0.1', {requires: ['test', 'node-event-simulate', 'ez-relation-view', 'ez-genericfieldview-tests']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-relation-view', 'ez-genericfieldview-tests']});

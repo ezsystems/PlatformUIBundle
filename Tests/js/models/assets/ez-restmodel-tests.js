@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
 YUI.add('ez-restmodel-tests', function (Y) {
     var modelTest,
         Model, DeepModel;
@@ -302,4 +306,4 @@ YUI.add('ez-restmodel-tests', function (Y) {
     Y.Test.Runner.setName("eZ Rest Model tests");
     Y.Test.Runner.add(modelTest);
 
-}, '0.0.1', {requires: ['test', 'ez-restmodel']});
+}, '', {requires: ['test', 'ez-restmodel']});
