@@ -35,7 +35,6 @@ class SectionController extends PjaxController
         $response = new Response();
         try
         {
-            $sectionList = $this->sectionHelper->getSectionList();
             return $this->render(
                 'eZPlatformUIBundle:Section:list.html.twig',
                 array(

@@ -1324,7 +1324,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 );
                 Y.Assert.areSame(
                     loadUser, result,
-                    "The resulf of the user loading should be provided"
+                    "The result of the user loading should be provided"
                 );
             });
             Y.Assert.isTrue(callbackCalled, "The logIn callback should have been called");
@@ -1351,7 +1351,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 );
                 Y.Assert.areSame(
                     createSessionErrorResponse, result,
-                    "The resulf of the failed login should be provided"
+                    "The result of the failed login should be provided"
                 );
             });
             Y.Assert.isTrue(callbackCalled, "The logIn callback should have been called");

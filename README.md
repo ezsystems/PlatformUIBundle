@@ -8,7 +8,7 @@ install.
 
 If you find a bug, please create an issue [in JIRA](https://jira.ez.no/) and
 don't forget to add as much details as you can (steps to reproduce, OS and
-brower(s) versions, ...) and to put *PlatformUI* in the *Component/s* field.
+browser(s) versions, ...) and to put *PlatformUI* in the *Component/s* field.
 
 ## Installation
 
@@ -81,7 +81,7 @@ UI application.
 ## Developers tasks
 
 Most developer related tasks can be run with [Grunt](http://gruntjs.com/) and
-have several additionnal dependencies:
+have several additional dependencies:
 
 * Install Grunt, YUIDoc and Grover globally (usually you need to be root):
 

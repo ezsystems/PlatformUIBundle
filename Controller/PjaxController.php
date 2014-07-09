@@ -15,7 +15,7 @@ class PjaxController extends Controller
 {
     /**
      * Returns the HTTP status code to use when the user does not have access to
-     * a ressource so that the JS code can detect if the user needs to be
+     * a resource so that the JS code can detect if the user needs to be
      * authenticated first.
      *
      * @return int 401 if anonymous, 403 otherwise
