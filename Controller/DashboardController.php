@@ -13,7 +13,7 @@ use eZ\Bundle\EzPublishCoreBundle\Controller;
 class DashboardController extends Controller
 {
     /**
-     * Renders the administration dashboard to be usable by the PlatformUI 
+     * Renders the administration dashboard to be usable by the PlatformUI
      * JavaScript code.
      *
      * @return \Symfony\Component\HttpFoundation\Response

@@ -35,7 +35,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * @inherited
+     * {@inheritDoc}
      */
     public function getSectionList()
     {
@@ -55,7 +55,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * @inherited
+     * {@inheritDoc}
      */
     public function canCreate()
     {
@@ -80,7 +80,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * @inherited
+     * {@inheritDoc}
      */
     public function loadSection( $sectionId )
     {
@@ -88,7 +88,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * @inherited
+     * {@inheritDoc}
      */
     public function contentCount( Section $section )
     {
