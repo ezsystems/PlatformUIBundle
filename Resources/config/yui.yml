@@ -24,9 +24,10 @@ parameters:
                     - 'ez-discoverybarview'
                     - 'ez-errorview'
                     - 'ez-usermodel'
+                    - 'ez-pluginregistry'
                 path: js/apps/ez-platformuiapp.js
             ez-viewservice:
-                requires: ['base']
+                requires: ['base', 'parallel']
                 path: js/views/services/ez-viewservice.js
             ez-loginformviewservice:
                 requires: ['ez-viewservice']
@@ -219,6 +220,9 @@ parameters:
             ez-pluginregistry:
                 requires: ['array-extras']
                 path: js/services/ez-pluginregistry.js
+            ez-viewservicebaseplugin:
+                requires: ['plugin', 'base']
+                path: js/views/services/plugins/ez-viewservicebaseplugin.js
             ez-expandable:
                 requires: ['view']
                 path: js/extensions/ez-expandable.js

@@ -353,6 +353,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                         viewInfo.serviceInstance = new viewInfo.service({
                             app: this,
                             capi: this.get('capi'),
+                            plugins: Y.eZ.PluginRegistry.getPlugins(viewInfo.service.NAME),
                         });
                     }
                     service = viewInfo.serviceInstance;
@@ -484,7 +485,8 @@ YUI.add('ez-platformuiapp', function (Y) {
                     app: this,
                     capi: this.get('capi'),
                     request: req,
-                    response: res
+                    response: res,
+                    plugins: Y.eZ.PluginRegistry.getPlugins(req.route.service.NAME),
                 });
 
                 viewInfo.service.on('error', function (e) {

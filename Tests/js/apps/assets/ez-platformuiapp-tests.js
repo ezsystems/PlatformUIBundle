@@ -662,6 +662,34 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.app.handleMainView(req, res, next);
             Y.Assert.isTrue(fatalErrorTriggered, "A fatal error should have been triggered");
         },
+
+        "Should inject the registered plugin in the view service": function () {
+            var serviceName = 'testService', pluginNS = 'mainViewPluginNS',
+                TestService = Y.Base.create(serviceName, Y.eZ.ViewService, [], {}),
+                req = {
+                    route: {
+                        view: 'myView',
+                        service: TestService,
+                    },
+                };
+
+            Y.eZ.PluginRegistry.registerPlugin(
+                Y.Base.create(pluginNS, Y.eZ.Plugin.ViewServiceBase, [], {}, {
+                    NS: pluginNS
+                }), [serviceName]
+            );
+            this.app.views.myView = {
+                type: Y.eZ.View
+            };
+
+            this.app.handleMainView(req, {});
+
+            Y.Assert.isObject(
+                this.app.getViewInfo(req.route.view).service.hasPlugin(pluginNS),
+                "The service should get the registered plugin"
+            );
+            Y.eZ.PluginRegistry.reset();
+        },
     });
 
     sideViewServicesTest = new Y.Test.Case({
@@ -680,12 +708,19 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.load2 = function (next) { setTimeout(function () { that.load2Calls++; next(); }, 50); };
             this.viewParameters1 = {"bike": "Lapierre X-Control 229"};
             this.viewParameters2 = {"bike": "Sunn Xicrcuit"};
+            this.viewService1 = 'viewService1';
+            this.pluginNS = 'testPlugin';
+            Y.eZ.PluginRegistry.registerPlugin(
+                Y.Base.create(this.pluginNS, Y.eZ.Plugin.ViewServiceBase, [], {}, {
+                    NS: this.pluginNS,
+                }), [this.viewService1]
+            );
             this.app.sideViews = {
                 sideView1: {
                     hideClass: 'sideview1-hidden',
                     type: Y.Base.create('view1', Y.View, [], {
                     }),
-                    service: Y.Base.create('viewService1', Y.eZ.ViewService, [], {
+                    service: Y.Base.create(that.viewService1, Y.eZ.ViewService, [], {
                         load: that.load1,
                         getViewParameters: function () {
                             return that.viewParameters1;
@@ -710,6 +745,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
 
         tearDown: function () {
             this.app.destroy();
+            Y.eZ.PluginRegistry.reset();
         },
 
         "Should instantiate the view service associated with the view": function () {
@@ -755,6 +791,32 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     Y.Assert.isTrue(
                         view.getTargets().indexOf(service) !== -1,
                         "The service should be a bubble target of the view"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should inject the registered plugins into services": function () {
+            var that = this,
+                request, response = {};
+
+            request = {
+                route: {
+                    sideViews: {
+                        "sideView1": true,
+                        "sideView2": false,
+                    }
+                }
+            };
+
+            this.app.handleSideViews(request, response, function () {
+                that.resume(function () {
+                    var service = this.app.sideViews.sideView1.serviceInstance;
+
+                    Y.Assert.isObject(
+                        service.hasPlugin(this.pluginNS),
+                        "The service should get the registered plugins"
                     );
                 });
             });
@@ -1651,4 +1713,4 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(loginTest);
     Y.Test.Runner.add(logoutTest);
     Y.Test.Runner.add(checkUserTest);
-}, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice']});
+}, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice', 'ez-viewservicebaseplugin']});

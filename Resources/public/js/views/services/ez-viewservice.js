@@ -43,25 +43,83 @@ YUI.add('ez-viewservice', function (Y) {
         },
 
         /**
-         * Loads the data for the view. The default implementation does nothing
-         * except calling the passed callback.
+         * Loads the data for the view. This method first calls the
+         * `parallelLoad` of each plugins in parallel with the service `_load`
+         * and after that it calls in parallel the `afterLoad` of each plugins
+         * and then calls the callback with the service in parameter.
+         *
+         * **Do not override this method unless you know what you are doing**
+         * You'll most likely want to implement the `_load` method instead!
          *
          * @method load
          * @param {Function} callback
          */
         load: function (callback) {
-            callback(this);
+            var tasks = new Y.Parallel(),
+                service = this;
+
+            Y.Object.each(this._plugins, function (fn, name) {
+                service[name].parallelLoad(tasks.add());
+            });
+            this._load(tasks.add());
+
+            tasks.done(function () {
+                var after = new Y.Parallel();
+
+                Y.Object.each(service._plugins, function (fn, name) {
+                    service[name].afterLoad(after.add());
+                });
+                after.done(function () {
+                    callback(service);
+                });
+            });
         },
 
         /**
-         * Returns the parameters to pass to the view instance
+         * Defaut load implementation of the service. This method is meant to be
+         * overriden in services. The default implementation does nothing except
+         * calling the passed callback.
+         *
+         * @method _load
+         * @protected
+         * @param {Function} callback
+         */
+        _load: function (callback) {
+            callback();
+        },
+
+        /**
+         * Returns the parameters to pass to the view. This method merges the
+         * view parameters provided by the plugins and by the service itself.
+         *
+         * **Do not override this method unless you know what you are doing**
+         * You'll most likely want to implement the `_getViewParameters` method
+         * instead!
          *
          * @method getViewParameters
          * @return {Object}
          */
         getViewParameters: function () {
-            return {};
+            var viewParams = [this._getViewParameters()],
+                service = this;
+
+            Y.Object.each(this._plugins, function (fn, name) {
+                viewParams.push(service[name].getViewParameters());
+            });
+            return Y.merge.apply(Y, viewParams);
         },
+
+        /**
+         * Returns the parameters to pass to the view. This method is meant to
+         * be overriden in custom view services. The default implementation
+         * returns an empty object.
+         *
+         * @method _getViewParameters
+         * @return {Object}
+         */
+        _getViewParameters: function () {
+            return {};
+        }
     }, {
         ATTRS: {
             /**

@@ -45,7 +45,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
          * @method getViewParameters
          * @return {Object}
          */
-        getViewParameters: function () {
+        _getViewParameters: function () {
             return {
                 user: this.get('app').get('user'),
             };

@@ -107,10 +107,11 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * Loads the content, the main location, the content type and the owner
          * of the currently edited content
          *
-         * @method load
+         * @method _load
+         * @protected
          * @param {Function} next
          */
-        load: function (next) {
+        _load: function (next) {
             var request = this.get('request'),
                 service = this;
 
@@ -231,10 +232,11 @@ YUI.add('ez-contenteditviewservice', function (Y) {
         /**
          * Returns the view parameters of the content edit view
          *
-         * @method getViewParameters
+         * @method _getViewParameters
+         * @protected
          * @return {Object}
          */
-        getViewParameters: function () {
+        _getViewParameters: function () {
             return {
                 content: this.get('content'),
                 version: this.get('version'),

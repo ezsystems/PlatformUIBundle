@@ -29,10 +29,11 @@ YUI.add('ez-loginformviewservice', function (Y) {
          * the user is already logged and if it is, it redirects to the
          * dashboard
          *
-         * @method load
+         * @method _load
+         * @protected
          * @param {Function} next
          */
-        load: function (next) {
+        _load: function (next) {
             var capi = this.get('capi'),
                 app = this.get('app');
 

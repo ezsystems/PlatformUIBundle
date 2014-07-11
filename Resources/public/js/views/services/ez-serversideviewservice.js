@@ -29,10 +29,11 @@ YUI.add('ez-serversideviewservice', function (Y) {
          * loading is done, the next callback is called with the service itself
          * in parameter. If an error occurs, an error event is triggered.
          *
-         * @method load
+         * @method _load
+         * @protected
          * @param {Function} next
          */
-        load: function (next) {
+        _load: function (next) {
             var uri = this.get('app').get('baseUri') + this.get('request').params.uri;
 
             Y.io(uri, {
@@ -104,10 +105,11 @@ YUI.add('ez-serversideviewservice', function (Y) {
         /**
          * Returns the title and the html code as an object
          *
-         * @method getViewParameters
+         * @method _getViewParameters
+         * @protected
          * @return {Object}
          */
-        getViewParameters: function () {
+        _getViewParameters: function () {
             return {
                 title: this.get('title'),
                 html: this.get('html'),

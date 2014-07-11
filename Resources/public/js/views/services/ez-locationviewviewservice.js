@@ -76,10 +76,11 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          * Loads the location, the content and the path for the location id
          * available in the request and calls the next callback once it's done.
          *
-         * @method load
+         * @method _load
+         * @protected
          * @param {Function} next
          */
-        load: function (next) {
+        _load: function (next) {
             var loadOptions = {
                     api: this.get('capi')
                 },
@@ -220,7 +221,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             });
         },
 
-        getViewParameters: function () {
+        _getViewParameters: function () {
             return {
                 content: this.get('content'),
                 contentType: this.get('contentType'),
