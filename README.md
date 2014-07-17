@@ -62,10 +62,10 @@ browser(s) versions, ...) and to put *PlatformUI* in the *Component/s* field.
   ```
   # npm install -g bower
   ```
-* Install frontend dependencies:
+* Install frontend dependencies (from the `vendor/ezsystems/platform-ui-bundle directory):
 
   ```
-  $ bower install
+  $ cd vendor/ezsystems/platform-ui-bundle && bower install && cd -
   ```
 
 If you are running eZ Publish in the `prod` environment, you also need to dump
