@@ -36,7 +36,7 @@ parameters:
                 requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel', 'ez-versionmodel']
                 path: js/views/services/ez-contenteditviewservice.js
             ez-locationviewviewservice:
-                requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel']
+                requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin']
                 path: js/views/services/ez-locationviewviewservice.js
             ez-navigationhubviewservice:
                 requires: ['ez-viewservice']
@@ -223,6 +223,9 @@ parameters:
             ez-viewservicebaseplugin:
                 requires: ['plugin', 'base']
                 path: js/views/services/plugins/ez-viewservicebaseplugin.js
+            ez-objectrelationloadplugin:
+                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                path: js/views/services/plugins/ez-objectrelationloadplugin.js
             ez-expandable:
                 requires: ['view']
                 path: js/extensions/ez-expandable.js

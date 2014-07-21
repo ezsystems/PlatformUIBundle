@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Object Relation Load Plugin tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/pluginregister-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-objectrelationloadplugin-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-objectrelationloadplugin'],
+        filter: loaderFilter,
+        modules: {
+            "ez-objectrelationloadplugin": {
+                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-objectrelationloadplugin.js"
+            },
+            "ez-viewservicebaseplugin": {
+                requires: ['plugin', 'base'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+            "ez-contentmodel": {
+                requires: ['ez-restmodel', 'array-extras'],
+                fullpath: "../../../../../Resources/public/js/models/ez-contentmodel.js"
+            },
+            "ez-restmodel": {
+                requires: ['model'],
+                fullpath: "../../../../../Resources/public/js/models/ez-restmodel.js"
+            },
+        }
+    }).use('ez-objectrelationloadplugin-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
