@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Content Tree Plugin tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/pluginregister-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-contenttreeplugin-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-contenttreeplugin'],
+        filter: loaderFilter,
+        modules: {
+            "ez-contenttreeplugin": {
+                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'parallel'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-contenttreeplugin.js"
+            },
+            "ez-viewservicebaseplugin": {
+                requires: ['plugin', 'base'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+            "ez-contentmodel": {
+                requires: ['ez-restmodel', 'array-extras'],
+                fullpath: "../../../../../Resources/public/js/models/ez-contentmodel.js"
+            },
+            "ez-contenttypemodel": {
+                requires: ['ez-restmodel'],
+                fullpath: "../../../../../Resources/public/js/models/ez-contentypemodel.js"
+            },
+            "ez-locationmodel": {
+                requires: ['ez-restmodel'],
+                fullpath: "../../../../../Resources/public/js/models/ez-locationmodel.js"
+            },
+            "ez-contenttree": {
+                requires: ['tree', 'tree-selectable', 'tree-openable', 'tree-lazy'],
+                fullpath: "../../../../../Resources/public/js/models/structs/ez-contenttree.js"
+            },
+            "ez-restmodel": {
+                requires: ['model'],
+                fullpath: "../../../../../Resources/public/js/models/ez-restmodel.js"
+            },
+        }
+    }).use('ez-contenttreeplugin-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

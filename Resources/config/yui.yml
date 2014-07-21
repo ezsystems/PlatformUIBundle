@@ -42,7 +42,7 @@ parameters:
                 requires: ['ez-viewservice']
                 path: js/views/services/ez-navigationhubviewservice.js
             ez-discoverybarviewservice:
-                requires: ['ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-contenttree']
+                requires: ['ez-viewservice', 'ez-contenttreeplugin']
                 path: js/views/services/ez-discoverybarviewservice.js
             ez-serversideviewservice:
                 requires: ['io-base', 'ez-viewservice']
@@ -226,6 +226,9 @@ parameters:
             ez-objectrelationloadplugin:
                 requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                 path: js/views/services/plugins/ez-objectrelationloadplugin.js
+            ez-contenttreeplugin:
+                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree']
+                path: js/views/services/plugins/ez-contenttreeplugin.js
             ez-expandable:
                 requires: ['view']
                 path: js/extensions/ez-expandable.js
