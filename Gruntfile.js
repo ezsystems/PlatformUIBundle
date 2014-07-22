@@ -16,9 +16,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/helpers/*.js", "!./Resources/public/js/helpers/*-min.js"
         ],
         testFiles = [
-            "./Tests/js/*/*/*.js",
-            "./Tests/js/*/*/*/*.js",
-            "./Tests/js/*/*/*/*/*.js",
+            "./Tests/js/**/*.js",
         ],
         trashFiles = [
             "./Resources/public/js/apps/*-min.js",
