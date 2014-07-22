@@ -12,7 +12,7 @@
 <script type="text/javascript" src="./assets/ez-author-view-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
-            loaderFilter;
+        loaderFilter;
 
     if (filter == 'coverage'){
         loaderFilter = {
@@ -49,8 +49,8 @@
             },
         }
     }).use('ez-author-view-tests', function (Y) {
-                Y.Test.Runner.run();
-            });
+        Y.Test.Runner.run();
+    });
 </script>
 </body>
 </html>
