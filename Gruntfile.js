@@ -115,7 +115,7 @@ module.exports = function(grunt) {
                 atBegin: true
             },
             test: {
-                files: [sourceFiles, testFiles],
+                files: [sourceFiles, testFiles, "Tests/js/**/*.html"],
                 tasks: ["shell:grover"]
             },
         },
