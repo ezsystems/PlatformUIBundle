@@ -48,7 +48,7 @@ parameters:
                 requires: ['io-base', 'ez-viewservice']
                 path: js/views/services/ez-serversideviewservice.js
             ez-view:
-                requires: ['view']
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry']
                 path: js/views/ez-view.js
             ez-templatebasedview:
                 requires: ['ez-texthelper', 'ez-view', 'handlebars']

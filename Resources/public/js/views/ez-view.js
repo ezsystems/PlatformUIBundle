@@ -23,10 +23,25 @@ YUI.add('ez-view', function (Y) {
     Y.eZ.View = Y.Base.create('eZView', Y.View, [], {
         initializer: function () {
             this.after('activeChange', this._setSubviewsActive);
+            this._initPlugins();
         },
 
         destructor: function () {
             this.set('active', false);
+        },
+
+        /**
+         * Plugs the registered plugins for this view instance
+         *
+         * @private
+         * @method _initPlugins
+         */
+        _initPlugins: function () {
+            var name = this.constructor.NAME;
+
+            Y.Array.each(Y.eZ.PluginRegistry.getPlugins(name), function (Plugin) {
+                this.plug(Plugin);
+            }, this);
         },
 
         /**

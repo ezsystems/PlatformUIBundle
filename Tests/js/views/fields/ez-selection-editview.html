@@ -52,12 +52,16 @@
                 fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
             },
             "ez-view": {
-                requires: ['view'],
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
                 fullpath: "../../../../Resources/public/js/views/ez-view.js"
             },
             "ez-selectionfilterview": {
                 requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view'],
                 fullpath: "../../../../Resources/public/js/views/ez-selectionfilterview.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
         }
     }).use('ez-selection-editview-tests', function (Y) {
