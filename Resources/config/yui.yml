@@ -25,6 +25,7 @@ parameters:
                     - 'ez-errorview'
                     - 'ez-usermodel'
                     - 'ez-pluginregistry'
+                    - 'ez-registerpartialsplugin'
                 path: js/apps/ez-platformuiapp.js
             ez-viewservice:
                 requires: ['base', 'parallel']
@@ -220,6 +221,9 @@ parameters:
             ez-pluginregistry:
                 requires: ['array-extras']
                 path: js/services/ez-pluginregistry.js
+            ez-registerpartialsplugin:
+                requires: ['plugin', 'handlebars', 'base', 'node', 'ez-pluginregistry']
+                path: js/apps/plugins/ez-registerpartialsplugin.js
             ez-viewservicebaseplugin:
                 requires: ['plugin', 'base']
                 path: js/views/services/plugins/ez-viewservicebaseplugin.js

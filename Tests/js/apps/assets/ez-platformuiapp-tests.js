@@ -419,16 +419,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 "asset should add the slash"
             );
         },
-
-        "Should register partials found inside the DOM": function () {
-            var template = Y.Handlebars.compile('Test partial should be here: {{> ezTestPartial}}');
-
-            Y.Assert.isFunction(template);
-            Y.Assert.areEqual(
-                "Test partial should be here: I'm a test partial!",
-                template()
-            );
-        },
     });
 
     handleMainViewTest = new Y.Test.Case({

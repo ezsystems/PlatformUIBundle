@@ -17,7 +17,6 @@ YUI.add('ez-platformuiapp', function (Y) {
         APP_LOADING = 'is-app-loading',
         MINIMIZE_DISCOVERY_BAR_CLASS = 'is-discoverybar-minimized',
         ERROR_VIEW_CONTAINER = '.ez-errorview-container',
-        PARTIALS_SEL = '.ez-platformui-app-partial',
 
         /**
          * Fired whenever a fatal error occurs and application is not able to continue current action
@@ -144,8 +143,6 @@ YUI.add('ez-platformuiapp', function (Y) {
             // Listening for events fired on child views
             this.views.errorView.instance.addTarget(this);
 
-            // Registering handlebars partials
-            this._registerPartials();
             this._registerUrlHelpers();
         },
 
@@ -530,19 +527,6 @@ YUI.add('ez-platformuiapp', function (Y) {
             } else {
                 this.get('container').removeClass(APP_LOADING);
             }
-        },
-
-        /**
-         * Register any handlebar partials situated in the DOM and sporting
-         * PARTIALS_SEL class
-         *
-         * @method _registerPartials
-         * @protected
-         */
-        _registerPartials: function () {
-            Y.all(PARTIALS_SEL).each(function (partial) {
-                Y.Handlebars.registerPartial(partial.get('id'), partial.getHTML());
-            });
         },
 
         /**
