@@ -142,8 +142,6 @@ YUI.add('ez-platformuiapp', function (Y) {
 
             // Listening for events fired on child views
             this.views.errorView.instance.addTarget(this);
-
-            this._registerUrlHelpers();
         },
 
         /**
@@ -527,28 +525,6 @@ YUI.add('ez-platformuiapp', function (Y) {
             } else {
                 this.get('container').removeClass(APP_LOADING);
             }
-        },
-
-        /**
-         * Registers the URL related handlebars helpers, ie:
-         *
-         *   * `path`: to generate an URL from its name and its parameters
-         *   * `asset` : to generate the URL to an asset available in the
-         *   `assetRoot` directory
-         *
-         * @method _registerUrlHelpers
-         * @protected
-         */
-        _registerUrlHelpers: function () {
-            var that = this;
-
-            Y.Handlebars.registerHelper('path', function (routeName, options) {
-                return that.routeUri(routeName, options.hash);
-            });
-
-            Y.Handlebars.registerHelper('asset', function (uri) {
-                return that.get('assetRoot').replace(/\/+$/, '') + '/' + uri.replace(/^\/+/, '');
-            });
         },
 
         /*

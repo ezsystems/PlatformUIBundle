@@ -9,7 +9,6 @@ parameters:
                     - 'app-transitions'
                     - 'node-screen'
                     - 'parallel'
-                    - 'handlebars'
                     - 'ez-capi'
                     - 'ez-loginformviewservice'
                     - 'ez-loginformview'
@@ -26,6 +25,7 @@ parameters:
                     - 'ez-usermodel'
                     - 'ez-pluginregistry'
                     - 'ez-registerpartialsplugin'
+                    - 'ez-registerurlhelpersplugin'
                 path: js/apps/ez-platformuiapp.js
             ez-viewservice:
                 requires: ['base', 'parallel']
@@ -224,6 +224,9 @@ parameters:
             ez-registerpartialsplugin:
                 requires: ['plugin', 'handlebars', 'base', 'node', 'ez-pluginregistry']
                 path: js/apps/plugins/ez-registerpartialsplugin.js
+            ez-registerurlhelpersplugin:
+                requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry']
+                path: js/apps/plugins/ez-registerurlhelpersplugin.js
             ez-viewservicebaseplugin:
                 requires: ['plugin', 'base']
                 path: js/views/services/plugins/ez-viewservicebaseplugin.js
