@@ -8,10 +8,16 @@
 
 namespace EzSystems\PlatformUIBundle;
 
+use EzSystems\PlatformUIBundle\DependencyInjection\EzPlatformUIExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class EzSystemsPlatformUIBundle extends Bundle
 {
     const NAME = "eZPlatformUIBundle";
     protected $name = self::NAME;
+
+    public function getContainerExtension()
+    {
+        return new EzPlatformUIExtension();
+    }
 }

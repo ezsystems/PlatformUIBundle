@@ -31,11 +31,10 @@ In the PlatformUIBundle, the `yui.yml` file should be converted into a semantic
 configuration, this file would look like:
 
 ```yaml
-platformui:
+ez_platformui:
     system:
         default: # siteaccess, group of siteaccess or default or global
             yui:
-                base: "extension/ezjscore/design/standard/lib/yui/3.15.0/build/"
                 filter: "min"
                 modules:
                     ez-module1:
@@ -68,7 +67,7 @@ With this configuration system in place, it should be possible to tweak the
 configuration from an external bundle, with something like:
 
 ```yaml
-platformui:
+ez_platformui:
     system:
         ezdemo_site:
             yui:

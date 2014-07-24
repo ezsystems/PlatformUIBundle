@@ -8,13 +8,20 @@
 
 namespace EzSystems\PlatformUIBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Exception\BadMethodCallException;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
-class eZPlatformUIExtension extends Extension
+class EzPlatformUIExtension extends Extension
 {
+    public function getAlias()
+    {
+        return 'ez_platformui';
+    }
+
     /**
      * {@inheritDoc}
      */
