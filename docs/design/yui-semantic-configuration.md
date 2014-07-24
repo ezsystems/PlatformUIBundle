@@ -97,7 +97,6 @@ In others terms, the configuration for `ezdemo_site` siteaccess is:
 
 ```yaml
 yui:
-    base: "extension/ezjscore/design/standard/lib/yui/3.15.0/build/"
     filter: "min"
     modules:
         ez-module1:
