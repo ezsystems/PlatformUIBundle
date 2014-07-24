@@ -1,2 +1,8 @@
 parameters:
     ez_platformui.default.yui: {}
+    ezplatformui.default.yui.filter: "min"
+    ez_platformui.default.yui.modules: []
+    # Requirements for each YUI module can be found after compilation under:
+    # ez_platformui.<scope>.yui.modules.<module_name>.requires
+    # For reverse requirements:
+    # ez_platformui.<scope>.yui.modules.<module_name>.dependencyOf

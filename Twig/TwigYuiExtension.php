@@ -69,11 +69,41 @@ class TwigYuiExtension extends Twig_Extension
      */
     public function yuiConfigLoaderFunction( $configObject = '' )
     {
-        $yui = $this->configResolver->getParameter( 'yui', 'ez_platformui' );
-        foreach ( $yui['modules'] as $key => $value )
+        $modules = $this->configResolver->getParameter( 'yui.modules', 'ez_platformui' );
+        $yui = array(
+            'filter' => $this->configResolver->getParameter( 'yui.filter', 'ez_platformui' ),
+            'modules' => array()
+        );
+        foreach ( $modules as $module )
         {
-            $yui['modules'][$key]['fullpath'] = $this->asset( $yui['modules'][$key]['path'] );
-            unset( $yui['modules'][$key]['path'] );
+            $yui['modules'][$module]['requires'] = array();
+            // Module dependencies
+            if ( $this->configResolver->hasParameter( "yui.modules.$module.requires", 'ez_platformui' ) )
+            {
+                $yui['modules'][$module]['requires'] = array_merge(
+                    $yui['modules'][$module]['requires'],
+                    $this->configResolver->getParameter( "yui.modules.$module.requires", 'ez_platformui' )
+                );
+            }
+
+            // Reverse dependencies
+            if ( $this->configResolver->hasParameter( "yui.modules.$module.dependencyOf", 'ez_platformui' ) )
+            {
+                foreach ( $this->configResolver->getParameter( "yui.modules.$module.dependencyOf", 'ez_platformui' ) as $dep )
+                {
+                    $yui['modules'][$dep]['requires'][] = $module;
+                }
+            }
+
+            $yui['modules'][$module]['fullpath'] = $this->asset(
+                $this->configResolver->getParameter( "yui.modules.$module.path", 'ez_platformui' )
+            );
+        }
+
+        // Now ensure that all requirements are unique
+        foreach ( $yui['modules'] as &$moduleConfig )
+        {
+            $moduleConfig['requires'] = array_unique( $moduleConfig['requires'] );
         }
 
         $res = '';
