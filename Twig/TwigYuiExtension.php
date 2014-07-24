@@ -8,6 +8,7 @@
 
 namespace EzSystems\PlatformUIBundle\Twig;
 
+use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use Twig_Environment;
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -19,21 +20,18 @@ use EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle;
 class TwigYuiExtension extends Twig_Extension
 {
     /**
-     * @var array()
-     */
-    protected $yui = array();
-
-    /**
      * @var Twig_Environment
      */
     protected $twig;
 
     /**
-     * @param array $config
+     * @var \eZ\Publish\Core\MVC\ConfigResolverInterface
      */
-    public function __construct( array $config )
+    private $configResolver;
+
+    public function __construct( ConfigResolverInterface $configResolver )
     {
-        $this->yui = $config;
+        $this->configResolver = $configResolver;
     }
 
     public function getFunctions()
@@ -66,23 +64,25 @@ class TwigYuiExtension extends Twig_Extension
     /**
      * Returns the YUI loader configuration
      *
+     * @param string $configObject
+     *
      * @return string
      */
     public function yuiConfigLoaderFunction( $configObject = '' )
     {
-        foreach ( $this->yui['modules'] as $key => $value )
+        $yui = $this->configResolver->getParameter( 'yui', 'ez_platformui' );
+        foreach ( $yui['modules'] as $key => $value )
         {
-            // taken from assets:install script
-            $fullpath = "bundles/" . preg_replace( "/bundle$/", "", strtolower( EzSystemsPlatformUIBundle::NAME ) ) . "/" . $this->yui['modules'][$key]['path'];
-            unset( $this->yui['modules'][$key]['path'] );
-            $this->yui['modules'][$key]['fullpath'] = $this->asset( $fullpath );
+            $yui['modules'][$key]['fullpath'] = $this->asset( $yui['modules'][$key]['path'] );
+            unset( $yui['modules'][$key]['path'] );
         }
+
         $res = '';
         if ( $configObject != '' )
         {
             $res = $configObject . ' = ';
         }
-        return $res . ( defined( 'JSON_UNESCAPED_SLASHES' ) ? json_encode( $this->yui, JSON_UNESCAPED_SLASHES ) :  json_encode( $this->yui ) ) . ";";
+        return $res . ( defined( 'JSON_UNESCAPED_SLASHES' ) ? json_encode( $yui, JSON_UNESCAPED_SLASHES ) :  json_encode( $yui ) ) . ";";
     }
 
     /**

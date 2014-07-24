@@ -8,6 +8,7 @@
 
 namespace EzSystems\PlatformUIBundle\DependencyInjection;
 
+use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\ConfigurationProcessor;
 use EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,6 +33,9 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
         $loader = new Loader\YamlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
         $loader->load( 'services.yml' );
         $loader->load( 'default_settings.yml' );
+
+        $processor = new ConfigurationProcessor( $container, 'ez_platformui' );
+        $processor->mapSetting( 'yui', $config );
     }
 
     public function prepend( ContainerBuilder $container )

@@ -18,12 +18,15 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
 
     protected function getExtensions()
     {
+        $configResolver = $this->getMock( 'eZ\Publish\Core\MVC\ConfigResolverInterface' );
+        $configResolver
+            ->expects( $this->any() )
+            ->method( 'getParameter' )
+            ->with( 'yui', 'ez_platformui' )
+            ->will( $this->returnValue( array( 'modules' => array() ) ) );
+
         return array(
-            new TwigYuiExtension(
-                array(
-                    'modules' => array()
-                )
-            )
+            new TwigYuiExtension( $configResolver )
         );
     }
 
@@ -38,7 +41,14 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
      */
     public function testConfig( $module, $expectedResult )
     {
-        $extension = new TwigYuiExtension( $module );
+        $configResolverMock = $this->getMock( 'eZ\Publish\Core\MVC\ConfigResolverInterface' );
+        $configResolverMock
+            ->expects( $this->once() )
+            ->method( 'getParameter' )
+            ->with( 'yui', 'ez_platformui' )
+            ->will( $this->returnValue( $module ) );
+
+        $extension = new TwigYuiExtension( $configResolverMock );
         $extension->initRuntime( $this->getEnvironmentMock() );
         $result = $extension->yuiConfigLoaderFunction();
         $this->assertEquals( $expectedResult, $result );
@@ -59,7 +69,7 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                 $this->returnValue(
                     function ( $path )
                     {
-                        return self::PREFIX . $path;
+                        return self::PREFIX . '/' . $path;
                     }
                 )
             );
@@ -86,15 +96,15 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                 array(
                     'modules' => array(
                         'ez-test' => array(
-                            'path' => 'js/test.js'
+                            'path' => 'bundles/ezplatformui/js/test.js'
                         ),
                         'ez-test2' => array(
-                            'path' => 'js/test2.js'
+                            'path' => 'bundles/ezplatformui/js/test2.js'
                         )
                     ),
                     'filter' => 'min'
                 ),
-                '{"modules":{"ez-test":{"fullpath":"' . self::PREFIX . 'bundles/ezplatformui/js/test.js"},"ez-test2":{"fullpath":"' . self::PREFIX . 'bundles/ezplatformui/js/test2.js"}},"filter":"min"};'
+                '{"modules":{"ez-test":{"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},"ez-test2":{"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"}},"filter":"min"};'
             )
         );
     }

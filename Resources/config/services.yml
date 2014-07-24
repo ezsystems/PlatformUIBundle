@@ -9,7 +9,7 @@ parameters:
 services:
     ezsystems.platformui.twig.yui_extension:
         class: %ezsystems.platformui.twig.yui_extension.class%
-        arguments: [%yui%]
+        arguments: [@ezpublish.config.resolver]
         tags:
             - { name: twig.extension }
 

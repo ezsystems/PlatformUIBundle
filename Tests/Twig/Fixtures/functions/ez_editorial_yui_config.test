@@ -1,5 +1,5 @@
 --TEST--
-"twig" function
+ez_platformui_ui_config "twig" function
 --TEMPLATE--
 {{ ez_platformui_yui_config( YUIConf ) }}
 {{ ez_platformui_yui_config( 'myObj' ) }}
