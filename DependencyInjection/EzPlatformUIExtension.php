@@ -8,14 +8,14 @@
 
 namespace EzSystems\PlatformUIBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Container;
 use EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle;
+use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Exception\BadMethodCallException;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\Yaml\Yaml;
 
 class EzPlatformUIExtension extends Extension implements PrependExtensionInterface
 {
@@ -24,9 +24,6 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
         return 'ez_platformui';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
@@ -34,10 +31,16 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
 
         $loader = new Loader\YamlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
         $loader->load( 'services.yml' );
-        $loader->load( 'yui.yml' );
+        $loader->load( 'default_settings.yml' );
+    }
 
     public function prepend( ContainerBuilder $container )
     {
         $container->prependExtensionConfig( 'assetic', array( 'bundles' => array( EzSystemsPlatformUIBundle::NAME ) ) );
+
+        $yuiConfigFile = __DIR__ . '/../Resources/config/yui.yml';
+        $config = Yaml::parse( file_get_contents( $yuiConfigFile ) );
+        $container->prependExtensionConfig( 'ez_platformui', $config );
+        $container->addResource( new FileResource( $yuiConfigFile ) );
     }
 }
