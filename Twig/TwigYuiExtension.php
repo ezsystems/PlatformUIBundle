@@ -12,7 +12,6 @@ use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use Twig_Environment;
 use Twig_Extension;
 use Twig_SimpleFunction;
-use EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle;
 
 /**
  * Class TwigYuiExtension

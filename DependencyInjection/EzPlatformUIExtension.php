@@ -9,7 +9,6 @@
 namespace EzSystems\PlatformUIBundle\DependencyInjection;
 
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\ConfigurationProcessor;
-use EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -40,7 +39,7 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
 
     public function prepend( ContainerBuilder $container )
     {
-        $container->prependExtensionConfig( 'assetic', array( 'bundles' => array( EzSystemsPlatformUIBundle::NAME ) ) );
+        $container->prependExtensionConfig( 'assetic', array( 'bundles' => array( 'eZPlatformUIBundle' ) ) );
 
         # Directory where public resources are stored (relative to web/ directory).
         $container->setParameter( 'ez_platformui.public_dir', 'bundles/ezplatformui' );
