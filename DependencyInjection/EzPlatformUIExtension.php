@@ -42,6 +42,8 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
     {
         $container->prependExtensionConfig( 'assetic', array( 'bundles' => array( EzSystemsPlatformUIBundle::NAME ) ) );
 
+        # Directory where public resources are stored (relative to web/ directory).
+        $container->setParameter( 'ez_platformui.public_dir', 'bundles/ezplatformui' );
         $yuiConfigFile = __DIR__ . '/../Resources/config/yui.yml';
         $config = Yaml::parse( file_get_contents( $yuiConfigFile ) );
         $container->prependExtensionConfig( 'ez_platformui', $config );

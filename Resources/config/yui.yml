@@ -5,7 +5,7 @@ system:
             filter: min
             modules:
                 ez-capi:
-                    path: bundles/ezplatformuivendors/ez-js-rest-client/dist/CAPI.js
+                    path: %ez_platformui.public_dir%/vendors/ez-js-rest-client/dist/CAPI.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -27,52 +27,52 @@ system:
                         - 'ez-discoverybarview'
                         - 'ez-errorview'
                         - 'ez-usermodel'
-                    path: bundles/ezplatformuijs/apps/ez-platformuiapp.js
+                    path: %ez_platformui.public_dir%/js/apps/ez-platformuiapp.js
                 ez-viewservice:
                     requires: ['base']
-                    path: bundles/ezplatformuijs/views/services/ez-viewservice.js
+                    path: %ez_platformui.public_dir%/js/views/services/ez-viewservice.js
                 ez-loginformviewservice:
                     requires: ['ez-viewservice']
-                    path: bundles/ezplatformuijs/views/services/ez-loginformviewservice.js
+                    path: %ez_platformui.public_dir%/js/views/services/ez-loginformviewservice.js
                 ez-contenteditviewservice:
                     requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel', 'ez-versionmodel']
-                    path: bundles/ezplatformuijs/views/services/ez-contenteditviewservice.js
+                    path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
                 ez-locationviewviewservice:
                     requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel']
-                    path: bundles/ezplatformuijs/views/services/ez-locationviewviewservice.js
+                    path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
                     requires: ['ez-viewservice']
-                    path: bundles/ezplatformuijs/views/services/ez-navigationhubviewservice.js
+                    path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
                 ez-discoverybarviewservice:
                     requires: ['ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-contenttree']
-                    path: bundles/ezplatformuijs/views/services/ez-discoverybarviewservice.js
+                    path: %ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js
                 ez-serversideviewservice:
                     requires: ['io-base', 'ez-viewservice']
-                    path: bundles/ezplatformuijs/views/services/ez-serversideviewservice.js
+                    path: %ez_platformui.public_dir%/js/views/services/ez-serversideviewservice.js
                 ez-view:
                     requires: ['view']
-                    path: bundles/ezplatformuijs/views/ez-view.js
+                    path: %ez_platformui.public_dir%/js/views/ez-view.js
                 ez-templatebasedview:
                     requires: ['ez-texthelper', 'ez-view', 'handlebars']
-                    path: bundles/ezplatformuijs/views/ez-templatebasedview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-templatebasedview.js
                 ez-loginformview:
                     requires: ['ez-templatebasedview', 'node-style']
-                    path: bundles/ezplatformuijs/views/ez-loginformview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-loginformview.js
                 ez-dashboardview:
                     requires: ['ez-templatebasedview']
-                    path: bundles/ezplatformuijs/views/ez-dashboardview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-dashboardview.js
                 ez-locationviewview:
                     requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'ez-tabs', 'event-tap', 'array-extras']
-                    path: bundles/ezplatformuijs/views/ez-locationviewview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-locationviewview.js
                 ez-navigationhubview:
                     requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside']
-                    path: bundles/ezplatformuijs/views/ez-navigationhubview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-navigationhubview.js
                 ez-discoverybarview:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview']
-                    path: bundles/ezplatformuijs/views/ez-discoverybarview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-discoverybarview.js
                 ez-actionbarview:
                     requires: ['ez-barview', 'ez-buttonactionview']
-                    path: bundles/ezplatformuijs/views/ez-actionbarview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-actionbarview.js
                 ez-rawcontentview:
                     requires:
                         - 'ez-templatebasedview'
@@ -88,10 +88,10 @@ system:
                         - 'ez-maplocation-view'
                         - 'ez-author-view'
                         - 'event-tap'
-                    path: bundles/ezplatformuijs/views/ez-rawcontentview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-rawcontentview.js
                 ez-contenteditview:
                     requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'event-tap']
-                    path: bundles/ezplatformuijs/views/ez-contenteditview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-contenteditview.js
                 ez-contenteditformview:
                     requires:
                         - 'ez-templatebasedview'
@@ -107,133 +107,133 @@ system:
                         - 'ez-integer-editview'
                         - 'ez-selection-editview'
                         - 'event-tap'
-                    path: bundles/ezplatformuijs/views/ez-contenteditformview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-contenteditformview.js
                 ez-errorview:
                     requires: ['ez-templatebasedview', 'event-tap']
-                    path: bundles/ezplatformuijs/views/ez-errorview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-errorview.js
                 ez-fieldeditview:
                     requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'node-style']
-                    path: bundles/ezplatformuijs/views/ez-fieldeditview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-fieldeditview.js
                 ez-fieldview:
                     requires: ['ez-templatebasedview']
-                    path: bundles/ezplatformuijs/views/ez-fieldview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-fieldview.js
                 ez-checkbox-view:
                     requires: ['ez-fieldview']
-                    path: bundles/ezplatformuijs/views/fields/ez-checkbox-view.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-checkbox-view.js
                 ez-checkbox-editview:
                     requires: ['ez-fieldeditview']
-                    path: bundles/ezplatformuijs/views/fields/ez-checkbox-editview.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-checkbox-editview.js
                 ez-textline-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange']
-                    path: bundles/ezplatformuijs/views/fields/ez-textline-editview.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-textline-editview.js
                 ez-textblock-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange']
-                    path: bundles/ezplatformuijs/views/fields/ez-textblock-editview.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-textblock-editview.js
                 ez-emailaddress-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange']
-                    path: bundles/ezplatformuijs/views/fields/ez-emailaddress-editview.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-emailaddress-editview.js
                 ez-relation-view:
                     requires: ['ez-fieldview', 'event-tap']
-                    path: bundles/ezplatformuijs/views/fields/ez-relation-view.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-relation-view.js
                 ez-user-view:
                     requires: ['ez-fieldview']
-                    path: bundles/ezplatformuijs/views/fields/ez-user-view.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-user-view.js
                 ez-selection-view:
                     requires: ['ez-fieldview']
-                    path: bundles/ezplatformuijs/views/fields/ez-selection-view.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-selection-view.js
                 ez-url-view:
                     requires: ['ez-fieldview']
-                    path: bundles/ezplatformuijs/views/fields/ez-url-view.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-url-view.js
                 ez-url-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange']
-                    path: bundles/ezplatformuijs/views/fields/ez-url-editview.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-url-editview.js
                 ez-author-view:
                     requires: ['ez-fieldview']
-                    path: bundles/ezplatformuijs/views/fields/ez-author-view.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-author-view.js
                 ez-author-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'event-tap', 'model', 'model-list']
-                    path: bundles/ezplatformuijs/views/fields/ez-author-editview.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-author-editview.js
                 ez-float-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange']
-                    path: bundles/ezplatformuijs/views/fields/ez-float-editview.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-float-editview.js
                 ez-integer-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange']
-                    path: bundles/ezplatformuijs/views/fields/ez-integer-editview.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-integer-editview.js
                 ez-maplocation-view:
                     requires: ['ez-fieldview', 'ez-googlemapapiloader']
-                    path: bundles/ezplatformuijs/views/fields/ez-maplocation-view.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-maplocation-view.js
                 ez-maplocation-editview:
                     requires: ['ez-fieldeditview', 'ez-googlemapapiloader']
-                    path: bundles/ezplatformuijs/views/fields/ez-maplocation-editview.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-maplocation-editview.js
                 ez-selection-editview:
                     requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside', 'node-screen']
-                    path: bundles/ezplatformuijs/views/fields/ez-selection-editview.js
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-selection-editview.js
                 ez-selectionfilterview:
                     requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view']
-                    path: bundles/ezplatformuijs/views/ez-selectionfilterview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-selectionfilterview.js
                 ez-restmodel:
                     requires: ['model', 'json']
-                    path: bundles/ezplatformuijs/models/ez-restmodel.js
+                    path: %ez_platformui.public_dir%/js/models/ez-restmodel.js
                 ez-contentmodel:
                     requires: ['ez-restmodel', 'array-extras']
-                    path: bundles/ezplatformuijs/models/ez-contentmodel.js
+                    path: %ez_platformui.public_dir%/js/models/ez-contentmodel.js
                 ez-versionmodel:
                     requires: ['ez-restmodel']
-                    path: bundles/ezplatformuijs/models/ez-versionmodel.js
+                    path: %ez_platformui.public_dir%/js/models/ez-versionmodel.js
                 ez-locationmodel:
                     requires: ['ez-restmodel']
-                    path: bundles/ezplatformuijs/models/ez-locationmodel.js
+                    path: %ez_platformui.public_dir%/js/models/ez-locationmodel.js
                 ez-usermodel:
                     requires: ['ez-restmodel']
-                    path: bundles/ezplatformuijs/models/ez-usermodel.js
+                    path: %ez_platformui.public_dir%/js/models/ez-usermodel.js
                 ez-contenttypemodel:
                     requires: ['ez-restmodel']
-                    path: bundles/ezplatformuijs/models/ez-contenttypemodel.js
+                    path: %ez_platformui.public_dir%/js/models/ez-contenttypemodel.js
                 ez-contenttree:
                     requires: ['tree', 'tree-openable', 'tree-selectable', 'tree-lazy']
-                    path: bundles/ezplatformuijs/models/structs/ez-contenttree.js
+                    path: %ez_platformui.public_dir%/js/models/structs/ez-contenttree.js
                 ez-editactionbarview:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-previewactionview']
-                    path: bundles/ezplatformuijs/views/ez-editactionbarview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-editactionbarview.js
                 ez-buttonactionview:
                     requires: ['ez-templatebasedview']
-                    path: bundles/ezplatformuijs/views/actions/ez-buttonactionview.js
+                    path: %ez_platformui.public_dir%/js/views/actions/ez-buttonactionview.js
                 ez-previewactionview:
                     requires: ['ez-buttonactionview', 'ez-editpreviewview']
-                    path: bundles/ezplatformuijs/views/actions/ez-previewactionview.js
+                    path: %ez_platformui.public_dir%/js/views/actions/ez-previewactionview.js
                 ez-treeactionview:
                     requires: ['ez-buttonactionview', 'ez-expandable', 'event-tap', 'event-outside', 'handlebars', 'node-style']
-                    path: bundles/ezplatformuijs/views/actions/ez-treeactionview.js
+                    path: %ez_platformui.public_dir%/js/views/actions/ez-treeactionview.js
                 ez-editpreviewview:
                     requires: ['ez-templatebasedview', 'event-tap']
-                    path: bundles/ezplatformuijs/views/ez-editpreviewview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-editpreviewview.js
                 ez-barview:
                     requires: ['ez-templatebasedview', 'event-tap', 'event-resize']
-                    path: bundles/ezplatformuijs/views/ez-barview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-barview.js
                 ez-serversideview:
                     requires: ['ez-view', 'ez-tabs', 'ez-selection-table', 'event-tap']
-                    path: bundles/ezplatformuijs/views/ez-serversideview.js
+                    path: %ez_platformui.public_dir%/js/views/ez-serversideview.js
                 ez-texthelper:
                     requires: ['handlebars']
-                    path: bundles/ezplatformuijs/helpers/ez-texthelper.js
+                    path: %ez_platformui.public_dir%/js/helpers/ez-texthelper.js
                 ez-googlemapapiloader:
                     requires: ['jsonp', 'jsonp-url', 'event-custom']
-                    path: bundles/ezplatformuijs/services/ez-googlemapapiloader.js
+                    path: %ez_platformui.public_dir%/js/services/ez-googlemapapiloader.js
                 ez-expandable:
                     requires: ['view']
-                    path: bundles/ezplatformuijs/extensions/ez-expandable.js
+                    path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js
                 ez-accordion-element:
                     requires: ['transition']
-                    path: bundles/ezplatformuijs/extensions/ez-accordion-element.js
+                    path: %ez_platformui.public_dir%/js/extensions/ez-accordion-element.js
                 ez-tabs:
                     requires: ['node']
-                    path: bundles/ezplatformuijs/extensions/ez-tabs.js
+                    path: %ez_platformui.public_dir%/js/extensions/ez-tabs.js
                 ez-selection-table:
                     requires: ['node']
-                    path: bundles/ezplatformuijs/extensions/ez-selection-table.js
+                    path: %ez_platformui.public_dir%/js/extensions/ez-selection-table.js
                 ez-app-extension:
                     requires: ['base']
-                    path: bundles/ezplatformuijs/apps/extensions/ez-app-extension.js
+                    path: %ez_platformui.public_dir%/js/apps/extensions/ez-app-extension.js
                 ez-app-extension-admin:
                     requires: ['ez-serversideview', 'ez-serversideviewservice', 'ez-app-extension']
-                    path: bundles/ezplatformuijs/apps/extensions/ez-app-extension-admin.js
+                    path: %ez_platformui.public_dir%/js/apps/extensions/ez-app-extension-admin.js
