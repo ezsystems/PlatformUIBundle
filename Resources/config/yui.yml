@@ -26,6 +26,7 @@ parameters:
                     - 'ez-pluginregistry'
                     - 'ez-registerpartialsplugin'
                     - 'ez-registerurlhelpersplugin'
+                    - 'ez-domstateplugin'
                 path: js/apps/ez-platformuiapp.js
             ez-viewservice:
                 requires: ['base', 'parallel']
@@ -221,6 +222,9 @@ parameters:
             ez-pluginregistry:
                 requires: ['array-extras']
                 path: js/services/ez-pluginregistry.js
+            ez-domstateplugin:
+                requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
+                path: js/apps/plugins/ez-domstateplugin.js
             ez-registerpartialsplugin:
                 requires: ['plugin', 'handlebars', 'base', 'node', 'ez-pluginregistry']
                 path: js/apps/plugins/ez-registerpartialsplugin.js

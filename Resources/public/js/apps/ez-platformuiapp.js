@@ -15,7 +15,6 @@ YUI.add('ez-platformuiapp', function (Y) {
     var L = Y.Lang,
         APP_OPEN = 'is-app-open',
         APP_LOADING = 'is-app-loading',
-        MINIMIZE_DISCOVERY_BAR_CLASS = 'is-discoverybar-minimized',
         ERROR_VIEW_CONTAINER = '.ez-errorview-container',
 
         /**
@@ -136,42 +135,8 @@ YUI.add('ez-platformuiapp', function (Y) {
                 this.set('loading', true);
             });
 
-            this.on('*:minimizeDiscoveryBarAction', this._minimizeDiscoveryBar);
-
-            this.on('*:navigationModeChange', this._uiSetNavigationModeClass);
-
             // Listening for events fired on child views
             this.views.errorView.instance.addTarget(this);
-        },
-
-        /**
-         * navigationModeChange event handler, it sets or unsets the navigation
-         * mode class provided in the event facade to handle the fact that the
-         * navigation hub can be fixed or not.
-         *
-         * @method _uiSetNavigationModeClass
-         * @protected
-         * @param {Object} e navigation mode event facade
-         */
-        _uiSetNavigationModeClass: function (e) {
-            if ( e.navigation.value ) {
-                this.get('container').addClass(e.navigation.modeClass);
-            } else {
-                this.get('container').removeClass(e.navigation.modeClass);
-            }
-        },
-
-        /**
-         * minimizeDiscoveryBarAction event handler, toggles the discovery bar
-         * mininized class on the app container to minimize/maximize the
-         * discovery bar
-         *
-         * @method _minimizeDiscoveryBar
-         * @protected
-         * @param {Object} e event facade of the minimizeDiscoveryBarAction
-         */
-        _minimizeDiscoveryBar: function (e) {
-            this.get('container').toggleClass(MINIMIZE_DISCOVERY_BAR_CLASS);
         },
 
         /**

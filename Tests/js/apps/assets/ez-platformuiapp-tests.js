@@ -230,49 +230,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 "Test action should have been retried"
             );
         },
-
-        "Should toggle the discovery bar minimized class on minimizeDiscoveryBarAction event": function () {
-            var container = this.app.get('container');
-
-            this.app.fire('whatever:minimizeDiscoveryBarAction');
-            Y.Assert.isTrue(
-                container.hasClass('is-discoverybar-minimized'),
-                "The app container should have the discovery bar minimized class"
-            );
-            this.app.fire('whatever:minimizeDiscoveryBarAction');
-            Y.Assert.isFalse(
-                container.hasClass('is-discoverybar-minimized'),
-                "The app container should have the discovery bar minimized class"
-            );
-        },
-
-        "Should set a class on the app container when receiving a 'navigationModeChange' event": function () {
-            var container = this.app.get('container'),
-                testClass = 'test-class';
-
-            this.app.fire('whatever:navigationModeChange', {
-                navigation: {
-                    modeClass: testClass,
-                    value: true
-                }
-            });
-
-            Y.Assert.isTrue(
-                container.hasClass(testClass),
-                "The container should have the class '" + testClass + "'"
-            );
-
-            this.app.fire('whatever:navigationModeChange', {
-                navigation: {
-                    modeClass: testClass,
-                    value: false
-                }
-            });
-            Y.Assert.isFalse(
-                container.hasClass(testClass),
-                "The container should not have the class '" + testClass + "'"
-            );
-        },
     });
 
     titleTest = new Y.Test.Case({
