@@ -22,8 +22,14 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
         $configResolver
             ->expects( $this->any() )
             ->method( 'getParameter' )
-            ->with( 'yui', 'ez_platformui' )
-            ->will( $this->returnValue( array( 'modules' => array() ) ) );
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array( 'yui.modules', 'ez_platformui', null, array() ),
+                        array( 'yui.filter', 'ez_platformui', null, 'min' ),
+                    )
+                )
+            );
 
         return array(
             new TwigYuiExtension( $configResolver )
@@ -39,19 +45,46 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
      * @params array $module, string $expectedResult
      * @dataProvider dataProviderConfig
      */
-    public function testConfig( $module, $expectedResult )
+    public function testConfig( array $modules, $filter, $expectedResult )
     {
         $configResolverMock = $this->getMock( 'eZ\Publish\Core\MVC\ConfigResolverInterface' );
+        $modulesList = array_keys( $modules );
+        $getParameterValueMap = array(
+            array( 'yui.modules', 'ez_platformui', null, $modulesList ),
+            array( 'yui.filter', 'ez_platformui', null, $filter ),
+        );
+        $hasParameterValueMap = array();
+
+        foreach ( $modules as $name => $config )
+        {
+            if ( isset( $config['requires'] ) )
+            {
+                $getParameterValueMap[] = array( "yui.modules.$name.requires", 'ez_platformui', null, $config['requires'] );
+                $hasParameterValueMap[] = array( "yui.modules.$name.requires", 'ez_platformui', null, true );
+            }
+
+            if ( isset( $config['dependencyOf'] ) )
+            {
+                $getParameterValueMap[] = array( "yui.modules.$name.dependencyOf", 'ez_platformui', null, $config['dependencyOf'] );
+                $hasParameterValueMap[] = array( "yui.modules.$name.dependencyOf", 'ez_platformui', null, true );
+            }
+
+            $getParameterValueMap[] = array( "yui.modules.$name.path", 'ez_platformui', null, $config['path'] );
+        }
+
         $configResolverMock
-            ->expects( $this->once() )
+            ->expects( $this->any() )
+            ->method( 'hasParameter' )
+            ->will( $this->returnValueMap( $hasParameterValueMap ) );
+        $configResolverMock
+            ->expects( $this->atLeastOnce() )
             ->method( 'getParameter' )
-            ->with( 'yui', 'ez_platformui' )
-            ->will( $this->returnValue( $module ) );
+            ->will( $this->returnValueMap( $getParameterValueMap ) );
 
         $extension = new TwigYuiExtension( $configResolverMock );
         $extension->initRuntime( $this->getEnvironmentMock() );
         $result = $extension->yuiConfigLoaderFunction();
-        $this->assertEquals( $expectedResult, $result );
+        $this->assertSame( $expectedResult, $result );
     }
 
     /**
@@ -80,32 +113,100 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
     {
         return array(
             array(
-                array(
-                    'modules' => array()
-                ),
-                '{"modules":[]};'
+                array(),
+                'min',
+                '{"filter":"min","modules":[]};'
             ),
             array(
                 array(
-                    'modules' => array(),
-                    'filter' => 'min'
-                ),
-                '{"modules":[],"filter":"min"};'
-            ),
-            array(
-                array(
-                    'modules' => array(
-                        'ez-test' => array(
-                            'path' => 'bundles/ezplatformui/js/test.js'
-                        ),
-                        'ez-test2' => array(
-                            'path' => 'bundles/ezplatformui/js/test2.js'
-                        )
+                    'ez-test' => array(
+                        'path' => 'bundles/ezplatformui/js/test.js'
                     ),
-                    'filter' => 'min'
+                    'ez-test2' => array(
+                        'path' => 'bundles/ezplatformui/js/test2.js'
+                    )
                 ),
-                '{"modules":{"ez-test":{"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},"ez-test2":{"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"}},"filter":"min"};'
-            )
+                'debug',
+                '{"filter":"debug","modules":{' .
+                '"ez-test":{"requires":[],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
+                '"ez-test2":{"requires":[],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"}' .
+                '}};'
+            ),
+            array(
+                array(
+                    'ez-test' => array(
+                        'path' => 'bundles/ezplatformui/js/test.js',
+                        'requires' => array( 'foo', 'bar' )
+                    ),
+                    'ez-test2' => array(
+                        'path' => 'bundles/ezplatformui/js/test2.js',
+                        'requires' => array( 'ez-test' )
+                    ),
+                ),
+                'raw',
+                '{"filter":"raw","modules":{' .
+                '"ez-test":{"requires":["foo","bar"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
+                '"ez-test2":{"requires":["ez-test"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"}' .
+                '}};'
+            ),
+            array(
+                array(
+                    'ez-test' => array(
+                        'path' => 'bundles/ezplatformui/js/test.js',
+                        'requires' => array( 'foo', 'bar' )
+                    ),
+                    'ez-test2' => array(
+                        'path' => 'bundles/ezplatformui/js/test2.js',
+                        'requires' => array( 'baz' ),
+                        'dependencyOf' => array( 'ez-test' )
+                    ),
+                ),
+                'raw',
+                '{"filter":"raw","modules":{' .
+                '"ez-test":{"requires":["foo","bar","ez-test2"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
+                '"ez-test2":{"requires":["baz"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"}' .
+                '}};'
+            ),
+            array(
+                array(
+                    'ez-test' => array(
+                        'path' => 'bundles/ezplatformui/js/test.js',
+                    ),
+                    'ez-test2' => array(
+                        'path' => 'bundles/ezplatformui/js/test2.js',
+                        'requires' => array( 'baz' ),
+                        'dependencyOf' => array( 'ez-test', 'another-module' )
+                    ),
+                    'another-module' => array(
+                        'path' => 'js/fork_me_im_famous.js',
+                        'requires' => array( 'michaeljackson', 'is', 'from', 'venus' ),
+                        'dependencyOf' => array( 'ez-test' )
+                    ),
+                ),
+                'min',
+                '{"filter":"min","modules":{' .
+                '"ez-test":{"requires":["ez-test2","another-module"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
+                '"ez-test2":{"requires":["baz"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"},' .
+                '"another-module":{"requires":["ez-test2","michaeljackson","is","from","venus"],"fullpath":"' . self::PREFIX . '/js/fork_me_im_famous.js"}' .
+                '}};'
+            ),
+            array(
+                array(
+                    'ez-test' => array(
+                        'path' => 'bundles/ezplatformui/js/test.js',
+                    ),
+                    'ez-test2' => array(
+                        'path' => 'bundles/ezplatformui/js/test2.js',
+                        'requires' => array( 'baz' ),
+                        'dependencyOf' => array( 'ez-test', 'another-module' )
+                    ),
+                ),
+                'min',
+                '{"filter":"min","modules":{' .
+                '"ez-test":{"requires":["ez-test2"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
+                '"ez-test2":{"requires":["baz"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"}' .
+                '}};'
+            ),
         );
     }
 }

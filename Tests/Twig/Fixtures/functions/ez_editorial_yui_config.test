@@ -7,6 +7,6 @@ ez_platformui_ui_config "twig" function
 --DATA--
 return array('YUIConf' => 'YUI.GlobalConfig')
 --EXPECT--
-YUI.GlobalConfig = {"modules":[]};
-myObj = {"modules":[]};
-{"modules":[]};
+YUI.GlobalConfig = {"filter":"min","modules":[]};
+myObj = {"filter":"min","modules":[]};
+{"filter":"min","modules":[]};

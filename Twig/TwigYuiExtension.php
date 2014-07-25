@@ -69,14 +69,17 @@ class TwigYuiExtension extends Twig_Extension
      */
     public function yuiConfigLoaderFunction( $configObject = '' )
     {
-        $modules = $this->configResolver->getParameter( 'yui.modules', 'ez_platformui' );
+        $modules = array_fill_keys( $this->configResolver->getParameter( 'yui.modules', 'ez_platformui' ), true );
         $yui = array(
             'filter' => $this->configResolver->getParameter( 'yui.filter', 'ez_platformui' ),
             'modules' => array()
         );
-        foreach ( $modules as $module )
+
+        foreach ( array_keys( $modules ) as $module )
         {
-            $yui['modules'][$module]['requires'] = array();
+            if ( !isset( $yui['modules'][$module]['requires'] ) )
+                $yui['modules'][$module]['requires'] = array();
+
             // Module dependencies
             if ( $this->configResolver->hasParameter( "yui.modules.$module.requires", 'ez_platformui' ) )
             {
@@ -91,7 +94,9 @@ class TwigYuiExtension extends Twig_Extension
             {
                 foreach ( $this->configResolver->getParameter( "yui.modules.$module.dependencyOf", 'ez_platformui' ) as $dep )
                 {
-                    $yui['modules'][$dep]['requires'][] = $module;
+                    // Add reverse dependency only if referred module is declared in the modules list.
+                    if ( isset( $modules[$dep] ) )
+                        $yui['modules'][$dep]['requires'][] = $module;
                 }
             }
 
