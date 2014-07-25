@@ -3,7 +3,7 @@
 * Author: Damien Pobel <dp@ez.no>
 * Created: 2014-07-07
 * JIRA: https://jira.ez.no/browse/EZP-23096
-* Status: Ready to be implemented
+* Status: Implemented
 
 ## Context
 
@@ -139,7 +139,7 @@ For the others siteaccesses, the configuration remains the same.
   indicated in the semantic configuration is relative to the `web` directory of
   eZ Publish.
 * the module identifiers in the `dependencyOf` array must be declared in the
-  `modules` hash.
+  `modules` hash. If not, an error message will be logged.
 
 Note: the `requires` array can not be validated the same way `dependencyOf`
 is, as it might contain YUI modules.
