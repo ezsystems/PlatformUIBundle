@@ -35,13 +35,7 @@ browser(s) versions, ...) and to put *PlatformUI* in the *Component/s* field.
       );
   }
   ```
-* In `ezpublish/config/config.yml` add the `eZPlatformUIBundle` in the
-  `assetic.bundles` setting:
 
-  ```yml
-  assetic:
-      bundles: [ eZDemoBundle, eZPlatformUIBundle ]
-  ```
 * In `ezpublish/config/routing.yml` include the eZPlatformUIBundle routing
   configuration:
 
