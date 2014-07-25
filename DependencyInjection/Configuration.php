@@ -33,7 +33,6 @@ class Configuration extends SiteAccessConfiguration
                             ->info( 'YUI module definitions' )
                             ->children()
                                 ->scalarNode( 'path' )
-                                    ->isRequired()
                                     ->info( "Path to the module's JS file, relative to web/ directory." )
                                     ->example( 'bundles/acmedemo/js/my_yui_module.js' )
                                 ->end()
