@@ -12,6 +12,9 @@ namespace EzSystems\PlatformUIBundle\DependencyInjection\Configuration;
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\ContextualizerInterface;
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\HookableConfigurationMapperInterface;
 
+/**
+ * Configuration mapper for PlatformUIBundle.
+ */
 class PlatformUIMapper implements HookableConfigurationMapperInterface
 {
     private $allModules = array();
@@ -28,6 +31,8 @@ class PlatformUIMapper implements HookableConfigurationMapperInterface
 
         if ( isset( $scopeSettings['yui']['modules'] ) )
         {
+            // Adding entries in $scopeSettings, so that they can be merged across scopes further on,
+            // as $contextualizer->mapConfigArray() can only merge with 1st level settings in the configuration tree.
             foreach ( $scopeSettings['yui']['modules'] as $moduleName => $moduleConfig )
             {
                 $scopeSettings['yui.modules'][] = $moduleName;

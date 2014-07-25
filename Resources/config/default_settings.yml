@@ -6,3 +6,5 @@ parameters:
     # ez_platformui.<scope>.yui.modules.<module_name>.requires
     # For reverse requirements:
     # ez_platformui.<scope>.yui.modules.<module_name>.dependencyOf
+    # Path:
+    # ez_platformui.<scope>.yui.modules.<module_name>.path
