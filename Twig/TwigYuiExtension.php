@@ -9,6 +9,7 @@
 namespace EzSystems\PlatformUIBundle\Twig;
 
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
+use Psr\Log\LoggerInterface;
 use Twig_Environment;
 use Twig_Extension;
 use Twig_SimpleFunction;
@@ -28,9 +29,15 @@ class TwigYuiExtension extends Twig_Extension
      */
     private $configResolver;
 
-    public function __construct( ConfigResolverInterface $configResolver )
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
+
+    public function __construct( ConfigResolverInterface $configResolver, LoggerInterface $logger = null )
     {
         $this->configResolver = $configResolver;
+        $this->logger = $logger;
     }
 
     public function getFunctions()
@@ -95,8 +102,16 @@ class TwigYuiExtension extends Twig_Extension
                 foreach ( $this->configResolver->getParameter( "yui.modules.$module.dependencyOf", 'ez_platformui' ) as $dep )
                 {
                     // Add reverse dependency only if referred module is declared in the modules list.
-                    if ( isset( $modules[$dep] ) )
-                        $yui['modules'][$dep]['requires'][] = $module;
+                    if ( !isset( $modules[$dep] ) )
+                    {
+                        if ( $this->logger )
+                        {
+                            $this->logger->error( "'$module' is declared to be a dependency of undeclared module '$dep'. Ignoring." );
+                        }
+                        continue;
+                    }
+
+                    $yui['modules'][$dep]['requires'][] = $module;
                 }
             }
 
