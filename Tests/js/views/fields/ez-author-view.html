@@ -12,7 +12,7 @@
 <script type="text/javascript" src="./assets/ez-author-view-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
-            loaderFilter;
+        loaderFilter;
 
     if (filter == 'coverage'){
         loaderFilter = {
@@ -40,13 +40,17 @@
                 fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
             },
             "ez-view": {
-                requires: ['view'],
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
                 fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
         }
     }).use('ez-author-view-tests', function (Y) {
-                Y.Test.Runner.run();
-            });
+        Y.Test.Runner.run();
+    });
 </script>
 </body>
 </html>

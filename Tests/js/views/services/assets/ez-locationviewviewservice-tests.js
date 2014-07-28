@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationviewviewservice-tests', function (Y) {
-    var functionalTest, unitTest, eventTest, loadFieldRelatedContentEventTest;
+    var functionalTest, unitTest, eventTest;
 
     functionalTest = new Y.Test.Case({
         name: "eZ Location View View Service 'functional' tests",
@@ -373,115 +373,6 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         }
     });
 
-    loadFieldRelatedContentEventTest = new Y.Test.Case({
-        name: "eZ Location View View Service event tests",
-
-        setUp: function () {
-            var that = this;
-
-            this.relatedContent = new Y.Mock();
-            this.destination = '/api/ezp/v2/content/objects/117';
-            this.fieldDefinitionIdentifier = 'super_attribut_relation';
-            this.relationId = 42;
-
-            Y.Mock.expect(this.relatedContent, {
-                method: 'set',
-                args: ['id', this.destination],
-            });
-
-            this.app = new Y.Mock();
-            this.capi = {};
-            this.service = new Y.eZ.LocationViewViewService({
-                app: this.app,
-                capi: this.capi,
-            });
-            this.view = new Y.View();
-            this.view.set('loadingError', false);
-            this.view.set('destinationContent', null);
-            this.view.addTarget(this.service);
-
-            this.service.get('content').set('relations', [{
-                id: this.relationId,
-                destination: this.destination,
-                type: 'ATTRIBUTE',
-                fieldDefinitionIdentifier: this.fieldDefinitionIdentifier,
-            }]);
-            this.service._newContent = function () {
-                return that.relatedContent;
-            };
-        },
-
-        tearDown: function () {
-            this.service.destroy();
-            this.view.destroy();
-            delete this.service;
-            delete this.view;
-            delete this.app;
-            delete this.capi;
-            delete this.relatedContent;
-        },
-
-        "Should load the related content on `loadFieldRelatedContent` event": function () {
-            var that = this,
-                initialLoadingError = this.view.get('loadingError');
-
-            Y.Mock.expect(this.relatedContent, {
-                method: 'load',
-                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
-                run: function (options, callback) {
-                    Y.Assert.areSame(
-                        that.capi,
-                        options.api,
-                        'the CAPI should be passed in the options'
-                    );
-                    callback();
-                }
-            });
-
-            this.view.fire(
-                'loadFieldRelatedContent',
-                {fieldDefinitionIdentifier: this.fieldDefinitionIdentifier}
-            );
-            Y.Assert.areSame(this.relatedContent, this.view.get('destinationContent'));
-            Y.Assert.areSame(
-                    initialLoadingError,
-                this.view.get('loadingError'),
-                "The loadingError should stay the same"
-            );
-            Y.Mock.verify(this.relatedContent);
-        },
-
-        "Should handle loading error while loading related content": function () {
-            var that = this,
-                initialDest = this.view.get('destinationContent');
-
-            Y.Mock.expect(this.relatedContent, {
-                method: 'load',
-                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
-                run: function (options, callback) {
-                    Y.Assert.areSame(
-                        that.capi,
-                        options.api,
-                        'the CAPI should be passed in the options'
-                    );
-                    callback(true);
-                }
-            });
-
-            this.view.fire(
-                'loadFieldRelatedContent',
-                {fieldDefinitionIdentifier: this.fieldDefinitionIdentifier}
-            );
-            Y.Assert.areSame(
-                initialDest,
-                this.view.get('destinationContent'),
-                "The destinationContent should stay the same"
-            );
-            Y.Assert.isTrue(this.view.get('loadingError'), "The loadingError should be true");
-            Y.Mock.verify(this.relatedContent);
-        },
-    });
-
     eventTest = new Y.Test.Case({
         name: "eZ Location View View Service event tests",
 
@@ -545,6 +436,4 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
     Y.Test.Runner.add(unitTest);
     Y.Test.Runner.add(functionalTest);
     Y.Test.Runner.add(eventTest);
-    Y.Test.Runner.add(loadFieldRelatedContentEventTest);
-
 }, '', {requires: ['test', 'ez-locationviewviewservice']});

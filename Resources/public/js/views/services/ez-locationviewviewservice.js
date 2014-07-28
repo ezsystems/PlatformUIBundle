@@ -24,36 +24,6 @@ YUI.add('ez-locationviewviewservice', function (Y) {
     Y.eZ.LocationViewViewService = Y.Base.create('locationViewViewService', Y.eZ.ViewService, [], {
         initializer: function () {
             this.on('*:editAction', this._editContent);
-            this.on('*:loadFieldRelatedContent', this._loadFieldRelatedContent);
-        },
-
-        /**
-         * loadFieldRelatedContent event handler. It loads the related
-         * content held by the field which field definition identifier is
-         * available in the event facade.
-         *
-         * @method _loadFieldRelatedContent
-         * @protected
-         * @param {Object} e event facade of the loadContent event
-         */
-        _loadFieldRelatedContent: function (e) {
-            var loadOptions = {api: this.get('capi')},
-                relatedContent = this._newContent(),
-                contentDestination = this.get('content').relations(
-                    'ATTRIBUTE', e.fieldDefinitionIdentifier
-                ).shift();
-
-            relatedContent.set('id', contentDestination.destination);
-            relatedContent.load(loadOptions, function (error) {
-                if (error) {
-                    e.target.set("loadingError", true);
-                } else {
-                    e.target.setAttrs({
-                        destinationContent: relatedContent,
-                        loadingError: false,
-                    });
-                }
-            });
         },
 
         /**
@@ -76,10 +46,11 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          * Loads the location, the content and the path for the location id
          * available in the request and calls the next callback once it's done.
          *
-         * @method load
+         * @method _load
+         * @protected
          * @param {Function} next
          */
-        load: function (next) {
+        _load: function (next) {
             var loadOptions = {
                     api: this.get('capi')
                 },
@@ -220,7 +191,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             });
         },
 
-        getViewParameters: function () {
+        _getViewParameters: function () {
             return {
                 content: this.get('content'),
                 contentType: this.get('contentType'),

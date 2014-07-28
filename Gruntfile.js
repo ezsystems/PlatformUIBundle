@@ -8,6 +8,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/fields/*.js", "!./Resources/public/js/views/fields/*-min.js",
             "./Resources/public/js/views/actions/*.js", "!./Resources/public/js/views/actions/*-min.js",
             "./Resources/public/js/views/services/*.js", "!./Resources/public/js/views/services/*-min.js",
+            "./Resources/public/js/views/services/plugins/*.js", "!./Resources/public/js/views/services/plugins/*-min.js",
             "./Resources/public/js/models/*.js", "!./Resources/public/js/models/*-min.js",
             "./Resources/public/js/models/structs/*.js", "!./Resources/public/js/models/structs/*-min.js",
             "./Resources/public/js/extensions/*.js", "!./Resources/public/js/extensions/*-min.js",
@@ -15,8 +16,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/helpers/*.js", "!./Resources/public/js/helpers/*-min.js"
         ],
         testFiles = [
-            "./Tests/js/*/*/*.js",
-            "./Tests/js/*/*/*/*.js"
+            "./Tests/js/**/*.js",
         ],
         trashFiles = [
             "./Resources/public/js/apps/*-min.js",
@@ -24,6 +24,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/*-min.js",
             "./Resources/public/js/views/fields/*-min.js",
             "./Resources/public/js/views/services/*-min.js",
+            "./Resources/public/js/views/services/plugins/*-min.js",
             "./Resources/public/js/models/*-min.js",
             "./Resources/public/js/models/structs/*-min.js",
             "./Resources/public/js/extensions/*-min.js",
@@ -86,7 +87,7 @@ module.exports = function(grunt) {
         },
         shell: {
             grover: {
-                command: 'grover --server -o "' + reportDir + '/junit.xml" --junit Tests/js/*/*.html Tests/js/*/*/*.html',
+                command: 'grover --server -o "' + reportDir + '/junit.xml" --junit Tests/js/*/*.html Tests/js/*/*/*.html Tests/js/*/*/*/*.html',
                 options: {
                     stdout: true,
                     stderr: true,
@@ -94,7 +95,7 @@ module.exports = function(grunt) {
                 }
             },
             groverCoverage: {
-                command: 'grover --server --coverage --coverdir "' + reportDir + '" -S "?filter=coverage" Tests/js/*/*.html Tests/js/*/*/*.html',
+                command: 'grover --server --coverage --coverdir "' + reportDir + '" -S "?filter=coverage" Tests/js/*/*.html Tests/js/*/*/*.html Tests/js/*/*/*/*.html',
                 options: {
                     stdout: true,
                     stderr: true,
@@ -114,7 +115,7 @@ module.exports = function(grunt) {
                 atBegin: true
             },
             test: {
-                files: [sourceFiles, testFiles],
+                files: [sourceFiles, testFiles, "Tests/js/**/*.html"],
                 tasks: ["shell:grover"]
             },
         },

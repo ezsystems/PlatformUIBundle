@@ -44,8 +44,12 @@
                 fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
             },
             "ez-view": {
-                requires: ['view'],
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
                 fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
         }
     }).use('ez-maplocation-view-tests', function (Y) {

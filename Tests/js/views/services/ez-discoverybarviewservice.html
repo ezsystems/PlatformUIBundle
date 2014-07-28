@@ -24,33 +24,13 @@
         filter: loaderFilter,
         modules: {
             "ez-discoverybarviewservice": {
-                requires: ['ez-viewservice', 'parallel', 'ez-locationmodel', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-contenttree'],
+                requires: ['ez-viewservice'],
                 fullpath: "../../../../Resources/public/js/views/services/ez-discoverybarviewservice.js"
             },
             "ez-viewservice": {
-                requires: ['base'],
+                requires: ['base', 'parallel'],
                 fullpath: "../../../../Resources/public/js/views/services/ez-viewservice.js"
             },
-            "ez-contenttree": {
-                requires: ['tree', 'tree-selectable', 'tree-openable', 'tree-lazy'],
-                fullpath: "../../../../Resources/public/js/models/structs/ez-contenttree.js"
-            },
-            "ez-contentmodel": {
-                requires: ['ez-restmodel'],
-                fullpath: "../../../../Resources/public/js/models/ez-contentmodel.js"
-            },
-            "ez-contenttypemodel": {
-                requires: ['ez-restmodel'],
-                fullpath: "../../../../Resources/public/js/models/ez-contenttypemodel.js"
-            },
-            "ez-locationmodel": {
-                requires: ['ez-restmodel'],
-                fullpath: "../../../../Resources/public/js/models/ez-locationmodel.js"
-            },
-            "ez-restmodel": {
-                requires: ['model'],
-                fullpath: "../../../../Resources/public/js/models/ez-restmodel.js"
-            }
         }
     }).use('ez-discoverybarviewservice-tests', function (Y) {
         Y.Test.Runner.run();

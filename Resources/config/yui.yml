@@ -1,5 +1,4 @@
 system:
-    # base: extension/ezjscore/design/standard/lib/yui/3.15.0/build/
     default:
         yui:
             filter: min
@@ -12,7 +11,6 @@ system:
                         - 'app-transitions'
                         - 'node-screen'
                         - 'parallel'
-                        - 'handlebars'
                         - 'ez-capi'
                         - 'ez-loginformviewservice'
                         - 'ez-loginformview'
@@ -27,9 +25,13 @@ system:
                         - 'ez-discoverybarview'
                         - 'ez-errorview'
                         - 'ez-usermodel'
+                        - 'ez-pluginregistry'
+                        - 'ez-registerpartialsplugin'
+                        - 'ez-registerurlhelpersplugin'
+                        - 'ez-domstateplugin'
                     path: %ez_platformui.public_dir%/js/apps/ez-platformuiapp.js
                 ez-viewservice:
-                    requires: ['base']
+                    requires: ['base', 'parallel']
                     path: %ez_platformui.public_dir%/js/views/services/ez-viewservice.js
                 ez-loginformviewservice:
                     requires: ['ez-viewservice']
@@ -38,19 +40,19 @@ system:
                     requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel', 'ez-versionmodel']
                     path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
                 ez-locationviewviewservice:
-                    requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel']
+                    requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
                     requires: ['ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
                 ez-discoverybarviewservice:
-                    requires: ['ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-contenttree']
+                    requires: ['ez-viewservice', 'ez-contenttreeplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js
                 ez-serversideviewservice:
                     requires: ['io-base', 'ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-serversideviewservice.js
                 ez-view:
-                    requires: ['view']
+                    requires: ['view', 'base-pluginhost', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/views/ez-view.js
                 ez-templatebasedview:
                     requires: ['ez-texthelper', 'ez-view', 'handlebars']
@@ -219,6 +221,27 @@ system:
                 ez-googlemapapiloader:
                     requires: ['jsonp', 'jsonp-url', 'event-custom']
                     path: %ez_platformui.public_dir%/js/services/ez-googlemapapiloader.js
+                ez-pluginregistry:
+                    requires: ['array-extras']
+                    path: %ez_platformui.public_dir%/js/services/ez-pluginregistry.js
+                ez-domstateplugin:
+                    requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-domstateplugin.js
+                ez-registerpartialsplugin:
+                    requires: ['plugin', 'handlebars', 'base', 'node', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-registerpartialsplugin.js
+                ez-registerurlhelpersplugin:
+                    requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-registerurlhelpersplugin.js
+                ez-viewservicebaseplugin:
+                    requires: ['plugin', 'base']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-viewservicebaseplugin.js
+                ez-objectrelationloadplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationloadplugin.js
+                ez-contenttreeplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
                 ez-expandable:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js

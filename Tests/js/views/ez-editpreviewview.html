@@ -49,31 +49,28 @@
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
             },
             "ez-view": {
-                requires: ['view'],
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
                 fullpath: "../../../Resources/public/js/views/ez-view.js"
             },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
             "ez-contentmodel": {
-                requires: [
-                    'ez-restmodel'
-                ],
+                requires: ['ez-restmodel'],
                 fullpath: "../../../Resources/public/js/models/ez-contentmodel.js"
             },
             "ez-versionmodel": {
-                requires: [
-                    'ez-restmodel'
-                ],
+                requires: ['ez-restmodel'],
                 fullpath: "../../../Resources/public/js/models/ez-versionmodel.js"
             },
             "ez-restmodel": {
-                requires: [
-                    'model'
-                ],
+                requires: ['model'],
                 fullpath: "../../../Resources/public/js/models/ez-restmodel.js"
             }
         }
     }).use('ez-editpreviewview-tests', function (Y) {
         Y.Test.Runner.run();
-
     });
 </script>
 </body>

@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-viewservice-tests', function (Y) {
-    var test;
+    var test, pluginViewParamTests, pluginLoadTests,
+        Assert = Y.Assert;
 
     test = new Y.Test.Case({
         name: "eZ View Service tests",
@@ -56,7 +57,166 @@ YUI.add('ez-viewservice-tests', function (Y) {
         }
     });
 
+    pluginViewParamTests = new Y.Test.Case({
+        name: "eZ View Service getViewParameters with plugins tests",
+
+        setUp: function () {
+            var serviceParams = {'service': 1, 'param': {}},
+                plugin1Params = {'plugin1': "plugin1"},
+                plugin2Params = {'plugin2': "plugin2"},
+                Service = Y.Base.create('testService', Y.eZ.ViewService, [], {
+                    _getViewParameters: function () {
+                        return serviceParams;
+                    }
+                }),
+                plugins = [
+                    Y.Base.create('plugin1', Y.eZ.Plugin.ViewServiceBase, [], {
+                        getViewParameters: function () {
+                            return plugin1Params;
+                        },
+                    }, {NS: "plugin1"}),
+                    Y.Base.create('plugin2', Y.eZ.Plugin.ViewServiceBase, [], {
+                        getViewParameters: function () {
+                            return plugin2Params;
+                        },
+                    }, {NS: "plugin2"}),
+                ];
+
+            this.serviceParams = serviceParams;
+            this.plugin1Params = plugin1Params;
+            this.plugin2Params = plugin2Params;
+            this.service = new Service({
+                plugins: plugins
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+        },
+
+        "Should merge the view parameters from the plugins and the service": function () {
+            var params = this.service.getViewParameters(),
+                expectedLength;
+
+            expectedLength = Y.Object.keys(this.serviceParams).length
+                + Y.Object.keys(this.plugin1Params).length
+                + Y.Object.keys(this.plugin2Params).length;
+            Assert.areEqual(
+                expectedLength, Y.Object.keys(params).length,
+                "The view should get " + expectedLength + " parameters"
+            );
+
+            Y.Object.each(this.serviceParams, function (value, key) {
+                Assert.areSame(
+                    value, params[key],
+                    "The view should get the parameter " + key + " from view service"
+                );
+            });
+            Y.Object.each(this.plugin1Params, function (value, key) {
+                Assert.areSame(
+                    value, params[key],
+                    "The view should get the parameter " + key + " from the plugin 1"
+                );
+            });
+            Y.Object.each(this.plugin2Params, function (value, key) {
+                Assert.areSame(
+                    value, params[key],
+                    "The view should get the parameter " + key + " from the plugin 2"
+                );
+            });
+        },
+    });
+
+    pluginLoadTests = new Y.Test.Case({
+        name: "eZ View Service load with plugins tests",
+
+        setUp: function () {
+            var that = this,
+                Service, plugins;
+
+            this.serviceName = 'testService';
+            this.plugin1Name = 'plugin1';
+            this.plugin2Name = 'plugin2';
+            this.loadStack = [];
+            this.expectedLoadStack = [
+                this.serviceName + "._load",
+                this.plugin2Name + ".parallelLoad",
+                this.plugin1Name + ".parallelLoad",
+                this.plugin2Name + ".afterLoad",
+                this.plugin1Name + ".afterLoad"
+            ];
+            Service  = Y.Base.create(this.serviceName, Y.eZ.ViewService, [], {
+                _load: function (cb) {
+                    that.loadStack.push(that.serviceName + "._load");
+                    cb();
+                },
+            });
+            plugins = [
+                Y.Base.create(this.plugin1Name, Y.eZ.Plugin.ViewServiceBase, [], {
+                    parallelLoad: function (cb) {
+                        setTimeout(function () {
+                            that.loadStack.push(that.plugin1Name + ".parallelLoad");
+                            cb();
+                        }, 30);
+                    },
+
+                    afterLoad: function (cb) {
+                        setTimeout(function () {
+                            that.loadStack.push(that.plugin1Name + ".afterLoad");
+                            cb();
+                        }, 30);
+                    },
+                }, {NS: this.plugin1Name}),
+                Y.Base.create(this.plugin2Name, Y.eZ.Plugin.ViewServiceBase, [], {
+                    parallelLoad: function (cb) {
+                        setTimeout(function () {
+                            that.loadStack.push(that.plugin2Name + ".parallelLoad");
+                            cb();
+                        }, 10);
+                    },
+                    afterLoad: function (cb) {
+                        setTimeout(function () {
+                            that.loadStack.push(that.plugin2Name + ".afterLoad");
+                            cb();
+                        }, 10);
+                    },
+                }, {NS: this.plugin2Name}),
+            ];
+
+            this.service = new Service({
+                plugins: plugins
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+        },
+
+        "Should the afterLoad and parallelLoad of the plugins": function () {
+            var that = this;
+
+            this.service.load(function () {
+                that.resume(function () {
+                    Assert.areSame(
+                        this.expectedLoadStack.length, this.loadStack.length,
+                        "Expected " + this.expectedLoadStack.length + " 'load' calls"
+                    );
+                    Y.Array.each(this.expectedLoadStack, function (expected, i) {
+                        Assert.areEqual(
+                            expected, that.loadStack[i],
+                            "The operation " + i + " should be " + expected
+                        );
+                    });
+                });
+            });
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ View Service tests");
     Y.Test.Runner.add(test);
-
-}, '', {requires: ['test', 'ez-viewservice']});
+    Y.Test.Runner.add(pluginViewParamTests);
+    Y.Test.Runner.add(pluginLoadTests);
+}, '', {requires: ['test', 'ez-viewservice', 'ez-viewservicebaseplugin']});
