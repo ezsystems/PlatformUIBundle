@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-navigationhubviewservice', function (Y) {
-    "user strict";
+    "use strict";
     /**
      * Provides the view service component for the navigation hub
      *

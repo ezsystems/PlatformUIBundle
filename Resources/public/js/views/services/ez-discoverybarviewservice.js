@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-discoverybarviewservice', function (Y) {
-    "user strict";
+    "use strict";
     /**
      * Provides the view service component for the discovery bar
      *

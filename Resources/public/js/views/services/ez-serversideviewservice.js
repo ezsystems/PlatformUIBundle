@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-serversideviewservice', function (Y) {
-    "user strict";
+    "use strict";
     /**
      * Provides the server side view service class
      *
