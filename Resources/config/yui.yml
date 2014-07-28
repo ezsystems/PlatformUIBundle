@@ -9,7 +9,6 @@ parameters:
                     - 'app-transitions'
                     - 'node-screen'
                     - 'parallel'
-                    - 'handlebars'
                     - 'ez-capi'
                     - 'ez-loginformviewservice'
                     - 'ez-loginformview'
@@ -25,6 +24,9 @@ parameters:
                     - 'ez-errorview'
                     - 'ez-usermodel'
                     - 'ez-pluginregistry'
+                    - 'ez-registerpartialsplugin'
+                    - 'ez-registerurlhelpersplugin'
+                    - 'ez-domstateplugin'
                 path: js/apps/ez-platformuiapp.js
             ez-viewservice:
                 requires: ['base', 'parallel']
@@ -48,7 +50,7 @@ parameters:
                 requires: ['io-base', 'ez-viewservice']
                 path: js/views/services/ez-serversideviewservice.js
             ez-view:
-                requires: ['view']
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry']
                 path: js/views/ez-view.js
             ez-templatebasedview:
                 requires: ['ez-texthelper', 'ez-view', 'handlebars']
@@ -220,6 +222,15 @@ parameters:
             ez-pluginregistry:
                 requires: ['array-extras']
                 path: js/services/ez-pluginregistry.js
+            ez-domstateplugin:
+                requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
+                path: js/apps/plugins/ez-domstateplugin.js
+            ez-registerpartialsplugin:
+                requires: ['plugin', 'handlebars', 'base', 'node', 'ez-pluginregistry']
+                path: js/apps/plugins/ez-registerpartialsplugin.js
+            ez-registerurlhelpersplugin:
+                requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry']
+                path: js/apps/plugins/ez-registerurlhelpersplugin.js
             ez-viewservicebaseplugin:
                 requires: ['plugin', 'base']
                 path: js/views/services/plugins/ez-viewservicebaseplugin.js

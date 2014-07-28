@@ -1,15 +1,19 @@
 <!doctype html>
 <html>
 <head>
-<title>eZ View tests</title>
+<title>eZ DOM State Plugin tests</title>
 </head>
 <body>
 
-<script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
-<script type="text/javascript" src="./assets/ez-view-tests.js"></script>
+<div class="app-container"></div>
+
+<script type="text/javascript" src="../../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="../../assets/pluginregister-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-domstateplugin-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
+
     if (filter == 'coverage'){
         loaderFilter = {
             searchExp : "/Resources/",
@@ -20,19 +24,19 @@
     }
 
     YUI({
-        coverage: ['ez-view'],
+        coverage: ['ez-domstateplugin'],
         filter: loaderFilter,
         modules: {
-            "ez-view": {
-                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
-                fullpath: "../../../Resources/public/js/views/ez-view.js"
+            "ez-domstateplugin": {
+                requires: ['plugin', 'base', 'node', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/apps/plugins/ez-domstateplugin.js"
             },
             "ez-pluginregistry": {
                 requires: ['array-extras'],
                 fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
         }
-    }).use('ez-view-tests', function (Y) {
+    }).use('ez-domstateplugin-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>
