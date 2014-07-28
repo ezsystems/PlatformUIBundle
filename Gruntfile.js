@@ -4,6 +4,7 @@ module.exports = function(grunt) {
         sourceFiles = [ // Syntax "!<whatever>" means - exclude whatever from the result set
             "./Resources/public/js/apps/*.js", "!./Resources/public/js/apps/*-min.js",
             "./Resources/public/js/apps/extensions/*.js", "!./Resources/public/js/apps/extensions/*-min.js",
+            "./Resources/public/js/apps/plugins/*.js", "!./Resources/public/js/apps/plugins/*-min.js",
             "./Resources/public/js/views/*.js", "!./Resources/public/js/views/*-min.js",
             "./Resources/public/js/views/fields/*.js", "!./Resources/public/js/views/fields/*-min.js",
             "./Resources/public/js/views/actions/*.js", "!./Resources/public/js/views/actions/*-min.js",
@@ -21,6 +22,7 @@ module.exports = function(grunt) {
         trashFiles = [
             "./Resources/public/js/apps/*-min.js",
             "./Resources/public/js/apps/extensions/*-min.js",
+            "./Resources/public/js/apps/plugins/*-min.js",
             "./Resources/public/js/views/*-min.js",
             "./Resources/public/js/views/fields/*-min.js",
             "./Resources/public/js/views/services/*-min.js",
