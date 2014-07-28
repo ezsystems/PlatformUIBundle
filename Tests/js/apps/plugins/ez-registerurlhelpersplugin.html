@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Register Url Helpers Plugin tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="../../assets/pluginregister-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-registerurlhelpersplugin-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-registerurlhelpersplugin'],
+        filter: loaderFilter,
+        modules: {
+            "ez-registerurlhelpersplugin": {
+                requires: ['plugin', 'base', 'handlebars', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/apps/plugins/ez-registerurlhelpersplugin.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-registerurlhelpersplugin-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
