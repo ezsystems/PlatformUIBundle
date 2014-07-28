@@ -8,10 +8,11 @@
 
 namespace EzSystems\PlatformUIBundle\Twig;
 
+use eZ\Publish\Core\MVC\ConfigResolverInterface;
+use Psr\Log\LoggerInterface;
 use Twig_Environment;
 use Twig_Extension;
 use Twig_SimpleFunction;
-use EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle;
 
 /**
  * Class TwigYuiExtension
@@ -19,21 +20,24 @@ use EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle;
 class TwigYuiExtension extends Twig_Extension
 {
     /**
-     * @var array()
-     */
-    protected $yui = array();
-
-    /**
      * @var Twig_Environment
      */
     protected $twig;
 
     /**
-     * @param array $config
+     * @var \eZ\Publish\Core\MVC\ConfigResolverInterface
      */
-    public function __construct( array $config )
+    private $configResolver;
+
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
+
+    public function __construct( ConfigResolverInterface $configResolver, LoggerInterface $logger = null )
     {
-        $this->yui = $config;
+        $this->configResolver = $configResolver;
+        $this->logger = $logger;
     }
 
     public function getFunctions()
@@ -66,23 +70,68 @@ class TwigYuiExtension extends Twig_Extension
     /**
      * Returns the YUI loader configuration
      *
+     * @param string $configObject
+     *
      * @return string
      */
     public function yuiConfigLoaderFunction( $configObject = '' )
     {
-        foreach ( $this->yui['modules'] as $key => $value )
+        $modules = array_fill_keys( $this->configResolver->getParameter( 'yui.modules', 'ez_platformui' ), true );
+        $yui = array(
+            'filter' => $this->configResolver->getParameter( 'yui.filter', 'ez_platformui' ),
+            'modules' => array()
+        );
+
+        foreach ( array_keys( $modules ) as $module )
         {
-            // taken from assets:install script
-            $fullpath = "bundles/" . preg_replace( "/bundle$/", "", strtolower( EzSystemsPlatformUIBundle::NAME ) ) . "/" . $this->yui['modules'][$key]['path'];
-            unset( $this->yui['modules'][$key]['path'] );
-            $this->yui['modules'][$key]['fullpath'] = $this->asset( $fullpath );
+            if ( !isset( $yui['modules'][$module]['requires'] ) )
+                $yui['modules'][$module]['requires'] = array();
+
+            // Module dependencies
+            if ( $this->configResolver->hasParameter( "yui.modules.$module.requires", 'ez_platformui' ) )
+            {
+                $yui['modules'][$module]['requires'] = array_merge(
+                    $yui['modules'][$module]['requires'],
+                    $this->configResolver->getParameter( "yui.modules.$module.requires", 'ez_platformui' )
+                );
+            }
+
+            // Reverse dependencies
+            if ( $this->configResolver->hasParameter( "yui.modules.$module.dependencyOf", 'ez_platformui' ) )
+            {
+                foreach ( $this->configResolver->getParameter( "yui.modules.$module.dependencyOf", 'ez_platformui' ) as $dep )
+                {
+                    // Add reverse dependency only if referred module is declared in the modules list.
+                    if ( !isset( $modules[$dep] ) )
+                    {
+                        if ( $this->logger )
+                        {
+                            $this->logger->error( "'$module' is declared to be a dependency of undeclared module '$dep'. Ignoring." );
+                        }
+                        continue;
+                    }
+
+                    $yui['modules'][$dep]['requires'][] = $module;
+                }
+            }
+
+            $yui['modules'][$module]['fullpath'] = $this->asset(
+                $this->configResolver->getParameter( "yui.modules.$module.path", 'ez_platformui' )
+            );
         }
+
+        // Now ensure that all requirements are unique
+        foreach ( $yui['modules'] as &$moduleConfig )
+        {
+            $moduleConfig['requires'] = array_unique( $moduleConfig['requires'] );
+        }
+
         $res = '';
         if ( $configObject != '' )
         {
             $res = $configObject . ' = ';
         }
-        return $res . ( defined( 'JSON_UNESCAPED_SLASHES' ) ? json_encode( $this->yui, JSON_UNESCAPED_SLASHES ) :  json_encode( $this->yui ) ) . ";";
+        return $res . ( defined( 'JSON_UNESCAPED_SLASHES' ) ? json_encode( $yui, JSON_UNESCAPED_SLASHES ) :  json_encode( $yui ) ) . ";";
     }
 
     /**

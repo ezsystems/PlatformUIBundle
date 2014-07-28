@@ -3,7 +3,7 @@
 * Author: Damien Pobel <dp@ez.no>
 * Created: 2014-07-07
 * JIRA: https://jira.ez.no/browse/EZP-23096
-* Status: Ready to be implemented
+* Status: Implemented
 
 ## Context
 
@@ -31,11 +31,10 @@ In the PlatformUIBundle, the `yui.yml` file should be converted into a semantic
 configuration, this file would look like:
 
 ```yaml
-platformui:
+ez_platformui:
     system:
         default: # siteaccess, group of siteaccess or default or global
             yui:
-                base: "extension/ezjscore/design/standard/lib/yui/3.15.0/build/"
                 filter: "min"
                 modules:
                     ez-module1:
@@ -68,7 +67,7 @@ With this configuration system in place, it should be possible to tweak the
 configuration from an external bundle, with something like:
 
 ```yaml
-platformui:
+ez_platformui:
     system:
         ezdemo_site:
             yui:
@@ -98,7 +97,6 @@ In others terms, the configuration for `ezdemo_site` siteaccess is:
 
 ```yaml
 yui:
-    base: "extension/ezjscore/design/standard/lib/yui/3.15.0/build/"
     filter: "min"
     modules:
         ez-module1:
@@ -141,7 +139,7 @@ For the others siteaccesses, the configuration remains the same.
   indicated in the semantic configuration is relative to the `web` directory of
   eZ Publish.
 * the module identifiers in the `dependencyOf` array must be declared in the
-  `modules` hash.
+  `modules` hash. If not, an error message will be logged.
 
 Note: the `requires` array can not be validated the same way `dependencyOf`
 is, as it might contain YUI modules.
