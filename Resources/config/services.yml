@@ -5,6 +5,8 @@ parameters:
     ezsystems.platformui.controller.systeminfo.class: EzSystems\PlatformUIBundle\Controller\SystemInfoController
     ezsystems.platformui.helper.section.class: EzSystems\PlatformUIBundle\Helper\SectionHelper
     ezsystems.platformui.controller.section.class: EzSystems\PlatformUIBundle\Controller\SectionController
+    ezsystems.platformui.form.type.section.class: EzSystems\PlatformUIBundle\Form\Type\SectionType
+    ezsystems.platformui.form.type.sectionupdatestruct.class: EzSystems\PlatformUIBundle\Form\Type\SectionUpdateStructType
 
 services:
     ezsystems.platformui.twig.yui_extension:
@@ -40,4 +42,18 @@ services:
         class: %ezsystems.platformui.controller.section.class%
         arguments:
             - @ezsystems.platformui.helper.section
+            - @ezpublish.api.service.section
+            - @ezsystems.platformui.form.type.section
         parent: ezpublish.controller.base
+
+     # Declaring the section form as a service
+    ezsystems.platformui.form.type.section:
+        class: %ezsystems.platformui.form.type.section.class%
+        tags:
+            - { name: form.section, alias: ezplatformui_section }
+
+     # Declaring the section form as a service
+    ezsystems.platformui.form.type.sectionupdatestruct:
+        class: %ezsystems.platformui.form.type.sectionupdatestruct.class%
+        tags:
+            - { name: form.section, alias: ezplatformui_sectionupdatestruct }
