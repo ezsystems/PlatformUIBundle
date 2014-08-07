@@ -61,6 +61,7 @@ YUI.add('ez-contenteditformview', function (Y) {
 
                 try {
                     EditView = Y.eZ.FieldEditView.getFieldEditView(def.fieldType);
+
                     views.push(
                         new EditView({
                             content: content,
@@ -116,13 +117,15 @@ YUI.add('ez-contenteditformview', function (Y) {
          * Returns an array containing the field updated with the user input
          *
          * @method getFields
+         * @param createMode indicator whether the view should get the value from content model
+         *                   or from the view
          * @return Array
          */
-        getFields: function () {
+        getFields: function (createMode) {
             var res = [];
 
             Y.Array.each(this._fieldEditViews, function (val) {
-                res.push(val.getField());
+                res.push(val.getField(createMode));
             });
             return res;
         },

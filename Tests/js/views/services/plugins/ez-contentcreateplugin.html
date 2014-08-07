@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>eZ Content Create Plugin tests</title>
+</head>
+<body>
+    <div class="app">
+        <div class="view-container"></div>
+        <div class="ez-errorview-container is-hidden"></div>
+    </div>
+<script type="text/javascript" src="../../../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="../../../assets/pluginregister-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-contentcreateplugin-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : '/Resources/',
+            replaceStr: '/Tests/instrument/Resources/'
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-contentcreateplugin'],
+        filter: loaderFilter,
+        modules: {
+            'ez-contentcreateplugin': {
+                requires: [
+                    'ez-viewservicebaseplugin',
+                    'ez-pluginregistry',
+                    'ez-contentmodel',
+                    'ez-contenttypemodel',
+                    'ez-locationmodel',
+                    'ez-contenttree',
+                    'ez-contenteditviewservice',
+                    'promise',
+                    'ez-createcontentactionview'
+
+                ],
+                fullpath: '../../../../../Resources/public/js/views/services/plugins/ez-contentcreateplugin.js'
+            },
+            'ez-viewservicebaseplugin': {
+                requires: ['plugin', 'base'],
+                fullpath: '../../../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js'
+            },
+            'ez-pluginregistry': {
+                requires: ['array-extras'],
+                fullpath: '../../../../../Resources/public/js/services/ez-pluginregistry.js'
+            },
+            'ez-locationviewviewservice': {
+                requires: [
+                    'ez-viewservice',
+                    'parallel',
+                    'ez-locationmodel',
+                    'ez-contentmodel',
+                    'ez-contenttypemodel',
+                    'ez-contentcreateplugin'
+                ],
+                fullpath: '../../../../../Resources/public/js/views/services/ez-locationviewviewservice.js'
+            },
+            'ez-viewservice': {
+                requires: ['view'],
+                fullpath: '../../../../../Resources/public/js/views/services/ez-viewservice.js'
+            },
+            'ez-contentmodel': {
+                requires: ['ez-restmodel', 'array-extras'],
+                fullpath: '../../../../../Resources/public/js/models/ez-contentmodel.js'
+            },
+            'ez-contenttypemodel': {
+                requires: ['ez-restmodel'],
+                fullpath: '../../../../../Resources/public/js/models/ez-contenttypemodel.js'
+            },
+            'ez-locationmodel': {
+                requires: ['ez-restmodel'],
+                fullpath: '../../../../../Resources/public/js/models/ez-locationmodel.js'
+            },
+            'ez-restmodel': {
+                requires: ['model'],
+                fullpath: '../../../../../Resources/public/js/models/ez-restmodel.js'
+            },
+            'ez-platformuiapp': {
+                requires: [
+                    'app', 'app-transitions', 'node-screen', 'parallel', 'ez-viewservice', 'ez-pluginregistry', 'ez-errorview', 'ez-usermodel'
+                ],
+                fullpath: '../../../../../Resources/public/js/apps/ez-platformuiapp.js'
+            },
+            'ez-errorview': {
+                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                fullpath: '../../../../../Resources/public/js/views/ez-errorview.js'
+            },
+            'ez-templatebasedview': {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: '../../../../../Resources/public/js/views/ez-templatebasedview.js'
+            },
+            'ez-view': {
+                requires: ['view'],
+                fullpath: '../../../../../Resources/public/js/views/ez-view.js'
+            },
+            'ez-usermodel': {
+                requires: ['ez-restmodel'],
+                fullpath: '../../../../../Resources/public/js/models/ez-usermodel.js'
+            },
+            'ez-contenteditviewservice': {
+                requires: ['ez-viewservice', 'parallel', 'fake-models'],
+                fullpath: '../../../../../Resources/public/js/views/services/ez-contenteditviewservice.js'
+            },
+            'ez-createcontentactionview': {
+                requires: ['ez-createcontentfilterview', 'ez-buttonactionview', 'ez-expandable', 'event-tap'],
+                fullpath: '../../../../../Resources/public/js/views/actions/ez-createcontentactionview.js'
+            },
+            'ez-createcontentfilterview': {
+                requires: ['ez-selectionfilterview', 'ez-templatebasedview'],
+                fullpath: '../../../../../Resources/public/js/views/ez-createcontentfilterview.js'
+            },
+            'ez-selectionfilterview' : {
+                requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view'],
+                fullpath: '../../../../../Resources/public/js/views/ez-selectionfilterview.js'
+            },
+            'ez-buttonactionview': {
+                requires: ['ez-templatebasedview', 'event-tap'],
+                fullpath: '../../../../../Resources/public/js/views/actions/ez-buttonactionview.js'
+            },
+            'ez-expandable': {
+                requires: ['view'],
+                fullpath: '../../../../../Resources/public/js/extensions/ez-expandable.js'
+            },
+        }
+    }).use('ez-contentcreateplugin-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

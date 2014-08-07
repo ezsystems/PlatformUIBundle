@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenteditviewservice', function (Y) {
-    "use strict";
+    'use strict';
     /**
      * Provides the view service component for the content edit view
      *
@@ -35,9 +35,8 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          *
          * @method _discardDraft
          * @protected
-         * @param {Object} e event facade
          */
-        _discardDraft: function (e) {
+        _discardDraft: function () {
             var version = this.get('version'),
                 that = this,
                 app = this.get('app');
@@ -57,16 +56,18 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          *
          * @method _saveDraft
          * @protected
-         * @param {Object} e saveAction event facade
+         * @param {Object} event saveAction event facade
          */
-        _saveDraft: function (e) {
-            var version = this.get('version');
-
-            if ( e.formIsValid ) {
-                version.save({
-                    api: this.get('capi'),
-                    fields: e.fields
-                }, function (error, response) {});
+        _saveDraft: function (event) {
+            if (event.formIsValid) {
+                if (this.get('createMode')) {
+                    this._createNewContentStruct(event.fields);
+                } else {
+                    this.get('version').save({
+                        api: this.get('capi'),
+                        fields: event.fields
+                    }, function (error, response) {});
+                }
             }
         },
 
@@ -82,17 +83,57 @@ YUI.add('ez-contenteditviewservice', function (Y) {
         _publishDraft: function (e) {
             var version = this.get('version'),
                 app = this.get('app'),
-                that = this;
+                that = this,
+                capi = this.get('capi'),
+                promise, redirect;
 
-            if ( e.formIsValid ) {
-                app.set('loading', true);
-                version.save({
-                    api: this.get('capi'),
-                    fields: e.fields,
-                    publish: true
-                }, function () {
-                    app.navigate(that.get('publishRedirectionUrl'));
-                });
+            if (e.formIsValid) {
+                if (this.get('createMode')) {
+                    this._createNewContentStruct(e.fields, function () {
+                        that._publishDraft(e);
+                    });
+                } else {
+                    redirect = function (id) {
+                        app.navigate(
+                            app.routeUri('viewLocation', {id: id})
+                        );
+                    };
+                    app.set('loading', true);
+
+                    promise = new Y.Promise(function (resolve, reject) {
+                        version.save({
+                            api: capi,
+                            fields: e.fields,
+                            publish: true
+                        }, resolve);
+                    });
+
+                    promise.then(function () {
+                        var returnVal = true;
+
+                        if (that.get('isNewContentDraftCreated')) {
+                            returnVal = new Y.Promise(function (resolve, reject) {
+                                capi.getContentService().loadLocations(that.get('location').get('id'), function (error, response) {
+                                    if (error) {
+                                        reject(response);
+                                    }
+
+                                    resolve(response);
+                                });
+                            });
+                        }
+
+                        return returnVal;
+                    }).then(function (response, isCreated) {
+                        redirect(
+                            response.document ?
+                            response.document.LocationList.Location[0]._href :
+                            that.get('location').get('id')
+                        );
+                    }, function (error) {
+                        this._error("Could not create a new content of content with id '" + that.get('version').get('id') + "'");
+                    });
+                }
             }
         },
 
@@ -106,27 +147,61 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          */
         _load: function (next) {
             var request = this.get('request'),
-                service = this;
+                service = this,
+                tasks = new Y.Parallel(),
+                resources,
+                goToNext = function () { next(service); };
 
-            this._loadContent(request.params.id, function () {
-                var tasks,
-                    resources;
+            // check whether content type id is provided with url
+            // if so, prepare the service to create a content
+            if (request.params.contentTypeIdentifier) {
+                this._createEmptyPropertyObject('version');
+                this._createEmptyPropertyObject('content');
+                this.set('createMode', true);
+                this.set('isNewContentDraftCreated', false);
 
-                resources = service.get('content').get('resources');
+                service._loadOwner(service.get('app').get('user').get('id'), tasks.add());
+                service._loadLocation(request.params.id, tasks.add());
+                service._loadContentTypeByIdentifier(request.params.contentTypeIdentifier, tasks.add());
 
-                // the new version creation and the loading of the owner, the
-                // location and the content type are done in parallel
-                tasks = new Y.Parallel();
+                tasks.done(goToNext);
+            } else {
+                this.set('createMode', false);
 
-                service._createVersion(tasks.add());
-                service._loadOwner(resources.Owner, tasks.add());
-                service._loadLocation(resources.MainLocation, tasks.add());
-                service._loadContentType(resources.ContentType, tasks.add());
+                this._loadContent(request.params.id, function () {
+                    resources = service.get('content').get('resources');
 
-                tasks.done(function () {
-                    next(service);
+                    // the new version creation and the loading of the owner, the
+                    // location and the content type are done in parallel
+                    service._createVersion(tasks.add());
+                    service._loadOwner(resources.Owner, tasks.add());
+                    service._loadLocation(resources.MainLocation, tasks.add());
+                    service._loadContentType(resources.ContentType, tasks.add());
+
+                    tasks.done(goToNext);
                 });
-            });
+            }
+        },
+
+        /**
+         * Creates a new property object defined by name.
+         *
+         * @method _createEmptyPropertyObject
+         * @protected
+         * @param {String} name
+         * @return service itself
+         */
+        _createEmptyPropertyObject: function (name) {
+            var EmptyProperty;
+
+            EmptyProperty = this.get(name + 'Class');
+
+            if (EmptyProperty) {
+                EmptyProperty = new EmptyProperty();
+                this.set(name, EmptyProperty);
+            }
+
+            return this;
         },
 
         /**
@@ -136,8 +211,8 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @protected
          * @param {Function} callback
          */
-        _createVersion: function (callback) {
-            var contentId = this.get('request').params.id;
+        _createVersion: function (callback, contentId) {
+            contentId = contentId || this.get('request').params.id;
 
             this.get('version').loadNew({
                 api: this.get('capi'),
@@ -149,6 +224,74 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 }
                 this._error("Could not create a new version of content with id '" + contentId + "'");
             }, this));
+        },
+
+        /**
+         * Creates a new content struct
+         *
+         * @method _createNewContentStruct
+         * @protected
+         * @param {Array} fields provides an array of field objects containing data
+         */
+        _createNewContentStruct: function (fields, callback) {
+            var that = this,
+                contentService = this.get('capi').getContentService(),
+                version = this.get('version'),
+                request = this.get('request'),
+                locationStruct = contentService.newLocationCreateStruct(request.params.id),
+                contentTypeModel = this.get('contentType'),
+                contentCreateStruct = contentService.newContentCreateStruct(
+                    this.get('contentTypeId'),
+                    locationStruct,
+                    request.params.contentTypeLang
+                );
+
+            Y.Array.each(fields, function (field) {
+                contentCreateStruct.setField(
+                    field.id,
+                    field.fieldDefinitionIdentifier,
+                    field.fieldValue
+                );
+            });
+
+            Y.Object.each(contentTypeModel.get('fieldDefinitions'), function (field, name) {
+                if (field.isRequired && !contentCreateStruct.getField(name)) {
+                    var value;
+
+                    if (name === 'intro') {
+                        // temporary solution as a field view for xml content is not ready
+                        value = {
+                            xml: '<?xml version="1.0"?>' +
+                            '<section xmlns:image="http://ez.no/namespaces/ezpublish3/image/" ' +
+                            'xmlns:xhtml="http://ez.no/namespaces/ezpublish3/xhtml/" ' +
+                            'xmlns:custom="http://ez.no/namespaces/ezpublish3/custom/">' +
+                            '<paragraph xmlns:tmp="http://ez.no/namespaces/ezpublish3/temporary/">' +
+                            '#LetFootballWin</paragraph></section>'
+                        };
+                    } else {
+                        value = 'field: ' + name;
+                    }
+
+                    contentCreateStruct.setField(field.id, name, value);
+                }
+            });
+
+            contentService.createContent(contentCreateStruct, function (error, response) {
+                if (error) {
+                    console.error('Error: ', response.document.ErrorMessage.errorDescription);
+                    return;
+                }
+
+                version.setAttrs(response.document.Content.CurrentVersion.Version.VersionInfo);
+                version.set('id', response.document.Content.CurrentVersion.Version._href);
+                that.set('createMode', false);
+                that.set('isNewContentDraftCreated', true);
+                that.get('location').set('id', response.document.Content._href);
+
+                if (typeof callback === 'function') {
+                    callback();
+                }
+            });
         },
 
         /**
@@ -173,6 +316,24 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          */
         _loadContentType: function (id, callback) {
             this._loadModel('contentType', id, "Could not load the content type with id '" + id + "'", callback);
+        },
+
+        /**
+         * Loads a content type by its name/identifier
+         *
+         * @method _loadContentTypeByIdentifier
+         * @protected
+         * @param {String} name
+         * @param {Function} callback
+         */
+        _loadContentTypeByIdentifier: function (name, callback) {
+            var that = this,
+                service = this.get('capi').getContentTypeService();
+
+            service.loadContentTypeByIdentifier(name, function (error, response) {
+                that.set('contentTypeId', response.document.ContentTypeInfoList.ContentType[0]._href);
+                that._loadContentType(that.get('contentTypeId'), callback);
+            });
         },
 
         /**
@@ -214,8 +375,9 @@ YUI.add('ez-contenteditviewservice', function (Y) {
 
             model.set('id', modelId);
             model.load({api: this.get('capi')}, Y.bind(function (error) {
-                if ( !error ) {
+                if (!error) {
                     callback();
+
                     return;
                 }
                 this._error(errorMsg);
@@ -235,7 +397,8 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 version: this.get('version'),
                 mainLocation: this.get('location'),
                 contentType: this.get('contentType'),
-                owner: this.get('owner')
+                owner: this.get('owner'),
+                createMode: this.get('createMode')
             };
         },
 
@@ -262,6 +425,27 @@ YUI.add('ez-contenteditviewservice', function (Y) {
     }, {
         ATTRS: {
             /**
+             * When it's set to true then the view will be informed
+             * to load a form without content.
+             *
+             * @attribute createMode
+             * @type {Boolean}
+             */
+            createMode: {
+                value: false
+            },
+
+            /**
+             * Indicator whether a new draft has been created.
+             *
+             * @attribute isNewContentDraftCreated
+             * @type {Boolean}
+             */
+            isNewContentDraftCreated: {
+                value: false
+            },
+
+            /**
              * The content to be loaded
              *
              * @attribute content
@@ -269,7 +453,8 @@ YUI.add('ez-contenteditviewservice', function (Y) {
              */
             content: {
                 valueFn: function () {
-                    return new Y.eZ.Content();
+                    var Content = this.get('contentClass');
+                    return new Content();
                 }
             },
 
@@ -298,6 +483,26 @@ YUI.add('ez-contenteditviewservice', function (Y) {
             },
 
             /**
+             * The version class to be instantiated
+             *
+             * @attribute versionClass
+             * @type eZ.Version
+             */
+            versionClass: {
+                value: Y.eZ.Version
+            },
+
+            /**
+             * The content class to be instantiated
+             *
+             * @attribute contentClass
+             * @type eZ.Content
+             */
+            contentClass: {
+                value: Y.eZ.Content
+            },
+
+            /**
              * The version that will be edited
              *
              * @attribute version
@@ -305,7 +510,8 @@ YUI.add('ez-contenteditviewservice', function (Y) {
              */
             version: {
                 valueFn: function () {
-                    return new Y.eZ.Version();
+                    var Version = this.get('versionClass');
+                    return new Version();
                 }
             },
 
