@@ -6,6 +6,7 @@ parameters:
     ezsystems.platformui.helper.section.class: EzSystems\PlatformUIBundle\Helper\SectionHelper
     ezsystems.platformui.controller.section.class: EzSystems\PlatformUIBundle\Controller\SectionController
     ezsystems.platformui.controller.template.class: EzSystems\PlatformUIBundle\Controller\TemplateController
+    ezsystems.platformui.controller.create_content.class: EzSystems\PlatformUIBundle\Controller\CreateContentController
 
 services:
     ezsystems.platformui.twig.yui_extension:
@@ -22,6 +23,16 @@ services:
     ezsystems.platformui.controller.dashboard:
         class: %ezsystems.platformui.controller.dashboard.class%
         parent: ezpublish.controller.base
+
+    ezsystems.platformui.controller.create_content:
+        class: %ezsystems.platformui.controller.create_content.class%
+        parent: ezpublish.controller.base
+        arguments:
+            - @ezpublish.api.service.location
+            - @ezpublish.api.service.content_type
+            - @?logger
+        tags:
+            - { name: monolog.logger, channel: platformUI.create_content }
 
     ezsystems.platformui.helper.systeminfo:
         class: %ezsystems.platformui.helper.systeminfo.class%

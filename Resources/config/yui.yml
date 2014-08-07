@@ -39,7 +39,7 @@ system:
                     requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel', 'ez-versionmodel']
                     path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
                 ez-locationviewviewservice:
-                    requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin']
+                    requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin', 'io-base']
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
                     requires: ['ez-viewservice']
@@ -84,7 +84,7 @@ system:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview']
                     path: %ez_platformui.public_dir%/js/views/ez-discoverybarview.js
                 ez-actionbarview:
-                    requires: ['ez-barview', 'ez-buttonactionview']
+                    requires: ['ez-barview', 'ez-buttonactionview', 'ez-createcontentactionview']
                     path: %ez_platformui.public_dir%/js/views/ez-actionbarview.js
                 ez-rawcontentview:
                     requires:
@@ -270,6 +270,9 @@ system:
                 ez-selectionfilterview:
                     requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view']
                     path: %ez_platformui.public_dir%/js/views/ez-selectionfilterview.js
+                ez-createcontentfilterview:
+                    requires: ['ez-selectionfilterview', 'ez-templatebasedview']
+                    path: %ez_platformui.public_dir%/js/views/ez-createcontentfilterview.js
                 ez-restmodel:
                     requires: ['model', 'json']
                     path: %ez_platformui.public_dir%/js/models/ez-restmodel.js
@@ -315,6 +318,13 @@ system:
                 tree-ez-partial:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/partials/tree.hbt
+                ez-createcontentactionview:
+                    requires:
+                        - 'ez-createcontentfilterview'
+                        - 'ez-buttonactionview'
+                        - 'ez-expandable'
+                        - 'event-tap'
+                    path: %ez_platformui.public_dir%/js/views/actions/ez-createcontentactionview.js
                 ez-editpreviewview:
                     requires: ['ez-templatebasedview', 'event-tap', 'editpreviewview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-editpreviewview.js

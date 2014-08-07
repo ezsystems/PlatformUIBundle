@@ -24,6 +24,9 @@ YUI.add('ez-locationviewviewservice', function (Y) {
     Y.eZ.LocationViewViewService = Y.Base.create('locationViewViewService', Y.eZ.ViewService, [], {
         initializer: function () {
             this.on('*:editAction', this._editContent);
+            this.on('createContentActionView:activeChange', function (event) {
+                this._getFieldTypesList(event.target);
+            });
         },
 
         /**
@@ -222,6 +225,18 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          */
         _newContent: function (params) {
             return new Y.eZ.Content(params);
+        },
+
+        _getFieldTypesList: function (target) {
+            var that = this;
+
+            Y.io(that.get('app').get('baseUri') + 'ajax/get-field-types-list', {
+                on: {
+                    success: function (id, xhr) {
+                        target.set('contentGroupsList', JSON.parse(xhr.response));
+                    }
+                }
+            });
         }
     }, {
         ATTRS: {
