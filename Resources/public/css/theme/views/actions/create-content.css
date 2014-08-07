@@ -1,0 +1,70 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-createcontentactionview {
+    background: #333;
+    -webkit-transition: all .1s ease-in-out;
+       -moz-transition: all .1s ease-in-out;
+        -ms-transition: all .1s ease-in-out;
+         -o-transition: all .1s ease-in-out;
+            transition: all .1s ease-in-out;
+}
+
+.ez-view-createcontentactionview.is-expanded {
+    padding-left: 1rem;
+    margin-left: -1rem;
+    -webkit-transition: all .3s .2s ease-in-out;
+       -moz-transition: all .3s .2s ease-in-out;
+        -ms-transition: all .3s .2s ease-in-out;
+         -o-transition: all .3s .2s ease-in-out;
+            transition: all .3s .2s ease-in-out;
+}
+
+.ez-view-createcontentactionview .ez-expandable-area {
+    -webkit-transition: all .4s ease-in-out;
+       -moz-transition: all .4s ease-in-out;
+        -ms-transition: all .4s ease-in-out;
+         -o-transition: all .4s ease-in-out;
+            transition: all .4s ease-in-out;
+    -webkit-transform: translateX(100%);
+       -moz-transform: translateX(100%);
+        -ms-transform: translateX(100%);
+         -o-transform: translateX(100%);
+            transform: translateX(100%);
+    background: #333;
+}
+
+.ez-view-createcontentactionview.is-expanded .ez-expandable-area {
+    -webkit-transition: all .4s ease-in-out;
+       -moz-transition: all .4s ease-in-out;
+        -ms-transition: all .4s ease-in-out;
+         -o-transition: all .4s ease-in-out;
+            transition: all .4s ease-in-out;
+    -webkit-transform: translateX(calc(-100% + .5rem));
+       -moz-transform: translateX(calc(-100% + .5rem));
+        -ms-transform: translateX(calc(-100% + .5rem));
+         -o-transform: translateX(calc(-100% + .5rem));
+            transform: translateX(calc(-100% + .5rem));
+    box-shadow: -3px 3px 3px 0px #888;
+}
+
+.is-actionbar-minimized .ez-view-createcontentactionview.is-expanded .ez-expandable-area {
+    -webkit-transform: translateX(-4.5rem);
+       -moz-transform: translateX(-4.5rem);
+        -ms-transform: translateX(-4.5rem);
+         -o-transform: translateX(-4.5rem);
+            transform: translateX(-4.5rem);
+}
+
+.ez-view-createcontentactionview h4 {
+    color: #fff;
+    text-transform: uppercase;
+    font-size: .6rem;
+    font-weight: 700;
+}
+
+.ez-view-createcontentactionview [class*="ez-createcontent-filter-"] {
+    background: #fff;
+}

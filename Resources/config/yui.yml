@@ -36,10 +36,18 @@ system:
                     requires: ['ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-loginformviewservice.js
                 ez-contenteditviewservice:
-                    requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel', 'ez-versionmodel']
+                    requires:
+                        - 'parallel'
+                        - 'ez-viewservice'
+                        - 'ez-contentmodel'
+                        - 'ez-locationmodel'
+                        - 'ez-contenttypemodel'
+                        - 'ez-usermodel'
+                        - 'ez-versionmodel'
+                        - 'promise'
                     path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
                 ez-locationviewviewservice:
-                    requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin', 'ez-objectrelationlistloadplugin']
+                    requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin', 'ez-objectrelationlistloadplugin', 'io-base', 'ez-contentcreateplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
                     requires: ['ez-viewservice']
@@ -84,7 +92,7 @@ system:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview']
                     path: %ez_platformui.public_dir%/js/views/ez-discoverybarview.js
                 ez-actionbarview:
-                    requires: ['ez-barview', 'ez-buttonactionview']
+                    requires: ['ez-barview', 'ez-buttonactionview', 'ez-createcontentactionview']
                     path: %ez_platformui.public_dir%/js/views/ez-actionbarview.js
                 ez-rawcontentview:
                     requires:
@@ -284,6 +292,9 @@ system:
                 ez-selectionfilterview:
                     requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view']
                     path: %ez_platformui.public_dir%/js/views/ez-selectionfilterview.js
+                ez-createcontentfilterview:
+                    requires: ['ez-selectionfilterview', 'ez-templatebasedview']
+                    path: %ez_platformui.public_dir%/js/views/ez-createcontentfilterview.js
                 ez-restmodel:
                     requires: ['model', 'json']
                     path: %ez_platformui.public_dir%/js/models/ez-restmodel.js
@@ -329,6 +340,17 @@ system:
                 tree-ez-partial:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/partials/tree.hbt
+                ez-createcontentactionview:
+                    requires:
+                        - 'ez-createcontentfilterview'
+                        - 'ez-buttonactionview'
+                        - 'ez-expandable'
+                        - 'event-tap'
+                        - 'createcontentactionview-ez-template'
+                    path: %ez_platformui.public_dir%/js/views/actions/ez-createcontentactionview.js
+                createcontentactionview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/createcontentaction.hbt
                 ez-editpreviewview:
                     requires: ['ez-templatebasedview', 'event-tap', 'editpreviewview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-editpreviewview.js
@@ -371,6 +393,9 @@ system:
                 ez-contenttreeplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
+                ez-contentcreateplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'promise']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contentcreateplugin.js
                 ez-expandable:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js

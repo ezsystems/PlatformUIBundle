@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>eZ Create Content Action view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="createcontentactionview-ez-template">
+<button class="ez-action {{#if disabled}}is-disabled {{else}}{{#if actionId}}action-trigger {{/if}}{{/if}}{{#if hint}}with-hint{{/if}}" data-action="{{ actionId }}">
+    <div class="font-icon action-icon">
+        <p class="action-label">{{ label }}</p>
+        {{#if hint}}
+        <p class="action-hint">{{ hint }}</p>
+        {{/if}}
+    </div>
+</button>
+<div class="ez-expandable-area">
+    <div class="content-type-groups">
+        <h4>Create new subitem</h4>
+        <div class="groups"></div>
+    </div>
+    <div class="content-types">
+        <h4>Select type to create new subitem</h4>
+        <input type="text" class="autocomplete-filter" placeholder="start typing to refine list" />
+        <ul class="autocomplete-list"></ul>
+    </div>
+</div>
+</script>
+
+<script type="text/javascript" src="../../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/genericbuttonactionview-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-createcontentactionview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+
+    YUI({
+        coverage: ['ez-createcontentactionview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-buttonactionview": {
+                requires: ['ez-templatebasedview', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/actions/ez-buttonactionview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            'ez-createcontentactionview': {
+                requires: ['ez-createcontentfilterview', 'ez-buttonactionview', 'ez-expandable', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/actions/ez-createcontentactionview.js"
+            },
+            'ez-createcontentfilterview': {
+                requires: ['ez-selectionfilterview', 'ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/ez-createcontentfilterview.js"
+            },
+            'ez-selectionfilterview' : {
+                requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view'],
+                fullpath: "../../../../Resources/public/js/views/ez-selectionfilterview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            'ez-expandable': {
+                requires: ['view'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-expandable.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-createcontentactionview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

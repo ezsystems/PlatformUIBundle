@@ -1,0 +1,19 @@
+<button class="ez-action {{#if disabled}}is-disabled {{else}}{{#if actionId}}action-trigger {{/if}}{{/if}}{{#if hint}}with-hint{{/if}}" data-action="{{ actionId }}">
+    <div class="font-icon action-icon">
+        <p class="action-label">{{ label }}</p>
+        {{#if hint}}
+        <p class="action-hint">{{ hint }}</p>
+        {{/if}}
+    </div>
+</button>
+<div class="ez-expandable-area">
+    <div class="content-type-groups">
+        <h4>Create new subitem</h4>
+        <div class="groups"></div>
+    </div>
+    <div class="content-types">
+        <h4>Select type to create new subitem</h4>
+        <input type="text" class="autocomplete-filter" placeholder="start typing to refine list" />
+        <ul class="autocomplete-list"></ul>
+    </div>
+</div>
