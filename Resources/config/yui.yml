@@ -36,7 +36,7 @@ system:
                     requires: ['ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-loginformviewservice.js
                 ez-contenteditviewservice:
-                    requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel', 'ez-versionmodel']
+                    requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel', 'ez-versionmodel', 'promise']
                     path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
                 ez-locationviewviewservice:
                     requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin', 'io-base']

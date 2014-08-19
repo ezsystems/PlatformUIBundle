@@ -37,7 +37,8 @@ YUI.add('ez-createcontentfilterview', function (Y) {
             this.get('container').addClass(SELECTION_FILTER_CLASS);
             this.on({
                 'clear': this._uiSetDefaultList,
-                'results': this._filter
+                'results': this._filter,
+                'select': this._handleSelect
             });
 
             listNode.addClass(FILTER_LIST_CLASS);
@@ -185,6 +186,12 @@ YUI.add('ez-createcontentfilterview', function (Y) {
                 }
             }
 
+            /**
+            * Fired after changing the checkbox selection.
+            * Refreshes a list of available content types.
+            *
+            * @event results
+            */
             this.fire('results');
 
             return this;
@@ -238,6 +245,32 @@ YUI.add('ez-createcontentfilterview', function (Y) {
 
             return this;
         },
+
+        /**
+         * Event handler for *:select event.
+         * Prepares data for creating a new content of selected content type
+         *
+         * @method _handleSelect
+         * @protected
+         * @param {Object} event event facade
+         */
+        _handleSelect: function (event) {
+            var selectedType = this.get('extendedSource')[event.text];
+
+            /**
+            * Fired when a user selects a content type.
+            * Passes information about a selected content type and its language
+            * to prepare a content create form view
+            *
+            * @event createContent
+            * @param {String} contentTypeIdentifier a selected content type's name
+            * @param {String} contentTypeLang a selected content type's language
+            */
+            this.fire('createContent', {
+                contentTypeIdentifier: selectedType.identifier,
+                contentTypeLang: selectedType.lang
+            });
+        }
     }, {
         ATTRS: {
             /**

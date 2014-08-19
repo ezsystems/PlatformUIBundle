@@ -72,13 +72,14 @@ class CreateContentController extends Controller
 
                 foreach ( $this->contentTypeService->loadContentTypes($group) as $type )
                 {
-                    $typeName = array_values( $type->names )[0];
+                    $typeName = $type->names[$type->mainLanguageCode];
 
                     $responseData['types'][$typeName] = array(
                         'id' => $type->id,
                         'groupId' => $group->id,
                         'identifier' => $type->identifier,
                         'name' => $typeName,
+                        'lang' => $type->mainLanguageCode
                     );
                     $responseData['source'][] = $typeName;
                 }

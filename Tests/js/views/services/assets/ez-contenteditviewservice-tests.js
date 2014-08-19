@@ -136,6 +136,115 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             Y.Assert.isTrue(callbackCalled, "The load callback should have been called");
         },
 
+        'Should create a new version, load the location, the owner and the content type by identifer': function () {
+            var response = {}, service, callback,
+                resources = {
+                    'Owner': '/api/ezp/v2/user/users/14',
+                    'MainLocation': '/api/ezp/v2/content/locations/1/2/61',
+                    'ContentType': '/api/ezp/v2/content/types/16'
+                },
+                callbackCalled = false,
+                app = new Y.Test.Mock(),
+                request = {
+                    params: {
+                        contentTypeIdentifier: 'article',
+                        id: '/api/ezp/v2/content/locations/1/2/61'
+                    }
+                },
+                runLoadCallback = function (options, cb) {
+                    Y.Assert.areSame(
+                        options.api, cevlTest.capiMock,
+                        "The 'api' property should be the CAPI"
+                    );
+                    cb(false);
+                };
+
+            Y.Mock.expect(app, {
+                method: 'get',
+                args: ['user'],
+                run: function () {
+                    return {
+                        get: function (name) {
+                            if (name === 'id') {
+                                return '/api/ezp/v2/user/users/14';
+                            }
+                        }
+                    };
+                }
+            });
+
+            Y.Mock.expect(this.content, {
+                method: 'set',
+                args: ['id', request.params.id]
+            });
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['resources'],
+                returns: resources
+            });
+
+            Y.Object.each(resources, function (val, key) {
+                var attr = key.charAt(0).toLowerCase() + key.substr(1);
+                Y.Mock.expect(cevlTest[attr], {
+                    method: 'set',
+                    args: ['id',  val]
+                });
+            });
+
+            Y.Array.each(this.mocks, function (val) {
+                Y.Mock.expect(cevlTest[val], {
+                    method: 'load',
+                    args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                    run: runLoadCallback
+                });
+            });
+
+            Y.Mock.expect(this.version, {
+                method: 'loadNew',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, cb) {
+                    Y.Assert.areEqual(
+                        request.params.id,
+                        options.contentId,
+                        "The content id should passed to the loadNew method"
+                    );
+                    runLoadCallback(options, cb);
+                }
+            });
+
+            Y.Mock.expect(this.capiMock, {
+                method: 'getContentTypeService',
+                run: function () {
+                    return {
+                        loadContentTypeByIdentifier: function (name, cb) {
+                            service.set('contentTypeId', '/api/ezp/v2/content/types/16');
+                            service._loadContentType('/api/ezp/v2/content/types/16', callback);
+                        }
+                    };
+                }
+            });
+
+            callback = function () {
+                callbackCalled = true;
+            };
+
+            service = new Y.eZ.ContentEditViewService({
+                capi: this.capiMock,
+                app: app,
+                request: request,
+                response: response,
+                content: this.content,
+                contentType: this.contentType,
+                location: this.mainLocation,
+                owner: this.owner,
+                version: this.version
+            });
+
+            service.load(callback);
+
+            Y.Assert.isTrue(callbackCalled, "The load callback should have been called");
+        },
+
         "Should fire the 'error' event when the content loading fails": function () {
             var service, callback,
                 errorTriggered = false;
@@ -291,6 +400,40 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         "Should fire the error event when the version creation fails":  function () {
             this._testSubloadError('version');
         },
+
+        'Should create and set an empty version model': function () {
+            var service = new Y.eZ.ContentEditViewService({
+                    capi: this.capiMock,
+                    content: this.content,
+                    version: this.version
+                }),
+                isCreated = false;
+
+            service.after('versionChange', function (event) {
+                isCreated = true;
+            });
+
+            service._createEmptyPropertyObject('version');
+
+            Y.Assert.isTrue(isCreated, 'A new empty version model has been created and set as a service attribute as expected');
+        },
+
+        'Should not create and set an empty undefined model': function () {
+            var service = new Y.eZ.ContentEditViewService({
+                    capi: this.capiMock,
+                    content: this.content,
+                    version: this.version
+                }),
+                isCreated = false;
+
+            service.after('anyChange', function (event) {
+                isCreated = true;
+            });
+
+            service._createEmptyPropertyObject('any');
+
+            Y.Assert.isFalse(isCreated, 'A new empty any model has not been created and set as a service attribute as expected');
+        }
     });
 
     eventTest = new Y.Test.Case({
@@ -410,6 +553,27 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             Y.Mock.verify(this.version);
         },
 
+        'Should create a draft for a new content': function () {
+            var fields = [{}, {}],
+                isCalled = false;
+
+            Y.Mock.expect(this.service, {
+                method: '_createNewContentStruct',
+                args: [Y.Mock.Value.Any],
+                run: function (fields) {
+                    isCalled = true;
+                }
+            });
+
+            this.service.set('createMode', true);
+            this.service.fire('test:saveAction', {
+                fields: fields,
+                formIsValid: true
+            });
+
+            Y.Assert.isTrue(isCalled, '_createNewContentStruct() method was called as expected');
+        },
+
         "Should publish the draft": function () {
             var fields = [{}, {}];
 
@@ -444,9 +608,28 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 formIsValid: true,
                 fields: fields
             });
+        },
 
-            Y.Mock.verify(this.version);
-            Y.Mock.verify(this.app);
+        'Should publish a draft of new content': function () {
+            var fields = [{}, {}],
+                isCalled = false;
+
+            Y.Mock.expect(this.service, {
+                method: '_createNewContentStruct',
+                args: [Y.Mock.Value.Any, Y.Mock.Value.Function],
+                run: function (fields, callback) {
+                    isCalled = true;
+                }
+            });
+
+            this.service.set('createMode', true);
+            this.service.set('isNewContentDraftCreated', false);
+            this.service.fire('test:publishAction', {
+                fields: fields,
+                formIsValid: true
+            });
+
+            Y.Assert.isTrue(isCalled, '_createNewContentStruct() method was called as expected');
         },
 
         "Should not publish the draft": function () {
@@ -472,4 +655,4 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
     Y.Test.Runner.add(cevlTest);
     Y.Test.Runner.add(eventTest);
 
-}, '', {requires: ['test', 'ez-contenteditviewservice']});
+}, '', {requires: ['test', 'ez-contenteditviewservice', 'promise']});

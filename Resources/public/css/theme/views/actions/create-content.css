@@ -5,16 +5,21 @@
 
 .ez-view-createcontentactionview {
     background: #333;
-    -webkit-transition: all .2s ease-in-out;
-       -moz-transition: all .2s ease-in-out;
-        -ms-transition: all .2s ease-in-out;
-         -o-transition: all .2s ease-in-out;
-            transition: all .3s ease-in-out;
+    -webkit-transition: all .1s ease-in-out;
+       -moz-transition: all .1s ease-in-out;
+        -ms-transition: all .1s ease-in-out;
+         -o-transition: all .1s ease-in-out;
+            transition: all .1s ease-in-out;
 }
 
 .ez-view-createcontentactionview.is-expanded {
     padding-left: 1rem;
     margin-left: -1rem;
+    -webkit-transition: all .3s .2s ease-in-out;
+       -moz-transition: all .3s .2s ease-in-out;
+        -ms-transition: all .3s .2s ease-in-out;
+         -o-transition: all .3s .2s ease-in-out;
+            transition: all .3s .2s ease-in-out;
 }
 
 .ez-view-createcontentactionview .ez-expandable-area {
