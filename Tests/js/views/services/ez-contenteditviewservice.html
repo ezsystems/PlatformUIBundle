@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+<meta charset="utf-8">
 <title>eZ Content Edit View Service tests</title>
 </head>
 <body>
@@ -31,6 +32,10 @@
             "ez-viewservice": {
                 requires: ['view'],
                 fullpath: "../../../../Resources/public/js/views/services/ez-viewservice.js"
+            },
+            "ez-viewservicebaseplugin": {
+                requires: ['plugin'],
+                fullpath: "../../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js"
             }
         }
     }).use('ez-contenteditviewservice-tests', function (Y) {

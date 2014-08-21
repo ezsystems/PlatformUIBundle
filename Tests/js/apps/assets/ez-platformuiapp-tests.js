@@ -60,21 +60,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             );
         },
 
-        "Should go back in the history when contentEditView:closeView event is fired": function () {
-            var origBack = Y.config.win.history.back, backCalled = false;
-
-            this.app.open();
-
-            Y.config.win.history.back = function () {
-                backCalled = true;
-            };
-
-            this.app.fire('contentEditView:closeView');
-
-            Y.Assert.isTrue(backCalled, "history.back should have been called");
-            Y.config.win.history.back = origBack;
-        },
-
         "Should set/unset the app in loading mode": function () {
             this.app.set('loading', true);
             Y.assert(
@@ -128,6 +113,21 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 }
             );
             this.wait();
+        },
+
+        'Should call setNextViewServiceParameters() when changing the active view service': function () {
+            var firstService = new Y.Test.Mock(),
+                secondService = new Y.Test.Mock();
+
+            Y.Mock.expect(firstService, {
+                method: 'setNextViewServiceParameters',
+                args: [secondService]
+            });
+
+            this.app._set('activeViewService', firstService);
+            this.app._set('activeViewService', secondService);
+
+            Y.Mock.verify(firstService);
         },
 
         "After the view has changed, the view container should not have any transformation": function () {

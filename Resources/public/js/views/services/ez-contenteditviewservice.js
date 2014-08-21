@@ -26,6 +26,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
             this.on('*:saveAction', this._saveDraft);
             this.on('*:publishAction', this._publishDraft);
             this.on('*:discardAction', this._discardDraft);
+            this.on('*:closeView', this._handleCloseView);
         },
 
         /**
@@ -46,11 +47,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 remove: true,
                 api: this.get('capi')
             }, function () {
-                app.navigate(
-                    app.routeUri('viewLocation', {
-                        id: that.get('location').get('id')
-                    })
-                );
+                app.navigate(that.get('discardRedirectionUrl'));
             });
         },
 
@@ -93,12 +90,8 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                     api: this.get('capi'),
                     fields: e.fields,
                     publish: true
-                }, function (error, response) {
-                    app.navigate(
-                        app.routeUri('viewLocation', {
-                            id: that.get('location').get('id')
-                        })
-                    );
+                }, function () {
+                    app.navigate(that.get('publishRedirectionUrl'));
                 });
             }
         },
@@ -245,6 +238,27 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 owner: this.get('owner')
             };
         },
+
+        /**
+         * Close view event handler.
+         *
+         * @method _handleCloseView
+         * @protected
+         */
+        _handleCloseView: function () {
+            this.get('app').navigate(this.get('closeRedirectionUrl'));
+        },
+
+        /**
+         * Returns default uri for user redirection.
+         *
+         * @method _defaultRedirectionUrl
+         * @protected
+         * @return {String}
+         */
+        _defaultRedirectionUrl: function () {
+            return this.get('app').routeUri('viewLocation', {id: this.get('location').get('id')});
+        }
     }, {
         ATTRS: {
             /**
@@ -305,7 +319,40 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 valueFn: function () {
                     return new Y.eZ.ContentType();
                 }
-            }
+            },
+
+            /**
+             * The URL user will be redirected to after closing the edit view
+             *
+             * @attribute closeRedirectionUrl
+             * @type {Object}
+             * @default '_defaultRedirectionUrl'
+             */
+            closeRedirectionUrl: {
+                valueFn: '_defaultRedirectionUrl'
+            },
+
+            /**
+             * The URL user will be redirected to after discarding changes
+             *
+             * @attribute discardRedirectionUrl
+             * @type {Object}
+             * @default '_defaultRedirectionUrl'
+             */
+            discardRedirectionUrl: {
+                valueFn: '_defaultRedirectionUrl'
+            },
+
+            /**
+             * The url user will be redirected to after publishing the content
+             *
+             * @attribute closeRedirectionUrl
+             * @type {Object}
+             * @default '_defaultRedirectionUrl'
+             */
+            publishRedirectionUrl: {
+                valueFn: '_defaultRedirectionUrl'
+            },
         }
     });
 });

@@ -9,6 +9,10 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         name: "eZ Content Edit View Service tests",
 
         setUp: function () {
+            var that = this;
+
+            this.viewLocationRoute = '/view/something';
+            this.locationId = 'something';
             this.request = {params: {id: "/api/ezp/v2/content/objects/59"}};
             this.capiMock = new Y.Test.Mock();
             this.resources = {
@@ -23,6 +27,26 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             this.contentType = new Y.Test.Mock();
             this.owner = new Y.Test.Mock();
             this.version = new Y.Test.Mock();
+            this.app = new Y.Test.Mock();
+
+            Y.Mock.expect(this.mainLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: this.locationId,
+                callCount: 3
+            });
+            Y.Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['viewLocation', Y.Mock.Value.Object],
+                callCount: 3,
+                run: function (route, params) {
+                    Y.Assert.areEqual(
+                        that.locationId,
+                        params.id
+                    );
+                    return that.viewLocationRoute;
+                }
+            });
         },
 
         "Should create a new version and load the content, the location, the content type and the owner": function () {
@@ -89,6 +113,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
 
             service = new Y.eZ.ContentEditViewService({
                 capi: this.capiMock,
+                app: this.app,
                 request: this.request,
                 response: response,
 
@@ -101,9 +126,10 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
 
             service.load(callback);
 
+            Y.Mock.verify(this.app);
             Y.Mock.verify(this.content);
-            Y.Mock.verify(this.mainLocation);
             Y.Mock.verify(this.contentType);
+            Y.Mock.verify(this.mainLocation);
             Y.Mock.verify(this.owner);
             Y.Mock.verify(this.version);
 
@@ -111,7 +137,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         },
 
         "Should fire the 'error' event when the content loading fails": function () {
-            var service, callback, errorTriggered = false;
+            var service, callback,
+                errorTriggered = false;
 
             Y.Mock.expect(this.content, {
                 method: 'set',
@@ -133,7 +160,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             service = new Y.eZ.ContentEditViewService({
                 capi: this.capiMock,
                 request: this.request,
-
+                app: this.app,
+                location: this.mainLocation,
                 content: this.content
             });
 
@@ -143,7 +171,9 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
 
             service.load(callback);
 
+            Y.Mock.verify(this.app);
             Y.Mock.verify(this.content);
+            Y.Mock.verify(this.mainLocation);
             Y.Assert.isTrue(errorTriggered, "The error event should have been triggered");
         },
 
@@ -152,6 +182,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
          */
         _testSubloadError: function (fail) {
             var response = {}, service, callback,
+                that = this,
                 errorTriggered = false,
                 runLoadCallbackSuccess = function (options, callback) {
                     callback(false);
@@ -168,6 +199,26 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 method: 'get',
                 args: ['resources'],
                 returns: this.resources
+            });
+
+            Y.Mock.expect(this.mainLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: this.locationId,
+                callCount: 3
+            });
+
+            Y.Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['viewLocation', Y.Mock.Value.Object],
+                callCount: 3,
+                run: function (route, params) {
+                    Y.Assert.areEqual(
+                        that.locationId,
+                        params.id
+                    );
+                    return that.viewLocationRoute;
+                }
             });
 
             Y.Object.each(this.resources, function (val, key) {
@@ -200,7 +251,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 capi: this.capiMock,
                 request: this.request,
                 response: response,
-
+                app: this.app,
                 content: this.content,
                 location: this.mainLocation,
                 contentType: this.contentType,
@@ -215,9 +266,10 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
 
             service.load(callback);
 
+            Y.Mock.verify(this.app);
             Y.Mock.verify(this.content);
-            Y.Mock.verify(this.mainLocation);
             Y.Mock.verify(this.contentType);
+            Y.Mock.verify(this.mainLocation);
             Y.Mock.verify(this.owner);
             Y.Mock.verify(this.version);
 
@@ -245,10 +297,39 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         name: "eZ Content Edit View Service events tests",
 
         setUp: function () {
+            var that = this;
+
+            this.viewLocationRoute = '/view/something';
+            this.locationId = 'something';
+
             this.version = new Y.Mock();
             this.location = new Y.Mock();
             this.capi = new Y.Mock();
             this.app = new Y.Mock();
+
+            Y.Mock.expect(this.location, {
+                method: 'get',
+                args: ['id'],
+                returns: this.locationId
+            });
+            Y.Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['viewLocation', Y.Mock.Value.Object],
+                callCount: 3,
+                run: function (route, params) {
+                    Y.Assert.areEqual(
+                        that.locationId,
+                        params.id
+                    );
+                    return that.viewLocationRoute;
+                }
+            });
+            Y.Mock.expect(this.app, {
+                method: 'navigate',
+                args: [this.viewLocationRoute],
+                callCount: 1
+            });
+
             this.service = new Y.eZ.ContentEditViewService({
                 app: this.app,
                 capi: this.capi,
@@ -263,32 +344,9 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         },
 
         "Should discard the draft": function () {
-            var viewLocationRoute = '/view/something',
-                locationId = 'something';
-
             Y.Mock.expect(this.app, {
                 method: 'set',
                 args: ['loading', true]
-            });
-            Y.Mock.expect(this.location, {
-                method: 'get',
-                args: ['id'],
-                returns: locationId
-            });
-            Y.Mock.expect(this.app, {
-                method: 'routeUri',
-                args: ['viewLocation', Y.Mock.Value.Object],
-                run: function (route, params) {
-                    Y.Assert.areEqual(
-                        locationId,
-                        params.id
-                    );
-                    return viewLocationRoute;
-                }
-            });
-            Y.Mock.expect(this.app, {
-                method: 'navigate',
-                args: [viewLocationRoute]
             });
 
             Y.Mock.expect(this.version, {
@@ -353,9 +411,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         },
 
         "Should publish the draft": function () {
-            var fields = [{}, {}],
-                locationId = 'something',
-                viewLocationRoute = '/view/something';
+            var fields = [{}, {}];
 
             Y.Mock.expect(this.version, {
                 method: 'save',
@@ -378,29 +434,10 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                     callback();
                 }
             });
-            Y.Mock.expect(this.location, {
-                method: 'get',
-                args: ['id'],
-                returns: locationId
-            });
+
             Y.Mock.expect(this.app, {
                 method: 'set',
                 args: ['loading', true]
-            });
-            Y.Mock.expect(this.app, {
-                method: 'routeUri',
-                args: ['viewLocation', Y.Mock.Value.Object],
-                run: function (route, params) {
-                    Y.Assert.areEqual(
-                        locationId,
-                        params.id
-                    );
-                    return viewLocationRoute;
-                }
-            });
-            Y.Mock.expect(this.app, {
-                method: 'navigate',
-                args: [viewLocationRoute]
             });
 
             this.service.fire('whatever:publishAction', {
@@ -423,8 +460,12 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             this.service.fire('whatever:publishAction', {
                 formIsValid: false
             });
-        }
+        },
 
+        'Should close the view': function () {
+            this.service.fire('test:closeView');
+            Y.Mock.verify(this.app);
+        }
     });
 
     Y.Test.Runner.setName("eZ Content Edit View Service tests");
