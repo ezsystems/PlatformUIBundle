@@ -24,9 +24,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
     Y.eZ.LocationViewViewService = Y.Base.create('locationViewViewService', Y.eZ.ViewService, [], {
         initializer: function () {
             this.on({
-                '*:editAction': this._editContent,
-                '*:createContent': this._handleCreateContentAction,
-                'createContentActionView:activeChange': this._getFieldTypesList
+                '*:editAction': this._editContent
             });
         },
 
@@ -227,44 +225,6 @@ YUI.add('ez-locationviewviewservice', function (Y) {
         _newContent: function (params) {
             return new Y.eZ.Content(params);
         },
-
-        /**
-         * Fetches content groups list and sends it to the target view
-         *
-         * @protected
-         * @method _getFieldTypesList
-         * @param {Object} event event facade
-         */
-        _getFieldTypesList: function (event) {
-            var that = this;
-
-            Y.io(that.get('app').get('baseUri') + 'ajax/get-field-types-list', {
-                on: {
-                    success: function (id, xhr) {
-                        event.target.set('contentGroupsList', JSON.parse(xhr.response));
-                    }
-                }
-            });
-        },
-
-        /**
-         * Redirects a user to the create content view
-         *
-         * @protected
-         * @method _handleCreateContentAction
-         * @param {Object} event event facade
-         */
-        _handleCreateContentAction: function (event) {
-            var app = this.get('app');
-
-            app.navigate(
-                app.routeUri('addContent', {
-                    contentTypeLang: event.contentTypeLang,
-                    contentTypeIdentifier: event.contentTypeIdentifier,
-                    id: this.get('location').get('id')
-                })
-            );
-        }
     }, {
         ATTRS: {
             /**

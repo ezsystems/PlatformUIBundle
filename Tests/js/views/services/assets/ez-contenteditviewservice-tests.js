@@ -449,6 +449,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             this.location = new Y.Mock();
             this.capi = new Y.Mock();
             this.app = new Y.Mock();
+            this.contentTypeModel = new Y.Mock();
 
             Y.Mock.expect(this.location, {
                 method: 'get',
@@ -477,7 +478,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 app: this.app,
                 capi: this.capi,
                 version: this.version,
-                location: this.location
+                location: this.location,
+                contentType: this.contentTypeModel
             });
         },
 
@@ -555,18 +557,112 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
 
         'Should create a draft for a new content': function () {
             var fields = [{}, {}],
-                isCalled = false;
+                service = this.service,
+                isCalled = false,
+                contentService = new Y.Mock();
 
-            Y.Mock.expect(this.service, {
-                method: '_createNewContentStruct',
-                args: [Y.Mock.Value.Any],
-                run: function (fields) {
+            Y.Mock.expect(this.contentTypeModel, {
+                method: 'get',
+                args: [Y.Mock.Value.String],
+                run: function (name) {
+                    return {
+                        title: {
+                            isRequired: true,
+                            id: 181
+                        },
+                        tags: {
+                            isRequired: false,
+                            id: 190
+                        },
+                        intro: {
+                            isRequired: true,
+                            id: 184
+                        }
+                    };
+                }
+            });
+            Y.Mock.expect(contentService, {
+                method: 'newLocationCreateStruct',
+                args: [Y.Mock.Value.String],
+                run: function () {
+                    return {
+                        body: {
+                            LocationCreate: {
+                                ParentLocation: {"_href":"/api/ezp/v2/content/locations/1/2/90/93"},
+                                sortField: "PATH",
+                                sortOrder: "ASC"
+                            }
+                        },
+                        headers: {
+                            Accept: "application/vnd.ez.api.Location+json",
+                            "Content-Type": "application/vnd.ez.api.LocationCreate+json"
+                        }
+                    };
+                }
+            });
+            Y.Mock.expect(contentService, {
+                method: 'newContentCreateStruct',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Object, Y.Mock.Value.String],
+                run: function () {
+                    return {
+                        setField: function (id, name, value) {
+                            return this.body.ContentCreate.fields.field.push({
+                                id: id,
+                                fieldDefinitionIdentifier: name,
+                                fieldValue: value,
+                                languageCode: this.body.ContentCreate.mainLanguageCode
+                            });
+                        },
+                        getField: function (name) {
+                            return this.body.ContentCreate.fields.field[name];
+                        },
+                        "body": {
+                            "ContentCreate": {
+                                "ContentType": {"_href":"/api/ezp/v2/content/types/16"},
+                                "mainLanguageCode": "eng-GB",
+                                "LocationCreate": {
+                                    "ParentLocation": {"_href": "/api/ezp/v2/content/locations/1/2/90/93"},
+                                    "sortField": "PATH",
+                                    "sortOrder": "ASC"
+                                },
+                                "Section": null,
+                                "alwaysAvailable": "true",
+                                "remoteId": null,
+                                "modificationDate": "2014-09-05T12:50:57.589Z",
+                                "fields":{"field":[]}
+                            }
+                        },
+                        "headers": {
+                            "Accept": "application/vnd.ez.api.Content+json",
+                            "Content-Type": "application/vnd.ez.api.ContentCreate+json"
+                        }
+                    };
+                }
+            });
+            Y.Mock.expect(contentService, {
+                method: 'createContent',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function () {
                     isCalled = true;
                 }
             });
+            Y.Mock.expect(this.capi, {
+                method: 'getContentService',
+                run: function () {
+                    return contentService;
+                }
+            });
 
-            this.service.set('createMode', true);
-            this.service.fire('test:saveAction', {
+            service.set('createMode', true);
+            service.set('contentTypeId', '/api/ezp/v2/content/types/16');
+            service.set('request', {
+                params: {
+                    contentTypeIdentifier: "article",
+                    contentTypeLang: "eng-GB",
+                    id: "/api/ezp/v2/content/locations/1/2/90/93"
+                }
+            });
+            service.fire('test:saveAction', {
                 fields: fields,
                 formIsValid: true
             });

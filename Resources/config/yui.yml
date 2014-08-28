@@ -36,10 +36,18 @@ system:
                     requires: ['ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-loginformviewservice.js
                 ez-contenteditviewservice:
-                    requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel', 'ez-versionmodel', 'promise']
+                    requires:
+                        - 'parallel'
+                        - 'ez-viewservice'
+                        - 'ez-contentmodel'
+                        - 'ez-locationmodel'
+                        - 'ez-contenttypemodel'
+                        - 'ez-usermodel'
+                        - 'ez-versionmodel'
+                        - 'promise'
                     path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
                 ez-locationviewviewservice:
-                    requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin', 'io-base']
+                    requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin', 'io-base', 'ez-contentcreateplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
                     requires: ['ez-viewservice']
@@ -364,6 +372,9 @@ system:
                 ez-contenttreeplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
+                ez-contentcreateplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contentcreateplugin.js
                 ez-expandable:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js

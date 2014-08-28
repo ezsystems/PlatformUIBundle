@@ -48,7 +48,7 @@ class CreateContentController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getFieldTypesListAction( Request $request )
+    public function getContentTypesListAction( Request $request )
     {
         $jsonResponse = new JsonResponse();
 
@@ -91,7 +91,7 @@ class CreateContentController extends Controller
         {
             $jsonResponse->setStatusCode( 404 );
             $jsonResponse->setData( array( 'message' => 'Not found' ) );
-            $this->logger->error('@getFieldTypesListAction - 404: Not found');
+            $this->logger->error('@getContentTypesListAction - 404: Not found');
         }
 
         return $jsonResponse;

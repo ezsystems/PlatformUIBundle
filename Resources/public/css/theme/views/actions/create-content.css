@@ -61,7 +61,8 @@
 .ez-view-createcontentactionview h4 {
     color: #fff;
     text-transform: uppercase;
-    font: 700 .6rem/1.4 "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: .6rem;
+    font-weight: 700;
 }
 
 .ez-view-createcontentactionview [class*="ez-createcontent-filter-"] {

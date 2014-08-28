@@ -435,6 +435,12 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 value: false
             },
 
+            /**
+             * Indicator whether a new draft has been created.
+             *
+             * @attribute isNewContentDraftCreated
+             * @type {Boolean}
+             */
             isNewContentDraftCreated: {
                 value: false
             },

@@ -92,83 +92,6 @@ YUI.add('ez-createcontentfilterview-tests', function (Y) {
             );
         },
 
-        '_uiSetList() should create a new list of items': function () {
-            var newList = [{text: 'User group'}, {text:'Video'}];
-
-            this.view._uiSetList(newList);
-
-            Y.Assert.areEqual(
-                newList.length,
-                this._getListNodes().size(),
-                '_uiSetList() method has rendered expected amount of list items'
-            );
-        },
-
-        '_uiCreateTypeNode() should create a list item node': function () {
-            var itemValues = {
-                    content: 'Test',
-                    text: 'test',
-                    groupId: 2
-                },
-                item = this.view._uiCreateTypeNode(
-                    itemValues.content,
-                    itemValues.text,
-                    itemValues.groupId
-                );
-
-            Y.Assert.isNotUndefined(item, 'An item has been created correctly and it\'s not undefined');
-            Y.Assert.areEqual(
-                itemValues.content,
-                item.get('text'),
-                'Text of the item is set correctly'
-            );
-            Y.Assert.areEqual(
-                itemValues.text,
-                item.getAttribute('data-text'),
-                'Item\'s attribute: data-text, is set correctly'
-            );
-            Y.Assert.areEqual(
-                itemValues.groupId,
-                item.getAttribute('data-group-id'),
-                'Item\'s attribute: data-group-id, is set correctly'
-            );
-        },
-
-        '_uiCreateGroupNode() should create a list of content types groups with checkboxes': function () {
-            var itemValues = {
-                    id: 25,
-                    content: 'Test group'
-                },
-                item = this.view._uiCreateGroupNode(itemValues.id, itemValues.content);
-
-            Y.Assert.isNotUndefined(item, 'An item has been created correctly and it\'s not undefined');
-            Y.Assert.areEqual(
-                itemValues.content,
-                item.get('text'),
-                'Text of the item is set correctly'
-            );
-            Y.Assert.areEqual(
-                itemValues.id,
-                item.getAttribute('data-group-id'),
-                'Item\'s attribute: data-group-id, is set correctly'
-            );
-            Y.Assert.areEqual(
-                1,
-                item.all('[type="checkbox"]').size(),
-                'There is exactly one checkbox inside the item'
-            );
-        },
-
-        '_uiRenderGroupItems() should create a list of content type groups': function () {
-            this.view._uiRenderGroupItems();
-
-            Y.Assert.areEqual(
-                this.view.get('groups').length,
-                this.view.get('container').one('.groups').all('.ez-createcontent-filter-group').size(),
-                'All group items are available on rendered list'
-            );
-        },
-
         'Should add a selected group to the list of groups that results are filtered with': function () {
             var that = this,
                 groupItem;
@@ -224,6 +147,77 @@ YUI.add('ez-createcontentfilterview-tests', function (Y) {
             });
             this.wait();
         },
+
+        'Should selection start preparation for displaying a form to create a new content': function () {
+            var view = this.view,
+                text = 'User',
+                selectedType = view.get('extendedSource')[text];
+
+            view.on('createContent', function (event) {
+                Y.Assert.areEqual(selectedType.identifier, event.contentTypeIdentifier, 'Content type identifier is correct');
+                Y.Assert.areEqual(selectedType.lang, event.contentTypeLang, 'Content type language is correct');
+            });
+
+            view.render();
+            view.fire('select', {text: 'User'});
+        },
+
+        'Should correctly update a results list on results event': function () {
+            var results = [{
+                    "display":"<b class='yui3-highlight'>U</b><b class='yui3-highlight'>s</b>er gro<b class='yui3-highlight'>u</b>p",
+                    "raw":"User group",
+                    "text":"User group",
+                    "highlighted":"<b class='yui3-highlight'>U</b><b class='yui3-highlight'>s</b>er gro<b class='yui3-highlight'>u</b>p"
+                },{
+                    "display":"<b class='yui3-highlight'>U</b><b class='yui3-highlight'>s</b>er",
+                    "raw":"User",
+                    "text":"User",
+                    "highlighted":"<b class='yui3-highlight'>U</b><b class='yui3-highlight'>s</b>er"
+                }],
+                query = 'us',
+                view = this.view;
+
+            view.after('lastQueryChange', function () {
+                Y.Assert.areEqual(query, view.get('lastQuery'), 'Last query value is set correctly');
+            });
+
+            view.fire('results', {
+                results: results,
+                query: query
+            });
+        },
+
+        'Should remove unchecked group from selectedGroups attribute': function () {
+            var view = this.view,
+                that = this,
+                container,
+                groupItem,
+                groupItemCheckbox;
+
+            view.set('selectedGroups', [2, 3]);
+            view.render();
+            container = view.get('container');
+            container.all('[type="checkbox"]').set('checked', true);
+
+            groupItem = that.view.get('container').one('.ez-createcontent-filter-group');
+            groupItemCheckbox = groupItem.one('[type="checkbox"]');
+            groupItemCheckbox.simulateGesture('tap', function () {
+                that.resume(function () {
+                    var index = parseInt(groupItem.getAttribute('data-group-id'), 10);
+
+                    Y.Assert.isFalse(
+                        groupItemCheckbox.get('checked'),
+                        'The group item\'s checkbox is unchecked'
+                    );
+
+                    Y.Assert.isTrue(
+                        (view.get('selectedGroups').indexOf(index) === -1),
+                        'A group id has been succesfully removed from the selected groups list'
+                    );
+                });
+            });
+            this.wait();
+        }
     });
 
     Y.Test.Runner.setName("eZ Create Content Filter View tests");
