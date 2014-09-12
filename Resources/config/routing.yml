@@ -3,6 +3,14 @@ shell:
     pattern: /shell
     defaults: { _controller: eZPlatformUIBundle:PlatformUI:shell }
 
+template_yui_module:
+    path: /tpl/handlebars/{module}.js
+    defaults:
+        _controller: ezsystems.platformui.controller.template:wrapTemplateAction
+        _format: js
+    requirements:
+        _method: GET
+
 admin_dashboard:
     pattern: /pjax/dashboard
     defaults:

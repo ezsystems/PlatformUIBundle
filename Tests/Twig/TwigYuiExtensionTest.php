@@ -31,8 +31,10 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                 )
             );
 
+        $router = $this->getMock( '\Symfony\Component\Routing\RouterInterface' );
+
         return array(
-            new TwigYuiExtension( $configResolver )
+            new TwigYuiExtension( $configResolver, $router )
         );
     }
 
@@ -68,6 +70,10 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                 $getParameterValueMap[] = array( "yui.modules.$name.dependencyOf", 'ez_platformui', null, $config['dependencyOf'] );
                 $hasParameterValueMap[] = array( "yui.modules.$name.dependencyOf", 'ez_platformui', null, true );
             }
+            if ( isset( $config['type'] ) )
+            {
+                $getParameterValueMap[] = array( "yui.modules.$name.type", 'ez_platformui', null, $config['type'] );
+            }
 
             $getParameterValueMap[] = array( "yui.modules.$name.path", 'ez_platformui', null, $config['path'] );
         }
@@ -81,7 +87,29 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
             ->method( 'getParameter' )
             ->will( $this->returnValueMap( $getParameterValueMap ) );
 
-        $extension = new TwigYuiExtension( $configResolverMock );
+        $router = $this->getMock( '\Symfony\Component\Routing\RouterInterface' );
+        $router
+            ->expects( $this->any() )
+            ->method( 'generate' )
+            ->with(
+                $this->equalTo( 'template_yui_module' ),
+                $this->callback(
+                    function( $params )
+                    {
+                        return is_array( $params ) && isset( $params['module'] );
+                    }
+                )
+            )
+            ->will(
+                $this->returnCallback(
+                    function ( $name, $params )
+                    {
+                        return $name . '/' . $params['module'];
+                    }
+                )
+            );
+
+        $extension = new TwigYuiExtension( $configResolverMock, $router );
         $extension->initRuntime( $this->getEnvironmentMock() );
         $result = $extension->yuiConfigLoaderFunction();
         $this->assertSame( $expectedResult, $result );
@@ -124,12 +152,17 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                     ),
                     'ez-test2' => array(
                         'path' => 'bundles/ezplatformui/js/test2.js'
-                    )
+                    ),
+                    'ez-template' => array(
+                        'path' => 'bundles/ezplatformui/template/template.js',
+                        'type' => 'template',
+                    ),
                 ),
                 'debug',
                 '{"filter":"debug","modules":{' .
                 '"ez-test":{"requires":[],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
-                '"ez-test2":{"requires":[],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"}' .
+                '"ez-test2":{"requires":[],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"},' .
+                '"ez-template":{"requires":["template","handlebars"],"fullpath":"template_yui_module/ez-template"}' .
                 '}};'
             ),
             array(
