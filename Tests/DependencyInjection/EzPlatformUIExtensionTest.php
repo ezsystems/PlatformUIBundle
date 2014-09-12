@@ -214,10 +214,6 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
 
         // SA group
         $this->assertContainerBuilderHasParameter( 'ez_platformui.sa_group.yui.filter', $filterSaGroup );
-        $this->assertContainerBuilderHasParameter(
-            "ez_platformui.sa3.yui.modules",
-            array( 'ez-capi', 'foobar', 'module-sagroup' )
-        );
         $this->assertFalse( $this->container->hasParameter( 'ez_platformui.sa_group.yui.modules.ez-capi.path' ) );
         $this->assertFalse( $this->container->hasParameter( 'ez_platformui.sa_group.yui.modules.ez-capi.requires' ) );
         $this->assertFalse( $this->container->has( 'ez_platformui.sa_group.yui.modules.ez-capi.dependencyOf' ) );
