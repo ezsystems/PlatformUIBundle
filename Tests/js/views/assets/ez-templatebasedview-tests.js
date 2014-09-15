@@ -11,13 +11,7 @@ YUI.add('ez-templatebasedview-tests', function (Y) {
         setUp: function () {
             var that = this;
 
-            this.TestView = Y.Base.create('TestView', Y.eZ.TemplateBasedView, [], {}, {
-                ATTRS: {
-                    notAView: {},
-                    subviewSimple: {},
-                    subviewCallback: {}
-                }
-            });
+            this.TestView = Y.Base.create('TestView', Y.eZ.TemplateBasedView, []);
             this.TestViewNoTemplate = Y.Base.create('TestViewNoTemplate', Y.eZ.TemplateBasedView, []);
             this.TestViewTemplateRegistry = Y.Base.create('TestViewTemplateRegistry', Y.eZ.TemplateBasedView, []);
             this.templateRegistryResult = "You've got here in your pocket";
