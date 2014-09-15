@@ -90,6 +90,24 @@ YUI.add('ez-genericbuttonactionview-tests', function (Y) {
                 });
             });
             this.wait();
+        },
+
+        'Should disable the button': function () {
+            var view = this.view;
+
+            view.render();
+            view.set('disabled', true);
+
+            Y.Assert.isTrue(view.get('container').one('.action-trigger').hasAttribute('disabled'), 'The button should be disabled');
+        },
+
+        'Should enable the button': function () {
+            var view = this.view;
+
+            view.render();
+            view.set('disabled', true);
+            view.set('disabled', false);
+            Y.Assert.isFalse(view.get('container').one('.action-trigger').hasAttribute('disabled'), 'The button should be enabled');
         }
     };
 }, '', {requires: ['test', 'node-event-simulate']});

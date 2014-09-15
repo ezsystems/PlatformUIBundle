@@ -32,7 +32,7 @@
     z-index: 1015;
 }
 
-.ez-view-barview .ez-actions-list .ez-action.is-disabled {
+.ez-view-barview .ez-actions-list .ez-action[disabled] {
     cursor: default;
 }
 
