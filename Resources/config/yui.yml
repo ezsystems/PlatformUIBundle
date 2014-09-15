@@ -55,7 +55,7 @@ system:
                     requires: ['view', 'base-pluginhost', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/views/ez-view.js
                 ez-templatebasedview:
-                    requires: ['ez-texthelper', 'ez-view', 'handlebars']
+                    requires: ['ez-texthelper', 'ez-view', 'handlebars', 'template']
                     path: %ez_platformui.public_dir%/js/views/ez-templatebasedview.js
                 ez-loginformview:
                     requires: ['ez-templatebasedview', 'node-style']

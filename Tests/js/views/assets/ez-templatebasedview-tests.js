@@ -9,6 +9,8 @@ YUI.add('ez-templatebasedview-tests', function (Y) {
         name: "eZ Template based view tests",
 
         setUp: function () {
+            var that = this;
+
             this.TestView = Y.Base.create('TestView', Y.eZ.TemplateBasedView, [], {}, {
                 ATTRS: {
                     notAView: {},
@@ -17,9 +19,34 @@ YUI.add('ez-templatebasedview-tests', function (Y) {
                 }
             });
             this.TestViewNoTemplate = Y.Base.create('TestViewNoTemplate', Y.eZ.TemplateBasedView, []);
+            this.TestViewTemplateRegistry = Y.Base.create('TestViewTemplateRegistry', Y.eZ.TemplateBasedView, []);
+            this.templateRegistryResult = "You've got here in your pocket";
+            this.templateRegistry = function () { return that.templateRegistryResult; };
+            Y.Template.register('testviewtemplateregistry-ez-template', this.templateRegistry);
         },
 
-        "Should find the template": function () {
+        tearDown: function () {
+            Y.Template.register('testviewtemplateregistry-ez-template', undefined);
+        },
+
+        "Should find the template in the template registry": function () {
+            var view = new this.TestViewTemplateRegistry();
+
+            Y.Assert.isFunction(view.template, "The template property should be function");
+            Y.Assert.areEqual(
+                this.templateRegistryResult, view.template(),
+                "The template should generate the content of the template in the registry"
+            );
+        },
+
+        "Should use the template in the template registry in priority": function () {
+            Y.one('body').append(
+                '<script type="text/x-handlebars-template" id="testviewtemplateregistry-ez-template">Not used</script>'
+            );
+            this["Should find the template in the template registry"]();
+        },
+
+        "Should find the template in the DOM": function () {
             var view = new this.TestView();
 
             Y.Assert.isFunction(view.template, "The template property should be function");
