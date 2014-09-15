@@ -29,6 +29,10 @@ YUI.add('ez-buttonactionview', function (Y) {
             }
         },
 
+        initializer: function () {
+            this.on('disabledChange', this._handleToggleButtonState);
+        },
+
         /**
          * Renders the action
          *
@@ -82,8 +86,21 @@ YUI.add('ez-buttonactionview', function (Y) {
             this.fire(this.get('actionId') + ACTION_SUFFIX, {
                 content: this.get('content')
             });
-        }
+        },
 
+        /**
+         * Handles *:disabledChange event
+         *
+         * @method _handleToggleButtonState
+         * @param event {Object} event facade
+         * @protected
+         */
+        _handleToggleButtonState: function (event) {
+            var buttons = this.get('container').all('.action-trigger'),
+                buttonMethod = event.newVal ? 'setAttribute' : 'removeAttribute';
+
+            buttons[buttonMethod]('disabled', event.newVal);
+        }
     }, {
         ATTRS: {
             /**
