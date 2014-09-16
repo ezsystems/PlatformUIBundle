@@ -464,6 +464,10 @@ YUI.add('ez-platformuiapp', function (Y) {
             } else {
                 showView();
             }
+
+            if (typeof next === 'function') {
+                next();
+            }
         },
 
         /**
