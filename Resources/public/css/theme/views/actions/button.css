@@ -20,9 +20,9 @@
     font-size: 60%;
 }
 
-.ez-view-buttonactionview .is-disabled .action-icon,
-.ez-view-buttonactionview .is-disabled .action-label,
-.ez-view-buttonactionview .is-disabled .action-hint {
+.ez-view-buttonactionview [disabled] .action-icon,
+.ez-view-buttonactionview [disabled] .action-label,
+.ez-view-buttonactionview [disabled] .action-hint {
     color: #808080;
 }
 
