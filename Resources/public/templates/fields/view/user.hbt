@@ -1,0 +1,15 @@
+<div class="ez-fieldview-row pure-g">
+    <div class="ez-fieldview-label pure-u">
+        <p class="ez-fieldview-name"><strong>{{ fieldDefinition.names.[eng-GB] }}</strong></p>
+    </div>
+    <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
+        {{#if isEmpty }}
+            This field is empty
+        {{else}}
+            <ul class="ez-user-properties">
+                <li><b>Username:</b> {{value.login}}</li>
+                <li><b>Email address:</b> <a href="mailto:{{ value.email }}">{{ value.email }}</a></li>
+            </ul>
+        {{/if}}
+    </div></div>
+</div>

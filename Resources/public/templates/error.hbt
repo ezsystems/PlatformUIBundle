@@ -1,0 +1,14 @@
+<div class="ez-error-content">
+    <div class="ez-error-dialog" tabindex="0">
+        <h2>An error has occurred</h2>
+        <p class="additional-info">
+            {{#if additionalInfo.errorText}}
+                {{ additionalInfo.errorText }}
+            {{/if}}
+        </p>
+        <div class="ez-buttons-container">
+            <button class="pure-button ez-close-app" data-icon="&#xe600;">Close the application</button>
+            <button class="pure-button ez-retry" data-icon="&#xe60f;">Retry the operation</button>
+        </div>
+    </div>
+</div>

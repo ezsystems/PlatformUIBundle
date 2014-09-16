@@ -58,17 +58,29 @@ system:
                     requires: ['ez-texthelper', 'ez-view', 'handlebars', 'template']
                     path: %ez_platformui.public_dir%/js/views/ez-templatebasedview.js
                 ez-loginformview:
-                    requires: ['ez-templatebasedview', 'node-style']
+                    requires: ['ez-templatebasedview', 'node-style', 'loginformview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-loginformview.js
+                loginformview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/loginform.hbt
                 ez-dashboardview:
-                    requires: ['ez-templatebasedview']
+                    requires: ['ez-templatebasedview', 'dashboardview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-dashboardview.js
+                dashboardview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/dashboard.hbt
                 ez-locationviewview:
-                    requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'ez-tabs', 'event-tap', 'array-extras']
+                    requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'ez-tabs', 'event-tap', 'array-extras', 'locationviewview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-locationviewview.js
+                locationviewview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/locationview.hbt
                 ez-navigationhubview:
-                    requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside']
+                    requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside', 'navigationhubview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-navigationhubview.js
+                navigationhubview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/navigationhub.hbt
                 ez-discoverybarview:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview']
                     path: %ez_platformui.public_dir%/js/views/ez-discoverybarview.js
@@ -90,10 +102,17 @@ system:
                         - 'ez-maplocation-view'
                         - 'ez-author-view'
                         - 'event-tap'
+                        - 'rawcontentview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/ez-rawcontentview.js
+                rawcontentview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/rawcontent.hbt
                 ez-contenteditview:
-                    requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'event-tap']
+                    requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'event-tap', 'contenteditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-contenteditview.js
+                contenteditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/contentedit.hbt
                 ez-contenteditformview:
                     requires:
                         - 'ez-templatebasedview'
@@ -109,67 +128,128 @@ system:
                         - 'ez-integer-editview'
                         - 'ez-selection-editview'
                         - 'event-tap'
+                        - 'contenteditformview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/ez-contenteditformview.js
+                contenteditformview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/contenteditform.hbt
                 ez-errorview:
-                    requires: ['ez-templatebasedview', 'event-tap']
+                    requires: ['ez-templatebasedview', 'event-tap', 'errorview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-errorview.js
+                errorview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/error.hbt
                 ez-fieldeditview:
                     requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'node-style']
                     path: %ez_platformui.public_dir%/js/views/ez-fieldeditview.js
                 ez-fieldview:
-                    requires: ['ez-templatebasedview']
+                    requires: ['ez-templatebasedview', 'fieldview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-fieldview.js
+                fieldview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/field.hbt
                 ez-checkbox-view:
                     requires: ['ez-fieldview']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-checkbox-view.js
                 ez-checkbox-editview:
-                    requires: ['ez-fieldeditview']
+                    requires: ['ez-fieldeditview', 'checkboxeditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-checkbox-editview.js
+                checkboxeditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/checkbox.hbt
                 ez-textline-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'textlineeditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-textline-editview.js
+                textlineeditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/textline.hbt
                 ez-textblock-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'textblockeditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-textblock-editview.js
+                textblockeditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/textblock.hbt
                 ez-emailaddress-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'emailaddresseditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-emailaddress-editview.js
+                emailaddresseditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/emailaddress.hbt
                 ez-relation-view:
-                    requires: ['ez-fieldview', 'event-tap']
+                    requires: ['ez-fieldview', 'event-tap', 'relationview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-relation-view.js
+                relationview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/relation.hbt
                 ez-user-view:
-                    requires: ['ez-fieldview']
+                    requires: ['ez-fieldview', 'userview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-user-view.js
+                userview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/user.hbt
                 ez-selection-view:
-                    requires: ['ez-fieldview']
+                    requires: ['ez-fieldview', 'selectionview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-selection-view.js
+                selectionview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/selection.hbt
                 ez-url-view:
-                    requires: ['ez-fieldview']
+                    requires: ['ez-fieldview', 'urlview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-url-view.js
+                urlview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/url.hbt
                 ez-url-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'urleditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-url-editview.js
+                urleditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/url.hbt
                 ez-author-view:
-                    requires: ['ez-fieldview']
+                    requires: ['ez-fieldview', 'authorview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-author-view.js
+                authorview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/author.hbt
                 ez-author-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'event-tap', 'model', 'model-list']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'event-tap', 'model', 'model-list', 'authoreditview-ez-template', 'authorinputview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-author-editview.js
+                authoreditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/author.hbt
+                authorinputview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/authorinput.hbt
                 ez-float-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'floateditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-float-editview.js
+                floateditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/float.hbt
                 ez-integer-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'integereditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-integer-editview.js
+                integereditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/integer.hbt
                 ez-maplocation-view:
-                    requires: ['ez-fieldview', 'ez-googlemapapiloader']
+                    requires: ['ez-fieldview', 'ez-googlemapapiloader', 'maplocationview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-maplocation-view.js
+                maplocationview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/maplocation.hbt
                 ez-maplocation-editview:
-                    requires: ['ez-fieldeditview', 'ez-googlemapapiloader']
+                    requires: ['ez-fieldeditview', 'ez-googlemapapiloader', 'maplocationeditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-maplocation-editview.js
+                maplocationeditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/maplocation.hbt
                 ez-selection-editview:
-                    requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside', 'node-screen']
+                    requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside', 'node-screen', 'selectioneditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-selection-editview.js
+                selectioneditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/selection.hbt
                 ez-selectionfilterview:
                     requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view']
                     path: %ez_platformui.public_dir%/js/views/ez-selectionfilterview.js
@@ -198,20 +278,35 @@ system:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-previewactionview']
                     path: %ez_platformui.public_dir%/js/views/ez-editactionbarview.js
                 ez-buttonactionview:
-                    requires: ['ez-templatebasedview']
+                    requires: ['ez-templatebasedview', 'buttonactionview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/actions/ez-buttonactionview.js
+                buttonactionview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/buttonaction.hbt
                 ez-previewactionview:
-                    requires: ['ez-buttonactionview', 'ez-editpreviewview']
+                    requires: ['ez-buttonactionview', 'ez-editpreviewview', 'previewactionview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/actions/ez-previewactionview.js
+                previewactionview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/previewaction.hbt
                 ez-treeactionview:
-                    requires: ['ez-buttonactionview', 'ez-expandable', 'event-tap', 'event-outside', 'handlebars', 'node-style']
+                    requires: ['ez-buttonactionview', 'ez-expandable', 'event-tap', 'event-outside', 'handlebars', 'node-style', 'treeactionview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/actions/ez-treeactionview.js
+                treeactionview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/treeaction.hbt
                 ez-editpreviewview:
-                    requires: ['ez-templatebasedview', 'event-tap']
+                    requires: ['ez-templatebasedview', 'event-tap', 'editpreviewview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-editpreviewview.js
+                editpreviewview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/editpreview.hbt
                 ez-barview:
-                    requires: ['ez-templatebasedview', 'event-tap', 'event-resize']
+                    requires: ['ez-templatebasedview', 'event-tap', 'event-resize', 'barview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-barview.js
+                barview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/bar.hbt
                 ez-serversideview:
                     requires: ['ez-view', 'ez-tabs', 'ez-selection-table', 'event-tap']
                     path: %ez_platformui.public_dir%/js/views/ez-serversideview.js

@@ -1,0 +1,19 @@
+<div class="pure-g ez-editfield-row">
+    <div class="pure-u ez-editfield-infos">
+        <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+            <p class="ez-fielddefinition-name">
+                {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+            </p>
+            <p class="ez-editfield-error-message">&nbsp;</p>
+        </label>
+    </div>
+    <div class="pure-u ez-editfield-input-area">
+        <div class="ez-editfield-input"><div class="ez-checkbox-input-ui"><input type="checkbox"
+                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+                {{#if defaultValue}}checked="checked"{{/if}}/>
+            <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+                {{ fieldDefinition.descriptions.[eng-GB] }}
+            </label>
+        </div></div>
+    </div>
+</div>

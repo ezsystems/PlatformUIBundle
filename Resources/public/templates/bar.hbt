@@ -1,0 +1,5 @@
+<menu class="ez-actions-list active-actions" tabindex="0">
+</menu>
+<button class="view-more-button is-hidden">{{ viewMoreText }}</button>
+<menu class="ez-actions-list view-more-actions is-hidden">
+</menu>
