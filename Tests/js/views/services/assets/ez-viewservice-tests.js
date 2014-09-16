@@ -24,6 +24,38 @@ YUI.add('ez-viewservice-tests', function (Y) {
             Y.Assert.isTrue(cbCalled, "The load callback should have been called");
         },
 
+        "setNextViewServiceParameters() should return the provided param": function () {
+            var service = new Y.eZ.ViewService(),
+                param = 'test';
+
+            Y.Assert.areEqual(
+                param,
+                service.setNextViewServiceParameters(param),
+                'The setNextViewServiceParameters() method should return provided param'
+            );
+        },
+
+        "setNextViewServiceParameters() should spread the provided param to the view service plugins": function () {
+            var pluginMethodCalled = false,
+                plugin = Y.Base.create('plugin1', Y.eZ.Plugin.ViewServiceBase, [], {
+                    setNextViewServiceParameters: function (service) {
+                        pluginMethodCalled = true;
+                        Y.Assert.areEqual(
+                            param,
+                            service,
+                            'The new active service should be passed to the plugin setNextViewServiceParameters method'
+                        );
+                    }
+                }, {NS: 'plugin1'}),
+                plugins = [plugin],
+                service,
+                param = 'test';
+
+            service = new Y.eZ.ViewService({plugins: plugins});
+            service.setNextViewServiceParameters(param);
+            Y.Assert.isTrue(pluginMethodCalled, 'Plugin setNextViewServiceParameters() method should be called');
+        },
+
         "getViewParameters should return an empty object": function () {
             var service = new Y.eZ.ViewService(),
                 params = service.getViewParameters();

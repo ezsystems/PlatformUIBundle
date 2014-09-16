@@ -119,20 +119,24 @@ YUI.add('ez-platformuiapp', function (Y) {
             this._initialTitle = Y.config.doc.title;
 
             // Setting events handlers
-            this.on('*:closeView', function (e) {
-                Y.config.win.history.back();
+
+            this.on({
+                '*:closeApp': this.close,
+                '*:fatalError': this._handleError,
+                '*:retryAction': this._retryAction,
+                'loadingChange': this._loading,
+                'navigate': function () {
+                    this.set('loading', true);
+                }
             });
 
-            this.on('*:closeApp', this.close);
+            this.after('activeViewServiceChange', function (event) {
+                var newService = event.newVal,
+                    oldService = event.prevVal;
 
-            this.on('*:fatalError', this._handleError);
-
-            this.on('*:retryAction', this._retryAction);
-
-            this.on('loadingChange', this._loading);
-
-            this.on('navigate', function (e) {
-                this.set('loading', true);
+                if (oldService && newService) {
+                    oldService.setNextViewServiceParameters(newService);
+                }
             });
 
             // Listening for events fired on child views
@@ -434,10 +438,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                     });
                 };
 
+            app._set('activeViewService', viewInfo.service);
+
             if ( req.route.service && viewInfo.service ) {
                 this.set('loading', true);
                 viewInfo.service.set('request', req);
                 viewInfo.service.set('response', res);
+
                 viewInfo.service.load(showView);
             } else if ( req.route.service ) {
                 this.set('loading', true);
@@ -714,6 +721,17 @@ YUI.add('ez-platformuiapp', function (Y) {
                     return new Y.eZ.User();
                 },
             },
+
+            /**
+             * Active view service instance
+             *
+             * @attribute activeViewService
+             * @type eZ.ViewService
+             * @readOnly
+             */
+            activeViewService: {
+                readOnly: true
+            }
         }
     });
 });

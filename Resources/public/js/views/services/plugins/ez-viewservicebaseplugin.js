@@ -86,6 +86,19 @@ YUI.add('ez-viewservicebaseplugin', function (Y) {
          */
         getViewParameters: function () {
             return {};
-        }
+        },
+
+        /**
+         * Configures the next view service. It is called when the active view
+         * service change in the application with the new service in parameters
+         * so that it's possible to configure it.
+         *
+         * @method setNextViewServiceParameters
+         * @param {eZ.ViewService} newService the new view service to configure
+         * @return {eZ.ViewService} the new view service
+         */
+        setNextViewServiceParameters: function (service) {
+            return service;
+        },
     });
 });

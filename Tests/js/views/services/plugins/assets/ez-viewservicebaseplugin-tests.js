@@ -42,8 +42,15 @@ YUI.add('ez-viewservicebaseplugin-tests', function (Y) {
                 "getViewParameters should return an empty object"
             );
         },
+
+        'setNextViewServiceParameters() should return the plugin itself': function () {
+            var service = new Y.eZ.ViewService(),
+                returnVal = this.plugin.setNextViewServiceParameters(service);
+
+            Assert.areSame(service, returnVal, 'setNextViewServiceParameters() should return the new active service');
+        }
     });
 
     Y.Test.Runner.setName("eZ View Service Base Plugin tests");
     Y.Test.Runner.add(tests);
-}, '0.0.1', {requires: ['test', 'ez-viewservicebaseplugin']});
+}, '0.0.1', {requires: ['test', 'ez-viewservicebaseplugin', 'ez-viewservice']});

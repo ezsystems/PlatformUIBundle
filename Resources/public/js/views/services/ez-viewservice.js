@@ -89,6 +89,45 @@ YUI.add('ez-viewservice', function (Y) {
         },
 
         /**
+        * Configures the next view services. This method is meant to be overridden in
+        * view services implementations. It is called before load and takes the view
+        * service instance that will replace the current one.
+        * The default implementation does nothing.
+        *
+        * @method _setNextViewServiceParameters
+        * @protected
+        * @param {eZ.ViewService} service the new active view service
+        * @return {eZ.ViewService} the new view service
+        */
+        _setNextViewServiceParameters: function (service) {
+            return service;
+        },
+
+        /**
+         * Configures the next view services, it calls `_setNextViewServiceParameters`
+         * and takes the view service plugins into account.
+         *
+         * **Do not override this method unless you know what you are doing**
+         * You'll most likely want to implement the `_setNextViewServiceParameters`
+         * method instead or write a view service plugin.
+         *
+         * @method setNextViewServiceParameters
+         * @protected
+         * @param {eZ.ViewService} service the new active view service
+         * @return {eZ.ViewService} the new view service
+         */
+        setNextViewServiceParameters: function (newService) {
+            var that = this;
+
+            this._setNextViewServiceParameters(newService);
+            Y.Object.each(this._plugins, function (fn, name) {
+                that[name].setNextViewServiceParameters(newService);
+            });
+
+            return newService;
+        },
+
+        /**
          * Returns the parameters to pass to the view. This method merges the
          * view parameters provided by the plugins and by the service itself.
          *
