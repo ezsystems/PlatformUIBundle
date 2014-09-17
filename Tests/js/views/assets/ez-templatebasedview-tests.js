@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-templatebasedview-tests', function (Y) {
-    var viewTest;
+    var viewTest, partialTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Template based view tests",
@@ -70,6 +70,62 @@ YUI.add('ez-templatebasedview-tests', function (Y) {
         },
     });
 
+    partialTest = new Y.Test.Case({
+        name: "eZ Template based view registerPartial tests",
+
+        init: function () {
+            this.partialName = 'oneWayTicket';
+            this.templateId = 'oneWayTicket-ez-template';
+            this.templateId2 = 'back-ez-template';
+            Y.Template.register(this.templateId, "One way ticket to hell");
+            Y.Template.register(this.templateId2, "and back!");
+        },
+
+        destroy: function () {
+            Y.Template.register(this.templateId, undefined);
+            Y.Handlebars.registerPartial(this.partialId, undefined);
+        },
+
+        "Should register partial template": function () {
+            Y.eZ.TemplateBasedView.registerPartial(this.partialId, this.templateId);
+
+            Y.Assert.isNotUndefined(
+                Y.Handlebars.partials[this.partialId],
+                "The partial should have been registered"
+            );
+        },
+
+        "Should not overwrite existing partial": function () {
+            var partial;
+
+            this["Should register partial template"]();
+            partial = Y.Handlebars.partials[this.partialId];
+
+            Y.eZ.TemplateBasedView.registerPartial(this.partialId, this.templateId2);
+
+            Y.Assert.areSame(
+                partial, Y.Handlebars.partials[this.partialId],
+                "The partial should not be overwritten"
+            );
+        },
+
+        "Should ignore non existent template": function () {
+            var partial;
+
+            this["Should register partial template"]();
+            partial = Y.Handlebars.partials[this.partialId];
+
+            Y.eZ.TemplateBasedView.registerPartial(this.partialId, "DoesNotExist");
+
+            Y.Assert.areSame(
+                partial, Y.Handlebars.partials[this.partialId],
+                "The partial should not be overwritten"
+            );
+        }
+    });
+
+
     Y.Test.Runner.setName("eZ Template Based view tests");
     Y.Test.Runner.add(viewTest);
+    Y.Test.Runner.add(partialTest);
 }, '', {requires: ['test', 'ez-templatebasedview']});

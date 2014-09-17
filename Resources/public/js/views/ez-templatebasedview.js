@@ -100,6 +100,31 @@ YUI.add('ez-templatebasedview', function (Y) {
          * @static
          * @protected
          */
-        VIEW_PREFIX: "ez-view-"
+        VIEW_PREFIX: "ez-view-",
+
+        /**
+         * Registers a partial template which is registered in the template
+         * registery. This method is meant to be called in the initializer
+         * method of a view compontent that requires a given partial. It takes
+         * care of not defining/overwriting existing partial.
+         *
+         * @static
+         * @method registerPartial
+         * @param {String} partialName
+         * @param {String} tplId
+         */
+        registerPartial: function (partialName, tplId) {
+            var tpl;
+
+            if ( Y.Handlebars.partials[partialName] ) {
+                return;
+            }
+            tpl = Y.Template.get(tplId);
+            if ( tpl ) {
+                Y.Handlebars.registerPartial(partialName, tpl);
+                return ;
+            }
+            console.warn('Unable to find the partial template with id "' + tplId + "' in the registry");
+        },
     });
 });

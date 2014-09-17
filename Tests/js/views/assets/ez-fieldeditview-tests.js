@@ -5,10 +5,22 @@
 YUI.add('ez-fieldeditview-tests', function (Y) {
     var viewTest, tooltipTest, customViewTest, registryTest;
 
-    Y.Handlebars.registerPartial('ezFieldinfoTooltip', Y.one('#ezFieldinfoTooltip').getHTML());
+    function initTooltipPartial() {
+        Y.Template.register(
+            'fieldinfo-tooltip-ez-partial', Y.one('#ezFieldinfoTooltip').getHTML()
+        );
+    }
+
+    function destroyTooltipPartial () {
+        Y.Handlebars.registerPartial('ez_fieldinfo_tooltip', undefined);
+        Y.Template.register('fieldinfo-tooltip-ez-partial', undefined);
+    }
 
     viewTest = new Y.Test.Case({
         name: "eZ Field Edit View test",
+
+        init: initTooltipPartial,
+        destroy: destroyTooltipPartial,
 
         setUp: function () {
             this.jsonContent = {};
@@ -172,6 +184,9 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
 
     tooltipTest = new Y.Test.Case({
         name: "eZ Field Edit View tooltip test",
+
+        init: initTooltipPartial,
+        destroy: destroyTooltipPartial,
 
         setUp: function () {
             this.jsonContent = {};
@@ -360,6 +375,9 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
 
     customViewTest = new Y.Test.Case({
         name: "Custom eZ Field Edit View test",
+
+        init: initTooltipPartial,
+        destroy: destroyTooltipPartial,
 
         setUp: function () {
             var CustomView = Y.Base.create('customView', Y.eZ.FieldEditView, [], {

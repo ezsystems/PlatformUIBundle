@@ -38,6 +38,7 @@ YUI.add('ez-treeactionview', function (Y) {
      */
     Y.eZ.TreeActionView = Y.Base.create('treeActionView', Y.eZ.ButtonActionView, [Y.eZ.Expandable], {
         initializer: function () {
+            Y.eZ.TemplateBasedView.registerPartial('ez_tree', 'tree-ez-partial');
             this.events = Y.merge(_events, this.events);
             this.childrenTemplate = TREE_TPL;
 

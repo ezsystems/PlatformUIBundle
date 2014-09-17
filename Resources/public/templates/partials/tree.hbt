@@ -1,4 +1,3 @@
-{% verbatim %}
 <ul class="ez-tree-level">
 {{#each children}}
     <li class="ez-tree-node{{#if state.leaf}} is-tree-node-leaf{{/if}} {{#if state.open}}is-tree-node-open{{else}}is-tree-node-close{{/if}}" data-node-id="{{id}}">
@@ -6,4 +5,3 @@
     </li>
 {{/each}}
 </ul>
-{% endverbatim %}

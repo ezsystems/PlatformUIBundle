@@ -153,17 +153,5 @@
             }
         });
     </script>
-
-{% macro partial(tpl, name) %}
-<script type="text/x-handlebars-template" id="{{ name }}" class="ez-platformui-app-partial">
-{{ include( 'eZPlatformUIBundle:PlatformUI/handlebars/partials/:' ~ tpl ~ '.twig' ) }}
-</script>
-{% endmacro %}
-
-{% import _self as handlebars %}
-
-{{ handlebars.partial( 'fieldinfo_tooltip.handlebars', 'ez_fieldinfo_tooltip' ) }}
-
-{{ handlebars.partial( 'tree.handlebars', 'ez_tree' ) }}
 </body>
 </html>
