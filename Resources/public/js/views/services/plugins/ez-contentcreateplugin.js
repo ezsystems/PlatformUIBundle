@@ -26,6 +26,14 @@ YUI.add('ez-contentcreateplugin', function (Y) {
             this.afterHostEvent('createContentActionView:activeChange', this._getContentTypesList);
         },
 
+        setNextViewServiceParameters: function (service) {
+            var host = this.get('host'),
+                app = host.get('app');
+
+            service.set('closeRedirectionUrl', app.routeUri('viewLocation', {id: host.get('location').get('id')}));
+            service.set('discardRedirectionUrl', app.routeUri('viewLocation', {id: host.get('location').get('id')}));
+        },
+
         /**
          * Fetches content groups list and sends it to the target view
          *

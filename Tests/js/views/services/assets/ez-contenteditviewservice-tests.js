@@ -173,6 +173,14 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 }
             });
 
+            Y.Mock.expect(app, {
+                method: 'routeUri',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Object],
+                run: function () {
+                    return 'test';
+                }
+            });
+
             Y.Mock.expect(this.content, {
                 method: 'set',
                 args: ['id', request.params.id]
@@ -402,12 +410,14 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         },
 
         'Should create and set an empty version model': function () {
-            var service = new Y.eZ.ContentEditViewService({
+            var isCreated = false,
+                service = new Y.eZ.ContentEditViewService({
+                    app: this.app,
                     capi: this.capiMock,
                     content: this.content,
-                    version: this.version
-                }),
-                isCreated = false;
+                    version: this.version,
+                    location: this.mainLocation
+                });
 
             service.after('versionChange', function (event) {
                 isCreated = true;
@@ -416,13 +426,16 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             service._createEmptyPropertyObject('version');
 
             Y.Assert.isTrue(isCreated, 'A new empty version model has been created and set as a service attribute as expected');
+            Y.Mock.verify(service);
         },
 
         'Should not create and set an empty undefined model': function () {
             var service = new Y.eZ.ContentEditViewService({
+                    app: this.app,
                     capi: this.capiMock,
                     content: this.content,
-                    version: this.version
+                    version: this.version,
+                    location: this.mainLocation
                 }),
                 isCreated = false;
 
