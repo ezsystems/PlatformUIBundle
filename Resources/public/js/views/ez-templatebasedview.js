@@ -104,9 +104,9 @@ YUI.add('ez-templatebasedview', function (Y) {
 
         /**
          * Registers a partial template which is registered in the template
-         * registery. This method is meant to be called in the initializer
+         * registry. This method is meant to be called in the initializer
          * method of a view compontent that requires a given partial. It takes
-         * care of not defining/overwriting existing partial.
+         * care of not defining/overwriting an existing partial.
          *
          * @static
          * @method registerPartial

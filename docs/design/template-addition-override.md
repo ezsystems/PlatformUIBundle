@@ -10,7 +10,7 @@
 The PlatformUIBundle provides a web application based on the YUI Library. The
 user interface is generated *via* a set of views. While it's not mandatory, every
 view makes use of a string based templates which is stored in the HTML page.
-Each template code is embed in a `script̀` tag with a custom `type` attribute
+Each template code is embedded in a `script̀` tag with a custom `type` attribute
 and a forged `id` so that the application can load the correct template for a
 given view.
 
@@ -19,16 +19,16 @@ some limitations:
 
 1. Scalability: There are currently 34 `script` tags in the *shell* page of the
    PlatformUI application and this list is growing with the new features. The
-   1.0 of the application would easily require more than 100 templates and with
-   some extensions this number will easily grow.
+   version 1.0 of the application would easily require more than 100 templates
+   and with some extensions this number will easily grow.
 2. Twig vs. Handlebars: for now the Handlebars templates are stored as
    *verbatim* text in the Twig templates. This prevents us from [pre-compiling the
    templates](http://handlebarsjs.com/precompilation.html) to avoid this step in
-   the browser and that's not very handy for the developper.
+   the browser and that's not very handy for the developer.
 3. Extensibility: for now, there's no way to add new templates in the
    application and the only way to override an existing template is to make a
    bundle inheriting from the PlatformUIBundle
-4. Performances: in addition to the pre-compiling issue mentionned above, by
+4. Performances: in addition to the pre-compiling issue mentioned above, by
    embedding the templates in the HTML page running the application, there's no
    way to have a reliable and efficient usage of the HTTP cache.
 
@@ -37,7 +37,7 @@ some limitations:
 
 To solve (or open doors to solve) those issues, the templates should be defined
 as YUI modules. This way the template can be added as a dependency of the
-view(s) which need(s) it and automatically loaded when it is needed.
+view(s) which need(s) it and it can be automatically loaded when required.
 
 Example:
 
@@ -103,6 +103,6 @@ optimize the CSS or the JavaScript files.
       wraps the file content a YUI module
     * in "prod" environment, the YUI template module should be written on the
       disk
-4. Optionnally, in the "prod" environment and if the requirement are met (node
+4. Optionally, in the "prod" environment and if the requirement are met (node
    and handlebars CLI are set up), the template can be pre-compiled.  
 
