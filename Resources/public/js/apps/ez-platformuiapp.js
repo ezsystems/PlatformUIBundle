@@ -438,13 +438,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                     });
                 };
 
-            app._set('activeViewService', viewInfo.service);
-
             if ( req.route.service && viewInfo.service ) {
                 this.set('loading', true);
+
                 viewInfo.service.set('request', req);
                 viewInfo.service.set('response', res);
 
+                app._set('activeViewService', viewInfo.service);
                 viewInfo.service.load(showView);
             } else if ( req.route.service ) {
                 this.set('loading', true);
@@ -466,7 +466,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                         additionalInfo: {errorText: e.message}
                     });
                 });
-
+                app._set('activeViewService', viewInfo.service);
                 viewInfo.service.load(showView);
             } else {
                 showView();
