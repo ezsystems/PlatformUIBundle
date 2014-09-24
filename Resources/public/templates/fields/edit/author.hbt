@@ -1,0 +1,7 @@
+<div class="ez-authors-input-container"></div>
+<div class="pure-g ez-editfield-row">
+    <div class="pure-u ez-editfield-infos"></div>
+    <div class="pure-u ez-editfield-input-area">
+        <div class="ez-editfield-input-no-validation"><button data-icon="&#xe616;" class="ez-field-author-add ez-button pure-button">Add another author</button></div>
+    </div>
+</div>

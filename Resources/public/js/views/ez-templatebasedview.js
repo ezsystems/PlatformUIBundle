@@ -50,27 +50,48 @@ YUI.add('ez-templatebasedview', function (Y) {
         /**
          * Initializes the template based view object:
          *
-         *   * the template property is filled with the content of the element
-         *     which id is the name of view in the lower case followed by
-         *     "-ez-template". If this element is not found, the template property
-         *     is filled with a function that returns an empty string
+         *   * filles the `template` property (see _setTemplate)
+         *
          *   * defines the containerTemplate property so that it contains a
          *     class based on the name of the view object
          *
          * @method initializer
          */
         initializer: function () {
-            var name = this._getName(),
-                tplEl = Y.one('#' + name.toLowerCase() + TPL_ELEM_SUFFIX);
-
-            this.template = function () { return ''; };
-            if ( tplEl ) {
-                this.template = Y.Handlebars.compile(
-                    tplEl.getHTML()
-                );
-            }
-            this.containerTemplate = '<div class="' + this._generateViewClassName(name) + '"/>';
+            this._setTemplate();
+            this.containerTemplate = '<div class="' + this._generateViewClassName(this._getName()) + '"/>';
         },
+
+        /**
+         * Initializes the `template` property of the view. The template is
+         * searched in the template registry and then in the DOM. The id of the
+         * template (both in the registry and in the DOM) is the name of the
+         * view in lowercase with the suffix `-ez-template`.
+         *
+         * @method _setTemplate
+         * @protected
+         */
+        _setTemplate: function () {
+            var tplId = this._getName().toLowerCase() + TPL_ELEM_SUFFIX,
+                tpl = Y.Template.get(tplId),
+                tplEl, engine;
+
+            if ( tpl ) {
+                this.template = tpl;
+                return;
+            } else {
+                tplEl = Y.one('#' + tplId);
+                if ( tplEl ) {
+                    engine = new Y.Template(Y.Handlebars);
+                    this.template = engine.compile(tplEl.getHTML());
+                    return;
+                }
+            }
+
+            console.warn("No template found for the view '" + this._getName() + "'");
+            console.warn("tried template registry with id '" + tplId + "' and the DOM element #" + tplId);
+            this.template = function () { return ''; };
+        }
     }, {
         /**
          * the prefix to generate the view class name
@@ -79,6 +100,31 @@ YUI.add('ez-templatebasedview', function (Y) {
          * @static
          * @protected
          */
-        VIEW_PREFIX: "ez-view-"
+        VIEW_PREFIX: "ez-view-",
+
+        /**
+         * Registers a partial template which is registered in the template
+         * registry. This method is meant to be called in the initializer
+         * method of a view compontent that requires a given partial. It takes
+         * care of not defining/overwriting an existing partial.
+         *
+         * @static
+         * @method registerPartial
+         * @param {String} partialName
+         * @param {String} tplId
+         */
+        registerPartial: function (partialName, tplId) {
+            var tpl;
+
+            if ( Y.Handlebars.partials[partialName] ) {
+                return;
+            }
+            tpl = Y.Template.get(tplId);
+            if ( tpl ) {
+                Y.Handlebars.registerPartial(partialName, tpl);
+                return ;
+            }
+            console.warn('Unable to find the partial template with id "' + tplId + "' in the registry");
+        },
     });
 });

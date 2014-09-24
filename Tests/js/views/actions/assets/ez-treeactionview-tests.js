@@ -113,13 +113,14 @@ YUI.add('ez-treeactionview-tests', function (Y) {
         name: "eZ Tree Action View tree tests",
 
         init: function () {
-            Y.Handlebars.registerPartial(
-                'ez_tree', Y.one('#ez_tree').getHTML()
+            Y.Template.register(
+                'tree-ez-partial', Y.one('#ez_tree').getHTML()
             );
         },
 
         destroy: function () {
             Y.Handlebars.registerPartial('ez_tree', undefined);
+            Y.Template.register('tree-ez-partial', undefined);
         },
 
         _buildNode: function (id, leaf, canHaveChildren) {

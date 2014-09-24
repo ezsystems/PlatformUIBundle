@@ -40,6 +40,9 @@ class PlatformUIMapper implements HookableConfigurationMapperInterface
                 if ( isset( $moduleConfig['path'] ) )
                     $contextualizer->setContextualParameter( "yui.modules.{$moduleName}.path", $currentScope, $moduleConfig['path'] );
 
+                $contextualizer->setContextualParameter(
+                    "yui.modules.{$moduleName}.type", $currentScope, $moduleConfig['type']
+                );
                 if ( isset( $moduleConfig['requires'] ) )
                 {
                     if ( !isset( $scopeSettings["yui.modules.{$moduleName}.requires"] ) )

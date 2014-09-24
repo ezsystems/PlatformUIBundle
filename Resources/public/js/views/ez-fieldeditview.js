@@ -230,6 +230,7 @@ YUI.add('ez-fieldeditview', function (Y) {
          * @method initializer
          */
         initializer: function () {
+            Y.eZ.TemplateBasedView.registerPartial('ez_fieldinfo_tooltip', 'fieldinfo-tooltip-ez-partial');
             this.after('errorStatusChange', this._errorUI);
 
             this.events = Y.merge(_events, this.events);

@@ -5,13 +5,19 @@ parameters:
     ezsystems.platformui.controller.systeminfo.class: EzSystems\PlatformUIBundle\Controller\SystemInfoController
     ezsystems.platformui.helper.section.class: EzSystems\PlatformUIBundle\Helper\SectionHelper
     ezsystems.platformui.controller.section.class: EzSystems\PlatformUIBundle\Controller\SectionController
+    ezsystems.platformui.controller.template.class: EzSystems\PlatformUIBundle\Controller\TemplateController
 
 services:
     ezsystems.platformui.twig.yui_extension:
         class: %ezsystems.platformui.twig.yui_extension.class%
-        arguments: [@ezpublish.config.resolver, @?logger]
+        arguments: [@ezpublish.config.resolver, @router, @?logger]
         tags:
             - { name: twig.extension }
+
+    ezsystems.platformui.controller.template:
+        class: %ezsystems.platformui.controller.template.class%
+        arguments: [@ezpublish.config.resolver]
+        parent: ezpublish.controller.base
 
     ezsystems.platformui.controller.dashboard:
         class: %ezsystems.platformui.controller.dashboard.class%

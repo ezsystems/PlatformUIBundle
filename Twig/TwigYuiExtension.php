@@ -9,6 +9,7 @@
 namespace EzSystems\PlatformUIBundle\Twig;
 
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Psr\Log\LoggerInterface;
 use Twig_Environment;
 use Twig_Extension;
@@ -34,9 +35,15 @@ class TwigYuiExtension extends Twig_Extension
      */
     private $logger;
 
-    public function __construct( ConfigResolverInterface $configResolver, LoggerInterface $logger = null )
+    /**
+     * @var \Symfony\Component\Routing\RouterInterface
+     */
+    private $router;
+
+    public function __construct( ConfigResolverInterface $configResolver, RouterInterface $router, LoggerInterface $logger = null )
     {
         $this->configResolver = $configResolver;
+        $this->router = $router;
         $this->logger = $logger;
     }
 
@@ -115,9 +122,22 @@ class TwigYuiExtension extends Twig_Extension
                 }
             }
 
-            $yui['modules'][$module]['fullpath'] = $this->asset(
-                $this->configResolver->getParameter( "yui.modules.$module.path", 'ez_platformui' )
-            );
+            if ( $this->configResolver->getParameter( "yui.modules.$module.type", 'ez_platformui' ) === 'template' )
+            {
+                $yui['modules'][$module]['requires'][] = 'template';
+                $yui['modules'][$module]['requires'][] = 'handlebars';
+                $yui['modules'][$module]['fullpath'] = $this->router->generate(
+                    'template_yui_module', array( 'module' => $module )
+                );
+            }
+            else
+            {
+                $yui['modules'][$module]['fullpath'] = $this->asset(
+                    $this->configResolver->getParameter(
+                        "yui.modules.$module.path", 'ez_platformui'
+                    )
+                );
+            }
         }
 
         // Now ensure that all requirements are unique
