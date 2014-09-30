@@ -22,8 +22,22 @@ YUI.add('ez-contentcreateplugin', function (Y) {
      */
     Y.eZ.Plugin.ContentCreate = Y.Base.create('contentCreate', Y.eZ.Plugin.ViewServiceBase, [], {
         initializer: function () {
+            this._extendRouting();
             this.onHostEvent('*:createContent', this._handleCreateContentAction);
             this.afterHostEvent('createContentActionView:activeChange', this._getContentTypesList);
+        },
+
+        _extendRouting: function () {
+            var app = this.get('host').get('app');
+
+            app.route({
+                name: 'addContent',
+                path: '/add/:contentTypeIdentifier/:contentTypeLang/:id',
+                service: Y.eZ.ContentEditViewService,
+                sideViews: {},
+                view: 'contentEditView',
+                callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+            });
         },
 
         setNextViewServiceParameters: function (service) {

@@ -332,7 +332,11 @@ system:
                         - 'ez-buttonactionview'
                         - 'ez-expandable'
                         - 'event-tap'
+                        - 'createcontentactionview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/actions/ez-createcontentactionview.js
+                createcontentactionview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/createcontentaction.hbt
                 ez-editpreviewview:
                     requires: ['ez-templatebasedview', 'event-tap', 'editpreviewview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-editpreviewview.js
@@ -360,6 +364,9 @@ system:
                 ez-domstateplugin:
                     requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-domstateplugin.js
+                ez-registerpartialsplugin:
+                    requires: ['plugin', 'handlebars', 'base', 'node', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-registerpartialsplugin.js
                 ez-registerurlhelpersplugin:
                     requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-registerurlhelpersplugin.js
