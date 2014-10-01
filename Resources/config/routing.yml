@@ -11,10 +11,6 @@ template_yui_module:
     requirements:
         _method: GET
 
-locationview_get_field_types:
-    pattern: /ajax/get-content-types-list
-    defaults: { _controller: ezsystems.platformui.controller.create_content:getContentTypesListAction }
-
 admin_dashboard:
     pattern: /pjax/dashboard
     defaults:

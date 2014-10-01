@@ -5,9 +5,9 @@
 YUI.add('ez-contentcreateplugin', function (Y) {
     'use strict';
     /**
-     * Provides the content tree plugin for the discovery bar view service.
+     * Provides the content create plugin for the location view view service.
      *
-     * @module ez-contenttreeplugin
+     * @module ez-contentcreateplugin
      */
     Y.namespace('eZ.Plugin');
 
@@ -57,22 +57,90 @@ YUI.add('ez-contentcreateplugin', function (Y) {
          */
         _getContentTypesList: function (event) {
             var that = this,
-                contentGroupsList = this.get('contentGroupsList');
+                capi = this.get('host').get('capi'),
+                app = this.get('host').get('app'),
+                contentGroupsList = this.get('contentGroupsList'),
+                responseData = {
+                    groups: [],
+                    types: [],
+                    source: []
+                };
 
             if (!contentGroupsList) {
-                Y.io(this.get('host').get('app').get('baseUri') + 'ajax/get-content-types-list', {
-                    on: {
-                        success: function (id, xhr) {
-                            contentGroupsList = JSON.parse(xhr.response);
-
-                            that.set('contentGroupsList', contentGroupsList);
-                            event.target.set('contentGroupsList', contentGroupsList);
+                new Y.Promise(function (resolve, reject) {
+                    app.set('loading', true);
+                    capi.getContentTypeService().loadContentTypeGroups(function (error, response) {
+                        if (error) {
+                            reject(error);
                         }
-                    }
-                });
+
+                        resolve(response);
+                    });
+                }).then(function (response) {
+                    var contentTypeGroups = response.document.ContentTypeGroupList.ContentTypeGroup,
+                        contentTypeService = capi.getContentTypeService(),
+                        contentTypePromises = [];
+
+                    Y.Array.each(contentTypeGroups, function (group) {
+                        responseData[group.id] = {identifier: group.identifier};
+                        responseData.groups.push({
+                            id: group.id,
+                            name: group.identifier
+                        });
+
+                        contentTypePromises.push(new Y.Promise(function (resolve, reject) {
+                            contentTypeService.loadContentTypes(group._href, function (error, xhr) {
+                                if (error) {
+                                    reject(error);
+                                }
+
+                                xhr.groupId = group.id;
+
+                                resolve(xhr);
+                            });
+                        }));
+                    });
+
+                    return Y.Promise.all(contentTypePromises);
+                }, that._handlePromiseError)
+                .then(function (contentTypeGroups) {
+                    Y.Array.each(contentTypeGroups, function (group) {
+                        var contentTypes = group.document.ContentTypeInfoList.ContentType;
+
+                        Y.Array.each(contentTypes, function (type) {
+                            var typeName = type.names.value[0]['#text'];
+
+                            responseData.types[typeName] = {
+                                id: type.id,
+                                groupId: group.groupId,
+                                identifier: type.identifier,
+                                name: typeName,
+                                lang: type.mainLanguageCode
+                            };
+
+                            responseData.source.push(typeName);
+                        });
+                    });
+
+                    app.set('loading', false);
+                    that.set('contentGroupsList', responseData);
+                    event.target.set('contentGroupsList', responseData);
+                }, that._handlePromiseError);
             } else {
                 event.target.set('contentGroupsList', contentGroupsList);
             }
+        },
+
+        /**
+         * Promise error handler. Displays an error message in the console.
+         *
+         * @protected
+         * @method _handlePromiseError
+         * @param {Object} error
+         */
+        _handlePromiseError: function (error) {
+            this.get('host').get('app').set('loading', false);
+            console.error('Promise has been rejected:', error);
         },
 
         /**
@@ -94,7 +162,7 @@ YUI.add('ez-contentcreateplugin', function (Y) {
             );
         }
     }, {
-        NS: 'createContent',
+        NS: 'contentCreate',
         ATTRS: {
             /**
              * Stores content type data as a result of AJAX request
