@@ -13,7 +13,7 @@ YUI.add('ez-date-view-tests', function (Y) {
                 this.fieldValue = {
                     timestamp: 374388330,
                 };
-                this.date = '12/11/1981';
+                this.date = '11/12/1981';
                 this.templateVariablesCount = 4;
                 this.fieldDefinition = {
                     fieldType: 'ezdate',
