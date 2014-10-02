@@ -102,6 +102,7 @@ system:
                         - 'ez-author-view'
                         - 'ez-dateandtime-view'
                         - 'ez-date-view'
+                        - 'ez-time-view'
                         - 'event-tap'
                         - 'rawcontentview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/ez-rawcontentview.js
@@ -161,6 +162,9 @@ system:
                 ez-date-view:
                     requires: ['ez-dateandtime-view']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-date-view.js
+                ez-time-view:
+                    requires: ['ez-dateandtime-view']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-time-view.js
                 ez-checkbox-view:
                     requires: ['ez-fieldview']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-checkbox-view.js
