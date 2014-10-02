@@ -19,8 +19,8 @@ YUI.add('ez-time-view-tests', function (Y) {
 
             setUp: function () {
                 this.fieldValue = 374388330;
-                this.time = '05:45:30';
-                this.timeNoSeconds = '05:45';
+                this.time = '05:45:30 AM';
+                this.timeNoSeconds = '05:45 AM';
                 this.templateVariablesCount = 4;
                 this.fieldDefinition = {
                     fieldType: 'eztime',

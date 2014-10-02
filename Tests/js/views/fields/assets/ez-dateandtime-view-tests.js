@@ -21,8 +21,8 @@ YUI.add('ez-dateandtime-view-tests', function (Y) {
                 this.fieldValue = {
                     timestamp: 374388330,
                 };
-                this.datetime = '12/11/1981 05:45:30';
-                this.datetimeNoSeconds = '12/11/1981 05:45';
+                this.datetime = '11/12/1981 05:45:30 AM';
+                this.datetimeNoSeconds = '11/12/1981 05:45 AM';
                 this.templateVariablesCount = 4;
                 this.fieldDefinition = {
                     fieldType: 'ezdatetime',
