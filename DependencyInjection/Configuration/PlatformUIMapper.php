@@ -26,6 +26,20 @@ class PlatformUIMapper implements HookableConfigurationMapperInterface
 
     public function mapConfig( array &$scopeSettings, $currentScope, ContextualizerInterface $contextualizer )
     {
+        $this->mapConfigYui( $scopeSettings, $currentScope, $contextualizer );
+        $this->mapConfigCss( $scopeSettings, $currentScope, $contextualizer );
+    }
+
+    protected function mapConfigCss( array &$scopeSettings, $currentScope, ContextualizerInterface $contextualizer )
+    {
+        if ( isset( $scopeSettings['css']['files'] ) )
+        {
+            $scopeSettings['css.files'] = $scopeSettings['css']['files'];
+        }
+    }
+
+    protected function mapConfigYui( array &$scopeSettings, $currentScope, ContextualizerInterface $contextualizer )
+    {
         if ( isset( $scopeSettings['yui']['filter'] ) )
             $contextualizer->setContextualParameter( 'yui.filter', $currentScope, $scopeSettings['yui']['filter'] );
 
@@ -76,5 +90,7 @@ class PlatformUIMapper implements HookableConfigurationMapperInterface
             $contextualizer->mapConfigArray( "yui.modules.{$moduleName}.requires", $config, ContextualizerInterface::UNIQUE );
             $contextualizer->mapConfigArray( "yui.modules.{$moduleName}.dependencyOf", $config, ContextualizerInterface::UNIQUE );
         }
+
+        $contextualizer->mapConfigArray( 'css.files', $config, ContextualizerInterface::UNIQUE );
     }
 }

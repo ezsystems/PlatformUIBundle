@@ -40,14 +40,15 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
             $container->getExtensionConfig( 'assetic' )
         );
 
+        $defaultCssConfig = Yaml::parse( file_get_contents( __DIR__ . '/../../Resources/config/css.yml' ) );
         $defaultYuiConfig = Yaml::parse( file_get_contents( __DIR__ . '/../../Resources/config/yui.yml' ) );
         $this->assertSame(
-            array( $defaultYuiConfig ),
+            array( $defaultCssConfig, $defaultYuiConfig ),
             $container->getExtensionConfig( 'ez_platformui' )
         );
     }
 
-    public function testLoadNoConfig()
+    public function testLoadNoYuiConfig()
     {
         $this->load();
         $this->assertContainerBuilderHasParameter( 'ez_platformui.default.yui', array() );
@@ -55,7 +56,13 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter( 'ez_platformui.default.yui.filter', 'min' );
     }
 
-    public function testLoadWithConfig()
+    public function testLoadNoCssConfig()
+    {
+        $this->load();
+        $this->assertContainerBuilderHasParameter( 'ez_platformui.default.css.files', array() );
+    }
+
+    public function testLoadWithYuiConfig()
     {
         ConfigurationProcessor::setAvailableSiteAccesses( array( 'sa1', 'sa2', 'sa3' ) );
         ConfigurationProcessor::setGroupsBySiteAccess(
@@ -270,4 +277,50 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter( 'ez_platformui.sa_group.yui.modules.template-sagroup.path', $templateGroupPath );
         $this->assertContainerBuilderHasParameter( 'ez_platformui.sa_group.yui.modules.template-sagroup.type', $tplType );
     }
+
+    public function testLoadWithCssConfig()
+    {
+        ConfigurationProcessor::setAvailableSiteAccesses( array( 'sa1', 'sa2', 'sa3' ) );
+        ConfigurationProcessor::setGroupsBySiteAccess(
+            array(
+                'sa2' => array( 'sa_group' ),
+                'sa3' => array( 'sa_group' ),
+            )
+        );
+        $defaultFiles = array( 'def1.css', 'def2.css' );
+        $default = array( 'css' => array( 'files' => $defaultFiles ) );
+
+        $sa1Files = array( 'sa1.css' );
+        $sa1 = array( 'css' => array( 'files' => $sa1Files ) );
+        $sa2 = array();
+        $sa3Files = array( 'sa3.css' );
+        $sa3 = array( 'css' => array( 'files' => $sa3Files ) );
+        $groupFiles = array( 'group.css' );
+        $group = array( 'css' => array( 'files' => $groupFiles ) );
+
+        $this->load(
+            array(
+                'system' => array(
+                    'default' => $default,
+                    'sa1' => $sa1,
+                    'sa2' => $sa2,
+                    'sa3' => $sa3,
+                    'sa_group' => $group,
+                ),
+            )
+        );
+
+        $this->assertContainerBuilderHasParameter( "ez_platformui.default.css.files", $defaultFiles );
+        $this->assertContainerBuilderHasParameter(
+            "ez_platformui.sa1.css.files", array_merge( $defaultFiles, $sa1Files )
+        );
+        $this->assertContainerBuilderHasParameter(
+            "ez_platformui.sa2.css.files", array_merge( $defaultFiles, $groupFiles )
+        );
+        $this->assertContainerBuilderHasParameter(
+            "ez_platformui.sa3.css.files", array_merge( $defaultFiles, $groupFiles, $sa3Files )
+        );
+        $this->assertFalse( $this->container->has( 'ez_platformui.sa_group.css.files' ) );
+    }
+
 }
