@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
     var reportDir = "./Tests/report",
         instrumentDir = "./Tests/instrument",
+        environment = process.env,
         sourceFiles = [ // Syntax "!<whatever>" means - exclude whatever from the result set
             "./Resources/public/js/apps/*.js", "!./Resources/public/js/apps/*-min.js",
             "./Resources/public/js/apps/extensions/*.js", "!./Resources/public/js/apps/extensions/*-min.js",
@@ -36,6 +37,9 @@ module.exports = function(grunt) {
             instrumentDir,
             reportDir
         ];
+
+    environment.TZ = 'Europe/Paris';
+    environment.LC_TIME = 'en_US';
 
     grunt.initConfig({
         jshint: {
@@ -93,7 +97,10 @@ module.exports = function(grunt) {
                 options: {
                     stdout: true,
                     stderr: true,
-                    failOnError: true
+                    failOnError: true,
+                    execOptions: {
+                        env: environment,
+                    },
                 }
             },
             groverCoverage: {
@@ -101,7 +108,10 @@ module.exports = function(grunt) {
                 options: {
                     stdout: true,
                     stderr: true,
-                    failOnError: true
+                    failOnError: true,
+                    execOptions: {
+                        env: environment,
+                    },
                 }
             },
             livedoc: {
