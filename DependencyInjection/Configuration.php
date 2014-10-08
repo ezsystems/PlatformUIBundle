@@ -9,16 +9,35 @@
 namespace EzSystems\PlatformUIBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\Configuration as SiteAccessConfiguration;
 
 class Configuration extends SiteAccessConfiguration
 {
-    public function getConfigTreeBuilder()
+    /**
+     * Defines the expected configuration for the CSS
+     *
+     * @param $saNode \Symfony\Component\Config\Definition\Builder\NodeBuilder
+     */
+    protected function defineCss( NodeBuilder $saNode )
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root( 'ez_platformui' );
+        $saNode
+            ->arrayNode( 'css' )
+                ->children()
+                    ->arrayNode( 'files' )
+                        ->prototype( 'scalar' )->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
 
-        $saNode = $this->generateScopeBaseNode( $rootNode );
+    /**
+     * Defines the expected configuration for the YUI modules
+     *
+     * @param $saNode \Symfony\Component\Config\Definition\Builder\NodeBuilder
+     */
+    protected function defineYui( NodeBuilder $saNode )
+    {
         $saNode
             ->arrayNode( 'yui' )
                 ->children()
@@ -56,6 +75,17 @@ class Configuration extends SiteAccessConfiguration
                     ->end()
                 ->end()
             ->end();
+    }
+
+    public function getConfigTreeBuilder()
+    {
+        $treeBuilder = new TreeBuilder();
+        $rootNode = $treeBuilder->root( 'ez_platformui' );
+
+        $saNode = $this->generateScopeBaseNode( $rootNode );
+
+        $this->defineYui( $saNode );
+        $this->defineCss( $saNode );
 
         return $treeBuilder;
     }
