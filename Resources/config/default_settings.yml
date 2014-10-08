@@ -10,3 +10,4 @@ parameters:
     # ez_platformui.<scope>.yui.modules.<module_name>.path
     # Type ('js' or 'template')
     # ez_platformui.<scope>.yui.modules.<module_name>.type
+    ez_platformui.default.css.files: []
