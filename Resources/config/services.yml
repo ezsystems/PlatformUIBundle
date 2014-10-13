@@ -6,6 +6,8 @@ parameters:
     ezsystems.platformui.helper.section.class: EzSystems\PlatformUIBundle\Helper\SectionHelper
     ezsystems.platformui.controller.section.class: EzSystems\PlatformUIBundle\Controller\SectionController
     ezsystems.platformui.controller.template.class: EzSystems\PlatformUIBundle\Controller\TemplateController
+    ezsystems.platformui.form.type.section.class: EzSystems\PlatformUIBundle\Form\Type\SectionType
+    ezsystems.platformui.controller.pjax.class: EzSystems\PlatformUIBundle\Controller\PjaxController
 
 services:
     ezsystems.platformui.twig.yui_extension:
@@ -36,14 +38,28 @@ services:
             - @ezsystems.platformui.helper.systeminfo
         parent: ezpublish.controller.base
 
+    ezsystems.platformui.controller.pjax:
+        class: %ezsystems.platformui.controller.pjax.class%
+        parent: ezpublish.controller.base
+
+    ## Section related services
+    ezsystems.platformui.controller.section:
+        class: %ezsystems.platformui.controller.section.class%
+        arguments:
+            - @ezsystems.platformui.helper.section
+            - @ezsystems.platformui.form.type.section
+            - @router
+            - @translator
+            - @session
+        parent: ezpublish.controller.base
+
     ezsystems.platformui.helper.section:
         class: %ezsystems.platformui.helper.section.class%
         arguments:
             - @ezpublish.api.service.section
             - @security.context
 
-    ezsystems.platformui.controller.section:
-        class: %ezsystems.platformui.controller.section.class%
-        arguments:
-            - @ezsystems.platformui.helper.section
-        parent: ezpublish.controller.base
+    ezsystems.platformui.form.type.section:
+        class: %ezsystems.platformui.form.type.section.class%
+        tags:
+            - { name: form.section, alias: section }

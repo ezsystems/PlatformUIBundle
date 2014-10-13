@@ -8,7 +8,7 @@
     </header>
     <section class="ez-serverside-content">
         <div class="ez-table-data is-flexible">
-            <form class="ez-table-data-container" method="post" action"">
+            <form class="ez-table-data-container" method="post" action="">
                 <table class="pure-table pure-table-striped ez-selection-table" data-selection-buttons=".ez-remove-section-button">
                     <thead>
                         <tr>
@@ -39,7 +39,7 @@
                                 <a href="#" class="pure-button ez-button{% if not sectionInfo.canAssign %} pure-button-disabled{% endif %}" data-icon="&#xe619;">{{ 'section.assigned.to_subtree'|trans }}</a>
                             </td>
                             <td>
-                                <a href="#" class="pure-button ez-button{% if not sectionInfo.canEdit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'section.edit'|trans }}</a>
+                                <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="pure-button ez-button{% if not sectionInfo.canEdit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'section.edit'|trans }}</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -47,7 +47,7 @@
                 </table>
                 <p class="ez-table-data-buttons">
                     <button class="pure-button ez-button ez-remove-section-button" data-icon="&#xe615;" disabled="disabled">{{ 'section.remove.selected'|trans }}</button>
-                    <a href="#" class="pure-button ez-button{% if not canCreate %} pure-button-disabled{% endif %}" data-icon="&#xe616;">{{ 'section.new'|trans }}</a>
+                    <a href="{{ path('admin_sectioncreate') }}" class="pure-button ez-button{% if not canCreate %} pure-button-disabled{% endif %}" data-icon="&#xe616;">{{ 'section.new'|trans }}</a>
                 </p>
             </form>
         </div>

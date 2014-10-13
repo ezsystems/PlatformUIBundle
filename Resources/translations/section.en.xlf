@@ -50,6 +50,14 @@
         <source>section.content.translate</source>
         <target>Contents in this section</target>
       </trans-unit>
+      <trans-unit id="967b7e408a5f43a03f44c7cf479855db" resname="section.create.title">
+        <source>section.create.title</source>
+        <target>Creating a new section</target>
+      </trans-unit>
+      <trans-unit id="f3c4115b0fe3b3ada04e69e775c2db2c" resname="section.edit.title">
+        <source>section.edit.title</source>
+        <target>Editing the section "%sectionName%"</target>
+      </trans-unit>
       <trans-unit id="007cd5845351d36a9ec70173d2b44bb2" resname="section.name.label">
         <source>section.name.label</source>
         <target>Section name:</target>
@@ -61,6 +69,22 @@
       <trans-unit id="f066f9960df2f81907c3680c9148cef5" resname="section.id.label">
         <source>section.id.label</source>
         <target>Section ID:</target>
+      </trans-unit>
+      <trans-unit id="751bbc52342db46a046c52c4dc0b6b00" resname="section.label.edit">
+        <source>section.label.edit</source>
+        <target>Section edit</target>
+      </trans-unit>
+      <trans-unit id="60ff6d8b447be276d65797a5244d79c3" resname="section.error.id_already_exist">
+        <source>section.error.id_already_exist</source>
+        <target>A section with this identifier already exists, please enter a different one</target>
+      </trans-unit>
+      <trans-unit id="1" resname="section.not_found.title">
+        <source>section.not_found.title</source>
+        <target>Section can not be found</target>
+      </trans-unit>
+      <trans-unit id="b00c6ea9a4b5640994842367abddc8a2" resname="section.not_found.message">
+        <source>section.not_found.message</source>
+        <target>The section with the id "%sectionId%" can not be found.</target>
       </trans-unit>
     </body>
   </file>

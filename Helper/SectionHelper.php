@@ -8,21 +8,22 @@
 
 namespace EzSystems\PlatformUIBundle\Helper;
 
-use EzSystems\PlatformUIBundle\Helper\SectionHelperInterface;
 use eZ\Publish\API\Repository\SectionService;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute as AuthorizationAttribute;
+use EzSystems\PlatformUIBundle\Entity\EnrichedSection;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use eZ\Publish\API\Repository\Values\Content\Section;
+use EzSystems\PlatformUIBundle\Entity\Section as SectionEntity;
 
 class SectionHelper implements SectionHelperInterface
 {
     /**
-     * @var eZ\Publish\API\Repository\SectionService
+     * @var \eZ\Publish\API\Repository\SectionService
      */
     protected $sectionService;
 
     /**
-     * @var Symfony\Component\Security\Core\SecurityContextInterface
+     * @var \Symfony\Component\Security\Core\SecurityContextInterface
      */
     protected $securityContext;
 
@@ -43,14 +44,15 @@ class SectionHelper implements SectionHelperInterface
         $list = array();
         foreach ( $sections as $section )
         {
-            $list[] = array(
-                'section' => $section,
-                'contentCount' => $this->sectionService->countAssignedContents( $section ),
-                'canEdit' => $this->canUser( 'edit' ),
-                'canDelete' => $this->canUser( 'edit' ),
-                'canAssign' => $this->canUser( 'assign' ),
+            $list[] = new EnrichedSection(
+                $section,
+                $this->sectionService->countAssignedContents( $section ),
+                $this->canUser( 'edit' ),
+                $this->canUser( 'edit' ),
+                $this->canUser( 'assign' )
             );
         }
+
         return $list;
     }
 
@@ -93,5 +95,29 @@ class SectionHelper implements SectionHelperInterface
     public function contentCount( Section $section )
     {
         return $this->sectionService->countAssignedContents( $section );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createSection( SectionEntity $section )
+    {
+        $sectionCreateStruct = $this->sectionService->newSectionCreateStruct();
+        $sectionCreateStruct->identifier = $section->identifier;
+        $sectionCreateStruct->name = $section->name;
+
+        return $this->sectionService->createSection( $sectionCreateStruct );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function updateSection( Section $sectionToUpdate, SectionEntity $section)
+    {
+        $sectionUpdateStruct = $this->sectionService->newSectionUpdateStruct();
+        $sectionUpdateStruct->identifier = $section->identifier;
+        $sectionUpdateStruct->name = $section->name;
+
+        return $this->sectionService->updateSection( $sectionToUpdate, $sectionUpdateStruct );
     }
 }
