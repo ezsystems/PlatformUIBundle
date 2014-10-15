@@ -48,7 +48,14 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         _getViewParameters: function () {
             return {
                 user: this.get('app').get('user'),
+                menus: this.get('menus')
             };
         },
+    }, {
+        ATTRS: {
+            menus: {
+                value: []
+            }
+        }
     });
 });

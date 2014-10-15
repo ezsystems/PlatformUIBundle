@@ -56,7 +56,8 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 },
                 request = this.get('request'),
                 service = this,
-                location = this.get('location'), content = this.get('content'),
+                location = this.get('location'),
+                content = this.get('content'),
                 type = this.get('contentType'),
                 contentService = this.get('capi').getContentService();
 

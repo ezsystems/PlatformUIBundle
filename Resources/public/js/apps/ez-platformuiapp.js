@@ -731,7 +731,9 @@ YUI.add('ez-platformuiapp', function (Y) {
              */
             activeViewService: {
                 readOnly: true
-            }
+            },
+
+            activeLocationId: {}
         }
     });
 });

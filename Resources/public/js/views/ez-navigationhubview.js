@@ -85,6 +85,7 @@ YUI.add('ez-navigationhubview', function (Y) {
             this.after('activeNavigationChange', this._uiSetActiveNavigation);
             this.after('navigationFixedChange', this._uiHandleFixedNavigation);
             this.after('activeChange', this._onActiveUpdate);
+            this.after('menusChange', this._renderMenus);
         },
 
         /**
@@ -156,13 +157,21 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @return {eZ.NavigationHubView} the view itself
          */
         render: function () {
-            var container = this.get('container');
+            var container = this.get('container'),
+                menus;
 
-            container.setHTML(this.template({
+            Y.Array.each(this.get('menus'), function (menu) {
+                menus = menu.toJSON();
+            });
+
+            container.empty().setHTML(this.template({
                 user: this.get('user').toJSON(),
+                menus: menus
             }));
+
             this._setNavigationMenu(this.get('activeNavigation'));
             this._uiSetActiveNavigation();
+
             return this;
         },
 
@@ -241,26 +250,26 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @protected
          */
         _uiNavigationSize: function (e) {
-            var items, item,
-                more = this._navigationMenu.one('.ez-more'),
-                moreMenu = more.one('.ez-sub-menu'),
-                moreItems = moreMenu.all('li');
+            // var items, item,
+            //     more = this._navigationMenu.one('.ez-more'),
+            //     moreMenu = more.one('.ez-sub-menu'),
+            //     moreItems = moreMenu.all('li');
 
-            while ( this._navigationUnderflowed() ) {
-                if ( moreItems.isEmpty() ) {
-                    this._navigationMenu.removeClass('has-more');
-                    break;
-                } else {
-                    item = moreItems.shift();
-                    this._navigationMenu.insert(item, more);
-                }
-            }
-            items = this._getNavigationItems();
-            while ( !items.isEmpty() && this._navigationOverflowed() ) {
-                this._navigationMenu.addClass('has-more');
-                item = items.pop();
-                moreMenu.prepend(item);
-            }
+            // while ( this._navigationUnderflowed() ) {
+            //     if ( moreItems.isEmpty() ) {
+            //         this._navigationMenu.removeClass('has-more');
+            //         break;
+            //     } else {
+            //         item = moreItems.shift();
+            //         this._navigationMenu.insert(item, more);
+            //     }
+            // }
+            // items = this._getNavigationItems();
+            // while ( !items.isEmpty() && this._navigationOverflowed() ) {
+            //     this._navigationMenu.addClass('has-more');
+            //     item = items.pop();
+            //     moreMenu.prepend(item);
+            // }
         },
 
         /**
@@ -378,6 +387,12 @@ YUI.add('ez-navigationhubview', function (Y) {
             );
             return val;
         },
+
+        _renderMenus: function () {
+            if (this.get('menus')) {
+                this.render();
+            }
+        }
     }, {
         ATTRS: {
             /**
@@ -413,7 +428,147 @@ YUI.add('ez-navigationhubview', function (Y) {
              * @type eZ.User
              * @required
              */
-            user: {}
+            user: {},
+
+            menus: {
+                value: []
+            }
+
+            // menus: [{
+            //     className: 'ez-navigation-create',
+            //     index: 1,
+            //     items: [
+            //         {
+            //             className: 'ez-logo',
+            //             href: '/shell#/dashboard',
+            //             innerHTML: '<img src="bundles/ezplatformui/img/logo.png" alt="Logo eZ" />',
+            //             isParent: false,
+            //             isActive: false,
+            //             subItems: []
+            //         },
+            //         {
+            //             className: '',
+            //             href: '#',
+            //             innerHTML: 'Insite editing',
+            //             isParent: true,
+            //             isActive: false,
+            //             subItems: [
+            //                 {
+            //                     className: '',
+            //                     href: '#',
+            //                     innerHTML: 'Site 1',
+            //                     isParent: false,
+            //                     isActive: false,
+            //                     subItems: []
+            //                 },
+            //                 {
+            //                     className: '',
+            //                     href: '#',
+            //                     innerHTML: 'eZ Demo Site',
+            //                     isParent: false,
+            //                     isActive: false,
+            //                     subItems: []
+            //                 },
+            //             ]
+            //         }, {
+            //             className: '',
+            //             href: '/shell#/view/%2Fapi%2Fezp%2Fv2%2Fcontent%2Flocations%2F1%2F2', // href="{{path "viewLocation" id='/api/ezp/v2/content/locations/1/2'}}"
+            //             innerHTML: 'Content structure',
+            //             isParent: false,
+            //             isActive: true,
+            //             subItems: []
+            //         }, {
+            //             className: '',
+            //             href: '/shell#/view/%2Fapi%2Fezp%2Fv2%2Fcontent%2Flocations%2F1%2F43', // href="{{path "viewLocation" id='/api/ezp/v2/content/locations/1/43'}}"
+            //             innerHTML: 'Media library',
+            //             isParent: false,
+            //             isActive: false,
+            //             subItems: []
+            //         }, {
+            //             className: '',
+            //             href: '#',
+            //             innerHTML: 'Campaign',
+            //             isParent: false,
+            //             isActive: false,
+            //             subItems: []
+            //         }, {
+            //             className: '',
+            //             href: '#',
+            //             innerHTML: 'Extension',
+            //             isParent: false,
+            //             isActive: false,
+            //             subItems: []
+            //         }, {
+            //             className: '',
+            //             href: '#',
+            //             innerHTML: 'Another extension',
+            //             isParent: false,
+            //             isActive: false,
+            //             subItems: []
+            //         }, {
+            //             className: '',
+            //             href: '#',
+            //             innerHTML: 'Non-existing extension',
+            //             isParent: false,
+            //             isActive: false,
+            //             subItems: []
+            //         }
+            //     ]
+            // }, {
+            //     className: 'ez-navigation-optimize',
+            //     index: 2,
+            //     items: [
+            //         {
+            //             className: 'ez-logo',
+            //             href: '/shell#/dashboard',
+            //             innerHTML: '<img src="bundles/ezplatformui/img/logo.png" alt="Logo eZ" />',
+            //             isParent: false,
+            //             isActive: false,
+            //             subItems: []
+            //         }, {
+            //             className: '',
+            //             href: '#',
+            //             innerHTML: 'Optimize 1',
+            //             isParent: false,
+            //             isActive: false,
+            //             subItems: []
+            //         }, {
+            //             className: '',
+            //             href: '#',
+            //             innerHTML: 'Optimize 2',
+            //             isParent: false,
+            //             isActive: false,
+            //             subItems: []
+            //         }
+            //     ]
+            // }, {
+            //     className: 'ez-navigation-deliver',
+            //     index: 3,
+            //     items: [
+            //         {
+            //             className: 'ez-logo',
+            //             href: '/shell#/dashboard',
+            //             innerHTML: '<img src="bundles/ezplatformui/img/logo.png" alt="Logo eZ" />',
+            //             isParent: false,
+            //             isActive: false,
+            //             subItems: []
+            //         }, {
+            //             className: '',
+            //             href: '#',
+            //             innerHTML: 'Deliver 1',
+            //             isParent: false,
+            //             isActive: false,
+            //             subItems: []
+            //         }, {
+            //             className: '',
+            //             href: '#',
+            //             innerHTML: 'Deliver 2',
+            //             isParent: false,
+            //             isActive: false,
+            //             subItems: []
+            //         }
+            //     ]
+            // }]
         }
     });
 });
