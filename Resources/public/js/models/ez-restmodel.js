@@ -12,7 +12,8 @@ YUI.add('ez-restmodel', function (Y) {
 
     Y.namespace('eZ');
 
-    var L = Y.Lang;
+    var L = Y.Lang,
+        REST_ROOT_LEVEL_SEP = '.';
 
     /**
      * Abstract class for the model objects loaded from the
@@ -164,11 +165,33 @@ YUI.add('ez-restmodel', function (Y) {
                 return null;
             }
             if ( root ) {
-                Y.Array.each(root.split('.'), function (val) {
+                Y.Array.each(root.split(REST_ROOT_LEVEL_SEP), function (val) {
                     content = content[val];
                 });
             }
             return this._parseStruct(content, response.document);
+        },
+
+        /**
+         * Loads the model from a simple literal object. It takes care to apply
+         * the mapping described by the ATTRS_REST_MAP and LINKS_MAP.
+         *
+         * @method loadFromHash
+         * @params {Object} hash a literal object to import
+         */
+        loadFromHash: function (hash) {
+            var root = this.constructor.REST_STRUCT_ROOT,
+                doc = {},
+                tmp = doc;
+
+            if ( root ) {
+                Y.Array.each(root.split(REST_ROOT_LEVEL_SEP), function (val) {
+                    tmp[val] = {};
+                    tmp = tmp[val];
+                });
+            }
+            tmp = hash;
+            this.setAttrs(this._parseStruct(hash, doc));
         },
 
         /**

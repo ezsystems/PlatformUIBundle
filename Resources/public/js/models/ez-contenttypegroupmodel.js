@@ -43,6 +43,41 @@ YUI.add('ez-contenttypegroupmodel', function (Y) {
                 callback("Only read operation is supported at the moment");
             }
         },
+
+        /**
+         * Loads the content types in this group using the JS REST client. The
+         * content types list is stored in the `contentTypes` attribute.
+         *
+         * @method loadContentTypes
+         * @param {Object} options
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        loadContentTypes: function (options, callback) {
+            var typeService = options.api.getContentTypeService(),
+                group = this;
+
+            if ( this.get('contentTypes') ) {
+                return callback();
+            }
+            typeService.loadContentTypes(this.get('id'), function (error, response) {
+                var types = [];
+
+                if ( error ) {
+                    return callback(error);
+                }
+                Y.Array.each(response.document.ContentTypeInfoList.ContentType, function (typeHash) {
+                    var type = new Y.eZ.ContentType();
+
+                    type.set('id', typeHash._href);
+                    type.loadFromHash(typeHash);
+                    types.push(type);
+                });
+
+                group._set('contentTypes', types);
+                callback();
+            });
+        },
     }, {
         REST_STRUCT_ROOT: "ContentTypeGroup",
         ATTRS_REST_MAP: [
@@ -52,6 +87,18 @@ YUI.add('ez-contenttypegroupmodel', function (Y) {
             'ContentTypes'
         ],
         ATTRS: {
+            /**
+             * The list of content types in this group. This attribute is lazily
+             * filled by loadContentTypes
+             *
+             * @attribute contentTypes
+             * @default undefined
+             * @type Array
+             */
+            contentTypes: {
+                readOnly: true,
+            },
+
             /**
              * The content type group's creation date
              *
