@@ -277,8 +277,25 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
                 fieldDefinitions.page_meta.descriptions["eng-GB"]
             );
             /* jshint camelcase: true */
-        }
+        },
 
+        "Should ignore an invalid fieldDefinitions value": function () {
+            this.model.set('fieldDefinitions', "Something from nothing");
+
+            Y.Assert.isObject(
+                this.model.get('fieldDefinitions'),
+                "The default value of fieldDefinitions should be kept"
+            );
+        },
+
+        "Should ignore a falsy fieldDefinitions value": function () {
+            this.model.set('fieldDefinitions', undefined);
+
+            Y.Assert.isObject(
+                this.model.get('fieldDefinitions'),
+                "The default value of fieldDefinitions should be kept"
+            );
+        },
     }));
 
     Y.Test.Runner.setName("eZ ContentType Model tests");

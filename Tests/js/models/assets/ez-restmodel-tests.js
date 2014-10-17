@@ -29,7 +29,7 @@ YUI.add('ez-restmodel-tests', function (Y) {
             }
         },
         ATTRS_REST_MAP: [
-            "name", {"restId": "newIdName"}
+            "name", {"restId": "newIdName"}, "localized", "date"
         ],
         LINKS_MAP: [
             'Link1', 'Link2'
@@ -59,7 +59,7 @@ YUI.add('ez-restmodel-tests', function (Y) {
             }
         },
         ATTRS_REST_MAP: [
-            "name", {"restId": "newIdName"}
+            "name", {"restId": "newIdName"}, "localized", "date"
         ],
         LINKS_MAP: [
             'Link1', 'Link2'
@@ -298,9 +298,54 @@ YUI.add('ez-restmodel-tests', function (Y) {
                 m.get('resources').Link3,
                 "Link3 should not be imported"
             );
-        }
+        },
 
+        _loadFromHashTest: function (m) {
+            var hash = {
+                name: "Something from nothing",
+                restId: 42,
+                bool: "false",
+                date: "2014-10-17T11:21:38+02:00",
+                localized: {
+                    value: [{
+                        '_languageCode': 'fre-FR',
+                        '#text': 'Sorti le 17/10/2014'
+                    }, {
+                        '_languageCode': 'eng-GB',
+                        '#text': 'Released on 2014-10-17'
+                    }],
+                },
+                Link1: {
+                    '_href': '/link1',
+                },
+            };
 
+            m.loadFromHash(hash);
+
+            Y.Assert.areEqual(hash.name, m.get('name'), "The name should be parsed");
+            Y.Assert.areEqual(hash.restId, m.get('newIdName'), "The newIdName should be parsed as restId");
+            Y.Assert.areEqual(false, m.get('bool'), "The bool should transform to a boolean value");
+
+            Y.Assert.isInstanceOf(Date, m.get('date'), "A date object should be created");
+            Y.Assert.areEqual(+(new Date(hash.date)), +m.get('date'), "The date should be parsed");
+
+            Y.Assert.areEqual(
+                hash.localized.length, m.get('localized').length,
+                "The localized date should be parsed"
+            );
+            Y.Assert.areEqual(hash.localized.value[0]['#text'], m.get('localized')['fre-FR']);
+            Y.Assert.areEqual(hash.localized.value[1]['#text'], m.get('localized')['eng-GB']);
+
+            Y.Assert.areEqual(hash.Link1._href, m.get('resources').Link1, "The link should be parsed");
+        },
+
+        "Should load the model from the provided hash": function () {
+            this._loadFromHashTest(this.model);
+        },
+
+        "Should load the deep model from the provided hash": function () {
+            this._loadFromHashTest(this.deepModel);
+        },
     });
 
     resetTest = new Y.Test.Case({

@@ -12,6 +12,8 @@ YUI.add('ez-contenttypemodel', function (Y) {
 
     Y.namespace('eZ');
 
+    var L = Y.Lang;
+
     /**
      * Content type model
      *
@@ -299,6 +301,10 @@ YUI.add('ez-contenttypemodel', function (Y) {
                 setter: function (val) {
                     var that = this,
                         newval = {};
+
+                    if ( !val || !L.isObject(val) ) {
+                        return Y.Attribute.INVALID_VALUE;
+                    }
 
                     if ( val.FieldDefinition ) {
                         // val comes from the REST API, it needs to be

@@ -26,9 +26,13 @@
         modules: {
             "ez-contenttypegroupmodel": {
                 requires: [
-                    'ez-restmodel', 'array-extras',
+                    'ez-restmodel', 'array-extras', 'ez-contenttypemodel',
                 ],
                 fullpath: "../../../Resources/public/js/models/ez-contenttypegroupmodel.js"
+            },
+            "ez-contenttypemodel": {
+                requires: ['ez-restmodel'],
+                fullpath: "../../../Resources/public/js/models/ez-contenttypemodel.js"
             },
             "ez-restmodel": {
                 requires: [
