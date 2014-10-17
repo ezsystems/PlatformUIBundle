@@ -388,7 +388,6 @@ YUI.add('ez-restmodel-tests', function (Y) {
             Y.Assert.areEqual(idValue, this.model.get('id'), "The id should be kept");
             Y.Assert.areEqual("", this.model.get('name'), "The name should be resetted to its default value");
         },
-
     });
 
     Y.Test.Runner.setName("eZ Rest Model tests");
