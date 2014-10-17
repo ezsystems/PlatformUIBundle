@@ -313,6 +313,9 @@ system:
                 ez-contenttypemodel:
                     requires: ['ez-restmodel']
                     path: %ez_platformui.public_dir%/js/models/ez-contenttypemodel.js
+                ez-contenttypegroupmodel:
+                    requires: ['ez-restmodel']
+                    path: %ez_platformui.public_dir%/js/models/ez-contenttypegroupmodel.js
                 ez-contenttree:
                     requires: ['tree', 'tree-openable', 'tree-selectable', 'tree-lazy']
                     path: %ez_platformui.public_dir%/js/models/structs/ez-contenttree.js
