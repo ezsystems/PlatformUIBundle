@@ -24,7 +24,7 @@ YUI.add('ez-contentcreateplugin', function (Y) {
         initializer: function () {
             this._extendRouting();
             this.onHostEvent('*:createContent', this._handleCreateContentAction);
-            this.afterHostEvent('createContentActionView:activeChange', this._getContentTypesList);
+            this.afterHostEvent('*:createContentAction', this._getContentTypes);
         },
 
         _extendRouting: function () {
@@ -49,98 +49,50 @@ YUI.add('ez-contentcreateplugin', function (Y) {
         },
 
         /**
-         * Fetches content groups list and sends it to the target view
+         * Fetches the content type groups and the content types.
          *
          * @protected
          * @method _getContentTypesList
          * @param {Object} event event facade
          */
-        _getContentTypesList: function (event) {
-            var that = this,
-                capi = this.get('host').get('capi'),
-                app = this.get('host').get('app'),
-                contentGroupsList = this.get('contentGroupsList'),
-                responseData = {
-                    groups: [],
-                    types: [],
-                    source: []
-                };
+        _getContentTypes: function (event) {
+            var capi = this.get('host').get('capi'),
+                view = event.target,
+                typeService = this.get('host').get('capi').getContentTypeService();
 
-            if (!contentGroupsList) {
-                new Y.Promise(function (resolve, reject) {
-                    app.set('loading', true);
-                    capi.getContentTypeService().loadContentTypeGroups(function (error, response) {
-                        if (error) {
-                            reject(error);
-                        }
-
-                        resolve(response);
-                    });
-                }).then(function (response) {
-                    var contentTypeGroups = response.document.ContentTypeGroupList.ContentTypeGroup,
-                        contentTypeService = capi.getContentTypeService(),
-                        contentTypePromises = [];
-
-                    Y.Array.each(contentTypeGroups, function (group) {
-                        responseData[group.id] = {identifier: group.identifier};
-                        responseData.groups.push({
-                            id: group.id,
-                            name: group.identifier
-                        });
-
-                        contentTypePromises.push(new Y.Promise(function (resolve, reject) {
-                            contentTypeService.loadContentTypes(group._href, function (error, xhr) {
-                                if (error) {
-                                    reject(error);
-                                }
-
-                                xhr.groupId = group.id;
-
-                                resolve(xhr);
-                            });
-                        }));
-                    });
-
-                    return Y.Promise.all(contentTypePromises);
-                }, that._handlePromiseError)
-                .then(function (contentTypeGroups) {
-                    Y.Array.each(contentTypeGroups, function (group) {
-                        var contentTypes = group.document.ContentTypeInfoList.ContentType;
-
-                        Y.Array.each(contentTypes, function (type) {
-                            var typeName = type.names.value[0]['#text'];
-
-                            responseData.types[typeName] = {
-                                id: type.id,
-                                groupId: group.groupId,
-                                identifier: type.identifier,
-                                name: typeName,
-                                lang: type.mainLanguageCode
-                            };
-
-                            responseData.source.push(typeName);
-                        });
-                    });
-
-                    app.set('loading', false);
-                    that.set('contentGroupsList', responseData);
-                    event.target.set('contentGroupsList', responseData);
-                }, that._handlePromiseError);
-            } else {
-                event.target.set('contentGroupsList', contentGroupsList);
+            if ( !view.get('expanded') ) {
+                return;
             }
-        },
+            typeService.loadContentTypeGroups(function (error, response) {
+                var groups = [], hasError = false,
+                    parallel = new Y.Parallel();
 
-        /**
-         * Promise error handler. Displays an error message in the console.
-         *
-         * @protected
-         * @method _handlePromiseError
-         * @param {Object} error
-         */
-        _handlePromiseError: function (error) {
-            this.get('host').get('app').set('loading', false);
-            console.error('Promise has been rejected:', error);
+                if ( error ) {
+                    return view.set('loadingError', true);
+                }
+
+                Y.Array.each(response.document.ContentTypeGroupList.ContentTypeGroup, function (groupHash) {
+                    var group = new Y.eZ.ContentTypeGroup();
+
+                    group.set('id', groupHash._href);
+                    group.loadFromHash(groupHash);
+                    groups.push(group);
+
+                    group.loadContentTypes({api: capi}, parallel.add(function (error) {
+                        if ( error ) {
+                            hasError = true;
+                        }
+                    }));
+                });
+
+                parallel.done(function () {
+                    if ( hasError ) {
+                        view.set('loadingError', true);
+                    } else {
+                        view.set('contentTypeGroups', groups);
+                    }
+                });
+            });
         },
 
         /**
@@ -163,15 +115,6 @@ YUI.add('ez-contentcreateplugin', function (Y) {
         }
     }, {
         NS: 'contentCreate',
-        ATTRS: {
-            /**
-             * Stores content type data as a result of AJAX request
-             *
-             * @attribute contentGroupsList
-             * @type {Object}
-             */
-            contentGroupsList: {}
-        }
     });
 
     Y.eZ.PluginRegistry.registerPlugin(

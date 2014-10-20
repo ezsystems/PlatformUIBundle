@@ -133,7 +133,7 @@ YUI.add('ez-createcontentfilterview', function (Y) {
                 fragment = Y.one(document.createDocumentFragment());
 
             Y.Array.each(this.get('groups'), function (group) {
-                fragment.append(this._uiCreateGroupNode(group.id, group.name));
+                fragment.append(this._uiCreateGroupNode(group.get('id'), group.get('identifier')));
             }, this);
 
             groupsContainer.empty().append(fragment);
@@ -168,7 +168,7 @@ YUI.add('ez-createcontentfilterview', function (Y) {
         _handleToggleCheckboxSelection: function (event) {
             var checkbox = event.currentTarget.one('[type="checkbox"]'),
                 selectedGroups = this.get('selectedGroups'),
-                groupId = parseInt(event.currentTarget.getAttribute('data-group-id'), 10),
+                groupId = event.currentTarget.getAttribute('data-group-id'),
                 index;
 
             event.preventDefault();
@@ -255,20 +255,22 @@ YUI.add('ez-createcontentfilterview', function (Y) {
          * @param {Object} event event facade
          */
         _handleSelect: function (event) {
-            var selectedType = this.get('extendedSource')[event.text];
+            var selectedTypeInfo = this.get('extendedSource')[event.text];
 
             /**
             * Fired when a user selects a content type.
-            * Passes information about a selected content type and its language
-            * to prepare a content create form view
+            * Passes the selected content type and language in which the content
+            * should be created. The language is hardcoded for now.
             *
             * @event createContent
-            * @param {String} contentTypeIdentifier a selected content type's name
-            * @param {String} contentTypeLang a selected content type's language
+            * @param {eZ.ContentType} contentType the content type to use to
+            * create the content
+            * @param {String} languageCode the language code of the language in
+            * which the content should be created
             */
             this.fire('createContent', {
-                contentTypeIdentifier: selectedType.identifier,
-                contentTypeLang: selectedType.lang
+                contentType: selectedTypeInfo.contentType,
+                languageCode: 'eng-GB', // hardcoded for now
             });
         }
     }, {
