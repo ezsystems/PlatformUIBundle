@@ -26,7 +26,7 @@ YUI.add('ez-createcontentactionview', function (Y) {
         initializer: function () {
             this.containerTemplate = '<div class="ez-view-buttonactionview ' + MODULE_CLASS_NAME + '"/>';
             this.after({
-                'contentGroupsListChange': this._handleContentGroupsListChange,
+                'contentTypeGroupsChange': this._handleContentTypeGroupsChange,
                 'activeChange': this._handleActiveChange,
                 'createContentAction': this._toggleExpanded
             });
@@ -75,19 +75,33 @@ YUI.add('ez-createcontentactionview', function (Y) {
         },
 
         /**
-         * Handler for contentGroupsListChange event
+         * Handler for contentTypeGroupsChange event
          * Updates data properties of the {{#crossLink "Y.eZ.CreateContentFilterView"}}Y.eZ.CreateContentFilterView{{/#crossLink}}
          *
-         * @method _handleContentGroupsListChange
+         * @method _handleContentTypeGroupsChange
          */
-        _handleContentGroupsListChange: function () {
+        _handleContentTypeGroupsChange: function () {
             var contentFilter = this.get('contentFilter'),
-                typesData = this.get('contentGroupsList');
+                groups = this.get('contentTypeGroups'),
+                typeNames = [],
+                types = {};
+
+            Y.Array.each(groups, function (group) {
+                Y.Array.each(group.get('contentTypes'), function (type) {
+                    var name = type.get('names')['eng-GB'];
+
+                    typeNames.push(name);
+                    types[name] = { // TODO this is buggy, the content types names are not unique...
+                        contentType: type,
+                        groupId: group.get('id'),
+                    };
+                });
+            });
 
             contentFilter.setAttrs({
-                'groups': typesData.groups,
-                'source': typesData.source,
-                'extendedSource': typesData.types
+                'groups': groups,
+                'source': typeNames,
+                'extendedSource': types
             }).resetFilter();
 
             return this;
@@ -117,12 +131,12 @@ YUI.add('ez-createcontentactionview', function (Y) {
     }, {
         ATTRS: {
             /**
-             * Stores content type data as a result of AJAX request
+             * Stores an array of content type groups
              *
-             * @attribute contentGroupsList
-             * @type {Object}
+             * @attribute contentTypeGroups
+             * @type Array
              */
-            contentGroupsList: {},
+            contentTypeGroups: {},
 
             /**
              * Stores {{#crossLink "Y.eZ.CreateContentFilterView"}}Y.eZ.CreateContentFilterView{{/#crossLink}} instance
