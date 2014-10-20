@@ -3,238 +3,246 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contentcreateplugin-tests', function (Y) {
-    var tests, eventsTest, registerTest;
+    var createContentEvent, registerTest;
 
-    tests = new Y.Test.Case({
-        name: 'eZ Content Create Plugin tests',
-
-        setUp: function () {
-            this.root = '/shell';
-            this.addContentRouteName = 'addContent';
-            this.app = new Y.eZ.PlatformUIApp({
-                container: '.app',
-                viewContainer: '.view-container',
-                root: this.root
-            });
-
-            this.service = new Y.eZ.LocationViewViewService({app: this.app});
-            this.plugin = new Y.eZ.Plugin.ContentCreate({host: this.service});
-        },
-
-        tearDown: function () {
-            this.service.destroy();
-            this.plugin.destroy();
-            this.app.destroy();
-            delete this.service;
-            delete this.plugin;
-            delete this.app;
-        },
-
-        'Should add the `addContent` route to the PlatformUI app': function () {
-            var routes,
-                that = this,
-                routeFound = false;
-
-            routes = this.app.get('routes');
-
-            routeFound = Y.Array.find(routes, function (route) {
-                return route.name === that.addContentRouteName;
-            });
-
-            Y.Assert.isObject(routeFound, 'The `addContent` route should be added to the PlatformUI app');
-        },
-
-        'Should use contentEditView view': function () {
-            var routes,
-                that = this,
-                viewName = 'contentEditView',
-                routeFound = false;
-
-            routes = this.app.get('routes');
-
-            routeFound = Y.Array.find(routes, function (route) {
-                return route.name === that.addContentRouteName;
-            });
-
-            Y.Assert.areEqual(
-                viewName,
-                routeFound.view,
-                'The `addContent` route should point to contentEditView view'
-            );
-        },
-
-        'Should use contentEditViewService service': function () {
-            var routes,
-                that = this,
-                routeFound = false;
-
-            routes = this.app.get('routes');
-
-            routeFound = Y.Array.find(routes, function (route) {
-                return route.name === that.addContentRouteName;
-            });
-
-            Y.Assert.areEqual(
-                'contentEditViewService',
-                routeFound.service.NAME,
-                'The `addContent` route should use contentEditViewService service'
-            );
-        },
-
-        'Should set next view service parameters': function () {
-            var service = new Y.eZ.LocationViewViewService({plugins: [this.plugin]}),
-                newService = new Y.eZ.ViewService(),
-                locationId = '/api/ezp/v2/content/locations/1/2/90/93';
-
-            service.get('location').set('id', locationId);
-            service.setNextViewServiceParameters(newService);
-        }
-    });
-
-    eventsTest = new Y.Test.Case({
-        name: 'eZ Create Content plugin events tests',
+    createContentEvent = new Y.Test.Case({
+        name: 'eZ Create Content plugin create content event tests',
 
         setUp: function () {
-            var that = this;
-
             this.capiMock = new Y.Test.Mock();
             this.contentTypeServiceMock = new Y.Test.Mock();
 
-            this.root = '/shell';
-            this.addContentRouteName = 'addContent';
-            this.app = new Y.eZ.PlatformUIApp({
-                container: '.app',
-                viewContainer: '.view-container',
-                root: this.root
-            });
-
             Y.Mock.expect(this.capiMock, {
                 method: 'getContentTypeService',
-                run: function () {
-                    return that.contentTypeServiceMock;
-                }
+                returns: this.contentTypeServiceMock,
             });
 
-            this.service = new Y.eZ.LocationViewViewService({
+            this.service = new Y.eZ.ViewService({
                 app: this.app,
                 capi: this.capiMock
             });
+            this.view = new Y.View();
+            this.view.set('loadingError', false);
             this.plugin = new Y.eZ.Plugin.ContentCreate({host: this.service});
+
+            this.view.addTarget(this.service);
+
+            this.responseGroups = {
+                "ContentTypeGroupList": {
+                    "_media-type": "application\/vnd.ez.api.ContentTypeGroupList+json",
+                    "_href": "\/api\/ezp\/v2\/content\/typegroups",
+                    "ContentTypeGroup": [
+                        {
+                            "_media-type": "application\/vnd.ez.api.ContentTypeGroup+json",
+                            "_href": "\/api\/ezp\/v2\/content\/typegroups\/1",
+                            "id": 1,
+                            "identifier": "Content",
+                            "created": "2002-09-05T11:08:48+02:00",
+                            "modified": "2002-10-06T18:35:06+02:00",
+                            "ContentTypes": {
+                                "_media-type": "application\/vnd.ez.api.ContentTypeInfoList+json",
+                                "_href": "\/api\/ezp\/v2\/content\/typegroups\/1\/types"
+                            }
+                        },
+                        {
+                            "_media-type": "application\/vnd.ez.api.ContentTypeGroup+json",
+                            "_href": "\/api\/ezp\/v2\/content\/typegroups\/2",
+                            "id": 2,
+                            "identifier": "Users",
+                            "created": "2002-09-05T11:09:01+02:00",
+                            "modified": "2002-10-06T18:35:13+02:00",
+                            "ContentTypes": {
+                                "_media-type": "application\/vnd.ez.api.ContentTypeInfoList+json",
+                                "_href": "\/api\/ezp\/v2\/content\/typegroups\/2\/types"
+                            }
+                        }
+                    ]
+                }
+            };
+            this.responseTypes = {
+                "ContentTypeInfoList": {
+                    "_media-type": "application\/vnd.ez.api.ContentTypeInfoList+json",
+                    "_href": "\/api\/ezp\/v2\/content\/typegroups\/2\/types",
+                    "ContentType": [
+                        {
+                            "_media-type": "application\/vnd.ez.api.ContentTypeInfo+json",
+                            "_href": "\/api\/ezp\/v2\/content\/types\/3",
+                            "id": 3,
+                            "status": "DEFINED",
+                            "identifier": "user_group",
+                            "names": {
+                                "value": [
+                                    {
+                                        "_languageCode": "eng-GB",
+                                        "#text": "User group"
+                                    }
+                                ]
+                            },
+                            "creationDate": "2002-06-18T11:21:38+02:00",
+                            "modificationDate": "2003-03-24T09:32:23+01:00",
+                            "Creator": {
+                                "_media-type": "application\/vnd.ez.api.User+json",
+                                "_href": "\/api\/ezp\/v2\/user\/users\/14"
+                            },
+                            "Modifier": {
+                                "_media-type": "application\/vnd.ez.api.User+json",
+                                "_href": "\/api\/ezp\/v2\/user\/users\/14"
+                            },
+                            "Groups": {
+                                "_media-type": "application\/vnd.ez.api.ContentTypeGroupRefList+json",
+                                "_href": "\/api\/ezp\/v2\/content\/types\/3\/groups"
+                            },
+                            "Draft": {
+                                "_media-type": "application\/vnd.ez.api.ContentType+json",
+                                "_href": "\/api\/ezp\/v2\/content\/types\/3\/draft"
+                            },
+                            "remoteId": "25b4268cdcd01921b808a0d854b877ef",
+                            "urlAliasSchema": null,
+                            "nameSchema": "<name>",
+                            "isContainer": true,
+                            "mainLanguageCode": "eng-GB",
+                            "defaultAlwaysAvailable": true,
+                            "defaultSortField": "PATH",
+                            "defaultSortOrder": "ASC"
+                        }
+                    ]
+                }
+            };
+
         },
 
         tearDown: function () {
             this.service.destroy();
             this.plugin.destroy();
-            this.app.destroy();
+            this.view.destroy();
             delete this.service;
+            delete this.view;
             delete this.plugin;
-            delete this.app;
             delete this.contentTypeServiceMock;
             delete this.capiMock;
+            delete this.responseGroups;
         },
 
-        'Should navigate to add content form': function () {
-            var contentTypeLang = 'eng-GB',
-                contentTypeIdentifier = 'article',
-                locationId = '/api/ezp/v2/content/locations/1/2/90/93',
-                host = this.plugin.get('host');
+        'Should not load the content types if the view is not expanded': function () {
+            Y.Mock.expect(this.contentTypeServiceMock, {
+                method: 'loadContentTypeGroups',
+                callCount: 0,
+            });
+            this.view.set('expanded', false);
+            this.view.fire('whatever:createContentAction');
 
-            Y.Mock.expect(this.app, {
-                method: 'routeUri',
-                args: [this.addContentRouteName, Y.Mock.Value.Object],
-                run: function (route, params) {
-                    Y.Assert.areEqual(contentTypeLang, params.contentTypeLang);
-                    Y.Assert.areEqual(contentTypeIdentifier, params.contentTypeIdentifier);
+            Y.Mock.verify(this.contentTypeServiceMock);
+        },
 
-                    return locationId;
+        'Should load the content type groups and content types': function () {
+            var that = this,
+                groups;
+
+            Y.Mock.expect(this.contentTypeServiceMock, {
+                method: 'loadContentTypeGroups',
+                args: [Y.Mock.Value.Function],
+                run: function (callback) {
+                    callback(false, {document: that.responseGroups});
+                },
+            });
+
+            Y.Mock.expect(this.contentTypeServiceMock, {
+                method: 'loadContentTypes',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Function],
+                run: function (id, callback) {
+                    callback(false, {document: that.responseTypes});
                 }
             });
-            Y.Mock.expect(this.app, {
-                method: 'navigate',
-                args: [locationId]
-            });
 
-            host.get('location').set('id', locationId);
+            this.view.set('expanded', true);
+            this.view.fire('whatever:createContentAction');
 
-            this.service.fire('createContent', {
-                contentTypeLang: contentTypeLang,
-                contentTypeIdentifier: contentTypeIdentifier
+            Y.Assert.isFalse(
+                this.view.get('loadingError'),
+                "The loading error flag of the view should be set to false"
+            );
+            groups = this.view.get('contentTypeGroups');
+
+            Y.Assert.areEqual(
+                this.responseGroups.ContentTypeGroupList.ContentTypeGroup.length,
+                groups.length,
+                "The groups should be available in the view"
+            );
+
+            Y.Array.each(this.responseGroups.ContentTypeGroupList.ContentTypeGroup, function (groupInfo, i) {
+                Y.Assert.areEqual(
+                    groupInfo._href,
+                    groups[i].get('id'),
+                    "The content type groups should be parsed"
+                );
+                Y.Assert.areEqual(
+                    groupInfo.identifier,
+                    groups[i].get('identifier'),
+                    "The content type groups should be parsed"
+                );
+                Y.Assert.areEqual(
+                    that.responseTypes.ContentTypeInfoList.ContentType.length,
+                    groups[i].get('contentTypes').length,
+                    "THe content types should be loaded"
+                );
             });
         },
 
-        'Should get content types list without using REST': function () {
-            var host = this.plugin.get('host'),
-                contentGroupsList = {};
+        'Should handle the error while loading the group': function () {
+            Y.Mock.expect(this.contentTypeServiceMock, {
+                method: 'loadContentTypeGroups',
+                args: [Y.Mock.Value.Function],
+                run: function (callback) {
+                    callback(true);
+                },
+            });
 
-            this.plugin.set('contentGroupsList', contentGroupsList);
-            host.fire('createContentActionView:activeChange');
+            this.view.set('expanded', true);
+            this.view.fire('whatever:createContentAction');
 
-            Y.Assert.areSame(
-                contentGroupsList,
-                host.get('contentGroupsList'),
-                'The service\'s contentGroupsList property value should be set correctly'
+            Y.Assert.isTrue(
+                this.view.get('loadingError'),
+                "The loading error flag of the view should be set to true"
             );
         },
 
-        'Should get content types list using REST': function () {
-            var host = this.plugin.get('host');
+        'Should handle the error while loading the content types': function () {
+            var that = this;
 
             Y.Mock.expect(this.contentTypeServiceMock, {
                 method: 'loadContentTypeGroups',
                 args: [Y.Mock.Value.Function],
                 run: function (callback) {
-                    return callback(false, {
-                        document: {
-                            ContentTypeGroupList: {
-                                ContentTypeGroup: [{id: 1, identifier: 'Content'}]
-                            }
-                        }
-                    });
+                    callback(false, {document: that.responseGroups});
+                },
+            });
+
+            Y.Mock.expect(this.contentTypeServiceMock, {
+                method: 'loadContentTypes',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Function],
+                run: function (id, callback) {
+                    callback(true);
                 }
             });
 
-            host.fire('createContentActionView:activeChange');
+            this.view.set('expanded', true);
+            this.view.fire('whatever:createContentAction');
 
-            Y.Mock.verify(this.capiMock);
-            Y.Mock.verify(this.contentTypeServiceMock);
+            Y.Assert.isTrue(
+                this.view.get('loadingError'),
+                "The loading error flag of the view should be set to true"
+            );
         },
-
-        'Should throw an error when REST request fails': function () {
-            var host = this.plugin.get('host'),
-                errorObject = {message: 'Error test'};
-
-            Y.Mock.expect(this.contentTypeServiceMock, {
-                method: 'loadContentTypeGroups',
-                args: [Y.Mock.Value.Function],
-                run: function (callback) {
-                    return callback(true, errorObject);
-                }
-            });
-
-            host.fire('createContentActionView:activeChange');
-
-            Y.Mock.verify(this.capiMock);
-            Y.Mock.verify(this.contentTypeServiceMock);
-        }
     });
+
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.ContentCreate;
     registerTest.components = ['locationViewViewService'];
 
     Y.Test.Runner.setName('eZ Content Create Plugin tests');
-    Y.Test.Runner.add(tests);
-    Y.Test.Runner.add(eventsTest);
+    Y.Test.Runner.add(createContentEvent);
     Y.Test.Runner.add(registerTest);
-}, '', {requires: [
-    'test',
-    'base',
-    'ez-contentcreateplugin',
-    'ez-pluginregister-tests',
-    'ez-locationviewviewservice',
-    'ez-platformuiapp',
-    'ez-contenteditviewservice',
-    'ez-viewservice',
-    'array-extras',
-    'promise'
-]});
+}, '', {
+    requires: ['test', 'ez-contentcreateplugin', 'ez-pluginregister-tests', 'view']
+});
