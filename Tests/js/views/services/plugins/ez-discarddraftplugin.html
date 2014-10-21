@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Discard Draft Plugin tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="../../../assets/pluginregister-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-discarddraftplugin-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-discarddraftplugin'],
+        filter: loaderFilter,
+        modules: {
+            "ez-discarddraftplugin": {
+                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-discarddraftplugin.js"
+            },
+            "ez-viewservicebaseplugin": {
+                requires: ['plugin', 'base'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-discarddraftplugin-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
