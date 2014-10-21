@@ -10,6 +10,7 @@ namespace EzSystems\PlatformUIBundle\Helper;
 
 use eZ\Publish\API\Repository\Values\Content\Section;
 use EzSystems\PlatformUIBundle\Entity\Section as SectionEntity;
+use EzSystems\PlatformUIBundle\Entity\SectionList;
 
 /**
  * Interface SectionHelperInterface
@@ -23,7 +24,7 @@ interface SectionHelperInterface
     /**
      * Returns the section list
      *
-     * @return \EzSystems\PlatformUIBundle\Entity\EnrichedSection[]
+     * @return array[] key is section id and value a \EzSystems\PlatformUIBundle\Entity\SectionListItem
      */
     public function getSectionList();
 
@@ -81,5 +82,13 @@ interface SectionHelperInterface
      * @return \eZ\Publish\API\Repository\Values\Content\Section The updated section
      */
     public function updateSection( Section $sectionToUpdate, SectionEntity $section );
+
+    /**
+     * Removes sections
+     *
+     * @param \EzSystems\PlatformUIBundle\Entity\SectionList $sectionList sections to be deleted
+     *
+     */
+    public function deleteSectionList( SectionList $sectionList );
 
 }

@@ -7,6 +7,7 @@ parameters:
     ezsystems.platformui.controller.section.class: EzSystems\PlatformUIBundle\Controller\SectionController
     ezsystems.platformui.controller.template.class: EzSystems\PlatformUIBundle\Controller\TemplateController
     ezsystems.platformui.form.type.section.class: EzSystems\PlatformUIBundle\Form\Type\SectionType
+    ezsystems.platformui.form.type.section_list.class: EzSystems\PlatformUIBundle\Form\Type\SectionListType
     ezsystems.platformui.controller.pjax.class: EzSystems\PlatformUIBundle\Controller\PjaxController
 
 services:
@@ -50,7 +51,7 @@ services:
             - @ezsystems.platformui.form.type.section
             - @router
             - @translator
-            - @session
+            - @ezsystems.platformui.form.type.section_list
         parent: ezpublish.controller.base
 
     ezsystems.platformui.helper.section:
@@ -63,3 +64,13 @@ services:
         class: %ezsystems.platformui.form.type.section.class%
         tags:
             - { name: form.section, alias: section }
+        arguments:
+            - @translator
+
+    ezsystems.platformui.form.type.section_list:
+        class: %ezsystems.platformui.form.type.section_list.class%
+        tags:
+            - { name: form.section, alias: section_list }
+        arguments:
+            - @ezsystems.platformui.helper.section
+            - @translator

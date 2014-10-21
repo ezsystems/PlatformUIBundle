@@ -58,4 +58,9 @@ admin_sectionedit:
     defaults:
         _controller: ezsystems.platformui.controller.section:editAction
     requirements:
-            sectionId: \d+
+        sectionId: \d+
+
+admin_sectiondelete:
+    path: /pjax/section/delete
+    defaults:
+        _controller: ezsystems.platformui.controller.section:deleteAction
