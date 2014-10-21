@@ -44,7 +44,9 @@ system:
                         - 'ez-contenttypemodel'
                         - 'ez-usermodel'
                         - 'ez-versionmodel'
-                        - 'promise'
+                        - 'ez-savedraftplugin'
+                        - 'ez-publishdraftplugin'
+                        - 'ez-discarddraftplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
                 ez-locationviewviewservice:
                     requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin', 'ez-objectrelationlistloadplugin', 'io-base', 'ez-contentcreateplugin']
@@ -399,6 +401,15 @@ system:
                 ez-contentcreateplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contentcreateplugin.js
+                ez-discarddraftplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-discarddraftplugin.js
+                ez-savedraftplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-savedraftplugin.js
+                ez-publishdraftplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-publishdraftplugin.js
                 ez-expandable:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js
