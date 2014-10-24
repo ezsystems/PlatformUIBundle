@@ -135,35 +135,18 @@ YUI.add('ez-restmodel', function (Y) {
         },
 
         /**
-         * Parses the response from the eZ Publish REST API
+         * Parses an object (usually a response object from the JS REST client)
          *
          * @method parse
-         * @param {Object} response the response object from the eZ JS REST Client
+         * @param {Object} response an object with a `document` property holding
+         * the struct to parse like the response object from the eZ JS REST
+         * Client
          * @return {Object} attribute hash
          */
         parse: function (response) {
-            var content,
+            var content = response.document,
                 root = this.constructor.REST_STRUCT_ROOT;
 
-            try {
-                content = Y.JSON.parse(response.body);
-            } catch (ex) {
-                /**
-                 * Fired when a parsing error occurs
-                 *
-                 * @event error
-                 * @param {String} src "parse"
-                 * @param {String} error the error message
-                 * @param {Object} response the response object that failed to
-                 * be parsed
-                 */
-                this.fire('error', {
-                    src: 'parse',
-                    error: "No content in the response",
-                    response: response
-                });
-                return null;
-            }
             if ( root ) {
                 Y.Array.each(root.split(REST_ROOT_LEVEL_SEP), function (val) {
                     content = content[val];

@@ -61,36 +61,12 @@ YUI.add('model-tests', function (Y) {
             this._testUnsupportedSyncOperation('create');
         },
 
-        "parse should return null and fire the error event on JSON parse error": function () {
-            var m = this.model,
-                response, res = false,
-                errorFired = false;
-
-            response = {
-                body: "{invalid json string"
-            };
-
-            m.on('error', function (e) {
-                errorFired = true;
-
-                Y.Assert.areEqual('parse', e.src, "'src' property should set to 'parse'");
-                Y.Assert.isString(e.error, "'error' property should set to a string");
-                Y.Assert.areSame(response, e.response, "'response' property should be set to the response that failed to be parsed");
-            });
-
-            res = m.parse(response);
-
-            Y.Assert.isTrue(errorFired, "The error event should been fired");
-            Y.Assert.isNull(res, "The result of parse should be null");
-        },
-
         "parse should return a correctly parsed hash": function () {
             var m = this.model,
                 response, res = false,
                 errorFired = false, key, identifier, i, len;
 
             response = {
-                body: Y.JSON.stringify(this.loadResponse),
                 document: this.loadResponse
             };
 
@@ -139,7 +115,6 @@ YUI.add('model-tests', function (Y) {
                 errorFired = false, key, i, len, linksMap;
 
             response = {
-                body: Y.JSON.stringify(this.loadResponse),
                 document: this.loadResponse
             };
 
