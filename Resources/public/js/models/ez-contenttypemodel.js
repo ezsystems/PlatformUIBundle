@@ -262,11 +262,10 @@ YUI.add('ez-contenttypemodel', function (Y) {
              * {{#crossLink "eZ.RestModel/_setterLocalizedValue:method"}}_setterLocalizedValue{{/crossLink}}
              *
              * @attribute fieldDefinitions
-             * @default {}
+             * @default undefined
              * @type Object
              */
             fieldDefinitions: {
-                value: {},
                 setter: function (val) {
                     var that = this,
                         newval = {};
