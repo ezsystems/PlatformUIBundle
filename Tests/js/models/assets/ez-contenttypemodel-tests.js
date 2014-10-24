@@ -282,7 +282,7 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
         "Should ignore an invalid fieldDefinitions value": function () {
             this.model.set('fieldDefinitions', "Something from nothing");
 
-            Y.Assert.isObject(
+            Y.Assert.isUndefined(
                 this.model.get('fieldDefinitions'),
                 "The default value of fieldDefinitions should be kept"
             );
@@ -291,7 +291,7 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
         "Should ignore a falsy fieldDefinitions value": function () {
             this.model.set('fieldDefinitions', undefined);
 
-            Y.Assert.isObject(
+            Y.Assert.isUndefined(
                 this.model.get('fieldDefinitions'),
                 "The default value of fieldDefinitions should be kept"
             );
