@@ -59,7 +59,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 method: 'loadContentType',
                 args: [this.contenTypeId, Y.Mock.Value.Function],
                 run: function (typeId, callback) {
-                    callback(fail ? true : false, {});
+                    callback(fail ? true : false, {document: {ContentType: {}}});
                 }
             });
         },

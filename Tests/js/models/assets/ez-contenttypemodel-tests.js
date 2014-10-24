@@ -15,6 +15,9 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
             this.serviceLoad = 'loadContentType';
             this.rootProperty = "ContentType";
             this.parsedAttributeNumber = Y.eZ.ContentType.ATTRS_REST_MAP.length + 1; // links
+        },
+
+        setUp: function () {
             this.loadResponse = {
                 "ContentType": {
                     "_media-type": "application/vnd.ez.api.ContentType+json",
@@ -169,9 +172,6 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
                     }
                 }
             };
-        },
-
-        setUp: function () {
             this.model = new Y.eZ.ContentType();
         },
 
@@ -180,12 +180,12 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
             delete this.model;
         },
 
-        "Should create correct field groups for the FormEditView from the REST data": function () {
+        "Should create correct field groups from the REST data": function () {
             var m = this.model,
                 mockResponse = {},
                 fieldGroups;
 
-            mockResponse.body = Y.JSON.stringify(this.loadResponse);
+            mockResponse.document = this.loadResponse;
             m.setAttrs(m.parse(mockResponse));
 
             fieldGroups = m.getFieldGroups();

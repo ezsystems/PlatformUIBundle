@@ -47,38 +47,6 @@ YUI.add('ez-contenttypemodel', function (Y) {
         },
 
         /**
-         * Parses the response from the eZ Publish REST API
-         *
-         * @method parse
-         * @param {Object} response the response object from the eZ JS REST Client
-         * @return {Object} attribute hash
-         */
-        parse: function (response) {
-            var type;
-
-            try {
-                type = Y.JSON.parse(response.body);
-            } catch (ex) {
-                /**
-                 * Fired when a parsing error occurs
-                 *
-                 * @event error
-                 * @param {String} src "parse"
-                 * @param {String} error the error message
-                 * @param {Object} response the response object that failed to
-                 * be parsed
-                 */
-                this.fire('error', {
-                    src: 'parse',
-                    error: "No content in the response",
-                    response: response
-                });
-                return null;
-            }
-            return this._parseStruct(type.ContentType);
-        },
-
-        /**
          * Returns the field definitions organized by field group. Each element
          * of the array is a hash containing the `fieldGroupName` (string) and
          * the `fieldDefinitions` (array of field definition) entries.
@@ -117,6 +85,7 @@ YUI.add('ez-contenttypemodel', function (Y) {
         }
 
     }, {
+        REST_STRUCT_ROOT: 'ContentType',
         ATTRS_REST_MAP: [
             'creationDate', 'defaultAlwaysAvailable',
             'defaultSortField', 'defaultSortOrder', 'descriptions',
