@@ -158,7 +158,7 @@ YUI.add('ez-restmodel-tests', function (Y) {
                     "notParsed": false
                 },
                 response = {
-                    body: Y.JSON.stringify(struct)
+                    document: struct
                 };
 
             m.setAttrs(m.parse(response));
@@ -192,7 +192,7 @@ YUI.add('ez-restmodel-tests', function (Y) {
                     }
                 },
                 response = {
-                    body: Y.JSON.stringify(struct)
+                    document: struct
                 };
 
             m.setAttrs(m.parse(response));
@@ -232,7 +232,6 @@ YUI.add('ez-restmodel-tests', function (Y) {
                     }
                 },
                 response = {
-                    body: Y.JSON.stringify(struct),
                     document: struct
                 };
 
@@ -273,7 +272,6 @@ YUI.add('ez-restmodel-tests', function (Y) {
                     }
                 },
                 response = {
-                    body: Y.JSON.stringify(struct),
                     document: struct
                 };
 

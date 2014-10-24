@@ -197,7 +197,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         "Should read the fields of the current version": function () {
             var m = this.model,
                 response = {
-                    body: Y.JSON.stringify(this.loadResponse)
+                    document: this.loadResponse
                 },
                 fields, res;
 
@@ -225,7 +225,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         "Should read the relations of the current version": function () {
             var m = this.model,
                 response = {
-                    body: Y.JSON.stringify(this.loadResponse)
+                    document: this.loadResponse
                 },
                 relations, res,
                 respRelation = this.loadResponse.Content.CurrentVersion.Version.Relations.Relation;
