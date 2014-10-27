@@ -10,11 +10,11 @@ namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute as AuthorizationAttribute;
 use Symfony\Component\HttpFoundation\Response;
+use eZ\Bundle\EzPublishCoreBundle\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use EzSystems\PlatformUIBundle\Controller\PjaxController;
 use EzSystems\PlatformUIBundle\Helper\SystemInfoHelperInterface;
 
-class SystemInfoController extends PjaxController
+class SystemInfoController extends Controller
 {
     /**
      * @var \EzSystems\PlatformUIBundle\Helper\SystemInfoHelperInterface
@@ -33,11 +33,9 @@ class SystemInfoController extends PjaxController
      */
     public function infoAction()
     {
-        $response = new Response();
         if ( !$this->hasAccess() )
         {
-            $response->setStatusCode( $this->getNoAccessStatusCode() );
-            return $response;
+            return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
         }
 
         return $this->render(
@@ -45,13 +43,14 @@ class SystemInfoController extends PjaxController
             array(
                 'ezplatformInfo' => $this->systemInfoHelper->getEzPlatformInfo(),
                 'systemInfo' => $this->systemInfoHelper->getSystemInfo(),
-            ),
-            $response
+            )
         );
     }
 
     /**
      * Renders a PHP info page
+     *
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

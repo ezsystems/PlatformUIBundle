@@ -30,7 +30,7 @@ admin_phpinfo:
     methods: [GET]
 
 admin_sectionlist:
-    pattern: /pjax/section/list
+    path: /pjax/section/list
     defaults:
         _controller: ezsystems.platformui.controller.section:listAction
     methods: [GET]
@@ -42,3 +42,20 @@ admin_sectionview:
     methods: [GET]
     requirements:
         sectionId: \d+
+
+admin_accessdenied:
+    path: /pjax/accessdenied
+    defaults:
+        _controller: ezsystems.platformui.controller.pjax:accessDeniedAction
+
+admin_sectioncreate:
+    path: /pjax/section/create
+    defaults:
+        _controller: ezsystems.platformui.controller.section:createAction
+
+admin_sectionedit:
+    path: /pjax/section/edit/{sectionId}
+    defaults:
+        _controller: ezsystems.platformui.controller.section:editAction
+    requirements:
+            sectionId: \d+

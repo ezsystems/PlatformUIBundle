@@ -10,9 +10,23 @@ namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Publish\Core\MVC\Symfony\Security\User as CoreUser;
 use eZ\Bundle\EzPublishCoreBundle\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class PjaxController extends Controller
 {
+    /**
+     * To be used when access is denied to a user
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function accessDeniedAction()
+    {
+        $response = new Response();
+        $response->setStatusCode( $this->getNoAccessStatusCode() );
+
+        return $response;
+    }
+
     /**
      * Returns the HTTP status code to use when the user does not have access to
      * a resource so that the JS code can detect if the user needs to be
@@ -37,7 +51,7 @@ class PjaxController extends Controller
             !$user
             || (
                 $user instanceof CoreUser
-                && $user->id == $this->getConfigResolver()->getParameter( "anonymous_user_id" )
+                && $user->getAPIUser()->id == $this->getConfigResolver()->getParameter( "anonymous_user_id" )
             )
         );
     }

@@ -9,19 +9,21 @@
 namespace EzSystems\PlatformUIBundle\Helper;
 
 use eZ\Publish\API\Repository\Values\Content\Section;
+use EzSystems\PlatformUIBundle\Entity\Section as SectionEntity;
 
+/**
+ * Interface SectionHelperInterface
+ *
+ * Provides utility methods to handle section stored in the API
+ *
+ * @package EzSystems\PlatformUIBundle\Helper
+ */
 interface SectionHelperInterface
 {
     /**
-     * Returns the section list as an array. Each element of the returned array
-     * is an associated array containing the following entries:
-     *      - section: the Section object
-     *      - contentCount: the number of contents the section is assigned to
-     *      - canEdit: whether the current user can edit the section
-     *      - canDelete: whether the current user can delete the section
-     *      - canAssign: whether the current user can assign the section to some contents
+     * Returns the section list
      *
-     * @return array
+     * @return \EzSystems\PlatformUIBundle\Entity\EnrichedSection[]
      */
     public function getSectionList();
 
@@ -34,7 +36,12 @@ interface SectionHelperInterface
 
     /**
      * Returns a section
-     * @param int $sectionId
+     *
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException if section could not be found
+     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException If the current user user is not allowed to read a section
+     *
+     * @param mixed $sectionId
+     *
      * @return \eZ\Publish\API\Repository\Values\Content\Section
      */
     public function loadSection( $sectionId );
@@ -45,4 +52,34 @@ interface SectionHelperInterface
      * @return int
      */
     public function contentCount( Section $section );
+
+    /**
+     * Creates a new Section in the content repository
+     *
+     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException If the current user is
+     *  not allowed to create a section
+     * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException If the new identifier
+     *  already exists
+     *
+     * @param  \EzSystems\PlatformUIBundle\Entity\Section $section
+     *
+     * @return \eZ\Publish\API\Repository\Values\Content\Section The newly created section
+     */
+    public function createSection( SectionEntity $section );
+
+    /**
+     * Updates a Section in the content repository
+     *
+     * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException If the current user is
+     *  not allowed to update a section
+     * @throws \eZ\Publish\API\Repository\Exceptions\InvalidArgumentException If the new identifier
+     *  already exists
+     *
+     * @param  \eZ\Publish\API\Repository\Values\Content\Section $sectionToUpdate
+     * @param  \EzSystems\PlatformUIBundle\Entity\Section $section
+     *
+     * @return \eZ\Publish\API\Repository\Values\Content\Section The updated section
+     */
+    public function updateSection( Section $sectionToUpdate, SectionEntity $section );
+
 }

@@ -1,0 +1,18 @@
+{% extends "eZPlatformUIBundle::pjax.html.twig" %}
+
+{% trans_default_domain "section" %}
+
+{% block title %}{{ 'section.not_found.title'|trans }}{% endblock %}
+
+{% block content %}
+    <header class="ez-page-header">
+        <h1 class="ez-page-header-name" data-icon="&#xe61a;">{{ 'section.not_found.title'|trans }}</h1>
+    </header>
+
+    <ul class="ez-simpleform-error">
+        <li class="ez-simpleform-error-item">
+            {{ 'section.not_found.message'|trans( {'%sectionId%':sectionId}) }}
+        </li>
+    </ul>
+
+{% endblock %}

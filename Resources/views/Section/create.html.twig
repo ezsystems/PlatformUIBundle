@@ -1,0 +1,20 @@
+{% extends "eZPlatformUIBundle::pjax.html.twig" %}
+
+{% trans_default_domain "section" %}
+
+{% block title %}{{ 'section.create.title'|trans }}{% endblock %}
+
+{% block content %}
+    <header class="ez-page-header">
+        <h1 class="ez-page-header-name" data-icon="&#xe61a;">{{ 'section.create.title'|trans }}</h1>
+    </header>
+
+    <ul class="ez-simpleform-error">
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <li class="ez-simpleform-error-item">{{ flashMessage }}</li>
+        {% endfor %}
+    </ul>
+
+    {{ form(form) }}
+
+{% endblock %}
