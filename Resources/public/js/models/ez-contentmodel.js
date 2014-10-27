@@ -53,10 +53,27 @@ YUI.add('ez-contentmodel', function (Y) {
         },
 
         /**
+         * Creates a new content (ie the content must not have an id) in the
+         * repository.
+         *
+         * @method save
+         * @param {Object} options
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {eZ.ContentType} options.contentType (required) the content
+         * type to use to create the content
+         * @param {eZ.Location} options.parentLocation (required) the parent
+         * location
+         * @param {String} options.languageCode (required)
+         * @param {Array} options.fields (required) an array containing a
+         * literal object for each fields in the content with the properties
+         * `fieldDefinitionIdentifier` and `fieldValue
+         * @param {Function} callback
+         */
+
+        /**
          * sync implementation that relies on the JS REST client.
-         * For now, it only supports the 'read' action. The callback is
-         * directly passed to the UserService.loadContentInfoAndCurrentVersion
-         * method.
+         * It only supports the 'read' and 'create' action. The callback is
+         * directly passed to the corresponding ContentService methods.
          *
          * @method sync
          * @param {String} action the action, currently only 'read' is supported
@@ -71,9 +88,65 @@ YUI.add('ez-contentmodel', function (Y) {
                 api.getContentService().loadContentInfoAndCurrentVersion(
                     this.get('id'), callback
                 );
+            } else if ( action === 'create' ) {
+                this._createContent(options, callback);
             } else {
-                callback("Only read operation is supported at the moment");
+                callback("Only read and create operations are supported at the moment");
             }
+        },
+
+        /**
+         * Creates a content in the repository
+         *
+         * @method _createContent
+         * @protected
+         * @param {Object} options
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {eZ.ContentType} options.contentType (required) the content
+         * type to use to create the content
+         * @param {eZ.Location} options.parentLocation (required) the parent
+         * location
+         * @param {String} options.languageCode (required)
+         * @param {Array} options.fields (required) an array containing a
+         * literal object for each fields in the content with the properties
+         * `fieldDefinitionIdentifier` and `fieldValue
+         * @param {Function} callback
+         */
+        _createContent: function (options, callback) {
+            var api = options.api,
+                content = this;
+
+            api.getContentService().createContent(this._createContentStruct(options), function (error, response) {
+                if  ( !error ) {
+                    content.setAttrs(content.parse(response));
+                }
+                callback(error, response);
+            });
+        },
+
+        /**
+         * Creates the content create struct to create the content in the
+         * repository
+         *
+         * @method _createContentStruct
+         * @param {Object} options see _createContent
+         * @private
+         */
+        _createContentStruct: function (options) {
+            var contentService = options.api.getContentService(),
+                type = options.contentType,
+                struct;
+
+            struct = options.api.getContentService().newContentCreateStruct(
+                type.get('id'),
+                contentService.newLocationCreateStruct(options.parentLocation.get('id')),
+                options.languageCode
+            );
+
+            Y.Array.each(options.fields, function (field) {
+                struct.addField(field.fieldDefinitionIdentifier, field.fieldValue);
+            });
+            return struct;
         },
 
         /**
