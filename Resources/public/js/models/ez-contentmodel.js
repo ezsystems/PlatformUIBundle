@@ -122,7 +122,8 @@ YUI.add('ez-contentmodel', function (Y) {
             'mainLanguageCode', 'publishedDate',
             {'_remoteId': 'remoteId'},
             {'Name': 'name'},
-            {'_id': 'contentId'}
+            {'_id': 'contentId'},
+            {'_href': 'id'},
         ],
         LINKS_MAP: [
             'Owner', 'MainLocation', 'ContentType'
