@@ -57,8 +57,8 @@ YUI.add('model-tests', function (Y) {
             Y.assert(called, "The callback should have been called");
         },
 
-        "Sync action other than 'read' are not supported": function () {
-            this._testUnsupportedSyncOperation('create');
+        "Test unsupported sync action": function () {
+            this._testUnsupportedSyncOperation('run');
         },
 
         "parse should return a correctly parsed hash": function () {
