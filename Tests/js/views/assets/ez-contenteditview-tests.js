@@ -408,7 +408,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
             Y.Mock.expect(this.formView, {
                 method: 'getFields',
-                args: [Y.Mock.Value.Any],
                 returns: fields
             });
             Y.Mock.expect(this.formView, {

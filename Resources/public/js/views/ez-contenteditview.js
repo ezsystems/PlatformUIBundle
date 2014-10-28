@@ -69,7 +69,7 @@ YUI.add('ez-contenteditview', function (Y) {
         _handleSavePublish: function (e) {
             var form = this.get('formView');
 
-            e.fields = form.getFields(this.get('createMode'));
+            e.fields = form.getFields();
             e.formIsValid = form.isValid();
         },
 
