@@ -117,15 +117,13 @@ YUI.add('ez-contenteditformview', function (Y) {
          * Returns an array containing the field updated with the user input
          *
          * @method getFields
-         * @param createMode indicator whether the view should get the value from content model
-         *                   or from the view
          * @return Array
          */
-        getFields: function (createMode) {
+        getFields: function () {
             var res = [];
 
             Y.Array.each(this._fieldEditViews, function (val) {
-                res.push(val.getField(createMode));
+                res.push(val.getField());
             });
             return res;
         },

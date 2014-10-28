@@ -280,24 +280,12 @@ YUI.add('ez-fieldeditview', function (Y) {
          * reflecting the current user input
          *
          * @method getField
-         * @param createMode
          * @return Object
          */
-        getField: function (createMode) {
-            var field, def;
-
-            if (createMode) {
-                def = this.get('fieldDefinition');
-                field = {
-                    id: def.id,
-                    fieldDefinitionIdentifier: def.identifier
-                };
-            } else {
-                field = Y.clone(this.get('field'));
-            }
+        getField: function () {
+            var field = Y.clone(this.get('field'));
 
             field.fieldValue = this._getFieldValue();
-
             return field;
         },
     }, {
