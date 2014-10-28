@@ -90,12 +90,14 @@ YUI.add('ez-restmodel', function (Y) {
         _setterLocalizedValue: function (val) {
             var res = {};
 
-            if ( !L.isObject(val) || !L.isArray(val.value) ) {
+            if ( !L.isObject(val) ) {
                 return Y.Attribute.INVALID_VALUE;
             }
-            Y.Array.each(val.value, function (item) {
-                res[item._languageCode] = item["#text"];
-            });
+            if ( L.isArray(val.value) ) {
+                Y.Array.each(val.value, function (item) {
+                    res[item._languageCode] = item["#text"];
+                });
+            }
             return res;
         },
 
