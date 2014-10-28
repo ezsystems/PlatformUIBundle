@@ -41,7 +41,7 @@ YUI.add('ez-versionmodel', function (Y) {
             if ( action === 'read' ) {
                 contentService.loadContent(this.get('id'), callback);
             } else if ( action === 'create' ) {
-                contentService.createContentDraft(options.contentId, callback);
+                this._createVersion(options, callback);
             } else if ( action === 'update' ) {
                 this._updateVersion(options, callback);
             } else if ( action === 'delete' ) {
@@ -49,30 +49,6 @@ YUI.add('ez-versionmodel', function (Y) {
             } else {
                 callback(action + " not supported");
             }
-        },
-
-        /**
-         * Create a new version in the repository based on the current version
-         * of the content which id is passed in options. If something goes
-         * wrong, the version is kept intact.
-         *
-         * @method loadNew
-         * @param {Object} options
-         * @param {Object} options.api the JS REST client instance
-         * @param {String} options.contentId the id of the content to create a
-         * version form
-         * @param {Function} callback
-         */
-        loadNew: function (options, callback) {
-            var version = this;
-
-            this.set('id', undefined);
-            this.save(options, function (error, response) {
-                if ( error ) {
-                    version.undo();
-                }
-                callback(error);
-            });
         },
 
         /**
@@ -88,6 +64,9 @@ YUI.add('ez-versionmodel', function (Y) {
             var contentService = options.api.getContentService(),
                 version = this;
 
+            if ( !this.get('id') ) {
+                return callback(false);
+            }
             contentService.deleteVersion(this.get('id'), function (error, response) {
                 if ( error ) {
                     callback(error);
@@ -115,6 +94,28 @@ YUI.add('ez-versionmodel', function (Y) {
          * request (even with the publish operation
          */
 
+        /**
+         * Creates a new version for a given contentId in the repository
+         *
+         * @method _createVersion
+         * @param {Object} options
+         * @param {Object} options.api the JS REST client instance
+         * @param {Object} options.contentId
+         * @param {Function} callback
+         */
+        _createVersion: function (options, callback) {
+            var api = options.api,
+                contentService = api.getContentService(),
+                version = this;
+
+            contentService.createContentDraft(options.contentId, function (error, response) {
+                if ( error ) {
+                    return callback(error);
+                }
+                version.setAttrs(version.parse(response));
+                version._updateVersion(options, callback);
+            });
+        },
 
         /**
          * Updates a version in the repository and potentially publish it
@@ -129,30 +130,41 @@ YUI.add('ez-versionmodel', function (Y) {
          */
         _updateVersion: function (options, cb) {
             var cs = options.api.getContentService(),
-                struct = cs.newContentUpdateStruct('eng-GB'),
-                callback = cb,
-                version = this,
-                versionId = this.get('id');
+                struct = cs.newContentUpdateStruct(options.languageCode),
+                version = this;
 
-            if ( options.publish ) {
-                callback = function (error, response) {
-                    if ( !error ) {
-                        cs.publishVersion(versionId, function (error, pubResponse) {
-                            if ( error ) {
-                                cb(error, pubResponse);
-                                return;
-                            }
-                            version.setAttrs(version.parse(response));
-                            version.set('status', 'PUBLISHED');
-                            cb(error, pubResponse);
-                        });
-                        return;
-                    }
-                    cb(error, response);
-                };
-            }
             struct.body.VersionUpdate.fields.field = options.fields;
-            cs.updateContent(versionId, struct, callback);
+            cs.updateContent(this.get('id'), struct, function (error, response) {
+                if ( error ) {
+                    return cb(error, response);
+                }
+                version.setAttrs(version.parse(response));
+                if ( !options.publish ) {
+                    return cb(error, response);
+                }
+                version.publishVersion({api: options.api}, function (error, pubResponse) {
+                    if ( error ) {
+                        version.undo();
+                        return cb(error);
+                    }
+                    version.set('status', 'PUBLISHED');
+                    cb();
+                });
+            });
+        },
+
+        /**
+         * Publishes the version in the repository
+         *
+         * @method publishVersion
+         * @param {Object} options
+         * @param {Object} options.api the JS REST client instance
+         * @param {Function} callback
+         */
+        publishVersion: function (options, callback) {
+            var cs = options.api.getContentService();
+
+            cs.publishVersion(this.get('id'), callback);
         },
 
         /**
