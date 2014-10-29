@@ -44,8 +44,7 @@ YUI.add('ez-createcontentfilterview', function (Y) {
             listNode.addClass(FILTER_LIST_CLASS);
             this._attachedViewEvents.push(
                 listNode.delegate('mouseover', Y.bind(this._itemMouseOver, this), this.ITEM_TAG),
-                listNode.delegate('mouseout', Y.bind(this._itemMouseOut, this), this.ITEM_TAG),
-                listNode.delegate('tap', Y.bind(this._select, this), this.ITEM_TAG)
+                listNode.delegate('mouseout', Y.bind(this._itemMouseOut, this), this.ITEM_TAG)
             );
         },
 
