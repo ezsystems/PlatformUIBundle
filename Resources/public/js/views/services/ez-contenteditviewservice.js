@@ -38,17 +38,19 @@ YUI.add('ez-contenteditviewservice', function (Y) {
             var request = this.get('request'),
                 service = this;
 
+            this.get('version').reset();
             this._loadContent(request.params.id, function () {
                 var tasks,
+                    version = service.get('version'),
+                    content = service.get('content'),
                     resources;
+
+                version.set('fields', content.get('fields'));
 
                 resources = service.get('content').get('resources');
 
-                // the new version creation and the loading of the owner, the
-                // location and the content type are done in parallel
                 tasks = new Y.Parallel();
 
-                service._createVersion(tasks.add());
                 service._loadOwner(resources.Owner, tasks.add());
                 service._loadLocation(resources.MainLocation, tasks.add());
                 service._loadContentType(resources.ContentType, tasks.add());
@@ -57,28 +59,6 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                     next(service);
                 });
             });
-        },
-
-        /**
-         * Creates a new version
-         *
-         * @method _createVersion
-         * @protected
-         * @param {Function} callback
-         */
-        _createVersion: function (callback) {
-            var contentId = this.get('request').params.id;
-
-            this.get('version').loadNew({
-                api: this.get('capi'),
-                contentId: contentId
-            }, Y.bind(function (error) {
-                if ( !error ) {
-                    callback();
-                    return;
-                }
-                this._error("Could not create a new version of content with id '" + contentId + "'");
-            }, this));
         },
 
         /**
@@ -181,14 +161,19 @@ YUI.add('ez-contenteditviewservice', function (Y) {
         },
 
         /**
-         * Returns default uri for user redirection.
+         * Returns uri for user redirection.
          *
-         * @method _defaultRedirectionUrl
+         * @method _redirectionUrl
          * @protected
          * @return {String}
          */
-        _defaultRedirectionUrl: function () {
-            return this.get('app').routeUri('viewLocation', {id: this.get('location').get('id')});
+        _redirectionUrl: function (value) {
+            if ( !value ) {
+                return this.get('app').routeUri('viewLocation', {id: this.get('location').get('id')});
+            } else if ( typeof value === 'function' ) {
+                return value.call(this);
+            }
+            return value;
         }
     }, {
         ATTRS: {
@@ -257,10 +242,9 @@ YUI.add('ez-contenteditviewservice', function (Y) {
              *
              * @attribute closeRedirectionUrl
              * @type {Object}
-             * @default '_defaultRedirectionUrl'
              */
             closeRedirectionUrl: {
-                valueFn: '_defaultRedirectionUrl'
+                getter: '_redirectionUrl'
             },
 
             /**
@@ -268,10 +252,9 @@ YUI.add('ez-contenteditviewservice', function (Y) {
              *
              * @attribute discardRedirectionUrl
              * @type {Object}
-             * @default '_defaultRedirectionUrl'
              */
             discardRedirectionUrl: {
-                valueFn: '_defaultRedirectionUrl'
+                getter: '_redirectionUrl'
             },
 
             /**
@@ -279,11 +262,21 @@ YUI.add('ez-contenteditviewservice', function (Y) {
              *
              * @attribute closeRedirectionUrl
              * @type {Object}
-             * @default '_defaultRedirectionUrl'
              */
             publishRedirectionUrl: {
-                valueFn: '_defaultRedirectionUrl'
+                getter: '_redirectionUrl',
             },
+
+            /**
+             * The language code in which the content is edited.
+             *
+             * @attribute languageCode
+             * @type String
+             * @default eng-GB
+             */
+            languageCode: {
+                value: 'eng-GB'
+            }
         }
     });
 });
