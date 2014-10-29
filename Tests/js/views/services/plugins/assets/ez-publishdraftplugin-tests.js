@@ -14,12 +14,14 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
             this.app = new Y.Mock();
             this.capi = {};
             this.version = new Y.Mock();
+            this.content = new Y.Mock();
 
             this.service = new Y.Base();
             this.service.set('app', this.app);
             this.service.set('capi', this.capi);
             this.service.set('publishRedirectionUrl', this.publishRedirectionUrl);
             this.service.set('version', this.version);
+            this.service.set('content', this.content);
 
             this.view = new Y.View();
             this.view.addTarget(this.service);
@@ -38,12 +40,36 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
             delete this.view;
             delete this.service;
             delete this.app;
+            delete this.version;
+            delete this.content;
         },
 
         "Should publish the draft": function () {
             var fields = [{}, {}],
+                contentId = 'the-pretender',
                 that = this;
 
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: false,
+            });
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId,
+            });
+            Y.Mock.expect(this.content, {
+                method: 'load',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Assert.areSame(
+                        that.capi,
+                        options.api,
+                        "The save options should contain the CAPI"
+                    );
+                    callback();
+                }
+            });
             Y.Mock.expect(this.version, {
                 method: 'save',
                 args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
@@ -62,6 +88,7 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                         options.publish,
                         "The publish option should be set true"
                     );
+                    Assert.areEqual(contentId, options.contentId, "The content id should be passed");
                     callback();
                 }
             });

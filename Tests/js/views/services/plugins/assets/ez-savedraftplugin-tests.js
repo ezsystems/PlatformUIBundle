@@ -12,10 +12,12 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
         setUp: function () {
             this.capi = {};
             this.version = new Y.Mock();
+            this.content = new Y.Mock();
 
             this.service = new Y.Base();
             this.service.set('capi', this.capi);
             this.service.set('version', this.version);
+            this.service.set('content', this.content);
 
             this.view = new Y.View();
             this.view.addTarget(this.service);
@@ -33,12 +35,24 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
             delete this.plugin;
             delete this.view;
             delete this.service;
+            delete this.content;
+            delete this.version;
         },
 
         "Should save the draft": function () {
             var fields = [{}, {}],
+                contentId = "all-my-life",
                 that = this;
 
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: false
+            });
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId,
+            });
             Y.Mock.expect(this.version, {
                 method: 'save',
                 args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
@@ -53,6 +67,7 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                         options.fields,
                         "The fields from the event facade should be passed in the save options"
                     );
+                    Assert.areEqual(contentId, options.contentId, "The content id should be passed");
                     callback();
                 }
             });
