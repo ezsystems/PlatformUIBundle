@@ -12,40 +12,46 @@ YUI.add('ez-contentcreateplugin', function (Y) {
     Y.namespace('eZ.Plugin');
 
     /**
-     * Content Tree Plugin. It enhances the discovery bar to handle the content
-     * tree related events and fetching.
      *
      * @namespace eZ.Plugin
-     * @class ContentTree
+     * @class ContentCreate
      * @constructor
      * @extends eZ.Plugin.ViewServiceBase
      */
     Y.eZ.Plugin.ContentCreate = Y.Base.create('contentCreate', Y.eZ.Plugin.ViewServiceBase, [], {
         initializer: function () {
-            this._extendRouting();
             this.onHostEvent('*:createContent', this._handleCreateContentAction);
             this.afterHostEvent('*:createContentAction', this._getContentTypes);
         },
 
-        _extendRouting: function () {
-            var app = this.get('host').get('app');
-
-            app.route({
-                name: 'addContent',
-                path: '/add/:contentTypeIdentifier/:contentTypeLang/:id',
-                service: Y.eZ.ContentEditViewService,
-                sideViews: {},
-                view: 'contentEditView',
-                callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
-            });
+        /**
+         * Resets the state of the plugin's attributes
+         *
+         * @method parallelLoad
+         * @param {Function} next
+         */
+        parallelLoad: function (next) {
+            this.set('contentType', undefined);
+            this.set('languageCode', undefined);
+            this.set('parentLocation', undefined);
+            next();
         },
 
+        /**
+         * Sets the contentType, languageCode and parentLocation on the next
+         * view service if the users wants to create a new content
+         *
+         * @method setNextViewServiceParameters
+         * @param {eZ.ViewService} service
+         */
         setNextViewServiceParameters: function (service) {
-            var host = this.get('host'),
-                app = host.get('app');
-
-            service.set('closeRedirectionUrl', app.routeUri('viewLocation', {id: host.get('location').get('id')}));
-            service.set('discardRedirectionUrl', app.routeUri('viewLocation', {id: host.get('location').get('id')}));
+            if ( this.get('contentType') && this.get('languageCode') && this.get('parentLocation') ) {
+                service.setAttrs({
+                    contentType: this.get('contentType'),
+                    languageCode: this.get('languageCode'),
+                    parentLocation: this.get('parentLocation'),
+                });
+            }
         },
 
         /**
@@ -96,25 +102,56 @@ YUI.add('ez-contentcreateplugin', function (Y) {
         },
 
         /**
-         * Redirects a user to the create content view
+         * Retrieves and stores the content creation parameter paramters from
+         * the createContent event and redirect the user to the createContent
+         * route.
          *
          * @protected
          * @method _handleCreateContentAction
          * @param {Object} event event facade
          */
         _handleCreateContentAction: function (event) {
-            var app = this.get('host').get('app');
+            var service = this.get('host'),
+                app = service.get('app');
 
-            app.navigate(
-                app.routeUri('addContent', {
-                    contentTypeLang: event.contentTypeLang,
-                    contentTypeIdentifier: event.contentTypeIdentifier,
-                    id: this.get('host').get('location').get('id')
-                })
-            );
-        }
+            this.setAttrs({
+                contentType: event.contentType,
+                languageCode: event.languageCode,
+                parentLocation: service.get('location')
+            });
+            app.navigate(app.routeUri('createContent'));
+        },
     }, {
         NS: 'contentCreate',
+
+        ATTRS: {
+            /**
+             * The content type to use to create the new content
+             *
+             * @attribute contentType
+             * @default undefined
+             * @type Y.eZ.ContentType
+             */
+            contentType: {},
+
+            /**
+             * The language code to use to create the new content
+             *
+             * @attribute languageCode
+             * @default undefined
+             * @type String
+             */
+            languageCode: {},
+
+            /**
+             * The parent location of the content that will be created
+             *
+             * @attribute parentLocation
+             * @type Y.eZ.Location
+             * @default undefined
+             */
+            parentLocation: {},
+        }
     });
 
     Y.eZ.PluginRegistry.registerPlugin(

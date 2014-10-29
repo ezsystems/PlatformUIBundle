@@ -16,6 +16,7 @@ system:
                         - 'ez-loginformview'
                         - 'ez-dashboardview'
                         - 'ez-contenteditviewservice'
+                        - 'ez-contentcreateviewservice'
                         - 'ez-contenteditview'
                         - 'ez-locationviewview'
                         - 'ez-locationviewviewservice'
@@ -48,6 +49,9 @@ system:
                         - 'ez-publishdraftplugin'
                         - 'ez-discarddraftplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
+                ez-contentcreateviewservice:
+                    requires: ['ez-contenteditviewservice']
+                    path: %ez_platformui.public_dir%/js/views/services/ez-contentcreateviewservice.js
                 ez-locationviewviewservice:
                     requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin', 'ez-objectrelationlistloadplugin', 'io-base', 'ez-contentcreateplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js

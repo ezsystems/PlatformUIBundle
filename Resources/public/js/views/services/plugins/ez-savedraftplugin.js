@@ -34,21 +34,82 @@ YUI.add('ez-savedraftplugin', function (Y) {
          * @param {Object} e saveAction event facade
          */
         _saveDraft: function (e) {
-            var service = this.get('host'),
-                version = service.get('version');
+            var content = this.get('host').get('content');
 
-            if ( e.formIsValid ) {
-                version.save({
-                    api: service.get('capi'),
-                    fields: e.fields
-                }, function (error, response) {});
+            if ( !e.formIsValid ) {
+                return;
             }
+            if ( content.isNew() ) {
+                this._createContent(e.fields);
+            } else {
+                this._saveVersion(e.fields);
+            }
+        },
+
+        /**
+         * Save draft callback. For now it does nothing
+         *
+         * @method _saveDraftCallback
+         * @protected
+         */
+        _saveDraftCallback: function (error, response) {
+            // TODO visual feedback + error handling
+            // see https://jira.ez.no/browse/EZP-23512
+        },
+
+        /**
+         * Creates a draft of a new content with the given fields
+         *
+         * @method _createContent
+         * @param Array fields the fields structures coming from the saveAction
+         * event
+         * @protected
+         */
+        _createContent: function (fields) {
+            var service = this.get('host'),
+                capi = service.get('capi'),
+                version = service.get('version'),
+                content = service.get('content'),
+                that = this;
+
+            content.save({
+                api: capi,
+                languageCode: service.get('languageCode'),
+                contentType: service.get('contentType'),
+                parentLocation: service.get('parentLocation'),
+                fields: fields,
+            }, function (error, response) {
+                version.setAttrs(version.parse({document: response.document.Content.CurrentVersion}));
+                that._saveDraftCallback(error, response);
+            });
+        },
+
+        /**
+         * Sets the given fields on the version and stores it with the REST API.
+         *
+         * @method _saveVersion
+         * @param Array fields the fields structures coming from the saveAction
+         * event
+         * @protected
+         */
+        _saveVersion: function (fields) {
+            var service = this.get('host'),
+                capi = service.get('capi'),
+                version = service.get('version'),
+                content = service.get('content');
+
+            version.save({
+                api: capi,
+                fields: fields,
+                contentId: content.get('id'),
+                languageCode: service.get('languageCode'),
+            }, this._saveDraftCallback);
         },
     }, {
         NS: 'saveDraft',
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.SaveDraft, ['contentEditViewService']
+        Y.eZ.Plugin.SaveDraft, ['contentEditViewService', 'contentCreateViewService']
     );
 });

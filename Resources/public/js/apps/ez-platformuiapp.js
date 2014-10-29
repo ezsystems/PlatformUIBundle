@@ -639,6 +639,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                     view: 'contentEditView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
+                    name: "createContent",
+                    path: '/create',
+                    service: Y.eZ.ContentCreateViewService,
+                    sideViews: {},
+                    view: 'contentEditView',
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }, {
                     name: "viewLocation",
                     path: '/view/:id',
                     service: Y.eZ.LocationViewViewService,
