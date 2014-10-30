@@ -96,15 +96,6 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
              * @required
              */
             parentLocation: {},
-
-            /**
-             * The language code to use to create the content
-             *
-             * @attribute languageCode
-             * @type String
-             * @required
-             */
-            languageCode: {},
         }
     });
 });
