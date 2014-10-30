@@ -5,9 +5,9 @@
 YUI.add('fake-models', function (Y) {
     Y.namespace('eZ');
 
-    Y.eZ.Content = function () { };
-    Y.eZ.ContentType = function () { };
-    Y.eZ.Location = function () { };
-    Y.eZ.User = function () { };
-    Y.eZ.Version = function () { };
-});
+    Y.eZ.Content = Y.Model;
+    Y.eZ.ContentType = Y.Model;
+    Y.eZ.Location = Y.Model;
+    Y.eZ.User = Y.Model;
+    Y.eZ.Version = Y.Model;
+}, '', {requires: ['model']});
