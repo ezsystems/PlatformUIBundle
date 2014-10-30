@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenteditviewservice-tests', function (Y) {
-    var cevlTest, eventTest;
+    var cevlTest, eventTest, redirectionUrlTest,
+        Mock = Y.Mock, Assert = Y.Assert;
 
     cevlTest = new Y.Test.Case({
         name: "eZ Content Edit View Service tests",
@@ -267,33 +268,13 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
     });
 
     eventTest = new Y.Test.Case({
-        name: "eZ Content Edit View Service events tests",
+        name: "eZ Content Edit View Service 'closeView' event test",
 
         setUp: function () {
-            var that = this;
-
             this.viewLocationRoute = '/view/something';
-            this.locationId = 'something';
 
-            this.location = new Y.Mock();
             this.app = new Y.Mock();
 
-            Y.Mock.expect(this.location, {
-                method: 'get',
-                args: ['id'],
-                returns: this.locationId
-            });
-            Y.Mock.expect(this.app, {
-                method: 'routeUri',
-                args: ['viewLocation', Y.Mock.Value.Object],
-                run: function (route, params) {
-                    Y.Assert.areEqual(
-                        that.locationId,
-                        params.id
-                    );
-                    return that.viewLocationRoute;
-                }
-            });
             Y.Mock.expect(this.app, {
                 method: 'navigate',
                 args: [this.viewLocationRoute],
@@ -301,7 +282,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
 
             this.service = new Y.eZ.ContentEditViewService({
                 app: this.app,
-                location: this.location
+                closeRedirectionUrl: this.viewLocationRoute,
             });
         },
 
@@ -310,13 +291,122 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             delete this.service;
         },
 
-        'Should close the view': function () {
+        'Should redirect to the closeRedirectionUrl value': function () {
             this.service.fire('test:closeView');
             Y.Mock.verify(this.app);
         }
     });
 
+    redirectionUrlTest = new Y.Test.Case({
+        name: 'eZ Content Edit View Service redirection urls tests',
+
+        setUp: function () {
+            this.location = new Mock();
+            this.app = new Mock();
+            this.service = new Y.eZ.ContentEditViewService({
+                app: this.app,
+                location: this.location,
+            });
+        },
+
+        _defaultViewLocation: function (attr) {
+            var locationId = 'communication-breakdown',
+                uri = '/led-zeppelin/' + locationId;
+
+            Mock.expect(this.location, {
+                method: 'get',
+                args: ['id'],
+                returns: locationId,
+            });
+            Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['viewLocation', Mock.Value.Object],
+                run: function (routeName, options) {
+                    Assert.isObject(options, "The routeUri params should be an object");
+                    Assert.areEqual(
+                        locationId,
+                        options.id,
+                        "The current location id should be passed to routeUri"
+                    );
+                    return uri;
+                }
+            });
+
+            Assert.areEqual(
+                uri, this.service.get(attr),
+                "The " + attr + " default value should be the view location of the location"
+            );
+            Mock.verify(this.location);
+            Mock.verify(this.service);
+        },
+
+        _definedValue: function (attr) {
+            var uri = '/led-zeppelin/over-the-hills-and-far-away';
+
+            this.service.set(attr, uri);
+            Assert.areEqual(
+                uri, this.service.get(attr),
+                "The " + attr + " value should be the defined one"
+            );
+        },
+
+        _functionValue: function (attr) {
+            var uri = '/led-zeppelin/over-the-hills-and-far-away',
+                service = this.service,
+                func = function () {
+                    Assert.areSame(
+                        service, this,
+                        "The function should be executed in the service context"
+                    );
+                    return uri;
+                };
+
+            this.service.set(attr, func);
+            Assert.areEqual(
+                uri, this.service.get(attr),
+                "The " + attr + " value should be the result of the function"
+            );
+        },
+
+        "closeRedirectionUrl default value": function () {
+            this._defaultViewLocation('closeRedirectionUrl');
+        },
+
+        "discardRedirectionUrl default value": function () {
+            this._defaultViewLocation('closeRedirectionUrl');
+        },
+
+        "publishRedirectionUrl default value": function () {
+            this._defaultViewLocation('closeRedirectionUrl');
+        },
+
+        "closeRedirectionUrl defined value": function () {
+            this._definedValue('closeRedirectionUrl');
+        },
+
+        "discardRedirectionUrl defined value": function () {
+            this._definedValue('closeRedirectionUrl');
+        },
+
+        "publishRedirectionUrl defined value": function () {
+            this._definedValue('closeRedirectionUrl');
+        },
+
+        "closeRedirectionUrl function value": function () {
+            this._functionValue('closeRedirectionUrl');
+        },
+
+        "discardRedirectionUrl function value": function () {
+            this._functionValue('closeRedirectionUrl');
+        },
+
+        "publishRedirectionUrl function value": function () {
+            this._functionValue('closeRedirectionUrl');
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Edit View Service tests");
     Y.Test.Runner.add(cevlTest);
     Y.Test.Runner.add(eventTest);
+    Y.Test.Runner.add(redirectionUrlTest);
 }, '', {requires: ['test', 'ez-contenteditviewservice']});
