@@ -39,7 +39,7 @@ system:
                     requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel', 'ez-versionmodel']
                     path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
                 ez-locationviewviewservice:
-                    requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin']
+                    requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin', 'ez-objectrelationlistloadplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
                     requires: ['ez-viewservice']
@@ -95,6 +95,7 @@ system:
                         - 'ez-contenttypemodel'
                         - 'ez-checkbox-view'
                         - 'ez-relation-view'
+                        - 'ez-relationlist-view'
                         - 'ez-url-view'
                         - 'ez-selection-view'
                         - 'ez-user-view'
@@ -192,6 +193,12 @@ system:
                 emailaddresseditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/emailaddress.hbt
+                ez-relationlist-view:
+                    requires: ['ez-fieldview', 'event-tap', 'relationlistview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-relationlist-view.js
+                relationlistview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/relationlist.hbt
                 ez-relation-view:
                     requires: ['ez-fieldview', 'event-tap', 'relationview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-relation-view.js
@@ -348,6 +355,9 @@ system:
                 ez-viewservicebaseplugin:
                     requires: ['plugin', 'base']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-viewservicebaseplugin.js
+                ez-objectrelationlistloadplugin:
+                    requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationlistloadplugin.js
                 ez-objectrelationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationloadplugin.js

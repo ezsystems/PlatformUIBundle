@@ -1,0 +1,34 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-fieldview-ezobjectrelationlist .ez-relationlist-loading {
+    color: #888;
+    font-style: italic;
+}
+
+.ez-fieldview-ezobjectrelationlist .ez-relationlist-loading:before {
+    display: inline-block;
+    -webkit-animation: spin 0.7s infinite linear;
+    -moz-animation: spin 0.7s infinite linear;
+    -o-animation: spin 0.7s infinite linear;
+    animation: spin 0.7s infinite linear;
+    content: "\E61c";
+    padding: 0 0.2em;
+}
+
+.ez-fieldview-ezobjectrelationlist .ez-relationlist-retry:before {
+    content: "\E60f";
+}
+
+.ez-fieldview-ezobjectrelationlist .ez-relationlist-error {
+    color: #BF3E33;
+    font-style: italic;
+}
+
+.ez-fieldview-ezobjectrelationlist .ez-relationlist-error:before {
+    content: "\E61b";
+    font-style: normal;
+    padding-right: 0.2em;
+}
