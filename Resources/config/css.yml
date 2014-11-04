@@ -31,6 +31,7 @@ system:
                 - '@eZPlatformUIBundle/Resources/public/css/views/error.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/checkbox.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/textline.css'
+                - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/keyword.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/textblock.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/emailaddress.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/url.css'
