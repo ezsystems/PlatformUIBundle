@@ -1,0 +1,14 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-keyword-input-ui {
+    width: 100%;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.ez-keyword-input-ui input {
+    width: 100%;
+}
