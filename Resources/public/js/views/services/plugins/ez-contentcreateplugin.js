@@ -102,7 +102,7 @@ YUI.add('ez-contentcreateplugin', function (Y) {
         },
 
         /**
-         * Retrieves and stores the content creation parameter paramters from
+         * Retrieves and stores the content creation parameters from
          * the createContent event and redirect the user to the createContent
          * route.
          *

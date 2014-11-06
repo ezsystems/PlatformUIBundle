@@ -14,7 +14,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
     /**
      * Content create view service.
      *
-     * It initliazes the models to use the content edit view.
+     * It initializes the models to use while creating a content.
      *
      * @namespace eZ
      * @class ContentCreateViewService

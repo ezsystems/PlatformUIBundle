@@ -47,7 +47,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
 
                 version.set('fields', content.get('fields'));
 
-                resources = service.get('content').get('resources');
+                resources = content.get('resources');
 
                 tasks = new Y.Parallel();
 

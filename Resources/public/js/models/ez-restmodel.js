@@ -158,7 +158,7 @@ YUI.add('ez-restmodel', function (Y) {
         },
 
         /**
-         * Loads the model from a simple literal object. It takes care to apply
+         * Loads the model from a simple literal object. It applies
          * the mapping described by the ATTRS_REST_MAP and LINKS_MAP.
          *
          * @method loadFromHash
