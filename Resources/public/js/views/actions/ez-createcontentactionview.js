@@ -145,20 +145,6 @@ YUI.add('ez-createcontentactionview', function (Y) {
              * @type eZ.CreateContentFilterView
              */
             contentFilter: {},
-
-            /**
-             * The node which is expanded
-             *
-             * @attribute expandableNode
-             * @type Y.Node
-             * @readOnly
-             */
-            expandableNode: {
-                readOnly: true,
-                getter: function () {
-                    return this.get('container').one('.ez-expandable-area');
-                },
-            },
         }
     });
 });
