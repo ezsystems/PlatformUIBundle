@@ -25,7 +25,8 @@ YUI.add('ez-createcontentactionview', function (Y) {
             this.after({
                 'contentTypeGroupsChange': this._handleContentTypeGroupsChange,
                 'activeChange': this._handleActiveChange,
-                'createContentAction': this._toggleExpanded
+                'createContentAction': this._toggleExpanded,
+                'expandedChange': this._setClickOutsideEventHandler,
             });
         },
 
@@ -36,14 +37,27 @@ YUI.add('ez-createcontentactionview', function (Y) {
          * @return Y.eZ.CreateContentActionView the view itself
          */
         render: function () {
-            var container = this.get('container');
-
             this._addButtonActionViewClassName();
-            container.on('clickoutside', this._hideView, this);
             return this.constructor.superclass.render.call(this);
         },
 
-            return this;
+        /**
+         * expandedChange event handler to define or detach the click outside
+         * event handler so that the view gets hidden when the user click
+         * somewhere else
+         *
+         * @method _setClickOutsideEventHandler
+         * @param {Object} e event facade of the expandedChange event
+         * @protected
+         */
+        _setClickOutsideEventHandler: function (e) {
+            if ( e.newVal ) {
+                this._clickOutsideSubscription = this.get('container').on(
+                    'clickoutside', Y.bind(this._hideView, this)
+                );
+            } else {
+                this._clickOutsideSubscription.detach();
+            }
         },
 
         /**
