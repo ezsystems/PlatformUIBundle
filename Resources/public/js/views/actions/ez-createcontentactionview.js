@@ -12,8 +12,6 @@ YUI.add('ez-createcontentactionview', function (Y) {
 
     Y.namespace('eZ');
 
-    var MODULE_CLASS_NAME = 'ez-view-createcontentactionview';
-
     /**
      * Create Content Action View
      *
@@ -24,7 +22,6 @@ YUI.add('ez-createcontentactionview', function (Y) {
      */
     Y.eZ.CreateContentActionView = Y.Base.create('createContentActionView', Y.eZ.ButtonActionView, [Y.eZ.Expandable], {
         initializer: function () {
-            this.containerTemplate = '<div class="ez-view-buttonactionview ' + MODULE_CLASS_NAME + '"/>';
             this.after({
                 'contentTypeGroupsChange': this._handleContentTypeGroupsChange,
                 'activeChange': this._handleActiveChange,
@@ -41,14 +38,10 @@ YUI.add('ez-createcontentactionview', function (Y) {
         render: function () {
             var container = this.get('container');
 
-            container.setHTML(this.template({
-                actionId: this.get('actionId'),
-                disabled: this.get('disabled'),
-                label: this.get('label'),
-                hint: this.get('hint')
-            }));
-
+            this._addButtonActionViewClassName();
             container.on('clickoutside', this._hideView, this);
+            return this.constructor.superclass.render.call(this);
+        },
 
             return this;
         },
