@@ -50,7 +50,7 @@ services:
             - @ezsystems.platformui.form.type.section
             - @router
             - @translator
-            - @session
+            - @ezpublish.api.service.section
         parent: ezpublish.controller.base
 
     ezsystems.platformui.helper.section:
