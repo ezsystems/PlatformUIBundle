@@ -10,7 +10,7 @@ namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
-use EzSystems\PlatformUIBundle\Entity\Section;
+use eZ\Publish\API\Repository\SectionService;
 use eZ\Bundle\EzPublishCoreBundle\Controller;
 use EzSystems\PlatformUIBundle\Form\Type\SectionType;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,17 +42,24 @@ class SectionController extends Controller
      */
     private $translator;
 
+    /**
+     * @var SectionService
+     */
+    private $sectionService;
+
     public function __construct(
         SectionHelperInterface $sectionHelper,
         SectionType $sectionType,
         RouterInterface $router,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        SectionService $sectionService
     )
     {
         $this->sectionHelper = $sectionHelper;
         $this->sectionType = $sectionType;
         $this->router = $router;
         $this->translator = $translator;
+        $this->sectionService = $sectionService;
     }
 
     /**
@@ -112,11 +119,11 @@ class SectionController extends Controller
      */
     public function createAction( Request $request)
     {
-        $section = new Section();
+        $sectionCreateStruct = new \eZ\Publish\API\Repository\Values\Content\SectionCreateStruct();
 
         $form = $this->createForm(
             $this->sectionType,
-            $section,
+            $sectionCreateStruct,
             array(
                 'action' => $this->router->generate( 'admin_sectioncreate' ),
             )
@@ -128,7 +135,7 @@ class SectionController extends Controller
         {
             try
             {
-                $newSection = $this->sectionHelper->createSection( $section );
+                $newSection = $this->sectionService->createSection( $sectionCreateStruct );
 
                 return $this->redirect(
                     $this->generateUrl(

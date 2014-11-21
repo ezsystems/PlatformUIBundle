@@ -31,7 +31,7 @@ class SectionType extends AbstractType
     public function setDefaultOptions( OptionsResolverInterface $resolver )
     {
         $resolver->setDefaults(
-            array( 'data_class' => 'EzSystems\PlatformUIBundle\Entity\Section' )
+            array( 'data_class' => 'eZ\Publish\API\Repository\Values\Content\SectionCreateStruct' )
         );
     }
 }
