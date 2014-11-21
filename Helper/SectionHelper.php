@@ -11,6 +11,8 @@ namespace EzSystems\PlatformUIBundle\Helper;
 use eZ\Publish\API\Repository\SectionService;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute as AuthorizationAttribute;
 use EzSystems\PlatformUIBundle\Entity\EnrichedSection;
+use EzSystems\PlatformUIBundle\Entity\SectionList;
+use EzSystems\PlatformUIBundle\Entity\SectionListItem;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use eZ\Publish\API\Repository\Values\Content\Section;
 use EzSystems\PlatformUIBundle\Entity\Section as SectionEntity;
@@ -44,7 +46,8 @@ class SectionHelper implements SectionHelperInterface
         $list = array();
         foreach ( $sections as $section )
         {
-            $list[] = new EnrichedSection(
+            /** @var  $section Section  */
+            $list[$section->id] = new SectionListItem(
                 $section,
                 $this->sectionService->countAssignedContents( $section ),
                 $this->canUser( 'edit' ),
@@ -119,5 +122,27 @@ class SectionHelper implements SectionHelperInterface
         $sectionUpdateStruct->name = $section->name;
 
         return $this->sectionService->updateSection( $sectionToUpdate, $sectionUpdateStruct );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deleteSectionList( SectionList $sectionList )
+    {
+        foreach ( $sectionList->ids as $sectionId )
+        {
+            $this->deleteSection( $sectionId );
+        }
+    }
+
+    /**
+     * Removes the section having a given section id
+     *
+     * @param mixed $sectionId to be deleted
+     */
+    private function deleteSection( $sectionId )
+    {
+        $section = $this->sectionService->loadSection( $sectionId );
+        $this->sectionService->deleteSection( $section );
     }
 }

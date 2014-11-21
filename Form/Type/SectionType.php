@@ -12,15 +12,32 @@ namespace EzSystems\PlatformUIBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class SectionType extends AbstractType
 {
+    /**
+     * @var \Symfony\Component\Translation\TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct( TranslatorInterface $translator )
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm( FormBuilderInterface $builder, array $options )
     {
+        $submitLabel = $this->translator->trans(
+            'section.create.submit',
+            array(),
+            'section'
+        );
+
         $builder
             ->add( 'name', 'text' )
             ->add( 'identifier', 'text' )
-            ->add( 'save', 'submit' );
+            ->add( 'save', 'submit', array( 'label' => $submitLabel ) );
     }
 
     public function getName()

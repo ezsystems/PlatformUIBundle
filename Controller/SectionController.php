@@ -12,6 +12,8 @@ use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
 use EzSystems\PlatformUIBundle\Entity\Section;
 use eZ\Bundle\EzPublishCoreBundle\Controller;
+use EzSystems\PlatformUIBundle\Entity\SectionList;
+use EzSystems\PlatformUIBundle\Form\Type\SectionListType;
 use EzSystems\PlatformUIBundle\Form\Type\SectionType;
 use Symfony\Component\HttpFoundation\Request;
 use EzSystems\PlatformUIBundle\Helper\SectionHelperInterface;
@@ -33,6 +35,11 @@ class SectionController extends Controller
     protected $sectionType;
 
     /**
+     * @var \EzSystems\PlatformUIBundle\Form\Type\SectionListType
+     */
+    protected $sectionListType;
+
+    /**
      * @var \Symfony\Component\Routing\RouterInterface
      */
     private $router;
@@ -46,13 +53,15 @@ class SectionController extends Controller
         SectionHelperInterface $sectionHelper,
         SectionType $sectionType,
         RouterInterface $router,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        SectionListType $sectionListType
     )
     {
         $this->sectionHelper = $sectionHelper;
         $this->sectionType = $sectionType;
         $this->router = $router;
         $this->translator = $translator;
+        $this->sectionListType = $sectionListType;
     }
 
     /**
@@ -67,8 +76,8 @@ class SectionController extends Controller
             return $this->render(
                 'eZPlatformUIBundle:Section:list.html.twig',
                 array(
-                    'sectionInfoList' => $this->sectionHelper->getSectionList(),
                     'canCreate' => $this->sectionHelper->canCreate(),
+                    'form' => $this->generateDeleteForm( new SectionList() )->createView()
                 )
             );
         }
@@ -76,6 +85,45 @@ class SectionController extends Controller
         {
             return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
         }
+    }
+
+    /**
+     * Deletes sections
+     *
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction( Request $request )
+    {
+        $sectionListToDelete = new SectionList();
+        $form = $this->generateDeleteForm( $sectionListToDelete );
+        $form->handleRequest( $request );
+
+        if ( $form->isValid() )
+        {
+            $this->sectionHelper->deleteSectionList( $sectionListToDelete );
+        }
+
+        return $this->redirect( $this->generateUrl( 'admin_sectionlist' ) );
+    }
+
+    /**
+     * Generate the form object used to delete sections
+     *
+     * @param \EzSystems\PlatformUIBundle\Entity\SectionList $sectionListToDelete sections to be populated/deleted
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    private function generateDeleteForm( SectionList $sectionListToDelete )
+    {
+        return $this->createForm(
+            $this->sectionListType,
+            $sectionListToDelete,
+            array(
+                'action' => $this->router->generate( 'admin_sectiondelete' )
+            )
+        );
     }
 
     /**

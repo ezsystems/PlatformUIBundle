@@ -37,3 +37,8 @@
 {
     border: 1px solid #bbb;
 }
+
+.ez-button-delete:before {
+    content: "\E615";
+    padding-right: 0.5em;
+}

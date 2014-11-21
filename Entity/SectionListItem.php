@@ -1,6 +1,6 @@
 <?php
 /**
- * File containing the EnrichedSection class.
+ * File containing the SectionListItem class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -9,21 +9,22 @@
 
 namespace EzSystems\PlatformUIBundle\Entity;
 
-use eZ\Publish\API\Repository\Values\Content\Section;
+use eZ\Publish\API\Repository\Values\Content\Section as ApiSection;
 
 /**
- * Class EnrichedSection
+ * Class SectionListItem
  *
  * This class is a container for a Section and extra information
  *
  * @package EzSystems\PlatformUIBundle\Entity
+ *
  */
-class EnrichedSection
+class SectionListItem extends Section
 {
     /**
-     * @var \eZ\Publish\API\Repository\Values\Content\Section
+     * @var int
      */
-    public $section;
+    public $id;
 
     /**
      * @var int
@@ -52,9 +53,11 @@ class EnrichedSection
      * @param bool $canDelete
      * @param bool $canAssign
      */
-    public function __construct( Section $section, $contentCount, $canEdit, $canDelete, $canAssign )
+    public function __construct( ApiSection $section, $contentCount, $canEdit, $canDelete, $canAssign )
     {
-        $this->section = $section;
+        $this->id = $section->id;
+        $this->name = $section->name;
+        $this->identifier = $section->identifier;
         $this->contentCount = $contentCount;
         $this->canEdit = $canEdit;
         $this->canDelete = $canDelete;
