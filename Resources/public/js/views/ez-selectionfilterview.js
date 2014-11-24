@@ -217,7 +217,7 @@ YUI.add('ez-selectionfilterview', function (Y) {
 
         /**
          * Selects the item in the DOM by adding the selected class
-         * 
+         *
          * @protected
          * @method _uiSelectItem
          * @param {Node} item
@@ -228,7 +228,7 @@ YUI.add('ez-selectionfilterview', function (Y) {
 
         /**
          * Unselects the item in the DOM by removing the selected class
-         * 
+         *
          * @protected
          * @method _uiSelectItem
          * @param {Node} item

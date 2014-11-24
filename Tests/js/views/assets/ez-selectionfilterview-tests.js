@@ -116,7 +116,7 @@ YUI.add('ez-selectionfilterview-tests', function (Y) {
             var listNode = this.view.get('listNode'), item;
 
             this.view.render();
-            
+
             item = listNode.one('li[data-text=Loki]');
             item.simulate('mouseover');
             Y.Assert.isTrue(
@@ -168,7 +168,7 @@ YUI.add('ez-selectionfilterview-tests', function (Y) {
                     );
 
                     Y.Assert.isTrue(selectEvt, "The select event should have been fired");
-                    
+
                 });
             });
             this.wait();
@@ -227,7 +227,6 @@ YUI.add('ez-selectionfilterview-tests', function (Y) {
             });
             this.wait();
         },
-
     });
 
     filterDisabledTest = new Y.Test.Case({
@@ -337,7 +336,6 @@ YUI.add('ez-selectionfilterview-tests', function (Y) {
             this.view.resetFilter();
             this._assertDefaultList();
         },
-
     });
 
     multipleSelectTest = new Y.Test.Case({
