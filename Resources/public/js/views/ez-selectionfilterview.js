@@ -80,7 +80,12 @@ YUI.add('ez-selectionfilterview', function (Y) {
             this.on('clear', this._uiSetDefaultList);
 
             this.on('results', function (e) {
-                this._uiSetList(e.results);
+                var list = [];
+
+                Y.Array.each(e.results, function (elt) {
+                    list.push(elt.raw);
+                });
+                this._uiSetList(list);
             });
 
             this._attachedViewEvents.push(
@@ -100,6 +105,11 @@ YUI.add('ez-selectionfilterview', function (Y) {
                    'tap', Y.bind(this._select, this), this.ITEM_TAG
                )
             );
+
+            this.after('sourceChange', function () {
+                this.resetFilter();
+                this.render();
+            });
         },
 
         /**
@@ -134,18 +144,42 @@ YUI.add('ez-selectionfilterview', function (Y) {
                  * @event select
                  * @param {String} text the value which was selected
                  * @param {Node} elementNode the node containing the value
+                 * @param {Object} attributes the data attributes on the
+                 * elementNode. Those attributes are ones returned by the
+                 * function stored in the resultAttributesFormatter attribute.
                  */
                 this.fire(SELECT_EVT, {
                     elementNode: e.target,
-                    text: e.currentTarget.getAttribute('data-text')
+                    text: e.currentTarget.getAttribute('data-text'),
+                    attributes: this._getTargetAttributes(e.currentTarget),
                 });
             } else {
                 this.unselect(e.currentTarget.getAttribute('data-text'), e.currentTarget);
                 this.fire(UNSELECT_EVT, {
                     elementNode: e.currentTarget,
-                    text: e.currentTarget.getAttribute('data-text')
+                    text: e.currentTarget.getAttribute('data-text'),
+                    attributes: this._getTargetAttributes(e.currentTarget),
                 });
             }
+        },
+
+        /**
+         * Returns the attributes of the selected element. The attributes are
+         * the data attribute of the selected element.
+         *
+         * @param {Node} the selected node
+         * @return {Object} a hash with the attributes values.
+         */
+        _getTargetAttributes: function (target) {
+            var attributes = target.get('attributes'), res = {}, name;
+
+            attributes.each(function (attr) {
+                name = attr.get('name');
+                if ( name.indexOf('data-') === 0 ) {
+                    res[name.replace(/^data-/, '')] = target.getAttribute(name);
+                }
+            });
+            return res;
         },
 
         /**
@@ -231,17 +265,10 @@ YUI.add('ez-selectionfilterview', function (Y) {
          * @method _uiSetDefaultList
          * @protected
          */
-        /*jshint unused:false */
         _uiSetDefaultList: function () {
-            var list = [],
-                source = this.get('source'); // just to make sure _rawSource is defined
-
-            Y.Array.map(this._rawSource, function (text) {
-                list.push({display: text, text: text});
-            });
-            this._uiSetList(list);
+            this.get('source'); // just to make sure _rawSource is defined
+            this._uiSetList(this._rawSource);
         },
-        /*jshint unused:true */
 
         /**
          * Adds some items in the list node based on the list parameter. Each
@@ -252,9 +279,15 @@ YUI.add('ez-selectionfilterview', function (Y) {
          * @param {Array} list
          */
         _uiSetList: function (list) {
+            var resultTextLocator = this.get('resultTextLocator'),
+                resultAttributesFormatter = this.get('resultAttributesFormatter');
+
             this.get('listNode').setContent('');
             Y.Array.each(list, function (elt) {
-                this._uiAddItemNode(elt.display, elt.text);
+                this._uiAddItemNode(
+                    (resultTextLocator ? resultTextLocator.call(this, elt) : elt.toString()),
+                    resultAttributesFormatter(elt)
+                );
             }, this);
         },
 
@@ -264,14 +297,16 @@ YUI.add('ez-selectionfilterview', function (Y) {
          * @method _uiAddItemNode
          * @protected
          * @param {String} content the string to display
-         * @param {String} textAttr the string to put as data-text attribute
+         * @param {String} attrs hash to create data attributes
          */
-        _uiAddItemNode: function (content, textAttr) {
+        _uiAddItemNode: function (content, attrs) {
             var node = Y.Node.create(this.ITEM_TEMPLATE);
 
-            node.setAttribute('data-text', textAttr);
+            Y.Object.each(attrs, function (value, attr) {
+                node.setAttribute('data-' + attr, value);
+            });
             node.append(content);
-            if ( this.get('selected').indexOf(textAttr) !== -1 ) {
+            if ( this.get('selected').indexOf(attrs.text) !== -1 ) {
                 this._uiSelectItem(node);
             }
             this.get('listNode').append(node);
@@ -420,6 +455,22 @@ YUI.add('ez-selectionfilterview', function (Y) {
                 validator: Y.Lang.isArray,
                 setter: '_setSource',
                 value: []
+            },
+
+            /**
+             * A function to extract the attributes to add for each element in
+             * the source array. The default implementation returns a hash
+             * containing a `text` entry holding the `toString` return value of
+             * the source element.
+             *
+             * @attribute resultAttributesFormatter
+             * @type {Function}
+             */
+            resultAttributesFormatter: {
+                validator: Y.Lang.isFunction,
+                value: function (sourceElement) {
+                    return {text: sourceElement.toString()};
+                },
             },
         }
     });
