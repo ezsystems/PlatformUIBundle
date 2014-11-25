@@ -44,6 +44,7 @@ system:
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/author.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/selection.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/time.css'
+                - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/date.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/tabs.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/page-header.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/serverside-content.css'
