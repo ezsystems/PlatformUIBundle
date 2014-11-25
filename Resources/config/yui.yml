@@ -137,6 +137,7 @@ system:
                         - 'ez-keyword-editview'
                         - 'ez-author-editview'
                         - 'ez-float-editview'
+                        - 'ez-time-editview'
                         - 'ez-integer-editview'
                         - 'ez-selection-editview'
                         - 'event-tap'
@@ -169,6 +170,12 @@ system:
                 dateandtimeview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/view/dateandtime.hbt
+                ez-time-editview:
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'timeeditview-ez-template', 'datatype-date-format']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-time-editview.js
+                timeeditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/time.hbt
                 ez-date-view:
                     requires: ['ez-dateandtime-view']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-date-view.js
