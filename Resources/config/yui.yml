@@ -188,7 +188,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/view/field.hbt
                 ez-date-editview:
-                    requires: ['ez-fieldeditview', 'event-valuechange', 'dateeditview-ez-template', 'datatype-date-format']
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'dateeditview-ez-template', 'datatype-date-format', 'event-tap', 'calendar', 'datatype-date', 'datatype-date-parse', 'node']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-date-editview.js
                 dateeditview-ez-template:
                     type: 'template'

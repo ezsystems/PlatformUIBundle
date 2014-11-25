@@ -12,7 +12,10 @@
         <input type="date"
         {{#if isRequired}}required{{/if}}
         >
+        <button class="ez-date-cancel-button">X</button>
+        <button class="ez-date-calendar-button">Calendar</button>
     </p>
+    <div class="ez-yui-calendar" ></div>
     <p class="ez-editfield-error-message"></p>
 </script>
 
@@ -38,7 +41,7 @@
         filter: loaderFilter,
         modules: {
             "ez-date-editview": {
-                requires: ['ez-fieldeditview', 'datatype-date-format', 'event-valuechange' ],
+                requires: ['ez-fieldeditview', 'datatype-date-format', 'event-valuechange', 'calendar', 'event-tap', 'datatype-date-parse', 'node', 'node-event-simulate'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-date-editview.js"
             },
             "ez-fieldeditview": {

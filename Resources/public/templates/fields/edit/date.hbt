@@ -1,4 +1,4 @@
-<div class="pure-g ez-editfield-row">
+<div class="pure-g ez-editfield-row yui3-skin-sam">
     <div class="pure-u ez-editfield-infos">
         {{> ez_fieldinfo_tooltip }}
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
@@ -8,12 +8,25 @@
             <p class="ez-editfield-error-message">&nbsp;</p>
         </label>
     </div>
+
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
+
         <div class="ez-editfield-input"><div class="ez-date-input-ui"><input type="date"
-                value="{{ html5InputDate }}"
-                class="ez-validated-input"
-                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
-                {{#if isRequired}} required{{/if}}
-            ></div></div>
+            value="{{ date }}"
+            {{#unless supportsDateInput}}
+                placeholder="YYYY-MM-DD"
+                pattern="^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$|^$"
+            {{/unless}}
+            class="ez-validated-input"
+            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+            {{#if isRequired}} required{{/if}}
+            >
+            {{#unless supportsDateInput}}
+                <button class="ez-date-cancel-button">X</button>
+                <button class="ez-date-calendar-button">Calendar</button>
+                <div class="ez-yui-calendar-container" ></div>
+            {{/unless}}
+            </div></div>
+        </div>
     </div>
 </div>
