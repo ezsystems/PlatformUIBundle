@@ -1,0 +1,15 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-dateandtime-date-input-ui {
+    display: inline-block;
+    vertical-align: bottom;
+    margin-right: 1em;
+}
+
+.ez-dateandtime-time-input-ui {
+    display: inline-block;
+    vertical-align: bottom;
+}
