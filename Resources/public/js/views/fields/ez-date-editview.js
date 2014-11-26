@@ -18,7 +18,7 @@ YUI.add('ez-date-editview', function (Y) {
      * Date edit view
      *
      * @namespace eZ
-     * @class dateEditView
+     * @class DateEditView
      * @constructor
      * @extends eZ.FieldEditView
      */
@@ -40,8 +40,7 @@ YUI.add('ez-date-editview', function (Y) {
 
             if ( validity.valueMissing ) {
                 this.set('errorStatus', 'This field is required');
-            }
-            else if ( validity.badInput ) {
+            } else if ( validity.badInput ) {
                 this.set('errorStatus', 'This is not a valid input');
             } else {
                 this.set('errorStatus', false);
@@ -53,23 +52,33 @@ YUI.add('ez-date-editview', function (Y) {
          *
          * @protected
          * @method _variables
-         * @return {Object} containing isRequired
+         * @return {Object} holding the variables for the template
          */
         _variables: function () {
             var def = this.get('fieldDefinition'),
                 field = this.get('field'),
-                date;
+                date = '';
 
             if (field && field.fieldValue && field.fieldValue.timestamp) {
                 date = Y.Date.format(new Date(field.fieldValue.timestamp * 1000));
-            } else {
-                date = new Date();
             }
 
             return {
                 "isRequired": def.isRequired,
                 "html5InputDate": date
             };
+        },
+
+        /**
+         * Returns the date input node of the date template
+         *
+         *
+         * @protected
+         * @method __getInputNode
+         * @return {InputNode}
+         */
+        _getInputNode: function () {
+            return this.get('container').one('.ez-date-input-ui input');
         },
 
         /**
@@ -83,7 +92,7 @@ YUI.add('ez-date-editview', function (Y) {
          * @return {ValidityState}
          */
         _getInputValidity: function () {
-            return this.get('container').one('.ez-date-input-ui input').get('validity');
+            return this._getInputNode().get('validity');
         },
 
         /**
@@ -94,9 +103,11 @@ YUI.add('ez-date-editview', function (Y) {
          * @return {Integer}
          */
         _getFieldValue: function () {
-            var valueOfInput = this.get('container').one('.ez-date-input-ui input').get('valueAsNumber');
-
-            return {timestamp: valueOfInput/1000};
+            var valueOfInput = this._getInputNode().get('valueAsNumber');
+            if (valueOfInput){
+                return {timestamp: valueOfInput/1000};
+            }
+            return null;
         },
     });
 

@@ -63,7 +63,7 @@ YUI.add('ez-date-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 6 variables");
+                Y.Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 7 variables");
 
                 Y.Assert.areSame(
                     that.jsonContent, variables.content,
@@ -170,7 +170,7 @@ YUI.add('ez-date-editview-tests', function (Y) {
 
             _assertCorrectFieldValue: function (fieldValue, msg) {
                 Y.Assert.isObject(fieldValue, 'the fieldValue should be an object');
-                Y.Assert.areSame(this.convertedValue, fieldValue.timestamp, 'the converted date should match the fieldValue timestamp')
+                Y.Assert.areSame(this.convertedValue, fieldValue.timestamp, 'the converted date should match the fieldValue timestamp');
             },
         })
     );

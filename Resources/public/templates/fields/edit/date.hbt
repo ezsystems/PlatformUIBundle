@@ -4,7 +4,6 @@
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
             <p class="ez-fielddefinition-name">
                 {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
-                {{ calendar }}
             </p>
             <p class="ez-editfield-error-message">&nbsp;</p>
         </label>
