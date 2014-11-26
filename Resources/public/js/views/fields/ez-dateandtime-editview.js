@@ -45,9 +45,13 @@ YUI.add('ez-dateandtime-editview', function (Y) {
 
             if ( dateValidity.valueMissing || timeValidity.valueMissing  ) {
                 this.set('errorStatus', 'This field is required');
-            }
-            else if ( dateValidity.badInput || timeValidity.badInput ) {
+            } else if ( dateValidity.badInput || timeValidity.badInput ) {
                 this.set('errorStatus', 'This is not a valid input');
+            } else if (
+                (!this._getDateInputNode().get('valueAsNumber') && this._getTimeInputNode().get('valueAsNumber')) ||
+                (this._getDateInputNode().get('valueAsNumber') && !this._getTimeInputNode().get('valueAsNumber'))
+                ) {
+                this.set('errorStatus', 'the values should make a correct datetime');
             } else {
                 this.set('errorStatus', false);
             }
@@ -58,27 +62,50 @@ YUI.add('ez-dateandtime-editview', function (Y) {
          *
          * @protected
          * @method _variables
-         * @return {Object} containing isRequired
+         * @return {Object} holding the variables for the template
          */
         _variables: function () {
             var def = this.get('fieldDefinition'),
                 field = this.get('field'),
-                date,
-                time;
+                date = '',
+                time = '';
 
             if (field && field.fieldValue && field.fieldValue.timestamp) {
                 date = Y.Date.format(new Date(field.fieldValue.timestamp * 1000));
-                time = Y.Date.format(new Date(field.fieldValue.timestamp * 1000), {format:"%T"});
-            } else {
-                date = new Date();
-                time = new Date();
+                time = Y.Date.format(new Date(field.fieldValue.timestamp * 1000), {format: "%T"});
             }
 
             return {
                 "isRequired": def.isRequired,
                 "html5InputDate": date,
-                "html5InputTime": time
+                "html5InputTime": time,
+                "useSeconds": def.fieldSettings.useSeconds
             };
+        },
+
+        /**
+         * Returns the date input node of the dateAndTime template
+         *
+         *
+         * @protected
+         * @method __getDateInputNode
+         * @return {InputNode}
+         */
+        _getDateInputNode: function () {
+            return this.get('container').one('.ez-dateandtime-date-input-ui input');
+        },
+
+        /**
+         * Returns the date input node
+         * the date template
+         *
+         *
+         * @protected
+         * @method __getTimeInputNode
+         * @return {InputNode}
+         */
+        _getTimeInputNode: function () {
+            return this.get('container').one('.ez-dateandtime-time-input-ui input');
         },
 
         /**
@@ -92,7 +119,7 @@ YUI.add('ez-dateandtime-editview', function (Y) {
          * @return {ValidityState}
          */
         _getDateInputValidity: function () {
-            return this.get('container').one('.ez-dateandtime-date-input-ui input').get('validity');
+            return this._getDateInputNode().get('validity');
         },
 
         /**
@@ -106,7 +133,7 @@ YUI.add('ez-dateandtime-editview', function (Y) {
          * @return {ValidityState}
          */
         _getTimeInputValidity: function () {
-            return this.get('container').one('.ez-dateandtime-time-input-ui input').get('validity');
+            return this._getTimeInputNode().get('validity');
         },
 
         /**
@@ -117,14 +144,15 @@ YUI.add('ez-dateandtime-editview', function (Y) {
          * @return {Object}
          */
         _getFieldValue: function () {
-            var valueOfDateInput,
-                valueOfTimeInput,
-                container = this.get('container');
+            var valueOfDateInput = this._getDateInputNode().get('valueAsNumber'),
+                valueOfTimeInput = this._getTimeInputNode().get('valueAsNumber');
 
-            valueOfDateInput = this.get('container').one('.ez-dateandtime-date-input-ui input').get('valueAsNumber');
-            valueOfTimeInput = this.get('container').one('.ez-dateandtime-time-input-ui input').get('valueAsNumber');
+            if (valueOfDateInput && valueOfTimeInput){
+                return {timestamp: ( valueOfDateInput + valueOfTimeInput )/1000};
+            } else {
+                return null;
+            }
 
-            return {timestamp: ( valueOfDateInput + valueOfTimeInput )/1000};
         },
     });
 

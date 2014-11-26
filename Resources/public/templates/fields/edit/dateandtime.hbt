@@ -15,12 +15,10 @@
                 id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
                 {{#if isRequired}} required{{/if}}
             ></div>
-        <div class="ez-dateandtime-time-input-ui"><input type="time"
+        <div class="ez-dateandtime-time-input-ui"><input type="time" {{#if useSeconds}}step="1"{{/if}}
                 value="{{ html5InputTime }}"
                 class="ez-validated-input"
-                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
                 {{#if isRequired}} required{{/if}}
             ></div></div>
-
     </div>
 </div>
