@@ -4,7 +4,7 @@
  */
 YUI.add('ez-locationviewview-tests', function (Y) {
     var test, tabsTest, eventsTest, destroyTest,
-
+        Mock = Y.Mock, Assert = Y.Assert,
         _getModelMock = function (serialized) {
             var mock = new Y.Test.Mock();
 
@@ -13,75 +13,105 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 returns: serialized
             });
             return mock;
+        },
+        _mockSubViewForRender = function (view) {
+            Y.Mock.expect(view, {
+                method: 'render',
+                returns: view,
+            });
+            Y.Mock.expect(view, {
+                method: 'get',
+                args: ['container'],
+                returns: Y.Node.create('<div/>'),
+            });
+        },
+        _mockSubViewSetAny = function (view) {
+            Mock.expect(view, {
+                method: 'set',
+                args: [Mock.Value.Any, Mock.Value.Any],
+            });
+        },
+        _mockTarget = function (view) {
+            Mock.expect(view, {
+                method: 'addTarget',
+                args: [Mock.Value.Object],
+            });
+        },
+        _mockDestroy = function (view) {
+            Y.Mock.expect(view, {
+                method: 'destroy',
+            });
+            Mock.expect(view, {
+                method: 'removeTarget',
+                args: [Mock.Value.Object],
+            });
         };
 
     test = new Y.Test.Case({
         name: "eZ Location View view tests",
 
         setUp: function () {
-            this.view = new Y.eZ.LocationViewView();
+            this.barMock = new Mock();
+            this.rawMock = new Mock();
+            _mockTarget(this.barMock);
+            _mockTarget(this.rawMock);
+
+            this.view = new Y.eZ.LocationViewView({
+                actionBar: this.barMock,
+                rawContentView: this.rawMock,
+            });
         },
 
         tearDown: function () {
+            _mockDestroy(this.barMock);
+            _mockDestroy(this.rawMock);
             this.view.destroy();
         },
 
-        _mockView: function () {
-            var view = new Y.Mock();
-
-            Y.Mock.expect(view, {
-                method: 'render',
-                run: function () {
-                    return view;
-                }
-            });
-            Y.Mock.expect(view, {
-                method: 'get',
-                args: ['container'],
-                run: function () {
-                    return Y.Node.create('<div/>');
-                }
-            });
-            Y.Mock.expect(view, {
-                method: 'set',
-                args: [Y.Mock.Value.Any, Y.Mock.Value.Any]
-            });
-            return view;
-        },
-
         "Should set the content of the action bar": function () {
-            var content = {};
+            var content = {}, setBar = false;
 
+            Mock.expect(this.barMock, {
+                method: 'set',
+                args: ['content', content],
+                run: function () {
+                    setBar = true;
+                },
+            });
+            _mockSubViewSetAny(this.rawMock);
             this.view.set('content', content);
-            Y.Assert.areSame(
-                content, this.view.get('actionBar').get('content'),
-                "The content also have been set on the action bar"
-            );
+            Assert.isTrue(setBar, "The content should have been set on the action bar");
         },
 
 
         "Should set the content of the raw content view": function () {
-            var content = {};
+            var content = {}, setRaw = false;
 
+            Mock.expect(this.rawMock, {
+                method: 'set',
+                args: ['content', content],
+                run: function () {
+                    setRaw = true;
+                },
+            });
+            _mockSubViewSetAny(this.barMock);
             this.view.set('content', content);
-            Y.Assert.areSame(
-                content, this.view.get('rawContentView').get('content'),
-                "The content also have been set on the raw content view"
-            );
+            Assert.isTrue(setRaw, "The content should have been set on the raw content view");
         },
 
         "Should set the content type of the raw content view": function () {
-            var contentType = {},
-                rawView = new Y.Mock();
+            var contentType = {}, set = false;
 
-            Y.Mock.expect(rawView, {
+            Y.Mock.expect(this.rawMock, {
                 method: 'set',
-                args: ['contentType', contentType]
+                args: ['contentType', contentType],
+                run: function () {
+                    set = true;
+                }
             });
 
-            this.view.set('rawContentView', rawView);
             this.view.set('contentType', contentType);
-            Y.Mock.verify(rawView);
+            Assert.isTrue(set, "The content type should have been set on the raw content view");
         },
 
         "Test render": function () {
@@ -90,14 +120,17 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 plainLocation = {}, plainContent = {}, path = [],
                 container = this.view.get('container');
 
+            _mockSubViewForRender(this.barMock);
+            _mockSubViewForRender(this.rawMock);
+            _mockSubViewSetAny(this.barMock);
+            _mockSubViewSetAny(this.rawMock);
+
             origTpl = this.view.template;
             this.view.template = function () {
                 templateCalled = true;
                 return origTpl.apply(this, arguments);
             };
             this.view.setAttrs({
-                actionBar: this._mockView(),
-                rawContentView: this._mockView(),
                 location: _getModelMock(plainLocation),
                 content: _getModelMock(plainContent),
                 path: path
@@ -117,9 +150,8 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 container.get('winHeight') + 'px'
             );
 
-
-            Y.Mock.verify(this.view.get('rawContentView'));
-            Y.Mock.verify(this.view.get('actionBar'));
+            Y.Mock.verify(this.rawMock);
+            Y.Mock.verify(this.barMock);
         },
 
         "Test available variables in the template": function () {
@@ -129,6 +161,11 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 origTpl = this.view.template,
                 location = _getModelMock(plainLocation),
                 content = _getModelMock(plainContent);
+
+            _mockSubViewForRender(this.barMock);
+            _mockSubViewForRender(this.rawMock);
+            _mockSubViewSetAny(this.barMock);
+            _mockSubViewSetAny(this.rawMock);
 
             Y.Array.each(plainLocations, function (val, k) {
                 path.push({
@@ -166,8 +203,6 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             this.view.setAttrs({
                 location: location,
                 content: content,
-                actionBar: this._mockView(),
-                rawContentView: this._mockView(),
                 path: path
             });
             this.view.render();
@@ -199,6 +234,9 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 returns: contentName
             });
 
+            _mockSubViewSetAny(this.barMock);
+            _mockSubViewSetAny(this.rawMock);
+
             this.view.setAttrs({
                 content: content,
                 path: path
@@ -216,7 +254,18 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         name: "eZ Location view view tabs tests",
 
         setUp: function () {
+            this.barMock = new Mock();
+            this.rawMock = new Mock();
+            _mockTarget(this.barMock);
+            _mockTarget(this.rawMock);
+            _mockSubViewForRender(this.barMock);
+            _mockSubViewForRender(this.rawMock);
+            _mockSubViewSetAny(this.barMock);
+            _mockSubViewSetAny(this.rawMock);
+
             this.view = new Y.eZ.LocationViewView({
+                actionBar: this.barMock,
+                rawContentView: this.rawMock,
                 location: _getModelMock({}),
                 content: _getModelMock({}),
                 container: Y.one('.container')
@@ -271,6 +320,8 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         },
 
         tearDown: function () {
+            _mockDestroy(this.barMock);
+            _mockDestroy(this.rawMock);
             this.view.destroy();
         },
 
@@ -280,48 +331,32 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         name: "eZ Location view view events handling tests",
 
         setUp: function () {
-            this.view = new Y.eZ.LocationViewView();
+            this.barMock = new Mock();
+            this.rawMock = new Mock();
+            _mockTarget(this.barMock);
+            _mockTarget(this.rawMock);
+            this.view = new Y.eZ.LocationViewView({
+                rawContentView: this.rawMock,
+                actionBar: this.barMock,
+                container: '.container',
+            });
         },
 
         tearDown: function () {
+            _mockDestroy(this.barMock);
+            _mockDestroy(this.rawMock);
             this.view.destroy();
-        },
-
-        "Events from the action bar should bubble to the location view": function () {
-            var bubbled = false;
-
-            this.view.on('*:somethingHappened', function () {
-                bubbled = true;
-            });
-            this.view.get('actionBar').fire('somethingHappened');
-            Y.Assert.isTrue(
-                bubbled,
-                "The event should have bubbled to the location view"
-            );
-        },
-
-        "Events from the raw content view should bubble to the location view": function () {
-            var bubbled = false;
-
-            this.view.on('*:somethingElseHappened', function () {
-                bubbled = true;
-            });
-            this.view.get('rawContentView').fire('somethingElseHappened');
-            Y.Assert.isTrue(
-                bubbled,
-                "The event should have bubbled to the location view"
-            );
         },
 
         "The action bar minimized class should be toggled by the minimizeActionBarAction event": function () {
             var container = this.view.get('container');
 
-            this.view.get('actionBar').fire('minimizeActionBarAction');
+            this.view.fire('whatever:minimizeActionBarAction');
             Y.Assert.isTrue(
                 container.hasClass('is-actionbar-minimized'),
                 "The location view container should get the action bar minimized class"
             );
-            this.view.get('actionBar').fire('minimizeActionBarAction');
+            this.view.fire('whatever:minimizeActionBarAction');
             Y.Assert.isFalse(
                 container.hasClass('is-actionbar-minimized'),
                 "The location view container should NOT get the action bar minimized class"
