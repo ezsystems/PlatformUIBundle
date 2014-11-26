@@ -15,9 +15,12 @@ YUI.add('ez-time-editview-tests', function (Y) {
     viewTest = new Y.Test.Case({
         name: "eZ time editView test",
 
-        _getFieldDefinition: function (required) {
+        _getFieldDefinition: function (required, hasSeconds) {
             return {
-                isRequired: required
+                isRequired: required,
+                fieldSettings: {
+                    useSeconds: hasSeconds
+                }
             };
         },
 
@@ -55,15 +58,15 @@ YUI.add('ez-time-editview-tests', function (Y) {
             this.view.destroy();
         },
 
-        _testAvailableVariables: function (required, expectRequired) {
-            var fieldDefinition = this._getFieldDefinition(required),
+        _testAvailableVariables: function (required, expectRequired, useSeconds, expectUsingSeconds) {
+            var fieldDefinition = this._getFieldDefinition(required, useSeconds),
                 that = this;
 
             this.view.set('fieldDefinition', fieldDefinition);
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 6 variables");
+                Y.Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
 
                 Y.Assert.areSame(
                     that.jsonContent, variables.content,
@@ -87,21 +90,30 @@ YUI.add('ez-time-editview-tests', function (Y) {
                 );
 
                 Y.Assert.areSame(expectRequired, variables.isRequired);
+                Y.Assert.areSame(expectUsingSeconds, variables.useSeconds);
                 return '';
             };
             this.view.render();
         },
 
-        "Test not required field": function () {
-            this._testAvailableVariables(false, false);
+        "Test not required field without seconds": function () {
+            this._testAvailableVariables(false, false, false, false);
         },
 
-        "Test required field": function () {
-            this._testAvailableVariables(true, true);
+        "Test required field without seconds": function () {
+            this._testAvailableVariables(true, true, false, false);
+        },
+
+        "Test required field using seconds": function () {
+            this._testAvailableVariables(true, true, true, true);
+        },
+
+        "Test not required field using seconds": function () {
+            this._testAvailableVariables(false, false, true, true);
         },
 
         "Test validate no constraints": function () {
-            var fieldDefinition = this._getFieldDefinition(false),
+            var fieldDefinition = this._getFieldDefinition(false, false),
                 input;
 
             this.view.set('fieldDefinition', fieldDefinition);
@@ -122,7 +134,6 @@ YUI.add('ez-time-editview-tests', function (Y) {
 
             input = Y.one('.container input');
             input.set('value', '10:10');
-            console.log(input.get('value'));
             Y.Assert.isTrue(
                 this.view.isValid(),
                 "A non empty input is valid"
@@ -130,7 +141,7 @@ YUI.add('ez-time-editview-tests', function (Y) {
         },
 
         "Test validate required": function () {
-            var fieldDefinition = this._getFieldDefinition(true),
+            var fieldDefinition = this._getFieldDefinition(true, false),
                 input;
 
             this.view.set('fieldDefinition', fieldDefinition);
@@ -151,6 +162,24 @@ YUI.add('ez-time-editview-tests', function (Y) {
                 this.view.isValid(),
                 "An empty input is invalid"
             );
+        },
+
+        "Test validate use seconds": function () {
+            var fieldDefinition = this._getFieldDefinition(false, true),
+                input;
+
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.render();
+
+            input = Y.one('.container input');
+
+            input.set('value', '10:10:10');
+            this.view.validate();
+            Y.Assert.isTrue(
+                this.view.isValid(),
+                "An input with seconds is valid"
+            );
+
         }
     });
 
@@ -159,7 +188,12 @@ YUI.add('ez-time-editview-tests', function (Y) {
 
     getFieldTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.GetFieldTests, {
-            fieldDefinition: {isRequired: false},
+            fieldDefinition: {
+                isRequired: false,
+                fieldSettings: {
+                    useSeconds: false
+                }
+            },
             ViewConstructor: Y.eZ.TimeEditView,
             expectedValue: '10:10',
             convertedValue: 36600,
@@ -170,7 +204,7 @@ YUI.add('ez-time-editview-tests', function (Y) {
 
             _assertCorrectFieldValue: function (fieldValue, msg) {
                 Y.Assert.isNumber(fieldValue, 'the fieldValue should be an object');
-                Y.Assert.areSame(this.convertedValue, fieldValue, 'the converted date should match the fieldValue timestamp')
+                Y.Assert.areSame(this.convertedValue, fieldValue, 'the converted date should match the fieldValue timestamp');
             },
         })
     );

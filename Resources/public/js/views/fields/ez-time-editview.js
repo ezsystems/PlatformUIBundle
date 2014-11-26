@@ -53,23 +53,35 @@ YUI.add('ez-time-editview', function (Y) {
          *
          * @protected
          * @method _variables
-         * @return {Object} containing isRequired
+         * @return {Object} {Object} holding the variables for the template
          */
         _variables: function () {
             var def = this.get('fieldDefinition'),
                 field = this.get('field'),
-                time;
+                time = '';
+
 
             if ( field && field.fieldValue ) {
                 time =  Y.Date.format(new Date(field.fieldValue * 1000), {format:"%T"});
-            } else {
-                time = new Date();
             }
 
             return {
                 "isRequired": def.isRequired,
-                "html5InputTime": time
+                "html5InputTime": time,
+                "useSeconds": def.fieldSettings.useSeconds
             };
+        },
+
+        /**
+         * Returns the time input node of the time template
+         *
+         *
+         * @protected
+         * @method __getInputNode
+         * @return {InputNode}
+         */
+        _getInputNode: function () {
+            return this.get('container').one('.ez-time-input-ui input');
         },
 
         /**
@@ -96,7 +108,10 @@ YUI.add('ez-time-editview', function (Y) {
         _getFieldValue: function () {
             var valueOfInput = this.get('container').one('.ez-time-input-ui input').get('valueAsNumber');
 
-            return valueOfInput/1000;
+            if (valueOfInput){
+                return valueOfInput/1000;
+            }
+            return null;
         },
     });
 

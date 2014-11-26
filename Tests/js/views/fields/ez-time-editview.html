@@ -10,7 +10,7 @@
 <script type="text/x-handlebars-template" id="timeeditview-ez-template">
     <p class="ez-time-input-ui">
         <input type="time"
-        {{#if isRequired}}required{{/if}}
+        {{#if isRequired}}required{{/if}}{{#if useSeconds}}step="1"{{/if}}
         >
     </p>
     <p class="ez-editfield-error-message"></p>
