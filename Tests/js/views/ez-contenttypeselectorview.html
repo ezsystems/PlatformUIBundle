@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Content Type Selector view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="contenttypeselectorview-ez-template">
+    <ul>
+        {{#each contentTypeGroups}}
+        <li>
+            <input type="checkbox" value="{{ id }}" class="ez-contenttypeselector-group-checkbox"{{#if checked }} checked{{/if}}>
+            {{ identifier }}
+        </li>
+        {{/each}}
+    </ul>
+    <input type="text" class="ez-contenttypeselector-filter" />
+    <ul class="ez-contenttypeselector-list"></ul>
+</script>
+<script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-contenttypeselectorview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-contenttypeselectorview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-contenttypeselectorview": {
+                requires: ['ez-templatebasedview', 'ez-selectionfilterview'],
+                fullpath: "../../../Resources/public/js/views/ez-contenttypeselectorview.js"
+            },
+            "ez-selectionfilterview": {
+                requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view'],
+                fullpath: "../../../Resources/public/js/views/ez-selectionfilterview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-contenttypeselectorview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

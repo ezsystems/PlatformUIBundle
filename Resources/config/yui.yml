@@ -375,6 +375,12 @@ system:
                 createcontentactionview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/createcontentaction.hbt
+                ez-contenttypeselectorview:
+                    requires: ['ez-templatebasedview', 'contenttypeselectorview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/ez-contenttypeselectorview.js
+                contenttypeselectorview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/contenttypeselector.hbt
                 ez-editpreviewview:
                     requires: ['ez-templatebasedview', 'event-tap', 'editpreviewview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-editpreviewview.js
