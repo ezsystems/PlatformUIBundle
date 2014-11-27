@@ -55,6 +55,10 @@
     content: "\E606";
 }
 
+.ez-view-buttonactionview .ez-action[data-action="createContent"] .action-icon:before {
+    content: "\E61D";
+}
+
 .ez-view-buttonactionview .ez-action[data-action="minimizeActionBar"] .action-icon:before,
 .ez-view-buttonactionview .ez-action[data-action="minimizeDiscoveryBar"] .action-icon:before {
     content: "\E60c";
