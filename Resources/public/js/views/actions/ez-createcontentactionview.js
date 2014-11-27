@@ -12,6 +12,8 @@ YUI.add('ez-createcontentactionview', function (Y) {
 
     Y.namespace('eZ');
 
+    var IS_CONTENTTYPE_SELECTOR_LOADED = 'is-contenttypeselector-loaded';
+
     /**
      * Create Content Action View
      *
@@ -22,9 +24,9 @@ YUI.add('ez-createcontentactionview', function (Y) {
      */
     Y.eZ.CreateContentActionView = Y.Base.create('createContentActionView', Y.eZ.ButtonActionView, [Y.eZ.Expandable], {
         initializer: function () {
+            this.get('contentTypeSelectorView').addTarget(this);
             this.after({
-                'contentTypeGroupsChange': this._handleContentTypeGroupsChange,
-                'activeChange': this._handleActiveChange,
+                'contentTypeGroupsChange': this._renderContentTypeSelector,
                 'createContentAction': this._toggleExpanded,
                 'expandedChange': this._setClickOutsideEventHandler,
             });
@@ -39,6 +41,21 @@ YUI.add('ez-createcontentactionview', function (Y) {
         render: function () {
             this._addButtonActionViewClassName();
             return this.constructor.superclass.render.call(this);
+        },
+
+        /**
+         * Renders the content type selector
+         *
+         * @method _renderContentTypeSelector
+         * @protected _renderContentTypeSelector
+         */
+        _renderContentTypeSelector: function () {
+            var container = this.get('container');
+
+            container.addClass(IS_CONTENTTYPE_SELECTOR_LOADED);
+            container.one('.ez-contenttype-selector').append(
+                this.get('contentTypeSelectorView').render().get('container')
+            );
         },
 
         /**
@@ -61,60 +78,6 @@ YUI.add('ez-createcontentactionview', function (Y) {
         },
 
         /**
-         * Handler for activeChange event.
-         * CreateContentFilterView has to be initialized after activeChange event is fired.
-         * Adds {{#crossLink "Y.eZ.CreateContentFilterView"}}Y.eZ.CreateContentFilterView{{/#crossLink}} instance to the view
-         *
-         * @method _handleActiveChange
-         */
-        _handleActiveChange: function () {
-            var container = this.get('container'),
-                contentFilter = new Y.eZ.CreateContentFilterView({
-                    container: container.one('.ez-expandable-area'),
-                    inputNode: container.one('.autocomplete-filter'),
-                    listNode: container.one('.autocomplete-list'),
-                    source: this.get('fieldTypesList')
-                }).addTarget(this);
-
-            this.set('contentFilter', contentFilter);
-
-            return this;
-        },
-
-        /**
-         * Handler for contentTypeGroupsChange event
-         * Updates data properties of the {{#crossLink "Y.eZ.CreateContentFilterView"}}Y.eZ.CreateContentFilterView{{/#crossLink}}
-         *
-         * @method _handleContentTypeGroupsChange
-         */
-        _handleContentTypeGroupsChange: function () {
-            var contentFilter = this.get('contentFilter'),
-                groups = this.get('contentTypeGroups'),
-                typeNames = [],
-                types = {};
-
-            Y.Array.each(groups, function (group) {
-                Y.Array.each(group.get('contentTypes'), function (type) {
-                    var name = type.get('names')['eng-GB'];
-
-                    typeNames.push(name);
-                    types[name] = { // TODO this is buggy, the content types names are not unique...
-                        contentType: type,
-                        groupId: group.get('id'),
-                    };
-                });
-            });
-
-            contentFilter.setAttrs({
-                'groups': groups,
-                'source': typeNames,
-                'extendedSource': types
-            }).resetFilter();
-
-            return this;
-        },
-
-        /**
          * Toggles the expanded state
          *
          * @method _toggleExpanded
@@ -134,6 +97,11 @@ YUI.add('ez-createcontentactionview', function (Y) {
          */
         _hideView: function () {
             this.set('expanded', false);
+        },
+
+        destructor: function () {
+            this.get('contentTypeSelectorView').removeTarget(this);
+            this.get('contentTypeSelectorView').destroy();
         }
     }, {
         ATTRS: {
@@ -143,15 +111,24 @@ YUI.add('ez-createcontentactionview', function (Y) {
              * @attribute contentTypeGroups
              * @type Array
              */
-            contentTypeGroups: {},
+            contentTypeGroups: {
+                setter: function (groups) {
+                    this.get('contentTypeSelectorView').set('contentTypeGroups', groups);
+                    return groups;
+                },
+            },
 
             /**
-             * Stores {{#crossLink "Y.eZ.CreateContentFilterView"}}Y.eZ.CreateContentFilterView{{/#crossLink}} instance
+             * Holds the content type selector view instance
              *
-             * @attribute contentFilter
-             * @type eZ.CreateContentFilterView
+             * @attribute contentTypeSelectorView
+             * @type Y.eZ.ContentTypeSelectorView
              */
-            contentFilter: {},
+            contentTypeSelectorView: {
+                valueFn: function () {
+                    return new Y.eZ.ContentTypeSelectorView();
+                }
+            },
         }
     });
 });

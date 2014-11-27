@@ -8,38 +8,38 @@
     width: 100%;
 }
 
-.ez-view-createcontentactionview * {
-    -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
+.ez-view-createcontentactionview.is-expanded {
+    margin-left: -10px;
+    padding-left: 10px;
 }
 
 .ez-view-createcontentactionview .ez-expandable-area {
     position: absolute;
     z-index: 1;
     top: -80%;
-    right: 0;
-    width: 250px;
+    left: 0;
+    width: 300px;
     min-height: 120px;
     overflow-y: auto;
     overflow-x: hidden;
     white-space: nowrap;
-    padding: .5rem;
+    padding: 0.3em 0;
+
+    -webkit-transform: translateX(100%);
+       -moz-transform: translateX(100%);
+        -ms-transform: translateX(100%);
+         -o-transform: translateX(100%);
+            transform: translateX(100%);
 }
 
-.ez-view-createcontentactionview h4 {
-    padding: 0 .5rem;
+.ez-view-createcontentactionview.is-expanded .ez-expandable-area {
+    -webkit-transform: translateX(-100%);
+       -moz-transform: translateX(-100%);
+        -ms-transform: translateX(-100%);
+         -o-transform: translateX(-100%);
+            transform: translateX(-100%);
 }
 
-.ez-view-createcontentactionview [class*="ez-createcontent-filter-"] {
-    padding: .2rem .5rem;
-}
-
-.ez-view-createcontentactionview .ez-createcontent-filter-group {
-    display: block;
-    cursor: pointer;
-}
-
-.ez-view-createcontentactionview .ez-createcontent-filter-group [type="checkbox"] {
-    margin-right: .5rem;
+.ez-view-createcontentactionview.is-contenttypeselector-loaded .ez-contenttypes-loading {
+    display: none;
 }

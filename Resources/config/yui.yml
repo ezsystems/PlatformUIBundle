@@ -298,9 +298,6 @@ system:
                 ez-selectionfilterview:
                     requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view']
                     path: %ez_platformui.public_dir%/js/views/ez-selectionfilterview.js
-                ez-createcontentfilterview:
-                    requires: ['ez-selectionfilterview', 'ez-templatebasedview']
-                    path: %ez_platformui.public_dir%/js/views/ez-createcontentfilterview.js
                 ez-restmodel:
                     requires: ['model', 'json']
                     path: %ez_platformui.public_dir%/js/models/ez-restmodel.js
@@ -351,11 +348,11 @@ system:
                     path: %ez_platformui.public_dir%/templates/partials/tree.hbt
                 ez-createcontentactionview:
                     requires:
-                        - 'ez-createcontentfilterview'
                         - 'ez-buttonactionview'
                         - 'ez-expandable'
-                        - 'event-tap'
+                        - 'ez-contenttypeselectorview'
                         - 'createcontentactionview-ez-template'
+                        - 'event-outside'
                     path: %ez_platformui.public_dir%/js/views/actions/ez-createcontentactionview.js
                 createcontentactionview-ez-template:
                     type: 'template'
