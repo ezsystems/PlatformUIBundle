@@ -30,7 +30,7 @@
 <script type="text/javascript" src="./assets/ez-createcontentactionview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
-            loaderFilter;
+        loaderFilter;
     if (filter == 'coverage'){
         loaderFilter = {
             searchExp : "/Resources/",
@@ -39,7 +39,6 @@
     } else {
         loaderFilter = filter;
     }
-
 
     YUI({
         coverage: ['ez-createcontentactionview'],
