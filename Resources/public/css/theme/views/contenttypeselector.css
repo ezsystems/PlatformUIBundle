@@ -1,0 +1,26 @@
+.ez-view-contenttypeselectorview {
+    font-size: 90%;
+}
+
+.ez-view-contenttypeselectorview .ez-contenttypeselector-title {
+    font-size: 120%;
+    font-weight: bold;
+}
+
+.ez-view-contenttypeselectorview .ez-contenttypeselector-content {
+    background: #fff;
+    color: #333;
+}
+
+.ez-view-contenttypeselectorview .ez-contenttypeselector-zone-title {
+    background: #ccc;
+    font-weight: bold;
+}
+
+.ez-view-contenttypeselectorview .ez-contenttypeselector-group {
+    cursor: pointer;
+}
+
+.ez-view-contenttypeselectorview .ez-contenttypeselector-group:hover {
+    background: #E0E0E0;
+}

@@ -1,0 +1,31 @@
+.ez-view-contenttypeselectorview {
+    padding: 0.3em 0.5em;
+}
+
+.ez-view-contenttypeselectorview .ez-contenttypeselector-title {
+    margin: 0 0 0.5em 0;
+}
+
+.ez-view-contenttypeselectorview .ez-contenttypeselector-zone-title {
+    padding: 0.3em 0.1em 0.2em 0.3em;
+    margin: 0 0 0.3em 0;
+}
+
+.ez-view-contenttypeselectorview .ez-contenttypeselector-groups-list {
+    margin: 0;
+    padding: 0 0 0 0.5em;
+    list-style-type: none;
+    line-height: 1.8em;
+}
+
+.ez-view-contenttypeselectorview .ez-contenttypeselector-group {
+    display: block;
+}
+
+.ez-view-contenttypeselectorview .ez-contenttypeselector-group-checkbox {
+    margin-right: 0.4em;
+}
+
+.ez-view-contenttypeselectorview.ez-selection-filter .ez-selection-filter-list {
+    max-height: 14em;
+}
