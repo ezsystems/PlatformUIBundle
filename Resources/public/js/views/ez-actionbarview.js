@@ -49,9 +49,9 @@ YUI.add('ez-actionbarview', function (Y) {
                         new Y.eZ.CreateContentActionView({
                             actionId: 'createContent',
                             disabled: false,
-                            label: 'Create Content',
+                            label: 'Create a content',
                             priority: 210
-                        })
+                        }),
                     ];
                 }
             },
