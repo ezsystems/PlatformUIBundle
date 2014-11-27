@@ -7,13 +7,6 @@
     </div>
 </button>
 <div class="ez-expandable-area">
-    <div class="content-type-groups">
-        <h4>Create new subitem</h4>
-        <div class="groups"></div>
-    </div>
-    <div class="content-types">
-        <h4>Select type to create new subitem</h4>
-        <input type="text" class="autocomplete-filter" placeholder="start typing to refine list" />
-        <ul class="autocomplete-list"></ul>
-    </div>
+    <p class="ez-contenttypes-loading font-icon">Loading</p>
+    <div class="ez-contenttype-selector"></div>
 </div>

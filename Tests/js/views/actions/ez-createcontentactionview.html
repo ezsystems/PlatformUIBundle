@@ -7,6 +7,7 @@
 </head>
 <body>
 
+<div class="click-somewhere"></div>
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="createcontentactionview-ez-template">
@@ -19,15 +20,8 @@
     </div>
 </button>
 <div class="ez-expandable-area">
-    <div class="content-type-groups">
-        <h4>Create new subitem</h4>
-        <div class="groups"></div>
-    </div>
-    <div class="content-types">
-        <h4>Select type to create new subitem</h4>
-        <input type="text" class="autocomplete-filter" placeholder="start typing to refine list" />
-        <ul class="autocomplete-list"></ul>
-    </div>
+    <p class="ez-contenttypes-loading font-icon">Loading</p>
+    <div class="ez-contenttype-selector"></div>
 </div>
 </script>
 
@@ -60,16 +54,8 @@
                 fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
             },
             'ez-createcontentactionview': {
-                requires: ['ez-createcontentfilterview', 'ez-buttonactionview', 'ez-expandable', 'event-tap'],
+                requires: ['ez-buttonactionview', 'ez-expandable', 'event-outside'],
                 fullpath: "../../../../Resources/public/js/views/actions/ez-createcontentactionview.js"
-            },
-            'ez-createcontentfilterview': {
-                requires: ['ez-selectionfilterview', 'ez-templatebasedview'],
-                fullpath: "../../../../Resources/public/js/views/ez-createcontentfilterview.js"
-            },
-            'ez-selectionfilterview' : {
-                requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view'],
-                fullpath: "../../../../Resources/public/js/views/ez-selectionfilterview.js"
             },
             "ez-view": {
                 requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],

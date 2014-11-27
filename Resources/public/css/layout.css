@@ -139,6 +139,7 @@
 
 .ez-view-container {
     width: 100%;
+    overflow: hidden;
 }
 
 .is-discoverybar-minimized .ez-mainviews {
