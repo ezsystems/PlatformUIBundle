@@ -13,13 +13,14 @@
 
 .ez-view-contenttypeselectorview .ez-contenttypeselector-groups-list {
     margin: 0;
-    padding: 0 0 0 0.5em;
+    padding: 0;
     list-style-type: none;
     line-height: 1.8em;
 }
 
 .ez-view-contenttypeselectorview .ez-contenttypeselector-group {
     display: block;
+    padding-left: 0.5em;
 }
 
 .ez-view-contenttypeselectorview .ez-contenttypeselector-group-checkbox {
