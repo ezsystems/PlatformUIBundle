@@ -57,7 +57,6 @@ YUI.add('ez-serversideview-tests', function (Y) {
                 initialHash;
 
             initialHash = Y.config.win.location.hash;
-            console.log(c.get('innerHTML'));
             target.simulateGesture('tap', function () {
                 that.resume(function () {
                     Y.Assert.areEqual(
