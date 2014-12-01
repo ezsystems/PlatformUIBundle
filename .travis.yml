@@ -7,8 +7,8 @@ env:
       BEFORE_LOCAL="./bin/travis/composer.sh"
       TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml"
     - CODE="js"
-      BEFORE_GLOBAL="npm install -g grunt-cli grover"
-      BEFORE_LOCAL="npm install"
+      BEFORE_GLOBAL="npm install -g grunt-cli grover bower"
+      BEFORE_LOCAL="./bin/travis/localjsdeps.sh"
       TEST_CMD="grunt test"
 
 before_script:
