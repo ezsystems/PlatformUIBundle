@@ -94,6 +94,7 @@ system:
                         - 'ez-contentmodel'
                         - 'ez-contenttypemodel'
                         - 'ez-checkbox-view'
+                        - 'ez-xmltext-view'
                         - 'ez-relation-view'
                         - 'ez-relationlist-view'
                         - 'ez-url-view'
@@ -167,6 +168,12 @@ system:
                 ez-time-view:
                     requires: ['ez-dateandtime-view']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-time-view.js
+                ez-xmltext-view:
+                    requires: ['ez-fieldview', 'xmltextview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-xmltext-view.js
+                xmltextview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/xmltext.hbt
                 ez-checkbox-view:
                     requires: ['ez-fieldview']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-checkbox-view.js

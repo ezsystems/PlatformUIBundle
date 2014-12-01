@@ -66,6 +66,7 @@ system:
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/view/maplocation.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/view/relation.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/view/relationlist.css'
+                - '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/view/xmltext.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/contentedit.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/contenteditform.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/editpreview.css'
