@@ -98,7 +98,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                     }
 
                     rootLocationId = response.document.Root.rootLocation._href;
-                    if ( rootLocationId === location.get('id') ) {
+                    if ( rootLocationId === location.get('id') || location.get('depth') == 1 ) {
                         service.set('path', []);
                         endLoadPath();
                         return;
@@ -136,11 +136,11 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                     return;
                 }
                 path.push(parentStruct);
-                if ( rootLocationId !== parentStruct.location.get('id') ) {
-                    service._loadParent(parentStruct.location, loadParentCallback);
-                } else {
+                if ( rootLocationId === parentStruct.location.get('id') || parentStruct.location.get('depth') == 1 ) {
                     service.set('path', path);
                     end();
+                } else {
+                    service._loadParent(parentStruct.location, loadParentCallback);
                 }
             };
 
