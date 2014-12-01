@@ -48,6 +48,12 @@
     padding: 0;
     margin: 0;
     font-size: 80%;
+    visibility: hidden;
+}
+
+.ez-view-contenteditview.is-showing-technicalinfos .ez-technical-infos,
+.ez-view-contenteditview.is-using-touch-device .ez-technical-infos {
+    visibility: visible;
 }
 
 .ez-view-contenteditview .ez-technical-infos li {
