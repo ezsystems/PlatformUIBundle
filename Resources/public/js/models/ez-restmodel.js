@@ -169,8 +169,26 @@ YUI.add('ez-restmodel', function (Y) {
                 });
             }
             return this._parseStruct(content, response.document);
-        }
+        },
 
+        /**
+         * Overrides the default implementation to make sure the id is also
+         * resetted to its default value (null) when necessary.
+         * It's a workaround for https://github.com/yui/yui3/issues/1982 which
+         * causes https://jira.ez.no/browse/EZP-23584
+         *
+         * @method reset
+         * @param {String} [name] The name of the attribute to reset. If
+         * omitted, all attributes are reset.
+         * @return {Model} A reference to the host object.
+         */
+        reset: function (name) {
+            var ret = Y.Model.superclass.reset.call(this, name);
+            if ( !name || name === 'id' ) {
+                this.set('id', null);
+            }
+            return ret;
+        },
     }, {
         /**
          * Root element in the REST API response where the data is located.

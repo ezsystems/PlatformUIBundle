@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-restmodel-tests', function (Y) {
-    var modelTest,
+    var modelTest, resetTest,
         Model, DeepModel;
 
     Model = Y.Base.create('testModel', Y.eZ.RestModel, [], {
@@ -303,7 +303,52 @@ YUI.add('ez-restmodel-tests', function (Y) {
 
     });
 
+    resetTest = new Y.Test.Case({
+        name: "eZ Rest Model tests",
+
+        setUp: function () {
+            this.model = new Model();
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        "Should force the id to its default value together with the others attributes": function () {
+            this.model.set('id', 'an id');
+            this.model.set('name', 'model name');
+            this.model.reset();
+
+            Y.Assert.isNull(this.model.get('id'), "The id should be resetted to null");
+            Y.Assert.areEqual("", this.model.get('name'), "The name should be resetted to its default value");
+        },
+
+        "Should reset only the id": function () {
+            var name = 'model name';
+
+            this.model.set('id', 'an id');
+            this.model.set('name', name);
+            this.model.reset('id');
+
+            Y.Assert.isNull(this.model.get('id'), "The id should be resetted to null");
+            Y.Assert.areEqual(name, this.model.get('name'), "The name should keep its value");
+        },
+
+        "Should leave the id intact": function () {
+            var idValue = 'an id';
+
+            this.model.set('id', idValue);
+            this.model.set('name', 'model name');
+            this.model.reset('name');
+
+            Y.Assert.areEqual(idValue, this.model.get('id'), "The id should be kept");
+            Y.Assert.areEqual("", this.model.get('name'), "The name should be resetted to its default value");
+        },
+
+    });
+
     Y.Test.Runner.setName("eZ Rest Model tests");
     Y.Test.Runner.add(modelTest);
-
+    Y.Test.Runner.add(resetTest);
 }, '', {requires: ['test', 'ez-restmodel']});
