@@ -68,7 +68,7 @@ YUI.add('ez-textblock-editview', function (Y) {
          * @return {ValidityState}
          */
         _getInputValidity: function () {
-            return this.get('container').one('.ez-textblock-input-ui textarea').get('validity');
+            return this._getTextareaNode().get('validity');
         },
 
         /**
@@ -79,8 +79,19 @@ YUI.add('ez-textblock-editview', function (Y) {
          * @return String
          */
         _getFieldValue: function () {
-            return this.get('container').one('.ez-textblock-input-ui textarea').get('value');
-        }
+            return this._getTextareaNode().get('value');
+        },
+
+        /**
+         * Returns the Y.Node of the textarea used for the user input
+         *
+         * @method _getTextareaNode
+         * @private
+         * @return {Y.Node}
+         */
+        _getTextareaNode: function () {
+            return this.get('container').one('.ez-textblock-input-ui textarea');
+        },
     });
 
     Y.eZ.FieldEditView.registerFieldEditView(
