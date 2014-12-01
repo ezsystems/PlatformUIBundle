@@ -12,7 +12,9 @@ browser(s) versions, ...) and to put *PlatformUI* in the *Component/s* field.
 
 ## Installation
 
-* From your eZ Publish 5 installation, run composer:
+Requirements: eZ Publish Platform 5.4 or community release 2014.11
+
+* From your eZ Publish installation, run composer:
 
   ```
   $ composer require ezsystems/platform-ui-bundle:dev-master
