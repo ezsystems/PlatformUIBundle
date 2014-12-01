@@ -12,13 +12,13 @@
             {{ 'section.edit.title'|trans({ '%sectionName%': form.vars.value.name }) }}
         </h1>
     </header>
+    <section class="ez-serverside-content">
+        <ul class="ez-simpleform-error">
+            {% for flashMessage in app.session.flashbag.get('error') %}
+                <li class="ez-simpleform-error-item">{{ flashMessage }}</li>
+            {% endfor %}
+        </ul>
 
-    <ul class="ez-simpleform-error">
-        {% for flashMessage in app.session.flashbag.get('error') %}
-            <li class="ez-simpleform-error-item">{{ flashMessage }}</li>
-        {% endfor %}
-    </ul>
-
-    {{ form(form) }}
-
+        {{ form(form) }}
+    </section>
 {% endblock %}
