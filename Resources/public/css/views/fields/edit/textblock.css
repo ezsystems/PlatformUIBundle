@@ -9,9 +9,8 @@
     vertical-align: top;
 }
 
-.ez-platformui-app .ez-textblock-input-ui textarea {
+.ez-textblock-input-ui textarea {
     width: 100%;
     line-height: 1.3em;
-    height: auto;
     resize: vertical;
 }
