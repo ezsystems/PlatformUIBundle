@@ -147,6 +147,7 @@ system:
                         - 'ez-checkbox-editview'
                         - 'ez-textline-editview'
                         - 'ez-textblock-editview'
+                        - 'ez-xmltext-editview'
                         - 'ez-emailaddress-editview'
                         - 'ez-maplocation-editview'
                         - 'ez-url-editview'
@@ -218,6 +219,12 @@ system:
                 textblockeditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/textblock.hbt
+                ez-xmltext-editview:
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'xmltexteditview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-xmltext-editview.js
+                xmltexteditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/xmltext.hbt
                 ez-emailaddress-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'emailaddresseditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-emailaddress-editview.js

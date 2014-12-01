@@ -70,6 +70,10 @@
             transition: all 0.30s ease-in-out;
 }
 
+.ez-platformui-app textarea {
+    height: auto;
+}
+
 .ez-platformui-app input[type=text]:focus,
 .ez-platformui-app input[type=email]:focus,
 .ez-platformui-app input[type=number]:focus,

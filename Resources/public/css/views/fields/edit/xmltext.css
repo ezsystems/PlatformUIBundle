@@ -1,0 +1,16 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-xmltext-input-ui {
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.ez-xmltext-input-ui textarea {
+    width: 100%;
+    line-height: 1.3em;
+    resize: vertical;
+}
