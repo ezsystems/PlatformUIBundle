@@ -21,6 +21,65 @@ YUI.add('ez-serversideviewservice', function (Y) {
      * @extends eZ.ViewService
      */
     Y.eZ.ServerSideViewService = Y.Base.create('serverSideViewService', Y.eZ.ViewService, [], {
+        initializer: function () {
+            this.on('*:submitForm', this._handleFormSubmit);
+        },
+
+        /**
+         * Handles the `submitForm` event by preventing the original form to be
+         * submitted by the browser and by submitting the form with an AJAX
+         * request.
+         *
+         * @method _handleFormSubmit
+         * @protected
+         * @param {EventFacade} e
+         */
+        _handleFormSubmit: function (e) {
+            var form = e.form,
+                app = this.get('app');
+
+            app.set('loading', true);
+            e.originalEvent.preventDefault();
+            Y.io(form.getAttribute('action'), {
+                method: form.getAttribute('method'),
+                form: {
+                    id: form,
+                },
+                on: {
+                    success: function (tId, response) {
+                        // TODO: in some cases, the server side form handling
+                        // should generate a kind of custom redirection so that
+                        // the redirection happens in PlatformUI rather than in
+                        // the XmlHttpRequest object. This would allow to
+                        // properly update the window title and the URL
+                        // https://jira.ez.no/browse/EZP-23700
+                        app.set('loading', false);
+                        this._updateView(e.target, response);
+                    },
+                    failure: function () {
+                        app.set('loading', false);
+                        this._error('Failed to load the form');
+                    },
+                },
+                context: this,
+            });
+        },
+
+        /**
+         * Updates the view attributes with the provided HTTP response
+         *
+         * @method _updateView
+         * @private
+         * @param {eZ.ServerSideView} view
+         * @param {Response} response
+         */
+        _updateView: function (view, response) {
+            this._parseResponse(response);
+            view.setAttrs({
+                'title': this.get('title'),
+                'html': this.get('html'),
+            });
+        },
 
         /**
          * Load the content and the title of the server side view using a PJAX

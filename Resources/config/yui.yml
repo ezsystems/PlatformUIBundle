@@ -48,7 +48,7 @@ system:
                     requires: ['ez-viewservice', 'ez-contenttreeplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js
                 ez-serversideviewservice:
-                    requires: ['io-base', 'ez-viewservice']
+                    requires: ['io-base', 'io-form', 'ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-serversideviewservice.js
                 ez-view:
                     requires: ['view', 'base-pluginhost', 'ez-pluginregistry']

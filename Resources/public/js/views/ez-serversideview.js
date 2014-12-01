@@ -24,6 +24,9 @@ YUI.add('ez-serversideview', function (Y) {
             '.ez-tabs .ez-tabs-label a': {
                 'tap': '_uiTab'
             },
+            'form': {
+                'submit': '_submitForm'
+            },
         },
 
         /**
@@ -43,6 +46,29 @@ YUI.add('ez-serversideview', function (Y) {
         },
 
         /**
+         * Form handling. The DOM submit is transformed into an application
+         * level event `submitForm` so that the server side view service can
+         * handle it.
+         *
+         * @method _submitForm
+         * @protected
+         * @param {EventFacade} e
+         */
+        _submitForm: function (e) {
+            /**
+             * Fired when a form is submitted in the browser
+             *
+             * @event submitForm
+             * @param {Node} form the Node object of the submitted form
+             * @param {Event} originalEvent the original DOM submit event
+             */
+            this.fire('submitForm', {
+                form: e.target,
+                originalEvent: e,
+            });
+        },
+
+        /**
          * Initializes the view to make sure the container will get the
          * ez-view-serversideview class
          *
@@ -50,6 +76,10 @@ YUI.add('ez-serversideview', function (Y) {
          */
         initializer: function () {
             this.containerTemplate = '<div class="ez-view-serversideview"/>';
+
+            this.on('activeChange', function () {
+                this.after('htmlChange', this.render);
+            });
         },
 
         /**
