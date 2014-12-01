@@ -41,7 +41,9 @@
         <p>{{ 'javascript.disabled.required'|trans }}</p>
         <p><strong>{{ 'javascript.enable'|trans }}</strong></p>
     </noscript>
-    <script src="{{ asset( "extension/ezjscore/design/standard/lib/yui/3.17.2/build/yui/yui-min.js" ) }}"></script>
+    {% javascripts "@eZPlatformUIBundle/Resources/public/vendors/yui3/build/yui/yui-min.js" %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
     <script>
         {{ ez_platformui_yui_config( "YUI.GlobalConfig" ) }}
 

@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "pure": "~0.4.2",
-    "ez-js-rest-client": "ezsystems/ez-js-rest-client"
+    "ez-js-rest-client": "ezsystems/ez-js-rest-client",
+    "yui3": "http://yui.zenfs.com/releases/yui3/yui_3.18.1.zip"
   }
 }
