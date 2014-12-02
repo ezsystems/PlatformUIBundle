@@ -1,0 +1,23 @@
+<div class="ez-fieldview-row pure-g ez-asynchronousview">
+    <div class="ez-fieldview-label pure-u">
+        <p class="ez-fieldview-name"><strong>{{ fieldDefinition.names.[eng-GB] }}</strong></p>
+    </div>
+    <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
+        {{#if isEmpty}}
+            This field is empty
+        {{else}}
+            {{#if imageVariation }}
+                <img src="{{ imageVariation.uri }}" alt="{{ field.fieldValue.alternativeText }}" class="pure-img">
+            {{else}}
+                {{#if loadingError}}
+                    <p class="ez-asynchronousview-error font-icon">
+                        An error occurred while loading the image.
+                        <button class="ez-asynchronousview-retry ez-button font-icon pure-button">Retry</button>
+                    </p>
+                {{else}}
+                    <p class="font-icon ez-asynchronousview-loading">Loading the image</p>
+                {{/if}}
+            {{/if}}
+        {{/if}}
+    </div></div>
+</div>

@@ -101,6 +101,7 @@ system:
                         - 'ez-contentmodel'
                         - 'ez-contenttypemodel'
                         - 'ez-checkbox-view'
+                        - 'ez-image-view'
                         - 'ez-relation-view'
                         - 'ez-relationlist-view'
                         - 'ez-url-view'
@@ -213,6 +214,12 @@ system:
                 relationview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/view/relation.hbt
+                ez-image-view:
+                    requires: ['ez-fieldview', 'imageview-ez-template', 'ez-asynchronousview']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-image-view.js
+                imageview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/image.hbt
                 ez-user-view:
                     requires: ['ez-fieldview', 'userview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-user-view.js
