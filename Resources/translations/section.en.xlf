@@ -90,6 +90,10 @@
         <source>section.create.submit</source>
         <target>Save</target>
       </trans-unit>
+      <trans-unit id="1a1e659cce751325d5267ae1c8be9b33" resname="section.view.delete">
+        <source>section.view.delete</source>
+        <target>Delete this section</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

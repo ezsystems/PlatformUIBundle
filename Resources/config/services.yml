@@ -7,6 +7,7 @@ parameters:
     ezsystems.platformui.controller.section.class: EzSystems\PlatformUIBundle\Controller\SectionController
     ezsystems.platformui.controller.template.class: EzSystems\PlatformUIBundle\Controller\TemplateController
     ezsystems.platformui.form.type.section.class: EzSystems\PlatformUIBundle\Form\Type\SectionType
+    ezsystems.platformui.form.type.section_delete.class: EzSystems\PlatformUIBundle\Form\Type\SectionDeleteType
     ezsystems.platformui.form.type.section_list.class: EzSystems\PlatformUIBundle\Form\Type\SectionListType
     ezsystems.platformui.controller.pjax.class: EzSystems\PlatformUIBundle\Controller\PjaxController
 
@@ -52,6 +53,8 @@ services:
             - @router
             - @translator
             - @ezsystems.platformui.form.type.section_list
+            - @ezpublish.api.service.section
+            - @ezsystems.platformui.form.type.section_delete
         parent: ezpublish.controller.base
 
     ezsystems.platformui.helper.section:
@@ -64,6 +67,13 @@ services:
         class: %ezsystems.platformui.form.type.section.class%
         tags:
             - { name: form.section, alias: section }
+        arguments:
+            - @translator
+
+    ezsystems.platformui.form.type.section_delete:
+        class: %ezsystems.platformui.form.type.section_delete.class%
+        tags:
+            - { name: form.section, alias: section_delete }
         arguments:
             - @translator
 

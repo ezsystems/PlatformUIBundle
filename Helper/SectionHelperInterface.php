@@ -36,6 +36,27 @@ interface SectionHelperInterface
     public function canCreate();
 
     /**
+     * Returns whether the current user can delete a section
+     *
+     * @return boolean
+     */
+    public function canDelete();
+
+    /**
+     * Returns whether the current user can Edit a section
+     *
+     * @return boolean
+     */
+    public function canEdit();
+
+    /**
+     * Returns whether the current user can assign a section
+     *
+     * @return boolean
+     */
+    public function canAssign();
+
+    /**
      * Returns a section
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException if section could not be found
