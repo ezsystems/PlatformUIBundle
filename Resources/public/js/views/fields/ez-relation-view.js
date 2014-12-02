@@ -70,7 +70,7 @@ YUI.add('ez-relation-view', function (Y) {
             /**
              * The destination content of the relation
              *
-             * @attribute content
+             * @attribute destinationContent
              * @type Y.eZ.Content
              */
             destinationContent: {
