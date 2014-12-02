@@ -45,6 +45,7 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
 
         $this->prependYui( $container );
         $this->prependCss( $container );
+        $this->prependImageVariations( $container );
     }
 
     private function prependYui( ContainerBuilder $container )
@@ -65,4 +66,11 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
         $container->addResource( new FileResource( $cssConfigFile ) );
     }
 
+    private function prependImageVariations( ContainerBuilder $container )
+    {
+        $imageConfigFile = __DIR__ . '/../Resources/config/image_variations.yml';
+        $config = Yaml::parse( file_get_contents( $imageConfigFile ) );
+        $container->prependExtensionConfig( 'ezpublish', $config );
+        $container->addResource( new FileResource( $imageConfigFile ) );
+    }
 }

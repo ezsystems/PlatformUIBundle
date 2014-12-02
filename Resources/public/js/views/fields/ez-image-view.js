@@ -89,11 +89,11 @@ YUI.add('ez-image-view', function (Y) {
              *
              * @attribute variationIdentifier
              * @type {String}
-             * @default 'large'
+             * @default 'platformui_rawcontentview'
              * @initOnly
              */
             variationIdentifier: {
-                value: 'large'
+                value: 'platformui_rawcontentview'
             }
         },
     });
