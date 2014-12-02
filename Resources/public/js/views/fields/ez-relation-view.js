@@ -19,24 +19,10 @@ YUI.add('ez-relation-view', function (Y) {
      * @constructor
      * @extends eZ.FieldView
      */
-    Y.eZ.RelationView = Y.Base.create('relationView', Y.eZ.FieldView, [], {
-        events: {
-            '.ez-relation-retry': {
-                'tap': '_retryLoading',
-            },
-        },
-
+    Y.eZ.RelationView = Y.Base.create('relationView', Y.eZ.FieldView, [Y.eZ.AsynchronousView], {
         initializer: function () {
-            if (!this._isFieldEmpty()){
-                this.after('activeChange', this._fireLoadFieldRelatedContent);
-            }
-            this.after('destinationContentChange', function (e) {
-                this.render();
-            });
-
-            this.after('loadingErrorChange', function (e) {
-                this.render();
-            });
+            this._fireMethod = this._fireLoadFieldRelatedContent;
+            this._watchAttribute = 'destinationContent';
         },
 
         /**
@@ -57,26 +43,11 @@ YUI.add('ez-relation-view', function (Y) {
          * @protected
          */
         _fireLoadFieldRelatedContent: function () {
-            this.fire('loadFieldRelatedContent', {
-                fieldDefinitionIdentifier: this.get('fieldDefinition').identifier
-            });
-        },
-
-        /**
-         * Tap event handler for the retry button. It resets the
-         * `destinationContent` and `loadingError` attributes and fires again the
-         * `loadFieldRelatedContent` event
-         *
-         * @method _retryLoading
-         * @protected
-         * @param {Object} e
-         */
-        _retryLoading: function (e) {
-            this.setAttrs({
-                destinationContent: null,
-                loadingError: false
-            });
-            this._fireLoadFieldRelatedContent();
+            if (!this._isFieldEmpty()) {
+                this.fire('loadFieldRelatedContent', {
+                    fieldDefinitionIdentifier: this.get('fieldDefinition').identifier
+                });
+            }
         },
 
         /**
@@ -105,16 +76,6 @@ YUI.add('ez-relation-view', function (Y) {
             destinationContent: {
                 value: null,
             },
-
-            /**
-             * Loading error state
-             *
-             * @attribute loadingError
-             * @type Boolean
-             */
-            loadingError: {
-                value: false,
-            }
         },
     });
 

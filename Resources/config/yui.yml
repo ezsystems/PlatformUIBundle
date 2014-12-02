@@ -195,13 +195,13 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/emailaddress.hbt
                 ez-relationlist-view:
-                    requires: ['ez-fieldview', 'event-tap', 'relationlistview-ez-template']
+                    requires: ['ez-fieldview', 'relationlistview-ez-template', 'ez-asynchronousview']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-relationlist-view.js
                 relationlistview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/view/relationlist.hbt
                 ez-relation-view:
-                    requires: ['ez-fieldview', 'event-tap', 'relationview-ez-template']
+                    requires: ['ez-fieldview', 'relationview-ez-template', 'ez-asynchronousview']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-relation-view.js
                 relationview-ez-template:
                     type: 'template'
@@ -371,6 +371,9 @@ system:
                 ez-contenttreeplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
+                ez-asynchronousview:
+                    requires: ['view', 'event-tap']
+                    path: %ez_platformui.public_dir%/js/extensions/ez-asynchronousview.js
                 ez-expandable:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js

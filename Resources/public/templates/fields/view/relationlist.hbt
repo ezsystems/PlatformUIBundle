@@ -1,4 +1,4 @@
-<div class="ez-fieldview-row pure-g">
+<div class="ez-fieldview-row pure-g ez-asynchronousview">
     <div class="ez-fieldview-label pure-u">
         <p class="ez-fieldview-name"><strong>{{ fieldDefinition.names.[eng-GB] }}</strong></p>
     </div>
@@ -15,19 +15,19 @@
                     {{/each}}
                     </ul>
                     {{#if loadingError}}
-                        <div class="ez-relationlist-error font-icon">
+                        <div class="ez-asynchronousview-error font-icon">
                              An error occurred while loading some of the related contents.
-                            <button class="ez-relationlist-retry ez-button font-icon pure-button">Retry</button>
+                            <button class="ez-asynchronousview-retry ez-button font-icon pure-button">Retry</button>
                         </div>
                     {{/if}}
                 {{else}}
                     {{#if loadingError}}
-                        <div class="ez-relationlist-error font-icon">
+                        <div class="ez-asynchronousview-error font-icon">
                             An error occurred while loading some of the related contents.
-                            <button class="ez-relationlist-retry ez-button font-icon pure-button">Retry</button>
+                            <button class="ez-asynchronousview-retry ez-button font-icon pure-button">Retry</button>
                         </div>
                     {{else}}
-                       <div class="font-icon ez-relationlist-loading">Loading the related contents</div>
+                       <div class="font-icon ez-asynchronousview-loading">Loading the related contents</div>
                     {{/if}}
                 {{/if}}
             {{/if}}

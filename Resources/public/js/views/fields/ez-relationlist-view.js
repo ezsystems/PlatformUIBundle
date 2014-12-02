@@ -19,24 +19,10 @@ YUI.add('ez-relationlist-view', function (Y) {
      * @constructor
      * @extends eZ.FieldView
      */
-    Y.eZ.RelationListView = Y.Base.create('relationlistView', Y.eZ.FieldView, [], {
-        events: {
-            '.ez-relationlist-retry': {
-                'tap': '_retryLoading',
-            },
-        },
-
+    Y.eZ.RelationListView = Y.Base.create('relationlistView', Y.eZ.FieldView, [Y.eZ.AsynchronousView], {
         initializer: function () {
-
-            if (!this._isFieldEmpty()){
-                this.after('activeChange', this._fireLoadFieldRelatedContents);
-            }
-            this.after('destinationContentsChange', function (e) {
-                this.render();
-            });
-            this.after('loadingErrorChange', function (e) {
-                this.render();
-            });
+            this._fireMethod = this._fireLoadFieldRelatedContents;
+            this._watchAttribute = 'destinationContents';
         },
 
         /**
@@ -59,9 +45,11 @@ YUI.add('ez-relationlist-view', function (Y) {
          * @protected
          */
         _fireLoadFieldRelatedContents: function () {
-            this.fire('loadFieldRelatedContents', {
-                fieldDefinitionIdentifier: this.get('fieldDefinition').identifier
-            });
+            if (!this._isFieldEmpty()){
+                this.fire('loadFieldRelatedContents', {
+                    fieldDefinitionIdentifier: this.get('fieldDefinition').identifier
+                });
+            }
         },
 
         /**
@@ -84,23 +72,6 @@ YUI.add('ez-relationlist-view', function (Y) {
                 loadingError: this.get('loadingError'),
             };
         },
-
-        /**
-         * Tap event handler for the retry button. It resets the
-         * `destinationContent` and `loadingError` attributes and fires again the
-         * `loadFieldRelatedContent` event
-         *
-         * @method _retryLoading
-         * @protected
-         * @param {Object} e
-         */
-        _retryLoading: function (e) {
-            this.setAttrs({
-                destinationContents: null,
-                loadingError: false
-            });
-            this._fireLoadFieldRelatedContents();
-        },
     },{
         ATTRS: {
             /**
@@ -112,16 +83,6 @@ YUI.add('ez-relationlist-view', function (Y) {
             destinationContents: {
                 value: null,
             },
-
-            /**
-             * Loading error state
-             *
-             * @attribute loadingError
-             * @type Boolean
-             */
-            loadingError: {
-                value: false,
-            }
         },
     });
 
