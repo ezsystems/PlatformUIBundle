@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<script type="text/javascript" src="../../../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="../../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="../../../assets/pluginregister-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-publishdraftplugin-tests.js"></script>
 <script>
@@ -13,8 +13,8 @@
         loaderFilter;
     if (filter == 'coverage'){
         loaderFilter = {
-            searchExp : "/Resources/",
-            replaceStr: "/Tests/instrument/Resources/"
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
         };
     } else {
         loaderFilter = filter;

@@ -19,15 +19,15 @@
     <input type="text" class="ez-contenttypeselector-filter" />
     <ul class="ez-contenttypeselector-list"></ul>
 </script>
-<script type="text/javascript" src="../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-contenttypeselectorview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
     if (filter == 'coverage'){
         loaderFilter = {
-            searchExp : "/Resources/",
-            replaceStr: "/Tests/instrument/Resources/"
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
         };
     } else {
         loaderFilter = filter;
