@@ -121,6 +121,7 @@ system:
                         - 'ez-relation-view'
                         - 'ez-relationlist-view'
                         - 'ez-url-view'
+                        - 'ez-binaryfile-view'
                         - 'ez-selection-view'
                         - 'ez-user-view'
                         - 'ez-maplocation-view'
@@ -255,6 +256,12 @@ system:
                 userview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/view/user.hbt
+                ez-binaryfile-view:
+                    requires: ['ez-fieldview', 'binaryfileview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-binaryfile-view.js
+                binaryfileview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/binaryfile.hbt
                 ez-selection-view:
                     requires: ['ez-fieldview', 'selectionview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-selection-view.js

@@ -1,0 +1,11 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-fieldview-ezbinaryfile .ez-fieldview-value-content a:before {
+    font-family: 'ez-platformui-icomoon';
+    content: "\E61e";
+    padding-right: 0.3em;
+    color: #333;
+}
