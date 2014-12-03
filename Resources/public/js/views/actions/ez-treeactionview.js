@@ -106,7 +106,7 @@ YUI.add('ez-treeactionview', function (Y) {
             var exp = this.get('expandableNode');
 
             exp.setStyle(
-                'max-height',
+                'maxHeight',
                 Math.round(
                     exp.get('winHeight') - NAVIGATION_MAX_HEIGHT - exp.getY() + exp.get('docScrollY')
                 ) + 'px'
