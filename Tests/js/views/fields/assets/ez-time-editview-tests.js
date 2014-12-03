@@ -10,7 +10,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-time-editview-tests', function (Y) {
-    var viewTest, registerTest, getFieldTest;
+    var viewTest, registerTest, getFieldTest, getEmptyFieldTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ time editView test",
@@ -25,7 +25,7 @@ YUI.add('ez-time-editview-tests', function (Y) {
         },
 
         setUp: function () {
-            this.field = {};
+            this.field = {fieldValue: 36600};
             this.jsonContent = {};
             this.jsonContentType = {};
             this.jsonVersion = {};
@@ -132,6 +132,17 @@ YUI.add('ez-time-editview-tests', function (Y) {
                 "A empty input is valid"
             );
 
+            /*
+             This test can't be done because browser is making a
+             pre-validation and is considering a bad input as empty
+
+             input.set('value', 'blbllbl');
+             Y.Assert.isFalse(
+             this.view.isValid(),
+             "the value should be detected as invalid"
+             );
+             */
+
             input = Y.one('.container input');
             input.set('value', '10:10');
             Y.Assert.isTrue(
@@ -209,6 +220,28 @@ YUI.add('ez-time-editview-tests', function (Y) {
         })
     );
     Y.Test.Runner.add(getFieldTest);
+
+    getEmptyFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {
+                isRequired: false,
+                fieldSettings: {
+                    useSeconds: false
+                }
+            },
+            ViewConstructor: Y.eZ.TimeEditView,
+            expectedValue: null,
+
+            _setNewValue: function () {
+                this.view.get('container').one('input').set('value', this.expectedValue);
+            },
+
+            _assertCorrectFieldValue: function (fieldValue, msg) {
+                Y.Assert.isNull(fieldValue, 'the fieldValue should be null');
+            },
+        })
+    );
+    Y.Test.Runner.add(getEmptyFieldTest);
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Time Edit View registration test";

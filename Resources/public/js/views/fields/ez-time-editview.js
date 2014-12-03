@@ -60,7 +60,6 @@ YUI.add('ez-time-editview', function (Y) {
                 field = this.get('field'),
                 time = '';
 
-
             if ( field && field.fieldValue ) {
                 time =  Y.Date.format(new Date(field.fieldValue * 1000), {format:"%T"});
             }
@@ -95,7 +94,7 @@ YUI.add('ez-time-editview', function (Y) {
          * @return {ValidityState}
          */
         _getInputValidity: function () {
-            return this.get('container').one('.ez-time-input-ui input').get('validity');
+            return this._getInputNode().get('validity');
         },
 
         /**
@@ -106,7 +105,7 @@ YUI.add('ez-time-editview', function (Y) {
          * @return {Integer}
          */
         _getFieldValue: function () {
-            var valueOfInput = this.get('container').one('.ez-time-input-ui input').get('valueAsNumber');
+            var valueOfInput = this._getInputNode().get('valueAsNumber');
 
             if (valueOfInput){
                 return valueOfInput/1000;
