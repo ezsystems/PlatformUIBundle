@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+    <title>eZ Date and Time Edit view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="dateandtimeeditview-ez-template">
+    <p class="ez-dateandtime-date-input-ui">
+        <input type="date"
+        {{#if isRequired}}required{{/if}}
+        >
+    </p>
+    <p class="ez-dateandtime-time-input-ui">
+        <input type="time"
+        {{#if isRequired}}required{{/if}}
+        >
+    </p>
+    <p class="ez-editfield-error-message"></p>
+</script>
+
+<script type="text/javascript" src="../../../../node_modules/yui/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
+<script type="text/javascript" src="./assets/getfield-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-dateandtime-editview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/",
+            replaceStr: "/Tests/instrument/Resources/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-dateandtime-editview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-dateandtime-editview": {
+                requires: ['ez-fieldeditview', 'datatype-date-format'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-dateandtime-editview.js"
+            },
+            "ez-fieldeditview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/ez-fieldeditview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-dateandtime-editview-tests', function (Y) {
+                Y.Test.Runner.run();
+            });
+</script>
+</body>
+</html>
