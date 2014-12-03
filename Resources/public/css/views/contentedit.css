@@ -23,7 +23,7 @@
 }
 
 .ez-view-contenteditview .ez-page-header {
-    padding: 2em;
+    padding: 2em 2em 0 2em;
 }
 
 .ez-view-contenteditview .ez-view-close {
@@ -48,6 +48,12 @@
     padding: 0;
     margin: 0;
     font-size: 80%;
+    visibility: hidden;
+}
+
+.ez-view-contenteditview.is-showing-technicalinfos .ez-technical-infos,
+.ez-view-contenteditview.is-using-touch-device .ez-technical-infos {
+    visibility: visible;
 }
 
 .ez-view-contenteditview .ez-technical-infos li {

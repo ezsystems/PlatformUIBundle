@@ -12,7 +12,7 @@ YUI.add('ez-contenteditview', function (Y) {
 
     Y.namespace('eZ');
 
-    var DETAILS_SEL = '.ez-technical-infos',
+    var IS_SHOWING_TECH = 'is-showing-technicalinfos',
         CONTENT_SEL = '.ez-main-content',
         ESCAPE_KEY = 27,
         FORM_CONTAINER = '.ez-contenteditformview-container',
@@ -97,13 +97,15 @@ YUI.add('ez-contenteditview', function (Y) {
             var container = this.get('container');
 
             container.setHTML(this.template({
-                isTouch: this._isTouch(),
                 content: this.get('content').toJSON(),
                 version: this.get('version').toJSON(),
                 mainLocation: this.get('mainLocation').toJSON(),
                 contentType: this.get('contentType').toJSON(),
                 owner: this.get('owner').toJSON()
             }));
+            if ( this._isTouch() ) {
+                container.addClass('is-using-touch-device');
+            }
 
             container.one(FORM_CONTAINER).append(this.get('formView').render().get('container'));
 
@@ -149,35 +151,23 @@ YUI.add('ez-contenteditview', function (Y) {
         },
 
         /**
-         * Shows the technical infos of the content. If the device is detected
-         * as a touch device, it does nothing as the technical infos are always
-         * visible in this case.
+         * Shows the technical infos of the content.
          *
          * @method _showDetails
          * @protected
          */
         _showDetails: function () {
-            if ( !this._isTouch() ) {
-                this.get('container')
-                    .all(DETAILS_SEL)
-                    .show('fadeIn', {duration: 0.2});
-            }
+            this.get('container').addClass(IS_SHOWING_TECH);
         },
 
         /**
-         * Hides the technical infos of the content. If the device is detected
-         * as a touch device, it odes nothing as the technical infos are always
-         * visible in this case.
+         * Hides the technical infos of the content.         *
          *
          * @method _hideDetails
          * @protected
          */
         _hideDetails: function () {
-            if ( !this._isTouch() ) {
-                this.get('container')
-                    .all(DETAILS_SEL)
-                    .hide('fadeOut', {duration: 0.2});
-            }
+            this.get('container').removeClass(IS_SHOWING_TECH);
         },
 
         /**

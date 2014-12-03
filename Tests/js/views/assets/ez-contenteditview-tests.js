@@ -146,8 +146,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(6, Y.Object.keys(variables).length, "The template should receive 5 variables");
-                Y.Assert.isBoolean(variables.isTouch, "isTouch should be available in the template and should be boolean");
+                Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variables");
                 Y.Assert.isObject(variables.content, "content should be available in the template and should be an object");
                 Y.Assert.isObject(variables.contentType, "contentType should be available in the template and should be an object");
                 Y.Assert.isObject(variables.mainLocation, "mainLocation should be available in the template and should be an object");
@@ -290,57 +289,46 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             );
         },
 
-        "opacity of technical infos should vary if the device is not a touch device": function () {
-            var header;
+        "Should show the technical details when hover the header": function () {
+            var header, container = this.view.get('container');
 
             this.view._isTouch = function () { return false; };
             this.view.render();
 
-            header = this.view.get('container').one('header');
+            header = container.one('header');
             header.simulate('mouseover');
 
-            this.wait(function () {
-                Y.Assert.areEqual(
-                    1, header.one('.ez-technical-infos').getStyle('opacity'),
-                    "Opacity should be 1"
-                );
-                header.simulate('mouseout');
-                this.wait(function () {
-                    Y.Assert.areEqual(
-                        0, header.one('.ez-technical-infos').getStyle('opacity'),
-                        "Opacity should be 0"
-                    );
-                }, 300);
-            }, 300);
+            Y.Assert.isTrue(
+                container.hasClass('is-showing-technicalinfos'),
+                "The technical infos should be shown"
+            );
         },
 
-        "opacity of technical infos should stay at 1 if the device is a touch device": function () {
-            var header;
+        "Should hide the technical details when moving the mouse out of the header": function () {
+            var container = this.view.get('container');
+
+            this["Should show the technical details when hover the header"]();
+            container.one('header').simulate('mouseout');
+
+            Y.Assert.isFalse(
+                container.hasClass('is-showing-technicalinfos'),
+                "The technical infos should be hidden"
+            );
+        },
+
+        "Should add a class when detecting a touch device": function () {
+            var header, container = this.view.get('container');
 
             this.view._isTouch = function () { return true; };
             this.view.render();
 
-            header = this.view.get('container').one('header');
+            header = container.one('header');
             header.simulate('mouseover');
 
-            Y.assert(
-                header.one('.ez-technical-infos').getStyle('opacity') == 1,
-                "Opacity should be 1"
+            Y.Assert.isTrue(
+                container.hasClass('is-using-touch-device'),
+                "The container should have the 'is-using-touch-device' class"
             );
-
-            this.wait(function () {
-                Y.Assert.areEqual(
-                    1, header.one('.ez-technical-infos').getStyle('opacity'),
-                    "Opacity should be 1"
-                );
-                header.simulate('mouseout');
-                this.wait(function () {
-                    Y.Assert.areEqual(
-                        1, header.one('.ez-technical-infos').getStyle('opacity'),
-                        "Opacity should be 1"
-                    );
-                }, 300);
-            }, 300);
         },
     });
 
