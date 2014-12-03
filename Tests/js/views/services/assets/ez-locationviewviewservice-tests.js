@@ -73,7 +73,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 functionalTest.locations[locationId] = new Y.Test.Mock(
                     new Y.eZ.Location({
                         id: locationId,
-                        depth: locationId.split('/').length - functionalTest.rootLocationId.split('/').length,
+                        depth: locationId.split('/').length - functionalTest.rootLocationId.split('/').length + 1,
                         resources: {
                             Content: contentId,
                             ParentLocation: prevLocationId
