@@ -61,6 +61,7 @@ YUI.add('ez-contenteditformview', function (Y) {
 
                 try {
                     EditView = Y.eZ.FieldEditView.getFieldEditView(def.fieldType);
+
                     views.push(
                         new EditView({
                             content: content,

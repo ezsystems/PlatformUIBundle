@@ -6,8 +6,10 @@
             <ul class="ez-technical-infos"{{#unless isTouch}} style="opacity: 0;"{{/unless}}>
                 <li>{{ contentType.names.[eng-GB] }}</li>
                 <li>Created by {{ owner.name }}</li>
+                {{#if content.contentId}}
                 <li>{{ content.lastModificationDate }}</li>
                 <li>Object ID: {{ content.contentId }}, Node ID: {{ mainLocation.locationId }}</li>
+                {{/if}}
             </ul>
         </header>
         <div class="ez-contenteditformview-container"></div>

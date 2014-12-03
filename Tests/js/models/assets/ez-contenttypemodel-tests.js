@@ -15,6 +15,9 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
             this.serviceLoad = 'loadContentType';
             this.rootProperty = "ContentType";
             this.parsedAttributeNumber = Y.eZ.ContentType.ATTRS_REST_MAP.length + 1; // links
+        },
+
+        setUp: function () {
             this.loadResponse = {
                 "ContentType": {
                     "_media-type": "application/vnd.ez.api.ContentType+json",
@@ -169,9 +172,6 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
                     }
                 }
             };
-        },
-
-        setUp: function () {
             this.model = new Y.eZ.ContentType();
         },
 
@@ -180,12 +180,12 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
             delete this.model;
         },
 
-        "Should create correct field groups for the FormEditView from the REST data": function () {
+        "Should create correct field groups from the REST data": function () {
             var m = this.model,
                 mockResponse = {},
                 fieldGroups;
 
-            mockResponse.body = Y.JSON.stringify(this.loadResponse);
+            mockResponse.document = this.loadResponse;
             m.setAttrs(m.parse(mockResponse));
 
             fieldGroups = m.getFieldGroups();
@@ -277,8 +277,25 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
                 fieldDefinitions.page_meta.descriptions["eng-GB"]
             );
             /* jshint camelcase: true */
-        }
+        },
 
+        "Should ignore an invalid fieldDefinitions value": function () {
+            this.model.set('fieldDefinitions', "Something from nothing");
+
+            Y.Assert.isUndefined(
+                this.model.get('fieldDefinitions'),
+                "The default value of fieldDefinitions should be kept"
+            );
+        },
+
+        "Should ignore a falsy fieldDefinitions value": function () {
+            this.model.set('fieldDefinitions', undefined);
+
+            Y.Assert.isUndefined(
+                this.model.get('fieldDefinitions'),
+                "The default value of fieldDefinitions should be kept"
+            );
+        },
     }));
 
     Y.Test.Runner.setName("eZ ContentType Model tests");

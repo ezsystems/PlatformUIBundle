@@ -12,7 +12,8 @@ YUI.add('ez-restmodel', function (Y) {
 
     Y.namespace('eZ');
 
-    var L = Y.Lang;
+    var L = Y.Lang,
+        REST_ROOT_LEVEL_SEP = '.';
 
     /**
      * Abstract class for the model objects loaded from the
@@ -89,12 +90,14 @@ YUI.add('ez-restmodel', function (Y) {
         _setterLocalizedValue: function (val) {
             var res = {};
 
-            if ( !L.isObject(val) || !L.isArray(val.value) ) {
+            if ( !L.isObject(val) ) {
                 return Y.Attribute.INVALID_VALUE;
             }
-            Y.Array.each(val.value, function (item) {
-                res[item._languageCode] = item["#text"];
-            });
+            if ( L.isArray(val.value) ) {
+                Y.Array.each(val.value, function (item) {
+                    res[item._languageCode] = item["#text"];
+                });
+            }
             return res;
         },
 
@@ -134,41 +137,46 @@ YUI.add('ez-restmodel', function (Y) {
         },
 
         /**
-         * Parses the response from the eZ Publish REST API
+         * Parses an object (usually a response object from the JS REST client)
          *
          * @method parse
-         * @param {Object} response the response object from the eZ JS REST Client
+         * @param {Object} response an object with a `document` property holding
+         * the struct to parse like the response object from the eZ JS REST
+         * Client
          * @return {Object} attribute hash
          */
         parse: function (response) {
-            var content,
+            var content = response.document,
                 root = this.constructor.REST_STRUCT_ROOT;
 
-            try {
-                content = Y.JSON.parse(response.body);
-            } catch (ex) {
-                /**
-                 * Fired when a parsing error occurs
-                 *
-                 * @event error
-                 * @param {String} src "parse"
-                 * @param {String} error the error message
-                 * @param {Object} response the response object that failed to
-                 * be parsed
-                 */
-                this.fire('error', {
-                    src: 'parse',
-                    error: "No content in the response",
-                    response: response
-                });
-                return null;
-            }
             if ( root ) {
-                Y.Array.each(root.split('.'), function (val) {
+                Y.Array.each(root.split(REST_ROOT_LEVEL_SEP), function (val) {
                     content = content[val];
                 });
             }
             return this._parseStruct(content, response.document);
+        },
+
+        /**
+         * Loads the model from a simple literal object. It applies
+         * the mapping described by the ATTRS_REST_MAP and LINKS_MAP.
+         *
+         * @method loadFromHash
+         * @params {Object} hash a literal object to import
+         */
+        loadFromHash: function (hash) {
+            var root = this.constructor.REST_STRUCT_ROOT,
+                doc = {},
+                tmp = doc;
+
+            if ( root ) {
+                Y.Array.each(root.split(REST_ROOT_LEVEL_SEP), function (val) {
+                    tmp[val] = {};
+                    tmp = tmp[val];
+                });
+            }
+            tmp = hash;
+            this.setAttrs(this._parseStruct(hash, doc));
         },
 
         /**

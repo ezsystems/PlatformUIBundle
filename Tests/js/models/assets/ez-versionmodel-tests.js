@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-versionmodel-tests', function (Y) {
-    var modelTest, loadNewTest, updateTest, removeTest,
+    var modelTest, createTest, updateTest, removeTest,
         restResponse = {
             "Version": {
                 "_media-type": "application/vnd.ez.api.Version+json",
@@ -60,12 +60,6 @@ YUI.add('ez-versionmodel-tests', function (Y) {
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
         name: "eZ Version Model tests",
 
-        _should: {
-            ignore: {
-                "Sync action other than 'read' are not supported": true
-            }
-        },
-
         init: function () {
             this.capiMock = new Y.Mock();
             this.capiGetService = 'getContentService';
@@ -73,12 +67,11 @@ YUI.add('ez-versionmodel-tests', function (Y) {
             this.serviceLoad = 'loadContent';
             this.rootProperty = "Version.VersionInfo";
             this.parsedAttributeNumber = Y.eZ.Version.ATTRS_REST_MAP.length + 1 + 2; // links + "manually" parsed fields
-            this.loadResponse = restResponse;
         },
-
 
         setUp: function () {
             this.model = new Y.eZ.Version();
+            this.loadResponse = restResponse;
         },
 
         tearDown: function () {
@@ -86,14 +79,9 @@ YUI.add('ez-versionmodel-tests', function (Y) {
             delete this.model;
         },
 
-        "'xxxx' sync operation is not supported": function () {
-            this._testUnsupportedSyncOperation('xxxx');
-        },
-
         "Should read the fields": function () {
             var m = this.model,
                 response = {
-                    body: Y.JSON.stringify(this.loadResponse),
                     document: this.loadResponse
                 },
                 fields, res;
@@ -141,23 +129,37 @@ YUI.add('ez-versionmodel-tests', function (Y) {
         }
     }));
 
-    loadNewTest = new Y.Test.Case({
-        name: "eZ Version Model loadNew tests",
+    createTest = new Y.Test.Case({
+        name: "eZ Version Model create tests",
 
         setUp: function () {
             this.contentId = "/ezp/api/content/objects/4242";
+            this.languageCode = 'eng-GB';
             this.version = new Y.eZ.Version({
-                id: this.contentId + "/version/2",
                 versionId: "42",
                 versionNo: 2
             });
             this.createDraftResponse = restResponse;
             this.capiMock = new Y.Mock();
             this.contentService = new Y.Mock();
+            this.updateStruct = {
+                body: {
+                    VersionUpdate: {
+                        fields: {
+                            field: "",
+                        }
+                    }
+                }
+            };
 
             Y.Mock.expect(this.capiMock, {
                 method: 'getContentService',
                 returns: this.contentService,
+            });
+            Y.Mock.expect(this.contentService, {
+                method: 'newContentUpdateStruct',
+                args: [this.languageCode],
+                returns: this.updateStruct,
             });
         },
 
@@ -167,24 +169,36 @@ YUI.add('ez-versionmodel-tests', function (Y) {
         },
 
         "Should create a new version": function () {
+            var that = this, fields = [{}, {}];
+
             Y.Mock.expect(this.contentService, {
                 method: 'createContentDraft',
-                args: [Y.Mock.Value.String, Y.Mock.Value.Function],
+                args: [this.contentId, Y.Mock.Value.Function],
                 run: function (contentId, cb) {
-                    Y.Assert.areEqual(
-                        loadNewTest.contentId,
-                        contentId,
-                        "The content id should be used to create a new version"
-                    );
                     cb(false, {
-                        body: Y.JSON.stringify(loadNewTest.createDraftResponse),
-                        document: loadNewTest.createDraftResponse
+                        document: that.createDraftResponse
+                    });
+                }
+            });
+            Y.Mock.expect(this.contentService, {
+                method: 'updateContent',
+                args: [that.createDraftResponse.Version._href, Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (id, struct, callback) {
+                    Y.Assert.areSame(
+                        fields,
+                        struct.body.VersionUpdate.fields.field,
+                        "The field should be added to update struct"
+                    );
+                    callback(false, {
+                        document: that.createDraftResponse
                     });
                 }
             });
 
-            this.version.loadNew({
+            this.version.save({
                 api: this.capiMock,
+                languageCode: this.languageCode,
+                fields: fields,
                 contentId: this.contentId,
             }, function (error) {
                 Y.Assert.isTrue(
@@ -193,8 +207,8 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                 );
 
                 Y.Assert.areEqual(
-                    loadNewTest.createDraftResponse.Version.VersionInfo.versionNo,
-                    loadNewTest.version.get('versionNo'),
+                    that.createDraftResponse.Version.VersionInfo.versionNo,
+                    that.version.get('versionNo'),
                     "The new version should have been created and parsed"
                 );
             });
@@ -202,23 +216,22 @@ YUI.add('ez-versionmodel-tests', function (Y) {
 
         "Should keep the version intact in case of error": function () {
             var origVersionJSON = this.version.toJSON(),
-                capiError = {message: 'capi error'};
+                capiError = {message: 'capi error'},
+                that = this,
+                fields = [{}, {}];
 
             Y.Mock.expect(this.contentService, {
                 method: 'createContentDraft',
-                args: [Y.Mock.Value.String, Y.Mock.Value.Function],
+                args: [this.contentId, Y.Mock.Value.Function],
                 run: function (contentId, cb) {
-                    Y.Assert.areEqual(
-                        loadNewTest.contentId,
-                        contentId,
-                        "The content id should be used to create a new version"
-                    );
                     cb(capiError);
                 }
             });
 
-            this.version.loadNew({
+            this.version.save({
                 api: this.capiMock,
+                languageCode: this.languageCode,
+                fields: fields,
                 contentId: this.contentId
             }, function (error) {
                 Y.Assert.areSame(
@@ -228,7 +241,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                 );
                 Y.Assert.areEqual(
                     Y.JSON.stringify(origVersionJSON),
-                    Y.JSON.stringify(loadNewTest.version.toJSON()),
+                    Y.JSON.stringify(that.version.toJSON()),
                     "The version should be left intact"
                 );
             });
@@ -313,6 +326,24 @@ YUI.add('ez-versionmodel-tests', function (Y) {
 
             Y.Mock.verify(this.contentService);
         },
+
+        "Should ignore unsaved version": function () {
+            var that = this;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'deleteVersion',
+                callCount: 0,
+            });
+
+            this.version.set('id', undefined);
+            this.version.destroy({
+                api: this.capiMock,
+                remove: true,
+            }, function (error) {
+                Y.Assert.isFalse(error, "The error parameter of the callback should be false");
+                Y.Mock.verify(that.contentService);
+            });
+        },
     });
 
     updateTest = new Y.Test.Case({
@@ -325,6 +356,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                 versionId: "42",
                 versionNo: 2
             });
+            this.languageCode = 'eng-GB';
             this.origVersionJSON = this.version.toJSON();
             this.saveResponse = restResponse;
             this.capiMock = new Y.Mock();
@@ -337,7 +369,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
 
             Y.Mock.expect(this.contentService, {
                 method: 'newContentUpdateStruct',
-                args: ['eng-GB'],
+                args: [this.languageCode],
                 returns: {
                     "body": {
                         "VersionUpdate": {
@@ -368,7 +400,6 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                         "The field should be added to update struct"
                     );
                     callback(false, {
-                        body: Y.JSON.stringify(updateTest.saveResponse),
                         document: updateTest.saveResponse
                     });
                 }
@@ -376,6 +407,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
 
             this.version.save({
                 api: this.capiMock,
+                languageCode: this.languageCode,
                 fields: fields
             }, function (error) {
                 Y.Assert.isTrue(
@@ -394,7 +426,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
             });
         },
 
-        "Should update and publish the content": function () {
+        "Should update and publish the version": function () {
             var fields = [{}, {}];
 
             Y.Mock.expect(this.contentService, {
@@ -407,7 +439,6 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                         "The field should be added to update struct"
                     );
                     callback(false, {
-                        body: Y.JSON.stringify(updateTest.saveResponse),
                         document: updateTest.saveResponse
                     });
                 }
@@ -415,7 +446,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
 
             Y.Mock.expect(this.contentService, {
                 method: 'publishVersion',
-                args: [this.version.get('id'), Y.Mock.Value.Function],
+                args: [this.saveResponse.Version._href, Y.Mock.Value.Function],
                 run: function (id, callback) {
                     callback(false, {});
                 }
@@ -424,8 +455,9 @@ YUI.add('ez-versionmodel-tests', function (Y) {
             this.version.save({
                 api: this.capiMock,
                 fields: fields,
+                languageCode: this.languageCode,
                 publish: true
-            }, function (error) {
+            }, function (error, response) {
                 Y.Assert.isTrue(
                     !error, "No error should be detected"
                 );
@@ -462,6 +494,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
             this.version.save({
                 api: this.capiMock,
                 fields: fields,
+                languageCode: this.languageCode,
                 publish: publish
             }, function (error) {
                 Y.Assert.areSame(
@@ -500,7 +533,6 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                         "The field should be added to update struct"
                     );
                     callback(false, {
-                        body: Y.JSON.stringify(updateTest.saveResponse),
                         document: updateTest.saveResponse
                     });
                 }
@@ -508,7 +540,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
 
             Y.Mock.expect(this.contentService, {
                 method: 'publishVersion',
-                args: [this.version.get('id'), Y.Mock.Value.Function],
+                args: [this.saveResponse.Version._href, Y.Mock.Value.Function],
                 run: function (id, callback) {
                     callback(publishError, {});
                 }
@@ -516,6 +548,7 @@ YUI.add('ez-versionmodel-tests', function (Y) {
 
             this.version.save({
                 api: this.capiMock,
+                languageCode: this.languageCode,
                 fields: fields,
                 publish: true
             }, function (error) {
@@ -532,12 +565,11 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                 );
             });
         }
-
     });
 
     Y.Test.Runner.setName("eZ Version Model tests");
     Y.Test.Runner.add(modelTest);
-    Y.Test.Runner.add(loadNewTest);
+    Y.Test.Runner.add(createTest);
     Y.Test.Runner.add(updateTest);
     Y.Test.Runner.add(removeTest);
 

@@ -104,7 +104,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
 
             // If some location is already defined preparing to
             // show it on the map
-            if (field.fieldValue) {
+            if (field && field.fieldValue) {
                 mapOptions.zoom = DEFAULT_ZOOM;
                 mapOptions.center = new google.maps.LatLng(field.fieldValue.latitude, field.fieldValue.longitude);
             }
@@ -318,8 +318,8 @@ YUI.add('ez-maplocation-editview', function (Y) {
 
         /**
          * Checking if the geolocation API is available
-         * 
-         * @method _geolocationAvailable 
+         *
+         * @method _geolocationAvailable
          * @protected
          * @return {boolean} true, if geolocation API is available
          */
@@ -341,7 +341,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
                 location.longitude
             );
         },
-        
+
         /**
          * Defines the variables to import in the field edit template for the
          * map location

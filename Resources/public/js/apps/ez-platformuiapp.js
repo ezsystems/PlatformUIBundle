@@ -438,12 +438,12 @@ YUI.add('ez-platformuiapp', function (Y) {
                     });
                 };
 
-            app._set('activeViewService', viewInfo.service);
-
             if ( req.route.service && viewInfo.service ) {
                 this.set('loading', true);
                 viewInfo.service.set('request', req);
                 viewInfo.service.set('response', res);
+
+                app._set('activeViewService', viewInfo.service);
 
                 viewInfo.service.load(showView);
             } else if ( req.route.service ) {
@@ -455,6 +455,8 @@ YUI.add('ez-platformuiapp', function (Y) {
                     response: res,
                     plugins: Y.eZ.PluginRegistry.getPlugins(req.route.service.NAME),
                 });
+
+                app._set('activeViewService', viewInfo.service);
 
                 viewInfo.service.on('error', function (e) {
                     app.fire(EVT_FATALERROR, {
@@ -633,6 +635,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                     name: "editContent",
                     path: '/edit/:id',
                     service: Y.eZ.ContentEditViewService,
+                    sideViews: {},
+                    view: 'contentEditView',
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }, {
+                    name: "createContent",
+                    path: '/create',
+                    service: Y.eZ.ContentCreateViewService,
                     sideViews: {},
                     view: 'contentEditView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
