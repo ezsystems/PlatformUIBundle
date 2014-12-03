@@ -10,7 +10,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-date-editview-tests', function (Y) {
-    var viewTest, registerTest, getFieldTest;
+    var viewTest, registerTest, getFieldTest, getEmptyFieldTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ date editView test",
@@ -22,7 +22,7 @@ YUI.add('ez-date-editview-tests', function (Y) {
         },
 
         setUp: function () {
-            this.field = {};
+            this.field = {fieldValue: {timestamp: 46564455}};
             this.jsonContent = {};
             this.jsonContentType = {};
             this.jsonVersion = {};
@@ -86,7 +86,11 @@ YUI.add('ez-date-editview-tests', function (Y) {
                     "The field should be available in the field edit view template"
                 );
 
-                Y.Assert.areSame(expectRequired, variables.isRequired);
+                Y.Assert.areSame(
+                    expectRequired, variables.isRequired,
+                    "the variable for the template isRequired should have the same value that the isRequired field of the fieldDefinition"
+                );
+
                 return '';
             };
             this.view.render();
@@ -120,13 +124,21 @@ YUI.add('ez-date-editview-tests', function (Y) {
                 "A empty input is valid"
             );
 
-            input = Y.one('.container input');
             input.set('value', '1986-09-08');
-
             Y.Assert.isTrue(
                 this.view.isValid(),
                 "A non empty input is valid"
             );
+            /*
+            This test can't be done because browser is making a
+             pre-validation and is considering a bad input as empty
+
+            input.set('value', 'blbllbl');
+            Y.Assert.isFalse(
+                this.view.isValid(),
+                "the value should be detected as invalid"
+            );
+            */
         },
 
         "Test validate required": function () {
@@ -151,7 +163,7 @@ YUI.add('ez-date-editview-tests', function (Y) {
                 this.view.isValid(),
                 "An empty input is invalid"
             );
-        }
+        },
     });
 
     Y.Test.Runner.setName("eZ Time Edit View tests");
@@ -162,7 +174,7 @@ YUI.add('ez-date-editview-tests', function (Y) {
             fieldDefinition: {isRequired: false},
             ViewConstructor: Y.eZ.DateEditView,
             expectedValue: '1986-09-08',
-            convertedValue:526521600,
+            convertedValue: 526521600,
 
             _setNewValue: function () {
                 this.view.get('container').one('input').set('value', this.expectedValue);
@@ -172,13 +184,32 @@ YUI.add('ez-date-editview-tests', function (Y) {
                 Y.Assert.isObject(fieldValue, 'the fieldValue should be an object');
                 Y.Assert.areSame(this.convertedValue, fieldValue.timestamp, 'the converted date should match the fieldValue timestamp');
             },
+
         })
     );
     Y.Test.Runner.add(getFieldTest);
+
+    getEmptyFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false},
+            ViewConstructor: Y.eZ.DateEditView,
+            expectedValue: null,
+
+            _setNewValue: function () {
+                this.view.get('container').one('input').set('value', this.expectedValue);
+            },
+
+            _assertCorrectFieldValue: function (fieldValue, msg) {
+                Y.Assert.isNull(fieldValue, 'the fieldValue should be Null');
+            },
+        })
+    );
+    Y.Test.Runner.add(getEmptyFieldTest);
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Date Edit View registration test";
     registerTest.viewType = Y.eZ.DateEditView;
     registerTest.viewKey = "ezdate";
     Y.Test.Runner.add(registerTest);
+
 }, '', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-date-editview']});
