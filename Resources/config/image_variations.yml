@@ -1,0 +1,7 @@
+system:
+    default:
+        image_variations:
+            platformui_rawcontentview:
+                reference: reference
+                filters: 
+                    - {name: geometry/scaleheightdownonly, params: [250]}

@@ -127,7 +127,7 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
                     loadFieldRelatedContents = true;
                 });
 
-                this.view.get('container').one('.ez-relationlist-retry').simulateGesture('tap', function () {
+                this.view.get('container').one('.ez-asynchronousview-retry').simulateGesture('tap', function () {
                     that.resume(function () {
                         Y.Assert.isNull(
                             this.view.get('destinationContents'),

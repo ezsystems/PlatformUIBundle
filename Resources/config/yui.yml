@@ -39,7 +39,14 @@ system:
                     requires: ['parallel', 'ez-viewservice', 'ez-contentmodel', 'ez-locationmodel', 'ez-contenttypemodel', 'ez-usermodel', 'ez-versionmodel']
                     path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
                 ez-locationviewviewservice:
-                    requires: ['parallel', 'ez-viewservice', 'ez-locationmodel', 'ez-contentmodel', 'ez-objectrelationloadplugin', 'ez-objectrelationlistloadplugin']
+                    requires:
+                        - 'parallel'
+                        - 'ez-viewservice'
+                        - 'ez-locationmodel'
+                        - 'ez-contentmodel'
+                        - 'ez-objectrelationloadplugin'
+                        - 'ez-objectrelationlistloadplugin'
+                        - 'ez-imagevariationloadplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
                     requires: ['ez-viewservice']
@@ -94,6 +101,7 @@ system:
                         - 'ez-contentmodel'
                         - 'ez-contenttypemodel'
                         - 'ez-checkbox-view'
+                        - 'ez-image-view'
                         - 'ez-relation-view'
                         - 'ez-relationlist-view'
                         - 'ez-url-view'
@@ -195,17 +203,23 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/emailaddress.hbt
                 ez-relationlist-view:
-                    requires: ['ez-fieldview', 'event-tap', 'relationlistview-ez-template']
+                    requires: ['ez-fieldview', 'relationlistview-ez-template', 'ez-asynchronousview']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-relationlist-view.js
                 relationlistview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/view/relationlist.hbt
                 ez-relation-view:
-                    requires: ['ez-fieldview', 'event-tap', 'relationview-ez-template']
+                    requires: ['ez-fieldview', 'relationview-ez-template', 'ez-asynchronousview']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-relation-view.js
                 relationview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/view/relation.hbt
+                ez-image-view:
+                    requires: ['ez-fieldview', 'imageview-ez-template', 'ez-asynchronousview']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-image-view.js
+                imageview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/image.hbt
                 ez-user-view:
                     requires: ['ez-fieldview', 'userview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-user-view.js
@@ -368,9 +382,15 @@ system:
                 ez-objectrelationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationloadplugin.js
+                ez-imagevariationloadplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-imagevariationloadplugin.js
                 ez-contenttreeplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
+                ez-asynchronousview:
+                    requires: ['view', 'event-tap']
+                    path: %ez_platformui.public_dir%/js/extensions/ez-asynchronousview.js
                 ez-expandable:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js

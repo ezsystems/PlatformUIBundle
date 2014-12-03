@@ -1,4 +1,4 @@
-<div class="ez-fieldview-row pure-g">
+<div class="ez-fieldview-row pure-g ez-asynchronousview">
     <div class="ez-fieldview-label pure-u">
         <p class="ez-fieldview-name"><strong>{{ fieldDefinition.names.[eng-GB] }}</strong></p>
     </div>
@@ -10,12 +10,12 @@
                     <a class="ez-navigation-item" href="{{path "viewLocation" id=destinationContent.resources.MainLocation}}">{{ destinationContent.name }}</a></li>
                 {{else}}
                     {{#if loadingError}}
-                        <p class="ez-relation-error font-icon">
+                        <p class="ez-asynchronousview-error font-icon">
                             An error occurred while loading the related content.
-                            <button class="ez-relation-retry ez-button font-icon pure-button">Retry</button>
+                            <button class="ez-asynchronousview-retry ez-button font-icon pure-button">Retry</button>
                         </p>
                     {{else}}
-                        <p class="font-icon ez-relation-loading">Loading the related content</p>
+                        <p class="font-icon ez-asynchronousview-loading">Loading the related content</p>
                     {{/if}}
                 {{/if}}
             {{/if}}

@@ -112,7 +112,7 @@ YUI.add('ez-relation-view-tests', function (Y) {
                     loadFieldRelatedContent = true;
                 });
 
-                this.view.get('container').one('.ez-relation-retry').simulateGesture('tap', function () {
+                this.view.get('container').one('.ez-asynchronousview-retry').simulateGesture('tap', function () {
                     that.resume(function () {
                         Y.Assert.isNull(
                             this.view.get('destinationContent'),

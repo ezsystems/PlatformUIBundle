@@ -9,7 +9,7 @@
 
 <script type="text/x-handlebars-template" id="relationview-ez-template">
     template
-    <button class="ez-relation-retry">Retry</button>
+    <button class="ez-asynchronousview-retry">Retry</button>
 </script>
 
 <script type="text/javascript" src="../../../../node_modules/yui/yui/yui.js"></script>
@@ -29,12 +29,16 @@
     }
 
     YUI({
-        coverage: ['ez-relation-view'],
+        coverage: ['ez-relation-view', 'ez-asynchronousview'],
         filter: loaderFilter,
         modules: {
             "ez-relation-view": {
-                requires: ['ez-fieldview', 'event-tap'],
+                requires: ['ez-fieldview', 'ez-asynchronousview'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-relation-view.js"
+            },
+            "ez-asynchronousview": {
+                requires: ['view', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-asynchronousview.js"
             },
             "ez-fieldview": {
                 requires: ['ez-templatebasedview'],
