@@ -41,20 +41,102 @@ YUI.add('ez-dateandtime-editview', function (Y) {
          */
         validate: function () {
             var dateValidity = this._getDateInputValidity(),
-                timeValidity = this._getTimeInputValidity();
+                timeValidity = this._getTimeInputValidity(),
+                badInputDate = false,
+                badInputTime = false,
+                missingDate = false,
+                missingTime = false,
+                requiredDate = false,
+                requiredTime = false,
+                errorNumber = 0,
+                errorMessagesStruct = {
+                    0: false,
+                    1: 'Date and time do not have valid inputs',
+                    2: 'Date do not have a valid input and time is required',
+                    3: 'Date do not have a valid input',
+                    4: 'Time do not have a valid input and date is required',
+                    5: 'Time do not have a valid input',
+                    6: 'Date and time are required',
+                    7: 'Time is required',
+                    8: 'Date is required',
+                    9: 'Date do not have a valid input and time is missing',
+                    10: 'Time do not have a valid input and date is missing'
+                };
 
-            if ( dateValidity.valueMissing || timeValidity.valueMissing  ) {
-                this.set('errorStatus', 'This field is required');
-            } else if ( dateValidity.badInput || timeValidity.badInput ) {
-                this.set('errorStatus', 'This is not a valid input');
-            } else if (
-                (!this._getDateInputNode().get('valueAsNumber') && this._getTimeInputNode().get('valueAsNumber')) ||
-                (this._getDateInputNode().get('valueAsNumber') && !this._getTimeInputNode().get('valueAsNumber'))
-                ) {
-                this.set('errorStatus', 'the values should make a correct datetime');
-            } else {
-                this.set('errorStatus', false);
+            if ((dateValidity.platformMissingDate && !timeValidity.platformMissingTime) ||
+                (dateValidity.platformMissingDate && timeValidity.badInput)) {
+                missingDate = true;
             }
+            if (dateValidity.badInput) {
+                badInputDate = true;
+            }
+            if (dateValidity.valueMissing) {
+                requiredDate =  true;
+            }
+            if ((timeValidity.platformMissingTime && ! dateValidity.platformMissingDate) ||
+                (timeValidity.platformMissingTime && dateValidity.badInput)) {
+                missingTime = true;
+            }
+            if (timeValidity.badInput) {
+                badInputTime = true;
+            }
+            if (timeValidity.valueMissing) {
+                requiredTime =  true;
+            }
+
+            if (this.get('fieldDefinition').isRequired) {
+                if(badInputTime || badInputDate) {
+                    if(badInputTime && badInputDate){
+                        errorNumber = 1;
+                    } else if (badInputDate) {
+                        if(missingTime) {
+                            errorNumber = 2;
+                        } else {
+                            errorNumber = 3;
+                        }
+                    } else {
+                        if (missingDate) {
+                            errorNumber = 4;
+                        } else {
+                            errorNumber = 5;
+                        }
+                    }
+                } else if (requiredDate || requiredTime) {
+                    if (requiredDate && requiredTime) {
+                        errorNumber = 6;
+                    } else if (requiredTime) {
+                        errorNumber = 7;
+
+                    } else {
+                        errorNumber = 8;
+                    }
+                }
+            } else {
+                if(badInputTime || badInputDate) {
+                    if(badInputTime && badInputDate){
+                        errorNumber = 1;
+                    } else if (badInputDate) {
+                        if(missingTime) {
+                            errorNumber = 9;
+                        } else {
+                            errorNumber = 3;
+                        }
+                    } else {
+                        if (missingDate) {
+                            errorNumber = 10;
+                        } else {
+                            errorNumber = 5;
+                        }
+                    }
+                } else if (missingDate) {
+                    errorNumber = 3;
+                } else if (missingTime) {
+                    errorNumber = 5;
+                }
+            }
+            this.set('errorStatus', errorMessagesStruct[errorNumber]);
+            this._set('validateError', errorNumber);
+
         },
 
         /**
@@ -119,7 +201,12 @@ YUI.add('ez-dateandtime-editview', function (Y) {
          * @return {ValidityState}
          */
         _getDateInputValidity: function () {
-            return this._getDateInputNode().get('validity');
+            var platformMissingDate = !this._getDateInputNode().get('valueAsNumber'),
+                dateInputValidity = this._getDateInputNode().get('validity');
+
+            dateInputValidity.platformMissingDate = platformMissingDate;
+
+            return dateInputValidity;
         },
 
         /**
@@ -133,7 +220,12 @@ YUI.add('ez-dateandtime-editview', function (Y) {
          * @return {ValidityState}
          */
         _getTimeInputValidity: function () {
-            return this._getTimeInputNode().get('validity');
+            var platformMissingTime = !this._getTimeInputNode().get('valueAsNumber'),
+                timeInputValidity = this._getTimeInputNode().get('validity');
+
+            timeInputValidity.platformMissingTime = platformMissingTime;
+
+            return timeInputValidity;
         },
 
         /**
@@ -154,6 +246,18 @@ YUI.add('ez-dateandtime-editview', function (Y) {
             }
 
         },
+
+    },{
+        ATTRS: {
+            /**
+             * The number of the validate error
+             *
+             * @attribute validateError
+             * @protected
+             * @readOnly
+             */
+            validateError: null
+        }
     });
 
     Y.eZ.FieldEditView.registerFieldEditView(FIELDTYPE_IDENTIFIER, Y.eZ.DateAndTimeEditView);
