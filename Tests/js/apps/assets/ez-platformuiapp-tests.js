@@ -444,12 +444,12 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     route: {
                         view: 'myView',
                         service: TestService,
+                        serviceInstance: new TestService(),
                     },
                 };
 
             this.app.views.myView = {
                 type: Y.eZ.View,
-                service: new TestService()
             };
 
             this.app.after('activeViewChange', function () {

@@ -428,34 +428,39 @@ YUI.add('ez-platformuiapp', function (Y) {
          */
         handleMainView: function (req, res, next) {
             var app = this,
-                viewInfo = this.getViewInfo(req.route.view),
+                route = req.route,
+                ServiceContructor = route.service,
+                serviceInstance = route.serviceInstance,
+                viewInfo = this.getViewInfo(route.view),
                 showView = function (service) {
                     var parameters = service ? service.getViewParameters() : {};
 
-                    app.showView(req.route.view, parameters, {
+                    app.showView(route.view, parameters, {
                         update: true,
                         render: true
                     });
                 };
 
-            if ( req.route.service && viewInfo.service ) {
+            if ( serviceInstance ) {
                 this.set('loading', true);
+                viewInfo.service = serviceInstance;
                 viewInfo.service.set('request', req);
                 viewInfo.service.set('response', res);
 
                 app._set('activeViewService', viewInfo.service);
 
                 viewInfo.service.load(showView);
-            } else if ( req.route.service ) {
+            } else if ( ServiceContructor ) {
                 this.set('loading', true);
-                viewInfo.service = new req.route.service({
+                route.serviceInstance = new ServiceContructor({
                     app: this,
                     capi: this.get('capi'),
                     request: req,
                     response: res,
-                    plugins: Y.eZ.PluginRegistry.getPlugins(req.route.service.NAME),
+                    plugins: Y.eZ.PluginRegistry.getPlugins(ServiceContructor.NAME),
                 });
 
+                viewInfo.service = route.serviceInstance;
                 app._set('activeViewService', viewInfo.service);
 
                 viewInfo.service.on('error', function (e) {
