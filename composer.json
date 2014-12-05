@@ -12,5 +12,8 @@
         "psr-4": {
             "EzSystems\\PlatformUIBundle\\": ""
         }
+    },
+    "require": {
+        "ezsystems/platform-ui-assets-bundle": "~0.1"
     }
 }
