@@ -10,7 +10,6 @@ namespace EzSystems\PlatformUIBundle\Helper;
 
 use eZ\Publish\API\Repository\SectionService;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute as AuthorizationAttribute;
-use EzSystems\PlatformUIBundle\Entity\EnrichedSection;
 use EzSystems\PlatformUIBundle\Entity\SectionList;
 use EzSystems\PlatformUIBundle\Entity\SectionListItem;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -50,9 +49,9 @@ class SectionHelper implements SectionHelperInterface
             $list[$section->id] = new SectionListItem(
                 $section,
                 $this->sectionService->countAssignedContents( $section ),
-                $this->canUser( 'edit' ),
-                $this->canUser( 'edit' ),
-                $this->canUser( 'assign' )
+                $this->canCreate(),
+                $this->canDelete(),
+                $this->canAssign()
             );
         }
 
@@ -63,6 +62,30 @@ class SectionHelper implements SectionHelperInterface
      * {@inheritDoc}
      */
     public function canCreate()
+    {
+        return $this->canUser( 'edit' );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function canDelete()
+    {
+        return $this->canUser( 'edit' );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function canEdit()
+    {
+        return $this->canUser( 'edit' );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function canAssign()
     {
         return $this->canUser( 'edit' );
     }
@@ -131,18 +154,9 @@ class SectionHelper implements SectionHelperInterface
     {
         foreach ( $sectionList->ids as $sectionId )
         {
-            $this->deleteSection( $sectionId );
+            $this->sectionService->deleteSection(
+                $this->sectionService->loadSection( $sectionId )
+            );
         }
-    }
-
-    /**
-     * Removes the section having a given section id
-     *
-     * @param mixed $sectionId to be deleted
-     */
-    private function deleteSection( $sectionId )
-    {
-        $section = $this->sectionService->loadSection( $sectionId );
-        $this->sectionService->deleteSection( $section );
     }
 }

@@ -29,7 +29,31 @@
             <p>
                 {{ 'section.assigned.contentcount'|trans( {'%contentCount%': contentCount} ) }}
             </p>
+
+            <div>
+                {{ form_start(form) }}
+                    <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}"
+                       class="pure-button ez-button{% if not canEdit %} pure-button-disabled{% endif %}" data-icon="&#xe606;"
+                            >
+                        {{ 'section.edit'|trans }}
+                    </a>
+
+
+                    {{ form_widget(form.identifier) }}
+
+                    {{ form_widget(
+                    form.delete,
+                    {
+                    'disabled': not canDelete,
+                    'attr': {'class': 'pure-button ez-button ez-remove-section-button font-icon ez-button-delete'}
+                    }
+                    )}}
+                {{ form_end(form) }}
+            </div>
         </div>
+
+
+
         <div class="ez-tabs-panel" id="ez-tabs-content">
             <h2>content</h2>
         </div>
