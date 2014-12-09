@@ -12,19 +12,24 @@ browser(s) versions, ...) and to put *PlatformUI* in the *Component/s* field.
 
 ## Installation
 
-Requirements: eZ Publish Platform 5.4 or community release 2014.11
+**eZ Publish Platform 5.4 or community release 2014.11 (or later community
+release) are required to run the PlatformUI.**
+
+If you are using a recent clone of the ezpublish-community repository,
+PlatformUIBundle is automatically setup. So you can directly open
+http://[uri\_of\_ez]/shell in your favorite browser.
+
+On an existing installation, here's what you need to do:
 
 * From your eZ Publish installation, run composer:
 
   ```
   $ composer require ezsystems/platform-ui-bundle:dev-master
   ```
-  Note: The post install scripts are failing because of a missing CSS file, it's
-  [a known issue](https://jira.ez.no/browse/EZP-23128) that will be fixed in the
-  coming weeks.
 
 * In `ezpublish/EzPublishKernel.php` add an instance of
-  `EzSystemsPlatformUIBundle` class to the list of registered bundles:
+  `EzSystemsPlatformUIBundle` and `EzSystemsPlatformUIAssetsBundle` classes to
+  the list of registered bundles:
 
   ```php
   public function registerBundles()
@@ -34,6 +39,7 @@ Requirements: eZ Publish Platform 5.4 or community release 2014.11
           // ...
 
           new EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle(),
+          new EzSystems\PlatformUIAssetsBundle\EzSystemsPlatformUIAssetsBundle(),
       );
   }
   ```
@@ -51,19 +57,6 @@ Requirements: eZ Publish Platform 5.4 or community release 2014.11
   ```
   $ php ezpublish/console assets:install --symlink
   ```
-* Install [nodejs](http://nodejs.org/)
-* Install [bower](http://bower.io/) (usually you need to be root to install it
-  globally)
-
-  ```
-  # npm install -g bower
-  ```
-* Install frontend dependencies (from the `vendor/ezsystems/platform-ui-bundle directory):
-
-  ```
-  $ cd vendor/ezsystems/platform-ui-bundle && bower install && cd -
-  ```
-
 If you are running eZ Publish in the `prod` environment, you also need to dump
 the assets for Assetic with:
 
@@ -79,16 +72,17 @@ UI application.
 Most developer related tasks can be run with [Grunt](http://gruntjs.com/) and
 have several additional dependencies:
 
-* Install Grunt, YUIDoc and Grover globally (usually you need to be root):
+* Install grunt, yuidoc, bower and grover globally (usually you need to be root):
 
   ```
-  # npm install -g grunt-cli yuidocjs grover
+  # npm install -g grunt-cli yuidocjs grover bower
   ```
 * Install [phantomjs](http://phantomjs.org)
-* Install local npm dependencies, from the bundle root, run:
+* Install local npm and bower dependencies, from the bundle root, run:
 
   ```
   $ npm install
+  $ bower install
   ```
 
 Once this is done, you can use any tasks registered in Grunt, the most

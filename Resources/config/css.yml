@@ -3,10 +3,10 @@ system:
         css:
             files:
             # "external" fundation
-                - '@eZPlatformUIBundle/Resources/public/vendors/pure/base-context-min.css'
-                - '@eZPlatformUIBundle/Resources/public/vendors/pure/grids-min.css'
-                - '@eZPlatformUIBundle/Resources/public/vendors/pure/buttons-min.css'
-                - '@eZPlatformUIBundle/Resources/public/vendors/pure/tables-min.css'
+                - '@eZPlatformUIAssetsBundle/Resources/public/vendors/pure/base-context-min.css'
+                - '@eZPlatformUIAssetsBundle/Resources/public/vendors/pure/grids-min.css'
+                - '@eZPlatformUIAssetsBundle/Resources/public/vendors/pure/buttons-min.css'
+                - '@eZPlatformUIAssetsBundle/Resources/public/vendors/pure/tables-min.css'
             # layout stylesheets
                 - '@eZPlatformUIBundle/Resources/public/css/layout.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/navigationhub.css'
