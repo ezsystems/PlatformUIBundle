@@ -13,6 +13,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             Y.eZ.FieldEditView.registerFieldEditView('test1', Y.Base.create('test1FieldEditView', Y.View, [], {
                 render: function () {
                     this.get('container').setContent('test1 rendered');
+                    this.fire('test1Event');
                     return this;
                 }
             }));
@@ -113,6 +114,17 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 return origTpl.apply(this, arguments);
             };
             this.view.render();
+        },
+
+        "Should add the form view as a bubble target of the field edit view": function () {
+            var bubble = false;
+
+            this.view.on('*:test1Event', function () {
+                bubble = true;
+            });
+            this.view.render();
+
+            Y.Assert.isTrue(bubble, "The field edit view event should bubble to the form view");
         },
 
         "Should collapse and remove collapsing of a fieldset once repeatedly tapped": function () {
