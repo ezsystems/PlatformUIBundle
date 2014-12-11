@@ -380,13 +380,20 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         destroy: destroyTooltipPartial,
 
         setUp: function () {
-            var CustomView = Y.Base.create('customView', Y.eZ.FieldEditView, [], {
+            var CustomView, that = this;
+
+            this.fieldValue = "field value";
+            CustomView = Y.Base.create('customView', Y.eZ.FieldEditView, [], {
                 _variables: function () {
                     return {
                         'foo': 'bar',
                         'ez': 'publish'
                     };
-                }
+                },
+
+                _getFieldValue: function () {
+                    return that.fieldValue;
+                },
             });
 
             this.jsonContent = {};
@@ -409,7 +416,10 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             });
 
             this.fieldDefinition = {descriptions: {"eng-GB": "Test description"}};
-            this.field = {descriptions: {}};
+            this.field = {
+                fieldValue: this.fieldValue,
+                descriptions: {},
+            };
 
             this.view = new CustomView({
                 container: '.container',
@@ -466,18 +476,27 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             this.view.render();
         },
 
-        "getField should return a clone value with 'undefined' as a value": function () {
+        "getField should return a clone of the field": function () {
             var updatedField = this.view.getField();
 
             Y.Assert.areNotSame(
                 this.field, updatedField,
                 "getField should 'clone' the field"
             );
-            Y.Assert.isUndefined(
+            Y.Assert.areEqual(
+                this.fieldValue,
                 updatedField.fieldValue,
-                "The field value should be undefined"
+                "The field value should be kept"
             );
-        }
+        },
+
+        "getField should return undefined if _getFieldValue returns undefined": function () {
+            var updatedField;
+
+            this.fieldValue = undefined;
+            updatedField = this.view.getField();
+            Y.Assert.isUndefined(updatedField, "The field should be undefined");
+        },
     });
 
     registryTest = new Y.Test.Case({

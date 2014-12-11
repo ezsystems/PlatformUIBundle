@@ -15,7 +15,8 @@ YUI.add('ez-contenteditformview', function (Y) {
     var COLLAPSED_CLASS = 'is-collapsed',
         FIELDSET_FIELDS_CLASS = '.fieldgroup-fields',
         TRANSITION_DURATION = 0.4,
-        TRANSITION_EASING = 'ease-in-out';
+        TRANSITION_EASING = 'ease-in-out',
+        L = Y.Lang;
 
     /**
      * The form view
@@ -114,7 +115,8 @@ YUI.add('ez-contenteditformview', function (Y) {
         },
 
         /**
-         * Returns an array containing the field updated with the user input
+         * Returns an array containing the field updated with the user input.
+         * Any undefined field is ignored.
          *
          * @method getFields
          * @return Array
@@ -123,7 +125,11 @@ YUI.add('ez-contenteditformview', function (Y) {
             var res = [];
 
             Y.Array.each(this._fieldEditViews, function (val) {
-                res.push(val.getField());
+                var field = val.getField();
+
+                if ( !L.isUndefined(field) ) {
+                    res.push(field);
+                }
             });
             return res;
         },

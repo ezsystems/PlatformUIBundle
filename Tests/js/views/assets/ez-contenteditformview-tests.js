@@ -270,6 +270,11 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                         'identifier': 'id2',
                         'fieldType': 'test2',
                         'fieldGroup': 'testfieldgroup',
+                    },
+                    'id3': {
+                        'identifier': 'id3',
+                        'fieldType': 'test3',
+                        'fieldGroup': 'testfieldgroup',
                     }
                 }
             });
@@ -281,6 +286,11 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             Y.eZ.FieldEditView.registerFieldEditView('test2', Y.Base.create('fieldEdit2', Y.eZ.FieldEditView, [], {
                 getField: function () {
                     return that.field2;
+                }
+            }));
+            Y.eZ.FieldEditView.registerFieldEditView('test3', Y.Base.create('fieldEdit3', Y.eZ.FieldEditView, [], {
+                getField: function () {
+                    return undefined;
                 }
             }));
 
@@ -305,6 +315,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             delete this.view;
             Y.eZ.FieldEditView.registerFieldEditView('test1', undefined);
             Y.eZ.FieldEditView.registerFieldEditView('test2', undefined);
+            Y.eZ.FieldEditView.registerFieldEditView('test3', undefined);
         },
 
         "Should return the array of field handled by the form": function () {

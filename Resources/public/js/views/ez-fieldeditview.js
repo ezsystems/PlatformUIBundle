@@ -262,7 +262,8 @@ YUI.add('ez-fieldeditview', function (Y) {
          * Returns the value of the field from the current user input. This
          * method should be implemented in each field edit view.
          *
-         * The default implementation returns undefined.
+         * The default implementation returns undefined. Returning undefined
+         * means that the field should be ignored when saving the content.
          *
          * @method _getFieldValue
          * @protected
@@ -277,15 +278,22 @@ YUI.add('ez-fieldeditview', function (Y) {
 
         /**
          * Returns an updated version of the field containing a field value
-         * reflecting the current user input
+         * reflecting the current user input. Returns undefined when the field
+         * value should not be taken into account.
          *
          * @method getField
-         * @return Object
+         * @return Object or undefined
          */
         getField: function () {
-            var field = Y.clone(this.get('field'));
+            var value = this._getFieldValue(),
+                field;
 
-            field.fieldValue = this._getFieldValue();
+            if ( L.isUndefined(value) ) {
+                return undefined;
+            }
+            field = Y.clone(this.get('field'));
+            field.fieldValue = value;
+
             return field;
         },
     }, {
