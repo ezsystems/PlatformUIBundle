@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="8f43b15f9faa5a91f5834c78a47cb864" resname="dashboard.title">
+        <source>dashboard.title</source>
+        <target>Administration dashboard</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

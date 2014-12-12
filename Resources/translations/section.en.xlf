@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="file.ext">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
     <body>
       <trans-unit id="36aaf69db32866a9c2dd745ef9f7a643" resname="section.list">
         <source>section.list</source>
@@ -40,7 +40,7 @@
       </trans-unit>
       <trans-unit id="a1388bfac224ede1622fd041e51384e0" resname="section.view.title">
         <source>section.view.title</source>
-        <target>Section</target>
+        <target>Section: %sectionName%</target>
       </trans-unit>
       <trans-unit id="c56da0cc0963c5167293932e4409d502" resname="section.assigned.contentcount">
         <source>section.assigned.contentcount</source>
