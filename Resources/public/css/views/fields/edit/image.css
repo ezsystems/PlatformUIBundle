@@ -10,9 +10,11 @@
     margin: 0.5em 0 0 0.5em;
 }
 
-.ez-view-imageeditview .ez-image-editpreview-image {
-    float: left;
-    max-width: 300px;
+.ez-view-imageeditview .ez-image-editpreview {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+            flex-direction: row;
 }
 
 .ez-view-imageeditview .ez-image-preview {
@@ -21,16 +23,13 @@
     display: block;
 }
 
-.ez-view-imageeditview .ez-image-properties {
-    margin-left: 300px;
-    padding-left: 1em;
+.ez-view-imageeditview .ez-image-editpreview-image {
+    max-width: 300px;
 }
 
-.ez-view-imageeditview .ez-image-properties:after {
-    display: block;
-    background: #f00;
-    clear: both;
-    content: "";
+.ez-view-imageeditview .ez-image-properties {
+    margin-left: 1em;
+    flex-grow: 1;
 }
 
 .ez-view-imageeditview .ez-image-properties-title {
