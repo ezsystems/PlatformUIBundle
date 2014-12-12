@@ -5,3 +5,7 @@ system:
                 reference: reference
                 filters: 
                     - {name: geometry/scaleheightdownonly, params: [250]}
+            platformui_editview:
+                reference: reference
+                filters:
+                    - {name: geometry/scalewidthdownonly, params: [300]}

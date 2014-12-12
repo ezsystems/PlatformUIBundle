@@ -1,0 +1,98 @@
+.ez-view-imageeditview .ez-image-input-ui {
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.ez-view-imageeditview .ez-image-empty,
+.ez-view-imageeditview .ez-asynchronousview-loading,
+.ez-view-imageeditview .ez-asynchronousview-error {
+    margin: 0.5em 0 0 0.5em;
+}
+
+.ez-view-imageeditview .ez-image-editpreview-image {
+    float: left;
+    max-width: 300px;
+}
+
+.ez-view-imageeditview .ez-image-preview {
+    height: auto;
+    max-width: 100%;
+    display: block;
+}
+
+.ez-view-imageeditview .ez-image-properties {
+    margin-left: 300px;
+    padding-left: 1em;
+}
+
+.ez-view-imageeditview .ez-image-properties:after {
+    display: block;
+    background: #f00;
+    clear: both;
+    content: "";
+}
+
+.ez-view-imageeditview .ez-image-properties-title {
+    margin-top: 0;
+    padding: 0.3em 0.3em 0.3em 0;
+}
+
+.ez-view-imageeditview .ez-image-properties-original {
+    margin: 0 0 0 1.2em;
+    padding: 0;
+    line-height: 1.4em;
+}
+
+.ez-view-imageeditview .ez-image-alt-text {
+    margin-top: 1.5em;
+}
+
+.ez-view-imageeditview .ez-image-alt-text-label {
+    display: block;
+    margin-bottom: 0.5em;
+}
+
+.ez-view-imageeditview .ez-image-alt-text-input {
+    width: 100%;
+}
+
+.ez-view-imageeditview .ez-image-remove {
+    margin: 0.5em 0 0 0;
+}
+
+.ez-view-imageeditview .ez-image-action {
+    text-align: center;
+    position: relative;
+}
+
+.ez-view-imageeditview .ez-image-input-file {
+    display: none;
+}
+
+.ez-view-imageeditview .ez-image-action .ez-button {
+    margin: 1em;
+}
+
+.ez-view-imageeditview .ez-image-warning {
+    display: none;
+    text-align: left;
+    position: absolute;
+    bottom: 100%;
+    left: 10%;
+    width: 80%;
+    padding: 0.8em;
+}
+
+.ez-view-imageeditview.has-warning .ez-image-warning {
+    display: block;
+ }
+
+.ez-view-imageeditview .ez-image-warning-hide {
+    float: right;
+    display: block;
+}
+
+.ez-view-imageeditview .ez-image-warning-text {
+    margin: 0;
+}

@@ -1,0 +1,82 @@
+.ez-view-imageeditview .ez-image-empty {
+    color: #888;
+    font-style: italic;
+}
+
+.ez-view-imageeditview .ez-image-view-original {
+    font-size: 80%;
+}
+
+.ez-view-imageeditview .ez-image-view-original:after {
+    font-family: 'ez-platformui-icomoon';
+    content: "\E610";
+    padding-left: 0.3em;
+}
+
+.ez-view-imageeditview .ez-image-properties-title {
+    font-size: 120%;
+    border-bottom: 1px solid #ccc;
+}
+
+.ez-view-imageeditview .ez-image-properties-original {
+    list-style-type: square;
+}
+
+.ez-view-imageeditview.is-error .ez-button-upload {
+    color: #BF3E33;
+    border: 1px solid #BF3E33;
+}
+
+.ez-view-imageeditview .ez-image-warning {
+    border-radius: 3px;
+    background: #222;
+    opacity: 0.85;
+    color: #fff;
+    display: block;
+    padding: 0;
+
+    -webkit-transform: scale(0);
+       -moz-transform: scale(0);
+        -ms-transform: scale(0);
+         -o-transform: scale(0);
+            transform: scale(0);
+    -webkit-transform-origin: center bottom;
+       -moz-transform-origin: center bottom;
+        -ms-transform-origin: center bottom;
+         -o-transform-origin: center bottom;
+            transform-origin: center bottom;
+    -webkit-transition: all 0.2s ease;
+       -moz-transition: all 0.2s ease;
+        -ms-transition: all 0.2s ease;
+         -o-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.ez-view-imageeditview.has-warning .ez-image-warning {
+    padding: 0.8em;
+
+    -webkit-transform: scale(1);
+       -moz-transform: scale(1);
+        -ms-transform: scale(1);
+         -o-transform: scale(1);
+            transform: scale(1);
+}
+
+.ez-view-imageeditview .ez-image-warning-hide {
+    font-size: 90%;
+}
+
+.ez-view-imageeditview .ez-image-warning-hide:after {
+    content: "\E600";
+    color: #fff;
+    display: inline-block;
+}
+
+.ez-view-imageeditview .ez-image-warning-text:before {
+    content: "\E617";
+    font-size: 300%;
+    padding-right: 0.3em;
+    color: #fff;
+    display: block;
+    float: left;
+}

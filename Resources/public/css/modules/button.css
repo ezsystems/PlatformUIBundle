@@ -7,6 +7,19 @@
     padding: 0.4em 0.5em;
 }
 
+.ez-button-height:before {
+    display: block;
+    font-size: 200%;
+    text-align: center;
+    margin-bottom: 0.2em;
+}
+
+.ez-button-height {
+    text-align: center;
+    width: 14em;
+    white-space: normal;
+}
+
 .ez-button[data-icon]:before {
     padding-right: 0.5em;
 }
