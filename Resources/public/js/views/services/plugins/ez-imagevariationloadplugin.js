@@ -13,7 +13,7 @@ YUI.add('ez-imagevariationloadplugin', function (Y) {
 
     /**
      * Image variation load plugin. It sets an event handler on the
-     * loadImageVariation event to load an image variation 
+     * loadImageVariation event to load an image variation
      *
      * @namespace eZ.Plugin
      * @class ImageVariationLoad

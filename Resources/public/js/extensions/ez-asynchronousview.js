@@ -42,7 +42,7 @@ YUI.add('ez-asynchronousview', function (Y) {
          * @required
          * @type {String}
          */
- 
+
         events: {
             '.ez-asynchronousview-retry': {
                 'tap': '_retryLoading',
