@@ -4,10 +4,70 @@
     vertical-align: top;
 }
 
-.ez-view-imageeditview .ez-image-empty,
+.ez-view-imageeditview.is-image-empty .ez-image-editpreview {
+   display: none;
+}
+
+.ez-view-imageeditview .ez-image-empty {
+    display: none;
+}
+
+.ez-view-imageeditview.is-image-empty .ez-image-empty {
+    display: block;
+}
+
+.ez-view-imageeditview .ez-image-upload-new {
+    display: none;
+}
+
+.ez-view-imageeditview .ez-image-upload-replace {
+    display: inline;
+}
+
+.ez-view-imageeditview.is-image-empty .ez-image-upload-new {
+    display: inline;
+}
+
+.ez-view-imageeditview.is-image-empty .ez-image-upload-replace {
+    display: none;
+}
+
+.ez-view-imageeditview .ez-asynchronousview-loading {
+    display: none;
+}
+
+.ez-view-imageeditview.is-image-loading .ez-image-preview {
+    display: none;
+}
+
+.ez-view-imageeditview.is-image-loading .ez-asynchronousview-loading {
+    display: block;
+}
+
+.ez-view-imageeditview .ez-asynchronousview-error {
+    display: none;
+}
+
+.ez-view-imageeditview.has-loading-error .ez-asynchronousview-loading {
+    display: none;
+}
+
+.ez-view-imageeditview.has-loading-error .ez-asynchronousview-error {
+    display: block;
+}
+
+.ez-view-imageeditview .ez-asynchronousview-retry {
+    display: block;
+    margin: 0.5em auto;
+}
+
+.ez-view-imageeditview .ez-image-empty {
+    margin: 0.5em 0 0 0.5em;
+}
+
 .ez-view-imageeditview .ez-asynchronousview-loading,
 .ez-view-imageeditview .ez-asynchronousview-error {
-    margin: 0.5em 0 0 0.5em;
+    margin: 1em 0;
 }
 
 .ez-view-imageeditview .ez-image-editpreview {
@@ -29,7 +89,9 @@
 
 .ez-view-imageeditview .ez-image-properties {
     margin-left: 1em;
-    flex-grow: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
 }
 
 .ez-view-imageeditview .ez-image-properties-title {

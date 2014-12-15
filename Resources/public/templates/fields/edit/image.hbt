@@ -10,10 +10,14 @@
     </div>
     <div class="pure-u ez-editfield-input-area">
         <div class="ez-editfield-input"><div class="ez-image-input-ui">
-        {{#if image.displayUri}}
             <div class="ez-image-editpreview">
                 <div class="ez-image-editpreview-image">
-                    <img src="{{ image.displayUri }}" alt="{{ image.alternativeText }}" class="ez-image-preview">
+                    <img alt="{{ image.alternativeText }}" class="ez-image-preview" alt="Image preview">
+                    <p class="font-icon ez-asynchronousview-loading">Loading a thumbnail of the image...</p>
+                    <p class="ez-asynchronousview-error font-icon">
+                        An error occurred while loading the thumbnail.
+                        <button class="ez-asynchronousview-retry ez-button font-icon pure-button">Retry</button>
+                    </p>
                 </div>
                 <div class="ez-image-properties">
                     <h2 class="ez-image-properties-title">
@@ -21,11 +25,9 @@
                         (<a href="{{ image.originalUri }}" target="_blank" class="ez-image-view-original">View the full width image</a>)
                     </h2>
                     <ul class="ez-image-properties-original">
-                        <li><b>File name:</b> {{ image.name }}</li>
-                    {{#if image.type}}
-                        <li><b>Type:</b> {{ image.type }}</li>
-                    {{/if}}
-                        <li><b>File size:</b> {{ image.size }}&nbsp;bytes</li>
+                        <li><b>File name:</b> <span class="ez-image-properties-name">{{ image.name }}</span></li>
+                        <li><b>Type:</b> <span class="ez-image-properties-type">{{ image.type }}</span></li>
+                        <li><b>File size:</b> <span class="ez-image-properties-size">{{ image.size }}</span>&nbsp;bytes</li>
                     </ul>
 
                     <div class="ez-image-alt-text">
@@ -37,40 +39,28 @@
                     </div>
                 </div>
             </div>
-        {{/if}}
-        {{#if isEmpty}}
             <p class="ez-image-empty">No image yet.</p>
-        {{else}}
-            {{#if loadingError}}
-                <p class="ez-asynchronousview-error font-icon">
-                    An error occurred while loading the image.
-                    <button class="ez-asynchronousview-retry ez-button font-icon pure-button">Retry</button>
-                </p>
-            {{else}}
-                {{#unless image.displayUri}}
-                    <p class="font-icon ez-asynchronousview-loading">Loading the current image...</p>
-                {{/unless}}
-            {{/if}}
-        {{/if}}
-        <div class="ez-image-action">
-            <div class="ez-image-warning">
-                <a href="#" class="ez-image-warning-hide font-icon"></a>
-                <p class="ez-image-warning-text font-icon"></p>
+            <div class="ez-image-action">
+                <div class="ez-image-warning">
+                    <a href="#" class="ez-image-warning-hide font-icon"></a>
+                    <p class="ez-image-warning-text font-icon"></p>
+                </div>
+                <button class="ez-button ez-button-height ez-button-upload pure-button font-icon">
+                    <span class="ez-image-upload-new">Upload an image</span>
+                    <span class="ez-image-upload-replace">Replace this image</span>
+                </button>
+                <span class="ez-image-remove-option">
+                    or
+                    <button class="ez-button ez-button-height ez-button-delete pure-button font-icon">
+                        Remove this image
+                    </button>
+                </span>
             </div>
-            <button class="ez-button ez-button-height ez-button-upload pure-button font-icon">
-                {{#if isEmpty}}Upload an image{{else}}Replace this image{{/if}}
-            </button>
-            or
-            <button class="ez-button ez-button-height ez-button-delete pure-button font-icon"
-                {{#if isEmpty}} disabled="disabled"{{/if}}>
-                Remove this image
-            </button>
-        </div>
 
-        <input
-            type="file" accept="image/*"
-            class="ez-image-input-file"
-            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
-        ></div></div>
+            <input
+                type="file" accept="image/*"
+                class="ez-image-input-file"
+                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+            ></div></div>
     </div>
 </div>

@@ -14,6 +14,10 @@ YUI.add('ez-image-editview', function (Y) {
 
     var FIELDTYPE_IDENTIFIER = 'ezimage',
         HAS_WARNING = 'has-warning',
+        IS_EMPTY = 'is-image-empty',
+        IS_LOADING = 'is-image-loading',
+        IS_BEING_UPDATED = 'is-image-being-updated',
+        HAS_LOADING_ERROR = 'has-loading-error',
         L = Y.Lang,
         win = Y.config.win,
         events = {
@@ -80,17 +84,84 @@ YUI.add('ez-image-editview', function (Y) {
 
             this.after('imageVariationChange', function (e) {
                 this.get('image').displayUri = e.newVal.uri;
-                this.render();
+                this._uiImageChange();
             });
 
             this.after('imageChange', function () {
                 this._set('updated', true);
-                this.render();
-                this.validate();
+                this._uiImageChange();
             });
             this.after('alternativeTextChange', function () {
                 this._set('updated', true);
             });
+        },
+
+        /**
+         * Reflects the new image object in the generated UI
+         *
+         * @method _uiImageChange
+         * @protected
+         */
+        _uiImageChange: function () {
+            var image = this.get('image'),
+                container = this.get('container'),
+                removeButton = container.one('.ez-button-delete'),
+                imgNode = container.one('.ez-image-preview');
+
+            if ( image ) {
+                container.one('.ez-image-properties-name').setContent(image.name);
+                container.one('.ez-image-properties-size').setContent(image.size);
+                container.one('.ez-image-properties-type').setContent(image.type);
+                container.one('.ez-image-view-original').setAttribute('href', image.originalUri);
+                removeButton.set('disabled', false);
+                if ( image.displayUri ) {
+                    imgNode.setAttribute('src', image.displayUri);
+                    container.removeClass(IS_BEING_UPDATED);
+                }
+            } else {
+                // no need to update the DOM, the image is hidden by CSS
+                removeButton.set('disabled', true);
+            }
+            this._setStateClasses();
+            this.validate();
+        },
+
+        render: function () {
+            this.constructor.superclass.render.call(this);
+            this._setStateClasses();
+            return this;
+        },
+
+        /**
+         * Toggle a classe on the view container based on the value
+         *
+         * @method _toggleClass
+         * @param Mixed value
+         * @param {String} cl the class to toggle
+         * @private
+         */
+        _toggleClass: function (value, cl) {
+            var container = this.get('container');
+
+            if ( value ) {
+                container.addClass(cl);
+            } else {
+                container.removeClass(cl);
+            }
+        },
+
+        /**
+         * Set the state classes on the view container
+         *
+         * @method _setStateClasses
+         * @protected
+         */
+        _setStateClasses: function () {
+            var isEmpty = this._isEmpty();
+
+            this._toggleClass(isEmpty, IS_EMPTY);
+            this._toggleClass(!this.get('updated') && !isEmpty && !this.get('imageVariation'), IS_LOADING);
+            this._toggleClass(this.get('loadingError'), HAS_LOADING_ERROR);
         },
 
         /**
@@ -131,6 +202,7 @@ YUI.add('ez-image-editview', function (Y) {
                 reader, msg;
 
             if ( this._validSize(file.size) ) {
+                this.get('container').addClass(IS_BEING_UPDATED);
                 reader = this.get('fileReader');
                 reader.onload = function (e) {
                     var base64 = reader.result.replace(/^.*;base64,/, '');

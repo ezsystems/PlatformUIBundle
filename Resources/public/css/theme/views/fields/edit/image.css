@@ -1,6 +1,87 @@
+@-webkit-keyframes ez-image-expand {
+    0% {
+        -webkit-transform: scaleY(0);
+    }
+    100% {
+        -webkit-transform: scaleY(1);
+    }
+}
+
+@-webkit-keyframes ez-image-collpase {
+    0% {
+        -webkit-transform: scaleY(1);
+        max-height: 100%;
+    }
+    100% {
+        -webkit-transform: scaleY(0);
+        max-height: 0;
+    }
+}
+
+@keyframes ez-image-expand {
+    0% {
+        transform: scaleY(0);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes ez-image-collpase {
+    0% {
+        transform: scaleY(1);
+        max-height: 100%;
+    }
+    100% {
+        transform: scaleY(0);
+        max-height: 0;
+    }
+}
+
+.ez-view-imageeditview .ez-image-editpreview {
+    -webkit-transform-origin: center top;
+            transform-origin: center top;
+    -webkit-animation: ez-image-expand 0.2s ease forwards;
+            animation: ez-image-expand 0.2s ease forwards;
+}
+
+.ez-view-imageeditview.is-image-empty .ez-image-editpreview {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-animation: ez-image-collpase 0.2s ease forwards;
+            animation: ez-image-collpase 0.2s ease forwards;
+}
+
+.ez-view-imageeditview.is-image-being-updated .ez-image-preview {
+    opacity: 0.1;
+    -webkit-transform: scale(0);
+            transform: scale(0);
+}
+
+.ez-view-imageeditview .ez-image-preview {
+    opacity: 1;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    -webkit-transform-origin: left top;
+            transform-origin: left top;
+    -webkit-transition: all 0.1s ease;
+            transition: all 0.1s ease;
+}
+
+.ez-view-imageeditview.is-image-loading .ez-asynchronousview-loading,
+.ez-view-imageeditview.is-image-loading .ez-asynchronousview-error {
+    font-size: 120%;
+}
+
 .ez-view-imageeditview .ez-image-empty {
     color: #888;
     font-style: italic;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.ez-view-imageeditview.is-error .ez-image-empty {
+    color: #BF3E33;
 }
 
 .ez-view-imageeditview .ez-image-view-original {
@@ -22,9 +103,18 @@
     list-style-type: square;
 }
 
-.ez-view-imageeditview.is-error .ez-button-upload {
-    color: #BF3E33;
-    border: 1px solid #BF3E33;
+.ez-view-imageeditview .ez-image-remove-option {
+    opacity: 1;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.ez-view-imageeditview.is-image-empty .ez-image-remove-option {
+    opacity: 0.4;
+}
+
+.ez-view-imageeditview.is-image-empty .ez-button-delete[disabled] {
+    opacity: 1;
 }
 
 .ez-view-imageeditview .ez-image-warning {
@@ -36,19 +126,10 @@
     padding: 0;
 
     -webkit-transform: scale(0);
-       -moz-transform: scale(0);
-        -ms-transform: scale(0);
-         -o-transform: scale(0);
             transform: scale(0);
     -webkit-transform-origin: center bottom;
-       -moz-transform-origin: center bottom;
-        -ms-transform-origin: center bottom;
-         -o-transform-origin: center bottom;
             transform-origin: center bottom;
     -webkit-transition: all 0.2s ease;
-       -moz-transition: all 0.2s ease;
-        -ms-transition: all 0.2s ease;
-         -o-transition: all 0.2s ease;
             transition: all 0.2s ease;
 }
 
@@ -56,9 +137,6 @@
     padding: 0.8em;
 
     -webkit-transform: scale(1);
-       -moz-transform: scale(1);
-        -ms-transform: scale(1);
-         -o-transform: scale(1);
             transform: scale(1);
 }
 
