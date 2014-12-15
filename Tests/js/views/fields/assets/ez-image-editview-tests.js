@@ -880,6 +880,10 @@ YUI.add('ez-image-editview-tests', function (Y) {
                 method: 'getDOMNode',
                 returns: {files: [file]},
             });
+            Mock.expect(eventFacade.target, {
+                method: 'set',
+                args: ['value', ''],
+            });
             Mock.expect(fileReader, {
                 method: 'readAsDataURL',
                 args: [file],

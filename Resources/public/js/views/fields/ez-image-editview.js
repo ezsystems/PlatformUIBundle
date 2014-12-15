@@ -139,13 +139,13 @@ YUI.add('ez-image-editview', function (Y) {
                 };
                 reader.readAsDataURL(file);
             } else {
-                e.target.set('value', '');
                 msg = "The file '" + file.name + "' was refused because";
                 msg += ' its size is greater than the maximum allowed size (';
                 msg += this.get('fieldDefinition').validatorConfiguration.FileSizeValidator.maxFileSize;
                 msg += '&nbsp;bytes).';
                 this._set('warning', msg);
             }
+            e.target.set('value', '');
         },
 
         /**
