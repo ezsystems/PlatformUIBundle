@@ -109,10 +109,13 @@ YUI.add('ez-contenteditformview', function (Y) {
          * @return Boolean
          */
         isValid: function () {
-            return Y.Array.every(this._fieldEditViews, function (view) {
+            var valid = true;
+
+            Y.Array.each(this._fieldEditViews, function (view) {
                 view.validate();
-                return view.isValid();
+                valid = valid && view.isValid();
             });
+            return valid;
         },
 
         /**

@@ -193,15 +193,21 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                     }
                 }
             });
+            that.test1ValidateCalled = false;
+            that.test2ValidateCalled = false;
             Y.eZ.FieldEditView.registerFieldEditView('test1', Y.Base.create('fieldEdit1', Y.eZ.FieldEditView, [], {
-                validate: function () { },
+                validate: function () {
+                    that.test1ValidateCalled = true;
+                },
 
                 isValid: function () {
                     return that.test1Valid;
                 }
             }));
             Y.eZ.FieldEditView.registerFieldEditView('test2', Y.Base.create('fieldEdit2', Y.eZ.FieldEditView, [], {
-                validate: function () { },
+                validate: function () {
+                    that.test2ValidateCalled = true;
+                },
 
                 isValid: function () {
                     return that.test2Valid;
@@ -236,6 +242,10 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.test2Valid = true;
 
             Y.Assert.isTrue(this.view.isValid(), "The form validity should be true");
+            Y.Assert.isTrue(
+                this.test1ValidateCalled && this.test2ValidateCalled,
+                "The validate() of all views should have been called"
+            );
         },
 
         "Should return the validity of the form (2)": function () {
@@ -243,6 +253,10 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.test2Valid = false;
 
             Y.Assert.isFalse(this.view.isValid(), "The form validity should be false");
+            Y.Assert.isTrue(
+                this.test1ValidateCalled && this.test2ValidateCalled,
+                "The validate() of all views should have been called"
+            );
         },
 
         "Should return the validity of the form (3)": function () {
@@ -250,6 +264,10 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.test2Valid = true;
 
             Y.Assert.isFalse(this.view.isValid(), "The form validity should be false");
+            Y.Assert.isTrue(
+                this.test1ValidateCalled && this.test2ValidateCalled,
+                "The validate() of all views should have been called"
+            );
         },
 
         "Should return the validity of the form (4)": function () {
@@ -257,6 +275,10 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.test2Valid = false;
 
             Y.Assert.isFalse(this.view.isValid(), "The form validity should be false");
+            Y.Assert.isTrue(
+                this.test1ValidateCalled && this.test2ValidateCalled,
+                "The validate() of all views should have been called"
+            );
         },
     });
 
