@@ -53,6 +53,7 @@
 .ez-platformui-app input[type=search],
 .ez-platformui-app input[type=password],
 .ez-platformui-app input[type=time],
+.ez-platformui-app input[type=date],
 .ez-platformui-app textarea {
     line-height: 1.8em;
     height: 1.8em;
