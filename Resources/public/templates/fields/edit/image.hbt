@@ -21,7 +21,7 @@
                 </div>
                 <div class="ez-image-properties">
                     <h2 class="ez-image-properties-title">
-                        Original image properties
+                        Image properties
                         (<a href="{{ image.originalUri }}" target="_blank" class="ez-image-view-original">View the full width image</a>)
                     </h2>
                     <ul class="ez-image-properties-original">
