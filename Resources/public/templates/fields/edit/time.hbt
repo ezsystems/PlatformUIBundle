@@ -1,0 +1,19 @@
+<div class="pure-g ez-editfield-row">
+    <div class="pure-u ez-editfield-infos">
+        {{> ez_fieldinfo_tooltip }}
+        <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+            <p class="ez-fielddefinition-name">
+                {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+            </p>
+            <p class="ez-editfield-error-message">&nbsp;</p>
+        </label>
+    </div>
+    <div class="pure-u ez-editfield-input-area ez-default-error-style">
+        <div class="ez-editfield-input"><div class="ez-time-input-ui"><input type="time" {{#if useSeconds}}step="1"{{/if}}
+                value="{{ html5InputTime }}"
+                class="ez-validated-input"
+                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+                {{#if isRequired}} required{{/if}}
+            ></div></div>
+    </div>
+</div>
