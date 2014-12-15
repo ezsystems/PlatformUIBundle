@@ -366,7 +366,7 @@ YUI.add('ez-image-editview', function (Y) {
                 }
                 return {
                     name: file.fileName,
-                    type: null, // missing in the REST API, see https://jira.ez.no/browse/EZP-23758
+                    type: "N/A", // missing in the REST API, see https://jira.ez.no/browse/EZP-23758
                     size: file.fileSize,
                     originalUri: file.uri,
                     // displayUri value will be set after the asynchronous

@@ -231,7 +231,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
                 image.size,
                 "The image object should get a size property"
             );
-            Assert.isNull(image.type, "The type property should be null");
+            Assert.areEqual('N/A', image.type, "The type property should be 'N/A'");
             Assert.isFalse(image.displayUri, "The displayUri property should be false");
             Assert.isFalse(this.revokeCalled, "revokeObjectURL should not have been called");
         },
