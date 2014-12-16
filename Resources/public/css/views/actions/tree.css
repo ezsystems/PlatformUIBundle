@@ -25,9 +25,6 @@
     padding: 0.3em 0;
 
     -webkit-transform: translateX(-100%);
-       -moz-transform: translateX(-100%);
-        -ms-transform: translateX(-100%);
-         -o-transform: translateX(-100%);
             transform: translateX(-100%);
 
     box-shadow: 3px 3px 3px 0px #888;
@@ -35,9 +32,6 @@
 
 .ez-view-treeactionview.is-expanded .ez-expandable-area {
     -webkit-transform: translateX(100%);
-       -moz-transform: translateX(100%);
-        -ms-transform: translateX(100%);
-         -o-transform: translateX(100%);
             transform: translateX(100%);
 }
 

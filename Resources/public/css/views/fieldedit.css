@@ -37,10 +37,6 @@
     text-align: center;
     height: 1.8em;
     line-height: 1.8em;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    -o-box-sizing: border-box;
     box-sizing: border-box;
 }
 
@@ -85,11 +81,7 @@
     margin-left: 0.5em;
     width: 180px;
     z-index: 10;
-    -webkit-transition: opacity 0.1s;
-       -moz-transition: opacity 0.1s;
-        -ms-transition: opacity 0.1s;
-         -o-transition: opacity 0.1s;
-            transition: opacity 0.1s;
+    transition: opacity 0.1s;
 }
 
 .ez-editfield-infos .ez-fielddefinition-tooltip.is-displayed {
@@ -98,11 +90,7 @@
 
 .ez-editfield-infos .ez-fielddefinition-tooltip.is-visible {
     opacity: 1;
-    -webkit-transition: opacity 0.1s;
-       -moz-transition: opacity 0.1s;
-        -ms-transition: opacity 0.1s;
-         -o-transition: opacity 0.1s;
-            transition: opacity 0.1s;
+    transition: opacity 0.1s;
 }
 
 .ez-editfield-infos .ez-fielddefinition-tooltip-text {

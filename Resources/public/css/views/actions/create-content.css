@@ -26,17 +26,11 @@
     padding: 0.3em 0;
 
     -webkit-transform: translateX(100%);
-       -moz-transform: translateX(100%);
-        -ms-transform: translateX(100%);
-         -o-transform: translateX(100%);
             transform: translateX(100%);
 }
 
 .ez-view-createcontentactionview.is-expanded .ez-expandable-area {
     -webkit-transform: translateX(-100%);
-       -moz-transform: translateX(-100%);
-        -ms-transform: translateX(-100%);
-         -o-transform: translateX(-100%);
             transform: translateX(-100%);
 }
 

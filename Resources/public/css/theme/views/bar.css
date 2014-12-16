@@ -24,17 +24,11 @@
 }
 
 .ez-view-barview .ez-actions-list .ez-action:last-child {
-    -webkit-box-shadow: 0 1px 0 0 #424242;
-       -moz-box-shadow: 0 1px 0 0 #424242;
-            box-shadow: 0 1px 0 0 #424242;
+    box-shadow: 0 1px 0 0 #424242;
 }
 
 .ez-view-barview .view-more-actions {
-    -webkit-transition: all 0.30s ease-in-out;
-       -moz-transition: all 0.30s ease-in-out;
-        -ms-transition: all 0.30s ease-in-out;
-         -o-transition: all 0.30s ease-in-out;
-            transition: all 0.30s ease-in-out;
+    transition: all 0.30s ease-in-out;
     box-shadow: 7px 0 7px 0 rgba(0, 0, 0, 0.5);
 }
 

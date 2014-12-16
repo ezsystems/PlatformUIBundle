@@ -5,23 +5,13 @@
 
 .ez-view-treeactionview {
     background: #333;
-
-    -webkit-transition: padding 0.2s ease;
-       -moz-transition: padding 0.2s ease;
-        -ms-transition: padding 0.2s ease;
-         -o-transition: padding 0.2s ease;
-            transition: padding 0.2s ease;
+    transition: padding 0.2s ease;
 }
 
 .ez-view-treeactionview .ez-expandable-area {
     background: #333;
     font-size: 90%;
-
-    -webkit-transition: all 0.2s ease;
-       -moz-transition: all 0.2s ease;
-        -ms-transition: all 0.2s ease;
-         -o-transition: all 0.2s ease;
-            transition: all 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .ez-view-treeactionview .ez-tree-loading {
@@ -34,8 +24,6 @@
 .ez-view-treeactionview .ez-tree-loading:before {
     display: inline-block;
     -webkit-animation: spin 0.7s infinite linear;
-       -moz-animation: spin 0.7s infinite linear;
-         -o-animation: spin 0.7s infinite linear;
             animation: spin 0.7s infinite linear;
     content: "\E61C";
     padding-right: 0.5em;
@@ -84,8 +72,6 @@
     padding: 0 0.15em;
     content: "\E61C";
     -webkit-animation: spin 0.5s infinite linear;
-       -moz-animation: spin 0.5s infinite linear;
-         -o-animation: spin 0.5s infinite linear;
             animation: spin 0.5s infinite linear;
 }
 

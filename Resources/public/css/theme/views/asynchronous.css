@@ -11,8 +11,6 @@
 .ez-asynchronousview .ez-asynchronousview-loading:before {
     display: inline-block;
     -webkit-animation: spin 0.7s infinite linear;
-       -moz-animation: spin 0.7s infinite linear;
-         -o-animation: spin 0.7s infinite linear;
             animation: spin 0.7s infinite linear;
     content: "\E61c";
     padding: 0 0.2em;

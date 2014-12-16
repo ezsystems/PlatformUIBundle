@@ -15,12 +15,7 @@
 .ez-view-navigationhubview .ez-zone {
     border-left: 1px solid transparent;
     border-right: 1px solid transparent;
-
-    -webkit-transition: all 0.2s ease;
-       -moz-transition: all 0.2s ease;
-        -ms-transition: all 0.2s ease;
-         -o-transition: all 0.2s ease;
-            transition: all 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .ez-view-navigationhubview .is-zone-active {
@@ -36,12 +31,7 @@
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.30);
 
     background: #f5f5f5;
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #F5F5F5), color-stop(1, #FFFFFF));
-    background-image: -webkit-linear-gradient(top, #F5F5F5 0%, #FFFFFF 100%);
-    background-image:    -moz-linear-gradient(top, #F5F5F5 0%, #FFFFFF 100%);
-    background-image:     -ms-linear-gradient(top, #F5F5F5 0%, #FFFFFF 100%);
-    background-image:      -o-linear-gradient(top, #F5F5F5 0%, #FFFFFF 100%);
-    background-image:         linear-gradient(to top, #F5F5F5 0%, #FFFFFF 100%);
+    background-image: linear-gradient(to top, #F5F5F5 0%, #FFFFFF 100%);
     font-size: 90%;
 }
 
@@ -104,11 +94,7 @@
 .ez-view-navigationhubview .ez-navigation .ez-logo {
     opacity: 0;
     visibility: visible;
-    -webkit-transition: all 0.4s ease;
-       -moz-transition: all 0.4s ease;
-        -ms-transition: all 0.4s ease;
-         -o-transition: all 0.4s ease;
-            transition: all 0.4s ease;
+    transition: all 0.4s ease;
 }
 
 .ez-view-navigationhubview.is-navigation-fixed .ez-navigation .ez-logo {
@@ -140,27 +126,15 @@
     border-right: 1px solid #ddd;
 
     -webkit-transform: scaleY(0);
-       -moz-transform: scaleY(0);
-        -ms-transform: scaleY(0);
-         -o-transform: scaleY(0);
             transform: scaleY(0);
     -webkit-transform-origin: 50% 0;
-       -moz-transform-origin: 50% 0;
-        -ms-transform-origin: 50% 0;
-         -o-transform-origin: 50% 0;
             transform-origin: 50% 0;
     -webkit-transition: -webkit-transform 0.1s ease;
-       -moz-transition: -moz-transform 0.1s ease;
-        -ms-transition: -ms-transform 0.1s ease;
-         -o-transition: -o-transform 0.1s ease;
             transition: transform 0.1s ease;
 }
 
 .ez-view-navigationhubview .is-sub-menu-open .ez-sub-menu {
     -webkit-transform: scaleY(1);
-       -moz-transform: scaleY(1);
-        -ms-transform: scaleY(1);
-         -o-transform: scaleY(1);
             transform: scaleY(1);
 }
 
