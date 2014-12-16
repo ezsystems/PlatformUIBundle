@@ -17,8 +17,7 @@
 }
 
 .ez-button.pure-button-disabled,
-.ez-button[disabled]
-{
+.ez-button[disabled] {
     border: 1px solid #bbb;
 }
 
