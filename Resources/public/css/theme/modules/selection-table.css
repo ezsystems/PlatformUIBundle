@@ -6,10 +6,5 @@
 .ez-selection-table .is-row-selected td,
 .ez-selection-table .is-row-selected:nth-child(2n-1) td {
     background: #feffbb;
-
-    -webkit-transition: all 0.2s;
-       -moz-transition: all 0.2s;
-        -ms-transition: all 0.2s;
-         -o-transition: all 0.2s;
-            transition: all 0.2s;
+    transition: all 0.2s;
 }

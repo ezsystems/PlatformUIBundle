@@ -36,14 +36,6 @@
 }
 
 /*csslint vendor-prefix: false */
-@-moz-keyframes spin {
-  0% {
-    -moz-transform: rotate(0deg);
-  }
-  100% {
-    -moz-transform: rotate(359deg);
-  }
-}
 @-webkit-keyframes spin {
   0% {
     -webkit-transform: rotate(0deg);
@@ -52,14 +44,7 @@
     -webkit-transform: rotate(359deg);
   }
 }
-@-o-keyframes spin {
-  0% {
-    -o-transform: rotate(0deg);
-  }
-  100% {
-    -o-transform: rotate(359deg);
-  }
-}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
@@ -70,24 +55,6 @@
 }
 
 @-webkit-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@-moz-keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-@-o-keyframes fadeIn {
     0% {
         opacity: 0;
     }
@@ -120,12 +87,7 @@
 
 .ez-platformui-app {
     opacity: 0;
-
-    -webkit-transition: opacity 0.2s ease, left 0.3s ease;
-       -moz-transition: opacity 0.2s ease, left 0.3s ease;
-        -ms-transition: opacity 0.2s ease, left 0.3s ease;
-         -o-transition: opacity 0.2s ease, left 0.3s ease;
-            transition: opacity 0.2s ease, left 0.3s ease;
+    transition: opacity 0.2s ease, left 0.3s ease;
 }
 
 .ez-platformui-app p {
@@ -155,9 +117,6 @@
     opacity: 0;
 
     -webkit-transform: translateX(-230px);
-       -moz-transform: translateX(-230px);
-        -ms-transform: translateX(-230px);
-         -o-transform: translateX(-230px);
             transform: translateX(-230px);
     display: none;
 }
@@ -193,9 +152,6 @@
     top: 40%;
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
-       -moz-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-         -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
 
     width: 2em;
