@@ -1,0 +1,27 @@
+{#
+ # Generates an HTML like document to be used by the eZ.ServerSideViewService
+ # JavaScript component
+ #
+ # This is an "extended" version of pjax.html.twig adding the header that is used in admin pages
+ #
+ # Template extending this one should implement four blocks:
+ #   * title: to generate what will be used as the title of the web page
+ #   * header_breadcrums
+ #   * header_title
+ #   * content: to generate the HTML code to put in the page
+ #}
+
+<div data-name="title">{% block title %}{% endblock %}</div>
+
+<div data-name="html">
+    <header class="ez-page-header">
+        {% block header_breadcrumbs %}
+            {% if breadcrumb_items is defined %}
+                {% include 'eZPlatformUIBundle:components:breadcrumbs.html.twig' with {'items': breadcrumb_items} %}
+            {% endif %}
+        {% endblock %}
+
+        {% block header_title %} {% endblock %}
+    </header>
+    {% block content %}{% endblock %}
+</div>

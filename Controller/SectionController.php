@@ -342,7 +342,10 @@ class SectionController extends Controller
 
         return $this->render(
             'eZPlatformUIBundle:Section:edit.html.twig',
-            array( 'form' => $form->createView() )
+            array(
+                'form' => $form->createView(),
+                'section' => $sectionToUpdate
+            )
         );
     }
 
