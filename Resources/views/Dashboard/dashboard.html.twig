@@ -2,14 +2,6 @@
 
 {% trans_default_domain "dashboard" %}
 
-{% block header_breadcrumbs %}
-    {% set breadcrumb_items = [
-        {link: '', label: 'dashboard.title'|trans({}, 'dashboard')}
-    ] %}
-
-    {{ parent() }}
-{% endblock %}
-
 {% block header_title %}
     <h1 class="ez-page-header-name" data-icon="&#xe618;">{{ 'dashboard.title'|trans }}</h1>
 {% endblock %}
