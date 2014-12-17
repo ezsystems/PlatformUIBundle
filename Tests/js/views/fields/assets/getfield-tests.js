@@ -5,46 +5,63 @@
 YUI.add('getfield-tests', function (Y) {
     Y.namespace('eZ.Test');
 
+    var L = Y.Lang;
+
     Y.eZ.Test.GetFieldTests = {
         name: "getField Tests",
 
         setUp: function () {
-            var content, contentType, version;
-
-            content = new Y.Mock();
-            contentType = new Y.Mock();
-            version = new Y.Mock();
-            Y.Mock.expect(content, {
-                method: 'toJSON',
-                returns: {}
-            });
-            Y.Mock.expect(contentType, {
-                method: 'toJSON',
-                returns: {}
-            });
-            Y.Mock.expect(version, {
-                method: 'toJSON',
-                returns: {}
-            });
+            if ( !this.content ) {
+                this.content = new Y.Mock();
+                Y.Mock.expect(this.content, {
+                    method: 'toJSON',
+                    returns: {}
+                });
+            }
+            if ( !this.contentType ) {
+                this.contentType = new Y.Mock();
+                Y.Mock.expect(this.contentType, {
+                    method: 'toJSON',
+                    returns: {}
+                });
+            }
+            if ( !this.version ) {
+                this.version = new Y.Mock();
+                Y.Mock.expect(this.version, {
+                    method: 'toJSON',
+                    returns: {}
+                });
+            }
+            if ( L.isUndefined(this.fieldValue) ) {
+                this.fieldValue = "";
+            }
 
             this.view = new this.ViewConstructor({
                 container: '.container',
                 field: {
                     fieldDefinitionIdentifier: "name",
                     id: 186,
-                    fieldValue: "",
+                    fieldValue: this.fieldValue,
                     languageCode: "eng-GB"
                 },
                 fieldDefinition: this.fieldDefinition,
-                content: content,
-                version: version,
-                contentType: contentType
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType
             });
+            this._afterSetup();
+        },
+
+        _afterSetup: function () {
         },
 
         tearDown: function () {
             this.view.destroy();
             delete this.view;
+            this._afterTearnDown();
+        },
+
+        _afterTearnDown: function () {
         },
 
         _assertCorrectFieldValue: function (fieldValue, msg) {

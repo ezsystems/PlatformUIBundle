@@ -4,6 +4,38 @@
 		{
 			"icon": {
 				"paths": [
+					"M448 576h128v-256h192l-256-256-256 256h192zM640 432v98.712l293.066 109.288-421.066 157.018-421.066-157.018 293.066-109.288v-98.712l-384 144v256l512 192 512-192v-256z"
+				],
+				"attrs": [
+					{
+						"visibility": false
+					}
+				],
+				"tags": [
+					"upload",
+					"load",
+					"arrow"
+				],
+				"grid": 32
+			},
+			"attrs": [
+				{
+					"visibility": false
+				}
+			],
+			"properties": {
+				"order": 1,
+				"id": 1,
+				"prevSize": 32,
+				"code": 58911,
+				"name": "upload"
+			},
+			"setIdx": 0,
+			"iconIdx": 0
+		},
+		{
+			"icon": {
+				"paths": [
 					"M512 576l256-256h-192v-256h-128v256h-192zM744.726 471.272l-71.74 71.742 260.080 96.986-421.066 157.018-421.066-157.018 260.080-96.986-71.742-71.742-279.272 104.728v256l512 192 512-192v-256z"
 				],
 				"attrs": [
@@ -32,7 +64,7 @@
 				"name": "download"
 			},
 			"setIdx": 0,
-			"iconIdx": 0
+			"iconIdx": 1
 		},
 		{
 			"icon": {
@@ -52,7 +84,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 120,
-				"order": 30,
+				"order": 31,
 				"prevSize": 32,
 				"code": 58908,
 				"name": "spinner",
@@ -80,7 +112,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 2,
-				"order": 1,
+				"order": 2,
 				"prevSize": 32,
 				"code": 58880,
 				"name": "close",
@@ -110,7 +142,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 3,
-				"order": 3,
+				"order": 4,
 				"prevSize": 32,
 				"code": 58881,
 				"name": "file",
@@ -137,7 +169,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 4,
-				"order": 4,
+				"order": 5,
 				"prevSize": 32,
 				"code": 58882,
 				"name": "arrow-down",
@@ -164,7 +196,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 5,
-				"order": 5,
+				"order": 6,
 				"prevSize": 32,
 				"code": 58883,
 				"name": "arrow-up",
@@ -191,7 +223,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 6,
-				"order": 6,
+				"order": 7,
 				"prevSize": 32,
 				"code": 58884,
 				"name": "arrow-left",
@@ -218,7 +250,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 7,
-				"order": 7,
+				"order": 8,
 				"prevSize": 32,
 				"code": 58885,
 				"name": "arrow-right",
@@ -246,7 +278,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 8,
-				"order": 8,
+				"order": 9,
 				"prevSize": 32,
 				"code": 58886,
 				"name": "pencil",
@@ -271,7 +303,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 9,
-				"order": 9,
+				"order": 10,
 				"prevSize": 32,
 				"code": 58887,
 				"name": "eye",
@@ -299,7 +331,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 10,
-				"order": 10,
+				"order": 11,
 				"prevSize": 32,
 				"code": 58888,
 				"name": "screen",
@@ -324,7 +356,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 11,
-				"order": 11,
+				"order": 12,
 				"prevSize": 32,
 				"code": 58889,
 				"name": "tablet",
@@ -350,7 +382,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 12,
-				"order": 12,
+				"order": 13,
 				"prevSize": 32,
 				"code": 58890,
 				"name": "mobile",
@@ -378,7 +410,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 13,
-				"order": 13,
+				"order": 14,
 				"prevSize": 32,
 				"code": 58891,
 				"name": "bubbles",
@@ -406,7 +438,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 14,
-				"order": 14,
+				"order": 15,
 				"prevSize": 32,
 				"code": 58892,
 				"name": "menu",
@@ -434,7 +466,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 15,
-				"order": 15,
+				"order": 16,
 				"prevSize": 32,
 				"code": 58893,
 				"name": "rocket",
@@ -461,7 +493,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 16,
-				"order": 16,
+				"order": 17,
 				"prevSize": 32,
 				"code": 58894,
 				"name": "floppy",
@@ -486,7 +518,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 17,
-				"order": 17,
+				"order": 18,
 				"prevSize": 32,
 				"code": 58895,
 				"name": "refresh",
@@ -514,7 +546,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 346,
-				"order": 18,
+				"order": 19,
 				"prevSize": 32,
 				"code": 58896,
 				"name": "new-tab",
@@ -539,7 +571,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 146,
-				"order": 19,
+				"order": 20,
 				"prevSize": 32,
 				"code": 58897,
 				"name": "wand",
@@ -566,7 +598,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 150,
-				"order": 20,
+				"order": 21,
 				"prevSize": 32,
 				"code": 58898,
 				"name": "stats",
@@ -595,7 +627,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 144,
-				"order": 21,
+				"order": 22,
 				"prevSize": 32,
 				"code": 58899,
 				"name": "cog",
@@ -620,7 +652,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 286,
-				"order": 22,
+				"order": 23,
 				"prevSize": 32,
 				"code": 58900,
 				"name": "shuffle",
@@ -648,7 +680,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 168,
-				"order": 23,
+				"order": 24,
 				"prevSize": 32,
 				"code": 58901,
 				"name": "remove",
@@ -673,7 +705,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 258,
-				"order": 24,
+				"order": 25,
 				"prevSize": 32,
 				"code": 58902,
 				"name": "plus",
@@ -697,7 +729,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 247,
-				"order": 25,
+				"order": 26,
 				"prevSize": 32,
 				"code": 58903,
 				"name": "info",
@@ -721,7 +753,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 162,
-				"order": 26,
+				"order": 27,
 				"prevSize": 32,
 				"code": 58904,
 				"name": "dashboard",
@@ -746,7 +778,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 185,
-				"order": 27,
+				"order": 28,
 				"prevSize": 32,
 				"code": 58905,
 				"name": "tree",
@@ -773,7 +805,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 88,
-				"order": 28,
+				"order": 29,
 				"prevSize": 32,
 				"code": 58906,
 				"name": "cabinet",
@@ -797,7 +829,7 @@
 			"attrs": [],
 			"properties": {
 				"id": 244,
-				"order": 29,
+				"order": 30,
 				"prevSize": 32,
 				"code": 58907,
 				"name": "warning",
@@ -820,7 +852,7 @@
 			},
 			"properties": {
 				"id": 258,
-				"order": 2,
+				"order": 3,
 				"prevSize": 32,
 				"code": 58909,
 				"name": "plus2"
@@ -857,7 +889,8 @@
 			"columns": 16,
 			"margin": 16,
 			"png": false,
-			"sprites": true
+			"sprites": true,
+			"prefix": "icon-"
 		},
 		"historySize": 100,
 		"showCodes": true,

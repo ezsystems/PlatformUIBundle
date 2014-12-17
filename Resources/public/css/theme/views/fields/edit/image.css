@@ -1,0 +1,160 @@
+@-webkit-keyframes ez-image-expand {
+    0% {
+        -webkit-transform: scaleY(0);
+    }
+    100% {
+        -webkit-transform: scaleY(1);
+    }
+}
+
+@-webkit-keyframes ez-image-collpase {
+    0% {
+        -webkit-transform: scaleY(1);
+        max-height: 100%;
+    }
+    100% {
+        -webkit-transform: scaleY(0);
+        max-height: 0;
+    }
+}
+
+@keyframes ez-image-expand {
+    0% {
+        transform: scaleY(0);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes ez-image-collpase {
+    0% {
+        transform: scaleY(1);
+        max-height: 100%;
+    }
+    100% {
+        transform: scaleY(0);
+        max-height: 0;
+    }
+}
+
+.ez-view-imageeditview .ez-image-editpreview {
+    -webkit-transform-origin: center top;
+            transform-origin: center top;
+    -webkit-animation: ez-image-expand 0.2s ease forwards;
+            animation: ez-image-expand 0.2s ease forwards;
+}
+
+.ez-view-imageeditview.is-image-empty .ez-image-editpreview {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-animation: ez-image-collpase 0.2s ease forwards;
+            animation: ez-image-collpase 0.2s ease forwards;
+}
+
+.ez-view-imageeditview.is-image-being-updated .ez-image-preview {
+    opacity: 0.1;
+    -webkit-transform: scale(0);
+            transform: scale(0);
+}
+
+.ez-view-imageeditview .ez-image-preview {
+    opacity: 1;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    -webkit-transform-origin: left top;
+            transform-origin: left top;
+    -webkit-transition: all 0.1s ease;
+            transition: all 0.1s ease;
+}
+
+.ez-view-imageeditview.is-image-loading .ez-asynchronousview-loading,
+.ez-view-imageeditview.is-image-loading .ez-asynchronousview-error {
+    font-size: 120%;
+}
+
+.ez-view-imageeditview .ez-image-empty {
+    color: #888;
+    font-style: italic;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.ez-view-imageeditview.is-error .ez-image-empty {
+    color: #BF3E33;
+}
+
+.ez-view-imageeditview .ez-image-view-original {
+    font-size: 80%;
+}
+
+.ez-view-imageeditview .ez-image-view-original:after {
+    font-family: 'ez-platformui-icomoon';
+    content: "\E610";
+    padding-left: 0.3em;
+}
+
+.ez-view-imageeditview .ez-image-properties-title {
+    font-size: 120%;
+    border-bottom: 1px solid #ccc;
+}
+
+.ez-view-imageeditview .ez-image-properties-original {
+    list-style-type: square;
+}
+
+.ez-view-imageeditview .ez-image-remove-option {
+    opacity: 1;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.ez-view-imageeditview.is-image-empty .ez-image-remove-option {
+    opacity: 0.4;
+}
+
+.ez-view-imageeditview.is-image-empty .ez-button-delete[disabled] {
+    opacity: 1;
+}
+
+.ez-view-imageeditview .ez-image-warning {
+    border-radius: 3px;
+    background: #222;
+    opacity: 0.85;
+    color: #fff;
+    display: block;
+    padding: 0;
+
+    -webkit-transform: scale(0);
+            transform: scale(0);
+    -webkit-transform-origin: center bottom;
+            transform-origin: center bottom;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.ez-view-imageeditview.has-warning .ez-image-warning {
+    padding: 0.8em;
+
+    -webkit-transform: scale(1);
+            transform: scale(1);
+}
+
+.ez-view-imageeditview .ez-image-warning-hide {
+    font-size: 90%;
+}
+
+.ez-view-imageeditview .ez-image-warning-hide:after {
+    content: "\E600";
+    color: #fff;
+    display: inline-block;
+}
+
+.ez-view-imageeditview .ez-image-warning-text:before {
+    content: "\E617";
+    font-size: 300%;
+    padding-right: 0.3em;
+    color: #fff;
+    display: block;
+    float: left;
+}

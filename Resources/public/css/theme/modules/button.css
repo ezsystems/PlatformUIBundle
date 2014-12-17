@@ -25,3 +25,8 @@
     content: "\E615";
     padding-right: 0.5em;
 }
+
+.ez-button-upload:before {
+    content: "\E61f";
+    padding-right: 0.5em;
+}

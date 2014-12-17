@@ -42,7 +42,7 @@ YUI.add('ez-asynchronousview', function (Y) {
          * @required
          * @type {String}
          */
- 
+
         events: {
             '.ez-asynchronousview-retry': {
                 'tap': '_retryLoading',
@@ -56,9 +56,11 @@ YUI.add('ez-asynchronousview', function (Y) {
                 this.render();
             });
 
-            this.after(this._watchAttribute + 'Change', function (e) {
-                this.render();
-            });
+            if ( this._watchAttribute ) {
+                this.after(this._watchAttribute + 'Change', function (e) {
+                    this.render();
+                });
+            }
         },
 
         /**
@@ -76,7 +78,9 @@ YUI.add('ez-asynchronousview', function (Y) {
                     loadingError: false
                 };
 
-            attrs[this._watchAttribute] = null;
+            if ( this._watchAttribute ) {
+                attrs[this._watchAttribute] = null;
+            }
             this.setAttrs(attrs);
             this._fireMethod.call(this);
         },

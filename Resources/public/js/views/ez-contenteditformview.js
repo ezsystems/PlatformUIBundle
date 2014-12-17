@@ -15,7 +15,8 @@ YUI.add('ez-contenteditformview', function (Y) {
     var COLLAPSED_CLASS = 'is-collapsed',
         FIELDSET_FIELDS_CLASS = '.fieldgroup-fields',
         TRANSITION_DURATION = 0.4,
-        TRANSITION_EASING = 'ease-in-out';
+        TRANSITION_EASING = 'ease-in-out',
+        L = Y.Lang;
 
     /**
      * The form view
@@ -54,23 +55,24 @@ YUI.add('ez-contenteditformview', function (Y) {
                 version = this.get('version'),
                 contentType = this.get('contentType'),
                 fieldDefinitions = contentType.get('fieldDefinitions'),
-                views = [];
+                views = [],
+                that = this;
 
             Y.Object.each(fieldDefinitions, function (def) {
-                var EditView;
+                var EditView, view;
 
                 try {
                     EditView = Y.eZ.FieldEditView.getFieldEditView(def.fieldType);
 
-                    views.push(
-                        new EditView({
-                            content: content,
-                            version: version,
-                            contentType: contentType,
-                            fieldDefinition: def,
-                            field: version.getField(def.identifier)
-                        })
-                    );
+                    view = new EditView({
+                        content: content,
+                        version: version,
+                        contentType: contentType,
+                        fieldDefinition: def,
+                        field: version.getField(def.identifier)
+                    });
+                    views.push(view);
+                    view.addTarget(that);
                 } catch (e) {
                     console.error(e.message);
                 }
@@ -107,14 +109,18 @@ YUI.add('ez-contenteditformview', function (Y) {
          * @return Boolean
          */
         isValid: function () {
-            return Y.Array.every(this._fieldEditViews, function (view) {
+            var valid = true;
+
+            Y.Array.each(this._fieldEditViews, function (view) {
                 view.validate();
-                return view.isValid();
+                valid = valid && view.isValid();
             });
+            return valid;
         },
 
         /**
-         * Returns an array containing the field updated with the user input
+         * Returns an array containing the field updated with the user input.
+         * Any undefined field is ignored.
          *
          * @method getFields
          * @return Array
@@ -123,7 +129,11 @@ YUI.add('ez-contenteditformview', function (Y) {
             var res = [];
 
             Y.Array.each(this._fieldEditViews, function (val) {
-                res.push(val.getField());
+                var field = val.getField();
+
+                if ( !L.isUndefined(field) ) {
+                    res.push(field);
+                }
             });
             return res;
         },

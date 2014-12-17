@@ -1,0 +1,66 @@
+<div class="pure-g ez-editfield-row ez-asynchronousview ez-default-error-style">
+    <div class="pure-u ez-editfield-infos">
+        {{> ez_fieldinfo_tooltip }}
+        <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+            <p class="ez-fielddefinition-name">
+                {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+            </p>
+            <p class="ez-editfield-error-message">&nbsp;</p>
+        </label>
+    </div>
+    <div class="pure-u ez-editfield-input-area">
+        <div class="ez-editfield-input"><div class="ez-image-input-ui">
+            <div class="ez-image-editpreview">
+                <div class="ez-image-editpreview-image">
+                    <img alt="{{ image.alternativeText }}" class="ez-image-preview" alt="Image preview">
+                    <p class="font-icon ez-asynchronousview-loading">Loading a thumbnail of the image...</p>
+                    <p class="ez-asynchronousview-error font-icon">
+                        An error occurred while loading the thumbnail.
+                        <button class="ez-asynchronousview-retry ez-button font-icon pure-button">Retry</button>
+                    </p>
+                </div>
+                <div class="ez-image-properties">
+                    <h2 class="ez-image-properties-title">
+                        Image properties
+                        (<a href="{{ image.originalUri }}" target="_blank" class="ez-image-view-original">View the full width image</a>)
+                    </h2>
+                    <ul class="ez-image-properties-original">
+                        <li><b>File name:</b> <span class="ez-image-properties-name">{{ image.name }}</span></li>
+                        <li><b>Type:</b> <span class="ez-image-properties-type">{{ image.type }}</span></li>
+                        <li><b>File size:</b> <span class="ez-image-properties-size">{{ image.size }}</span>&nbsp;bytes</li>
+                    </ul>
+
+                    <div class="ez-image-alt-text">
+                        <label class="ez-image-alt-text-label" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">Alternative text:</label>
+                        <input type="text"
+                            class="ez-image-alt-text-input"
+                            value="{{ alternativeText }}" 
+                            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+                    </div>
+                </div>
+            </div>
+            <p class="ez-image-empty">No image yet.</p>
+            <div class="ez-image-action">
+                <div class="ez-image-warning">
+                    <a href="#" class="ez-image-warning-hide font-icon"></a>
+                    <p class="ez-image-warning-text font-icon"></p>
+                </div>
+                <button class="ez-button ez-button-height ez-button-upload pure-button font-icon">
+                    <span class="ez-image-upload-new">Upload an image</span>
+                    <span class="ez-image-upload-replace">Replace this image</span>
+                </button>
+                <span class="ez-image-remove-option">
+                    or
+                    <button class="ez-button ez-button-height ez-button-delete pure-button font-icon">
+                        Remove this image
+                    </button>
+                </span>
+            </div>
+
+            <input
+                type="file" accept="image/*"
+                class="ez-image-input-file"
+                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+            ></div></div>
+    </div>
+</div>

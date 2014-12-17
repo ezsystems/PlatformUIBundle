@@ -13,6 +13,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             Y.eZ.FieldEditView.registerFieldEditView('test1', Y.Base.create('test1FieldEditView', Y.View, [], {
                 render: function () {
                     this.get('container').setContent('test1 rendered');
+                    this.fire('test1Event');
                     return this;
                 }
             }));
@@ -115,6 +116,17 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.view.render();
         },
 
+        "Should add the form view as a bubble target of the field edit view": function () {
+            var bubble = false;
+
+            this.view.on('*:test1Event', function () {
+                bubble = true;
+            });
+            this.view.render();
+
+            Y.Assert.isTrue(bubble, "The field edit view event should bubble to the form view");
+        },
+
         "Should collapse and remove collapsing of a fieldset once repeatedly tapped": function () {
             var fieldGroupName, fieldGroupFields, that = this;
 
@@ -181,15 +193,21 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                     }
                 }
             });
+            that.test1ValidateCalled = false;
+            that.test2ValidateCalled = false;
             Y.eZ.FieldEditView.registerFieldEditView('test1', Y.Base.create('fieldEdit1', Y.eZ.FieldEditView, [], {
-                validate: function () { },
+                validate: function () {
+                    that.test1ValidateCalled = true;
+                },
 
                 isValid: function () {
                     return that.test1Valid;
                 }
             }));
             Y.eZ.FieldEditView.registerFieldEditView('test2', Y.Base.create('fieldEdit2', Y.eZ.FieldEditView, [], {
-                validate: function () { },
+                validate: function () {
+                    that.test2ValidateCalled = true;
+                },
 
                 isValid: function () {
                     return that.test2Valid;
@@ -224,6 +242,10 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.test2Valid = true;
 
             Y.Assert.isTrue(this.view.isValid(), "The form validity should be true");
+            Y.Assert.isTrue(
+                this.test1ValidateCalled && this.test2ValidateCalled,
+                "The validate() of all views should have been called"
+            );
         },
 
         "Should return the validity of the form (2)": function () {
@@ -231,6 +253,10 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.test2Valid = false;
 
             Y.Assert.isFalse(this.view.isValid(), "The form validity should be false");
+            Y.Assert.isTrue(
+                this.test1ValidateCalled && this.test2ValidateCalled,
+                "The validate() of all views should have been called"
+            );
         },
 
         "Should return the validity of the form (3)": function () {
@@ -238,6 +264,10 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.test2Valid = true;
 
             Y.Assert.isFalse(this.view.isValid(), "The form validity should be false");
+            Y.Assert.isTrue(
+                this.test1ValidateCalled && this.test2ValidateCalled,
+                "The validate() of all views should have been called"
+            );
         },
 
         "Should return the validity of the form (4)": function () {
@@ -245,6 +275,10 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.test2Valid = false;
 
             Y.Assert.isFalse(this.view.isValid(), "The form validity should be false");
+            Y.Assert.isTrue(
+                this.test1ValidateCalled && this.test2ValidateCalled,
+                "The validate() of all views should have been called"
+            );
         },
     });
 
@@ -270,6 +304,11 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                         'identifier': 'id2',
                         'fieldType': 'test2',
                         'fieldGroup': 'testfieldgroup',
+                    },
+                    'id3': {
+                        'identifier': 'id3',
+                        'fieldType': 'test3',
+                        'fieldGroup': 'testfieldgroup',
                     }
                 }
             });
@@ -281,6 +320,11 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             Y.eZ.FieldEditView.registerFieldEditView('test2', Y.Base.create('fieldEdit2', Y.eZ.FieldEditView, [], {
                 getField: function () {
                     return that.field2;
+                }
+            }));
+            Y.eZ.FieldEditView.registerFieldEditView('test3', Y.Base.create('fieldEdit3', Y.eZ.FieldEditView, [], {
+                getField: function () {
+                    return undefined;
                 }
             }));
 
@@ -305,6 +349,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             delete this.view;
             Y.eZ.FieldEditView.registerFieldEditView('test1', undefined);
             Y.eZ.FieldEditView.registerFieldEditView('test2', undefined);
+            Y.eZ.FieldEditView.registerFieldEditView('test3', undefined);
         },
 
         "Should return the array of field handled by the form": function () {
