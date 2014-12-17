@@ -17,7 +17,7 @@
     <header class="ez-page-header">
         {% block header_breadcrumbs %}
             {% if breadcrumb_items is defined %}
-                {% include 'eZPlatformUIBundle:BreadCrumbs:breadcrumbs.html.twig' with {'items': breadcrumb_items} %}
+                {% include 'eZPlatformUIBundle:components:breadcrumbs.html.twig' with {'items': breadcrumb_items} %}
             {% endif %}
         {% endblock %}
 
