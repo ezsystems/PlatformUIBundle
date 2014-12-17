@@ -3,10 +3,10 @@
  # Parameter :
  # - items: an array of hashes with a "link" and a "label" for each item.
 #}
-<nav class="ez-breadcrumb">
-    <ul class="ez-breadcrumb-list">
+<nav class="ez-breadcrumbs">
+    <ul class="ez-breadcrumbs-list">
         {% for item in items %}
-            <li class="ez-breadcrumb-item">
+            <li class="ez-breadcrumbs-item">
                 {% if item.link is not empty %}
                     <a href="{{ item.link }}">
                         {{ item.label }}
