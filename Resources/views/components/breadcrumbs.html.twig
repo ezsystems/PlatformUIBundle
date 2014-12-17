@@ -8,9 +8,7 @@
         {% for item in items %}
             <li class="ez-breadcrumbs-item">
                 {% if item.link is not empty %}
-                    <a href="{{ item.link }}">
-                        {{ item.label }}
-                    </a>
+                    <a href="{{ item.link }}">{{ item.label }}</a>
                 {% else %}
                     {{ item.label }}
                 {% endif %}
