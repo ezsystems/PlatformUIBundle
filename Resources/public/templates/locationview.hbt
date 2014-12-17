@@ -1,12 +1,14 @@
 <div class="pure-g">
     <div class="ez-locationview-content pure-u">
         <header class="ez-page-header">
-            <ul class="ez-breadcrumbs">
-            {{#each path}}
-                <li><a href="{{ path "viewLocation" id=location.id }}">{{ content.name }}</a></li>
-            {{/each}}
-                <li>{{ content.name }}</li>
-            </ul>
+            <nav class="ez-breadcrumbs">
+                <ul class="ez-breadcrumbs-list">
+                {{#each path}}
+                    <li class="ez-breadcrumbs-item"><a href="{{ path "viewLocation" id=location.id }}">{{ content.name }}</a></li>
+                {{/each}}
+                    <li class="ez-breadcrumbs-item">{{ content.name }}</li>
+                </ul>
+            </nav>
             <h1 class="ez-page-header-name" data-icon="&#xe601;">{{ content.name }}</h1>
         </header>
         <section class="ez-tabs">
