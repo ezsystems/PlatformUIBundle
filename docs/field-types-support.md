@@ -98,7 +98,7 @@ content type in the PlatformUI application.
 ## Media
 
 * Content view: No [EZP-23730](https://jira.ez.no/browse/EZP-23730)
-* Content edit: No
+* Content edit: No [EZP-23813](https://jira.ez.no/browse/EZP-23813)
 * Content type view: No
 * Content type edit: No
 
@@ -126,21 +126,21 @@ content type in the PlatformUI application.
 ## Relation
 
 * Content view: Yes
-* Content edit: No
+* Content edit: No [EZP-23816](https://jira.ez.no/browse/EZP-23816)
 * Content type view: No
 * Content type edit: No
 
 ## RelationList
 
 * Content view: Yes
-* Content edit: No
+* Content edit: No [EZP-23818](https://jira.ez.no/browse/EZP-23818)
 * Content type view: No
 * Content type edit: No
 
 ## RichText
 
-* Content view: No
-* Content edit: No
+* Content view: No [EZP-23814](https://jira.ez.no/browse/EZP-23814)
+* Content edit: No [EZP-23815](https://jira.ez.no/browse/EZP-23815)
 * Content type view: No
 * Content type edit: No
 
