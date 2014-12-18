@@ -109,13 +109,6 @@ content type in the PlatformUI application.
 * Content type view: No
 * Content type edit: No
 
-## Price
-
-* Content view: No
-* Content edit: No
-* Content type view: No
-* Content type edit: No
-
 ## Rating
 
 * Content view: No
