@@ -177,3 +177,43 @@
         opacity: 1;
     }
 }
+
+@-webkit-keyframes ez-expand {
+    0% {
+        -webkit-transform: scaleY(0);
+    }
+    100% {
+        -webkit-transform: scaleY(1);
+    }
+}
+
+@-webkit-keyframes ez-collapse {
+    0% {
+        -webkit-transform: scaleY(1);
+        max-height: 100%;
+    }
+    100% {
+        -webkit-transform: scaleY(0);
+        max-height: 0;
+    }
+}
+
+@keyframes ez-expand {
+    0% {
+        transform: scaleY(0);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes ez-collapse {
+    0% {
+        transform: scaleY(1);
+        max-height: 100%;
+    }
+    100% {
+        transform: scaleY(0);
+        max-height: 0;
+    }
+}

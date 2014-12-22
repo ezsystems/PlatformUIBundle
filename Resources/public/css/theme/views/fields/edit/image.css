@@ -1,55 +1,15 @@
-@-webkit-keyframes ez-image-expand {
-    0% {
-        -webkit-transform: scaleY(0);
-    }
-    100% {
-        -webkit-transform: scaleY(1);
-    }
-}
-
-@-webkit-keyframes ez-image-collpase {
-    0% {
-        -webkit-transform: scaleY(1);
-        max-height: 100%;
-    }
-    100% {
-        -webkit-transform: scaleY(0);
-        max-height: 0;
-    }
-}
-
-@keyframes ez-image-expand {
-    0% {
-        transform: scaleY(0);
-    }
-    100% {
-        transform: scaleY(1);
-    }
-}
-
-@keyframes ez-image-collpase {
-    0% {
-        transform: scaleY(1);
-        max-height: 100%;
-    }
-    100% {
-        transform: scaleY(0);
-        max-height: 0;
-    }
-}
-
 .ez-view-imageeditview .ez-image-editpreview {
     -webkit-transform-origin: center top;
             transform-origin: center top;
-    -webkit-animation: ez-image-expand 0.2s ease forwards;
-            animation: ez-image-expand 0.2s ease forwards;
+    -webkit-animation: ez-expand 0.2s ease forwards;
+            animation: ez-expand 0.2s ease forwards;
 }
 
 .ez-view-imageeditview.is-image-empty .ez-image-editpreview {
     display: -webkit-flex;
     display: flex;
-    -webkit-animation: ez-image-collpase 0.2s ease forwards;
-            animation: ez-image-collpase 0.2s ease forwards;
+    -webkit-animation: ez-collapse 0.2s ease forwards;
+            animation: ez-collapse 0.2s ease forwards;
 }
 
 .ez-view-imageeditview.is-image-being-updated .ez-image-preview {
