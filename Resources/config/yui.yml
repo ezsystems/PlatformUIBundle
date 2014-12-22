@@ -150,6 +150,7 @@ system:
                         - 'ez-textblock-editview'
                         - 'ez-xmltext-editview'
                         - 'ez-image-editview'
+                        - 'ez-binaryfile-editview'
                         - 'ez-emailaddress-editview'
                         - 'ez-maplocation-editview'
                         - 'ez-url-editview'
@@ -254,6 +255,12 @@ system:
                 imageeditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/image.hbt
+                ez-binaryfile-editview:
+                    requires: ['ez-fieldeditview', 'binaryfileeditview-ez-template', 'ez-asynchronousview', 'event-tap']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-binaryfile-editview.js
+                binaryfileeditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/binaryfile.hbt
                 ez-emailaddress-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'emailaddresseditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-emailaddress-editview.js

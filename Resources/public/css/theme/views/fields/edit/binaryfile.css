@@ -1,0 +1,145 @@
+.ez-view-binaryfileeditview .ez-binaryfile-content {
+    -webkit-transform-origin: center top;
+            transform-origin: center top;
+    -webkit-animation: ez-expand 0.2s ease forwards;
+            animation: ez-expand 0.2s ease forwards;
+}
+
+.ez-view-binaryfileeditview.is-binaryfile-empty .ez-binaryfile-content {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-animation: ez-collapse 0.2s ease forwards;
+            animation: ez-collapse 0.2s ease forwards;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-content:before {
+    content: "\E629";
+    font-size: 7em;
+    color: #222;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-properties {
+    margin-left: 10em; /* icon font size + 3em */
+    list-style-type: square;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-properties-download {
+    list-style-type: none;
+    margin-left: -1.45em;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-download:before {
+    font-family: 'ez-platformui-icomoon';
+    content: "\E61e";
+    padding-right: 0.3em;
+    font-size: 130%;
+    color: #333;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-empty {
+    color: #888;
+    font-style: italic;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.ez-view-binaryfileeditview.is-error .ez-binaryfile-empty {
+    color: #BF3E33;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-remove-option {
+    opacity: 1;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.ez-view-binaryfileeditview.is-binaryfile-empty .ez-binaryfile-remove-option {
+    opacity: 0.4;
+}
+
+.ez-view-binaryfileeditview.is-binaryfile-empty .ez-button-delete[disabled] {
+    opacity: 1;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-warning {
+    border-radius: 3px;
+    background: #222;
+    opacity: 0.85;
+    color: #fff;
+    display: block;
+    padding: 0;
+
+    -webkit-transform: scale(0);
+            transform: scale(0);
+    -webkit-transform-origin: center bottom;
+            transform-origin: center bottom;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.ez-view-binaryfileeditview.has-warning .ez-binaryfile-warning {
+    padding: 0.8em;
+
+    -webkit-transform: scale(1);
+            transform: scale(1);
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-warning-hide {
+    font-size: 90%;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-warning-hide:after {
+    content: "\E600";
+    color: #fff;
+    display: inline-block;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-warning-text:before {
+    content: "\E617";
+    font-size: 300%;
+    padding-right: 0.3em;
+    color: #fff;
+    display: block;
+    float: left;
+}
+
+.ez-view-binaryfileeditview.is-type-audio .ez-binaryfile-content:before {
+    content: "\E624";
+}
+
+.ez-view-binaryfileeditview.is-type-image .ez-binaryfile-content:before {
+    content: "\E625";
+}
+
+.ez-view-binaryfileeditview.is-type-text .ez-binaryfile-content:before {
+    content: "\E620";
+}
+
+.ez-view-binaryfileeditview.is-type-video .ez-binaryfile-content:before {
+    content: "\E621";
+}
+
+.ez-view-binaryfileeditview.is-mimetype-application-pdf .ez-binaryfile-content:before {
+    content: "\E628";
+}
+
+.ez-view-binaryfileeditview.is-mimetype-application-zip .ez-binaryfile-content:before,
+.ez-view-binaryfileeditview.is-mimetype-application-x-7z-compressed .ez-binaryfile-content:before,
+.ez-view-binaryfileeditview.is-mimetype-application-x-rar-compressed .ez-binaryfile-content:before,
+.ez-view-binaryfileeditview.is-mimetype-application-x-tar .ez-binaryfile-content:before,
+.ez-view-binaryfileeditview.is-mimetype-application-x-stuffit .ez-binaryfile-content:before,
+.ez-view-binaryfileeditview.is-mimetype-application-gzip .ez-binaryfile-content:before {
+    content: "\E623";
+}
+
+.ez-view-binaryfileeditview.is-mimetype-application-vnd-openxmlformats-officedocument-wordprocessingml-document .ez-binaryfile-content:before,
+.ez-view-binaryfileeditview.is-mimetype-application-vns-ms-word .ez-binaryfile-content:before,
+.ez-view-binaryfileeditview.is-mimetype-application-msword .ez-binaryfile-content:before {
+    content: "\E627";
+}
+
+.ez-view-binaryfileeditview.is-mimetype-application-vnd-openxmlformats-officedocument-spreadsheetml-sheet .ez-binaryfile-content:before,
+.ez-view-binaryfileeditview.is-mimetype-application-vnd-ms-excel .ez-binaryfile-content:before,
+.ez-view-binaryfileeditview.is-mimetype-application-msexcel .ez-binaryfile-content:before {
+    content: "\E626";
+}
