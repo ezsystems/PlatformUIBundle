@@ -1,0 +1,94 @@
+.ez-view-binaryfileeditview .ez-binaryfile-input-ui {
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.ez-view-binaryfileeditview.is-binaryfile-empty .ez-binaryfile-content {
+   display: none;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-empty {
+    display: none;
+}
+
+.ez-view-binaryfileeditview.is-binaryfile-empty .ez-binaryfile-empty {
+    display: block;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-upload-new {
+    display: none;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-upload-replace {
+    display: inline;
+}
+
+.ez-view-binaryfileeditview.is-binaryfile-empty .ez-binaryfile-upload-new {
+    display: inline;
+}
+
+.ez-view-binaryfileeditview.is-binaryfile-empty .ez-binaryfile-upload-replace {
+    display: none;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-content:before {
+    display: block;
+    float: left;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-content:after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-empty {
+    margin: 0.5em 0 0 0.5em;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-properties {
+    margin: 0;
+    padding: 0;
+    line-height: 1.4em;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-properties-download {
+    margin-top: 1em;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-action {
+    text-align: center;
+    position: relative;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-input-file {
+    display: none;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-action .ez-button {
+    margin: 1em;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-warning {
+    display: none;
+    text-align: left;
+    position: absolute;
+    bottom: 100%;
+    left: 10%;
+    width: 80%;
+    padding: 0.8em;
+}
+
+.ez-view-binaryfileeditview.has-warning .ez-binaryfile-warning {
+    display: block;
+ }
+
+.ez-view-binaryfileeditview .ez-binaryfile-warning-hide {
+    float: right;
+    display: block;
+}
+
+.ez-view-binaryfileeditview .ez-binaryfile-warning-text {
+    margin: 0;
+}

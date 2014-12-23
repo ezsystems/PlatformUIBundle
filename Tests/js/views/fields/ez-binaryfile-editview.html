@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ BinaryFile Edit view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="binaryfileeditview-ez-template">
+    <div class="ez-binaryfile-input-ui">
+        <input type="file" class="ez-binaryfile-input-file">
+    </div>
+    <ul>
+        <li><a class="ez-binaryfile-download" href="#">Download</a></li>
+        <li class="ez-binaryfile-properties-name"></li>
+        <li class="ez-binaryfile-properties-size"></li>
+        <li class="ez-binaryfile-properties-type"></li>
+    </ul>
+    <div class="ez-binaryfile-warning">
+        <a href="#" class="ez-binaryfile-warning-hide">Hide</a>
+        <p class="ez-binaryfile-warning-text"></p>
+    </div>
+    <button class="ez-button-upload">Add</button>
+    <button class="ez-button-delete">Remove</button>
+    <p class="ez-editfield-error-message"></p>
+</script>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
+<script type="text/javascript" src="./assets/getfield-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-binaryfile-editview-tests.js"></script>
+
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-binaryfile-editview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-binaryfile-editview": {
+                requires: ['ez-fieldeditview', 'event-tap', 'event-outside'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-binaryfile-editview.js"
+            },
+            "ez-fieldeditview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/ez-fieldeditview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-binaryfile-editview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<div class="pure-g ez-editfield-row ez-default-error-style">
+    <div class="pure-u ez-editfield-infos">
+        {{> ez_fieldinfo_tooltip }}
+        <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+            <p class="ez-fielddefinition-name">
+                {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+            </p>
+            <p class="ez-editfield-error-message">&nbsp;</p>
+        </label>
+    </div>
+    <div class="pure-u ez-editfield-input-area">
+        <div class="ez-editfield-input"><div class="ez-binaryfile-input-ui">
+            <div class="ez-binaryfile-content font-icon">
+                <ul class="ez-binaryfile-properties">
+                    <li><b>File name:</b> <span class="ez-binaryfile-properties-name">{{ binaryfile.name }}</span></li>
+                    <li><b>Type:</b> <span class="ez-binaryfile-properties-type">{{ binaryfile.type }}</span></li>
+                    <li><b>File size:</b> <span class="ez-binaryfile-properties-size">{{ binaryfile.size }}</span>&nbsp;bytes</li>
+                    <li class="ez-binaryfile-properties-download"><a href="{{ binaryfile.uri }}" class="ez-binaryfile-download" target="_blank">Download the file</a></li>
+                </ul>
+            </div>
+            <p class="ez-binaryfile-empty">No file yet.</p>
+            <div class="ez-binaryfile-action">
+                <div class="ez-binaryfile-warning">
+                    <a href="#" class="ez-binaryfile-warning-hide font-icon"></a>
+                    <p class="ez-binaryfile-warning-text font-icon"></p>
+                </div>
+                <button class="ez-button ez-button-height ez-button-upload pure-button font-icon">
+                    <span class="ez-binaryfile-upload-new">Upload a file</span>
+                    <span class="ez-binaryfile-upload-replace">Replace this file</span>
+                </button>
+                <span class="ez-binaryfile-remove-option">
+                    or
+                    <button class="ez-button ez-button-height ez-button-delete pure-button font-icon">
+                        Remove this file
+                    </button>
+                </span>
+            </div>
+
+            <input
+                type="file" accept="binaryfile/*"
+                class="ez-binaryfile-input-file"
+                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+            ></div></div>
+    </div>
+</div>
