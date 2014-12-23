@@ -88,7 +88,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
                     "The field should be available in the field edit view template"
                 );
                 Assert.areSame(
-                    view.get('binaryfile'), variables.binaryfile,
+                    view.get('file'), variables.binaryfile,
                     "The binaryfile struct should be available in the field edit view template"
                 );
 
@@ -179,14 +179,14 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
 
         "Should handle a null field value": function () {
             this._initView();
-            Assert.isNull(this.view.get('binaryfile'), 'The binaryfile attr should be null');
+            Assert.isNull(this.view.get('file'), 'The binaryfile attr should be null');
             Assert.isFalse(this.revokeCalled, "revokeObjectURL should not have been called");
         },
 
         "Should handle a null value": function () {
             this._initView();
-            this.view._set('binaryfile', null);
-            Assert.isNull(this.view.get('binaryfile'), 'The binaryfile attr should be null');
+            this.view._set('file', null);
+            Assert.isNull(this.view.get('file'), 'The binaryfile attr should be null');
             Assert.isFalse(this.revokeCalled, "revokeObjectURL should not have been called");
         },
 
@@ -203,7 +203,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
             };
             this._initView();
 
-            binaryfile = this.view.get('binaryfile');
+            binaryfile = this.view.get('file');
             Assert.isObject(binaryfile, 'The binaryfile attr should be an object');
             Assert.areEqual(
                 this.field.fieldValue.uri,
@@ -239,17 +239,17 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
                 };
 
             this._initView();
-            this.view._set('binaryfile', value);
+            this.view._set('file', value);
 
-            binaryfile = this.view.get('binaryfile');
+            binaryfile = this.view.get('file');
             Assert.areSame(value, binaryfile, "The binaryfile attr should store the object");
             Assert.isFalse(this.revokeCalled, "revokeObjectURL should not have been called");
         },
 
         "Should reject unrecognized value": function () {
             this._initView();
-            this.view._set('binaryfile', undefined);
-            Assert.isNull(this.view.get('binaryfile'), "The type property should be null");
+            this.view._set('file', undefined);
+            Assert.isNull(this.view.get('file'), "The type property should be null");
             Assert.isFalse(this.revokeCalled, "revokeObjectURL should not have been called");
         },
         
@@ -271,8 +271,8 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
 
 
             this._initView();
-            this.view._set('binaryfile', value);
-            this.view._set('binaryfile', value2);
+            this.view._set('file', value);
+            this.view._set('file', value2);
 
             Assert.isTrue(this.revokeCalled, "revokeObjectURL should have been called");
             Assert.areEqual(
@@ -348,7 +348,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
                         this.view.get('warning'), "The warning should be set to false"
                     );
                     Assert.isNull(
-                        this.view.get('binaryfile'), "The binaryfile attribute should be null"
+                        this.view.get('file'), "The binaryfile attribute should be null"
                     );
                 });
             });
@@ -361,7 +361,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
 
             this.view.render();
 
-            container.one('.ez-binaryfile-input-file').on('click', function () {
+            container.one('.ez-filebased-input-file').on('click', function () {
                 that.resume(function () {
                     Assert.isFalse(
                         this.view.get('warning'), "The warning should be set to false"
@@ -433,7 +433,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
             this.view.render();
             this.view._set('warning', text);
 
-            container.one('.ez-binaryfile-warning-hide').simulateGesture('tap', function () {
+            container.one('.ez-filebased-warning-hide').simulateGesture('tap', function () {
                 that.resume(function () {
                     Assert.isFalse(
                         container.hasClass('has-warning'),
@@ -628,7 +628,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
             });
 
             this.view.render();
-            this.view._updateBinaryFile(eventFacade);
+            this.view._updateFile(eventFacade);
             Assert.isString(
                 this.view.get('warning'),
                 "A warning should have been generated"
@@ -639,7 +639,6 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
 
         "Should read the file": function () {
             var fileReader = this.view.get('fileReader'),
-                container = this.view.get('container'),
                 fileContent = "base64 binaryfile content",
                 file = {size: 5 * 1024 * 1024, name: "file.jpg", type: "audio/ogg"},
                 base64ImgContent = "data;" + file.type + ";base64," + fileContent,
@@ -661,22 +660,18 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
                 method: 'readAsDataURL',
                 args: [file],
                 run: function (f) {
-                    Assert.isTrue(
-                        container.hasClass('is-binaryfile-being-updated'),
-                        "The container should get the is-binaryfile-being-updated class"
-                    );
                     fileReader.result = base64ImgContent;
                     fileReader.onload();
                 }
             });
 
             this.view.render();
-            this.view._updateBinaryFile(eventFacade);
+            this.view._updateFile(eventFacade);
             Assert.isFalse(
                 this.view.get('warning'),
                 "The warning attribute should stay false"
             );
-            binaryfile = this.view.get('binaryfile');
+            binaryfile = this.view.get('file');
 
             Assert.areEqual(
                 fileContent, binaryfile.data,
@@ -778,7 +773,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
             },
 
             _setNewValue: function () {
-                this.view._set('binaryfile', this.newValue);
+                this.view._set('file', this.newValue);
             },
 
             _assertCorrectFieldValue: function (fieldValue, msg) {
@@ -832,7 +827,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
             },
 
             _setNewValue: function () {
-                this.view._set('binaryfile', this.newValue);
+                this.view._set('file', this.newValue);
             },
 
             _assertCorrectFieldValue: function (fieldValue, msg) {
@@ -912,18 +907,18 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
             this.view.render();
 
             Assert.isTrue(
-                this.view.get('container').hasClass('is-binaryfile-empty'),
-                "The container should get the is-binaryfile-empty class"
+                this.view.get('container').hasClass('is-field-empty'),
+                "The container should get the is-field-empty class"
             );
         },
 
         "Should remove the empty class": function () {
             this["Should add the empty class"]();
-            this.view._set('binaryfile', {name: "file.jpg", uri: "path/to/file.jpg"});
+            this.view._set('file', {name: "file.jpg", uri: "path/to/file.jpg"});
 
             Assert.isFalse(
-                this.view.get('container').hasClass('is-binaryfile-empty'),
-                "The container should not get the is-binaryfile-empty class"
+                this.view.get('container').hasClass('is-field-empty'),
+                "The container should not get the is-field-empty class"
             );
         },
 
@@ -950,7 +945,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
 
         "Should remove the previously added mime type based class": function () {
             this["Should add classes based on the mime type"]();
-            this.view._set('binaryfile', null);
+            this.view._set('file', null);
 
             Assert.isFalse(
                 this.view.get('container').hasClass('is-type-audio'),
@@ -967,7 +962,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
             this._initView();
             this.view.render();
 
-            this.view._set('binaryfile', null);
+            this.view._set('file', null);
 
             Assert.isTrue(
                 this.view.get('container').one('.ez-button-delete').get('disabled'),
@@ -987,7 +982,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
             this["Should disable the remove button"]();
             c = this.view.get('container');
 
-            this.view._set('binaryfile', newBinaryFile);
+            this.view._set('file', newBinaryFile);
 
             Assert.isFalse(
                 this.view.get('container').one('.ez-button-delete').get('disabled'),
@@ -1008,10 +1003,6 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
             Assert.areEqual(
                 this.createdUrl, c.one(".ez-binaryfile-download").getAttribute('href'),
                 "The view original link should be updated"
-            );
-            Assert.isFalse(
-                c.hasClass('is-binaryfile-being-updated'),
-                "The container should not have the is-binaryfile-being-updated class"
             );
         },
     });

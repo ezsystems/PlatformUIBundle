@@ -9,7 +9,7 @@
 
 <script type="text/x-handlebars-template" id="binaryfileeditview-ez-template">
     <div class="ez-binaryfile-input-ui">
-        <input type="file" class="ez-binaryfile-input-file">
+        <input type="file" class="ez-filebased-input-file">
     </div>
     <ul>
         <li><a class="ez-binaryfile-download" href="#">Download</a></li>
@@ -17,9 +17,9 @@
         <li class="ez-binaryfile-properties-size"></li>
         <li class="ez-binaryfile-properties-type"></li>
     </ul>
-    <div class="ez-binaryfile-warning">
-        <a href="#" class="ez-binaryfile-warning-hide">Hide</a>
-        <p class="ez-binaryfile-warning-text"></p>
+    <div class="ez-filebased-warning">
+        <a href="#" class="ez-filebased-warning-hide">Hide</a>
+        <p class="ez-filebased-warning-text"></p>
     </div>
     <button class="ez-button-upload">Add</button>
     <button class="ez-button-delete">Remove</button>
@@ -49,8 +49,12 @@
         filter: loaderFilter,
         modules: {
             "ez-binaryfile-editview": {
-                requires: ['ez-fieldeditview', 'event-tap', 'event-outside'],
+                requires: ['ez-filebased-editview', 'event-tap'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-binaryfile-editview.js"
+            },
+            "ez-filebased-editview": {
+                requires: ['ez-fieldeditview', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-filebased-editview.js"
             },
             "ez-fieldeditview": {
                 requires: ['ez-templatebasedview'],

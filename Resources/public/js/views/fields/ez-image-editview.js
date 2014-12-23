@@ -13,29 +13,15 @@ YUI.add('ez-image-editview', function (Y) {
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'ezimage',
-        HAS_WARNING = 'has-warning',
-        IS_EMPTY = 'is-image-empty',
         IS_LOADING = 'is-image-loading',
         IS_BEING_UPDATED = 'is-image-being-updated',
         HAS_LOADING_ERROR = 'has-loading-error',
         L = Y.Lang,
         win = Y.config.win,
         events = {
-            '.ez-image-input-file': {
-                'change': '_updateImage'
-            },
-            '.ez-button-upload': {
-                'tap': '_chooseImage',
-            },
-            '.ez-button-delete': {
-                'tap': '_removeImage',
-            },
             '.ez-image-alt-text-input': {
                 'valuechange': '_altTextChange',
                 'blur': 'validate',
-            },
-            '.ez-image-warning-hide': {
-                'tap': '_hideWarning',
             },
         };
 
@@ -45,32 +31,21 @@ YUI.add('ez-image-editview', function (Y) {
      * @namespace eZ
      * @class ImageEditView
      * @constructor
-     * @extends eZ.FieldEditView
+     * @extends eZ.FileBasedEditView
      */
-    Y.eZ.ImageEditView = Y.Base.create('imageEditView', Y.eZ.FieldEditView, [Y.eZ.AsynchronousView], {
+    Y.eZ.ImageEditView = Y.Base.create('imageEditView', Y.eZ.FileBasedEditView, [Y.eZ.AsynchronousView], {
         initializer: function () {
+            var fieldValue = this.get('field').fieldValue;
+
             this.events = Y.merge(this.events, events);
             this._fireMethod = this._fireLoadImageVariation;
             this._watchAttribute = false;
 
-            this._initAttributesData();
-            this._initAttributesEvents();
-        },
-
-        /**
-         * Initializes the inital attribute values depending on the passed field
-         * during the building of the object
-         *
-         * @method _initAttributesData
-         * @protected
-         */
-        _initAttributesData: function () {
-            var fieldValue = this.get('field').fieldValue;
-
-            this._set('image', this.get('field'));
             if ( fieldValue ) {
                 this._set('alternativeText', fieldValue.alternativeText);
             }
+
+            this._initAttributesEvents();
         },
 
         /**
@@ -80,17 +55,12 @@ YUI.add('ez-image-editview', function (Y) {
          * @protected
          */
         _initAttributesEvents: function () {
-            this.after('warningChange', this._uiHandleWarningMessage);
-
             this.after('imageVariationChange', function (e) {
-                this.get('image').displayUri = e.newVal.uri;
+                this.get('file').displayUri = e.newVal.uri;
                 this._uiImageChange();
             });
 
-            this.after('imageChange', function () {
-                this._set('updated', true);
-                this._uiImageChange();
-            });
+            this.after('fileChange', this._uiImageChange);
             this.after('alternativeTextChange', function () {
                 this._set('updated', true);
             });
@@ -103,7 +73,7 @@ YUI.add('ez-image-editview', function (Y) {
          * @protected
          */
         _uiImageChange: function () {
-            var image = this.get('image'),
+            var image = this.get('file'),
                 container = this.get('container'),
                 removeButton = container.one('.ez-button-delete'),
                 imgNode = container.one('.ez-image-preview');
@@ -126,30 +96,6 @@ YUI.add('ez-image-editview', function (Y) {
             this.validate();
         },
 
-        render: function () {
-            this.constructor.superclass.render.call(this);
-            this._setStateClasses();
-            return this;
-        },
-
-        /**
-         * Toggle a classe on the view container based on the value
-         *
-         * @method _toggleClass
-         * @param Mixed value
-         * @param {String} cl the class to toggle
-         * @private
-         */
-        _toggleClass: function (value, cl) {
-            var container = this.get('container');
-
-            if ( value ) {
-                container.addClass(cl);
-            } else {
-                container.removeClass(cl);
-            }
-        },
-
         /**
          * Set the state classes on the view container
          *
@@ -157,10 +103,8 @@ YUI.add('ez-image-editview', function (Y) {
          * @protected
          */
         _setStateClasses: function () {
-            var isEmpty = this._isEmpty();
-
-            this._toggleClass(isEmpty, IS_EMPTY);
-            this._toggleClass(!this.get('updated') && !isEmpty && !this.get('imageVariation'), IS_LOADING);
+            this.constructor.superclass._setStateClasses.call(this);
+            this._toggleClass(!this.get('updated') && !this._isEmpty() && !this.get('imageVariation'), IS_LOADING);
             this._toggleClass(this.get('loadingError'), HAS_LOADING_ERROR);
         },
 
@@ -177,52 +121,34 @@ YUI.add('ez-image-editview', function (Y) {
         },
 
         /**
-         * Event handler for the tap event on the upload button
+         * Overrides the default implementation to add the
+         * is-image-being-updated class before starting to read the file
          *
-         * @method _chooseImage
+         * @method _readFile
          * @protected
-         * @param {EventFacade} e event facade of the tap event
          */
-        _chooseImage: function (e) {
-            e.preventDefault();
-            this._set('warning', false);
-            this.get('container').one('.ez-image-input-file').getDOMNode().click();
+        _readFile: function () {
+            this.get('container').addClass(IS_BEING_UPDATED);
+            this.constructor.superclass._readFile.apply(this, arguments);
         },
 
         /**
-         * Event handler for the change event on the file input
+         * Returns a "human" readable version of the max allowed file size. It
+         * is overidden the max size is in byte in Image fields.
          *
-         * @method _updateImage
+         * @method _getHumanMaxSize
          * @protected
-         * @param {EventFacade} e event facade of the change event
+         * @return {String}
          */
-        _updateImage: function (e) {
-            var file = e.target.getDOMNode().files[0],
-                that = this,
-                reader, msg;
-
-            if ( this._validSize(file.size) ) {
-                this.get('container').addClass(IS_BEING_UPDATED);
-                reader = this.get('fileReader');
-                reader.onload = function (e) {
-                    var base64 = reader.result.replace(/^.*;base64,/, '');
-                    that._set('image', that._createFileStruct(file, base64));
-                    reader.onload = undefined;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                msg = "The file '" + file.name + "' was refused because";
-                msg += ' its size is greater than the maximum allowed size (';
-                msg += this.get('fieldDefinition').validatorConfiguration.FileSizeValidator.maxFileSize;
-                msg += '&nbsp;bytes).';
-                this._set('warning', msg);
-            }
-            e.target.set('value', '');
+        _getHumanMaxSize: function () {
+            return this.get('fieldDefinition').validatorConfiguration.FileSizeValidator.maxFileSize + 'b';
         },
 
         /**
          * Checks whether the size is valid according to the field definition
-         * configuration
+         * configuration. The default implementation can not be used because for
+         * the image, the maximum size is in bytes while for binary file for
+         * instance it is in megabyte.
          *
          * @param {Number} size
          * @method _validSize
@@ -239,66 +165,6 @@ YUI.add('ez-image-editview', function (Y) {
         },
 
         /**
-         * Event handler for the tap event on the remove button
-         *
-         * @method _removeImage
-         * @protected
-         * @param {EventFacade} e event facade of tap event
-         */
-        _removeImage: function (e) {
-            e.preventDefault();
-            this._set('warning', false);
-            this._set('image', null);
-        },
-
-        /**
-         * warningChange event handler, it displays/hides the warning message
-         * depending on the attribute value.
-         *
-         * @method _uiHandleWarningMessage
-         * @protected
-         */
-        _uiHandleWarningMessage: function () {
-            var warning = this.get('warning'),
-                container = this.get('container');
-
-            if ( !warning ) {
-                container.removeClass(HAS_WARNING);
-            } else {
-                container.one('.ez-image-warning-text').setContent(warning);
-                container.addClass(HAS_WARNING);
-            }
-        },
-
-        /**
-         * Event handler for the tap event on the hide link of the warning box.
-         *
-         * @param {EventFacade} e tap event facade
-         * @method _hideWarning
-         * @protected
-         */
-        _hideWarning: function (e) {
-            e.preventDefault();
-            this._set('warning', false);
-        },
-
-        /**
-         * Validates the current input of the image against the is required
-         * field definition setting.
-         *
-         * @method validate
-         */
-        validate: function () {
-            var def = this.get('fieldDefinition');
-
-            if ( def.isRequired && this._isEmpty() ) {
-                this.set('errorStatus', 'This field is required');
-            } else {
-                this.set('errorStatus', false);
-            }
-        },
-
-        /**
          * Defines the variables to be imported in the field edit template.
          *
          * @protected
@@ -309,21 +175,10 @@ YUI.add('ez-image-editview', function (Y) {
             return {
                 "isRequired": this.get('fieldDefinition').isRequired,
                 "isEmpty": this._isEmpty(),
-                "image": this.get('image'),
+                "image": this.get('file'),
                 "alternativeText": this.get('alternativeText'),
                 "loadingError": this.get('loadingError'),
             };
-        },
-
-        /**
-         * Checks whether the image field is currently empty.
-         *
-         * @protected
-         * @method _isEmpty
-         * @return {Boolean}
-         */
-        _isEmpty: function () {
-            return !this.get('image');
         },
 
         /**
@@ -336,31 +191,10 @@ YUI.add('ez-image-editview', function (Y) {
          * @return {Object}
          */
         _getFieldValue: function () {
-            var image = this.get('image'),
-                that = this,
-                fieldValue;
+            var fieldValue = this.constructor.superclass._getFieldValue.call(this);
 
-            if ( !this.get('updated') ) {
-                return undefined;
-            }
-
-            if ( !image ) {
-                return null;
-            }
-
-            this.get('version').onceAfter('save', function (e) {
-                // this is to make sure we don't send again and again the
-                // image in the REST requests
-                that._set('updated', false);
-            });
-
-            fieldValue = {
-                fileName: image.name,
-                fileSize: image.size,
-                alternativeText: this.get('alternativeText'),
-            };
-            if ( image.data ) {
-                fieldValue.data = image.data;
+            if ( fieldValue ) {
+                fieldValue.alternativeText = this.get('alternativeText');
             }
             return fieldValue;
         },
@@ -418,13 +252,13 @@ YUI.add('ez-image-editview', function (Y) {
          * REST fieldValue or from the user input.
          *
          * @protected
-         * @method _imageSetter
+         * @method _fileSetter
          * @param {Object|Null} value
          * @return {Object}
          */
-        _imageSetter: function (value) {
+        _fileSetter: function (value) {
             var file,
-                previousValue = this.get('image');
+                previousValue = this.get('file');
 
             if ( previousValue ) {
                 win.URL.revokeObjectURL(previousValue.displayUri);
@@ -453,21 +287,6 @@ YUI.add('ez-image-editview', function (Y) {
     }, {
         ATTRS: {
             /**
-             * The image struct object for the current field. This attribute has
-             * a setter to accept either null value, any REST Image fieldValue
-             * or an object created from a File.
-             *
-             * @readOnly
-             * @attribute image
-             * @type {Object|null}
-             */
-            image: {
-                readOnly: true,
-                setter: '_imageSetter',
-                value: null,
-            },
-
-            /**
              * The alternative image text
              *
              * @attribute alternativeText
@@ -477,46 +296,6 @@ YUI.add('ez-image-editview', function (Y) {
             alternativeText: {
                 readOnly: true,
                 value: "",
-            },
-
-            /**
-             * Flag indicating whether the user changed something in the image
-             * field. This attribute is used to avoid sending the same image
-             * again and again.
-             *
-             * @attribute updated
-             * @readOnly
-             * @type {Boolean}
-             */
-            updated: {
-                readOnly: true,
-                value: false,
-            },
-
-            /**
-             * Stores the warning message (if any) or false
-             *
-             * @attribute warning
-             * @readOnly
-             * @type {String|false}
-             */
-            warning: {
-                readOnly: true,
-                value: false
-            },
-
-            /**
-             * FileReader instance
-             *
-             * @attribute fileReader
-             * @type FileReader
-             * @readOnly
-             */
-            fileReader: {
-                readOnly: true,
-                valueFn: function () {
-                    return new FileReader();
-                },
             },
 
             /**

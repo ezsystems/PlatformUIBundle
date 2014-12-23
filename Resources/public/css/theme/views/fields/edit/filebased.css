@@ -1,0 +1,80 @@
+.ez-filebased-content {
+    -webkit-transform-origin: center top;
+            transform-origin: center top;
+    -webkit-animation: ez-expand 0.2s ease forwards;
+            animation: ez-expand 0.2s ease forwards;
+}
+
+.is-field-empty .ez-filebased-content {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-animation: ez-collapse 0.2s ease forwards;
+            animation: ez-collapse 0.2s ease forwards;
+}
+
+.ez-filebased-warning {
+    border-radius: 3px;
+    background: #222;
+    opacity: 0.85;
+    color: #fff;
+    display: block;
+    padding: 0;
+
+    -webkit-transform: scale(0);
+            transform: scale(0);
+    -webkit-transform-origin: center bottom;
+            transform-origin: center bottom;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.has-warning .ez-filebased-warning {
+    padding: 0.8em;
+
+    -webkit-transform: scale(1);
+            transform: scale(1);
+}
+
+.ez-filebased-warning .ez-filebased-warning-hide {
+    font-size: 90%;
+}
+
+.ez-filebased-warning .ez-filebased-warning-hide:after {
+    content: "\E600";
+    color: #fff;
+    display: inline-block;
+}
+
+.ez-filebased-warning .ez-filebased-warning-text:before {
+    content: "\E617";
+    font-size: 300%;
+    padding-right: 0.3em;
+    color: #fff;
+    display: block;
+    float: left;
+}
+
+.ez-filebased-remove-option {
+    opacity: 1;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.is-field-empty .ez-filebased-remove-option {
+    opacity: 0.4;
+}
+
+.is-field-empty .ez-filebased-remove-option .ez-button-delete[disabled] {
+    opacity: 1;
+}
+
+.ez-filebased-empty {
+    color: #888;
+    font-style: italic;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.is-error .ez-filebased-empty {
+    color: #BF3E33;
+}

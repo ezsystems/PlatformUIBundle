@@ -93,7 +93,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
                     "isEmpty should be available in the field edit view template"
                 );
                 Assert.areSame(
-                    view.get('image'), variables.image,
+                    view.get('file'), variables.image,
                     "The image struct should be available in the field edit view template"
                 );
                 Assert.areSame(
@@ -192,14 +192,14 @@ YUI.add('ez-image-editview-tests', function (Y) {
 
         "Should handle a null field value": function () {
             this._initView();
-            Assert.isNull(this.view.get('image'), 'The image attr should be null');
+            Assert.isNull(this.view.get('file'), 'The image attr should be null');
             Assert.isFalse(this.revokeCalled, "revokeObjectURL should not have been called");
         },
 
         "Should handle a null value": function () {
             this._initView();
-            this.view._set('image', null);
-            Assert.isNull(this.view.get('image'), 'The image attr should be null');
+            this.view._set('file', null);
+            Assert.isNull(this.view.get('file'), 'The image attr should be null');
             Assert.isFalse(this.revokeCalled, "revokeObjectURL should not have been called");
         },
 
@@ -215,7 +215,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
             };
             this._initView();
 
-            image = this.view.get('image');
+            image = this.view.get('file');
             Assert.isObject(image, 'The image attr should be an object');
             Assert.areEqual(
                 this.field.fieldValue.uri,
@@ -249,17 +249,17 @@ YUI.add('ez-image-editview-tests', function (Y) {
                 };
 
             this._initView();
-            this.view._set('image', value);
+            this.view._set('file', value);
 
-            image = this.view.get('image');
+            image = this.view.get('file');
             Assert.areSame(value, image, "The image attr should store the object");
             Assert.isFalse(this.revokeCalled, "revokeObjectURL should not have been called");
         },
 
         "Should reject unrecognized value": function () {
             this._initView();
-            this.view._set('image', undefined);
-            Assert.isNull(this.view.get('image'), "The type property should be null");
+            this.view._set('file', undefined);
+            Assert.isNull(this.view.get('file'), "The type property should be null");
             Assert.isFalse(this.revokeCalled, "revokeObjectURL should not have been called");
         },
         
@@ -283,8 +283,8 @@ YUI.add('ez-image-editview-tests', function (Y) {
 
 
             this._initView();
-            this.view._set('image', value);
-            this.view._set('image', value2);
+            this.view._set('file', value);
+            this.view._set('file', value2);
 
             Assert.isTrue(this.revokeCalled, "revokeObjectURL should have been called");
             Assert.areEqual(
@@ -451,7 +451,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
             this.view.set('imageVariation', imageVariation);
 
             Assert.areEqual(
-                imageVariation.uri, this.view.get('image').displayUri,
+                imageVariation.uri, this.view.get('file').displayUri,
                 "The variation uri should be set as the display Uri"
             );
             Assert.areEqual(
@@ -575,7 +575,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
                         this.view.get('warning'), "The warning should be set to false"
                     );
                     Assert.isNull(
-                        this.view.get('image'), "The image attribute should be null"
+                        this.view.get('file'), "The image attribute should be null"
                     );
                 });
             });
@@ -588,7 +588,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
 
             this.view.render();
 
-            container.one('.ez-image-input-file').on('click', function () {
+            container.one('.ez-filebased-input-file').on('click', function () {
                 that.resume(function () {
                     Assert.isFalse(
                         this.view.get('warning'), "The warning should be set to false"
@@ -660,7 +660,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
             this.view.render();
             this.view._set('warning', text);
 
-            container.one('.ez-image-warning-hide').simulateGesture('tap', function () {
+            container.one('.ez-filebased-warning-hide').simulateGesture('tap', function () {
                 that.resume(function () {
                     Assert.isFalse(
                         container.hasClass('has-warning'),
@@ -855,7 +855,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
             });
 
             this.view.render();
-            this.view._updateImage(eventFacade);
+            this.view._updateFile(eventFacade);
             Assert.isString(
                 this.view.get('warning'),
                 "A warning should have been generated"
@@ -898,12 +898,12 @@ YUI.add('ez-image-editview-tests', function (Y) {
             });
 
             this.view.render();
-            this.view._updateImage(eventFacade);
+            this.view._updateFile(eventFacade);
             Assert.isFalse(
                 this.view.get('warning'),
                 "The warning attribute should stay false"
             );
-            image = this.view.get('image');
+            image = this.view.get('file');
 
             Assert.areEqual(
                 imgContent, image.data,
@@ -983,7 +983,6 @@ YUI.add('ez-image-editview-tests', function (Y) {
             },
             newValue: {
                 name: "me.jpg",
-                size: "42",
                 data: "base64 content",
             },
             ViewConstructor: Y.eZ.ImageEditView,
@@ -1007,7 +1006,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
             },
 
             _setNewValue: function () {
-                this.view._set('image', this.newValue);
+                this.view._set('file', this.newValue);
             },
 
             _assertCorrectFieldValue: function (fieldValue, msg) {
@@ -1040,7 +1039,6 @@ YUI.add('ez-image-editview-tests', function (Y) {
             },
             newValue: {
                 name: "me.jpg",
-                size: "42",
             },
             ViewConstructor: Y.eZ.ImageEditView,
 
@@ -1063,7 +1061,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
             },
 
             _setNewValue: function () {
-                this.view._set('image', this.newValue);
+                this.view._set('file', this.newValue);
             },
 
             _assertCorrectFieldValue: function (fieldValue, msg) {
@@ -1142,18 +1140,18 @@ YUI.add('ez-image-editview-tests', function (Y) {
             this.view.render();
 
             Assert.isTrue(
-                this.view.get('container').hasClass('is-image-empty'),
-                "The container should get the is-image-empty class"
+                this.view.get('container').hasClass('is-field-empty'),
+                "The container should get the is-field-empty class"
             );
         },
 
         "Should remove the empty class": function () {
             this["Should add the empty class"]();
-            this.view._set('image', {name: "file.jpg", uri: "path/to/file.jpg"});
+            this.view._set('file', {name: "file.jpg", uri: "path/to/file.jpg"});
 
             Assert.isFalse(
-                this.view.get('container').hasClass('is-image-empty'),
-                "The container should not get the is-image-empty class"
+                this.view.get('container').hasClass('is-field-empty'),
+                "The container should not get the is-field-empty class"
             );
         },
 
@@ -1204,7 +1202,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
             this._initView();
             this.view.render();
 
-            this.view._set('image', null);
+            this.view._set('file', null);
 
             Assert.isTrue(
                 this.view.get('container').one('.ez-button-delete').get('disabled'),
@@ -1225,7 +1223,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
             this["Should disable the remove button"]();
             c = this.view.get('container');
 
-            this.view._set('image', newImage);
+            this.view._set('file', newImage);
 
             Assert.isFalse(
                 this.view.get('container').one('.ez-button-delete').get('disabled'),

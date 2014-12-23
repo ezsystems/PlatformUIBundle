@@ -1,0 +1,64 @@
+.is-field-empty .ez-filebased-content {
+   display: none;
+}
+
+.ez-filebased-input-file {
+    display: none;
+}
+
+.ez-filebased-warning {
+    display: none;
+    text-align: left;
+    position: absolute;
+    bottom: 100%;
+    left: 10%;
+    width: 80%;
+    padding: 0.8em;
+}
+
+.has-warning .ez-filebased-warning {
+    display: block;
+ }
+
+.ez-filebased-warning .ez-filebased-warning-hide {
+    float: right;
+    display: block;
+}
+
+.ez-filebased-warning .ez-filebased-warning-text {
+    margin: 0;
+}
+
+.ez-filebased-action {
+    text-align: center;
+    position: relative;
+}
+
+.ez-filebased-action .ez-button {
+    margin: 1em;
+}
+
+.ez-filebased-upload-new {
+    display: none;
+}
+
+.ez-filebased-upload-replace {
+    display: inline;
+}
+
+.is-field-empty .ez-filebased-upload-new {
+    display: inline;
+}
+
+.is-field-empty .ez-filebased-upload-replace {
+    display: none;
+}
+
+.ez-filebased-empty {
+    display: none;
+}
+
+.is-field-empty .ez-filebased-empty {
+    display: block;
+    margin: 0.5em 0 0 0.5em;
+}
