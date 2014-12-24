@@ -174,10 +174,8 @@ YUI.add('ez-image-editview', function (Y) {
         _variables: function () {
             return {
                 "isRequired": this.get('fieldDefinition').isRequired,
-                "isEmpty": this._isEmpty(),
                 "image": this.get('file'),
                 "alternativeText": this.get('alternativeText'),
-                "loadingError": this.get('loadingError'),
             };
         },
 

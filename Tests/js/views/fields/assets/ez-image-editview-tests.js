@@ -65,7 +65,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
             view.set('fieldDefinition', fieldDefinition);
             view.template = function (variables) {
                 Assert.isObject(variables, "The template should receive some variables");
-                Assert.areEqual(10, Y.Object.keys(variables).length, "The template should receive 10 variables");
+                Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
 
                 Assert.areSame(
                      that.jsonContent, variables.content,
@@ -88,21 +88,12 @@ YUI.add('ez-image-editview-tests', function (Y) {
                     "The field should be available in the field edit view template"
                 );
                 Assert.areSame(
-                    expectedIsEmpty,
-                    variables.isEmpty,
-                    "isEmpty should be available in the field edit view template"
-                );
-                Assert.areSame(
                     view.get('file'), variables.image,
                     "The image struct should be available in the field edit view template"
                 );
                 Assert.areSame(
                     view.get('alternativeText'), variables.alternativeText,
                     "The alternativeText should be available in the field edit view template"
-                );
-                Assert.areSame(
-                    view.get('loadingError'), variables.loadingError,
-                    "The loadingError should be available in the field edit view template"
                 );
 
                 Assert.areSame(expectRequired, variables.isRequired);
@@ -462,17 +453,11 @@ YUI.add('ez-image-editview-tests', function (Y) {
         },
 
         "Should render the view when the loadingError attribute changes": function () {
-            var that = this,
-                templateCalled = false,
+            var templateCalled = false,
                 origTpl = this.view.template;
 
             this.view.template = function (variables) {
                 templateCalled = true;
-                Assert.areSame(
-                    that.view.get('loadingError'),
-                    variables.loadingError,
-                    "loadingError should be available in the template"
-                );
                 return origTpl.apply(this, arguments);
             };
 
