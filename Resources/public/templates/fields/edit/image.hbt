@@ -12,7 +12,7 @@
         <div class="ez-editfield-input"><div class="ez-image-input-ui">
             <div class="ez-image-editpreview ez-filebased-content">
                 <div class="ez-image-editpreview-image">
-                    <img alt="{{ image.alternativeText }}" class="ez-image-preview" alt="Image preview">
+                    <img alt="Image preview" class="ez-image-preview" alt="Image preview">
                     <p class="font-icon ez-asynchronousview-loading">Loading a thumbnail of the image...</p>
                     <p class="ez-asynchronousview-error font-icon">
                         An error occurred while loading the thumbnail.
