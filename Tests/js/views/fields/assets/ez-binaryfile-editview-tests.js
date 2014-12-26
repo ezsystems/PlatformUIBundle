@@ -11,7 +11,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
         Assert = Y.Assert;
 
     viewTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedViewTest, {
+        Y.merge(Y.eZ.Test.BinaryBaseViewTest, {
             name: "eZ BinaryFile View test",
             ViewConstructor: Y.eZ.BinaryFileEditView,
             fileTemplateVariable: "binaryfile",
@@ -19,7 +19,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
     );
 
     binaryfileSetterTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedFileSetterTest, {
+        Y.merge(Y.eZ.Test.BinaryBaseFileSetterTest, {
             name: "eZ BinaryFile View binaryfile attribute setter test",
             ViewConstructor: Y.eZ.BinaryFileEditView,
 
@@ -110,7 +110,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
     );
 
     buttonsTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedButtonTests, {
+        Y.merge(Y.eZ.Test.BinaryBaseButtonTests, {
             name: "eZ BinaryFile View buttons test",
             field: {
                 fieldValue: {
@@ -122,21 +122,21 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
     );
 
     warningTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedWarningTest, {
+        Y.merge(Y.eZ.Test.BinaryBaseWarningTest, {
             name: "eZ BinaryFile View warning test",
             ViewConstructor: Y.eZ.BinaryFileEditView,
         })
     );
 
     validateTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedValidateTest, {
+        Y.merge(Y.eZ.Test.BinaryBaseValidateTest, {
             name: "eZ BinaryFile View binaryfile validate test",
             ViewConstructor: Y.eZ.BinaryFileEditView,
         })
     );
 
     pickBinaryFileTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedPickFileTest, {
+        Y.merge(Y.eZ.Test.BinaryBasePickFileTest, {
             name: "eZ BinaryFile View pick file test",
             ViewConstructor: Y.eZ.BinaryFileEditView,
         })
@@ -291,7 +291,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
     );
 
     renderingTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedRenderingTest, {
+        Y.merge(Y.eZ.Test.BinaryBaseRenderingTest, {
             name: "eZ BinaryFile View rendering tests",
             ViewConstructor: Y.eZ.BinaryFileEditView,
 
@@ -391,6 +391,6 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
 }, '', {
     requires: [
         'test', 'model', 'event-valuechange', 'node-event-simulate', 'ez-binaryfile-editview',
-        'getfield-tests', 'editviewregister-tests', 'filebased-tests',
+        'getfield-tests', 'editviewregister-tests', 'binarybase-tests',
     ]
 });

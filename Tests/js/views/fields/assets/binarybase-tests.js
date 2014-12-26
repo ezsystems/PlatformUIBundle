@@ -2,7 +2,7 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-YUI.add('filebased-tests', function (Y) {
+YUI.add('binarybase-tests', function (Y) {
     var Assert = Y.Assert, Mock = Y.Mock;
 
     Y.namespace('eZ.Test');
@@ -18,7 +18,7 @@ YUI.add('filebased-tests', function (Y) {
     // by default)
     // - _additionalVariableAssertions: a method to check additional variables
     // if there are any
-    Y.eZ.Test.FileBasedViewTest = {
+    Y.eZ.Test.BinaryBaseViewTest = {
         templateVariablesCount: 7,
         _getFieldDefinition: function (required) {
             return {
@@ -140,7 +140,7 @@ YUI.add('filebased-tests', function (Y) {
     // Test for the `file` attribute setter. This test expects the
     // ViewConstructor property to be filled with the view constructor function
     // to test.
-    Y.eZ.Test.FileBasedFileSetterTest = {
+    Y.eZ.Test.BinaryBaseFileSetterTest = {
         setUp: function () {
             var that = this,
                 win = Y.config.win;
@@ -219,7 +219,7 @@ YUI.add('filebased-tests', function (Y) {
     // following properties to be set:
     // - ViewConstructor the view constructor
     // - field the initial field object
-    Y.eZ.Test.FileBasedButtonTests = {
+    Y.eZ.Test.BinaryBaseButtonTests = {
         setUp: function () {
             var win = Y.config.win,
                 that = this;
@@ -291,7 +291,7 @@ YUI.add('filebased-tests', function (Y) {
 
             this.view.render();
 
-            container.one('.ez-filebased-input-file').on('click', function () {
+            container.one('.ez-binarybase-input-file').on('click', function () {
                 that.resume(function () {
                     Assert.isFalse(
                         this.view.get('warning'), "The warning attribute should be set to false"
@@ -307,7 +307,7 @@ YUI.add('filebased-tests', function (Y) {
 
     // Test for the warning message handling. This test expects the
     // ViewConstructor property to set
-    Y.eZ.Test.FileBasedWarningTest = {
+    Y.eZ.Test.BinaryBaseWarningTest = {
         setUp: function () {
             this.field = {
                 fieldValue: null
@@ -363,7 +363,7 @@ YUI.add('filebased-tests', function (Y) {
             this.view.render();
             this.view._set('warning', text);
 
-            container.one('.ez-filebased-warning-hide').simulateGesture('tap', function () {
+            container.one('.ez-binarybase-warning-hide').simulateGesture('tap', function () {
                 that.resume(function () {
                     Assert.isFalse(
                         container.hasClass('has-warning'),
@@ -381,7 +381,7 @@ YUI.add('filebased-tests', function (Y) {
 
     // Test for the validate method. This test expects the ViewConstructor
     // property to be set with the view constructor function
-    Y.eZ.Test.FileBasedValidateTest = {
+    Y.eZ.Test.BinaryBaseValidateTest = {
         setUp: function () {
             this.field = {
                 fieldValue: null
@@ -481,7 +481,7 @@ YUI.add('filebased-tests', function (Y) {
     // to handle the fact the max file size is expressed in byte or megabyte.
     // The default value of multiplicator is suited for max size in megabyte,
     // set it to 1 to handle the case where the max file size is in byte.
-    Y.eZ.Test.FileBasedPickFileTest = {
+    Y.eZ.Test.BinaryBasePickFileTest = {
         multiplicator: 1024*1024, // default max file size in Mb
         setUp: function () {
             var that = this, win = Y.config.win;
@@ -636,7 +636,7 @@ YUI.add('filebased-tests', function (Y) {
         }
     };
 
-    Y.eZ.Test.FileBasedRenderingTest = {
+    Y.eZ.Test.BinaryBaseRenderingTest = {
         setUp: function () {
             var win = Y.config.win, that = this;
 

@@ -31,9 +31,9 @@ YUI.add('ez-image-editview', function (Y) {
      * @namespace eZ
      * @class ImageEditView
      * @constructor
-     * @extends eZ.FileBasedEditView
+     * @extends eZ.BinaryBaseEditView
      */
-    Y.eZ.ImageEditView = Y.Base.create('imageEditView', Y.eZ.FileBasedEditView, [Y.eZ.AsynchronousView], {
+    Y.eZ.ImageEditView = Y.Base.create('imageEditView', Y.eZ.BinaryBaseEditView, [Y.eZ.AsynchronousView], {
         initializer: function () {
             var fieldValue = this.get('field').fieldValue;
 

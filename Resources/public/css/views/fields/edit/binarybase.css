@@ -1,0 +1,64 @@
+.is-field-empty .ez-binarybase-content {
+   display: none;
+}
+
+.ez-binarybase-input-file {
+    display: none;
+}
+
+.ez-binarybase-warning {
+    display: none;
+    text-align: left;
+    position: absolute;
+    bottom: 100%;
+    left: 10%;
+    width: 80%;
+    padding: 0.8em;
+}
+
+.has-warning .ez-binarybase-warning {
+    display: block;
+ }
+
+.ez-binarybase-warning .ez-binarybase-warning-hide {
+    float: right;
+    display: block;
+}
+
+.ez-binarybase-warning .ez-binarybase-warning-text {
+    margin: 0;
+}
+
+.ez-binarybase-action {
+    text-align: center;
+    position: relative;
+}
+
+.ez-binarybase-action .ez-button {
+    margin: 1em;
+}
+
+.ez-binarybase-upload-new {
+    display: none;
+}
+
+.ez-binarybase-upload-replace {
+    display: inline;
+}
+
+.is-field-empty .ez-binarybase-upload-new {
+    display: inline;
+}
+
+.is-field-empty .ez-binarybase-upload-replace {
+    display: none;
+}
+
+.ez-binarybase-empty {
+    display: none;
+}
+
+.is-field-empty .ez-binarybase-empty {
+    display: block;
+    margin: 0.5em 0 0 0.5em;
+}

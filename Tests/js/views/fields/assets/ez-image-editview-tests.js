@@ -11,7 +11,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
         Assert = Y.Assert, Mock = Y.Mock;
 
     viewTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedViewTest, {
+        Y.merge(Y.eZ.Test.BinaryBaseViewTest, {
             name: "eZ Image View test",
             ViewConstructor: Y.eZ.ImageEditView,
             templateVariablesCount: 8,
@@ -26,7 +26,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
     );
 
     imageSetterTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedFileSetterTest, {
+        Y.merge(Y.eZ.Test.BinaryBaseFileSetterTest, {
             name: "eZ Image View image attribute setter test",
             ViewConstructor: Y.eZ.ImageEditView,
 
@@ -324,7 +324,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
     });
 
     buttonsTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedButtonTests, {
+        Y.merge(Y.eZ.Test.BinaryBaseButtonTests, {
             name: "eZ Image View buttons test",
             field: {
                 fieldValue: {
@@ -337,21 +337,21 @@ YUI.add('ez-image-editview-tests', function (Y) {
     );
 
     warningTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedWarningTest, {
+        Y.merge(Y.eZ.Test.BinaryBaseWarningTest, {
             name: "eZ Image View warning test",
             ViewConstructor: Y.eZ.ImageEditView,
         })
     );
 
     validateTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedValidateTest, {
+        Y.merge(Y.eZ.Test.BinaryBaseValidateTest, {
             name: "eZ Image View image validate test",
             ViewConstructor: Y.eZ.ImageEditView,
         })
     );
 
     pickImageTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedPickFileTest, {
+        Y.merge(Y.eZ.Test.BinaryBasePickFileTest, {
             name: "eZ Image View pick image test",
             ViewConstructor: Y.eZ.ImageEditView,
             multiplicator: 1, // in image, the max size is in bytes
@@ -509,7 +509,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
     );
 
     renderingTest = new Y.Test.Case(
-        Y.merge(Y.eZ.Test.FileBasedRenderingTest, {
+        Y.merge(Y.eZ.Test.BinaryBaseRenderingTest, {
             name: "eZ Image View rendering tests",
             ViewConstructor: Y.eZ.ImageEditView,
 
@@ -627,6 +627,6 @@ YUI.add('ez-image-editview-tests', function (Y) {
 }, '', {
     requires: [
         'test', 'model', 'event-valuechange', 'node-event-simulate', 'ez-image-editview',
-        'getfield-tests', 'editviewregister-tests', 'filebased-tests'
+        'getfield-tests', 'editviewregister-tests', 'binarybase-tests'
     ]
 });

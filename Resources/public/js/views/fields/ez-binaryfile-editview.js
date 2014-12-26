@@ -20,9 +20,9 @@ YUI.add('ez-binaryfile-editview', function (Y) {
      * @namespace eZ
      * @class BinaryFileEditView
      * @constructor
-     * @extends eZ.FileBasedEditView
+     * @extends eZ.BinaryBaseEditView
      */
-    Y.eZ.BinaryFileEditView = Y.Base.create('binaryfileEditView', Y.eZ.FileBasedEditView, [], {
+    Y.eZ.BinaryFileEditView = Y.Base.create('binaryfileEditView', Y.eZ.BinaryBaseEditView, [], {
         initializer: function () {
             this.after('fileChange', this._uiBinaryFileChange);
         },

@@ -2,13 +2,13 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-YUI.add('ez-filebased-editview', function (Y) {
+YUI.add('ez-binarybase-editview', function (Y) {
     "use strict";
     /**
      * Provides a base class for the field edit view of file based field types
      * (Image, BinaryFile, Media)
      *
-     * @module ez-filebased-editview
+     * @module ez-binarybase-editview
      */
 
     Y.namespace('eZ');
@@ -19,7 +19,7 @@ YUI.add('ez-filebased-editview', function (Y) {
         OVER_SIZE_TPL = "The file '{name}' was refused because its size is greater than the maximum allowed size ({max})",
         win = Y.config.win,
         events = {
-            '.ez-filebased-warning-hide': {
+            '.ez-binarybase-warning-hide': {
                 'tap': '_hideWarning',
             },
             '.ez-button-upload': {
@@ -28,20 +28,20 @@ YUI.add('ez-filebased-editview', function (Y) {
             '.ez-button-delete': {
                 'tap': '_removeFile',
             },
-            '.ez-filebased-input-file': {
+            '.ez-binarybase-input-file': {
                 'change': '_updateFile'
             },
         };
 
     /**
-     * The FileBased field edit view. This class is meant to be extended.
+     * The BinaryBase field edit view. This class is meant to be extended.
      *
      * @namespace eZ
-     * @class FileBasedEditView
+     * @class BinaryBaseEditView
      * @constructor
      * @extends FieldEditView
      */
-    Y.eZ.FileBasedEditView = Y.Base.create('filebasedEditView', Y.eZ.FieldEditView, [], {
+    Y.eZ.BinaryBaseEditView = Y.Base.create('binarybaseEditView', Y.eZ.FieldEditView, [], {
         initializer: function () {
             this.events = Y.merge(this.events, events);
             this._set('file', this.get('field'));
@@ -52,7 +52,7 @@ YUI.add('ez-filebased-editview', function (Y) {
         },
 
         render: function () {
-            Y.eZ.FileBasedEditView.superclass.render.call(this);
+            Y.eZ.BinaryBaseEditView.superclass.render.call(this);
             this._setStateClasses();
             return this;
         },
@@ -248,7 +248,7 @@ YUI.add('ez-filebased-editview', function (Y) {
         _chooseFile: function (e) {
             e.preventDefault();
             this._set('warning', false);
-            this.get('container').one('.ez-filebased-input-file').getDOMNode().click();
+            this.get('container').one('.ez-binarybase-input-file').getDOMNode().click();
         },
 
         /**
@@ -265,7 +265,7 @@ YUI.add('ez-filebased-editview', function (Y) {
             if ( !warning ) {
                 container.removeClass(HAS_WARNING);
             } else {
-                container.one('.ez-filebased-warning-text').setContent(warning);
+                container.one('.ez-binarybase-warning-text').setContent(warning);
                 container.addClass(HAS_WARNING);
             }
         },
