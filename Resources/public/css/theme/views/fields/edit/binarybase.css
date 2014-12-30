@@ -1,0 +1,80 @@
+.ez-binarybase-content {
+    -webkit-transform-origin: center top;
+            transform-origin: center top;
+    -webkit-animation: ez-expand 0.2s ease forwards;
+            animation: ez-expand 0.2s ease forwards;
+}
+
+.is-field-empty .ez-binarybase-content {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-animation: ez-collapse 0.2s ease forwards;
+            animation: ez-collapse 0.2s ease forwards;
+}
+
+.ez-binarybase-warning {
+    border-radius: 3px;
+    background: #222;
+    opacity: 0.85;
+    color: #fff;
+    display: block;
+    padding: 0;
+
+    -webkit-transform: scale(0);
+            transform: scale(0);
+    -webkit-transform-origin: center bottom;
+            transform-origin: center bottom;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.has-warning .ez-binarybase-warning {
+    padding: 0.8em;
+
+    -webkit-transform: scale(1);
+            transform: scale(1);
+}
+
+.ez-binarybase-warning .ez-binarybase-warning-hide {
+    font-size: 90%;
+}
+
+.ez-binarybase-warning .ez-binarybase-warning-hide:after {
+    content: "\E600";
+    color: #fff;
+    display: inline-block;
+}
+
+.ez-binarybase-warning .ez-binarybase-warning-text:before {
+    content: "\E617";
+    font-size: 300%;
+    padding-right: 0.3em;
+    color: #fff;
+    display: block;
+    float: left;
+}
+
+.ez-binarybase-remove-option {
+    opacity: 1;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.is-field-empty .ez-binarybase-remove-option {
+    opacity: 0.4;
+}
+
+.is-field-empty .ez-binarybase-remove-option .ez-button-delete[disabled] {
+    opacity: 1;
+}
+
+.ez-binarybase-empty {
+    color: #888;
+    font-style: italic;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+}
+
+.is-error .ez-binarybase-empty {
+    color: #BF3E33;
+}

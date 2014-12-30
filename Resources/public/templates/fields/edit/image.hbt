@@ -10,9 +10,9 @@
     </div>
     <div class="pure-u ez-editfield-input-area">
         <div class="ez-editfield-input"><div class="ez-image-input-ui">
-            <div class="ez-image-editpreview">
+            <div class="ez-image-editpreview ez-binarybase-content">
                 <div class="ez-image-editpreview-image">
-                    <img alt="{{ image.alternativeText }}" class="ez-image-preview" alt="Image preview">
+                    <img alt="Image preview" class="ez-image-preview" alt="Image preview">
                     <p class="font-icon ez-asynchronousview-loading">Loading a thumbnail of the image...</p>
                     <p class="ez-asynchronousview-error font-icon">
                         An error occurred while loading the thumbnail.
@@ -39,17 +39,17 @@
                     </div>
                 </div>
             </div>
-            <p class="ez-image-empty">No image yet.</p>
-            <div class="ez-image-action">
-                <div class="ez-image-warning">
-                    <a href="#" class="ez-image-warning-hide font-icon"></a>
-                    <p class="ez-image-warning-text font-icon"></p>
+            <p class="ez-binarybase-empty">No image yet.</p>
+            <div class="ez-binarybase-action">
+                <div class="ez-binarybase-warning">
+                    <a href="#" class="ez-binarybase-warning-hide font-icon"></a>
+                    <p class="ez-binarybase-warning-text font-icon"></p>
                 </div>
                 <button class="ez-button ez-button-height ez-button-upload pure-button font-icon">
-                    <span class="ez-image-upload-new">Upload an image</span>
-                    <span class="ez-image-upload-replace">Replace this image</span>
+                    <span class="ez-binarybase-upload-new">Upload an image</span>
+                    <span class="ez-binarybase-upload-replace">Replace this image</span>
                 </button>
-                <span class="ez-image-remove-option">
+                <span class="ez-binarybase-remove-option">
                     or
                     <button class="ez-button ez-button-height ez-button-delete pure-button font-icon">
                         Remove this image
@@ -59,7 +59,7 @@
 
             <input
                 type="file" accept="image/*"
-                class="ez-image-input-file"
+                class="ez-binarybase-input-file"
                 id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
             ></div></div>
     </div>

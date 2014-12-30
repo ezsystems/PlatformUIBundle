@@ -9,7 +9,7 @@
 
 <script type="text/x-handlebars-template" id="imageeditview-ez-template">
     <div class="ez-image-input-ui">
-        <input type="file" class="ez-image-input-file">
+        <input type="file" class="ez-binarybase-input-file">
         <input type="text" class="ez-image-alt-text-input" value="{{ alternativeText }}">
     </div>
     <img class="ez-image-preview">
@@ -20,9 +20,9 @@
         <li class="ez-image-properties-type"></li>
     </ul>
     <button class="ez-asynchronousview-retry">Retry</button>
-    <div class="ez-image-warning">
-        <a href="#" class="ez-image-warning-hide">Hide</a>
-        <p class="ez-image-warning-text"></p>
+    <div class="ez-binarybase-warning">
+        <a href="#" class="ez-binarybase-warning-hide">Hide</a>
+        <p class="ez-binarybase-warning-text"></p>
     </div>
     <button class="ez-button-upload">Add</button>
     <button class="ez-button-delete">Remove</button>
@@ -32,6 +32,7 @@
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
 <script type="text/javascript" src="./assets/getfield-tests.js"></script>
+<script type="text/javascript" src="./assets/binarybase-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-image-editview-tests.js"></script>
 
 <script>
@@ -52,8 +53,12 @@
         filter: loaderFilter,
         modules: {
             "ez-image-editview": {
-                requires: ['ez-fieldeditview', 'ez-asynchronousview', 'event-tap', 'event-outside'],
+                requires: ['ez-binarybase-editview', 'ez-asynchronousview', 'event-tap'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-image-editview.js"
+            },
+            "ez-binarybase-editview": {
+                requires: ['ez-fieldeditview', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-binarybase-editview.js"
             },
             "ez-asynchronousview": {
                 requires: ['view', 'event-tap'],

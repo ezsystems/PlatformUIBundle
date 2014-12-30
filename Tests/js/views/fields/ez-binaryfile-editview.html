@@ -9,7 +9,7 @@
 
 <script type="text/x-handlebars-template" id="binaryfileeditview-ez-template">
     <div class="ez-binaryfile-input-ui">
-        <input type="file" class="ez-binaryfile-input-file">
+        <input type="file" class="ez-binarybase-input-file">
     </div>
     <ul>
         <li><a class="ez-binaryfile-download" href="#">Download</a></li>
@@ -17,9 +17,9 @@
         <li class="ez-binaryfile-properties-size"></li>
         <li class="ez-binaryfile-properties-type"></li>
     </ul>
-    <div class="ez-binaryfile-warning">
-        <a href="#" class="ez-binaryfile-warning-hide">Hide</a>
-        <p class="ez-binaryfile-warning-text"></p>
+    <div class="ez-binarybase-warning">
+        <a href="#" class="ez-binarybase-warning-hide">Hide</a>
+        <p class="ez-binarybase-warning-text"></p>
     </div>
     <button class="ez-button-upload">Add</button>
     <button class="ez-button-delete">Remove</button>
@@ -29,6 +29,7 @@
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
 <script type="text/javascript" src="./assets/getfield-tests.js"></script>
+<script type="text/javascript" src="./assets/binarybase-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-binaryfile-editview-tests.js"></script>
 
 <script>
@@ -49,8 +50,12 @@
         filter: loaderFilter,
         modules: {
             "ez-binaryfile-editview": {
-                requires: ['ez-fieldeditview', 'event-tap', 'event-outside'],
+                requires: ['ez-binarybase-editview', 'event-tap'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-binaryfile-editview.js"
+            },
+            "ez-binarybase-editview": {
+                requires: ['ez-fieldeditview', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-binarybase-editview.js"
             },
             "ez-fieldeditview": {
                 requires: ['ez-templatebasedview'],

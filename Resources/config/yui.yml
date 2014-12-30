@@ -250,17 +250,20 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/xmltext.hbt
                 ez-image-editview:
-                    requires: ['ez-fieldeditview', 'imageeditview-ez-template', 'ez-asynchronousview', 'event-tap']
+                    requires: ['ez-binarybase-editview', 'imageeditview-ez-template', 'ez-asynchronousview', 'event-tap']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-image-editview.js
                 imageeditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/image.hbt
                 ez-binaryfile-editview:
-                    requires: ['ez-fieldeditview', 'binaryfileeditview-ez-template', 'ez-asynchronousview', 'event-tap']
+                    requires: ['ez-binarybase-editview', 'binaryfileeditview-ez-template', 'event-tap']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-binaryfile-editview.js
                 binaryfileeditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/binaryfile.hbt
+                ez-binarybase-editview:
+                    requires: ['ez-fieldeditview', 'event-tap']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-binarybase-editview.js
                 ez-emailaddress-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'emailaddresseditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-emailaddress-editview.js
