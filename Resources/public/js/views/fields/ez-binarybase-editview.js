@@ -54,7 +54,19 @@ YUI.add('ez-binarybase-editview', function (Y) {
         render: function () {
             Y.eZ.BinaryBaseEditView.superclass.render.call(this);
             this._setStateClasses();
+            this._afterRender();
             return this;
+        },
+
+        /**
+         * Method called at the end of the render process. The default
+         * implementation does nothing, it is meant to be overridden in the view
+         * extending the binary base edit view.
+         *
+         * @method _afterRender
+         * @protected
+         */
+        _afterRender: function () {
         },
 
         /**
@@ -112,9 +124,24 @@ YUI.add('ez-binarybase-editview', function (Y) {
             if ( file.data ) {
                 fieldValue.data = file.data;
             }
-            return fieldValue;
+            return this._completeFieldValue(fieldValue);
         },
 
+        /**
+         * Method called at the end of the field value building process in
+         * `_getFieldValue`. It takes the fieldValue in parameter and MUST
+         * return the final field value. By default, it only returns the passed
+         * field value. It is meant to be overridden in views extending the
+         * binary base edit view if the field value is supposed to have
+         * additional properties.
+         *
+         * @method _completeFieldValue
+         * @param {Object} fieldValue
+         * @return {Object}
+         */
+        _completeFieldValue: function (fieldValue) {
+            return fieldValue;
+        },
 
         /**
          * Checks whether the file field is currently empty.
@@ -181,12 +208,25 @@ YUI.add('ez-binarybase-editview', function (Y) {
             var reader = this.get('fileReader'),
                 that = this;
 
+            this._beforeReadFile(file);
             reader.onload = function (e) {
                 var base64 = reader.result.replace(/^.*;base64,/, '');
                 that._set('file', that._createFileStruct(file, base64));
                 reader.onload = undefined;
             };
             reader.readAsDataURL(file);
+        },
+
+        /**
+         * Method called before we start reading the content of the selected
+         * file. The default implementation does nothing, it is meant to be
+         * overridden in the views extending the binary base edit view.
+         *
+         * @method _beforeReadFile
+         * @param {File} file the selected file
+         * @protected
+         */
+        _beforeReadFile: function (file) {
         },
 
         /**
