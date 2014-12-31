@@ -121,15 +121,13 @@ YUI.add('ez-image-editview', function (Y) {
         },
 
         /**
-         * Overrides the default implementation to add the
-         * is-image-being-updated class before starting to read the file
+         * Removes the *being updated* class before reading the image content.
          *
-         * @method _readFile
+         * @method _beforeReadFile
          * @protected
          */
-        _readFile: function () {
+        _beforeReadFile: function () {
             this.get('container').addClass(IS_BEING_UPDATED);
-            this.constructor.superclass._readFile.apply(this, arguments);
         },
 
         /**
@@ -180,20 +178,15 @@ YUI.add('ez-image-editview', function (Y) {
         },
 
         /**
-         * Returns the field value suitable for the REST API based on the
-         * current input. It makes to sure to only send the actual image content
-         * when it's needed.
+         * Completes the field value with the alternative text
          *
-         * @method _getFieldValue
          * @protected
+         * @method _completeFieldValue
+         * @param {Object} fieldValue
          * @return {Object}
          */
-        _getFieldValue: function () {
-            var fieldValue = this.constructor.superclass._getFieldValue.call(this);
-
-            if ( fieldValue ) {
-                fieldValue.alternativeText = this.get('alternativeText');
-            }
+        _completeFieldValue: function (fieldValue) {
+            fieldValue.alternativeText = this.get('alternativeText');
             return fieldValue;
         },
 
