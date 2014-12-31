@@ -151,6 +151,7 @@ system:
                         - 'ez-xmltext-editview'
                         - 'ez-image-editview'
                         - 'ez-binaryfile-editview'
+                        - 'ez-media-editview'
                         - 'ez-emailaddress-editview'
                         - 'ez-maplocation-editview'
                         - 'ez-url-editview'
@@ -261,6 +262,12 @@ system:
                 binaryfileeditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/binaryfile.hbt
+                ez-media-editview:
+                    requires: ['ez-binarybase-editview', 'mediaeditview-ez-template', 'event-tap', 'event-valuechange', 'node-event-html5']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-media-editview.js
+                mediaeditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/media.hbt
                 ez-binarybase-editview:
                     requires: ['ez-fieldeditview', 'event-tap']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-binarybase-editview.js

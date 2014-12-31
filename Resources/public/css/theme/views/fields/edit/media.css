@@ -1,0 +1,83 @@
+.ez-view-mediaeditview.is-media-being-updated .ez-media-editpreview-player {
+    opacity: 0.1;
+}
+
+.ez-view-mediaeditview.is-media-being-updated .ez-button-upload:before {
+    -webkit-animation: spin 0.7s infinite linear;
+            animation: spin 0.7s infinite linear;
+    content: "\E61C";
+}
+
+.ez-view-mediaeditview .ez-media-editpreview-player {
+    opacity: 1;
+    -webkit-transition: all 0.1s ease;
+            transition: all 0.1s ease;
+    -webkit-transform-origin: left top;
+            transform-origin: left top;
+}
+
+.ez-view-mediaeditview .ez-media-player-unsupported {
+    display: block;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+    font-size: 140%;
+    color: #fff;
+}
+
+.ez-view-mediaeditview .ez-media-player-unsupported:before {
+    content: "\E617";
+    padding-right: 0.5em;
+}
+
+.ez-view-mediaeditview .ez-media-player-unsupported-audio {
+    color: #fff;
+}
+
+.ez-view-mediaeditview.is-media-unsupported .ez-media-player-unsupported {
+    -webkit-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+    background: #444;
+}
+
+.ez-view-mediaeditview.is-media-unsupported .ez-media-player {
+    -webkit-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+}
+
+.ez-view-mediaeditview .ez-media-player {
+    background: #000;
+}
+
+.ez-view-mediaeditview.is-media-unsupported .ez-media-player {
+    opacity: 0.4;
+}
+
+.ez-view-mediaeditview .ez-media-link {
+    font-size: 80%;
+}
+
+.ez-view-mediaeditview .ez-media-link:after {
+    font-family: 'ez-platformui-icomoon';
+    content: "\E610";
+    padding-left: 0.3em;
+}
+
+.ez-view-mediaeditview .ez-media-properties-title {
+    font-size: 120%;
+    border-bottom: 1px solid #ccc;
+}
+
+.ez-view-mediaeditview .ez-media-properties-original {
+    list-style-type: square;
+}
+
+.ez-view-mediaeditview .ez-media-player-settings-title {
+    font-size: 120%;
+    border-bottom: 1px solid #ccc;
+}
+
+.ez-view-mediaeditview .ez-media-player-settings-list {
+    list-style-type: none;
+}

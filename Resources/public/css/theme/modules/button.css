@@ -30,3 +30,7 @@
     content: "\E61f";
     padding-right: 0.5em;
 }
+
+.ez-button-height.ez-button-upload:before {
+    padding: 0;
+}

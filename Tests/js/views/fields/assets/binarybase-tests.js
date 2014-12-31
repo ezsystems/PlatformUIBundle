@@ -27,7 +27,7 @@ YUI.add('binarybase-tests', function (Y) {
         },
 
         setUp: function () {
-            this.field = {fieldValue: null};
+            this.field = this._getField();
             this.jsonContent = {};
             this.jsonContentType = {};
             this.jsonVersion = {};
@@ -48,6 +48,10 @@ YUI.add('binarybase-tests', function (Y) {
             });
         },
 
+        _getField: function () {
+            return {fieldValue: null};
+        },
+
         _initView: function () {
             this.view = new this.ViewConstructor({
                 container: '.container',
@@ -64,12 +68,13 @@ YUI.add('binarybase-tests', function (Y) {
 
         _testAvailableVariables: function (required, expectRequired, expectedIsEmpty) {
             var fieldDefinition = this._getFieldDefinition(required),
-                view,
+                view, origTpl,
                 that = this;
 
             this._initView();
             view = this.view;
             view.set('fieldDefinition', fieldDefinition);
+            origTpl = view.template;
             view.template = function (variables) {
                 Assert.isObject(variables, "The template should receive some variables");
                 Assert.areEqual(
@@ -106,7 +111,7 @@ YUI.add('binarybase-tests', function (Y) {
                 Assert.areSame(expectRequired, variables.isRequired);
                 that._additionalVariableAssertions.call(that, variables);
 
-                return '';
+                return origTpl.apply(this, arguments);
             };
             this.view.render();
         },
@@ -146,7 +151,7 @@ YUI.add('binarybase-tests', function (Y) {
                 win = Y.config.win;
 
             this.field = {fieldValue: null};
-            this.fieldDefinition = {isRequired: false};
+            this.fieldDefinition = this._getFieldDefinition();
             this.content = new Mock();
             this.version = new Mock();
             this.contentType = new Mock();
@@ -175,6 +180,10 @@ YUI.add('binarybase-tests', function (Y) {
                     that.originalURL.revokeObjectURL(uri);
                 }
             };
+        },
+
+        _getFieldDefinition: function () {
+            return {isRequired: false};
         },
 
         _initView: function () {
@@ -224,7 +233,7 @@ YUI.add('binarybase-tests', function (Y) {
             var win = Y.config.win,
                 that = this;
 
-            this.fieldDefinition = {isRequired: false};
+            this.fieldDefinition = this._getFieldDefinition();
             this.content = new Mock();
             this.version = new Mock();
             this.contentType = new Mock();
@@ -258,6 +267,10 @@ YUI.add('binarybase-tests', function (Y) {
                 content: this.content,
                 contentType: this.contentType
             });
+        },
+
+        _getFieldDefinition: function () {
+            return {isRequired: false};
         },
 
         tearDown: function () {
@@ -312,7 +325,7 @@ YUI.add('binarybase-tests', function (Y) {
             this.field = {
                 fieldValue: null
             };
-            this.fieldDefinition = {isRequired: false};
+            this.fieldDefinition = this._getFieldDefinition();
             this.content = new Mock();
             this.version = new Mock();
             this.contentType = new Mock();
@@ -337,6 +350,10 @@ YUI.add('binarybase-tests', function (Y) {
                 content: this.content,
                 contentType: this.contentType
             });
+        },
+
+        _getFieldDefinition: function () {
+            return {isRequired: false};
         },
 
         tearDown: function () {
@@ -386,7 +403,7 @@ YUI.add('binarybase-tests', function (Y) {
             this.field = {
                 fieldValue: null
             };
-            this.fieldDefinition = {isRequired: true};
+            this.fieldDefinition = this._getFieldDefinition();
             this.content = new Mock();
             this.version = new Mock();
             this.contentType = new Mock();
@@ -402,6 +419,10 @@ YUI.add('binarybase-tests', function (Y) {
                 method: 'toJSON',
                 returns: {}
             });
+        },
+
+        _getFieldDefinition: function () {
+            return {isRequired: true};
         },
 
         _initView: function () {
@@ -490,14 +511,7 @@ YUI.add('binarybase-tests', function (Y) {
                 fieldValue: null
             };
             this.maxSize = 10;
-            this.fieldDefinition = {
-                isRequired: false,
-                validatorConfiguration: {
-                    FileSizeValidator: {
-                        maxFileSize: this.maxSize
-                    }
-                }
-            };
+            this.fieldDefinition = this._getFieldDefinition();
             this.content = new Mock();
             this.version = new Mock();
             this.contentType = new Mock();
@@ -529,6 +543,17 @@ YUI.add('binarybase-tests', function (Y) {
                 // phantomjs seems to not support window.URL
                 if ( that.originalURL && that.originalURL.createObjectURL ) {
                     that.originalURL.revokeObjectURL(uri);
+                }
+            };
+        },
+
+        _getFieldDefinition: function () {
+            return {
+                isRequired: false,
+                validatorConfiguration: {
+                    FileSizeValidator: {
+                        maxFileSize: this.maxSize
+                    }
                 }
             };
         },
@@ -641,7 +666,7 @@ YUI.add('binarybase-tests', function (Y) {
             var win = Y.config.win, that = this;
 
             this.field = {};
-            this.fieldDefinition = {isRequired: false};
+            this.fieldDefinition = this._getFieldDefinition();
             this.content = new Mock();
             this.version = new Mock();
             this.contentType = new Mock();
@@ -667,6 +692,12 @@ YUI.add('binarybase-tests', function (Y) {
                 }
             };
             this.createdUrl = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+        },
+
+        _getFieldDefinition: function () {
+            return {
+                isRequired: false,
+            };
         },
 
         _initView: function () {

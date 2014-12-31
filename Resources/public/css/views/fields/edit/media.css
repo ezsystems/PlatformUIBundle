@@ -1,0 +1,86 @@
+.ez-view-mediaeditview .ez-media-input-ui {
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.ez-view-mediaeditview .ez-media-editpreview {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+            flex-direction: row;
+}
+
+.ez-view-mediaeditview .ez-media-editpreview-player {
+    position: relative;
+}
+
+.ez-view-mediaeditview .ez-media-player {
+    display: block;
+    width: 100%;
+}
+
+.ez-view-mediaeditview .ez-media-player-unsupported {
+    display: none;
+}
+
+.ez-view-mediaeditview.is-media-unsupported .ez-media-player-unsupported {
+    display: block;
+    position: absolute;
+    top: 25%;
+    left: 0;
+    width: 100%;
+    padding: 1em 0;
+    text-align: center;
+}
+
+.ez-view-mediaeditview.is-media-unsupported .ez-media-player-unsupported-audio {
+    top: 0;
+}
+
+.ez-view-mediaeditview .ez-media-video-player {
+    height: auto;
+}
+
+.ez-view-mediaeditview .ez-media-audio-player {
+    margin-top: 25%;
+}
+
+.ez-view-mediaeditview .ez-media-editpreview-player {
+    width: 400px;
+}
+
+.ez-view-mediaeditview .ez-media-properties {
+    margin-left: 1em;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+}
+
+.ez-view-mediaeditview .ez-media-properties-title {
+    margin-top: 0;
+    padding: 0.3em 0.3em 0.3em 0;
+}
+
+.ez-view-mediaeditview .ez-media-properties-original {
+    margin: 0 0 0 1.2em;
+    padding: 0;
+    line-height: 1.4em;
+}
+
+.ez-view-mediaeditview .ez-media-player-settings-list {
+    padding: 0;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+            flex-direction: row;
+}
+
+.ez-view-mediaeditview .ez-media-player-settings-item {
+    margin-right: 1.5em;
+    line-height: 1.4em;
+}
+
+.ez-view-mediaeditview .ez-media-settings-size {
+    width: 4.2em;
+}
