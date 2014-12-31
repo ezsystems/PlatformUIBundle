@@ -14,7 +14,7 @@ content type in the PlatformUI application.
 ## BinaryFile
 
 * Content view: Yes
-* Content edit: No, [EZP-23749](https://jira.ez.no/browse/EZP-23749)
+* Content edit: Yes (missing [drag and drop](https://jira.ez.no/browse/EZP-23789))
 * Content type view: No
 * Content type edit: No
 
