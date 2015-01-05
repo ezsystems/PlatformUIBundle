@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Media Edit view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="mediaeditview-ez-template">
+    <div class="ez-media-input-ui">
+        {{#unless isAudio}}
+        <input type="number" name="width" value="{{ media.width }}">
+        <input type="number" name="height" value="{{ media.height }}">
+        {{/unless}}
+        <input type="checkbox" name="loop">
+        <input type="checkbox" name="hasController">
+        <input type="checkbox" name="autoplay">
+        <input type="file" class="ez-binarybase-input-file">
+    </div>
+    <video class="ez-media-player"></video>
+    <ul>
+        <li><a class="ez-media-link" href="#">Download</a></li>
+        <li class="ez-media-properties-name"></li>
+        <li class="ez-media-properties-size"></li>
+        <li class="ez-media-properties-type"></li>
+    </ul>
+    <div class="ez-binarybase-warning">
+        <a href="#" class="ez-binarybase-warning-hide">Hide</a>
+        <p class="ez-binarybase-warning-text"></p>
+    </div>
+    <button class="ez-button-upload">Add</button>
+    <button class="ez-button-delete">Remove</button>
+    <p class="ez-editfield-error-message"></p>
+</script>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
+<script type="text/javascript" src="./assets/getfield-tests.js"></script>
+<script type="text/javascript" src="./assets/binarybase-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-media-editview-tests.js"></script>
+
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-media-editview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-media-editview": {
+                requires: ['ez-binarybase-editview', 'event-tap', 'event-valuechange', 'node-event-html5'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-media-editview.js"
+            },
+            "ez-binarybase-editview": {
+                requires: ['ez-fieldeditview', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-binarybase-editview.js"
+            },
+            "ez-fieldeditview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/ez-fieldeditview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-media-editview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

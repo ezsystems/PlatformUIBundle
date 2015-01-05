@@ -1,0 +1,78 @@
+<div class="pure-g ez-editfield-row ez-default-error-style">
+    <div class="pure-u ez-editfield-infos">
+        {{> ez_fieldinfo_tooltip }}
+        <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+            <p class="ez-fielddefinition-name">
+                {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+            </p>
+            <p class="ez-editfield-error-message">&nbsp;</p>
+        </label>
+    </div>
+    <div class="pure-u ez-editfield-input-area">
+        <div class="ez-editfield-input"><div class="ez-media-input-ui">
+            <div class="ez-media-editpreview ez-binarybase-content">
+                <div class="ez-media-editpreview-player">
+                {{#if isAudio }}
+                    <audio src="{{ media.uri }}" controls="controls" preload="auto" class="ez-media-player ez-media-audio-player"></audio>
+                    <div class="ez-media-player-unsupported ez-media-player-unsupported-audio font-icon">Unsupported audio format</div>
+                {{else}}
+                    <video src="{{ media.uri }}" controls="controls" preload="auto" class="ez-media-player ez-media-video-player"></video>
+                    <div class="ez-media-player-unsupported font-icon">Unsupported video format</div>
+                {{/if}}
+                </div>
+                <div class="ez-media-properties">
+                    <h2 class="ez-media-properties-title">
+                    {{#if isAudio }}
+                        Audio file properties
+                    {{else}}
+                        Video file properties
+                    {{/if}}
+                        (<a href="{{ media.uri }}" target="_blank" class="ez-media-link">Open it in a new tab</a>)
+                    </h2>
+                    <ul class="ez-media-properties-original">
+                        <li><b>File name:</b> <span class="ez-media-properties-name">{{ media.name }}</span></li>
+                        <li><b>Type:</b> <span class="ez-media-properties-type">{{ media.type }}</span></li>
+                        <li><b>File size:</b> <span class="ez-media-properties-size">{{ media.size }}</span>&nbsp;bytes</li>
+                    </ul>
+
+                    <h2 class="ez-media-player-settings-title">Player settings</h2>
+                    <ul class="ez-media-player-settings-list">
+                        <li class="ez-media-player-settings-item"><label>Display controls: <input type="checkbox" value="1" name="hasController" {{#if hasController }}checked="checked"{{/if}}></label></li>
+                        <li class="ez-media-player-settings-item"><label>Auto play: <input type="checkbox" value="1" name="autoplay" {{#if autoplay }}checked="checked"{{/if}}></label></li>
+                        <li class="ez-media-player-settings-item"><label>Loop: <input type="checkbox" value="1" name="loop" {{#if loop }}checked="checked"{{/if}}></label></li>
+                    </ul>
+                    {{#unless isAudio}}
+                    <ul class="ez-media-player-settings-list">
+                        <li class="ez-media-player-settings-item"><label>Width: <input type="number" name="width" value="{{ width }}" step="1" class="ez-media-settings-size" min="0"></label></li>
+                        <li class="ez-media-player-settings-item"><label>Height: <input type="number" name="height" value="{{ height }}" step="1" class="ez-media-settings-size" min="0"></label></li>
+                    </ul>
+                    {{/unless}}
+
+                </div>
+            </div>
+
+            <p class="ez-binarybase-empty">{{#if isAudio}}No audio file yet.{{else}}No video file yet.{{/if}}</p>
+            <div class="ez-binarybase-action">
+                <div class="ez-binarybase-warning">
+                    <a href="#" class="ez-binarybase-warning-hide font-icon"></a>
+                    <p class="ez-binarybase-warning-text font-icon"></p>
+                </div>
+                <button class="ez-button ez-button-height ez-button-upload pure-button font-icon">
+                    <span class="ez-binarybase-upload-new">{{#if isAudio}}Upload an audio file{{else}}Upload a video{{/if}}</span>
+                    <span class="ez-binarybase-upload-replace">{{#if isAudio}}Replace this audio file{{else}}Replace this video{{/if}}</span>
+                </button>
+                <span class="ez-binarybase-remove-option">
+                    or
+                    <button class="ez-button ez-button-height ez-button-delete pure-button font-icon">
+                        {{#if isAudio}}Remove this audio file{{else}}Remove this video{{/if}}
+                    </button>
+                </span>
+            </div>
+
+            <input
+                type="file" {{#if isAudio}}accept="audio/*"{{else}}accept="video/*"{{/if}}
+                class="ez-binarybase-input-file"
+                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
+            ></div></div>
+    </div>
+</div>

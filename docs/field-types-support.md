@@ -98,7 +98,7 @@ content type in the PlatformUI application.
 ## Media
 
 * Content view: No [EZP-23730](https://jira.ez.no/browse/EZP-23730)
-* Content edit: No [EZP-23813](https://jira.ez.no/browse/EZP-23813)
+* Content edit: Yes (only for HTML5 Audio and Video and missing [drag and drop](https://jira.ez.no/browse/EZP-23789))
 * Content type view: No
 * Content type edit: No
 
