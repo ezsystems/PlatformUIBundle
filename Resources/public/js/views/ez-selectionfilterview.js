@@ -168,6 +168,7 @@ YUI.add('ez-selectionfilterview', function (Y) {
          * the data attribute of the selected element.
          *
          * @param {Node} the selected node
+         * @method _getTargetAttributes
          * @return {Object} a hash with the attributes values.
          */
         _getTargetAttributes: function (target) {

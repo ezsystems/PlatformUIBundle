@@ -162,7 +162,7 @@ YUI.add('ez-restmodel', function (Y) {
          * the mapping described by the ATTRS_REST_MAP and LINKS_MAP.
          *
          * @method loadFromHash
-         * @params {Object} hash a literal object to import
+         * @param {Object} hash a literal object to import
          */
         loadFromHash: function (hash) {
             var root = this.constructor.REST_STRUCT_ROOT,
