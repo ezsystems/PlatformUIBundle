@@ -17,15 +17,15 @@
                 placeholder="YYYY-MM-DD"
                 pattern="^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$|^$"
             {{/unless}}
-            class="ez-validated-input"
+            class="ez-validated-input ez-date-input"
             id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
             {{#if isRequired}} required{{/if}}
             >
             {{#unless supportsDateInput}}
-                <button class="ez-date-cancel-button">X</button>
-                <button class="ez-date-calendar-button">Calendar</button>
+                <button class="ez-date-cancel-button font-icon"></button>
+                <button class="ez-date-calendar-button ez-button ez-button-calendar font-icon pure-button">Calendar</button>
                 <div class="ez-yui-calendar-container" ></div>
-            {{/unless}}
+            {{/if}}
             </div></div>
         </div>
     </div>

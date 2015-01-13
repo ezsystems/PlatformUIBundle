@@ -92,6 +92,7 @@ system:
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/image.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/media.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/binaryfile.css'
+                - '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/date.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/modules/tabs.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/modules/page-header.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/modules/serverside-content.css'

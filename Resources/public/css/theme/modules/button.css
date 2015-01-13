@@ -34,3 +34,8 @@
 .ez-button-height.ez-button-upload:before {
     padding: 0;
 }
+
+.ez-button-calendar:before {
+    content: "\E622";
+    padding-right: 0.5em;
+}

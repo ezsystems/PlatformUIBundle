@@ -3,16 +3,27 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-date-input-ui {
+.ez-view-dateeditview .ez-date-input-ui {
     display: inline-block;
     vertical-align: bottom;
+    position: relative;
 }
 
-.ez-yui-calendar-container {
+.ez-view-dateeditview .ez-date-input {
+    width: 10em;
+}
+
+.ez-view-dateeditview .ez-yui-calendar-container {
     display: none;
+    top: 100%;
+    right: 0;
+    position: absolute;
 }
 
-.is-calendar-visible .ez-yui-calendar-container {
+.ez-view-dateeditview.is-calendar-visible .ez-yui-calendar-container {
     display: block;
 }
 
+.ez-view-dateeditview .ez-date-cancel-button {
+    margin-left: -1.8em;
+}

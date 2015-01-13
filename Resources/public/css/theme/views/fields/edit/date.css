@@ -1,0 +1,33 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-dateeditview .ez-yui-calendar-container {
+    display: block;
+
+    -webkit-transform: scale(0);
+            transform: scale(0);
+
+    -webkit-transform-origin: right top;
+            transform-origin: right top;
+
+    -webkit-transition: -webkit-transform 0.2s ease;
+            transition: transform 0.2s ease;
+}
+
+.ez-view-dateeditview.is-calendar-visible .ez-yui-calendar-container {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+}
+
+.ez-view-dateeditview .ez-date-cancel-button {
+    border: 0;
+    background: transparent;
+}
+
+.ez-view-dateeditview .ez-date-cancel-button:before {
+    content: "\E600";
+    font-family: "ez-platformui-icomoon";
+    font-size: 90%;
+}
