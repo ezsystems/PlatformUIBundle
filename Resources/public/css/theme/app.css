@@ -25,6 +25,7 @@
 
 .ez-platformui-app .pure-g [class *= "pure-u"],
 .ez-platformui-app .pure-g-r [class *= "pure-u"],
+.ez-platformui-app .yui3-g [class *= "yui3-u"],
 .ez-platformui-app button {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }

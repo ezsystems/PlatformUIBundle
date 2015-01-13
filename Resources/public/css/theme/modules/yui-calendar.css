@@ -1,0 +1,84 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ *
+ * Based on https://yui.github.io/skinbuilder/index.html?opt=platformui,3355BA,ffffff,1,1,10,1.5&h=0,-30,60&n=0,-30,75&l=0,-30,80&b=0,-30,90&mode=yui
+ */
+.yui3-skin-platformui .yui3-calendar-content {
+    background: #f3f3f3;
+    border: 1px solid #ccc;
+}
+
+.yui3-skin-platformui .yui3-calendar-grid {
+    border-collapse: collapse;
+}
+
+.yui3-skin-platformui .yui3-calendar-header {
+    color: #444;
+}
+
+.yui3-skin-platformui .yui3-calendar-header-label {
+    font-weight: bold;
+}
+
+.yui3-skin-platformui .yui3-calendar-weekday {
+    color: #FAFAFA;
+    background: #333;
+}
+
+.yui3-skin-platformui .yui3-calendar-prevmonth-day,
+.yui3-skin-platformui .yui3-calendar-nextmonth-day {
+    background: #fafafa;
+    color: #999;
+    border: 1px solid #ccc;
+}
+
+.yui3-skin-platformui .yui3-calendar-day {
+    background: #fff;
+    border: 1px solid #ccc;
+}
+.yui3-skin-platformui .yui3-calendar-day:hover,
+.yui3-skin-platformui .yui3-calendar-day-highlighted {
+    background: #dfe7da;
+}
+
+.yui3-skin-platformui .yui3-calendar-day-selected,
+.yui3-skin-platformui .yui3-calendar-day-selected:hover {
+    background: #528036;
+    color: #fff;
+}
+
+.yui3-skin-platformui .yui3-calendar-selection-disabled,
+.yui3-skin-platformui .yui3-calendar-selection-disabled:hover {
+    background: #fafafa;
+    color: #999;
+}
+
+/**************** the following from calendarnavigator.css ******************/
+.yui3-skin-platformui .yui3-calendarnav-prevmonth, .yui3-skin-platformui .yui3-calendarnav-nextmonth {
+    color: #444;
+    font-size: 170%;
+    padding: 0;
+    margin: 0;
+}
+
+.yui3-skin-platformui .yui3-calendarnav-prevmonth:before, .yui3-skin-platformui .yui3-calendarnav-nextmonth:after {
+    font-family: 'ez-platformui-icomoon';
+}
+
+.yui3-skin-platformui .yui3-calendarnav-prevmonth:before {
+    content: "\E604";
+}
+
+.yui3-skin-platformui .yui3-calendarnav-nextmonth:after {
+    content: "\E605";
+}
+
+.yui3-skin-platformui .yui3-calendarnav-prevmonth:hover, .yui3-skin-platformui .yui3-calendarnav-nextmonth:hover {
+    color: #528036;
+}
+
+.yui3-skin-platformui .yui3-calendarnav-month-disabled, .yui3-skin-platformui .yui3-calendarnav-month-disabled:hover {
+    cursor: default;
+    color: #ccc;
+}

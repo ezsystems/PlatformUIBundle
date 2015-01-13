@@ -1,0 +1,37 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ *
+ * Based on https://yui.github.io/skinbuilder/index.html?opt=platformui,3355BA,ffffff,1,1,10,1.5&h=0,-30,60&n=0,-30,75&l=0,-30,80&b=0,-30,90&mode=yui
+ */
+.yui3-skin-platformui .yui3-calendar-content {
+    padding: 0.25em 1em 1em 1em;
+}
+
+.yui3-skin-platformui .yui3-calendar-header-label {
+    margin: 0;
+}
+
+.yui3-skin-platformui .yui3-calendar-day,
+.yui3-skin-platformui .yui3-calendar-weekday,
+.yui3-skin-platformui .yui3-calendar-prevmonth-day,
+.yui3-skin-platformui .yui3-calendar-nextmonth-day {
+    padding: 0.35em 0.5em;
+    text-align: center;
+}
+
+.yui3-skin-platformui .yui3-calendar-header .yui3-u {
+    vertical-align: middle;
+}
+
+.yui3-skin-platformui .yui3-calendar-header-label {
+    text-align: center;
+}
+
+.yui3-skin-platformui .yui3-calendar-left-grid {
+    margin-right:1em;
+}
+
+.yui3-skin-platformui .yui3-calendar-right-grid {
+    margin-left:1em;
+}
