@@ -26,8 +26,6 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
             var type = this.get('contentType'),
                 service = this;
 
-            this._setRedirectionUrls();
-
             if ( !type.get('fieldDefinitions') ) {
                 type.load({api: this.get('capi')}, function (err) {
                     if ( err ) {
@@ -70,22 +68,18 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
         },
 
         /**
-         * Sets the redirection URLs attributes
+         * Returns uri for user redirection.
          *
-         * @method _setRedirectionUrls
+         * @method _redirectionUrl
          * @protected
+         * @return {String}
          */
-        _setRedirectionUrls: function () {
-            var app = this.get('app'),
-                viewParent;
-
-            viewParent = app.routeUri('viewLocation', {id: this.get('parentLocation').get('id')});
-            this.set('discardRedirectionUrl', viewParent);
-            this.set('closeRedirectionUrl', viewParent);
-            this.set('publishRedirectionUrl', function () {
-                return app.routeUri('viewLocation', {id: this.get('content').get('resources').MainLocation});
-            });
-        },
+        _redirectionUrl: function (value) {
+            if ( !value ) {
+                return this.get('app').routeUri('viewLocation', {id: this.get('parentLocation').get('id')});
+            }
+            return this.constructor.superclass._redirectionUrl.apply(this, arguments);
+        }
     }, {
         ATTRS: {
             /**
@@ -96,6 +90,19 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
              * @required
              */
             parentLocation: {},
+
+            /**
+             * The url user will be redirected to after publishing the content
+             *
+             * @attribute publishRedirectionUrl
+             * @type {Object}
+             */
+            publishRedirectionUrl: {
+                value: function () {
+                    return this.get('app').routeUri('viewLocation', {id: this.get('content').get('resources').MainLocation});
+                },
+                getter: '_redirectionUrl',
+            },
         }
     });
 });
