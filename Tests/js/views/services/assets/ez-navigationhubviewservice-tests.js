@@ -22,19 +22,21 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             });
         },
 
-        "Should return an object containing the application user": function () {
+        "Should return an object containing the application user and navigation menus": function () {
             var param = this.service.getViewParameters();
 
             Y.Assert.areSame(
                 this.user, param.user,
                 "The view parameter should contain the app's user"
             );
+
+            Y.Assert.isObject(param.navigationMenus, 'navigationMenus attribute should be an object');
             Y.Mock.verify(this.app);
         },
     });
 
     logOutEvtTest = new Y.Test.Case({
-        name: "eZ Navigation Hub View Service logOut event testr",
+        name: "eZ Navigation Hub View Service logOut event test",
 
         setUp: function () {
             this.app = new Y.Mock();

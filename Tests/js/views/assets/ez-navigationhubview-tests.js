@@ -18,6 +18,38 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.view = new Y.eZ.NavigationHubView({
                 container: '.container',
                 user: this.userMock,
+                navigationMenus: {
+                    create: [{
+                        title: 'Content structure',
+                        href: '#'
+                    }, {
+                        title: 'Media library',
+                        href: '#'
+                    }, {
+                        title: 'Campaign',
+                        href: '#'
+                    }],
+                    optimize: [{
+                        title: 'Optimize 1',
+                        href: '#'
+                    }, {
+                        title: 'Optimize 2',
+                        href: '#'
+                    }, {
+                        title: 'Optimize 3',
+                        href: '#'
+                    }],
+                    deliver: [{
+                        title: 'Deliver 1',
+                        href: '#'
+                    }, {
+                        title: 'Deliver 2',
+                        href: '#'
+                    }, {
+                        title: 'Deliver 3',
+                        href: '#'
+                    }]
+                }
             });
         },
 
@@ -44,8 +76,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.areEqual(
-                    1, Y.Object.keys(variables).length,
-                    "The template should receive 1 variable"
+                    2, Y.Object.keys(variables).length,
+                    "The template should receive 2 variables"
                 );
                 Y.Assert.areSame(
                     that.userJson, variables.user,
@@ -70,6 +102,38 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.view = new Y.eZ.NavigationHubView({
                 container: '.container',
                 user: this.userMock,
+                navigationMenus: {
+                    create: [{
+                        title: 'Content structure',
+                        href: '#'
+                    }, {
+                        title: 'Media library',
+                        href: '#'
+                    }, {
+                        title: 'Campaign',
+                        href: '#'
+                    }],
+                    optimize: [{
+                        title: 'Optimize 1',
+                        href: '#'
+                    }, {
+                        title: 'Optimize 2',
+                        href: '#'
+                    }, {
+                        title: 'Optimize 3',
+                        href: '#'
+                    }],
+                    deliver: [{
+                        title: 'Deliver 1',
+                        href: '#'
+                    }, {
+                        title: 'Deliver 2',
+                        href: '#'
+                    }, {
+                        title: 'Deliver 3',
+                        href: '#'
+                    }]
+                }
             });
             this.view.render();
         },
@@ -146,7 +210,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                     "The sub menu should be aligned with the link on the X coordinate"
                 );
                 Y.Assert.areEqual(
-                    link.getY() + link.get('offsetHeight'), subMenu.getY(),
+                    parseInt(link.getY() + link.get('offsetHeight'), 10),
+                    parseInt(subMenu.getY()),
                     "The sub menu should be aligned with the bottom of the link on the Y coordinate"
                 );
             } else {
@@ -394,6 +459,38 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.view = new Y.eZ.NavigationHubView({
                 container: '.container',
                 user: this.userMock,
+                navigationMenus: {
+                    create: [{
+                        title: 'Content structure',
+                        href: '#'
+                    }, {
+                        title: 'Media library',
+                        href: '#'
+                    }, {
+                        title: 'Campaign',
+                        href: '#'
+                    }],
+                    optimize: [{
+                        title: 'Optimize 1',
+                        href: '#'
+                    }, {
+                        title: 'Optimize 2',
+                        href: '#'
+                    }, {
+                        title: 'Optimize 3',
+                        href: '#'
+                    }],
+                    deliver: [{
+                        title: 'Deliver 1',
+                        href: '#'
+                    }, {
+                        title: 'Deliver 2',
+                        href: '#'
+                    }, {
+                        title: 'Deliver 3',
+                        href: '#'
+                    }]
+                }
             });
             this.view.render();
         },

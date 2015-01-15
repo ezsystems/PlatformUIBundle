@@ -13,32 +13,25 @@
 <div class="container ez-view-navigationhubview"></div>
 
 <script type="text/x-handlebars-template" id="navigationhubview-ez-template">
-    <a href="#" class="ez-logout">Logout</a>
-    <ul class="ez-zones-navigation">
-        <li class="ez-zone ez-create-zone" data-navigation="create">Create</li>
-        <li class="ez-zone ez-optimize-zone" data-navigation="optimize">Optimize</li>
-    </ul>
-    <nav class="ez-navigation">
-        <ul class="ez-navigation-create">
-            <li class="ez-sub-menu-link">
-                <a class="ez-navigation-item" href="#">Insite editing</a>
-                <ul class="ez-sub-menu">
-                    <li><a class="ez-navigation-item" href="#">Site 1</a></li>
-                    <li><a class="ez-navigation-item" href="#">Site 2</a></li>
-                    <li><a class="ez-navigation-item" href="#">A very very very long site name</a></li>
-                    <li><a class="ez-navigation-item" href="#">Site 4</a></li>
-                </ul>
-            </li>
-            <li><a class="ez-navigation-item" href="#">Extensions 1</a></li>
-            <li><a class="ez-navigation-item" href="#">Extensions 2</a></li>
-            <li><a class="ez-navigation-item" href="#">Extensions 3</a></li>
-            <li><a class="ez-navigation-item" href="#">Extensions 4</a></li>
-            <li><a class="ez-navigation-item" href="#">Extensions 5</a></li>
-            <li><a class="ez-navigation-item" href="#">Extensions 6</a></li>
-            <li><a class="ez-navigation-item" href="#">Extensions 7</a></li>
-            <li><a class="ez-navigation-item" href="#">Extensions 8</a></li>
-            <li><a class="ez-navigation-item" href="#">Extensions 9</a></li>
-            <li><a class="ez-navigation-item" href="#">Extensions 10 with a very long name!</a></li>
+<a href="#" class="ez-logout">Logout</a>
+<ul class="ez-zones-navigation">
+    <li class="ez-zone ez-create-zone" data-navigation="create">Create</li>
+    <li class="ez-zone ez-optimize-zone" data-navigation="optimize">Optimize</li>
+</ul>
+<nav class="ez-navigation">
+    {{#each menus}}
+        <ul class="ez-navigation-{{@key}}">
+            {{#each this}}
+                <li {{#if children}}class="ez-sub-menu-link"{{/if}}><a class="ez-navigation-item" href="{{href}}">{{title}}</a>
+                {{#if children}}
+                    <ul class="ez-sub-menu">
+                    {{#each children}}
+                        <li><a class="ez-navigation-item" href="{{href}}">{{title}}</a></li>
+                    {{/each}}
+                    </ul>
+                {{/if}}
+                </li>
+            {{/each}}
             <li class="ez-more ez-sub-menu-link">
                 <a href="#" class="ez-navigation-item">More</a>
                 <ul class="ez-sub-menu">
@@ -51,30 +44,8 @@
                 </ul>
             </li>
         </ul>
-        <ul class="ez-navigation-optimize">
-            <li><a class="ez-navigation-item" href="#">Optimize 1</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 2</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 3</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 4</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 5</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 6</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 7</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 8</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 9</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 10</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 11</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 12</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 13</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 14</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 15</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 16</a></li>
-            <li><a class="ez-navigation-item" href="#">Optimize 17</a></li>
-            <li class="ez-more ez-sub-menu-link">
-                <a href="#" class="ez-navigation-item">More</a>
-                <ul class="ez-sub-menu"></ul>
-            </li>
-        </ul>
-    </nav>
+    {{/each}}
+</nav>
 </script>
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
