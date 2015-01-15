@@ -160,7 +160,9 @@ YUI.add('ez-navigationhubview', function (Y) {
 
             container.setHTML(this.template({
                 user: this.get('user').toJSON(),
+                menus: this.get('navigationMenus')
             }));
+
             this._setNavigationMenu(this.get('activeNavigation'));
             this._uiSetActiveNavigation();
             return this;
@@ -413,7 +415,17 @@ YUI.add('ez-navigationhubview', function (Y) {
              * @type eZ.User
              * @required
              */
-            user: {}
+            user: {},
+
+            /**
+             * Contains an object filled with menu links
+             * assigned to the tab
+             *
+             * @attribute navigationMenus
+             * @type Object
+             * @required
+             */
+            navigationMenus: {}
         }
     });
 });
