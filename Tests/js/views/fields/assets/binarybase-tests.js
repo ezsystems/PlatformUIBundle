@@ -758,4 +758,208 @@ YUI.add('binarybase-tests', function (Y) {
             );
         },
     };
+
+
+    Y.eZ.Test.BinaryBaseDragAndDropTest = {
+        multiplicator: 1024*1024, // default max file size in Mb
+        setUp: function () {
+            var win = Y.config.win, that = this;
+
+            this.maxSize = 10;
+            this.field = {};
+            this.fieldDefinition = this._getFieldDefinition();
+            this.content = new Mock();
+            this.version = new Mock();
+            this.contentType = new Mock();
+            Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: {}
+            });
+            Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: {}
+            });
+            Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: {}
+            });
+
+            this.originalURL = win.URL;
+            win.URL = {};
+            win.URL.revokeObjectURL = function (uri) {
+                // phantomjs seems to not support window.URL
+                if ( that.originalURL && that.originalURL.revokeObjectURL ) {
+                    that.originalURL.revokeObjectURL(uri);
+                }
+            };
+            win.URL.createObjectURL = function (uri) {
+                return that.createdUrl;
+            };
+
+            this.fileContent = "R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
+            this.createdUrl = "data:image/gif;base64," + this.fileContent;
+
+            this.view = new this.ViewConstructor({
+                container: '.container',
+                field: this.field,
+                fieldDefinition: this.fieldDefinition,
+                version: this.version,
+                content: this.content,
+                contentType: this.contentType
+            });
+        },
+
+        _getFieldDefinition: function () {
+            return {
+                isRequired: false,
+                validatorConfiguration: {
+                    FileSizeValidator: {
+                        maxFileSize: this.maxSize
+                    },
+                },
+            };
+        },
+
+        tearDown: function () {
+            Y.config.win.URL = this.originalURL;
+            this.view.destroy();
+            delete this.view;
+        },
+
+        _simulateEvent: function (evtName) {
+            var evt = Y.config.doc.createEvent('Event');
+
+            evt.initEvent(evtName, true, true);
+            return evt;
+        },
+
+        _dragEventTest: function (evtName) {
+            var dropArea,
+                container = this.view.get('container'),
+                facade,
+                evt = this._simulateEvent(evtName);
+
+            this.view.render();
+
+            dropArea = container.one('.ez-editfield-input');
+            this.view._set('warning', 'Previous message');
+            container.delegate(evtName, function (e) {
+                facade = e;
+            }, '.ez-editfield-input', this);
+            dropArea.getDOMNode().dispatchEvent(evt);
+            Assert.isFalse(
+                this.view.get('warning'),
+                "The previous warning message should be removed"
+            );
+            Assert.isTrue(
+                facade._event.defaultPrevented,
+                "The " + evtName + " event should be prevented"
+            );
+        },
+
+        "Should handle the dragenter DOM event": function () {
+            this._dragEventTest('dragenter');
+        },
+
+        "Should handle the dragover DOM event": function () {
+            this._dragEventTest('dragover');
+        },
+
+        _dropEventWarningTest: function (files) {
+            var dropArea,
+                container = this.view.get('container'),
+                facade,
+                evt = this._simulateEvent('drop');
+
+            evt.dataTransfer = {files: files};
+            this.view.render();
+
+            dropArea = container.one('.ez-editfield-input');
+            container.delegate("drop", function (e) {
+                facade = e;
+            }, '.ez-editfield-input', this);
+            dropArea.getDOMNode().dispatchEvent(evt);
+            Assert.isString(
+                this.view.get('warning'),
+                "The warning attribute should be filled with a message"
+            );
+            Assert.isTrue(
+                facade._event.defaultPrevented,
+                "The drop event should be prevented"
+            );
+        },
+
+        "Should handle drop of a text selection": function () {
+            this._dropEventWarningTest([false]);
+        },
+
+        "Should handle drop of several files": function () {
+            this._dropEventWarningTest([{}, {}]);
+        },
+
+        "Should validate the size of a dropped file": function () {
+            this._dropEventWarningTest(
+                [{size: (this.maxSize + 1) * this.multiplicator, name: "toobig.jpg"}]
+            );
+        },
+
+        "Should accept the dropped file": function () {
+            var dropArea,
+                that = this,
+                container = this.view.get('container'),
+                file = {
+                    size: (this.maxSize - 1) * this.multiplicator,
+                    type: "image/jpeg",
+                    name: "dropped.jpg",
+                },
+                reader = new Mock(),
+                facade,
+                evt = this._simulateEvent('drop');
+
+            evt.dataTransfer = {files: [file]};
+            Mock.expect(reader, {
+                method: 'readAsDataURL',
+                args: [file],
+                run: function () {
+                    reader.result = that.createdUrl;
+                    reader.onload();
+                }
+            });
+
+            this.view._set('fileReader', reader);
+            this.view.render();
+
+            dropArea = container.one('.ez-editfield-input');
+            container.delegate("drop", function (e) {
+                facade = e;
+            }, '.ez-editfield-input', this);
+            dropArea.getDOMNode().dispatchEvent(evt);
+            Assert.isFalse(
+                this.view.get('warning'),
+                "The warning attribute should be false"
+            );
+            Assert.isTrue(
+                facade._event.defaultPrevented,
+                "The drop event should be prevented"
+            );
+            Assert.isUndefined(reader.onload, "The onload handler should be resetted");
+            Assert.areEqual(
+                this.view.get('file').name, file.name,
+                "The name of the dropped file should be kept"
+            );
+            Assert.areEqual(
+                this.view.get('file').size, file.size,
+                "The size of the dropped file should be kept"
+            );
+            Assert.areEqual(
+                this.view.get('file').type, file.type,
+                "The type of the dropped file should be kept"
+            );
+            Assert.areEqual(
+                this.view.get('file').data, this.fileContent,
+                "The content of the dropped file should have been read"
+            );
+            Mock.verify(reader);
+        },
+    };
 });

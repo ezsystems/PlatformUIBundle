@@ -25,6 +25,7 @@ YUI.add('ez-keyword-view-tests', function (Y) {
             },
         })
     );
+    Y.Test.Runner.setName("eZ Keyword View tests");
     Y.Test.Runner.add(viewTest);
 
     emptyViewTest = new Y.Test.Case(

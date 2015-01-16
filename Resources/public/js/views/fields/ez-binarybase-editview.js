@@ -31,6 +31,11 @@ YUI.add('ez-binarybase-editview', function (Y) {
             '.ez-binarybase-input-file': {
                 'change': '_updateFile'
             },
+            '.ez-editfield-input': {
+                'dragenter': '_prepareDrop',
+                'dragover': '_prepareDrop',
+                'drop': '_drop',
+            },
         };
 
     /**
@@ -164,11 +169,7 @@ YUI.add('ez-binarybase-editview', function (Y) {
         _updateFile: function (e) {
             var file = e.target.getDOMNode().files[0];
 
-            if ( this._validSize(file.size) ) {
-                this._readFile(file);
-            } else {
-                this._set('warning', this._getOverSizeMessage(file.name));
-            }
+            this._readFile(file);
             e.target.set('value', '');
         },
 
@@ -197,8 +198,9 @@ YUI.add('ez-binarybase-editview', function (Y) {
         },
 
         /**
-         * Read the content of the choosen File and update the `file` attribute
-         * with the corresponding structure
+         * Read the content of the choosen File (if its size match the field
+         * configuration) and update the `file` attribute with the corresponding
+         * structure
          *
          * @method _readFile
          * @protected
@@ -208,13 +210,17 @@ YUI.add('ez-binarybase-editview', function (Y) {
             var reader = this.get('fileReader'),
                 that = this;
 
-            this._beforeReadFile(file);
-            reader.onload = function (e) {
-                var base64 = reader.result.replace(/^.*;base64,/, '');
-                that._set('file', that._createFileStruct(file, base64));
-                reader.onload = undefined;
-            };
-            reader.readAsDataURL(file);
+            if ( this._validSize(file.size) ) {
+                this._beforeReadFile(file);
+                reader.onload = function (e) {
+                    var base64 = reader.result.replace(/^.*;base64,/, '');
+                    that._set('file', that._createFileStruct(file, base64));
+                    reader.onload = undefined;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                this._set('warning', this._getOverSizeMessage(file.name));
+            }
         },
 
         /**
@@ -289,6 +295,46 @@ YUI.add('ez-binarybase-editview', function (Y) {
             e.preventDefault();
             this._set('warning', false);
             this.get('container').one('.ez-binarybase-input-file').getDOMNode().click();
+        },
+
+        /**
+         * Event handler for the dragenter and dragover DOM event
+         *
+         * @method _prepareDrop
+         * @param {EventFacade} e
+         * @protected
+         */
+        _prepareDrop: function (e) {
+            e.preventDefault();
+            this._set('warning', false);
+        },
+
+        /**
+         * Event handler for the drop DOM event.
+         *
+         * @method _drop
+         * @param {EventFacade} e
+         * @protected
+         */
+        _drop: function (e) {
+            var files = e._event.dataTransfer.files;
+
+            e.preventDefault();
+            if ( files.length > 1 ) {
+                this._set(
+                    'warning',
+                    'You dropped several files while only one can be stored in this field. Please choose one file.'
+                );
+                return;
+            }
+            if ( !files[0] ) {
+                this._set(
+                    'warning',
+                    'You dropped a text selection while this field can only store a file. Please drop a file instead.'
+                );
+                return;
+            }
+            this._readFile(files[0]);
         },
 
         /**

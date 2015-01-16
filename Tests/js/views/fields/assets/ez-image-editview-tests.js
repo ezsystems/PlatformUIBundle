@@ -5,7 +5,7 @@
 YUI.add('ez-image-editview-tests', function (Y) {
     var viewTest, registerTest, imageSetterTest, alternativeTextTest,
         imageVariationTest, buttonsTest, warningTest, renderingTest,
-        validateTest, pickImageTest,
+        validateTest, pickImageTest, dndTest,
         getFieldNotUpdatedTest, getFieldUpdatedEmptyTest,
         getFieldUpdatedTest, getFieldUpdatedNoDataTest,
         Assert = Y.Assert, Mock = Y.Mock;
@@ -604,6 +604,14 @@ YUI.add('ez-image-editview-tests', function (Y) {
         })
     );
 
+    dndTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.BinaryBaseDragAndDropTest, {
+            name: "eZ Image edit view drag and drop tests",
+            multiplicator: 1,
+            ViewConstructor: Y.eZ.ImageEditView,
+        })
+    );
+
     Y.Test.Runner.setName("eZ Image Edit View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(imageSetterTest);
@@ -614,6 +622,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
     Y.Test.Runner.add(validateTest);
     Y.Test.Runner.add(pickImageTest);
     Y.Test.Runner.add(renderingTest);
+    Y.Test.Runner.add(dndTest);
     Y.Test.Runner.add(getFieldNotUpdatedTest);
     Y.Test.Runner.add(getFieldUpdatedEmptyTest);
     Y.Test.Runner.add(getFieldUpdatedTest);

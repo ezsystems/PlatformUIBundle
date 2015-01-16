@@ -5,7 +5,7 @@
 YUI.add('ez-media-editview-tests', function (Y) {
     var viewTest, registerTest, mediaSetterTest,
         buttonsTest, warningTest, renderingTest,
-        validateTest, pickMediaTest,
+        validateTest, pickMediaTest, dndTest,
         getFieldNotUpdatedTest, getFieldUpdatedEmptyTest,
         getFieldUpdatedTest, getFieldUpdatedNoDataTest,
         playerSettingTest, videoEventTest,
@@ -820,6 +820,26 @@ YUI.add('ez-media-editview-tests', function (Y) {
         },
     });
 
+    dndTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.BinaryBaseDragAndDropTest, {
+            name: "eZ Media edit view drag and drop tests",
+            ViewConstructor: Y.eZ.MediaEditView,
+            _getFieldDefinition: function () {
+                return {
+                    isRequired: false,
+                    fieldSettings: {
+                        mediaType: "TYPE_HTML5_VIDEO"
+                    },
+                    validatorConfiguration: {
+                        FileSizeValidator: {
+                            maxFileSize: this.maxSize
+                        }
+                    },
+                };
+            },
+        })
+    );
+
     Y.Test.Runner.setName("eZ Media Edit View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(mediaSetterTest);
@@ -828,6 +848,7 @@ YUI.add('ez-media-editview-tests', function (Y) {
     Y.Test.Runner.add(validateTest);
     Y.Test.Runner.add(pickMediaTest);
     Y.Test.Runner.add(renderingTest);
+    Y.Test.Runner.add(dndTest);
     Y.Test.Runner.add(getFieldNotUpdatedTest);
     Y.Test.Runner.add(getFieldUpdatedEmptyTest);
     Y.Test.Runner.add(getFieldUpdatedTest);
