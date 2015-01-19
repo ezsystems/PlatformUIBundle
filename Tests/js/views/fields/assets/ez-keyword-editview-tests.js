@@ -10,7 +10,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-keyword-editview-tests', function (Y) {
-    var viewTest, registerTest, getFieldTest, getFieldTestWithSpaces;
+    var viewTest, registerTest, getFieldTest, getFieldTestWithSpaces, getEmptyFieldTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Keyword View test",
@@ -189,6 +189,21 @@ YUI.add('ez-keyword-editview-tests', function (Y) {
         })
     );
     Y.Test.Runner.add(getFieldTestWithSpaces);
+
+    getEmptyFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false},
+            ViewConstructor: Y.eZ.KeywordEditView,
+            newValue: "",
+            valuesArray: [],
+
+            _assertCorrectFieldValue: function (fieldValue, msg) {
+                Y.Assert.isArray(fieldValue, 'fieldValue should be an array');
+                Y.Assert.areEqual(fieldValue.length, 0,  msg);
+            },
+        })
+    );
+    Y.Test.Runner.add(getEmptyFieldTest);
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Keyword Edit View registration test";

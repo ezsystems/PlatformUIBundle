@@ -81,12 +81,13 @@ YUI.add('ez-keyword-editview', function (Y) {
          */
         _getFieldValue: function () {
             var tags = [],
-                str = this.get('container').one('.ez-keyword-input-ui input').get('value'),
-                res = str.split(",");
+                str = this.get('container').one('.ez-keyword-input-ui input').get('value');
 
-            Y.Array.each(res, function (value) {
-                tags.push(value.trim());
-            });
+            if (str) {
+                Y.Array.each(str.split(","), function (value) {
+                    tags.push(value.trim());
+                });
+            }
             return tags;
         }
     });
