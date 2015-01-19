@@ -899,7 +899,7 @@ YUI.add('binarybase-tests', function (Y) {
 
         "Should validate the size of a dropped file": function () {
             this._dropEventWarningTest(
-                [{size: (this.maxSize + 1) * this.multiplicator, name: "toobig.jpg"}]
+                [{size: (this.maxSize + 1) * this.multiplicator, name: "toobig.jpg", type: "image/jpeg"}]
             );
         },
 

@@ -357,6 +357,36 @@ YUI.add('ez-image-editview-tests', function (Y) {
             name: "eZ Image View pick image test",
             ViewConstructor: Y.eZ.ImageEditView,
             multiplicator: 1, // in image, the max size is in bytes
+
+            "Should refuse a non image file": function () {
+                var fileReader = this.view.get('fileReader'),
+                    eventFacade = new Y.DOMEventFacade({
+                        type: 'change'
+                    });
+
+                eventFacade.target = new Mock();
+                Mock.expect(fileReader, {
+                    method: 'readAsDataURL',
+                    callCount: 0,
+                });
+                Mock.expect(eventFacade.target, {
+                    method: 'getDOMNode',
+                    returns: {files: [{size: (this.maxSize - 1) * this.multiplicator, name: "file.ogv", type: "video/ogg"}]},
+                });
+                Mock.expect(eventFacade.target, {
+                    method: 'set',
+                    args: ['value', ''],
+                });
+
+                this.view.render();
+                this.view._updateFile(eventFacade);
+                Assert.isString(
+                    this.view.get('warning'),
+                    "A warning should have been generated"
+                );
+                Mock.verify(eventFacade);
+                Mock.verify(fileReader);
+            },
         })
     );
 
@@ -609,6 +639,11 @@ YUI.add('ez-image-editview-tests', function (Y) {
             name: "eZ Image edit view drag and drop tests",
             multiplicator: 1,
             ViewConstructor: Y.eZ.ImageEditView,
+            "Should refuse a non image dropped file": function () {
+                this._dropEventWarningTest(
+                    [{size: (this.maxSize - 1) * this.multiplicator, name: "wrong.ogg", type: "audio/ogg"}]
+                );
+            },
         })
     );
 

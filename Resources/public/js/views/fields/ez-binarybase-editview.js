@@ -210,7 +210,7 @@ YUI.add('ez-binarybase-editview', function (Y) {
             var reader = this.get('fileReader'),
                 that = this;
 
-            if ( this._validSize(file.size) ) {
+            if ( this._valid(file) ) {
                 this._beforeReadFile(file);
                 reader.onload = function (e) {
                     var base64 = reader.result.replace(/^.*;base64,/, '');
@@ -218,8 +218,6 @@ YUI.add('ez-binarybase-editview', function (Y) {
                     reader.onload = undefined;
                 };
                 reader.readAsDataURL(file);
-            } else {
-                this._set('warning', this._getOverSizeMessage(file.name));
             }
         },
 
@@ -236,21 +234,50 @@ YUI.add('ez-binarybase-editview', function (Y) {
         },
 
         /**
-         * Checks whether the size is valid according to the field definition
-         * configuration
+         * Checks whether the File in parameter is valid for the field. By
+         * default, only the size of the file is checked against the maximum
+         * allowed file size.
          *
-         * @param {Number} size
+         * @method _valid
+         * @param {File} file the File object to be stored in the field
+         * @protected
+         * @return Boolean
+         */
+        _valid: function (file) {
+            return this._validSize(file);
+        },
+
+        /**
+         * Returns the maximum allowed size in bytes or 0 if no limit is set.
+         *
+         * @method _maxSize
+         * @protected
+         * @return Number
+         */
+        _maxSize: function () {
+            var maxSize = this.get('fieldDefinition').validatorConfiguration.FileSizeValidator.maxFileSize;
+
+            return maxSize ? maxSize * 1024 * 1024 : 0;
+        },
+
+        /**
+         * Checks whether the size is valid according to the field definition
+         * configuration. If the file can not be accepted, a warning message is
+         * set in the `warning` attribute.
+         *
+         * @param {File} file the File object to be stored in the field
          * @method _validSize
          * @return {Boolean}
          * @private
          */
-        _validSize: function (size) {
-            var maxSize = this.get('fieldDefinition').validatorConfiguration.FileSizeValidator.maxFileSize;
+        _validSize: function (file) {
+            var maxSize = this._maxSize(),
+                valid = maxSize ? (file.size < maxSize) : true;
 
-            if ( maxSize ) {
-                return (size < (maxSize * 1024 * 1024));
+            if ( !valid ) {
+                this._set('warning', this._getOverSizeMessage(file.name));
             }
-            return true;
+            return valid;
         },
 
         /**
