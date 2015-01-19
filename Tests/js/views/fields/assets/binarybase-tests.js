@@ -64,6 +64,7 @@ YUI.add('binarybase-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         _testAvailableVariables: function (required, expectRequired, expectedIsEmpty) {
@@ -200,6 +201,7 @@ YUI.add('binarybase-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
             Y.config.win.URL = this.originalURL;
         },
 
@@ -275,6 +277,7 @@ YUI.add('binarybase-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
             Y.config.win.URL = this.originalURL;
         },
 
@@ -358,6 +361,7 @@ YUI.add('binarybase-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         "Should show the warning box": function () {
@@ -439,6 +443,7 @@ YUI.add('binarybase-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         "Test not required empty": function () {
@@ -560,6 +565,7 @@ YUI.add('binarybase-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
             Y.config.win.URL = this.originalURL;
         },
 
@@ -714,6 +720,7 @@ YUI.add('binarybase-tests', function (Y) {
         tearDown: function () {
             Y.config.win.URL = this.originalURL;
             this.view.destroy();
+            delete this.view;
             this.view.get('container').setAttribute('class', 'container');
         },
 

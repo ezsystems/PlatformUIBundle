@@ -527,6 +527,7 @@ YUI.add('ez-media-editview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         _fieldValueToAttributeTest: function (attribute) {
@@ -679,6 +680,7 @@ YUI.add('ez-media-editview-tests', function (Y) {
         tearDown: function () {
             this.view.destroy();
             this.view.get('container').setAttribute('class', 'container');
+            delete this.view;
             Y.Node.DOM_EVENTS.loadedmetadata = this.origLoadedMetadataCfg;
             Y.Node.DOM_EVENTS.error = this.origErrorCfg;
         },

@@ -154,6 +154,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         "Should retrieve the alternative text in the field value": function () {
@@ -231,6 +232,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         "Should fire the loadImageVariation event": function () {
