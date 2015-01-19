@@ -671,7 +671,7 @@ YUI.add('ez-media-editview-tests', function (Y) {
             // YUI consider those events as custom events, this way,
             // Y.Node.fire() can be used.
             this.origLoadedMetadataCfg = Y.Node.DOM_EVENTS.loadedmetadata;
-            this.origErrorCfg = Y.Node.DOM_EVENTS;
+            this.origErrorCfg = Y.Node.DOM_EVENTS.error;
             delete Y.Node.DOM_EVENTS.loadedmetadata;
             delete Y.Node.DOM_EVENTS.error;
         },
