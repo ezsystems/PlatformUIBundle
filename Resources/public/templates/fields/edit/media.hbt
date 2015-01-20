@@ -6,10 +6,15 @@
                 {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
             </p>
             <p class="ez-editfield-error-message">&nbsp;</p>
+            {{#if isAudio }}
+            <p class="ez-binarybase-help">You can drag and drop a file to add or replace the audio file.</p>
+            {{else}}
+            <p class="ez-binarybase-help">You can drag and drop a file to add or replace the video file.</p>
+            {{/if}}
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area">
-        <div class="ez-editfield-input"><div class="ez-media-input-ui">
+        <div class="ez-editfield-input ez-binarybase-drop-area"><div class="ez-media-input-ui">
             <div class="ez-media-editpreview ez-binarybase-content">
                 <div class="ez-media-editpreview-player">
                 {{#if isAudio }}

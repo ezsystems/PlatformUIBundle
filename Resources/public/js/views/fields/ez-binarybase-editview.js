@@ -15,6 +15,7 @@ YUI.add('ez-binarybase-editview', function (Y) {
 
     var HAS_WARNING = 'has-warning',
         IS_EMPTY = 'is-field-empty',
+        DRAGGING = 'is-dragging-file',
         L = Y.Lang,
         OVER_SIZE_TPL = "The file '{name}' was refused because its size is greater than the maximum allowed size ({max})",
         win = Y.config.win,
@@ -31,9 +32,10 @@ YUI.add('ez-binarybase-editview', function (Y) {
             '.ez-binarybase-input-file': {
                 'change': '_updateFile'
             },
-            '.ez-editfield-input': {
+            '.ez-binarybase-drop-area': {
                 'dragenter': '_prepareDrop',
                 'dragover': '_prepareDrop',
+                'dragleave': '_uiResetDropArea',
                 'drop': '_drop',
             },
         };
@@ -334,6 +336,29 @@ YUI.add('ez-binarybase-editview', function (Y) {
         _prepareDrop: function (e) {
             e.preventDefault();
             this._set('warning', false);
+            this._uiPrepareDropArea(e);
+        },
+
+        /**
+         * Prepares visually the drop area
+         *
+         * @method _uiPrepareDropArea
+         * @param {EventFacade} the event facade of the drag* event
+         * @protected
+         */
+        _uiPrepareDropArea: function (e) {
+            e._event.dataTransfer.dropEffect = 'copy';
+            this.get('container').addClass(DRAGGING);
+        },
+
+        /**
+         * Resets visually the drop area
+         *
+         * @method _uiResetDropArea
+         * @protected
+         */
+        _uiResetDropArea: function () {
+            this.get('container').removeClass(DRAGGING);
         },
 
         /**
@@ -347,6 +372,7 @@ YUI.add('ez-binarybase-editview', function (Y) {
             var files = e._event.dataTransfer.files;
 
             e.preventDefault();
+            this._uiResetDropArea();
             if ( files.length > 1 ) {
                 this._set(
                     'warning',

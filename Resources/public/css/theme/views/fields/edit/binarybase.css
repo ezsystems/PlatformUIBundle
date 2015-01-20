@@ -78,3 +78,15 @@
 .is-error .ez-binarybase-empty {
     color: #BF3E33;
 }
+
+.ez-binarybase-help {
+    font-size: 90%;
+    font-style: italic;
+}
+
+.is-dragging-file .ez-binarybase-drop-area {
+    border: 0.5em dashed #aaa;
+    border-radius: 3px;
+    margin: 0.5em 1.5em;
+    opacity: 0.7;
+}

@@ -841,12 +841,17 @@ YUI.add('binarybase-tests', function (Y) {
 
             this.view.render();
 
-            dropArea = container.one('.ez-editfield-input');
+            dropArea = container.one('.ez-binarybase-drop-area');
             this.view._set('warning', 'Previous message');
             container.delegate(evtName, function (e) {
                 facade = e;
-            }, '.ez-editfield-input', this);
+            }, '.ez-binarybase-drop-area', this);
+            evt.dataTransfer = {};
             dropArea.getDOMNode().dispatchEvent(evt);
+            Assert.isTrue(
+                this.view.get('container').hasClass('is-dragging-file'),
+                "The view container should get the is-dragging-file class"
+            );
             Assert.isFalse(
                 this.view.get('warning'),
                 "The previous warning message should be removed"
@@ -854,6 +859,10 @@ YUI.add('binarybase-tests', function (Y) {
             Assert.isTrue(
                 facade._event.defaultPrevented,
                 "The " + evtName + " event should be prevented"
+            );
+            Assert.areEqual(
+                "copy", facade._event.dataTransfer.dropEffect,
+                "The drop effect should be set to copy"
             );
         },
 
@@ -865,6 +874,21 @@ YUI.add('binarybase-tests', function (Y) {
             this._dragEventTest('dragover');
         },
 
+        "Should handle the dragleave DOM event": function () {
+            var dl = this._simulateEvent('dragleave'),
+                dropArea;
+
+            this._dragEventTest('dragenter');
+
+            dropArea = this.view.get('container').one('.ez-binarybase-drop-area');
+            dropArea.getDOMNode().dispatchEvent(dl);
+
+            Assert.isFalse(
+                this.view.get('container').hasClass('is-dragging-file'),
+                "The view container should not get the is-dragging-file class anymore"
+            );
+        },
+
         _dropEventWarningTest: function (files) {
             var dropArea,
                 container = this.view.get('container'),
@@ -874,10 +898,10 @@ YUI.add('binarybase-tests', function (Y) {
             evt.dataTransfer = {files: files};
             this.view.render();
 
-            dropArea = container.one('.ez-editfield-input');
+            dropArea = container.one('.ez-binarybase-drop-area');
             container.delegate("drop", function (e) {
                 facade = e;
-            }, '.ez-editfield-input', this);
+            }, '.ez-binarybase-drop-area', this);
             dropArea.getDOMNode().dispatchEvent(evt);
             Assert.isString(
                 this.view.get('warning'),
@@ -929,10 +953,10 @@ YUI.add('binarybase-tests', function (Y) {
             this.view._set('fileReader', reader);
             this.view.render();
 
-            dropArea = container.one('.ez-editfield-input');
+            dropArea = container.one('.ez-binarybase-drop-area');
             container.delegate("drop", function (e) {
                 facade = e;
-            }, '.ez-editfield-input', this);
+            }, '.ez-binarybase-drop-area', this);
             dropArea.getDOMNode().dispatchEvent(evt);
             Assert.isFalse(
                 this.view.get('warning'),

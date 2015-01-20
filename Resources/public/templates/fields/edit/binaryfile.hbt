@@ -6,10 +6,11 @@
                 {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
             </p>
             <p class="ez-editfield-error-message">&nbsp;</p>
+            <p class="ez-binarybase-help">You can drag and drop a file to add or replace the document.</p>
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area">
-        <div class="ez-editfield-input"><div class="ez-binaryfile-input-ui">
+        <div class="ez-editfield-input ez-binarybase-drop-area"><div class="ez-binaryfile-input-ui">
             <div class="ez-binaryfile-content font-icon ez-binarybase-content">
                 <ul class="ez-binaryfile-properties">
                     <li><b>File name:</b> <span class="ez-binaryfile-properties-name">{{ binaryfile.name }}</span></li>
