@@ -138,9 +138,33 @@ YUI.add('ez-platformuiapp', function (Y) {
                     oldService.setNextViewServiceParameters(newService);
                 }
             });
-
+            this._routeConfig();
             // Listening for events fired on child views
             this.views.errorView.instance.addTarget(this);
+        },
+
+        /**
+         * Check if there is config to add to the application routes
+         *
+         * @protected
+         * @method _routeConfig
+         */
+        _routeConfig: function () {
+            if (this.get('routeConfig')) {
+                Y.Array.each(this.get('routes'), Y.bind(this._enrichRoute, this));
+            }
+        },
+
+        /**
+         * Enrich the route with the route configuration
+         *
+         * @protected
+         * @method _enrichRoute
+         */
+        _enrichRoute: function (route, index) {
+            if (this.get('routeConfig')[route.name]) {
+                this.get('routes')[index].config = this.get('routeConfig')[route.name];
+            }
         },
 
         /**
@@ -706,6 +730,29 @@ YUI.add('ez-platformuiapp', function (Y) {
             loading: {
                 validator: L.isBoolean,
                 value: false
+            },
+
+            /**
+             * Routes configuration
+             *
+             * It's an object supposed to contain the configuration of a route,
+             * the key is the name of the route it should match
+             * For example if you want to match "loginForm" route:
+             *
+             *    "loginForm": {
+             *         "fieldsViews": {
+             *             "ezthing": 'Something'
+             *         }
+             *     },
+             *
+             * @attribute routeConfig
+             * @default null
+             * @type Object
+             * @writeOnce
+             */
+            routeConfig: {
+                writeOnce: "initOnly",
+                value: null
             },
 
             /**
