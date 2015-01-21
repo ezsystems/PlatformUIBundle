@@ -5,7 +5,7 @@
 YUI.add('ez-platformuiapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest, sideViewServicesTest,
         adminExtTest, loginTest, logoutTest, checkUserTest,
-        handleMainViewTest, tplTest, titleTest;
+        handleMainViewTest, tplTest, titleTest, configRouteTest;
 
     appTest = new Y.Test.Case({
         name: "eZ Platform UI App tests",
@@ -1561,6 +1561,57 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
+    configRouteTest = new Y.Test.Case({
+        name: "eZ Platform UI App reverse routing tests",
+
+        setUp: function () {
+
+            this.root = '/this/is/the/root/';
+            this.app = new Y.eZ.PlatformUIApp({
+                root: this.root,
+                container: '.app',
+                viewContainer: '.view-container',
+                routeConfig: {
+                    "loginForm": {
+                        "fieldsViews": {
+                            "ezthing": 'Something'
+                        }
+                    },
+                    "doesNotMatchAnything": {
+                        "fieldsViews": {
+                            "ezthing": 'Anything'
+                        }
+                    },
+                }
+            });
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+        },
+
+        "Should enrich route with config": function () {
+            var that = this;
+
+            Y.Array.each(this.app.get('routes'), function (value) {
+                if (value.name == 'loginForm') {
+                    Y.Assert.areSame(value.config, that.app.get('routeConfig').loginForm, 'Route loginForm should be enrich with config');
+                }
+            });
+        },
+
+        "Should Not enrich route with config if routeConfig does NOT match": function () {
+            var that = this;
+
+            Y.Array.each(this.app.get('routes'), function (value) {
+                Y.Assert.areNotSame(
+                    value.config,
+                    that.app.get('routeConfig').doesNotMatchAnything,
+                    'routeConfig doesNotMatchAnything should Not enrich loginForm route'
+                );
+            });
+        },
+    });
 
     Y.Test.Runner.setName("eZ Platform UI App tests");
     Y.Test.Runner.add(appTest);
@@ -1574,4 +1625,5 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(loginTest);
     Y.Test.Runner.add(logoutTest);
     Y.Test.Runner.add(checkUserTest);
+    Y.Test.Runner.add(configRouteTest);
 }, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice', 'ez-viewservicebaseplugin']});
