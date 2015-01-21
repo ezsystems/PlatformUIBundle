@@ -482,6 +482,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     request: req,
                     response: res,
                     plugins: Y.eZ.PluginRegistry.getPlugins(ServiceContructor.NAME),
+                    config: route.config,
                 });
 
                 viewInfo.service = route.serviceInstance;

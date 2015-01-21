@@ -193,7 +193,18 @@ YUI.add('ez-viewservice', function (Y) {
              */
             app: {
                 writeOnce: "initOnly"
-            }
+            },
+
+            /**
+             * The configuration coming from the matched route in the application
+             *
+             * @attribute config
+             * @type mixed
+             * @initOnly
+             */
+            config: {
+                writeOnce: "initOnly"
+            },
         }
     });
 });
