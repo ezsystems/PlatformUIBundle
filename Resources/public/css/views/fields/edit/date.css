@@ -7,3 +7,12 @@
     display: inline-block;
     vertical-align: bottom;
 }
+
+.ez-yui-calendar-container {
+    display: none;
+}
+
+.is-calendar-visible .ez-yui-calendar-container {
+    display: block;
+}
+
