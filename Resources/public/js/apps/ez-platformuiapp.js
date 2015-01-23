@@ -328,55 +328,85 @@ YUI.add('ez-platformuiapp', function (Y) {
          * @param {Function} next
          */
         handleSideViews: function (req, res, next) {
-            var container = this.get('container'),
-                routeSideViews = req.route.sideViews,
+            var routeSideViews = req.route.sideViews,
                 tasks = new Y.Parallel();
 
             Y.Object.each(this.sideViews, function (viewInfo, key) {
-                var cl = viewInfo.hideClass,
-                    service, view;
-
                 if ( routeSideViews && routeSideViews[key] ) {
-                    if ( !viewInfo.serviceInstance ) {
-                        viewInfo.serviceInstance = new viewInfo.service({
-                            app: this,
-                            capi: this.get('capi'),
-                            plugins: Y.eZ.PluginRegistry.getPlugins(viewInfo.service.NAME),
-                        });
-                    }
-                    service = viewInfo.serviceInstance;
-                    service.setAttrs({
-                        request: req,
-                        response: res,
-                    });
-                    if ( !viewInfo.instance ) {
-                        viewInfo.instance = new viewInfo.type();
-                    }
-                    view = viewInfo.instance;
-                    view.addTarget(service);
-                    service.addTarget(this);
-                    service.load(tasks.add(function () {
-                        view.setAttrs(service.getViewParameters());
-                        view.render();
-                        container.one(viewInfo.container).append(
-                            view.get('container')
-                        );
-                        view.set('active', true);
-                        container.removeClass(cl);
-                    }));
+                    this._showSideView(viewInfo, req, res, tasks.add());
                 } else {
-                    container.addClass(cl);
-                    if ( viewInfo.instance ) {
-                        view = viewInfo.instance;
-                        view.set('active', false);
-                        view.remove();
-                        viewInfo.serviceInstance.removeTarget(this);
-                    }
+                    this._hideSideView(viewInfo);
                 }
             }, this);
             tasks.done(function () {
                 next();
             });
+        },
+
+        /**
+         * Shows the side view
+         *
+         * @method _showSideView
+         * @param {Object} viewInfo the info hash of the side view to show
+         * @param {Object} req the request
+         * @param {Object} res the response
+         * @param {Function} next a callback function to call when the view is
+         * shown
+         * @protected
+         */
+        _showSideView: function (viewInfo, req, res, next) {
+            var view, service,
+                container = this.get('container');
+
+            if ( !viewInfo.serviceInstance ) {
+                viewInfo.serviceInstance = new viewInfo.service({
+                    app: this,
+                    capi: this.get('capi'),
+                    plugins: Y.eZ.PluginRegistry.getPlugins(viewInfo.service.NAME),
+                });
+            }
+            service = viewInfo.serviceInstance;
+            service.setAttrs({
+                request: req,
+                response: res,
+            });
+            if ( !viewInfo.instance ) {
+                viewInfo.instance = new viewInfo.type();
+            }
+            view = viewInfo.instance;
+            view.addTarget(service);
+            service.addTarget(this);
+            service.load(function () {
+                view.setAttrs(service.getViewParameters());
+                view.render();
+                container.one(viewInfo.container).append(
+                    view.get('container')
+                );
+                view.set('active', true);
+                container.removeClass(viewInfo.hideClass);
+                if ( next ) {
+                    next();
+                }
+            });
+        },
+
+        /**
+         * Hides the side view
+         *
+         * @method _hideSideView
+         * @param {Object} viewInfo the info hash of the side view to hide
+         * @protected
+         */
+        _hideSideView: function (viewInfo) {
+            var view;
+
+            this.get('container').addClass(viewInfo.hideClass);
+            if ( viewInfo.instance ) {
+                view = viewInfo.instance;
+                view.set('active', false);
+                view.remove();
+                viewInfo.serviceInstance.removeTarget(this);
+            }
         },
 
         /**
