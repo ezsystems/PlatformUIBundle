@@ -1023,7 +1023,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             );
         },
 
-        "Should remove the side view instance": function () {
+        "Should hide the side view instance": function () {
             var req = {
                     route: {
                         sideViews: {
@@ -1050,7 +1050,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             });
 
             this.app.sideViews.sideView1.instance.fire('testEvent');
-            Y.Assert.isTrue(removed, "The side view should have been removed");
+            Y.Assert.isFalse(removed, "The side view should not be removed");
             Y.Assert.isTrue(nextCalled, "The next callback should have been called");
         },
     });

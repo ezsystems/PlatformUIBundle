@@ -404,7 +404,6 @@ YUI.add('ez-platformuiapp', function (Y) {
             if ( viewInfo.instance ) {
                 view = viewInfo.instance;
                 view.set('active', false);
-                view.remove();
                 viewInfo.serviceInstance.removeTarget(this);
             }
         },
