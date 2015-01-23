@@ -333,7 +333,7 @@ YUI.add('ez-platformuiapp', function (Y) {
 
             Y.Object.each(this.sideViews, function (viewInfo, key) {
                 if ( routeSideViews && routeSideViews[key] ) {
-                    this._showSideView(viewInfo, req, res, tasks.add());
+                    this._showSideView(viewInfo, req, res, undefined, tasks.add());
                 } else {
                     this._hideSideView(viewInfo);
                 }
@@ -341,6 +341,38 @@ YUI.add('ez-platformuiapp', function (Y) {
             tasks.done(function () {
                 next();
             });
+        },
+
+        /**
+         * Shows a side view based on its identifier in the sideViews hash.
+         * This method also allows to pass a configuration hash that will stored
+         * in the `config` attribute of the view service.
+         *
+         * @method showSideView
+         * @param {String} sideViewKey
+         * @param {Mixed} config
+         * @param {Function} next
+         */
+        showSideView: function (sideViewKey, config, next) {
+            var activeViewService = this.get('activeViewService');
+
+            this._showSideView(
+                this.sideViews[sideViewKey],
+                activeViewService ? activeViewService.get('request') : null,
+                activeViewService ? activeViewService.get('response') : null,
+                config,
+                next
+             );
+        },
+
+        /**
+         * Hides a side view based on its identifier in the sideViews hash
+         *
+         * @method hideSideView
+         * @param {String} sideViewKey
+         */
+        hideSideView: function (sideViewKey) {
+            this._hideSideView(this.sideViews[sideViewKey]);
         },
 
         /**
@@ -354,7 +386,7 @@ YUI.add('ez-platformuiapp', function (Y) {
          * shown
          * @protected
          */
-        _showSideView: function (viewInfo, req, res, next) {
+        _showSideView: function (viewInfo, req, res, config, next) {
             var view, service,
                 container = this.get('container');
 
@@ -367,6 +399,7 @@ YUI.add('ez-platformuiapp', function (Y) {
             }
             service = viewInfo.serviceInstance;
             service.setAttrs({
+                config: config,
                 request: req,
                 response: res,
             });
