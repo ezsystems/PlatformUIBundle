@@ -22,10 +22,6 @@
         <source>bundles</source>
         <target>Bundles</target>
       </trans-unit>
-      <trans-unit id="1658fff8444e0e1f33fea5fbfc69cc29" resname="legacy.extensions">
-        <source>legacy.extensions</source>
-        <target>Legacy extensions</target>
-      </trans-unit>
       <trans-unit id="f9fa10ba956cacf91d7878861139efb9" resname="software">
         <source>software</source>
         <target>Software</target>
