@@ -74,7 +74,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                 service: Y.eZ.NavigationHubViewService,
                 container: '.ez-navigation-container',
                 hideClass: 'is-navigation-hidden'
-            }
+            },
+            universalDiscovery: {
+                type: Y.eZ.UniversalDiscoveryView,
+                service: Y.eZ.UniversalDiscoveryViewService,
+                container: '.ez-universaldiscovery-container',
+                hideClass: 'is-universaldiscovery-hidden',
+            },
         },
 
         views: {

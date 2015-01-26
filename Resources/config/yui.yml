@@ -24,11 +24,14 @@ system:
                         - 'ez-navigationhubview'
                         - 'ez-discoverybarviewservice'
                         - 'ez-discoverybarview'
+                        - 'ez-universaldiscoveryviewservice'
+                        - 'ez-universaldiscoveryview'
                         - 'ez-errorview'
                         - 'ez-usermodel'
                         - 'ez-pluginregistry'
                         - 'ez-registerurlhelpersplugin'
                         - 'ez-domstateplugin'
+                        - 'ez-universaldiscoveryplugin'
                     path: %ez_platformui.public_dir%/js/apps/ez-platformuiapp.js
                 ez-viewservice:
                     requires: ['base', 'parallel']
@@ -484,6 +487,9 @@ system:
                 ez-pluginregistry:
                     requires: ['array-extras']
                     path: %ez_platformui.public_dir%/js/services/ez-pluginregistry.js
+                ez-universaldiscoveryplugin:
+                    requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-universaldiscoveryplugin.js
                 ez-domstateplugin:
                     requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-domstateplugin.js
