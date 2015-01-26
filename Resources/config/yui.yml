@@ -69,6 +69,9 @@ system:
                 ez-discoverybarviewservice:
                     requires: ['ez-viewservice', 'ez-contenttreeplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js
+                ez-universaldiscoveryviewservice:
+                    requires: ['ez-viewservice']
+                    path: %ez_platformui.public_dir%/js/views/services/ez-universaldiscoveryviewservice.js
                 ez-serversideviewservice:
                     requires: ['io-base', 'io-form', 'ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-serversideviewservice.js
@@ -96,6 +99,12 @@ system:
                 locationviewview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/locationview.hbt
+                ez-universaldiscoveryview:
+                    requires: ['ez-templatebasedview', 'universaldiscoveryview-ez-template', 'event-tap']
+                    path: %ez_platformui.public_dir%/js/views/ez-universaldiscoveryview.js
+                universaldiscoveryview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/universaldiscovery.hbt
                 ez-navigationhubview:
                     requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside', 'navigationhubview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-navigationhubview.js
