@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationviewviewservice-tests', function (Y) {
-    var functionalTest, unitTest, eventTest;
+    var functionalTest, unitTest, eventTest, getViewParametersTest;
 
     functionalTest = new Y.Test.Case({
         name: "eZ Location View View Service 'functional' tests",
@@ -432,8 +432,55 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         },
     });
 
+    getViewParametersTest = new Y.Test.Case({
+        name: "eZ Location View View Service getViewParameters tests",
+
+        setUp: function () {
+            this.app = new Y.Mock();
+            this.capi = {};
+            this.content = {};
+            this.contentType = {};
+            this.location = {};
+            this.path = [];
+            this.config = {};
+            this.service = new Y.eZ.LocationViewViewService({
+                app: this.app,
+                capi: this.capi,
+                content: this.content,
+                contentType: this.contentType,
+                location: this.location ,
+                path: this.path,
+                config: this.config,
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+            delete this.app;
+            delete this.content;
+            delete this.contentType;
+            delete this.location;
+            delete this.path;
+            delete this.config;
+        },
+
+        "Should get the view parameters": function () {
+            var params = this.service.getViewParameters();
+
+            Y.Assert.areSame(this.content, params.content, 'Service should get the content');
+            Y.Assert.areSame(this.contentType, params.contentType, 'Service should get the contentType');
+            Y.Assert.areSame(this.location, params.location, 'Service should get the location');
+            Y.Assert.areSame(this.path, params.path, 'Service should get the path');
+            Y.Assert.areSame(this.config, params.config, 'Service should get the config');
+
+            Y.Assert.areSame(this.content, this.service.get('content'), 'Service should get the content');
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location View View Service tests");
     Y.Test.Runner.add(unitTest);
     Y.Test.Runner.add(functionalTest);
     Y.Test.Runner.add(eventTest);
+    Y.Test.Runner.add(getViewParametersTest);
 }, '', {requires: ['test', 'ez-locationviewviewservice']});
