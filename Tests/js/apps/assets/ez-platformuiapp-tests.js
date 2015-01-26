@@ -4,8 +4,7 @@
  */
 YUI.add('ez-platformuiapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest, sideViewServicesTest,
-        adminExtTest, loginTest, logoutTest, checkUserTest,
-        handleMainViewTest, tplTest, titleTest, configRouteTest;
+        adminExtTest, loginTest, logoutTest, checkUserTest, handleMainViewTest, titleTest, configRouteTest;
 
     appTest = new Y.Test.Case({
         name: "eZ Platform UI App tests",
@@ -369,6 +368,78 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     route: {
                         view: 'myView',
                         service: TestService,
+                    },
+                },
+                res = {};
+
+            this.app.views.myView = {
+                type: Y.Base.create('myView', Y.View, [], {
+                    render: function () {
+                        rendered = true;
+                        Y.Assert.areEqual(
+                            this.get('myVar'), viewParameters.myVar,
+                            "The view attributes should be updated with the result of the loader"
+                        );
+                    }
+                })
+            };
+
+            this.app.handleMainView(req, res);
+
+            Y.Assert.isTrue(rendered, "The view should have been rendered");
+            Y.Assert.isTrue(serviceInit, "The service should have been created");
+            Y.Assert.isTrue(serviceLoad, "The service load method should been called");
+        },
+
+        "Should show the view after using the view service with config": function () {
+            var rendered = false,
+                serviceInit = false, serviceLoad = false,
+                viewParameters = {'myVar': 1},
+                test = this,
+                TestService = Y.Base.create('testService', Y.eZ.ViewService, [], {
+                    initializer: function () {
+                        Y.Assert.areSame(
+                            test.capiMock, this.get('capi'),
+                            "The CAPI should be passed to the service"
+                        );
+                        Y.Assert.areSame(
+                            test.app, this.get('app'),
+                            "The app should be passed to the service"
+                        );
+                        Y.Assert.areSame(
+                            req, this.get('request'),
+                            "The request object should be passed to the service"
+                        );
+                        Y.Assert.areSame(
+                            res, this.get('response'),
+                            "The response object should be passed to the service"
+                        );
+                        Y.Assert.areSame(
+                            req.route.config,
+                            this.get('config'),
+                            'The view service should have the config'
+                        );
+                        serviceInit = true;
+                    },
+
+                    load: function (callback) {
+                        serviceLoad = true;
+                        callback(this);
+                    },
+
+                    getViewParameters: function () {
+                        return viewParameters;
+                    }
+                }),
+                req = {
+                    route: {
+                        view: 'myView',
+                        service: TestService,
+                        config: {
+                            "fieldsViews": {
+                                "ezthing": 'Something'
+                            }
+                        }
                     },
                 },
                 res = {};
@@ -1616,7 +1687,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.setName("eZ Platform UI App tests");
     Y.Test.Runner.add(appTest);
     Y.Test.Runner.add(titleTest);
-    Y.Test.Runner.add(tplTest);
     Y.Test.Runner.add(handleMainViewTest);
     Y.Test.Runner.add(sideViewsTest);
     Y.Test.Runner.add(sideViewServicesTest);
