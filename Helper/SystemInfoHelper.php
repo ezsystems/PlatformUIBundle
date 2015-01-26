@@ -19,12 +19,7 @@ use eZPublishSDK;
 class SystemInfoHelper implements SystemInfoHelperInterface
 {
     /**
-     * @var \eZ\Publish\Core\MVC\Legacy\Kernel
-     */
-    private $legacyKernel;
-
-    /**
-     * An array containing the active bundles (keys) and the corresponding 
+     * An array containing the active bundles (keys) and the corresponding
      * namespace.
      *
      * @var array
@@ -32,16 +27,15 @@ class SystemInfoHelper implements SystemInfoHelperInterface
     private $bundles;
 
     /**
-     * The database connection, only used to retrieve some information on the 
+     * The database connection, only used to retrieve some information on the
      * database itself.
      *
      * @var \Doctrine\DBAL\Connection
      */
     private $connection;
 
-    public function __construct( \Closure $legacyKernelClosure, Connection $db, array $bundles )
+    public function __construct( Connection $db, array $bundles )
     {
-        $this->legacyKernel = $legacyKernelClosure();
         $this->bundles = $bundles;
         $this->connection = $db;
     }
@@ -95,18 +89,11 @@ class SystemInfoHelper implements SystemInfoHelperInterface
      */
     public function getEzPlatformInfo()
     {
-        $info = $this->legacyKernel->runCallback(
-            function ()
-            {
-                return array(
-                    'version' => eZPublishSDK::version(),
-                    'extensions' => eZExtension::activeExtensions(),
-                );
-            }
-        );
-        $info['symfony'] = Kernel::VERSION;
-        sort( $info['extensions'] );
-        $info['bundles'] = $this->bundles;
+        $info = [
+            'version' => 'dev',
+            'symfony' => Kernel::VERSION,
+            'bundles' => $this->bundles
+        ];
         ksort( $info['bundles'], SORT_FLAG_CASE | SORT_STRING );
         return $info;
     }
