@@ -38,11 +38,16 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
             this.content = this._getContentMock();
             this.contentType = this._getContentTypeMock();
-
+            this.config = {
+                fieldViews: {
+                    something: 'hello'
+                }
+            };
             this.view = new Y.eZ.RawContentView({
                 container: '.container',
                 content: this.content,
-                contentType: this.contentType
+                contentType: this.contentType,
+                config: this.config
             });
         },
 
@@ -239,11 +244,18 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
             this.content = this._getContentMock();
             this.contentType = this._getContentTypeMock();
+            that = this;
 
+            this.config = {
+                fieldViews: {
+                    something: 'hello'
+                }
+            };
             this.view = new Y.eZ.RawContentView({
                 container: '.container',
                 content: this.content,
-                contentType: this.contentType
+                contentType: this.contentType,
+                config: this.config
             });
             this.eventFacade = {Something: 'something'};
             this.activeChangeCalled = 0;
@@ -259,9 +271,14 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                         },
                         initializer: function () {
                             this.after('activeChange', function (e) {
+                                that.config[def.fieldType] = this.get('config');
                                 that.activeChangeCalled++;
                                 that.activeChangeNewVal = e.newVal;
                             });
+                        }
+                    },{
+                        ATTRS : {
+                            config: {},
                         }
                     })
                 );
@@ -302,13 +319,47 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             return _getContentTypeMock(this.fieldDefinitions, this.fieldGroups);
         },
 
+        "Should give the config to the fieldView": function () {
+            var that = this;
+
+            this.view = new Y.eZ.RawContentView({
+                container: '.container',
+                content: this.content,
+                contentType: this.contentType,
+                config: {
+                    fieldViews: {
+                        something: 'hello'
+                    }
+                },
+            });
+
+            this.view.set('active', true);
+
+            Y.Array.each(this.fieldDefinitions, function (def) {
+                if (that.view.get('config').fieldViews[def.fieldType]){
+                    Y.Assert.areSame(
+                        that.config[def.fieldType],
+                        that.view.get('config').fieldViews[def.fieldType],
+                        "The config should be passed to the fieldView if fieldType match"
+                    );
+                } else {
+                    Y.Assert.isUndefined(that.config[def.fieldType], 'The fieldView should NOT have config if fieldType do Not match');
+                }
+            });
+        },
+
         "Should catch the fieldView's events": function () {
             var eventCount = 0, that = this;
 
             this.view = new Y.eZ.RawContentView({
                 container: '.container',
                 content: this.content,
-                contentType: this.contentType
+                contentType: this.contentType,
+                config: {
+                    fieldViews: {
+                        something: 'hello'
+                    }
+                },
             });
             this.view.on('*:fireSomething', function(e) {
                 eventCount++;
@@ -333,7 +384,12 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             this.view = new Y.eZ.RawContentView({
                 container: '.container',
                 content: this.content,
-                contentType: this.contentType
+                contentType: this.contentType,
+                config: {
+                    fieldViews: {
+                        ezthing: 'hello'
+                    }
+                },
             });
 
             this.view.set('active', true);
@@ -391,7 +447,12 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
             this.view = new Y.eZ.RawContentView({
                 content: content,
-                contentType: _getContentTypeMock(this.fieldDefinitions, this.fieldGroups)
+                contentType: _getContentTypeMock(this.fieldDefinitions, this.fieldGroups),
+                config: {
+                    fieldViews: {
+                        ezthing: 'hello'
+                    }
+                },
             });
             this.view.destroy();
 

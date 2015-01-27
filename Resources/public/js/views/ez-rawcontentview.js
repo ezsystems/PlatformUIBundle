@@ -34,10 +34,7 @@ YUI.add('ez-rawcontentview', function (Y) {
         },
 
         initializer: function () {
-            this.after('contentTypeChange', this._setFieldViews);
-            if ( this.get('contentType') ) {
-                this._setFieldViews();
-            }
+            this._setFieldViews();
             this.after('activeChange', function (e) {
                 Y.Array.each(this._fieldViews, function (v) {
                     v.set('active', e.newVal);
@@ -93,15 +90,21 @@ YUI.add('ez-rawcontentview', function (Y) {
         _setFieldViews: function () {
             var definitions = this.get('contentType').get('fieldDefinitions'),
                 content = this.get('content'),
-                views = [];
+                views = [],
+                config = this.get('config');
 
             Y.Object.each(definitions, function (def) {
-                var View, fieldView;
+                var View, fieldView, fieldConfig;
+
+                if (config && config.fieldViews && config.fieldViews[def.fieldType]) {
+                    fieldConfig = config.fieldViews[def.fieldType];
+                }
 
                 View = Y.eZ.FieldView.getFieldView(def.fieldType);
                 fieldView = new View({
                     fieldDefinition: def,
-                    field: content.getField(def.identifier)
+                    field: content.getField(def.identifier),
+                    config: fieldConfig,
                 });
                 fieldView.addTarget(this);
                 views.push(
@@ -167,16 +170,33 @@ YUI.add('ez-rawcontentview', function (Y) {
              *
              * @attribute content
              * @type Y.eZ.Content
+             * @writeOnce
              */
-            content: {},
+            content: {
+                writeOnce: "initOnly",
+            },
 
             /**
              * The content type of the content at the current location
              *
              * @attribute contentType
              * @type Y.eZ.ContentType
+             * @writeOnce
              */
-            contentType: {}
+            contentType: {
+                writeOnce: "initOnly",
+            },
+
+            /**
+             * The config at the current location
+             *
+             * @attribute config
+             * @type Mixed
+             * @writeOnce
+             */
+            config: {
+                writeOnce: "initOnly",
+            }
         }
     });
 });

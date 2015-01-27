@@ -152,22 +152,21 @@ YUI.add('ez-locationviewview', function (Y) {
              *
              * @attribute location
              * @type Y.eZ.Location
+             * @writeOnce
              */
-            location: {},
+            location: {
+                writeOnce: "initOnly",
+            },
 
             /**
              * The content associated the current location
              *
              * @attribute content
              * @type Y.eZ.Content
+             * @writeOnce
              */
             content: {
-                lazyAdd: false,
-                setter: function (val, name) {
-                    this.get('actionBar').set('content', val);
-                    this.get('rawContentView').set('content', val);
-                    return val;
-                }
+                writeOnce: "initOnly",
             },
 
             /**
@@ -175,13 +174,21 @@ YUI.add('ez-locationviewview', function (Y) {
              *
              * @attribute contentType
              * @type Y.eZ.ContentType
+             * @writeOnce
              */
             contentType: {
-                lazyAdd: false,
-                setter: function (val, name) {
-                    this.get('rawContentView').set('contentType', val);
-                    return val;
-                }
+                writeOnce: "initOnly",
+            },
+
+            /**
+             * The config at the current location
+             *
+             * @attribute config
+             * @type Mixed
+             * @writeOnce
+             */
+            config: {
+                writeOnce: "initOnly",
             },
 
             /**
@@ -191,8 +198,11 @@ YUI.add('ez-locationviewview', function (Y) {
              *
              * @attribute path
              * @type Array
+             * @writeOnce
              */
-            path: {},
+            path: {
+                writeOnce: "initOnly",
+            },
 
             /**
              * The action bar instance, by default an instance {{#crossLink
@@ -203,7 +213,9 @@ YUI.add('ez-locationviewview', function (Y) {
              */
             actionBar: {
                 valueFn: function () {
-                    return new Y.eZ.ActionBarView();
+                    return new Y.eZ.ActionBarView({
+                        content: this.get('content'),
+                    });
                 }
             },
 
@@ -215,7 +227,13 @@ YUI.add('ez-locationviewview', function (Y) {
              */
             rawContentView: {
                 valueFn: function () {
-                    return new Y.eZ.RawContentView();
+                    return new Y.eZ.RawContentView({
+                            content: this.get('content'),
+                            contentType: this.get('contentType'),
+                            config: this.get('config')
+                        }
+
+                    );
                 }
             }
         }
