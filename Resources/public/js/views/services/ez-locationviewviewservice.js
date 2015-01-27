@@ -197,6 +197,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 contentType: this.get('contentType'),
                 location: this.get('location'),
                 path: this.get('path'),
+                config: this.get('config'),
             };
         },
 
