@@ -4,7 +4,10 @@
  */
 YUI.add('ez-platformuiapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest, sideViewServicesTest,
-        adminExtTest, loginTest, logoutTest, checkUserTest, handleMainViewTest, titleTest, configRouteTest;
+        adminExtTest, loginTest, logoutTest, checkUserTest,
+        showSideViewTest, hideSideViewTest,
+        handleMainViewTest, titleTest, configRouteTest,
+        Assert = Y.Assert;
 
     appTest = new Y.Test.Case({
         name: "eZ Platform UI App tests",
@@ -624,6 +627,118 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
+    showSideViewTest = new Y.Test.Case({
+        name: "showSideView test",
+
+        setUp: function () {
+            this.app = new Y.eZ.PlatformUIApp({
+                container: '.app-sideviews',
+                viewContainer: '.view-container'
+            });
+
+            this.app.sideViews = {
+                sideView1: {
+                    hideClass: 'sideview1-hidden',
+                    type: Y.View,
+                    service: Y.eZ.ViewService,
+                    container: '.sideview1'
+                },
+            };
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
+        "Should show the side view": function () {
+            var config = {some: "config"};
+
+            this.app.showSideView("sideView1", config);
+            Assert.isFalse(
+                this.app.get('container').hasClass(this.app.sideViews.sideView1.hideClass),
+                "The side view should not be hidden"
+            );
+            Assert.areSame(
+                config.some, this.app.sideViews.sideView1.serviceInstance.get('config').some,
+                "The configuration should be passed to the view service"
+            );
+            Assert.isNull(
+                this.app.sideViews.sideView1.serviceInstance.get('request'),
+                "The request should be null"
+            );
+            Assert.isNull(
+                this.app.sideViews.sideView1.serviceInstance.get('response'),
+                "The response should be null"
+            );
+        },
+
+        "Should show the side view (activeViewService is set)": function () {
+            var config = {some: "config"},
+                response = {},
+                request = {},
+                viewService = new Y.eZ.ViewService({
+                    response: response,
+                    request: request,
+                });
+
+            this.app._set('activeViewService', viewService);
+            this.app.showSideView("sideView1", config);
+            Assert.isFalse(
+                this.app.get('container').hasClass(this.app.sideViews.sideView1.hideClass),
+                "The side view should not be hidden"
+            );
+            Assert.areSame(
+                config.some, this.app.sideViews.sideView1.serviceInstance.get('config').some,
+                "The configuration should be passed to the view service"
+            );
+            Assert.areSame(
+                request,
+                this.app.sideViews.sideView1.serviceInstance.get('request'),
+                "The request should be provided by the active view service"
+            );
+            Assert.areSame(
+                response,
+                this.app.sideViews.sideView1.serviceInstance.get('response'),
+                "The response should be provided by the active view service"
+            );
+        },
+    });
+
+    hideSideViewTest = new Y.Test.Case({
+        name: "hideSideView test",
+
+        setUp: function () {
+            this.app = new Y.eZ.PlatformUIApp({
+                container: '.app-sideviews',
+                viewContainer: '.view-container'
+            });
+
+            this.app.sideViews = {
+                sideView1: {
+                    hideClass: 'sideview1-hidden',
+                    type: Y.View,
+                    service: Y.eZ.ViewService,
+                    container: '.sideview1'
+                },
+            };
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
+        "Should hide the side view": function () {
+            this.app.showSideView("sideView1");
+            this.app.hideSideView("sideView1");
+            Assert.isTrue(
+                this.app.get('container').hasClass(this.app.sideViews.sideView1.hideClass),
+                "The side view should be hidden"
+            );
+        },
+    });
+
     sideViewServicesTest = new Y.Test.Case({
         name: "Side view service test",
 
@@ -1023,7 +1138,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             );
         },
 
-        "Should remove the side view instance": function () {
+        "Should hide the side view instance": function () {
             var req = {
                     route: {
                         sideViews: {
@@ -1050,7 +1165,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             });
 
             this.app.sideViews.sideView1.instance.fire('testEvent');
-            Y.Assert.isTrue(removed, "The side view should have been removed");
+            Y.Assert.isFalse(removed, "The side view should not be removed");
             Y.Assert.isTrue(nextCalled, "The next callback should have been called");
         },
     });
@@ -1689,6 +1804,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(titleTest);
     Y.Test.Runner.add(handleMainViewTest);
     Y.Test.Runner.add(sideViewsTest);
+    Y.Test.Runner.add(showSideViewTest);
+    Y.Test.Runner.add(hideSideViewTest);
     Y.Test.Runner.add(sideViewServicesTest);
     Y.Test.Runner.add(reverseRoutingTest);
     Y.Test.Runner.add(adminExtTest);

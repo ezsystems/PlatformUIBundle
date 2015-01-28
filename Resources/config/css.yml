@@ -10,6 +10,7 @@ system:
             # layout stylesheets
                 - '@eZPlatformUIBundle/Resources/public/css/layout.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/navigationhub.css'
+                - '@eZPlatformUIBundle/Resources/public/css/views/universaldiscovery.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/loginform.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/contentedit.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/locationview.css'
@@ -64,6 +65,7 @@ system:
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/error.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/loginform.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/bar.css'
+                - '@eZPlatformUIBundle/Resources/public/css/theme/views/universaldiscovery.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/discoverybar.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/contenttypeselector.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/actions/tree.css'
