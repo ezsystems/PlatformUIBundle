@@ -16,6 +16,7 @@ YUI.add('ez-image-editview', function (Y) {
         IS_LOADING = 'is-image-loading',
         IS_BEING_UPDATED = 'is-image-being-updated',
         HAS_LOADING_ERROR = 'has-loading-error',
+        NOT_IMAGE_TPL = "The file '{name}' was refused because it seems to not be an image. Please choose an image file.",
         L = Y.Lang,
         win = Y.config.win,
         events = {
@@ -131,6 +132,41 @@ YUI.add('ez-image-editview', function (Y) {
         },
 
         /**
+         * Checks whether the File in parameter is valid for the field. It
+         * checks the size of the selected file and its mime type.
+         *
+         * @method _valid
+         * @param {File} file the File object to be stored in the field
+         * @protected
+         * @return Boolean
+         */
+        _valid: function (file) {
+            if ( this._validSize(file) ) {
+                return this._validType(file);
+            }
+            return false;
+        },
+
+        /**
+         * Checks that the mime type of the user selected file starts with
+         * "image/". In case of error, a warning message is set in the `warning`
+         * attribute.
+         *
+         * @method _validType
+         * @param {File} file the File object to be stored in the field
+         * @protected
+         * @return Boolean
+         */
+        _validType: function (file) {
+            var isImage = (file.type.indexOf('image/') === 0);
+
+            if ( !isImage ) {
+                this._set('warning', L.sub(NOT_IMAGE_TPL, {name: file.name}));
+            }
+            return isImage;
+        },
+
+        /**
          * Returns a "human" readable version of the max allowed file size. It
          * is overidden the max size is in byte in Image fields.
          *
@@ -143,23 +179,19 @@ YUI.add('ez-image-editview', function (Y) {
         },
 
         /**
-         * Checks whether the size is valid according to the field definition
-         * configuration. The default implementation can not be used because for
-         * the image, the maximum size is in bytes while for binary file for
-         * instance it is in megabyte.
+         * Returns the maximum allowed size in bytes or 0 if no limit is set.
+         * The default implementation is overriden because in the case of the
+         * Image field, the field definition directly contains the maximum size
+         * in bytes while for BinaryFile and Media, this size is in megabytes.
          *
-         * @param {Number} size
-         * @method _validSize
-         * @return {Boolean}
-         * @private
+         * @method _maxSize
+         * @protected
+         * @return Number
          */
-        _validSize: function (size) {
+        _maxSize: function () {
             var maxSize = this.get('fieldDefinition').validatorConfiguration.FileSizeValidator.maxFileSize;
 
-            if ( maxSize ) {
-                return (size < maxSize);
-            }
-            return true;
+            return maxSize ? maxSize : 0;
         },
 
         /**

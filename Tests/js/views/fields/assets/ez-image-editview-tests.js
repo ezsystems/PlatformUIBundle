@@ -5,7 +5,7 @@
 YUI.add('ez-image-editview-tests', function (Y) {
     var viewTest, registerTest, imageSetterTest, alternativeTextTest,
         imageVariationTest, buttonsTest, warningTest, renderingTest,
-        validateTest, pickImageTest,
+        validateTest, pickImageTest, dndTest,
         getFieldNotUpdatedTest, getFieldUpdatedEmptyTest,
         getFieldUpdatedTest, getFieldUpdatedNoDataTest,
         Assert = Y.Assert, Mock = Y.Mock;
@@ -154,6 +154,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         "Should retrieve the alternative text in the field value": function () {
@@ -231,6 +232,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         "Should fire the loadImageVariation event": function () {
@@ -355,6 +357,36 @@ YUI.add('ez-image-editview-tests', function (Y) {
             name: "eZ Image View pick image test",
             ViewConstructor: Y.eZ.ImageEditView,
             multiplicator: 1, // in image, the max size is in bytes
+
+            "Should refuse a non image file": function () {
+                var fileReader = this.view.get('fileReader'),
+                    eventFacade = new Y.DOMEventFacade({
+                        type: 'change'
+                    });
+
+                eventFacade.target = new Mock();
+                Mock.expect(fileReader, {
+                    method: 'readAsDataURL',
+                    callCount: 0,
+                });
+                Mock.expect(eventFacade.target, {
+                    method: 'getDOMNode',
+                    returns: {files: [{size: (this.maxSize - 1) * this.multiplicator, name: "file.ogv", type: "video/ogg"}]},
+                });
+                Mock.expect(eventFacade.target, {
+                    method: 'set',
+                    args: ['value', ''],
+                });
+
+                this.view.render();
+                this.view._updateFile(eventFacade);
+                Assert.isString(
+                    this.view.get('warning'),
+                    "A warning should have been generated"
+                );
+                Mock.verify(eventFacade);
+                Mock.verify(fileReader);
+            },
         })
     );
 
@@ -602,6 +634,19 @@ YUI.add('ez-image-editview-tests', function (Y) {
         })
     );
 
+    dndTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.BinaryBaseDragAndDropTest, {
+            name: "eZ Image edit view drag and drop tests",
+            multiplicator: 1,
+            ViewConstructor: Y.eZ.ImageEditView,
+            "Should refuse a non image dropped file": function () {
+                this._dropEventWarningTest(
+                    [{size: (this.maxSize - 1) * this.multiplicator, name: "wrong.ogg", type: "audio/ogg"}]
+                );
+            },
+        })
+    );
+
     Y.Test.Runner.setName("eZ Image Edit View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(imageSetterTest);
@@ -612,6 +657,7 @@ YUI.add('ez-image-editview-tests', function (Y) {
     Y.Test.Runner.add(validateTest);
     Y.Test.Runner.add(pickImageTest);
     Y.Test.Runner.add(renderingTest);
+    Y.Test.Runner.add(dndTest);
     Y.Test.Runner.add(getFieldNotUpdatedTest);
     Y.Test.Runner.add(getFieldUpdatedEmptyTest);
     Y.Test.Runner.add(getFieldUpdatedTest);

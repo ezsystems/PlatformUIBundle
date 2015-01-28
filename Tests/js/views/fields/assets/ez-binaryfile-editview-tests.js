@@ -5,7 +5,7 @@
 YUI.add('ez-binaryfile-editview-tests', function (Y) {
     var viewTest, registerTest, binaryfileSetterTest,
         buttonsTest, warningTest, renderingTest,
-        validateTest, pickBinaryFileTest,
+        validateTest, pickBinaryFileTest, dndTest,
         getFieldNotUpdatedTest, getFieldUpdatedEmptyTest,
         getFieldUpdatedTest, getFieldUpdatedNoDataTest,
         Assert = Y.Assert;
@@ -368,6 +368,13 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
         })
     );
 
+    dndTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.BinaryBaseDragAndDropTest, {
+            name: "eZ BinaryFile edit view drag and drop tests",
+            ViewConstructor: Y.eZ.BinaryFileEditView,
+        })
+    );
+
     Y.Test.Runner.setName("eZ BinaryFile Edit View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(binaryfileSetterTest);
@@ -376,6 +383,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
     Y.Test.Runner.add(validateTest);
     Y.Test.Runner.add(pickBinaryFileTest);
     Y.Test.Runner.add(renderingTest);
+    Y.Test.Runner.add(dndTest);
     Y.Test.Runner.add(getFieldNotUpdatedTest);
     Y.Test.Runner.add(getFieldUpdatedEmptyTest);
     Y.Test.Runner.add(getFieldUpdatedTest);

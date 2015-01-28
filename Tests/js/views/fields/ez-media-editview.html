@@ -8,6 +8,7 @@
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="mediaeditview-ez-template">
+<div class="ez-binarybase-drop-area">
     <div class="ez-media-input-ui">
         {{#unless isAudio}}
         <input type="number" name="width" value="{{ media.width }}">
@@ -32,6 +33,7 @@
     <button class="ez-button-upload">Add</button>
     <button class="ez-button-delete">Remove</button>
     <p class="ez-editfield-error-message"></p>
+</div>
 </script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>

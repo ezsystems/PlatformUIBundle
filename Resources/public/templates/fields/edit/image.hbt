@@ -6,10 +6,11 @@
                 {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
             </p>
             <p class="ez-editfield-error-message">&nbsp;</p>
+            <p class="ez-binarybase-help">You can drag and drop a file to add or replace the image.</p>
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area">
-        <div class="ez-editfield-input"><div class="ez-image-input-ui">
+        <div class="ez-editfield-input ez-binarybase-drop-area"><div class="ez-image-input-ui">
             <div class="ez-image-editpreview ez-binarybase-content">
                 <div class="ez-image-editpreview-image">
                     <img alt="Image preview" class="ez-image-preview" alt="Image preview">

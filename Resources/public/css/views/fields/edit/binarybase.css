@@ -35,7 +35,7 @@
 }
 
 .ez-binarybase-action .ez-button {
-    margin: 1em;
+    margin: 1em 1em 0 1em;
 }
 
 .ez-binarybase-upload-new {
@@ -61,4 +61,8 @@
 .is-field-empty .ez-binarybase-empty {
     display: block;
     margin: 0.5em 0 0 0.5em;
+}
+
+.ez-binarybase-help {
+    margin: 0;
 }
