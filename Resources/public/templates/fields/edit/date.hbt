@@ -25,7 +25,7 @@
                 <button class="ez-date-cancel-button font-icon"></button>
                 <button class="ez-date-calendar-button ez-button ez-button-calendar font-icon pure-button">Calendar</button>
                 <div class="ez-yui-calendar-container" ></div>
-            {{/if}}
+            {{/unless}}
             </div></div>
         </div>
     </div>
