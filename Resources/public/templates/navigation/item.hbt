@@ -1,0 +1,1 @@
+<a href="{{ path route.name route.params }}" class="ez-navigation-item">{{ title }}</a>

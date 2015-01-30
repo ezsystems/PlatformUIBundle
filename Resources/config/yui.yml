@@ -114,6 +114,12 @@ system:
                 navigationhubview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/navigationhub.hbt
+                ez-navigationitemview:
+                    requires: ['ez-templatebasedview', 'navigationitemview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/navigation/ez-navigationitemview.js
+                navigationitemview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/navigation/item.hbt
                 ez-discoverybarview:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview']
                     path: %ez_platformui.public_dir%/js/views/ez-discoverybarview.js
