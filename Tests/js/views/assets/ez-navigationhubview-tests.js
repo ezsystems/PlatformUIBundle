@@ -107,15 +107,6 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             });
         },
 
-        "Should show the correct navigation menu when the mouse is over a navigation zone": function () {
-            var container = this.view.get('container'),
-                optZone = container.one('.ez-optimize-zone'),
-                navigationIdentifier = optZone.getAttribute('data-navigation');
-
-            optZone.simulate('mouseover');
-            this._testShowNavigationMenu(optZone, navigationIdentifier);
-        },
-
         "Should show the correct navigation menu when tapping a navigation zone": function () {
             var container = this.view.get('container'),
                 optZone = container.one('.ez-optimize-zone'),

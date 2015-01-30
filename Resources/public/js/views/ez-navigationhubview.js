@@ -31,7 +31,6 @@ YUI.add('ez-navigationhubview', function (Y) {
     Y.eZ.NavigationHubView = Y.Base.create('navigationHubView', Y.eZ.TemplateBasedView, [], {
         events: {
             '.ez-zone': {
-                'mouseover': '_setNavigation',
                 'tap': '_setNavigation',
             },
             '.ez-sub-menu-link': {
