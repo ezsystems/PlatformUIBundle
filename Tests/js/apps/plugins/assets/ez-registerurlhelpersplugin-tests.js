@@ -75,6 +75,29 @@ YUI.add('ez-registerurlhelpersplugin-tests', function (Y) {
             );
             Y.Mock.verify(this.app);
         },
+
+        "Should accept the route params as hash": function () {
+            var name = 'testRouteName', params = {'id': 1},
+                resUri = '#/uri/1/42';
+
+            Y.Mock.expect(this.app, {
+                method: 'routeUri',
+                args: [name, Y.Mock.Value.Object],
+                run: function (routeName, p) {
+                    Assert.areSame(
+                        params, p,
+                        "The 'params' parameter of 'path' should be passed to routeUri"
+                    );
+                    return resUri;
+                }
+            });
+            Y.Assert.areEqual(
+                resUri,
+                Y.Handlebars.helpers.path(name, params, {hash: {}}),
+                "'path' should return the routeUri result"
+            );
+            Y.Mock.verify(this.app);
+        },
     });
 
     assetHelperTest = new Y.Test.Case({

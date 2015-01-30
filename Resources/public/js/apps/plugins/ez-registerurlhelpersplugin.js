@@ -32,7 +32,10 @@ YUI.add('ez-registerurlhelpersplugin', function (Y) {
         },
 
         /**
-         * Registers the `path` handlebars helper.
+         * Registers the `path` handlebars helper. The `path` helper expects the
+         * first argument to be a route name. After the route name, it expects
+         * either the route parameters as a hash or a list of named parameters
+         * to configure the route.
          *
          * @method _registerPath
          * @protected
@@ -40,8 +43,11 @@ YUI.add('ez-registerurlhelpersplugin', function (Y) {
         _registerPath: function () {
             var app = this.get('host');
 
-            Y.Handlebars.registerHelper('path', function (routeName, options) {
-                return app.routeUri(routeName, options.hash);
+            Y.Handlebars.registerHelper('path', function (routeName, routeParams, options) {
+                if ( !options ) {
+                    routeParams = routeParams.hash;
+                }
+                return app.routeUri(routeName, routeParams);
             });
         },
 
