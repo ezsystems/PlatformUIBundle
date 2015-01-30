@@ -3,7 +3,9 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-navigationhubview-tests', function (Y) {
-    var viewTest, eventTest, logOutTest;
+    var viewTest, eventTest, logOutTest,
+        navigationItemsSetter,
+        Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
         name: "eZ Navigation Hub View test",
@@ -23,6 +25,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         "Test render": function () {
@@ -44,17 +47,52 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.areEqual(
-                    1, Y.Object.keys(variables).length,
-                    "The template should receive 1 variable"
+                    2, Y.Object.keys(variables).length,
+                    "The template should receive 2 variables"
                 );
                 Y.Assert.areSame(
                     that.userJson, variables.user,
                     "The template should receive the result of toJSON on the user"
                 );
+                Y.Assert.areSame(
+                    that.view.get('zones'), variables.zones,
+                    "The template should receive the zones descriptions"
+                );
 
                 return origTpl.call(this, variables);
             };
             this.view.render();
+        },
+
+        _testRenderNavigationItems: function (zone) {
+            var item1 = new Y.View({containerTemplate: '<li />'}),
+                item2 = new Y.View({containerTemplate: '<li />'}),
+                deliverItems;
+
+            this.view.set(zone + 'NavigationItems', [item1, item2]);
+            this.view.render();
+
+            deliverItems = this.view.get('container').all('.ez-navigation-' + zone + ' > li');
+            Assert.areSame(
+                item1.get('container'), deliverItems.item(1),
+                "The navigation items for " + zone + " should be rendered"
+            );
+            Assert.areSame(
+                item2.get('container'), deliverItems.item(2),
+                "The navigation items for " + zone + " should be rendered"
+            );
+        },
+
+        "Should render the create navigation items": function () {
+            this._testRenderNavigationItems('create');
+        },
+
+        "Should render the optimize navigation items": function () {
+            this._testRenderNavigationItems('optimize');
+        },
+
+        "Should render the deliver navigation items": function () {
+            this._testRenderNavigationItems('deliver');
         },
     });
 
@@ -76,6 +114,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         _testShowNavigationMenu: function (zoneNode, navigationIdentifier) {
@@ -391,6 +430,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         "Should fire the logOut event": function () {
@@ -414,10 +454,118 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         },
     });
 
+    navigationItemsSetter = new Y.Test.Case({
+        name: "eZ Navigation Hub View navigation items attributes setter test",
+
+        setUp: function () {
+            this.view = new Y.eZ.NavigationHubView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        _testStructNoConfig: function (attr) {
+            var value,
+                Constructor = Y.View;
+
+            this.view.set(attr, [{Constructor: Constructor}]);
+            value = this.view.get(attr);
+
+            Assert.isArray(value, "The " + attr + " value should be an array");
+            Assert.areEqual(
+                1, value.length,
+                "The " + attr + " length should be 1"
+            );
+            Assert.isInstanceOf(
+                Constructor, value[0],
+                "The " + attr + " should contain an instance of the constructor"
+            );
+        },
+
+        _testStructConfig: function (attr) {
+            var value,
+                config = {containerTemplate: "<span />"},
+                Constructor = Y.View;
+
+            this.view.set(attr, [{Constructor: Constructor, config: config}]);
+            value = this.view.get(attr);
+
+            Assert.isArray(value, "The " + attr + " value should be an array");
+            Assert.areEqual(
+                1, value.length,
+                "The " + attr + " length should be 1"
+            );
+            Assert.isInstanceOf(
+                Constructor, value[0],
+                "The " + attr + " should contain an instance of the constructor"
+            );
+            Assert.areEqual(
+                config.containerTemplate, value[0].containerTemplate,
+                "The config should be passed to the constructor"
+            );
+        },
+
+        _testView: function (attr) {
+            var value,
+                instance = new Y.View();
+
+            this.view.set(attr, [instance]);
+            value = this.view.get(attr);
+
+            Assert.isArray(value, "The " + attr + " value should be an array");
+            Assert.areEqual(
+                1, value.length,
+                "The " + attr + " length should be 1"
+            );
+            Assert.areSame(
+                instance, value[0],
+                "The " + attr + " should contain the view instance"
+            );
+
+        },
+
+        "Test createNavigationItems setter (struct, no config)": function () {
+            this._testStructNoConfig('createNavigationItems');
+        },
+
+        "Test createNavigationItems setter (struct, config)": function () {
+            this._testStructConfig('createNavigationItems');
+        },
+
+        "Test createNavigationItems setter (view)": function () {
+            this._testView('createNavigationItems');
+        },
+
+        "Test optimizeNavigationItems setter (struct, no config)": function () {
+            this._testStructNoConfig('optimizeNavigationItems');
+        },
+
+        "Test optimizeNavigationItems setter (struct, config)": function () {
+            this._testStructConfig('optimizeNavigationItems');
+        },
+
+        "Test optimizeNavigationItems setter (view)": function () {
+            this._testView('optimizeNavigationItems');
+        },
+
+        "Test deliverNavigationItems setter (struct, no config)": function () {
+            this._testStructNoConfig('deliverNavigationItems');
+        },
+
+        "Test deliverNavigationItems setter (struct, config)": function () {
+            this._testStructConfig('deliverNavigationItems');
+        },
+
+        "Test deliverNavigationItems setter (view)": function () {
+            this._testView('deliverNavigationItems');
+        },
+    });
 
     Y.Test.Runner.setName("eZ Navigation Hub View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(logOutTest);
-
+    Y.Test.Runner.add(navigationItemsSetter);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-navigationhubview']});

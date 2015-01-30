@@ -17,7 +17,7 @@ YUI.add('ez-navigationhubview', function (Y) {
         SUB_MENU_OPEN = 'is-sub-menu-open',
         NAVIGATION_SEL = '.ez-navigation',
         DEFAULT_ACTIVE_NAV = 'create',
-        ACTIVE_NAVIGATION_TPL = 'ez-navigation-{identifier}',
+        NAVIGATION_NODE_CLASS_TPL = 'ez-navigation-{identifier}',
         ZONE_ACTIVE = 'is-zone-active';
 
     /**
@@ -159,10 +159,31 @@ YUI.add('ez-navigationhubview', function (Y) {
 
             container.setHTML(this.template({
                 user: this.get('user').toJSON(),
+                zones: this.get('zones'),
             }));
+            this._renderNavigationItems();
             this._setNavigationMenu(this.get('activeNavigation'));
             this._uiSetActiveNavigation();
             return this;
+        },
+
+        /**
+         * Renders the navigation items in the corresponding navigation zone
+         *
+         * @method _renderNavigationItems
+         * @protected
+         */
+        _renderNavigationItems: function () {
+            var that = this;
+
+            Y.Object.each(this.get('zones'), function (zone, key) {
+                var after = that._getNavigationNode(key).one('.ez-logo');
+
+                Y.Array.each(that.get(key + 'NavigationItems'), function (view) {
+                    after.insert(view.render().get('container'), 'after');
+                    after = view.get('container');
+                });
+            });
         },
 
         _onActiveUpdate: function (e) {
@@ -190,7 +211,7 @@ YUI.add('ez-navigationhubview', function (Y) {
          */
         _uiShowNavigation: function () {
             var navigations = this.get('container').one(NAVIGATION_SEL).get('children'),
-                navClass = L.sub(ACTIVE_NAVIGATION_TPL, {identifier: this.get('activeNavigation')});
+                navClass = L.sub(NAVIGATION_NODE_CLASS_TPL, {identifier: this.get('activeNavigation')});
 
             navigations.each(function (nav) {
                 if ( nav.hasClass(navClass) ) {
@@ -372,13 +393,123 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @return {String} val
          */
         _setNavigationMenu: function (val) {
-            this._navigationMenu = this.get('container').one(
-                '.' + L.sub(ACTIVE_NAVIGATION_TPL, {identifier: val})
-            );
+            this._navigationMenu = this._getNavigationNode(val);
             return val;
+        },
+
+        /**
+         * Returns the navigation node corresponding to the identifier
+         *
+         * @param {String} identifier
+         * @method _getNavigationNode
+         * @protected
+         * @return {Y.Node}
+         */
+        _getNavigationNode: function (identifier) {
+            return this.get('container').one('.' + L.sub(NAVIGATION_NODE_CLASS_TPL, {identifier: identifier}));
+        },
+
+        /**
+         * Builds the list of navigation item views based on the value. This
+         * method is a setter for the *NavigationItems.
+         *
+         * @method _buildNavigationViews
+         * @protected
+         * @param {Array} value an array of plain object or Y.Views (see
+         * attributes description)
+         * @return {Array} of Y.View
+         */
+        _buildNavigationViews: function (value) {
+            var res = [],
+                that = this;
+
+            Y.Array.each(value, function (struct) {
+                var ViewConstructor, view;
+
+                if ( struct instanceof Y.View ) {
+                    view = struct;
+                } else {
+                    ViewConstructor = struct.Constructor;
+                    view = new ViewConstructor(struct.config || {});
+                }
+                view.addTarget(that);
+                res.push(view);
+            });
+            return res;
         },
     }, {
         ATTRS: {
+            /**
+             * Stores the list of zone (Create, Deliver, Optimize) and the
+             * corresponding data.
+             *
+             * @attribute zones
+             * @type Object
+             * @readOnly
+             */
+            zones: {
+                value: {
+                    'create': {
+                        name: 'Create',
+                        hint: 'Creating & Editing',
+                        identifier: 'create',
+                    },
+                    'deliver': {
+                        name: 'Deliver',
+                        hint: 'Publishing & Engagin',
+                        identifier: 'deliver',
+                    },
+                    'optimize': {
+                        name: 'Optimize',
+                        hint: 'Statistics & Analytics',
+                        identifier: 'optimize',
+                    },
+                },
+                readOnly: true,
+            },
+
+            /**
+             * Stores the navigation view item views instance for each item in
+             * the navigation for the create zone. This attribute accepts either
+             * an array of already build views or an array of object with at a
+             * `Constructor` property and optionally a `config` property holding
+             * an object to pass to the constructor function.
+             *
+             * @attribute createNavigationItems
+             * @type Array of Y.View
+             */
+            createNavigationItems: {
+                setter: '_buildNavigationViews',
+            },
+
+            /**
+             * Stores the navigation view item views instance for each item in
+             * the navigation for the optimize zone. This attribute accepts either
+             * an array of already build views or an array of object with at a
+             * `Constructor` property and optionally a `config` property holding
+             * an object to pass to the constructor function.
+             *
+             * @attribute createNavigationItems
+             * @type Array of Y.View
+             */
+            optimizeNavigationItems: {
+                setter: '_buildNavigationViews',
+            },
+
+            /**
+             * Stores the navigation view item views instance for each item in
+             * the navigation for the deliver zone. This attribute accepts either
+             * an array of already build views or an array of object with at a
+             * `Constructor` property and optionally a `config` property holding
+             * an object to pass to the constructor function.
+             *
+             * @attribute createNavigationItems
+             * @type Array of Y.View
+             */
+            deliverNavigationItems: {
+                setter: '_buildNavigationViews',
+            },
+
             /**
              * Contains the identifier ('create', 'optimize', ...) of the
              * currently active navigation. When set, this attribute updates the

@@ -4,18 +4,12 @@
         <p class="ez-user-info-logout"><a href="#" class="ez-logout">Logout</span></p>
     </li>
     <li class="ez-logo"><a href="{{ path "dashboard" }}"><img src="{{ asset "bundles/ezplatformui/img/logo.png" }}" alt="Logo eZ" /></a></li>
-    <li class="ez-zone ez-create-zone" data-navigation="create">
-        <p class="ez-zone-name">Create</p>
-        <p class="ez-zone-hint">Creating & Editing</p>
+{{#each zones }}
+    <li class="ez-zone ez-{{ identifier }}-zone" data-navigation="{{ identifier }}">
+        <p class="ez-zone-name">{{ name }}</p>
+        <p class="ez-zone-hint">{{ hint }}</p>
     </li>
-    <li class="ez-zone ez-deliver-zone" data-navigation="deliver">
-        <p class="ez-zone-name">Deliver</p>
-        <p class="ez-zone-hint">Publishing & Engaging</p>
-    </li>
-    <li class="ez-zone ez-optimize-zone" data-navigation="optimize">
-        <p class="ez-zone-name">Optimize</p>
-        <p class="ez-zone-hint">Statistics & Analytics</p>
-    </li>
+{{/each}}
     <li class="ez-link ez-exchange">
         <a href="#" data-icon-after="&#xe614;">eZ Exchange</a>
     </li>
@@ -24,55 +18,13 @@
     </li>
 </ul>
 <nav class="ez-navigation">
-    <ul class="ez-navigation-create">
+{{#each zones}}
+    <ul class="ez-navigation-{{ identifier }}">
         <li class="ez-logo"><a class="ez-navigation-item" href="{{ path "dashboard" }}"><img src="{{ asset "bundles/ezplatformui/img/logo.png" }}" alt="Logo eZ" /></a></li>
-        <li class="ez-sub-menu-link">
-            <a class="ez-navigation-item" href="#">Insite editing</a>
-            <ul class="ez-sub-menu">
-                <li><a class="ez-navigation-item" href="#">Site 1</a></li>
-                <li><a class="ez-navigation-item" href="#">Site 2</a></li>
-                <li><a class="ez-navigation-item" href="#">A very very very long site name</a></li>
-                <li><a class="ez-navigation-item" href="#">Site 4</a></li>
-            </ul>
-        </li>
-        <li class="ez-navigation-active"><a class="ez-navigation-item" href="{{path "viewLocation" id='/api/ezp/v2/content/locations/1/2'}}">Content structure</a></li>
-        <li><a class="ez-navigation-item" href="{{path "viewLocation" id='/api/ezp/v2/content/locations/1/43'}}">Media library</a></li>
-        <li><a class="ez-navigation-item" href="#">Campaign</a></li>
-        <li><a class="ez-navigation-item" href="#">Extensions 1</a></li>
-        <li><a class="ez-navigation-item" href="#">Extensions 2</a></li>
-        <li><a class="ez-navigation-item" href="#">Extensions 3</a></li>
-        <li><a class="ez-navigation-item" href="#">Extensions 4</a></li>
-        <li><a class="ez-navigation-item" href="#">Extensions 5</a></li>
-        <li><a class="ez-navigation-item" href="#">Extensions 6</a></li>
-        <li><a class="ez-navigation-item" href="#">Extensions 7</a></li>
-        <li><a class="ez-navigation-item" href="#">Very long extension name 8</a></li>
-        <li><a class="ez-navigation-item" href="#">Extensions 9</a></li>
-        <li><a class="ez-navigation-item" href="#">Extensions 10</a></li>
         <li class="ez-more ez-sub-menu-link">
             <a href="#" class="ez-navigation-item">More</a>
             <ul class="ez-sub-menu"></ul>
         </li>
     </ul>
-    <ul class="ez-navigation-optimize">
-        <li class="ez-logo"><a class="ez-navigation-item" href="{{ path "dashboard" }}"><img src="{{ asset "bundles/ezplatformui/img/logo.png" }}" alt="Logo eZ" /></a></li>
-        <li><a class="ez-navigation-item" href="#">Optimize 1</a></li>
-        <li><a class="ez-navigation-item" href="#">Optimize 2</a></li>
-        <li><a class="ez-navigation-item" href="#">Optimize 3</a></li>
-        <li><a class="ez-navigation-item" href="#">Optimize 4</a></li>
-        <li class="ez-more ez-sub-menu-link">
-            <a href="#" class="ez-navigation-item">More</a>
-            <ul class="ez-sub-menu"></ul>
-        </li>
-    </ul>
-    <ul class="ez-navigation-deliver">
-        <li class="ez-logo"><a class="ez-navigation-item" href="{{ path "dashboard" }}"><img src="{{ asset "bundles/ezplatformui/img/logo.png" }}" alt="Logo eZ" /></a></li>
-        <li><a class="ez-navigation-item" href="#">Deliver 1</a></li>
-        <li><a class="ez-navigation-item" href="#">Deliver 2</a></li>
-        <li><a class="ez-navigation-item" href="#">Deliver 3</a></li>
-        <li><a class="ez-navigation-item" href="#">Deliver 4</a></li>
-        <li class="ez-more ez-sub-menu-link">
-            <a href="#" class="ez-navigation-item">More</a>
-            <ul class="ez-sub-menu"></ul>
-        </li>
-    </ul>
+{{/each}}
 </nav>
