@@ -8,11 +8,9 @@
   "license": "",
   "private": true,
   "ignore": [
-    "*",
     "**/.*",
     "node_modules",
-    "Resources/public/vendors/",
-    "Tests"
+    "Resources/public/vendors/"
   ],
   "dependencies": {
     "yui3": "http://yui.zenfs.com/releases/yui3/yui_3.18.1.zip"
