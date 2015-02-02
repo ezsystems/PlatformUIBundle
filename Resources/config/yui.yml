@@ -67,7 +67,7 @@ system:
                         - 'ez-contentcreateplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
-                    requires: ['ez-viewservice']
+                    requires: ['ez-viewservice', 'ez-navigationitemview', 'array-extras']
                     path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
                 ez-discoverybarviewservice:
                     requires: ['ez-viewservice', 'ez-contenttreeplugin']

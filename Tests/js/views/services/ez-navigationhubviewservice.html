@@ -24,12 +24,28 @@
         filter: loaderFilter,
         modules: {
             "ez-navigationhubviewservice": {
-                requires: ['ez-viewservice'],
+                requires: ['ez-viewservice', 'ez-navigationitemview', 'array-extras'],
                 fullpath: "../../../../Resources/public/js/views/services/ez-navigationhubviewservice.js"
             },
             "ez-viewservice": {
                 requires: ['view'],
                 fullpath: "../../../../Resources/public/js/views/services/ez-viewservice.js"
+            },
+            "ez-navigationitemview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/services/ez-viewservice.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
         }
     }).use('ez-navigationhubviewservice-tests', function (Y) {
