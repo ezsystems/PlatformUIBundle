@@ -24,6 +24,13 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             });
         },
 
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+            delete this.user;
+            delete this.app;
+        },
+
         "Should return an object containing the application user": function () {
             var param = this.service.getViewParameters();
 
@@ -82,6 +89,12 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this.service = new Y.eZ.NavigationHubViewService({
                 app: this.app,
             });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+            delete this.app;
         },
 
         "Should handle the logOut event": function () {
