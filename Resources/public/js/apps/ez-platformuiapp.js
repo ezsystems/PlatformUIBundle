@@ -394,7 +394,8 @@ YUI.add('ez-platformuiapp', function (Y) {
          */
         _showSideView: function (viewInfo, req, res, config, next) {
             var view, service,
-                container = this.get('container');
+                container = this.get('container'),
+                createView = !viewInfo.instance;
 
             if ( !viewInfo.serviceInstance ) {
                 viewInfo.serviceInstance = new viewInfo.service({
@@ -409,7 +410,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                 request: req,
                 response: res,
             });
-            if ( !viewInfo.instance ) {
+            if ( createView ) {
                 viewInfo.instance = new viewInfo.type();
             }
             view = viewInfo.instance;
@@ -417,10 +418,12 @@ YUI.add('ez-platformuiapp', function (Y) {
             service.addTarget(this);
             service.load(function () {
                 view.setAttrs(service.getViewParameters());
-                view.render();
-                container.one(viewInfo.container).append(
-                    view.get('container')
-                );
+                if ( createView ) {
+                    view.render();
+                    container.one(viewInfo.container).append(
+                        view.get('container')
+                    );
+                }
                 view.set('active', true);
                 container.removeClass(viewInfo.hideClass);
                 if ( next ) {
