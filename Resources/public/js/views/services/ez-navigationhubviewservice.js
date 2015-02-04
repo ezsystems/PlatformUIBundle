@@ -108,7 +108,11 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         },
 
         /**
-         * Adds a navigation item for the given zone
+         * Adds a navigation item for the given zone.
+         * Note: adding a navigation item will only work before the first
+         * initialization of the navigation hub. As a result, in a navigation
+         * hub view service plugin, this method should be called only in or from
+         * the initializer method.
          *
          * @method addNavigationItem
          * @param {Object} item a navigation item, see the description of the
@@ -120,7 +124,11 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         },
 
         /**
-         * Removes a navigation item for the given zone
+         * Removes a navigation item for the given zone.
+         * Note: removing a navigation item will only work before the first
+         * initialization of the navigation hub. As a result, in a navigation
+         * hub view service plugin, this method should be called only in or from
+         * the initializer method.
          *
          * @method removeNavigationItem
          * @param {String} identifier the identifier of the navigation item to
