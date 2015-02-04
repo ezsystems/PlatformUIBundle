@@ -18,9 +18,19 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
                 args: ['user'],
                 returns: this.user
             });
+            this.request = {
+                params: {},
+                route: {
+                    name: "routeName",
+                    serviceInstance: {},
+                    service: function () {},
+                    callbacks: [],
+                }
+            };
 
             this.service = new Y.eZ.NavigationHubViewService({
                 app: this.app,
+                request: this.request,
             });
         },
 
@@ -29,6 +39,7 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             delete this.service;
             delete this.user;
             delete this.app;
+            delete this.request;
         },
 
         "Should return an object containing the application user": function () {
@@ -62,6 +73,36 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
         "Should return an object containing the 'deliver' navigation items": function () {
             this._testNavigationItems('deliver');
+        },
+
+        "Should provide a matched route object": function () {
+            var params = this.service.getViewParameters();
+
+            Assert.isObject(params.matchedRoute, "The matchedRoute entry should be an object");
+            Assert.areNotSame(
+                this.request.route, params.matchedRoute,
+                "The matchedRoute object should not be the app route"
+            );
+            Assert.areEqual(
+                this.request.route.name, params.matchedRoute.name,
+                "The matchedRoute should keep the route properties"
+            );
+            Assert.areSame(
+                this.request.params, params.matchedRoute.parameters,
+                "The request parameters should be added to the matchedRoute"
+            );
+            Assert.isUndefined(
+                params.matchedRoute.service,
+                "The service property should be removed"
+            );
+            Assert.isUndefined(
+                params.matchedRoute.serviceInstance,
+                "The serviceInstance property should be removed"
+            );
+            Assert.isUndefined(
+                params.matchedRoute.callbacks,
+                "The callbacks property should be removed"
+            );
         },
     });
 

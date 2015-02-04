@@ -81,9 +81,36 @@ YUI.add('ez-navigationhubview', function (Y) {
         _resizeSubscription: null,
 
         initializer: function () {
-            this.after('activeNavigationChange', this._uiSetActiveNavigation);
+            this.after('activeNavigationChange', function () {
+                if ( this.get('active') ) {
+                    this._uiSetActiveNavigation();
+                }
+            });
             this.after('navigationFixedChange', this._uiHandleFixedNavigation);
             this.after('activeChange', this._onActiveUpdate);
+            this.after('matchedRouteChange', this._handleSelectedItem);
+        },
+
+        /**
+         * matchedRouteChange event handler. It makes sure the corresponding
+         * navigation item is selected and the zone in which it is, is active.
+         *
+         * @method _handleSelectedItem
+         * @protected
+         */
+        _handleSelectedItem: function () {
+            var matchedRoute = this.get('matchedRoute');
+
+            Y.Object.each(this.get('zones'), function (zone) {
+                var inZone = false;
+
+                Y.Array.each(this.get(zone.identifier + 'NavigationItems'), function (item) {
+                    inZone = (item.matchRoute(matchedRoute) || inZone);
+                });
+                if ( inZone ) {
+                    this.set('activeNavigation', zone.identifier);
+                }
+            }, this);
         },
 
         /**
@@ -426,7 +453,7 @@ YUI.add('ez-navigationhubview', function (Y) {
             Y.Array.each(value, function (struct) {
                 var ViewConstructor, view;
 
-                if ( struct instanceof Y.View ) {
+                if ( struct instanceof Y.eZ.NavigationItemView ) {
                     view = struct;
                 } else {
                     ViewConstructor = struct.Constructor;
@@ -477,9 +504,11 @@ YUI.add('ez-navigationhubview', function (Y) {
              *
              * @attribute createNavigationItems
              * @type Array of Y.View
+             * @writeOnce
              */
             createNavigationItems: {
                 setter: '_buildNavigationViews',
+                writeOnce: true,
             },
 
             /**
@@ -491,9 +520,11 @@ YUI.add('ez-navigationhubview', function (Y) {
              *
              * @attribute createNavigationItems
              * @type Array of Y.View
+             * @writeOnce
              */
             optimizeNavigationItems: {
                 setter: '_buildNavigationViews',
+                writeOnce: true,
             },
 
             /**
@@ -505,9 +536,11 @@ YUI.add('ez-navigationhubview', function (Y) {
              *
              * @attribute createNavigationItems
              * @type Array of Y.View
+             * @writeOnce
              */
             deliverNavigationItems: {
                 setter: '_buildNavigationViews',
+                writeOnce: true,
             },
 
             /**
@@ -543,7 +576,17 @@ YUI.add('ez-navigationhubview', function (Y) {
              * @type eZ.User
              * @required
              */
-            user: {}
+            user: {},
+
+            /**
+             * The matched route provided by the navigation hub view service. It
+             * used to detect which navigaiton item should be selected and it is
+             * updated after each page change.
+             *
+             * @attribute matchedRoute
+             * @type {Object}
+             */
+            matchedRoute: {},
         }
     });
 });

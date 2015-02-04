@@ -4,7 +4,7 @@
  */
 YUI.add('ez-navigationhubview-tests', function (Y) {
     var viewTest, eventTest, logOutTest,
-        navigationItemsSetter,
+        navigationItemsSetter, routeMatchTest,
         Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
@@ -38,7 +38,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 return origTpl.apply(this, arguments);
             };
             this.view.render();
-            Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
+            Y.Assert.isTrue(templateCalled, "The template should have used to render the view");
         },
 
         "Test available variable in template": function () {
@@ -65,8 +65,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         },
 
         _testRenderNavigationItems: function (zone) {
-            var item1 = new Y.View({containerTemplate: '<li />'}),
-                item2 = new Y.View({containerTemplate: '<li />'}),
+            var item1 = new Y.eZ.NavigationItemView({containerTemplate: '<li />'}),
+                item2 = new Y.eZ.NavigationItemView({containerTemplate: '<li />'}),
                 deliverItems;
 
             this.view.set(zone + 'NavigationItems', [item1, item2]);
@@ -152,6 +152,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 navigationIdentifier = optZone.getAttribute('data-navigation'),
                 that = this;
 
+            this.view.set('active', true);
             optZone.simulateGesture('tap', function () {
                 that.resume(function () {
                     this._testShowNavigationMenu(optZone, navigationIdentifier);
@@ -468,7 +469,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         _testStructNoConfig: function (attr) {
             var value,
-                Constructor = Y.View;
+                Constructor = Y.eZ.NavigationItemView;
 
             this.view.set(attr, [{Constructor: Constructor}]);
             value = this.view.get(attr);
@@ -486,8 +487,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         _testStructConfig: function (attr) {
             var value,
-                config = {containerTemplate: "<span />"},
-                Constructor = Y.View;
+                config = {title: "Custom title"},
+                Constructor = Y.eZ.NavigationItemView;
 
             this.view.set(attr, [{Constructor: Constructor, config: config}]);
             value = this.view.get(attr);
@@ -502,14 +503,14 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 "The " + attr + " should contain an instance of the constructor"
             );
             Assert.areEqual(
-                config.containerTemplate, value[0].containerTemplate,
+                config.title, value[0].get('title'),
                 "The config should be passed to the constructor"
             );
         },
 
         _testView: function (attr) {
             var value,
-                instance = new Y.View();
+                instance = new Y.eZ.NavigationItemView();
 
             this.view.set(attr, [instance]);
             value = this.view.get(attr);
@@ -563,9 +564,102 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         },
     });
 
+    routeMatchTest = new Y.Test.Case({
+        name: "eZ Navigation Hub View navigation items attributes setter test",
+
+        setUp: function () {
+            var that = this;
+
+            this.matchRouteCalls = {};
+            this.Item = Y.Base.create('itemTest', Y.eZ.NavigationItemView, [], {
+                matchRoute: function (route) {
+                    that.matchRouteCalls[this.get('identifier')] = route;
+                    return route === that.route3;
+                }
+            });
+            this.route1 = {
+                name: "viewLocation",
+                params: {
+                    id: '/1/2/',
+                }
+            };
+            this.route2 = {
+                name: "viewLocation",
+                params: {
+                    id: '/1/43/',
+                }
+            };
+            this.route3 = {
+                name: "crapouilleView",
+            };
+            this.item1 = new this.Item({
+                identifier: 'item1',
+                route: this.route1,
+            });
+            this.item2 = new this.Item({
+                identifier: 'item2',
+                route: this.route2,
+            });
+            this.item3 = new this.Item({
+                identifier: 'item3',
+                route: this.route3,
+            });
+            this.view = new Y.eZ.NavigationHubView({
+                createNavigationItems: [this.item1, this.item2],
+                optimizeNavigationItems: [this.item3],
+            });
+            //this.view.render();
+        },
+
+        tearDown: function () {
+            this.item1.destroy();
+            this.item2.destroy();
+            this.item3.destroy();
+            this.view.destroy();
+            delete this.view;
+            delete this.item1;
+            delete this.item2;
+            delete this.item3;
+            delete this.Item;
+            delete this.matchRouteCalls;
+        },
+
+        "Should call matchRoute on all navigation items": function () {
+            var matchedRoute = {name: "externalRoute"};
+            this.view.set('matchedRoute', matchedRoute);
+
+            Assert.areEqual(
+                3, Y.Object.keys(this.matchRouteCalls).length,
+                "matchRoute() should have been called 3 times"
+            );
+            Assert.areSame(
+                this.matchRouteCalls.item1, matchedRoute,
+                "matchRoute() should have been called with the matched route"
+            );
+            Assert.areSame(
+                this.matchRouteCalls.item2, matchedRoute,
+                "match() should have been called with the matched route"
+            );
+            Assert.areSame(
+                this.matchRouteCalls.item3, matchedRoute,
+                "matchRoute() should have been called with the matched route"
+            );
+        },
+
+        "Should set the corresponding navigation to active": function () {
+            this.view.set('matchedRoute', this.route3);
+
+            Assert.areEqual(
+                'optimize', this.view.get('activeNavigation'),
+                "The optimize should be active"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Navigation Hub View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(logOutTest);
     Y.Test.Runner.add(navigationItemsSetter);
-}, '', {requires: ['test', 'node-event-simulate', 'ez-navigationhubview']});
+    Y.Test.Runner.add(routeMatchTest);
+}, '', {requires: ['test', 'node-event-simulate', 'ez-navigationhubview', 'ez-navigationitemview', 'view']});

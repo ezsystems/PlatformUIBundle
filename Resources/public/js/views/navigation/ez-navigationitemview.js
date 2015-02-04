@@ -11,6 +11,8 @@ YUI.add('ez-navigationitemview', function (Y) {
      */
     Y.namespace('eZ');
 
+    var NAVIGATION_ACTIVE = 'ez-navigation-active';
+
     /**
      * The navigation item view. It represents a navigation item to be
      * rendered in the navigation of a zone.
@@ -23,6 +25,24 @@ YUI.add('ez-navigationitemview', function (Y) {
     Y.eZ.NavigationItemView = Y.Base.create('navigationItemView', Y.eZ.TemplateBasedView, [], {
         initializer: function () {
             this.containerTemplate = '<li class="' + this._generateViewClassName(this._getName()) + '"/>';
+            this.after('selectedChange', this._uiSelectedChange);
+        },
+
+        /**
+         * selectedChange event handler. Adds or removes the navigation active
+         * class depending on the `selected` attribute value.
+         *
+         * @method _uiSelectedChange
+         * @protected
+         */
+        _uiSelectedChange: function () {
+            var container = this.get('container');
+
+            if ( this.get('selected') ) {
+                container.addClass(NAVIGATION_ACTIVE);
+            } else {
+                container.removeClass(NAVIGATION_ACTIVE);
+            }
         },
 
         render: function () {
@@ -33,6 +53,23 @@ YUI.add('ez-navigationitemview', function (Y) {
                 route: this.get('route'),
             }));
             return this;
+        },
+
+        /**
+         * Checks whether the navigation item is selected or not based on the
+         * matched route object provided by the navigation hub service.
+         * This default implementation only compares the matched route name
+         * against the route stored in the `route` attribute.
+         *
+         * @method matchRoute
+         * @param {Object} route the matched route object
+         * @return {Boolean}
+         */
+        matchRoute: function (route) {
+            var selected = (route.name === this.get('route').name);
+
+            this._set('selected', selected);
+            return selected;
         },
     }, {
         ATTRS: {
@@ -52,7 +89,22 @@ YUI.add('ez-navigationitemview', function (Y) {
              * @attribute route
              * @type Object
              */
-            route: {}
+            route: {},
+
+            /**
+             * Flag indicating whether the item is selected according to the
+             * matched route provided to the last call of `match` vs. the route
+             * stored in the `route` attribute
+             *
+             * @attribute selected
+             * @type Boolean
+             * @readOnly
+             * @default false
+             */
+            selected: {
+                value: false,
+                readOnly: true,
+            },
         }
     });
 });

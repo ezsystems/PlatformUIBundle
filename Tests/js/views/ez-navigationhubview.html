@@ -81,8 +81,12 @@
         filter: loaderFilter,
         modules: {
             "ez-navigationhubview": {
-                requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside'],
+                requires: ['ez-templatebasedview', 'ez-navigationitemview', 'event-tap', 'node-screen', 'node-style', 'event-outside'],
                 fullpath: "../../../Resources/public/js/views/ez-navigationhubview.js"
+            },
+            "ez-navigationitemview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../Resources/public/js/views/navigation/ez-navigationitemview.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],

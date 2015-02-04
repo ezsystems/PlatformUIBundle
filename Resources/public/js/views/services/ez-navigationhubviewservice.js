@@ -40,18 +40,19 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         },
 
         /**
-         * Returns the navigation items object.
+         * Returns the navigation item for the subtree starting for the
+         * given location id.
          *
-         * @method _getNavigationLocationItems
+         * @method _getSubtreeItems
          * @protected
          * @param {String} title
          * @param {String} identifier
          * @param {String} locationId
          * @return {Object}
          */
-        _getNavigationLocationItems: function (title, identifier, locationId) {
+        _getSubtreeItems: function (title, identifier, locationId) {
             return {
-                Constructor: Y.eZ.NavigationItemView,
+                Constructor: Y.eZ.NavigationItemSubtreeView,
                 config: {
                     title: title,
                     identifier: identifier,
@@ -77,7 +78,33 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                 createNavigationItems: this.get('createNavigationItems'),
                 deliverNavigationItems: this.get('deliverNavigationItems'),
                 optimizeNavigationItems: this.get('optimizeNavigationItems'),
+                matchedRoute: this._matchedRoute(),
             };
+        },
+
+        /**
+         * A matched route object from the request. This object will be used by
+         * the navigation hub view to check which navigation item view is
+         * selected. A matched route object is a clone of the application active
+         * route without the service, serviceInstance and callbacks entries and
+         * with an additionnal `parameters` property holding the route
+         * parameters and their values.
+         *
+         * @method _matchedRoute
+         * @protected
+         * @return {Object}
+         */
+        _matchedRoute: function () {
+            var request = this.get('request'),
+                route = request.route,
+                matchedRoute = Y.merge(route);
+
+            matchedRoute.parameters = request.params;
+            delete matchedRoute.service;
+            delete matchedRoute.serviceInstance;
+            delete matchedRoute.callbacks;
+
+            return matchedRoute;
         },
 
         /**
@@ -128,12 +155,12 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                     // TODO these location ids should be taken from the REST
                     // root ressource instead of being hardcoded
                     return [
-                        this._getNavigationLocationItems(
+                        this._getSubtreeItems(
                             "Content structure",
                             "content-structure",
                             "/api/ezp/v2/content/locations/1/2"
                         ),
-                        this._getNavigationLocationItems(
+                        this._getSubtreeItems(
                             "Media library",
                             "media-library",
                             "/api/ezp/v2/content/locations/1/43"

@@ -4,6 +4,7 @@
  */
 YUI.add('ez-navigationitemview-tests', function (Y) {
     var viewTest,
+        matchTest,
         Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
@@ -79,8 +80,66 @@ YUI.add('ez-navigationitemview-tests', function (Y) {
             };
             this.view.render();
         },
+
+        "Should add the active class when selected": function () {
+            var container = this.view.get('container');
+
+            this.view._set('selected', true);
+            Assert.isTrue(
+                container.hasClass('ez-navigation-active'),
+                "The container should have the active class"
+            );
+        },
+
+        "Should remove the active class when selected": function () {
+            var container = this.view.get('container');
+
+            this["Should add the active class when selected"]();
+            this.view._set('selected', false);
+            Assert.isFalse(
+                container.hasClass('ez-navigation-active'),
+                "The container should not have the active class"
+            );
+        }
+    });
+
+    matchTest = new Y.Test.Case({
+        name: "eZ Navigation Item View match test",
+
+        setUp: function () {
+            this.routeName = 'viewLocation';
+            this.route = {
+                name: this.routeName,
+                params: {
+                    id: 42,
+                }
+            };
+            this.view = new Y.eZ.NavigationItemView({
+                route: this.route,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should match with the same route": function () {
+            Assert.isTrue(
+                this.view.matchRoute(this.route),
+                "The navigation item should match"
+            );
+        },
+
+        "Should not match with a different route": function () {
+            Assert.isFalse(
+                this.view.matchRoute({name: this.routeName + 'a different route'}),
+                "The navigation item should match"
+            );
+        },
     });
 
     Y.Test.Runner.setName("eZ Navigation Item View tests");
     Y.Test.Runner.add(viewTest);
+    Y.Test.Runner.add(matchTest);
 }, '', {requires: ['test', 'ez-navigationitemview']});

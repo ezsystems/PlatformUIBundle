@@ -67,7 +67,7 @@ system:
                         - 'ez-contentcreateplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
-                    requires: ['ez-viewservice', 'ez-navigationitemview', 'array-extras']
+                    requires: ['ez-viewservice', 'ez-navigationitemsubtreeview', 'array-extras']
                     path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
                 ez-discoverybarviewservice:
                     requires: ['ez-viewservice', 'ez-contenttreeplugin']
@@ -114,6 +114,9 @@ system:
                 navigationhubview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/navigationhub.hbt
+                ez-navigationitemsubtreeview:
+                    requires: ['ez-navigationitemview']
+                    path: %ez_platformui.public_dir%/js/views/navigation/ez-navigationitemsubtreeview.js
                 ez-navigationitemview:
                     requires: ['ez-templatebasedview', 'navigationitemview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/navigation/ez-navigationitemview.js
