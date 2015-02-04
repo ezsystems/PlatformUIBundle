@@ -26,6 +26,12 @@ YUI.add('ez-url-view-tests', function (Y) {
                 );
             },
 
+            "Test empty field value (null)": function () {
+                this._testValue(
+                    null, undefined, "The value in the template should be undefined"
+                );
+            },
+
             "Test empty link in field value": function () {
                 this._testValue(
                     {link: ""}, undefined, "The value in the template should be undefined"

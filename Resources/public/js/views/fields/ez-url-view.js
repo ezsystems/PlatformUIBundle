@@ -32,7 +32,7 @@ YUI.add('ez-url-view', function (Y) {
         _getFieldValue: function () {
             var value = this.get('field').fieldValue, res;
 
-            if ( !value.link ) {
+            if ( !value || !value.link ) {
                 return res;
             }
             res = {link: value.link, text: value.text};
