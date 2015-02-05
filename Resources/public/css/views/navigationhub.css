@@ -144,12 +144,6 @@
     display: block;
 }
 
-@media (max-width:70em) {
-    .ez-view-navigationhubview .ez-zones-navigation .ez-exchange {
-        display: none;
-    }
-}
-
 @media (max-width:62em) {
     .ez-view-navigationhubview .ez-logo {
         width: 6em;

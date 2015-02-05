@@ -9,9 +9,6 @@
         <p class="ez-zone-name">{{ . }}</p>
     </li>
 {{/each}}
-    <li class="ez-link ez-exchange">
-        <a href="#" data-icon-after="&#xe614;">eZ Exchange</a>
-    </li>
     <li class="ez-link ez-settings">
         <a href="#/admin/{{ urlEncode "pjax/dashboard" }}" data-icon-after="&#xe613;">Administration</a>
     </li>
