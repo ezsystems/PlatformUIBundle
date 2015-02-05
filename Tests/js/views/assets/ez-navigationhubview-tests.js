@@ -4,6 +4,7 @@
  */
 YUI.add('ez-navigationhubview-tests', function (Y) {
     var viewTest, eventTest, logOutTest,
+        navigationItemTest,
         navigationItemsSetter, routeMatchTest,
         Assert = Y.Assert;
 
@@ -656,10 +657,56 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         },
     });
 
+    navigationItemTest = new Y.Test.Case({
+        name: "eZ Navigation Hub view item test",
+
+        setUp: function () {
+
+            this.item1 = new Y.eZ.NavigationItemView();
+            this.item2 = new Y.eZ.NavigationItemView();
+            this.item3 = new Y.eZ.NavigationItemView();
+            this.view = new Y.eZ.NavigationHubView({
+                createNavigationItems: [this.item1, this.item2],
+                optimizeNavigationItems: [this.item3],
+                container: '.container',
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.item1.destroy();
+            this.item2.destroy();
+            this.item3.destroy();
+            delete this.view;
+            delete this.item1;
+            delete this.item2;
+            delete this.item3;
+        },
+
+        "Should forward the active flag to the navigation items": function () {
+            this.view.set('active', true);
+
+            Assert.isTrue(
+                this.item1.get('active'),
+                "The navigation item should be active"
+            );
+            Assert.isTrue(
+                this.item2.get('active'),
+                "The navigation item should be active"
+            );
+            Assert.isTrue(
+                this.item3.get('active'),
+                "The navigation item should be active"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Navigation Hub View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(logOutTest);
     Y.Test.Runner.add(navigationItemsSetter);
     Y.Test.Runner.add(routeMatchTest);
+    Y.Test.Runner.add(navigationItemTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-navigationhubview', 'ez-navigationitemview', 'view']});

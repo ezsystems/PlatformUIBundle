@@ -216,6 +216,7 @@ YUI.add('ez-navigationhubview', function (Y) {
         _onActiveUpdate: function (e) {
             var fixed = this.get('navigationFixed');
 
+            this._setNavigationItemActive(e.newVal);
             if ( e.newVal ) {
                 this._scrollSubscription = Y.on('scroll', Y.bind(this._handleScroll, this));
                 this._resizeSubscription = Y.on('resize', Y.bind(this._uiNavigationSize, this));
@@ -227,6 +228,21 @@ YUI.add('ez-navigationhubview', function (Y) {
                 this._scrollSubscription.detach();
                 this._resizeSubscription.detach();
             }
+        },
+
+        /**
+         * Sets the active flag on the navigation item views
+         *
+         * @protected
+         * @method _setNavigationItemActive
+         * @param {Boolean} active
+         */
+        _setNavigationItemActive: function (active) {
+            Y.Object.each(this.get('zones'), function (zone, key) {
+                Y.Array.each(this.get(key + 'NavigationItems'), function (view) {
+                    view.set('active', active);
+                });
+            }, this);
         },
 
         /**
