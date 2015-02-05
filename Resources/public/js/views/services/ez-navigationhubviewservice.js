@@ -75,9 +75,9 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         _getViewParameters: function () {
             return {
                 user: this.get('app').get('user'),
-                createNavigationItems: this.get('createNavigationItems'),
-                deliverNavigationItems: this.get('deliverNavigationItems'),
-                optimizeNavigationItems: this.get('optimizeNavigationItems'),
+                platformNavigationItems: this.get('platformNavigationItems'),
+                studioNavigationItems: this.get('studioNavigationItems'),
+                studioplusNavigationItems: this.get('studioplusNavigationItems'),
                 matchedRoute: this._matchedRoute(),
             };
         },
@@ -145,20 +145,20 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
     }, {
         ATTRS: {
             /**
-             * Stores the navigation item objects for the 'create' zone. Each
+             * Stores the navigation item objects for the 'platform' zone. Each
              * object must contain a `Constructor` property referencing
              * the constructor function to use to build the navigation item
              * view and a `config` property will be used as a configuration
              * object for the navigation item view. This configuration must
              * contain a `title` and an `identifier` properties.
              *
-             * @attribute createNavigationItems
+             * @attribute platformNavigationItems
              * @type Array
              * @default array containing the object the 'Content structure' and
              * 'Media library' items
              * @readOnly
              */
-            createNavigationItems: {
+            platformNavigationItems: {
                 valueFn: function () {
                     // TODO these location ids should be taken from the REST
                     // root ressource instead of being hardcoded
@@ -179,37 +179,37 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
             },
 
             /**
-             * Stores the navigation item objects for the 'optimize' zone. Each
+             * Stores the navigation item objects for the 'studioplus' zone. Each
              * object must contain a `Constructor` property referencing
              * the constructor function to use to build the navigation item
              * view and a `config` property will be used as a configuration
              * object for the navigation item view. This configuration must
              * contain a `title` and an `identifier` properties.
              *
-             * @attribute optimizeNavigationItems
+             * @attribute studioplusNavigationItems
              * @type Array
              * @default empty array
              * @readOnly
              */
-            optimizeNavigationItems: {
+            studioplusNavigationItems: {
                 value: [],
                 readOnly: true,
             },
 
             /**
-             * Stores the navigation item objects for the 'deliver' zone. Each
+             * Stores the navigation item objects for the 'studio' zone. Each
              * object must contain a `Constructor` property referencing
              * the constructor function to use to build the navigation item
              * view and a `config` property will be used as a configuration
              * object for the navigation item view. This configuration must
              * contain a `title` and an `identifier` properties.
              *
-             * @attribute deliverNavigationItems
+             * @attribute studioNavigationItems
              * @type Array
              * @default empty array
              * @readOnly
              */
-            deliverNavigationItems: {
+            studioNavigationItems: {
                 value: [],
                 readOnly: true,
             },

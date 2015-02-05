@@ -16,15 +16,14 @@
     <a href="#" class="ez-logout">Logout</a>
     <ul class="ez-zones-navigation">
     {{#each zones }}
-        <li class="ez-zone ez-{{ identifier }}-zone" data-navigation="{{ identifier }}">
-            <p class="ez-zone-name">{{ name }}</p>
-            <p class="ez-zone-hint">{{ hint }}</p>
+        <li class="ez-zone ez-{{ @key }}-zone" data-navigation="{{ @key }}">
+            <p class="ez-zone-name">{{ . }}</p>
         </li>
     {{/each}}
     </ul>
     <nav class="ez-navigation">
     {{#each zones}}
-        <ul class="ez-navigation-{{ identifier }}">
+        <ul class="ez-navigation-{{ @key }}">
             <li class="ez-logo"><a class="ez-navigation-item" href="#">Logo</a></li>
             <li class="ez-sub-menu-link">
                 <a class="ez-navigation-item" href="#">Insite editing</a>

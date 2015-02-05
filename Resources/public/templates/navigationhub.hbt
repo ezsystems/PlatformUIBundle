@@ -5,9 +5,8 @@
     </li>
     <li class="ez-logo"><a href="{{ path "dashboard" }}"><img src="{{ asset "bundles/ezplatformui/img/logo.png" }}" alt="Logo eZ" /></a></li>
 {{#each zones }}
-    <li class="ez-zone ez-{{ identifier }}-zone" data-navigation="{{ identifier }}">
-        <p class="ez-zone-name">{{ name }}</p>
-        <p class="ez-zone-hint">{{ hint }}</p>
+    <li class="ez-zone ez-{{ @key }}-zone" data-navigation="{{ @key }}">
+        <p class="ez-zone-name">{{ . }}</p>
     </li>
 {{/each}}
     <li class="ez-link ez-exchange">
@@ -19,7 +18,7 @@
 </ul>
 <nav class="ez-navigation">
 {{#each zones}}
-    <ul class="ez-navigation-{{ identifier }}">
+    <ul class="ez-navigation-{{ @key }}">
         <li class="ez-logo"><a class="ez-navigation-item" href="{{ path "dashboard" }}"><img src="{{ asset "bundles/ezplatformui/img/logo.png" }}" alt="Logo eZ" /></a></li>
         <li class="ez-more ez-sub-menu-link">
             <a href="#" class="ez-navigation-item">More</a>

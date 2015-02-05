@@ -68,32 +68,32 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         _testRenderNavigationItems: function (zone) {
             var item1 = new Y.eZ.NavigationItemView({containerTemplate: '<li />'}),
                 item2 = new Y.eZ.NavigationItemView({containerTemplate: '<li />'}),
-                deliverItems;
+                studioItems;
 
             this.view.set(zone + 'NavigationItems', [item1, item2]);
             this.view.render();
 
-            deliverItems = this.view.get('container').all('.ez-navigation-' + zone + ' > li');
+            studioItems = this.view.get('container').all('.ez-navigation-' + zone + ' > li');
             Assert.areSame(
-                item1.get('container'), deliverItems.item(1),
+                item1.get('container'), studioItems.item(1),
                 "The navigation items for " + zone + " should be rendered"
             );
             Assert.areSame(
-                item2.get('container'), deliverItems.item(2),
+                item2.get('container'), studioItems.item(2),
                 "The navigation items for " + zone + " should be rendered"
             );
         },
 
-        "Should render the create navigation items": function () {
-            this._testRenderNavigationItems('create');
+        "Should render the platform navigation items": function () {
+            this._testRenderNavigationItems('platform');
         },
 
-        "Should render the optimize navigation items": function () {
-            this._testRenderNavigationItems('optimize');
+        "Should render the studioplus navigation items": function () {
+            this._testRenderNavigationItems('studioplus');
         },
 
-        "Should render the deliver navigation items": function () {
-            this._testRenderNavigationItems('deliver');
+        "Should render the studio navigation items": function () {
+            this._testRenderNavigationItems('studio');
         },
     });
 
@@ -149,7 +149,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         "Should show the correct navigation menu when tapping a navigation zone": function () {
             var container = this.view.get('container'),
-                optZone = container.one('.ez-optimize-zone'),
+                optZone = container.one('.ez-studioplus-zone'),
                 navigationIdentifier = optZone.getAttribute('data-navigation'),
                 that = this;
 
@@ -346,12 +346,12 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         "Should put some elements in the more sub menu": function () {
             var container = this.view.get('container'),
-                navigationMenu = container.one('.ez-navigation-create'),
+                navigationMenu = container.one('.ez-navigation-platform'),
                 more = navigationMenu.one('.ez-more'),
                 inMoreMenu = [], inMoreMenuAfter = [];
 
             this.view.set('active', true);
-            this.view.set('activeNavigation', 'create');
+            this.view.set('activeNavigation', 'platform');
 
             // emptying the more navigation
             navigationMenu.all('.ez-more li').each(function () {
@@ -386,9 +386,9 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         "Should take some elements from the more sub menu": function () {
             var container = this.view.get('container'),
-                navigationMenu = container.one('.ez-navigation-create');
+                navigationMenu = container.one('.ez-navigation-platform');
 
-            this.view.set('activeNavigation', 'create');
+            this.view.set('activeNavigation', 'platform');
             this.view.set('active', true);
 
             // making some space in the menu
@@ -541,45 +541,45 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             Assert.isTrue(bubble, "The event should bubble from the item to the hub view");
         },
 
-        "Test createNavigationItems setter (struct, no config)": function () {
-            this._testStructNoConfig('createNavigationItems');
+        "Test platformNavigationItems setter (struct, no config)": function () {
+            this._testStructNoConfig('platformNavigationItems');
         },
 
-        "Test createNavigationItems setter (struct, config)": function () {
-            this._testStructConfig('createNavigationItems');
+        "Test platformNavigationItems setter (struct, config)": function () {
+            this._testStructConfig('platformNavigationItems');
         },
 
-        "Test createNavigationItems setter (view)": function () {
-            this._testView('createNavigationItems');
+        "Test platformNavigationItems setter (view)": function () {
+            this._testView('platformNavigationItems');
         },
 
-        "Test optimizeNavigationItems setter (struct, no config)": function () {
-            this._testStructNoConfig('optimizeNavigationItems');
+        "Test studioplusNavigationItems setter (struct, no config)": function () {
+            this._testStructNoConfig('studioplusNavigationItems');
         },
 
-        "Test optimizeNavigationItems setter (struct, config)": function () {
-            this._testStructConfig('optimizeNavigationItems');
+        "Test studioplusNavigationItems setter (struct, config)": function () {
+            this._testStructConfig('studioplusNavigationItems');
         },
 
-        "Test optimizeNavigationItems setter (view)": function () {
-            this._testView('optimizeNavigationItems');
+        "Test studioplusNavigationItems setter (view)": function () {
+            this._testView('studioplusNavigationItems');
         },
 
-        "Test deliverNavigationItems setter (struct, no config)": function () {
-            this._testStructNoConfig('deliverNavigationItems');
+        "Test studioNavigationItems setter (struct, no config)": function () {
+            this._testStructNoConfig('studioNavigationItems');
         },
 
-        "Test deliverNavigationItems setter (struct, config)": function () {
-            this._testStructConfig('deliverNavigationItems');
+        "Test studioNavigationItems setter (struct, config)": function () {
+            this._testStructConfig('studioNavigationItems');
         },
 
-        "Test deliverNavigationItems setter (view)": function () {
-            this._testView('deliverNavigationItems');
+        "Test studioNavigationItems setter (view)": function () {
+            this._testView('studioNavigationItems');
         },
     });
 
     routeMatchTest = new Y.Test.Case({
-        name: "eZ Navigation Hub View navigation items attributes setter test",
+        name: "eZ Navigation Hub View route matching test",
 
         setUp: function () {
             var that = this;
@@ -619,8 +619,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 route: this.route3,
             });
             this.view = new Y.eZ.NavigationHubView({
-                createNavigationItems: [this.item1, this.item2],
-                optimizeNavigationItems: [this.item3],
+                platformNavigationItems: [this.item1, this.item2],
+                studioplusNavigationItems: [this.item3],
             });
         },
 
@@ -663,8 +663,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.view.set('matchedRoute', this.route3);
 
             Assert.areEqual(
-                'optimize', this.view.get('activeNavigation'),
-                "The optimize should be active"
+                'studioplus', this.view.get('activeNavigation'),
+                "The studioplus should be active"
             );
         },
     });
@@ -678,8 +678,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.item2 = new Y.eZ.NavigationItemView();
             this.item3 = new Y.eZ.NavigationItemView();
             this.view = new Y.eZ.NavigationHubView({
-                createNavigationItems: [this.item1, this.item2],
-                optimizeNavigationItems: [this.item3],
+                platformNavigationItems: [this.item1, this.item2],
+                studioplusNavigationItems: [this.item3],
                 container: '.container',
             });
             this.view.render();

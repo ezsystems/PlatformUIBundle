@@ -55,7 +55,7 @@
     float: left;
     text-align: center;
     font-family: 'ez-platformui-icomoon';
-    font-size: 150%;
+    font-size: 135%;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -68,15 +68,15 @@
     }
 }
 
-.ez-view-navigationhubview .ez-create-zone:before {
+.ez-view-navigationhubview .ez-platform-zone:before {
     content: "\E611";
 }
 
-.ez-view-navigationhubview .ez-optimize-zone:before {
+.ez-view-navigationhubview .ez-studioplus-zone:before {
     content: "\E612";
 }
 
-.ez-view-navigationhubview .ez-deliver-zone:before {
+.ez-view-navigationhubview .ez-studio-zone:before {
     content: "\E60D";
 }
 
@@ -85,10 +85,20 @@
     vertical-align: middle;
 }
 
-.ez-view-navigationhubview .ez-navigation .ez-navigation-item,
-.ez-view-navigationhubview .ez-zone-name {
+.ez-view-navigationhubview .ez-navigation .ez-navigation-item {
     font-weight: bold;
     color: #333;
+}
+
+.ez-view-navigationhubview .ez-zone-name {
+    color: #333;
+    font-size: 110%;
+}
+
+@media (max-width:62em) {
+    .ez-view-navigationhubview .ez-zone-name {
+        font-size: 100%;
+    }
 }
 
 .ez-view-navigationhubview .ez-navigation .ez-logo {
@@ -148,11 +158,6 @@
 
 .ez-view-navigationhubview .ez-navigation-active {
     border-bottom: 3px solid #528036;
-}
-
-.ez-view-navigationhubview .ez-zone-hint {
-    color: #777;
-    font-size: 80%;
 }
 
 .ez-view-navigationhubview .ez-link a {

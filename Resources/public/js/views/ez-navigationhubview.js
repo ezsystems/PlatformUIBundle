@@ -16,7 +16,7 @@ YUI.add('ez-navigationhubview', function (Y) {
         NAVIGATION_HIDDEN = 'is-navigation-hidden',
         SUB_MENU_OPEN = 'is-sub-menu-open',
         NAVIGATION_SEL = '.ez-navigation',
-        DEFAULT_ACTIVE_NAV = 'create',
+        DEFAULT_ACTIVE_NAV = 'platform',
         NAVIGATION_NODE_CLASS_TPL = 'ez-navigation-{identifier}',
         ZONE_ACTIVE = 'is-zone-active';
 
@@ -101,14 +101,14 @@ YUI.add('ez-navigationhubview', function (Y) {
         _handleSelectedItem: function () {
             var matchedRoute = this.get('matchedRoute');
 
-            Y.Object.each(this.get('zones'), function (zone) {
+            Y.Object.each(this.get('zones'), function (zone, key) {
                 var inZone = false;
 
-                Y.Array.each(this.get(zone.identifier + 'NavigationItems'), function (item) {
+                Y.Array.each(this.get(key + 'NavigationItems'), function (item) {
                     inZone = (item.matchRoute(matchedRoute) || inZone);
                 });
                 if ( inZone ) {
-                    this.set('activeNavigation', zone.identifier);
+                    this.set('activeNavigation', key);
                 }
             }, this);
         },
@@ -483,8 +483,8 @@ YUI.add('ez-navigationhubview', function (Y) {
     }, {
         ATTRS: {
             /**
-             * Stores the list of zone (Create, Deliver, Optimize) and the
-             * corresponding data.
+             * Object describing the available zones (Platform, Studio), the
+             * key is the zone identifier, the value is the zone name.
              *
              * @attribute zones
              * @type Object
@@ -492,75 +492,63 @@ YUI.add('ez-navigationhubview', function (Y) {
              */
             zones: {
                 value: {
-                    'create': {
-                        name: 'Create',
-                        hint: 'Creating & Editing',
-                        identifier: 'create',
-                    },
-                    'deliver': {
-                        name: 'Deliver',
-                        hint: 'Publishing & Engagin',
-                        identifier: 'deliver',
-                    },
-                    'optimize': {
-                        name: 'Optimize',
-                        hint: 'Statistics & Analytics',
-                        identifier: 'optimize',
-                    },
+                    'platform': 'Platform',
+                    'studio': 'Studio',
+                    'studioplus': 'Studio Plus',
                 },
                 readOnly: true,
             },
 
             /**
              * Stores the navigation view item views instance for each item in
-             * the navigation for the create zone. This attribute accepts either
+             * the navigation for the platform zone. This attribute accepts either
              * an array of already build views or an array of object with at a
              * `Constructor` property and optionally a `config` property holding
              * an object to pass to the constructor function.
              *
-             * @attribute createNavigationItems
+             * @attribute platformNavigationItems
              * @type Array of Y.View
              * @writeOnce
              */
-            createNavigationItems: {
+            platformNavigationItems: {
                 setter: '_buildNavigationViews',
                 writeOnce: true,
             },
 
             /**
              * Stores the navigation view item views instance for each item in
-             * the navigation for the optimize zone. This attribute accepts either
+             * the navigation for the studio zone. This attribute accepts either
              * an array of already build views or an array of object with at a
              * `Constructor` property and optionally a `config` property holding
              * an object to pass to the constructor function.
              *
-             * @attribute createNavigationItems
+             * @attribute studioNavigationItems
              * @type Array of Y.View
              * @writeOnce
              */
-            optimizeNavigationItems: {
+            studioNavigationItems: {
                 setter: '_buildNavigationViews',
                 writeOnce: true,
             },
 
             /**
              * Stores the navigation view item views instance for each item in
-             * the navigation for the deliver zone. This attribute accepts either
+             * the navigation for the studioplus zone. This attribute accepts either
              * an array of already build views or an array of object with at a
              * `Constructor` property and optionally a `config` property holding
              * an object to pass to the constructor function.
              *
-             * @attribute createNavigationItems
+             * @attribute studioplusNavigationItems
              * @type Array of Y.View
              * @writeOnce
              */
-            deliverNavigationItems: {
+            studioplusNavigationItems: {
                 setter: '_buildNavigationViews',
                 writeOnce: true,
             },
 
             /**
-             * Contains the identifier ('create', 'optimize', ...) of the
+             * Contains the identifier ('platform', 'studio', ...) of the
              * currently active navigation. When set, this attribute updates the
              * `_navigationMenu` property with the corresponding Node
              *

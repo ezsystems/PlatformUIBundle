@@ -4,9 +4,9 @@
  */
 
 .ez-view-navigationhubview .ez-zones-navigation,
-.ez-view-navigationhubview .ez-navigation-create,
-.ez-view-navigationhubview .ez-navigation-deliver,
-.ez-view-navigationhubview .ez-navigation-optimize {
+.ez-view-navigationhubview .ez-navigation-platform,
+.ez-view-navigationhubview .ez-navigation-studio,
+.ez-view-navigationhubview .ez-navigation-studioplus {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -30,9 +30,8 @@
     display: inline-block;
 }
 
-.ez-view-navigationhubview .ez-zone-name,
-.ez-view-navigationhubview .ez-zone-hint {
-    margin: 0 0 0 2.6rem;
+.ez-view-navigationhubview .ez-zone-name {
+    margin: 0.3rem 0 0 2.6rem;
 }
 
 .ez-view-navigationhubview .ez-logo {
@@ -43,7 +42,7 @@
 .ez-view-navigationhubview .ez-zone,
 .ez-view-navigationhubview .ez-link,
 .ez-view-navigationhubview .ez-user-info {
-    padding: 1em;
+    padding: 0.8em 1em;
 }
 
 .ez-view-navigationhubview .ez-user-info {
@@ -157,13 +156,8 @@
         vertical-align: middle;
     }
 
-    .ez-view-navigationhubview .ez-zone-hint {
-        display: none;
-    }
-
     .ez-view-navigationhubview .ez-zone-name {
-        margin: 0.2em 0 0 1.9rem;
-        font-size: 90%;
+        margin: 0.2rem 0 0 1.9rem;
     }
 
     .ez-view-navigationhubview .ez-zones-navigation .ez-settings a {

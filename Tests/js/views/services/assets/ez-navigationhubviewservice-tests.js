@@ -63,16 +63,16 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             );
         },
 
-        "Should return an object containing the 'create' navigation items": function () {
-            this._testNavigationItems('create');
+        "Should return an object containing the 'platform' navigation items": function () {
+            this._testNavigationItems('platform');
         },
 
-        "Should return an object containing the 'optimize' navigation items": function () {
-            this._testNavigationItems('optimize');
+        "Should return an object containing the 'studioplus' navigation items": function () {
+            this._testNavigationItems('studioplus');
         },
 
-        "Should return an object containing the 'deliver' navigation items": function () {
-            this._testNavigationItems('deliver');
+        "Should return an object containing the 'studio' navigation items": function () {
+            this._testNavigationItems('studio');
         },
 
         "Should provide a matched route object": function () {
@@ -178,13 +178,13 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             );
         },
 
-        "'create' zone": function () {
-            var value = this.service.get('createNavigationItems');
+        "'platform' zone": function () {
+            var value = this.service.get('platformNavigationItems');
 
-            Assert.isArray(value, "The createNavigationItems should contain an array");
+            Assert.isArray(value, "The platformNavigationItems should contain an array");
             Assert.areEqual(
                 2, value.length,
-                "2 items should be configured by default for the create zone"
+                "2 items should be configured by default for the platform zone"
             );
             this._assertLocationNavigationItem(
                 value[0], "Content structure", "content-structure", "/api/ezp/v2/content/locations/1/2"
@@ -194,23 +194,23 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             );
         },
 
-        "'optimize' zone": function () {
-            var value = this.service.get('optimizeNavigationItems');
+        "'studioplus' zone": function () {
+            var value = this.service.get('studioplusNavigationItems');
 
-            Assert.isArray(value, "The optimizeNavigationItems should contain an array");
+            Assert.isArray(value, "The studioplusNavigationItems should contain an array");
             Assert.areEqual(
                 0, value.length,
-                "optimize zone should be empty"
+                "studioplus zone should be empty"
             );
         },
 
-        "'deliver' zone": function () {
-            var value = this.service.get('deliverNavigationItems');
+        "'studio' zone": function () {
+            var value = this.service.get('studioNavigationItems');
 
-            Assert.isArray(value, "The deliverNavigationItems should contain an array");
+            Assert.isArray(value, "The studioNavigationItems should contain an array");
             Assert.areEqual(
                 0, value.length,
-                "deliver zone should be empty"
+                "studio zone should be empty"
             );
         },
     });
@@ -245,16 +245,16 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             );
         },
 
-        "Should add the navigation item to the 'create' zone": function () {
-            this._testAttribute('create');
+        "Should add the navigation item to the 'platform' zone": function () {
+            this._testAttribute('platform');
         },
 
-        "Should add the navigation item to the 'optimize' zone": function () {
-            this._testAttribute('optimize');
+        "Should add the navigation item to the 'studioplus' zone": function () {
+            this._testAttribute('studioplus');
         },
 
-        "Should add the navigation item to the 'deliver' zone": function () {
-            this._testAttribute('deliver');
+        "Should add the navigation item to the 'studio' zone": function () {
+            this._testAttribute('studio');
         },
     });
 
@@ -263,20 +263,20 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
         setUp: function () {
             this.service = new Y.eZ.NavigationHubViewService();
-            this.createIdentifier = 'peppa-pig';
-            this.optimizeIdentifier = 'ben-et-holly';
-            this.deliverIdentifier = 'paw-patrol';
+            this.platformIdentifier = 'peppa-pig';
+            this.studioplusIdentifier = 'ben-et-holly';
+            this.studioIdentifier = 'paw-patrol';
             this.service.addNavigationItem(
-                {config: {identifier: this.createIdentifier}},
-                'create'
+                {config: {identifier: this.platformIdentifier}},
+                'platform'
             );
             this.service.addNavigationItem(
-                {config: {identifier: this.deliverIdentifier}},
-                'deliver'
+                {config: {identifier: this.studioIdentifier}},
+                'studio'
             );
             this.service.addNavigationItem(
-                {config: {identifier: this.optimizeIdentifier}},
-                'optimize'
+                {config: {identifier: this.studioplusIdentifier}},
+                'studioplus'
             );
         },
 
@@ -298,16 +298,16 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             });
         },
 
-        "Should remove the navigation item to the 'create' zone": function () {
-            this._testAttribute('create');
+        "Should remove the navigation item to the 'platform' zone": function () {
+            this._testAttribute('platform');
         },
 
-        "Should remove the navigation item to the 'optimize' zone": function () {
-            this._testAttribute('optimize');
+        "Should remove the navigation item to the 'studioplus' zone": function () {
+            this._testAttribute('studioplus');
         },
 
-        "Should remove the navigation item to the 'deliver' zone": function () {
-            this._testAttribute('deliver');
+        "Should remove the navigation item to the 'studio' zone": function () {
+            this._testAttribute('studio');
         },
     });
 
