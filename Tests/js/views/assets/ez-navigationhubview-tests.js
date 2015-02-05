@@ -484,6 +484,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 Constructor, value[0],
                 "The " + attr + " should contain an instance of the constructor"
             );
+            this._testEventTarget(value[0]);
         },
 
         _testStructConfig: function (attr) {
@@ -507,6 +508,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 config.title, value[0].get('title'),
                 "The config should be passed to the constructor"
             );
+            this._testEventTarget(value[0]);
         },
 
         _testView: function (attr) {
@@ -525,7 +527,18 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 instance, value[0],
                 "The " + attr + " should contain the view instance"
             );
+            this._testEventTarget(instance);
+        },
 
+        _testEventTarget: function (itemView) {
+            var evt = 'hello',
+                bubble = false;
+
+            this.view.on('*:' + evt, function (e) {
+                bubble = true;
+            });
+            itemView.fire(evt);
+            Assert.isTrue(bubble, "The event should bubble from the item to the hub view");
         },
 
         "Test createNavigationItems setter (struct, no config)": function () {
@@ -609,7 +622,6 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 createNavigationItems: [this.item1, this.item2],
                 optimizeNavigationItems: [this.item3],
             });
-            //this.view.render();
         },
 
         tearDown: function () {
