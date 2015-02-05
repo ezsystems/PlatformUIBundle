@@ -2,5 +2,4 @@
 
 <ul>
     <li><a href="{{ path "viewLocation" id="/api/ezp/v2/content/locations/1/2" }}">Root location</a></li>
-    <li><a href="{{ path "viewLocation" id="/api/ezp/v2/content/locations/1/2/90/93" }}">Test content</a></li>
 </ul>
