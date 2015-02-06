@@ -166,6 +166,17 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.wait();
         },
 
+        "Should switch to the correct zone": function () {
+            var container = this.view.get('container'),
+                optZone = container.one('.ez-studioplus-zone'),
+                navigationIdentifier = optZone.getAttribute('data-navigation');
+
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'studio');
+            this.view.set('activeNavigation', 'studioplus');
+            this._testShowNavigationMenu(optZone, navigationIdentifier);
+        },
+
         _testShowSubMenu: function (link, subMenu, testCoordinates) {
             Y.Assert.isTrue(
                 link.hasClass('is-sub-menu-open'),
@@ -198,6 +209,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenuLink = container.one('.ez-sub-menu-link'),
                 subMenu = subMenuLink.one('.ez-sub-menu');
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulate('mouseover');
             this._testShowSubMenu(subMenuLink, subMenu, true);
         },
@@ -208,6 +221,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenu = subMenuLink.one('.ez-sub-menu'),
                 that = this;
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulateGesture('tap', function () {
                 that.resume(function () {
                     this._testShowSubMenu(subMenuLink, subMenu, true);
@@ -221,6 +236,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenuLink = container.one('.ez-more.ez-sub-menu-link'),
                 subMenu = subMenuLink.one('.ez-sub-menu');
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulate('mouseover');
             this._testShowSubMenu(subMenuLink, subMenu, false);
         },
@@ -231,6 +248,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenu = subMenuLink.one('.ez-sub-menu'),
                 that = this;
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulateGesture('tap', function () {
                 that.resume(function () {
                     this._testShowSubMenu(subMenuLink, subMenu, false);
@@ -251,6 +270,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenuLink = container.one('.ez-more.ez-sub-menu-link'),
                 subMenu = subMenuLink.one('.ez-sub-menu');
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulate('mouseover');
             subMenuLink.simulate('mouseout');
             this._testHiddenSubMenu(subMenu);
@@ -262,6 +283,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenu = subMenuLink.one('.ez-sub-menu'),
                 that = this;
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulateGesture('tap', function () {
                 that.resume(function () {
                     subMenu.one('.ez-navigation-item').simulateGesture('tap', function () {
@@ -281,6 +304,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenu = subMenuLink.one('.ez-sub-menu'),
                 that = this;
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulateGesture('tap', function () {
                 that.resume(function () {
                     container.simulate('click');
@@ -300,6 +325,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         },
 
         "Should set the navigationFixed attribute depending on scroll": function () {
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             this._scrollTo('-300px');
             Y.Assert.isTrue(
                 this.view.get('navigationFixed'),
@@ -318,6 +345,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             var eventFired = 0,
                 view = this.view;
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             this.view.on('navigationModeChange', function (e) {
                 eventFired++;
 
@@ -392,12 +421,12 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             var container = this.view.get('container'),
                 navigationMenu = container.one('.ez-navigation-platform');
 
-            this.view.set('activeNavigation', 'platform');
             this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
 
             // making some space in the menu
-            navigationMenu.all('li').pop().remove();
-            navigationMenu.all('li').pop().remove();
+            navigationMenu.all('> li').shift().remove();
+            navigationMenu.all('> li').shift().remove();
             // leaving only one element in the more menu
             navigationMenu.all('.ez-more li:not(.last)').each(function () {
                 this.remove();
@@ -683,13 +712,26 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 "The studioplus should be active"
             );
         },
+
+        "Should set the active navigation to null": function () {
+            this.view.set('matchedRoute', {name: "unknownRoute"});
+
+            Assert.isNull(
+                this.view.get('activeNavigation'),
+                "The active navigation should be null"
+            );
+        },
     });
 
     navigationItemTest = new Y.Test.Case({
         name: "eZ Navigation Hub view item test",
 
         setUp: function () {
-
+            var user = new Y.Mock();
+            Y.Mock.expect(user, {
+                method: 'toJSON',
+                returns: {},
+            });
             this.item1 = new Y.eZ.NavigationItemView();
             this.item2 = new Y.eZ.NavigationItemView();
             this.item3 = new Y.eZ.NavigationItemView();
@@ -697,6 +739,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 platformNavigationItems: [this.item1, this.item2],
                 studioplusNavigationItems: [this.item3],
                 container: '.container',
+                user: user,
             });
             this.view.render();
         },
