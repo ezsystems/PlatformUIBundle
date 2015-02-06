@@ -1,6 +1,6 @@
 <div class="ez-loginform-content">
     <form action="" class="ez-loginform" method="post">
-        <h1 class="ez-loginform-title"><img class="ez-logo" src="{{ asset 'bundles/ezplatformui/img/logo.png' }}" alt="eZ Logo"/> eZ Publish Platform</h1>
+        <h1 class="ez-loginform-title"><img class="ez-logo" src="{{ asset 'bundles/ezplatformui/img/logo.png' }}" alt="eZ Logo"/> eZ Platform</h1>
 
         <p class="ez-loginform-line ez-loginform-message">You need to login to access this area</p>
 
@@ -19,6 +19,6 @@
     </form>
 
     <footer>
-        <p class="ez-copyright">eZ Publish Platform &copy; 1999-2014 <a href="http://ez.no">eZ Systems AS</a> and others.</p>
+        <p class="ez-copyright">eZ Platform &copy; 1999-2015 <a href="http://ez.no">eZ Systems AS</a> and others.</p>
     </footer>
 </div>
