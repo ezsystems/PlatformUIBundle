@@ -99,6 +99,9 @@ YUI.add('ez-platformuiapp', function (Y) {
                 type: Y.eZ.LocationViewView,
                 parent: 'dashboardView'
             },
+            serverSideView: {
+                type: Y.eZ.ServerSideView,
+            },
             errorView: {
                 instance: new Y.eZ.ErrorView({
                     container: ERROR_VIEW_CONTAINER
@@ -662,34 +665,6 @@ YUI.add('ez-platformuiapp', function (Y) {
                 Y.config.doc.title = this._initialTitle;
             }
         },
-
-        /**
-         * Middleware that makes sure the admin app extension is loaded and that
-         * the application has been extended with it.
-         *
-         * @method _loadAdminExtension
-         * @protected
-         * @param {Object} req
-         * @param {Object} res
-         * @param {Function} next
-         */
-        _loadAdminExtension: function (req, res, next) {
-            Y.use('ez-app-extension-admin', function (Y, status) {
-                var extension;
-
-                if ( status.data ) {
-                    // first loading of the extension
-                    extension = new Y.eZ.AdminAppExtension();
-                    extension.extend(req.app);
-                    // can not just call next as the routing needs
-                    // to be done from scratch with the addition of
-                    // the app extension
-                    req.app.navigate(req.path);
-                } else {
-                    next();
-                }
-            });
-        },
     }, {
         ATTRS: {
             /**
@@ -715,6 +690,11 @@ YUI.add('ez-platformuiapp', function (Y) {
              *   * `sideViews`: a hash which keys are the side view keys in the
              *     sideViews property. A truthy value means that the
              *     corresponding side view should be visible.
+             *
+             * If a route provides both a `regex` and a `path` properties, the
+             * `regex` in the route matching process, while the `path` can be
+             * used in the reverse routing process (generation of a link). If
+             * no `path` is provided, no reverse routing is possible.
              *
              * @attribute routes
              */
@@ -754,9 +734,22 @@ YUI.add('ez-platformuiapp', function (Y) {
                     view: 'locationViewView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
-                    path: '/admin/*',
-                    callback: '_loadAdminExtension'
-                }],
+                    name: "adminSection",
+                    regex: /\/admin\/(pjax%2Fsection%2F.*)/,
+                    keys: ['uri'],
+                    path: "/admin/:uri",
+                    sideViews: {'navigationHub': true},
+                    service: Y.eZ.ServerSideViewService,
+                    view: "serverSideView",
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }, {
+                    name: "adminGenericRoute",
+                    path: "/admin/:uri",
+                    sideViews: {'navigationHub': true},
+                    service: Y.eZ.ServerSideViewService,
+                    view: "serverSideView",
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }]
             },
             serverRouting: {
                 value: false

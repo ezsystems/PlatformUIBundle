@@ -20,6 +20,8 @@ system:
                         - 'ez-contenteditview'
                         - 'ez-locationviewview'
                         - 'ez-locationviewviewservice'
+                        - 'ez-serversideview'
+                        - 'ez-serversideviewservice'
                         - 'ez-navigationhubviewservice'
                         - 'ez-navigationhubview'
                         - 'ez-discoverybarviewservice'
@@ -67,7 +69,7 @@ system:
                         - 'ez-contentcreateplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
-                    requires: ['ez-viewservice', 'ez-navigationitemsubtreeview', 'array-extras']
+                    requires: ['ez-viewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras']
                     path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
                 ez-discoverybarviewservice:
                     requires: ['ez-viewservice', 'ez-contenttreeplugin']

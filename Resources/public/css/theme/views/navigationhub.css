@@ -80,9 +80,8 @@
     content: "\E60D";
 }
 
-.ez-view-navigationhubview .ez-link a:after {
-    padding-left: 0.5em;
-    vertical-align: middle;
+.ez-view-navigationhubview .ez-admin-zone:before {
+    content: "\E613";
 }
 
 .ez-view-navigationhubview .ez-navigation .ez-navigation-item {
@@ -160,16 +159,7 @@
     border-bottom: 3px solid #528036;
 }
 
-.ez-view-navigationhubview .ez-link a {
-    color: #333;
-    font-size: 85%;
-    font-weight: bold;
-    margin-bottom: 1em;
-    display: inline-block;
-}
-
-.ez-view-navigationhubview .ez-navigation .ez-navigation-item:hover,
-.ez-view-navigationhubview .ez-link a:hover {
+.ez-view-navigationhubview .ez-navigation .ez-navigation-item:hover {
     color: #528036;
 }
 

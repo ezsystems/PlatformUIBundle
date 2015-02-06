@@ -71,6 +71,10 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this._testNavigationItems('studioplus');
         },
 
+        "Should return an object containing the 'admin' navigation items": function () {
+            this._testNavigationItems('admin');
+        },
+
         "Should return an object containing the 'studio' navigation items": function () {
             this._testNavigationItems('studio');
         },
@@ -194,6 +198,16 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             );
         },
 
+        "'admin' zone": function () {
+            var value = this.service.get('adminNavigationItems');
+
+            Assert.isArray(value, "The adminNavigationItems should contain an array");
+            Assert.areEqual(
+                3, value.length,
+                "3 items should be configured by default for the admin zone"
+            );
+        },
+
         "'studioplus' zone": function () {
             var value = this.service.get('studioplusNavigationItems');
 
@@ -253,6 +267,10 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this._testAttribute('studioplus');
         },
 
+        "Should add the navigation item to the 'admin' zone": function () {
+            this._testAttribute('admin');
+        },
+
         "Should add the navigation item to the 'studio' zone": function () {
             this._testAttribute('studio');
         },
@@ -266,6 +284,7 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this.platformIdentifier = 'peppa-pig';
             this.studioplusIdentifier = 'ben-et-holly';
             this.studioIdentifier = 'paw-patrol';
+            this.adminIdentifier = 'dora';
             this.service.addNavigationItem(
                 {config: {identifier: this.platformIdentifier}},
                 'platform'
@@ -277,6 +296,10 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this.service.addNavigationItem(
                 {config: {identifier: this.studioplusIdentifier}},
                 'studioplus'
+            );
+            this.service.addNavigationItem(
+                {config: {identifier: this.adminIdentifier}},
+                'admin'
             );
         },
 
@@ -304,6 +327,10 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
         "Should remove the navigation item to the 'studioplus' zone": function () {
             this._testAttribute('studioplus');
+        },
+
+        "Should remove the navigation item to the 'admin' zone": function () {
+            this._testAttribute('admin');
         },
 
         "Should remove the navigation item to the 'studio' zone": function () {

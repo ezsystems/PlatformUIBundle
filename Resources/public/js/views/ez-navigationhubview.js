@@ -495,6 +495,7 @@ YUI.add('ez-navigationhubview', function (Y) {
                     'platform': 'Platform',
                     'studio': 'Studio',
                     'studioplus': 'Studio Plus',
+                    'admin': 'Admin. Panel',
                 },
                 readOnly: true,
             },
@@ -527,6 +528,22 @@ YUI.add('ez-navigationhubview', function (Y) {
              * @writeOnce
              */
             studioNavigationItems: {
+                setter: '_buildNavigationViews',
+                writeOnce: true,
+            },
+
+            /**
+             * Stores the navigation view item views instance for each item in
+             * the navigation for the admin zone. This attribute accepts either
+             * an array of already build views or an array of object with at a
+             * `Constructor` property and optionally a `config` property holding
+             * an object to pass to the constructor function.
+             *
+             * @attribute studioplusNavigationItems
+             * @type Array of Y.View
+             * @writeOnce
+             */
+            adminNavigationItems: {
                 setter: '_buildNavigationViews',
                 writeOnce: true,
             },

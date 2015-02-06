@@ -92,6 +92,10 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this._testRenderNavigationItems('studioplus');
         },
 
+        "Should render the admin navigation items": function () {
+            this._testRenderNavigationItems('admin');
+        },
+
         "Should render the studio navigation items": function () {
             this._testRenderNavigationItems('studio');
         },
@@ -563,6 +567,18 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         "Test studioplusNavigationItems setter (view)": function () {
             this._testView('studioplusNavigationItems');
+        },
+
+        "Test adminNavigationItems setter (struct, no config)": function () {
+            this._testStructNoConfig('adminNavigationItems');
+        },
+
+        "Test adminNavigationItems setter (struct, config)": function () {
+            this._testStructConfig('adminNavigationItems');
+        },
+
+        "Test adminNavigationItems setter (view)": function () {
+            this._testView('adminNavigationItems');
         },
 
         "Test studioNavigationItems setter (struct, no config)": function () {

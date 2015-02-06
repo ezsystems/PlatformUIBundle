@@ -5,6 +5,7 @@
 
 .ez-view-navigationhubview .ez-zones-navigation,
 .ez-view-navigationhubview .ez-navigation-platform,
+.ez-view-navigationhubview .ez-navigation-admin,
 .ez-view-navigationhubview .ez-navigation-studio,
 .ez-view-navigationhubview .ez-navigation-studioplus {
     list-style-type: none;
@@ -14,10 +15,6 @@
 
 .ez-view-navigationhubview .ez-zones-navigation li {
     display: inline-block;
-}
-
-.ez-view-navigationhubview .ez-zones-navigation .ez-link {
-    vertical-align: bottom;
 }
 
 .ez-view-navigationhubview .ez-navigation > ul,
@@ -40,7 +37,6 @@
 }
 
 .ez-view-navigationhubview .ez-zone,
-.ez-view-navigationhubview .ez-link,
 .ez-view-navigationhubview .ez-user-info {
     padding: 0.8em 1em;
 }
@@ -152,9 +148,5 @@
 
     .ez-view-navigationhubview .ez-zone-name {
         margin: 0.2rem 0 0 1.9rem;
-    }
-
-    .ez-view-navigationhubview .ez-zones-navigation .ez-settings a {
-        margin-bottom: 0.4em;
     }
 }
