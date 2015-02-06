@@ -44,9 +44,9 @@
 }
 
 .ez-view-navigationhubview .ez-zone:before {
-    width: 1.5em;
-    height: 1.5em;
-    line-height: 1.5em;
+    width: 2rem;
+    height: 2rem;
+    line-height: 2rem;
     margin: 0;
     background: #528036;
     color: #fff;
@@ -59,7 +59,13 @@
     -webkit-font-smoothing: antialiased;
 }
 
-@media (max-width: 62em) {
+.ez-view-navigationhubview .ez-admin-zone:before {
+    background: transparent;
+    color: #444;
+    font-size: 100%;
+}
+
+@media (max-width: 58em) {
     .ez-view-navigationhubview .ez-zone:before {
         font-size: 120%;
         width: 1.4em;
@@ -94,7 +100,11 @@
     font-size: 110%;
 }
 
-@media (max-width:62em) {
+.ez-view-navigationhubview .ez-admin-zone .ez-zone-name {
+    font-size: 80%;
+}
+
+@media (max-width:58em) {
     .ez-view-navigationhubview .ez-zone-name {
         font-size: 100%;
     }
@@ -164,7 +174,7 @@
 }
 
 .ez-view-navigationhubview .ez-user-info {
-    font-size: 85%;
+    font-size: 0.85rem;
 }
 
 .ez-view-navigationhubview .ez-user-info-name {

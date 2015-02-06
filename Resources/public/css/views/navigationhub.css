@@ -15,6 +15,7 @@
 
 .ez-view-navigationhubview .ez-zones-navigation li {
     display: inline-block;
+    overflow: hidden;
 }
 
 .ez-view-navigationhubview .ez-navigation > ul,
@@ -23,22 +24,43 @@
     white-space: nowrap;
 }
 
+.ez-view-navigationhubview .ez-zones-navigation {
+    font-size: 0;
+}
+
 .ez-view-navigationhubview .ez-navigation li {
     display: inline-block;
 }
 
 .ez-view-navigationhubview .ez-zone-name {
-    margin: 0.3rem 0 0 2.6rem;
+    height: 2rem;
+    line-height: 2rem;
+    margin: 0 0 0 2.6rem;
+}
+
+.ez-view-navigationhubview .ez-admin-zone .ez-zone-name {
+    margin: 0 0 0 2rem;
 }
 
 .ez-view-navigationhubview .ez-logo {
     text-align: center;
-    width: 9em;
 }
 
 .ez-view-navigationhubview .ez-zone,
+.ez-view-navigationhubview .ez-zones-navigation .ez-logo,
 .ez-view-navigationhubview .ez-user-info {
-    padding: 0.8em 1em;
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+}
+
+.ez-view-navigationhubview .ez-zones-navigation .ez-logo,
+.ez-view-navigationhubview .ez-zone {
+    height: 2rem;
+}
+
+.ez-view-navigationhubview .ez-admin-zone {
+    padding-right: 1.3rem;
+    margin-left: 3em;
 }
 
 .ez-view-navigationhubview .ez-user-info {
@@ -140,13 +162,19 @@
     display: block;
 }
 
-@media (max-width:62em) {
-    .ez-view-navigationhubview .ez-logo {
-        width: 6em;
-        vertical-align: middle;
+@media (max-width:58em) {
+    .ez-view-navigationhubview .ez-zone,
+    .ez-view-navigationhubview .ez-zones-navigation .ez-logo,
+    .ez-view-navigationhubview .ez-user-info {
+        padding: 0.6rem 0.4rem;
     }
 
     .ez-view-navigationhubview .ez-zone-name {
-        margin: 0.2rem 0 0 1.9rem;
+        margin: 0 0 0 1.9rem;
+    }
+
+    .ez-view-navigationhubview .ez-admin-zone {
+        padding-right: 1.3rem;
+        margin-left: 1em;
     }
 }
