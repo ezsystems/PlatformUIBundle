@@ -16,7 +16,6 @@ YUI.add('ez-navigationhubview', function (Y) {
         NAVIGATION_HIDDEN = 'is-navigation-hidden',
         SUB_MENU_OPEN = 'is-sub-menu-open',
         NAVIGATION_SEL = '.ez-navigation',
-        DEFAULT_ACTIVE_NAV = 'platform',
         NAVIGATION_NODE_CLASS_TPL = 'ez-navigation-{identifier}',
         ZONE_ACTIVE = 'is-zone-active';
 
@@ -99,7 +98,8 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @protected
          */
         _handleSelectedItem: function () {
-            var matchedRoute = this.get('matchedRoute');
+            var matchedRoute = this.get('matchedRoute'),
+                activeZone = null;
 
             Y.Object.each(this.get('zones'), function (zone, key) {
                 var inZone = false;
@@ -108,9 +108,10 @@ YUI.add('ez-navigationhubview', function (Y) {
                     inZone = (item.matchRoute(matchedRoute) || inZone);
                 });
                 if ( inZone ) {
-                    this.set('activeNavigation', key);
+                    activeZone = key;
                 }
             }, this);
+            this.set('activeNavigation', activeZone);
         },
 
         /**
@@ -172,7 +173,9 @@ YUI.add('ez-navigationhubview', function (Y) {
             if ( active ) {
                 active.removeClass(ZONE_ACTIVE);
             }
-            container.one('.ez-' + this.get('activeNavigation') + '-zone').addClass(ZONE_ACTIVE);
+            if ( this.get('activeNavigation') ) {
+                container.one('.ez-' + this.get('activeNavigation') + '-zone').addClass(ZONE_ACTIVE);
+            }
         },
 
         /**
@@ -289,7 +292,6 @@ YUI.add('ez-navigationhubview', function (Y) {
 
             if ( navigation.get('docScrollY') > this._navigationY ) {
                 this.set('navigationFixed', true);
-                this.set('activeNavigation', DEFAULT_ACTIVE_NAV); // TODO should depend on the app activeView
             } else {
                 this.set('navigationFixed', false);
             }
@@ -304,10 +306,14 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @protected
          */
         _uiNavigationSize: function (e) {
-            var items, item,
-                more = this._navigationMenu.one('.ez-more'),
-                moreMenu = more.one('.ez-sub-menu'),
-                moreItems = moreMenu.all('li');
+            var items, item, more, moreMenu, moreItems;
+
+            if ( !this._navigationMenu ) {
+                return;
+            }
+            more = this._navigationMenu.one('.ez-more');
+            moreMenu = more.one('.ez-sub-menu');
+            moreItems = moreMenu.all('li');
 
             while ( this._navigationUnderflowed() ) {
                 if ( moreItems.isEmpty() ) {
@@ -436,7 +442,11 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @return {String} val
          */
         _setNavigationMenu: function (val) {
-            this._navigationMenu = this._getNavigationNode(val);
+            if ( val ) {
+                this._navigationMenu = this._getNavigationNode(val);
+            } else {
+                this._navigationMenu = null;
+            }
             return val;
         },
 
@@ -576,7 +586,7 @@ YUI.add('ez-navigationhubview', function (Y) {
              */
             activeNavigation: {
                 setter: '_setNavigationMenu',
-                value: DEFAULT_ACTIVE_NAV,
+                value: null,
             },
 
             /**
