@@ -117,6 +117,9 @@ system:
                 ez-navigationitemsubtreeview:
                     requires: ['ez-navigationitemview']
                     path: %ez_platformui.public_dir%/js/views/navigation/ez-navigationitemsubtreeview.js
+                ez-navigationitemparameterview:
+                    requires: ['ez-navigationitemview']
+                    path: %ez_platformui.public_dir%/js/views/navigation/ez-navigationitemparameterview.js
                 ez-navigationitemview:
                     requires: ['ez-templatebasedview', 'navigationitemview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/navigation/ez-navigationitemview.js
