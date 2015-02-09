@@ -15,7 +15,7 @@ YUI.add('ez-loginformviewservice-tests', function (Y) {
             this.capi = new Y.Mock();
 
             this.isLoggedIn = true;
-            Y.Mock.expect(this.capi, {
+            Y.Mock.expect(this.app, {
                 method: 'isLoggedIn',
                 args: [Y.Mock.Value.Function],
                 run: function (callback) {

@@ -18,9 +18,17 @@ class PlatformUIController extends Controller
      */
     private $session;
 
-    public function __construct( SessionInterface $session )
+    /**
+     * The configured anonymous user id
+     *
+     * @var int
+     */
+    private $anonymousUserId;
+
+    public function __construct( SessionInterface $session, $anonymousUserId = 10 )
     {
         $this->session = $session;
+        $this->anonymousUserId = $anonymousUserId;
     }
 
     /**
@@ -43,7 +51,13 @@ class PlatformUIController extends Controller
         }
         return $this->render(
             'eZPlatformUIBundle:PlatformUI:shell.html.twig',
-            array( 'sessionInfo' => $sessionInfo )
+            array(
+                'sessionInfo' => $sessionInfo,
+                'anonymousUserId' => $this->generateUrl(
+                    'ezpublish_rest_loadUser',
+                    array( 'userId' => $this->anonymousUserId )
+                ),
+            )
         );
     }
 }

@@ -64,6 +64,7 @@
                     viewContainer: '.ez-view-container',
                     root: "{{ app.request.attributes.get( 'semanticPathinfo' ) }}",
                     assetRoot: "{{ asset( '/' ) }}",
+                    anonymousUserId: "{{ anonymousUserId }}",
                     plugins: Y.eZ.PluginRegistry.getPlugins(Y.eZ.PlatformUIApp.NAME),
                     capi: new Y.eZ.CAPI(
                         "{{ app.request.uriForPath('/')|trim('/') }}",

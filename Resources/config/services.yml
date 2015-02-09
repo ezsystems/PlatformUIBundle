@@ -21,7 +21,7 @@ services:
 
     ezsystems.platformui.controller:
         class: %ezsystems.platformui.controller.class%
-        arguments: [@session]
+        arguments: [@session, $anonymous_user_id$]
         parent: ezpublish.controller.base
 
     ezsystems.platformui.controller.template:
