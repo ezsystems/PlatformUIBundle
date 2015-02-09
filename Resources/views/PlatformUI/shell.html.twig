@@ -72,7 +72,7 @@
                                 name: "{{ sessionInfo.name }}",
                                 identifier: "{{ sessionInfo.identifier }}",
                                 href: "{{ sessionInfo.href }}",
-                                csrfToken: "{{ csrf_token( 'rest' ) }}",
+                                csrfToken: "{{ sessionInfo.csrfToken }}",
                         }{% endif %})
                     )
                 });

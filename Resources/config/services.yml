@@ -21,7 +21,11 @@ services:
 
     ezsystems.platformui.controller:
         class: %ezsystems.platformui.controller.class%
-        arguments: [@session, $anonymous_user_id$]
+        arguments:
+            - @session
+            - @security.csrf.token_manager
+            - %ezpublish_rest.csrf_token_intention%
+            - $anonymous_user_id$
         parent: ezpublish.controller.base
 
     ezsystems.platformui.controller.template:

@@ -10,6 +10,7 @@ namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Bundle\EzPublishCoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class PlatformUIController extends Controller
 {
@@ -19,15 +20,32 @@ class PlatformUIController extends Controller
     private $session;
 
     /**
+     * @var Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
+     */
+    private $csrfTokenManager;
+
+    /**
+     * @var string
+     */
+    private $csrfTokenIntention;
+
+    /**
      * The configured anonymous user id
      *
      * @var int
      */
     private $anonymousUserId;
 
-    public function __construct( SessionInterface $session, $anonymousUserId = 10 )
+    public function __construct(
+        SessionInterface $session,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        $restIntention = 'rest',
+        $anonymousUserId = 10
+    )
     {
         $this->session = $session;
+        $this->csrfTokenManager = $csrfTokenManager;
+        $this->csrfTokenIntention = $restIntention;
         $this->anonymousUserId = $anonymousUserId;
     }
 
@@ -44,6 +62,9 @@ class PlatformUIController extends Controller
             $sessionInfo['isStarted'] = true;
             $sessionInfo['name'] = $this->session->getName();
             $sessionInfo['identifier'] = $this->session->getId();
+            $sessionInfo['csrfToken'] = $this->csrfTokenManager->getToken(
+                $this->csrfTokenIntention
+            );
             $sessionInfo['href'] = $this->generateUrl(
                 'ezpublish_rest_deleteSession',
                 array( 'sessionId' => $this->session->getId() )
