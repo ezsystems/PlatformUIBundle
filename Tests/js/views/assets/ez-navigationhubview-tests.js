@@ -4,7 +4,7 @@
  */
 YUI.add('ez-navigationhubview-tests', function (Y) {
     var viewTest, eventTest, logOutTest,
-        navigationItemTest,
+        navigationItemTest, zoneTest,
         navigationItemsSetter, routeMatchTest,
         Assert = Y.Assert;
 
@@ -46,6 +46,12 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             var origTpl = this.view.template,
                 that = this;
 
+
+            this.view.set(
+                'platformNavigationItems',
+                [new Y.eZ.NavigationItemView(), new Y.eZ.NavigationItemView()]
+            );
+            this.view.set('studioNavigationItems', [new Y.eZ.NavigationItemView()]);
             this.view.template = function (variables) {
                 Y.Assert.areEqual(
                     2, Y.Object.keys(variables).length,
@@ -55,10 +61,21 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                     that.userJson, variables.user,
                     "The template should receive the result of toJSON on the user"
                 );
-                Y.Assert.areSame(
-                    that.view.get('zones'), variables.zones,
-                    "The template should receive the zones descriptions"
+                Assert.isObject(
+                    variables.zones,
+                    "The zone list should be available"
                 );
+                Y.Object.each(variables.zones, function (zone, key) {
+                    Assert.areEqual(
+                        this.get('zones')[key], zone.name,
+                        "Each zone should have a name"
+                    );
+                    Assert.areEqual(
+                        (key === 'platform'),
+                        zone.hasNavigation,
+                        "Only the platform zone has a navigation " + key
+                    );
+                }, this);
 
                 return origTpl.call(this, variables);
             };
@@ -101,8 +118,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         },
     });
 
-    eventTest = new Y.Test.Case({
-        name: "eZ Navigation Hub View event tests",
+    zoneTest = new Y.Test.Case({
+        name: "eZ Navigation Hub View zone tests",
 
         setUp: function () {
             this.userMock = new Y.Mock();
@@ -113,6 +130,10 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.view = new Y.eZ.NavigationHubView({
                 container: '.container',
                 user: this.userMock,
+                studioplusNavigationItems: [
+                    new Y.eZ.NavigationItemView(),
+                    new Y.eZ.NavigationItemView(),
+                ],
             });
             this.view.render();
         },
@@ -151,7 +172,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             });
         },
 
-        "Should show the correct navigation menu when tapping a navigation zone": function () {
+        "Should show the navigation menu with some items": function () {
             var container = this.view.get('container'),
                 optZone = container.one('.ez-studioplus-zone'),
                 navigationIdentifier = optZone.getAttribute('data-navigation'),
@@ -166,6 +187,32 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.wait();
         },
 
+        "Should not show the navigation menu without items": function () {
+            var container = this.view.get('container'),
+                optZone = container.one('.ez-platform-zone'),
+                that = this;
+
+            this.view.set('active', true);
+            optZone.simulateGesture('tap', function () {
+                that.resume(function () {
+                    Assert.isTrue(
+                        optZone.hasClass("is-zone-active"),
+                        "The choosen zone should be active"
+                    );
+
+                    container.one('.ez-navigation').get('children').each(function () {
+                        Assert.isTrue(
+                            this.hasClass('is-navigation-hidden'),
+                            "The non active navigation menu should be hidden"
+                        );
+                    });
+
+                });
+            });
+            this.wait();
+        },
+
+
         "Should switch to the correct zone": function () {
             var container = this.view.get('container'),
                 optZone = container.one('.ez-studioplus-zone'),
@@ -175,6 +222,28 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.view.set('activeNavigation', 'studio');
             this.view.set('activeNavigation', 'studioplus');
             this._testShowNavigationMenu(optZone, navigationIdentifier);
+        },
+    });
+
+    eventTest = new Y.Test.Case({
+        name: "eZ Navigation Hub View event tests",
+
+        setUp: function () {
+            this.userMock = new Y.Mock();
+            Y.Mock.expect(this.userMock, {
+                method: 'toJSON',
+                returns: {},
+            });
+            this.view = new Y.eZ.NavigationHubView({
+                container: '.container',
+                user: this.userMock,
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
         },
 
         _testShowSubMenu: function (link, subMenu, testCoordinates) {
@@ -284,6 +353,10 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 that = this;
 
             this.view.set('active', true);
+            this.view.set('platformNavigationItems', [
+                new Y.eZ.NavigationItemView(),
+                new Y.eZ.NavigationItemView(),
+            ]);
             this.view.set('activeNavigation', 'platform');
             subMenuLink.simulateGesture('tap', function () {
                 that.resume(function () {
@@ -384,6 +457,10 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 inMoreMenu = [], inMoreMenuAfter = [];
 
             this.view.set('active', true);
+            this.view.set('platformNavigationItems', [
+                new Y.eZ.NavigationItemView(),
+                new Y.eZ.NavigationItemView(),
+            ]);
             this.view.set('activeNavigation', 'platform');
 
             // emptying the more navigation
@@ -776,6 +853,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Navigation Hub View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(eventTest);
+    Y.Test.Runner.add(zoneTest);
     Y.Test.Runner.add(logOutTest);
     Y.Test.Runner.add(navigationItemsSetter);
     Y.Test.Runner.add(routeMatchTest);

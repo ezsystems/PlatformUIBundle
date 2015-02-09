@@ -24,6 +24,10 @@
     border-right: 1px solid #ddd;
 }
 
+.ez-view-navigationhubview .ez-zone-no-navigation.is-zone-active {
+    border-bottom: 3px solid #528036;
+}
+
 .ez-view-navigationhubview .ez-navigation {
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #bbb;

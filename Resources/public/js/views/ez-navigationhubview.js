@@ -80,9 +80,9 @@ YUI.add('ez-navigationhubview', function (Y) {
         _resizeSubscription: null,
 
         initializer: function () {
-            this.after('activeNavigationChange', function () {
+            this.after('activeNavigationChange', function (e) {
                 if ( this.get('active') ) {
-                    this._uiSetActiveNavigation();
+                    this._uiSetActiveNavigation(e.prevVal);
                 }
             });
             this.after('navigationFixedChange', this._uiHandleFixedNavigation);
@@ -104,7 +104,7 @@ YUI.add('ez-navigationhubview', function (Y) {
             Y.Object.each(this.get('zones'), function (zone, key) {
                 var inZone = false;
 
-                Y.Array.each(this.get(key + 'NavigationItems'), function (item) {
+                Y.Array.each(this._getNavigationItemViews(key), function (item) {
                     inZone = (item.matchRoute(matchedRoute) || inZone);
                 });
                 if ( inZone ) {
@@ -118,11 +118,12 @@ YUI.add('ez-navigationhubview', function (Y) {
          * Sets the active navigation in the UI
          *
          * @method _uiSetActiveNavigation
+         * @param {String|Null} previousZone the previously active zone
          * @protected
          */
-        _uiSetActiveNavigation: function () {
+        _uiSetActiveNavigation: function (previousZone) {
             this._uiSetActiveZone();
-            this._uiShowNavigation();
+            this._uiShowNavigation(previousZone);
             this._uiNavigationSize();
         },
 
@@ -189,12 +190,59 @@ YUI.add('ez-navigationhubview', function (Y) {
 
             container.setHTML(this.template({
                 user: this.get('user').toJSON(),
-                zones: this.get('zones'),
+                zones: this._buildZones(),
             }));
             this._renderNavigationItems();
-            this._setNavigationMenu(this.get('activeNavigation'));
             this._uiSetActiveNavigation();
             return this;
+        },
+
+        /**
+         * Builds the zone list for the template. Each zone is represented by an
+         * object with a `name` and a `hasNavigation` properties.
+         *
+         * @method _buildZones
+         * @protected
+         * @return {Object}
+         */
+        _buildZones: function () {
+            var zones = {};
+
+            Y.Object.each(this.get('zones'), function (zoneName, key) {
+                zones[key] = {
+                    name: zoneName,
+                    hasNavigation: this._hasNavigation(key),
+                };
+            }, this);
+            return zones;
+        },
+
+        /**
+         * Returns whether the zone associated with the given key has a
+         * navigation ie it has more than one navigation item view.
+         *
+         * @method _hasNavigation
+         * @protected
+         * @param {String} zoneKey
+         * @return {Boolean}
+         */
+        _hasNavigation: function (zoneKey) {
+            var items = this._getNavigationItemViews(zoneKey);
+
+            return !!(items && items.length > 1);
+        },
+
+        /**
+         * Returns the navigation item views instances associated with the given
+         * zone key.
+         *
+         * @method _getNavigationItemViews
+         * @protected
+         * @param {String} zoneKey
+         * @return {undefined|Array} of eZ.NavigationItemView
+         */
+        _getNavigationItemViews: function (zoneKey) {
+            return this.get(zoneKey + 'NavigationItems');
         },
 
         /**
@@ -209,7 +257,7 @@ YUI.add('ez-navigationhubview', function (Y) {
             Y.Object.each(this.get('zones'), function (zone, key) {
                 var after = that._getNavigationNode(key).one('.ez-logo');
 
-                Y.Array.each(that.get(key + 'NavigationItems'), function (view) {
+                Y.Array.each(that._getNavigationItemViews(key), function (view) {
                     after.insert(view.render().get('container'), 'after');
                     after = view.get('container');
                 });
@@ -242,7 +290,7 @@ YUI.add('ez-navigationhubview', function (Y) {
          */
         _setNavigationItemActive: function (active) {
             Y.Object.each(this.get('zones'), function (zone, key) {
-                Y.Array.each(this.get(key + 'NavigationItems'), function (view) {
+                Y.Array.each(this._getNavigationItemViews(key), function (view) {
                     view.set('active', active);
                 });
             }, this);
@@ -250,22 +298,19 @@ YUI.add('ez-navigationhubview', function (Y) {
 
         /**
          * Makes sure the navigation corresponding to the activeNavigation value
-         * is shown
+         * is shown if needed
          *
          * @protected
          * @method _uiShowNavigation
+         * @param {String|Null} previousZone the previously active zone
          */
-        _uiShowNavigation: function () {
-            var navigations = this.get('container').one(NAVIGATION_SEL).get('children'),
-                navClass = L.sub(NAVIGATION_NODE_CLASS_TPL, {identifier: this.get('activeNavigation')});
-
-            navigations.each(function (nav) {
-                if ( nav.hasClass(navClass) ) {
-                    nav.removeClass(NAVIGATION_HIDDEN);
-                } else {
-                    nav.addClass(NAVIGATION_HIDDEN);
-                }
-            });
+        _uiShowNavigation: function (previousZone) {
+            if ( previousZone ) {
+                this._getNavigationNode(previousZone).addClass(NAVIGATION_HIDDEN);
+            }
+            if ( this.get('activeNavigation') && this._hasNavigation(this.get('activeNavigation')) ) {
+                this._getNavigationNode(this.get('activeNavigation')).removeClass(NAVIGATION_HIDDEN);
+            }
         },
 
         /**
