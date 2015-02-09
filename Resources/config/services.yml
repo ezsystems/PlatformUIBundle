@@ -1,5 +1,6 @@
 parameters:
     ezsystems.platformui.twig.yui_extension.class: EzSystems\PlatformUIBundle\Twig\TwigYuiExtension
+    ezsystems.platformui.controller.class: EzSystems\PlatformUIBundle\Controller\PlatformUIController
     ezsystems.platformui.controller.dashboard.class: EzSystems\PlatformUIBundle\Controller\DashboardController
     ezsystems.platformui.helper.systeminfo.class: EzSystems\PlatformUIBundle\Helper\SystemInfoHelper
     ezsystems.platformui.controller.systeminfo.class: EzSystems\PlatformUIBundle\Controller\SystemInfoController
@@ -17,6 +18,11 @@ services:
         arguments: [@ezpublish.config.resolver, @router, @?logger]
         tags:
             - { name: twig.extension }
+
+    ezsystems.platformui.controller:
+        class: %ezsystems.platformui.controller.class%
+        arguments: [@session]
+        parent: ezpublish.controller.base
 
     ezsystems.platformui.controller.template:
         class: %ezsystems.platformui.controller.template.class%

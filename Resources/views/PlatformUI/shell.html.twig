@@ -67,7 +67,12 @@
                     plugins: Y.eZ.PluginRegistry.getPlugins(Y.eZ.PlatformUIApp.NAME),
                     capi: new Y.eZ.CAPI(
                         "{{ app.request.uriForPath('/')|trim('/') }}",
-                        new Y.eZ.SessionAuthAgent()
+                        new Y.eZ.SessionAuthAgent({%if sessionInfo.isStarted %}{
+                                name: "{{ sessionInfo.name }}",
+                                identifier: "{{ sessionInfo.identifier }}",
+                                href: "{{ sessionInfo.href }}",
+                                csrfToken: "{{ csrf_token( 'rest' ) }}",
+                        }{% endif %})
                     )
                 });
             app.on('ready', function () {

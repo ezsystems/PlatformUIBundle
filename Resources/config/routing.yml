@@ -1,7 +1,8 @@
 
 shell:
     pattern: /shell
-    defaults: { _controller: eZPlatformUIBundle:PlatformUI:shell }
+    defaults:
+        _controller: ezsystems.platformui.controller:shellAction
 
 template_yui_module:
     path: /tpl/handlebars/{module}.js
