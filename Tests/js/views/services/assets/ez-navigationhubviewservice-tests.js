@@ -4,7 +4,7 @@
  */
 YUI.add('ez-navigationhubviewservice-tests', function (Y) {
     var getViewParametersTest, logOutEvtTest, defaultNavigationItemsTest,
-        addNavigationItemTest, removeNavigationItemTest,
+        addNavigationItemTest, removeNavigationItemTest, navigateToTest,
         Assert = Y.Assert;
 
     getViewParametersTest = new Y.Test.Case({
@@ -146,6 +146,38 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this.service.fire('whatever:logOut');
         },
     });
+
+    navigateToTest = new Y.Test.Case({
+        name: "eZ Navigation Hub View Service navigateTo event test",
+
+        setUp: function () {
+            this.routeName = 'samplanet';
+            this.routeParams = {};
+            this.app = new Y.Mock();
+            Y.Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: [this.routeName, this.routeParams]
+            });
+
+            this.service = new Y.eZ.NavigationHubViewService({
+                app: this.app,
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+            delete this.app;
+        },
+
+        "Should handle the navigateTo event": function () {
+            this.service.fire('whatever:navigateTo', {
+                route: {name: this.routeName, params: this.routeParams}
+            });
+            Y.Mock.verify(this.app);
+        },
+    });
+
 
     defaultNavigationItemsTest = new Y.Test.Case({
         name: "eZ Navigation Hub View Service default navigation items",
@@ -342,6 +374,7 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
     Y.Test.Runner.setName("eZ Navigation Hub View Service tests");
     Y.Test.Runner.add(getViewParametersTest);
     Y.Test.Runner.add(logOutEvtTest);
+    Y.Test.Runner.add(navigateToTest);
     Y.Test.Runner.add(defaultNavigationItemsTest);
     Y.Test.Runner.add(addNavigationItemTest);
     Y.Test.Runner.add(removeNavigationItemTest);

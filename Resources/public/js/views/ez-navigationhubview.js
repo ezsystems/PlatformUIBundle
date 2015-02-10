@@ -83,6 +83,7 @@ YUI.add('ez-navigationhubview', function (Y) {
             this.after('activeNavigationChange', function (e) {
                 if ( this.get('active') ) {
                     this._uiSetActiveNavigation(e.prevVal);
+                    this._navigateToZone(e.newVal);
                 }
             });
             this.after('navigationFixedChange', this._uiHandleFixedNavigation);
@@ -112,6 +113,29 @@ YUI.add('ez-navigationhubview', function (Y) {
                 }
             }, this);
             this.set('activeNavigation', activeZone);
+        },
+
+        /**
+         * Fires the event to navigate to the given zone. The navigation happens
+         * only if the zone has exactly one navigation items.
+         *
+         * @method _navigateToZone
+         * @param {String|Null} zone
+         * @method protected
+         */
+        _navigateToZone: function (zone) {
+            var items;
+
+            if ( !zone ) {
+                return;
+            }
+
+            items = this._getNavigationItemViews(zone);
+            if ( items && items.length === 1 ) {
+                this.fire('navigateTo', {
+                    route: items[0].get('route')
+                });
+            }
         },
 
         /**

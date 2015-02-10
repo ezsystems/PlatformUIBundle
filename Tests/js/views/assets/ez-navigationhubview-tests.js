@@ -127,12 +127,16 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 method: 'toJSON',
                 returns: {},
             });
+            this.routeAdmin = {name: "samplanet", params: {}};
             this.view = new Y.eZ.NavigationHubView({
                 container: '.container',
                 user: this.userMock,
                 studioplusNavigationItems: [
                     new Y.eZ.NavigationItemView(),
                     new Y.eZ.NavigationItemView(),
+                ],
+                adminNavigationItems: [
+                    new Y.eZ.NavigationItemView({route: this.routeAdmin})
                 ],
             });
             this.view.render();
@@ -222,6 +226,48 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.view.set('activeNavigation', 'studio');
             this.view.set('activeNavigation', 'studioplus');
             this._testShowNavigationMenu(optZone, navigationIdentifier);
+        },
+
+        "Should fire the navigateTo event": function () {
+            var fired = false,
+                that = this;
+
+            this.view.on('navigateTo', function (e) {
+                fired = true;
+                Assert.areSame(
+                    that.routeAdmin, e.route,
+                    "The event facade should provide the route"
+                );
+            });
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'admin');
+
+            Assert.isTrue(fired, "The navigateTo should have been fired");
+        },
+
+        "Should not fire the navigateTo event with several items": function () {
+
+            this.view.on('navigateTo', function (e) {
+                Assert.fail("The navigateTo event should not be fired");
+            });
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'studioplus');
+        },
+
+        "Should not fire the navigateTo event without items": function () {
+            this.view.on('navigateTo', function (e) {
+                Assert.fail("The navigateTo event should not be fired");
+            });
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
+        },
+
+        "Should not fire the navigateTo event without a zone": function () {
+            this.view.on('navigateTo', function (e) {
+                Assert.fail("The navigateTo event should not be fired");
+            });
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
         },
     });
 

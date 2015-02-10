@@ -22,6 +22,20 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
     Y.eZ.NavigationHubViewService = Y.Base.create('navigationHubViewService', Y.eZ.ViewService, [], {
         initializer: function () {
             this.on('*:logOut', this._logOut);
+            this.after('*:navigateTo', this._navigateTo);
+        },
+
+        /**
+         * navigateTo event handler. it redirects the user to the given route.
+         *
+         * @method _navigateTo
+         * @protected
+         * @param {EventFacade} e
+         */
+        _navigateTo: function (e) {
+            var route = e.route;
+
+            this.get('app').navigateTo(route.name, route.params);
         },
 
         /**
