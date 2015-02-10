@@ -34,10 +34,9 @@ YUI.add('ez-loginformviewservice', function (Y) {
          * @param {Function} next
          */
         _load: function (next) {
-            var capi = this.get('capi'),
-                app = this.get('app');
+            var app = this.get('app');
 
-            capi.isLoggedIn(function (error) {
+            app.isLoggedIn(function (error) {
                 if ( error ) {
                     next();
                     return;

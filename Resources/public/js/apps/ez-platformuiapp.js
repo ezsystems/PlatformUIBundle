@@ -306,6 +306,36 @@ YUI.add('ez-platformuiapp', function (Y) {
         },
 
         /**
+         * Checks whether the user is logged in. From the application point of
+         * view, being logged in means the user has a session and this session
+         * is associated with a user which is not the anonymous user.
+         *
+         * @method isLoggedIn
+         * @param {Function} callback function called after the check
+         * @param {Boolean} callback.notLoggedIn false if the user is logged in,
+         * true otherwise
+         * @param {Object} [callback.response] the response object if a REST
+         * call is done
+         */
+        isLoggedIn: function (callback) {
+            var capi = this.get('capi'),
+                anonymousUserId = this.get('anonymousUserId'),
+                userId = this.get('user').get('id');
+
+            if ( userId ) {
+                callback(userId === anonymousUserId);
+                return;
+            }
+            capi.isLoggedIn(function (error, response) {
+                if ( error || response.document.Session.User._href === anonymousUserId ) {
+                    callback(true, response);
+                    return;
+                }
+                callback(false, response);
+            });
+        },
+
+        /**
          * Changes the application state to be open
          *
          * @method open
@@ -470,11 +500,8 @@ YUI.add('ez-platformuiapp', function (Y) {
         },
 
         /**
-         * Checks whether the user is loaded and logged in. If the user object
-         * in the `user` attribute is loaded, the user is considered logged in.
-         * If it's not loaded, the CAPI.isLoggedIn method is called and the user
-         * is loaded if it's logged other, the application user is redirected to
-         * the login form.
+         * Middleware to check whether the user is logged in. When not logged
+         * in, it redirects the user to the login form.
          *
          * @method checkUser
          * @param {Object} req
@@ -486,26 +513,25 @@ YUI.add('ez-platformuiapp', function (Y) {
                 app = this,
                 capi = this.get('capi');
 
-            if ( user.get('id') ) {
-                next();
-                return;
-            }
-
-            capi.isLoggedIn(function (error, response) {
-                if ( error ) {
+            app.isLoggedIn(function (notLoggedIn, response) {
+                if ( notLoggedIn ) {
                     app.navigateTo('loginForm');
                     return;
                 }
-                user.set('id', response.document.Session.User._href);
-                user.load({api: capi}, function (error) {
-                    if ( error ) {
-                        app.logOut(function () {
-                            app.navigateTo('loginForm');
-                        });
-                        return;
-                    }
+                if ( !user.get('id') ) {
+                    user.set('id', response.document.Session.User._href);
+                    user.load({api: capi}, function (error) {
+                        if ( error ) {
+                            app.logOut(function () {
+                                app.navigateTo('loginForm');
+                            });
+                            return;
+                        }
+                        next();
+                    });
+                } else {
                     next();
-                });
+                }
             });
         },
 
@@ -861,7 +887,18 @@ YUI.add('ez-platformuiapp', function (Y) {
              */
             activeViewService: {
                 readOnly: true
-            }
+            },
+
+            /**
+             * Stores the REST id of the configured anonymous user
+             *
+             * @attribute anonymousUserId
+             * @type {String}
+             * @required
+             */
+            anonymousUserId: {
+                writeOnce: "initOnly",
+            },
         }
     });
 });
