@@ -48,7 +48,85 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         _getViewParameters: function () {
             return {
                 user: this.get('app').get('user'),
+                navigationMenus: this.get('navigationMenus')
             };
         },
+    }, {
+        ATTRS: {
+            /**
+             * Contains an object filled with menu links
+             * assigned to the tab
+             *
+             * @attribute navigationMenus
+             * @type Object
+             * @required
+             * @default {
+                    create: [{
+                        title: 'Content structure',
+                        href: '/shell#/view/%2Fapi%2Fezp%2Fv2%2Fcontent%2Flocations%2F1%2F2'
+                    }, {
+                        title: 'Media library',
+                        href: '/shell#/view/%2Fapi%2Fezp%2Fv2%2Fcontent%2Flocations%2F1%2F43'
+                    }, {
+                        title: 'Campaign',
+                        href: '/shell#/'
+                    }],
+                    optimize: [{
+                        title: 'Optimize 1',
+                        href: '/shell#'
+                    }, {
+                        title: 'Optimize 2',
+                        href: '/shell#'
+                    }, {
+                        title: 'Optimize 3',
+                        href: '/shell#'
+                    }],
+                    deliver: [{
+                        title: 'Deliver 1',
+                        href: '/shell#'
+                    }, {
+                        title: 'Deliver 2',
+                        href: '/shell#'
+                    }, {
+                        title: 'Deliver 3',
+                        href: '/shell#'
+                    }]
+                }
+             */
+            navigationMenus: {
+                value: {
+                    create: [{
+                        title: 'Content structure',
+                        href: '/shell#/view/%2Fapi%2Fezp%2Fv2%2Fcontent%2Flocations%2F1%2F2'
+                    }, {
+                        title: 'Media library',
+                        href: '/shell#/view/%2Fapi%2Fezp%2Fv2%2Fcontent%2Flocations%2F1%2F43'
+                    }, {
+                        title: 'Campaign',
+                        href: '/shell#/'
+                    }],
+                    optimize: [{
+                        title: 'Optimize 1',
+                        href: '/shell#'
+                    }, {
+                        title: 'Optimize 2',
+                        href: '/shell#'
+                    }, {
+                        title: 'Optimize 3',
+                        href: '/shell#'
+                    }],
+                    deliver: [{
+                        title: 'Deliver 1',
+                        href: '/shell#'
+                    }, {
+                        title: 'Deliver 2',
+                        href: '/shell#'
+                    }, {
+                        title: 'Deliver 3',
+                        href: '/shell#'
+                    }]
+                }
+            }
+        }
     });
 });
