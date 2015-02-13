@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>eZ Universal Discovery Method Base view tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-universaldiscoverymethodbaseview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-universaldiscoverymethodbaseview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-universaldiscoverymethodbaseview": {
+                requires: ['ez-templatebasedview', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoverymethodbaseview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-universaldiscoverymethodbaseview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

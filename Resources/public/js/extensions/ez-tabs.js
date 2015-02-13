@@ -30,6 +30,25 @@ YUI.add('ez-tabs', function (Y) {
 
     Tabs.prototype.initializer = function () {
         this.events = Y.merge(_events, this.events || {});
+
+        /**
+         * Fired when changing the visible tab. The default function changes the
+         * DOM so that the new tab panel appears and the associated tab label is
+         * highlighted. The behavior can be prevented.
+         *
+         * @event changeTab
+         * @param {Node} tabLabelNode
+         * @param {String} tabId
+         * @param {Node} container
+         */
+        this.publish('changeTab', {
+            bubbles: true,
+            emitFacade: true,
+            preventable: true,
+            defaultFn: function (e) {
+                this._selectTab(e.tabLabelNode, e.tabId, e.tabContainerNode);
+            },
+        });
     };
 
     /**
@@ -41,11 +60,23 @@ YUI.add('ez-tabs', function (Y) {
      */
     Tabs.prototype._uiTab = function (e) {
         e.preventDefault();
-        this._selectTab(
-            e.currentTarget.ancestor('.ez-tabs-label'),
-            e.currentTarget.getAttribute('href'),
-            this.get('container')
-        );
+        this.fire('changeTab', {
+            tabLabelNode: this._getTabLabel(e.currentTarget),
+            tabId: e.currentTarget.getAttribute('href'),
+            tabContainerNode: this.get('container'),
+        });
+    };
+
+    /**
+     * Returns the tab label element from the corresponding link
+     *
+     * @protected
+     * @method _getTabLabel
+     * @param {Node} linkNode
+     * @return {Node}
+     */
+    Tabs.prototype._getTabLabel = function (linkNode) {
+        return linkNode.ancestor('.ez-tabs-label');
     };
 
     /**

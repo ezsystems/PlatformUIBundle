@@ -8,9 +8,23 @@
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="universaldiscoveryview-ez-template">
+<div class="ez-tabs">
+    {{#each methods}}
+        <p class="ez-tabs-label"><a href="#{{ identifier }}">{{ title }}</a></p>
+    {{/each}}
+    {{#each methods}}
+        <div class="ez-tabs-panel" id="{{ identifier }}"></div>
+    {{/each}}
+</div>
+
 <a href="#" class="ez-universaldiscovery-cancel">Cancel</a>
 
 <button class="ez-universaldiscovery-confirm">Confirm</button>
+</script>
+
+
+<script type="text/x-handlebars-template" id="universaldiscoverymethodbaseview-ez-template">
+method base view
 </script>
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -33,12 +47,20 @@
         filter: loaderFilter,
         modules: {
             "ez-universaldiscoveryview": {
-                requires: ['ez-templatebasedview', 'event-tap'],
+                requires: ['ez-templatebasedview', 'ez-universaldiscoverymethodbaseview', 'ez-tabs', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-universaldiscoveryview.js"
+            },
+            "ez-universaldiscoverymethodbaseview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoverymethodbaseview.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-tabs": {
+                requires: ['node', 'event-tap'],
+                fullpath: "../../../Resources/public/js/extensions/ez-tabs.js"
             },
             "ez-view": {
                 requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
