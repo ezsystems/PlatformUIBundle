@@ -1,5 +1,13 @@
 <h1>Welcome to eZ Platform</h1>
 
+<div style="width: 70%; border: 1px solid #ccc; border-radius: 3px; background: #f5f4f2; margin: auto; padding:0.5em 1em;">
+<p>Universal discovery confirm count: <span class="ez-ud-count" style="font-size: 200%; font-weight: bold;">0</span></p>
+<p>
+    <button class="ez-discover ez-button pure-button">Universal discovery widget</button>
+    <button class="ez-discover-settings ez-button pure-button">Universal discovery widget with custom settings</button>
+</p>
+</div>
+
 <p>
     eZ Platform is the upcoming next generation Content Management Platform from <a href="http://ez.no">eZ Systems</a> and the <a href="http://share.ez.no">eZ Community</a>.
 </p>

@@ -110,6 +110,7 @@ system:
                         - 'ez-templatebasedview'
                         - 'universaldiscoveryview-ez-template'
                         - 'ez-universaldiscoverybrowseview'
+                        - 'ez-universaldiscoveryrecentview'
                         - 'event-tap'
                     path: %ez_platformui.public_dir%/js/views/ez-universaldiscoveryview.js
                 universaldiscoveryview-ez-template:
@@ -124,6 +125,12 @@ system:
                 universaldiscoverybrowseview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/universaldiscovery/browse.hbt
+                ez-universaldiscoveryrecentview:
+                    requires: ['ez-universaldiscoverymethodbaseview', 'universaldiscoveryrecentview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoveryrecentview.js
+                universaldiscoveryrecentview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/universaldiscovery/recent.hbt
                 ez-navigationhubview:
                     requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside', 'navigationhubview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-navigationhubview.js
