@@ -574,7 +574,7 @@ YUI.add('ez-navigationhubview', function (Y) {
                     'platform': 'Platform',
                     'studio': 'Studio',
                     'studioplus': 'Studio Plus',
-                    'admin': 'Admin. Panel',
+                    'admin': 'Admin Panel',
                 },
                 readOnly: true,
             },
