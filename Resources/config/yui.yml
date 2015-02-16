@@ -20,6 +20,8 @@ system:
                         - 'ez-contenteditview'
                         - 'ez-locationviewview'
                         - 'ez-locationviewviewservice'
+                        - 'ez-serversideview'
+                        - 'ez-serversideviewservice'
                         - 'ez-navigationhubviewservice'
                         - 'ez-navigationhubview'
                         - 'ez-discoverybarviewservice'
@@ -67,7 +69,7 @@ system:
                         - 'ez-contentcreateplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
-                    requires: ['ez-viewservice']
+                    requires: ['ez-viewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras']
                     path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
                 ez-discoverybarviewservice:
                     requires: ['ez-viewservice', 'ez-contenttreeplugin']
@@ -114,6 +116,18 @@ system:
                 navigationhubview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/navigationhub.hbt
+                ez-navigationitemsubtreeview:
+                    requires: ['ez-navigationitemview']
+                    path: %ez_platformui.public_dir%/js/views/navigation/ez-navigationitemsubtreeview.js
+                ez-navigationitemparameterview:
+                    requires: ['ez-navigationitemview']
+                    path: %ez_platformui.public_dir%/js/views/navigation/ez-navigationitemparameterview.js
+                ez-navigationitemview:
+                    requires: ['ez-templatebasedview', 'navigationitemview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/navigation/ez-navigationitemview.js
+                navigationitemview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/navigation/item.hbt
                 ez-discoverybarview:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview']
                     path: %ez_platformui.public_dir%/js/views/ez-discoverybarview.js

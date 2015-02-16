@@ -3,7 +3,10 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-navigationhubview-tests', function (Y) {
-    var viewTest, eventTest, logOutTest;
+    var viewTest, eventTest, logOutTest,
+        navigationItemTest, zoneTest,
+        navigationItemsSetter, routeMatchTest,
+        Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
         name: "eZ Navigation Hub View test",
@@ -23,6 +26,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         "Test render": function () {
@@ -35,31 +39,87 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 return origTpl.apply(this, arguments);
             };
             this.view.render();
-            Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
+            Y.Assert.isTrue(templateCalled, "The template should have used to render the view");
         },
 
         "Test available variable in template": function () {
             var origTpl = this.view.template,
                 that = this;
 
+
+            this.view.set(
+                'platformNavigationItems',
+                [new Y.eZ.NavigationItemView(), new Y.eZ.NavigationItemView()]
+            );
+            this.view.set('studioNavigationItems', [new Y.eZ.NavigationItemView()]);
             this.view.template = function (variables) {
                 Y.Assert.areEqual(
-                    1, Y.Object.keys(variables).length,
-                    "The template should receive 1 variable"
+                    2, Y.Object.keys(variables).length,
+                    "The template should receive 2 variables"
                 );
                 Y.Assert.areSame(
                     that.userJson, variables.user,
                     "The template should receive the result of toJSON on the user"
                 );
+                Assert.isObject(
+                    variables.zones,
+                    "The zone list should be available"
+                );
+                Y.Object.each(variables.zones, function (zone, key) {
+                    Assert.areEqual(
+                        this.get('zones')[key], zone.name,
+                        "Each zone should have a name"
+                    );
+                    Assert.areEqual(
+                        (key === 'platform'),
+                        zone.hasNavigation,
+                        "Only the platform zone has a navigation " + key
+                    );
+                }, this);
 
                 return origTpl.call(this, variables);
             };
             this.view.render();
         },
+
+        _testRenderNavigationItems: function (zone) {
+            var item1 = new Y.eZ.NavigationItemView({containerTemplate: '<li />'}),
+                item2 = new Y.eZ.NavigationItemView({containerTemplate: '<li />'}),
+                studioItems;
+
+            this.view.set(zone + 'NavigationItems', [item1, item2]);
+            this.view.render();
+
+            studioItems = this.view.get('container').all('.ez-navigation-' + zone + ' > li');
+            Assert.areSame(
+                item1.get('container'), studioItems.item(1),
+                "The navigation items for " + zone + " should be rendered"
+            );
+            Assert.areSame(
+                item2.get('container'), studioItems.item(2),
+                "The navigation items for " + zone + " should be rendered"
+            );
+        },
+
+        "Should render the platform navigation items": function () {
+            this._testRenderNavigationItems('platform');
+        },
+
+        "Should render the studioplus navigation items": function () {
+            this._testRenderNavigationItems('studioplus');
+        },
+
+        "Should render the admin navigation items": function () {
+            this._testRenderNavigationItems('admin');
+        },
+
+        "Should render the studio navigation items": function () {
+            this._testRenderNavigationItems('studio');
+        },
     });
 
-    eventTest = new Y.Test.Case({
-        name: "eZ Navigation Hub View event tests",
+    zoneTest = new Y.Test.Case({
+        name: "eZ Navigation Hub View zone tests",
 
         setUp: function () {
             this.userMock = new Y.Mock();
@@ -67,15 +127,24 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 method: 'toJSON',
                 returns: {},
             });
+            this.routeAdmin = {name: "samplanet", params: {}};
             this.view = new Y.eZ.NavigationHubView({
                 container: '.container',
                 user: this.userMock,
+                studioplusNavigationItems: [
+                    new Y.eZ.NavigationItemView(),
+                    new Y.eZ.NavigationItemView(),
+                ],
+                adminNavigationItems: [
+                    new Y.eZ.NavigationItemView({route: this.routeAdmin})
+                ],
             });
             this.view.render();
         },
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         _testShowNavigationMenu: function (zoneNode, navigationIdentifier) {
@@ -107,18 +176,120 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             });
         },
 
-        "Should show the correct navigation menu when tapping a navigation zone": function () {
+        "Should show the navigation menu with some items": function () {
             var container = this.view.get('container'),
-                optZone = container.one('.ez-optimize-zone'),
+                optZone = container.one('.ez-studioplus-zone'),
                 navigationIdentifier = optZone.getAttribute('data-navigation'),
                 that = this;
 
+            this.view.set('active', true);
             optZone.simulateGesture('tap', function () {
                 that.resume(function () {
                     this._testShowNavigationMenu(optZone, navigationIdentifier);
                 });
             });
             this.wait();
+        },
+
+        "Should not show the navigation menu without items": function () {
+            var container = this.view.get('container'),
+                optZone = container.one('.ez-platform-zone'),
+                that = this;
+
+            this.view.set('active', true);
+            optZone.simulateGesture('tap', function () {
+                that.resume(function () {
+                    Assert.isTrue(
+                        optZone.hasClass("is-zone-active"),
+                        "The choosen zone should be active"
+                    );
+
+                    container.one('.ez-navigation').get('children').each(function () {
+                        Assert.isTrue(
+                            this.hasClass('is-navigation-hidden'),
+                            "The non active navigation menu should be hidden"
+                        );
+                    });
+
+                });
+            });
+            this.wait();
+        },
+
+
+        "Should switch to the correct zone": function () {
+            var container = this.view.get('container'),
+                optZone = container.one('.ez-studioplus-zone'),
+                navigationIdentifier = optZone.getAttribute('data-navigation');
+
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'studio');
+            this.view.set('activeNavigation', 'studioplus');
+            this._testShowNavigationMenu(optZone, navigationIdentifier);
+        },
+
+        "Should fire the navigateTo event": function () {
+            var fired = false,
+                that = this;
+
+            this.view.on('navigateTo', function (e) {
+                fired = true;
+                Assert.areSame(
+                    that.routeAdmin, e.route,
+                    "The event facade should provide the route"
+                );
+            });
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'admin');
+
+            Assert.isTrue(fired, "The navigateTo should have been fired");
+        },
+
+        "Should not fire the navigateTo event with several items": function () {
+
+            this.view.on('navigateTo', function (e) {
+                Assert.fail("The navigateTo event should not be fired");
+            });
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'studioplus');
+        },
+
+        "Should not fire the navigateTo event without items": function () {
+            this.view.on('navigateTo', function (e) {
+                Assert.fail("The navigateTo event should not be fired");
+            });
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
+        },
+
+        "Should not fire the navigateTo event without a zone": function () {
+            this.view.on('navigateTo', function (e) {
+                Assert.fail("The navigateTo event should not be fired");
+            });
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
+        },
+    });
+
+    eventTest = new Y.Test.Case({
+        name: "eZ Navigation Hub View event tests",
+
+        setUp: function () {
+            this.userMock = new Y.Mock();
+            Y.Mock.expect(this.userMock, {
+                method: 'toJSON',
+                returns: {},
+            });
+            this.view = new Y.eZ.NavigationHubView({
+                container: '.container',
+                user: this.userMock,
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
         },
 
         _testShowSubMenu: function (link, subMenu, testCoordinates) {
@@ -153,6 +324,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenuLink = container.one('.ez-sub-menu-link'),
                 subMenu = subMenuLink.one('.ez-sub-menu');
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulate('mouseover');
             this._testShowSubMenu(subMenuLink, subMenu, true);
         },
@@ -163,6 +336,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenu = subMenuLink.one('.ez-sub-menu'),
                 that = this;
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulateGesture('tap', function () {
                 that.resume(function () {
                     this._testShowSubMenu(subMenuLink, subMenu, true);
@@ -176,6 +351,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenuLink = container.one('.ez-more.ez-sub-menu-link'),
                 subMenu = subMenuLink.one('.ez-sub-menu');
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulate('mouseover');
             this._testShowSubMenu(subMenuLink, subMenu, false);
         },
@@ -186,6 +363,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenu = subMenuLink.one('.ez-sub-menu'),
                 that = this;
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulateGesture('tap', function () {
                 that.resume(function () {
                     this._testShowSubMenu(subMenuLink, subMenu, false);
@@ -206,6 +385,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenuLink = container.one('.ez-more.ez-sub-menu-link'),
                 subMenu = subMenuLink.one('.ez-sub-menu');
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulate('mouseover');
             subMenuLink.simulate('mouseout');
             this._testHiddenSubMenu(subMenu);
@@ -217,6 +398,12 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenu = subMenuLink.one('.ez-sub-menu'),
                 that = this;
 
+            this.view.set('active', true);
+            this.view.set('platformNavigationItems', [
+                new Y.eZ.NavigationItemView(),
+                new Y.eZ.NavigationItemView(),
+            ]);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulateGesture('tap', function () {
                 that.resume(function () {
                     subMenu.one('.ez-navigation-item').simulateGesture('tap', function () {
@@ -236,6 +423,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 subMenu = subMenuLink.one('.ez-sub-menu'),
                 that = this;
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             subMenuLink.simulateGesture('tap', function () {
                 that.resume(function () {
                     container.simulate('click');
@@ -255,6 +444,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         },
 
         "Should set the navigationFixed attribute depending on scroll": function () {
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             this._scrollTo('-300px');
             Y.Assert.isTrue(
                 this.view.get('navigationFixed'),
@@ -273,6 +464,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             var eventFired = 0,
                 view = this.view;
 
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
             this.view.on('navigationModeChange', function (e) {
                 eventFired++;
 
@@ -305,12 +498,16 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         "Should put some elements in the more sub menu": function () {
             var container = this.view.get('container'),
-                navigationMenu = container.one('.ez-navigation-create'),
+                navigationMenu = container.one('.ez-navigation-platform'),
                 more = navigationMenu.one('.ez-more'),
                 inMoreMenu = [], inMoreMenuAfter = [];
 
             this.view.set('active', true);
-            this.view.set('activeNavigation', 'create');
+            this.view.set('platformNavigationItems', [
+                new Y.eZ.NavigationItemView(),
+                new Y.eZ.NavigationItemView(),
+            ]);
+            this.view.set('activeNavigation', 'platform');
 
             // emptying the more navigation
             navigationMenu.all('.ez-more li').each(function () {
@@ -345,14 +542,14 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         "Should take some elements from the more sub menu": function () {
             var container = this.view.get('container'),
-                navigationMenu = container.one('.ez-navigation-create');
+                navigationMenu = container.one('.ez-navigation-platform');
 
-            this.view.set('activeNavigation', 'create');
             this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
 
             // making some space in the menu
-            navigationMenu.all('li').pop().remove();
-            navigationMenu.all('li').pop().remove();
+            navigationMenu.all('> li').shift().remove();
+            navigationMenu.all('> li').shift().remove();
             // leaving only one element in the more menu
             navigationMenu.all('.ez-more li:not(.last)').each(function () {
                 this.remove();
@@ -391,6 +588,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         "Should fire the logOut event": function () {
@@ -414,10 +612,296 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         },
     });
 
+    navigationItemsSetter = new Y.Test.Case({
+        name: "eZ Navigation Hub View navigation items attributes setter test",
+
+        setUp: function () {
+            this.view = new Y.eZ.NavigationHubView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        _testStructNoConfig: function (attr) {
+            var value,
+                Constructor = Y.eZ.NavigationItemView;
+
+            this.view.set(attr, [{Constructor: Constructor}]);
+            value = this.view.get(attr);
+
+            Assert.isArray(value, "The " + attr + " value should be an array");
+            Assert.areEqual(
+                1, value.length,
+                "The " + attr + " length should be 1"
+            );
+            Assert.isInstanceOf(
+                Constructor, value[0],
+                "The " + attr + " should contain an instance of the constructor"
+            );
+            this._testEventTarget(value[0]);
+        },
+
+        _testStructConfig: function (attr) {
+            var value,
+                config = {title: "Custom title"},
+                Constructor = Y.eZ.NavigationItemView;
+
+            this.view.set(attr, [{Constructor: Constructor, config: config}]);
+            value = this.view.get(attr);
+
+            Assert.isArray(value, "The " + attr + " value should be an array");
+            Assert.areEqual(
+                1, value.length,
+                "The " + attr + " length should be 1"
+            );
+            Assert.isInstanceOf(
+                Constructor, value[0],
+                "The " + attr + " should contain an instance of the constructor"
+            );
+            Assert.areEqual(
+                config.title, value[0].get('title'),
+                "The config should be passed to the constructor"
+            );
+            this._testEventTarget(value[0]);
+        },
+
+        _testView: function (attr) {
+            var value,
+                instance = new Y.eZ.NavigationItemView();
+
+            this.view.set(attr, [instance]);
+            value = this.view.get(attr);
+
+            Assert.isArray(value, "The " + attr + " value should be an array");
+            Assert.areEqual(
+                1, value.length,
+                "The " + attr + " length should be 1"
+            );
+            Assert.areSame(
+                instance, value[0],
+                "The " + attr + " should contain the view instance"
+            );
+            this._testEventTarget(instance);
+        },
+
+        _testEventTarget: function (itemView) {
+            var evt = 'hello',
+                bubble = false;
+
+            this.view.on('*:' + evt, function (e) {
+                bubble = true;
+            });
+            itemView.fire(evt);
+            Assert.isTrue(bubble, "The event should bubble from the item to the hub view");
+        },
+
+        "Test platformNavigationItems setter (struct, no config)": function () {
+            this._testStructNoConfig('platformNavigationItems');
+        },
+
+        "Test platformNavigationItems setter (struct, config)": function () {
+            this._testStructConfig('platformNavigationItems');
+        },
+
+        "Test platformNavigationItems setter (view)": function () {
+            this._testView('platformNavigationItems');
+        },
+
+        "Test studioplusNavigationItems setter (struct, no config)": function () {
+            this._testStructNoConfig('studioplusNavigationItems');
+        },
+
+        "Test studioplusNavigationItems setter (struct, config)": function () {
+            this._testStructConfig('studioplusNavigationItems');
+        },
+
+        "Test studioplusNavigationItems setter (view)": function () {
+            this._testView('studioplusNavigationItems');
+        },
+
+        "Test adminNavigationItems setter (struct, no config)": function () {
+            this._testStructNoConfig('adminNavigationItems');
+        },
+
+        "Test adminNavigationItems setter (struct, config)": function () {
+            this._testStructConfig('adminNavigationItems');
+        },
+
+        "Test adminNavigationItems setter (view)": function () {
+            this._testView('adminNavigationItems');
+        },
+
+        "Test studioNavigationItems setter (struct, no config)": function () {
+            this._testStructNoConfig('studioNavigationItems');
+        },
+
+        "Test studioNavigationItems setter (struct, config)": function () {
+            this._testStructConfig('studioNavigationItems');
+        },
+
+        "Test studioNavigationItems setter (view)": function () {
+            this._testView('studioNavigationItems');
+        },
+    });
+
+    routeMatchTest = new Y.Test.Case({
+        name: "eZ Navigation Hub View route matching test",
+
+        setUp: function () {
+            var that = this;
+
+            this.matchRouteCalls = {};
+            this.Item = Y.Base.create('itemTest', Y.eZ.NavigationItemView, [], {
+                matchRoute: function (route) {
+                    that.matchRouteCalls[this.get('identifier')] = route;
+                    return route === that.route3;
+                }
+            });
+            this.route1 = {
+                name: "viewLocation",
+                params: {
+                    id: '/1/2/',
+                }
+            };
+            this.route2 = {
+                name: "viewLocation",
+                params: {
+                    id: '/1/43/',
+                }
+            };
+            this.route3 = {
+                name: "crapouilleView",
+            };
+            this.item1 = new this.Item({
+                identifier: 'item1',
+                route: this.route1,
+            });
+            this.item2 = new this.Item({
+                identifier: 'item2',
+                route: this.route2,
+            });
+            this.item3 = new this.Item({
+                identifier: 'item3',
+                route: this.route3,
+            });
+            this.view = new Y.eZ.NavigationHubView({
+                platformNavigationItems: [this.item1, this.item2],
+                studioplusNavigationItems: [this.item3],
+            });
+        },
+
+        tearDown: function () {
+            this.item1.destroy();
+            this.item2.destroy();
+            this.item3.destroy();
+            this.view.destroy();
+            delete this.view;
+            delete this.item1;
+            delete this.item2;
+            delete this.item3;
+            delete this.Item;
+            delete this.matchRouteCalls;
+        },
+
+        "Should call matchRoute on all navigation items": function () {
+            var matchedRoute = {name: "externalRoute"};
+            this.view.set('matchedRoute', matchedRoute);
+
+            Assert.areEqual(
+                3, Y.Object.keys(this.matchRouteCalls).length,
+                "matchRoute() should have been called 3 times"
+            );
+            Assert.areSame(
+                this.matchRouteCalls.item1, matchedRoute,
+                "matchRoute() should have been called with the matched route"
+            );
+            Assert.areSame(
+                this.matchRouteCalls.item2, matchedRoute,
+                "match() should have been called with the matched route"
+            );
+            Assert.areSame(
+                this.matchRouteCalls.item3, matchedRoute,
+                "matchRoute() should have been called with the matched route"
+            );
+        },
+
+        "Should set the corresponding navigation to active": function () {
+            this.view.set('matchedRoute', this.route3);
+
+            Assert.areEqual(
+                'studioplus', this.view.get('activeNavigation'),
+                "The studioplus should be active"
+            );
+        },
+
+        "Should set the active navigation to null": function () {
+            this.view.set('matchedRoute', {name: "unknownRoute"});
+
+            Assert.isNull(
+                this.view.get('activeNavigation'),
+                "The active navigation should be null"
+            );
+        },
+    });
+
+    navigationItemTest = new Y.Test.Case({
+        name: "eZ Navigation Hub view item test",
+
+        setUp: function () {
+            var user = new Y.Mock();
+            Y.Mock.expect(user, {
+                method: 'toJSON',
+                returns: {},
+            });
+            this.item1 = new Y.eZ.NavigationItemView();
+            this.item2 = new Y.eZ.NavigationItemView();
+            this.item3 = new Y.eZ.NavigationItemView();
+            this.view = new Y.eZ.NavigationHubView({
+                platformNavigationItems: [this.item1, this.item2],
+                studioplusNavigationItems: [this.item3],
+                container: '.container',
+                user: user,
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.item1.destroy();
+            this.item2.destroy();
+            this.item3.destroy();
+            delete this.view;
+            delete this.item1;
+            delete this.item2;
+            delete this.item3;
+        },
+
+        "Should forward the active flag to the navigation items": function () {
+            this.view.set('active', true);
+
+            Assert.isTrue(
+                this.item1.get('active'),
+                "The navigation item should be active"
+            );
+            Assert.isTrue(
+                this.item2.get('active'),
+                "The navigation item should be active"
+            );
+            Assert.isTrue(
+                this.item3.get('active'),
+                "The navigation item should be active"
+            );
+        },
+    });
 
     Y.Test.Runner.setName("eZ Navigation Hub View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(eventTest);
+    Y.Test.Runner.add(zoneTest);
     Y.Test.Runner.add(logOutTest);
-
-}, '', {requires: ['test', 'node-event-simulate', 'ez-navigationhubview']});
+    Y.Test.Runner.add(navigationItemsSetter);
+    Y.Test.Runner.add(routeMatchTest);
+    Y.Test.Runner.add(navigationItemTest);
+}, '', {requires: ['test', 'node-event-simulate', 'ez-navigationhubview', 'ez-navigationitemview', 'view']});

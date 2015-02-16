@@ -4,7 +4,7 @@
  */
 YUI.add('ez-platformuiapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest, sideViewServicesTest,
-        adminExtTest, loginTest, logoutTest, isLoggedInTest, checkUserTest,
+        loginTest, logoutTest, isLoggedInTest, checkUserTest,
         showSideViewTest, hideSideViewTest,
         handleMainViewTest, titleTest, configRouteTest,
         Assert = Y.Assert, Mock = Y.Mock;
@@ -1127,7 +1127,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             );
 
             Y.Assert.isTrue(initialized === 1, "The side view should have been build one time");
-            Y.Assert.isTrue(rendered === 2, "The side view should have been rendered twice");
+            Y.Assert.isTrue(rendered === 1, "The side view should have been rendered once");
             Y.Assert.isTrue(activeSet === 2, "The active flag should have been set two times " + activeSet);
             Y.Assert.isTrue(bubble, "The event from the side view should bubble to the app");
             Y.Assert.isTrue(nextCalls === 2, "The next callback should have been called two times");
@@ -1290,60 +1290,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 "The parameters should be removed"
             );
         },
-    });
-
-    adminExtTest = new Y.Test.Case({
-        name: "eZ Platform UI App tests",
-
-        setUp: function () {
-            this.root = '/shell';
-            Y.config.doc.location.hash = '';
-            this.app = new Y.eZ.PlatformUIApp({
-                container: '.app',
-                viewContainer: '.view-container',
-                root: this.root
-            });
-            this.app.get('user').set('id', 1);
-            this.app.render();
-        },
-
-        tearDown: function () {
-            this.app.destroy();
-            delete this.app;
-            Y.config.doc.location.hash = '';
-        },
-
-        "Admin extension should be loaded and called": function () {
-            var load2Called = false;
-
-            this.app.route({
-                path: "/admin/load1",
-                callback: function () {
-                    Y.Assert.areEqual(
-                        1, Y.eZ.AdminAppExtension._called,
-                        "The app should have been extended"
-                    );
-                    Y.config.doc.location.hash = '/admin/load2';
-                }
-            });
-
-            this.app.route({
-                path: "/admin/load2",
-                callback: function () {
-                    Y.config.doc.location.hash = '';
-                    load2Called = true;
-                }
-            });
-
-            Y.config.doc.location.hash = '/admin/load1';
-
-            this.waitFor(function () { return load2Called; }, function () {
-                Y.Assert.areEqual(
-                    1, Y.eZ.AdminAppExtension._called,
-                    "The app should have been extended only once"
-                );
-            });
-        }
     });
 
     loginTest = new Y.Test.Case({
@@ -1944,7 +1890,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(hideSideViewTest);
     Y.Test.Runner.add(sideViewServicesTest);
     Y.Test.Runner.add(reverseRoutingTest);
-    Y.Test.Runner.add(adminExtTest);
     Y.Test.Runner.add(loginTest);
     Y.Test.Runner.add(logoutTest);
     Y.Test.Runner.add(isLoggedInTest);

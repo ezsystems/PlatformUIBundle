@@ -4,9 +4,10 @@
  */
 
 .ez-view-navigationhubview .ez-zones-navigation,
-.ez-view-navigationhubview .ez-navigation-create,
-.ez-view-navigationhubview .ez-navigation-deliver,
-.ez-view-navigationhubview .ez-navigation-optimize {
+.ez-view-navigationhubview .ez-navigation-platform,
+.ez-view-navigationhubview .ez-navigation-admin,
+.ez-view-navigationhubview .ez-navigation-studio,
+.ez-view-navigationhubview .ez-navigation-studioplus {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -14,10 +15,7 @@
 
 .ez-view-navigationhubview .ez-zones-navigation li {
     display: inline-block;
-}
-
-.ez-view-navigationhubview .ez-zones-navigation .ez-link {
-    vertical-align: bottom;
+    overflow: hidden;
 }
 
 .ez-view-navigationhubview .ez-navigation > ul,
@@ -26,24 +24,43 @@
     white-space: nowrap;
 }
 
+.ez-view-navigationhubview .ez-zones-navigation {
+    font-size: 0;
+}
+
 .ez-view-navigationhubview .ez-navigation li {
     display: inline-block;
 }
 
-.ez-view-navigationhubview .ez-zone-name,
-.ez-view-navigationhubview .ez-zone-hint {
+.ez-view-navigationhubview .ez-zone-name {
+    height: 2rem;
+    line-height: 2rem;
     margin: 0 0 0 2.6rem;
+}
+
+.ez-view-navigationhubview .ez-admin-zone .ez-zone-name {
+    margin: 0 0 0 2rem;
 }
 
 .ez-view-navigationhubview .ez-logo {
     text-align: center;
-    width: 9em;
 }
 
 .ez-view-navigationhubview .ez-zone,
-.ez-view-navigationhubview .ez-link,
+.ez-view-navigationhubview .ez-zones-navigation .ez-logo,
 .ez-view-navigationhubview .ez-user-info {
-    padding: 1em;
+    font-size: 1rem;
+    padding: 0.8rem 1rem;
+}
+
+.ez-view-navigationhubview .ez-zones-navigation .ez-logo,
+.ez-view-navigationhubview .ez-zone {
+    height: 2rem;
+}
+
+.ez-view-navigationhubview .ez-admin-zone {
+    padding-right: 1.3rem;
+    margin-left: 3em;
 }
 
 .ez-view-navigationhubview .ez-user-info {
@@ -145,28 +162,19 @@
     display: block;
 }
 
-@media (max-width:70em) {
-    .ez-view-navigationhubview .ez-zones-navigation .ez-exchange {
-        display: none;
-    }
-}
-
-@media (max-width:62em) {
-    .ez-view-navigationhubview .ez-logo {
-        width: 6em;
-        vertical-align: middle;
-    }
-
-    .ez-view-navigationhubview .ez-zone-hint {
-        display: none;
+@media (max-width:58em) {
+    .ez-view-navigationhubview .ez-zone,
+    .ez-view-navigationhubview .ez-zones-navigation .ez-logo,
+    .ez-view-navigationhubview .ez-user-info {
+        padding: 0.6rem 0.4rem;
     }
 
     .ez-view-navigationhubview .ez-zone-name {
-        margin: 0.2em 0 0 1.9rem;
-        font-size: 90%;
+        margin: 0 0 0 1.9rem;
     }
 
-    .ez-view-navigationhubview .ez-zones-navigation .ez-settings a {
-        margin-bottom: 0.4em;
+    .ez-view-navigationhubview .ez-admin-zone {
+        padding-right: 1.3rem;
+        margin-left: 1em;
     }
 }
