@@ -34,25 +34,3 @@
     -webkit-transform: translateX(100%);
             transform: translateX(100%);
 }
-
-.ez-view-treeactionview .ez-tree-level .ez-tree-level {
-    padding-left: 1em;
-}
-
-.ez-view-treeactionview .ez-tree-level {
-    padding-left: 0.3em;
-    line-height: 1.6em;
-    margin: 0;
-}
-
-.ez-view-treeactionview .ez-tree-node {
-    padding-left: 0.2em;
-}
-
-.ez-view-treeactionview.is-tree-loaded .ez-tree-loading {
-    display: none;
-}
-
-.ez-view-treeactionview .is-tree-node-close .ez-tree-level {
-    display: none;
-}

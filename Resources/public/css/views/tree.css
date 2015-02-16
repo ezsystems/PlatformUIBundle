@@ -1,0 +1,26 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-treeview .ez-tree-level .ez-tree-level {
+    padding-left: 1em;
+}
+
+.ez-view-treeview .ez-tree-level {
+    padding-left: 0.3em;
+    line-height: 1.6em;
+    margin: 0;
+}
+
+.ez-view-treeview .ez-tree-node {
+    padding-left: 0.2em;
+}
+
+.ez-view-treeview.is-tree-loaded .ez-tree-loading {
+    display: none;
+}
+
+.ez-view-treeview .is-tree-node-close .ez-tree-level {
+    display: none;
+}

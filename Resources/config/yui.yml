@@ -438,14 +438,11 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/previewaction.hbt
                 ez-treeactionview:
-                    requires: ['ez-buttonactionview', 'ez-expandable', 'event-tap', 'event-outside', 'handlebars', 'node-style', 'treeactionview-ez-template', 'tree-ez-partial']
+                    requires: ['ez-buttonactionview', 'ez-treeview', 'ez-expandable', 'event-outside', 'node-style', 'treeactionview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/actions/ez-treeactionview.js
                 treeactionview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/treeaction.hbt
-                tree-ez-partial:
-                    type: 'template'
-                    path: %ez_platformui.public_dir%/templates/partials/tree.hbt
                 ez-createcontentactionview:
                     requires:
                         - 'ez-buttonactionview'
@@ -475,6 +472,15 @@ system:
                 barview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/bar.hbt
+                ez-treeview:
+                    requires: ['ez-templatebasedview', 'event-tap', 'treeview-ez-template', 'template', 'tree-ez-partial']
+                    path: %ez_platformui.public_dir%/js/views/ez-treeview.js
+                treeview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/tree.hbt
+                tree-ez-partial:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/partials/tree.hbt
                 ez-serversideview:
                     requires: ['ez-view', 'ez-tabs', 'ez-selection-table', 'event-tap']
                     path: %ez_platformui.public_dir%/js/views/ez-serversideview.js

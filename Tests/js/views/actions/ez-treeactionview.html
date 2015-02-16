@@ -18,18 +18,7 @@
     </div>
 </button>
 <div class="ez-expandable-area">
-    <div class="ez-tree-content"></div>
 </div>
-</script>
-
-<script type="text/x-handlebars-template" id="ez_tree" class="ez-platformui-app-partial">
-<ul class="ez-tree-level">
-{{#each children}}
-    <li class="ez-tree-node{{#if state.leaf}} is-tree-node-leaf{{/if}} {{#if state.open}}is-tree-node-open{{else}}is-tree-node-close{{/if}}" data-node-id="{{id}}">
-        <a href="#" class="ez-tree-node-toggle font-icon"></a><a href="#" class="ez-tree-navigate"></a>
-    </li>
-{{/each}}
-</ul>
 </script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -52,7 +41,7 @@
         filter: loaderFilter,
         modules: {
             "ez-treeactionview": {
-                requires: ['ez-buttonactionview', 'ez-expandable', 'event-tap', 'event-outside', 'handlebars', 'node-style'],
+                requires: ['ez-buttonactionview', 'ez-expandable', 'event-outside', 'node-style'],
                 fullpath: "../../../../Resources/public/js/views/actions/ez-treeactionview.js"
             },
             "ez-buttonactionview": {
