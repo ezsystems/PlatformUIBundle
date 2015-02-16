@@ -38,7 +38,7 @@ YUI.add('ez-navigationitemsubtreeview', function (Y) {
                 linkRoute = this.get('route'),
                 startLocatioId = linkRoute.params.id;
 
-            if ( route.name === linkRoute.name && route.parameters.id ) {
+            if ( this._sameRoute(route) && route.parameters.id ) {
                 selected = (route.parameters.id.indexOf(startLocatioId) === 0);
             }
             this._set('selected', selected);

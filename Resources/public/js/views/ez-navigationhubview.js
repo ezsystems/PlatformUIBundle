@@ -16,7 +16,6 @@ YUI.add('ez-navigationhubview', function (Y) {
         NAVIGATION_HIDDEN = 'is-navigation-hidden',
         SUB_MENU_OPEN = 'is-sub-menu-open',
         NAVIGATION_SEL = '.ez-navigation',
-        DEFAULT_ACTIVE_NAV = 'create',
         NAVIGATION_NODE_CLASS_TPL = 'ez-navigation-{identifier}',
         ZONE_ACTIVE = 'is-zone-active';
 
@@ -81,9 +80,10 @@ YUI.add('ez-navigationhubview', function (Y) {
         _resizeSubscription: null,
 
         initializer: function () {
-            this.after('activeNavigationChange', function () {
+            this.after('activeNavigationChange', function (e) {
                 if ( this.get('active') ) {
-                    this._uiSetActiveNavigation();
+                    this._uiSetActiveNavigation(e.prevVal);
+                    this._navigateToZone(e.newVal);
                 }
             });
             this.after('navigationFixedChange', this._uiHandleFixedNavigation);
@@ -99,29 +99,55 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @protected
          */
         _handleSelectedItem: function () {
-            var matchedRoute = this.get('matchedRoute');
+            var matchedRoute = this.get('matchedRoute'),
+                activeZone = null;
 
-            Y.Object.each(this.get('zones'), function (zone) {
+            Y.Object.each(this.get('zones'), function (zone, key) {
                 var inZone = false;
 
-                Y.Array.each(this.get(zone.identifier + 'NavigationItems'), function (item) {
+                Y.Array.each(this._getNavigationItemViews(key), function (item) {
                     inZone = (item.matchRoute(matchedRoute) || inZone);
                 });
                 if ( inZone ) {
-                    this.set('activeNavigation', zone.identifier);
+                    activeZone = key;
                 }
             }, this);
+            this.set('activeNavigation', activeZone);
+        },
+
+        /**
+         * Fires the event to navigate to the given zone. The navigation happens
+         * only if the zone has exactly one navigation items.
+         *
+         * @method _navigateToZone
+         * @param {String|Null} zone
+         * @method protected
+         */
+        _navigateToZone: function (zone) {
+            var items;
+
+            if ( !zone ) {
+                return;
+            }
+
+            items = this._getNavigationItemViews(zone);
+            if ( items && items.length === 1 ) {
+                this.fire('navigateTo', {
+                    route: items[0].get('route')
+                });
+            }
         },
 
         /**
          * Sets the active navigation in the UI
          *
          * @method _uiSetActiveNavigation
+         * @param {String|Null} previousZone the previously active zone
          * @protected
          */
-        _uiSetActiveNavigation: function () {
+        _uiSetActiveNavigation: function (previousZone) {
             this._uiSetActiveZone();
-            this._uiShowNavigation();
+            this._uiShowNavigation(previousZone);
             this._uiNavigationSize();
         },
 
@@ -172,7 +198,9 @@ YUI.add('ez-navigationhubview', function (Y) {
             if ( active ) {
                 active.removeClass(ZONE_ACTIVE);
             }
-            container.one('.ez-' + this.get('activeNavigation') + '-zone').addClass(ZONE_ACTIVE);
+            if ( this.get('activeNavigation') ) {
+                container.one('.ez-' + this.get('activeNavigation') + '-zone').addClass(ZONE_ACTIVE);
+            }
         },
 
         /**
@@ -186,12 +214,59 @@ YUI.add('ez-navigationhubview', function (Y) {
 
             container.setHTML(this.template({
                 user: this.get('user').toJSON(),
-                zones: this.get('zones'),
+                zones: this._buildZones(),
             }));
             this._renderNavigationItems();
-            this._setNavigationMenu(this.get('activeNavigation'));
             this._uiSetActiveNavigation();
             return this;
+        },
+
+        /**
+         * Builds the zone list for the template. Each zone is represented by an
+         * object with a `name` and a `hasNavigation` properties.
+         *
+         * @method _buildZones
+         * @protected
+         * @return {Object}
+         */
+        _buildZones: function () {
+            var zones = {};
+
+            Y.Object.each(this.get('zones'), function (zoneName, key) {
+                zones[key] = {
+                    name: zoneName,
+                    hasNavigation: this._hasNavigation(key),
+                };
+            }, this);
+            return zones;
+        },
+
+        /**
+         * Returns whether the zone associated with the given key has a
+         * navigation ie it has more than one navigation item view.
+         *
+         * @method _hasNavigation
+         * @protected
+         * @param {String} zoneKey
+         * @return {Boolean}
+         */
+        _hasNavigation: function (zoneKey) {
+            var items = this._getNavigationItemViews(zoneKey);
+
+            return !!(items && items.length > 1);
+        },
+
+        /**
+         * Returns the navigation item views instances associated with the given
+         * zone key.
+         *
+         * @method _getNavigationItemViews
+         * @protected
+         * @param {String} zoneKey
+         * @return {undefined|Array} of eZ.NavigationItemView
+         */
+        _getNavigationItemViews: function (zoneKey) {
+            return this.get(zoneKey + 'NavigationItems');
         },
 
         /**
@@ -206,7 +281,7 @@ YUI.add('ez-navigationhubview', function (Y) {
             Y.Object.each(this.get('zones'), function (zone, key) {
                 var after = that._getNavigationNode(key).one('.ez-logo');
 
-                Y.Array.each(that.get(key + 'NavigationItems'), function (view) {
+                Y.Array.each(that._getNavigationItemViews(key), function (view) {
                     after.insert(view.render().get('container'), 'after');
                     after = view.get('container');
                 });
@@ -239,7 +314,7 @@ YUI.add('ez-navigationhubview', function (Y) {
          */
         _setNavigationItemActive: function (active) {
             Y.Object.each(this.get('zones'), function (zone, key) {
-                Y.Array.each(this.get(key + 'NavigationItems'), function (view) {
+                Y.Array.each(this._getNavigationItemViews(key), function (view) {
                     view.set('active', active);
                 });
             }, this);
@@ -247,22 +322,19 @@ YUI.add('ez-navigationhubview', function (Y) {
 
         /**
          * Makes sure the navigation corresponding to the activeNavigation value
-         * is shown
+         * is shown if needed
          *
          * @protected
          * @method _uiShowNavigation
+         * @param {String|Null} previousZone the previously active zone
          */
-        _uiShowNavigation: function () {
-            var navigations = this.get('container').one(NAVIGATION_SEL).get('children'),
-                navClass = L.sub(NAVIGATION_NODE_CLASS_TPL, {identifier: this.get('activeNavigation')});
-
-            navigations.each(function (nav) {
-                if ( nav.hasClass(navClass) ) {
-                    nav.removeClass(NAVIGATION_HIDDEN);
-                } else {
-                    nav.addClass(NAVIGATION_HIDDEN);
-                }
-            });
+        _uiShowNavigation: function (previousZone) {
+            if ( previousZone ) {
+                this._getNavigationNode(previousZone).addClass(NAVIGATION_HIDDEN);
+            }
+            if ( this.get('activeNavigation') && this._hasNavigation(this.get('activeNavigation')) ) {
+                this._getNavigationNode(this.get('activeNavigation')).removeClass(NAVIGATION_HIDDEN);
+            }
         },
 
         /**
@@ -289,7 +361,6 @@ YUI.add('ez-navigationhubview', function (Y) {
 
             if ( navigation.get('docScrollY') > this._navigationY ) {
                 this.set('navigationFixed', true);
-                this.set('activeNavigation', DEFAULT_ACTIVE_NAV); // TODO should depend on the app activeView
             } else {
                 this.set('navigationFixed', false);
             }
@@ -304,10 +375,14 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @protected
          */
         _uiNavigationSize: function (e) {
-            var items, item,
-                more = this._navigationMenu.one('.ez-more'),
-                moreMenu = more.one('.ez-sub-menu'),
-                moreItems = moreMenu.all('li');
+            var items, item, more, moreMenu, moreItems;
+
+            if ( !this._navigationMenu ) {
+                return;
+            }
+            more = this._navigationMenu.one('.ez-more');
+            moreMenu = more.one('.ez-sub-menu');
+            moreItems = moreMenu.all('li');
 
             while ( this._navigationUnderflowed() ) {
                 if ( moreItems.isEmpty() ) {
@@ -436,7 +511,11 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @return {String} val
          */
         _setNavigationMenu: function (val) {
-            this._navigationMenu = this._getNavigationNode(val);
+            if ( val ) {
+                this._navigationMenu = this._getNavigationNode(val);
+            } else {
+                this._navigationMenu = null;
+            }
             return val;
         },
 
@@ -483,8 +562,8 @@ YUI.add('ez-navigationhubview', function (Y) {
     }, {
         ATTRS: {
             /**
-             * Stores the list of zone (Create, Deliver, Optimize) and the
-             * corresponding data.
+             * Object describing the available zones (Platform, Studio), the
+             * key is the zone identifier, the value is the zone name.
              *
              * @attribute zones
              * @type Object
@@ -492,75 +571,80 @@ YUI.add('ez-navigationhubview', function (Y) {
              */
             zones: {
                 value: {
-                    'create': {
-                        name: 'Create',
-                        hint: 'Creating & Editing',
-                        identifier: 'create',
-                    },
-                    'deliver': {
-                        name: 'Deliver',
-                        hint: 'Publishing & Engagin',
-                        identifier: 'deliver',
-                    },
-                    'optimize': {
-                        name: 'Optimize',
-                        hint: 'Statistics & Analytics',
-                        identifier: 'optimize',
-                    },
+                    'platform': 'Platform',
+                    'studio': 'Studio',
+                    'studioplus': 'Studio Plus',
+                    'admin': 'Admin Panel',
                 },
                 readOnly: true,
             },
 
             /**
              * Stores the navigation view item views instance for each item in
-             * the navigation for the create zone. This attribute accepts either
+             * the navigation for the platform zone. This attribute accepts either
              * an array of already build views or an array of object with at a
              * `Constructor` property and optionally a `config` property holding
              * an object to pass to the constructor function.
              *
-             * @attribute createNavigationItems
+             * @attribute platformNavigationItems
              * @type Array of Y.View
              * @writeOnce
              */
-            createNavigationItems: {
+            platformNavigationItems: {
                 setter: '_buildNavigationViews',
                 writeOnce: true,
             },
 
             /**
              * Stores the navigation view item views instance for each item in
-             * the navigation for the optimize zone. This attribute accepts either
+             * the navigation for the studio zone. This attribute accepts either
              * an array of already build views or an array of object with at a
              * `Constructor` property and optionally a `config` property holding
              * an object to pass to the constructor function.
              *
-             * @attribute createNavigationItems
+             * @attribute studioNavigationItems
              * @type Array of Y.View
              * @writeOnce
              */
-            optimizeNavigationItems: {
+            studioNavigationItems: {
                 setter: '_buildNavigationViews',
                 writeOnce: true,
             },
 
             /**
              * Stores the navigation view item views instance for each item in
-             * the navigation for the deliver zone. This attribute accepts either
+             * the navigation for the admin zone. This attribute accepts either
              * an array of already build views or an array of object with at a
              * `Constructor` property and optionally a `config` property holding
              * an object to pass to the constructor function.
              *
-             * @attribute createNavigationItems
+             * @attribute studioplusNavigationItems
              * @type Array of Y.View
              * @writeOnce
              */
-            deliverNavigationItems: {
+            adminNavigationItems: {
                 setter: '_buildNavigationViews',
                 writeOnce: true,
             },
 
             /**
-             * Contains the identifier ('create', 'optimize', ...) of the
+             * Stores the navigation view item views instance for each item in
+             * the navigation for the studioplus zone. This attribute accepts either
+             * an array of already build views or an array of object with at a
+             * `Constructor` property and optionally a `config` property holding
+             * an object to pass to the constructor function.
+             *
+             * @attribute studioplusNavigationItems
+             * @type Array of Y.View
+             * @writeOnce
+             */
+            studioplusNavigationItems: {
+                setter: '_buildNavigationViews',
+                writeOnce: true,
+            },
+
+            /**
+             * Contains the identifier ('platform', 'studio', ...) of the
              * currently active navigation. When set, this attribute updates the
              * `_navigationMenu` property with the corresponding Node
              *
@@ -571,7 +655,7 @@ YUI.add('ez-navigationhubview', function (Y) {
              */
             activeNavigation: {
                 setter: '_setNavigationMenu',
-                value: DEFAULT_ACTIVE_NAV,
+                value: null,
             },
 
             /**

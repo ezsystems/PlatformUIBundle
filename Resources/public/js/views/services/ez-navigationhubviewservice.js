@@ -22,6 +22,20 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
     Y.eZ.NavigationHubViewService = Y.Base.create('navigationHubViewService', Y.eZ.ViewService, [], {
         initializer: function () {
             this.on('*:logOut', this._logOut);
+            this.after('*:navigateTo', this._navigateTo);
+        },
+
+        /**
+         * navigateTo event handler. it redirects the user to the given route.
+         *
+         * @method _navigateTo
+         * @protected
+         * @param {EventFacade} e
+         */
+        _navigateTo: function (e) {
+            var route = e.route;
+
+            this.get('app').navigateTo(route.name, route.params);
         },
 
         /**
@@ -40,30 +54,97 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         },
 
         /**
-         * Returns the navigation item for the subtree starting for the
-         * given location id.
+         * Returns a navigation item object. See the *NavigatinItems attribute.
          *
-         * @method _getSubtreeItems
-         * @protected
+         * @private
+         * @method _getItem
+         * @param {Function} constructor
+         * @param {Object} config
+         * @return {Object}
+         */
+        _getItem: function(constructor, config) {
+            return {
+                Constructor: constructor,
+                config: config
+            };
+        },
+
+        /**
+         * Returns a navigation item object describing a {{#crossLink
+         * "eZ.NavigationItemView"}}eZ.NavigationItemView{{/crossLink}}
+         *
+         * @private
+         * @method _getNavigationItem
+         * @param {String} title
+         * @param {String} identifier
+         * @param {String} routeName
+         * @param {Object} routeParams
+         * @return {Object}
+         */
+        _getNavigationItem: function (title, identifier, routeName, routeParams) {
+            return this._getItem(
+                Y.eZ.NavigationItemView, {
+                    title: title,
+                    identifier: identifier,
+                    route: {
+                        name: routeName,
+                        params: routeParams
+                    }
+                }
+            );
+        },
+
+        /**
+         * Returns the navigation item object describing a {{#crossLink
+         * "eZ.NavigationItemSubtreeView"}}eZ.NavigationItemSubtreeView{{/crossLink}}.
+         *
+         * @method _getSubtreeItem
+         * @private
          * @param {String} title
          * @param {String} identifier
          * @param {String} locationId
          * @return {Object}
          */
-        _getSubtreeItems: function (title, identifier, locationId) {
-            return {
-                Constructor: Y.eZ.NavigationItemSubtreeView,
-                config: {
+        _getSubtreeItem: function (title, identifier, locationId) {
+            return this._getItem(
+                Y.eZ.NavigationItemSubtreeView, {
                     title: title,
                     identifier: identifier,
                     route: {
                         name: 'viewLocation',
                         params: {
-                            id: locationId,
-                        },
+                            id: locationId
+                        }
+                    }
+                }
+            );
+        },
+
+        /**
+         * Returns a navigation item object describing a {{#crossLink
+         * "eZ.NavigationItemParameterView"}}eZ.NavigationItemParameterView{{/crossLink}}
+         *
+         * @private
+         * @method _getParameterItem
+         * @param {String} title
+         * @param {String} identifier
+         * @param {String} routeName
+         * @param {Object} routeParams
+         * @param {String} matchParameter
+         * @return {Object}
+         */
+        _getParameterItem: function (title, identifier, routeName, routeParams, matchParameter) {
+            return this._getItem(
+                Y.eZ.NavigationItemParameterView, {
+                    title: title,
+                    identifier: identifier,
+                    route: {
+                        name: routeName,
+                        params: routeParams,
                     },
-                },
-            };
+                    matchParameter: matchParameter
+                }
+            );
         },
 
         /**
@@ -75,9 +156,10 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         _getViewParameters: function () {
             return {
                 user: this.get('app').get('user'),
-                createNavigationItems: this.get('createNavigationItems'),
-                deliverNavigationItems: this.get('deliverNavigationItems'),
-                optimizeNavigationItems: this.get('optimizeNavigationItems'),
+                platformNavigationItems: this.get('platformNavigationItems'),
+                studioNavigationItems: this.get('studioNavigationItems'),
+                studioplusNavigationItems: this.get('studioplusNavigationItems'),
+                adminNavigationItems: this.get('adminNavigationItems'),
                 matchedRoute: this._matchedRoute(),
             };
         },
@@ -145,30 +227,30 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
     }, {
         ATTRS: {
             /**
-             * Stores the navigation item objects for the 'create' zone. Each
+             * Stores the navigation item objects for the 'platform' zone. Each
              * object must contain a `Constructor` property referencing
              * the constructor function to use to build the navigation item
              * view and a `config` property will be used as a configuration
              * object for the navigation item view. This configuration must
              * contain a `title` and an `identifier` properties.
              *
-             * @attribute createNavigationItems
+             * @attribute platformNavigationItems
              * @type Array
              * @default array containing the object the 'Content structure' and
              * 'Media library' items
              * @readOnly
              */
-            createNavigationItems: {
+            platformNavigationItems: {
                 valueFn: function () {
                     // TODO these location ids should be taken from the REST
                     // root ressource instead of being hardcoded
                     return [
-                        this._getSubtreeItems(
+                        this._getSubtreeItem(
                             "Content structure",
                             "content-structure",
                             "/api/ezp/v2/content/locations/1/2"
                         ),
-                        this._getSubtreeItems(
+                        this._getSubtreeItem(
                             "Media library",
                             "media-library",
                             "/api/ezp/v2/content/locations/1/43"
@@ -179,38 +261,71 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
             },
 
             /**
-             * Stores the navigation item objects for the 'optimize' zone. Each
+             * Stores the navigation item objects for the 'studioplus' zone. Each
              * object must contain a `Constructor` property referencing
              * the constructor function to use to build the navigation item
              * view and a `config` property will be used as a configuration
              * object for the navigation item view. This configuration must
              * contain a `title` and an `identifier` properties.
              *
-             * @attribute optimizeNavigationItems
+             * @attribute studioplusNavigationItems
              * @type Array
              * @default empty array
              * @readOnly
              */
-            optimizeNavigationItems: {
+            studioplusNavigationItems: {
                 value: [],
                 readOnly: true,
             },
 
             /**
-             * Stores the navigation item objects for the 'deliver' zone. Each
+             * Stores the navigation item objects for the 'studio' zone. Each
              * object must contain a `Constructor` property referencing
              * the constructor function to use to build the navigation item
              * view and a `config` property will be used as a configuration
              * object for the navigation item view. This configuration must
              * contain a `title` and an `identifier` properties.
              *
-             * @attribute deliverNavigationItems
+             * @attribute studioNavigationItems
              * @type Array
              * @default empty array
              * @readOnly
              */
-            deliverNavigationItems: {
+            studioNavigationItems: {
                 value: [],
+                readOnly: true,
+            },
+
+            /**
+             * Stores the navigation item objects for the 'admin' zone. Each
+             * object must contain a `Constructor` property referencing
+             * the constructor function to use to build the navigation item
+             * view and a `config` property will be used as a configuration
+             * object for the navigation item view. This configuration must
+             * contain a `title` and an `identifier` properties.
+             *
+             * @attribute platformNavigationItems
+             * @type Array
+             * @default array containing the items for the admin
+             * @readOnly
+             */
+            adminNavigationItems: {
+                valueFn: function () {
+                    return [
+                        this._getParameterItem(
+                            "Administration dashboard", "admin-dashboard",
+                            "adminGenericRoute", {uri: "pjax/dashboard"}, "uri"
+                        ),
+                        this._getParameterItem(
+                            "System information", "admin-systeminfo",
+                            "adminGenericRoute", {uri: "pjax/systeminfo"}, "uri"
+                        ),
+                        this._getNavigationItem(
+                            "Sections", "admin-sections",
+                            "adminSection", {uri: "pjax/section/list"}
+                        ),
+                    ];
+                },
                 readOnly: true,
             },
         },

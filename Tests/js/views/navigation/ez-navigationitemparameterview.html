@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+    <title>eZ Navigation Item Parameter view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="navigationitemview-ez-template">navigation item view template</script>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-navigationitemparameterview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-navigationitemparameterview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-navigationitemparameterview": {
+                requires: ['ez-navigationitemview'],
+                fullpath: "../../../../Resources/public/js/views/navigation/ez-navigationitemparameterview.js"
+            },
+            "ez-navigationitemview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/navigation/ez-navigationitemview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-navigationitemparameterview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
