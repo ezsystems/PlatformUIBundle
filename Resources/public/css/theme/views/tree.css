@@ -1,0 +1,69 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-treeview .ez-tree-loading {
+    margin-top: 40px;
+    font-style: italic;
+    text-align: center;
+    font-size: 120%;
+}
+
+.ez-view-treeview .ez-tree-loading:before {
+    display: inline-block;
+    -webkit-animation: spin 0.7s infinite linear;
+            animation: spin 0.7s infinite linear;
+    content: "\E61C";
+    padding-right: 0.5em;
+}
+
+.ez-view-treeview .ez-tree-level {
+    list-style-type: none;
+}
+
+.ez-view-treeview .ez-tree-navigate,
+.ez-view-treeview .ez-tree-node-toggle {
+    color: #ccc;
+}
+
+.ez-view-treeview .ez-tree-node-toggle:before {
+    display: inline-block; /* to be able to animate the loader */
+}
+
+.ez-view-treeview .ez-tree-node-toggle:before,
+.ez-view-treeview .ez-tree-navigate:before {
+    padding-right: 0.3em;
+}
+
+.ez-view-treeview .is-tree-node-close > .ez-tree-node-toggle:before {
+    content: "\E605";
+}
+
+.ez-view-treeview .is-tree-node-open > .ez-tree-node-toggle:before {
+    content: "\E602";
+}
+
+.ez-view-treeview .is-tree-node-error > .ez-tree-node-toggle:before {
+    content: "\E600";
+    color: #BF3E33;
+}
+
+.ez-view-treeview .is-tree-node-selected > .ez-tree-navigate {
+    color: #67A53D;
+}
+
+.ez-view-treeview .is-tree-node-selected > .ez-tree-navigate:before {
+    color: #ccc;
+}
+
+.ez-view-treeview .is-tree-node-loading > .ez-tree-node-toggle:before {
+    padding: 0 0.15em;
+    content: "\E61C";
+    -webkit-animation: spin 0.5s infinite linear;
+            animation: spin 0.5s infinite linear;
+}
+
+.ez-view-treeview .is-tree-node-leaf > .ez-tree-node-toggle {
+    visibility: hidden;
+}

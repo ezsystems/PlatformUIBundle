@@ -784,6 +784,12 @@ YUI.add('ez-platformuiapp', function (Y) {
             serverRouting: {
                 value: false
             },
+            linkSelector: {
+                // this is to avoid the Y.App to capture the click on the links
+                // otherwise the custom code can not prevent a click on any
+                // link.
+                value: "a.ez-pjax-no-element"
+            },
             transitions: {
                 value: {
                     navigate: 'slideLeft',

@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Tree view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="treeview-ez-template">
+<p class="ez-tree-loading font-icon">Loading</p>
+<div class="ez-tree-content"></div>
+</script>
+
+<script type="text/x-handlebars-template" id="ez_tree">
+<ul class="ez-tree-level">
+{{#each children}}
+    <li class="ez-tree-node{{#if state.leaf}} is-tree-node-leaf{{/if}} {{#if state.open}}is-tree-node-open{{else}}is-tree-node-close{{/if}}" data-node-id="{{id}}">
+        <a href="#" class="ez-tree-node-toggle font-icon"></a><a href="#" class="ez-tree-navigate"></a>
+    </li>
+{{/each}}
+</ul>
+</script>
+
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-treeview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-treeview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-treeview": {
+                requires: ['ez-templatebasedview', 'event-tap', 'template'],
+                fullpath: "../../../Resources/public/js/views/ez-treeview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-treeview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

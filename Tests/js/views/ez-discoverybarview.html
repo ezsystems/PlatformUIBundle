@@ -29,7 +29,8 @@
 
 <script type="text/x-handlebars-template" id="treeactionview-ez-template">
 tree
-<div class="ez-expandable-area"></div>
+<div class="ez-expandable-area">
+</div>
 </script>
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -63,8 +64,12 @@ tree
                 fullpath: "../../../Resources/public/js/views/actions/ez-buttonactionview.js"
             },
             "ez-treeactionview": {
-                requires: ['ez-buttonactionview', 'ez-expandable', 'handlebars'],
+                requires: ['ez-buttonactionview', 'ez-treeview', 'ez-expandable', 'handlebars'],
                 fullpath: "../../../Resources/public/js/views/actions/ez-treeactionview.js"
+            },
+            "ez-treeview": {
+                requires: ['ez-templatebasedview', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-treeview.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
