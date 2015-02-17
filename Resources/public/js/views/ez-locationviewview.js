@@ -22,28 +22,6 @@ YUI.add('ez-locationviewview', function (Y) {
      * @extends eZ.TemplateBasedView
      */
     Y.eZ.LocationViewView = Y.Base.create('locationViewView', Y.eZ.TemplateBasedView, [Y.eZ.Tabs], {
-        events: {
-            '.ez-tabs .ez-tabs-label a': {
-                'tap': '_uiTab'
-            }
-        },
-
-        /**
-         * tap event handler on a tab label
-         *
-         * @method _uiTab
-         * @protected
-         * @param {Object} e tap event facade
-         */
-        _uiTab: function (e) {
-            e.preventDefault();
-            this._selectTab(
-                e.currentTarget.ancestor('.ez-tabs-label'),
-                e.currentTarget.getAttribute('href'),
-                this.get('container')
-            );
-        },
-
         initializer: function () {
             this.get('actionBar').addTarget(this);
             this.get('rawContentView').addTarget(this);

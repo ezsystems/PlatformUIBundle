@@ -1,7 +1,17 @@
 <h1>{{ title }}</h1>
 
-<p>Selection mode is set to {{ selectionMode }}</p>
-
+<section class="ez-tabs">
+    <ul class="ez-tabs-list">
+    {{#each methods}}
+        <li class="ez-tabs-label"><a href="#{{ identifier }}">{{ title }}</a></li>
+    {{/each}}
+    </ul>
+    <div class="ez-tabs-panels">
+    {{#each methods}}
+        <div class="ez-tabs-panel" id="{{ identifier }}"></div>
+    {{/each}}
+    </div>
+</section>
 <p>
     <a href="#" class="ez-universaldiscovery-cancel">Cancel</a>
     <button class="ez-universaldiscovery-confirm ez-button pure-button">Confirm</button>

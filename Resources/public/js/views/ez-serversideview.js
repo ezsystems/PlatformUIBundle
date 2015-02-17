@@ -21,28 +21,9 @@ YUI.add('ez-serversideview', function (Y) {
      */
     Y.eZ.ServerSideView = Y.Base.create('serverSideView', Y.eZ.View, [Y.eZ.Tabs, Y.eZ.SelectionTable], {
         events: {
-            '.ez-tabs .ez-tabs-label a': {
-                'tap': '_uiTab'
-            },
             'form': {
                 'submit': '_submitForm'
             },
-        },
-
-        /**
-         * tap event handler on a tab label
-         *
-         * @method _uiTab
-         * @protected
-         * @param {Object} e tap event facade
-         */
-        _uiTab: function (e) {
-            e.preventDefault();
-            this._selectTab(
-                e.currentTarget.ancestor('.ez-tabs-label'),
-                e.currentTarget.getAttribute('href'),
-                this.get('container')
-            );
         },
 
         /**

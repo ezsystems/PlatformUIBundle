@@ -23,7 +23,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.UniversalDiscoveryView = Y.Base.create('universalDiscoveryView', Y.eZ.TemplateBasedView, [], {
+    Y.eZ.UniversalDiscoveryView = Y.Base.create('universalDiscoveryView', Y.eZ.TemplateBasedView, [Y.eZ.Tabs], {
         events: {
             '.ez-universaldiscovery-confirm': {
                 'tap': '_confirmSelection'
@@ -35,6 +35,14 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         initializer: function () {
+            this._setMethodsVisibleFlag();
+            this.after('visibleMethodChange', this._setMethodsVisibleFlag);
+            this.after('activeChange', function () {
+                if ( this.get('active') ) {
+                    this._setMethodsVisibleFlag();
+                    this._uiUpdateTab();
+                }
+            });
             this.on('contentDiscoveredHandlerChange', function (e) {
                 this._syncEventHandler(DISCOVERED, e.prevVal, e.newVal);
             });
@@ -44,6 +52,71 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             });
 
             this._publishEvents();
+
+            this.on('changeTab', this._updateVisibleMethod);
+        },
+
+        /**
+         * Updates the tab to show the correct tab depending on the visible
+         * method
+         *
+         * @method _uiUpdateTab
+         * @protected
+         */
+        _uiUpdateTab: function () {
+            var container = this.get('container'),
+                htmlId = '#' + this._visibleMethodView.getHTMLIdentifier();
+
+            this._selectTab(
+                this._getTabLabel(container.one('[href="' + htmlId + '"]')),
+                htmlId,
+                container
+            );
+        },
+
+        /**
+         * Updates the visible flag of the method views depending on the value
+         * of the `visibleMethod` attribute
+         *
+         * @method _setMethodsVisibleFlag
+         * @protected
+         */
+        _setMethodsVisibleFlag: function () {
+            var visibleMethod = this.get('visibleMethod');
+
+            /**
+             * Stores a reference to the visible method view
+             *
+             * @property _visibleMethodView
+             * @protected
+             * @type {eZ.UniversalDiscoveryMethodBaseView|Null}
+             */
+            this._visibleMethodView = null;
+            Y.Array.each(this.get('methods'), function (method) {
+                var visible = (visibleMethod === method.get('identifier'));
+
+                method.set('visible', visible);
+                if ( visible ) {
+                    this._visibleMethodView = method;
+                }
+            }, this);
+        },
+
+        /**
+         * tabChange event handler to update the `visibleMethod` attribute.
+         *
+         * @method _updateVisibleMethod
+         * @protected
+         * @param {EventFacade} e
+         */
+        _updateVisibleMethod: function (e) {
+            var identifier = e.tabId.replace(/^#/, ''),
+                newlyVisibleMethod;
+
+            newlyVisibleMethod = Y.Array.find(this.get('methods'), function (method) {
+                return method.getHTMLIdentifier() === identifier;
+            });
+            this.set('visibleMethod', newlyVisibleMethod.get('identifier'));
         },
 
         /**
@@ -95,6 +168,9 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
          */
         _resetState: function () {
             this.reset();
+            Y.Array.each(this.get('methods'), function (method) {
+                method.set('visible', false);
+            });
         },
 
         /**
@@ -140,9 +216,47 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             this.get('container').setHTML(this.template({
                 title: this.get('title'),
                 selectionMode: this.get('selectionMode'),
+                methods: this._methodsList(),
             }));
+            this._renderMethods();
             return this;
-        }
+        },
+
+        /**
+         * Renders the available methods in a DOM element which id is the
+         * HTML identifier of the method.
+         *
+         * @method _renderMethods
+         * @protected
+         */
+        _renderMethods: function () {
+            var container = this.get('container');
+
+            Y.Array.each(this.get('methods'), function (method) {
+                container.one('#' + method.getHTMLIdentifier()).append(method.render().get('container'));
+            });
+        },
+
+        /**
+         * Builds an array containing objects that describes the available
+         * methods.
+         *
+         * @protected
+         * @method _methodsList
+         * @return Array
+         */
+        _methodsList: function () {
+            var res = [];
+
+            Y.Array.each(this.get('methods'), function (method) {
+                res.push({
+                    title: method.get('title'),
+                    identifier: method.getHTMLIdentifier(),
+                    visible: method.get('visible'),
+                });
+            });
+            return res;
+        },
     }, {
         ATTRS: {
             /**
@@ -187,6 +301,36 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
              */
             cancelDiscoverHandler: {
                 value: null,
+            },
+
+            /**
+             * The available methods to discover content. Each element in the
+             * array should be an instance of a class extending
+             * Y.eZ.UniversalDiscoveryMethodBaseView.
+             *
+             * @attribute methods
+             * @type array
+             */
+            methods: {
+                valueFn: function () {
+                    return [
+                        new Y.eZ.UniversalDiscoveryBrowseView({
+                            priority: 100,
+                            selectionMode: this.get('selectionMode'),
+                        }),
+                    ];
+                },
+            },
+
+            /**
+             * The identifier of the visible method
+             *
+             * @attribute visibleMethod
+             * @type String
+             * @default 'browse'
+             */
+            visibleMethod: {
+                value: 'browse',
             },
         }
     });

@@ -105,11 +105,25 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/locationview.hbt
                 ez-universaldiscoveryview:
-                    requires: ['ez-templatebasedview', 'universaldiscoveryview-ez-template', 'event-tap']
+                    requires:
+                        - 'ez-tabs'
+                        - 'ez-templatebasedview'
+                        - 'universaldiscoveryview-ez-template'
+                        - 'ez-universaldiscoverybrowseview'
+                        - 'event-tap'
                     path: %ez_platformui.public_dir%/js/views/ez-universaldiscoveryview.js
                 universaldiscoveryview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/universaldiscovery.hbt
+                ez-universaldiscoverymethodbaseview:
+                    requires: ['ez-templatebasedview']
+                    path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverymethodbaseview.js
+                ez-universaldiscoverybrowseview:
+                    requires: ['ez-universaldiscoverymethodbaseview', 'universaldiscoverybrowseview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverybrowseview.js
+                universaldiscoverybrowseview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/universaldiscovery/browse.hbt
                 ez-navigationhubview:
                     requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside', 'navigationhubview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-navigationhubview.js
@@ -553,7 +567,7 @@ system:
                     requires: ['transition']
                     path: %ez_platformui.public_dir%/js/extensions/ez-accordion-element.js
                 ez-tabs:
-                    requires: ['node']
+                    requires: ['node', 'event-tap']
                     path: %ez_platformui.public_dir%/js/extensions/ez-tabs.js
                 ez-selection-table:
                     requires: ['node']

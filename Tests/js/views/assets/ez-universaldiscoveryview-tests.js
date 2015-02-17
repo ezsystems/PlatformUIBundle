@@ -4,6 +4,7 @@
  */
 YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     var renderTest, domEventTest, eventHandlersTest, eventsTest,
+        methodVisibilityTest, tabTest, defaultMethodsTest,
         Assert = Y.Assert;
 
     renderTest = new Y.Test.Case({
@@ -12,16 +13,23 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         setUp: function () {
             this.title = 'Universal discovery view title';
             this.selectionMode = 'multiple';
+            this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView();
             this.view = new Y.eZ.UniversalDiscoveryView({
                 container: '.container',
                 title: this.title,
                 selectionMode: this.selectionMode,
+                methods: [this.method1, this.method2],
             });
         },
 
         tearDown: function () {
             this.view.destroy();
+            this.method1.destroy();
+            this.method2.destroy();
             delete this.view;
+            delete this.method1;
+            delete this.method2;
         },
 
         "Test render": function () {
@@ -43,7 +51,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Assert.isObject(variables, "The template should receive some variables");
-                Assert.areEqual(2, Y.Object.keys(variables).length, "The template should receive 2 variables");
+                Assert.areEqual(3, Y.Object.keys(variables).length, "The template should receive 3 variables");
                 Assert.areSame(
                     that.title, variables.title,
                     "The title should be available in the template"
@@ -52,6 +60,29 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                     that.selectionMode, variables.selectionMode,
                     "The selectionMode should available in the template"
                 );
+                Assert.isArray(
+                    variables.methods, "The method list should be available in the template"
+                );
+                Assert.areEqual(
+                    2, variables.methods.length,
+                    "The 2 method should available"
+                );
+                Y.Array.each(this.get('methods'), function (method, i) {
+                    var localMethod = variables.methods[i];
+
+                    Assert.areEqual(
+                        localMethod.title, method.get('title'),
+                        "The method title should be available"
+                    );
+                    Assert.areEqual(
+                        localMethod.identifier, method.getHTMLIdentifier(),
+                        "The method html identifier should be available"
+                    );
+                    Assert.areSame(
+                        localMethod.visible, method.get('visible'),
+                        "The method visible flag should be available"
+                    );
+                });
                 
                 return origTpl.apply(this, arguments);
             };
@@ -65,6 +96,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         setUp: function () {
             this.view = new Y.eZ.UniversalDiscoveryView({
                 container: '.container',
+                methods: [],
             });
             this.view.render();
         },
@@ -119,6 +151,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         setUp: function () {
             this.view = new Y.eZ.UniversalDiscoveryView({
                 container: '.container',
+                methods: [],
             });
             this.handler1 = false;
             this.handler2 = false;
@@ -194,8 +227,14 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         name: "eZ Universal Discovery View events tests",
 
         setUp: function () {
+            this.methodIdentifier = 'default';
+            this.method = new Y.eZ.UniversalDiscoveryMethodBaseView({
+                identifier: this.methodIdentifier,
+            });
             this.view = new Y.eZ.UniversalDiscoveryView({
+                visibleMethod: this.methodIdentifier,
                 container: '.container',
+                methods: [this.method],
             });
             this.handler1 = false;
             this.handler2 = false;
@@ -203,7 +242,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            this.method.destroy();
             delete this.view;
+            delete this.method;
             delete this.handler1;
             delete this.handler2;
         },
@@ -217,6 +258,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 customTitle,
                 this.view.get('title'),
                 "The title should resetted to its default value"
+            );
+            Assert.isFalse(
+                this.method.get('visible'),
+                "The method should have the visible flag to false"
             );
         },
 
@@ -232,6 +277,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 customTitle,
                 this.view.get('title'),
                 "The title should be kept"
+            );
+            Assert.isTrue(
+                this.method.get('visible'),
+                "The method visible flag should still be true"
             );
         },
 
@@ -252,9 +301,206 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
     });
 
+    renderTest = new Y.Test.Case({
+        name: "eZ Universal Discovery View render test",
+
+        setUp: function () {
+            this.title = 'Universal discovery view title';
+            this.selectionMode = 'multiple';
+            this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView({
+                identifier: 'method1',
+            });
+            this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView({
+                identifier: 'method2',
+            });
+            this.view = new Y.eZ.UniversalDiscoveryView({
+                container: '.container',
+                title: this.title,
+                visibleMethod: 'method2',
+                selectionMode: this.selectionMode,
+                methods: [this.method1, this.method2],
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.method1.destroy();
+            this.method2.destroy();
+            delete this.view;
+            delete this.method1;
+            delete this.method2;
+        },
+
+        "Should initialize function visibility of the method views": function () {
+            Assert.isTrue(
+                this.method2.get('visible'),
+                "The method2 should be visible"
+            );
+            Assert.isFalse(
+                this.method1.get('visible'),
+                "The method1 should not be visible"
+            );
+        },
+
+        "Should change the visible flag depending on visibleMethod": function () {
+            this.view.set('visibleMethod', 'method1');
+            Assert.isTrue(
+                this.method1.get('visible'),
+                "The method1 should be visible"
+            );
+            Assert.isFalse(
+                this.method2.get('visible'),
+                "The method2 should not be visible"
+            );
+        },
+    });
+
+    tabTest = new Y.Test.Case({
+        name: "eZ Universal Discovery View render test",
+
+        setUp: function () {
+            this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method1._set("title", "Method 1");
+            this.method1._set("identifier", "method1");
+
+            this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method2._set("title", "Method 2");
+            this.method2._set("identifier", "method2");
+
+            this.view = new Y.eZ.UniversalDiscoveryView({
+                container: '.container',
+                methods: [this.method1, this.method2],
+                visibleMethod: "method1",
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.method1.destroy();
+            this.method2.destroy();
+            delete this.view;
+            delete this.method1;
+            delete this.method2;
+        },
+
+        "Should initialize the tabs when getting active": function () {
+            var container = this.view.get('container'),
+                method1 = this.method1;
+
+            this.view.set('active', true);
+
+            Assert.isTrue(
+                method1.get('visible'),
+                "The method1 visible flag should be true"
+            );
+            Assert.isFalse(
+                this.method2.get('visible'),
+                "The method2 visible flag should be false"
+            );
+
+            Assert.isTrue(
+                container.one('#' + method1.getHTMLIdentifier()).hasClass('is-tab-selected'),
+                "The method1 tab panel should be selected"
+            );
+            Assert.isTrue(
+                container.one('[href="#' + method1.getHTMLIdentifier() + '"]').ancestor('.ez-tabs-label').hasClass('is-tab-selected'),
+                "The method1 tab label should be selected"
+            );
+        },
+
+        "Should update the method visible flag when changing the visibleMethod": function () {
+            var method2 = this.method2;
+
+            this.view.set('active', true);
+            this.view.set('visibleMethod', 'method2');
+
+            Assert.isTrue(
+                method2.get('visible'),
+                "The method2 should be visible"
+            );
+            Assert.isFalse(
+                this.method1.get('visible'),
+                "The method2 should not be visible"
+            );
+        },
+
+        "Should change the visibleMethod when tapping a tab": function () {
+            var container = this.view.get('container'),
+                method2 = this.method2,
+                that = this;
+
+            this.view.set('active', true);
+
+            container.one('[href="#' + method2.getHTMLIdentifier() + '"]').simulateGesture('tap', function () {
+                that.resume(function () {
+                    Assert.areEqual(
+                        method2.get('identifier'), this.view.get('visibleMethod'),
+                        "The method2 should be visible"
+                    );
+                    Assert.isTrue(
+                        method2.get('visible'),
+                        "The method2 visible flag should be true"
+                    );
+                    Assert.isFalse(
+                        this.method1.get('visible'),
+                        "The method1 visible flag should be false"
+                    );
+                });
+            });
+            this.wait();
+        },
+    });
+
+    defaultMethodsTest = new Y.Test.Case({
+        name: "eZ Universal Discovery View default methods value test",
+
+        setUp: function () {
+            this.config = {};
+            this.selectionMode = 'multiple';
+
+            Y.eZ.UniversalDiscoveryBrowseView = Y.Base.create(
+                'testView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
+            );
+            this.view = new Y.eZ.UniversalDiscoveryView({
+                selectionMode: this.selectionMode,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+            delete Y.eZ.UniversalDiscoveryBrowseView;
+        },
+
+        "Should instantiate the browse method": function () {
+            var methods = this.view.get('methods');
+
+            Assert.isArray(
+                methods,
+                "The method list should be an array"
+            );
+            Assert.areEqual(
+                1, methods.length,
+                "The default method list should contain 1 element"
+            );
+            Assert.isInstanceOf(
+                Y.eZ.UniversalDiscoveryBrowseView, methods[0],
+                "The first element should be an instance of the browse method"
+            );
+            Assert.areEqual(
+                this.selectionMode, methods[0].get('selectionMode'),
+                "The selection mode should be passed to the method views"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(domEventTest);
     Y.Test.Runner.add(eventHandlersTest);
     Y.Test.Runner.add(eventsTest);
+    Y.Test.Runner.add(methodVisibilityTest);
+    Y.Test.Runner.add(tabTest);
+    Y.Test.Runner.add(defaultMethodsTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-universaldiscoveryview']});
