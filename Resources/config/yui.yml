@@ -157,6 +157,7 @@ system:
                         - 'ez-contenttypemodel'
                         - 'ez-checkbox-view'
                         - 'ez-image-view'
+                        - 'ez-country-view'
                         - 'ez-xmltext-view'
                         - 'ez-relation-view'
                         - 'ez-relationlist-view'
@@ -336,6 +337,12 @@ system:
                 imageview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/view/image.hbt
+                ez-country-view:
+                    requires: ['ez-fieldview', 'countryview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-country-view.js
+                countryview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/country.hbt
                 ez-user-view:
                     requires: ['ez-fieldview', 'userview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-user-view.js

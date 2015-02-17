@@ -36,7 +36,13 @@ class PlatformUIController extends Controller
      */
     private $anonymousUserId;
 
+    /**
+    * @var array
+    */
+    protected $countriesInfo;
+
     public function __construct(
+        array $countriesInfo,
         SessionInterface $session,
         CsrfTokenManagerInterface $csrfTokenManager,
         $restIntention = 'rest',
@@ -47,6 +53,7 @@ class PlatformUIController extends Controller
         $this->csrfTokenManager = $csrfTokenManager;
         $this->csrfTokenIntention = $restIntention;
         $this->anonymousUserId = $anonymousUserId;
+        $this->countriesInfo = $countriesInfo;
     }
 
     /**
@@ -78,6 +85,7 @@ class PlatformUIController extends Controller
                     'ezpublish_rest_loadUser',
                     array( 'userId' => $this->anonymousUserId )
                 ),
+                'countriesInfo' => $this->countriesInfo,
             )
         );
     }
