@@ -74,7 +74,14 @@
                                 href: "{{ sessionInfo.href }}",
                                 csrfToken: "{{ sessionInfo.csrfToken }}",
                         }{% endif %})
-                    )
+                    ),
+                    routeConfig: {
+                        "viewLocation": {
+                            "fieldViews": {
+                                "ezcountry": {{countriesInfo|json_encode|raw}}
+                            }
+                        }
+                    }
                 });
             app.on('ready', function () {
                 Y.one(Y.config.doc.documentElement).addClass('ez-platformui-app-ready');

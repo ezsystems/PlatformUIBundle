@@ -72,7 +72,7 @@ system:
                     requires: ['ez-viewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras']
                     path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
                 ez-discoverybarviewservice:
-                    requires: ['ez-viewservice', 'ez-contenttreeplugin']
+                    requires: ['ez-viewservice', 'ez-discoverybarcontenttreeplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js
                 ez-universaldiscoveryviewservice:
                     requires: ['ez-viewservice']
@@ -110,6 +110,7 @@ system:
                         - 'ez-templatebasedview'
                         - 'universaldiscoveryview-ez-template'
                         - 'ez-universaldiscoverybrowseview'
+                        - 'ez-universaldiscoveryrecentview'
                         - 'event-tap'
                     path: %ez_platformui.public_dir%/js/views/ez-universaldiscoveryview.js
                 universaldiscoveryview-ez-template:
@@ -124,6 +125,12 @@ system:
                 universaldiscoverybrowseview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/universaldiscovery/browse.hbt
+                ez-universaldiscoveryrecentview:
+                    requires: ['ez-universaldiscoverymethodbaseview', 'universaldiscoveryrecentview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoveryrecentview.js
+                universaldiscoveryrecentview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/universaldiscovery/recent.hbt
                 ez-navigationhubview:
                     requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside', 'navigationhubview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-navigationhubview.js
@@ -157,6 +164,7 @@ system:
                         - 'ez-contenttypemodel'
                         - 'ez-checkbox-view'
                         - 'ez-image-view'
+                        - 'ez-country-view'
                         - 'ez-xmltext-view'
                         - 'ez-relation-view'
                         - 'ez-relationlist-view'
@@ -336,6 +344,12 @@ system:
                 imageview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/view/image.hbt
+                ez-country-view:
+                    requires: ['ez-fieldview', 'countryview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-country-view.js
+                countryview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/country.hbt
                 ez-user-view:
                     requires: ['ez-fieldview', 'userview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-user-view.js
@@ -542,8 +556,11 @@ system:
                 ez-imagevariationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-imagevariationloadplugin.js
+                ez-discoverybarcontenttreeplugin:
+                    requires: ['ez-contenttreeplugin', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-discoverybarcontenttreeplugin.js
                 ez-contenttreeplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree']
+                    requires: ['ez-viewservicebaseplugin', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'parallel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
                 ez-contentcreateplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']

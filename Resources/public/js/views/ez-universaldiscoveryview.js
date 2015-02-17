@@ -318,6 +318,10 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             priority: 100,
                             selectionMode: this.get('selectionMode'),
                         }),
+                        new Y.eZ.UniversalDiscoveryRecentView({
+                            priority: 80,
+                            selectionMode: this.get('selectionMode'),
+                        }),
                     ];
                 },
             },
