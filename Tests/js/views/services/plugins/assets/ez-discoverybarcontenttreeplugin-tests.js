@@ -11,6 +11,8 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
 
         setUp: function () {
             this.service = new Y.Base();
+            this.view = new Y.Base();
+            this.view.addTarget(this.service);
             this.plugin = new Y.eZ.Plugin.DiscoveryBarContentTree({
                 host: this.service
             });
@@ -19,8 +21,10 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
         tearDown: function () {
             this.service.destroy();
             this.plugin.destroy();
+            this.view.destroy();
             delete this.service;
             delete this.plugin;
+            delete this.view;
         },
 
         "Should reuse the tree if the node is already present": function () {
@@ -48,6 +52,35 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
 
             Assert.isTrue(node.isSelected(), "The node should be selected");
             Assert.isTrue(node.isOpen(), "The node should be open");
+        },
+
+        "Should not build the tree if the view is not expanded": function () {
+            var tree = this.plugin.get('tree'),
+                loc, node;
+
+            loc = new Y.Mock();
+            Y.Mock.expect(loc, {
+                method: 'get',
+                args: ['id'],
+                returns: "42",
+            });
+            node = tree.rootNode.append({
+                canHaveChildren: true,
+                id: 1,
+                children: [{}, {}],
+                state: {loaded: true},
+            }).close();
+
+            this.service.set('response', {view: {"location": loc}});
+            this.view.set('expanded', false);
+
+            tree.on('clear', function () {
+                Assert.fail("The tree should not be cleared");
+            });
+            this.view.fire('treeAction');
+
+            Assert.isFalse(node.isSelected(), "The node should not be selected");
+            Assert.isFalse(node.isOpen(), "The node should not be open");
         },
     });
 
