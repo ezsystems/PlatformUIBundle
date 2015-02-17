@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenttreeplugin-tests', function (Y) {
-    var tests, registerTest,
+    var tests,
         Assert = Y.Assert;
 
     tests = new Y.Test.Case({
@@ -67,40 +67,8 @@ YUI.add('ez-contenttreeplugin-tests', function (Y) {
                 "The handling of the `toggleNode` event should have closed the node"
             );
         },
-
-        "Should reuse the tree if the node is already present": function () {
-            var tree = this.plugin.get('tree'),
-                nodeId = 3, loc, node;
-
-            loc = new Y.Mock();
-            Y.Mock.expect(loc, {
-                method: 'get',
-                args: ['id'],
-                returns: nodeId,
-            });
-            this.service.set('response', {view: {"location": loc}});
-            node = tree.rootNode.append({
-                canHaveChildren: true,
-                id: nodeId,
-                children: [{}, {}],
-                state: {loaded: true},
-            }).close();
-
-            tree.on('clear', function () {
-                Assert.fail("The tree should be cleared");
-            });
-            this.service.fire('treeAction');
-
-            Assert.isTrue(node.isSelected(), "The node should be selected");
-            Assert.isTrue(node.isOpen(), "The node should be open");
-        },
     });
-
-    registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
-    registerTest.Plugin = Y.eZ.Plugin.ContentTree;
-    registerTest.components = ['discoveryBarViewService'];
 
     Y.Test.Runner.setName("eZ Content Tree Plugin tests");
     Y.Test.Runner.add(tests);
-    Y.Test.Runner.add(registerTest);
 }, '', {requires: ['test', 'base', 'ez-contenttreeplugin', 'ez-pluginregister-tests']});

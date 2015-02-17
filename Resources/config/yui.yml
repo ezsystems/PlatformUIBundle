@@ -72,7 +72,7 @@ system:
                     requires: ['ez-viewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras']
                     path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
                 ez-discoverybarviewservice:
-                    requires: ['ez-viewservice', 'ez-contenttreeplugin']
+                    requires: ['ez-viewservice', 'ez-discoverybarcontenttreeplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js
                 ez-universaldiscoveryviewservice:
                     requires: ['ez-viewservice']
@@ -549,8 +549,11 @@ system:
                 ez-imagevariationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-imagevariationloadplugin.js
+                ez-discoverybarcontenttreeplugin:
+                    requires: ['ez-contenttreeplugin', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-discoverybarcontenttreeplugin.js
                 ez-contenttreeplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree']
+                    requires: ['ez-viewservicebaseplugin', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'parallel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
                 ez-contentcreateplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']
