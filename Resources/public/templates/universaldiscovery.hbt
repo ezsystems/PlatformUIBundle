@@ -14,5 +14,5 @@
 </section>
 <p>
     <a href="#" class="ez-universaldiscovery-cancel">Cancel</a>
-    <button class="ez-universaldiscovery-confirm ez-button pure-button">Confirm</button>
+    <button class="ez-universaldiscovery-confirm ez-button pure-button" disabled="disabled">Confirm</button>
 </p>
