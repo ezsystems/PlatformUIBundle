@@ -12,12 +12,34 @@ YUI.add('ez-author-view-tests', function (Y) {
             setUp: function () {
                 this.templateVariablesCount = 4;
                 this.fieldDefinition = {fieldType: 'ezauthor'};
-                this.field = {fieldValue: {email: "MarieChantal@NS.com", id: 0, name:"MarieChantal" }};
+                this.field = {fieldValue: [{email: "MarieChantal@NS.com", id: 0, name:"MarieChantal" }]};
                 this.isEmpty = false;
                 this.view = new Y.eZ.AuthorView({
                     fieldDefinition: this.fieldDefinition,
                     field: this.field
                 });
+            },
+
+            "Test isEmpty with an empty field": function () {
+                this._testIsEmpty(
+                    {}, true,
+                    "The field should be seen as empty"
+                );
+            },
+
+            "Test isEmpty with a filled fieldValue": function () {
+                this._testIsEmpty(
+                    this.field,
+                    false,
+                    "The field should not be seen as empty"
+                );
+            },
+
+            "Test isEmpty with an empty fieldValue": function () {
+                this._testIsEmpty(
+                    {fieldValue: []}, true,
+                    "The field should be seen as empty"
+                );
             },
 
             tearDown: function () {
