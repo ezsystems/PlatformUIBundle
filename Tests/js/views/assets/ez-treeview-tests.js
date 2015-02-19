@@ -4,24 +4,15 @@
  */
 YUI.add('ez-treeview-tests', function (Y) {
     var treeTest,
-        Assert = Y.Assert;
+        Assert = Y.Assert, Mock = Y.Mock;
 
     treeTest = new Y.Test.Case({
         name: "eZ Tree View tree tests",
 
-        init: function () {
-            Y.Template.register(
-                'tree-ez-partial', Y.Handlebars.compile(Y.one('#ez_tree').getHTML())
-            );
-        },
-
-        destroy: function () {
-            Y.Template.register('tree-ez-partial', undefined);
-        },
-
-        _buildNode: function (id, leaf, canHaveChildren) {
+        _buildNode: function (id, leaf, canHaveChildren, data) {
             return {
                 id: id,
+                data: data,
                 state: {
                     leaf: leaf,
                 },
@@ -32,6 +23,9 @@ YUI.add('ez-treeview-tests', function (Y) {
         setUp: function () {
             var Tree;
 
+            Y.Template.register(
+                'tree-ez-partial', Y.Handlebars.compile(Y.one('#ez_tree').getHTML())
+            );
             this.view = new Y.eZ.TreeView({
                 container: '.container',
                 actionId: "tree",
@@ -51,6 +45,7 @@ YUI.add('ez-treeview-tests', function (Y) {
         },
 
         tearDown: function () {
+            Y.Template.register('tree-ez-partial', undefined);
             this.view.get('container').empty();
             this.view.destroy();
             this.tree.destroy();
@@ -113,6 +108,47 @@ YUI.add('ez-treeview-tests', function (Y) {
 
             this._assertNodeRendered(childNodeId[0]);
             this._assertNodeRendered(childNodeId[1]);
+        },
+
+        "Should 'jsonify' the node's data": function () {
+            var level2Node = this.tree.getNodeById(this.level2NodeId),
+                childNodeId = 20,
+                modelMock = new Mock(), modelJson = {}, other = {},
+                origTemplate = Y.Template.get('tree-ez-partial'),
+                that = this;
+
+            Mock.expect(modelMock, {
+                method: 'toJSON',
+                returns: modelJson,
+            });
+            this.tree.plug(Y.Plugin.Tree.Lazy, {
+                load: function (node, callback) {
+                    node.append([
+                        that._buildNode(childNodeId, true, false, {model: modelMock, other: other}),
+                    ]);
+                    callback();
+                }
+            });
+            this.view.set('tree', this.tree);
+            this.view.render();
+
+            this.tree.lazy.fire('load', {node: this.tree.rootNode});
+            this.tree.rootNode.open();
+            Y.Template.register('tree-ez-partial', function (variables) {
+                Assert.areSame(
+                    modelJson, variables.children[0].data.model,
+                    "The model should be jsonified"
+                );
+                Assert.areSame(
+                    other, variables.children[0].data.other,
+                    "Others data should be left intact"
+                );
+                return origTemplate.apply(this, arguments);
+            });
+
+
+            level2Node.open();
+
         },
 
         "Should handle the lazy loading while opening": function () {

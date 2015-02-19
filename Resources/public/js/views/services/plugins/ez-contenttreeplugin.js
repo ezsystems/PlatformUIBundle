@@ -68,9 +68,9 @@ YUI.add('ez-contenttreeplugin', function (Y) {
                                 return;
                             }
                             children[location.get('id')] = {
-                                location: location.toJSON(),
-                                content: content.toJSON(),
-                                contentType: contentType.toJSON(),
+                                location: location,
+                                content: content,
+                                contentType: contentType,
                             };
                         });
 
@@ -99,9 +99,9 @@ YUI.add('ez-contenttreeplugin', function (Y) {
                         node.append({
                             data: children[key._href],
                             id: key._href,
-                            canHaveChildren: children[key._href].contentType.isContainer,
+                            canHaveChildren: children[key._href].contentType.get('isContainer'),
                             state: {
-                                leaf: (children[key._href].location.childCount === 0),
+                                leaf: (children[key._href].location.get('childCount') === 0),
                             },
                         });
                     });
