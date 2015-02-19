@@ -1,0 +1,6 @@
+{{#if content}}
+    <h2>Selected item</h2>
+    <p>{{ content.name }} ({{ contentType.names.[eng-GB] }})</p>
+{{else}}
+    <p>Select a content from the left</p>
+{{/if}}
