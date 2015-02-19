@@ -14,6 +14,7 @@
         }
     },
     "require": {
-        "ezsystems/platform-ui-assets-bundle": "~0.2"
+        "ezsystems/platform-ui-assets-bundle": "~0.2",
+        "zetacomponents/system-information": "~1.1"
     }
 }
