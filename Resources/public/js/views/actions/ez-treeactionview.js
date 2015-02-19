@@ -99,14 +99,14 @@ YUI.add('ez-treeactionview', function (Y) {
         },
 
         /**
-         * Tap event handler on the navigate links in the tree
+         * `treeNavigate` event handler. It makes sure the tree action view is
+         * unexpanded when navigating with the tree.
          *
          * @method _uiNavigate
-         * @param {Object} e
+         * @param {EventFacade} e
          * @protected
          */
         _uiNavigate: function (e) {
-            e.preventDefault();
             this.set('expanded', false);
         },
 

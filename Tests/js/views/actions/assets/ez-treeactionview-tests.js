@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-treeactionview-tests', function (Y) {
-    var buttonTest, viewTest, treeTest,
+    var buttonTest, viewTest, treeTest, treeEventTest,
         Assert = Y.Assert;
 
     buttonTest = new Y.Test.Case(
@@ -152,10 +152,59 @@ YUI.add('ez-treeactionview-tests', function (Y) {
         },
     });
 
+    treeEventTest = new Y.Test.Case({
+        name: "eZ Tree Action View tree event tests",
+
+        setUp: function () {
+            this.treeView = new Y.View();
+            this.view = new Y.eZ.TreeActionView({
+                container: '.container',
+                actionId: "tree",
+                hint: "Fool's Garden",
+                label: "Lemon tree",
+                treeView: this.treeView,
+            });
+            this.treeView.addTarget(this.view);
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.treeView.destroy();
+            delete this.view;
+            delete this.treeView;
+        },
+
+        "Should unexpand on treeNavigate event": function () {
+            var treeNavigateEvt = false;
+
+            this.view.set('expanded', true);
+
+            this.view.on('*:treeNavigate', function (e) {
+                treeNavigateEvt = true;
+                Assert.isFalse(
+                    !!e.prevented,
+                    "The treeNavigate event should not be prevented"
+                );
+                Assert.isFalse(
+                    this.get('expanded'),
+                    "The tree should be unexpanded"
+                );
+            });
+
+            this.treeView.fire('treeNavigate');
+            Assert.isTrue(
+                treeNavigateEvt,
+                "The tree navigate event should bubble to the view"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Tree Action View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(treeTest);
     Y.Test.Runner.add(buttonTest);
+    Y.Test.Runner.add(treeEventTest);
 }, '', {
     requires: [
         'test', 'node-event-simulate', 'ez-treeactionview',
