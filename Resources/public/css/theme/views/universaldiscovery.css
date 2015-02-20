@@ -24,3 +24,22 @@
     background: #f5f4f2;
     border: 1px solid #aaa;
 }
+
+.ez-view-universaldiscoveryview .ez-universaldiscovery-title {
+    font-weight: bold;
+    font-size: 170%;
+}
+
+.ez-view-universaldiscoveryview .ez-tabs-panel {
+    border: 1px solid #ccc;
+    border-top: 0;
+}
+
+.ez-view-universaldiscoveryview .ez-universaldiscovery-toolbar {
+    text-align: right;
+}
+
+.ez-view-universaldiscoveryview .ez-universaldiscovery-confirm {
+    font-size: 110%;
+    font-weight: bold;
+}
