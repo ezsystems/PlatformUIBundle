@@ -75,7 +75,7 @@ system:
                     requires: ['ez-viewservice', 'ez-discoverybarcontenttreeplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js
                 ez-universaldiscoveryviewservice:
-                    requires: ['ez-viewservice']
+                    requires: ['ez-viewservice', 'ez-universaldiscoverycontenttreeplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-universaldiscoveryviewservice.js
                 ez-serversideviewservice:
                     requires: ['io-base', 'io-form', 'ez-viewservice']
@@ -555,6 +555,9 @@ system:
                 ez-imagevariationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-imagevariationloadplugin.js
+                ez-universaldiscoverycontenttreeplugin:
+                    requires: ['ez-contenttreeplugin', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-universaldiscoverycontenttreeplugin.js
                 ez-discoverybarcontenttreeplugin:
                     requires: ['ez-contenttreeplugin', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-discoverybarcontenttreeplugin.js
