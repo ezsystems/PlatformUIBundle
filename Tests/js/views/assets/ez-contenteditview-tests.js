@@ -3,14 +3,13 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenteditview-tests', function (Y) {
-    var viewTest, titleTest, eventTest;
+    var viewTest, titleTest, eventTest, attrsToFormViewAndActionBarTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Content Edit View test",
 
         setUp: function () {
-            var that = this,
-                mockConf = {
+            var mockConf = {
                     method: 'toJSON',
                     returns: {}
                 };
@@ -30,23 +29,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 args: ['container'],
                 returns: this.formViewContents
             });
-            Y.Mock.expect(this.formView, {
-                method: 'set',
-                callCount: 3,
-                args: [Y.Mock.Value.String, Y.Mock.Value.Object],
-                run: function (attribute, value) {
-                    // fails if attribute and value are not consistent
-                    // or if we set something else than content or contentType
-                    if (
-                        ( attribute === 'content' && value !== that.content ) ||
-                        ( attribute === 'contentType' && value !== that.contentType ) ||
-                        ( attribute === 'version' && value !== that.version ) ||
-                        ( attribute !== 'content' && attribute !== 'contentType' && attribute !== 'version' )
-                    ) {
-                        Y.Assert.fail('Expecting to set either the content, the contentType or the version on the this.formView');
-                    }
-                }
-            });
+
             Y.Mock.expect(this.formView, {
                 method: 'addTarget',
                 args: [Y.Mock.Value.Object],
@@ -65,20 +48,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 args: ['container'],
                 returns: this.actionBarContents
             });
-            Y.Mock.expect(this.actionBar, {
-                method: 'set',
-                callCount: 2,
-                args: [Y.Mock.Value.String, Y.Mock.Value.Object],
-                run: function (attr, value) {
-                    if ( attr === 'content' ) {
-                        Y.Assert.areSame(value, that.content, "Expecting the content");
-                    } else if ( attr === 'version' ) {
-                        Y.Assert.areSame(value, that.version, "Expected the version");
-                    } else {
-                        Y.Assert.fail("Expecting to set either the version or content");
-                    }
-                }
-            });
+
             Y.Mock.expect(this.actionBar, {
                 method: 'addTarget',
                 args: [Y.Mock.Value.Object],
@@ -197,6 +167,10 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
 
         "Should receive events fired on it's child formView": function () {
+            Y.Mock.expect(this.contentType, {
+                method: 'get',
+                args: ['fieldDefinitions']
+            });
             // We need another (not as in "setUp") view initialization sequence to test that
             var testEventReceived = false,
                 view = new Y.eZ.ContentEditView({
@@ -336,7 +310,69 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         name: "View title test",
 
         setUp: function () {
-            this.view = new Y.eZ.ContentEditView();
+            var mockConf = {
+                    method: 'toJSON',
+                    returns: {}
+                };
+
+            Y.Array.each(['content', 'contentType', 'owner', 'mainLocation', 'version'], function (mock) {
+                this[mock] = new Y.Mock();
+                Y.Mock.expect(this[mock], mockConf);
+            }, this);
+
+            this.formView = new Y.Mock();
+            this.formViewContents = '<form></form>';
+            this.actionBar = new Y.Mock();
+            this.actionBarContents = '<menu></menu>';
+
+            Y.Mock.expect(this.formView, {
+                method: 'get',
+                args: ['container'],
+                returns: this.formViewContents
+            });
+
+            Y.Mock.expect(this.formView, {
+                method: 'addTarget',
+                args: [Y.Mock.Value.Object],
+                returns: true
+            });
+            Y.Mock.expect(this.formView, {
+                method: 'render',
+                returns: this.formView
+            });
+            Y.Mock.expect(this.formView, {
+                method: 'destroy'
+            });
+
+            Y.Mock.expect(this.actionBar, {
+                method: 'get',
+                args: ['container'],
+                returns: this.actionBarContents
+            });
+
+            Y.Mock.expect(this.actionBar, {
+                method: 'addTarget',
+                args: [Y.Mock.Value.Object],
+                returns: true
+            });
+            Y.Mock.expect(this.actionBar, {
+                method: 'render',
+                returns: this.actionBar
+            });
+            Y.Mock.expect(this.actionBar, {
+                method: 'destroy'
+            });
+
+            this.view = new Y.eZ.ContentEditView({
+                container: '.container',
+                content: this.content,
+                contentType: this.contentType,
+                mainLocation: this.mainLocation,
+                version: this.version,
+                owner: this.owner,
+                formView: this.formView,
+                actionBar: this.actionBar
+            });
         },
 
         tearDown: function () {
@@ -344,7 +380,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
 
         "Should build the title with the content name": function () {
-            var content = new Y.Mock(),
+            var content = this.content,
                 contentName = 'Ryan Gosling';
 
             Y.Mock.expect(content, {
@@ -352,10 +388,87 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 args: ['name'],
                 returns: contentName
             });
-            this.view.set('content', content);
             Y.Assert.isTrue(
                 this.view.getTitle().indexOf(contentName) != -1,
                 "The title of the view should contain the content name"
+            );
+        },
+    });
+
+    attrsToFormViewAndActionBarTest = new Y.Test.Case({
+        name: "eZ Content Edit View event tests",
+
+        setUp: function () {
+
+            Y.eZ.ContentEditFormView = Y.Base.create('contentEditFormView', Y.View, [], {}, {
+                ATTRS: {
+                    content: {},
+                    contentType: {},
+                    config: {},
+                    version: {},
+                },
+            });
+
+            Y.eZ.ActionBarView = Y.Base.create('actionBarView', Y.View, [], {}, {
+                ATTRS: {
+                    version: {},
+                },
+            });
+
+            this.view = new Y.eZ.ContentEditView({
+                container: '.container',
+                content: {},
+                contentType: {},
+                mainLocation: {},
+                version: {},
+                config: {},
+                owner: {},
+            });
+        },
+
+        tearDown: function () {
+            delete Y.eZ.ActionBarView;
+            delete Y.eZ.ContentEditFormView;
+            this.view.destroy();
+        },
+
+        "Should set the version of the action bar": function () {
+            Y.Assert.areSame(
+                this.view.get('version'),
+                this.view.get('actionBar').get('version'),
+                'The version should have been set to the actionBar'
+            );
+        },
+
+        "Should set the version of the contentEditFormView": function () {
+            Y.Assert.areSame(
+                this.view.get('version'),
+                this.view.get('formView').get('version'),
+                'The version should have been set to the contentEditFormView'
+            );
+        },
+
+        "Should set the content of the contentEditFormView": function () {
+            Y.Assert.areSame(
+                this.view.get('content'),
+                this.view.get('formView').get('content'),
+                'The content should have been set to the contentEditFormView'
+            );
+        },
+
+        "Should set the content type of the contentEditFormView": function () {
+            Y.Assert.areSame(
+                this.view.get('contentType'),
+                this.view.get('formView').get('contentType'),
+                'The content should have been set to the contentEditFormView'
+            );
+        },
+
+        "Should set the config of the contentEditFormView": function () {
+            Y.Assert.areSame(
+                this.view.get('config'),
+                this.view.get('formView').get('config'),
+                'The content should have been set to the contentEditFormView'
             );
         },
     });
@@ -431,5 +544,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(titleTest);
     Y.Test.Runner.add(eventTest);
+    Y.Test.Runner.add(attrsToFormViewAndActionBarTest);
 
 }, '', {requires: ['test', 'node-event-simulate', 'ez-contenteditview']});

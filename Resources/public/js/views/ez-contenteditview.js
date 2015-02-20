@@ -221,12 +221,7 @@ YUI.add('ez-contenteditview', function (Y) {
              * @required
              */
             content: {
-                value: {},
-                setter: function (val, name) {
-                    this.get('formView').set('content', val);
-                    this.get('actionBar').set('content', val);
-                    return val;
-                }
+                writeOnce: "initOnly",
             },
 
             /**
@@ -237,12 +232,7 @@ YUI.add('ez-contenteditview', function (Y) {
              * @required
              */
             version: {
-                value: {},
-                setter: function (val, name) {
-                    this.get('formView').set('version', val);
-                    this.get('actionBar').set('version', val);
-                    return val;
-                }
+                writeOnce: "initOnly",
             },
 
             /**
@@ -253,11 +243,7 @@ YUI.add('ez-contenteditview', function (Y) {
              * @required
              */
             contentType: {
-                value: {},
-                setter: function (val, name) {
-                    this.get('formView').set('contentType', val);
-                    return val;
-                }
+                writeOnce: "initOnly",
             },
 
             /**
@@ -268,7 +254,7 @@ YUI.add('ez-contenteditview', function (Y) {
              * @required
              */
             mainLocation: {
-                value: {}
+                writeOnce: "initOnly",
             },
 
             /**
@@ -279,7 +265,18 @@ YUI.add('ez-contenteditview', function (Y) {
              * @required
              */
             owner: {
-                value: {}
+                writeOnce: "initOnly",
+            },
+
+            /**
+             * A configuration object coming from the application route configuration
+             *
+             * @attribute config
+             * @type Mixed
+             * @writeOnce
+             */
+            config: {
+                writeOnce: "initOnly",
             },
 
             /**
@@ -292,7 +289,12 @@ YUI.add('ez-contenteditview', function (Y) {
              */
             formView: {
                 valueFn: function () {
-                    return new Y.eZ.ContentEditFormView();
+                    return new Y.eZ.ContentEditFormView({
+                        config: this.get('config'),
+                        contentType: this.get('contentType'),
+                        content: this.get('content'),
+                        version: this.get('version')
+                    });
                 }
             },
 
@@ -306,7 +308,9 @@ YUI.add('ez-contenteditview', function (Y) {
              */
             actionBar: {
                 valueFn: function () {
-                    return new Y.eZ.EditActionBarView();
+                    return new Y.eZ.EditActionBarView({
+                        version: this.get('version')
+                    });
                 }
             }
         }

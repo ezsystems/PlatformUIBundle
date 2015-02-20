@@ -32,11 +32,7 @@ YUI.add('ez-contenteditformview', function (Y) {
         },
 
         initializer: function () {
-            this.after('contentTypeChange', this._setFieldEditViews);
-            if ( this.get('contentType') ) {
-                this._setFieldEditViews();
-            }
-
+            this._setFieldEditViews();
             this.after('activeChange', function (e) {
                 Y.Array.each(this._fieldEditViews, function (view) {
                     view.set('active', e.newVal);
@@ -56,20 +52,25 @@ YUI.add('ez-contenteditformview', function (Y) {
                 contentType = this.get('contentType'),
                 fieldDefinitions = contentType.get('fieldDefinitions'),
                 views = [],
-                that = this;
+                that = this,
+                config = this.get('config');
 
             Y.Object.each(fieldDefinitions, function (def) {
-                var EditView, view;
+                var EditView, view, fieldConfig;
 
                 try {
                     EditView = Y.eZ.FieldEditView.getFieldEditView(def.fieldType);
 
+                    if (config && config.fieldEditViews && config.fieldEditViews[def.fieldType]) {
+                        fieldConfig = config.fieldEditViews[def.fieldType];
+                    }
                     view = new EditView({
                         content: content,
                         version: version,
                         contentType: contentType,
                         fieldDefinition: def,
-                        field: version.getField(def.identifier)
+                        field: version.getField(def.identifier),
+                        config: fieldConfig,
                     });
                     views.push(view);
                     view.addTarget(that);
@@ -195,7 +196,9 @@ YUI.add('ez-contenteditformview', function (Y) {
              * @type {eZ.ContentType}
              * @required
              */
-            contentType: {},
+            contentType: {
+                writeOnce: "initOnly",
+            },
 
             /**
              * The content instance
@@ -205,7 +208,9 @@ YUI.add('ez-contenteditformview', function (Y) {
              * @type {eZ.Content}
              * @required
              */
-            content: {},
+            content: {
+                writeOnce: "initOnly",
+            },
 
             /**
              * The version handled in the form view
@@ -215,7 +220,20 @@ YUI.add('ez-contenteditformview', function (Y) {
              * @type {eZ.Version}
              * @required
              */
-            version: {},
+            version: {
+                writeOnce: "initOnly",
+            },
+
+            /**
+             * A configuration object for the field edit views.
+             *
+             * @attribute config
+             * @type Mixed
+             * @writeOnce
+             */
+            config: {
+                writeOnce: "initOnly",
+            },
         }
     });
 });
