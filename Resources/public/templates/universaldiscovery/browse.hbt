@@ -1,1 +1,7 @@
-{{ title }}
+<div class="pure-g">
+    <div class="pure-u-1-5">
+        <h2>Content tree</h2>
+        <div class="ez-ud-browse-tree"></div>
+    </div>
+    <div class="pure-u-4-5 ez-ud-browse-selected"></div>
+</div>

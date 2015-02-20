@@ -119,7 +119,11 @@ system:
                     requires: ['ez-templatebasedview']
                     path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverymethodbaseview.js
                 ez-universaldiscoverybrowseview:
-                    requires: ['ez-universaldiscoverymethodbaseview', 'universaldiscoverybrowseview-ez-template']
+                    requires:
+                        - 'ez-universaldiscoverymethodbaseview'
+                        - 'universaldiscoverybrowseview-ez-template'
+                        - 'ez-treeview'
+                        - 'ez-universaldiscoveryselectedview'
                     path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverybrowseview.js
                 universaldiscoverybrowseview-ez-template:
                     type: 'template'
