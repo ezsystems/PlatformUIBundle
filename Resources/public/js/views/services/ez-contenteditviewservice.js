@@ -146,7 +146,8 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 version: this.get('version'),
                 mainLocation: this.get('location'),
                 contentType: this.get('contentType'),
-                owner: this.get('owner')
+                owner: this.get('owner'),
+                config: this.get('config'),
             };
         },
 

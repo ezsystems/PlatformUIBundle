@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenteditviewservice-tests', function (Y) {
-    var cevlTest, eventTest, redirectionUrlTest,
+    var cevlTest, eventTest, redirectionUrlTest, getViewParametersTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     cevlTest = new Y.Test.Case({
@@ -405,8 +405,52 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         },
     });
 
+    getViewParametersTest = new Y.Test.Case({
+        name: "eZ Content edit View Service getViewParameters tests",
+
+        setUp: function () {
+            this.content = {};
+            this.contentType = {};
+            this.location = {};
+            this.owner = {};
+            this.version = {};
+            this.config = {};
+            this.service = new Y.eZ.ContentEditViewService({
+                content: this.content,
+                contentType: this.contentType,
+                location: this.location,
+                config: this.config,
+                owner: this.owner,
+                version: this.version,
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+            delete this.content;
+            delete this.contentType;
+            delete this.location;
+            delete this.config;
+            delete this.owner;
+            delete this.version;
+        },
+
+        "Should get the view parameters": function () {
+            var params = this.service.getViewParameters();
+
+            Y.Assert.areSame(this.content, params.content, 'The content should be available in the return value of getViewParameters');
+            Y.Assert.areSame(this.contentType, params.contentType, 'The contentType should be available in the return value of getViewParameters');
+            Y.Assert.areSame(this.config, params.config, 'The config should be available in the return value of getViewParameters');
+            Y.Assert.areSame(this.version, params.version, 'The version should be available in the return value of getViewParameters');
+            Y.Assert.areSame(this.owner, params.owner, 'The owner should be available in the return value of getViewParameters');
+            Y.Assert.areSame(this.location, params.mainLocation, 'The location should be available in the return value of getViewParameters');
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Edit View Service tests");
     Y.Test.Runner.add(cevlTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(redirectionUrlTest);
+    Y.Test.Runner.add(getViewParametersTest);
 }, '', {requires: ['test', 'ez-contenteditviewservice']});

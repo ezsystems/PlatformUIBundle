@@ -28,6 +28,12 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.contentType = new Y.Mock();
             this.content = new Y.Mock();
             this.version = new Y.Mock();
+            this.config = {
+                editViews: {
+                    test1: 'hello'
+                }
+            };
+
             Y.Mock.expect(this.contentType, {
                 method: 'getFieldGroups',
                 returns: [{
@@ -72,7 +78,8 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 container: '.container',
                 contentType: this.contentType,
                 content: this.content,
-                version: this.version
+                version: this.version,
+                config: this.config
             });
         },
 
@@ -164,8 +171,37 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 });
             });
             this.wait();
-        }
+        },
 
+        "Should give the config to the fieldEditView": function () {
+            var that = this;
+
+            this.view = new Y.eZ.ContentEditFormView({
+                container: '.container',
+                contentType: this.contentType,
+                content: this.content,
+                version: this.version,
+                config: {
+                    editViews: {
+                        test1: 'hello'
+                    }
+                }
+            });
+
+            this.view.set('active', true);
+
+            Y.Array.each(this.fieldDefinitions, function (def) {
+                if (that.view.get('config').editViews[def.fieldType]){
+                    Y.Assert.areSame(
+                        that.config[def.fieldType],
+                        that.view.get('config').editViews[def.fieldType],
+                        "The config should be passed to the fieldView if fieldType match"
+                    );
+                } else {
+                    Y.Assert.isUndefined(that.config[def.fieldType], 'The fieldView should NOT have config if fieldType do Not match');
+                }
+            });
+        },
     });
 
     isValidTest = new Y.Test.Case({
@@ -176,6 +212,11 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
 
             this.contentType = new Y.Mock();
             this.version = new Y.Mock();
+            this.config = {
+                editViews: {
+                    something: 'hello'
+                }
+            };
 
             Y.Mock.expect(this.contentType, {
                 method: 'get',
@@ -226,7 +267,8 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
 
             this.view = new Y.eZ.ContentEditFormView({
                 contentType: this.contentType,
-                version: this.version
+                version: this.version,
+                config: this.config
             });
         },
 
@@ -290,6 +332,11 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
 
             this.contentType = new Y.Mock();
             this.version = new Y.Mock();
+            this.config = {
+                editViews: {
+                    something: 'hello'
+                }
+            };
 
             Y.Mock.expect(this.contentType, {
                 method: 'get',
@@ -340,7 +387,8 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
 
             this.view = new Y.eZ.ContentEditFormView({
                 contentType: this.contentType,
-                version: this.version
+                version: this.version,
+                config: this.config
             });
         },
 
@@ -385,6 +433,11 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
 
             this.contentType = new Y.Mock();
             this.version = new Y.Mock();
+            this.config = {
+                editViews: {
+                    something: 'hello'
+                }
+            };
 
             Y.Mock.expect(this.contentType, {
                 method: 'get',
@@ -430,7 +483,8 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
 
             this.view = new Y.eZ.ContentEditFormView({
                 contentType: this.contentType,
-                version: this.version
+                version: this.version,
+                config: this.config
             });
         },
 
