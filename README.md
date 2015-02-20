@@ -9,6 +9,8 @@ install.
 If you find a bug, please create an issue [in JIRA](https://jira.ez.no/) and
 don't forget to add as much details as you can (steps to reproduce, OS and
 browser(s) versions, ...) and to put *PlatformUI* in the *Component/s* field.
+If you discover a security issue, please see how to responsibly report such
+issues on https://doc.ez.no/Security
 
 ## Installation
 
