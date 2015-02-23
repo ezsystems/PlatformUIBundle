@@ -135,14 +135,19 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
 
         "Should fire the `selectContent` event and update the selectedView": function () {
             var tree = new Mock(),
+                node = new Mock(),
                 nodeData = {},
                 nodeId = 42,
                 selectContent = false;
 
+            node.data = nodeData;
+            Mock.expect(node, {
+                method: 'select',
+            });
             Mock.expect(tree, {
                 method: 'getNodeById',
                 args: [nodeId],
-                returns: {data: nodeData},
+                returns: node,
             });
             Mock.expect(this.selectedView, {
                 method: 'set',
@@ -172,6 +177,7 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
 
             Assert.isTrue(selectContent, "The selectContent event should have been fired");
             Mock.verify(tree);
+            Mock.verify(node);
             Mock.verify(this.selectedView);
         },
     });

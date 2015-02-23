@@ -82,6 +82,7 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
             this.fire('selectContent', {
                 selection: node.data,
             });
+            node.select();
             this.get('selectedView').set('contentStruct', node.data);
         },
     }, {
