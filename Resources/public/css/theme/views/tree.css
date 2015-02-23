@@ -22,11 +22,6 @@
     list-style-type: none;
 }
 
-.ez-view-treeview .ez-tree-navigate,
-.ez-view-treeview .ez-tree-node-toggle {
-    color: #ccc;
-}
-
 .ez-view-treeview .ez-tree-node-toggle:before {
     display: inline-block; /* to be able to animate the loader */
 }
@@ -47,14 +42,6 @@
 .ez-view-treeview .is-tree-node-error > .ez-tree-node-toggle:before {
     content: "\E600";
     color: #BF3E33;
-}
-
-.ez-view-treeview .is-tree-node-selected > .ez-tree-navigate {
-    color: #67A53D;
-}
-
-.ez-view-treeview .is-tree-node-selected > .ez-tree-navigate:before {
-    color: #ccc;
 }
 
 .ez-view-treeview .is-tree-node-loading > .ez-tree-node-toggle:before {

@@ -1,7 +1,5 @@
-<div class="pure-g">
-    <div class="pure-u-1-5">
-        <h2 class="ez-ud-browse-pane-title">Content tree</h2>
-        <div class="ez-ud-browse-tree"></div>
-    </div>
-    <div class="pure-u-4-5 ez-ud-browse-selected"></div>
+<div class="ez-ud-pane ez-ud-pane-tree">
+    <h2 class="ez-ud-pane-title">Content tree</h2>
+    <div class="ez-ud-browse-tree ez-ud-pane-content"></div>
 </div>
+<div class="ez-ud-browse-selected"></div>

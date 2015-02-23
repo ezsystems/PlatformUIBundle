@@ -3,12 +3,22 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-view-universaldiscoverybrowseview .ez-ud-browse-pane-title {
-    font-size: 1.4em;
-    font-weight: bold;
+.ez-view-universaldiscoverybrowseview .ez-tree-navigate,
+.ez-view-universaldiscoverybrowseview .ez-tree-node-toggle {
+    color: #444;
 }
 
-.ez-view-universaldiscoverybrowseview .ez-ud-browse-tree {
-    border: 1px solid #ccc;
+.ez-view-universaldiscoverybrowseview .is-tree-node-selected {
+    background: #528036;
+    transition: all ease 0.3s;
+}
+
+.ez-view-universaldiscoverybrowseview .is-tree-node-selected > .ez-tree-navigate,
+.ez-view-universaldiscoverybrowseview .is-tree-node-selected > .ez-tree-node-toggle {
+    color: #fff;
+    outline: none;
+}
+
+.ez-view-universaldiscoverybrowseview .is-tree-node-selected .ez-tree-level {
     background: #fafafa;
 }
