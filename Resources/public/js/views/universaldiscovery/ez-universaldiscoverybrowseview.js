@@ -23,6 +23,7 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
     Y.eZ.UniversalDiscoveryBrowseView = Y.Base.create('universalDiscoveryBrowseView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {
         initializer: function () {
             this.on('*:treeNavigate', this._selectContent);
+            this.after('visibleChange', this._unselectContent);
         },
 
         /**
@@ -69,21 +70,45 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
             var node = e.tree.getNodeById(e.nodeId);
 
             e.preventDefault();
+            this._fireSelectContent(node.data);
+            node.select();
+            this.get('selectedView').set('contentStruct', node.data);
+        },
+
+        /**
+         * `visibleChange` event handler. It makes to reset the current
+         * selection when the browse method is hidden/showed
+         *
+         * @method _unselectContent
+         * @protected
+         */
+        _unselectContent: function () {
+            this._fireSelectContent(null);
+            this.get('selectedView').set('contentStruct', null);
+        },
+
+        /**
+         * Fires the `selectContent` event for the given `selection`
+         *
+         * @method _fireSelectContent
+         * @param {Object|Null} selection
+         * @protected
+         */
+        _fireSelectContent: function (selection) {
             /**
-             * Fired when a content is selected. The event facade provides the
-             * content structure (the content, location and content type models)
+             * Fired when a content is selected or unselected. The event facade
+             * provides the content structure (the content, location and content
+             * type models) if a selection was made.
              *
              * @event selectContent
-             * @param selection {Object}
+             * @param selection {Object|Null}
              * @param selection.content {eZ.Content}
              * @param selection.location {eZ.Location}
              * @param selection.contentType {eZ.ContentType}
              */
             this.fire('selectContent', {
-                selection: node.data,
+                selection: selection,
             });
-            node.select();
-            this.get('selectedView').set('contentStruct', node.data);
         },
     }, {
         ATTRS: {

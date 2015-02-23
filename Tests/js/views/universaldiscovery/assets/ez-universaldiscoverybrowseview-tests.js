@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
-    var resetTest, defaultSubViewTest, treeNavigateTest, renderTest,
+    var resetTest, defaultSubViewTest, treeNavigateTest, renderTest, unselectTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     resetTest = new Y.Test.Case({
@@ -257,9 +257,54 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
         },
     });
 
+    unselectTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Browse visibility change unselect tests',
+
+        setUp: function () {
+            this.selectedView = new Mock();
+            this.treeView = new Mock();
+            this.view = new Y.eZ.UniversalDiscoveryBrowseView({
+                selectedView: this.selectedView,
+                treeView: this.treeView,
+                visible: true,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+            delete this.selectedView;
+            delete this.treeView;
+        },
+
+        "Should fire the selectContent with a null selection": function () {
+            var selectContent = false;
+
+            Mock.expect(this.selectedView, {
+                method: 'set',
+                args: ['contentStruct', null],
+            });
+            this.view.on('selectContent', function (e) {
+                selectContent = true;
+                Assert.isNull(
+                    e.selection,
+                    "The selectContent event facade should contain a null selection"
+                );
+            });
+
+            this.view.set('visible', false);
+            Assert.isTrue(
+                selectContent,
+                "The selectContent event should have been fired"
+            );
+            Mock.verify(this.selectedView);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Browse View tests");
     Y.Test.Runner.add(resetTest);
     Y.Test.Runner.add(defaultSubViewTest);
     Y.Test.Runner.add(treeNavigateTest);
+    Y.Test.Runner.add(unselectTest);
     Y.Test.Runner.add(renderTest);
 }, '', {requires: ['test', 'view', 'ez-universaldiscoverybrowseview']});
