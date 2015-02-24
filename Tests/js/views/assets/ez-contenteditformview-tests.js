@@ -29,7 +29,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.content = new Y.Mock();
             this.version = new Y.Mock();
             this.config = {
-                editViews: {
+                fieldEditViews: {
                     test1: 'hello'
                 }
             };
@@ -182,7 +182,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 content: this.content,
                 version: this.version,
                 config: {
-                    editViews: {
+                    fieldEditViews: {
                         test1: 'hello'
                     }
                 }
@@ -191,10 +191,10 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.view.set('active', true);
 
             Y.Array.each(this.fieldDefinitions, function (def) {
-                if (that.view.get('config').editViews[def.fieldType]){
+                if (that.view.get('config').fieldEditViews[def.fieldType]){
                     Y.Assert.areSame(
                         that.config[def.fieldType],
-                        that.view.get('config').editViews[def.fieldType],
+                        that.view.get('config').fieldEditViews[def.fieldType],
                         "The config should be passed to the fieldView if fieldType match"
                     );
                 } else {
@@ -213,7 +213,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.contentType = new Y.Mock();
             this.version = new Y.Mock();
             this.config = {
-                editViews: {
+                fieldEditViews: {
                     something: 'hello'
                 }
             };
@@ -333,7 +333,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.contentType = new Y.Mock();
             this.version = new Y.Mock();
             this.config = {
-                editViews: {
+                fieldEditViews: {
                     something: 'hello'
                 }
             };
@@ -434,7 +434,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.contentType = new Y.Mock();
             this.version = new Y.Mock();
             this.config = {
-                editViews: {
+                fieldEditViews: {
                     something: 'hello'
                 }
             };
