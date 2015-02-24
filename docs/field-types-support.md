@@ -14,7 +14,7 @@ content type in the PlatformUI application.
 ## BinaryFile
 
 * Content view: Yes
-* Content edit: Yes (missing [drag and drop](https://jira.ez.no/browse/EZP-23789))
+* Content edit: Yes
 * Content type view: No
 * Content type edit: No
 
@@ -27,15 +27,15 @@ content type in the PlatformUI application.
 
 ## Country
 
-* Content view: No, [EZP-22347](https://jira.ez.no/browse/EZP-22247) (need to implement a new API in the JS REST Client)
-* Content edit: No, [EZP-21715](https://jira.ez.no/browse/EZP-21715) (need to implement a new API in the JS REST Client)
+* Content view: Yes
+* Content edit: No, [EZP-21715](https://jira.ez.no/browse/EZP-21715)
 * Content type view: No
 * Content type edit: No
 
 ## Date
 
 * Content view: Yes (but [missing localization](https://jira.ez.no/browse/EZP-23429))
-* Content edit: Yes (only for [browsers supporting the HTML5 date input](https://jira.ez.no/browse/EZP-23744))
+* Content edit: Yes
 * Content type view: No
 * Content type edit: No
 
@@ -63,7 +63,7 @@ content type in the PlatformUI application.
 ## Image
 
 * Content view: Yes
-* Content edit: Yes (missing [drag and drop](https://jira.ez.no/browse/EZP-23789))
+* Content edit: Yes
 * Content type view: No
 * Content type edit: No
 
@@ -83,7 +83,7 @@ content type in the PlatformUI application.
 
 ## Keyword
 
-* Content view: No, [EZP-23729](https://jira.ez.no/browse/EZP-23729) (the generic field view is somehow working but it does not detect an empty field)
+* Content view: Yes
 * Content edit: Yes
 * Content type view: No
 * Content type edit: No
@@ -98,7 +98,7 @@ content type in the PlatformUI application.
 ## Media
 
 * Content view: No [EZP-23730](https://jira.ez.no/browse/EZP-23730)
-* Content edit: Yes (only for HTML5 Audio and Video and missing [drag and drop](https://jira.ez.no/browse/EZP-23789))
+* Content edit: Yes (only for HTML5 Audio and Video)
 * Content type view: No
 * Content type edit: No
 
@@ -161,7 +161,7 @@ content type in the PlatformUI application.
 ## Time
 
 * Content view: Yes (but [missing localization](https://jira.ez.no/browse/EZP-23429) and buggy because of that)
-* Content edit: Yes (only for [browsers supporting the HTML5 time input](https://jira.ez.no/browse/EZP-23744))
+* Content edit: Yes
 * Content type view: No
 * Content type edit: No
 
