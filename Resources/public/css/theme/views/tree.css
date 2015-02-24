@@ -12,10 +12,12 @@
 
 .ez-view-treeview .ez-tree-loading:before {
     display: inline-block;
-    -webkit-animation: spin 0.7s infinite linear;
-            animation: spin 0.7s infinite linear;
+    -webkit-animation: spin 0.5s infinite linear;
+            animation: spin 0.5s infinite linear;
     content: "\E61C";
-    padding-right: 0.5em;
+    padding: 0 0.15em;
+    text-align: center;
+    font-style: normal;
 }
 
 .ez-view-treeview .ez-tree-level {
