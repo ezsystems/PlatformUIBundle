@@ -234,9 +234,8 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
         setUp: function () {
             this.methodIdentifier = 'default';
-            this.method = new Y.eZ.UniversalDiscoveryMethodBaseView({
-                identifier: this.methodIdentifier,
-            });
+            this.method = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method._set('identifier', this.methodIdentifier);
             this.view = new Y.eZ.UniversalDiscoveryView({
                 visibleMethod: this.methodIdentifier,
                 container: '.container',
@@ -330,12 +329,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         setUp: function () {
             this.title = 'Universal discovery view title';
             this.selectionMode = 'multiple';
-            this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView({
-                identifier: 'method1',
-            });
-            this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView({
-                identifier: 'method2',
-            });
+            this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method1._set('identifier', 'method1');
+            this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method2._set('identifier', 'method2');
             this.view = new Y.eZ.UniversalDiscoveryView({
                 container: '.container',
                 title: this.title,

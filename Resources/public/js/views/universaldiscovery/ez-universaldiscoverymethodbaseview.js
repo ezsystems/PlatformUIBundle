@@ -57,7 +57,7 @@ YUI.add('ez-universaldiscoverymethodbaseview', function (Y) {
              * @type {String}
              * @readOnly
              */
-            identifer: {
+            identifier: {
                 value: "",
                 readOnly: true,
             },
