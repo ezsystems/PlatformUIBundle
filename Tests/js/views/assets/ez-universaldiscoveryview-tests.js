@@ -5,6 +5,7 @@
 YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     var renderTest, domEventTest, eventHandlersTest, eventsTest,
         tabTest, defaultMethodsTest, selectContentTest, confirmButtonStateTest,
+        updateTitleTest,
         Assert = Y.Assert;
 
     renderTest = new Y.Test.Case({
@@ -595,6 +596,40 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         }
     });
 
+    updateTitleTest= new Y.Test.Case({
+        name: "eZ Universal Discovery View update title test",
+
+        setUp: function () {
+            this.method = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method._set('identifier', 'browse');
+            this.view = new Y.eZ.UniversalDiscoveryView({
+                container: '.container',
+                title: "Easier to run",
+                methods: [this.method],
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.method.destroy();
+            delete this.view;
+            delete this.method;
+        },
+
+        "Should update the title when the view is getting active": function () {
+            var newTitle = 'Breaking the habits';
+
+            this.view.set('title', newTitle);
+            this.view.set('active', true);
+
+            Assert.areEqual(
+                newTitle,
+                this.view.get('container').one('.ez-universaldiscovery-title').getContent(),
+                "The title should have been updated"
+            );
+        },
+    });
 
     Y.Test.Runner.setName("eZ Universal Discovery View tests");
     Y.Test.Runner.add(renderTest);
@@ -605,4 +640,5 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     Y.Test.Runner.add(defaultMethodsTest);
     Y.Test.Runner.add(selectContentTest);
     Y.Test.Runner.add(confirmButtonStateTest);
+    Y.Test.Runner.add(updateTitleTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-universaldiscoveryview']});

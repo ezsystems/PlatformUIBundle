@@ -43,6 +43,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                 if ( this.get('active') ) {
                     this._setMethodsVisibleFlag();
                     this._uiUpdateTab();
+                    this._uiUpdateTitle();
                 }
             });
             this.on(['contentDiscoveredHandlerChange', 'cancelDiscoverHandlerChange'], function (e) {
@@ -92,6 +93,17 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             var confirmButton = this.get('container').one('.ez-universaldiscovery-confirm');
 
             confirmButton.set('disabled', !this.get('selection'));
+        },
+
+        /**
+         * Updates the title in the already rendered view
+         *
+         * @method _uiUpdateTitle
+         * @protected
+         */
+        _uiUpdateTitle: function () {
+            this.get('container')
+                .one('.ez-universaldiscovery-title').setContent(this.get('title'));
         },
 
         /**
