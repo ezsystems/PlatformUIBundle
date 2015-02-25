@@ -5,6 +5,7 @@
 YUI.add('ez-treeview', function (Y) {
     "use strict";
     /**
+     * Provides the tree view
      *
      * @method ez-treeview
      */
@@ -18,6 +19,13 @@ YUI.add('ez-treeview', function (Y) {
         IS_TREE_LOADED = "is-tree-loaded",
         EVT_TREENAVIGATE = 'treeNavigate';
 
+    /**
+     * Tree View class. It is meant to display a lazily loaded tree.
+     *
+     * @namespace eZ
+     * @class TreeView
+     * @extends eZ.TemplateBasedView
+     */
     Y.eZ.TreeView = Y.Base.create('treeView', Y.eZ.TemplateBasedView, [], {
         events: {
             '.ez-tree-node-toggle': {
