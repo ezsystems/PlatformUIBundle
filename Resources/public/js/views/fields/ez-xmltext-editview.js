@@ -9,7 +9,6 @@ YUI.add('ez-xmltext-editview', function (Y) {
      *
      * @module ez-xmltext-editview
      */
-
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'ezxmltext';

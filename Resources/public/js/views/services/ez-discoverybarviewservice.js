@@ -19,6 +19,5 @@ YUI.add('ez-discoverybarviewservice', function (Y) {
      * @constructor
      * @extends eZ.ViewService
      */
-    Y.eZ.DiscoveryBarViewService = Y.Base.create('discoveryBarViewService', Y.eZ.ViewService, [], {
-    });
+    Y.eZ.DiscoveryBarViewService = Y.Base.create('discoveryBarViewService', Y.eZ.ViewService, [], {});
 });

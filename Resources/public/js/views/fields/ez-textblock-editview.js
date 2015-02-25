@@ -9,7 +9,6 @@ YUI.add('ez-textblock-editview', function (Y) {
      *
      * @module ez-textblock-editview
      */
-
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'eztext';

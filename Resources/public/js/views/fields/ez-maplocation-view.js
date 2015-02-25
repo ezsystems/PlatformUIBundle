@@ -10,7 +10,6 @@ YUI.add('ez-maplocation-view', function (Y) {
      *
      * @module ez-maplocation-view
      */
-
     Y.namespace('eZ');
 
     var LOADING = 'is-maplocationview-loading',

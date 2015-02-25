@@ -9,7 +9,6 @@ YUI.add('ez-dateandtime-editview', function (Y) {
      *
      * @module ez-dateandtime-editview
      */
-
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'ezdatetime',
@@ -278,7 +277,6 @@ YUI.add('ez-dateandtime-editview', function (Y) {
             }
 
         },
-
     },{
         ATTRS: {
             /**

@@ -9,7 +9,6 @@ YUI.add('ez-editpreviewview', function (Y) {
      *
      * @module ez-editpreviewview
      */
-
     Y.namespace('eZ');
 
     var IS_HIDDEN_CLASS = 'is-editpreview-hidden',

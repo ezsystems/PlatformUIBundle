@@ -9,7 +9,6 @@ YUI.add('ez-buttonactionview', function (Y) {
      *
      * @module ez-buttonactionview
      */
-
     Y.namespace('eZ');
 
     var ACTION_SUFFIX = 'Action';

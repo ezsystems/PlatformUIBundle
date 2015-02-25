@@ -9,7 +9,6 @@ YUI.add('ez-keyword-editview', function (Y) {
      *
      * @module ez-keyword-editview
      */
-
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'ezkeyword';

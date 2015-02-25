@@ -20,7 +20,6 @@ YUI.add('ez-author-view', function (Y) {
      * @extends eZ.FieldView
      */
     Y.eZ.AuthorView = Y.Base.create('authorView', Y.eZ.FieldView, [], {
-
         _isFieldEmpty: function () {
             var fieldValue = this.get('field').fieldValue;
 

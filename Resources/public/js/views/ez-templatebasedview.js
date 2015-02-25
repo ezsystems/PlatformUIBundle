@@ -9,7 +9,6 @@ YUI.add('ez-templatebasedview', function (Y) {
      *
      * @module ez-templatebasedview
      */
-
     Y.namespace('eZ');
 
     var TPL_ELEM_SUFFIX = "-ez-template";

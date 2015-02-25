@@ -9,7 +9,6 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
      *
      * @module ez-contenttypeselector
      */
-
     Y.namespace('eZ');
 
     var _GET_NAME = function (type) {

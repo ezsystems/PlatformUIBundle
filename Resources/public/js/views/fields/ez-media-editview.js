@@ -9,7 +9,6 @@ YUI.add('ez-media-editview', function (Y) {
      *
      * @module ez-media-editview
      */
-
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'ezmedia',

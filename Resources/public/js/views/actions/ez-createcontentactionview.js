@@ -9,7 +9,6 @@ YUI.add('ez-createcontentactionview', function (Y) {
      *
      * @module ez-createcontentactionview
      */
-
     Y.namespace('eZ');
 
     var IS_CONTENTTYPE_SELECTOR_LOADED = 'is-contenttypeselector-loaded';

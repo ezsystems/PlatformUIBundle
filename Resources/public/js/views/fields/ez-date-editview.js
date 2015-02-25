@@ -9,7 +9,6 @@ YUI.add('ez-date-editview', function (Y) {
      *
      * @module ez-date-editview
      */
-
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'ezdate',

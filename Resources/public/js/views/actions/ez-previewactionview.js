@@ -9,7 +9,6 @@ YUI.add('ez-previewactionview', function (Y) {
      *
      * @module ez-previewactionview
      */
-
     Y.namespace('eZ');
 
     var EDIT_PREVIEW_CONTAINER = '.ez-editpreviewview-container',

@@ -9,7 +9,6 @@ YUI.add('ez-url-editview', function (Y) {
      *
      * @module ez-url-editview
      */
-
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'ezurl';

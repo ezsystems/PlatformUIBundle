@@ -19,8 +19,7 @@ YUI.add('ez-user-view', function (Y) {
      * @constructor
      * @extends eZ.FieldView
      */
-    Y.eZ.UserView = Y.Base.create('userView', Y.eZ.FieldView, [], {
-    });
+    Y.eZ.UserView = Y.Base.create('userView', Y.eZ.FieldView, [], {});
 
     Y.eZ.FieldView.registerFieldView('ezuser', Y.eZ.UserView);
 });

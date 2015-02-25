@@ -9,7 +9,6 @@ YUI.add('ez-fieldeditview', function (Y) {
      *
      * @module ez-fieldeditview
      */
-
     Y.namespace('eZ');
 
     var L = Y.Lang,
