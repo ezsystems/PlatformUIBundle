@@ -9,7 +9,6 @@ YUI.add('ez-contenteditformview', function (Y) {
      *
      * @module ez-contenteditformview
      */
-
     Y.namespace('eZ');
 
     var COLLAPSED_CLASS = 'is-collapsed',

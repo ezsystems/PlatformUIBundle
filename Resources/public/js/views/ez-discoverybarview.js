@@ -9,7 +9,6 @@ YUI.add('ez-discoverybarview', function (Y) {
      *
      * @module ez-discoverybarview
      */
-
     Y.namespace('eZ');
 
     /**

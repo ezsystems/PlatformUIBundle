@@ -9,7 +9,6 @@ YUI.add('ez-contenteditview', function (Y) {
      *
      * @module ez-contenteditview
      */
-
     Y.namespace('eZ');
 
     var IS_SHOWING_TECH = 'is-showing-technicalinfos',

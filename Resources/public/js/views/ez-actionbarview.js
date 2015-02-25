@@ -9,7 +9,6 @@ YUI.add('ez-actionbarview', function (Y) {
      *
      * @module ez-actionbarview
      */
-
     Y.namespace('eZ');
 
     /**

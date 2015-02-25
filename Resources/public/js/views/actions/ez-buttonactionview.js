@@ -9,7 +9,6 @@ YUI.add('ez-buttonactionview', function (Y) {
      *
      * @module ez-buttonactionview
      */
-
     Y.namespace('eZ');
 
     var ACTION_SUFFIX = 'Action';
@@ -77,8 +76,10 @@ YUI.add('ez-buttonactionview', function (Y) {
          */
         _handleActionClick: function (e) {
             /**
-             * Fired when the action button is clicked. Name of the event consists of the action view's 'actionId' attribute and 'Action' suffix.
-             * For example for a view with actionId = "publish", the event fired will be named "publishAction".
+             * Fired when the action button is clicked. Name of the event
+             * consists of the action view's 'actionId' attribute and 'Action'
+             * suffix.  For example for a view with actionId = "publish", the
+             * event fired will be named "publishAction".
              *
              * @event <actionId>Action
              * @param {eZ.Content} the content model object
@@ -104,8 +105,9 @@ YUI.add('ez-buttonactionview', function (Y) {
     }, {
         ATTRS: {
             /**
-             * The priority of the action. Actions are orderd by priority (from top to bottom)
-             * If priority is equal, actions are ordered in the order they are added to list
+             * The priority of the action. Actions are orderd by priority (from
+             * top to bottom) If priority is equal, actions are ordered in the
+             * order they are added to list
              *
              * @attribute priority
              * @default 0
@@ -116,7 +118,8 @@ YUI.add('ez-buttonactionview', function (Y) {
             },
 
             /**
-             * The primary action id, should be unique among other instances of actions, since it is used for styling, running commands, etc.
+             * The primary action id, should be unique among other instances of
+             * actions, since it is used for styling, running commands, etc.
              *
              * @attribute action
              * @default ''

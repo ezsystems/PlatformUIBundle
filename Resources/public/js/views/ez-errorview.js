@@ -9,7 +9,6 @@ YUI.add('ez-errorview', function (Y) {
      *
      * @module ez-errorview
      */
-
     Y.namespace('eZ');
 
     var IS_HIDDEN_CLASS = 'is-hidden',

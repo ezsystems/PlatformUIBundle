@@ -20,7 +20,6 @@ YUI.add('ez-country-view', function (Y) {
      * @extends eZ.FieldView
      */
     Y.eZ.CountryView = Y.Base.create('countryView', Y.eZ.FieldView, [], {
-
         /**
          * Returns the name of the countries that will be used in the template.
          * If a country is missing, it returns a country code (alpha2)
@@ -90,7 +89,7 @@ YUI.add('ez-country-view', function (Y) {
         ATTRS: {
             /**
              * Stores the country list, indexed by alpha2 code
-             * 
+             *
              * @type Object
              * @attribute config
              */

@@ -9,7 +9,6 @@ YUI.add('ez-selectionfilterview', function (Y) {
      *
      * @module ez-selectionfilterview
      */
-
     Y.namespace('eZ');
 
     var SELECTION_FILTER_CLASS = 'ez-selection-filter',

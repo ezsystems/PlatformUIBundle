@@ -5,13 +5,11 @@
 /* global google */
 YUI.add('ez-maplocation-editview', function (Y) {
     "use strict";
-
     /**
      * Provides the field edit view for the Map Location (ezgmaplocation) fields
      *
      * @module ez-maplocation-editview
      */
-
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'ezgmaplocation',
@@ -399,10 +397,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
              *
              * @attribute location
              * @type {Object}
-             * @default {
-             *     latitude: 0,
-                   longitude: 0
-             * }
+             * @default {latitude: 0, longitude: 0}
              */
             location: {
                 value: {

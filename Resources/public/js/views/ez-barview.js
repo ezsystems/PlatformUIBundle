@@ -9,7 +9,6 @@ YUI.add('ez-barview', function (Y) {
      *
      * @module ez-barview
      */
-
     Y.namespace('eZ');
 
     var BAR_VIEW_NAME = 'barView',

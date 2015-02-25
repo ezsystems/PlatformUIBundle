@@ -9,7 +9,6 @@ YUI.add('ez-textline-editview', function (Y) {
      *
      * @module ez-textline-editview
      */
-
     Y.namespace('eZ');
 
     var L = Y.Lang,

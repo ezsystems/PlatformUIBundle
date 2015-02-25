@@ -9,7 +9,6 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
      *
      * @module ez-contenttypeselector
      */
-
     Y.namespace('eZ');
 
     var _GET_NAME = function (type) {
@@ -40,7 +39,7 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
 
         destructor: function () {
             var filter = this.get('filterView');
-            
+
             if ( filter ) {
                 filter.destroy();
                 this._set('filterView', undefined);

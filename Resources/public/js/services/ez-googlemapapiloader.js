@@ -5,23 +5,26 @@
 /* global google */
 YUI.add('ez-googlemapapiloader', function (Y) {
     "use strict";
-
-    Y.namespace('eZ');
+    /**
+     * Provides the Google map api loader service
+     *
+     * @module ez-googlemapapiloader
+     */
+    Y.namespace('eZ.services');
 
     var EVENT_MAP_API_READY = 'mapAPIReady',
         EVENT_MAP_API_FAILED = 'mapAPIFailed',
         GMAP_JSONP_URI = 'https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback={callback}';
 
     /**
-     * A Component with one specific task - try to load Google Maps API and fire
-     * the EVENT_MAP_API_READY event in case of success or
-     * EVENT_MAP_API_FAILED event in case of problems encountered
+     * Google Maps API loader. It fires the `mapAPIReady` event when the Google
+     * Map API is ready or `mapAPIFailed` event if a loading error occurs.
      *
      * @class GoogleMapAPILoader
      * @namespace eZ
      * @constructor
      * @param {Function} [JSONPRequest] constructor function of an object
-     *                   havving the same behaviour as Y.JSONPRequest
+     *                   having the same behaviour as Y.JSONPRequest
      */
     function GoogleMapAPILoader(JSONPRequest) {
         /**
@@ -47,14 +50,14 @@ YUI.add('ez-googlemapapiloader', function (Y) {
         /**
          * Fired once map API is correctly loaded
          *
-         * @event EVENT_MAP_API_READY
+         * @event mapAPIReady
          */
         this.publish(EVENT_MAP_API_READY, {fireOnce: true});
 
         /**
          * Fired once map API have failed to load
          *
-         * @event EVENT_MAP_API_FAILED
+         * @event mapAPIFailed
          */
         this.publish(EVENT_MAP_API_FAILED, {fireOnce: true});
     }
@@ -62,7 +65,7 @@ YUI.add('ez-googlemapapiloader', function (Y) {
     GoogleMapAPILoader.prototype = {
         /**
          * Trying to load Google Maps API via JSONP and firing either
-         * EVENT_MAP_API_READY or EVENT_MAP_API_FAILED depending on results
+         * `mapAPIReady` or `mapAPIFailed` depending on results
          *
          * @method load
          */
@@ -122,9 +125,6 @@ YUI.add('ez-googlemapapiloader', function (Y) {
     };
 
     Y.augment(GoogleMapAPILoader, Y.EventTarget);
-
     Y.eZ.GoogleMapAPILoader = GoogleMapAPILoader;
-
-    Y.namespace('eZ.services');
     Y.eZ.services.mapAPILoader = new GoogleMapAPILoader();
 });

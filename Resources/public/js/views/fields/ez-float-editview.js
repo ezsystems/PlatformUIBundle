@@ -9,7 +9,6 @@ YUI.add('ez-float-editview', function (Y) {
      *
      * @module ez-float-editview
      */
-
     Y.namespace('eZ');
 
     var L = Y.Lang,

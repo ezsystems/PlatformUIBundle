@@ -9,7 +9,6 @@ YUI.add('ez-image-editview', function (Y) {
      *
      * @module ez-image-editview
      */
-
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'ezimage',

@@ -12,6 +12,7 @@ YUI.add('ez-contentcreateplugin', function (Y) {
     Y.namespace('eZ.Plugin');
 
     /**
+     * Content create plugin.
      *
      * @namespace eZ.Plugin
      * @class ContentCreate

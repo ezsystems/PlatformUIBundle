@@ -9,7 +9,6 @@ YUI.add('ez-view', function (Y) {
      *
      * @module ez-view
      */
-
     Y.namespace('eZ');
 
     /**

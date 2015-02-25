@@ -5,7 +5,6 @@ YUI.add('ez-pluginregistry', function (Y) {
      *
      * @module ez-pluginregistry
      */
-
     Y.namespace('eZ');
 
     /**

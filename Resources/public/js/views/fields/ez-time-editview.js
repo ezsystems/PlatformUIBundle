@@ -9,7 +9,6 @@ YUI.add('ez-time-editview', function (Y) {
      *
      * @module ez-time-editview
      */
-
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'eztime';

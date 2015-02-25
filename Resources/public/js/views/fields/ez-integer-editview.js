@@ -9,7 +9,6 @@ YUI.add('ez-integer-editview', function (Y) {
      *
      * @module ez-integer-editview
      */
-
     Y.namespace('eZ');
 
     var L = Y.Lang,

@@ -9,7 +9,6 @@ YUI.add('ez-selection-editview', function (Y) {
      *
      * @module ez-selection-editview
      */
-
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'ezselection',
