@@ -397,10 +397,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
              *
              * @attribute location
              * @type {Object}
-             * @default {
-             *     latitude: 0,
-                   longitude: 0
-             * }
+             * @default {latitude: 0, longitude: 0}
              */
             location: {
                 value: {
