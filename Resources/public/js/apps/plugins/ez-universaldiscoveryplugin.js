@@ -13,9 +13,10 @@ YUI.add('ez-universaldiscoveryplugin', function (Y) {
 
     /**
      * Universal discovery plugin. It connects the PlatformUI app and the
-     * universal discovery widget by setting two events handlers. Those events
-     * allow any component in the application to trigger or disable the
-     * universal discovery widget.
+     * universal discovery widget by setting the event handlers for the
+     * `contentDiscover`, `contentDiscovered` and `cancelDiscover` events.
+     * By triggering those events, any component can control the universal
+     * discovery widget.
      *
      * @namespace eZ.Plugin
      * @class DiscoveryWidget

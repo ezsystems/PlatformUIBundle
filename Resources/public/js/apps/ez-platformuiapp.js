@@ -110,9 +110,7 @@ YUI.add('ez-platformuiapp', function (Y) {
         },
 
         /**
-         * Initialize the application:
-         *
-         *   * set up the 'close' event that closes the application
+         * Initializes the application.
          *
          * @method initializer
          */
@@ -126,8 +124,6 @@ YUI.add('ez-platformuiapp', function (Y) {
              * @default the actual page title
              */
             this._initialTitle = Y.config.doc.title;
-
-            // Setting events handlers
 
             this.on({
                 '*:closeApp': this.close,
@@ -153,7 +149,8 @@ YUI.add('ez-platformuiapp', function (Y) {
         },
 
         /**
-         * Check if there is config to add to the application routes
+         * Reads the `routeConfig` configuration object and applies the given
+         * settings to the correct route.
          *
          * @protected
          * @method _routeConfig
@@ -169,6 +166,9 @@ YUI.add('ez-platformuiapp', function (Y) {
          *
          * @protected
          * @method _enrichRoute
+         * @param {Object} route a route object (an entry in the `routes`
+         * attribute)
+         * @param {Number} index
          */
         _enrichRoute: function (route, index) {
             if (this.get('routeConfig')[route.name]) {
@@ -186,7 +186,7 @@ YUI.add('ez-platformuiapp', function (Y) {
          * @param {String} routeName the name of the route to look for
          * @param {Object} [params] an object containing the key/value to replace
          *                 in the route path
-         * @return {String} or null if the route was not found
+         * @return {String|Null} null if the route was not found
          */
         routeUri: function (routeName, params) {
             var route = Y.Array.find(this.get('routes'), function (elt) {
@@ -251,7 +251,7 @@ YUI.add('ez-platformuiapp', function (Y) {
         },
 
         /**
-         * Logs in a user using the provided the credentials. If the credentials
+         * Logs in a user using the provided credentials. If the credentials
          * are wrong, the callback is called with the error and response from
          * CAPI.logIn. If the credentials are correct, the error and response
          * arguments are set with the ones from eZ.UserModel.load method. If the
@@ -616,8 +616,8 @@ YUI.add('ez-platformuiapp', function (Y) {
         },
 
         /**
-         * Event handler for the loadingChange event. Adds or removes the
-         * is-app-loading class on the application container.
+         * `loadingChange` event handler. Adds or removes the `is-app-loading`
+         * class on the application container.
          *
          * @method _loading
          * @protected
@@ -631,7 +631,7 @@ YUI.add('ez-platformuiapp', function (Y) {
             }
         },
 
-        /*
+        /**
          * Overrides the default implementation to make sure the view `active`
          * attribute is set to true  after the view is attached to the
          * DOM. It also sets the loading flag to false and make sure the title
@@ -718,9 +718,9 @@ YUI.add('ez-platformuiapp', function (Y) {
              *     corresponding side view should be visible.
              *
              * If a route provides both a `regex` and a `path` properties, the
-             * `regex` in the route matching process, while the `path` can be
-             * used in the reverse routing process (generation of a link). If
-             * no `path` is provided, no reverse routing is possible.
+             * `regex` is used in the route matching process, while the `path`
+             * can be used in the reverse routing process (generation of a
+             * link). If no `path` is provided, no reverse routing is possible.
              *
              * @attribute routes
              */
@@ -857,7 +857,7 @@ YUI.add('ez-platformuiapp', function (Y) {
              *
              * @attribute capi
              * @default null
-             * @type eZ.CAPI
+             * @type {eZ.CAPI}
              * @writeOnce
              * @required
              */
@@ -870,7 +870,7 @@ YUI.add('ez-platformuiapp', function (Y) {
              * The logged in user
              *
              * @attribute user
-             * @type eZ.User
+             * @type {eZ.User}
              * @readOnly
              */
             user: {
@@ -884,7 +884,7 @@ YUI.add('ez-platformuiapp', function (Y) {
              * Active view service instance
              *
              * @attribute activeViewService
-             * @type eZ.ViewService
+             * @type {eZ.ViewService}
              * @readOnly
              */
             activeViewService: {
