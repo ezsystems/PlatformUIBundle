@@ -156,7 +156,7 @@ YUI.add('ez-maplocation-view', function (Y) {
              * Instance of a map API loader component
              *
              * @attribute mapAPILoader
-             * @type {Object} instance of a map loader component 
+             * @type {Object} instance of a map loader component
              * @default the map api loader service if it is defined
              */
             mapAPILoader: {

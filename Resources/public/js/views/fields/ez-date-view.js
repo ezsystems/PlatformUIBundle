@@ -42,7 +42,7 @@ YUI.add('ez-date-view', function (Y) {
          */
         _getFieldValue: function () {
             var date =  this._getDateObject();
-           
+
             if ( date ) {
                 return this._formatDate(date);
             }

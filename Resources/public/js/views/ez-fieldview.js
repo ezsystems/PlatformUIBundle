@@ -40,7 +40,7 @@ YUI.add('ez-fieldview', function (Y) {
                     value: this._getFieldValue(),
                     isEmpty: isEmpty,
                 };
-            
+
             container.addClass(CONTAINER_CLASS_PREFIX + def.fieldType.toLowerCase());
             if ( isEmpty ) {
                 container.addClass(FIELD_EMPTY_CLASS);
@@ -157,7 +157,7 @@ YUI.add('ez-fieldview', function (Y) {
          */
         getFieldView: function (fieldTypeIdentifier) {
             var view = Y.eZ.FieldView.REGISTRY[fieldTypeIdentifier];
-            
+
             if ( typeof view === 'function' ) {
                 return view;
             }

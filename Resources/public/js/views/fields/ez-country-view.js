@@ -90,7 +90,7 @@ YUI.add('ez-country-view', function (Y) {
         ATTRS: {
             /**
              * Stores the country list, indexed by alpha2 code
-             * 
+             *
              * @type Object
              * @attribute config
              */

@@ -40,7 +40,7 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
 
         destructor: function () {
             var filter = this.get('filterView');
-            
+
             if ( filter ) {
                 filter.destroy();
                 this._set('filterView', undefined);
