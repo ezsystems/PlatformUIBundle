@@ -72,10 +72,10 @@ system:
                     requires: ['ez-viewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras']
                     path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
                 ez-discoverybarviewservice:
-                    requires: ['ez-viewservice', 'ez-contenttreeplugin']
+                    requires: ['ez-viewservice', 'ez-discoverybarcontenttreeplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js
                 ez-universaldiscoveryviewservice:
-                    requires: ['ez-viewservice']
+                    requires: ['ez-viewservice', 'ez-universaldiscoverycontenttreeplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-universaldiscoveryviewservice.js
                 ez-serversideviewservice:
                     requires: ['io-base', 'io-form', 'ez-viewservice']
@@ -119,11 +119,21 @@ system:
                     requires: ['ez-templatebasedview']
                     path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverymethodbaseview.js
                 ez-universaldiscoverybrowseview:
-                    requires: ['ez-universaldiscoverymethodbaseview', 'universaldiscoverybrowseview-ez-template']
+                    requires:
+                        - 'ez-universaldiscoverymethodbaseview'
+                        - 'universaldiscoverybrowseview-ez-template'
+                        - 'ez-treeview'
+                        - 'ez-universaldiscoveryselectedview'
                     path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverybrowseview.js
                 universaldiscoverybrowseview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/universaldiscovery/browse.hbt
+                ez-universaldiscoveryselectedview:
+                    requires: ['ez-templatebasedview', 'universaldiscoveryselectedview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryselectedview.js
+                universaldiscoveryselectedview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/universaldiscovery/selected.hbt
                 ez-navigationhubview:
                     requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside', 'navigationhubview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-navigationhubview.js
@@ -549,8 +559,14 @@ system:
                 ez-imagevariationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-imagevariationloadplugin.js
+                ez-universaldiscoverycontenttreeplugin:
+                    requires: ['ez-contenttreeplugin', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-universaldiscoverycontenttreeplugin.js
+                ez-discoverybarcontenttreeplugin:
+                    requires: ['ez-contenttreeplugin', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-discoverybarcontenttreeplugin.js
                 ez-contenttreeplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree']
+                    requires: ['ez-viewservicebaseplugin', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'parallel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
                 ez-contentcreateplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']

@@ -24,3 +24,36 @@
     background: #f5f4f2;
     border: 1px solid #aaa;
 }
+
+.ez-view-universaldiscoveryview .ez-universaldiscovery-title {
+    font-weight: bold;
+    font-size: 170%;
+}
+
+.ez-view-universaldiscoveryview .ez-tabs-panels {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-top: 0;
+}
+
+.ez-view-universaldiscoveryview .ez-universaldiscovery-toolbar {
+    text-align: right;
+}
+
+.ez-view-universaldiscoveryview .ez-universaldiscovery-confirm {
+    font-size: 110%;
+    font-weight: bold;
+}
+
+.ez-view-universaldiscoveryview .ez-ud-pane-title {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #444;
+    font-size: 115%;
+}
+
+.ez-view-universaldiscoveryview .ez-ud-pane-content {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: #fafafa;
+}

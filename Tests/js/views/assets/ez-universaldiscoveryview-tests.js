@@ -4,7 +4,8 @@
  */
 YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     var renderTest, domEventTest, eventHandlersTest, eventsTest,
-        methodVisibilityTest, tabTest, defaultMethodsTest,
+        tabTest, defaultMethodsTest, selectContentTest, confirmButtonStateTest,
+        updateTitleTest,
         Assert = Y.Assert;
 
     renderTest = new Y.Test.Case({
@@ -127,10 +128,16 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
         "Should fire the contentDiscovered event": function () {
             var conf = this.view.get('container').one('.ez-universaldiscovery-confirm'),
+                selection = {},
                 that = this,
                 contentDiscoveredFired = false;
 
+            this.view._set('selection', selection);
             this.view.on('contentDiscovered', function (e) {
+                Assert.areSame(
+                    selection, e.selection,
+                    "The selection should be available in the contentDiscovered event facade"
+                );
                 contentDiscoveredFired = true;
             });
             conf.simulateGesture('tap', function () {
@@ -228,9 +235,8 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
         setUp: function () {
             this.methodIdentifier = 'default';
-            this.method = new Y.eZ.UniversalDiscoveryMethodBaseView({
-                identifier: this.methodIdentifier,
-            });
+            this.method = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method._set('identifier', this.methodIdentifier);
             this.view = new Y.eZ.UniversalDiscoveryView({
                 visibleMethod: this.methodIdentifier,
                 container: '.container',
@@ -253,15 +259,26 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             var customTitle = "A custom title";
 
             this.view.set('title', "A custom title");
+            this.view._set('selection', {});
+            this.method.set('visible', true);
+            this.method.set('selectionMode', 'multiple');
             this.view.fire(evt);
             Assert.areNotEqual(
                 customTitle,
                 this.view.get('title'),
                 "The title should resetted to its default value"
             );
+            Assert.isNull(
+                this.view.get('selection'),
+                "The selection should resetted to null"
+            );
             Assert.isFalse(
                 this.method.get('visible'),
                 "The method should have the visible flag to false"
+            );
+            Assert.areEqual(
+                'single', this.method.get('selectionMode'),
+                "The method selectionMode should be resetted to 'single'"
             );
         },
 
@@ -269,8 +286,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             var customTitle = "A custom title";
 
             this.view.set('title', "A custom title");
+            this.method.set('visible', true);
+            this.method.set('selectionMode', 'multiple');
             this.view.on(evt, function (e) {
-                e.halt();
+                e.preventDefault();
             });
             this.view.fire(evt);
             Assert.areEqual(
@@ -281,6 +300,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             Assert.isTrue(
                 this.method.get('visible'),
                 "The method visible flag should still be true"
+            );
+            Assert.areEqual(
+                'multiple', this.method.get('selectionMode'),
+                "The method selectionMode should still be 'multiple'"
             );
         },
 
@@ -307,12 +330,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         setUp: function () {
             this.title = 'Universal discovery view title';
             this.selectionMode = 'multiple';
-            this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView({
-                identifier: 'method1',
-            });
-            this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView({
-                identifier: 'method2',
-            });
+            this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method1._set('identifier', 'method1');
+            this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method2._set('identifier', 'method2');
             this.view = new Y.eZ.UniversalDiscoveryView({
                 container: '.container',
                 title: this.title,
@@ -332,6 +353,8 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
 
         "Should initialize function visibility of the method views": function () {
+            this.view.render();
+            this.view.set('active', true);
             Assert.isTrue(
                 this.method2.get('visible'),
                 "The method2 should be visible"
@@ -493,6 +516,119 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 "The selection mode should be passed to the method views"
             );
         },
+
+        "Should add the universal discovery view as a bubble target": function () {
+            var methods = this.view.get('methods'),
+                bubble = false;
+
+            this.view.on('*:whatever', function () {
+                bubble = true;
+            });
+            methods[0].fire('whatever');
+
+            Assert.isTrue(
+                bubble,
+                "The method's event should bubble to the universal discovery view"
+            );
+        },
+    });
+
+    selectContentTest = new Y.Test.Case({
+        name: "eZ Universal Discovery View select content event test",
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoveryView({
+                container: '.container',
+                methods: [],
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should store the selection": function () {
+            var selection = {};
+
+            this.view.fire('selectContent', {selection: selection});
+
+            Assert.areSame(
+                selection, this.view.get('selection'),
+                "The selection from the selectContent event facade should be stored"
+            );
+        },
+    });
+
+    confirmButtonStateTest = new Y.Test.Case({
+        name: "eZ Universal Discovery View confirm button state test",
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoveryView({
+                container: '.container',
+                methods: [],
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should enable the confirm button": function () {
+            this.view._set('selection', {});
+
+            Assert.isFalse(
+                this.view.get('container').one('.ez-universaldiscovery-confirm').get('disabled'),
+                "The confirm button should be enabled"
+            );
+        },
+
+        "Should disabled the confirm button": function () {
+            this["Should enable the confirm button"]();
+            this.view._set('selection', null);
+
+            Assert.isTrue(
+                this.view.get('container').one('.ez-universaldiscovery-confirm').get('disabled'),
+                "The confirm button should be disabled"
+            );
+        }
+    });
+
+    updateTitleTest= new Y.Test.Case({
+        name: "eZ Universal Discovery View update title test",
+
+        setUp: function () {
+            this.method = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method._set('identifier', 'browse');
+            this.view = new Y.eZ.UniversalDiscoveryView({
+                container: '.container',
+                title: "Easier to run",
+                methods: [this.method],
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.method.destroy();
+            delete this.view;
+            delete this.method;
+        },
+
+        "Should update the title when the view is getting active": function () {
+            var newTitle = 'Breaking the habits';
+
+            this.view.set('title', newTitle);
+            this.view.set('active', true);
+
+            Assert.areEqual(
+                newTitle,
+                this.view.get('container').one('.ez-universaldiscovery-title').getContent(),
+                "The title should have been updated"
+            );
+        },
     });
 
     Y.Test.Runner.setName("eZ Universal Discovery View tests");
@@ -500,7 +636,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     Y.Test.Runner.add(domEventTest);
     Y.Test.Runner.add(eventHandlersTest);
     Y.Test.Runner.add(eventsTest);
-    Y.Test.Runner.add(methodVisibilityTest);
     Y.Test.Runner.add(tabTest);
     Y.Test.Runner.add(defaultMethodsTest);
+    Y.Test.Runner.add(selectContentTest);
+    Y.Test.Runner.add(confirmButtonStateTest);
+    Y.Test.Runner.add(updateTitleTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-universaldiscoveryview']});

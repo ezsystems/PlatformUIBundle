@@ -1,0 +1,10 @@
+{{#if content}}
+    <div class="ez-ud-pane ez-ud-pane-selected">
+        <h2 class="ez-ud-pane-title">Selected item</h2>
+        <div class="ez-ud-pane-content">
+            <h3>{{ content.name }} ({{ contentType.names.[eng-GB] }})<h3>
+        </div>
+    </div>
+{{else}}
+    <p class="ez-ud-help-text">Select a content from the left</p>
+{{/if}}

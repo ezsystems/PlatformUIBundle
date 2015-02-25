@@ -8,6 +8,7 @@
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="universaldiscoveryview-ez-template">
+<h1 class="ez-universaldiscovery-title">{{ title }}</h1>
 <div class="ez-tabs">
     {{#each methods}}
         <p class="ez-tabs-label"><a href="#{{ identifier }}">{{ title }}</a></p>
@@ -19,7 +20,7 @@
 
 <a href="#" class="ez-universaldiscovery-cancel">Cancel</a>
 
-<button class="ez-universaldiscovery-confirm">Confirm</button>
+<button class="ez-universaldiscovery-confirm" disabled="disabled">Confirm</button>
 </script>
 
 

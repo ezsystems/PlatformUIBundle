@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>eZ Universal Discovery Browse view tests</title>
+</head>
+<body>
+
+<script type="text/x-handlebars-template" id="universaldiscoverybrowseview-ez-template">
+<div class="ez-ud-browse-tree"></div>
+<div class="ez-ud-browse-selected"></div>
+</script>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-universaldiscoverybrowseview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-universaldiscoverybrowseview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-universaldiscoverybrowseview": {
+                requires: ['ez-universaldiscoverymethodbaseview'],
+                fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoverybrowseview.js"
+            },
+            "ez-universaldiscoverymethodbaseview": {
+                requires: ['ez-templatebasedview', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoverymethodbaseview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-universaldiscoverybrowseview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

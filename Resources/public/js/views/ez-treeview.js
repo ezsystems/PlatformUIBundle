@@ -214,14 +214,42 @@ YUI.add('ez-treeview', function (Y) {
          * @param node {Y.Tree.Node}
          */
         _renderNodeChildren: function (node) {
-            var template = Y.Template.get('tree-ez-partial');
+            var template = Y.Template.get('tree-ez-partial'),
+                nodeJson = this._nodeToJson(node);
 
             if ( node.isRoot() ) {
                 this.get('container').addClass(IS_TREE_LOADED);
-                this._getTreeContentNode().append(template(node.toJSON()));
+                this._getTreeContentNode().append(template(nodeJson));
             } else {
-                this._getElementYNode(node).append(template(node.toJSON()));
+                this._getElementYNode(node).append(template(nodeJson));
             }
+        },
+
+        /**
+         * 'jsonifies' the node and its data to be used in the tree level
+         * template
+         *
+         * @method _nodeToJson
+         * @protected
+         * @param {Y.Tree.Node} node
+         * @return {Object}
+         */
+        _nodeToJson: function (node) {
+            var json = node.toJSON();
+
+            Y.Array.each(json.children, function (value, key) {
+                var data = {};
+
+                Y.Object.each(value.data, function (object, idx) {
+                    if ( object.toJSON ) {
+                        data[idx] = object.toJSON();
+                    } else {
+                        data[idx] = object;
+                    }
+                });
+                value.data = data;
+            });
+            return json;
         },
 
         /**

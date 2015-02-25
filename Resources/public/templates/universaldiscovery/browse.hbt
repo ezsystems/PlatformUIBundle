@@ -1,1 +1,5 @@
-{{ title }}
+<div class="ez-ud-pane ez-ud-pane-tree">
+    <h2 class="ez-ud-pane-title">Content tree</h2>
+    <div class="ez-ud-browse-tree ez-ud-pane-content"></div>
+</div>
+<div class="ez-ud-browse-selected"></div>

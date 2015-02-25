@@ -1,4 +1,4 @@
-<h1>{{ title }}</h1>
+<h1 class="ez-universaldiscovery-title">{{ title }}</h1>
 
 <section class="ez-tabs">
     <ul class="ez-tabs-list">
@@ -12,7 +12,7 @@
     {{/each}}
     </div>
 </section>
-<p>
+<div class="ez-universaldiscovery-toolbar">
     <a href="#" class="ez-universaldiscovery-cancel">Cancel</a>
-    <button class="ez-universaldiscovery-confirm ez-button pure-button">Confirm</button>
-</p>
+    <button class="ez-universaldiscovery-confirm ez-button pure-button" disabled="disabled">Confirm selection</button>
+</div>

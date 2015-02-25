@@ -35,25 +35,33 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         initializer: function () {
-            this._setMethodsVisibleFlag();
+            this.on('changeTab', this._updateVisibleMethod);
             this.after('visibleMethodChange', this._setMethodsVisibleFlag);
+            this.after('*:selectContent', this._storeSelection);
+            this.after('selectionChange', this._uiSetConfirmButtonState);
             this.after('activeChange', function () {
                 if ( this.get('active') ) {
                     this._setMethodsVisibleFlag();
                     this._uiUpdateTab();
+                    this._uiUpdateTitle();
                 }
             });
-            this.on('contentDiscoveredHandlerChange', function (e) {
-                this._syncEventHandler(DISCOVERED, e.prevVal, e.newVal);
+            this.on(['contentDiscoveredHandlerChange', 'cancelDiscoverHandlerChange'], function (e) {
+                this._syncEventHandler(e.attrName.replace(/Handler$/, ''), e.prevVal, e.newVal);
             });
-
-            this.on('cancelDiscoverHandlerChange', function (e) {
-                this._syncEventHandler(CANCEL, e.prevVal, e.newVal);
-            });
-
             this._publishEvents();
+        },
 
-            this.on('changeTab', this._updateVisibleMethod);
+        /**
+         * `selectContent` event handler. it stores the selection in the
+         * discovery view selection attribute
+         *
+         * @method _storeSelection
+         * @protected
+         * @param {EventFacade} e
+         */
+        _storeSelection: function (e) {
+            this._set('selection', e.selection);
         },
 
         /**
@@ -72,6 +80,30 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                 htmlId,
                 container
             );
+        },
+
+        /**
+         * `selectionChange` event handler. It enables/disables the button
+         * depending on the selection
+         *
+         * @method _uiSetConfirmButtonState
+         * @protected
+         */
+        _uiSetConfirmButtonState: function () {
+            var confirmButton = this.get('container').one('.ez-universaldiscovery-confirm');
+
+            confirmButton.set('disabled', !this.get('selection'));
+        },
+
+        /**
+         * Updates the title in the already rendered view
+         *
+         * @method _uiUpdateTitle
+         * @protected
+         */
+        _uiUpdateTitle: function () {
+            this.get('container')
+                .one('.ez-universaldiscovery-title').setContent(this.get('title'));
         },
 
         /**
@@ -168,8 +200,9 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
          */
         _resetState: function () {
             this.reset();
+            this._set('selection', null);
             Y.Array.each(this.get('methods'), function (method) {
-                method.set('visible', false);
+                method.reset();
             });
         },
 
@@ -208,8 +241,12 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
              *
              * @event contentDiscovered
              * @bubbles
+             * @param {Null|Array|Object} selection the current selection of the
+             * discovery
              */
-            this.fire(DISCOVERED);
+            this.fire(DISCOVERED, {
+                selection: this.get('selection'),
+            });
         },
 
         render: function () {
@@ -315,6 +352,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                 valueFn: function () {
                     return [
                         new Y.eZ.UniversalDiscoveryBrowseView({
+                            bubbleTargets: this,
                             priority: 100,
                             selectionMode: this.get('selectionMode'),
                         }),
@@ -331,6 +369,23 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
              */
             visibleMethod: {
                 value: 'browse',
+            },
+
+            /**
+             * The current selection of the discovery. This selection is
+             * providded to the contentDiscovered event handler in the event
+             * facade. Depending on the selectionMode and on the user action,
+             * the selection is either null or an object (selectionMode to
+             * 'single') or an array (selectionMode to 'multiple').
+             *
+             * @attribute selection
+             * @type {Null|Object|Array}
+             * @readOnly
+             * @default null
+             */
+            selection: {
+                value: null,
+                readOnly: true,
             },
         }
     });
