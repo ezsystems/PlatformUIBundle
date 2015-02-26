@@ -13,13 +13,13 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
         setUp: function () {
             this.title = 'Universal discovery view title';
-            this.selectionMode = 'multiple';
+            this.multiple = true;
             this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView();
             this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView();
             this.view = new Y.eZ.UniversalDiscoveryView({
                 container: '.container',
                 title: this.title,
-                selectionMode: this.selectionMode,
+                multiple: this.multiple,
                 methods: [this.method1, this.method2],
             });
         },
@@ -58,8 +58,8 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                     "The title should be available in the template"
                 );
                 Assert.areSame(
-                    that.selectionMode, variables.selectionMode,
-                    "The selectionMode should available in the template"
+                    that.multiple, variables.multiple,
+                    "The multiple flag should available in the template"
                 );
                 Assert.isArray(
                     variables.methods, "The method list should be available in the template"
@@ -261,7 +261,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.view.set('title', "A custom title");
             this.view._set('selection', {});
             this.method.set('visible', true);
-            this.method.set('selectionMode', 'multiple');
+            this.method.set('multiple', true);
             this.view.fire(evt);
             Assert.areNotEqual(
                 customTitle,
@@ -276,9 +276,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 this.method.get('visible'),
                 "The method should have the visible flag to false"
             );
-            Assert.areEqual(
-                'single', this.method.get('selectionMode'),
-                "The method selectionMode should be resetted to 'single'"
+            Assert.isFalse(
+                this.method.get('multiple'),
+                "The method multiple flag should be resetted to false"
             );
         },
 
@@ -287,7 +287,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
             this.view.set('title', "A custom title");
             this.method.set('visible', true);
-            this.method.set('selectionMode', 'multiple');
+            this.method.set('multiple', true);
             this.view.on(evt, function (e) {
                 e.preventDefault();
             });
@@ -301,9 +301,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 this.method.get('visible'),
                 "The method visible flag should still be true"
             );
-            Assert.areEqual(
-                'multiple', this.method.get('selectionMode'),
-                "The method selectionMode should still be 'multiple'"
+            Assert.isTrue(
+                this.method.get('multiple'),
+                "The method multiple flag should still be true"
             );
         },
 
@@ -329,7 +329,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
         setUp: function () {
             this.title = 'Universal discovery view title';
-            this.selectionMode = 'multiple';
+            this.multiple = true;
             this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView();
             this.method1._set('identifier', 'method1');
             this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView();
@@ -338,7 +338,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 container: '.container',
                 title: this.title,
                 visibleMethod: 'method2',
-                selectionMode: this.selectionMode,
+                multiple: this.multiple,
                 methods: [this.method1, this.method2],
             });
         },
@@ -480,13 +480,13 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
         setUp: function () {
             this.config = {};
-            this.selectionMode = 'multiple';
+            this.multiple = true;
 
             Y.eZ.UniversalDiscoveryBrowseView = Y.Base.create(
                 'testView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
             );
             this.view = new Y.eZ.UniversalDiscoveryView({
-                selectionMode: this.selectionMode,
+                multiple: this.multiple,
             });
         },
 
@@ -511,8 +511,8 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 Y.eZ.UniversalDiscoveryBrowseView, methods[0],
                 "The first element should be an instance of the browse method"
             );
-            Assert.areEqual(
-                this.selectionMode, methods[0].get('selectionMode'),
+            Assert.areSame(
+                this.multiple, methods[0].get('multiple'),
                 "The selection mode should be passed to the method views"
             );
         },

@@ -252,7 +252,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         render: function () {
             this.get('container').setHTML(this.template({
                 title: this.get('title'),
-                selectionMode: this.get('selectionMode'),
+                multiple: this.get('multiple'),
                 methods: this._methodsList(),
             }));
             this._renderMethods();
@@ -308,14 +308,15 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             },
 
             /**
-             * The selection mode ('single' or 'multiple'
+             * Flag indicating whether the user is able to select several
+             * contents.
              *
-             * @attribute selectionMode
-             * @type {String}
-             * @default 'single'
+             * @attribute multiple
+             * @type {Boolean}
+             * @default false
              */
-            selectionMode: {
-                value: 'single'
+            multiple: {
+                value: false,
             },
 
             /**
@@ -354,7 +355,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                         new Y.eZ.UniversalDiscoveryBrowseView({
                             bubbleTargets: this,
                             priority: 100,
-                            selectionMode: this.get('selectionMode'),
+                            multiple: this.get('multiple'),
                         }),
                     ];
                 },
@@ -373,10 +374,10 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
 
             /**
              * The current selection of the discovery. This selection is
-             * providded to the contentDiscovered event handler in the event
-             * facade. Depending on the selectionMode and on the user action,
-             * the selection is either null or an object (selectionMode to
-             * 'single') or an array (selectionMode to 'multiple').
+             * provided to the contentDiscovered event handler in the event
+             * facade. Depending on the `multiple` flag and on the user action,
+             * the selection is either null or an object (`multiple` to
+             * false) or an array (`multiple` set to true)
              *
              * @attribute selection
              * @type {Null|Object|Array}
