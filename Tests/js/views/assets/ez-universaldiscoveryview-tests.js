@@ -5,7 +5,7 @@
 YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     var renderTest, domEventTest, eventHandlersTest, eventsTest,
         tabTest, defaultMethodsTest, selectContentTest, confirmButtonStateTest,
-        updateTitleTest,
+        updateTitleTest, confirmSelectedContentTest,
         Assert = Y.Assert;
 
     renderTest = new Y.Test.Case({
@@ -394,6 +394,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 container: '.container',
                 methods: [this.method1, this.method2],
                 visibleMethod: "method1",
+                multiple: true,
             });
             this.view.render();
         },
@@ -432,8 +433,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             );
         },
 
-        "Should update the method visible flag when changing the visibleMethod": function () {
-            var method2 = this.method2;
+        "Should update the method when changing the visibleMethod": function () {
+            var method2 = this.method2,
+                method1 = this.method1;
 
             this.view.set('active', true);
             this.view.set('visibleMethod', 'method2');
@@ -443,8 +445,16 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 "The method2 should be visible"
             );
             Assert.isFalse(
-                this.method1.get('visible'),
+                method1.get('visible'),
                 "The method2 should not be visible"
+            );
+            Assert.isTrue(
+                method2.get('multiple'),
+                "The method2 mutiple flag should be true"
+            );
+            Assert.isTrue(
+                method1.get('multiple'),
+                "The method1 mutiple flag should be true"
             );
         },
 
@@ -558,6 +568,85 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 "The selection from the selectContent event facade should be stored"
             );
         },
+
+        "Should reset the selection": function () {
+            this.view.fire('selectContent', {selection: null});
+
+            Assert.isNull(
+                this.view.get('selection'),
+                "The selection should have been resetted"
+            );
+        },
+
+        "Should ignore the event when multiple is true": function () {
+            this.view.set('multiple', true);
+
+            this.view.fire('selectContent', {selection: {}});
+            Assert.isNull(
+                this.view.get('selection'),
+                "The selection should remain empty"
+            );
+        },
+    });
+
+    confirmSelectedContentTest = new Y.Test.Case({
+        name: "eZ Universal Discovery View confirm selected content event test",
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoveryView({
+                multiple: true,
+                methods: [],
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should add the content to the selection": function () {
+            var content = {};
+
+            this.view.fire('confirmSelectedContent', {selection: content});
+
+            Assert.isArray(
+                this.view.get('selection'),
+                "The selection should an array"
+            );
+            Assert.areEqual(
+                1, this.view.get('selection').length,
+                "The selection should contain one entry"
+            );
+            Assert.areSame(
+                content, this.view.get('selection')[0],
+                "The selection should contain the content provided in the confirmSelectedContent event"
+            );
+        },
+
+        "Should add the contents to the selection": function () {
+            var content1 = {}, content2 = {};
+
+            this.view.fire('confirmSelectedContent', {selection: content1});
+            this.view.fire('confirmSelectedContent', {selection: content2});
+
+            Assert.isArray(
+                this.view.get('selection'),
+                "The selection should an array"
+            );
+            Assert.areEqual(
+                2, this.view.get('selection').length,
+                "The selection should contain one entry"
+            );
+            Assert.areSame(
+                content1, this.view.get('selection')[0],
+                "The selection should contain the content provided in the first confirmSelectedContent event"
+            );
+            Assert.areSame(
+                content2, this.view.get('selection')[1],
+                "The selection should contain the content provided in the second confirmSelectedContent event"
+            );
+        },
     });
 
     confirmButtonStateTest = new Y.Test.Case({
@@ -639,6 +728,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     Y.Test.Runner.add(tabTest);
     Y.Test.Runner.add(defaultMethodsTest);
     Y.Test.Runner.add(selectContentTest);
+    Y.Test.Runner.add(confirmSelectedContentTest);
     Y.Test.Runner.add(confirmButtonStateTest);
     Y.Test.Runner.add(updateTitleTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-universaldiscoveryview']});

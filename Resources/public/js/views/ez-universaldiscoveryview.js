@@ -36,12 +36,19 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
 
         initializer: function () {
             this.on('changeTab', this._updateVisibleMethod);
-            this.after('visibleMethodChange', this._setMethodsVisibleFlag);
-            this.after('*:selectContent', this._storeSelection);
+            this.after('visibleMethodChange', this._updateMethods);
+            this.after('*:selectContent', function (e) {
+                if ( !this.get('multiple') ) {
+                    this._storeSelection(e.selection);
+                }
+            });
+            this.after('*:confirmSelectedContent', function (e) {
+                this._storeSelection(e.selection);
+            });
             this.after('selectionChange', this._uiSetConfirmButtonState);
             this.after('activeChange', function () {
                 if ( this.get('active') ) {
-                    this._setMethodsVisibleFlag();
+                    this._updateMethods();
                     this._uiUpdateTab();
                     this._uiUpdateTitle();
                 }
@@ -53,15 +60,38 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         /**
-         * `selectContent` event handler. it stores the selection in the
-         * discovery view selection attribute
+         * Stores the given contentStruct in the selection. Depending on the
+         * `multiple` attribute value, the contentStruct is added to the
+         * selection or completely replaces it.
          *
          * @method _storeSelection
          * @protected
-         * @param {EventFacade} e
+         * @param {Object|Null} contentStruct
          */
-        _storeSelection: function (e) {
-            this._set('selection', e.selection);
+        _storeSelection: function (contentStruct) {
+            var sel;
+
+            if ( contentStruct === null ) {
+                this._resetSelection();
+                return;
+            }
+            if ( this.get('multiple') ) {
+                sel = this.get('selection') || [];
+                sel.push(contentStruct);
+                this._set('selection', sel);
+            } else {
+                this._set('selection', contentStruct);
+            }
+        },
+
+        /**
+         * Resets the current selection
+         *
+         * @protected
+         * @method _resetSelection
+         */
+        _resetSelection: function () {
+            this._set('selection', null);
         },
 
         /**
@@ -107,13 +137,14 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         /**
-         * Updates the visible flag of the method views depending on the value
-         * of the `visibleMethod` attribute
+         * Updates the method views depending on the value so that their
+         * `visible` flag is consistent with the `visibleMethod` attribute value
+         * and so that they get the correct `multiple` flag value as well.
          *
-         * @method _setMethodsVisibleFlag
+         * @method _updateMethods
          * @protected
          */
-        _setMethodsVisibleFlag: function () {
+        _updateMethods: function () {
             var visibleMethod = this.get('visibleMethod');
 
             /**
@@ -127,7 +158,10 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             Y.Array.each(this.get('methods'), function (method) {
                 var visible = (visibleMethod === method.get('identifier'));
 
-                method.set('visible', visible);
+                method.setAttrs({
+                    'multiple': this.get('multiple'),
+                    'visible': visible
+                });
                 if ( visible ) {
                     this._visibleMethodView = method;
                 }
