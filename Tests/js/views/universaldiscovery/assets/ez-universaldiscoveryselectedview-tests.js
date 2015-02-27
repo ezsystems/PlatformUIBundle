@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
-    var renderTest,
+    var renderTest, domEventTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -52,6 +52,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 content: content,
                 contentType: type,
             });
+            this.view.set('confirmButton', true);
             this.view.template = function (variables) {
                 Assert.areSame(
                     tplLocation, variables.location,
@@ -64,6 +65,10 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 Assert.areSame(
                     tplType, variables.contentType,
                     "The toJSON result of the content type should be available in the template"
+                );
+                Assert.isTrue(
+                    variables.confirmButton,
+                    "The confirmButton flag should be available in the template"
                 );
                 return origTpl.apply(this, arguments);
             };
@@ -103,6 +108,40 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
         },
     });
 
+    domEventTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Selected DOM event tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoverySelectedView({container: '.container'});
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should fire the confirmSelectedContent event": function () {
+            var container = this.view.get('container'),
+                struct = {},
+                that = this;
+
+            this.view.set('contentStruct', struct);
+            this.view.render();
+
+            this.view.on('confirmSelectedContent', function (e) {
+                that.resume(function () {
+                    Assert.areSame(
+                        struct, e.selection,
+                        "The contentStruct being displayed should be available in the event facade"
+                    );
+                });
+            });
+            container.one('.ez-ud-selected-confirm').simulateGesture('tap');
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Selected View tests");
     Y.Test.Runner.add(renderTest);
-}, '', {requires: ['test', 'ez-universaldiscoveryselectedview']});
+    Y.Test.Runner.add(domEventTest);
+}, '', {requires: ['test', 'node-event-simulate', 'ez-universaldiscoveryselectedview']});

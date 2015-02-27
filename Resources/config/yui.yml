@@ -129,7 +129,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/universaldiscovery/browse.hbt
                 ez-universaldiscoveryselectedview:
-                    requires: ['ez-templatebasedview', 'universaldiscoveryselectedview-ez-template']
+                    requires: ['event-tap', 'ez-templatebasedview', 'universaldiscoveryselectedview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryselectedview.js
                 universaldiscoveryselectedview-ez-template:
                     type: 'template'

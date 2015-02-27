@@ -21,9 +21,40 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
      * @extends eZ.TemplateBasedView
      */
     Y.eZ.UniversalDiscoverySelectedView = Y.Base.create('universalDiscoverySelectedView', Y.eZ.TemplateBasedView, [], {
+        events: {
+            '.ez-ud-selected-confirm': {
+                'tap': '_confirmSelected',
+            }
+        },
+
         initializer: function () {
             this.after('contentStructChange', function (e) {
                 this.render();
+            });
+        },
+
+        /**
+         * tap event handler on the confirm button. It fires the
+         * `confirmSelectedContent` event meaning that the user wants the
+         * content to be added to his confirmed content list.
+         *
+         * @method _confirmSelected
+         * @protected
+         * @param {EventFacade} e
+         */
+        _confirmSelected: function (e) {
+            /**
+             * Fired when the user has confirmed that he wants the content to be
+             * added in the confirmed list. This event will be fired/used only
+             * when the universal discovery widget is configured to allow
+             * several contents to be selected.
+             *
+             * @event confirmSelectedContent
+             * @param selection {Object} the content structure for the content
+             * which is selected
+             */
+            this.fire('confirmSelectedContent', {
+                selection: this.get('contentStruct'),
             });
         },
 
@@ -32,6 +63,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
                 content: this._modelJson('content'),
                 location: this._modelJson('location'),
                 contentType: this._modelJson('contentType'),
+                confirmButton: this.get('confirmButton'),
             }));
             return this;
         },
@@ -67,7 +99,18 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
              */
             contentStruct: {
                 value: null,
-            }
+            },
+
+            /**
+             * Flag indicating whether a confirm button is needed or not.
+             *
+             * @attribute confirmButton
+             * @type {Boolean}
+             * @default false
+             */
+            confirmButton: {
+                value: false,
+            },
         }
     });
 });

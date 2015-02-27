@@ -5,9 +5,11 @@
 <title>eZ Universal Discovery Selected view tests</title>
 </head>
 <body>
+<div class="container"></div>
 
 <script type="text/x-handlebars-template" id="universaldiscoveryselectedview-ez-template">
 template
+<button class="ez-ud-selected-confirm">Confirm</button>
 </script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -29,7 +31,7 @@ template
         filter: loaderFilter,
         modules: {
             "ez-universaldiscoveryselectedview": {
-                requires: ['ez-templatebasedview'],
+                requires: ['ez-templatebasedview', 'event-tap'],
                 fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoveryselectedview.js"
             },
             "ez-templatebasedview": {
