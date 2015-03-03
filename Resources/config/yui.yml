@@ -115,6 +115,12 @@ system:
                 universaldiscoveryview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/universaldiscovery.hbt
+                ez-universaldiscoveryconfirmedlistview:
+                    requires: ['ez-templatebasedview', 'universaldiscoveryconfirmedlistview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryconfirmedlistview.js
+                universaldiscoveryconfirmedlistview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/universaldiscovery/confirmedlist.hbt
                 ez-universaldiscoverymethodbaseview:
                     requires: ['ez-templatebasedview']
                     path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverymethodbaseview.js
