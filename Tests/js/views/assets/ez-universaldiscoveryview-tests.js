@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoveryview-tests', function (Y) {
-    var renderTest, domEventTest, eventHandlersTest, eventsTest,
+    var renderTest, domEventTest, eventHandlersTest, eventsTest, visibleMethodTest,
         tabTest, defaultMethodsTest, selectContentTest, confirmButtonStateTest,
         updateTitleTest, confirmSelectedContentTest,
         Assert = Y.Assert;
@@ -324,8 +324,8 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
     });
 
-    renderTest = new Y.Test.Case({
-        name: "eZ Universal Discovery View render test",
+    visibleMethodTest = new Y.Test.Case({
+        name: "eZ Universal Discovery View visible method test",
 
         setUp: function () {
             this.title = 'Universal discovery view title';
@@ -352,7 +352,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             delete this.method2;
         },
 
-        "Should initialize function visibility of the method views": function () {
+        "Should initialize the visibility flag of the method views": function () {
             this.view.render();
             this.view.set('active', true);
             Assert.isTrue(
@@ -725,6 +725,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     Y.Test.Runner.add(domEventTest);
     Y.Test.Runner.add(eventHandlersTest);
     Y.Test.Runner.add(eventsTest);
+    Y.Test.Runner.add(visibleMethodTest);
     Y.Test.Runner.add(tabTest);
     Y.Test.Runner.add(defaultMethodsTest);
     Y.Test.Runner.add(selectContentTest);
