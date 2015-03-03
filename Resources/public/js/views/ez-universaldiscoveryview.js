@@ -76,18 +76,35 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
          * @param {Object|Null} contentStruct
          */
         _storeSelection: function (contentStruct) {
-            var sel;
-
             if ( contentStruct === null ) {
                 this._resetSelection();
                 return;
             }
             if ( this.get('multiple') ) {
-                sel = this.get('selection') || [];
-                sel.push(contentStruct);
-                this._set('selection', sel);
+                this._addToSelection(contentStruct);
             } else {
                 this._set('selection', contentStruct);
+            }
+        },
+
+        /**
+         * Add a content to the selection if it's not already part of this
+         * selection.
+         *
+         * @method _addToSelection
+         * @protected
+         * @param {Object} contentStruct
+         */
+        _addToSelection: function (contentStruct) {
+            var sel = this.get('selection') || [],
+                found;
+
+            found = Y.Array.find(sel, function (struct) {
+                return struct.content.get('id') === contentStruct.content.get('id');
+            });
+            if ( !found ) {
+                sel.push(contentStruct);
+                this._set('selection', sel);
             }
         },
 

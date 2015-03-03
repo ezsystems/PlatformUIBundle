@@ -686,8 +686,22 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             delete this.confirmedList;
         },
 
+        _getMockStruct: function (contentId) {
+            var content = new Mock();
+
+            Mock.expect(content, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId,
+            });
+
+            return {
+                content: content,
+            };
+        },
+
         "Should add the content to the selection": function () {
-            var content = {};
+            var content = this._getMockStruct(1);
 
             this.view.fire('confirmSelectedContent', {selection: content});
 
@@ -706,7 +720,8 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
 
         "Should add the contents to the selection": function () {
-            var content1 = {}, content2 = {};
+            var content1 = this._getMockStruct(1),
+                content2 = this._getMockStruct(2);
 
             this.view.fire('confirmSelectedContent', {selection: content1});
             this.view.fire('confirmSelectedContent', {selection: content2});
@@ -726,6 +741,26 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             Assert.areSame(
                 content2, this.view.get('selection')[1],
                 "The selection should contain the content provided in the second confirmSelectedContent event"
+            );
+        },
+
+        "Should not add the same content twice": function () {
+            var content = this._getMockStruct(1);
+
+            this.view.fire('confirmSelectedContent', {selection: content});
+            this.view.fire('confirmSelectedContent', {selection: content});
+
+            Assert.isArray(
+                this.view.get('selection'),
+                "The selection should an array"
+            );
+            Assert.areEqual(
+                1, this.view.get('selection').length,
+                "The selection should contain one entry"
+            );
+            Assert.areSame(
+                content, this.view.get('selection')[0],
+                "The selection should contain the content provided in the confirmSelectedContent event"
             );
         },
     });
