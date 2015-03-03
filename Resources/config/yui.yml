@@ -110,6 +110,7 @@ system:
                         - 'ez-templatebasedview'
                         - 'universaldiscoveryview-ez-template'
                         - 'ez-universaldiscoverybrowseview'
+                        - 'ez-universaldiscoveryconfirmedlistview'
                         - 'event-tap'
                     path: %ez_platformui.public_dir%/js/views/ez-universaldiscoveryview.js
                 universaldiscoveryview-ez-template:

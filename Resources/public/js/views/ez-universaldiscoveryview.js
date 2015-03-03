@@ -12,7 +12,8 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
     Y.namespace('eZ');
 
     var DISCOVERED = 'contentDiscovered',
-        CANCEL = 'cancelDiscover';
+        CANCEL = 'cancelDiscover',
+        MULTIPLE_SELECTION_CLASS = 'is-multiple-selection-mode';
 
     /**
      * The universal discovery view is a widget to allow the user to pick one or
@@ -36,6 +37,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
 
         initializer: function () {
             this.on('changeTab', this._updateVisibleMethod);
+            this.after('multipleChange', this._uiMultipleMode);
             this.after('visibleMethodChange', this._updateMethods);
             this.after('*:selectContent', function (e) {
                 if ( !this.get('multiple') ) {
@@ -45,7 +47,12 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             this.after('*:confirmSelectedContent', function (e) {
                 this._storeSelection(e.selection);
             });
-            this.after('selectionChange', this._uiSetConfirmButtonState);
+            this.after('selectionChange', function () {
+                this._uiSetConfirmButtonState();
+                if ( this.get('multiple') ) {
+                    this.get('confirmedListView').set('confirmedList', this.get('selection'));
+                }
+            });
             this.after('activeChange', function () {
                 if ( this.get('active') ) {
                     this._updateMethods();
@@ -110,6 +117,23 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                 htmlId,
                 container
             );
+        },
+
+        /**
+         * Adds or removes the multiple selection class on the container
+         * depending on the `multiple` attribute value.
+         *
+         * @method _uiMultipleMode
+         * @protected
+         */
+        _uiMultipleMode: function () {
+            var container = this.get('container');
+
+            if ( this.get('multiple') ) {
+                container.addClass(MULTIPLE_SELECTION_CLASS);
+            } else {
+                container.removeClass(MULTIPLE_SELECTION_CLASS);
+            }
         },
 
         /**
@@ -241,6 +265,21 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         /**
+         * Custom reset implementation to make sure to reset the confirmed list
+         * sub view.
+         *
+         * @method reset
+         * @param {String} name
+         */
+        reset: function (name) {
+            if ( name === 'confirmedListView' ) {
+                this.get('confirmedListView').reset();
+                return;
+            }
+            this.constructor.superclass.reset.apply(this, arguments);
+        },
+
+        /**
          * Tap event handler on the cancel link(s).
          *
          * @method _cancel
@@ -284,11 +323,17 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         render: function () {
-            this.get('container').setHTML(this.template({
+            var container = this.get('container');
+
+            this._uiMultipleMode();
+            container.setHTML(this.template({
                 title: this.get('title'),
                 multiple: this.get('multiple'),
                 methods: this._methodsList(),
             }));
+            container.one('.ez-universaldiscovery-confirmed-list-container').append(
+                this.get('confirmedListView').render().get('container')
+            );
             this._renderMethods();
             return this;
         },
@@ -421,6 +466,21 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             selection: {
                 value: null,
                 readOnly: true,
+            },
+
+            /**
+             * The confirmed list view. It displays the user's current confirmed
+             * list content.
+             *
+             * @attribute @confirmedListView
+             * @type {eZ.UniversalDiscoveryConfirmedListView}
+             */
+            confirmedListView: {
+                valueFn: function () {
+                    return new Y.eZ.UniversalDiscoveryConfirmedListView({
+                        bubbleTargets: this,
+                    });
+                }
             },
         }
     });
