@@ -1,6 +1,7 @@
 parameters:
     ezsystems.platformui.twig.yui_extension.class: EzSystems\PlatformUIBundle\Twig\TwigYuiExtension
     ezsystems.platformui.controller.class: EzSystems\PlatformUIBundle\Controller\PlatformUIController
+    ezsystems.platformui.controller.subitems.class: EzSystems\PlatformUIBundle\Controller\SubitemsController
     ezsystems.platformui.controller.dashboard.class: EzSystems\PlatformUIBundle\Controller\DashboardController
     ezsystems.platformui.helper.systeminfo.class: EzSystems\PlatformUIBundle\Helper\SystemInfoHelper
     ezsystems.platformui.controller.systeminfo.class: EzSystems\PlatformUIBundle\Controller\SystemInfoController
@@ -28,6 +29,13 @@ services:
             - @security.csrf.token_manager
             - %ezpublish_rest.csrf_token_intention%
             - $anonymous_user_id$
+        parent: ezpublish.controller.base
+
+    ezsystems.platformui.subitems.controller:
+        class: %ezsystems.platformui.controller.subitems.class%
+        arguments:
+            - @ezpublish.api.service.search
+            - @ezpublish.api.service.content_type
         parent: ezpublish.controller.base
 
     ezsystems.platformui.controller.template:
