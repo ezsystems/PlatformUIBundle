@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
-    var renderTest, domEventTest,
+    var renderTest, domEventTest, startAnimationTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -141,7 +141,44 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
         },
     });
 
+    startAnimationTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Selected startAnimation tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoverySelectedView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should return null if the animation element is not there": function () {
+            Assert.isNull(
+                this.view.startAnimation(),
+                "startAnimation should return null"
+            );
+        },
+
+        "Should return the animation element with the is-animated class": function () {
+            var elt;
+
+            this.view.render();
+            elt = this.view.startAnimation();
+            Assert.isInstanceOf(
+                Y.Node, elt,
+                "startAnimation should return a Y.Node"
+            );
+            Assert.isTrue(
+                elt.hasClass('is-animated'),
+                "startAnimation should add the is-animated class"
+            );
+        },
+
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Selected View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(domEventTest);
+    Y.Test.Runner.add(startAnimationTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-universaldiscoveryselectedview']});

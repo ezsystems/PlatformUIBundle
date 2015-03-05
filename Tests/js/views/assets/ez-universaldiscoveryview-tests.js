@@ -6,7 +6,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     var renderTest, domEventTest, eventHandlersTest, eventsTest, visibleMethodTest,
         tabTest, defaultMethodsTest, selectContentTest, confirmButtonStateTest,
         updateTitleTest, confirmSelectedContentTest, resetTest, selectionUpdateConfirmViewTest,
-        defaultConfirmedListTest, multipleClassTest,
+        defaultConfirmedListTest, multipleClassTest, animatedSelectionTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -670,11 +670,19 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         name: "eZ Universal Discovery View confirm selected content event test",
 
         setUp: function () {
+            var SelectedView = Y.Base.create('selectedView', Y.View, [], {
+                    startAnimation: function () {
+                        return false;
+                    },
+                });
             this.confirmedList = new Y.View();
             this.view = new Y.eZ.UniversalDiscoveryView({
                 multiple: true,
                 methods: [],
                 confirmedListView: this.confirmedList,
+            });
+            this.selectedView = new SelectedView({
+                bubbleTargets: this.view,
             });
             this.view.render();
         },
@@ -682,8 +690,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         tearDown: function () {
             this.view.destroy();
             this.confirmedList.destroy();
+            this.selectedView.destroy();
             delete this.view;
             delete this.confirmedList;
+            delete this.selectedView;
         },
 
         _getMockStruct: function (contentId) {
@@ -703,7 +713,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         "Should add the content to the selection": function () {
             var content = this._getMockStruct(1);
 
-            this.view.fire('confirmSelectedContent', {selection: content});
+            this.selectedView.fire('confirmSelectedContent', {selection: content});
 
             Assert.isArray(
                 this.view.get('selection'),
@@ -723,8 +733,8 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             var content1 = this._getMockStruct(1),
                 content2 = this._getMockStruct(2);
 
-            this.view.fire('confirmSelectedContent', {selection: content1});
-            this.view.fire('confirmSelectedContent', {selection: content2});
+            this.selectedView.fire('confirmSelectedContent', {selection: content1});
+            this.selectedView.fire('confirmSelectedContent', {selection: content2});
 
             Assert.isArray(
                 this.view.get('selection'),
@@ -747,8 +757,8 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         "Should not add the same content twice": function () {
             var content = this._getMockStruct(1);
 
-            this.view.fire('confirmSelectedContent', {selection: content});
-            this.view.fire('confirmSelectedContent', {selection: content});
+            this.selectedView.fire('confirmSelectedContent', {selection: content});
+            this.selectedView.fire('confirmSelectedContent', {selection: content});
 
             Assert.isArray(
                 this.view.get('selection'),
@@ -769,11 +779,19 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         name: "eZ Universal Discovery View confirm view test",
 
         setUp: function () {
+            var SelectedView = Y.Base.create('selectedView', Y.View, [], {
+                    startAnimation: function () {
+                        return false;
+                    }
+                });
             this.confirmedList = new Y.View();
             this.view = new Y.eZ.UniversalDiscoveryView({
                 multiple: true,
                 methods: [],
                 confirmedListView: this.confirmedList,
+            });
+            this.selectedView = new SelectedView({
+                bubbleTargets: this.view
             });
             this.view.render();
         },
@@ -781,14 +799,16 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         tearDown: function () {
             this.view.destroy();
             this.confirmedList.destroy();
+            this.selectedView.destroy();
             delete this.view;
             delete this.confirmedList;
+            delete this.selectedView;
         },
 
         "Should set the selection to the confirmed list": function () {
             var content = {};
 
-            this.view.fire('confirmSelectedContent', {selection: content});
+            this.selectedView.fire('confirmSelectedContent', {selection: content});
 
             Assert.areSame(
                 this.view.get('selection'), this.confirmedList.get('confirmedList'),
@@ -1003,6 +1023,65 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
     });
 
+    animatedSelectionTest = new Y.Test.Case({
+        name: "eZ Universal Discovery View animated selection test",
+
+        setUp: function () {
+            var SelectedView = Y.Base.create('selectedView', Y.View, [], {
+                    startAnimation: function () {
+                        return this.get('container').one('.animation');
+                    }
+                });
+            this.confirmedList = new Y.View();
+            this.view = new Y.eZ.UniversalDiscoveryView({
+                methods: [],
+                confirmedListView: this.confirmedList,
+            });
+            this.selectedView = new SelectedView({
+                bubbleTargets: this.view,
+                container: '.selected-container',
+            });
+            this.view.render();
+            this.selectedView.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.confirmedList.destroy();
+            this.selectedView.destroy();
+            delete this.view;
+            delete this.confirmedList;
+            delete this.selectedView;
+        },
+
+        _getMockStruct: function (contentId) {
+            var content = new Mock();
+
+            Mock.expect(content, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId,
+            });
+
+            return {
+                content: content,
+            };
+        },
+
+        "Should move the selectedView animate element": function () {
+            var animatedElt;
+
+            this.selectedView.fire('confirmSelectedContent', {selection: this._getMockStruct(1)});
+            animatedElt = this.selectedView.startAnimation();
+
+            Assert.areEqual(
+                this.confirmedList.get('container').getX(),
+                animatedElt.getX(),
+                "The animated element x coordinate should be the confirmed list container x coordinate"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(domEventTest);
@@ -1019,4 +1098,5 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     Y.Test.Runner.add(resetTest);
     Y.Test.Runner.add(defaultConfirmedListTest);
     Y.Test.Runner.add(multipleClassTest);
+    Y.Test.Runner.add(animatedSelectionTest);
 }, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'ez-universaldiscoveryview']});

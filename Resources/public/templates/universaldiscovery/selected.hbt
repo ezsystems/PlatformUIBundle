@@ -9,6 +9,7 @@
                 <button class="ez-ud-selected-confirm ez-button pure-button">Choose this content</button>
             </p>
             {{/if}}
+            <div class="ez-ud-selected-animation"></div>
         </div>
     </div>
 {{else}}

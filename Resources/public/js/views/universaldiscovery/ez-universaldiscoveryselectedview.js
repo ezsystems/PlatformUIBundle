@@ -69,6 +69,22 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
         },
 
         /**
+         * Starts the animation of the content selection. It also returns the
+         * node to animate.
+         *
+         * @method startAnimation
+         * @return {Y.Node|Null}
+         */
+        startAnimation: function () {
+            var node = this.get('container').one('.ez-ud-selected-animation');
+            if ( node ) {
+                node.addClass('is-animated');
+                return node;
+            }
+            return null;
+        },
+
+        /**
          * 'jsonifies' the model available under the identifier in the
          * `contentStruct` attribute
          *

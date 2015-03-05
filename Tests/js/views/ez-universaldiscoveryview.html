@@ -5,6 +5,9 @@
 </head>
 <body>
 
+<div class="selected-container">
+    <div class="animation"></div>
+</div>
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="universaldiscoveryview-ez-template">
@@ -49,7 +52,7 @@ method base view
         filter: loaderFilter,
         modules: {
             "ez-universaldiscoveryview": {
-                requires: ['ez-templatebasedview', 'ez-universaldiscoverymethodbaseview', 'ez-tabs', 'event-tap'],
+                requires: ['ez-templatebasedview', 'ez-universaldiscoverymethodbaseview', 'ez-tabs', 'event-tap', 'node-screen'],
                 fullpath: "../../../Resources/public/js/views/ez-universaldiscoveryview.js"
             },
             "ez-universaldiscoverymethodbaseview": {

@@ -112,6 +112,7 @@ system:
                         - 'ez-universaldiscoverybrowseview'
                         - 'ez-universaldiscoveryconfirmedlistview'
                         - 'event-tap'
+                        - 'node-screen'
                     path: %ez_platformui.public_dir%/js/views/ez-universaldiscoveryview.js
                 universaldiscoveryview-ez-template:
                     type: 'template'

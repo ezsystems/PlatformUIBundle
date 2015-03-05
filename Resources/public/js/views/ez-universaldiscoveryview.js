@@ -45,7 +45,10 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                 }
             });
             this.after('*:confirmSelectedContent', function (e) {
-                this._storeSelection(e.selection);
+                if ( !this._isAlreadySelected(e.selection) ) {
+                    this._uiAnimateSelection(e.target);
+                    this._storeSelection(e.selection);
+                }
             });
             this.after('selectionChange', function () {
                 this._uiSetConfirmButtonState();
@@ -88,24 +91,34 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         /**
-         * Add a content to the selection if it's not already part of this
-         * selection.
+         * Checks whether the content is already selected
+         *
+         * @method _isAlreadySelected
+         * @protected
+         * @param {Object} contentStruct
+         * @return {Boolean}
+         */
+        _isAlreadySelected: function (contentStruct) {
+            if ( !this.get('selection') ) {
+                return false;
+            }
+            return !!Y.Array.find(this.get('selection'), function (struct) {
+                return struct.content.get('id') === contentStruct.content.get('id');
+            });
+        },
+
+        /**
+         * Add a content to the selection
          *
          * @method _addToSelection
          * @protected
          * @param {Object} contentStruct
          */
         _addToSelection: function (contentStruct) {
-            var sel = this.get('selection') || [],
-                found;
+            var sel = this.get('selection') || [];
 
-            found = Y.Array.find(sel, function (struct) {
-                return struct.content.get('id') === contentStruct.content.get('id');
-            });
-            if ( !found ) {
-                sel.push(contentStruct);
-                this._set('selection', sel);
-            }
+            sel.push(contentStruct);
+            this._set('selection', sel);
         },
 
         /**
@@ -116,6 +129,27 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
          */
         _resetSelection: function () {
             this._set('selection', null);
+        },
+
+        /**
+         * Animates the selection done by the user with the given view. An
+         * animation is done only if the source view properly implements the
+         * `startAnimation` (see {{#crossLink
+         * "eZ.UniversalDiscoverySelectedView"}}Y.eZ.UniversalDiscoverySelectedView{{/crossLink}})
+         *
+         * @method _uiAnimateSelection
+         * @protected
+         * @param {Y.View} sourceView the view used by the user to select the
+         * content
+         */
+        _uiAnimateSelection: function (sourceView) {
+            var elt, confirmNode;
+
+            confirmNode = this.get('confirmedListView').get('container');
+            if ( sourceView.startAnimation && (elt = sourceView.startAnimation()) ) {
+                elt.setX(confirmNode.getX());
+                elt.setY(confirmNode.getY() + confirmNode.get('offsetHeight') - elt.get('offsetHeight'));
+            }
         },
 
         /**
