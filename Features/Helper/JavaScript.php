@@ -16,12 +16,18 @@ namespace EzSystems\PlatformUIBundle\Features\Helper;
 class JavaScript
 {
 
+    /**
+     * Fetches the contents of the PlatformUI Javascript helper library to add to the main PlatformUI context
+     */
     public static function getHelperJs( $js = "PlatformUI" )
     {
         $fileName = realpath( __DIR__ . '/../Lib' ) . '/' . $js . '.js';
         return file_get_contents( $fileName );
     }
 
+    /**
+     * Helper to generaton the Javascript functions arguments when calling them with PHP
+     */
     public static function generateFuncArgs()
     {
         $args = func_get_args();

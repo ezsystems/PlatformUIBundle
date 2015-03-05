@@ -9,7 +9,6 @@ namespace EzSystems\PlatformUIBundle\Features\DriverJS;
 /**
  * Implementation of Sahi Driver
  *
- * @author miguel
  */
 class Sahi implements DriverJSInterface
 {

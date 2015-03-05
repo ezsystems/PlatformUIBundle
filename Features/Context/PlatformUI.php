@@ -1,7 +1,9 @@
 <?php
 
 /**
- * File containing the main context class for PlatformUI.
+ * File containing the main context class for PlatformUI
+ * This flie contains the mapping of the BDD sentences to the functions that implement them
+ * Also contains the necessary initializations
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -75,43 +77,35 @@ class PlatformUI extends Context
     }
 
      /**
-     * @Given I click (on) the menu zone :zone
+     * @Given I click (on) the navigation zone :zone
      */
-    public function iClickMenuZone( $zone )
+    public function iClickNavigationZone( $zone )
     {
-        $this->clickMenuZone( $zone );
+        $this->clickNavigationZone( $zone );
     }
 
     /**
-     * @Given I over (on) the menu zone :zone
+     * @Given I over (on) the navigation zone :zone
      */
-    public function iOverMenuZone( $zone )
+    public function iOverNavigationZone( $zone )
     {
-        $this->overMenuZone( $zone );
+        $this->overNavigationZone( $zone );
     }
 
     /**
-     * @Given I click (on) the menu link :link
+     * @Given I click (on) the navigation item :subMenu
      */
-    public function iClickMenuLink( $link )
+    public function iClickNavigationItem( $subMenu )
     {
-        $this->clickMenuLink( $link );
-    }
-
-    /**
-     * @Given I click (on) the sub-menu option :subMenu
-     */
-    public function iClickSubMenuOption( $subMenu )
-    {
-        $this->clickSubMenuLink( $subMenu );
+        $this->clickNavigationItem( $subMenu );
     }
 
      /**
-     * @Given I click (on) the side menu option :sideMenuOption
+     * @Given I click (on) the actionbar action :sideMenuOption
      */
     public function iclickSideMenuOption( $sideMenuOption )
     {
-        $this->clickSideMenuLink( $sideMenuOption );
+        $this->clickActionBarAction( $sideMenuOption );
     }
 
     /**
@@ -128,14 +122,6 @@ class PlatformUI extends Context
     public function iClickContentTreePath( $path )
     {
         $this->clickContentTreeLink( $path );
-    }
-
-    /**
-     * @Given I upload the file :path
-     */
-    public function iUploadTheFile( $path )
-    {
-        $this->attachFilePrepare( $path, '#ez-field--file' );
     }
 
     /**
@@ -157,10 +143,11 @@ class PlatformUI extends Context
 
     /**
      * @Given I upload the image :path
+     * @Given I upload the file :path
      */
     public function iUploadTheImage( $path )
     {
-        $this->attachFilePrepare( $path, '#ez-field--image' );
+        $this->attachFilePrepare( $path, '.ez-binarybase-input-file' );
     }
 
     /**
@@ -185,7 +172,7 @@ class PlatformUI extends Context
      */
     public function contentExists( $contentName, $contentType )
     {
-        $contentId = $this->getThisContentId();
+        $contentId = $this->getLocationId();
         $content = $this->getContentManager()->loadContentWithLocationId( $contentId );
         $contentInfo = $content->contentInfo;
         $contentTypeName = $this->getContentManager()->getContentType( $content );
@@ -263,7 +250,7 @@ class PlatformUI extends Context
         {
             $found = false;
             $name = array_values( $element )[0];
-            $found = $this->checksElementsByText( $name, '.ez-selection-filter-item' );
+            $found = $this->checksElementByText( $name, '.ez-selection-filter-item' );
             Assertion::assertNotNull( $found, "Element: $name not found" );
         }
     }
@@ -275,14 +262,7 @@ class PlatformUI extends Context
     {
         $this->shouldBeLoggedIn = true;
 
-        $jsCode = <<<JSCODE
-        YUI().use('node', function(Y){
-            window.Y = Y;
-        });
-
-        var node = Y.one('.ez-loginform');
-        return (node == null);
-JSCODE;
+        $jsCode = "return (document.querySelector('.ez-loginform') === null);";
 
         $isLoggedIn = $this->evalJavascript( $jsCode, false );
         Assertion::assertTrue( $isLoggedIn, "Not logged in" );

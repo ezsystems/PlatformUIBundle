@@ -1,7 +1,7 @@
 <?php
 
 /**
- * File containing the Common Funtios context class for PlatformUI.
+ * File containing the Common Functions for context class PlatformUI.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
@@ -38,7 +38,7 @@ trait CommonActions
     protected function activateJsErrorHandler()
     {
         //Needs to be here
-       // $this->execJavascript( '' );
+        //$this->execJavascript( '' );
         $jsCode = "return BDD.errorHandlerActivate();";
         $this->execJavascript( $jsCode );
     }
@@ -46,8 +46,8 @@ trait CommonActions
     /**
      * Evaluate javascript code and return result.
      *
-     * @param  string  $jsCode
-     * @return mixed
+     * @param   string  $jsCode
+     * @return  mixed
      */
     protected function evalJavascript( $jsCode, $addJsHelper = true )
     {
@@ -63,8 +63,8 @@ trait CommonActions
     /**
      * Execute javascript code and return result.
      *
-     * @param  string  $jsCode
-     * @return mixed
+     * @param   string  $jsCode
+     * @return  mixed
      */
     protected function execJavascript( $jsCode, $addJsHelper = true )
     {
@@ -81,11 +81,11 @@ trait CommonActions
     /**
      * Clicks on the PlatformUI logo
      *
-     * @param string $text
+     * @param   string  $text
      */
     protected function clickLogo()
     {
-        $selector = 'img[alt="Logo eZ"]';
+        $selector = '.ez-logo a';
         $jsArg = JsHelper::generateFuncArgs( $selector );
         $jsCode = "return BDD.clickElement( $jsArg );";
         $this->execJavascript( $jsCode );
@@ -94,29 +94,29 @@ trait CommonActions
     /**
      * Clicks on a PlatformUI tab
      *
-     * @param string $text
+     * @param   string  $text
      */
     protected function clickTab( $text )
     {
-        $this->clickElementsByText( $text, ".ez-tabs-label a[href]" );
+        $this->clickElementByText( $text, ".ez-tabs-label a[href]" );
     }
 
     /**
      * Click on a PlatformUI menu zone
      *
-     * @param string $text
+     * @param   string  $text
      */
-    protected function clickMenuZone( $text )
+    protected function clickNavigationZone( $text )
     {
-        $this->clickElementsByText( $text, ".ez-zone-name" );
+        $this->clickElementByText( $text, ".ez-zone-name" );
     }
 
     /**
      * Over on a PlatformUI menu zone
      *
-     * @param string $text
+     * @param   string  $text
      */
-    protected function overMenuZone( $text )
+    protected function overNavigationZone( $text )
     {
         $selector = ".ez-zone-name";
         $jsArgs = JsHelper::generateFuncArgs( $text, $selector );
@@ -125,49 +125,41 @@ trait CommonActions
     }
 
     /**
-     * Click on a PlatformUI menu link
+     * Click on a PlatformUI sub-menu option
      *
-     * @param string $text
+     * @param   string  $text
      */
-    protected function clickMenuLink( $text )
+    protected function clickNavigationItem( $text )
     {
-        $this->clickElementsByText( $text, '.ez-link a[href]' );
+        $this->clickElementByText( $text, '.ez-navigation-item' );
     }
 
     /**
-     * click on a PlatformUI sub-menu option
+     * Click on a PlatformUI side menu option
      *
-     * @param string $text
+     * @param   string  $text
      */
-    protected function clickSubMenuLink( $text )
+    protected function clickActionBarAction( $text )
     {
-        $this->clickElementsByText( $text, '.ez-navigation-item' );
+        $this->clickElementByText( $text, '.ez-action' );
     }
 
     /**
-     * click on a PlatformUI side menu option
+     * Click on a PlatformUI side menu content type
      *
-     * @param string $text
-     */
-    protected function clickSideMenuLink( $text )
-    {
-        $this->clickElementsByText( $text, '.ez-action p.action-label' );
-    }
-
-    /**
-     * click on a PlatformUI side menu content type
-     *
-     * @param string $text
+     * @param   string  $text
      */
     protected function clickContentType( $text )
     {
-        $this->clickElementsByText( $text, '.ez-selection-filter-item' );
+        $this->clickElementByText( $text, '.ez-contenttypeselector-types .ez-selection-filter-item ' );
     }
 
     /**
-     * Verifies the visibility of an html element
+     * Verifies the visibility of an HTML element
      *
-     * @param   string  $text
+     * @param   string  $text       Text value of the element
+     * @param   string  $selector   CSS selector of the element
+     * @return  boolean
      */
     protected function isElementVisible( $text, $selector )
     {
@@ -181,8 +173,8 @@ trait CommonActions
     /**
      * Fills a sub form with values
      *
-     * @param   string    $text
-     * @param   array     $values
+     * @param   string    $text     Sub form label text
+     * @param   array     $values   Values to fill in the sub form
      */
     protected function fillSubFormList( $text, $values )
     {
@@ -198,9 +190,10 @@ trait CommonActions
     /**
      * Finds an HTML element by class and the text value and clicks it
      *
-     * @param string $name
+     * @param   string  $text       Text value of the element
+     * @param   string  $selector   CSS selector of the element  
      */
-    protected function clickElementsByText( $text, $selector )
+    protected function clickElementByText( $text, $selector )
     {
         $jsArgs = JsHelper::generateFuncArgs( $text, $selector );
         $jsCode = "return BDD.clickElementByText( $jsArgs );";
@@ -210,9 +203,11 @@ trait CommonActions
     /**
      * Finds an HTML element by class and the text value and returns it
      *
-     * @param string $name
+     * @param   string  $text       Text value of the element
+     * @param   string  $selector   CSS selector of the element
+     * @return  array 
      */
-    protected function checksElementsByText( $text, $selector )
+    protected function checksElementByText( $text, $selector )
     {
         $jsArgs = JsHelper::generateFuncArgs( $text, $selector );
         $jsCode = "return BDD.getElementByText( $jsArgs );";
@@ -222,7 +217,9 @@ trait CommonActions
     /**
      * Finds an HTML element by class and the text value and return the value of the sibling
      *
-     * @param string $name
+     * @param   string  $text       Text value of the element
+     * @param   string  $selector   CSS selector of the element
+     * @return  array
      */
     protected function checksElementSiblingValue( $text, $selector )
     {
@@ -232,9 +229,10 @@ trait CommonActions
     }
 
     /**
-     * Finds an HTML element by class and the text value and clicks/hovers it
+     * Explores the content tree, expanding it and click on the desired element
      *
-     * @param string $name
+     * @param   string  $dir    The content tree path such as 'Content1/Content2/ContentIWantToClick'
+     * @param   int     $index  Path current depth index such as '0 => Content1 2=> Content2'
      */
     protected function clickContentTreeLink( $dir, $index = 0, $rootSelectorId = '' )
     {
@@ -257,8 +255,8 @@ trait CommonActions
     /**
      * Makes and element visible so a file can be attached to it
      *
-     * @param string $path      file path relative to mink definitions
-     * @param string $selector  selector of the element do to make visible
+     * @param   string  $path      file path relative to mink definitions
+     * @param   string  $selector  selector of the element do to make visible
      */
     protected function attachFilePrepare( $path, $selector )
     {
@@ -266,93 +264,101 @@ trait CommonActions
         $jsCode = "return BDD.changeCssDisplay( $jsArgs );";
         $this->execJavascript( $jsCode );
 
-        $this->attachFile( $path );
+        $this->attachFile( $path, $selector );
     }
 
     /**
      * Attaches a file to a input field en HTML
      *
-     * @param string $path      file path relative to mink definitions
+     * @param   string  $file       file name relative to mink definitions
+     * @param   string $selector    CSS file upload element selector
      */
-    protected function attachFile( $path )
+    protected function attachFile( $fileName, $selector )
     {
         if ( $this->getMinkParameter( 'files_path' ) )
         {
-            $fullPath = rtrim( realpath( $this->getMinkParameter( 'files_path' ) ), DIRECTORY_SEPARATOR ).DIRECTORY_SEPARATOR.$path;
+            $fullPath = rtrim( realpath( $this->getMinkParameter( 'files_path' ) ), DIRECTORY_SEPARATOR ).DIRECTORY_SEPARATOR.$fileName;
 
             if ( is_file( $fullPath ) )
             {
-                $fileInput = 'input[type="file"]';
+                $fileInput = 'input[type="file"]' . $selector;
                 $field = $this->getSession()->getPage()->find( 'css', $fileInput );
 
                 if ( null === $field )
                 {
-                    throw new Exception( "File input is not found" );
+                    throw new Exception( "File input $$selector is not found" );
                 }
-            $field->attachFile( $fullPath );
+                $field->attachFile( $fullPath );
             }
         }
-        else throw new Exception( "File is not found at the given location" );
+        else
+        {
+            throw new Exception( "File $fileName is not found at the given location: $fullPath" );
+        }
     }
 
     /**
      * Drops a file to an HTML element with specific text
      *
-     * @param string $path      file path relative to mink definitions
-     * @param string $selector  selector of the element where to drop the file
+     * @param   string  $path      file path relative to mink definitions
+     * @param   string  $selector  selector of the element where to drop the file
      */
-    protected function dragAndDropFile( $path, $selector )
+    protected function dragAndDropFile( $fileName, $selector )
     {
         if ( $this->getMinkParameter( 'files_path' ) )
         {
-            $fullPath = rtrim( realpath( $this->getMinkParameter( 'files_path' ) ), DIRECTORY_SEPARATOR ).DIRECTORY_SEPARATOR.$path;
+            $fullPath = rtrim( realpath( $this->getMinkParameter( 'files_path' ) ), DIRECTORY_SEPARATOR ).DIRECTORY_SEPARATOR.$fileName;
 
             if ( is_file( $fullPath ) )
             {
-                $fileName = $path;
                 $finfo = finfo_open( FILEINFO_MIME_TYPE );
                 $fileType = finfo_file( $finfo, $fullPath );
                 $contents = file_get_contents( $fullPath );
                 $contentBase64 = base64_encode( $contents );
 
-                $jsArgs = JsHelper::generateFuncArgs( $fileName, $fileType, $contentBase64, $selector );
+                $jsArgs = JsHelper::generateFuncArgs( $file, $fileType, $contentBase64, $selector );
                 $jsCode = "return BDD.simulateDropEventWithFile( $jsArgs );";
                 $jsFile = $this->execJavascript( $jsCode );
             }
         }
-        else throw new Exception( "File is not found at the given location" );
+        else
+        {
+                throw new Exception( "File $fileName is not found at the given location: $fullPath" );
+        }
     }
 
     /**
-     * Finds an HTML element by class and the text value and return the value of the sibling
+     * Finds an Image element with a label
      *
-     * @param string $name
+     * @param   string  $imageLabel image label text
+     * @param   string  $selector   image css selector
      */
-    protected function checksImagePresent( $text, $selector )
+    protected function checksImagePresent( $imageLabel, $selector )
     {
-        $jsArgs = JsHelper::generateFuncArgs( $text, $selector );
+        $jsArgs = JsHelper::generateFuncArgs( $imageLabel, $selector );
         $jsCode = "return BDD.getImgSrc( $jsArgs );";
         return $this->evalJavascript( $jsCode );
     }
 
     /**
-     * Finds an HTML element by class and the text value and return the value of the sibling
+     * Finds an file URL link with a label
      *
-     * @param string $name
+     * @param   string  $fileLabel  file label text
+     * @param   string  $selector   file css selector 
      */
-    protected function getFileUrl( $text, $selector )
+    protected function getFileUrl( $fileLabel, $selector )
     {
-        $jsArgs = JsHelper::generateFuncArgs( $text, $selector );
+        $jsArgs = JsHelper::generateFuncArgs( $fileLabel, $selector );
         $jsCode = "return BDD.getLinkUrl( $jsArgs );";
         return $this->evalJavascript( $jsCode );
     }
 
     /**
-     * Get the current window Node Id
+     * Get the Location Id of the location on the display in the corrent browser window
      *
      * @return string
      */
-    protected function getThisContentId()
+    protected function getLocationId()
     {
         $jsCode = "return BDD.getWindowHash();";
         $hash = $this->evalJavascript( $jsCode );

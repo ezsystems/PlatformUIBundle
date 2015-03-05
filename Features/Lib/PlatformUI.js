@@ -1,4 +1,6 @@
 /*
+ * File containing all Javascript implentations for the PlatformUI BDD
+ *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
@@ -9,8 +11,7 @@
  *
  * @returns {PlatformUIHelper}
  */
-function PlatformUIHelper()
-{
+function PlatformUIHelper(){
     //YUI global object with node-event-simulate module
     var Y = YUI().use('node-event-simulate', 'stylesheet');
 
@@ -20,8 +21,7 @@ function PlatformUIHelper()
      * @param {HTML ELement / string} element/selector
      * @returns {Boolean}
      */
-    this.clickElement = function (element)
-    {
+    this.clickElement = function (element){
         // if using a selector, convert to Y element first
         if ( typeof( element ) == 'string' )
             element = Y.one( element );
@@ -41,8 +41,7 @@ function PlatformUIHelper()
      * @param {HTML ELement / string} element/selector
      * @returns {Boolean}
      */
-    this.mouseOverElement = function (element)
-    {
+    this.mouseOverElement = function (element){
         // if using a selector, convert to Y element first
         if ( typeof( element ) == 'string' )
             element = Y.one( element );
@@ -60,14 +59,12 @@ function PlatformUIHelper()
      * @param {string} text
      * @param {sting} selector
      */
-    this.getElementByText = function (text, selector)
-    {
+    this.getElementByText = function (text, selector){
         var rightElement = null;
         Y.all(selector).some(function (element) {
             var textContent = Y.DOM.getText( element.getDOMNode() ).trim();
             var textEquals = (textContent == text);
-            if ( textEquals )
-            {
+            if ( textEquals ){
                 rightElement = element;
                 return true;
             }
@@ -82,8 +79,7 @@ function PlatformUIHelper()
      * @param {string} text
      * @param {string} selector
      */
-    this.clickElementByText = function(text, selector)
-    {
+    this.clickElementByText = function(text, selector){
         this.clickElement(
                 this.getElementByText(text, selector)
                 );
@@ -108,8 +104,7 @@ function PlatformUIHelper()
      * @param {string} text
      * @param {string} selector
      */
-    this.checksElementSiblingValueByText = function(text, selector)
-    {
+    this.checksElementSiblingValueByText = function(text, selector){
         var siblingValue;
         var element = this.getElementByText(text, selector);
         element.siblings().each( function(e) {
@@ -125,8 +120,7 @@ function PlatformUIHelper()
      * @param {string} ancestorSelector
      * @param {string} childSelector
      */
-    this.getAncestorSpecificList = function(element, ancestorSelector, childSelector)
-    {
+    this.getAncestorSpecificList = function(element, ancestorSelector, childSelector){
         var elemList = element.ancestor(ancestorSelector).all(childSelector);
         return elemList;
     }
@@ -140,8 +134,7 @@ function PlatformUIHelper()
      * @param   {string}    ancestorSelector
      * @param   {string}    childSelector
      */
-    this.fillListPair = function(text, mainSelector, values, ancestorSelector, childSelector)
-    {
+    this.fillListPair = function(text, mainSelector, values, ancestorSelector, childSelector){
         for(j = 0; j < values.size; j++){
             this.fillSingle( text, mainSelector, values, ancestorSelector, childSelector);
         }
@@ -156,8 +149,7 @@ function PlatformUIHelper()
      * @param   {string}    ancestorSelector
      * @param   {string}    childSelector
      */
-    this.fillSinglePair = function(text, mainSelector, values, ancestorSelector, childSelector)
-    {
+    this.fillSinglePair = function(text, mainSelector, values, ancestorSelector, childSelector){
         var mainElement = this.getElementByText( text, mainSelector );
         var elemList = this.getAncestorSpecificList( mainElement, ancestorSelector, childSelector );
 
@@ -165,19 +157,16 @@ function PlatformUIHelper()
         elemList.some(function (e) {
 
             currentLabel = Y.DOM.getText( e.getDOMNode() ).trim();
-            if(currentLabel != '' && currentLabel != undefined )
-            {
+            if(currentLabel != '' && currentLabel != undefined ){
                 nextLabel = currentLabel;
-                for(i = 0; i < labelList.length; i++)
-                {
-                    if(currentLabel == labelList[i])
-                    return true;
+                for(i = 0; i < labelList.length; i++){
+                    if(currentLabel == labelList[i]){
+                        return true;
+                    }
                 }
             }
-            else
-            {
-                if(e.get('value') == '')
-                {
+            else{
+                if(e.get('value') == ''){
                     labelList.push( nextLabel );
                     e.set('value', values[nextLabel][0]);
 
@@ -198,11 +187,9 @@ function PlatformUIHelper()
      * @param   {string}    selector
      * @returns {boolean}
      */
-    this.checkVisibility = function( text, selector )
-    {
+    this.checkVisibility = function( text, selector ){
         var element = this.getElementByText( text, selector );
-        if( element == null)
-        {
+        if( element == null){
             return false;
         }
         element = element.getDOMNode();
@@ -211,7 +198,7 @@ function PlatformUIHelper()
 
         return visibility;
     }
-     /**
+    /**
      * Specific function used to open a content Tree path
      *
      * @param   {array}     path
@@ -219,8 +206,7 @@ function PlatformUIHelper()
      * @param   {string}    rootSelectorId
      * @returns {Number|Boolean}
      */
-    this.openTreePath = function (path, level, rootSelectorId)
-    {
+    this.openTreePath = function (path, level, rootSelectorId){
         var rootNode;
         if (rootSelectorId === '')
             rootNode = Y.one('.ez-platformui-app-body'); // FIXME
@@ -231,35 +217,30 @@ function PlatformUIHelper()
             return false;
 
         var result = false;
-        if (level < path.length - 1)
-        {
+        if (level < path.length - 1){
             var nodes = rootNode.all('.ez-tree-node');
 
-            nodes.some(function (elem)
-            {
+            nodes.some(function (elem){
                 leafNode = elem.one('.ez-tree-navigate');
-                if (leafNode.get('text') === path[level])
-                {
-                    if (!elem.hasClass('is-tree-node-open'))
-                    {
+                if (leafNode.get('text') === path[level]){
+                    if (!elem.hasClass('is-tree-node-open')){
                         this.clickElement(elem.one('.ez-tree-node-toggle'));
                         result = -1;
                     }
 
                     if (elem.hasClass('is-tree-node-loading'))
-                        result = -1;
+                result = -1;
 
-                    var newRoot = elem.one('ul.ez-tree-level');
-                    if (newRoot)
-                        result = newRoot.generateID();
+            var newRoot = elem.one('ul.ez-tree-level');
+            if (newRoot)
+                result = newRoot.generateID();
 
-                    return true;
+            return true;
                 }
             }, this);
             return result;
         }
-        else
-        {
+        else{
             leafNode = rootNode.one('.ez-tree-navigate');
             return this.clickElement(leafNode);
         }
@@ -273,8 +254,7 @@ function PlatformUIHelper()
      * @param {String} cotentBase64 contents of file in base 64
      * @param {String} selector     element selector
      */
-    this.simulateDropEventWithFile = function( fileName, fileType, contentBase64, selector )
-    {
+    this.simulateDropEventWithFile = function( fileName, fileType, contentBase64, selector ){
         jsFile = new Blob( [this.base64DecToArr( contentBase64 )], {type: fileType});
         jsFile.name = fileName;
         jsFile.lastModifiedDate = new Date();
@@ -293,8 +273,7 @@ function PlatformUIHelper()
      *
      * @param {String} selector     element selector
      */
-    this.changeCssDisplay = function( selector )
-    {
+    this.changeCssDisplay = function( selector ){
         Y.StyleSheet('NewStyle').set( selector, { display: 'inline' });
     }
 
@@ -303,18 +282,17 @@ function PlatformUIHelper()
      *
      * @returns {Boolean}
      */
-    this.isSomethingLoading = function()
-    {
+    this.isSomethingLoading = function(){
         var classList = [
-                    '.yui3-app-transitioning',
-                    '.is-app-loading',
-                    '.is-app-transitioning',
-                    // content tree
-                    '.ez-view-treeactionview.is-expanded:not(.is-tree-loaded)',
-                    '.is-tree-node-loading',
-                    // contenttype menu
-                    '.ez-view-createcontentactionview.is-expanded:not(.is-contenttypeselector-loaded)'
-                    ];
+            '.yui3-app-transitioning',
+        '.is-app-loading',
+        '.is-app-transitioning',
+        // content tree
+        '.ez-view-treeactionview.is-expanded:not(.is-tree-loaded)',
+        '.is-tree-node-loading',
+        // contenttype menu
+        '.ez-view-createcontentactionview.is-expanded:not(.is-contenttypeselector-loaded)'
+            ];
 
         var exists = Y.one( classList.join(',') );
         return exists !== null;
@@ -325,8 +303,7 @@ function PlatformUIHelper()
      *
      * @returns {String.hash|window.location.hash|ret.cfg.redirect_uri.hash|DOMString}
      */
-    this.getWindowHash = function()
-    {
+    this.getWindowHash = function(){
         return window.location.hash;
     }
 
@@ -365,6 +342,7 @@ function PlatformUIHelper()
     }
 
     /**
+     * Makes an alert pop up whenever there is a javascript error(used to alert webdriver about the error)
      */
     this.errorHandlerActivate = function()
     {
@@ -378,19 +356,18 @@ function PlatformUIHelper()
      * Mozzilla: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Base64_encoding_and_decoding
      * https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#Appendix.3A_Decode_a_Base64_string_to_Uint8Array_or_ArrayBuffer
      */
-    this.b64ToUint6 = function(nChr)
-    {
+    this.b64ToUint6 = function(nChr){
         return nChr > 64 && nChr < 91 ?
             nChr - 65
-          : nChr > 96 && nChr < 123 ?
+            : nChr > 96 && nChr < 123 ?
             nChr - 71
-          : nChr > 47 && nChr < 58 ?
+            : nChr > 47 && nChr < 58 ?
             nChr + 4
-          : nChr === 43 ?
+            : nChr === 43 ?
             62
-          : nChr === 47 ?
+            : nChr === 47 ?
             63
-          :
+            :
             0;
     }
 
@@ -398,24 +375,20 @@ function PlatformUIHelper()
      * Mozzilla: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Base64_encoding_and_decoding
      * https://developer.mozilla.org/en-US/docs/Web/API/WindowBase64/Base64_encoding_and_decoding#Appendix.3A_Decode_a_Base64_string_to_Uint8Array_or_ArrayBuffer
      */
-    this.base64DecToArr = function( sBase64, nBlocksSize )
-    {
+    this.base64DecToArr = function( sBase64, nBlocksSize ){
         var sB64Enc = sBase64.replace( /[^A-Za-z0-9\+\/]/g, "" ), nInLen = sB64Enc.length,
-        nOutLen = nBlocksSize ? Math.ceil( ( nInLen * 3 + 1 >> 2 ) / nBlocksSize ) * nBlocksSize : nInLen * 3 + 1 >> 2, taBytes = new Uint8Array( nOutLen );
-        for ( var nMod3, nMod4, nUint24 = 0, nOutIdx = 0, nInIdx = 0; nInIdx < nInLen; nInIdx++ )
-        {
+            nOutLen = nBlocksSize ? Math.ceil( ( nInLen * 3 + 1 >> 2 ) / nBlocksSize ) * nBlocksSize : nInLen * 3 + 1 >> 2, taBytes = new Uint8Array( nOutLen );
+        for ( var nMod3, nMod4, nUint24 = 0, nOutIdx = 0, nInIdx = 0; nInIdx < nInLen; nInIdx++ ){
             nMod4 = nInIdx & 3;
             nUint24 |= this.b64ToUint6( sB64Enc.charCodeAt( nInIdx ) ) << 18 - 6 * nMod4;
-            if ( nMod4 === 3 || nInLen - nInIdx === 1 )
-            {
-                for ( nMod3 = 0; nMod3 < 3 && nOutIdx < nOutLen; nMod3++, nOutIdx++ )
-                {
+            if ( nMod4 === 3 || nInLen - nInIdx === 1 ){
+                for ( nMod3 = 0; nMod3 < 3 && nOutIdx < nOutLen; nMod3++, nOutIdx++ ){
                     taBytes[nOutIdx] = nUint24 >>> ( 16 >>> nMod3 & 24 ) & 255;
                 }
                 nUint24 = 0;
             }
         } 
-    return taBytes;
+        return taBytes;
     }
 }
 

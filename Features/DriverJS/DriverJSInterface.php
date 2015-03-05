@@ -6,10 +6,9 @@
  * @version //autogentag//
  */
 namespace EzSystems\PlatformUIBundle\Features\DriverJS;
+
 /**
  * Bridge for implenting diferences between webDrivers
- *
- * @author miguel
  */
 interface DriverJSInterface
 {
