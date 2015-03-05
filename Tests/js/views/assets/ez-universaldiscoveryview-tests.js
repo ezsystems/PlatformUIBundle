@@ -7,6 +7,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         tabTest, defaultMethodsTest, selectContentTest, confirmButtonStateTest,
         updateTitleTest, confirmSelectedContentTest, resetTest, selectionUpdateConfirmViewTest,
         defaultConfirmedListTest, multipleClassTest, animatedSelectionTest,
+        selectedViewButtonStateTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -1082,6 +1083,70 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
     });
 
+    selectedViewButtonStateTest = new Y.Test.Case({
+        name: "eZ Universal Discovery View selected view button state test",
+
+        setUp: function () {
+            var SelectedView = Y.Base.create('universalDiscoverySelectedView', Y.View, [], {});
+
+            this.confirmedList = new Y.View();
+            this.view = new Y.eZ.UniversalDiscoveryView({
+                methods: [],
+                confirmedListView: this.confirmedList,
+            });
+            this.selectedView = new SelectedView({
+                bubbleTargets: this.view,
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.confirmedList.destroy();
+            this.selectedView.destroy();
+            delete this.view;
+            delete this.confirmedList;
+            delete this.selectedView;
+        },
+
+        _getMockStruct: function (contentId) {
+            var content = new Mock();
+
+            Mock.expect(content, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId,
+            });
+
+            return {
+                content: content,
+            };
+        },
+
+        "Should enable the button of the selected view": function () {
+            var content = this._getMockStruct(1);
+
+            this.view._set('selection', [content]);
+            this.selectedView.set('contentStruct', content);
+
+            Assert.isFalse(
+                this.selectedView.get('confirmButtonEnabled'),
+                "The confirm button should have been disabled"
+            );
+        },
+
+        "Should disable the button of the selected view": function () {
+            var content = this._getMockStruct(1);
+
+            this.selectedView.set('contentStruct', content);
+
+            Assert.isTrue(
+                this.selectedView.get('confirmButtonEnabled'),
+                "The confirm button should be enabled"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(domEventTest);
@@ -1099,4 +1164,5 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     Y.Test.Runner.add(defaultConfirmedListTest);
     Y.Test.Runner.add(multipleClassTest);
     Y.Test.Runner.add(animatedSelectionTest);
+    Y.Test.Runner.add(selectedViewButtonStateTest);
 }, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'ez-universaldiscoveryview']});

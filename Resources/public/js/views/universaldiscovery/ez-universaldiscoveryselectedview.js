@@ -31,18 +31,36 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
             this.after('contentStructChange', function (e) {
                 this.render();
             });
+            this.after('confirmButtonEnabledChange', this._uiButtonState);
         },
 
         /**
-         * tap event handler on the confirm button. It fires the
-         * `confirmSelectedContent` event meaning that the user wants the
-         * content to be added to his confirmed content list.
+         * `confirmButtonEnabledChange` event handler. It sets the confirm
+         * button state depending on the value of the `confirmButtonEnabled`
+         * attribute
+         *
+         * @method _uiButtonState
+         * @protected
+         */
+        _uiButtonState: function () {
+            if ( this.get('confirmButton') ) {
+                this.get('container').one('.ez-ud-selected-confirm').set(
+                    'disabled', !this.get('confirmButtonEnabled')
+                );
+            }
+        },
+
+        /**
+         * tap event handler on the confirm button. It disables the confirm
+         * button and  fires the `confirmSelectedContent` event meaning that the
+         * user wants the content to be added to his confirmed content list.
          *
          * @method _confirmSelected
          * @protected
          * @param {EventFacade} e
          */
         _confirmSelected: function (e) {
+            this.set('confirmButtonEnabled', false);
             /**
              * Fired when the user has confirmed that he wants the content to be
              * added in the confirmed list. This event will be fired/used only
@@ -64,6 +82,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
                 location: this._modelJson('location'),
                 contentType: this._modelJson('contentType'),
                 confirmButton: this.get('confirmButton'),
+                confirmButtonEnabled: this.get('confirmButtonEnabled'),
             }));
             return this;
         },
@@ -126,6 +145,18 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
              */
             confirmButton: {
                 value: false,
+            },
+
+            /**
+             * Flag indicating whether the confirm button should be enabled or
+             * not.
+             *
+             * @attribute confirmButtonEnabled
+             * @type {Boolean}
+             * @default true
+             */
+            confirmButtonEnabled: {
+                value: true,
             },
         }
     });

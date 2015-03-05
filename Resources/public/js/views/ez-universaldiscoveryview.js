@@ -50,6 +50,9 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     this._storeSelection(e.selection);
                 }
             });
+            this.after('universalDiscoverySelectedView:contentStructChange', function (e) {
+                e.target.set('confirmButtonEnabled', !this._isAlreadySelected(e.newVal));
+            });
             this.after('selectionChange', function () {
                 this._uiSetConfirmButtonState();
                 if ( this.get('multiple') ) {

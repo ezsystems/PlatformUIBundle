@@ -6,7 +6,7 @@
 
             {{#if confirmButton}}
             <p>
-                <button class="ez-ud-selected-confirm ez-button pure-button">Choose this content</button>
+                <button class="ez-ud-selected-confirm ez-button pure-button"{{#unless confirmButtonEnabled}} disabled="disabled"{{/unless}}>Choose this content</button>
             </p>
             {{/if}}
             <div class="ez-ud-selected-animation"></div>
