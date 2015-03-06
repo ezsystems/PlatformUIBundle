@@ -509,7 +509,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
              * The current selection of the discovery. This selection is
              * provided to the contentDiscovered event handler in the event
              * facade. Depending on the `multiple` flag and on the user action,
-             * the selection is either null or an object (`multiple` to
+             * the selection is either null or an object (`multiple` set to
              * false) or an array (`multiple` set to true)
              *
              * @attribute selection

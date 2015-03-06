@@ -109,7 +109,7 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
             /**
              * The current confirmed list. It's an array containing one or
              * several content structure (ie an object with a content, a
-             * location and a content type models or null.
+             * location and a content type models) or null.
              *
              * @attribute confirmedList
              * @type {Array|Null}
