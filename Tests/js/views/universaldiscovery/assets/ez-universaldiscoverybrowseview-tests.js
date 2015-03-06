@@ -114,10 +114,10 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
             Assert.isTrue(bubble, "The event should bubble to the browse view");
         },
 
-        "Should set the selectedView's confirmButton": function () {
+        "Should set the selectedView's addConfirmButton": function () {
             Assert.isFalse(
-                this.view.get('selectedView').get('confirmButton'),
-                "The selectedView's confirmButton flag should be false"
+                this.view.get('selectedView').get('addConfirmButton'),
+                "The selectedView's addConfirmButton flag should be false"
             );
         },
     });
@@ -331,7 +331,7 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
 
             Mock.expect(this.selectedView, {
                 method: 'set',
-                args: ['confirmButton', multipleValue],
+                args: ['addConfirmButton', multipleValue],
             });
             this.view.set('multiple', multipleValue);
             Mock.verify(this.selectedView);

@@ -60,13 +60,13 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
 
         /**
          * `multipleChange` event handler. It sets the selected view
-         * `confirmButton` flag according to the new `multiple` attribute value.
+         * `addConfirmButton` flag according to the new `multiple` attribute value.
          *
          * @method _setSelectedViewConfirmButton
          * @protected
          */
         _setSelectedViewConfirmButton: function () {
-            this.get('selectedView').set('confirmButton', this.get('multiple'));
+            this.get('selectedView').set('addConfirmButton', this.get('multiple'));
         },
 
         /**
@@ -167,7 +167,7 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
                 valueFn: function () {
                     return new Y.eZ.UniversalDiscoverySelectedView({
                         bubbleTargets: this,
-                        confirmButton: this.get('multiple'),
+                        addConfirmButton: this.get('multiple'),
                     });
                 },
             },

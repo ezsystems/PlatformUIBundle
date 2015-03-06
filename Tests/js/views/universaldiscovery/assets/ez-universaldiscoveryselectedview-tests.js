@@ -52,7 +52,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 content: content,
                 contentType: type,
             });
-            this.view.set('confirmButton', true);
+            this.view.set('addConfirmButton', true);
             this.view.template = function (variables) {
                 Assert.areSame(
                     tplLocation, variables.location,
@@ -67,8 +67,8 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                     "The toJSON result of the content type should be available in the template"
                 );
                 Assert.isTrue(
-                    variables.confirmButton,
-                    "The confirmButton flag should be available in the template"
+                    variables.addConfirmButton,
+                    "The addConfirmButton flag should be available in the template"
                 );
                 Assert.isTrue(
                     variables.confirmButtonEnabled,
@@ -129,7 +129,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 struct = {},
                 that = this;
 
-            this.view.set('confirmButton', true);
+            this.view.set('addConfirmButton', true);
             this.view.set('contentStruct', struct);
             this.view.render();
 
@@ -191,7 +191,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
         name: 'eZ Universal Discovery Selected confirm button state tests',
 
         setUp: function () {
-            this.view = new Y.eZ.UniversalDiscoverySelectedView({'confirmButton': true});
+            this.view = new Y.eZ.UniversalDiscoverySelectedView({'addConfirmButton': true});
             this.view.render();
         },
 
@@ -201,7 +201,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
         },
 
         "Should not try to update the state of the button": function () {
-            this.view.set('confirmButton', false);
+            this.view.set('addConfirmButton', false);
             this.view.set('confirmButtonEnabled', false);
 
             Assert.isFalse(

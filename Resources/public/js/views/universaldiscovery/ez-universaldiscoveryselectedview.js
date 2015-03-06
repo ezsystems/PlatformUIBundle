@@ -43,7 +43,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
          * @protected
          */
         _uiButtonState: function () {
-            if ( this.get('confirmButton') ) {
+            if ( this.get('addConfirmButton') ) {
                 this.get('container').one('.ez-ud-selected-confirm').set(
                     'disabled', !this.get('confirmButtonEnabled')
                 );
@@ -81,7 +81,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
                 content: this._modelJson('content'),
                 location: this._modelJson('location'),
                 contentType: this._modelJson('contentType'),
-                confirmButton: this.get('confirmButton'),
+                addConfirmButton: this.get('addConfirmButton'),
                 confirmButtonEnabled: this.get('confirmButtonEnabled'),
             }));
             return this;
@@ -137,13 +137,13 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
             },
 
             /**
-             * Flag indicating whether a confirm button is needed or not.
+             * Flag indicating whether a confirm button has to be added.
              *
-             * @attribute confirmButton
+             * @attribute addConfirmButton
              * @type {Boolean}
              * @default false
              */
-            confirmButton: {
+            addConfirmButton: {
                 value: false,
             },
 
