@@ -10,7 +10,7 @@
 ## Known issues:
 * Sahi web driver can't publish content;
 * Selenium web driver does not work with Firefox 35 and up, Firefox 34 recommended;
-* Running multiple scenarios impossible due to cookies issue with PlatformUI;
+* Currently it is not possible to run multiple scenarios in sequence (using the same browser instance), possible issue with cookies.
 
 ## How to run:
 * Selenium
