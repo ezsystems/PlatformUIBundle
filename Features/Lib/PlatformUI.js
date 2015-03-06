@@ -80,9 +80,12 @@ function PlatformUIHelper(){
      * @param {string} selector
      */
     this.clickElementByText = function(text, selector){
-        this.clickElement(
+        var success = this.clickElement(
                 this.getElementByText(text, selector)
                 );
+
+        if(!success)
+            throw new Error("Element: " + text + " not found");
     }
 
     /**
@@ -93,9 +96,12 @@ function PlatformUIHelper(){
      */
     this.mouseOverElementByText = function(text, selector)
     {
-        this.mouseOverElement(
+        var success = this.mouseOverElement(
                 this.getElementByText(text, selector)
                 );
+
+        if(!success)
+            throw new Error("Element: " + text + " not found");
     }
 
     /**
@@ -136,7 +142,7 @@ function PlatformUIHelper(){
      */
     this.fillListPair = function(text, mainSelector, values, ancestorSelector, childSelector){
         for(j = 0; j < values.size; j++){
-            this.fillSingle( text, mainSelector, values, ancestorSelector, childSelector);
+            this.fillSinglePair( text, mainSelector, values, ancestorSelector, childSelector);
         }
     }
 
@@ -347,7 +353,7 @@ function PlatformUIHelper(){
     this.errorHandlerActivate = function()
     {
         window.onerror = function (errorMsg, url, lineNumber) {
-            alert('Error: ' + errorMsg );
+            throw new Error('Error: ' + errorMsg );
         }
     }
 

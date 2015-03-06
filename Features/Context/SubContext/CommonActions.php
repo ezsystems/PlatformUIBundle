@@ -179,8 +179,8 @@ trait CommonActions
     protected function fillSubFormList( $text, $values )
     {
         $mainSelector = ".ez-editfield-infos";
-        $ancestorSelector = ".ez-authors-input-container";
-        $childSelector = ".ez-validated-input, .ez-field-sublabel";
+        $ancestorSelector = ".ez-editfield-row";
+        $childSelector = "input, .ez-field-sublabel";
 
         $jsArgs = JsHelper::generateFuncArgs( $text, $mainSelector, $values, $ancestorSelector, $childSelector );
         $jsCode = "return BDD.fillListPair( $jsArgs )";
