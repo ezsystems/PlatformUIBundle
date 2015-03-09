@@ -34,6 +34,7 @@ services:
     ezsystems.platformui.subitems.controller:
         class: %ezsystems.platformui.controller.subitems.class%
         arguments:
+            - @ezpublish.api.service.location
             - @ezpublish.api.service.search
             - @ezpublish.api.service.content_type
         parent: ezpublish.controller.base

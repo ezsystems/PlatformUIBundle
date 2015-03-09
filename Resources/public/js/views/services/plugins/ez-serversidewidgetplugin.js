@@ -14,6 +14,10 @@ YUI.add('ez-serversidewidgetplugin', function (Y) {
                     this._loadServerResponse(e);
                 }
             });
+
+            this.onHostEvent('*:navigateTo', function (e) {
+                this.get('host').get('app').navigateTo(e.routeName, e.routeParams);
+            });
         },
 
         _loadServerResponse: function (e) {

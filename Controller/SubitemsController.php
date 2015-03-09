@@ -9,6 +9,7 @@
 namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Bundle\EzPublishCoreBundle\Controller;
+use eZ\Publish\API\Repository\LocationService;
 use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Values\Content\Query;
@@ -22,8 +23,23 @@ class SubitemsController extends Controller
      */
     private $searchService;
 
-    function __construct( SearchService $searchService, ContentTypeService $contentTypeService )
+    /**
+     * @var eZ\Publish\API\Repository\LocationService
+     */
+    private $locationService;
+
+    /**
+     * @var eZ\Publish\API\Repository\ContentTypeService
+     */
+    private $contentTypeService;
+
+    function __construct(
+        LocationService $locationService,
+        SearchService $searchService,
+        ContentTypeService $contentTypeService
+    )
     {
+        $this->locationService = $locationService;
         $this->searchService = $searchService;
         $this->contentTypeService = $contentTypeService;
     }
@@ -42,10 +58,21 @@ class SubitemsController extends Controller
 
         foreach ( $result->searchHits as $hit )
         {
+            $contentInfo = $hit->valueObject->contentInfo;
             $contentsStruct[] = array(
                 'content' => $hit->valueObject,
                 'contentType' => $this->contentTypeService->loadContentType(
-                    $hit->valueObject->contentInfo->contentTypeId
+                    $contentInfo->contentTypeId
+                ),
+                'locationId' => $this->generateUrl(
+                    'ezpublish_rest_loadLocation',
+                    array(
+                        'locationPath' => trim(
+                            $this->locationService->loadLocation(
+                                $contentInfo->mainLocationId
+                            )->pathString, '/'
+                        ),
+                    )
                 ),
             );
         }
