@@ -10,7 +10,7 @@ YUI.add('ez-serversidewidgetplugin', function (Y) {
     Y.eZ.Plugin.ServerSideWidget = Y.Base.create('serverSideWidgetPlugin', Y.eZ.Plugin.ViewServiceBase, [], {
         initializer: function () {
             this.onHostEvent('*:activeChange', function (e) {
-                if ( e.target.getServerSideParameters ) {
+                if ( e.newVal && e.target.getServerSideParameters ) {
                     this._loadServerResponse(e);
                 }
             });
