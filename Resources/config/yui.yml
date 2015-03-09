@@ -67,6 +67,7 @@ system:
                         - 'ez-objectrelationlistloadplugin'
                         - 'ez-imagevariationloadplugin'
                         - 'ez-contentcreateplugin'
+                        - 'ez-serversidewidgetplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
                     requires: ['ez-viewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras']
@@ -99,7 +100,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/dashboard.hbt
                 ez-locationviewview:
-                    requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'ez-tabs', 'event-tap', 'array-extras', 'locationviewview-ez-template']
+                    requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'ez-subitemsview', 'ez-tabs', 'event-tap', 'array-extras', 'locationviewview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-locationviewview.js
                 locationviewview-ez-template:
                     type: 'template'
@@ -526,6 +527,12 @@ system:
                 tree-ez-partial:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/partials/tree.hbt
+                ez-serversidewidgetview:
+                    requires: ['ez-serversideview']
+                    path: %ez_platformui.public_dir%/js/views/ez-serversidewidgetview.js
+                ez-subitemsview:
+                    requires: ['ez-serversidewidgetview']
+                    path: %ez_platformui.public_dir%/js/views/ez-subitemsview.js
                 ez-serversideview:
                     requires: ['ez-view', 'ez-tabs', 'ez-selection-table', 'event-tap']
                     path: %ez_platformui.public_dir%/js/views/ez-serversideview.js
@@ -556,6 +563,9 @@ system:
                 ez-objectrelationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationloadplugin.js
+                ez-serversidewidgetplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-serversidewidgetplugin.js
                 ez-imagevariationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-imagevariationloadplugin.js
