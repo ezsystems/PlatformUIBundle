@@ -14,6 +14,7 @@ use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
+use eZ\Publish\API\Repository\Values\Content\Query\SortClause;
 use Symfony\Component\HttpFoundation\Request;
 
 class SubitemsController extends Controller
@@ -52,6 +53,9 @@ class SubitemsController extends Controller
         $query = new Query();
         $query->filter = new Criterion\ParentLocationId(
             $request->get( 'parentLocationId' )
+        );
+        $query->sortClauses = array(
+            new SortClause\DatePublished(),
         );
         $result = $this->searchService->findContent( $query );
         $contentsStruct = array();
