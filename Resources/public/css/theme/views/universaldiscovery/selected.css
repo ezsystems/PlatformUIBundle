@@ -8,3 +8,17 @@
     font-weight: bold;
     color: #ddd;
 }
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-animation {
+    background: #000;
+    opacity: 0.7;
+    -webkit-transition: top 0.2s, left 0.2s, -webkit-transform 0.3s;
+            transition: top 0.2s, left 0.2s, transform 0.3s;
+}
+
+.ez-view-universaldiscoveryselectedview .is-animated {
+    -webkit-transform: scale(0);
+            transform: scale(0);
+    -webkit-transform-origin: bottom left;
+            transform-origin: bottom left;
+}

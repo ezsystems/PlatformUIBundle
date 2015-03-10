@@ -1,0 +1,15 @@
+<div class="ez-ud-mini-display">
+    <h2 class="ez-ud-mini-display-title">Confirmed items:</h2>
+{{#if hasConfirmedList}}
+    <ul class="ez-ud-mini-display-list">
+    {{#each miniDisplayList}}
+        <li class="ez-ud-mini-display-item" title="{{ content.name }} ({{ contentType.names.[eng-GB] }})">{{ content.name }}</li>
+    {{/each}}
+    {{#if remainingCount}}
+        <li class="ez-ud-mini-display-item ez-ud-mini-display-remaining-count">+{{ remainingCount }} more</li>
+    {{/if}}
+    </ul>
+{{else}}
+    <p class="ez-ud-mini-display-empty">No confirmed content yet.</p>
+{{/if}}
+</div>

@@ -74,14 +74,15 @@ YUI.add('ez-universaldiscoverymethodbaseview', function (Y) {
             },
 
             /**
-             * Selection mode ('single' or 'multiple')
+             * Flag indicating whether the user is able to select several
+             * contents.
              *
-             * @attribute selectionMode
-             * @type {String}
-             * @default 'single'
+             * @attribute multiple
+             * @type {Boolean}
+             * @default false
              */
-            selectionMode: {
-                value: 'single',
+            multiple: {
+                value: false,
             },
 
             /**

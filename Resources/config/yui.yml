@@ -110,11 +110,19 @@ system:
                         - 'ez-templatebasedview'
                         - 'universaldiscoveryview-ez-template'
                         - 'ez-universaldiscoverybrowseview'
+                        - 'ez-universaldiscoveryconfirmedlistview'
                         - 'event-tap'
+                        - 'node-screen'
                     path: %ez_platformui.public_dir%/js/views/ez-universaldiscoveryview.js
                 universaldiscoveryview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/universaldiscovery.hbt
+                ez-universaldiscoveryconfirmedlistview:
+                    requires: ['ez-templatebasedview', 'universaldiscoveryconfirmedlistview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryconfirmedlistview.js
+                universaldiscoveryconfirmedlistview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/universaldiscovery/confirmedlist.hbt
                 ez-universaldiscoverymethodbaseview:
                     requires: ['ez-templatebasedview']
                     path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverymethodbaseview.js
@@ -129,7 +137,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/universaldiscovery/browse.hbt
                 ez-universaldiscoveryselectedview:
-                    requires: ['ez-templatebasedview', 'universaldiscoveryselectedview-ez-template']
+                    requires: ['event-tap', 'ez-templatebasedview', 'universaldiscoveryselectedview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryselectedview.js
                 universaldiscoveryselectedview-ez-template:
                     type: 'template'

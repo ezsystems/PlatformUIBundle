@@ -1,0 +1,25 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-universaldiscoveryconfirmedlistview {
+    color: #444;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-title {
+    font-size: 100%;
+    font-weight: bold;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-empty {
+    font-style: italic;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-list {
+    list-style-type: none;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-remaining-count {
+    color: #555;
+}

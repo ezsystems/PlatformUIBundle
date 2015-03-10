@@ -2,19 +2,17 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>eZ Universal Discovery Selected view tests</title>
+<title>eZ Universal Discovery Confirmed List view tests</title>
 </head>
 <body>
 <div class="container"></div>
 
-<script type="text/x-handlebars-template" id="universaldiscoveryselectedview-ez-template">
+<script type="text/x-handlebars-template" id="universaldiscoveryconfirmedlistview-ez-template">
 template
-<div class="ez-ud-selected-animation"></div>
-<button class="ez-ud-selected-confirm">Confirm</button>
 </script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
-<script type="text/javascript" src="./assets/ez-universaldiscoveryselectedview-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-universaldiscoveryconfirmedlistview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -28,12 +26,12 @@ template
     }
 
     YUI({
-        coverage: ['ez-universaldiscoveryselectedview'],
+        coverage: ['ez-universaldiscoveryconfirmedlistview'],
         filter: loaderFilter,
         modules: {
-            "ez-universaldiscoveryselectedview": {
-                requires: ['ez-templatebasedview', 'event-tap'],
-                fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoveryselectedview.js"
+            "ez-universaldiscoveryconfirmedlistview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoveryconfirmedlistview.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
@@ -48,7 +46,7 @@ template
                 fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
         }
-    }).use('ez-universaldiscoveryselectedview-tests', function (Y) {
+    }).use('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>

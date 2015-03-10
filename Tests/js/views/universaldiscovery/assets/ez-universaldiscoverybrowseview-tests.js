@@ -4,6 +4,7 @@
  */
 YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
     var resetTest, defaultSubViewTest, treeNavigateTest, renderTest, unselectTest,
+        multipleUpdateTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     resetTest = new Y.Test.Case({
@@ -111,6 +112,13 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
             });
             this.view.get('selectedView').fire('whatever');
             Assert.isTrue(bubble, "The event should bubble to the browse view");
+        },
+
+        "Should set the selectedView's addConfirmButton": function () {
+            Assert.isFalse(
+                this.view.get('selectedView').get('addConfirmButton'),
+                "The selectedView's addConfirmButton flag should be false"
+            );
         },
     });
 
@@ -301,10 +309,40 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
         },
     });
 
+    multipleUpdateTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Browse multiple update test',
+
+        setUp: function () {
+            this.selectedView = new Mock();
+            this.view = new Y.eZ.UniversalDiscoveryBrowseView({
+                selectedView: this.selectedView,
+                treeView: {},
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+            delete this.selectedView;
+        },
+
+        "Should forward the multiple value to the selectedView": function () {
+            var multipleValue = true;
+
+            Mock.expect(this.selectedView, {
+                method: 'set',
+                args: ['addConfirmButton', multipleValue],
+            });
+            this.view.set('multiple', multipleValue);
+            Mock.verify(this.selectedView);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Browse View tests");
     Y.Test.Runner.add(resetTest);
     Y.Test.Runner.add(defaultSubViewTest);
     Y.Test.Runner.add(treeNavigateTest);
     Y.Test.Runner.add(unselectTest);
     Y.Test.Runner.add(renderTest);
+    Y.Test.Runner.add(multipleUpdateTest);
 }, '', {requires: ['test', 'view', 'ez-universaldiscoverybrowseview']});

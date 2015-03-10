@@ -2,7 +2,14 @@
     <div class="ez-ud-pane ez-ud-pane-selected">
         <h2 class="ez-ud-pane-title">Selected item</h2>
         <div class="ez-ud-pane-content">
-            <h3>{{ content.name }} ({{ contentType.names.[eng-GB] }})<h3>
+            <h3>{{ content.name }} ({{ contentType.names.[eng-GB] }})</h3>
+
+            {{#if addConfirmButton}}
+            <p>
+                <button class="ez-ud-selected-confirm ez-button pure-button"{{#unless confirmButtonEnabled}} disabled="disabled"{{/unless}}>Choose this content</button>
+            </p>
+            {{/if}}
+            <div class="ez-ud-selected-animation"></div>
         </div>
     </div>
 {{else}}

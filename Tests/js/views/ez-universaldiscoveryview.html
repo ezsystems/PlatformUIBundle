@@ -5,6 +5,9 @@
 </head>
 <body>
 
+<div class="selected-container">
+    <div class="animation"></div>
+</div>
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="universaldiscoveryview-ez-template">
@@ -20,6 +23,7 @@
 
 <a href="#" class="ez-universaldiscovery-cancel">Cancel</a>
 
+<div class="ez-universaldiscovery-confirmed-list-container"></div>
 <button class="ez-universaldiscovery-confirm" disabled="disabled">Confirm</button>
 </script>
 
@@ -48,7 +52,7 @@ method base view
         filter: loaderFilter,
         modules: {
             "ez-universaldiscoveryview": {
-                requires: ['ez-templatebasedview', 'ez-universaldiscoverymethodbaseview', 'ez-tabs', 'event-tap'],
+                requires: ['ez-templatebasedview', 'ez-universaldiscoverymethodbaseview', 'ez-tabs', 'event-tap', 'node-screen'],
                 fullpath: "../../../Resources/public/js/views/ez-universaldiscoveryview.js"
             },
             "ez-universaldiscoverymethodbaseview": {

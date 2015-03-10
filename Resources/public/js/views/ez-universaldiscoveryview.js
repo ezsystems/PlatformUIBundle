@@ -12,7 +12,8 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
     Y.namespace('eZ');
 
     var DISCOVERED = 'contentDiscovered',
-        CANCEL = 'cancelDiscover';
+        CANCEL = 'cancelDiscover',
+        MULTIPLE_SELECTION_CLASS = 'is-multiple-selection-mode';
 
     /**
      * The universal discovery view is a widget to allow the user to pick one or
@@ -36,12 +37,31 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
 
         initializer: function () {
             this.on('changeTab', this._updateVisibleMethod);
-            this.after('visibleMethodChange', this._setMethodsVisibleFlag);
-            this.after('*:selectContent', this._storeSelection);
-            this.after('selectionChange', this._uiSetConfirmButtonState);
+            this.after('multipleChange', this._uiMultipleMode);
+            this.after('visibleMethodChange', this._updateMethods);
+            this.after('*:selectContent', function (e) {
+                if ( !this.get('multiple') ) {
+                    this._storeSelection(e.selection);
+                }
+            });
+            this.after('*:confirmSelectedContent', function (e) {
+                if ( !this._isAlreadySelected(e.selection) ) {
+                    this._uiAnimateSelection(e.target);
+                    this._storeSelection(e.selection);
+                }
+            });
+            this.after('universalDiscoverySelectedView:contentStructChange', function (e) {
+                e.target.set('confirmButtonEnabled', !this._isAlreadySelected(e.newVal));
+            });
+            this.after('selectionChange', function () {
+                this._uiSetConfirmButtonState();
+                if ( this.get('multiple') ) {
+                    this.get('confirmedListView').set('confirmedList', this.get('selection'));
+                }
+            });
             this.after('activeChange', function () {
                 if ( this.get('active') ) {
-                    this._setMethodsVisibleFlag();
+                    this._updateMethods();
                     this._uiUpdateTab();
                     this._uiUpdateTitle();
                 }
@@ -53,15 +73,86 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         /**
-         * `selectContent` event handler. it stores the selection in the
-         * discovery view selection attribute
+         * Stores the given contentStruct in the selection. Depending on the
+         * `multiple` attribute value, the contentStruct is added to the
+         * selection or completely replaces it.
          *
          * @method _storeSelection
          * @protected
-         * @param {EventFacade} e
+         * @param {Object|Null} contentStruct
          */
-        _storeSelection: function (e) {
-            this._set('selection', e.selection);
+        _storeSelection: function (contentStruct) {
+            if ( contentStruct === null ) {
+                this._resetSelection();
+                return;
+            }
+            if ( this.get('multiple') ) {
+                this._addToSelection(contentStruct);
+            } else {
+                this._set('selection', contentStruct);
+            }
+        },
+
+        /**
+         * Checks whether the content is already selected
+         *
+         * @method _isAlreadySelected
+         * @protected
+         * @param {Object} contentStruct
+         * @return {Boolean}
+         */
+        _isAlreadySelected: function (contentStruct) {
+            if ( !this.get('selection') ) {
+                return false;
+            }
+            return !!Y.Array.find(this.get('selection'), function (struct) {
+                return struct.content.get('id') === contentStruct.content.get('id');
+            });
+        },
+
+        /**
+         * Add a content to the selection
+         *
+         * @method _addToSelection
+         * @protected
+         * @param {Object} contentStruct
+         */
+        _addToSelection: function (contentStruct) {
+            var sel = this.get('selection') || [];
+
+            sel.push(contentStruct);
+            this._set('selection', sel);
+        },
+
+        /**
+         * Resets the current selection
+         *
+         * @protected
+         * @method _resetSelection
+         */
+        _resetSelection: function () {
+            this._set('selection', null);
+        },
+
+        /**
+         * Animates the selection done by the user with the given view. An
+         * animation is done only if the source view properly implements the
+         * `startAnimation` (see {{#crossLink
+         * "eZ.UniversalDiscoverySelectedView"}}Y.eZ.UniversalDiscoverySelectedView{{/crossLink}})
+         *
+         * @method _uiAnimateSelection
+         * @protected
+         * @param {Y.View} sourceView the view used by the user to select the
+         * content
+         */
+        _uiAnimateSelection: function (sourceView) {
+            var elt, confirmNode;
+
+            confirmNode = this.get('confirmedListView').get('container');
+            if ( sourceView.startAnimation && (elt = sourceView.startAnimation()) ) {
+                elt.setX(confirmNode.getX());
+                elt.setY(confirmNode.getY() + confirmNode.get('offsetHeight') - elt.get('offsetHeight'));
+            }
         },
 
         /**
@@ -80,6 +171,23 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                 htmlId,
                 container
             );
+        },
+
+        /**
+         * Adds or removes the multiple selection class on the container
+         * depending on the `multiple` attribute value.
+         *
+         * @method _uiMultipleMode
+         * @protected
+         */
+        _uiMultipleMode: function () {
+            var container = this.get('container');
+
+            if ( this.get('multiple') ) {
+                container.addClass(MULTIPLE_SELECTION_CLASS);
+            } else {
+                container.removeClass(MULTIPLE_SELECTION_CLASS);
+            }
         },
 
         /**
@@ -107,13 +215,14 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         /**
-         * Updates the visible flag of the method views depending on the value
-         * of the `visibleMethod` attribute
+         * Updates the method views depending on the value so that their
+         * `visible` flag is consistent with the `visibleMethod` attribute value
+         * and so that they get the correct `multiple` flag value as well.
          *
-         * @method _setMethodsVisibleFlag
+         * @method _updateMethods
          * @protected
          */
-        _setMethodsVisibleFlag: function () {
+        _updateMethods: function () {
             var visibleMethod = this.get('visibleMethod');
 
             /**
@@ -127,7 +236,10 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             Y.Array.each(this.get('methods'), function (method) {
                 var visible = (visibleMethod === method.get('identifier'));
 
-                method.set('visible', visible);
+                method.setAttrs({
+                    'multiple': this.get('multiple'),
+                    'visible': visible
+                });
                 if ( visible ) {
                     this._visibleMethodView = method;
                 }
@@ -207,6 +319,21 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         /**
+         * Custom reset implementation to make sure to reset the confirmed list
+         * sub view.
+         *
+         * @method reset
+         * @param {String} name
+         */
+        reset: function (name) {
+            if ( name === 'confirmedListView' ) {
+                this.get('confirmedListView').reset();
+                return;
+            }
+            this.constructor.superclass.reset.apply(this, arguments);
+        },
+
+        /**
          * Tap event handler on the cancel link(s).
          *
          * @method _cancel
@@ -250,11 +377,17 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         render: function () {
-            this.get('container').setHTML(this.template({
+            var container = this.get('container');
+
+            this._uiMultipleMode();
+            container.setHTML(this.template({
                 title: this.get('title'),
-                selectionMode: this.get('selectionMode'),
+                multiple: this.get('multiple'),
                 methods: this._methodsList(),
             }));
+            container.one('.ez-universaldiscovery-confirmed-list-container').append(
+                this.get('confirmedListView').render().get('container')
+            );
             this._renderMethods();
             return this;
         },
@@ -308,14 +441,15 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             },
 
             /**
-             * The selection mode ('single' or 'multiple'
+             * Flag indicating whether the user is able to select several
+             * contents.
              *
-             * @attribute selectionMode
-             * @type {String}
-             * @default 'single'
+             * @attribute multiple
+             * @type {Boolean}
+             * @default false
              */
-            selectionMode: {
-                value: 'single'
+            multiple: {
+                value: false,
             },
 
             /**
@@ -354,7 +488,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                         new Y.eZ.UniversalDiscoveryBrowseView({
                             bubbleTargets: this,
                             priority: 100,
-                            selectionMode: this.get('selectionMode'),
+                            multiple: this.get('multiple'),
                         }),
                     ];
                 },
@@ -373,10 +507,10 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
 
             /**
              * The current selection of the discovery. This selection is
-             * providded to the contentDiscovered event handler in the event
-             * facade. Depending on the selectionMode and on the user action,
-             * the selection is either null or an object (selectionMode to
-             * 'single') or an array (selectionMode to 'multiple').
+             * provided to the contentDiscovered event handler in the event
+             * facade. Depending on the `multiple` flag and on the user action,
+             * the selection is either null or an object (`multiple` set to
+             * false) or an array (`multiple` set to true)
              *
              * @attribute selection
              * @type {Null|Object|Array}
@@ -386,6 +520,21 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             selection: {
                 value: null,
                 readOnly: true,
+            },
+
+            /**
+             * The confirmed list view. It displays the user's current confirmed
+             * list content.
+             *
+             * @attribute @confirmedListView
+             * @type {eZ.UniversalDiscoveryConfirmedListView}
+             */
+            confirmedListView: {
+                valueFn: function () {
+                    return new Y.eZ.UniversalDiscoveryConfirmedListView({
+                        bubbleTargets: this,
+                    });
+                }
             },
         }
     });

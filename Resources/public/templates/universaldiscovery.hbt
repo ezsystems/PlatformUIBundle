@@ -13,6 +13,9 @@
     </div>
 </section>
 <div class="ez-universaldiscovery-toolbar">
-    <a href="#" class="ez-universaldiscovery-cancel">Cancel</a>
-    <button class="ez-universaldiscovery-confirm ez-button pure-button" disabled="disabled">Confirm selection</button>
+    <div class="ez-universaldiscovery-confirmed-list-container"></div>
+    <div class="ez-universaldiscovery-actions">
+        <a href="#" class="ez-universaldiscovery-cancel">Cancel</a>
+        <button class="ez-universaldiscovery-confirm ez-button pure-button" disabled="disabled">Confirm selection</button>
+    </div>
 </div>

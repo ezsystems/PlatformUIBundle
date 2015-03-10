@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
-    var renderTest,
+    var renderTest, domEventTest, startAnimationTest, confirmButtonStateTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -52,6 +52,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 content: content,
                 contentType: type,
             });
+            this.view.set('addConfirmButton', true);
             this.view.template = function (variables) {
                 Assert.areSame(
                     tplLocation, variables.location,
@@ -64,6 +65,14 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 Assert.areSame(
                     tplType, variables.contentType,
                     "The toJSON result of the content type should be available in the template"
+                );
+                Assert.isTrue(
+                    variables.addConfirmButton,
+                    "The addConfirmButton flag should be available in the template"
+                );
+                Assert.isTrue(
+                    variables.confirmButtonEnabled,
+                    "The confirmButtonEnabled flag should be available in the template"
                 );
                 return origTpl.apply(this, arguments);
             };
@@ -103,6 +112,127 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
         },
     });
 
+    domEventTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Selected DOM event tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoverySelectedView({container: '.container'});
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should fire the confirmSelectedContent event": function () {
+            var container = this.view.get('container'),
+                struct = {},
+                that = this;
+
+            this.view.set('addConfirmButton', true);
+            this.view.set('contentStruct', struct);
+            this.view.render();
+
+            this.view.on('confirmSelectedContent', function (e) {
+                that.resume(function () {
+                    Assert.areSame(
+                        struct, e.selection,
+                        "The contentStruct being displayed should be available in the event facade"
+                    );
+
+                    Assert.isFalse(
+                        this.view.get('confirmButtonEnabled'),
+                        "The confirm button should be disabled"
+                    );
+                });
+            });
+            container.one('.ez-ud-selected-confirm').simulateGesture('tap');
+            this.wait();
+        },
+    });
+
+    startAnimationTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Selected startAnimation tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoverySelectedView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should return null if the animation element is not there": function () {
+            Assert.isNull(
+                this.view.startAnimation(),
+                "startAnimation should return null"
+            );
+        },
+
+        "Should return the animation element with the is-animated class": function () {
+            var elt;
+
+            this.view.render();
+            elt = this.view.startAnimation();
+            Assert.isInstanceOf(
+                Y.Node, elt,
+                "startAnimation should return a Y.Node"
+            );
+            Assert.isTrue(
+                elt.hasClass('is-animated'),
+                "startAnimation should add the is-animated class"
+            );
+        },
+
+    });
+
+    confirmButtonStateTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Selected confirm button state tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoverySelectedView({'addConfirmButton': true});
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should not try to update the state of the button": function () {
+            this.view.set('addConfirmButton', false);
+            this.view.set('confirmButtonEnabled', false);
+
+            Assert.isFalse(
+                this.view.get('container').one('.ez-ud-selected-confirm').get('disabled'),
+                "The button should not be disabled"
+            );
+        },
+
+        "Should disable the button": function () {
+            this["Should enable the button"]();
+            this.view.set('confirmButtonEnabled', false);
+
+            Assert.isTrue(
+                this.view.get('container').one('.ez-ud-selected-confirm').get('disabled'),
+                "The button should be disabled"
+            );
+        },
+
+        "Should enable the button": function () {
+            this.view.set('confirmButtonEnabled', true);
+
+            Assert.isFalse(
+                this.view.get('container').one('.ez-ud-selected-confirm').get('disabled'),
+                "The button should not be disabled"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Selected View tests");
     Y.Test.Runner.add(renderTest);
-}, '', {requires: ['test', 'ez-universaldiscoveryselectedview']});
+    Y.Test.Runner.add(domEventTest);
+    Y.Test.Runner.add(startAnimationTest);
+    Y.Test.Runner.add(confirmButtonStateTest);
+}, '', {requires: ['test', 'node-event-simulate', 'ez-universaldiscoveryselectedview']});
