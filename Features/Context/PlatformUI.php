@@ -76,7 +76,7 @@ class PlatformUI extends Context
         $this->clickTab( $tab );
     }
 
-     /**
+    /**
      * @Given I click (on) the navigation zone :zone
      */
     public function iClickNavigationZone( $zone )
@@ -100,12 +100,12 @@ class PlatformUI extends Context
         $this->clickNavigationItem( $subMenu );
     }
 
-     /**
-     * @Given I click (on) the actionbar action :sideMenuOption
+    /**
+     * @Given I click (on) the actionbar action :action
      */
-    public function iclickSideMenuOption( $sideMenuOption )
+    public function iclickActionBar( $action )
     {
-        $this->clickActionBarAction( $sideMenuOption );
+        $this->clickActionBarAction( $action );
     }
 
     /**
@@ -300,8 +300,18 @@ class PlatformUI extends Context
     {
         if ( $this->shouldBeLoggedIn )
         {
-           $this->iShouldBeLoggedIn();
+            $this->iShouldBeLoggedIn();
         }
+    }
+
+    /**
+     * Checks if the user is still logged in
+     *
+     * @AfterScenario
+     */
+    public function loggOutAfterScenario()
+    {
+        $this->iLogout();
     }
 
 }
