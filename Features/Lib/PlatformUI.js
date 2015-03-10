@@ -290,15 +290,15 @@ function PlatformUIHelper(){
      */
     this.isSomethingLoading = function(){
         var classList = [
-            '.yui3-app-transitioning',
+        '.yui3-app-transitioning',
         '.is-app-loading',
         '.is-app-transitioning',
         // content tree
-        '.ez-view-treeactionview.is-expanded:not(.is-tree-loaded)',
+        '.ez-view-treeactionview.is-expanded .ez-view-treeview:not(.is-tree-loaded)',
         '.is-tree-node-loading',
         // contenttype menu
         '.ez-view-createcontentactionview.is-expanded:not(.is-contenttypeselector-loaded)'
-            ];
+        ];
 
         var exists = Y.one( classList.join(',') );
         return exists !== null;
@@ -393,7 +393,7 @@ function PlatformUIHelper(){
                 }
                 nUint24 = 0;
             }
-        } 
+        }
         return taBytes;
     }
 }
