@@ -145,7 +145,7 @@ YUI.add('ez-contenttypeselectorview-tests', function (Y) {
 
                     Assert.isTrue(
                         that.groupsData.indexOf(g) !== -1,
-                        "The groups should be the resulf of the toJSON call"
+                        "The groups should be the result of the toJSON call"
                     );
                 });
                 return origTpl.apply(this, arguments);
@@ -209,7 +209,7 @@ YUI.add('ez-contenttypeselectorview-tests', function (Y) {
 
             container.one('.ez-contenttypeselector-group-checkbox[value="id/3"]').simulate('click');
             container.all('.ez-contenttypeselector-group-checkbox').each(function (checkbox) {
-                Assert.isFalse(checkbox.get('disabled'), "The chekboxes should be enabled");
+                Assert.isFalse(checkbox.get('disabled'), "The checkboxes should be enabled");
             });
         },
 
