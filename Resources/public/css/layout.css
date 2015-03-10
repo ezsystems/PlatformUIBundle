@@ -101,6 +101,7 @@
 .is-navigation-hidden .ez-navigation-container {
     max-height: 0;
     opacity: 0;
+    overflow: hidden;
 }
 
 .ez-navigation-container {
