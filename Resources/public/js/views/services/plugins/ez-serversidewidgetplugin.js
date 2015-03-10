@@ -30,7 +30,6 @@ YUI.add('ez-serversidewidgetplugin', function (Y) {
                 data: serverParameters.data,
                 on: {
                     success: function (tId, response) {
-                        console.log(response);
                         e.target.set('html', response.responseText);
                     },
                     failure: function () {
