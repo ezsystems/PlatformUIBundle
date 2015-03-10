@@ -91,7 +91,7 @@ Handlebars* issue with the same results.
 ## Automatic Handlebars to YUI module conversion
 
 The operation of wrapping the Handlebars template in a YUI module can be done
-automatically by adopting a strategry similar to what Assetic is doing to
+automatically by adopting a strategy similar to what Assetic is doing to
 optimize the CSS or the JavaScript files.
 
 1. On the disk, the templates are stored as plain Handlebars templates

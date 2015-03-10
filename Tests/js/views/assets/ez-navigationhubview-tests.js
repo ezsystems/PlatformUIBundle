@@ -150,7 +150,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         _testShowNavigationMenu: function (zoneNode, navigationIdentifier) {
             Y.Assert.isTrue(
                 zoneNode.hasClass("is-zone-active"),
-                "The choosen zone should be active"
+                "The chosen zone should be active"
             );
 
             this.view.get('container').one('.ez-navigation').get('children').each(function () {

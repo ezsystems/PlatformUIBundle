@@ -188,7 +188,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
             view.get('formView').fire('testEvent');
 
-            Y.assert(testEventReceived, "Should have recieved the 'testEvent' from child contentEditFormView");
+            Y.assert(testEventReceived, "Should have received the 'testEvent' from child contentEditFormView");
         },
 
         "Should receive events fired on it's child actionBar": function () {
@@ -209,7 +209,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
             view.get('actionBar').fire('testEvent');
 
-            Y.assert(testEventReceived, "Should have recieved the 'testEvent' from child editActionBarView");
+            Y.assert(testEventReceived, "Should have received the 'testEvent' from child editActionBarView");
         },
 
         "Should fire a closeView event when tapping 'close' link": function () {
