@@ -49,45 +49,47 @@ YUI.add('ez-contenttreeplugin', function (Y) {
         _loadNode: function (node, callback) {
             var capi = this.get('host').get('capi'),
                 options = {api: capi},
-                contentService = capi.getContentService();
+                contentService = capi.getContentService(),
+                viewStruct = contentService.newViewCreateStruct("children " + node.data.location.get('locationId'));
 
-            contentService.loadLocationChildren(node.id, function (err, response) {
-                var tasks = new Y.Parallel(),
+            viewStruct.body.ViewInput.Query.Criteria = {
+                'ParentLocationIdCriterion': node.data.location.get('locationId'),
+            };
+            // TODO  we should set the sort order from the content type
+            contentService.createView(viewStruct, function (err, response) {
+                var results = response.document.View.Result.searchHits.searchHit,
+                    tasks = new Y.Parallel(),
+                    children = {},
                     loadError = false,
-                    children = {};
+                    errCheck = function (err) {
+                        if ( err ) {
+                            loadError = true;
+                        }
+                    };
 
                 if ( err ) {
                     callback({node: node});
                     return;
                 }
-                Y.Array.each(response.document.LocationList.Location, function (loc) {
-                    var location, content, contentType,
-                        end = tasks.add(function (err) {
-                            if ( err ) {
-                                loadError = true;
-                                return;
-                            }
-                            children[location.get('id')] = {
-                                location: location,
-                                content: content,
-                                contentType: contentType,
-                            };
-                        });
+                Y.Array.each(results, function (hit) {
+                    var content = new Y.eZ.Content(),
+                        locationId = '';
 
-                    location = new Y.eZ.Location({id: loc._href});
-                    location.load(options, function (err) {
-                        if ( err ) {
-                            end(err);
-                        }
-                        content = new Y.eZ.Content({id: location.get('resources').Content});
-                        content.load(options, function (err) {
-                            if ( err ) {
-                                end(err);
-                            }
-                            contentType = new Y.eZ.ContentType({id: content.get('resources').ContentType});
-                            contentType.load(options, end);
-                        });
-                    });
+                    content.loadFromHash(hit.value.Content);
+                    // TODO: this might not be the correct location
+                    // but the location is needed only to get the number of sub
+                    // items to determine whether this is a leaf or not.
+                    locationId = content.get('resources').MainLocation;
+
+                    children[locationId] = {
+                        content: content,
+                        location: new Y.eZ.Location({id: locationId}),
+                        contentType: new Y.eZ.ContentType(
+                            {id: content.get('resources').ContentType}
+                        ),
+                    };
+                    children[locationId].location.load(options, tasks.add(errCheck));
+                    children[locationId].contentType.load(options, tasks.add(errCheck));
                 });
 
                 tasks.done(function () {
@@ -95,13 +97,13 @@ YUI.add('ez-contenttreeplugin', function (Y) {
                         callback({node: node});
                         return;
                     }
-                    Y.Array.each(response.document.LocationList.Location, function (key) {
+                    Y.Object.each(children, function (childStruct, key) {
                         node.append({
-                            data: children[key._href],
-                            id: key._href,
-                            canHaveChildren: children[key._href].contentType.get('isContainer'),
+                            data: childStruct,
+                            id: key,
+                            canHaveChildren: childStruct.contentType.get('isContainer'),
                             state: {
-                                leaf: (children[key._href].location.get('childCount') === 0),
+                                leaf: (childStruct.location.get('childCount') === 0),
                             },
                         });
                     });

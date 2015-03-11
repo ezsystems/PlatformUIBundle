@@ -39,13 +39,19 @@ YUI.add('ez-universaldiscoverycontenttreeplugin', function (Y) {
          * @param {eZ.UniversalDiscoveryBrowseView} browseView
          */
         _buildTree: function (browseView) {
-            var tree = this.get('tree');
+            var tree = this.get('tree'),
+                rootLocationId = '/api/ezp/v2/content/locations/1';
 
+            // TODO: this id and locationId should not be hardcoded, but auto
+            // detected somehow.
             tree.clear({
-                data: {},
-                // TODO: this location id should not be hardcoded, but auto
-                // detected somehow.
-                id: '/api/ezp/v2/content/locations/1',
+                data: {
+                    location: new Y.eZ.Location({
+                        id: rootLocationId,
+                        locationId: 1,
+                    }),
+                },
+                id: rootLocationId,
                 state: {
                     leaf: false,
                 },
