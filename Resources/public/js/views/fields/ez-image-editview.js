@@ -218,6 +218,7 @@ YUI.add('ez-image-editview', function (Y) {
          */
         _completeFieldValue: function (fieldValue) {
             fieldValue.alternativeText = this.get('alternativeText');
+            delete fieldValue.variations;
             return fieldValue;
         },
 

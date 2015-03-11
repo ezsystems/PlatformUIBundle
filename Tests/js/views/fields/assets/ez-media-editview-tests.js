@@ -334,6 +334,11 @@ YUI.add('ez-media-editview-tests', function (Y) {
             },
 
             _assertCorrectFieldValue: function (fieldValue, msg) {
+                Assert.areNotSame(
+                    this.view.get('field').fieldValue,
+                    fieldValue,
+                    "The original field value should be cloned"
+                );
                 Assert.areEqual(this.newValue.name, fieldValue.fileName, msg);
                 Assert.areEqual(this.newValue.size, fieldValue.fileSize, msg);
                 Assert.areEqual(this.newValue.data, fieldValue.data, msg);
