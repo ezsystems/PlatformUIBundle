@@ -13,11 +13,13 @@
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
 use EzSystems\BehatBundle\Context\Browser\Context;
+use EzSystems\PlatformUIBundle\Features\Helper\JavaScript as JsHelper;
 use Behat\Gherkin\Node\TableNode;
 use PHPUnit_Framework_Assert as Assertion;
 
 class PlatformUI extends Context
 {
+    use SubContext\Authentication;
     use SubContext\CommonActions;
 
     /**
@@ -26,119 +28,137 @@ class PlatformUI extends Context
      * @var string
      */
     private $platformUiUri;
-    protected $shouldBeLoggedIn;
+
+    /**
+     * WebDriver in use
+     * Only Sahi or Selenium2 accepted
+     *
+     * @var string
+     */
     protected $driver;
 
     /**
-     * @Given I go to homepage
+     * Evaluate javascript code and return result.
+     *
+     * @param   string  $jsCode
+     * @return  mixed
      */
-    public function goToPlatformUi()
+    protected function evalJavascript( $jsCode, $addJsHelper = true )
     {
-        $this->visit( $this->platformUiUri );
+        if ( $addJsHelper )
+        {
+            $jsCode = JsHelper::getHelperJs() . $jsCode;
+        }
+        $jsCode = $this->driver->wrappedFunction( $jsCode );
+
+        return $this->getSession()->evaluateScript( $jsCode );
     }
 
     /**
-     * @Given I go to PlatformUI app with username :user and password :password
+     * Execute javascript code and return result.
+     *
+     * @param   string  $jsCode
+     * @return  mixed
      */
-    public function goToPlatformUiAndLogIn( $username, $password )
+    protected function execJavascript( $jsCode, $addJsHelper = true )
     {
-        // Given I go to PlatformUI app
-        $this->goToPlatformUi();
-        //wait fos JS
+        if ( $addJsHelper )
+        {
+            $jsCode = JsHelper::getHelperJs() . $jsCode;
+        }
+
+        $jsCode = $this->driver->wrappedFunction( $jsCode );
+
+        return $this->getSession()->executeScript( $jsCode );
+    }
+
+    /**
+     * Waits for Javascript to finnish by running a empty Javascript
+     * (In Sahi it's possible to have the same result by running an empty javascript only)
+     */
+    protected function waitForLastJs()
+    {
+        //Needs to be here
+        $this->execJavascript( '' );
+
+        $jsCode = "return BDD.isSomethingLoading();";
+
+        while ( $this->evalJavascript( $jsCode ) )
+        {
+            usleep( 100 * 1000 ); // 100ms
+        }
+    }
+
+    /**
+     * Waits for Javascript to finnish by running a empty Javascript
+     * (In Sahi it's possible to have the same result by running an empty javascript only)
+     */
+    protected function activateJsErrorHandler()
+    {
+        //Needs to be here
+        //$this->execJavascript( '' );
+        $jsCode = "return BDD.errorHandlerActivate();";
+        $this->execJavascript( $jsCode );
+    }
+
+    /**
+     * @Given I create a content of content type :type with:
+     */
+    public function iCreateContentType( $type, TableNode $fields )
+    {
+        $this->clickNavigationZone( "Platform" );
         $this->waitForJs();
-        // And I fill in "Username" with "admin"
-        $this->fillFieldWithValue( 'Username', $username );
-        //And I fill in "Password" with "publish"
-        $this->fillFieldWithValue( 'Password', $password );
-        //And I click on the "Login" button
-        $this->iClickAtButton( 'Login' );
-        //wait fos JS
+        $this->iClickAtLink( "Content structure" );
         $this->waitForJs();
-        //Then I should be logged in
-        $this->iShouldBeLoggedIn();
-        //Catches Js errors
-        $this->activateJsErrorHandler();
+        $this->clickActionBar( "Create a content" );
+        $this->waitForJs();
+        $this->clickContentType( $type );
+        $this->waitForJs();
+        foreach ( $fields as $fieldArray )
+        {
+            $keys = array_keys( $fieldArray );
+            for ( $i = 0; $i < count( $keys ); $i++ )
+            {
+                $this->fillFieldWithValue( $keys[$i], $fieldArray[$keys[$i]] );
+            }
+        }
     }
 
     /**
-     * @Given I click (on) the logo
+     * @Then I see Content :contentName of type :contentType
      */
-    public function iClickLogo()
+    public function contentExists( $contentName, $contentType )
     {
-        $this->clickLogo();
-    }
-
-    /**
-     * @Given I click (on) the tab :tab
-     */
-    public function iClickTab( $tab )
-    {
-        $this->clickTab( $tab );
-    }
-
-    /**
-     * @Given I click (on) the navigation zone :zone
-     */
-    public function iClickNavigationZone( $zone )
-    {
-        $this->clickNavigationZone( $zone );
-    }
-
-    /**
-     * @Given I over (on) the navigation zone :zone
-     */
-    public function iOverNavigationZone( $zone )
-    {
-        $this->overNavigationZone( $zone );
-    }
-
-    /**
-     * @Given I click (on) the navigation item :subMenu
-     */
-    public function iClickNavigationItem( $subMenu )
-    {
-        $this->clickNavigationItem( $subMenu );
-    }
-
-    /**
-     * @Given I click (on) the actionbar action :action
-     */
-    public function iclickActionBar( $action )
-    {
-        $this->clickActionBarAction( $action );
-    }
-
-    /**
-     * @Given I click (on) the content type :contentType
-     */
-    public function iclickContentTypeOption( $contentType )
-    {
-        $this->clickContentType( $contentType );
-    }
-
-    /**
-     * @Given I click (on) the content tree with path :path
-     */
-    public function iClickContentTreePath( $path )
-    {
-        $this->clickContentTreeLink( $path );
+        $contentId = $this->getLocationId();
+        $content = $this->getContentManager()->loadContentWithLocationId( $contentId );
+        $contentInfo = $content->contentInfo;
+        $contentTypeName = $this->getContentManager()->getContentType( $content );
+        Assertion::assertEquals( $contentName, $contentInfo->name, "Content has wrong name" );
+        Assertion::assertEquals( $contentType, $contentTypeName, "Content has wrong type" );
     }
 
     /**
      * @Given I fill in :field subform with:
      */
-    public function iFillSubForm( $field, TableNode $values )
+    public function fillSubForm( $field, TableNode $values )
     {
-        $arrayValues = array();
+        $valuesInArray = array();
         foreach ( $values as $value )
         {
             foreach ( array_keys( $value ) as $key )
             {
-                $arrayValues[$key][] = $value[$key];
+                $valuesInArray[$key][] = $value[$key];
             }
         }
-        $arrayValues['size'] = count( array_keys( $arrayValues[$key] ) );
-        $this->fillSubFormList( $field, $arrayValues );
+        $valuesInArray['size'] = count( array_keys( $valuesInArray[$key] ) );
+
+        $mainSelector = ".ez-editfield-infos";
+        $ancestorSelector = "div[class$='editview']";
+        $childSelector = "input, .ez-field-sublabel";
+
+        $jsArgs = JsHelper::generateFuncArgs( $field, $mainSelector, $valuesInArray, $ancestorSelector, $childSelector );
+        $jsCode = "return BDD.fillListPair( $jsArgs )";
+        $this->execJavascript( $jsCode );
     }
 
     /**
@@ -156,28 +176,6 @@ class PlatformUI extends Context
     public function iDragAndDropFile( $path )
     {
         $this->dragAndDropFile( $path, 'ez-button-upload' );
-    }
-
-    /**
-     * @Given I logout
-     */
-    public function iLogout()
-    {
-        $this->shouldBeLoggedIn = false;
-        $this->iClickAtLink( "Logout" );
-    }
-
-    /**
-     * @Then I see Content :contentName of type :contentType
-     */
-    public function contentExists( $contentName, $contentType )
-    {
-        $contentId = $this->getLocationId();
-        $content = $this->getContentManager()->loadContentWithLocationId( $contentId );
-        $contentInfo = $content->contentInfo;
-        $contentTypeName = $this->getContentManager()->getContentType( $content );
-        Assertion::assertEquals( $contentName, $contentInfo->name, "Content has wrong name" );
-        Assertion::assertEquals( $contentType, $contentTypeName, "Content has wrong type" );
     }
 
     /**
@@ -256,16 +254,13 @@ class PlatformUI extends Context
     }
 
     /**
-     * @Then I should be logged in
+     * Runs a empty Javascript between step so that the next step is only executed when the previous Javascript finnished
+     *
+     * @AfterStep
      */
-    public function iShouldBeLoggedIn()
+    public function waitForJs()
     {
-        $this->shouldBeLoggedIn = true;
-
-        $jsCode = "return (document.querySelector('.ez-loginform') === null);";
-
-        $isLoggedIn = $this->evalJavascript( $jsCode, false );
-        Assertion::assertTrue( $isLoggedIn, "Not logged in" );
+        $this->waitForLastJs();
     }
 
     /**
@@ -282,36 +277,147 @@ class PlatformUI extends Context
     }
 
     /**
-     * Runs a empty Javascript between step so that the next step is only executed when the previous Javascript finnished
+     * Finds an HTML element by class and the text value and return the value of the sibling
      *
-     * @AfterStep
+     * @param   string  $text       Text value of the element
+     * @param   string  $selector   CSS selector of the element
+     * @return  array
      */
-    public function waitForJs()
+    protected function checksElementSiblingValue( $text, $selector )
     {
-        $this->waitForLastJs();
+        $jsArgs = JsHelper::generateFuncArgs( $text, $selector );
+        $jsCode = "return BDD.checksElementSiblingValueByText( $jsArgs );";
+        return $this->evalJavascript( $jsCode );
     }
 
     /**
-     * Checks if the user is still logged in
+     * Makes and element visible so a file can be attached to it
      *
-     * @AfterStep
+     * @param   string  $path      file path relative to mink definitions
+     * @param   string  $selector  selector of the element do to make visible
      */
-    public function runAfterStep()
+    protected function attachFilePrepare( $path, $selector )
     {
-        if ( $this->shouldBeLoggedIn )
+        $jsArgs = JsHelper::generateFuncArgs( $selector );
+        $jsCode = "return BDD.changeCssDisplay( $jsArgs );";
+        $this->execJavascript( $jsCode );
+
+        $this->attachFile( $path, $selector );
+    }
+
+    /**
+     * Attaches a file to a input field on the HTML
+     *
+     * @param   string  $file       file name relative to mink definitions
+     * @param   string $selector    CSS file upload element selector
+     */
+    protected function attachFile( $fileName, $selector )
+    {
+        if ( $this->getMinkParameter( 'files_path' ) )
         {
-            $this->iShouldBeLoggedIn();
+            $fullPath = rtrim( realpath( $this->getMinkParameter( 'files_path' ) ), DIRECTORY_SEPARATOR ).DIRECTORY_SEPARATOR.$fileName;
+
+            if ( is_file( $fullPath ) )
+            {
+                $fileInput = 'input[type="file"]' . $selector;
+                $field = $this->getSession()->getPage()->find( 'css', $fileInput );
+
+                if ( null === $field )
+                {
+                    throw new Exception( "File input $selector is not found" );
+                }
+                $field->attachFile( $fullPath );
+            }
+        }
+        else
+        {
+            throw new Exception( "File $fileName is not found at the given location: $fullPath" );
         }
     }
 
     /**
-     * Checks if the user is still logged in
+     * Drops a file to an HTML element with specific text
      *
-     * @AfterScenario
+     * @param   string  $path      file path relative to mink definitions
+     * @param   string  $selector  selector of the element where to drop the file
      */
-    public function loggOutAfterScenario()
+    protected function dragAndDropFile( $fileName, $selector )
     {
-        $this->iLogout();
+        if ( $this->getMinkParameter( 'files_path' ) )
+        {
+            $fullPath = rtrim( realpath( $this->getMinkParameter( 'files_path' ) ), DIRECTORY_SEPARATOR ).DIRECTORY_SEPARATOR.$fileName;
+
+            if ( is_file( $fullPath ) )
+            {
+                $finfo = finfo_open( FILEINFO_MIME_TYPE );
+                $fileType = finfo_file( $finfo, $fullPath );
+                $contents = file_get_contents( $fullPath );
+                $contentBase64 = base64_encode( $contents );
+
+                $jsArgs = JsHelper::generateFuncArgs( $file, $fileType, $contentBase64, $selector );
+                $jsCode = "return BDD.simulateDropEventWithFile( $jsArgs );";
+                $jsFile = $this->execJavascript( $jsCode );
+            }
+        }
+        else
+        {
+                throw new Exception( "File $fileName is not found at the given location: $fullPath" );
+        }
     }
 
+    /**
+     * Verifies the visibility of an HTML element
+     *
+     * @param   string  $text       Text value of the element
+     * @param   string  $selector   CSS selector of the element
+     * @return  boolean
+     */
+    protected function isElementVisible( $text, $selector )
+    {
+        $jsArgs = JsHelper::generateFuncArgs( $text, $selector );
+        $jsCode = "return BDD.checkVisibility( $jsArgs );";
+        $visibility = $this->evalJavascript( $jsCode );
+
+        return $visibility;
+    }
+
+    /**
+     * Finds an Image element with a label
+     *
+     * @param   string  $imageLabel image label text
+     * @param   string  $selector   image css selector
+     */
+    protected function checksImagePresent( $imageLabel, $selector )
+    {
+        $jsArgs = JsHelper::generateFuncArgs( $imageLabel, $selector );
+        $jsCode = "return BDD.getImgSrc( $jsArgs );";
+        return $this->evalJavascript( $jsCode );
+    }
+
+    /**
+     * Finds an file URL link with a label
+     *
+     * @param   string  $fileLabel  file label text
+     * @param   string  $selector   file css selector
+     */
+    protected function getFileUrl( $fileLabel, $selector )
+    {
+        $jsArgs = JsHelper::generateFuncArgs( $fileLabel, $selector );
+        $jsCode = "return BDD.getLinkUrl( $jsArgs );";
+        return $this->evalJavascript( $jsCode );
+    }
+
+    /**
+     * Get the Location Id of the location on the display in the corrent browser window
+     *
+     * @return string
+     */
+    protected function getLocationId()
+    {
+        $jsCode = "return BDD.getWindowHash();";
+        $hash = $this->evalJavascript( $jsCode );
+        $hash = explode( '/', $hash );
+        $lastElement = end( $hash );
+        return $lastElement;
+    }
 }
