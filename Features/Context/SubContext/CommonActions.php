@@ -45,6 +45,15 @@ trait CommonActions
     }
 
     /**
+     * @Given I click on the :button button number :index
+     * Click on a PlatformUI button
+     */
+    public function clickButtonWithIndex( $button, $index )
+    {
+        $this->clickElementByText( $button, "button", $index );
+    }
+
+    /**
      * @Given I over (on) the navigation zone :zone
      * Over on a PlatformUI menu zone
      */
@@ -114,9 +123,9 @@ trait CommonActions
     * @param string $text Text value of the element
     * @param string $selector CSS selector of the element
     */
-    protected function clickElementByText( $text, $selector )
+    protected function clickElementByText( $text, $selector, $index = 1 )
     {
-        $jsArgs = JsHelper::generateFuncArgs( $text, $selector );
+        $jsArgs = JsHelper::generateFuncArgs( $text, $selector, $index );
         $jsCode = "return BDD.clickElementByText( $jsArgs );";
         $this->execJavascript( $jsCode );
     }

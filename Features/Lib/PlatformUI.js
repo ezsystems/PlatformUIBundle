@@ -59,14 +59,20 @@ function PlatformUIHelper(){
      * @param {string} text
      * @param {sting} selector
      */
-    this.getElementByText = function (text, selector){
+    this.getElementByText = function (text, selector, index = 1){
         var rightElement = null;
+        var currentIndex = 1;
         Y.all(selector).some(function (element) {
             var textContent = Y.DOM.getText( element.getDOMNode() ).trim();
             var textEquals = (textContent == text);
             if ( textEquals ){
-                rightElement = element;
-                return true;
+                if( currentIndex == index ){
+                    rightElement = element;
+                    return true;
+                }
+                else{
+                currentIndex++;
+                }
             }
         }, this);
 
@@ -79,9 +85,9 @@ function PlatformUIHelper(){
      * @param {string} text
      * @param {string} selector
      */
-    this.clickElementByText = function(text, selector){
+    this.clickElementByText = function(text, selector, index = 1){
         var success = this.clickElement(
-                this.getElementByText(text, selector)
+                this.getElementByText(text, selector, index)
                 );
 
         if(!success)
