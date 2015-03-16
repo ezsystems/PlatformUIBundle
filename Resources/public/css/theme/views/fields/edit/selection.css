@@ -48,26 +48,6 @@
     padding-left: 0.5em;
 }
 
-.ez-view-selectioneditview .ez-selection-list {
-    background: #fff;
-    border: 1px solid #ccc;
-    border-top: 0;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-
-    box-sizing: border-box;
-    box-shadow: 4px 4px 5px 0 rgba(120, 120, 120, 0.75);
-
-    -webkit-transform: scaleY(1);
-            transform: scaleY(1);
-
-    -webkit-transform-origin: center top;
-            transform-origin: center top;
-
-    -webkit-transition: -webkit-transform 0.2s ease;
-            transition: transform 0.2s ease;
-}
-
 .ez-view-selectioneditview.is-top-list .ez-selection-list {
     border: 1px solid #ccc;
     border-bottom: 0;
@@ -84,12 +64,4 @@
     display: block;
     -webkit-transform: scaleY(0);
             transform: scaleY(0);
-}
-
-.ez-view-selectioneditview.is-list-hidden .ez-selection-values {
-    border: 1px solid #ccc;
-}
-
-.ez-view-selectioneditview.is-list-hidden.is-error .ez-selection-values {
-    border: 1px solid #BF3E33;
 }
