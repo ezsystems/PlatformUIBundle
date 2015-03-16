@@ -376,8 +376,9 @@ YUI.add('ez-selectionfilterview', function (Y) {
             this._set('selected', selected);
 
             if ( !selectedNode ) {
-                this._uiUnselectItem(this._getListNode(value));
-            } else {
+                selectedNode = this._getListNode(value);
+            }
+            if ( selectedNode ) {
                 this._uiUnselectItem(selectedNode);
             }
         },

@@ -490,6 +490,25 @@ YUI.add('ez-selectionfilterview-tests', function (Y) {
                 "The selection should be empty"
             );
         },
+
+        "unselect() when value is not in the filter options test": function () {
+            var sel = ['Loki', 'Iron Man', 'ultron'];
+
+            this.view.render();
+            Y.Array.each(sel, function (val) {
+                this.view.unselect(val);
+            }, this);
+
+            Y.Assert.areEqual(
+                0, this.view.get('selected'),
+                "The selection should be empty"
+            );
+
+            Y.Assert.areEqual(
+                0, this.view.get('listNode').all('.ez-selection-filter-item-selected').size(),
+                "The selection should be empty"
+            );
+        },
     });
 
     sourceValidationTest = new Y.Test.Case({
