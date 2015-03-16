@@ -17,7 +17,7 @@
             <td class="ez-table-data-id"><a href="{{ path( "admin_sectionview", {"sectionId": section.id} ) }}">{{ section.id }}</a></td>
             <td class="ez-table-data-count">{{ section.contentCount }}</td>
             <td>
-                <a href="#" class="pure-button ez-button{% if not section.canAssign %} pure-button-disabled{% endif %}" data-icon="&#xe619;">{{ 'section.assigned.to_subtree'|trans }}</a>
+                <a href="#" data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}" class="ez-section-assign-button pure-button ez-button{% if not section.canAssign %} pure-button-disabled{% endif %}" data-icon="&#xe619;">{{ 'section.assigned.to_subtree'|trans }}</a>
             </td>
             <td>
                 <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="pure-button ez-button{% if not section.canEdit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'section.edit'|trans }}</a>

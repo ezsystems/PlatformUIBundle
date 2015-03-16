@@ -22,6 +22,8 @@ system:
                         - 'ez-locationviewviewservice'
                         - 'ez-serversideview'
                         - 'ez-serversideviewservice'
+                        - 'ez-sectionserversideview'
+                        - 'ez-sectionserversideviewservice'
                         - 'ez-navigationhubviewservice'
                         - 'ez-navigationhubview'
                         - 'ez-discoverybarviewservice'
@@ -80,6 +82,9 @@ system:
                 ez-serversideviewservice:
                     requires: ['io-base', 'io-form', 'ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-serversideviewservice.js
+                ez-sectionserversideviewservice:
+                    requires: ['ez-serversideviewservice']
+                    path: %ez_platformui.public_dir%/js/views/services/ez-sectionserversideviewservice.js
                 ez-view:
                     requires: ['view', 'base-pluginhost', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/views/ez-view.js
@@ -537,6 +542,9 @@ system:
                 ez-serversideview:
                     requires: ['ez-view', 'ez-tabs', 'ez-selection-table', 'event-tap']
                     path: %ez_platformui.public_dir%/js/views/ez-serversideview.js
+                ez-sectionserversideview:
+                    requires: ['ez-serversideview', 'event-tap']
+                    path: %ez_platformui.public_dir%/js/views/serverside/ez-sectionserversideview.js
                 ez-texthelper:
                     requires: ['handlebars']
                     path: %ez_platformui.public_dir%/js/helpers/ez-texthelper.js

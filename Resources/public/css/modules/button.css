@@ -19,7 +19,3 @@
     width: 14em;
     white-space: normal;
 }
-
-.ez-button[data-icon]:before {
-    padding-right: 0.5em;
-}

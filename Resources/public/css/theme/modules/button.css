@@ -11,6 +11,10 @@
     background: linear-gradient(to bottom, #fff 0%, #e6e6e6 100%);
 }
 
+.ez-button:before {
+    margin-right: 0.5em;
+}
+
 .ez-button:hover {
     background: #fff;
     background: linear-gradient(to bottom, #e6e6e6 0%, #fff 100%);
@@ -23,12 +27,20 @@
 
 .ez-button-delete:before {
     content: "\E615";
-    padding-right: 0.5em;
 }
 
 .ez-button-upload:before {
     content: "\E61f";
-    padding-right: 0.5em;
+}
+
+.ez-button-tree:before {
+    content: "\E619";
+}
+
+.ez-button.is-loading:before {
+    content: "\E61C";
+    -webkit-animation: spin 0.5s infinite linear;
+            animation: spin 0.5s infinite linear;
 }
 
 .ez-button-height.ez-button-upload:before {

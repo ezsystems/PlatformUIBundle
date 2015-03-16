@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Section Server Side view tests</title>
+</head>
+<body>
+
+<div class="container">
+    <button class="ez-section-assign-button" data-universaldiscovery-title="UD title" data-section-rest-id="section-id">Assign</button>
+</div>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-sectionserversideview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-sectionserversideview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-sectionserversideview": {
+                requires: ['ez-serversideview', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/serverside/ez-sectionserversideview.js"
+            },
+            "ez-serversideview": {
+                requires: ['ez-view', 'ez-tabs', 'ez-selection-table', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/ez-serversideview.js"
+            },
+            "ez-tabs": {
+                requires: ['node'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-tabs.js"
+            },
+            "ez-selection-table": {
+                requires: ['node'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-selection-table.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-sectionserversideview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

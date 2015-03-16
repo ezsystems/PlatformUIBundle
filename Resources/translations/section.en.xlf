@@ -94,6 +94,10 @@
         <source>section.view.delete</source>
         <target>Delete this section</target>
       </trans-unit>
+      <trans-unit id="1bf9bdce5e87c98df324d43e717d9d85" resname="section.assign.universaldiscovery.title">
+        <source>section.assign.universaldiscovery.title</source>
+        <target>Pick a content to assign the section "%sectionName%" to its subtree(s)</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
