@@ -74,7 +74,7 @@ YUI.add('ez-selection-editview', function (Y) {
          */
         render: function () {
             this.get('container').addClass(IS_LIST_HIDDEN);
-            return this.constructor.superclass.render.apply(this);
+            return Y.eZ.FieldEditView.prototype.render.apply(this, arguments);
         },
 
         /**
@@ -85,28 +85,22 @@ YUI.add('ez-selection-editview', function (Y) {
          * @protected
          */
         _initSelectionFilter: function () {
-            var container = this.get('container'),
-                selected = this._getSelectedTextValues(),
-                input = container.one('.ez-selection-filter-input'),
-                source = this.get('fieldDefinition').fieldSettings.options;
+            var container = this.get('container');
 
-            this._selectionFilter = new Y.eZ.SelectionFilterView({
-                container: input.get('parentNode'),
-                inputNode: input,
-                listNode: this.get('container').one('.ez-selection-options'),
-                selected: selected,
-                source: source,
-                filter: (source.length > 5),
-                resultFilters: 'startsWith',
-                resultHighlighter: 'startsWith',
-                isMultiple: this.get('isMultiple'),
-            });
+            this._selectionFilter = this._getSelectionFilter();
 
             this._selectionFilter.on('select', Y.bind(function (e) {
-                this._addSelection(e.text);
+
                 if ( !this.get('isMultiple') ) {
                     this.set('showSelectionUI', false);
                 }
+
+                if ( Y.Object.keys(e.attributes).length === 1 ) {
+                    this._addSelection(e.attributes.text);
+                } else {
+                    this._addSelection(e.attributes);
+                }
+
             }, this));
 
             this._selectionFilter.on('unselect', Y.bind(function (e) {
@@ -122,6 +116,43 @@ YUI.add('ez-selection-editview', function (Y) {
                     }, this)
                 )
             );
+        },
+
+        /**
+         * Returns the selection filter
+         *
+         * @method _getSelectionFilter
+         * @protected
+         * @return Y.eZ.SelectionFilterView
+         */
+        _getSelectionFilter: function () {
+            var container = this.get('container'),
+                selected = this._getSelectedTextValues(),
+                input = container.one('.ez-selection-filter-input'),
+                source = this._getSource();
+
+            return new Y.eZ.SelectionFilterView({
+                container: input.get('parentNode'),
+                inputNode: input,
+                listNode: this.get('container').one('.ez-selection-options'),
+                selected: selected,
+                source: source,
+                filter: (source.length > 5),
+                resultFilters: 'startsWith',
+                resultHighlighter: 'startsWith',
+                isMultiple: this.get('isMultiple'),
+            });
+        },
+
+        /**
+         * Returns the selection source
+         *
+         * @method _getSource
+         * @protected
+         * @return {Array}
+         */
+        _getSource: function () {
+            return this.get('fieldDefinition').fieldSettings.options;
         },
 
         /**
@@ -156,7 +187,7 @@ YUI.add('ez-selection-editview', function (Y) {
          *
          * @method _addSelection
          * @protected
-         * @param {String} value
+         * @param {String|Object}  value
          */
         _addSelection: function (value) {
             var values = this.get('values');
@@ -177,8 +208,9 @@ YUI.add('ez-selection-editview', function (Y) {
             var values = this.get('values');
 
             values = Y.Array.reject(values, function (val) {
-                return (val === value);
+                return (typeof val === 'object' ? val.text === value : val === value);
             });
+
             this._selectionFilter.unselect(value);
             this._set('values', values, {
                 "removed": value,
@@ -195,9 +227,7 @@ YUI.add('ez-selection-editview', function (Y) {
          * @protected
          */
         _removeValue: function (e) {
-            var text = e.target.getContent();
-
-            this._removeSelection(text, e.target);
+            this._removeSelection(e.target.getAttribute('data-text'), e.target);
             this.validate();
         },
 
@@ -260,6 +290,7 @@ YUI.add('ez-selection-editview', function (Y) {
                 this._selectionFilter.resetFilter();
                 this._selectionFilter.focus();
             } else {
+                this._selectionFilter.resetFilter();
                 container.addClass(IS_LIST_HIDDEN);
             }
             this.validate();
@@ -278,8 +309,15 @@ YUI.add('ez-selection-editview', function (Y) {
                 node;
 
             if ( e.added ) {
-                node = Y.Node.create(this.VALUES_TPL).setContent(e.added);
-                node.setAttribute('data-text', e.added);
+                if ( typeof e.added === "object" ) {
+                    node = Y.Node.create(this.VALUES_TPL).setContent(e.added.text);
+                    Y.Object.each(e.added, function (value, key) {
+                        node.setAttribute('data-' + key, value);
+                    });
+                } else {
+                    node = Y.Node.create(this.VALUES_TPL).setContent(e.added);
+                    node.setAttribute('data-text', e.added);
+                }
                 selectionValues.append(node);
             } else if ( e.removed ) {
                 if ( e.node ) {

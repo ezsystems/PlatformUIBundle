@@ -19,3 +19,31 @@
     background: #528036;
     color: #fff;
 }
+
+.ez-selection-list {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-top: 0;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+
+    box-sizing: border-box;
+    box-shadow: 4px 4px 5px 0 rgba(120, 120, 120, 0.75);
+
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+
+    -webkit-transform-origin: center top;
+            transform-origin: center top;
+
+    -webkit-transition: -webkit-transform 0.2s ease;
+            transition: transform 0.2s ease;
+}
+
+.is-list-hidden .ez-selection-values {
+    border: 1px solid #ccc;
+}
+
+.is-list-hidden.is-error .ez-selection-values {
+    border: 1px solid #BF3E33;
+}

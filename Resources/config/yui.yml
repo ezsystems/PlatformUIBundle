@@ -215,6 +215,7 @@ system:
                         - 'ez-emailaddress-editview'
                         - 'ez-maplocation-editview'
                         - 'ez-url-editview'
+                        - 'ez-country-editview'
                         - 'ez-keyword-editview'
                         - 'ez-author-editview'
                         - 'ez-float-editview'
@@ -391,6 +392,12 @@ system:
                 urleditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/url.hbt
+                ez-country-editview:
+                    requires: ['ez-fieldeditview', 'ez-selection-editview', 'event-valuechange', 'countryeditview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-country-editview.js
+                countryeditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/country.hbt
                 ez-keyword-view:
                     requires: ['ez-fieldview', 'keywordview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-keyword-view.js
