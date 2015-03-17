@@ -83,7 +83,7 @@ system:
                     requires: ['io-base', 'io-form', 'ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-serversideviewservice.js
                 ez-sectionserversideviewservice:
-                    requires: ['ez-serversideviewservice']
+                    requires: ['ez-serversideviewservice', 'parallel']
                     path: %ez_platformui.public_dir%/js/views/services/ez-sectionserversideviewservice.js
                 ez-view:
                     requires: ['view', 'base-pluginhost', 'ez-pluginregistry']

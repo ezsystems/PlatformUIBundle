@@ -22,10 +22,6 @@
         <source>section.assigned.content</source>
         <target>Assigned contents</target>
       </trans-unit>
-      <trans-unit id="f11bc03b12fb7dfeaa73529f0154ed6f" resname="section.assigned.to_subtree">
-        <source>section.assigned.to_subtree</source>
-        <target>Assign to a subtree</target>
-      </trans-unit>
       <trans-unit id="bd9bc055699bd779f27ce1c3b2e0121d" resname="section.edit">
         <source>section.edit</source>
         <target>Edit</target>
@@ -96,7 +92,11 @@
       </trans-unit>
       <trans-unit id="1bf9bdce5e87c98df324d43e717d9d85" resname="section.assign.universaldiscovery.title">
         <source>section.assign.universaldiscovery.title</source>
-        <target>Pick a content to assign the section "%sectionName%" to its subtree(s)</target>
+        <target>Pick the contents to assign the section "%sectionName%"</target>
+      </trans-unit>
+      <trans-unit id="058b034a4aa957ab59f853e8375ff2b3" resname="section.assign.contents">
+        <source>section.assign.contents</source>
+        <target>Assign to contents</target>
       </trans-unit>
     </body>
   </file>

@@ -29,7 +29,7 @@ YUI.add('ez-sectionserversideview', function (Y) {
 
         /**
          * tap event handler on the section assign buttons. It launches the
-         * universal discovery widget so that the user can a pick content
+         * universal discovery widget so that the user can pick some contents.
          *
          * @method _pickSubtree
          * @protected
@@ -45,6 +45,7 @@ YUI.add('ez-sectionserversideview', function (Y) {
                 config: {
                     title: button.getAttribute('data-universaldiscovery-title'),
                     cancelDiscoverHandler: unsetLoading,
+                    multiple: true,
                     data: {
                         sectionId: button.getAttribute('data-section-rest-id'),
                         afterUpdateCallback: unsetLoading,

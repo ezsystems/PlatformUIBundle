@@ -56,6 +56,10 @@ YUI.add('ez-sectionserversideview-tests', function (Y) {
                         e.config.data.afterUpdateCallback,
                         "The config data should contain the unset loading function"
                     );
+                    Assert.isTrue(
+                        e.config.multiple,
+                        "The universal discovery should be configured in multiple mode"
+                    );
                 });
             });
             button.simulateGesture('tap');

@@ -61,7 +61,7 @@ YUI.add('ez-sectionserversideviewservice-tests', function (Y) {
                 updateStruct = new Mock(),
                 content = new Mock(),
                 universalDiscovery = new Mock(),
-                selection = {content: content},
+                selection = [{content: content}],
                 callbackCalled = false,
                 callback = function () {
                     callbackCalled = true;

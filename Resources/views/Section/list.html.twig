@@ -21,7 +21,7 @@
                     data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
                     data-section-rest-id="{{path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
                     class="ez-section-assign-button ez-button-tree pure-button font-icon ez-button"
-                    {% if not section.canAssign %}disabled="disabled"{% endif %}>{{ 'section.assigned.to_subtree'|trans }}</button>
+                    {% if not section.canAssign %}disabled="disabled"{% endif %}>{{ 'section.assign.contents'|trans }}</button>
             </td>
             <td>
                 <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="pure-button ez-button{% if not section.canEdit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'section.edit'|trans }}</a>
