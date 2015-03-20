@@ -125,9 +125,8 @@ YUI.add('ez-binarybase-editview', function (Y) {
             }
             this._trackVersionSave();
 
-            fieldValue = {
-                fileName: file.name,
-            };
+            fieldValue = Y.merge(this.get('field').fieldValue);
+            fieldValue.fileName = file.name;
             if ( file.data ) {
                 fieldValue.data = file.data;
             }
