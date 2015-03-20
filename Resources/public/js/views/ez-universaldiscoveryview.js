@@ -536,6 +536,19 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     });
                 }
             },
+
+            /**
+             * An arbitrary object the component triggering the universal
+             * discovery can set. It is useful to store some data the
+             * contentDiscovered and cancelDiscover handlers need.
+             *
+             * @attribute data
+             * @type {Object}
+             * @default {}
+             */
+            data: {
+                value: {},
+            }
         }
     });
 });

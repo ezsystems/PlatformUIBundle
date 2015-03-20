@@ -63,10 +63,14 @@
             </div>
         </div>
 
-
-
         <div class="ez-tabs-panel" id="ez-tabs-content">
-            <h2>content</h2>
+            <p>
+                <button
+                    data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
+                    data-section-rest-id="{{path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
+                    class="ez-section-assign-button ez-button-tree pure-button font-icon ez-button"
+                >{{ 'section.assign.contents'|trans }}</button>
+            </p>
         </div>
     </section>
 {% endblock %}

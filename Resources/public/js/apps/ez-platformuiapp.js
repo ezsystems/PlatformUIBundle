@@ -102,6 +102,9 @@ YUI.add('ez-platformuiapp', function (Y) {
             serverSideView: {
                 type: Y.eZ.ServerSideView,
             },
+            sectionServerSideView: {
+                type: Y.eZ.SectionServerSideView,
+            },
             errorView: {
                 instance: new Y.eZ.ErrorView({
                     container: ERROR_VIEW_CONTAINER
@@ -765,8 +768,8 @@ YUI.add('ez-platformuiapp', function (Y) {
                     keys: ['uri'],
                     path: "/admin/:uri",
                     sideViews: {'navigationHub': true},
-                    service: Y.eZ.ServerSideViewService,
-                    view: "serverSideView",
+                    service: Y.eZ.SectionServerSideViewService,
+                    view: "sectionServerSideView",
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "adminGenericRoute",

@@ -11,6 +11,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/universaldiscovery/*.js", "!./Resources/public/js/views/universaldiscovery/*-min.js",
             "./Resources/public/js/views/actions/*.js", "!./Resources/public/js/views/actions/*-min.js",
             "./Resources/public/js/views/navigation/*.js", "!./Resources/public/js/views/navigation/*-min.js",
+            "./Resources/public/js/views/serverside/*.js", "!./Resources/public/js/views/serverside/*-min.js",
             "./Resources/public/js/views/services/*.js", "!./Resources/public/js/views/services/*-min.js",
             "./Resources/public/js/views/services/plugins/*.js", "!./Resources/public/js/views/services/plugins/*-min.js",
             "./Resources/public/js/models/*.js", "!./Resources/public/js/models/*-min.js",
