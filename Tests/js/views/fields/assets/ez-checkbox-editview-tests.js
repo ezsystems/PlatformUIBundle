@@ -113,6 +113,10 @@ YUI.add('ez-checkbox-editview-tests', function (Y) {
             fieldDefinition: {isRequired: false},
             ViewConstructor: Y.eZ.CheckboxEditView,
             newValue: true,
+
+            _setNewValue: function () {
+                this.view.get('container').one('input').set('checked', this.newValue);
+            },
         })
     );
     Y.Test.Runner.add(getFieldTest);
