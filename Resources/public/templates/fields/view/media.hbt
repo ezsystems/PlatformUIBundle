@@ -1,0 +1,47 @@
+<div class="ez-fieldview-row pure-g">
+    <div class="ez-fieldview-label pure-u">
+        <p class="ez-fieldview-name"><strong>{{ fieldDefinition.names.[eng-GB] }}</strong></p>
+    </div>
+    <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
+        {{#if isEmpty }}
+        This field is empty
+        {{else}}
+
+        <div class="ez-media-view">
+            <div class="ez-media-view-player">
+            {{#if isAudio}}
+                <audio src="{{ value.uri }}" controls="controls" preload="auto" class="ez-media-player ez-media-audio-player"></audio>
+                <div class="ez-media-player-unsupported ez-media-player-unsupported-audio font-icon">Unsupported audio format</div>
+            {{else}}
+                <video src="{{ value.uri }}" controls="controls" preload="auto" class="ez-media-player ez-media-video-player"></video>
+                <div class="ez-media-player-unsupported font-icon">Unsupported video format</div>
+            {{/if}}
+            </div>
+
+            <div class="ez-media-view-properties">
+                <h2 class="ez-media-view-properties-title">
+                {{#if isAudio }}
+                    Audio file properties
+                {{else}}
+                    Video file properties
+                {{/if}}
+                </h2>
+
+                <ul class="ez-media-view-properties-text">
+                    <li><b>File name:</b> {{ value.fileName }}</li>
+                    <li><b>Type:</b> {{ value.mimeType }}</li>
+                    <li><b>File size:</b> {{ value.fileSize }}&nbsp;bytes</li>
+                    <li><b>Display controls:</b> {{#if value.hasController }}yes{{else}}no{{/if}}</li>
+                    <li><b>Auto play:</b>{{#if value.autoplay }}yes{{else}}no{{/if}}</li>
+                    <li><b>Loop:</b> {{#if value.loop }}yes{{else}}no{{/if}}</li>
+
+                    {{#unless isAudio}}
+                        {{#if value.width }}<li><b>Width:</b> {{ value.width }}</li>{{/if}}
+                        {{#if value.height }}<li><b>Height:</b> {{ value.height }}</li>{{/if}}
+                    {{/unless}}
+                </ul>
+            </div>
+        {{/if}}
+        </div>
+    </div></div>
+</div>

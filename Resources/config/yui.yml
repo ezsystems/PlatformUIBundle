@@ -172,6 +172,7 @@ system:
                         - 'ez-relation-view'
                         - 'ez-relationlist-view'
                         - 'ez-url-view'
+                        - 'ez-media-view'
                         - 'ez-keyword-view'
                         - 'ez-binaryfile-view'
                         - 'ez-selection-view'
@@ -377,6 +378,12 @@ system:
                 urlview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/view/url.hbt
+                ez-media-view:
+                    requires: ['ez-fieldview', 'node-event-html5', 'mediaview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-media-view.js
+                mediaview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/media.hbt
                 ez-url-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'urleditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-url-editview.js

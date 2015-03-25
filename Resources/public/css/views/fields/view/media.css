@@ -1,0 +1,65 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-fieldview-ezmedia .ez-media-view-player {
+    position: relative;
+}
+
+.ez-fieldview-ezmedia .ez-media-player-unsupported {
+    display: none;
+}
+
+.ez-fieldview-ezmedia.is-media-unsupported .ez-media-player-unsupported {
+    display: block;
+    position: absolute;
+    top: 25%;
+    left: 0;
+    width: 100%;
+    padding: 1em 0;
+    text-align: center;
+}
+
+.ez-fieldview-ezmedia.is-media-unsupported .ez-media-player-unsupported-audio {
+    top: 0;
+}
+
+.ez-fieldview-ezmedia .ez-media-view-player {
+    max-width: 60%;
+}
+
+.ez-fieldview-ezmedia .ez-media-video-player {
+    height: auto;
+    max-width: 100%;
+}
+
+.ez-fieldview-ezmedia .ez-media-audio-player {
+    margin-top: 25%;
+}
+
+.ez-fieldview-ezmedia .ez-media-view {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.ez-fieldview-ezmedia .ez-media-view-properties {
+    margin-left: 1em;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+}
+
+.ez-fieldview-ezmedia .ez-media-view-properties-title {
+    margin-top: 0;
+    padding: 0.3em 0.3em 0.3em 0;
+}
+
+.ez-fieldview-ezmedia .ez-media-view-properties-text {
+    margin: 0 0 0 1.2em;
+    padding: 0;
+    line-height: 1.4em;
+}
