@@ -8,10 +8,9 @@ YUI.add('ez-checkbox-editview-tests', function (Y) {
     viewTest = new Y.Test.Case({
         name: "eZ Checkbox View test",
 
-        _getFieldDefinition: function (required, defaultValue) {
+        _getFieldDefinition: function (required) {
             return {
                 isRequired: required,
-                defaultValue: defaultValue
             };
         },
 
@@ -49,15 +48,15 @@ YUI.add('ez-checkbox-editview-tests', function (Y) {
             this.view.destroy();
         },
 
-        _testAvailableVariables: function (required, defaultValue, expectRequired, expectDefaultValue) {
-            var fieldDefinition = this._getFieldDefinition(required, defaultValue),
+        _testAvailableVariables: function (required, expectRequired) {
+            var fieldDefinition = this._getFieldDefinition(required),
                 that = this;
 
             this.view.set('fieldDefinition', fieldDefinition);
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 7 variables");
+                Y.Assert.areEqual(6, Y.Object.keys(variables).length, "The template should receive 6 variables");
 
                 Y.Assert.areSame(
                      that.jsonContent, variables.content,
@@ -81,28 +80,18 @@ YUI.add('ez-checkbox-editview-tests', function (Y) {
                 );
 
                 Y.Assert.areSame(expectRequired, variables.isRequired);
-                Y.Assert.areSame(expectDefaultValue, variables.defaultValue);
-
                 return '';
             };
             this.view.render();
         },
 
-        "Test not required field and false default value": function () {
-            this._testAvailableVariables(false, false, false, false);
+        "Test not required field": function () {
+            this._testAvailableVariables(false, false);
         },
 
-        "Test required field and false default value": function () {
-            this._testAvailableVariables(true, false, true, false);
+        "Test required field": function () {
+            this._testAvailableVariables(true, true);
         },
-
-        "Test not required field and true default value": function () {
-            this._testAvailableVariables(false, true, false, true);
-        },
-
-        "Test required field and true default value": function () {
-            this._testAvailableVariables(true, true, true, true);
-        }
     });
 
     Y.Test.Runner.setName("eZ Checkbox Edit View tests");
