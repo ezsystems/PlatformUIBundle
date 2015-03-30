@@ -35,7 +35,6 @@ YUI.add('ez-checkbox-editview', function (Y) {
             var def = this.get('fieldDefinition');
             return {
                 "isRequired": def.isRequired,
-                "defaultValue": def.defaultValue
             };
         },
 
@@ -49,7 +48,7 @@ YUI.add('ez-checkbox-editview', function (Y) {
         _getFieldValue: function () {
             var input = this.get('container').one('.ez-checkbox-input-ui input');
 
-            return !!input.get('value');
+            return input.get('checked');
         },
     });
 
