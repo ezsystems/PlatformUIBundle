@@ -1,0 +1,78 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-relationeditview .ez-relation-content {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.ez-view-relationeditview .ez-editfield-input {
+    margin: 1em 2em;
+}
+
+.ez-view-relationeditview .ez-relation-input-ui {
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.ez-view-relationeditview .ez-relation-empty {
+    margin: 0.5em 0 0 0.5em;
+}
+
+.ez-view-relationeditview .ez-relation-content-icon,
+.ez-view-relationeditview .ez-relation-value {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+}
+
+.ez-view-relationeditview .ez-relation-properties {
+    padding: 0;
+    margin: 0;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+}
+
+.ez-view-relationeditview .ez-relation-properties .ez-relation-property {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+    width: 50%;
+    margin: 0;
+}
+
+.ez-view-relationeditview .ez-relation-content-name {
+    margin: 0 0 0.3em 0;
+}
+
+.ez-view-relationeditview .ez-relation-content-icon {
+    margin: 0 0.3em 0 0;
+}
+
+.ez-view-relationeditview .ez-relation-tools {
+    text-align: center;
+}
+
+.ez-view-relationeditview .ez-relation-discover {
+    margin-right: 1em;
+}
+
+.ez-view-relationeditview .ez-relation-remove {
+    margin-left: 1em;
+}

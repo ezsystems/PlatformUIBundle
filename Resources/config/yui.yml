@@ -230,6 +230,7 @@ system:
                         - 'ez-dateandtime-editview'
                         - 'ez-integer-editview'
                         - 'ez-selection-editview'
+                        - 'ez-relation-editview'
                         - 'event-tap'
                         - 'contenteditformview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/ez-contenteditformview.js
@@ -461,6 +462,12 @@ system:
                 maplocationeditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/maplocation.hbt
+                ez-relation-editview:
+                    requires: ['ez-fieldeditview', 'relationeditview-ez-template', 'ez-asynchronousview']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-relation-editview.js
+                relationeditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/relation.hbt
                 ez-selection-editview:
                     requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside', 'node-screen', 'selectioneditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-selection-editview.js
