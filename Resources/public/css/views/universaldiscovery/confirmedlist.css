@@ -5,6 +5,7 @@
 
 .ez-view-universaldiscoveryconfirmedlistview {
     padding-top: 0.3em;
+    position: relative;
 }
 
 .ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-title {
@@ -34,4 +35,29 @@
 
 .ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-item:last-of-type:after {
     content: "";
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list {
+    position: absolute;
+    bottom: 100%;
+    left: -2em;
+    width: 40em;
+    display: none;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview.is-full-list-visible .ez-ud-full-list {
+    display: block;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-title {
+    margin: 0 0 0.5em 0;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-close {
+    display: block;
+    float: right;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-title {
+    margin: 0.5em 0;
 }

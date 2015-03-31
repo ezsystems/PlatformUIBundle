@@ -1,3 +1,14 @@
+<div class="ez-ud-full-list">
+    <div class="ez-ud-full-list-content">
+        <h2 class="ez-ud-full-list-title"><a href="" class="ez-ud-full-list-close font-icon"></a>Confirmed items</h2>
+        {{#each confirmedList}}
+        <div class="ez-ud-full-list-item">
+            <h3 class="ez-ud-full-list-item-title">{{ content.name }}</h3>
+            <p class="ez-ud-full-list-item-details"><strong>{{ contentType.names.[eng-GB] }}</strong></p>
+        </div>
+        {{/each}}
+    </div>
+</div>
 <div class="ez-ud-mini-display">
     <h2 class="ez-ud-mini-display-title">Confirmed items:</h2>
 {{#if hasConfirmedList}}
