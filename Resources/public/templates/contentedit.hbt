@@ -1,7 +1,7 @@
 <div class="pure-g">
     <div class="ez-main-content pure-u" tabindex="0">
         <header class="ez-page-header">
-            <a href="#" class="ez-view-close" data-icon-after="&#xe600;">Close</a>
+            <a href="#" class="ez-view-close" data-icon-after="&#xe62a;"></a>
             <h1 class="ez-page-header-name" data-icon="&#xe601;">{{ content.name }}</h1>
             <ul class="ez-technical-infos">
                 <li>{{ contentType.names.[eng-GB] }}</li>

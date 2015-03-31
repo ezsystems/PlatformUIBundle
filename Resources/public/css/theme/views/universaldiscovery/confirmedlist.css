@@ -67,10 +67,8 @@
     height: 2em;
 }
 
-.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-close:before {
-    content: "\E600";
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-close:after {
     color: #444;
-    font-weight: normal;
 }
 
 .ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item {
