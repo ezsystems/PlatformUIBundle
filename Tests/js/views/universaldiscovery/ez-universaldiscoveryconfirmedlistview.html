@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="container"></div>
-
+<div class="outside"></div>
 <script type="text/x-handlebars-template" id="universaldiscoveryconfirmedlistview-ez-template">
     <div class="ez-ud-mini-display-list">Mini list</div>
     <a href="#" class="ez-ud-full-list-close">Close</a>
@@ -31,7 +31,7 @@
         filter: loaderFilter,
         modules: {
             "ez-universaldiscoveryconfirmedlistview": {
-                requires: ['ez-templatebasedview', 'event-tap'],
+                requires: ['ez-templatebasedview', 'event-tap', 'event-outside'],
                 fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoveryconfirmedlistview.js"
             },
             "ez-templatebasedview": {

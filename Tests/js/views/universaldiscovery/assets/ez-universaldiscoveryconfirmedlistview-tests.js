@@ -5,6 +5,7 @@
 YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
     var renderTest, confirmedListChangeTest, toggleShowFullListTest,
         showHideFullListTest, closeLinkTest, resetTest,
+        clickOutsideTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -353,6 +354,30 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
         },
     });
 
+    clickOutsideTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Confirmed List click outside tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoveryConfirmedListView({container: '.container'});
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should hide the full list": function () {
+            this.view._set('showFullList', true);
+
+            Y.one('.outside').simulate('click');
+            Assert.isFalse(
+                this.view.get('showFullList'),
+                "The full list should be hidden"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Confirmed List View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(confirmedListChangeTest);
@@ -360,4 +385,5 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
     Y.Test.Runner.add(showHideFullListTest);
     Y.Test.Runner.add(closeLinkTest);
     Y.Test.Runner.add(resetTest);
+    Y.Test.Runner.add(clickOutsideTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-universaldiscoveryconfirmedlistview']});

@@ -30,7 +30,10 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
                 'tap': '_toggleFullList'
             },
             '.ez-ud-full-list-close': {
-                'tap': '_hideFullList',
+                'tap': function (e) {
+                    e.preventDefault();
+                    this._hideFullList();
+                }
             },
         },
 
@@ -42,7 +45,9 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
         },
 
         render: function () {
-            this.get('container').setHTML(this.template({
+            var container = this.get('container');
+
+            container.setHTML(this.template({
                 hasConfirmedList: this._hasConfirmedList(),
                 confirmedList: this._jsonifyList(this.get('confirmedList')),
                 miniDisplayList: this._getMiniDisplayList(),
@@ -61,9 +66,11 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
             var container = this.get('container');
 
             if ( this.get('showFullList') ) {
+                container.on('clickoutside', Y.bind(this._hideFullList, this));
                 container.addClass(IS_FULL_LIST_VISIBLE);
             } else {
                 container.removeClass(IS_FULL_LIST_VISIBLE);
+                container.detach('clickoutside');
             }
         },
 
@@ -78,14 +85,12 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
         },
 
         /**
-         * Tap event handler on the close full list link
+         * Hides the full list
          *
          * @method _hideFullList
-         * @param {EventFacade} e
          * @protected
          */
-        _hideFullList: function (e) {
-            e.preventDefault();
+        _hideFullList: function () {
             this._set('showFullList', false);
         },
 
