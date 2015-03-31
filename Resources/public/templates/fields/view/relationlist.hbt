@@ -15,19 +15,19 @@
                     {{/each}}
                     </ul>
                     {{#if loadingError}}
-                        <div class="ez-asynchronousview-error font-icon">
+                        <div class="ez-asynchronousview-error ez-font-icon">
                              An error occurred while loading some of the related contents.
-                            <button class="ez-asynchronousview-retry ez-button font-icon pure-button">Retry</button>
+                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
                         </div>
                     {{/if}}
                 {{else}}
                     {{#if loadingError}}
-                        <div class="ez-asynchronousview-error font-icon">
+                        <div class="ez-asynchronousview-error ez-font-icon">
                             An error occurred while loading some of the related contents.
-                            <button class="ez-asynchronousview-retry ez-button font-icon pure-button">Retry</button>
+                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
                         </div>
                     {{else}}
-                       <div class="font-icon ez-asynchronousview-loading">Loading the related contents</div>
+                       <div class="ez-font-icon ez-asynchronousview-loading">Loading the related contents</div>
                     {{/if}}
                 {{/if}}
             {{/if}}

@@ -10,12 +10,12 @@
                 <img src="{{ imageVariation.uri }}" alt="{{ field.fieldValue.alternativeText }}" class="pure-img">
             {{else}}
                 {{#if loadingError}}
-                    <p class="ez-asynchronousview-error font-icon">
+                    <p class="ez-asynchronousview-error ez-font-icon">
                         An error occurred while loading the image.
-                        <button class="ez-asynchronousview-retry ez-button font-icon pure-button">Retry</button>
+                        <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
                     </p>
                 {{else}}
-                    <p class="font-icon ez-asynchronousview-loading">Loading the image</p>
+                    <p class="ez-font-icon ez-asynchronousview-loading">Loading the image</p>
                 {{/if}}
             {{/if}}
         {{/if}}

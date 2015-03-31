@@ -14,10 +14,10 @@
             <div class="ez-image-editpreview ez-binarybase-content">
                 <div class="ez-image-editpreview-image">
                     <img alt="Image preview" class="ez-image-preview" alt="Image preview">
-                    <p class="font-icon ez-asynchronousview-loading">Loading a thumbnail of the image...</p>
-                    <p class="ez-asynchronousview-error font-icon">
+                    <p class="ez-font-icon ez-asynchronousview-loading">Loading a thumbnail of the image...</p>
+                    <p class="ez-asynchronousview-error ez-font-icon">
                         An error occurred while loading the thumbnail.
-                        <button class="ez-asynchronousview-retry ez-button font-icon pure-button">Retry</button>
+                        <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
                     </p>
                 </div>
                 <div class="ez-image-properties">
@@ -43,16 +43,16 @@
             <p class="ez-binarybase-empty">No image yet.</p>
             <div class="ez-binarybase-action">
                 <div class="ez-binarybase-warning">
-                    <a href="#" class="ez-binarybase-warning-hide font-icon"></a>
-                    <p class="ez-binarybase-warning-text font-icon"></p>
+                    <a href="#" class="ez-binarybase-warning-hide ez-font-icon"></a>
+                    <p class="ez-binarybase-warning-text ez-font-icon"></p>
                 </div>
-                <button class="ez-button ez-button-height ez-button-upload pure-button font-icon">
+                <button class="ez-button ez-button-height ez-button-upload pure-button ez-font-icon">
                     <span class="ez-binarybase-upload-new">Upload an image</span>
                     <span class="ez-binarybase-upload-replace">Replace this image</span>
                 </button>
                 <span class="ez-binarybase-remove-option">
                     or
-                    <button class="ez-button ez-button-height ez-button-delete pure-button font-icon">
+                    <button class="ez-button ez-button-height ez-button-delete pure-button ez-font-icon">
                         Remove this image
                     </button>
                 </span>
