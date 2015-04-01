@@ -21,13 +21,17 @@
 }
 
 .ez-universaldiscovery-container .ez-view-universaldiscoveryview {
-    background: #f5f4f2;
+    background: #eee;
     border: 1px solid #aaa;
 }
 
 .ez-view-universaldiscoveryview .ez-universaldiscovery-title {
     font-weight: bold;
     font-size: 170%;
+}
+
+.ez-view-universaldiscoveryview .ez-tabs .ez-tabs-list {
+    background: #eee;
 }
 
 .ez-view-universaldiscoveryview .ez-tabs-panels {
