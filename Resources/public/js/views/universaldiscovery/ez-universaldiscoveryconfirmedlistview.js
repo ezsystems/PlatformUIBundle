@@ -49,7 +49,7 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
 
             container.setHTML(this.template({
                 hasConfirmedList: this._hasConfirmedList(),
-                confirmedList: this._jsonifyList(this.get('confirmedList')),
+                confirmedList: this._jsonifyList(this.get('confirmedList')).reverse(),
                 miniDisplayList: this._getMiniDisplayList(),
                 remainingCount: this._getRemainingCount(),
             }));

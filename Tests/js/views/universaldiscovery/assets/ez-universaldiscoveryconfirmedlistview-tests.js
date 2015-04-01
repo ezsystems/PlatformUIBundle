@@ -139,15 +139,15 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
                 });
                 Y.Array.each(variables.confirmedList, function (struct, i) {
                     Assert.areSame(
-                        struct.content, that.structsJson[i].content,
+                        struct.content, that.structsJson[size - i - 1].content,
                         "The content toJSON result should be provided"
                     );
                     Assert.areSame(
-                        struct.location, that.structsJson[i].location,
+                        struct.location, that.structsJson[size - i - 1].location,
                         "The location toJSON result should be provided"
                     );
                     Assert.areSame(
-                        struct.contentType, that.structsJson[i].contentType,
+                        struct.contentType, that.structsJson[size - i - 1].contentType,
                         "The contentType toJSON result should be provided"
                     );
                 });
