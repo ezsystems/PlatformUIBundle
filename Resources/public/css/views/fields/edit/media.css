@@ -5,9 +5,14 @@
 }
 
 .ez-view-mediaeditview .ez-media-editpreview {
+    display: -webkit-box;
     display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
+        -ms-flex-direction: row;
             flex-direction: row;
 }
 
@@ -52,6 +57,7 @@
 
 .ez-view-mediaeditview .ez-media-properties {
     margin-left: 1em;
+    -webkit-box-flex: 1;
     -webkit-flex: 1;
         -ms-flex: 1;
             flex: 1;
@@ -70,9 +76,14 @@
 
 .ez-view-mediaeditview .ez-media-player-settings-list {
     padding: 0;
+    display: -webkit-box;
     display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
     -webkit-flex-direction: row;
+        -ms-flex-direction: row;
             flex-direction: row;
 }
 
