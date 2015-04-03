@@ -411,6 +411,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
             Y.eZ.ActionBarView = Y.Base.create('actionBarView', Y.View, [], {}, {
                 ATTRS: {
+                    content: {},
                     version: {},
                 },
             });
@@ -437,6 +438,14 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 this.view.get('version'),
                 this.view.get('actionBar').get('version'),
                 'The version should have been set to the actionBar'
+            );
+        },
+
+        "Should set the content of the action bar": function () {
+            Y.Assert.areSame(
+                this.view.get('content'),
+                this.view.get('actionBar').get('content'),
+                'The content should have been set to the actionBar'
             );
         },
 

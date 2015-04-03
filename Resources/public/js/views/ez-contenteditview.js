@@ -308,6 +308,7 @@ YUI.add('ez-contenteditview', function (Y) {
             actionBar: {
                 valueFn: function () {
                     return new Y.eZ.EditActionBarView({
+                        content: this.get('content'),
                         version: this.get('version')
                     });
                 }
