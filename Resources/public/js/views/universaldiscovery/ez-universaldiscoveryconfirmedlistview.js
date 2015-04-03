@@ -11,7 +11,8 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var MAX_MINI_DISPLAY = 3;
+    var MAX_MINI_DISPLAY = 3,
+        IS_FULL_LIST_VISIBLE = 'is-full-list-visible';
 
     /**
      * The universal discovery confirmed list view. It displays the contents
@@ -24,20 +25,73 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
      * @extends eZ.TemplateBasedView
      */
     Y.eZ.UniversalDiscoveryConfirmedListView = Y.Base.create('universalDiscoveryConfirmedListView', Y.eZ.TemplateBasedView, [], {
+        events: {
+            '.ez-ud-mini-display-list': {
+                'tap': '_toggleFullList'
+            },
+            '.ez-ud-full-list-close': {
+                'tap': function (e) {
+                    e.preventDefault();
+                    this._hideFullList();
+                }
+            },
+        },
 
         initializer: function () {
             this.after('confirmedListChange', function () {
                 this.render();
             });
+            this.after('showFullListChange', this._uiHandleFullList);
         },
 
         render: function () {
-            this.get('container').setHTML(this.template({
+            var container = this.get('container');
+
+            container.setHTML(this.template({
                 hasConfirmedList: this._hasConfirmedList(),
+                confirmedList: this._jsonifyList(this.get('confirmedList')).reverse(),
                 miniDisplayList: this._getMiniDisplayList(),
                 remainingCount: this._getRemainingCount(),
             }));
             return this;
+        },
+
+        /**
+         * Show or hide the full list depending on the `showFullList` flag
+         *
+         * @method _uiHandleFullList
+         * @protected
+         */
+        _uiHandleFullList: function () {
+            var container = this.get('container');
+
+            if ( this.get('showFullList') ) {
+                container.on('clickoutside', Y.bind(this._hideFullList, this));
+                container.addClass(IS_FULL_LIST_VISIBLE);
+            } else {
+                container.removeClass(IS_FULL_LIST_VISIBLE);
+                container.detach('clickoutside');
+            }
+        },
+
+        /**
+         * Toggles the `showFullList` flag
+         *
+         * @method _toggleFullList
+         * @protected
+         */
+        _toggleFullList: function () {
+            this._set('showFullList', !this.get('showFullList'));
+        },
+
+        /**
+         * Hides the full list
+         *
+         * @method _hideFullList
+         * @protected
+         */
+        _hideFullList: function () {
+            this._set('showFullList', false);
         },
 
         /**
@@ -84,14 +138,16 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
          * @param {Array} list
          */
         _jsonifyList: function (list) {
+            var res = [];
+
             Y.Array.each(list, function (struct, i) {
-                list[i] = {
+                res[i] = {
                     content: struct.content.toJSON(),
                     location: struct.location.toJSON(),
                     contentType: struct.contentType.toJSON(),
                 };
             });
-            return list;
+            return res;
         },
 
         /**
@@ -103,6 +159,21 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
          */
         _hasConfirmedList: function () {
             return !!this.get('confirmedList');
+        },
+
+        /**
+         * Custom reset implementation to make sure to also reset the
+         * read only `showFullList` attribute.
+         *
+         * @method reset
+         * @param {String} name
+         */
+        reset: function (name) {
+            if ( name === 'showFullList' ) {
+                this._set('showFullList', false);
+                return;
+            }
+            this.constructor.superclass.reset.apply(this, arguments);
         },
     }, {
         ATTRS: {
@@ -116,6 +187,18 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
              */
             confirmedList: {
                 value: null,
+            },
+
+            /**
+             * Flag indicating whether the full list should be shown
+             *
+             * @attribute showFullList
+             * @type Boolean
+             * @readOnly
+             */
+            showFullList: {
+                readOnly: true,
+                value: false,
             },
         },
     });

@@ -1,12 +1,12 @@
 <div class="ez-action {{#if disabled}}is-disabled {{/if}}{{#if hint}}with-hint{{/if}}"  data-action="{{ actionId }}">
-    <div class="font-icon action-icon">
+    <div class="ez-font-icon action-icon">
         <p class="action-label">{{ label }}</p>
         {{#if hint}}
         <p class="action-hint">{{ hint }}</p>
         {{/if}}
         <menu class="preview-modes">
             {{#each buttons}}
-            <button class="preview-mode-button action-trigger font-icon" data-action="{{ ../actionId }}" {{#if option}}data-action-option="{{ option }}"{{/if}} ></button>
+            <button class="preview-mode-button action-trigger ez-font-icon" data-action="{{ ../actionId }}" {{#if option}}data-action-option="{{ option }}"{{/if}} ></button>
             {{/each}}
         </menu>
     </div>

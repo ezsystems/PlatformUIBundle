@@ -22,8 +22,8 @@
             {{#if isRequired}} required{{/if}}
             >
             {{#unless supportsDateInput}}
-                <button class="ez-date-cancel-button font-icon"></button>
-                <button class="ez-date-calendar-button ez-button ez-button-calendar font-icon pure-button">Calendar</button>
+                <button class="ez-date-cancel-button ez-font-icon"></button>
+                <button class="ez-date-calendar-button ez-button ez-button-calendar ez-font-icon pure-button">Calendar</button>
                 <div class="ez-yui-calendar-container" ></div>
             {{/unless}}
             </div></div>

@@ -3,7 +3,9 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
-    var renderTest, confirmedListChangeTest,
+    var renderTest, confirmedListChangeTest, toggleShowFullListTest,
+        showHideFullListTest, closeLinkTest, resetTest,
+        clickOutsideTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -117,6 +119,10 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
                     expectedContentCount, variables.miniDisplayList.length,
                     "The miniDisplayList variable value should have one entry"
                 );
+                Assert.isArray(
+                    variables.confirmedList,
+                    "The confirmedList variable value should be an array"
+                );
                 Y.Array.each(variables.miniDisplayList, function (struct, i) {
                     Assert.areSame(
                         struct.content, that.structsJson[size - i - 1].content,
@@ -131,6 +137,21 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
                         "The contentType toJSON result should be provided"
                     );
                 });
+                Y.Array.each(variables.confirmedList, function (struct, i) {
+                    Assert.areSame(
+                        struct.content, that.structsJson[size - i - 1].content,
+                        "The content toJSON result should be provided"
+                    );
+                    Assert.areSame(
+                        struct.location, that.structsJson[size - i - 1].location,
+                        "The location toJSON result should be provided"
+                    );
+                    Assert.areSame(
+                        struct.contentType, that.structsJson[size - i - 1].contentType,
+                        "The contentType toJSON result should be provided"
+                    );
+                });
+
                 return origTpl.apply(this, arguments);
             };
             this.view.render();
@@ -192,7 +213,177 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
         },
     });
 
+    toggleShowFullListTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Confirmed List toggle full list tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoveryConfirmedListView({container: '.container'});
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should set the showFullList flag to true": function () {
+            var container = this.view.get('container'),
+                that = this;
+
+            container.one('.ez-ud-mini-display-list').simulateGesture('tap', function () {
+                that.resume(function () {
+                    Assert.isTrue(
+                        this.view.get('showFullList'),
+                        "The `showFullList` flag should be set to true"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should set the showFullList flag to false": function () {
+            var container = this.view.get('container'),
+                that = this;
+
+            this.view._set('showFullList', true);
+            container.one('.ez-ud-mini-display-list').simulateGesture('tap', function () {
+                that.resume(function () {
+                    Assert.isFalse(
+                        this.view.get('showFullList'),
+                        "The `showFullList` flag should be set to false"
+                    );
+                });
+            });
+            this.wait();
+        },
+    });
+
+    showHideFullListTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Confirmed List show/hide the full list test',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoveryConfirmedListView();
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should show the full list": function () {
+            this.view._set('showFullList', true);
+
+            Assert.isTrue(
+                this.view.get('container').hasClass('is-full-list-visible'),
+                "The full list should be visible"
+            );
+        },
+
+        "Should hide the full list": function () {
+            this["Should show the full list"]();
+            this.view._set('showFullList', false);
+
+            Assert.isFalse(
+                this.view.get('container').hasClass('is-full-list-visible'),
+                "The full list should be hidden"
+            );
+        },
+    });
+
+    closeLinkTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Confirmed List close link tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoveryConfirmedListView({container: '.container'});
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should hide the list": function () {
+            var container = this.view.get('container'),
+                that = this;
+
+            this.view._set('showFullList', true);
+            container.on('tap', function (e) {
+                that.resume(function () {
+                    Assert.isTrue(
+                        !!e.prevented,
+                        "The tap event should have been prevented"
+                    );
+                    Assert.isFalse(
+                        this.view.get('showFullList'),
+                        "The showFullList flag should be set to false"
+                    );
+                });
+            });
+            container.one('.ez-ud-full-list-close').simulateGesture('tap');
+            this.wait();
+        },
+    });
+
+    resetTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Confirmed List reset tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoveryConfirmedListView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should reset the attributes": function () {
+            this.view.set('confirmedList', []);
+            this.view._set('showFullList', true);
+            this.view.reset();
+
+            Assert.isNull(
+                this.view.get('confirmedList'),
+                "The confirmed list should be resetted to null"
+            );
+            Assert.isFalse(
+                this.view.get('showFullList'),
+                "The showFullList flag should be false"
+            );
+        },
+    });
+
+    clickOutsideTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Confirmed List click outside tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoveryConfirmedListView({container: '.container'});
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should hide the full list": function () {
+            this.view._set('showFullList', true);
+
+            Y.one('.outside').simulate('click');
+            Assert.isFalse(
+                this.view.get('showFullList'),
+                "The full list should be hidden"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Confirmed List View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(confirmedListChangeTest);
+    Y.Test.Runner.add(toggleShowFullListTest);
+    Y.Test.Runner.add(showHideFullListTest);
+    Y.Test.Runner.add(closeLinkTest);
+    Y.Test.Runner.add(resetTest);
+    Y.Test.Runner.add(clickOutsideTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-universaldiscoveryconfirmedlistview']});

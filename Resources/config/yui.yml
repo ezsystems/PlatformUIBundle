@@ -123,7 +123,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/universaldiscovery.hbt
                 ez-universaldiscoveryconfirmedlistview:
-                    requires: ['ez-templatebasedview', 'universaldiscoveryconfirmedlistview-ez-template']
+                    requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'universaldiscoveryconfirmedlistview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryconfirmedlistview.js
                 universaldiscoveryconfirmedlistview-ez-template:
                     type: 'template'

@@ -5,6 +5,7 @@
 
 .ez-view-universaldiscoveryconfirmedlistview {
     padding-top: 0.3em;
+    position: relative;
 }
 
 .ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-title {
@@ -34,4 +35,118 @@
 
 .ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-item:last-of-type:after {
     content: "";
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list {
+    position: absolute;
+    bottom: 100%;
+    left: -2em;
+    width: 40em;
+    display: none;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview.is-full-list-visible .ez-ud-full-list {
+    display: block;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-title {
+    margin: 0 0 0.5em 0;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-close {
+    display: block;
+    float: right;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-title {
+    margin: 0.5em 0;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-items {
+    max-height: 20em;
+    overflow: auto;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+        -ms-flex-flow: row wrap;
+            flex-flow: row wrap;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item {
+    width: 48%;
+    margin-bottom: 1em;
+
+    /**
+     * both flex item and flex container
+     * - flex item so that the full list item are displayed on 2 columns
+     * - flex container to display correctly the buttons, the icon and the details
+     *   of the full list item
+     */
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    flew-flow: row nowrap;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-icon {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-icon {
+    width: 2em;
+    padding: 0.15em;
+
+    display: -webkit-box;
+
+    display: -webkit-flex;
+
+    display: -ms-flexbox;
+
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-icon:before {
+    text-align: center;
+    display: block;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+    margin: auto;
+    padding: 0.3em 0.5em;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-content {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
 }

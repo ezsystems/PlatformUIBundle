@@ -6,9 +6,10 @@
 </head>
 <body>
 <div class="container"></div>
-
+<div class="outside"></div>
 <script type="text/x-handlebars-template" id="universaldiscoveryconfirmedlistview-ez-template">
-template
+    <div class="ez-ud-mini-display-list">Mini list</div>
+    <a href="#" class="ez-ud-full-list-close">Close</a>
 </script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -30,7 +31,7 @@ template
         filter: loaderFilter,
         modules: {
             "ez-universaldiscoveryconfirmedlistview": {
-                requires: ['ez-templatebasedview'],
+                requires: ['ez-templatebasedview', 'event-tap', 'event-outside'],
                 fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoveryconfirmedlistview.js"
             },
             "ez-templatebasedview": {

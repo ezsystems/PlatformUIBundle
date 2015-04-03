@@ -20,6 +20,10 @@
     color: #555;
 }
 
+.ez-view-contenteditview .ez-view-close:after {
+    font-size: 200%;
+}
+
 .ez-view-contenteditview .ez-technical-infos {
     opacity: 0;
     visibility: visible;

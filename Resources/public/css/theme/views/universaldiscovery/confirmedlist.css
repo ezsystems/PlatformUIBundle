@@ -4,7 +4,7 @@
  */
 
 .ez-view-universaldiscoveryconfirmedlistview {
-    color: #444;
+    color: #333;
 }
 
 .ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-title {
@@ -18,8 +18,71 @@
 
 .ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-list {
     list-style-type: none;
+    cursor: pointer;
 }
 
-.ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-remaining-count {
-    color: #555;
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list {
+    display: block;
+
+    transition: all 0.3s ease;
+    -webkit-transform-origin: 2em bottom;
+            transform-origin: 2em bottom;
+    -webkit-transform: scale(0);
+            transform: scale(0);
+}
+
+.ez-view-universaldiscoveryconfirmedlistview.is-full-list-visible .ez-ud-full-list {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-content {
+    background: #eee;
+    border: 1px solid #ccc;
+    margin-bottom: 1em;
+    padding: 1em 1em 1.41em 1em;
+    box-shadow: 5px 5px 7px -2px #666;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-content:after {
+    content: " ";
+    position: absolute;
+    bottom: 0;
+    display: block;
+    border: 1px solid #ccc;
+    box-shadow: 5px 5px 7px -2px #666;
+    border-top: 0;
+    border-left: 0;
+    -webkit-transform-origin: center center;
+            transform-origin: center center;
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+    background: #eee;
+    margin-left: 4em;
+    width: 2em;
+    height: 2em;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-close:after {
+    color: #444;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item {
+    background: #fff;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-title {
+    font-size: 110%;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-details {
+    font-size: 90%;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-icon {
+    font-size: 270%;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-icon:before {
+    background: #f5f4f2;
 }

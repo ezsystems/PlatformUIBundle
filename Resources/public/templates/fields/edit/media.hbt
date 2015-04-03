@@ -19,10 +19,10 @@
                 <div class="ez-media-editpreview-player">
                 {{#if isAudio }}
                     <audio src="{{ media.uri }}" controls="controls" preload="auto" class="ez-media-player ez-media-audio-player"></audio>
-                    <div class="ez-media-player-unsupported ez-media-player-unsupported-audio font-icon">Unsupported audio format</div>
+                    <div class="ez-media-player-unsupported ez-media-player-unsupported-audio ez-font-icon">Unsupported audio format</div>
                 {{else}}
                     <video src="{{ media.uri }}" controls="controls" preload="auto" class="ez-media-player ez-media-video-player"></video>
-                    <div class="ez-media-player-unsupported font-icon">Unsupported video format</div>
+                    <div class="ez-media-player-unsupported ez-font-icon">Unsupported video format</div>
                 {{/if}}
                 </div>
                 <div class="ez-media-properties">
@@ -59,16 +59,16 @@
             <p class="ez-binarybase-empty">{{#if isAudio}}No audio file yet.{{else}}No video file yet.{{/if}}</p>
             <div class="ez-binarybase-action">
                 <div class="ez-binarybase-warning">
-                    <a href="#" class="ez-binarybase-warning-hide font-icon"></a>
-                    <p class="ez-binarybase-warning-text font-icon"></p>
+                    <a href="#" class="ez-binarybase-warning-hide ez-font-icon"></a>
+                    <p class="ez-binarybase-warning-text ez-font-icon"></p>
                 </div>
-                <button class="ez-button ez-button-height ez-button-upload pure-button font-icon">
+                <button class="ez-button ez-button-height ez-button-upload pure-button ez-font-icon">
                     <span class="ez-binarybase-upload-new">{{#if isAudio}}Upload an audio file{{else}}Upload a video{{/if}}</span>
                     <span class="ez-binarybase-upload-replace">{{#if isAudio}}Replace this audio file{{else}}Replace this video{{/if}}</span>
                 </button>
                 <span class="ez-binarybase-remove-option">
                     or
-                    <button class="ez-button ez-button-height ez-button-delete pure-button font-icon">
+                    <button class="ez-button ez-button-height ez-button-delete pure-button ez-font-icon">
                         {{#if isAudio}}Remove this audio file{{else}}Remove this video{{/if}}
                     </button>
                 </span>

@@ -29,14 +29,6 @@
 .ez-view-contenteditview .ez-view-close {
     display: block;
     float: right;
-    font-weight: bold;
-    font-size: 90%;
-    padding: 0.5em;
-}
-
-.ez-view-contenteditview .ez-view-close:after {
-    font-size: 90%;
-    padding-left: 0.5em;
 }
 
 .ez-view-contenteditview .ez-page-header-name {
