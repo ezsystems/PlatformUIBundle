@@ -28,7 +28,7 @@ content type in the PlatformUI application.
 ## Country
 
 * Content view: Yes
-* Content edit: No, [EZP-21715](https://jira.ez.no/browse/EZP-21715)
+* Content edit: Yes
 * Content type view: No
 * Content type edit: No
 
