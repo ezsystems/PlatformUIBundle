@@ -1,0 +1,61 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-fieldview-ezmedia .ez-media-player-unsupported {
+    display: block;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+    font-size: 120%;
+    color: #fff;
+}
+
+.ez-fieldview-ezmedia .ez-media-player-unsupported:before {
+    content: "\E617";
+    padding-right: 0.5em;
+}
+
+.ez-fieldview-ezmedia .ez-media-player-unsupported-audio {
+    color: #fff;
+}
+
+.ez-fieldview-ezmedia.is-media-unsupported .ez-media-player-unsupported {
+    -webkit-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
+    background: #444;
+}
+
+.ez-fieldview-ezmedia.is-media-unsupported .ez-media-player {
+    -webkit-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+}
+
+.ez-fieldview-ezmedia .ez-media-player {
+    background: #000;
+}
+
+.ez-fieldview-ezmedia.is-media-unsupported .ez-media-player {
+    opacity: 0.4;
+}
+
+.ez-fieldview-ezmedia .ez-media-link {
+    font-size: 80%;
+}
+
+.ez-fieldview-ezmedia .ez-media-link:after {
+    font-family: 'ez-platformui-icomoon';
+    content: "\E610";
+    padding-left: 0.3em;
+}
+
+.ez-fieldview-ezmedia .ez-media-view-properties-title {
+    font-size: 120%;
+    border-bottom: 1px solid #ccc;
+}
+
+.ez-fieldview-ezmedia .ez-media-view-properties-text {
+    list-style-type: square;
+}

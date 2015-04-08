@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Media view tests</title>
+</head>
+<body>
+
+<script type="text/x-handlebars-template" id="mediaview-ez-template">
+    {{#unless isEmpty}}
+    <video class="ez-media-player"></video>
+    {{/unless}}
+</script>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../assets/genericfieldview-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-media-view-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-media-view'],
+        filter: loaderFilter,
+        modules: {
+            "ez-media-view": {
+                requires: ['ez-fieldview', 'node-event-html5'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-media-view.js"
+            },
+            "ez-fieldview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/ez-fieldview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-media-view-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
