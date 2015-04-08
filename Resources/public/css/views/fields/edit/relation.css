@@ -24,7 +24,13 @@
     margin: 0.5em 0 0 0.5em;
 }
 
-.ez-view-relationeditview .ez-relation-content-icon,
+.ez-view-relationeditview .ez-relation-content-icon {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 auto;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+}
+
 .ez-view-relationeditview .ez-relation-value {
     -webkit-box-flex: 1;
     -webkit-flex: 1 1 auto;
