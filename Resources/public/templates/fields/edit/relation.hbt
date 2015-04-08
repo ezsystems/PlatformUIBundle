@@ -1,0 +1,44 @@
+<div class="pure-g ez-editfield-row ez-asynchronousview">
+    <div class="pure-u ez-editfield-infos">
+        {{> ez_fieldinfo_tooltip }}
+        <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+            <p class="ez-fielddefinition-name">
+                {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+            </p>
+            <p class="ez-editfield-error-message">&nbsp;</p>
+        </label>
+    </div>
+    <div class="pure-u ez-editfield-input-area ez-default-error-style">
+        <div class="ez-editfield-input"><div class="ez-relation-input-ui">
+            {{#if isEmpty}}
+               <p class="ez-relation-empty">No relation.</p>
+            {{else}}
+                {{#if destinationContent }}
+                <div class="ez-relation-content">
+                    <div class="ez-relation-content-icon" data-icon="&#xe601;"></div>
+                    <div class="ez-relation-value">
+                        <h2 class="ez-relation-content-name">{{ destinationContent.name }}</h2>
+                        <ul class="ez-relation-properties">
+                            <li class="ez-relation-property"><strong>Published:</strong> {{ destinationContent.publishedDate }}</li>
+                            <li class="ez-relation-property"><strong>Modified:</strong> {{ destinationContent.lastModificationDate }}</li>
+                        </ul>
+                    </div>
+                </div>
+                {{else}}
+                    {{#if loadingError}}
+                        <p class="ez-asynchronousview-error ez-font-icon">
+                            An error occurred while loading the related content.
+                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+                        </p>
+                    {{else}}
+                        <p class="ez-font-icon ez-asynchronousview-loading">Loading the related content</p>
+                    {{/if}}
+                {{/if}}
+            {{/if}}
+            <p class="ez-relation-tools">
+                <button class="ez-relation-discover ez-button ez-button-height ez-button-tree ez-font-icon pure-button">Select a content</button>
+                <button class="ez-relation-remove ez-button ez-button-height ez-button-delete ez-font-icon pure-button">Remove relation</button>
+            </p>
+        </div></div>
+    </div>
+</div>
