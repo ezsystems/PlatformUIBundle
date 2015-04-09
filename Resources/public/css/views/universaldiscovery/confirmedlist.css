@@ -105,19 +105,15 @@
     -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
-}
 
-.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-icon {
     width: 2em;
     padding: 0.15em;
 
     display: -webkit-box;
-
     display: -webkit-flex;
-
     display: -ms-flexbox;
-
     display: flex;
+
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
