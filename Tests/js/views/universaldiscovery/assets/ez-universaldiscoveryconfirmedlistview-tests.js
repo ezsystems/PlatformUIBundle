@@ -5,7 +5,7 @@
 YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
     var renderTest, confirmedListChangeTest, toggleShowFullListTest,
         showHideFullListTest, closeLinkTest, resetTest,
-        clickOutsideTest,
+        clickOutsideTest, removeButtonTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -20,7 +20,7 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
         "Should use the template": function () {
             var templateCalled = false,
                 origTpl = this.view.template;
-            
+
             this.view.template = function () {
                 templateCalled = true;
                 return origTpl.apply(this, arguments);
@@ -35,10 +35,6 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Assert.isFalse(
-                    variables.hasConfirmedList,
-                    "The hasConfirmedList variable value should be false"
-                );
-                Assert.isFalse(
                     variables.miniDisplayList,
                     "The hasConfirmedList variable value should be false"
                 );
@@ -49,6 +45,10 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
                 return origTpl.apply(this, arguments);
             };
             this.view.render();
+            Assert.isTrue(
+                this.view.get('container').hasClass('is-empty'),
+                "The view container should have the is-empty class"
+            );
         },
 
         _getStructMocks: function () {
@@ -103,10 +103,6 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
 
             this.view.set('confirmedList', this._getContentList(size));
             this.view.template = function (variables) {
-                Assert.isTrue(
-                    variables.hasConfirmedList,
-                    "The hasConfirmedList variable value should be true"
-                );
                 Assert.areEqual(
                     expectedRemainingCount, variables.remainingCount,
                     "The remainingCount variable value should be zero"
@@ -155,6 +151,10 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
                 return origTpl.apply(this, arguments);
             };
             this.view.render();
+            Assert.isFalse(
+                this.view.get('container').hasClass('is-empty'),
+                "The view container should not have the is-empty class"
+            );
         },
 
         "Test render below length limit list": function () {
@@ -198,7 +198,7 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
         "Should render the view": function () {
             var rendered = false,
                 origTpl = this.view.template;
-            
+
             this.view.template = function () {
                 rendered = true;
                 return origTpl.apply(this, arguments);
@@ -210,6 +210,30 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
             }]);
 
             Assert.isTrue(rendered, "render should use the template");
+        },
+
+        "Should hide the full list and add the empty class": function () {
+            var origTpl = this.view.template;
+
+            this.view.set('confirmedList', [{
+                content: this._getModelMock(),
+                location: this._getModelMock(),
+                contentType: this._getModelMock(),
+            }]);
+            this.view.template = function () {
+                Assert.fail("The view should not have been rerendered");
+                return origTpl.apply(this, arguments);
+            };
+            this.view._set('showFullList', true);
+            this.view.set('confirmedList', null);
+            Assert.isFalse(
+                this.view.get('showFullList'),
+                "The showFullList flag should be false"
+            );
+            Assert.isTrue(
+                this.view.get('container').hasClass('is-empty'),
+                "The container should get the is-empty class"
+            );
         },
     });
 
@@ -309,7 +333,7 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
                 that = this;
 
             this.view._set('showFullList', true);
-            container.on('tap', function (e) {
+            container.once('tap', function (e) {
                 that.resume(function () {
                     Assert.isTrue(
                         !!e.prevented,
@@ -378,6 +402,37 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
         },
     });
 
+    removeButtonTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Confirmed List remove button tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoveryConfirmedListView({container: '.container'});
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should fire the unselectContent event": function () {
+            var that = this,
+                button = this.view.get('container').one('button');
+
+            this.view.on('unselectContent', function (e) {
+                that.resume(function () {
+                    Assert.areEqual(
+                        button.getAttribute('data-content-id'),
+                        e.contentId,
+                        "The content id should be provided in the event facade"
+                    );
+                });
+            });
+            button.simulateGesture('tap');
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Confirmed List View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(confirmedListChangeTest);
@@ -386,4 +441,5 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
     Y.Test.Runner.add(closeLinkTest);
     Y.Test.Runner.add(resetTest);
     Y.Test.Runner.add(clickOutsideTest);
+    Y.Test.Runner.add(removeButtonTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-universaldiscoveryconfirmedlistview']});

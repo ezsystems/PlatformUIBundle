@@ -44,6 +44,9 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     this._storeSelection(e.selection);
                 }
             });
+            this.after('*:unselectContent', function (e) {
+                this._unselectContent(e.contentId);
+            });
             this.after('*:confirmSelectedContent', function (e) {
                 if ( !this._isAlreadySelected(e.selection) ) {
                     this._uiAnimateSelection(e.target);
@@ -91,6 +94,27 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             } else {
                 this._set('selection', contentStruct);
             }
+        },
+
+        /**
+         * Unselects the content from its content id.
+         *
+         * @method _unselectContent
+         * @param {String} contentId
+         */
+        _unselectContent: function (contentId) {
+            var newSelection = [];
+
+            if ( this.get('multiple') ) {
+                newSelection = Y.Array.filter(this.get('selection'), function (struct) {
+                    return struct.content.get('id') !== contentId;
+                });
+            }
+            if ( newSelection.length === 0 ) {
+                this._resetSelection();
+                return;
+            }
+            this._set('selection', newSelection);
         },
 
         /**

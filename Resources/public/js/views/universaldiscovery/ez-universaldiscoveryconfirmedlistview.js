@@ -12,6 +12,7 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
     Y.namespace('eZ');
 
     var MAX_MINI_DISPLAY = 3,
+        IS_EMPTY = 'is-empty',
         IS_FULL_LIST_VISIBLE = 'is-full-list-visible';
 
     /**
@@ -35,11 +36,21 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
                     this._hideFullList();
                 }
             },
+            '.ez-ud-full-list-item-remove': {
+                'tap': '_removeContent',
+            }
         },
 
         initializer: function () {
-            this.after('confirmedListChange', function () {
-                this.render();
+            this.after('confirmedListChange', function (e) {
+                if ( this._hasConfirmedList() ) {
+                    this.render();
+                } else {
+                    // do not rerender the view if it's getting empty so that
+                    // the hiding transition can be seen
+                    this._uiHandleEmptyClass();
+                    this._hideFullList();
+                }
             });
             this.after('showFullListChange', this._uiHandleFullList);
         },
@@ -48,12 +59,49 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
             var container = this.get('container');
 
             container.setHTML(this.template({
-                hasConfirmedList: this._hasConfirmedList(),
                 confirmedList: this._jsonifyList(this.get('confirmedList')).reverse(),
                 miniDisplayList: this._getMiniDisplayList(),
                 remainingCount: this._getRemainingCount(),
             }));
+            this._uiHandleEmptyClass();
             return this;
+        },
+
+        /**
+         * tap event handler on the remove button.
+         *
+         * @method _removeContent
+         * @param {EventFacade} e
+         * @protected
+         */
+        _removeContent: function (e) {
+            e.preventDefault();
+            /**
+             * Fired to unselect a content in universal discovery widget
+             *
+             * @event unselectContent
+             * @param {String} contentId
+             */
+            this.fire('unselectContent', {
+                contentId: e.target.getAttribute('data-content-id'),
+            });
+        },
+
+        /**
+         * Adds or removes the `is-empty` class on the container depending on
+         * the confirmedList content
+         *
+         * @method _uiHandleEmptyClass
+         * @protected
+         */
+        _uiHandleEmptyClass: function () {
+            var container = this.get('container');
+
+            if ( this._hasConfirmedList() ) {
+                container.removeClass(IS_EMPTY);
+            } else {
+                container.addClass(IS_EMPTY);
+            }
         },
 
         /**
