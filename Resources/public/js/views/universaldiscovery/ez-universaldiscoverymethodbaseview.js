@@ -33,6 +33,17 @@ YUI.add('ez-universaldiscoverymethodbaseview', function (Y) {
         getHTMLIdentifier: function () {
             return 'ez-ud-' + this.get('identifier');
         },
+
+        /**
+         * Method called when a content is removed from the universal discovery
+         * view selection. The default implementation does nothing, it is meant
+         * to be overriden.
+         *
+         * @method onUnselectContent
+         * @param {String} contentId
+         */
+        onUnselectContent: function (contentId) {
+        },
     }, {
         ATTRS: {
             /**

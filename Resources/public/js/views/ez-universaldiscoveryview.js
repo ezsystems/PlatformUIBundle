@@ -110,11 +110,26 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     return struct.content.get('id') !== contentId;
                 });
             }
+            this._notifyMethodsUnselectContent(contentId);
             if ( newSelection.length === 0 ) {
                 this._resetSelection();
                 return;
             }
             this._set('selection', newSelection);
+        },
+
+        /**
+         * Notifies the browse method views that a content is removed from the
+         * selection.
+         *
+         * @method _notifyMethodsUnselectContent
+         * @protected
+         * @param {String} contentId
+         */
+        _notifyMethodsUnselectContent: function (contentId) {
+            Y.Array.each(this.get('methods'), function (method) {
+                method.onUnselectContent(contentId);
+            });
         },
 
         /**

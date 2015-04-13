@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoverymethodbaseview-tests', function (Y) {
-    var identifierTest,
+    var identifierTest, onUnselectContentTest,
         Assert = Y.Assert;
 
     identifierTest = new Y.Test.Case({
@@ -28,6 +28,24 @@ YUI.add('ez-universaldiscoverymethodbaseview-tests', function (Y) {
         },
     });
 
+    onUnselectContentTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Method Base onUnselectContent tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoveryMethodBaseView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should provide an onUnselectContent method": function () {
+            this.view.onUnselectContent(42);
+        }
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Method Base View tests");
     Y.Test.Runner.add(identifierTest);
+    Y.Test.Runner.add(onUnselectContentTest);
 }, '', {requires: ['test', 'ez-universaldiscoverymethodbaseview']});

@@ -1151,9 +1151,21 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         name: "eZ Universal Discovery View confirm unselectContent event test",
 
         setUp: function () {
+            var that = this,
+                TestMethod = Y.Base.create('testMethod', Y.eZ.UniversalDiscoveryMethodBaseView, [], {
+                    onUnselectContent: function (contentId) {
+                        Assert.areEqual(
+                            that.removeContentId, contentId,
+                            "The method should be notified for the removal of the content"
+                        );
+                        that.onUnselectContentCalled = true;
+                    },
+                });
+            this.removeContentId = 42;
+            this.onUnselectContentCalled = false;
             this.confirmedList = new Y.View();
             this.view = new Y.eZ.UniversalDiscoveryView({
-                methods: [],
+                methods: [new TestMethod()],
                 confirmedListView: this.confirmedList,
             });
             this.view.render();
@@ -1201,6 +1213,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 remainingContent, this.view.get('selection')[0].content,
                 "The 42 content should have been removed"
             );
+            Assert.isTrue(
+                this.onUnselectContentCalled, "onUnselectContent should have been called"
+            );
         },
 
         "Should reset the selection after removing the last content": function () {
@@ -1225,6 +1240,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 this.view.get('selection'),
                 "The selection should be null"
             );
+            Assert.isTrue(
+                this.onUnselectContentCalled, "onUnselectContent should have been called"
+            );
         },
 
         "Should remove the content from the selection": function () {
@@ -1247,6 +1265,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             Assert.isNull(
                 this.view.get('selection'),
                 "The selection should be null"
+            );
+            Assert.isTrue(
+                this.onUnselectContentCalled, "onUnselectContent should have been called"
             );
         },
     });

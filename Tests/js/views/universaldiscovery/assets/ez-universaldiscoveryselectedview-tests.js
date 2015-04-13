@@ -228,6 +228,25 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 "The button should not be disabled"
             );
         },
+
+        "Should reset the animation": function () {
+            var elt, style;
+
+            this["Should disable the button"]();
+            elt = this.view.startAnimation();
+            elt.setStyle('left', "42px");
+            style = elt.getAttribute('style');
+
+            this.view.set('confirmButtonEnabled', true);
+            Assert.isFalse(
+                elt.hasClass('is-animated'),
+                "The animated element should not have the animated class"
+            );
+            Assert.areNotEqual(
+                style, elt.getAttribute('style'),
+                "The style attribute should be removed"
+            );
+        }
     });
 
     Y.Test.Runner.setName("eZ Universal Discovery Selected View tests");
@@ -235,4 +254,4 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
     Y.Test.Runner.add(domEventTest);
     Y.Test.Runner.add(startAnimationTest);
     Y.Test.Runner.add(confirmButtonStateTest);
-}, '', {requires: ['test', 'node-event-simulate', 'ez-universaldiscoveryselectedview']});
+}, '', {requires: ['test', 'node-style', 'node-event-simulate', 'ez-universaldiscoveryselectedview']});

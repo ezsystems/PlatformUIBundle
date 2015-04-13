@@ -4,7 +4,7 @@
  */
 YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
     var resetTest, defaultSubViewTest, treeNavigateTest, renderTest, unselectTest,
-        multipleUpdateTest,
+        multipleUpdateTest, onUnselectContentTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     resetTest = new Y.Test.Case({
@@ -338,6 +338,77 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
         },
     });
 
+    onUnselectContentTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Browse onUnselectContentTest test',
+
+        setUp: function () {
+            this.selectedView = new Mock();
+            this.view = new Y.eZ.UniversalDiscoveryBrowseView({
+                selectedView: this.selectedView,
+                treeView: {},
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+            delete this.selectedView;
+        },
+
+        "Should ignore an empty selectedView": function () {
+            Mock.expect(this.selectedView, {
+                method: 'get',
+                args: ['contentStruct'],
+                returns: null
+            });
+            this.view.onUnselectContent(42);
+            Mock.verify(this.selectedView);
+        },
+
+        "Should ignore when the selectedView displays a different content": function () {
+            var content = new Mock(),
+                contentId = 42;
+
+            Mock.expect(content, {
+                method: 'get',
+                args: ['id'],
+                returns: (contentId + 1),
+            });
+            Mock.expect(this.selectedView, {
+                method: 'get',
+                args: ['contentStruct'],
+                returns: {content: content},
+            });
+            this.view.onUnselectContent(contentId);
+            Mock.verify(content);
+            Mock.verify(this.selectedView);
+        },
+
+        "Should enable the button and reset the animated element": function () {
+            var content = new Mock(),
+                contentId = 42;
+
+            Mock.expect(content, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId,
+            });
+            Mock.expect(this.selectedView, {
+                method: 'get',
+                args: ['contentStruct'],
+                returns: {content: content},
+            });
+            Mock.expect(this.selectedView, {
+                method: 'set',
+                args: ['confirmButtonEnabled', true],
+            });
+            this.view.onUnselectContent(contentId);
+            Mock.verify(content);
+            Mock.verify(this.selectedView);
+        },
+    });
+
+
     Y.Test.Runner.setName("eZ Universal Discovery Browse View tests");
     Y.Test.Runner.add(resetTest);
     Y.Test.Runner.add(defaultSubViewTest);
@@ -345,4 +416,5 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
     Y.Test.Runner.add(unselectTest);
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(multipleUpdateTest);
+    Y.Test.Runner.add(onUnselectContentTest);
 }, '', {requires: ['test', 'view', 'ez-universaldiscoverybrowseview']});
