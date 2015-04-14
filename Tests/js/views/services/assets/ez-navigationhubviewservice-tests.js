@@ -214,6 +214,25 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             );
         },
 
+        _assertNavigationItem: function (item, title, identifier, routeName) {
+            Assert.areSame(
+                Y.eZ.NavigationItemView, item.Constructor,
+                "The constructor should be eZ.NavigationItemView"
+            );
+            Assert.areEqual(
+                title, item.config.title,
+                "The navigation item title does not match"
+            );
+            Assert.areEqual(
+                identifier, item.config.identifier,
+                "The navigation item identifier does not match"
+            );
+            Assert.areEqual(
+                routeName, item.config.route.name,
+                "The navigation item route name does not match"
+            );
+        },
+
         "'platform' zone": function () {
             var value = this.service.get('platformNavigationItems');
 
@@ -245,8 +264,17 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
             Assert.isArray(value, "The studioplusNavigationItems should contain an array");
             Assert.areEqual(
-                0, value.length,
-                "studioplus zone should be empty"
+                1, value.length,
+                "studio plus zone should contain only one element"
+            );
+
+            this._assertNavigationItem(
+                value[0], "eZ Studio Plus presentation", "studioplus-presentation", "studioPlusPresentation"
+            );
+
+            Assert.areEqual(
+                0, Y.Object.keys(value[0].config.route.params),
+                "List of param should be empty"
             );
         },
 
@@ -255,8 +283,16 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
             Assert.isArray(value, "The studioNavigationItems should contain an array");
             Assert.areEqual(
-                0, value.length,
-                "studio zone should be empty"
+                1, value.length,
+                "studio zone should contain only one element"
+            );
+            this._assertNavigationItem(
+                value[0], "eZ Studio presentation", "studio-presentation", "studioPresentation"
+            );
+
+            Assert.areEqual(
+                0, Y.Object.keys(value[0].config.route.params),
+                "List of param should be empty"
             );
         },
     });

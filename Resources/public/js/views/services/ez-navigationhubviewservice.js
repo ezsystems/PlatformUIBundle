@@ -274,7 +274,14 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
              * @readOnly
              */
             studioplusNavigationItems: {
-                value: [],
+                valueFn: function () {
+                    return [
+                        this._getNavigationItem(
+                            "eZ Studio Plus presentation", "studioplus-presentation",
+                            "studioPlusPresentation", {}
+                        ),
+                    ];
+                },
                 readOnly: true,
             },
 
@@ -292,7 +299,14 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
              * @readOnly
              */
             studioNavigationItems: {
-                value: [],
+                valueFn: function () {
+                    return [
+                        this._getNavigationItem(
+                            "eZ Studio presentation", "studio-presentation",
+                            "studioPresentation", {}
+                        ),
+                    ];
+                },
                 readOnly: true,
             },
 
