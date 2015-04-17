@@ -11,6 +11,9 @@
     left: 0;
     z-index: 21000;
 
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
 }
 

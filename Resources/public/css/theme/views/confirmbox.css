@@ -4,6 +4,9 @@
  */
 
 .is-confirmbox-hidden .ez-confirmbox-container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
 
     background: rgba(0, 0, 0, 0);
