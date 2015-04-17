@@ -30,12 +30,15 @@ system:
                         - 'ez-discoverybarview'
                         - 'ez-universaldiscoveryviewservice'
                         - 'ez-universaldiscoveryview'
+                        - 'ez-confirmboxviewservice'
+                        - 'ez-confirmboxview'
                         - 'ez-errorview'
                         - 'ez-usermodel'
                         - 'ez-pluginregistry'
                         - 'ez-registerurlhelpersplugin'
                         - 'ez-domstateplugin'
                         - 'ez-universaldiscoveryplugin'
+                        - 'ez-confirmboxplugin'
                     path: %ez_platformui.public_dir%/js/apps/ez-platformuiapp.js
                 ez-viewservice:
                     requires: ['base', 'parallel']
@@ -79,6 +82,9 @@ system:
                 ez-universaldiscoveryviewservice:
                     requires: ['ez-viewservice', 'ez-universaldiscoverycontenttreeplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-universaldiscoveryviewservice.js
+                ez-confirmboxviewservice:
+                    requires: ['ez-viewservice']
+                    path: %ez_platformui.public_dir%/js/views/services/ez-confirmboxviewservice.js
                 ez-serversideviewservice:
                     requires: ['io-base', 'io-form', 'ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-serversideviewservice.js
@@ -148,6 +154,12 @@ system:
                 universaldiscoveryselectedview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/universaldiscovery/selected.hbt
+                ez-confirmboxview:
+                    requires: ['ez-templatebasedview', 'confirmboxview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/ez-confirmboxview.js
+                confirmboxview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/confirmbox.hbt
                 ez-navigationhubview:
                     requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside', 'navigationhubview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-navigationhubview.js
@@ -576,6 +588,9 @@ system:
                 ez-pluginregistry:
                     requires: ['array-extras']
                     path: %ez_platformui.public_dir%/js/services/ez-pluginregistry.js
+                ez-confirmboxplugin:
+                    requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-confirmboxplugin.js
                 ez-universaldiscoveryplugin:
                     requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-universaldiscoveryplugin.js

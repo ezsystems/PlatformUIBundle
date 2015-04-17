@@ -10,6 +10,7 @@ system:
             # layout stylesheets
                 - '@eZPlatformUIBundle/Resources/public/css/layout.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/navigationhub.css'
+                - '@eZPlatformUIBundle/Resources/public/css/views/confirmbox.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/universaldiscovery.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/universaldiscovery/browse.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/universaldiscovery/selected.css'
@@ -72,6 +73,7 @@ system:
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/error.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/loginform.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/bar.css'
+                - '@eZPlatformUIBundle/Resources/public/css/theme/views/confirmbox.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/universaldiscovery.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/universaldiscovery/browse.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/universaldiscovery/selected.css'
