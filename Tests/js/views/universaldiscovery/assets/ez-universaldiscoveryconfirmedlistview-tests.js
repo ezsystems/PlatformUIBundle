@@ -400,6 +400,16 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
                 "The full list should be hidden"
             );
         },
+
+        "Should ignore the confirmbox click": function () {
+            this.view._set('showFullList', true);
+
+            Y.one('.confirm').simulate('click');
+            Assert.isTrue(
+                this.view.get('showFullList'),
+                "The full list should be still visible"
+            );
+        },
     });
 
     removeButtonTest = new Y.Test.Case({
@@ -415,16 +425,64 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
             delete this.view;
         },
 
-        "Should fire the unselectContent event": function () {
+        "Should fire the confirmBoxOpen event": function () {
             var that = this,
                 button = this.view.get('container').one('button');
 
-            this.view.on('unselectContent', function (e) {
+            this.view.on('confirmBoxOpen', function (e) {
                 that.resume(function () {
-                    Assert.areEqual(
-                        button.getAttribute('data-content-id'),
-                        e.contentId,
-                        "The content id should be provided in the event facade"
+                    Assert.isObject(e.config, "The event facade should contain a config object");
+                    Assert.isString(e.config.title, "The tile should be defined");
+                    Assert.isFunction(e.config.confirmHandler, "A confirmHandler should be provided");
+                    Assert.isFunction(e.config.cancelHandler, "A cancelHandler should be provided");
+                    Assert.isFalse(
+                        this.view.get('trackOutsideEvents'),
+                        "The trackOutsideEvents should be false"
+                    );
+                });
+            });
+            button.simulateGesture('tap');
+            this.wait();
+        },
+
+        "Should remove the content": function () {
+            var that = this,
+                unselectContent = false,
+                button = this.view.get('container').one('button');
+
+            this.view.on('unselectContent', function (e) {
+                unselectContent = true;
+                Assert.areEqual(
+                    button.getAttribute('data-content-id'), e.contentId,
+                    "The contentId should be available in the event facade"
+                );
+            });
+            this.view.on('confirmBoxOpen', function (e) {
+                that.resume(function () {
+                    e.config.confirmHandler.apply(this);
+                    Assert.isTrue(
+                        this.view.get('trackOutsideEvents'),
+                        "trackOutsideEvents should be set to true"
+                    );
+                    Assert.isTrue(
+                        unselectContent, "The unselectContent event should be fired"
+                    );
+                });
+            });
+            button.simulateGesture('tap');
+            this.wait();
+        },
+
+        "Should not remove the content": function () {
+            var that = this,
+                button = this.view.get('container').one('button');
+
+            this.view.on('confirmBoxOpen', function (e) {
+                that.resume(function () {
+                    e.config.cancelHandler.apply(this);
+                    Assert.isTrue(
+                        this.view.get('trackOutsideEvents'),
+                        "trackOutsideEvents should be set to true"
                     );
                 });
             });

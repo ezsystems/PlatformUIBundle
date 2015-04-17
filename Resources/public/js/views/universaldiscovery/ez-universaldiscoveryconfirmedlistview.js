@@ -37,7 +37,7 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
                 }
             },
             '.ez-ud-full-list-item-remove': {
-                'tap': '_removeContent',
+                'tap': '_confirmRemoval',
             }
         },
 
@@ -53,6 +53,7 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
                 }
             });
             this.after('showFullListChange', this._uiHandleFullList);
+            this.after('trackOutsideEventsChange', this._handleClickOutsideEventHandler);
         },
 
         render: function () {
@@ -74,8 +75,34 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
          * @param {EventFacade} e
          * @protected
          */
-        _removeContent: function (e) {
+        _confirmRemoval: function (e) {
+            var contentId = e.target.getAttribute('data-content-id');
+
             e.preventDefault();
+            this._set('trackOutsideEvents', false);
+            this.fire('confirmBoxOpen', {
+                config: {
+                    title: "Are you sure you want to remove this item?",
+                    confirmHandler: Y.bind(function () {
+                        this._removeContent(contentId);
+                        this._set('trackOutsideEvents', true);
+                    }, this),
+                    cancelHandler: Y.bind(function () {
+                        this._set('trackOutsideEvents', true);
+                    }, this),
+                },
+            });
+        },
+
+        /**
+         * Fires the unselectContent to remove the content from the universal
+         * discovery selection.
+         *
+         * @method _removeContent
+         * @param {String} contentId
+         * @protected
+         */
+        _removeContent: function (contentId) {
             /**
              * Fired to unselect a content in universal discovery widget
              *
@@ -83,7 +110,7 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
              * @param {String} contentId
              */
             this.fire('unselectContent', {
-                contentId: e.target.getAttribute('data-content-id'),
+                contentId: contentId
             });
         },
 
@@ -114,11 +141,56 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
             var container = this.get('container');
 
             if ( this.get('showFullList') ) {
-                container.on('clickoutside', Y.bind(this._hideFullList, this));
                 container.addClass(IS_FULL_LIST_VISIBLE);
+                this._set('trackOutsideEvents', true);
             } else {
                 container.removeClass(IS_FULL_LIST_VISIBLE);
-                container.detach('clickoutside');
+                this._set('trackOutsideEvents', false);
+            }
+        },
+
+        /**
+         * `trackOutsideEventsChange` event handler.
+         * Adds or removes the click outside event handler depending on the
+         * `trackOutsideEvents` attribute value.
+         *
+         * @method _handleClickOutsideEventHandler
+         * @protected
+         */
+        _handleClickOutsideEventHandler: function () {
+            if ( this.get('trackOutsideEvents') ) {
+                this._addClickOutsideHandler();
+            } else {
+                this._removeClickOutsideHandler();
+            }
+        },
+
+        /**
+         * Adds the click outside event handler
+         *
+         * @method _addClickOutsideHandler
+         * @protected
+         */
+        _addClickOutsideHandler: function () {
+            this._clickOutsideHandler = this.get('container').on('clickoutside', Y.bind(function (e) {
+                // This condition is workaround to make sure any tap on the
+                // confirmbox does not hide the full list.
+                if ( !e.target.ancestor('.ez-confirmbox-container', true) ) {
+                    this._hideFullList();
+                }
+            }, this));
+        },
+
+        /**
+         * Removes the click outside event handler
+         *
+         * @method _removeClickOutsideHandler
+         * @protected
+         */
+        _removeClickOutsideHandler: function () {
+            if ( this._clickOutsideHandler ) {
+                this._clickOutsideHandler.detach();
+                this._clickOutsideHandler = null;
             }
         },
 
@@ -248,6 +320,17 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
                 readOnly: true,
                 value: false,
             },
+
+            /**
+             * Flag indicating whether the confirmed list should track the
+             * outside events (click).
+             *
+             * @attribute trackOutsideEvents
+             * @readOnly
+             */
+            trackOutsideEvents: {
+                readOnly: true,
+            }
         },
     });
 });
