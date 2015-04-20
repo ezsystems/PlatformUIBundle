@@ -58,6 +58,14 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
             return this;
         },
 
+        onUnselectContent: function (contentId) {
+            var selectedViewStruct = this.get('selectedView').get('contentStruct');
+
+            if ( selectedViewStruct && selectedViewStruct.content.get('id') === contentId ) {
+                this.get('selectedView').set('confirmButtonEnabled', true);
+            }
+        },
+
         /**
          * `multipleChange` event handler. It sets the selected view
          * `addConfirmButton` flag according to the new `multiple` attribute value.

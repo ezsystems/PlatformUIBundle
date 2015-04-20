@@ -1,0 +1,45 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.is-confirmbox-hidden .ez-confirmbox-container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+
+    background: rgba(0, 0, 0, 0);
+    -webkit-transform: translateY(-100%);
+            transform: translateY(-100%);
+}
+
+.ez-confirmbox-container {
+    background: rgba(0, 0, 0, 0.6);
+
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    -webkit-transition: all 0.3s;
+            transition: all 0.3s;
+}
+
+.ez-view-confirmboxview {
+    background: #f5f4f2;
+    border: 1px solid #aaa;
+}
+
+.ez-view-confirmboxview .ez-confirmbox-title {
+    font-size: 150%;
+    font-weight: normal;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.2em;
+}
+
+.ez-view-confirmboxview .ez-confirmbox-close-icon:after {
+    color: #444;
+    font-size: 150%;
+}
+
+.ez-view-confirmboxview .ez-confirmbox-confirm {
+    font-weight: bold;
+}

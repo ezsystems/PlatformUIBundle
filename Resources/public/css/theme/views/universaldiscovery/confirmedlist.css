@@ -86,3 +86,13 @@
 .ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-icon:before {
     background: #f5f4f2;
 }
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-remove {
+    font-size: 110%;
+    background: #B10020;
+    border: 0;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-remove:before {
+    color: #fff;
+}

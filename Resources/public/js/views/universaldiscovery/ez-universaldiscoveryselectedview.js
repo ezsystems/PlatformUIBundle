@@ -11,6 +11,8 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
      */
     Y.namespace('eZ');
 
+    var IS_ANIMATED = 'is-animated';
+
     /**
      * Universal Discovery Selected View. It's a view meant to display the
      * currently selected content in the different discovery method.
@@ -31,7 +33,12 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
             this.after('contentStructChange', function (e) {
                 this.render();
             });
-            this.after('confirmButtonEnabledChange', this._uiButtonState);
+            this.after('confirmButtonEnabledChange', function (e) {
+                this._uiButtonState();
+                if ( this.get('confirmButtonEnabled') ) {
+                    this._uiResetAnimation();
+                }
+            });
         },
 
         /**
@@ -88,6 +95,18 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
         },
 
         /**
+         * Returns the element that will be animated when the displayed content
+         * is selected
+         *
+         * @method _getAnimatedElement
+         * @protected
+         * @return {Y.Node|Null}
+         */
+        _getAnimatedElement: function () {
+            return this.get('container').one('.ez-ud-selected-animation');
+        },
+
+        /**
          * Starts the animation of the content selection. It also returns the
          * node to animate.
          *
@@ -95,12 +114,27 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
          * @return {Y.Node|Null}
          */
         startAnimation: function () {
-            var node = this.get('container').one('.ez-ud-selected-animation');
+            var node = this._getAnimatedElement();
+
             if ( node ) {
-                node.addClass('is-animated');
+                node.addClass(IS_ANIMATED);
                 return node;
             }
             return null;
+        },
+
+        /**
+         * Resets the animated element to its original state
+         *
+         * @method _uiResetAnimation
+         * @protected
+         */
+        _uiResetAnimation: function () {
+            var node = this._getAnimatedElement();
+
+            if ( node ) {
+                node.removeClass(IS_ANIMATED).removeAttribute('style');
+            }
         },
 
         /**

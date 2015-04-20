@@ -12,13 +12,22 @@
     margin: 0;
 }
 
+.ez-view-universaldiscoveryconfirmedlistview.is-empty .ez-ud-mini-display-empty {
+    display: block;
+}
+
 .ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-empty {
+    display: none;
     margin: 0;
 }
 
 .ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-list {
     padding: 0;
     margin: 0.2em 0 0 0;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview.is-empty .ez-ud-mini-display-list {
+    display: none;
 }
 
 .ez-view-universaldiscoveryconfirmedlistview .ez-ud-mini-display-item {
@@ -100,24 +109,21 @@
     flew-flow: row nowrap;
 }
 
-.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-icon {
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-icon,
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-actions {
     -webkit-box-flex: 0;
     -webkit-flex: 0 0 auto;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
-}
 
-.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-icon {
     width: 2em;
     padding: 0.15em;
 
     display: -webkit-box;
-
     display: -webkit-flex;
-
     display: -ms-flexbox;
-
     display: flex;
+
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
@@ -131,6 +137,42 @@
     -webkit-align-items: center;
         -ms-flex-align: center;
             align-items: center;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-actions {
+    padding: 0;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-align: stretch;
+    -webkit-align-items: stretch;
+        -ms-flex-align: stretch;
+            align-items: stretch;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-action {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-action:before {
+    display: block;
+    text-align: center;
+
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    margin: auto;
 }
 
 .ez-view-universaldiscoveryconfirmedlistview .ez-ud-full-list-item-icon:before {

@@ -81,6 +81,12 @@ YUI.add('ez-platformuiapp', function (Y) {
                 container: '.ez-universaldiscovery-container',
                 hideClass: 'is-universaldiscovery-hidden',
             },
+            confirmBox: {
+                type: Y.eZ.ConfirmBoxView,
+                service: Y.eZ.ConfirmBoxViewService,
+                container: '.ez-confirmbox-container',
+                hideClass: 'is-confirmbox-hidden',
+            },
         },
 
         views: {

@@ -7,7 +7,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         tabTest, defaultMethodsTest, selectContentTest, confirmButtonStateTest,
         updateTitleTest, confirmSelectedContentTest, resetTest, selectionUpdateConfirmViewTest,
         defaultConfirmedListTest, multipleClassTest, animatedSelectionTest,
-        selectedViewButtonStateTest,
+        selectedViewButtonStateTest, unselectContentTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -1147,6 +1147,131 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
     });
 
+    unselectContentTest = new Y.Test.Case({
+        name: "eZ Universal Discovery View confirm unselectContent event test",
+
+        setUp: function () {
+            var that = this,
+                TestMethod = Y.Base.create('testMethod', Y.eZ.UniversalDiscoveryMethodBaseView, [], {
+                    onUnselectContent: function (contentId) {
+                        Assert.areEqual(
+                            that.removeContentId, contentId,
+                            "The method should be notified for the removal of the content"
+                        );
+                        that.onUnselectContentCalled = true;
+                    },
+                });
+            this.removeContentId = 42;
+            this.onUnselectContentCalled = false;
+            this.confirmedList = new Y.View();
+            this.view = new Y.eZ.UniversalDiscoveryView({
+                methods: [new TestMethod()],
+                confirmedListView: this.confirmedList,
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.confirmedList.destroy();
+            delete this.view;
+            delete this.confirmedList;
+        },
+
+        "Should remove the content from the selection (multiple)": function () {
+            var selection = [],
+                remainingContent = new Mock(),
+                removeContentId = 42;
+
+            selection.push({
+                content: new Mock(),
+            });
+            selection.push({
+                content: remainingContent,
+            });
+            Mock.expect(selection[0].content, {
+                method: 'get',
+                args: ['id'],
+                returns: removeContentId,
+            });
+            Mock.expect(remainingContent, {
+                method: 'get',
+                args: ['id'],
+                returns: "",
+            });
+            this.view.set('multiple', true);
+            this.view._set('selection', selection);
+            this.view.fire('whatever:unselectContent', {
+                contentId: removeContentId,
+            });
+
+            Assert.areEqual(
+                1, this.view.get('selection').length,
+                "The selection should contain only one content"
+            );
+            Assert.areSame(
+                remainingContent, this.view.get('selection')[0].content,
+                "The 42 content should have been removed"
+            );
+            Assert.isTrue(
+                this.onUnselectContentCalled, "onUnselectContent should have been called"
+            );
+        },
+
+        "Should reset the selection after removing the last content": function () {
+            var selection = [],
+                removeContentId = 42;
+
+            selection.push({
+                content: new Mock(),
+            });
+            Mock.expect(selection[0].content, {
+                method: 'get',
+                args: ['id'],
+                returns: removeContentId,
+            });
+            this.view.set('multiple', true);
+            this.view._set('selection', selection);
+            this.view.fire('whatever:unselectContent', {
+                contentId: removeContentId,
+            });
+
+            Assert.isNull(
+                this.view.get('selection'),
+                "The selection should be null"
+            );
+            Assert.isTrue(
+                this.onUnselectContentCalled, "onUnselectContent should have been called"
+            );
+        },
+
+        "Should remove the content from the selection": function () {
+            var selection,
+                removeContentId = 42;
+
+            selection = {
+                content: new Mock(),
+            };
+            Mock.expect(selection.content, {
+                method: 'get',
+                args: ['id'],
+                returns: removeContentId,
+            });
+            this.view._set('selection', selection);
+            this.view.fire('whatever:unselectContent', {
+                contentId: removeContentId,
+            });
+
+            Assert.isNull(
+                this.view.get('selection'),
+                "The selection should be null"
+            );
+            Assert.isTrue(
+                this.onUnselectContentCalled, "onUnselectContent should have been called"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(domEventTest);
@@ -1165,4 +1290,5 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     Y.Test.Runner.add(multipleClassTest);
     Y.Test.Runner.add(animatedSelectionTest);
     Y.Test.Runner.add(selectedViewButtonStateTest);
+    Y.Test.Runner.add(unselectContentTest);
 }, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'ez-universaldiscoveryview']});

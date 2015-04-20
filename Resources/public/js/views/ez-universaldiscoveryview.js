@@ -44,6 +44,9 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     this._storeSelection(e.selection);
                 }
             });
+            this.after('*:unselectContent', function (e) {
+                this._unselectContent(e.contentId);
+            });
             this.after('*:confirmSelectedContent', function (e) {
                 if ( !this._isAlreadySelected(e.selection) ) {
                     this._uiAnimateSelection(e.target);
@@ -91,6 +94,42 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             } else {
                 this._set('selection', contentStruct);
             }
+        },
+
+        /**
+         * Unselects the content from its content id.
+         *
+         * @method _unselectContent
+         * @param {String} contentId
+         */
+        _unselectContent: function (contentId) {
+            var newSelection = [];
+
+            if ( this.get('multiple') ) {
+                newSelection = Y.Array.filter(this.get('selection'), function (struct) {
+                    return struct.content.get('id') !== contentId;
+                });
+            }
+            this._notifyMethodsUnselectContent(contentId);
+            if ( newSelection.length === 0 ) {
+                this._resetSelection();
+                return;
+            }
+            this._set('selection', newSelection);
+        },
+
+        /**
+         * Notifies the browse method views that a content is removed from the
+         * selection.
+         *
+         * @method _notifyMethodsUnselectContent
+         * @protected
+         * @param {String} contentId
+         */
+        _notifyMethodsUnselectContent: function (contentId) {
+            Y.Array.each(this.get('methods'), function (method) {
+                method.onUnselectContent(contentId);
+            });
         },
 
         /**
