@@ -40,6 +40,8 @@ system:
                 - '@eZPlatformUIBundle/Resources/public/css/views/fieldedit.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/error.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/asynchronous.css'
+                - '@eZPlatformUIBundle/Resources/public/css/views/studiopresentation.css'
+                - '@eZPlatformUIBundle/Resources/public/css/views/studiopluspresentation.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/checkbox.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/textline.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/keyword.css'

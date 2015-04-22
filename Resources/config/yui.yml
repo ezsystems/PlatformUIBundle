@@ -118,13 +118,13 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/locationview.hbt
                 ez-studiopresentationview:
-                    requires: ['ez-templatebasedview', 'studiopresentationview-ez-template']
+                    requires: ['ez-templatebasedview', 'studiopresentationview-ez-template', 'ez-height-fit']
                     path: %ez_platformui.public_dir%/js/views/ez-studiopresentationview.js
                 studiopresentationview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/studiopresentation.hbt
                 ez-studiopluspresentationview:
-                    requires: ['ez-templatebasedview', 'studiopluspresentationview-ez-template']
+                    requires: ['ez-templatebasedview', 'studiopluspresentationview-ez-template', 'ez-height-fit']
                     path: %ez_platformui.public_dir%/js/views/ez-studiopluspresentationview.js
                 studiopluspresentationview-ez-template:
                     type: 'template'
@@ -653,6 +653,9 @@ system:
                 ez-expandable:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js
+                ez-height-fit:
+                    requires: ['view', 'node-screen', 'node-style']
+                    path: %ez_platformui.public_dir%/js/extensions/ez-height-fit.js
                 ez-accordion-element:
                     requires: ['transition']
                     path: %ez_platformui.public_dir%/js/extensions/ez-accordion-element.js

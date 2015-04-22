@@ -9,7 +9,9 @@ YUI.add('ez-studiopluspresentationview-tests', function (Y) {
         name: "eZ Studio Plus Presentation View test",
 
         setUp: function () {
-            this.view = new Y.eZ.StudioPlusPresentationView();
+            this.view = new Y.eZ.StudioPlusPresentationView({container: '.container'});
+            this.dummyIframeFile = '/Tests/js/assets/dummy-iframe.htm';
+            this.view._set('iframeSource', this.dummyIframeFile);
         },
 
         tearDown: function () {
@@ -28,6 +30,34 @@ YUI.add('ez-studiopluspresentationview-tests', function (Y) {
             this.view.render();
             Y.Assert.isTrue(templateCalled, "The template should have been used to render this.view");
         },
+
+        "Test height fit": function () {
+            var container = this.view.get('container');
+            this.view.render();
+            this.view.set('active', true);
+
+            Y.Assert.areSame(
+                container.get('winHeight') - container.getY() + "px",
+                container.getStyle('height'),
+                "The height of the container should have been adapted to the windows size"
+            );
+        },
+
+        "Test iframe link": function () {
+            var iframeSource;
+            this.view.render();
+            this.view.set('active', true);
+
+            iframeSource = this.view.get('container').one('.ez-studiopluspresentation-content').get('src');
+
+            Y.Assert.isTrue(
+                iframeSource.indexOf(
+                    this.dummyIframeFile,
+                    iframeSource.length - this.dummyIframeFile.length
+                ) !== -1,
+                'Link of the iframe should have been replaced'
+            );
+        }
     });
 
     Y.Test.Runner.setName("eZ Studio Plus Presentation View tests");

@@ -5,7 +5,10 @@
 </head>
 <body>
 
-<script type="text/x-handlebars-template" id="studiopluspresentationview-ez-template">template</script>
+<script type="text/x-handlebars-template" id="studiopluspresentationview-ez-template">
+    <iframe class="ez-studiopluspresentation-content" src="about:blank"></iframe>
+</script>
+<div class="container" style="margin-top: 93px;"></div>
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-studiopluspresentationview-tests.js"></script>
@@ -27,12 +30,16 @@
         filter: loaderFilter,
         modules: {
             "ez-studiopluspresentationview": {
-                requires: ['ez-templatebasedview'],
+                requires: ['ez-templatebasedview', 'ez-height-fit'],
                 fullpath: "../../../Resources/public/js/views/ez-studiopluspresentationview.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-height-fit": {
+                requires: ['view', 'node-screen', 'node-style'],
+                fullpath:"../../../../Resources/public/js/extensions/ez-height-fit.js"
             },
             "ez-view": {
                 requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
