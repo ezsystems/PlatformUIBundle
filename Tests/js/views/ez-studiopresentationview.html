@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Studio Presentation view tests</title>
+</head>
+<body>
+
+<script type="text/x-handlebars-template" id="studiopresentationview-ez-template">template</script>
+
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-studiopresentationview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-studiopresentationview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-studiopresentationview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../Resources/public/js/views/ez-studiopresentationview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-studiopresentationview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

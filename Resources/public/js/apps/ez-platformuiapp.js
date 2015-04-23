@@ -97,6 +97,12 @@ YUI.add('ez-platformuiapp', function (Y) {
                 type: Y.eZ.DashboardView,
                 parent: 'loginFormView',
             },
+            studioPresentationView: {
+                type: Y.eZ.StudioPresentationView,
+            },
+            studioPlusPresentationView: {
+                type: Y.eZ.StudioPlusPresentationView,
+            },
             contentEditView: {
                 type: Y.eZ.ContentEditView,
                 parent: 'locationViewView',
@@ -746,6 +752,18 @@ YUI.add('ez-platformuiapp', function (Y) {
                     path: "/dashboard",
                     sideViews: {'navigationHub': true},
                     view: 'dashboardView',
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }, {
+                    name: "studioPresentation",
+                    path: "/studio/presentation",
+                    sideViews: {'navigationHub': true},
+                    view: 'studioPresentationView',
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }, {
+                    name: "studioPlusPresentation",
+                    path: "/studioplus/presentation",
+                    sideViews: {'navigationHub': true},
+                    view: 'studioPlusPresentationView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "editContent",

@@ -15,6 +15,8 @@ system:
                         - 'ez-loginformviewservice'
                         - 'ez-loginformview'
                         - 'ez-dashboardview'
+                        - 'ez-studiopresentationview'
+                        - 'ez-studiopluspresentationview'
                         - 'ez-contenteditviewservice'
                         - 'ez-contentcreateviewservice'
                         - 'ez-contenteditview'
@@ -115,6 +117,18 @@ system:
                 locationviewview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/locationview.hbt
+                ez-studiopresentationview:
+                    requires: ['ez-templatebasedview', 'studiopresentationview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/ez-studiopresentationview.js
+                studiopresentationview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/studiopresentation.hbt
+                ez-studiopluspresentationview:
+                    requires: ['ez-templatebasedview', 'studiopluspresentationview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/ez-studiopluspresentationview.js
+                studiopluspresentationview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/studiopluspresentation.hbt
                 ez-universaldiscoveryview:
                     requires:
                         - 'ez-tabs'

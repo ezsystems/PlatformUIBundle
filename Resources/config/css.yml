@@ -86,6 +86,8 @@ system:
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/actions/preview.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/actions/create-content.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/dashboard.css'
+                - '@eZPlatformUIBundle/Resources/public/css/theme/views/studiopresentation.css'
+                - '@eZPlatformUIBundle/Resources/public/css/theme/views/studiopluspresentation.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/serverside.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/navigationhub.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/locationview.css'
