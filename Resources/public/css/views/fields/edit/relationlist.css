@@ -1,0 +1,34 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-relationlisteditview .ez-editfield-input {
+    margin: 1em 2em;
+}
+
+.ez-view-relationlisteditview .ez-relation-input-ui {
+    width: 100%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.ez-view-relationlisteditview .ez-relation-empty {
+    margin: 0.5em 0 0 0.5em;
+}
+
+.ez-view-relationlisteditview .ez-relation-content-name {
+    margin: 0 0 0.3em 0;
+}
+
+.ez-view-relationlisteditview .ez-relation-tools {
+    text-align: center;
+}
+
+.ez-view-relationlisteditview .ez-relation-discover {
+    margin-right: 1em;
+}
+
+.ez-view-relationlisteditview .ez-relation-remove-content {
+    text-align: center;
+}
