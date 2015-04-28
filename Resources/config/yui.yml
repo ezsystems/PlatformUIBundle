@@ -536,6 +536,12 @@ system:
                 ez-contenttree:
                     requires: ['tree', 'tree-openable', 'tree-selectable', 'tree-lazy']
                     path: %ez_platformui.public_dir%/js/models/structs/ez-contenttree.js
+                ez-notification:
+                    requires: ['model']
+                    path: %ez_platformui.public_dir%/js/models/structs/ez-notification.js
+                ez-notificationlist:
+                    requires: ['model-list', 'ez-notification']
+                    path: %ez_platformui.public_dir%/js/models/structs/ez-notificationlist.js
                 ez-editactionbarview:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-previewactionview']
                     path: %ez_platformui.public_dir%/js/views/ez-editactionbarview.js
