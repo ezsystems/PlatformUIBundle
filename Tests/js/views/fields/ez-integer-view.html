@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <title>eZ Integer view tests</title>
+</head>
+<body>
+
+<script type="text/x-handlebars-template" id="fieldview-ez-template">
+    <div id="marcelobielsa">Bielsa No Se Va</div>
+</script>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../assets/genericfieldview-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-integer-view-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-integer-view'],
+        filter: loaderFilter,
+        modules: {
+            "ez-integer-view": {
+                requires: ['ez-fieldview'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-integer-view.js"
+            },
+            "ez-fieldview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/ez-fieldview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-integer-view-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

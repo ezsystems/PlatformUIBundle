@@ -219,6 +219,8 @@ system:
                         - 'ez-user-view'
                         - 'ez-maplocation-view'
                         - 'ez-author-view'
+                        - 'ez-integer-view'
+                        - 'ez-float-view'
                         - 'ez-dateandtime-view'
                         - 'ez-date-view'
                         - 'ez-time-view'
@@ -468,9 +470,15 @@ system:
                 ez-float-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'floateditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-float-editview.js
+                ez-float-view:
+                    requires: ['ez-fieldview']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-float-view.js
                 floateditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/float.hbt
+                ez-integer-view:
+                    requires: ['ez-fieldview']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-integer-view.js
                 ez-integer-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'integereditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-integer-editview.js
