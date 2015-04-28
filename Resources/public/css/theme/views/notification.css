@@ -1,0 +1,29 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-notificationview {
+    -webkit-transition: all 0.4s ease;
+            transition: all 0.4s ease;
+}
+
+.ez-view-notificationview {
+    background: #f5f4f2;
+}
+
+.ez-view-notificationview.is-state-started {
+    background: #F7A64D;
+}
+
+.ez-view-notificationview.is-state-done {
+    background: #1EDCB1;
+}
+
+.ez-view-notificationview .ez-notification-tools {
+    font-size: 200%;
+}
+
+.ez-view-notificationview .ez-notification-close:after {
+    color: #444;
+}

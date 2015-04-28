@@ -1,0 +1,22 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-notificationview {
+    padding: 0;
+    margin: 0;
+
+    display: flex; /* TODO vendor prefixes */
+    align-items: stretch;
+}
+
+.ez-view-notificationview .ez-notification-text {
+    flex: 1 100%;
+    align-self: center;
+}
+
+.ez-view-notificationview .ez-notification-tools {
+    flex: 1 0 1em;
+    text-align: center;
+}
