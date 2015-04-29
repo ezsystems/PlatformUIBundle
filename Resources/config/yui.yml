@@ -34,6 +34,8 @@ system:
                         - 'ez-universaldiscoveryview'
                         - 'ez-confirmboxviewservice'
                         - 'ez-confirmboxview'
+                        - 'ez-notificationhubviewservice'
+                        - 'ez-notificationhubview'
                         - 'ez-errorview'
                         - 'ez-usermodel'
                         - 'ez-pluginregistry'
@@ -41,6 +43,7 @@ system:
                         - 'ez-domstateplugin'
                         - 'ez-universaldiscoveryplugin'
                         - 'ez-confirmboxplugin'
+                        - 'ez-notificationhubplugin'
                     path: %ez_platformui.public_dir%/js/apps/ez-platformuiapp.js
                 ez-viewservice:
                     requires: ['base', 'parallel']

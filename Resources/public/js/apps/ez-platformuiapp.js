@@ -87,6 +87,12 @@ YUI.add('ez-platformuiapp', function (Y) {
                 container: '.ez-confirmbox-container',
                 hideClass: 'is-confirmbox-hidden',
             },
+            notificationHub: {
+                type: Y.eZ.NotificationHubView,
+                service: Y.eZ.NotificationHubViewService,
+                container: '.ez-notification-container',
+                hideClass: 'is-notification-hidden',
+            },
         },
 
         views: {
