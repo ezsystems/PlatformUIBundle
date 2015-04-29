@@ -87,6 +87,9 @@ system:
                 ez-confirmboxviewservice:
                     requires: ['ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-confirmboxviewservice.js
+                ez-notificationhubviewservice:
+                    requires: ['ez-viewservice', 'ez-notificationlist']
+                    path: %ez_platformui.public_dir%/js/views/services/ez-notificationhubviewservice.js
                 ez-serversideviewservice:
                     requires: ['io-base', 'io-form', 'ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-serversideviewservice.js
