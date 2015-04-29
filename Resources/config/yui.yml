@@ -628,6 +628,9 @@ system:
                 ez-pluginregistry:
                     requires: ['array-extras']
                     path: %ez_platformui.public_dir%/js/services/ez-pluginregistry.js
+                ez-notificationhubplugin:
+                    requires: ['plugin', 'base', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-notificationhubplugin.js
                 ez-confirmboxplugin:
                     requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-confirmboxplugin.js
