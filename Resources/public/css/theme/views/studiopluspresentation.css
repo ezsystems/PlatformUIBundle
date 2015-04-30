@@ -4,7 +4,9 @@
  */
 
 .ez-view-studiopluspresentationview {
-    /* for test purpose */
-    padding: 1em;
     background: #fff;
+}
+
+.ez-view-studiopluspresentationview .ez-studiopluspresentation-content {
+    border: 0;
 }
