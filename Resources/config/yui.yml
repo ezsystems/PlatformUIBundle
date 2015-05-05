@@ -639,10 +639,10 @@ system:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-notificationhubplugin.js
                 ez-confirmboxplugin:
-                    requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
+                    requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-confirmboxplugin.js
                 ez-universaldiscoveryplugin:
-                    requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
+                    requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-universaldiscoveryplugin.js
                 ez-domstateplugin:
                     requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
