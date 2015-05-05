@@ -394,7 +394,7 @@ YUI.add('ez-platformuiapp', function (Y) {
             Y.Object.each(this.sideViews, function (viewInfo, key) {
                 if ( routeSideViews && routeSideViews[key] ) {
                     this._showSideView(viewInfo, req, res, undefined, tasks.add());
-                } else {
+                } else if ( routeSideViews && routeSideViews[key] !== undefined ) {
                     this._hideSideView(viewInfo);
                 }
             }, this);
@@ -736,7 +736,9 @@ YUI.add('ez-platformuiapp', function (Y) {
              *     display. This is handled by the `handleMainView` middleware.
              *   * `sideViews`: a hash which keys are the side view keys in the
              *     sideViews property. A truthy value means that the
-             *     corresponding side view should be visible.
+             *     corresponding side view should be visible, false means that
+             *     the side view should be explicitely hidden. If a side view is
+             *     not mentionned it means it should remain as it is.
              *
              * If a route provides both a `regex` and a `path` properties, the
              * `regex` is used in the route matching process, while the `path`
@@ -750,39 +752,39 @@ YUI.add('ez-platformuiapp', function (Y) {
                     name: "loginForm",
                     path: "/login",
                     service: Y.eZ.LoginFormViewService,
-                    sideViews: {},
+                    sideViews: {'navigationHub': false, 'discoveryBar': false},
                     view: 'loginFormView',
                     callbacks: ['open', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "dashboard",
                     path: "/dashboard",
-                    sideViews: {'navigationHub': true},
+                    sideViews: {'navigationHub': true, 'discoveryBar': false},
                     view: 'dashboardView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "studioPresentation",
                     path: "/studio/presentation",
-                    sideViews: {'navigationHub': true},
+                    sideViews: {'navigationHub': true, 'discoveryBar': false},
                     view: 'studioPresentationView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "studioPlusPresentation",
                     path: "/studioplus/presentation",
-                    sideViews: {'navigationHub': true},
+                    sideViews: {'navigationHub': true, 'discoveryBar': false},
                     view: 'studioPlusPresentationView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "editContent",
                     path: '/edit/:id',
                     service: Y.eZ.ContentEditViewService,
-                    sideViews: {},
+                    sideViews: {'navigationHub': false, 'discoveryBar': false},
                     view: 'contentEditView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "createContent",
                     path: '/create',
                     service: Y.eZ.ContentCreateViewService,
-                    sideViews: {},
+                    sideViews: {'navigationHub': false, 'discoveryBar': false},
                     view: 'contentEditView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
@@ -797,14 +799,14 @@ YUI.add('ez-platformuiapp', function (Y) {
                     regex: /\/admin\/(pjax%2Fsection%2F.*)/,
                     keys: ['uri'],
                     path: "/admin/:uri",
-                    sideViews: {'navigationHub': true},
+                    sideViews: {'navigationHub': true, 'discoveryBar': false},
                     service: Y.eZ.SectionServerSideViewService,
                     view: "sectionServerSideView",
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "adminGenericRoute",
                     path: "/admin/:uri",
-                    sideViews: {'navigationHub': true},
+                    sideViews: {'navigationHub': true, 'discoveryBar': false},
                     service: Y.eZ.ServerSideViewService,
                     view: "serverSideView",
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
