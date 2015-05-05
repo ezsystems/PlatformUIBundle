@@ -10,6 +10,8 @@ YUI.add('ez-notificationview', function (Y) {
      * @method ez-notificationview
      */
 
+    var IS_ACTIVE = 'is-active';
+
     /**
      * The notification view.
      *
@@ -43,16 +45,20 @@ YUI.add('ez-notificationview', function (Y) {
 
             this.containerTemplate = '<li class="' + this._generateViewClassName(this._getName()) + '"/>';
 
-            notification.on('destroy', Y.bind(function () {
-                // TODO animate the destruction for a nicer UX/UI
-                this.destroy({remove: true});
-            }, this));
             notification.after('stateChange', Y.bind(function (e) {
                 this._uiChangeState(e.prevVal, e.newVal);
             }, this));
             notification.after('textChange', Y.bind(function () {
                 this._uiChangeText(notification.get('text'));
             }, this));
+
+            this.after('activeChange', function (e) {
+                if ( this.get('active') ) {
+                    this.get('container').addClass(IS_ACTIVE);
+                } else {
+                    this.get('container').removeClass(IS_ACTIVE);
+                }
+            });
         },
 
         /**
@@ -105,6 +111,19 @@ YUI.add('ez-notificationview', function (Y) {
                 notification: this.get('notification').toJSON(),
             }));
             return this;
+        },
+
+        /**
+         * Hides the notification view and destroys the view after the CSS
+         * transition has been executed.
+         *
+         * @method vanish
+         */
+        vanish: function () {
+            this.get('container').onceAfter(['webkitTransitionEnd', 'transitionend'], Y.bind(function () {
+                this.destroy({remove: true});
+            }, this));
+            this.set('active', false);
         },
     }, {
         ATTRS: {

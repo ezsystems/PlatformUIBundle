@@ -28,6 +28,7 @@
 .is-app-open {
     opacity: 1;
     min-height: 100%;
+    overflow: auto;
 }
 
 .ez-view-container {
@@ -73,7 +74,17 @@
 }
 
 .ez-navigation-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     max-height: 20em;
+}
+
+.ez-notification-container {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
 }
 

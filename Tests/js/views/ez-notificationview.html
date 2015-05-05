@@ -2,9 +2,21 @@
 <html>
 <head>
 <title>eZ Notification view tests</title>
+<style>
+    .container2 {
+        background: #f00;
+        -webkit-transition: all 0.2s ease;
+                transition: all 0.2s ease;
+    }
+
+    .container2.is-active {
+        background: #00f;
+    }
+</style>
 </head>
 <body>
 <div class="container"></div>
+<div class="container2 is-active"></div>
 
 <script type="text/x-handlebars-template" id="notificationview-ez-template">
     <p class="ez-notification-text">{{ notification.text }}</p>
@@ -31,7 +43,7 @@
         filter: loaderFilter,
         modules: {
             "ez-notificationview": {
-                requires: ['ez-templatebasedview', 'ez-notification', 'event-tap'],
+                requires: ['ez-templatebasedview', 'ez-notification', 'event-tap', 'transition'],
                 fullpath: "../../../Resources/public/js/views/ez-notificationview.js"
             },
             "ez-notification": {

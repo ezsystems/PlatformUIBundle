@@ -54,6 +54,14 @@ YUI.add('ez-notificationhubplugin-tests', function (Y) {
                 "The notification hub should receive the notification"
             );
         },
+
+        "Should show the notification hub when the app is ready": function () {
+            this.app.fire('ready');
+            Assert.areEqual(
+                "notificationHub", this.showSideViewName,
+                "The notification hub should have been shown"
+            );
+        },
     });
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);

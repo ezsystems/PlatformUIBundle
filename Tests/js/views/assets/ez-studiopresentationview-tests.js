@@ -43,6 +43,21 @@ YUI.add('ez-studiopresentationview-tests', function (Y) {
             );
         },
 
+        "Should refresh the height of the view": function () {
+            var height,
+                offset = -42;
+
+            this["Test height fit"]();
+            height = parseInt(this.view.get('container').getStyle('height'), 10);
+
+            this.view.refreshTopPosition(offset);
+            Y.Assert.areEqual(
+                height - offset,
+                parseInt(this.view.get('container').getStyle('height'), 10),
+                "The height of the view should have been adjusted"
+            );
+        },
+
         "Test iframe link": function () {
             var iframeSource;
             this.view.render();

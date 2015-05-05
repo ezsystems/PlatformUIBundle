@@ -54,19 +54,27 @@ YUI.add('ez-notificationhubview-tests', function (Y) {
         name: "eZ Notification Hub View list event test test",
 
         setUp: function () {
+            this.initialContainer = Y.one('.container').get('innerHTML');
             this.identifier = 'music';
             this.notificationList = new Y.eZ.NotificationList();
             this.view = new Y.eZ.NotificationHubView({
                 notificationList: this.notificationList,
+                container: '.container',
             });
         },
 
         tearDown: function () {
             this.view.destroy();
+            Y.one('.container').setHTML(this.initialContainer);
         },
 
         "Should render the added notification": function () {
+            var active = false;
+
             this.view.render();
+            this.view.after('notificationView:activeChange', function (e) {
+                active = e.newVal;
+            });
             this.notificationList.add({
                 identifier: this.identifier,
                 text: 'Foo Fighters',
@@ -77,19 +85,80 @@ YUI.add('ez-notificationhubview-tests', function (Y) {
                 this.view.get('container').all('li').size(),
                 "The container should contain as many li element as the notification list"
             );
+            Assert.isTrue(active, "The notificationView should be set as active");
         },
 
-        "Should remove the rendered notification": function () {
-            var notification;
+        "Should vanish the rendered notification": function () {
+            var notification, view, vanish = false, after;
 
+            this.view.onceAfter('notificationView:activeChange', function (e) {
+                view = e.target;
+            });
             this["Should render the added notification"]();
+            this.notificationList.add({
+                identifier: this.identifier + '2',
+                text: 'Foo Fighters 2',
+                state: 'playing',
+            });
+
+            after = Y.Do.after(function () {
+                vanish = true;
+                after.detach();
+            }, view, 'vanish', view);
+
             notification = this.notificationList.getById(this.identifier);
             notification.destroy();
 
-            Assert.areEqual(
-                0, this.view.get('container').get('children').size(),
-                "The view container should be empty"
-            );
+            Assert.isTrue(vanish, "The notificationView should vanish");
+        },
+
+        "Should fire the heightChange event when adding a notification": function () {
+            var heightChange = false;
+
+            this.view.render();
+            this.view.on('heightChange', function (e) {
+                heightChange = true;
+
+                Assert.isObject(e.height, "The event facade should contain an object");
+                Assert.areEqual(
+                    e.height.new - e.height.old, e.height.offset,
+                    "The event facade should contain the height change info"
+                );
+            });
+
+            this.notificationList.add({
+                identifier: this.identifier,
+                text: 'Foo Fighters',
+                state: 'playing',
+            });
+            Assert.isTrue(heightChange, "The heightChange event should have been fired");
+        },
+
+        "Should fire the heightChange event when removing a notification": function () {
+            var heightChange = false, notification;
+
+            this.view.render();
+            this.view.on('heightChange', function (e) {
+                heightChange = true;
+
+                Assert.isObject(e.height, "The event facade should contain an object");
+                Assert.areEqual(
+                    e.height.new - e.height.old, e.height.offset,
+                    "The event facade should contain the height change info"
+                );
+            });
+
+            this["Should render the added notification"]();
+            this.notificationList.add({
+                identifier: this.identifier + '2',
+                text: 'Foo Fighters 2',
+                state: 'playing',
+            });
+
+            notification = this.notificationList.getById(this.identifier);
+            notification.destroy();
+
+            Assert.isTrue(heightChange, "The heightChange event should have been fired");
         },
     });
 

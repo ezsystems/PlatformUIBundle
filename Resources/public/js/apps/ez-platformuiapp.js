@@ -91,7 +91,6 @@ YUI.add('ez-platformuiapp', function (Y) {
                 type: Y.eZ.NotificationHubView,
                 service: Y.eZ.NotificationHubViewService,
                 container: '.ez-notification-container',
-                hideClass: 'is-notification-hidden',
             },
         },
 

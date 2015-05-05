@@ -25,6 +25,10 @@ YUI.add('ez-notificationhubplugin', function (Y) {
         initializer: function () {
             var app = this.get('host');
 
+            app.on('ready', function () {
+                app.showSideView('notificationHub');
+            });
+
             app.on('*:notify', function (e) {
                 app.showSideView('notificationHub', {notification: e.notification});
             });

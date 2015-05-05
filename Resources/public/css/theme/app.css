@@ -143,6 +143,10 @@
     transition: all 0.3s ease;
 }
 
+.ez-notification-container {
+    transition: all 0.2s ease;
+}
+
 /*csslint vendor-prefix: false */
 @-webkit-keyframes spin {
   0% {

@@ -50,7 +50,6 @@
 
 .is-navigationhubview-fixed .ez-view-barview {
     position: fixed;
-    top: 2.3rem;
     z-index: 1000;
     width: 230px;
 }

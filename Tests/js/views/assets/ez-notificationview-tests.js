@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-notificationview-tests', function (Y) {
-    var viewTest, stateTest, textTest, destroyTest, closeTest,
+    var viewTest, stateTest, textTest, closeTest, activeTest, vanishTest,
         Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
@@ -160,9 +160,6 @@ YUI.add('ez-notificationview-tests', function (Y) {
         name: "eZ Notification View close test",
 
         setUp: function () {
-            this.container = Y.one('.container');
-            this.initialContainer = this.container.get('outerHTML');
-            this.parent = this.container.get('parentNode');
             this.state = 'playing';
             this.notification = new Y.eZ.Notification({
                 identifier: 'something-from-nothing',
@@ -170,15 +167,14 @@ YUI.add('ez-notificationview-tests', function (Y) {
                 state: this.state,
             });
             this.view = new Y.eZ.NotificationView({
-                container: '.container',
                 notification: this.notification,
+                container: '.container',
             });
             this.view.render();
         },
 
         tearDown: function () {
             this.view.destroy();
-            this.parent.append(this.initialContainer);
         },
 
         "Should destroy the corresponding notification model": function () {
@@ -187,47 +183,77 @@ YUI.add('ez-notificationview-tests', function (Y) {
             this.notification.on('destroy', function () {
                 that.resume();
             });
-            this.container.one('a').simulateGesture('tap');
+            this.view.get('container').one('a').simulateGesture('tap');
             this.wait();
         },
     });
 
-    destroyTest= new Y.Test.Case({
-        name: "eZ Notification View destroy test",
+    activeTest = new Y.Test.Case({
+        name: "eZ Notification View active test",
 
         setUp: function () {
-            this.container = Y.one('.container');
-            this.initialContainer = this.container.get('outerHTML');
-            this.parent = this.container.get('parentNode');
-            this.state = 'playing';
             this.notification = new Y.eZ.Notification({
                 identifier: 'something-from-nothing',
                 text: 'Playing Foo Fighters - Something from nothing',
-                state: this.state,
+                state: 'playing',
             });
             this.view = new Y.eZ.NotificationView({
-                container: this.container,
                 notification: this.notification,
             });
         },
 
         tearDown: function () {
             this.view.destroy();
-            this.parent.append(this.initialContainer);
         },
 
-        "Should destroy and remove the view container": function () {
-            this.view.render();
-            this.notification.destroy();
+        "Should add the active class on the container": function () {
+            this.view.set('active', true);
 
             Assert.isTrue(
-                this.view.get('destroyed'),
-                "The view should have been destroyed"
+                this.view.get('container').hasClass('is-active'),
+                "The view container should get the is-active class"
             );
+        },
+
+        "Should remove the active class on the container": function () {
+            this["Should add the active class on the container"]();
+            this.view.set('active', false);
+
             Assert.isFalse(
-                this.container.inDoc(),
-                "The container should have been removed from the DOM"
+                this.view.get('container').hasClass('is-active'),
+                "The view container should not get the is-active class"
             );
+        },
+    });
+
+    vanishTest = new Y.Test.Case({
+        name: "eZ Notification View vanish test",
+
+        setUp: function () {
+            this.notification = new Y.eZ.Notification({
+                identifier: 'something-from-nothing',
+                text: 'Playing Foo Fighters - Something from nothing',
+                state: 'playing',
+            });
+            this.view = new Y.eZ.NotificationView({
+                notification: this.notification,
+                container: '.container2',
+                active: true,
+            });
+            this.view.render();
+        },
+
+        "Should destroy the view after the transition": function () {
+            this.view.on('destroy', Y.bind(function () {
+                this.resume(function () {
+                    Assert.isFalse(
+                        this.view.get('active'),
+                        "active should be set to false"
+                    );
+                });
+            }, this));
+            this.view.vanish();
+            this.wait();
         },
     });
 
@@ -235,6 +261,7 @@ YUI.add('ez-notificationview-tests', function (Y) {
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(stateTest);
     Y.Test.Runner.add(textTest);
-    Y.Test.Runner.add(destroyTest);
     Y.Test.Runner.add(closeTest);
+    Y.Test.Runner.add(activeTest);
+    Y.Test.Runner.add(vanishTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-notificationview']});

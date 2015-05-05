@@ -2,10 +2,23 @@
 <html>
 <head>
 <title>eZ Notification Hub view tests</title>
+<style>
+    .ez-view-notificationview {
+        background: #f00;
+        -webkit-transition: all 0.2s ease;
+                transition: all 0.2s ease;
+    }
+
+    .ez-view-notificationview.is-active {
+        background: #00f;
+    }
+</style>
 </head>
 <body>
 <div class="container"></div>
 
+
+<script type="text/x-handlebars-template" id="notificationview-ez-template">Notification view</script>
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-notificationhubview-tests.js"></script>
 <script>
@@ -26,7 +39,7 @@
         filter: loaderFilter,
         modules: {
             "ez-notificationhubview": {
-                requires: ['ez-view', 'ez-notificationlist', 'ez-notificationview'],
+                requires: ['ez-view', 'ez-notificationlist', 'ez-notificationview', 'ez-height-change'],
                 fullpath: "../../../Resources/public/js/views/ez-notificationhubview.js"
             },
             "ez-notificationview": {
@@ -48,6 +61,10 @@
             "ez-view": {
                 requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
                 fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-height-change": {
+                requires: ['view'],
+                fullpath: "../../../Resources/public/js/extensions/ez-height-change.js"
             },
             "ez-pluginregistry": {
                 requires: ['array-extras'],

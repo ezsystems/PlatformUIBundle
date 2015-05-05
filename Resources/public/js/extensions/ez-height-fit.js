@@ -33,13 +33,26 @@ YUI.add('ez-height-fit', function (Y) {
          *
          * @private
          * @method _uiSetHeight
+         * @param {Number} heightOffset the height offset to apply when
+         * computing the height of the view.
          */
-        _uiSetHeight: function () {
+        _uiSetHeight: function (heightOffset) {
             var container = this.get('container');
 
             container.setStyle(
-                'height', container.get('winHeight') - container.getY() + 'px'
+                'height', container.get('winHeight') - container.getY() - (heightOffset ? heightOffset : 0) + 'px'
             );
         },
+
+        /**
+         * Refreshes the height of the view with the given height offset. This
+         * method is automatically called by the App Position plugin.
+         *
+         * @method refreshTopPosition
+         * @param {Number} heightOffset
+         */
+        refreshTopPosition: function (heightOffset) {
+            this._uiSetHeight(heightOffset);
+        }
     });
 });

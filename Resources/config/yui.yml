@@ -44,6 +44,7 @@ system:
                         - 'ez-universaldiscoveryplugin'
                         - 'ez-confirmboxplugin'
                         - 'ez-notificationhubplugin'
+                        - 'ez-positionplugin'
                     path: %ez_platformui.public_dir%/js/apps/ez-platformuiapp.js
                 ez-viewservice:
                     requires: ['base', 'parallel']
@@ -79,7 +80,7 @@ system:
                         - 'ez-contentcreateplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
-                    requires: ['ez-viewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras']
+                    requires: ['ez-viewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras', 'ez-height-change']
                     path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
                 ez-discoverybarviewservice:
                     requires: ['ez-viewservice', 'ez-discoverybarcontenttreeplugin']
@@ -181,10 +182,10 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/confirmbox.hbt
                 ez-notificationhubview:
-                    requires: ['ez-view', 'ez-notificationview', 'ez-notificationlist']
+                    requires: ['ez-view', 'ez-notificationview', 'ez-notificationlist', 'ez-height-change']
                     path: %ez_platformui.public_dir%/js/views/ez-notificationhubview.js
                 ez-notificationview:
-                    requires: ['ez-templatebasedview', 'notificationview-ez-template']
+                    requires: ['ez-templatebasedview', 'notificationview-ez-template', 'transition', 'event-tap']
                     path: %ez_platformui.public_dir%/js/views/ez-notificationview.js
                 notificationview-ez-template:
                     type: 'template'
@@ -631,6 +632,9 @@ system:
                 ez-pluginregistry:
                     requires: ['array-extras']
                     path: %ez_platformui.public_dir%/js/services/ez-pluginregistry.js
+                ez-positionplugin:
+                    requires: ['plugin', 'base', 'node-style', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-positionplugin.js
                 ez-notificationhubplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-notificationhubplugin.js
@@ -679,6 +683,9 @@ system:
                 ez-publishdraftplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-publishdraftplugin.js
+                ez-height-change:
+                    requires: ['view']
+                    path: %ez_platformui.public_dir%/js/extensions/ez-height-change.js
                 ez-asynchronousview:
                     requires: ['view', 'event-tap']
                     path: %ez_platformui.public_dir%/js/extensions/ez-asynchronousview.js
