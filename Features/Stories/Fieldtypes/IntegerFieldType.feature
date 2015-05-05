@@ -49,7 +49,7 @@ Scenario: The label of an mandatory integer field of a Content must have an * as
     Then the Content is successfully published
 
   @javascript
-  Scenario: Publishing an invalid integer Field don't work when using a value smaller than minimum value allowed
+  Scenario: Publishing an invalid integer Field fails validation when using a value smaller than minimum value allowed
     Given a Content Type with an "integer" Field exists with Properties:
       | minimum value validator | 1 |
       | maximum value validator | 3 |
@@ -59,7 +59,7 @@ Scenario: The label of an mandatory integer field of a Content must have an * as
     Then Publishing fails with validation error message "The value should be more than or equal to 1"
 
   @javascript
-  Scenario: Publishing an invalid integer Field don't work when using a value bigger than maximum value allowed
+  Scenario: Publishing an invalid integer Field fails validation when using a value bigger than maximum value allowed
     Given a Content Type with an "integer" Field exists with Properties:
       | minimum value validator | 1 |
       | maximum value validator | 3 |
@@ -69,7 +69,7 @@ Scenario: The label of an mandatory integer field of a Content must have an * as
     Then Publishing fails with validation error message "The value should be less than or equal to 3"
 
   @javascript
-  Scenario: Publishing an invalid integer Field don't work when using a string
+  Scenario: Publishing an invalid integer Field fails validation when using a string
     Given a Content Type with an "integer" Field exists
     When I create a content of this Type
     And I enter "a" as the Field Value
@@ -77,7 +77,7 @@ Scenario: The label of an mandatory integer field of a Content must have an * as
     Then Publishing fails with validation error message "The value should be a valid integer number"
 
   @javascript
-  Scenario: Publishing an invalid integer Field don't work when using a float
+  Scenario: Publishing an invalid integer Field fails validation when using a float
     Given a Content Type with an "integer" Field exists
     When I create a content of this Type
     And I enter "1.5" as the Field Value
@@ -91,7 +91,7 @@ Scenario: The label of an mandatory integer field of a Content must have an * as
   Scenario: Updating an integer field using a valid integer Field works
     Given a Content Type with an "integer" Field exists
     And a Content of this Content Type exists with "integer" Field Value set to "1"
-    When I update this content using "10" in the Field Value
+    When I update this content setting "10" as the Field Value
     And I publish the content
     Then the Content is successfully published
 
@@ -101,43 +101,43 @@ Scenario: The label of an mandatory integer field of a Content must have an * as
       | minimum value validator | 1 |
       | maximum value validator | 3 |
     And a Content of this Content Type exists with "integer" Field Value set to "1"
-    When I update this content using "2" in the Field Value
+    When I update this content setting "2" as the Field Value
     And I publish the content
     Then the Content is successfully published
 
   @javascript
-  Scenario: Updating an integer Field don't work when using a value smaller than minimum value allowed
+  Scenario: Updating an integer Field fails validation when using a value smaller than minimum value allowed
     Given a Content Type with an "integer" Field exists with Properties:
       | minimum value validator | 1 |
       | maximum value validator | 3 |
     And a Content of this Content Type exists with "integer" Field Value set to "2"
-    When I update this content using "0" in the Field Value
+    When I update this content setting "0" as the Field Value
     And I publish the content
     Then Publishing fails with validation error message "The value should be more than or equal to 1"
 
   @javascript
-  Scenario: Updating an integer Field don't work when using a value bigger than maximum value allowed
+  Scenario: Updating an integer Field fails validation when using a value bigger than maximum value allowed
     Given a Content Type with an "integer" Field exists with Properties:
       | minimum value validator | 1 |
       | maximum value validator | 3 |
     And a Content of this Content Type exists
-    When I update this content using "4" in the Field Value
+    When I update this content setting "4" as the Field Value
     And I publish the content
     Then Publishing fails with validation error message "The value should be less than or equal to 3"
 
   @javascript
-  Scenario: Updating an integer Field don't work when using a string
+  Scenario: Updating an integer Field fails validation when using a string
     Given a Content Type with an "integer" Field exists
     And a Content of this Content Type exists
-    When I update this content using "a" in the Field Value
+    When I update this content setting "a" as the Field Value
     And I publish the content
     Then Publishing fails with validation error message "The value should be a valid integer number"
 
   @javascript
-  Scenario: Updating an integer Field don't work  when using a float
+  Scenario: Updating an integer Field fails validation  when using a float
     Given a Content Type with an "integer" Field exists
     And a Content of this Content Type exists
-    When I update this content using "1.5" in the Field Value
+    When I update this content setting "1.5" as the Field Value
     And I publish the content
     Then Publishing fails with validation error message "The value should be a valid integer number"
 
