@@ -21,8 +21,30 @@
     background: #F7A64D;
 }
 
+.ez-view-notificationview .ez-notification-text {
+    font-weight: bold;
+    color: #444;
+}
+
+.ez-view-notificationview .ez-notification-text:before {
+    display: inline-block;
+    text-align: center;
+    margin-right: 0.5em;
+}
+
+.ez-view-notificationview.is-state-started .ez-notification-text:before {
+    -webkit-animation: spin 0.5s infinite linear;
+            animation: spin 0.5s infinite linear;
+    content: "\E61C";
+    margin-right: 0.2em;
+}
+
 .ez-view-notificationview.is-state-done {
     background: #1EDCB1;
+}
+
+.ez-view-notificationview.is-state-done .ez-notification-text:before {
+    content: "\E617";
 }
 
 .ez-view-notificationview .ez-notification-tools {

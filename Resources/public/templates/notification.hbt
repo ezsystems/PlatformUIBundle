@@ -1,4 +1,4 @@
-<div class="ez-notification-text">
+<div class="ez-notification-text ez-font-icon">
     {{ notification.text }}
 </div>
 <div class="ez-notification-tools">
