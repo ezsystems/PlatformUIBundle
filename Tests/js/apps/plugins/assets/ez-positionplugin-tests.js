@@ -34,6 +34,10 @@ YUI.add('ez-positionplugin-tests', function (Y) {
             delete this.app;
         },
 
+        "Should handle the initial *:heightChange event": function () {
+            this["Should handle the *:heightChange event"]();
+        },
+
         "Should handle the *:heightChange event": function () {
             var marginTop = parseInt(Y.one('.ez-mainviews').getStyle('marginTop'), 10),
                 offset = -42;
