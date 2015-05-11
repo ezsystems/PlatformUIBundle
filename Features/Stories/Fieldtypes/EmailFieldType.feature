@@ -1,78 +1,109 @@
-Feature: Test the validations done on fields from Editorial Interface - Email fieldtype
+Feature: Test the validations done on fields from PlatformUI - Email fieldtype
+    In order to validate the email fieldtype
+    As an Editor  user
+    I need to be able to create, update and delete content with email fieldtype
+
+    Background:
+        Given I am logged in as an Editor in PlatformUI
+
+    ##
+    # Validate the existence of expected fields from a field type when creating a content
+    ##
+    @javascript
+    Scenario: A Content of a Content Type that has an email fieldtype must have an email field
+        Given a Content Type with an "email" Field exists
+        When I create a content of this Content Type
+        Then I should have an "email" field
 
     @javascript
-    Scenario: Use of invalid email field
-        Given I am logged in as admin on PlatformUI
-        And a Content Type exists with identifier "Email" in Group with identifier "Content" with fields:
-            | identifier | Type     | Name  |
-            | name       | ezstring | Name  |
-            | email      | ezemail  | Email |
-        And I create a content of content type "Email" with:
-            | Name      | Email    |
-            | EmailTest | failtest |
-        When I click on the actionbar action "Publish"
-        Then I should see "The value should be a valid email address" text
+    Scenario: When editing a Content the label of an email field must have the same name of the field type from the respective Content Type
+        Given a Content Type with an "email" with "Name" "Email Contact" exists
+        When I create a content of this Content Type
+        Then I should have a "Email Contact:" label related with the "email" field
 
     @javascript
-    Scenario Outline: Use of invalid email field
-        Given I am logged in as admin on PlatformUI
-        And a Content Type exists with identifier "Email" in Group with identifier "Content" with fields:
-            | identifier | Type     | Name  |
-            | name       | ezstring | Name  |
-            | email      | ezemail  | Email |
-        And I create a content of content type "Email" with:
-            | Name      | Email   |
-            | EmailTest | <email> |
-        When I click on the actionbar action "Publish"
-        Then I should see "The value should be a valid email address" text
+    Scenario: The label of an mandatory email field of a Content must have an * as suffix on the field's label's' name
+        Given a Content Type with a "required" "email" with "Name" "Email Contact" exists
+        When I create a content of this Content Type
+        Then I should have an "Email Contact*:" label related with the "email" field
 
-        Examples:
-            | email      |
-            | failemail  |
-            | teste@     |
+    ##
+    # Creating Content using a Content Type that has an email Field Type
+    ##
+    @javascript
+    Scenario: Publishing a valid email Field works
+        Given a Content Type with an "email" Field exists
+        When I create a content of this Content Type
+        And I set "paul@acme.com" as the Field Value
+        And I publish the content
+        Then the Content is successfully published
 
     @javascript
-    Scenario: Use of valid email field
-        Given I am logged in as admin on PlatformUI
-        And a Content Type exists with identifier "Email" in Group with identifier "Content" with fields:
-            | identifier | Type     | Name  |
-            | name       | ezstring | Name  |
-            | email      | ezemail  | Email |
-        And I create a content of content type "Email" with:
-            | Name      | Email         |
-            | EmailTest | pass@test.com |
-        When I click on the actionbar action "Publish"
-        Then I should see "EmailTest" title
-        And I should see an element 'Email' with value 'pass@test.com'
+    Scenario: Publishing an invalid email Field fails validation when using an invalid email
+        Given a Content Type with an "email" Field exists
+        When I create a content of this Content Type
+        And I set "paul.acme.com" as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "Please check the email syntax"
 
     @javascript
-    Scenario Outline: Validate not filling required fields
-        Given I am logged in as admin on PlatformUI
-        And a Content Type exists with identifier "Email2" in Group with identifier "Content" with fields:
-            | Identifier | Type     | Name  | Required |
-            | name       | ezstring | Name  | true     |
-            | email      | ezemail  | Email | true     |
-        And I create a content of content type "Email2" with:
-            | Name   | Email   |
-            | <name> | <email> |
-        When I click on the actionbar action "Publish"
-        Then I should see "This field is required" text
+    Scenario: Publishing an required email Field fails validation when using an empty value
+        Given a Content Type with a "requited" "email" exists
+        When I create a content of this Content Type
+        And I set an empty value as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "This field is required"
 
-        Examples:
-            | name      | email         |
-            | EmailTest |               |
-            |           | test@test.com |
+    ##
+    # Update Content using a Content Type that has an email Field Type
+    ##
+    @javascript
+    Scenario: Updating to a valid email Field works
+        Given a Content Type with an "email" Field exists
+        And a Content of this Content Type exists with "email" Field Value set to "paul@acme.com"
+        When I update this content setting "ana@acme.com" as the Field Value
+        And I publish the content
+        Then the Content is successfully published
 
     @javascript
-    Scenario: Validate filling required fields
-        Given I am logged in as admin on PlatformUI
-        And a Content Type exists with identifier "Email2" in Group with identifier "Content" with fields:
-            | identifier | Type     | Name  | Required |
-            | name       | ezstring | Name  | true     |
-            | email      | ezemail  | Email | true     |
-        And I create a content of content type "Email2" with:
-            | Name      | Email         |
-            | EmailTest | pass@test.com |
-        When I click on the actionbar action "Publish"
-        Then I should see "EmailTest" title
-        And I should see an element 'Email' with value 'pass@test.com'
+    Scenario: Publishing an invalid email Field fails validation when using an invalid email
+        Given a Content Type with an "email" Field exists
+        And a Content of this Content Type exists with "email" Field Value set to "paul@acme.com"
+        When I update this content setting an empty value as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "Please check the email syntax"
+
+    @javascript
+    Scenario: Publishing an required email Field fails validation when using an empty value
+        Given a Content Type with a "requited" "email" exists
+        When I create a content of this Content Type
+        And I set an empty value as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "This field is required"
+
+    ##
+    # Delete Content using a Content Type that has an email Field Type
+    ##
+    @javascript
+    Scenario: Deleting a content that has an email field
+        Given a Content Type with an "email" Field exists
+        And a Content of this Content Type exists
+        When I delete this Content
+        Then the Content is successfully deleted
+
+    ##
+    # Viewing content that has an email fieldtype
+    ##
+    @javascript
+    Scenario: Viewing a Content that has an email fieldtype should show the expected value
+        Given a Content Type with an "email" Field exists
+        And a Content of this Content Type exists with "email" Field Value set to "paul@acme.com"
+        When I view this Content
+        Then I should see a field with value "paul@acme.com"
+
+    @javascript
+    Scenario: Viewing a Content that has an email fieldtype should return "This field is empty" when the value is empty
+        Given a Content Type with an "email" Field exists
+        And a Content of this Content Type exists with "email" Field Value set to empty
+        When I view this Content
+        Then I should see a field with value "This field is empty"
