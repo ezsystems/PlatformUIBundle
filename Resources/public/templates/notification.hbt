@@ -1,0 +1,6 @@
+<div class="ez-notification-text ez-font-icon">
+    {{ notification.text }}
+</div>
+<div class="ez-notification-tools">
+    <a href="#" class="ez-notification-close" data-icon-after="&#xe62a;"></a>
+</div>

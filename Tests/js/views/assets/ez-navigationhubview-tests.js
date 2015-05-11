@@ -228,6 +228,25 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this._testShowNavigationMenu(optZone, navigationIdentifier);
         },
 
+        "Should fire the heightChange event": function () {
+            var heightChange = false;
+
+            this.view.on('heightChange', function (e) {
+                heightChange = true;
+
+                Assert.isObject(e.height, "The event facade should contain an info object");
+                Assert.areEqual(
+                    e.height.new - e.height.old,
+                    e.height.offset,
+                    "The event facade should provide the offset"
+                );
+            });
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'studio');
+
+            Assert.isTrue(heightChange, "The heightChange event should have been fired");
+        },
+
         "Should fire the navigateTo event": function () {
             var fired = false,
                 that = this;
@@ -495,6 +514,48 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
             Y.Assert.areEqual(2, eventFired, "The 'navigationModeChange' event should be been fire twice");
         },
+
+        "Should fire the heightChange event when getting fixed": function () {
+            var heightChange = false;
+
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
+            this.view.on('heightChange', function (e) {
+                heightChange = true;
+
+                Assert.isObject(e.height, "The event facade should contain an info object");
+                Assert.areEqual(
+                    e.height.new - e.height.old,
+                    e.height.offset,
+                    "The event facade should provide the offset"
+                );
+            });
+            this.view.set('navigationFixed', true);
+
+            Assert.isTrue(heightChange, "The heightChange event should have been fired");
+        },
+
+        "Should fire the heightChange event when getting unfixed": function () {
+            var heightChange = false;
+
+            this.view.set('active', true);
+            this.view.set('activeNavigation', 'platform');
+            this.view.set('navigationFixed', true);
+            this.view.on('heightChange', function (e) {
+                heightChange = true;
+
+                Assert.isObject(e.height, "The event facade should contain an info object");
+                Assert.areEqual(
+                    e.height.new - e.height.old,
+                    e.height.offset,
+                    "The event facade should provide the offset"
+                );
+            });
+            this.view.set('navigationFixed', false);
+
+            Assert.isTrue(heightChange, "The heightChange event should have been fired");
+        },
+
 
         "Should put some elements in the more sub menu": function () {
             var container = this.view.get('container'),

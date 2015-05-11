@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Notification view tests</title>
+<style>
+    .container2 {
+        background: #f00;
+        -webkit-transition: all 0.2s ease;
+                transition: all 0.2s ease;
+    }
+
+    .container2.is-active {
+        background: #00f;
+    }
+</style>
+</head>
+<body>
+<div class="container"></div>
+<div class="container2 is-active"></div>
+
+<script type="text/x-handlebars-template" id="notificationview-ez-template">
+    <p class="ez-notification-text">{{ notification.text }}</p>
+    <a href="#" class="ez-notification-close">Close</a>
+</script>
+
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-notificationview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-notificationview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-notificationview": {
+                requires: ['ez-templatebasedview', 'ez-notification', 'event-tap', 'transition'],
+                fullpath: "../../../Resources/public/js/views/ez-notificationview.js"
+            },
+            "ez-notification": {
+                requires: ['model'],
+                fullpath: "../../../Resources/public/js/models/structs/ez-notification.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-notificationview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

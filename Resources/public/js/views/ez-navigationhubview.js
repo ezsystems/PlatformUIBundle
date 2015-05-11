@@ -27,7 +27,7 @@ YUI.add('ez-navigationhubview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.NavigationHubView = Y.Base.create('navigationHubView', Y.eZ.TemplateBasedView, [], {
+    Y.eZ.NavigationHubView = Y.Base.create('navigationHubView', Y.eZ.TemplateBasedView, [Y.eZ.HeightChange], {
         events: {
             '.ez-zone': {
                 'tap': '_setNavigation',
@@ -81,14 +81,29 @@ YUI.add('ez-navigationhubview', function (Y) {
 
         initializer: function () {
             this.after('activeNavigationChange', function (e) {
+                var oldHeight;
+
                 if ( this.get('active') ) {
+                    oldHeight = this._getContainerHeight();
                     this._uiSetActiveNavigation(e.prevVal);
                     this._navigateToZone(e.newVal);
+                    this._fireHeightChange(oldHeight, this._getContainerHeight());
                 }
             });
             this.after('navigationFixedChange', this._uiHandleFixedNavigation);
             this.after('activeChange', this._onActiveUpdate);
             this.after('matchedRouteChange', this._handleSelectedItem);
+        },
+
+        /**
+         * Returns the height of the navigation menu
+         *
+         * @protected
+         * @method _getNavigationHeight
+         * @return {Number}
+         */
+        _getNavigationHeight: function () {
+            return this.get('container').one(NAVIGATION_SEL).get('offsetHeight');
         },
 
         /**
@@ -159,12 +174,23 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @param {Object} e event facade
          */
         _uiHandleFixedNavigation: function (e) {
-            var container = this.get('container');
+            var container = this.get('container'),
+                oldHeight;
 
             if ( e.newVal ) {
+                oldHeight = this._getContainerHeight();
                 container.addClass(FIXED_NAVIGATION);
+                this._fireHeightChange(
+                    oldHeight,
+                    this._getNavigationHeight()
+                );
             } else {
+                oldHeight = this._getNavigationHeight();
                 container.removeClass(FIXED_NAVIGATION);
+                this._fireHeightChange(
+                    oldHeight,
+                    this._getContainerHeight()
+                );
             }
             /**
              * event fired when the navigation mode change so that the rest of
@@ -295,11 +321,14 @@ YUI.add('ez-navigationhubview', function (Y) {
             if ( e.newVal ) {
                 this._scrollSubscription = Y.on('scroll', Y.bind(this._handleScroll, this));
                 this._resizeSubscription = Y.on('resize', Y.bind(this._uiNavigationSize, this));
+                this._fireHeightChange(0, this._getContainerHeight());
                 this.set('navigationFixed', false);
                 this._navigationY = this.get('container').one(NAVIGATION_SEL).getY();
                 this.set('navigationFixed', fixed);
                 this._uiNavigationSize();
             } else {
+                this.set('navigationFixed', false);
+                this._fireHeightChange(this._getContainerHeight(), 0);
                 this._scrollSubscription.detach();
                 this._resizeSubscription.detach();
             }

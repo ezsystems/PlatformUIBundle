@@ -1,0 +1,37 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-notificationview {
+    padding: 0;
+    margin: 0;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: stretch;
+    -ms-flex-align: stretch;
+    -webkit-align-items: stretch;
+            align-items: stretch;
+}
+
+.ez-view-notificationview .ez-notification-text {
+    padding-left: 5%;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 100%;
+        -ms-flex: 1 100%;
+            flex: 1 100%;
+   -ms-flex-item-align: center;
+    -webkit-align-self: center;
+            align-self: center;
+}
+
+.ez-view-notificationview .ez-notification-tools {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 0 1em;
+        -ms-flex: 1 0 1em;
+            flex: 1 0 1em;
+    text-align: center;
+}

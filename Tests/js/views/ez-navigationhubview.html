@@ -83,7 +83,7 @@ item
         filter: loaderFilter,
         modules: {
             "ez-navigationhubview": {
-                requires: ['ez-templatebasedview', 'ez-navigationitemview', 'event-tap', 'node-screen', 'node-style', 'event-outside'],
+                requires: ['ez-templatebasedview', 'ez-navigationitemview', 'event-tap', 'node-screen', 'node-style', 'event-outside', 'ez-height-change'],
                 fullpath: "../../../Resources/public/js/views/ez-navigationhubview.js"
             },
             "ez-navigationitemview": {
@@ -97,6 +97,10 @@ item
             "ez-view": {
                 requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
                 fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-height-change": {
+                requires: ['view'],
+                fullpath: "../../../Resources/public/js/extensions/ez-height-change.js"
             },
             "ez-pluginregistry": {
                 requires: ['array-extras'],

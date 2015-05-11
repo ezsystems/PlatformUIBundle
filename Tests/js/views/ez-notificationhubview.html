@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Notification Hub view tests</title>
+<style>
+    .ez-view-notificationview {
+        background: #f00;
+        -webkit-transition: all 0.2s ease;
+                transition: all 0.2s ease;
+    }
+
+    .ez-view-notificationview.is-active {
+        background: #00f;
+    }
+</style>
+</head>
+<body>
+<div class="container"></div>
+
+
+<script type="text/x-handlebars-template" id="notificationview-ez-template">Notification view</script>
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-notificationhubview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-notificationview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-notificationhubview": {
+                requires: ['ez-view', 'ez-notificationlist', 'ez-notificationview', 'ez-height-change'],
+                fullpath: "../../../Resources/public/js/views/ez-notificationhubview.js"
+            },
+            "ez-notificationview": {
+                requires: ['ez-templatebasedview', 'ez-notification', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-notificationview.js"
+            },
+            "ez-notificationlist": {
+                requires: ['model-list', 'ez-notification'],
+                fullpath: "../../../Resources/public/js/models/structs/ez-notificationlist.js"
+            },
+            "ez-notification": {
+                requires: ['model'],
+                fullpath: "../../../Resources/public/js/models/structs/ez-notification.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-height-change": {
+                requires: ['view'],
+                fullpath: "../../../Resources/public/js/extensions/ez-height-change.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-notificationhubview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

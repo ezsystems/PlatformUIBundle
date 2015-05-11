@@ -969,21 +969,23 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.app.destroy();
         },
 
-        "Should hide all the side views using a route without sideViews": function () {
+        "Should keep the side views state using a route without sideViews": function () {
             var container = this.app.get('container'),
                 nextCalled = false;
 
+            this.app.hideSideView('sideView1');
+            this.app.showSideView('sideView2');
             this.app.handleSideViews({route: {}}, {}, function () {
                 nextCalled = true;
             });
 
             Y.Assert.isTrue(
                 container.hasClass(this.sideView1Hidden),
-                "The side view 1 should be hidden"
+                "The side view 1 should stay hidden"
             );
-            Y.Assert.isTrue(
+            Y.Assert.isFalse(
                 container.hasClass(this.sideView2Hidden),
-                "The side view 2 should be hidden"
+                "The side view 2 should stay visible"
             );
             Y.Assert.isTrue(nextCalled, "The next callback should have been called");
         },
@@ -1110,7 +1112,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.app.handleSideViews(req, {}, function () {
                 nextCalls++;
             });
-            this.app.handleSideViews({route: {}}, {}, function () {});
+            this.app.handleSideViews({route: {sideViews: {sideView1: false}}}, {}, function () {});
             this.app.handleSideViews(req, {}, function () {
                 nextCalls++;
             });
@@ -1160,7 +1162,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             });
 
             this.app.handleSideViews(req, {}, function () {});
-            this.app.handleSideViews({route: {}}, {}, function () {
+            this.app.handleSideViews({route: {sideViews: {sideView1: false}}}, {}, function () {
                 nextCalled = true;
             });
 
