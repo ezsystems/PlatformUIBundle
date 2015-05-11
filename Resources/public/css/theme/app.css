@@ -16,6 +16,11 @@
 
 .ez-platformui-app-page body {
     background: #333;
+    transition: all 3s ease;
+}
+
+.ez-platformui-app-ready body {
+    background: #fff;
 }
 
 .ez-platformui-app {
@@ -135,6 +140,10 @@
     background: #333;
     color: #fff;
     margin-top: -1px; /* to align with the bottom border of the navigation hub */
+}
+
+.ez-mainviews {
+    background: #333;
 }
 
 .ez-mainviews,
