@@ -13,20 +13,20 @@ Feature: Test the validations done on fields from Editorial Interface - Checkbox
     @javascript
     Scenario: A Content of a Content Type that has a checkbox fieldtype must have a Checkbox field
         Given a Content Type with a "checkbox" Field exists
-        When I create a content of this Content Type
-        Then I should have a "checkbox" field
+        When I create a content of this type
+        Then I should see a "checkbox" field
 
     @javascript
-    Scenario: When editing a Content the label of a checkbox field must have the same name of the field type from the respective Content Type
+    Scenario: When editing a Content the label of a checkbox field must have the same name than field type from the respective Content Type
         Given a Content Type with a "checkbox" with "Name" "Do you agree?" exists
-        When I create a content of this Content Type
-        Then I should have a "Do you agree?:" label related with the "checkbox" field
+        When I create a content of this type
+        Then I should see a "Do you agree?:" label related with the "checkbox" field
 
     @javascript
     Scenario: The label of an mandatory checkbox field of a Content must have an * as suffix on the field's label's' name
         Given a Content Type with a "required" "checkbox" with "Name" "Do you agree?" exists
-        When I create a content of this Content Type
-        Then I should have an "Do you agree?*:" label related with the "checkbox" field
+        When I create a content of this type
+        Then the "Do you agree?" field should be marked as mandatory
 
     ##
     # Creating Content using a Content Type that has a Checkbox Field Type
@@ -34,7 +34,7 @@ Feature: Test the validations done on fields from Editorial Interface - Checkbox
     @javascript
     Scenario: Publishing a valid checkbox Field works
         Given a Content Type with a "checkbox" Field exists
-        When I create a content of this Content Type
+        When I create a content of this type
         And I check the Field Value
         And I publish the content
         Then the Content is successfully published
@@ -45,8 +45,9 @@ Feature: Test the validations done on fields from Editorial Interface - Checkbox
     @javascript
     Scenario: Updating a Checkbox field using a valid checkbox Field works
         Given a Content Type with a "checkbox" Field exists
-        And a Content of this Content Type exists with "checkbox" Field Value checked
-        When I update this content unchecking the Field Value
+        And a Content of this type exists with "checkbox" Field Value checked
+        When I edit this content
+        And I uncheck the Field Value
         And I publish the content
         Then the Content is successfully published
 
@@ -56,7 +57,7 @@ Feature: Test the validations done on fields from Editorial Interface - Checkbox
     @javascript
     Scenario: Deleting a content that has a Checkbox field
         Given a Content Type with a "checkbox" Field exists
-        And a Content of this Content Type exists
+        And a Content of this type exists
         When I delete this Content
         Then the Content is successfully deleted
 
@@ -66,13 +67,13 @@ Feature: Test the validations done on fields from Editorial Interface - Checkbox
     @javascript
     Scenario: Viewing a Content that has a Checkbox fieldtype should show the expected value when the checkbox is checked
         Given a Content Type with a "checkbox" Field exists
-        And a Content of this Content Type exists with "checkbox" Field Value checked
+        And a Content of this type exists with "checkbox" Field Value checked
         When I view this Content
         Then I should see a field with value "Yes"
 
     @javascript
     Scenario: Viewing a Content that has a Checkbox fieldtype should show the expected value when the checkbox is unchecked
         Given a Content Type with a "checkbox" Field exists
-        And a Content of this Content Type exists with "checkbox" Field Value unchecked
+        And a Content of this type exists with "checkbox" Field Value unchecked
         When I view this Content
         Then I should see a field with value "No"
