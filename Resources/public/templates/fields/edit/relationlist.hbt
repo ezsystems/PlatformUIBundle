@@ -1,0 +1,53 @@
+<div class="pure-g ez-editfield-row ez-asynchronousview">
+    <div class="pure-u ez-editfield-infos">
+        {{> ez_fieldinfo_tooltip }}
+        <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+            <p class="ez-fielddefinition-name">
+                {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+            </p>
+            <p class="ez-editfield-error-message">&nbsp;</p>
+        </label>
+    </div>
+    <div class="pure-u ez-editfield-input-area ez-default-error-style">
+        <div class="ez-editfield-input"><div class="ez-relation-input-ui">
+            {{#if isEmpty}}
+                <p class="ez-relation-empty">No relation.</p>
+            {{else}}
+                {{#if destinationContents }}
+                    <table class="pure-table pure-table-striped ez-relationlist-contents">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Published</th>
+                                <th>Modified</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each destinationContents}}
+                                <tr class="ez-relation-content" data-content-id="{{id}}">
+                                    <td class="ez-relation-content-name" data-icon="&#xe601;">{{ name }}</td>
+                                    <td class="ez-relation-property">{{ publishedDate }}</td>
+                                    <td class="ez-relation-property">{{ lastModificationDate }}</td>
+                                    <td class="ez-relation-remove-content"><button data-content-id="{{id}}" class=" ez-button ez-button-delete ez-font-icon pure-button">Remove</button></td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                {{else}}
+                    {{#if loadingError}}
+                        <p class="ez-asynchronousview-error ez-font-icon">
+                            An error occurred while loading the related content.
+                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+                        </p>
+                    {{else}}
+                        <p class="ez-font-icon ez-asynchronousview-loading">Loading the related content(s)</p>
+                    {{/if}}
+                {{/if}}
+            {{/if}}
+            <p class="ez-relation-tools">
+                <button class="ez-relation-discover ez-button ez-button-height ez-button-tree ez-font-icon pure-button">Select contents</button>
+            </p>
+        </div></div>
+    </div>
+</div>

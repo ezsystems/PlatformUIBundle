@@ -276,6 +276,7 @@ system:
                         - 'ez-integer-editview'
                         - 'ez-selection-editview'
                         - 'ez-relation-editview'
+                        - 'ez-relationlist-editview'
                         - 'event-tap'
                         - 'contenteditformview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/ez-contenteditformview.js
@@ -519,6 +520,12 @@ system:
                 relationeditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/relation.hbt
+                ez-relationlist-editview:
+                    requires: ['ez-fieldeditview', 'relationlisteditview-ez-template', 'ez-asynchronousview', 'array-extras', 'transition']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-relationlist-editview.js
+                relationlisteditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/relationlist.hbt
                 ez-selection-editview:
                     requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside', 'node-screen', 'selectioneditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-selection-editview.js
