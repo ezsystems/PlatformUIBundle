@@ -51,6 +51,11 @@ YUI.add('ez-sectionserversideview-tests', function (Y) {
                         e.config.data.sectionId,
                         "The section id should be available in the config data"
                     );
+                    Assert.areEqual(
+                        button.getAttribute('data-section-name'),
+                        e.config.data.sectionName,
+                        "The section name should be available in the config data"
+                    );
                     Assert.areSame(
                         e.config.cancelDiscoverHandler,
                         e.config.data.afterUpdateCallback,

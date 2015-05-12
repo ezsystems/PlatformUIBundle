@@ -48,6 +48,7 @@ YUI.add('ez-sectionserversideview', function (Y) {
                     multiple: true,
                     data: {
                         sectionId: button.getAttribute('data-section-rest-id'),
+                        sectionName: button.getAttribute('data-section-name'),
                         afterUpdateCallback: unsetLoading,
                     },
                 },

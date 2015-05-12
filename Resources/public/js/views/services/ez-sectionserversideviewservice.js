@@ -39,6 +39,10 @@ YUI.add('ez-sectionserversideviewservice', function (Y) {
                 tasks = new Y.Parallel(),
                 contentService = this.get('capi').getContentService();
 
+            this._assignSectionNotificationStarted(
+                data.sectionId, data.sectionName, e.selection
+            );
+
             Y.Array.each(e.selection, function (struct) {
                 var update = contentService.newContentMetadataUpdateStruct();
 
@@ -48,7 +52,96 @@ YUI.add('ez-sectionserversideviewservice', function (Y) {
                     struct.content.get('id'), update, tasks.add()
                 );
             });
-            tasks.done(Y.bind(data.afterUpdateCallback, this));
+
+            tasks.done(
+                Y.bind(this._assignSectionCallback, this,
+                    data.sectionId, data.sectionName, e.selection,
+                    Y.bind(data.afterUpdateCallback, this)
+                )
+            );
+        },
+
+        /**
+         * Assign section callback trigerring notification and calling given callback
+         * 
+         * @method _assignSectionCallback
+         * @protected
+         * @param {String} sectionId the section id
+         * @param {String} sectionName the section name
+         * @param {Array} contents the array of contents to which section is being assigned to
+         * @param {Function} callback the callback to call when other tasks are done
+         */
+        _assignSectionCallback: function (sectionId, sectionName, contents, callback) {
+            this._assignSectionNotificationDone(sectionId, sectionName, contents);
+            callback();
+        },
+
+        /**
+         * Notification changed to *started* before assigning section to contents
+         * 
+         * @method _assignSectionNotificationStarted
+         * @protected
+         * @param {String} sectionId the section id
+         * @param {String} sectionName the section name
+         * @param {Array} contents the array of contents to which section is being assigned to
+         */
+        _assignSectionNotificationStarted: function (sectionId, sectionName, contents) {
+            var notificationIdentifier = this._getAssignSectionNotificationIdentifier(
+                    'assign-section', sectionId, contents
+                );
+
+            this.fire('notify', {
+                notification: {
+                    identifier: notificationIdentifier,
+                    text: 'Assigning the section "' + sectionName + '" to ' + contents.length + ' contents',
+                    state: 'started',
+                    timeout: 0
+                },
+            });
+        },
+
+        /**
+         * Notification changed to *done* after assigning section to contents
+         * 
+         * @method _assignSectionNotificationDone
+         * @protected
+         * @param {String} sectionId the section id
+         * @param {String} sectionName the section name
+         * @param {Array} contents the array of contents to which section is being assigned to
+         */
+        _assignSectionNotificationDone: function (sectionId, sectionName, contents) {
+            var notificationIdentifier = this._getAssignSectionNotificationIdentifier(
+                    'assign-section', sectionId, contents
+                );
+
+            this.fire('notify', {
+                notification: {
+                    identifier: notificationIdentifier,
+                    text: 'Section "' + sectionName + '" assigned to ' + contents.length + ' contents',
+                    state: 'done',
+                    timeout: 5
+                },
+            });
+        },
+
+        /**
+         * Generates identifier for notifications which is unique basing on
+         * section ID and IDs of contents which section is being assigned to.
+         * 
+         * @method _getAssignSectionNotificationIdentifier
+         * @protected
+         * @param {String} action custom string describing action which is being taken
+         * @param {String} sectionId the section id
+         * @param {Array} contents the array of contents to which section is being assigned to
+         * @return {String} unique notification identifier based on passed parameters
+         */
+        _getAssignSectionNotificationIdentifier: function (action, sectionId, contents) {
+            var contentIds = [];
+
+            Y.Array.each(contents, function (struct) {
+                contentIds.push(struct.content.get('id'));
+            });
+            return action + '-' + sectionId + '-' + contentIds.join('_');
         },
     });
 });

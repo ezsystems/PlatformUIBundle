@@ -109,9 +109,181 @@ YUI.add('ez-sectionserversideviewservice-tests', function (Y) {
                 selection: selection
             });
             Assert.isTrue(callbackCalled, "The afterUpdateCallback should have been called");
-            Mock.verify(content);
             Mock.verify(universalDiscovery);
             Mock.verify(updateStruct);
+        },
+
+        "Should notify about the start of assigning the section to contents process": function () {
+            var that = this,
+                config = {},
+                updateStruct = new Mock(),
+                contentId = this.contentId,
+                sectionId = this.sectionId,
+                content = new Mock(),
+                universalDiscovery = new Mock(),
+                selection = [{content: content}],
+                callbackCalled = false,
+                callback = function () {
+                    callbackCalled = true;
+                    Assert.areSame(
+                        that.service, this,
+                        "The callback should be executed in the service context"
+                    );
+                },
+                notified = false;
+
+            Mock.expect(content, {
+                method: 'get',
+                args: ['id'],
+                returns: this.contentId
+            });
+            Mock.expect(universalDiscovery, {
+                method: 'get',
+                args: ['data'],
+                returns: {
+                    sectionId: this.sectionId,
+                    afterUpdateCallback: callback,
+                },
+            });
+
+            this.service.on('notify', function (e) {
+                notified = true;
+
+                Assert.areEqual(
+                    "started", e.notification.state,
+                    "The notification state should be 'started'"
+                );
+                Assert.isString(
+                    e.notification.text,
+                    "The notification text should be a String"
+                );
+                Assert.isTrue(
+                    e.notification.identifier.indexOf(contentId) !== -1,
+                    "The notification identifier should contain the content id"
+                );
+                Assert.isTrue(
+                    e.notification.identifier.indexOf(sectionId) !== -1,
+                    "The notification identifier should contain the section id"
+                );
+                Assert.areSame(
+                    0, e.notification.timeout,
+                    "The notification timeout should be set to 0"
+                );
+            });
+
+            Mock.expect(this.contentService, {
+                method: 'newContentMetadataUpdateStruct',
+                returns: updateStruct,
+            });
+            Mock.expect(updateStruct, {
+                method: 'setSection',
+                args: [this.sectionId],
+            });
+            Mock.expect(this.contentService, {
+                method: 'updateContentMetadata',
+                args: [this.contentId, updateStruct, Mock.Value.Function],
+            });
+
+            this.service.fire('whatever:contentDiscover', {
+                config: config,
+            });
+
+            config.contentDiscoveredHandler.call(this, {
+                target: universalDiscovery,
+                selection: selection
+            });
+
+            Assert.isTrue(notified, "The notify event should have been fired");
+        },
+
+        "Should notify about the success of assigning the section to contents": function () {
+            var that = this,
+                config = {},
+                updateStruct = new Mock(),
+                contentId = this.contentId,
+                sectionId = this.sectionId,
+                content = new Mock(),
+                universalDiscovery = new Mock(),
+                selection = [{content: content}],
+                callbackCalled = false,
+                callback = function () {
+                    callbackCalled = true;
+                    Assert.areSame(
+                        that.service, this,
+                        "The callback should be executed in the service context"
+                    );
+                },
+                notificationId,
+                notified = false;
+
+            Mock.expect(content, {
+                method: 'get',
+                args: ['id'],
+                returns: this.contentId
+            });
+            Mock.expect(universalDiscovery, {
+                method: 'get',
+                args: ['data'],
+                returns: {
+                    sectionId: this.sectionId,
+                    afterUpdateCallback: callback,
+                },
+            });
+
+            this.service.on('notify', function (e) {
+                notificationId = e.notification.identifier;
+                this.once('notify', function (e) {
+                    notified = true;
+
+                    Assert.areEqual(
+                        "done", e.notification.state,
+                        "The notification state should be 'done'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a String"
+                    );
+                    Assert.isTrue(
+                        e.notification.identifier.indexOf(contentId) !== -1,
+                        "The notification identifier should contain the content id"
+                    );
+                    Assert.isTrue(
+                        e.notification.identifier.indexOf(sectionId) !== -1,
+                        "The notification identifier should contain the section id"
+                    );
+                    Assert.areSame(
+                        5, e.notification.timeout,
+                        "The notification timeout should be set to 5"
+                    );
+                });
+            });
+
+            Mock.expect(this.contentService, {
+                method: 'newContentMetadataUpdateStruct',
+                returns: updateStruct,
+            });
+            Mock.expect(updateStruct, {
+                method: 'setSection',
+                args: [this.sectionId],
+            });
+            Mock.expect(this.contentService, {
+                method: 'updateContentMetadata',
+                args: [this.contentId, updateStruct, Mock.Value.Function],
+                run: function (id, struct, cb) {
+                    cb();
+                },
+            });
+
+            this.service.fire('whatever:contentDiscover', {
+                config: config,
+            });
+
+            config.contentDiscoveredHandler.call(this, {
+                target: universalDiscovery,
+                selection: selection
+            });
+
+            Assert.isTrue(notified, "The notify event should have been fired");
         },
     });
 
