@@ -4,6 +4,7 @@
  */
 YUI.add('ez-notificationview-tests', function (Y) {
     var viewTest, stateTest, textTest, closeTest, activeTest, vanishTest,
+        autohideTest,
         Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
@@ -257,6 +258,72 @@ YUI.add('ez-notificationview-tests', function (Y) {
         },
     });
 
+    autohideTest = new Y.Test.Case({
+        name: "eZ Notification View active test",
+
+        setUp: function () {
+            this.identifier = 'dani-california';
+            this.timeout = 0.2;
+            this.notification = new Y.eZ.Notification({
+                identifier: this.identifier,
+                text: 'Playing Red Hot Chili Peppers - Dani California',
+                state: 'playing',
+                timeout: this.timeout,
+            });
+            this.view = new Y.eZ.NotificationView({
+                notification: this.notification,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.notification.destroy();
+        },
+
+        "Should autohide the notification": function () {
+            this.notification.once('destroy', Y.bind(function () {
+                this.resume();
+            }, this));
+            this.view.render();
+            this.view.set('active', true);
+            this.wait();
+        },
+
+        "Should not autohide the notification": function () {
+            var subscription;
+
+            subscription = this.notification.on('destroy', Y.bind(function () {
+                Y.fail("The notification should not be destroyed");
+            }, this));
+            this.notification.set('timeout', 0);
+            this.view.render();
+            this.view.set('active', true);
+            setTimeout(Y.bind(function () {
+                this.resume(function () {
+                    subscription.detach();
+                });
+            }, this), this.timeout + 0.1);
+            this.wait();
+        },
+
+        "Should cancel the autohide of the notification": function () {
+            var subscription;
+
+            subscription = this.notification.on('destroy', Y.bind(function () {
+                Y.fail("The notification should not be destroyed");
+            }, this));
+            this.view.render();
+            this.view.set('active', true);
+            this.notification.set('timeout', 0);
+            setTimeout(Y.bind(function () {
+                this.resume(function () {
+                    subscription.detach();
+                });
+            }, this), this.timeout + 0.1);
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Notification View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(stateTest);
@@ -264,4 +331,5 @@ YUI.add('ez-notificationview-tests', function (Y) {
     Y.Test.Runner.add(closeTest);
     Y.Test.Runner.add(activeTest);
     Y.Test.Runner.add(vanishTest);
+    Y.Test.Runner.add(autohideTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-notificationview']});

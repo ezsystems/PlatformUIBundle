@@ -57,6 +57,18 @@ YUI.add('ez-notification', function (Y) {
             state: {
                 value: null
             },
+
+            /**
+             * The duration in second after which the notification should disappear.
+             * Zero means the notification should not automatically disappear.
+             *
+             * @attribute timeout
+             * @type {Number}
+             * @default 0
+             */
+            timeout: {
+                value: 0
+            },
         }
     });
 });

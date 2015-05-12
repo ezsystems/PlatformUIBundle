@@ -24,29 +24,49 @@ YUI.add('ez-positionplugin', function (Y) {
      */
     Y.eZ.Plugin.Position = Y.Base.create('positionPlugin', Y.Plugin.Base, [], {
         initializer: function () {
-            var app = this.get('host');
+            var app = this.get('host'),
+                plugin = this;
 
             app.after('navigationHubView:heightChange', function (e) {
                 var notificationContainer = app.get('container').one('.ez-notification-container');
 
-                notificationContainer.setStyle(
-                    'top',
-                    (parseInt(notificationContainer.getStyle('top'), 10) + e.height.offset) + 'px'
-                );
+                plugin._setPositionProperty(notificationContainer, 'top', e.height.offset);
             });
 
             app.after('*:heightChange', function (e) {
                 var mainViews = app.get('container').one('.ez-mainviews'),
                     activeView = app.get('activeView');
 
-                mainViews.setStyle(
-                    'marginTop',
-                    (parseInt(mainViews.getStyle('marginTop'), 10) + e.height.offset) + 'px'
-                );
+                plugin._setPositionProperty(mainViews, 'marginTop', e.height.offset);
                 if ( activeView && activeView.refreshTopPosition ) {
                     activeView.refreshTopPosition(e.height.offset);
                 }
             });
+        },
+
+        /**
+         * Sets the given style property on the node after applying the given
+         * offset. It stores the actual state of the property in a data
+         * attribute to avoid having to deal with running transitions when
+         * getting the actual style.
+         *
+         * @method _setPositionProperty
+         * @protected
+         * @param {Node} node
+         * @param {String} property
+         * @param {Number} offset
+         */
+        _setPositionProperty: function (node, property, offset) {
+            var value = parseInt(
+                    node.getData(property) ? node.getData(property) : 0,
+                    10
+                );
+
+            node.setStyle(
+                property,
+                (value + offset) + 'px'
+            );
+            node.setData(property, (value + offset));
         },
     }, {
         NS: 'position',

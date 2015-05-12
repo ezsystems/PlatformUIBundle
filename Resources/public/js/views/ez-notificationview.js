@@ -23,26 +23,35 @@ YUI.add('ez-notificationview', function (Y) {
     Y.eZ.NotificationView = Y.Base.create('notificationView', Y.eZ.TemplateBasedView, [], {
         events: {
             '.ez-notification-close': {
-                'tap': '_closeNotification',
+                'tap': function (e) {
+                    e.preventDefault();
+                    this._closeNotification();
+                }
             }
         },
 
         /**
-         * tap event handler on the close notification link. It destroys the
-         * corresponding notification model.
+         * Closes the notification view by destroying the corresponding
+         * Notification object.
          *
          * @method _closeNotification
-         * @param {EventFacade} e
          * @protected
          */
         _closeNotification: function (e) {
-            e.preventDefault();
             this.get('notification').destroy();
         },
 
         initializer: function () {
             var notification = this.get('notification');
 
+            /**
+             * Stores the auto hide timer returned by Y.later.
+             *
+             * @property _autohideTimer
+             * @type {Object|Null}
+             * @protected
+             */
+            this._autohideTimer = null;
             this.containerTemplate = '<li class="' + this._generateViewClassName(this._getName()) + '"/>';
 
             notification.after('stateChange', Y.bind(function (e) {
@@ -52,13 +61,48 @@ YUI.add('ez-notificationview', function (Y) {
                 this._uiChangeText(notification.get('text'));
             }, this));
 
+            notification.after('destroy', Y.bind(this._stopAutohide, this));
+
             this.after('activeChange', function (e) {
                 if ( this.get('active') ) {
                     this.get('container').addClass(IS_ACTIVE);
+                    this._setAutohide();
+                    notification.after(
+                        'timeoutChange',
+                        Y.bind(this._setAutohide, this)
+                    );
                 } else {
                     this.get('container').removeClass(IS_ACTIVE);
                 }
             });
+        },
+
+        /**
+         * Creates a timer so that the notification is automatically hidden
+         * after its timeout. An already existing timer if any is stopped
+         *
+         * @method _setAutohide
+         * @protected
+         */
+        _setAutohide: function () {
+            var timeout = this.get('notification').get('timeout');
+
+            this._stopAutohide();
+            if ( timeout ) {
+                this._autohideTimer = Y.later(timeout, this, this._closeNotification);
+            }
+        },
+
+        /**
+         * Stops the auto hide timer if any
+         *
+         * @method _stopAutohide
+         * @protected
+         */
+        _stopAutohide: function () {
+            if ( this._autohideTimer ) {
+                this._autohideTimer.cancel();
+            }
         },
 
         /**

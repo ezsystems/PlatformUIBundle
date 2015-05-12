@@ -4,17 +4,19 @@
  */
 
 .ez-view-notificationview {
-    -webkit-transition: all 0.3s ease;
-            transition: all 0.3s ease;
+    transition: transform 0.2s ease, opacity 0.2s ease, background 0.3s ease;
     background: #f5f4f2;
     opacity: 0;
-    max-height: 0;
-    overflow: hidden;
+    -webkit-transform: scaleY(0);
+            transform: scaleY(0);
+    -webkit-transform-origin: top center;
+            transform-origin: top center;
 }
 
 .ez-view-notificationview.is-active {
     opacity: 1;
-    max-height: 10em;
+    -webkit-transform: scaleY(1);
+            transform: scaleY(1);
 }
 
 .ez-view-notificationview.is-state-started {
