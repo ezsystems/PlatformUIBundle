@@ -217,6 +217,10 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
         },
 
         "Should not save the draft": function () {
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: true,
+            });
             Y.Mock.expect(this.version, {
                 method: 'save',
                 args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
@@ -227,6 +231,291 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
             this.view.fire('whatever:saveAction', {
                 formIsValid: false
             });
+        },
+
+        "Should notify about the start of saving draft process": function () {
+            var contentId = "all-my-life",
+                notified = false;
+
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: false
+            });
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId,
+            });
+            Y.Mock.expect(this.version, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+            });
+
+            this.service.on('notify', function (e) {
+                notified = true;
+
+                Assert.areEqual(
+                    "started", e.notification.state,
+                    "The notification state should be 'started'"
+                );
+                Assert.isString(
+                    e.notification.text,
+                    "The notification text should be a String"
+                );
+                Assert.isTrue(
+                    e.notification.identifier.indexOf(contentId) !== -1,
+                    "The notification identifier should contain the content id"
+                );
+                Assert.isTrue(
+                    e.notification.identifier.indexOf(this.get('languageCode')) !== -1,
+                    "The notification identifier should contain the languageCode"
+                );
+            });
+
+            this.view.fire('whatever:saveAction', {
+                formIsValid: true,
+            });
+            Assert.isTrue(notified, "The plugin should have fired the notify event");
+        },
+
+        "Should notify about the success of saving draft process": function () {
+            var contentId = "all-my-life",
+                notificationId,
+                notified = false;
+
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: false
+            });
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId,
+            });
+            Y.Mock.expect(this.version, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    callback(false, {});
+                },
+            });
+
+            this.service.once('notify', function (e) {
+                notificationId = e.notification.identifier;
+                this.once('notify', function (e) {
+                    notified = true;
+                    Assert.areEqual(
+                        notificationId, e.notification.identifier,
+                        "The notification should be updated"
+                    );
+                    Assert.areEqual(
+                        "done", e.notification.state,
+                        "The notification state should be 'done'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a String"
+                    );
+                    Assert.areSame(
+                        5, e.notification.timeout,
+                        "The notification timeout should be set to 5"
+                    );
+                });
+            });
+
+            this.view.fire('whatever:saveAction', {
+                formIsValid: true,
+            });
+            Assert.isTrue(notified, "The plugin should have fired the notify event");
+        },
+
+        "Should notify about the failure of saving draft process": function () {
+            var contentId = "all-my-life",
+                notificationId,
+                notified = false;
+
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: false
+            });
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId,
+            });
+            Y.Mock.expect(this.version, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    callback(true);
+                },
+            });
+
+            this.service.once('notify', function (e) {
+                notificationId = e.notification.identifier;
+                this.once('notify', function (e) {
+                    notified = true;
+                    Assert.areEqual(
+                        notificationId, e.notification.identifier,
+                        "The notification should be updated"
+                    );
+                    Assert.areEqual(
+                        "error", e.notification.state,
+                        "The notification state should be 'done'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a String"
+                    );
+                });
+            });
+
+            this.view.fire('whatever:saveAction', {
+                formIsValid: true,
+            });
+            Assert.isTrue(notified, "The plugin should have fired the notify event");
+        },
+
+
+        "Should notify about the start of the draft creation process": function () {
+            var notified = false;
+
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: true
+            });
+            Y.Mock.expect(this.content, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+            });
+
+            this.service.on('notify', function (e) {
+                notified = true;
+
+                Assert.areEqual(
+                    "started", e.notification.state,
+                    "The notification state should be 'started'"
+                );
+                Assert.isString(
+                    e.notification.text,
+                    "The notification text should be a String"
+                );
+                Assert.isTrue(
+                    e.notification.identifier.indexOf("0") !== -1,
+                    "The notification identifier should contain the content id"
+                );
+                Assert.isTrue(
+                    e.notification.identifier.indexOf(this.get('languageCode')) !== -1,
+                    "The notification identifier should contain the languageCode"
+                );
+            });
+
+            this.view.fire('whatever:saveAction', {
+                formIsValid: true,
+            });
+            Assert.isTrue(notified, "The plugin should have fired the notify event");
+        },
+
+        "Should notify about the success of the draft creation process": function () {
+            var notificationId,
+                notified = false;
+
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: true
+            });
+            Y.Mock.expect(this.content, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: Y.bind(function (options, callback) {
+                    callback(false, {document: this.createContentResponse});
+                }, this),
+            });
+            Y.Mock.expect(this.version, {
+                method: "parse",
+                args: [Y.Mock.Value.Object],
+            });
+            Y.Mock.expect(this.version, {
+                method: "setAttrs",
+                args: [Y.Mock.Value.Any]
+            });
+
+            this.service.once('notify', function (e) {
+                notificationId = e.notification.identifier;
+                this.once('notify', function (e) {
+                    notified = true;
+                    Assert.areEqual(
+                        notificationId, e.notification.identifier,
+                        "The notification should be updated"
+                    );
+                    Assert.areEqual(
+                        "done", e.notification.state,
+                        "The notification state should be 'done'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a String"
+                    );
+                    Assert.areSame(
+                        5, e.notification.timeout,
+                        "The notification timeout should be set to 5"
+                    );
+                });
+            });
+
+            this.view.fire('whatever:saveAction', {
+                formIsValid: true,
+            });
+            Assert.isTrue(notified, "The plugin should have fired the notify event");
+        },
+
+        "Should notify about the failure of the draft creation process": function () {
+            var notificationId,
+                notified = false;
+
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: true
+            });
+            Y.Mock.expect(this.content, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: Y.bind(function (options, callback) {
+                    callback(true);
+                }, this),
+            });
+            Y.Mock.expect(this.version, {
+                method: "parse",
+                args: [Y.Mock.Value.Object],
+            });
+            Y.Mock.expect(this.version, {
+                method: "setAttrs",
+                args: [Y.Mock.Value.Any]
+            });
+
+            this.service.once('notify', function (e) {
+                notificationId = e.notification.identifier;
+                this.once('notify', function (e) {
+                    notified = true;
+                    Assert.areEqual(
+                        notificationId, e.notification.identifier,
+                        "The notification should be updated"
+                    );
+                    Assert.areEqual(
+                        "error", e.notification.state,
+                        "The notification state should be 'error'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a String"
+                    );
+                });
+            });
+
+            this.view.fire('whatever:saveAction', {
+                formIsValid: true,
+            });
+            Assert.isTrue(notified, "The plugin should have fired the notify event");
         },
     });
 
