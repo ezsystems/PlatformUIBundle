@@ -56,3 +56,16 @@
 .ez-view-notificationview .ez-notification-close:after {
     color: #444;
 }
+
+.ez-view-notificationview.is-state-error {
+    background: #BF3E33;
+}
+
+.ez-view-notificationview.is-state-error .ez-notification-text,
+.ez-view-notificationview.is-state-error .ez-notification-close:after {
+    color: #fff;
+}
+
+.ez-view-notificationview.is-state-error .ez-notification-text:before {
+    content: "\E61B";
+}
