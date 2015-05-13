@@ -68,6 +68,19 @@ YUI.add('ez-locationmodel', function (Y) {
                     location.get('id'), trashPath, callback
                 );
             });
+        },
+
+        /**
+         * Moves the location under the given parenLocationId.
+         *
+         * @method move
+         * @param {Object} options the options for the move.
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {String} parentLocationId the location id where we should move the content
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        move: function (options, parentLocationId, callback) {
+            options.api.getContentService().moveSubtree(this.get('id'), parentLocationId, callback);
         }
     }, {
         REST_STRUCT_ROOT: "Location",

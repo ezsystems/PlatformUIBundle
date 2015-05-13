@@ -45,6 +45,12 @@ YUI.add('ez-actionbarview', function (Y) {
                             hint: "Edit this content",
                             priority: 200
                         }),
+                        new Y.eZ.ButtonActionView({
+                            actionId: "move",
+                            disabled: false,
+                            label: "Move",
+                            priority: 190
+                        }),
                         new Y.eZ.CreateContentActionView({
                             actionId: 'createContent',
                             disabled: false,
