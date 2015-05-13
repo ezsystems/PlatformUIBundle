@@ -270,6 +270,10 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                     e.notification.identifier.indexOf(this.get('languageCode')) !== -1,
                     "The notification identifier should contain the languageCode"
                 );
+                Assert.areSame(
+                    0, e.notification.timeout,
+                    "The notification timeout should be set to 0"
+                );
             });
 
             this.view.fire('whatever:saveAction', {
@@ -367,6 +371,10 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                         e.notification.text,
                         "The notification text should be a String"
                     );
+                    Assert.areSame(
+                        0, e.notification.timeout,
+                        "The notification timeout should be set to 0"
+                    );
                 });
             });
 
@@ -407,6 +415,10 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                 Assert.isTrue(
                     e.notification.identifier.indexOf(this.get('languageCode')) !== -1,
                     "The notification identifier should contain the languageCode"
+                );
+                Assert.areSame(
+                    0, e.notification.timeout,
+                    "The notification timeout should be set to 0"
                 );
             });
 
@@ -508,6 +520,10 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                     Assert.isString(
                         e.notification.text,
                         "The notification text should be a String"
+                    );
+                    Assert.areSame(
+                        0, e.notification.timeout,
+                        "The notification timeout should be set to 0"
                     );
                 });
             });

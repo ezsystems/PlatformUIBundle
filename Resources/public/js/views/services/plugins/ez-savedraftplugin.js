@@ -47,6 +47,7 @@ YUI.add('ez-savedraftplugin', function (Y) {
                     identifier: this._buildNotificationIdentifier(isNew, content),
                     text: 'Saving the draft',
                     state: 'started',
+                    timeout: 0,
                 },
             });
             if ( isNew ) {
@@ -76,6 +77,7 @@ YUI.add('ez-savedraftplugin', function (Y) {
             if ( error ) {
                 notification.text = 'An error occured while saving the draft';
                 notification.state = 'error';
+                notification.timeout = 0;
             } else {
                 notification.text = 'The draft was stored successfully';
                 notification.state = 'done';
