@@ -76,14 +76,21 @@ class PlatformUI extends Context
      * Waits for Javascript to finnish by running a empty Javascript
      * (In Sahi it's possible to have the same result by running an empty javascript only)
      */
-    protected function waitForLastJs()
+    protected function waitForLoadings()
     {
-        //Needs to be here
-        $this->execJavascript( '' );
-
-        $jsCode = "return BDD.isSomethingLoading();";
-
-        while ( $this->evalJavascript( $jsCode ) )
+        $page = $this->getSession()->getPage();
+        $loadingClasses = array(
+            '.yui3-app-transitioning',
+            '.is-app-loading',
+            '.is-app-transitioning',
+            // content tree
+            '.ez-view-treeactionview.is-expanded .ez-view-treeview:not(.is-tree-loaded)',
+            '.is-tree-node-loading',
+            // contenttype menu
+            '.ez-view-createcontentactionview.is-expanded:not(.is-contenttypeselector-loaded)'
+        );
+        $loadingSelector = implode( ',', $loadingClasses );
+        while ( $page->find( 'css', $loadingSelector  ) != null )
         {
             usleep( 100 * 1000 ); // 100ms
         }
@@ -248,7 +255,7 @@ class PlatformUI extends Context
         {
             $found = false;
             $name = array_values( $element )[0];
-            $found = $this->checksElementByText( $name, '.ez-selection-filter-item' );
+            $found = $this->getElementByText( $name, '.ez-selection-filter-item' );
             Assertion::assertNotNull( $found, "Element: $name not found" );
         }
     }
@@ -260,7 +267,7 @@ class PlatformUI extends Context
      */
     public function waitForJs()
     {
-        $this->waitForLastJs();
+        $this->waitForLoadings();
     }
 
     /**
@@ -361,7 +368,7 @@ class PlatformUI extends Context
         }
         else
         {
-                throw new Exception( "File $fileName is not found at the given location: $fullPath" );
+            throw new Exception( "File $fileName is not found at the given location: $fullPath" );
         }
     }
 
