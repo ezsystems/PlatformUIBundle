@@ -89,7 +89,7 @@ YUI.add('ez-notificationview', function (Y) {
 
             this._stopAutohide();
             if ( timeout ) {
-                this._autohideTimer = Y.later(timeout, this, this._closeNotification);
+                this._autohideTimer = Y.later(timeout * 1000, this, this._closeNotification);
             }
         },
 
