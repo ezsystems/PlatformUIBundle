@@ -1,65 +1,120 @@
-Feature: Test the validations done on fields from Editorial Interface - Date fieldtype
+Feature: Test the validations done on fields from PlatformUI - Date fieldtype
+    In order to validate the date fieldtype
+    As an Editor  user
+    I need to be able to create, update and delete content with date fieldtypes
+
+    Background:
+        Given I am logged in as an Editor in PlatformUI
+
+    ##
+    # Validate the existence of expected fields from a field type when creating a content
+    ##
+    @javascript
+    Scenario: A Content of a Content Type that has a date fieldtype must have a date field
+        Given a Content Type with a "date" Field exists
+        When I create a content of this type
+        Then I should see a "date" field
 
     @javascript
-    Scenario Outline: Create a content with a valid date
-        Given I am logged in as admin on PlatformUI
-        And a Content Type exists with identifier "Date" in Group with identifier "Content" with fields:
-            | identifier | Type     | Name |
-            | title      | ezstring | Name |
-            | date       | ezdate   | Date |
-        And I create a content of content type "Date" with:
-            | Name    | Date   |
-            | <title> | <date> |
-        When I click on the actionbar action "Publish"
-        Then I should see <title> title
-        And I should see an element 'Date' with value "<showDate>"
-
-        Examples:
-            | title     | date       | showDate   |
-            | dateTest1 | 2015-01-01 | 01/01/2015 |
-            | dateTest2 | 2012-02-29 | 29/02/2012 |
-            | dateTest3 | 1911-01-01 | 01/01/1911 |
-            | dateTest4 | 1938-01-01 | 01/01/1938 |
+    Scenario: When editing a Content the label of a date field must have the same name than field type from the respective Content Type
+        Given a Content Type with a "date" with "Name" "Birthdate" exists
+        When I create a content of this type
+        Then I should see a "Birthdate:" label related with the "date" field
 
     @javascript
-    Scenario: Create a content with an empty date
-        Given I am logged in as admin on PlatformUI
-        And a Content Type exists with identifier "Date" in Group with identifier "Content" with fields:
-            | identifier | Type     | Name |
-            | title      | ezstring | Name |
-            | date       | ezdate   | Date |
-        And I create a content of content type "Date" with:
-            | Name     | Date |
-            | dateTest |      |
-        When I click on the actionbar action "Publish"
-        Then I should see "dateTest" title
-        And I should see an element 'Date' with value "This field is empty"
+    Scenario: The label of an mandatory date field of a Content must be marked as mandatory
+        Given a Content Type with a "required" "date" with "Name" "Birthdate" exists
+        When I create a content of this type
+        Then the "Birthdate" field should be marked as mandatory
+
+    ##
+    # Creating Content using a Content Type that has a Date Field Type
+    ##
+    @javascript
+    Scenario: Publishing a valid date Field works
+        Given a Content Type with a "date" Field exists
+        When I create a content of this Type
+        And I set "2015/05/01" as the Field Value
+        And I publish the content
+        Then the Content is successfully published
 
     @javascript
-    Scenario Outline: Create content with invalid dates
-        Given I am logged in as admin on PlatformUI
-        And a Content Type exists with identifier "Date" in Group with identifier "Content" with fields:
-            | identifier | Type     | Name |
-            | title      | ezstring | Name |
-            | date       | ezdate   | Date |
-        And I create a content of content type "Date" with:
-            | Name    | Date   |
-            | <title> | <date> |
-        When I click on the actionbar action "Publish"
-        Then I should see "This is not a correct date" text
+    Scenario: The date field of a Content of a Content Type that has a Date field with a default date set to current date, should present the current date
+        Given a Content Type with a "date" Field exists with Properties:
+            | Validator     | Value        |
+            | Default value | Current date |
+        When I create a content of this type
+        Then I should see a field with value "TODAYS_DATE"
 
-        Examples:
-            | title      | date        |
-            | dateTest1  | 2013-01-32  |
-            | dateTest2  | 2013-02-29  |
-            | dateTest3  | 2013-01--01 |
-            | dateTest4  | 2013-01-1.1 |
-            | dateTest5  | 2013-13-01  |
-            | dateTest6  | 2013--01-01 |
-            | dateTest7  | 2013-1.1-01 |
-            | dateTest8  | 1969-01-01  |
-            | dateTest9  | -2013-01-01 |
-            | dateTest10 | 20.13-01-01 |
-            | dateTest11 | aaaa-01-01  |
-            | dateTest12 | 2013-aa-01  |
-            | dateTest13 | 2013-01-aa  |
+    @javascript
+    Scenario: Publishing an invalid date Field fails validation when using an inccorect date
+        Given a Content Type with a "date" Field exists
+        When I create a content of this Type
+        And I set "2015/05/32" as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "This is not a correct date"
+
+    @javascript
+    Scenario: Publishing a required date Field fails validation when using an empty value
+        Given a Content Type with a "required" "date" exists
+        When I create a content of this type
+        And I set an empty value as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "This field is required"
+
+    ##
+    # Update Content using a Content Type that has a Date Field Type
+    ##
+    @javascript
+    Scenario: Updating a date field using a valid date Field works
+        Given a Content Type with a "date" Field exists
+        And a Content of this type exists
+        When I edit this content
+        And I set "2015/12/31" as the Field Value
+        And I publish the content
+        Then the Content is successfully published
+
+    @javascript
+    Scenario: Updating a date Field fails validation when using an invalid date
+        Given a Content Type with a "date" Field exists
+        And a Content of this type exists
+        When I edit this content
+        And I set "2015/05/32" as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "This is not a correct date"
+
+    @javascript
+    Scenario: Updating a required date Field fails validation when using an empty value
+        Given a Content Type with a "required" "date" exists
+        And a Content of this type exists
+        When I edit this content
+        And I set an empty value as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "This field is required"
+
+    ##
+    # Delete Content using a Content Type that has a Date Field Type
+    ##
+    @javascript
+    Scenario: Deleting a content that has a date field
+        Given a Content Type with a "date" Field exists
+        And a Content of this type exists
+        When I delete this Content
+        Then the Content is successfully deleted
+
+    ##
+    # Viewing content that has a date fieldtype
+    ##
+    @javascript
+    Scenario: Viewing a Content that has a date fieldtype should show the expected value
+        Given a Content Type with a "date" Field exists
+        And a Content of this type exists with "date" Field Value set to "2015/12/31"
+        When I view this Content
+        Then I should see a field with value "2015/12/31"
+
+    @javascript
+    Scenario: Viewing a Content that has a date fieldtype should return "This field is empty" when the value is empty
+        Given a Content Type with a "date" Field exists
+        And a Content of this type exists with "date" Field Value set to empty
+        When I view this Content
+        Then I should see a field with value "This field is empty"

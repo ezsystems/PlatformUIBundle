@@ -1,87 +1,203 @@
-Feature: Test the validations done on fields from Editorial Interface - Float fieldtype
+Feature: Test the validations done on fields from PlatformUI - Float fieldtype
+    In order to validate the float fieldtype
+    As an Editor  user
+    I need to be able to create, update and delete content with float fieldtypes
+
+    Background:
+        Given I am logged in as an Editor in PlatformUI
+
+    ##
+    # Validate the existence of expected fields from a field type when creating a content
+    ##
+    @javascript
+    Scenario: A Content of a Content Type that has an float fieldtype must have an float field
+        Given a Content Type with an "float" Field exists
+        When I create a content of this type
+        Then I should see an "float" field
 
     @javascript
-    Scenario Outline: Validate use of invalid floats
-        Given I am logged in as admin on PlatformUI
-        And a Content Type exists with identifier "Float" in Group with identifier "Content" with fields:
-            | identifier | Type     | Name  |
-            | name       | ezstring | Name  |
-            | float      | ezfloat  | Float |
-        And I create a content of content type "Float" with:
-            | Name   | Float   |
-            | <name> | <float> |
-        When I click on the actionbar action "Publish"
-        Then I should see "The value should be a valid float number" text
-        Examples:
-            | name      | float    |
-            | floatTest | failtest |
+    Scenario: When editing a Content the label of an float field must have the same name than field type from the respective Content Type
+        Given a Content Type with an "float" with "Name" "Weight" exists
+        When I create a content of this type
+        Then I should see a "Weight:" label related with the "float" field
 
     @javascript
-    Scenario Outline: Use of valid floats
-        Given I am logged in as admin on PlatformUI
-        And a Content Type exists with identifier "Float" in Group with identifier "Content" with fields:
-            | identifier | Type     | Name  |
-            | Name       | ezstring | Name  |
-            | float      | ezfloat  | Float |
-        And I create a content of content type "Float" with:
-            | Name   | Float   |
-            | <name> | <float> |
-        When I click on the actionbar action "Publish"
-        Then I should see <name> title
-        And I should see an element 'Float' with value "<float>"
-        Examples:
-            | name       | float |
-            | floatTest1 | 1,2   |
-            | floatTest2 | 1     |
-            | floatTest3 | 0     |
-            | floatTest4 | -1    |
-            | floatTest5 | -1,2  |
+    Scenario: The label of an mandatory float field of a Content must be marked as mandatory
+        Given a Content Type with a "required" "float" with "Name" "Weight" exists
+        When I create a content of this type
+        Then the "Weight" field should be marked as mandatory
+
+    ##
+    # Creating Content using a Content Type that has an Float Field Type
+    ##
+    @javascript
+    Scenario: Publishing a valid float Field works
+        Given a Content Type with an "float" Field exists
+        When I create a content of this type
+        And I set "1.5" as the Field Value
+        And I publish the content
+        Then the Content is successfully published
 
     @javascript
-    Scenario: Validate required float field
-        Given I am logged in as admin on PlatformUI
-        And a Content Type exists with identifier "Float2" in Group with identifier "Content" with fields:
-            | identifier | Type     | Name  | required |
-            | name       | ezstring | Name  | false    |
-            | float      | ezfloat  | Float | true     |
-        And I create a content of content type "Float2" with:
-            | Name      | Float |
-            | FloatTest |       |
-        And I fill in "Name" with "FloatTest"
-        When I click on the actionbar action "Publish"
-        Then I should see "This field is required" text
+    Scenario: Publishing a valid float Field works when using an integer
+        Given a Content Type with an "float" Field exists
+        When I create a content of this type
+        And I set "1" as the Field Value
+        And I publish the content
+        Then the Content is successfully published
 
     @javascript
-    Scenario Outline: Float field outside of maximum and minimum permited values
-        Given I am logged in as admin on PlatformUI
-        And a Content Type exists with identifier "Float3" in Group with identifier "Content" with fields:
-            | identifier | Type     | Name  | validator          |
-            | name       | ezstring | Name  | false              |
-            | float      | ezfloat  | Float | FloatValue:2.0~3.1 |
-        When I create a content of content type "Float3" with:
-            | Name      | Float   |
-            | FloatTest | <float> |
-        Then I should see <errorMessage> text
-        Examples:
-            | float | errorMessage                                    |
-            | 1.9   | "The value should be more than or equal to 2"   |
-            | 3.5   | "The value should be less than or equal to 3.1" |
+    Scenario: Publishing a valid float Field works when using a value within limited scope
+        Given a Content Type with an "float" Field exists with Properties:
+            | Validator               | Value |
+            | minimum value validator | 2     |
+            | maximum value validator | 3.1   |
+        When I create a content of this Type
+        And I set "2.5" as the Field Value
+        And I publish the content
+        Then the Content is successfully published
 
     @javascript
-    Scenario Outline: Float field within maximum and minimum permited values
-        Given I am logged in as admin on PlatformUI
-        And a Content Type exists with identifier "Float3" in Group with identifier "Content" with fields:
-            | identifier | Type     | Name  | validator          |
-            | name       | ezstring | Name  | false              |
-            | float      | ezfloat  | Float | FloatValue:2.0~3.1 |
-        And I create a content of content type "Float3" with:
-            | Name   | Float   |
-            | <name> | <float> |
-        When I click on the actionbar action "Publish"
-        Then I should see "FloatTest" title
-        And I should see an element 'Float' with value "<float>""
-        Examples:
-            | name       | float |
-            | flostTest1 | 2.5   |
-            | flostTest2 | 1.9   |
-            | flostTest3 | 3.5   |
+    Scenario: Publishing an invalid float Field fails validation when using a value smaller than minimum value allowed
+        Given a Content Type with an "float" Field exists with Properties:
+            | Validator               | Value |
+            | minimum value validator | 2     |
+            | maximum value validator | 3.1   |
+        When I create a content of this Type
+        And I set "0.5" as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "The value should be more than or equal to 2"
+
+    @javascript
+    Scenario: Publishing an invalid float Field fails validation when using a value bigger than maximum value allowed
+        Given a Content Type with an "float" Field exists with Properties:
+            | Validator               | Value |
+            | minimum value validator | 2     |
+            | maximum value validator | 3.1   |
+        When I create a content of this Type
+        And I set "4.5" as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "The value should be less than or equal to 3.1"
+
+    @javascript
+    Scenario: Publishing an invalid float Field fails validation when using a string
+        Given a Content Type with an "float" Field exists
+        When I create a content of this Type
+        And I set "a" as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "The value should be a valid float number"
+
+    @javascript
+    Scenario: Publishing a required float Field fails validation when using an empty value
+        Given a Content Type with a "required" "float" exists
+        When I create a content of this type
+        And I set an empty value as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "This field is required"
+
+    ##
+    # Update Content using a Content Type that has an Float Field Type
+    ##
+    @javascript
+    Scenario: Updating an float field using a valid float Field works
+        Given a Content Type with an "float" Field exists
+        And a Content of this type exists
+        When I edit this content
+        And I set "10.5" as the Field Value
+        And I publish the content
+        Then the Content is successfully published
+
+    @javascript
+    Scenario: Updating an float Field works when using a value within limited scope
+        Given a Content Type with an "float" Field exists with Properties:
+            | Validator               | Value |
+            | minimum value validator | 1     |
+            | maximum value validator | 3     |
+        And a Content of this type exists
+        When I edit this content
+        And I set "2.5" as the Field Value
+        And I publish the content
+        Then the Content is successfully published
+
+    @javascript
+    Scenario: Updating an float Field fails validation when using a value smaller than minimum value allowed
+        Given a Content Type with an "float" Field exists with Properties:
+            | Validator               | Value |
+            | minimum value validator | 1.5   |
+            | maximum value validator | 3     |
+        And a Content of this type exists
+        When I edit this content
+        And I set "0.5" as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "The value should be more than or equal to 1.5"
+
+    @javascript
+    Scenario: Updating an float Field fails validation when using a value bigger than maximum value allowed
+        Given a Content Type with an "float" Field exists with Properties:
+            | Validator               | Value |
+            | minimum value validator | 1     |
+            | maximum value validator | 3.5   |
+        And a Content of this type exists
+        When I edit this content
+        And I set "4.5" as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "The value should be less than or equal to 3.5"
+
+    @javascript
+    Scenario: Updating an float Field fails validation when using a string
+        Given a Content Type with an "float" Field exists
+        And a Content of this type exists
+        When I edit this content
+        And I set "a" as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "The value should be a valid float number"
+
+    @javascript
+    Scenario: Updating a required float Field fails validation when using an empty value
+        Given a Content Type with a "required" "float" exists
+        And a Content of this type exists
+        When I edit this content
+        And I set an empty value as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "This field is required"
+
+    ##
+    # Delete Content using a Content Type that has an Float Field Type
+    ##
+    @javascript
+    Scenario: Deleting a content that has an float field
+        Given a Content Type with an "float" Field exists
+        And a Content of this type exists
+        When I delete this Content
+        Then the Content is successfully deleted
+
+    ##
+    # Viewing content that has an float fieldtype
+    ##
+    @javascript
+    Scenario: Viewing a Content that has an float fieldtype should show the expected value when the value is positive
+        Given a Content Type with an "float" Field exists
+        And a Content of this type exists with "float" Field Value set to "1.5"
+        When I view this Content
+        Then I should see a field with value "1.5"
+
+    @javascript
+    Scenario: Viewing a Content that has an float fieldtype should return the expected value when the value is equal to zero
+        Given a Content Type with an "float" Field exists
+        And a Content of this type exists with "float" Field Value set to "0"
+        When I view this Content
+        Then I should see a field with value "0"
+
+    @javascript
+    Scenario: Viewing a Content that has an float fieldtype should return the expected value when the value is negative
+        Given a Content Type with an "float" Field exists
+        And a Content of this type exists with "float" Field Value set to "-1.5"
+        When I view this Content
+        Then I should see a field with value "-1.5"
+
+    @javascript
+    Scenario: Viewing a Content that has an float fieldtype should return "This field is empty" when the value is empty
+        Given a Content Type with an "float" Field exists
+        And a Content of this type exists with "float" Field Value set to empty
+        When I view this Content
+        Then I should see a field with value "This field is empty"

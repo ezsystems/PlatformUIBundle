@@ -22,7 +22,7 @@ Feature: Test the validations done on fields from PlatformUI - Email fieldtype
         Then I should see an "Email Contact:" label related with the "email" field
 
     @javascript
-    Scenario: The label of an mandatory email field of a Content must have an * as suffix on the field's label's' name
+    Scenario: The label of an mandatory email field of a Content must be marked as mandatory
         Given a Content Type with a "required" "email" with "Name" "Email Contact" exists
         When I create a content of this type
         Then the "Email Contact" field should be marked as mandatory
@@ -47,7 +47,7 @@ Feature: Test the validations done on fields from PlatformUI - Email fieldtype
         Then Publishing fails with validation error message "Please check the email syntax"
 
     @javascript
-    Scenario: Publishing an required email Field fails validation when using an empty value
+    Scenario: Publishing a required email Field fails validation when using an empty value
         Given a Content Type with a "requited" "email" exists
         When I create a content of this type
         And I set an empty value as the Field Value
@@ -60,7 +60,7 @@ Feature: Test the validations done on fields from PlatformUI - Email fieldtype
     @javascript
     Scenario: Updating to a valid email Field works
         Given a Content Type with an "email" Field exists
-        And a Content of this type exists with "email" Field Value set to "paul@acme.com"
+        And a Content of this type exists
         When I edit this content
         And I set "ana@acme.com" as the Field Value
         And I publish the content
@@ -69,7 +69,7 @@ Feature: Test the validations done on fields from PlatformUI - Email fieldtype
     @javascript
     Scenario: Updating an invalid email Field fails validation when using an invalid email
         Given a Content Type with an "email" Field exists
-        And a Content of this type exists with "email" Field Value set to "paul@acme.com"
+        And a Content of this type exists
         When I edit this content
         And I set "invalidEmail" as the Field Value
         And I publish the content
@@ -78,7 +78,7 @@ Feature: Test the validations done on fields from PlatformUI - Email fieldtype
     @javascript
     Scenario: Updating a required email Field fails validation when using an empty value
         Given a Content Type with a "requited" "email" exists
-        And a Content of this type exists with "email" Field Value set to "paul@acme.com"
+        And a Content of this type exists
         When I edit this content
         And I set an empty value as the Field Value
         And I publish the content

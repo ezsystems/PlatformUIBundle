@@ -23,7 +23,7 @@ Feature: Test the validations done on fields from Editorial Interface - Checkbox
         Then I should see a "Do you agree?:" label related with the "checkbox" field
 
     @javascript
-    Scenario: The label of an mandatory checkbox field of a Content must have an * as suffix on the field's label's' name
+    Scenario: The label of an mandatory checkbox field of a Content must be marked as mandatory
         Given a Content Type with a "required" "checkbox" with "Name" "Do you agree?" exists
         When I create a content of this type
         Then the "Do you agree?" field should be marked as mandatory

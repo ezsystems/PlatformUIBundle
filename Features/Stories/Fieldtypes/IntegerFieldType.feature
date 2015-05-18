@@ -22,7 +22,7 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
         Then I should see a "Quantity:" label related with the "integer" field
 
     @javascript
-    Scenario: The label of an mandatory integer field of a Content must have an * as suffix on the field's label's' name
+    Scenario: The label of an mandatory integer field of a Content must be marked as mandatory
         Given a Content Type with a "required" "integer" with "Name" "Quantity" exists
         When I create a content of this type
         Then the "Quantity" field should be marked as mandatory
@@ -41,8 +41,9 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
     @javascript
     Scenario: Publishing a valid integer Field works when using a value within limited scope
         Given a Content Type with an "integer" Field exists with Properties:
-            | minimum value validator | 1 |
-            | maximum value validator | 3 |
+            | Validator               | Value |
+            | minimum value validator | 1     |
+            | maximum value validator | 3     |
         When I create a content of this Type
         And I set "2" as the Field Value
         And I publish the content
@@ -51,8 +52,9 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
     @javascript
     Scenario: Publishing an invalid integer Field fails validation when using a value smaller than minimum value allowed
         Given a Content Type with an "integer" Field exists with Properties:
-            | minimum value validator | 1 |
-            | maximum value validator | 3 |
+            | Validator               | Value |
+            | minimum value validator | 1     |
+            | maximum value validator | 3     |
         When I create a content of this Type
         And I set "0" as the Field Value
         And I publish the content
@@ -61,10 +63,11 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
     @javascript
     Scenario: Publishing an invalid integer Field fails validation when using a value bigger than maximum value allowed
         Given a Content Type with an "integer" Field exists with Properties:
-            | minimum value validator | 1 |
-            | maximum value validator | 3 |
+            | Validator               | Value |
+            | minimum value validator | 1     |
+            | maximum value validator | 3     |
         When I create a content of this Type
-        And I set "0" as the Field Value
+        And I set "4" as the Field Value
         And I publish the content
         Then Publishing fails with validation error message "The value should be less than or equal to 3"
 
@@ -85,7 +88,7 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
         Then Publishing fails with validation error message "The value should be a valid integer number"
 
     @javascript
-    Scenario: Publishing an required integer Field fails validation when using an empty value
+    Scenario: Publishing a required integer Field fails validation when using an empty value
         Given a Content Type with a "required" "integer" exists
         When I create a content of this type
         And I set an empty value as the Field Value
@@ -98,7 +101,7 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
     @javascript
     Scenario: Updating an integer field using a valid integer Field works
         Given a Content Type with an "integer" Field exists
-        And a Content of this type exists with "integer" Field Value set to "1"
+        And a Content of this type exists
         When I edit this content
         And I set "10" as the Field Value
         And I publish the content
@@ -107,9 +110,10 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
     @javascript
     Scenario: Updating an integer Field works when using a value within limited scope
         Given a Content Type with an "integer" Field exists with Properties:
-            | minimum value validator | 1 |
-            | maximum value validator | 3 |
-        And a Content of this type exists with "integer" Field Value set to "1"
+            | Validator               | Value |
+            | minimum value validator | 1     |
+            | maximum value validator | 3     |
+        And a Content of this type exists
         When I edit this content
         And I set "2" as the Field Value
         And I publish the content
@@ -118,9 +122,10 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
     @javascript
     Scenario: Updating an integer Field fails validation when using a value smaller than minimum value allowed
         Given a Content Type with an "integer" Field exists with Properties:
-            | minimum value validator | 1 |
-            | maximum value validator | 3 |
-        And a Content of this type exists with "integer" Field Value set to "2"
+            | Validator               | Value |
+            | minimum value validator | 1     |
+            | maximum value validator | 3     |
+        And a Content of this type exists
         When I edit this content
         And I set "0" as the Field Value
         And I publish the content
@@ -129,8 +134,9 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
     @javascript
     Scenario: Updating an integer Field fails validation when using a value bigger than maximum value allowed
         Given a Content Type with an "integer" Field exists with Properties:
-            | minimum value validator | 1 |
-            | maximum value validator | 3 |
+            | Validator               | Value |
+            | minimum value validator | 1     |
+            | maximum value validator | 3     |
         And a Content of this type exists
         When I edit this content
         And I set "4" as the Field Value
@@ -154,6 +160,15 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
         And I set "1.5" as the Field Value
         And I publish the content
         Then Publishing fails with validation error message "The value should be a valid integer number"
+
+    @javascript
+    Scenario: Updating a required integer Field fails validation when using an empty value
+        Given a Content Type with a "required" "integer" exists
+        And a Content of this type exists
+        When I edit this content
+        And I set an empty value as the Field Value
+        And I publish the content
+        Then Publishing fails with validation error message "This field is required"
 
     ##
     # Delete Content using a Content Type that has an Integer Field Type
