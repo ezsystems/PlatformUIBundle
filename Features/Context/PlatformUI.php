@@ -21,8 +21,13 @@ class PlatformUI extends Context
 {
     const USER = "admin";
     const PASSWORD = "publish";
+
+    const NOT_WAITING = 0;
+    const WAITING_FOR_PUBLISHING = 1;
+
     use SubContext\Authentication;
     use SubContext\CommonActions;
+    use SubContext\Fields;
 
     /**
      * PlatformUI relative URL path
@@ -38,6 +43,12 @@ class PlatformUI extends Context
      * @var string
      */
     protected $driver;
+
+    /**
+     * Stores the status of the platform
+     * @var int
+     */
+    private $platformStatus = self::NOT_WAITING;
 
     /**
      * Evaluate javascript code and return result.
@@ -75,8 +86,7 @@ class PlatformUI extends Context
     }
 
     /**
-     * Waits for Javascript to finnish by running a empty Javascript
-     * (In Sahi it's possible to have the same result by running an empty javascript only)
+     * Waits for Javascript to finnish by checking the loading tags of the page
      */
     protected function waitForLoadings()
     {
@@ -99,8 +109,6 @@ class PlatformUI extends Context
     }
 
     /**
-     * Waits for Javascript to finnish by running a empty Javascript
-     * (In Sahi it's possible to have the same result by running an empty javascript only)
      */
     protected function activateJsErrorHandler()
     {
@@ -116,13 +124,13 @@ class PlatformUI extends Context
     public function iCreateContentType( $type, TableNode $fields )
     {
         $this->clickNavigationZone( "Platform" );
-        $this->waitForJs();
+        $this->waitForLoadings();
         $this->iClickAtLink( "Content structure" );
-        $this->waitForJs();
+        $this->waitForLoadings();
         $this->clickActionBar( "Create a content" );
-        $this->waitForJs();
+        $this->waitForLoadings();
         $this->clickContentType( $type );
-        $this->waitForJs();
+        $this->waitForLoadings();
         foreach ( $fields as $fieldArray )
         {
             $keys = array_keys( $fieldArray );
@@ -283,6 +291,18 @@ class PlatformUI extends Context
         $this->platformUiUri = $uri;
         $driver = "EzSystems\PlatformUIBundle\Features\DriverJS\\" . $driver;
         $this->driver = new $driver;
+    }
+
+    /**
+     * Checks if platform is waiting for publishing a content and if it is publishes it
+     */
+    private function executeDelayedActions()
+    {
+        if ( $this->platformStatus == self::WAITING_FOR_PUBLISHING )
+        {
+            $this->clickActionBar( "Publish" );
+        }
+        $this->waitForLoadings();
     }
 
     /**

@@ -92,7 +92,7 @@ Feature: Login on PlatformUI
         And I click on the "Content structure" link
         When I click on the actionbar action "Minimize"
         Then I don't see "Minimize" text
-@now
+
     @javascript
     Scenario: As a admin User, I want to use side menu
         Given I go to PlatformUI app with username "admin" and password "publish"
