@@ -19,6 +19,8 @@ use PHPUnit_Framework_Assert as Assertion;
 
 class PlatformUI extends Context
 {
+    const USER = "admin";
+    const PASSWORD = "publish";
     use SubContext\Authentication;
     use SubContext\CommonActions;
 

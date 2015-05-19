@@ -58,7 +58,7 @@ trait Authentication
      */
     public function loggedAsAdminPlatformUi()
     {
-        $this->goToPlatformUiAndLogIn( "admin", "publish" );
+        $this->goToPlatformUiAndLogIn( self::USER, self::PASSWORD );
     }
 
     /**
