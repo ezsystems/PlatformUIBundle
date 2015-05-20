@@ -21,7 +21,7 @@ trait Fields
     public function createAContentOfThisType()
     {
         $fieldManager = $this->getFieldTypeManager();
-        $fieldManager->executeDelayedOperations( FieldType::CONTENT_TYPE_PUBLISHED );
+        $fieldManager->setFieldContentState( FieldType::CONTENT_TYPE_PUBLISHED );
         $type = $fieldManager->getThisContentTypeName( 'eng-GB' );
 
         $this->loggedAsAdminPlatformUi();
@@ -42,7 +42,7 @@ trait Fields
     public function editThisContent()
     {
         $fieldManager = $this->getFieldTypeManager();
-        $fieldManager->executeDelayedOperations( FieldType::CONTENT_PUBLISHED );
+        $fieldManager->setFieldContentState( FieldType::CONTENT_PUBLISHED );
         $name = $fieldManager->getThisContentName( 'eng-GB' );
 
         $this->loggedAsAdminPlatformUi();
@@ -63,7 +63,7 @@ trait Fields
     public function viewThisContent()
     {
         $fieldManager = $this->getFieldTypeManager();
-        $fieldManager->executeDelayedOperations( FieldType::CONTENT_PUBLISHED );
+        $fieldManager->setFieldContentState( FieldType::CONTENT_PUBLISHED );
         $name = $fieldManager->getThisContentName( 'eng-GB' );
 
         $this->loggedAsAdminPlatformUi();
