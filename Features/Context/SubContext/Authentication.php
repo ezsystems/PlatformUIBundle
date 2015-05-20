@@ -11,7 +11,7 @@
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
 use EzSystems\PlatformUIBundle\Features\Helper\JavaScript as JsHelper;
-use PHPUnit_Framework_Assert as Assertion;
+use Behat\Mink\WebAssert;
 
 trait Authentication
 {
@@ -49,8 +49,6 @@ trait Authentication
         $this->waitForJs();
         //Then I should be logged in
         $this->iShouldBeLoggedIn();
-        //Catches Js errors
-        $this->activateJsErrorHandler();
     }
 
     /**
@@ -77,10 +75,9 @@ trait Authentication
     {
         $this->shouldBeLoggedIn = true;
 
+        $verification = new WebAssert( $this->getSession() );
+        $verification->elementNotExists( 'css', '.ez-loginform' );
         $jsCode = "return (document.querySelector('.ez-loginform') === null);";
-
-        $isLoggedIn = $this->evalJavascript( $jsCode, false );
-        Assertion::assertTrue( $isLoggedIn, "Not logged in" );
     }
 
     /**

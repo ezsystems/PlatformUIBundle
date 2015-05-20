@@ -10,8 +10,6 @@
 
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
-use EzSystems\PlatformUIBundle\Features\Helper\JavaScript as JsHelper;
-
 trait CommonActions
 {
     /**
