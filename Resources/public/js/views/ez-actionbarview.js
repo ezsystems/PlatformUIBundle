@@ -51,6 +51,13 @@ YUI.add('ez-actionbarview', function (Y) {
                             label: 'Create a content',
                             priority: 210
                         }),
+                        new Y.eZ.ButtonActionView({
+                            actionId: 'remove',
+                            disabled: false,
+                            label: 'Remove',
+                            hint: 'Remove this content',
+                            priority: 190
+                        }),
                     ];
                 }
             },
