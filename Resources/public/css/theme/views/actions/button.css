@@ -54,7 +54,7 @@
     content: "\E61D";
 }
 
-.ez-view-buttonactionview .ez-action[data-action="remove"] .action-icon:before {
+.ez-view-buttonactionview .ez-action[data-action="sendToTrash"] .action-icon:before {
     content: "\E615";
 }
 

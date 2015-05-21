@@ -52,11 +52,10 @@ YUI.add('ez-actionbarview', function (Y) {
                             priority: 210
                         }),
                         new Y.eZ.ButtonActionView({
-                            actionId: 'remove',
+                            actionId: 'sendToTrash',
                             disabled: false,
-                            label: 'Remove',
-                            hint: 'Remove this content',
-                            priority: 190
+                            label: 'Send to Trash',
+                            priority: 10
                         }),
                     ];
                 }

@@ -24,6 +24,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
     Y.eZ.LocationViewViewService = Y.Base.create('locationViewViewService', Y.eZ.ViewService, [], {
         initializer: function () {
             this.on('*:editAction', this._editContent);
+            this.on('*:sendToTrashAction', this._sendContentToTrash);
         },
 
         /**
@@ -40,6 +41,113 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             app.navigate(
                 app.routeUri('editContent', {id: e.content.get('id')})
             );
+        },
+
+        /**
+         * sendToTrashAction event handler, sends location available in request to trash
+         * and makes the application navigate to parent location
+         *
+         * @method _sendContentToTrash
+         * @protected
+         * @param {Object} e event facade of the sendToTrashAction event
+         */
+        _sendContentToTrash: function (e) {
+            var app = this.get('app'),
+                that = this,
+                contentService = this.get('capi').getContentService(),
+                location = this.get('location'),
+                locationId = location.get('id'),
+                // TODO this route should be taken from REST not hardcoded
+                trashLocation = '/api/ezp/v2/content/trash',
+                contentName = e.content.get('name');
+
+            that.fire('confirmBoxOpen', {
+                config: {
+                    title: "Are you sure you want to send this content to trash?",
+                    confirmHandler: Y.bind(function () {
+                        that._sendContentToTrashNotificationStarted(locationId, contentName);
+                        that._loadParent(location, function(error, parentLocationResponse){
+                            if (error) {
+                                that._sendContentToTrashNotificationError(locationId, contentName);
+                                return;
+                            }
+
+                            contentService.moveSubtree (locationId, trashLocation, function(error, response){
+                                if (error) {
+                                    that._sendContentToTrashNotificationError(locationId, contentName);
+                                    return;
+                                }
+
+                                that._sendContentToTrashNotificationDone(locationId, contentName);
+                                app.navigate(
+                                    app.routeUri('viewLocation', {id: parentLocationResponse.location.get('id')})
+                                );
+                            });
+                        });
+                        this._set('trackOutsideEvents', true);
+                    }, this),
+                    cancelHandler: Y.bind(function () {
+                        this._set('trackOutsideEvents', true);
+                    }, this),
+                },
+            });
+        },
+
+        /**
+         * Notification changed to *started* before sending content to trash
+         *
+         * @method _sendContentToTrashNotificationStarted
+         * @protected
+         * @param {String} locationId
+         * @param {String} contentName
+         */
+        _sendContentToTrashNotificationStarted: function (locationId, contentName) {
+            this.fire('notify', {
+                notification: {
+                    identifier: 'send-to-trash-' + locationId,
+                    text: 'Sending "' + contentName + '" to Trash',
+                    state: 'started',
+                    timeout: 0
+                },
+            });
+        },
+
+        /**
+         * Notification changed to *done* after sucessfull sending content to trash
+         *
+         * @method _sendContentToTrashNotificationDone
+         * @protected
+         * @param {String} locationId
+         * @param {String} contentName
+         */
+        _sendContentToTrashNotificationDone: function (locationId, contentName) {
+            this.fire('notify', {
+                notification: {
+                    identifier: 'send-to-trash-' + locationId,
+                    text: '"' + contentName + '" sent to Trash',
+                    state: 'done',
+                    timeout: 5
+                },
+            });
+        },
+
+        /**
+         * Notification changed to *error* when sending content to trash has failed
+         *
+         * @method _sendContentToTrashNotificationError
+         * @protected
+         * @param {String} locationId
+         * @param {String} contentName
+         */
+        _sendContentToTrashNotificationError: function (locationId, contentName) {
+            this.fire('notify', {
+                notification: {
+                    identifier: 'send-to-trash-' + locationId,
+                    text: 'An error occurred when sending "' + contentName + '" to Trash',
+                    state: 'error',
+                    timeout: 5
+                },
+            });
         },
 
         /**
