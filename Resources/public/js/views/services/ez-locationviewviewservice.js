@@ -61,7 +61,8 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 trashLocation = '/api/ezp/v2/content/trash',
                 contentName = e.content.get('name');
 
-            that.fire('confirmBoxOpen', {
+            this._set('trackOutsideEvents', false);
+            this.fire('confirmBoxOpen', {
                 config: {
                     title: "Are you sure you want to send this content to trash?",
                     confirmHandler: Y.bind(function () {
