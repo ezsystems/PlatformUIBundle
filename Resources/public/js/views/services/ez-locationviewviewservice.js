@@ -61,6 +61,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 trashLocation = '/api/ezp/v2/content/trash',
                 contentName = e.content.get('name');
 
+            e.preventDefault();
             this._set('trackOutsideEvents', false);
             this.fire('confirmBoxOpen', {
                 config: {
