@@ -170,7 +170,10 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          */
         _redirectionUrl: function (value) {
             if ( !value ) {
-                return this.get('app').routeUri('viewLocation', {id: this.get('location').get('id')});
+                return this.get('app').routeUri(
+                    'viewLocation',
+                    {id: this.get('location').get('id'), languageCode: this.get('content').get('mainLanguageCode')}
+                );
             } else if ( typeof value === 'function' ) {
                 return value.call(this);
             }

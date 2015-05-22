@@ -51,6 +51,7 @@ YUI.add('ez-contentcreateplugin', function (Y) {
                     contentType: this.get('contentType'),
                     languageCode: this.get('languageCode'),
                     parentLocation: this.get('parentLocation'),
+                    parentContent: this.get('parentContent'),
                 });
             }
         },
@@ -118,7 +119,8 @@ YUI.add('ez-contentcreateplugin', function (Y) {
             this.setAttrs({
                 contentType: event.contentType,
                 languageCode: event.languageCode,
-                parentLocation: service.get('location')
+                parentLocation: service.get('location'),
+                parentContent: service.get('content')
             });
             app.navigate(app.routeUri('createContent'));
         },
@@ -152,6 +154,15 @@ YUI.add('ez-contentcreateplugin', function (Y) {
              * @default undefined
              */
             parentLocation: {},
+
+            /**
+             * The parent content of the content that will be created
+             *
+             * @attribute parentContent
+             * @type Y.eZ.Content
+             * @default undefined
+             */
+            parentContent: {},
         }
     });
 

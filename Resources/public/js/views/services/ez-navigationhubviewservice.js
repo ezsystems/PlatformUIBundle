@@ -53,8 +53,126 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
             });
         },
 
+        _load: function (next) {
+            var api = this.get('capi'),
+                loadError = false,
+                service = this,
+                discoveryService = api.getDiscoveryService(),
+                tasks = new Y.Parallel();
+
+            // Loading root
+            discoveryService.getInfoObject('rootLocation', function (error, response){
+                var rootLocationId;
+
+                if ( error ) {
+                    loadError = true;
+                    return;
+                }
+
+                rootLocationId = response._href;
+
+                service._loadLocationAndContent(rootLocationId, 'rootStruct', tasks.add(function (error) {
+                    var params = {id: '', languageCode: ''};
+
+                    if ( error ) {
+                        loadError = true;
+                        return;
+                    }
+
+                    params.id = service.get('rootStruct').location.get('id');
+                    params.languageCode = service.get('rootStruct').content.get('mainLanguageCode');
+
+                    service.getNavigationItem('content-structure').set(
+                        'route',
+                        {name: 'viewLocation', params: params}
+                    );
+                }));
+            });
+
+            // Loading media root
+            discoveryService.getInfoObject('rootMediaFolder', function (error, response){
+                var rootMediaLocationId;
+
+                if ( error ) {
+                    loadError = true;
+                    return;
+                }
+
+                rootMediaLocationId = response._href;
+
+                service._loadLocationAndContent(rootMediaLocationId, 'rootMediaStruct' , tasks.add(function (error){
+                    var params = {id: '', languageCode: ''};
+
+                    if ( error ) {
+                        loadError = true;
+                        return;
+                    }
+
+                    params.id = service.get('rootMediaStruct').location.get('id');
+                    params.languageCode = service.get('rootMediaStruct').content.get('mainLanguageCode');
+
+                    service.getNavigationItem('content-structure').set(
+                        'route',
+                        {name: 'viewLocation', params: params}
+                    );
+                }));
+            });
+
+            tasks.done(function () {
+                if ( loadError ) {
+                    service._error("Failed to the load root contents and locations");
+                    return;
+                }
+
+                next(service);
+            });
+        },
+
         /**
-         * Returns a navigation item object. See the *NavigatinItems attribute.
+         * Loads the given `locationId` and its content
+         *
+         * @protected
+         * @method _loadLocationAndContent
+         * @param {Integer} locationId
+         * @param {string} attributeName where thisthings need to be loaded
+         * @param {Function} callback the function to call when the location and
+         *        the content are loaded
+         * @param {Boolean} callback.error the error, true if an error occurred
+         * @param {Object} callback.result an object containing the
+         *        Y.eZ.Location and the Y.eZ.Content instances under the `location` and
+         *        the `content` keys.
+         */
+        _loadLocationAndContent: function (locationId, attributeName, callback) {
+            var loadOptions = {
+                    api: this.get('capi')
+                },
+                attribute = this.get(attributeName),
+                location = attribute.location,
+                content = attribute.content;
+
+            location.set('id', locationId);
+
+            location.load(loadOptions, function (error) {
+                if ( error ) {
+                    callback(error);
+                    return;
+                }
+
+                content.set('id', location.get('resources').Content);
+
+                content.load(loadOptions, function (error) {
+                    if ( error ) {
+                        callback(error);
+                        return;
+                    }
+
+                    callback();
+                });
+            });
+        },
+
+        /**
+         * Returns a navigation item object. See the *NavigationItems attribute.
          *
          * @private
          * @method _getItem
@@ -105,19 +223,18 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
          * @param {String} locationId
          * @return {Object}
          */
-        _getSubtreeItem: function (title, identifier, locationId) {
-            return this._getItem(
-                Y.eZ.NavigationItemSubtreeView, {
-                    title: title,
-                    identifier: identifier,
-                    route: {
-                        name: 'viewLocation',
-                        params: {
-                            id: locationId
-                        }
+        _getSubtreeItem: function (title, identifier, locationId, languageCode) {
+            return new Y.eZ.NavigationItemSubtreeView( {
+                title: title,
+                identifier: identifier,
+                route: {
+                    name: 'viewLocation',
+                    params: {
+                        id: locationId,
+                        languageCode: languageCode
                     }
                 }
-            );
+            });
         },
 
         /**
@@ -221,11 +338,64 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
             var attr = zone + 'NavigationItems';
 
             this._set(attr, Y.Array.reject(this.get(attr), function (elt) {
-                return elt.config.identifier === identifier;
+                if (elt.get) {
+                    return elt.get('identifier') === identifier;
+                } else {
+                    return elt.config.identifier === identifier;
+                }
             }));
         },
+
+        /**
+         * Retrieves a navigation item
+         *
+         * @method getNavigationItem
+         * @param {String} identifier the identifier of the navigation item to retrieve
+         * @return {Object}
+         */
+        getNavigationItem: function(identifier) {
+            var zones = ['platform', 'studio', 'studioplus', 'admin'],
+                items = [];
+
+            Y.Array.each(zones, function (zone) {
+                items = items.concat(this.get(zone + 'NavigationItems'));
+            }, this);
+
+            return Y.Array.find(items, function (elt) {
+                if (elt.get) {
+                    return elt.get('identifier') === identifier;
+                } else {
+                    return false;
+                }
+            });
+        }
     }, {
         ATTRS: {
+
+            /**
+             * Stores the root struct with it's `location` and `content`
+             *
+             * @attribute rootStruct
+             * @type {Object}
+             */
+            rootStruct: {
+                valueFn: function () {
+                    return {location: new Y.eZ.Location(), content: new Y.eZ.Content()};
+                },
+            },
+
+            /**
+             * Stores the root media struct with it's `location` and `content`
+             *
+             * @attribute rootMediaStruct
+             * @type {Object}
+             */
+            rootMediaStruct: {
+                valueFn: function () {
+                    return {location: new Y.eZ.Location(), content: new Y.eZ.Content()};
+                },
+            },
+
             /**
              * Stores the navigation item objects for the 'platform' zone. Each
              * object must contain a `Constructor` property referencing
@@ -241,21 +411,28 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
              * @readOnly
              */
             platformNavigationItems: {
-                valueFn: function () {
-                    // TODO these location ids should be taken from the REST
-                    // root ressource instead of being hardcoded
-                    return [
+                getter: function (val) {
+                    if (val) {
+                        return val;
+                    }
+
+                    val = [
                         this._getSubtreeItem(
                             "Content structure",
                             "content-structure",
-                            "/api/ezp/v2/content/locations/1/2"
+                            this.get('rootStruct').location.get('id'),
+                            this.get('rootStruct').content.get('mainLanguageCode')
                         ),
                         this._getSubtreeItem(
                             "Media library",
                             "media-library",
-                            "/api/ezp/v2/content/locations/1/43"
+                            this.get('rootMediaStruct').location.get('id'),
+                            this.get('rootMediaStruct').content.get('mainLanguageCode')
                         ),
                     ];
+
+                    this._set('platformNavigationItems', val);
+                    return val;
                 },
                 readOnly: true,
             },
@@ -274,13 +451,20 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
              * @readOnly
              */
             studioplusNavigationItems: {
-                valueFn: function () {
-                    return [
+                getter: function (val) {
+                    if (val) {
+                        return val;
+                    }
+
+                    val = [
                         this._getNavigationItem(
                             "eZ Studio Plus presentation", "studioplus-presentation",
                             "studioPlusPresentation", {}
                         ),
                     ];
+
+                    this._set('studioplusNavigationItems', val);
+                    return val;
                 },
                 readOnly: true,
             },
@@ -299,13 +483,20 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
              * @readOnly
              */
             studioNavigationItems: {
-                valueFn: function () {
-                    return [
+                getter: function (val) {
+                    if (val) {
+                        return val;
+                    }
+
+                    val = [
                         this._getNavigationItem(
                             "eZ Studio presentation", "studio-presentation",
                             "studioPresentation", {}
                         ),
                     ];
+
+                    this._set('studioNavigationItems', val);
+                    return val;
                 },
                 readOnly: true,
             },
@@ -324,8 +515,12 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
              * @readOnly
              */
             adminNavigationItems: {
-                valueFn: function () {
-                    return [
+                getter: function (val) {
+                    if (val) {
+                        return val;
+                    }
+
+                    val = [
                         this._getParameterItem(
                             "Administration dashboard", "admin-dashboard",
                             "adminGenericRoute", {uri: "pjax/dashboard"}, "uri"
@@ -343,6 +538,9 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                             "adminContentType", {uri: "contenttype"}
                         ),
                     ];
+
+                    this._set('adminNavigationItems', val);
+                    return val;
                 },
                 readOnly: true,
             },

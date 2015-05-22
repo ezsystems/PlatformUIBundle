@@ -16,6 +16,7 @@ YUI.add('ez-navigationitemsubtreeview-tests', function (Y) {
                 name: "viewLocation",
                 params: {
                     id: 42,
+                    languageCode: 'eng-GB',
                 }
             };
             this.view = new Y.eZ.NavigationItemSubtreeView({
@@ -49,6 +50,7 @@ YUI.add('ez-navigationitemsubtreeview-tests', function (Y) {
                 name: this.routeName,
                 params: {
                     id: this.locationId,
+                    languageCode: 'eng-GB',
                 }
             };
             this.view = new Y.eZ.NavigationItemSubtreeView({

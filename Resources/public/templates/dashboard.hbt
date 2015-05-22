@@ -12,7 +12,7 @@
     The User Interface you are now browsing is an early alpha, however should already give you an idea of what kind of usability improvements we are working on.
 </p>
 <p>
-    Go to the <a href="{{ path "viewLocation" id="/api/ezp/v2/content/locations/1/2" }}">Root location</a> of this installation to start browsing the tree and edit or create new content, and you'll see how the interface gives you direct feedback as you work on your content.
+    Go to the <a href="{{ path "viewLocation" id="/api/ezp/v2/content/locations/1/2" languageCode="eng-GB"}}">Root location</a> of this installation to start browsing the tree and edit or create new content, and you'll see how the interface gives you direct feedback as you work on your content.
 </p>
 <p>
     Good luck, and thanks for trying the alpha!

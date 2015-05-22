@@ -79,11 +79,21 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
             var app = this.get('app'),
                 viewParent;
 
-            viewParent = app.routeUri('viewLocation', {id: this.get('parentLocation').get('id')});
+            viewParent = app.routeUri(
+                'viewLocation',
+                {
+                    id: this.get('parentLocation').get('id'),
+                    languageCode: this.get('parentContent').get('mainLanguageCode')
+                }
+            );
             this.set('discardRedirectionUrl', viewParent);
             this.set('closeRedirectionUrl', viewParent);
             this.set('publishRedirectionUrl', function () {
-                return app.routeUri('viewLocation', {id: this.get('content').get('resources').MainLocation});
+                var content = this.get('content');
+                return app.routeUri(
+                    'viewLocation',
+                    {id: content.get('resources').MainLocation, languageCode: content.get('mainLanguageCode')}
+                );
             });
         },
     }, {
@@ -96,6 +106,15 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
              * @required
              */
             parentLocation: {},
+
+            /**
+             * The parent content of the new content
+             *
+             * @attribute parentContent
+             * @type Y.eZ.Content
+             * @required
+             */
+            parentContent: {},
         }
     });
 });

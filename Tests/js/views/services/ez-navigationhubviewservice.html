@@ -5,8 +5,11 @@
 </head>
 <body>
 
+<script type="text/x-handlebars-template" id="navigationitemview-ez-template">navigation item view template</script>
+
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-navigationhubviewservice-tests.js"></script>
+<script type="text/javascript" src="./assets/fake-models.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -24,16 +27,20 @@
         filter: loaderFilter,
         modules: {
             "ez-navigationhubviewservice": {
-                requires: ['ez-viewservice', 'ez-navigationitemview', 'array-extras'],
+                requires: ['ez-viewservice', 'ez-navigationitemview', 'array-extras', 'ez-navigationitemsubtreeview', 'parallel', 'fake-models'],
                 fullpath: "../../../../Resources/public/js/views/services/ez-navigationhubviewservice.js"
             },
+            "ez-navigationitemsubtreeview": {
+                requires: ['ez-navigationitemview'],
+                fullpath: "../../../../Resources/public/js/views/navigation/ez-navigationitemsubtreeview.js"
+            },
             "ez-viewservice": {
-                requires: ['view'],
+                requires: ['base'],
                 fullpath: "../../../../Resources/public/js/views/services/ez-viewservice.js"
             },
             "ez-navigationitemview": {
                 requires: ['ez-templatebasedview'],
-                fullpath: "../../../../Resources/public/js/views/services/ez-viewservice.js"
+                fullpath: "../../../../Resources/public/js/views/navigation/ez-navigationitemview.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
@@ -47,6 +54,7 @@
                 requires: ['array-extras'],
                 fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
+
         }
     }).use('ez-navigationhubviewservice-tests', function (Y) {
         Y.Test.Runner.run();

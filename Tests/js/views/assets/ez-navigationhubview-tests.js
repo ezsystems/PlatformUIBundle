@@ -824,12 +824,14 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 name: "viewLocation",
                 params: {
                     id: '/1/2/',
+                    languageCode: 'eng-GB',
                 }
             };
             this.route2 = {
                 name: "viewLocation",
                 params: {
                     id: '/1/43/',
+                    languageCode: 'eng-GB',
                 }
             };
             this.route3 = {
