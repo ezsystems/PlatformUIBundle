@@ -240,6 +240,7 @@ system:
                         - 'ez-dateandtime-view'
                         - 'ez-date-view'
                         - 'ez-time-view'
+                        - 'ez-richtext-view'
                         - 'event-tap'
                         - 'rawcontentview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/ez-rawcontentview.js
@@ -526,6 +527,12 @@ system:
                 relationlisteditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/relationlist.hbt
+                ez-richtext-view:
+                    requires: ['ez-fieldview', 'richtextview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-view.js
+                richtextview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/view/richtext.hbt
                 ez-selection-editview:
                     requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside', 'node-screen', 'selectioneditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-selection-editview.js
