@@ -20,6 +20,7 @@
                 <button
                     data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
                     data-section-rest-id="{{path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
+                    data-section-name="{{ section.name }}"
                     class="ez-section-assign-button ez-button-tree pure-button ez-font-icon ez-button"
                     {% if not section.canAssign %}disabled="disabled"{% endif %}>{{ 'section.assign.contents'|trans }}</button>
             </td>
