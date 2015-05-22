@@ -57,8 +57,6 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 contentService = this.get('capi').getContentService(),
                 location = this.get('location'),
                 locationId = location.get('id'),
-                // TODO this route should be taken from REST not hardcoded
-                trashLocation = '/api/ezp/v2/content/trash',
                 contentName = e.content.get('name');
 
             e.preventDefault();
@@ -67,22 +65,45 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 config: {
                     title: "Are you sure you want to send this content to trash?",
                     confirmHandler: Y.bind(function () {
+                        var tasks, parentLocation, trashPath, endLoadParent, endLoadTrashPath;
+
                         that._sendContentToTrashNotificationStarted(locationId, contentName);
-                        that._loadParent(location, function(error, parentLocationResponse){
+
+                        tasks = new Y.Parallel();
+                        endLoadParent = tasks.add();
+                        that._loadParent(location, function (error, parentLocationResponse) {
                             if (error) {
                                 that._sendContentToTrashNotificationError(locationId, contentName);
+                                that._error("Failed to load parent location of " + locationId);
                                 return;
                             }
 
-                            contentService.moveSubtree (locationId, trashLocation, function(error, response){
-                                if (error) {
+                            parentLocation = parentLocationResponse.location;
+                            endLoadParent();
+                        });
+
+                        endLoadTrashPath = tasks.add();
+                        contentService.loadRoot(function (error, loadRootResponse) {
+                            if (error) {
+                                that._sendContentToTrashNotificationError(locationId, contentName);
+                                that._error("Failed to contact the REST API");
+                                return;
+                            }
+
+                            trashPath = loadRootResponse.document.Root.trash._href;
+                            endLoadTrashPath();
+                        });
+
+                        tasks.done(function () {
+                            contentService.moveSubtree(locationId, trashPath, function (err, response) {
+                                if (err) {
                                     that._sendContentToTrashNotificationError(locationId, contentName);
                                     return;
                                 }
 
                                 that._sendContentToTrashNotificationDone(locationId, contentName);
                                 app.navigate(
-                                    app.routeUri('viewLocation', {id: parentLocationResponse.location.get('id')})
+                                    app.routeUri('viewLocation', {id: parentLocation.get('id')})
                                 );
                             });
                         });
