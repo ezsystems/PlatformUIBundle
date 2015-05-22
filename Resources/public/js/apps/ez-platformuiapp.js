@@ -745,7 +745,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "viewLocation",
-                    path: '/view/:id',
+                    path: '/view/:id/:languageCode',
                     service: Y.eZ.LocationViewViewService,
                     sideViews: {'discoveryBar': true, 'navigationHub': true},
                     view: 'locationViewView',

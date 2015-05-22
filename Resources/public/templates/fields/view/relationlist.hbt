@@ -10,7 +10,7 @@
                     <ul>
                     {{#each destinationContents}}
                         <li>
-                            <a href="{{path "viewLocation" id=resources.MainLocation}}">{{name }}</a></li>
+                            <a href="{{path "viewLocation" id=resources.MainLocation languageCode=mainLanguageCode}}">{{ name }}</a></li>
                         </li>
                     {{/each}}
                     </ul>

@@ -93,17 +93,16 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 locationId = location.get('id'),
                 path = this.get('path'),
                 content = this.get('content'),
-                contentName = content.get('name'),
                 parentLocation = path[path.length - 1].location;
 
             this._notify(
-                'Sending "' + contentName + '" to Trash',
+                'Sending "' + content.get('name') + '" to Trash',
                 'send-to-trash-' + locationId,
                 'started',
                 0
             );
 
-            location.trash({api: this.get('capi')}, Y.bind(that._afterSendToTrashCallback, that, parentLocation, contentName));
+            location.trash({api: this.get('capi')}, Y.bind(that._afterSendToTrashCallback, that, parentLocation, content));
         },
 
         /**
@@ -112,13 +111,14 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          * @method _afterSendToTrashCallback
          * @protected
          * @param {eZ.Location} parentLocation the parent location to which app will navigate to
-         * @param {String} contentName the name of the content
+         * @param {eZ.Content} content the content to be trashed
          * @param {Boolean} error
          */
-        _afterSendToTrashCallback: function (parentLocation, contentName, error) {
+        _afterSendToTrashCallback: function (parentLocation, content, error) {
             var app = this.get('app'),
                 location = this.get('location'),
-                locationId = location.get('id');
+                locationId = location.get('id'),
+                contentName = content.get('name');
 
             if (error) {
                 this._notify(
@@ -136,6 +136,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 'done',
                 5
             );
+
             /**
              * Fired when the content is sent to trash
              *
@@ -143,7 +144,11 @@ YUI.add('ez-locationviewviewservice', function (Y) {
              * @param {eZ.Location} location
              */
             this.fire('sentToTrash', {location: location});
-            app.navigateTo('viewLocation', {id: parentLocation.get('id')});
+
+            app.navigateTo('viewLocation', {
+                id: parentLocation.get('id'),
+                languageCode: content.get('mainLanguageCode')
+            });
         },
 
         /**
@@ -160,7 +165,8 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 oldParentLocationId = this.get('location').get('id'),
                 locationId = this.get('location').get('id'),
                 that = this,
-                contentName =  this.get('content').get('name'),
+                content = this.get('content'),
+                contentName =  content.get('name'),
                 parentContentName = e.selection.content.get('name'),
                 notificationIdentifier =  'move-notification-' + parentLocationId + '-' + locationId;
 
@@ -189,7 +195,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 if ( app.get('activeView') === initialActiveView ) {
                     app.navigateTo(
                         'viewLocation',
-                        {id: response.getHeader('location')}
+                        {id: response.getHeader('location'), languageCode: content.get('mainLanguageCode')}
                     );
                 }
             });
@@ -372,6 +378,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 location: this.get('location'),
                 path: this.get('path'),
                 config: this.get('config'),
+                languageCode: this.get('request').params.languageCode,
             };
         },
 

@@ -5,6 +5,7 @@
 YUI.add('ez-navigationitemview-tests', function (Y) {
     var viewTest,
         matchTest,
+        routeChangeTest,
         Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
@@ -16,6 +17,7 @@ YUI.add('ez-navigationitemview-tests', function (Y) {
                 name: "viewLocation",
                 params: {
                     id: 42,
+                    languageCode: 'eng-GB',
                 }
             };
             this.view = new Y.eZ.NavigationItemView({
@@ -112,6 +114,7 @@ YUI.add('ez-navigationitemview-tests', function (Y) {
                 name: this.routeName,
                 params: {
                     id: 42,
+                    languageCode: 'eng-GB',
                 }
             };
             this.view = new Y.eZ.NavigationItemView({
@@ -139,7 +142,64 @@ YUI.add('ez-navigationitemview-tests', function (Y) {
         },
     });
 
+    routeChangeTest = new Y.Test.Case({
+        name: "eZ Navigation Item View route change test",
+
+        setUp: function () {
+            this.routeName = 'viewLocation';
+            this.route = {
+                name: this.routeName,
+                params: {
+                    id: 42,
+                    languageCode: 'eng-GB',
+                }
+            };
+            this.view = new Y.eZ.NavigationItemView({});
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "The view is not rendered if the route is not changed": function () {
+            var templateCalled = false,
+                origTpl;
+
+            origTpl = this.view.template;
+            this.view.template = function () {
+                templateCalled = true;
+                return origTpl.apply(this, arguments);
+            };
+
+            Y.Assert.isFalse(
+                templateCalled,
+                "Changing the route should refresh the view"
+            );
+        },
+
+        "Changing route renders the view": function () {
+            var templateCalled = false,
+                origTpl;
+
+            origTpl = this.view.template;
+            this.view.template = function () {
+                templateCalled = true;
+                return origTpl.apply(this, arguments);
+            };
+            this.view._set('route', this.route);
+
+            Y.Assert.isTrue(
+                templateCalled,
+                "Changing the route should refresh the view"
+            );
+        },
+    });
+
+
+
     Y.Test.Runner.setName("eZ Navigation Item View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(matchTest);
+    Y.Test.Runner.add(routeChangeTest);
 }, '', {requires: ['test', 'ez-navigationitemview']});

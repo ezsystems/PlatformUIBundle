@@ -26,6 +26,9 @@ YUI.add('ez-navigationitemview', function (Y) {
         initializer: function () {
             this.containerTemplate = '<li class="' + this._generateViewClassName(this._getName()) + '"/>';
             this.after('selectedChange', this._uiSelectedChange);
+            this.after('routeChange', function (){
+                this.render();
+            });
         },
 
         /**
@@ -86,6 +89,14 @@ YUI.add('ez-navigationitemview', function (Y) {
         },
     }, {
         ATTRS: {
+            /**
+             * Identifier of the navigation item
+             *
+             * @attribute identifier
+             * @type string
+             */
+            identifier: {},
+
             /**
              * Title of the navigation item
              *

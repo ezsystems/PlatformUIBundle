@@ -39,6 +39,13 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 args: ['id'],
                 returns: this.parentLocationId,
             });
+            this.parentContent = new Mock();
+            this.parentContentMainLanguageCode = 'eng-GB';
+            Mock.expect(this.parentContent, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: this.parentContentMainLanguageCode,
+            });
             Mock.expect(this.app, {
                 method: 'routeUri',
                 args: ['viewLocation', Mock.Value.Object],
@@ -46,6 +53,10 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                     Assert.areEqual(
                         that.parentLocationId, params.id,
                         "The parent location id should be passed to routeUri"
+                    );
+                    Assert.areEqual(
+                        that.parentContentMainLanguageCode, params.languageCode,
+                        "The parent language code should be passed to routeUri"
                     );
                     return that.viewParentLocation;
                 }
@@ -56,6 +67,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 app: this.app,
                 capi: this.capi,
                 parentLocation: this.parentLocation,
+                parentContent: this.parentContent,
             });
         },
 
@@ -221,19 +233,17 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
         },
 
         "Should initialize the redirection attributes": function () {
-            var content = new Mock(),
+            var content,
                 mainLocationId = 'good-bad-times',
-                viewMainLocation = '/view/' + mainLocationId;
+                mainLanguageCode = 'fre-FR',
+                viewMainLocation = '/view/' + mainLocationId + "/" + mainLanguageCode;
 
             this["Should initialize a new content and a new version"]();
 
-            Mock.expect(content, {
-                method: 'get',
-                args: ['resources'],
-                returns: {
-                    MainLocation: mainLocationId
-                }
-            });
+            content = this.service.get('content');
+            content.set('resources', {MainLocation: mainLocationId});
+            content.set('mainLanguageCode', mainLanguageCode);
+
             Mock.expect(this.app, {
                 method: 'routeUri',
                 args: ['viewLocation', Mock.Value.Object],
@@ -242,10 +252,14 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                         mainLocationId, params.id,
                         "The main location id should be passed to routeUri"
                     );
+                    Assert.areEqual(
+                        mainLanguageCode, params.languageCode,
+                        "The main language code should be passed to routeUri"
+                    );
+
                     return viewMainLocation;
                 }
             });
-            this.service.set('content', content);
             Assert.areEqual(
                 this.viewParentLocation,
                 this.service.get('discardRedirectionUrl'),
