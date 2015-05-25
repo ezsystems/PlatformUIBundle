@@ -24,7 +24,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
     Y.eZ.LocationViewViewService = Y.Base.create('locationViewViewService', Y.eZ.ViewService, [], {
         initializer: function () {
             this.on('*:editAction', this._editContent);
-            this.on('*:sendToTrashAction', this._sendContentToTrash);
+            this.on('*:sendToTrashAction', this._sendContentToTrashConfirmBox);
         },
 
         /**
@@ -44,76 +44,90 @@ YUI.add('ez-locationviewviewservice', function (Y) {
         },
 
         /**
-         * sendToTrashAction event handler, sends location available in request to trash
-         * and makes the application navigate to parent location
+         * _sendContentToTrashConfirmBox event handler on send to trash button
          *
-         * @method _sendContentToTrash
+         * @method _sendContentToTrashConfirmBox
          * @protected
          * @param {Object} e event facade of the sendToTrashAction event
          */
-        _sendContentToTrash: function (e) {
-            var app = this.get('app'),
-                that = this,
-                contentService = this.get('capi').getContentService(),
-                location = this.get('location'),
-                locationId = location.get('id'),
-                contentName = e.content.get('name');
-
+        _sendContentToTrashConfirmBox: function (e) {
             e.preventDefault();
-            this._set('trackOutsideEvents', false);
             this.fire('confirmBoxOpen', {
                 config: {
                     title: "Are you sure you want to send this content to trash?",
                     confirmHandler: Y.bind(function () {
-                        var tasks, parentLocation, trashPath, endLoadParent, endLoadTrashPath;
-
-                        that._sendContentToTrashNotificationStarted(locationId, contentName);
-
-                        tasks = new Y.Parallel();
-                        endLoadParent = tasks.add();
-                        that._loadParent(location, function (error, parentLocationResponse) {
-                            if (error) {
-                                that._sendContentToTrashNotificationError(locationId, contentName);
-                                that._error("Failed to load parent location of " + locationId);
-                                return;
-                            }
-
-                            parentLocation = parentLocationResponse.location;
-                            endLoadParent();
-                        });
-
-                        endLoadTrashPath = tasks.add();
-                        contentService.loadRoot(function (error, loadRootResponse) {
-                            if (error) {
-                                that._sendContentToTrashNotificationError(locationId, contentName);
-                                that._error("Failed to contact the REST API");
-                                return;
-                            }
-
-                            trashPath = loadRootResponse.document.Root.trash._href;
-                            endLoadTrashPath();
-                        });
-
-                        tasks.done(function () {
-                            contentService.moveSubtree(locationId, trashPath, function (err, response) {
-                                if (err) {
-                                    that._sendContentToTrashNotificationError(locationId, contentName);
-                                    return;
-                                }
-
-                                that._sendContentToTrashNotificationDone(locationId, contentName);
-                                app.navigate(
-                                    app.routeUri('viewLocation', {id: parentLocation.get('id')})
-                                );
-                            });
-                        });
-                        this._set('trackOutsideEvents', true);
+                        this._sendToTrash(e);
                     }, this),
                     cancelHandler: Y.bind(function () {
-                        this._set('trackOutsideEvents', true);
                     }, this),
                 },
             });
+        },
+
+        /**
+         * Sends location to trash, triggering loading parent location and notifications
+         *
+         * @method _sendToTrash
+         * @protected
+         * @param {Object} e event facade of the sendToTrashAction event
+         */
+        _sendToTrash: function (e) {
+            var tasks, parentLocation, endLoadParent,
+                that = this,
+                location = this.get('location'),
+                locationId = location.get('id'),
+                contentName = e.content.get('name');
+
+            this._sendContentToTrashNotificationStarted(locationId, contentName);
+
+            tasks = new Y.Parallel();
+            endLoadParent = tasks.add();
+            this._loadParent(location, function (error, parentLocationResponse) {
+                if (error) {
+                    that._sendContentToTrashNotificationError(locationId, contentName);
+                    return;
+                }
+
+                parentLocation = parentLocationResponse.location;
+                endLoadParent();
+            });
+
+            tasks.done(function () {
+                var options = {
+                    api: that.get('capi'),
+                    parentLocation: parentLocation,
+                    contentName: contentName
+                };
+
+                location.trash(options, Y.bind(that._afterSendToTrashCallback, that, options));
+            });
+        },
+
+        /**
+         * Send to trash callback triggering notifications and making app to navigate to parent location
+         *
+         * @method _afterSendToTrashCallback
+         * @protected
+         * @param {Object} options the options for sending to trash
+         * @param {Boolean} error
+         * @param {Object} response
+         */
+        _afterSendToTrashCallback: function (options, error, response) {
+            var app = this.get('app'),
+                location = this.get('location'),
+                locationId = location.get('id'),
+                parentLocation = options.parentLocation,
+                contentName = options.contentName;
+
+            if (error) {
+                this._sendContentToTrashNotificationError(locationId, contentName);
+                return;
+            }
+
+            this._sendContentToTrashNotificationDone(locationId, contentName);
+            app.navigate(
+                app.routeUri('viewLocation', {id: parentLocation.get('id')})
+            );
         },
 
         /**
