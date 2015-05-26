@@ -3,12 +3,12 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
     As an Editor  user
     I need to be able to create, update and delete content with integer fieldtypes
 
-    Background:
-        Given I am logged in as an Editor in PlatformUI
+    #Background:
+     #   Given I am logged in as an Editor in PlatformUI
 
-    ##
-    # Validate the existence of expected fields from a field type when creating a content
-    ##
+        ##
+        # Validate the existence of expected fields from a field type when creating a content
+        ##
     @javascript
     Scenario: A Content of a Content Type that has an integer fieldtype must have an integer field
         Given a Content Type with an "integer" Field exists
@@ -19,17 +19,17 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
     Scenario: When editing a Content the label of an integer field must have the same name than field type from the respective Content Type
         Given a Content Type with an "integer" with field definition name "Quantity" exists
         When I create a content of this type
-        Then I should see a "Quantity:" label related with the "integer" field
+        Then I should see a "Quantity" label related with the "integer" field
 
     @javascript
     Scenario: The label of an mandatory integer field of a Content must be marked as mandatory
-        Given a Content Type with a "required" "integer" with field definition name "Quantity" exists
+        Given a Content Type with a required "integer" with field definition name "Quantity" exists
         When I create a content of this type
         Then the "Quantity" field should be marked as mandatory
 
-    ##
-    # Creating Content using a Content Type that has an Integer Field Type
-    ##
+        ##
+        # Creating Content using a Content Type that has an Integer Field Type
+        ##
     @javascript
     Scenario: Publishing a valid integer Field works
         Given a Content Type with an "integer" Field exists
@@ -89,15 +89,15 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
 
     @javascript
     Scenario: Publishing a required integer Field fails validation when using an empty value
-        Given a Content Type with a "required" "integer" exists
+        Given a Content Type with a required "integer" Field exists
         When I create a content of this type
         And I set an empty value as the Field Value
         And I publish the content
         Then Publishing fails with validation error message "This field is required"
 
-    ##
-    # Update Content using a Content Type that has an Integer Field Type
-    ##
+        ##
+        # Update Content using a Content Type that has an Integer Field Type
+        ##
     @javascript
     Scenario: Updating an integer field using a valid integer Field works
         Given a Content Type with an "integer" Field exists
@@ -163,16 +163,16 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
 
     @javascript
     Scenario: Updating a required integer Field fails validation when using an empty value
-        Given a Content Type with a "required" "integer" exists
+        Given a Content Type with a required "integer" Field exists
         And a Content of this type exists
         When I edit this content
         And I set an empty value as the Field Value
         And I publish the content
         Then Publishing fails with validation error message "This field is required"
 
-    ##
-    # Viewing content that has an integer fieldtype
-    ##
+        ##
+        # Viewing content that has an integer fieldtype
+        ##
     @javascript
     Scenario: Viewing a Content that has an integer fieldtype should show the expected value when the value is positive
         Given a Content Type with an "integer" Field exists
