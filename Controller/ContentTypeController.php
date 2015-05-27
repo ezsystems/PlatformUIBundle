@@ -51,68 +51,87 @@ class ContentTypeController extends Controller
     /**
      * @param array $languages
      */
-    public function setPrioritizedLanguages($languages)
+    public function setPrioritizedLanguages( $languages )
     {
         $this->prioritizedLanguages = $languages;
     }
 
-    public function createContentTypeAction($contentTypeGroupId, $languageCode = null)
+    public function createContentTypeAction( $contentTypeGroupId, $languageCode = null )
     {
         $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
-        $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
+        $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup( $contentTypeGroupId );
 
-        $contentTypeCreateStruct = new ContentTypeCreateStruct([
-            'identifier' => 'new_content_type',
-            'mainLanguageCode' => $languageCode,
-            'names' => [$languageCode => 'New ContentType'],
-        ]);
-        $contentTypeDraft = $this->contentTypeService->createContentType($contentTypeCreateStruct, [$contentTypeGroup]);
+        $contentTypeCreateStruct = new ContentTypeCreateStruct(
+            [
+                'identifier' => 'new_content_type',
+                'mainLanguageCode' => $languageCode,
+                'names' => [ $languageCode => 'New ContentType' ],
+            ]
+        );
+        $contentTypeDraft = $this->contentTypeService->createContentType(
+            $contentTypeCreateStruct,
+            [ $contentTypeGroup ]
+        );
 
         return $this->redirectToRoute(
             'contenttype/update',
-            ['contentTypeId' => $contentTypeDraft->id, 'languageCode' => $languageCode]
+            [ 'contentTypeId' => $contentTypeDraft->id, 'languageCode' => $languageCode ]
         );
     }
 
-    public function updateContentTypeAction(Request $request, $contentTypeId, $languageCode = null)
+    public function updateContentTypeAction( Request $request, $contentTypeId, $languageCode = null )
     {
         $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
         // First try to load the draft.
         // If it doesn't exist, create it.
-        try {
-            $contentTypeDraft = $this->contentTypeService->loadContentTypeDraft($contentTypeId);
-        } catch (NotFoundException $e) {
+        try
+        {
+            $contentTypeDraft = $this->contentTypeService->loadContentTypeDraft( $contentTypeId );
+        }
+        catch ( NotFoundException $e )
+        {
             $contentTypeDraft = $this->contentTypeService->createContentTypeDraft(
-                $this->contentTypeService->loadContentType($contentTypeId)
+                $this->contentTypeService->loadContentType( $contentTypeId )
             );
         }
 
-        $contentTypeData = (new ContentTypeDraftMapper())->mapToFormData($contentTypeDraft);
-        $form = $this->createForm('ezrepoforms_contenttype_update', $contentTypeData, [
-            'languageCode' => $languageCode,
-        ]);
+        $contentTypeData = ( new ContentTypeDraftMapper() )->mapToFormData( $contentTypeDraft );
+        $form = $this->createForm(
+            'ezrepoforms_contenttype_update',
+            $contentTypeData, ['languageCode' => $languageCode]
+        );
 
         // Synchronize form and data.
-        $form->handleRequest($request);
-        if ($form->isValid()) {
+        $form->handleRequest( $request );
+        if ( $form->isValid() )
+        {
             $this->actionDispatcher->dispatchFormAction(
-                $form, $contentTypeData, $form->getClickedButton()->getName(),
+                $form,
+                $contentTypeData,
+                $form->getClickedButton()->getName(),
                 ['languageCode' => $languageCode]
             );
 
-            if ($response = $this->actionDispatcher->getResponse()) {
+            if ( $response = $this->actionDispatcher->getResponse() )
+            {
                 return $response;
             }
 
-            return $this->redirectToRoute('admin_contenttypeUpdate', ['contentTypeId' => $contentTypeId, 'languageCode' => $languageCode]);
+            return $this->redirectToRoute(
+                'admin_contenttypeUpdate',
+                ['contentTypeId' => $contentTypeId, 'languageCode' => $languageCode]
+            );
         }
 
-        return $this->render('eZPlatformUIBundle:ContentType:update_content_type.html.twig', [
-            'form' => $form->createView(),
-            'contentTypeName' => $contentTypeDraft->getName($languageCode),
-            'contentTypeDraft' => $contentTypeDraft,
-            'languageCode' => $languageCode,
-            'fieldTypeMapperRegistry' => $this->fieldTypeMapperRegistry
-        ]);
+        return $this->render(
+            'eZPlatformUIBundle:ContentType:update_content_type.html.twig',
+            [
+                'form' => $form->createView(),
+                'contentTypeName' => $contentTypeDraft->getName( $languageCode ),
+                'contentTypeDraft' => $contentTypeDraft,
+                'languageCode' => $languageCode,
+                'fieldTypeMapperRegistry' => $this->fieldTypeMapperRegistry
+            ]
+        );
     }
 }
