@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationmodel-tests', function (Y) {
-    var modelTest;
+    var modelTest, trashTest,
+        Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
         name: "eZ Location Model tests",
@@ -56,7 +57,99 @@ YUI.add('ez-locationmodel-tests', function (Y) {
 
     }));
 
+    trashTest = new Y.Test.Case({
+        name: "eZ Location Model trash tests",
+
+        setUp: function () {
+            this.model = new Y.eZ.Location();
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        "Should move location to trash": function () {
+            var capiMock = new Mock(),
+                contentServiceMock = new Mock(),
+                locationId = 'ronaldo-luis-nazario-de-lima',
+                loadRootResponse = {
+                    "document": {
+                        "Root": {
+                            "trash": {
+                                "_href": 'gianfranco-zola'
+                            }
+                        }
+                    }
+                };
+
+            Mock.expect(capiMock, {
+                method: 'getContentService',
+                returns: contentServiceMock,
+            });
+
+            Mock.expect(contentServiceMock, {
+                method: 'loadRoot',
+                args: [Mock.Value.Function],
+                run: function (cb) {
+                    cb(false, loadRootResponse);
+                }
+            });
+
+            Mock.expect(this.model, {
+                method: 'get',
+                args: [Mock.Value.String],
+                returns: locationId
+            });
+
+            Mock.expect(contentServiceMock, {
+                method: 'moveSubtree',
+                args: [Mock.Value.String, Mock.Value.String, Mock.Value.Function],
+                run: function (id, trashPath, cb){
+                    cb(false);
+                }
+            });
+
+            this.model.trash({
+                api: capiMock
+            }, function (error) {
+                Assert.isTrue(
+                    !error,
+                    "No error should be detected"
+                );
+            });
+        },
+
+        "Should catch error when loadRoot returns error": function () {
+            var capiMock = new Mock(),
+                contentServiceMock = new Mock();
+
+            Mock.expect(capiMock, {
+                method: 'getContentService',
+                returns: contentServiceMock,
+            });
+
+            Mock.expect(contentServiceMock, {
+                method: 'loadRoot',
+                args: [Mock.Value.Function],
+                run: function (cb) {
+                    cb(true);
+                }
+            });
+
+            this.model.trash({
+                api: capiMock
+            }, function (error) {
+                Assert.isTrue(
+                    error,
+                    "Error should be detected"
+                );
+            });
+        }
+    });
+
     Y.Test.Runner.setName("eZ Location Model tests");
     Y.Test.Runner.add(modelTest);
+    Y.Test.Runner.add(trashTest);
 
 }, '', {requires: ['test', 'model-tests', 'ez-locationmodel', 'ez-restmodel']});
