@@ -70,3 +70,15 @@ admin_sectiondelete:
     path: /pjax/section/delete
     defaults:
         _controller: ezsystems.platformui.controller.section:deleteAction
+
+admin_contenttypeCreate:
+    path: /contenttype/create/{contentTypeGroupId}/{languageCode}
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:createContentTypeAction
+        languageCode: ~
+
+admin_contenttypeUpdate:
+    path: /contenttype/update/{contentTypeId}/{languageCode}
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:updateContentTypeAction
+        languageCode: ~
