@@ -104,7 +104,7 @@ class ContentTypeController extends Controller
                 return $response;
             }
 
-            return $this->redirectToRoute('contenttype/update', ['contentTypeId' => $contentTypeId, 'languageCode' => $languageCode]);
+            return $this->redirectToRoute('admin_contenttypeUpdate', ['contentTypeId' => $contentTypeId, 'languageCode' => $languageCode]);
         }
 
         return $this->render('eZPlatformUIBundle:ContentType:update_content_type.html.twig', [
