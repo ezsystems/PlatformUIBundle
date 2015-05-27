@@ -51,6 +51,12 @@ YUI.add('ez-actionbarview', function (Y) {
                             label: "Move",
                             priority: 190
                         }),
+                        new Y.eZ.ButtonActionView({
+                            actionId: "copy",
+                            disabled: false,
+                            label: "Copy",
+                            priority: 180
+                        }),
                         new Y.eZ.CreateContentActionView({
                             actionId: 'createContent',
                             disabled: false,

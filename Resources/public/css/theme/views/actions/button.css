@@ -54,6 +54,10 @@
     content: "\E934";
 }
 
+.ez-view-buttonactionview .ez-action[data-action="copy"] .action-icon:before {
+    content: "\E92c";
+}
+
 .ez-view-buttonactionview .ez-action[data-action="createContent"] .action-icon:before {
     content: "\E61D";
 }

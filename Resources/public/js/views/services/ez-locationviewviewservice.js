@@ -26,6 +26,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             this.on('*:editAction', this._editContent);
             this.on('*:sendToTrashAction', this._sendContentToTrashConfirmBox);
             this.on('*:moveAction', this._selectLocation);
+            this.on('*:copyAction', this._copySelectLocation);
         },
 
         /**
@@ -77,6 +78,23 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 config: {
                     title: "Select the location you want to move your content into",
                     contentDiscoveredHandler: Y.bind(this._moveContent, this),
+                },
+            });
+        },
+
+        /**
+         * copyAction event handler, launch the universal discovery widget
+         * to choose a location to copy the content
+         *
+         * @method _copySelectLocation
+         * @protected
+         * @param {EventFacade} e
+         */
+        _copySelectLocation: function (e) {
+            this.fire('contentDiscover', {
+                config: {
+                    title: "Select the location you want to copy your content into",
+                    contentDiscoveredHandler: Y.bind(this._copyContent, this),
                 },
             });
         },
@@ -140,6 +158,43 @@ YUI.add('ez-locationviewviewservice', function (Y) {
         },
 
         /**
+         * Copy the content to the selected location
+         *
+         * @method _copyContent
+         * @protected
+         * @param {EventFacade} e
+         */
+        _copyContent: function (e) {
+            var app = this.get('app'),
+                parentLocationId = e.selection.location.get('id'),
+                locationId = this.get('location').get('id'),
+                that = this,
+                contentName =  this.get('content').get('name'),
+                parentContentName = e.selection.content.get('name'),
+                notificationIdentifier =  'copy-notification-' + parentLocationId + '-' + locationId;
+
+            this._notify(
+                "'" + contentName + "' is being copied under '" + parentContentName + "'",
+                notificationIdentifier,
+                'started',
+                5
+            );
+            this.get('content').copy({api: this.get('capi')}, parentLocationId, function (error, response) {
+                if (error) {
+                    that._notify('An error occured while copying your content', notificationIdentifier, 'error', 0);
+                    return;
+                }
+                that._notify(
+                    "'" + contentName + "' has been successfully copied under '" + parentContentName + "'",
+                    notificationIdentifier,
+                    'done',
+                    5
+                );
+                app.navigateTo('viewLocation', {id: response.getHeader('location')});
+            });
+        },
+
+        /**
          * Move the content to the selected location
          *
          * @method _moveContent
@@ -185,7 +240,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          *
          * @method _notify
          * @protected
-         * @param {String} text the text shown durring the notification
+         * @param {String} text the text shown during the notification
          * @param {String} identifier the identifier of the notification
          * @param {String} state the state of the notification
          * @param {Integer} timeout the number of second, the notification will be shown
