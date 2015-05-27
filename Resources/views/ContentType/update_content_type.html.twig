@@ -19,7 +19,7 @@
     <section class="ez-serverside-content">
         Last modified: {{ contentTypeDraft.modificationDate|localizeddate('medium', 'medium', app.request.locale) }}
 
-        {{ form_start(form) }}
+        {{ form_start(form, {"action": action_url}) }}
             {{ form_errors(form) }}
 
             <div>

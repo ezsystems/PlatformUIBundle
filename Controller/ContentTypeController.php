@@ -100,6 +100,10 @@ class ContentTypeController extends Controller
             'ezrepoforms_contenttype_update',
             $contentTypeData, ['languageCode' => $languageCode]
         );
+        $actionUrl = $this->generateUrl(
+            'admin_contenttypeUpdate',
+            ['contentTypeId' => $contentTypeId, 'languageCode' => $languageCode]
+        );
 
         // Synchronize form and data.
         $form->handleRequest( $request );
@@ -117,16 +121,14 @@ class ContentTypeController extends Controller
                 return $response;
             }
 
-            return $this->redirectToRoute(
-                'admin_contenttypeUpdate',
-                ['contentTypeId' => $contentTypeId, 'languageCode' => $languageCode]
-            );
+            return $this->redirect( $actionUrl );
         }
 
         return $this->render(
             'eZPlatformUIBundle:ContentType:update_content_type.html.twig',
             [
                 'form' => $form->createView(),
+                'action_url' => $actionUrl,
                 'contentTypeName' => $contentTypeDraft->getName( $languageCode ),
                 'contentTypeDraft' => $contentTypeDraft,
                 'languageCode' => $languageCode,
