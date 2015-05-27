@@ -56,10 +56,8 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 config: {
                     title: "Are you sure you want to send this content to trash?",
                     confirmHandler: Y.bind(function () {
-                        this._sendToTrash(e);
-                    }, this),
-                    cancelHandler: Y.bind(function () {
-                    }, this),
+                        this._sendToTrash(e.content);
+                    }, this)
                 },
             });
         },
@@ -69,33 +67,36 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          *
          * @method _sendToTrash
          * @protected
-         * @param {Object} e event facade of the sendToTrashAction event
+         * @param {Object} content
          */
-        _sendToTrash: function (e) {
-            var tasks, parentLocation, endLoadParent,
+        _sendToTrash: function (content) {
+            var options,
                 that = this,
                 location = this.get('location'),
                 locationId = location.get('id'),
-                contentName = e.content.get('name');
+                contentName = content.get('name');
 
-            this._sendContentToTrashNotificationStarted(locationId, contentName);
+            this._notify(
+                'Sending "' + contentName + '" to Trash',
+                'send-to-trash-' + locationId,
+                'started',
+                0
+            );
 
-            tasks = new Y.Parallel();
-            endLoadParent = tasks.add();
             this._loadParent(location, function (error, parentLocationResponse) {
                 if (error) {
-                    that._sendContentToTrashNotificationError(locationId, contentName);
+                    this._notify(
+                        'An error occurred when sending "' + contentName + '" to Trash',
+                        'send-to-trash-' + locationId,
+                        'error',
+                        5
+                    );
                     return;
                 }
 
-                parentLocation = parentLocationResponse.location;
-                endLoadParent();
-            });
-
-            tasks.done(function () {
-                var options = {
+                options = {
                     api: that.get('capi'),
-                    parentLocation: parentLocation,
+                    parentLocation: parentLocationResponse.location,
                     contentName: contentName
                 };
 
@@ -120,70 +121,44 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 contentName = options.contentName;
 
             if (error) {
-                this._sendContentToTrashNotificationError(locationId, contentName);
+                this._notify(
+                    'An error occurred when sending "' + contentName + '" to Trash',
+                    'send-to-trash-' + locationId,
+                    'error',
+                    5
+                );
                 return;
             }
 
-            this._sendContentToTrashNotificationDone(locationId, contentName);
+            this._notify(
+                '"' + contentName + '" sent to Trash',
+                'send-to-trash-' + locationId,
+                'done',
+                5
+            );
             app.navigate(
                 app.routeUri('viewLocation', {id: parentLocation.get('id')})
             );
         },
 
         /**
-         * Notification changed to *started* before sending content to trash
+         * Fire 'notify' event
          *
-         * @method _sendContentToTrashNotificationStarted
+         * @method _notify
          * @protected
-         * @param {String} locationId
-         * @param {String} contentName
+         * @param {String} text the text shown durring the notification
+         * @param {String} identifier the identifier of the notification
+         * @param {String} state the state of the notification
+         * @param {Integer} timeout the number of second, the notification will be shown
          */
-        _sendContentToTrashNotificationStarted: function (locationId, contentName) {
+        _notify: function (text, identifier, state, timeout) {
             this.fire('notify', {
                 notification: {
-                    identifier: 'send-to-trash-' + locationId,
-                    text: 'Sending "' + contentName + '" to Trash',
-                    state: 'started',
-                    timeout: 0
-                },
-            });
-        },
-
-        /**
-         * Notification changed to *done* after sucessfull sending content to trash
-         *
-         * @method _sendContentToTrashNotificationDone
-         * @protected
-         * @param {String} locationId
-         * @param {String} contentName
-         */
-        _sendContentToTrashNotificationDone: function (locationId, contentName) {
-            this.fire('notify', {
-                notification: {
-                    identifier: 'send-to-trash-' + locationId,
-                    text: '"' + contentName + '" sent to Trash',
-                    state: 'done',
-                    timeout: 5
-                },
-            });
-        },
-
-        /**
-         * Notification changed to *error* when sending content to trash has failed
-         *
-         * @method _sendContentToTrashNotificationError
-         * @protected
-         * @param {String} locationId
-         * @param {String} contentName
-         */
-        _sendContentToTrashNotificationError: function (locationId, contentName) {
-            this.fire('notify', {
-                notification: {
-                    identifier: 'send-to-trash-' + locationId,
-                    text: 'An error occurred when sending "' + contentName + '" to Trash',
-                    state: 'error',
-                    timeout: 5
-                },
+                    text: text,
+                    identifier: identifier,
+                    state: state,
+                    timeout: timeout,
+                }
             });
         },
 
