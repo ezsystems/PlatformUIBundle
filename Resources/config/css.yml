@@ -66,6 +66,7 @@ system:
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/dateandtime.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/relation.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/relationlist.css'
+                - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/richtext.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/tabs.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/page-header.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/serverside-content.css'
