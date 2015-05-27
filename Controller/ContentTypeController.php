@@ -12,6 +12,8 @@ namespace EzSystems\PlatformUIBundle\Controller;
 use eZ\Bundle\EzPublishCoreBundle\Controller;
 use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
+use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
+use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\Core\Repository\Values\ContentType\ContentTypeCreateStruct;
 use EzSystems\RepositoryForms\Data\Mapper\ContentTypeDraftMapper;
 use EzSystems\RepositoryForms\FieldType\FieldTypeFormMapperRegistryInterface;
@@ -56,26 +58,64 @@ class ContentTypeController extends Controller
         $this->prioritizedLanguages = $languages;
     }
 
+    public function listContentTypeGroupsAction()
+    {
+        return $this->render(
+            'eZPlatformUIBundle:ContentType:list_content_type_groups.html.twig',
+            [
+                'content_type_groups' => $this->contentTypeService->loadContentTypeGroups(),
+                'can_edit' => $this->isGranted( new Attribute( 'class', 'update' ) ),
+            ]
+        );
+    }
+
+    public function viewContentTypeGroupAction( $contentTypeGroupId )
+    {
+        $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup( $contentTypeGroupId );
+
+        return $this->render(
+            'eZPlatformUIBundle:ContentType:view_content_type_group.html.twig',
+            [
+                'group' => $contentTypeGroup,
+                'content_types' => $this->contentTypeService->loadContentTypes($contentTypeGroup),
+                'can_edit' => $this->isGranted( new Attribute( 'class', 'update' ) ),
+                'can_create' => $this->isGranted( new Attribute( 'class', 'create' ) ),
+            ]
+        );
+    }
+
+    public function editContentTypeGroupAction( $contentTypeGroupId )
+    {
+
+    }
+
     public function createContentTypeAction( $contentTypeGroupId, $languageCode = null )
     {
         $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
-        $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup( $contentTypeGroupId );
+        try
+        {
+            $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup( $contentTypeGroupId );
 
-        $contentTypeCreateStruct = new ContentTypeCreateStruct(
-            [
-                'identifier' => 'new_content_type',
-                'mainLanguageCode' => $languageCode,
-                'names' => [ $languageCode => 'New ContentType' ],
-            ]
-        );
-        $contentTypeDraft = $this->contentTypeService->createContentType(
-            $contentTypeCreateStruct,
-            [ $contentTypeGroup ]
-        );
+            $contentTypeCreateStruct = new ContentTypeCreateStruct(
+                [
+                    'identifier' => 'new_content_type',
+                    'mainLanguageCode' => $languageCode,
+                    'names' => [$languageCode => 'New ContentType'],
+                ]
+            );
+            $contentTypeDraft = $this->contentTypeService->createContentType(
+                $contentTypeCreateStruct,
+                [$contentTypeGroup]
+            );
+        }
+        catch ( UnauthorizedException $e )
+        {
+            return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
+        }
 
         return $this->redirectToRoute(
             'contenttype/update',
-            [ 'contentTypeId' => $contentTypeDraft->id, 'languageCode' => $languageCode ]
+            ['contentTypeId' => $contentTypeDraft->id, 'languageCode' => $languageCode]
         );
     }
 
@@ -90,9 +130,16 @@ class ContentTypeController extends Controller
         }
         catch ( NotFoundException $e )
         {
-            $contentTypeDraft = $this->contentTypeService->createContentTypeDraft(
-                $this->contentTypeService->loadContentType( $contentTypeId )
-            );
+            try
+            {
+                $contentTypeDraft = $this->contentTypeService->createContentTypeDraft(
+                    $this->contentTypeService->loadContentType( $contentTypeId )
+                );
+            }
+            catch ( UnauthorizedException $e )
+            {
+                return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
+            }
         }
 
         $contentTypeData = ( new ContentTypeDraftMapper() )->mapToFormData( $contentTypeDraft );

@@ -71,6 +71,28 @@ admin_sectiondelete:
     defaults:
         _controller: ezsystems.platformui.controller.section:deleteAction
 
+admin_contenttype:
+    path: /contenttype
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: admin_contenttypeGroupList
+        permanent: true
+
+admin_contenttypeGroupList:
+    path: /contenttype/group/list
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:listContentTypeGroupsAction
+
+admin_contenttypeGroupView:
+    path: /contenttype/group/{contentTypeGroupId}
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:viewContentTypeGroupAction
+
+admin_contenttypeGroupEdit:
+    path: /contenttype/group/edit/{contentTypeGroupId}
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:editContentTypeGroupAction
+
 admin_contenttypeCreate:
     path: /contenttype/create/{contentTypeGroupId}/{languageCode}
     defaults:

@@ -9,7 +9,7 @@
 {% block header_breadcrumbs %}
     {% set breadcrumb_items = [
         {link: path("admin_dashboard"), label: "dashboard.title"|trans({}, "dashboard")},
-        {link: null, label: "Content type"|trans({}, "content_type")},
+        {link: path("admin_contenttype"), label: "Content type"|trans({}, "content_type")},
         {link: null,label: "content_type.edit_title"|trans({"%contentTypeName%": contentTypeName}, "ezrepoforms_content_type")}
     ] %}
 

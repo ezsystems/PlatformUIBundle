@@ -1,0 +1,46 @@
+{% extends "eZPlatformUIBundle::pjax_admin.html.twig" %}
+
+{% trans_default_domain "content_type" %}
+
+{% block header_breadcrumbs %}
+    {% set breadcrumb_items = [
+        {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
+        {link: null, label: 'content_type.dashboard_title'|trans},
+        {link: null, label: 'content_type.group.list'|trans}
+    ] %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header_title %}
+    <h1 class="ez-page-header-name" data-icon="&#xe61a;">{{ 'content_type.group.list'|trans }}</h1>
+{% endblock %}
+
+{% block content %}
+    <section class="ez-serverside-content">
+        <div class="ez-table-data is-flexible">
+            <table class="pure-table pure-table-striped ez-selection-table">
+                <thead>
+                <tr class="ez-selection-table-row">
+                    <th>{{ 'content_type.group.name'|trans }}</th>
+                    <th>{{ 'content_type.group.id'|trans }}</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for group in content_type_groups %}
+                    {# @var group \eZ\Publish\Core\Repository\Values\ContentType\ContentTypeGroup #}
+                    <tr>
+                        <td><a href="{{ path("admin_contenttypeGroupView", {"contentTypeGroupId": group.id}) }}">{{ group.identifier }}</a></td>
+                        <td>{{ group.id }}</td>
+                        <td>
+                            <a href="{{ path('admin_contenttypeGroupView', {'contentTypeGroupId': group.id}) }}" class="pure-button ez-button{% if not can_edit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'content_type.group.edit'|trans }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}
+
+{% block title %}{{ 'content_type.group.list'|trans }}{% endblock %}
