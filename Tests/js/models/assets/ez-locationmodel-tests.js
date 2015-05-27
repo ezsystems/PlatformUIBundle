@@ -105,7 +105,7 @@ YUI.add('ez-locationmodel-tests', function (Y) {
             Mock.expect(contentServiceMock, {
                 method: 'moveSubtree',
                 args: [Mock.Value.String, Mock.Value.String, Mock.Value.Function],
-                run: function (id, trashPath, cb){
+                run: function (id, trashPath, cb) {
                     cb(false);
                 }
             });
