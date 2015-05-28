@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationviewviewservice-tests', function (Y) {
-    var functionalTest, unitTest, eventTest, getViewParametersTest;
+    var functionalTest, unitTest, eventTest, getViewParametersTest, sendToTrashButtonTest,
+        Assert = Y.Assert, Mock = Y.Mock;
 
     functionalTest = new Y.Test.Case({
         name: "eZ Location View View Service 'functional' tests",
@@ -478,9 +479,100 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         },
     });
 
+    sendToTrashButtonTest = new Y.Test.Case({
+        name: "eZ Location View View Service send to trash button tests",
+
+        setUp: function () {
+            this.service = new Y.eZ.LocationViewViewService({
+                app: this.app,
+                capi: this.capi,
+                content: this.content,
+                contentType: this.contentType,
+                location: this.location ,
+                path: this.path,
+                config: this.config,
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+        },
+
+        "Should open confirmBox when receiving sendToTrashAction event": function () {
+            var contentMock = new Mock(),
+                sendToTrashCalled = false;
+
+            Mock.expect(this.service, {
+                method: '_sendToTrash',
+                args: [contentMock],
+                run: function () {
+                    sendToTrashCalled = true;
+                }
+            });
+
+            this.service.on('confirmBoxOpen', function (e) {
+                Assert.isObject(e.config, "The event facade should contain a config object");
+                Assert.isString(e.config.title, "The title should be defined");
+                Assert.isFunction(e.config.confirmHandler, "A confirmHandler should be provided");
+
+                e.config.confirmHandler.apply(this);
+
+                Assert.isTrue(sendToTrashCalled, "_sendToTrash method should be called after confirmation");
+            });
+
+            this.service.fire('whatever:sendToTrashAction', {content: contentMock});
+        },
+
+        "Should send content to trash": function () {
+            var service = this.service,
+                contentMock = new Mock(),
+                capiMock = new Mock(),
+                locationMock = new Mock(),
+                contentId = 'raul-gonzalez-blanco',
+                contentName = 'romario-de-souza-faria',
+                locationId = 'alan-shearer';
+            
+            Mock.expect(contentMock, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId
+            });
+
+            Mock.expect(contentMock, {
+                method: 'get',
+                args: ['name'],
+                returns: contentName
+            });
+
+            Mock.expect(locationMock, {
+                method: 'get',
+                args: ['id'],
+                returns: locationId
+            });
+
+            Mock.expect(capiMock, {
+                method: 'get',
+                args: ['capi'],
+                returns: contentName
+            });
+
+            Mock.expect(this.service, {
+                method: '_loadParent',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (location, cb) {
+//                    cb(false, parentLocationResponse);
+                }
+            });
+            
+            this.service._sendToTrash(contentMock);
+        }
+    });
+
     Y.Test.Runner.setName("eZ Location View View Service tests");
     Y.Test.Runner.add(unitTest);
     Y.Test.Runner.add(functionalTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(getViewParametersTest);
+    Y.Test.Runner.add(sendToTrashButtonTest);
 }, '', {requires: ['test', 'ez-locationviewviewservice']});
