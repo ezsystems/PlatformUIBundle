@@ -123,9 +123,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 'done',
                 5
             );
-            app.navigate(
-                app.routeUri('viewLocation', {id: parentLocation.get('id')})
-            );
+            app.navigateTo('viewLocation', {id: parentLocation.get('id')});
         },
 
         /**
