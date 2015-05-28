@@ -5,19 +5,20 @@
 {% trans_default_domain "content_type" %}
 
 {% set content_type_group = content_type.contentTypeGroups|first %}
+{% set content_type_name = ez_trans_prop(content_type, 'name', language_code) %}
 
 {% block header_breadcrumbs %}
     {% set breadcrumb_items = [
         {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
         {link: path('admin_contenttype'), label: 'content_type.dashboard_title'|trans},
         {link: path('admin_contenttypeGroupView', {'contentTypeGroupId': content_type_group.id}), label: content_type_group.identifier},
-        {link: null, label: content_type.names|first}
+        {link: null, label: content_type_name}
     ] %}
     {{ parent() }}
 {% endblock %}
 
 {% block header_title %}
-    <h1 class="ez-page-header-name" data-icon="&#xe61a;">{{ content_type.names|first }} [{{ 'content_type.content_count'|transchoice(content_count) }}]</h1>
+    <h1 class="ez-page-header-name" data-icon="&#xe61a;">{{ content_type_name }} [{{ 'content_type.content_count'|transchoice(content_count) }}]</h1>
 {% endblock %}
 
 {% block content %}

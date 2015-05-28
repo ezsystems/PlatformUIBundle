@@ -8,7 +8,7 @@
     {% set breadcrumb_items = [
         {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
         {link: path('admin_contenttype'), label: 'content_type.dashboard_title'|trans},
-        {link: null, label: group.identifier|trans}
+        {link: null, label: group.identifier}
     ] %}
     {{ parent() }}
 {% endblock %}
@@ -35,7 +35,7 @@
                     {% for content_type in content_types %}
                         <tr>
                             <td></td>
-                            <td><a href="{{ path('admin_contenttypeView', {'contentTypeId': content_type.id}) }}">{{ content_type.names|first }}</a></td>
+                            <td><a href="{{ path('admin_contenttypeView', {'contentTypeId': content_type.id}) }}">{{ ez_trans_prop(content_type, "name") }}</a></td>
                             <td>{{ content_type.id }}</td>
                             <td>{{ content_type.identifier }}</td>
                             <td>
