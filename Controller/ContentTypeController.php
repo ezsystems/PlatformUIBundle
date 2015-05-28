@@ -110,20 +110,18 @@ class ContentTypeController extends Controller
             return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
         }
 
+        $query = new Query(
+            [
+                'filter' => new Query\Criterion\ContentTypeId( $contentTypeId ),
+                'limit' => 0,
+            ]
+        );
         return $this->render(
             'eZPlatformUIBundle:ContentType:view_content_type.html.twig',
             [
                 'language_code' => $languageCode,
                 'content_type' => $contentType,
-                'content_count' => $this->searchService->findContent(
-                    new Query(
-                        [
-                            'filter' => new Query\Criterion\ContentTypeId( $contentTypeId ),
-                            'limit' => 0,
-                        ]
-                    ),
-                    [], false
-                )->totalCount,
+                'content_count' => $this->searchService->findContent( $query, [], false )->totalCount,
             ]
         );
     }
