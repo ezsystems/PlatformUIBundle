@@ -41,12 +41,90 @@ YUI.add('ez-serversideview', function (Y) {
              *
              * @event submitForm
              * @param {Node} form the Node object of the submitted form
+             * @param {Object} formData the serialized form data including the
+             * used button to validate the form
              * @param {Event} originalEvent the original DOM submit event
              */
             this.fire('submitForm', {
                 form: e.target,
+                formData: this._serializeForm(e.target),
                 originalEvent: e,
             });
+        },
+
+        /**
+         * Serializes the form data so that it can be sent with an AJAX request.
+         * It also checks which button was used (if any) to include it in the
+         * data.
+         *
+         * @method _serializeForm
+         * @param {Node} form
+         * @return {Object} key/value data of the form
+         */
+        _serializeForm: function (form) {
+            var focusedNode = form.get('ownerDocument').get('activeElement'),
+                data = {};
+
+            if ( this._isSubmitButton(focusedNode, form) ) {
+                data[focusedNode.getAttribute('name')] = "";
+            }
+
+            form.get('elements').each(function (field) {
+                var name = field.getAttribute('name'),
+                    type = field.get('type');
+
+                if ( !name ) {
+                    return;
+                }
+
+                /* jshint -W015 */
+                switch (type) {
+                    case 'button':
+                    case 'reset':
+                    case 'submit':
+                        break;
+                    case 'radio':
+                    case 'checkbox':
+                        if ( field.get('checked') ) {
+                            data[name] = field.get('value');
+                        }
+                        break;
+                    default:
+                        // `.get('value')` returns the expected field value for
+                        // inputs, select and even textarea.
+                        data[name] = field.get('value');
+                }
+                /* jshint +W015 */
+            });
+            return data;
+        },
+
+        /**
+         * Checks whether the given node is a valid submit button for the given
+         * form.
+         *
+         * @method _isSubmitButton
+         * @protected
+         * @param {Node} node
+         * @param {Node} form
+         * @return {Boolean}
+         */
+        _isSubmitButton: function (node, form) {
+            var localName, name, type;
+
+            if ( !node || !form.contains(node) ) {
+                return false;
+            }
+            name = node.getAttribute('name');
+            if ( !name ) {
+                return false;
+            }
+            localName = node.get('localName');
+            type = node.getAttribute('type');
+            return (
+                localName === 'button' ||
+                ( localName === 'input' && (type === 'submit' || type === 'image' ) )
+            );
         },
 
         /**

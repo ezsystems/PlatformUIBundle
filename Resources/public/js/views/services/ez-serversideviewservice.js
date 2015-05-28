@@ -42,9 +42,8 @@ YUI.add('ez-serversideviewservice', function (Y) {
             e.originalEvent.preventDefault();
             Y.io(form.getAttribute('action'), {
                 method: form.getAttribute('method'),
-                form: {
-                    id: form,
-                },
+                headers: {'Content-Type': form.get('encoding')},
+                data: e.formData,
                 on: {
                     success: function (tId, response) {
                         // TODO: in some cases, the server side form handling
