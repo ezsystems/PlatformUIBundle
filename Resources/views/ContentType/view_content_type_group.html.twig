@@ -6,9 +6,9 @@
 
 {% block header_breadcrumbs %}
     {% set breadcrumb_items = [
-    {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
-    {link: null, label: 'content_type.dashboard_title'|trans},
-    {link: null, label: group.identifier|trans}
+        {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
+        {link: path('admin_contenttype'), label: 'content_type.dashboard_title'|trans},
+        {link: null, label: group.identifier|trans}
     ] %}
     {{ parent() }}
 {% endblock %}
@@ -20,28 +20,36 @@
 {% block content %}
     <section class="ez-serverside-content">
         <div class="ez-table-data is-flexible">
-            <table class="pure-table pure-table-striped ez-selection-table">
-                <thead>
-                <tr class="ez-selection-table-row">
-                    <th>{{ 'content_type.name'|trans }}</th>
-                    <th>{{ 'content_type.id'|trans }}</th>
-                    <th>{{ 'content_type.identifier'|trans }}</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for content_type in content_types %}
-                    <tr>
-                        <td><a href="">{{ content_type.names|first }}</a></td>
-                        <td>{{ content_type.id }}</td>
-                        <td>{{ content_type.identifier }}</td>
-                        <td>
-                            <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': group.id}) }}" class="pure-button ez-button{% if not can_edit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'content_type.edit'|trans }}</a>
-                        </td>
+            <div class="ez-table-data-container">
+                <table class="pure-table pure-table-striped ez-selection-table">
+                    <thead>
+                    <tr class="ez-selection-table-row">
+                        <th></th>
+                        <th>{{ 'content_type.name'|trans }}</th>
+                        <th>{{ 'content_type.id'|trans }}</th>
+                        <th>{{ 'content_type.identifier'|trans }}</th>
+                        <th></th>
                     </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for content_type in content_types %}
+                        <tr>
+                            <td></td>
+                            <td><a href="{{ path('admin_contenttypeView', {'contentTypeId': content_type.id}) }}">{{ content_type.names|first }}</a></td>
+                            <td>{{ content_type.id }}</td>
+                            <td>{{ content_type.identifier }}</td>
+                            <td>
+                                <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="pure-button ez-button{% if not can_edit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'content_type.edit'|trans }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <p class="ez-table-data-buttons">
+                    {# TODO: We should be able to select a language for ContentType creation #}
+                    <a href="{{ path('admin_contenttypeCreate', {"contentTypeGroupId": group.id}) }}" class="pure-button ez-button{% if not can_create %} pure-button-disabled{% endif %}" data-icon="&#xe616;">{{ 'content_type.create'|trans }}</a>
+                </p>
+            </div>
         </div>
     </section>
 {% endblock %}
