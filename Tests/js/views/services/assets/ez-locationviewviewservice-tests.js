@@ -483,14 +483,13 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         name: "eZ Location View View Service send to trash button tests",
 
         setUp: function () {
+            this.app = new Mock();
+            this.capi = new Mock();
+            this.location = new Mock();
             this.service = new Y.eZ.LocationViewViewService({
                 app: this.app,
                 capi: this.capi,
-                content: this.content,
-                contentType: this.contentType,
-                location: this.location ,
-                path: this.path,
-                config: this.config,
+                location: this.location,
             });
         },
 
@@ -499,31 +498,73 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             delete this.service;
         },
 
-        "Should open confirmBox when receiving sendToTrashAction event": function () {
-            var contentMock = new Mock(),
-                sendToTrashCalled = false;
-
-            Mock.expect(this.service, {
-                method: '_sendToTrash',
-                args: [contentMock],
-                run: function () {
-                    sendToTrashCalled = true;
-                }
-            });
+        "Should fire the confirBoxOpen event": function () {
+            var confirmBoxOpenEvent = false;
 
             this.service.on('confirmBoxOpen', function (e) {
+                confirmBoxOpenEvent = true;
                 Assert.isObject(e.config, "The event facade should contain a config object");
                 Assert.isString(e.config.title, "The title should be defined");
                 Assert.isFunction(e.config.confirmHandler, "A confirmHandler should be provided");
-
-                e.config.confirmHandler.apply(this);
-
-                Assert.isTrue(sendToTrashCalled, "_sendToTrash method should be called after confirmation");
             });
 
-            this.service.fire('whatever:sendToTrashAction', {content: contentMock});
+            this.service.fire('whatever:sendToTrashAction', {content: {}});
+            Assert.isTrue(confirmBoxOpenEvent, "The confirmBoxOpen event should have been fired");
         },
 
+        "Should notify the user when starting to send to trash": function () {
+            var content = new Mock(),
+                parentLocation = new Mock(),
+                locationId = 'wonderwall',
+                notified = false;
+
+            this.service.set('path', [{location: parentLocation}]);
+            Mock.expect(this.location, {
+                method: 'get',
+                args: ['id'],
+                returns: locationId,
+            });
+            Mock.expect(content, {
+                method: 'get',
+                args: ['name'],
+                returns: 'Oasis',
+            });
+            Mock.expect(parentLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: 'Whatever'
+            });
+            Mock.expect(this.location, {
+                method: 'trash',
+                args: [Mock.Value.Object, Mock.Value.Function],
+            });
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.on('notify', function (e) {
+                notified = true;
+                Assert.isObject(e.notification, "The event facade should provide a notification config");
+                // TODO add some assertions on the e.notification.*
+            });
+
+            this.service.fire('whatever:sendToTrashAction', {content: content});
+            Assert.isTrue(notified, "The notified event should have been fired");
+        },
+
+        /*
+            Mock.expect(this.location, {
+                method: 'trash',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (options, callback) {
+                    // TODO: assert on option
+                    callback(false);
+                },
+            });
+        */
+
+        /*
         "Should send content to trash": function () {
             var service = this.service,
                 contentMock = new Mock(),
@@ -567,6 +608,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             
             this.service._sendToTrash(contentMock);
         }
+        */
     });
 
     Y.Test.Runner.setName("eZ Location View View Service tests");

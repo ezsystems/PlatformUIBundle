@@ -74,6 +74,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 that = this,
                 location = this.get('location'),
                 locationId = location.get('id'),
+                path = this.get('path'),
                 contentName = content.get('name');
 
             this._notify(
@@ -83,25 +84,12 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 0
             );
 
-            this._loadParent(location, function (error, parentLocationResponse) {
-                if (error) {
-                    this._notify(
-                        'An error occurred when sending "' + contentName + '" to Trash',
-                        'send-to-trash-' + locationId,
-                        'error',
-                        5
-                    );
-                    return;
-                }
+            options = {
+                parentLocation: path[path.length - 1].location,
+                contentName: contentName
+            };
 
-                options = {
-                    api: that.get('capi'),
-                    parentLocation: parentLocationResponse.location,
-                    contentName: contentName
-                };
-
-                location.trash(options, Y.bind(that._afterSendToTrashCallback, that, options));
-            });
+            location.trash({api: this.get('capi')}, Y.bind(that._afterSendToTrashCallback, that, options));
         },
 
         /**
@@ -111,9 +99,8 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          * @protected
          * @param {Object} options the options for sending to trash
          * @param {Boolean} error
-         * @param {Object} response
          */
-        _afterSendToTrashCallback: function (options, error, response) {
+        _afterSendToTrashCallback: function (options, error) {
             var app = this.get('app'),
                 location = this.get('location'),
                 locationId = location.get('id'),
@@ -125,7 +112,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                     'An error occurred when sending "' + contentName + '" to Trash',
                     'send-to-trash-' + locationId,
                     'error',
-                    5
+                    0
                 );
                 return;
             }
