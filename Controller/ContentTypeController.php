@@ -116,10 +116,14 @@ class ContentTypeController extends Controller
                 'language_code' => $languageCode,
                 'content_type' => $contentType,
                 'content_count' => $this->searchService->findContent(
-                    new Query([
-                        'filter' => new Query\Criterion\ContentTypeId($contentTypeId),
-                        'limit' => 0,
-                    ]), [], false)->totalCount,
+                    new Query(
+                        [
+                            'filter' => new Query\Criterion\ContentTypeId( $contentTypeId ),
+                            'limit' => 0,
+                        ]
+                    ),
+                    [], false
+                )->totalCount,
             ]
         );
     }
