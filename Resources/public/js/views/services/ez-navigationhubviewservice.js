@@ -338,6 +338,10 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                             "Sections", "admin-sections",
                             "adminSection", {uri: "pjax/section/list"}
                         ),
+                        this._getNavigationItem(
+                            "Content types", "admin-contenttypes",
+                            "adminSection", {uri: "contenttype"}
+                        ),
                     ];
                 },
                 readOnly: true,
