@@ -1,0 +1,31 @@
+{# @var content_type \eZ\Publish\API\Repository\Values\ContentType\ContentType #}
+
+{% extends "eZPlatformUIBundle::pjax_admin.html.twig" %}
+
+{% trans_default_domain "content_type" %}
+
+{% block header_breadcrumbs %}
+    {% set breadcrumb_items = [
+        {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
+        {link: path('admin_contenttype'), label: 'content_type.dashboard_title'|trans},
+        {link: null, label: content_type.names|first}
+    ] %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header_title %}
+    <h1 class="ez-page-header-name" data-icon="&#xe61a;">{{ content_type.names|first }} [{{ 'content_type.content_count'|transchoice(content_count) }}]</h1>
+{% endblock %}
+
+{% block content %}
+    <section class="ez-serverside-content">
+        <div class="ez-table-data is-flexible">
+            <div class="ez-table-data-container">
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block title %}{{ 'content_type.group.list'|trans }}{% endblock %}
+
+

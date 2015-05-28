@@ -101,6 +101,7 @@ services:
         parent: ezpublish.controller.base
         arguments:
             - @ezpublish.api.service.content_type
+            - @ezpublish.api.service.search
             - @ezrepoforms.action_dispatcher.content_type
             - @ezrepoforms.field_type_form_mapper.registry
         calls:

@@ -13,6 +13,8 @@ use eZ\Bundle\EzPublishCoreBundle\Controller;
 use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
+use eZ\Publish\API\Repository\SearchService;
+use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\Core\Repository\Values\ContentType\ContentTypeCreateStruct;
 use EzSystems\RepositoryForms\Data\Mapper\ContentTypeDraftMapper;
@@ -28,6 +30,11 @@ class ContentTypeController extends Controller
     private $contentTypeService;
 
     /**
+     * @var SearchService
+     */
+    private $searchService;
+
+    /**
      * @var ActionDispatcherInterface
      */
     private $actionDispatcher;
@@ -41,11 +48,13 @@ class ContentTypeController extends Controller
 
     public function __construct(
         ContentTypeService $contentTypeService,
+        SearchService $searchService,
         ActionDispatcherInterface $actionDispatcher,
         FieldTypeFormMapperRegistryInterface $fieldTypeMapperRegistry
     )
     {
         $this->contentTypeService = $contentTypeService;
+        $this->searchService = $searchService;
         $this->actionDispatcher = $actionDispatcher;
         $this->fieldTypeMapperRegistry = $fieldTypeMapperRegistry;
     }
@@ -77,7 +86,7 @@ class ContentTypeController extends Controller
             'eZPlatformUIBundle:ContentType:view_content_type_group.html.twig',
             [
                 'group' => $contentTypeGroup,
-                'content_types' => $this->contentTypeService->loadContentTypes($contentTypeGroup),
+                'content_types' => $this->contentTypeService->loadContentTypes( $contentTypeGroup ),
                 'can_edit' => $this->isGranted( new Attribute( 'class', 'update' ) ),
                 'can_create' => $this->isGranted( new Attribute( 'class', 'create' ) ),
             ]
@@ -87,6 +96,32 @@ class ContentTypeController extends Controller
     public function editContentTypeGroupAction( $contentTypeGroupId )
     {
 
+    }
+
+    public function viewContentTypeAction( $contentTypeId, $languageCode = null )
+    {
+        $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
+        try
+        {
+            $contentType = $this->contentTypeService->loadContentType( $contentTypeId );
+        }
+        catch ( UnauthorizedException $e )
+        {
+            return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
+        }
+
+        return $this->render(
+            'eZPlatformUIBundle:ContentType:view_content_type.html.twig',
+            [
+                'language_code' => $languageCode,
+                'content_type' => $contentType,
+                'content_count' => $this->searchService->findContent(
+                    new Query([
+                        'filter' => new Query\Criterion\ContentTypeId($contentTypeId),
+                        'limit' => 0,
+                    ]), [], false)->totalCount,
+            ]
+        );
     }
 
     public function createContentTypeAction( $contentTypeGroupId, $languageCode = null )

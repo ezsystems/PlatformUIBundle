@@ -93,6 +93,12 @@ admin_contenttypeGroupEdit:
     defaults:
         _controller: ezsystems.platformui.controller.content_type:editContentTypeGroupAction
 
+admin_contenttypeView:
+    path: /contenttype/view/{contentTypeId}/{languageCode}
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:viewContentTypeAction
+        languageCode: ~
+
 admin_contenttypeCreate:
     path: /contenttype/create/{contentTypeGroupId}/{languageCode}
     defaults:
