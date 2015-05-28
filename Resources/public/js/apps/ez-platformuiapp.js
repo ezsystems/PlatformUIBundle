@@ -803,13 +803,22 @@ YUI.add('ez-platformuiapp', function (Y) {
                     view: "sectionServerSideView",
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
+                    name: "adminContentType",
+                    regex: /\/admin\/(contenttype.*)/,
+                    keys: ['uri'],
+                    path: "/admin/:uri",
+                    sideViews: {'navigationHub': true, 'discoveryBar': false},
+                    service: Y.eZ.ServerSideViewService,
+                    view: "serverSideView",
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }, {
                     name: "adminGenericRoute",
                     path: "/admin/:uri",
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     service: Y.eZ.ServerSideViewService,
                     view: "serverSideView",
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
-                }]
+                },]
             },
             serverRouting: {
                 value: false
