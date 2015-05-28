@@ -5,7 +5,7 @@
 {% block header_breadcrumbs %}
     {% set breadcrumb_items = [
         {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
-        {link: null, label: 'content_type.dashboard_title'|trans},
+        {link: path('admin_contenttype'), label: 'content_type.dashboard_title'|trans},
         {link: null, label: 'content_type.group.list'|trans}
     ] %}
     {{ parent() }}
