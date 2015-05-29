@@ -15,7 +15,7 @@
     },
     "require": {
         "ezsystems/platform-ui-assets-bundle": "~0.2",
-        "ezsystems/repository-forms": "dev-EZP-24379_platformUIIntegration",
+        "ezsystems/repository-forms": "dev-master",
         "zetacomponents/system-information": "~1.1"
     }
 }
