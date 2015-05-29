@@ -11,7 +11,8 @@ parameters:
     ezsystems.platformui.form.type.section_delete.class: EzSystems\PlatformUIBundle\Form\Type\SectionDeleteType
     ezsystems.platformui.form.type.section_list.class: EzSystems\PlatformUIBundle\Form\Type\SectionListType
     ezsystems.platformui.controller.pjax.class: EzSystems\PlatformUIBundle\Controller\PjaxController
-    ezsystems.platformui.controller.class: EzSystems\PlatformUIBundle\Controller\PlatformUIController
+    ezsystems.platformui.controller.content_type.class: EzSystems\PlatformUIBundle\Controller\ContentTypeController
+    ezsystems.platformui.form_processor.content_type.class: EzSystems\PlatformUIBundle\Form\Processor\ContentTypeFormProcessor
 
 services:
     ezsystems.platformui.twig.yui_extension:
@@ -95,3 +96,20 @@ services:
         arguments:
             - @ezsystems.platformui.helper.section
             - @translator
+
+    ezsystems.platformui.controller.content_type:
+        class: %ezsystems.platformui.controller.content_type.class%
+        parent: ezpublish.controller.base
+        arguments:
+            - @ezpublish.api.service.content_type
+            - @ezpublish.api.service.search
+            - @ezrepoforms.action_dispatcher.content_type
+            - @ezrepoforms.field_type_form_mapper.registry
+        calls:
+            - [setPrioritizedLanguages, ["$languages$"]]
+
+    ezsystems.platformui.form_processor.content_type:
+        class: %ezsystems.platformui.form_processor.content_type.class%
+        arguments: [@router]
+        tags:
+            - { name: kernel.event_subscriber }
