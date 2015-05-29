@@ -53,7 +53,7 @@ class PlatformUI extends Context
     private $platformStatus = self::NOT_WAITING;
 
     /**
-     * Waits for Javascript to finnish by checking the loading tags of the page
+     * Waits for Javascript to finish by checking the loading tags of the page
      */
     protected function waitForLoadings()
     {
@@ -138,7 +138,7 @@ class PlatformUI extends Context
     }
 
     /**
-     * Runs a empty Javascript between step so that the next step is only executed when the previous Javascript finnished
+     * Runs a empty Javascript between step so that the next step is only executed when the previous Javascript finished
      *
      * @AfterStep
      */

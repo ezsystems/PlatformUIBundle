@@ -103,8 +103,8 @@ trait Fields
     }
 
     /**
-     * @Then I should see an :type field
-     * @Then I should see a :label label related with the :type field
+     * @Then I should see an/a :type field
+     * @Then I should see an/a :label label related with the :type field
      */
     public function seeFieldtOfType( $type, $label = null )
     {
@@ -120,7 +120,7 @@ trait Fields
     }
 
     /**
-     * @Then I should see a field with value :value
+     * @Then I should see an/a field with value :value
      */
     public function seeFieldtWithValue( $value )
     {
@@ -146,8 +146,8 @@ trait Fields
     }
 
     /**
-     *  @Given I set an empty value as the Field Value
-     *  @And I set an empty value as the Field Value
+     *  @Given I set an/a empty value as the Field Value
+     *  @And I set an/a empty value as the Field Value
      *
      */
     public function setFieldValueToNothing()
