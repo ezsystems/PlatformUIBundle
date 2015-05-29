@@ -44,7 +44,8 @@ YUI.add('ez-locationviewviewservice', function (Y) {
         },
 
         /**
-         * _sendContentToTrashConfirmBox event handler on send to trash button
+         * `sendToTrashAction` event handler, 
+         * it asks confirmation to the user before sending the location to the trash.
          *
          * @method _sendContentToTrashConfirmBox
          * @protected
@@ -67,15 +68,15 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          *
          * @method _sendToTrash
          * @protected
-         * @param {Object} content
          */
-        _sendToTrash: function (content) {
-            var options,
-                that = this,
+        _sendToTrash: function () {
+            var that = this,
                 location = this.get('location'),
                 locationId = location.get('id'),
                 path = this.get('path'),
-                contentName = content.get('name');
+                content = this.get('content'),
+                contentName = content.get('name'),
+                parentLocation = path[path.length - 1].location;
 
             this._notify(
                 'Sending "' + contentName + '" to Trash',
@@ -84,12 +85,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 0
             );
 
-            options = {
-                parentLocation: path[path.length - 1].location,
-                contentName: contentName
-            };
-
-            location.trash({api: this.get('capi')}, Y.bind(that._afterSendToTrashCallback, that, options));
+            location.trash({api: this.get('capi')}, Y.bind(that._afterSendToTrashCallback, that, parentLocation, contentName));
         },
 
         /**
@@ -97,15 +93,14 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          *
          * @method _afterSendToTrashCallback
          * @protected
-         * @param {Object} options the options for sending to trash
+         * @param {eZ.Location} parentLocation the parent location to which app will navigate to
+         * @param {String} contentName the name of the content
          * @param {Boolean} error
          */
-        _afterSendToTrashCallback: function (options, error) {
+        _afterSendToTrashCallback: function (parentLocation, contentName, error) {
             var app = this.get('app'),
                 location = this.get('location'),
-                locationId = location.get('id'),
-                parentLocation = options.parentLocation,
-                contentName = options.contentName;
+                locationId = location.get('id');
 
             if (error) {
                 this._notify(
