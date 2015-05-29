@@ -520,6 +520,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 notified = false;
 
             this.service.set('path', [{location: parentLocation}]);
+            this.service.set('content', content);
 
             Mock.expect(this.location, {
                 method: 'get',
@@ -548,7 +549,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 e.config.confirmHandler.apply(this);
             });
 
-            this.service.on('notify', function (e) {
+            this.service.once('notify', function (e) {
                 notified = true;
 
                 Assert.isObject(e.notification, "The event facade should provide a notification config");
@@ -586,6 +587,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 notified = false;
 
             this.service.set('path', [{location: parentLocation}]);
+            this.service.set('content', content);
 
             Mock.expect(this.location, {
                 method: 'get',
@@ -617,7 +619,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 e.config.confirmHandler.apply(this);
             });
 
-            this.service.on('notify', function (e) {
+            this.service.once('notify', function (e) {
                 this.once('notify', function (e) {
                     notified = true;
 
@@ -657,6 +659,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 notified = false;
 
             this.service.set('path', [{location: parentLocation}]);
+            this.service.set('content', content);
 
             Mock.expect(this.location, {
                 method: 'get',
@@ -693,7 +696,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 e.config.confirmHandler.apply(this);
             });
 
-            this.service.on('notify', function (e) {
+            this.service.once('notify', function (e) {
                 this.once('notify', function (e) {
                     notified = true;
 
@@ -762,12 +765,8 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
 
             Mock.expect(this.app, {
                 method: 'navigateTo',
-                args: [Mock.Value.String, Mock.Value.Object],
+                args: ['viewLocation', Mock.Value.Object],
                 run: function (routeName, params) {
-                    Assert.areEqual(
-                        routeName, 'viewLocation',
-                        "Route name passed to navigateTo should be set to 'viewLocation'"
-                    );
                     Assert.isObject(params, "Params passed to navigateTo should be an object");
                     Assert.isString(params.id, "Params should provide id of location");
                     Assert.areEqual(
@@ -782,6 +781,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             });
 
             this.service.fire('whatever:sendToTrashAction', {content: content});
+            Mock.verify(this.app);
         },
     });
 
