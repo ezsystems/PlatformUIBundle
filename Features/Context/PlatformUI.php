@@ -18,9 +18,6 @@ use PHPUnit_Framework_Assert as Assertion;
 
 class PlatformUI extends Context
 {
-    const USER = "admin";
-    const PASSWORD = "publish";
-
     const NOT_WAITING = 0;
     const WAITING_FOR_PUBLISHING = 1;
 
@@ -34,6 +31,20 @@ class PlatformUI extends Context
      * @var string
      */
     private $platformUiUri;
+
+    /**
+     * User account name, admin by default
+     *
+     * @var string
+     */
+    private $user = "admin";
+
+    /**
+     * User account password, publish by default
+     *
+     * @var string
+     */
+    private $password = "publish";
 
     /**
      * Stores the status of the platform
@@ -141,10 +152,18 @@ class PlatformUI extends Context
      *
      * @param string $uri
      */
-    public function __construct( $uri )
+    public function __construct( $uri, $user = null, $password = null )
     {
         parent::__construct();
         $this->platformUiUri = $uri;
+        if ( $user != null )
+        {
+            $this->user = $user;
+        }
+        if ( $password != null )
+        {
+           $this->password = $password;
+        }
     }
 
     /**
