@@ -151,7 +151,7 @@ class ContentTypeController extends Controller
         }
 
         return $this->redirectToRoute(
-            'contenttype/update',
+            'admin_contenttypeUpdate',
             ['contentTypeId' => $contentTypeDraft->id, 'languageCode' => $languageCode]
         );
     }
