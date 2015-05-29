@@ -104,7 +104,7 @@ YUI.add('ez-locationmodel-tests', function (Y) {
 
             Mock.expect(contentServiceMock, {
                 method: 'moveSubtree',
-                args: [Mock.Value.String, Mock.Value.String, Mock.Value.Function],
+                args: [locationId, loadRootResponse.document.Root.trash._href, Mock.Value.Function],
                 run: function (id, trashPath, cb) {
                     cb(false);
                 }
@@ -113,8 +113,8 @@ YUI.add('ez-locationmodel-tests', function (Y) {
             this.model.trash({
                 api: capiMock
             }, function (error) {
-                Assert.isTrue(
-                    !error,
+                Assert.isFalse(
+                    error,
                     "No error should be detected"
                 );
             });
