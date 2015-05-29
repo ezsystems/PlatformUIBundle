@@ -216,7 +216,6 @@ class ContentTypeController extends Controller
                 'contentTypeName' => $contentTypeDraft->getName( $languageCode ),
                 'contentTypeDraft' => $contentTypeDraft,
                 'languageCode' => $languageCode,
-                'fieldTypeMapperRegistry' => $this->fieldTypeMapperRegistry
             ]
         );
     }
