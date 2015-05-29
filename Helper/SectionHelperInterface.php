@@ -66,14 +66,14 @@ interface SectionHelperInterface
      *
      * @return \eZ\Publish\API\Repository\Values\Content\Section
      */
-    public function loadSection( $sectionId );
+    public function loadSection($sectionId);
 
     /**
      * Returns the number of contents assigned to a given $section
      * @param \eZ\Publish\API\Repository\Values\Content\Section $section
      * @return int
      */
-    public function contentCount( Section $section );
+    public function contentCount(Section $section);
 
     /**
      * Creates a new Section in the content repository
@@ -87,7 +87,7 @@ interface SectionHelperInterface
      *
      * @return \eZ\Publish\API\Repository\Values\Content\Section The newly created section
      */
-    public function createSection( SectionEntity $section );
+    public function createSection(SectionEntity $section);
 
     /**
      * Updates a Section in the content repository
@@ -102,7 +102,7 @@ interface SectionHelperInterface
      *
      * @return \eZ\Publish\API\Repository\Values\Content\Section The updated section
      */
-    public function updateSection( Section $sectionToUpdate, SectionEntity $section );
+    public function updateSection(Section $sectionToUpdate, SectionEntity $section);
 
     /**
      * Removes sections
@@ -110,6 +110,5 @@ interface SectionHelperInterface
      * @param \EzSystems\PlatformUIBundle\Entity\SectionList $sectionList sections to be deleted
      *
      */
-    public function deleteSectionList( SectionList $sectionList );
-
+    public function deleteSectionList(SectionList $sectionList);
 }

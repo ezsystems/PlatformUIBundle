@@ -53,7 +53,7 @@ class SectionListItem extends Section
      * @param bool $canDelete
      * @param bool $canAssign
      */
-    public function __construct( ApiSection $section, $contentCount, $canEdit, $canDelete, $canAssign )
+    public function __construct(ApiSection $section, $contentCount, $canEdit, $canDelete, $canAssign)
     {
         $this->id = $section->id;
         $this->name = $section->name;

@@ -22,7 +22,7 @@ class PjaxController extends Controller
     public function accessDeniedAction()
     {
         $response = new Response();
-        $response->setStatusCode( $this->getNoAccessStatusCode() );
+        $response->setStatusCode($this->getNoAccessStatusCode());
 
         return $response;
     }
@@ -51,7 +51,7 @@ class PjaxController extends Controller
             !$user
             || (
                 $user instanceof CoreUser
-                && $user->getAPIUser()->id == $this->getConfigResolver()->getParameter( "anonymous_user_id" )
+                && $user->getAPIUser()->id == $this->getConfigResolver()->getParameter("anonymous_user_id")
             )
         );
     }

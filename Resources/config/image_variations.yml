@@ -3,7 +3,7 @@ system:
         image_variations:
             platformui_rawcontentview:
                 reference: reference
-                filters: 
+                filters:
                     - {name: geometry/scaleheightdownonly, params: [250]}
             platformui_editview:
                 reference: reference

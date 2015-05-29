@@ -51,8 +51,7 @@ class ContentTypeController extends Controller
         SearchService $searchService,
         ActionDispatcherInterface $actionDispatcher,
         FieldTypeFormMapperRegistryInterface $fieldTypeMapperRegistry
-    )
-    {
+    ) {
         $this->contentTypeService = $contentTypeService;
         $this->searchService = $searchService;
         $this->actionDispatcher = $actionDispatcher;
@@ -62,92 +61,72 @@ class ContentTypeController extends Controller
     /**
      * @param array $languages
      */
-    public function setPrioritizedLanguages( $languages )
+    public function setPrioritizedLanguages($languages)
     {
         $this->prioritizedLanguages = $languages;
     }
 
     public function listContentTypeGroupsAction()
     {
-        return $this->render(
-            'eZPlatformUIBundle:ContentType:list_content_type_groups.html.twig',
-            [
-                'content_type_groups' => $this->contentTypeService->loadContentTypeGroups(),
-                'can_edit' => $this->isGranted( new Attribute( 'class', 'update' ) ),
-            ]
-        );
+        return $this->render('eZPlatformUIBundle:ContentType:list_content_type_groups.html.twig', [
+            'content_type_groups' => $this->contentTypeService->loadContentTypeGroups(),
+            'can_edit' => $this->isGranted(new Attribute('class', 'update')),
+        ]);
     }
 
-    public function viewContentTypeGroupAction( $contentTypeGroupId )
+    public function viewContentTypeGroupAction($contentTypeGroupId)
     {
-        $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup( $contentTypeGroupId );
+        $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
 
-        return $this->render(
-            'eZPlatformUIBundle:ContentType:view_content_type_group.html.twig',
-            [
-                'group' => $contentTypeGroup,
-                'content_types' => $this->contentTypeService->loadContentTypes( $contentTypeGroup ),
-                'can_edit' => $this->isGranted( new Attribute( 'class', 'update' ) ),
-                'can_create' => $this->isGranted( new Attribute( 'class', 'create' ) ),
-            ]
-        );
+        return $this->render('eZPlatformUIBundle:ContentType:view_content_type_group.html.twig', [
+            'group' => $contentTypeGroup,
+            'content_types' => $this->contentTypeService->loadContentTypes($contentTypeGroup),
+            'can_edit' => $this->isGranted(new Attribute('class', 'update')),
+            'can_create' => $this->isGranted(new Attribute('class', 'create')),
+        ]);
     }
 
-    public function editContentTypeGroupAction( $contentTypeGroupId )
+    public function editContentTypeGroupAction($contentTypeGroupId)
     {
-
     }
 
-    public function viewContentTypeAction( $contentTypeId, $languageCode = null )
+    public function viewContentTypeAction($contentTypeId, $languageCode = null)
     {
         $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
-        try
-        {
-            $contentType = $this->contentTypeService->loadContentType( $contentTypeId );
-        }
-        catch ( UnauthorizedException $e )
-        {
-            return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
+        try {
+            $contentType = $this->contentTypeService->loadContentType($contentTypeId);
+        } catch (UnauthorizedException $e) {
+            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
         }
 
-        $query = new Query(
-            [
-                'filter' => new Query\Criterion\ContentTypeId( $contentTypeId ),
-                'limit' => 0,
-            ]
-        );
-        return $this->render(
-            'eZPlatformUIBundle:ContentType:view_content_type.html.twig',
-            [
-                'language_code' => $languageCode,
-                'content_type' => $contentType,
-                'content_count' => $this->searchService->findContent( $query, [], false )->totalCount,
-            ]
-        );
+        $query = new Query([
+            'filter' => new Query\Criterion\ContentTypeId($contentTypeId),
+            'limit' => 0,
+        ]);
+        return $this->render('eZPlatformUIBundle:ContentType:view_content_type.html.twig', [
+            'language_code' => $languageCode,
+            'content_type' => $contentType,
+            'content_count' => $this->searchService->findContent($query, [], false)->totalCount,
+        ]);
     }
 
-    public function createContentTypeAction( $contentTypeGroupId, $languageCode = null )
+    public function createContentTypeAction($contentTypeGroupId, $languageCode = null)
     {
         $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
-        try
-        {
-            $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup( $contentTypeGroupId );
+        try {
+            $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
 
-            $contentTypeCreateStruct = new ContentTypeCreateStruct(
-                [
-                    'identifier' => 'new_content_type',
-                    'mainLanguageCode' => $languageCode,
-                    'names' => [$languageCode => 'New ContentType'],
-                ]
-            );
+            $contentTypeCreateStruct = new ContentTypeCreateStruct([
+                'identifier' => 'new_content_type',
+                'mainLanguageCode' => $languageCode,
+                'names' => [$languageCode => 'New ContentType'],
+            ]);
             $contentTypeDraft = $this->contentTypeService->createContentType(
                 $contentTypeCreateStruct,
                 [$contentTypeGroup]
             );
-        }
-        catch ( UnauthorizedException $e )
-        {
-            return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
+        } catch (UnauthorizedException $e) {
+            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
         }
 
         return $this->redirectToRoute(
@@ -156,33 +135,28 @@ class ContentTypeController extends Controller
         );
     }
 
-    public function updateContentTypeAction( Request $request, $contentTypeId, $languageCode = null )
+    public function updateContentTypeAction(Request $request, $contentTypeId, $languageCode = null)
     {
         $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
         // First try to load the draft.
         // If it doesn't exist, create it.
-        try
-        {
-            $contentTypeDraft = $this->contentTypeService->loadContentTypeDraft( $contentTypeId );
-        }
-        catch ( NotFoundException $e )
-        {
-            try
-            {
+        try {
+            $contentTypeDraft = $this->contentTypeService->loadContentTypeDraft($contentTypeId);
+        } catch (NotFoundException $e) {
+            try {
                 $contentTypeDraft = $this->contentTypeService->createContentTypeDraft(
-                    $this->contentTypeService->loadContentType( $contentTypeId )
+                    $this->contentTypeService->loadContentType($contentTypeId)
                 );
-            }
-            catch ( UnauthorizedException $e )
-            {
-                return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
+            } catch (UnauthorizedException $e) {
+                return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
             }
         }
 
-        $contentTypeData = ( new ContentTypeDraftMapper() )->mapToFormData( $contentTypeDraft );
+        $contentTypeData = (new ContentTypeDraftMapper())->mapToFormData($contentTypeDraft);
         $form = $this->createForm(
             'ezrepoforms_contenttype_update',
-            $contentTypeData, ['languageCode' => $languageCode]
+            $contentTypeData,
+            ['languageCode' => $languageCode]
         );
         $actionUrl = $this->generateUrl(
             'admin_contenttypeUpdate',
@@ -190,9 +164,8 @@ class ContentTypeController extends Controller
         );
 
         // Synchronize form and data.
-        $form->handleRequest( $request );
-        if ( $form->isValid() )
-        {
+        $form->handleRequest($request);
+        if ($form->isValid()) {
             $this->actionDispatcher->dispatchFormAction(
                 $form,
                 $contentTypeData,
@@ -200,23 +173,19 @@ class ContentTypeController extends Controller
                 ['languageCode' => $languageCode]
             );
 
-            if ( $response = $this->actionDispatcher->getResponse() )
-            {
+            if ($response = $this->actionDispatcher->getResponse()) {
                 return $response;
             }
 
-            return $this->redirect( $actionUrl );
+            return $this->redirect($actionUrl);
         }
 
-        return $this->render(
-            'eZPlatformUIBundle:ContentType:update_content_type.html.twig',
-            [
-                'form' => $form->createView(),
-                'action_url' => $actionUrl,
-                'contentTypeName' => $contentTypeDraft->getName( $languageCode ),
-                'contentTypeDraft' => $contentTypeDraft,
-                'languageCode' => $languageCode,
-            ]
-        );
+        return $this->render('eZPlatformUIBundle:ContentType:update_content_type.html.twig', [
+            'form' => $form->createView(),
+            'action_url' => $actionUrl,
+            'contentTypeName' => $contentTypeDraft->getName($languageCode),
+            'contentTypeDraft' => $contentTypeDraft,
+            'languageCode' => $languageCode,
+        ]);
     }
 }

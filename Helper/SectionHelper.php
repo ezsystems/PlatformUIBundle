@@ -28,9 +28,7 @@ class SectionHelper implements SectionHelperInterface
      */
     protected $securityContext;
 
-    public function __construct(
-        SectionService $sectionService, SecurityContextInterface $securityContext
-    )
+    public function __construct(SectionService $sectionService, SecurityContextInterface $securityContext)
     {
         $this->sectionService = $sectionService;
         $this->securityContext = $securityContext;
@@ -42,13 +40,12 @@ class SectionHelper implements SectionHelperInterface
     public function getSectionList()
     {
         $sections = $this->sectionService->loadSections();
-        $list = array();
-        foreach ( $sections as $section )
-        {
+        $list = [];
+        foreach ($sections as $section) {
             /** @var  $section Section  */
             $list[$section->id] = new SectionListItem(
                 $section,
-                $this->sectionService->countAssignedContents( $section ),
+                $this->sectionService->countAssignedContents($section),
                 $this->canCreate(),
                 $this->canDelete(),
                 $this->canAssign()
@@ -63,7 +60,7 @@ class SectionHelper implements SectionHelperInterface
      */
     public function canCreate()
     {
-        return $this->canUser( 'edit' );
+        return $this->canUser('edit');
     }
 
     /**
@@ -71,7 +68,7 @@ class SectionHelper implements SectionHelperInterface
      */
     public function canDelete()
     {
-        return $this->canUser( 'edit' );
+        return $this->canUser('edit');
     }
 
     /**
@@ -79,7 +76,7 @@ class SectionHelper implements SectionHelperInterface
      */
     public function canEdit()
     {
-        return $this->canUser( 'edit' );
+        return $this->canUser('edit');
     }
 
     /**
@@ -87,7 +84,7 @@ class SectionHelper implements SectionHelperInterface
      */
     public function canAssign()
     {
-        return $this->canUser( 'edit' );
+        return $this->canUser('edit');
     }
 
     /**
@@ -97,7 +94,7 @@ class SectionHelper implements SectionHelperInterface
      * @param string $function
      * @return boolean
      */
-    protected function canUser( $function )
+    protected function canUser($function)
     {
         return $this->securityContext->isGranted(
             new AuthorizationAttribute(
@@ -110,52 +107,51 @@ class SectionHelper implements SectionHelperInterface
     /**
      * {@inheritDoc}
      */
-    public function loadSection( $sectionId )
+    public function loadSection($sectionId)
     {
-        return $this->sectionService->loadSection( $sectionId );
+        return $this->sectionService->loadSection($sectionId);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function contentCount( Section $section )
+    public function contentCount(Section $section)
     {
-        return $this->sectionService->countAssignedContents( $section );
+        return $this->sectionService->countAssignedContents($section);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function createSection( SectionEntity $section )
+    public function createSection(SectionEntity $section)
     {
         $sectionCreateStruct = $this->sectionService->newSectionCreateStruct();
         $sectionCreateStruct->identifier = $section->identifier;
         $sectionCreateStruct->name = $section->name;
 
-        return $this->sectionService->createSection( $sectionCreateStruct );
+        return $this->sectionService->createSection($sectionCreateStruct);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function updateSection( Section $sectionToUpdate, SectionEntity $section)
+    public function updateSection(Section $sectionToUpdate, SectionEntity $section)
     {
         $sectionUpdateStruct = $this->sectionService->newSectionUpdateStruct();
         $sectionUpdateStruct->identifier = $section->identifier;
         $sectionUpdateStruct->name = $section->name;
 
-        return $this->sectionService->updateSection( $sectionToUpdate, $sectionUpdateStruct );
+        return $this->sectionService->updateSection($sectionToUpdate, $sectionUpdateStruct);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function deleteSectionList( SectionList $sectionList )
+    public function deleteSectionList(SectionList $sectionList)
     {
-        foreach ( $sectionList->ids as $sectionId )
-        {
+        foreach ($sectionList->ids as $sectionId) {
             $this->sectionService->deleteSection(
-                $this->sectionService->loadSection( $sectionId )
+                $this->sectionService->loadSection($sectionId)
             );
         }
     }

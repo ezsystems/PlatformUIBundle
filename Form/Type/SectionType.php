@@ -21,23 +21,19 @@ class SectionType extends AbstractType
      */
     private $translator;
 
-    public function __construct( TranslatorInterface $translator )
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    public function buildForm( FormBuilderInterface $builder, array $options )
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $submitLabel = $this->translator->trans(
-            'section.create.submit',
-            array(),
-            'section'
-        );
+        $submitLabel = $this->translator->trans('section.create.submit', [], 'section');
 
         $builder
-            ->add( 'name', 'text' )
-            ->add( 'identifier', 'text' )
-            ->add( 'save', 'submit', array( 'label' => $submitLabel ) );
+            ->add('name', 'text')
+            ->add('identifier', 'text')
+            ->add('save', 'submit', ['label' => $submitLabel]);
     }
 
     public function getName()
@@ -45,10 +41,10 @@ class SectionType extends AbstractType
         return 'section';
     }
 
-    public function setDefaultOptions( OptionsResolverInterface $resolver )
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array( 'data_class' => 'EzSystems\PlatformUIBundle\Entity\Section' )
+            ['data_class' => 'EzSystems\PlatformUIBundle\Entity\Section']
         );
     }
 }

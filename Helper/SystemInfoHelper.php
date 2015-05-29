@@ -11,7 +11,6 @@ namespace EzSystems\PlatformUIBundle\Helper;
 use EzSystems\PlatformUIBundle\Helper\SystemInfoHelperInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Doctrine\DBAL\Connection;
-
 use ezcSystemInfo;
 use eZExtension;
 use eZPublishSDK;
@@ -34,7 +33,7 @@ class SystemInfoHelper implements SystemInfoHelperInterface
      */
     private $connection;
 
-    public function __construct( Connection $db, array $bundles )
+    public function __construct(Connection $db, array $bundles)
     {
         $this->bundles = $bundles;
         $this->connection = $db;
@@ -54,29 +53,28 @@ class SystemInfoHelper implements SystemInfoHelperInterface
     {
         $info = ezcSystemInfo::getInstance();
         $accelerator = false;
-        if ( $info->phpAccelerator )
-        {
-            $accelerator = array(
+        if ($info->phpAccelerator) {
+            $accelerator = [
                 'name' => $info->phpAccelerator->name,
                 'url' => $info->phpAccelerator->url,
                 'enabled' => $info->phpAccelerator->isEnabled,
                 'versionString' => $info->phpAccelerator->versionString
-            );
+            ];
         }
-        return array(
+        return [
             'cpuType' => $info->cpuType,
             'cpuSpeed' => $info->cpuSpeed,
             'cpuCount' => $info->cpuCount,
             'memorySize' => $info->memorySize,
             'phpVersion' => phpversion(),
             'phpAccelerator' => $accelerator,
-            'database' => array(
+            'database' => [
                 'type' => $this->connection->getDatabasePlatform()->getName(),
                 'name' => $this->connection->getDatabase(),
                 'host' => $this->connection->getHost(),
                 'username' => $this->connection->getUsername(),
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -94,7 +92,7 @@ class SystemInfoHelper implements SystemInfoHelperInterface
             'symfony' => Kernel::VERSION,
             'bundles' => $this->bundles
         ];
-        ksort( $info['bundles'], SORT_FLAG_CASE | SORT_STRING );
+        ksort($info['bundles'], SORT_FLAG_CASE | SORT_STRING);
         return $info;
     }
 }
