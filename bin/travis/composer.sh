@@ -1,4 +1,4 @@
 #! /bin/sh
 
 curl -sS https://getcomposer.org/installer | php
-./composer.phar install --dev --prefer-dist
+./composer.phar install --prefer-dist
