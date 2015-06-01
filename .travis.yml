@@ -11,6 +11,11 @@ env:
       BEFORE_LOCAL="./bin/travis/localjsdeps.sh"
       TEST_CMD="grunt test"
 
+# test only master (+ Pull requests)
+branches:
+    only:
+        - master
+
 before_script:
     - $BEFORE_GLOBAL
     - $BEFORE_LOCAL
