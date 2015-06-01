@@ -27,24 +27,24 @@ trait Authentication
      */
     public function goToPlatformUi()
     {
-        $this->visit( $this->platformUiUri );
+        $this->visit($this->platformUiUri);
     }
 
     /**
      * @Given I go to PlatformUI app with username :user and password :password
      */
-    public function goToPlatformUiAndLogIn( $username, $password )
+    public function goToPlatformUiAndLogIn($username, $password)
     {
         // Given I go to PlatformUI app
         $this->goToPlatformUi();
         //wait fos JS
         $this->waitForJs();
         // And I fill in "Username" with "admin"
-        $this->fillFieldWithValue( 'Username', $username );
+        $this->fillFieldWithValue('Username', $username);
         //And I fill in "Password" with "publish"
-        $this->fillFieldWithValue( 'Password', $password );
+        $this->fillFieldWithValue('Password', $password);
         //And I click on the "Login" button
-        $this->iClickAtButton( 'Login' );
+        $this->iClickAtButton('Login');
         //wait fos JS
         $this->waitForJs();
         //Then I should be logged in
@@ -56,7 +56,7 @@ trait Authentication
      */
     public function loggedAsAdminPlatformUi()
     {
-        $this->goToPlatformUiAndLogIn( $this->user, $this->password );
+        $this->goToPlatformUiAndLogIn($this->user, $this->password);
     }
 
     /**
@@ -65,7 +65,7 @@ trait Authentication
     public function iLogout()
     {
         $this->shouldBeLoggedIn = false;
-        $this->iClickAtLink( "Logout" );
+        $this->iClickAtLink("Logout");
     }
 
     /**
@@ -75,8 +75,8 @@ trait Authentication
     {
         $this->shouldBeLoggedIn = true;
 
-        $verification = new WebAssert( $this->getSession() );
-        $verification->elementNotExists( 'css', '.ez-loginform' );
+        $verification = new WebAssert($this->getSession());
+        $verification->elementNotExists('css', '.ez-loginform');
         $jsCode = "return (document.querySelector('.ez-loginform') === null);";
     }
 
@@ -87,8 +87,7 @@ trait Authentication
      */
     public function runAfterStep()
     {
-        if ( $this->shouldBeLoggedIn )
-        {
+        if ($this->shouldBeLoggedIn) {
             $this->iShouldBeLoggedIn();
         }
     }

@@ -20,7 +20,7 @@ trait CommonActions
     {
         $page = $this->getSession()->getPage();
         $selector = '.ez-logo a';
-        $page->find( 'css', $selector )->click();
+        $page->find('css', $selector)->click();
     }
 
     /**
@@ -29,9 +29,9 @@ trait CommonActions
      *
      * @param   string  $tab    Text of the element to click
      */
-    public function clickTab( $tab )
+    public function clickTab($tab)
     {
-        $this->clickElementByText( $tab, ".ez-tabs-label a[href]" );
+        $this->clickElementByText($tab, ".ez-tabs-label a[href]");
     }
 
     /**
@@ -40,9 +40,9 @@ trait CommonActions
      *
      * @param   string  $zone   Text of the element to click
      */
-    public function clickNavigationZone( $zone )
+    public function clickNavigationZone($zone)
     {
-        $this->clickElementByText( $zone, ".ez-zone-name" );
+        $this->clickElementByText($zone, ".ez-zone-name");
     }
 
     /**
@@ -52,9 +52,9 @@ trait CommonActions
      * @param  string   $button     Text of the element to click
      * @param  string   $index      WHAT IS THIS?!
      */
-    public function clickButtonWithIndex( $button, $index )
+    public function clickButtonWithIndex($button, $index)
     {
-        $this->clickElementByText( $button, "button", $index );
+        $this->clickElementByText($button, "button", $index);
     }
 
     /**
@@ -63,12 +63,12 @@ trait CommonActions
      *
      * @param  string   $button     Text of the element to click
      */
-    public function overNavigationZone( $zone )
+    public function overNavigationZone($zone)
     {
         $selector = ".ez-zone-name";
-        $jsArgs = JsHelper::generateFuncArgs( $zone, $selector );
+        $jsArgs = JsHelper::generateFuncArgs($zone, $selector);
         $jsCode = "return BDD.mouseOverElementByText( $jsArgs );";
-        $this->execJavascript( $jsCode );
+        $this->execJavascript($jsCode);
     }
 
     /**
@@ -77,9 +77,9 @@ trait CommonActions
      *
      * @param  string   $item     Text of the element to click
      */
-    public function clickNavigationItem( $item )
+    public function clickNavigationItem($item)
     {
-        $this->clickElementByText( $item, '.ez-navigation-item' );
+        $this->clickElementByText($item, '.ez-navigation-item');
     }
 
     /**
@@ -88,9 +88,9 @@ trait CommonActions
      *
      * @param  string   $action     Text of the element to click
      */
-    public function clickActionBar( $action )
+    public function clickActionBar($action)
     {
-        $this->clickElementByText( $action, '.ez-action', '.action-label' );
+        $this->clickElementByText($action, '.ez-action', '.action-label');
     }
 
     /**
@@ -99,9 +99,9 @@ trait CommonActions
      *
      * @param  string   $contentType     Text of the element to click
      */
-    public function clickContentType( $contentType )
+    public function clickContentType($contentType)
     {
-        $this->clickElementByText( $contentType, '.ez-contenttypeselector-types .ez-selection-filter-item ' );
+        $this->clickElementByText($contentType, '.ez-contenttypeselector-types .ez-selection-filter-item ');
     }
 
     /**
@@ -110,18 +110,17 @@ trait CommonActions
      *
      * @param   string  $path    The content tree path such as 'Content1/Content2/ContentIWantToClick'
      */
-    public function openTreePath( $path )
+    public function openTreePath($path)
     {
-        $this->clickActionBar( "Content tree" );
+        $this->clickActionBar("Content tree");
         $this->waitForLoadings();
-        $path = explode( "/", $path );
+        $path = explode("/", $path);
         $node = null;
-        foreach ( $path as $pathNode )
-        {
-            $node = $this->openTreeNode( $pathNode, $node );
+        foreach ($path as $pathNode) {
+            $node = $this->openTreeNode($pathNode, $node);
             $this->waitForLoadings();
         }
-        $node->find( 'css', '.ez-tree-navigate' )->click();
+        $node->find('css', '.ez-tree-navigate')->click();
     }
 
     /**
@@ -131,35 +130,29 @@ trait CommonActions
      * @param   NodeElement     $node       The base node that I want to expand from, if null provided defaults to the content tree root
      * @return  NodeElement                 The node that was opened
      */
-    private function openTreeNode( $pathNode, $node )
+    private function openTreeNode($pathNode, $node)
     {
         $page = $this->getSession()->getPage();
         $notFound = true;
-        if ( $node == null )
-        {
-            $node = $page->find( 'css', '.ez-platformui-app-body' );
+        if ($node == null) {
+            $node = $page->find('css', '.ez-platformui-app-body');
         }
-        $subNodes = $node->findAll( 'css', '.ez-tree-node' );
-        foreach ( $subNodes as $subNode )
-        {
-            $leafNode = $subNode->find( 'css', '.ez-tree-navigate' );
-            if ( $leafNode->getText() == $pathNode )
-            {
+        $subNodes = $node->findAll('css', '.ez-tree-node');
+        foreach ($subNodes as $subNode) {
+            $leafNode = $subNode->find('css', '.ez-tree-navigate');
+            if ($leafNode->getText() == $pathNode) {
                 $notFound = false;
-                if ( $subNode->hasClass( 'is-tree-node-close' ) )
-                {
-                    $toggleNode = $subNode->find( 'css', '.ez-tree-node-toggle' );
-                    if ( $toggleNode->isVisible() )
-                    {
+                if ($subNode->hasClass('is-tree-node-close')) {
+                    $toggleNode = $subNode->find('css', '.ez-tree-node-toggle');
+                    if ($toggleNode->isVisible()) {
                         $toggleNode->click();
                     }
                 }
                 return $subNode;
             }
         }
-        if ( $notFound )
-        {
-            throw new \Exception( "The path node: $pathNode was not found for the given path" );
+        if ($notFound) {
+            throw new \Exception("The path node: $pathNode was not found for the given path");
         }
         return $node;
     }
@@ -170,17 +163,14 @@ trait CommonActions
      * @param string $text Text value of the element
      * @param string $selector CSS selector of the element
      */
-    protected function clickElementByText( $text, $selector, $textSelector= null, $index = 1 )
+    protected function clickElementByText($text, $selector, $textSelector = null, $index = 1)
     {
         $index + 1; //DO NOT FORGET SOMETHING THAT I DON'T REMENBER
-        $element = $this->getElementByText( $text, $selector, $textSelector );
-        if ( $element )
-        {
+        $element = $this->getElementByText($text, $selector, $textSelector);
+        if ($element) {
             $element->click();
-        }
-        else
-        {
-            throw new \Exception( "Can't click \" $text \" element: Not Found" );
+        } else {
+            throw new \Exception("Can't click \" $text \" element: Not Found");
         }
     }
 
@@ -192,22 +182,17 @@ trait CommonActions
      * @param string    $textSelector   extra CSS selector for text of the element
      * @return array
      */
-    protected function getElementByText( $text, $selector, $textSelector = null )
+    protected function getElementByText($text, $selector, $textSelector = null)
     {
         $page = $this->getSession()->getPage();
-        $elements = $page->findAll( 'css', $selector  );
-        foreach ( $elements as $element )
-        {
-            if ( $textSelector != null )
-            {
-                $elementText = $element->find( 'css', $textSelector )->getText();
-            }
-            else
-            {
+        $elements = $page->findAll('css', $selector);
+        foreach ($elements as $element) {
+            if ($textSelector != null) {
+                $elementText = $element->find('css', $textSelector)->getText();
+            } else {
                 $elementText = $element->getText();
             }
-            if ( $elementText == $text )
-            {
+            if ($elementText == $text) {
                 return $element;
             }
         }

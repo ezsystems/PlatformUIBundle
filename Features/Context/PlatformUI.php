@@ -68,32 +68,29 @@ class PlatformUI extends Context
             // contenttype menu
             '.ez-view-createcontentactionview.is-expanded:not(.is-contenttypeselector-loaded)'
         );
-        $loadingSelector = implode( ',', $loadingClasses );
-        while ( $page->find( 'css', $loadingSelector  ) != null )
-        {
-            usleep( 100 * 1000 ); // 100ms
+        $loadingSelector = implode(',', $loadingClasses);
+        while ($page->find('css', $loadingSelector) != null) {
+            usleep(100 * 1000); // 100ms
         }
     }
 
     /**
      * @Given I create a content of content type :type with:
      */
-    public function iCreateContentType( $type, TableNode $fields )
+    public function iCreateContentType($type, TableNode $fields)
     {
-        $this->clickNavigationZone( "Platform" );
+        $this->clickNavigationZone("Platform");
         $this->waitForLoadings();
-        $this->iClickAtLink( "Content structure" );
+        $this->iClickAtLink("Content structure");
         $this->waitForLoadings();
-        $this->clickActionBar( "Create a content" );
+        $this->clickActionBar("Create a content");
         $this->waitForLoadings();
-        $this->clickContentType( $type );
+        $this->clickContentType($type);
         $this->waitForLoadings();
-        foreach ( $fields as $fieldArray )
-        {
-            $keys = array_keys( $fieldArray );
-            for ( $i = 0; $i < count( $keys ); $i++ )
-            {
-                $this->fillFieldWithValue( $keys[$i], $fieldArray[$keys[$i]] );
+        foreach ($fields as $fieldArray) {
+            $keys = array_keys($fieldArray);
+            for ($i = 0; $i < count($keys); $i++) {
+                $this->fillFieldWithValue($keys[$i], $fieldArray[$keys[$i]]);
             }
         }
     }
@@ -101,39 +98,38 @@ class PlatformUI extends Context
     /**
      * @Then I see Content :contentName of type :contentType
      */
-    public function contentExists( $contentName, $contentType )
+    public function contentExists($contentName, $contentType)
     {
         $contentId = $this->getLocationId();
-        $content = $this->getContentManager()->loadContentWithLocationId( $contentId );
+        $content = $this->getContentManager()->loadContentWithLocationId($contentId);
         $contentInfo = $content->contentInfo;
-        $contentTypeName = $this->getContentManager()->getContentType( $content );
-        Assertion::assertEquals( $contentName, $contentInfo->name, "Content has wrong name" );
-        Assertion::assertEquals( $contentType, $contentTypeName, "Content has wrong type" );
+        $contentTypeName = $this->getContentManager()->getContentType($content);
+        Assertion::assertEquals($contentName, $contentInfo->name, "Content has wrong name");
+        Assertion::assertEquals($contentType, $contentTypeName, "Content has wrong type");
     }
 
     /**
      * @Then I should see (an) element :element with (an) file :file
      */
-    public function iSeeElementFile( $element, $file )
+    public function iSeeElementFile($element, $file)
     {
-        $url = $this->getFileUrl( $element, '.ez-fieldview-label' );
-        $fileContentActual = file_get_contents( $url );
-        $file = rtrim( realpath( $this->getMinkParameter( 'files_path' ) ), DIRECTORY_SEPARATOR ).DIRECTORY_SEPARATOR.$file;
-        $fileContentExpected = file_get_contents( $file );
-        Assertion::assertEquals( $fileContentActual, $fileContentExpected );
+        $url = $this->getFileUrl($element, '.ez-fieldview-label');
+        $fileContentActual = file_get_contents($url);
+        $file = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file;
+        $fileContentExpected = file_get_contents($file);
+        Assertion::assertEquals($fileContentActual, $fileContentExpected);
     }
 
     /**
      * @Then I should see elements with the following names:
      */
-    public function iSeeElements( TableNode $elements )
+    public function iSeeElements(TableNode $elements)
     {
-        foreach ( $elements as $element )
-        {
+        foreach ($elements as $element) {
             $found = false;
-            $name = array_values( $element )[0];
-            $found = $this->getElementByText( $name, '.ez-selection-filter-item' );
-            Assertion::assertNotNull( $found, "Element: $name not found" );
+            $name = array_values($element)[0];
+            $found = $this->getElementByText($name, '.ez-selection-filter-item');
+            Assertion::assertNotNull($found, "Element: $name not found");
         }
     }
 
@@ -152,17 +148,15 @@ class PlatformUI extends Context
      *
      * @param string $uri
      */
-    public function __construct( $uri, $user = null, $password = null )
+    public function __construct($uri, $user = null, $password = null)
     {
         parent::__construct();
         $this->platformUiUri = $uri;
-        if ( $user != null )
-        {
+        if ($user != null) {
             $this->user = $user;
         }
-        if ( $password != null )
-        {
-           $this->password = $password;
+        if ($password != null) {
+            $this->password = $password;
         }
     }
 
@@ -171,9 +165,8 @@ class PlatformUI extends Context
      */
     private function executeDelayedActions()
     {
-        if ( $this->platformStatus == self::WAITING_FOR_PUBLISHING )
-        {
-            $this->clickActionBar( "Publish" );
+        if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
+            $this->clickActionBar("Publish");
         }
         $this->waitForLoadings();
     }
@@ -184,27 +177,22 @@ class PlatformUI extends Context
      * @param   string  $file       file name relative to mink definitions
      * @param   string $selector    CSS file upload element selector
      */
-    protected function attachFile( $fileName, $selector )
+    protected function attachFile($fileName, $selector)
     {
-        if ( $this->getMinkParameter( 'files_path' ) )
-        {
-            $fullPath = rtrim( realpath( $this->getMinkParameter( 'files_path' ) ), DIRECTORY_SEPARATOR ).DIRECTORY_SEPARATOR.$fileName;
+        if ($this->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$fileName;
 
-            if ( is_file( $fullPath ) )
-            {
+            if (is_file($fullPath)) {
                 $fileInput = 'input[type="file"]' . $selector;
-                $field = $this->getSession()->getPage()->find( 'css', $fileInput );
+                $field = $this->getSession()->getPage()->find('css', $fileInput);
 
-                if ( null === $field )
-                {
-                    throw new Exception( "File input $selector is not found" );
+                if (null === $field) {
+                    throw new Exception("File input $selector is not found");
                 }
-                $field->attachFile( $fullPath );
+                $field->attachFile($fullPath);
             }
-        }
-        else
-        {
-            throw new Exception( "File $fileName is not found at the given location: $fullPath" );
+        } else {
+            throw new Exception("File $fileName is not found at the given location: $fullPath");
         }
     }
 }
