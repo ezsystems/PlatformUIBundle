@@ -25,6 +25,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
         initializer: function () {
             this.on('*:editAction', this._editContent);
             this.on('*:sendToTrashAction', this._sendContentToTrashConfirmBox);
+            this.on('*:moveAction', this._selectLocation);
         },
 
         /**
@@ -44,7 +45,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
         },
 
         /**
-         * `sendToTrashAction` event handler, 
+         * `sendToTrashAction` event handler,
          * it asks confirmation to the user before sending the location to the trash.
          *
          * @method _sendContentToTrashConfirmBox
@@ -59,6 +60,23 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                     confirmHandler: Y.bind(function () {
                         this._sendToTrash(e.content);
                     }, this)
+                },
+            });
+        },
+
+        /**
+         * moveAction event handler, launch the universal discovery widget
+         * to choose a location to move the content
+         *
+         * @method _selectLocation
+         * @protected
+         * @param {EventFacade} e
+         */
+        _selectLocation: function (e) {
+            this.fire('contentDiscover', {
+                config: {
+                    title: "Select the location you want to move your content into",
+                    contentDiscoveredHandler: Y.bind(this._moveContent, this),
                 },
             });
         },
@@ -119,6 +137,47 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 5
             );
             app.navigateTo('viewLocation', {id: parentLocation.get('id')});
+        },
+
+        /**
+         * Move the content to the selected location
+         *
+         * @method _moveContent
+         * @protected
+         * @param {EventFacade} e
+         */
+        _moveContent: function (e) {
+            var app = this.get('app'),
+                initialActiveView = app.get('activeView'),
+                parentLocationId = e.selection.location.get('id'),
+                locationId = this.get('location').get('id'),
+                that = this,
+                contentName =  this.get('content').get('name'),
+                parentContentName = e.selection.content.get('name'),
+                notificationIdentifier =  'move-notification-' + parentLocationId + '-' + locationId;
+
+            this._notify("'" + contentName + "' is being moved under '" + parentContentName + "'", notificationIdentifier, 'started', 5);
+
+            this.get('location').move({api: this.get('capi')},  parentLocationId, function (error, response) {
+                if (error) {
+                    that._notify('An error occured while moving your content', notificationIdentifier, 'error', 0);
+                    return;
+                }
+
+                that._notify(
+                    "'" + contentName + "' has been successfully moved under '" + parentContentName + "'",
+                    notificationIdentifier,
+                    'done',
+                    5
+                );
+
+                if ( app.get('activeView') === initialActiveView ) {
+                    app.navigateTo(
+                        'viewLocation',
+                        {id: response.getHeader('location')}
+                    );
+                }
+            });
         },
 
         /**

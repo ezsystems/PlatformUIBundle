@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationmodel-tests', function (Y) {
-    var modelTest, trashTest,
+    var modelTest, trashTest, moveTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
@@ -54,7 +54,6 @@ YUI.add('ez-locationmodel-tests', function (Y) {
             this.model.destroy();
             delete this.model;
         }
-
     }));
 
     trashTest = new Y.Test.Case({
@@ -148,8 +147,43 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         }
     });
 
+    moveTest = new Y.Test.Case({
+        name: "eZ location model move tests",
+
+        setUp: function () {
+            this.capiMock = new Y.Mock();
+            this.capiGetService = 'getContentService';
+            this.locationId = '1/2/3';
+            this.model = new Y.eZ.Location({id: this.locationId});
+            this.contentServiceMock = new Y.Mock();
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        "Should move the location": function () {
+            var callback = function () {},
+                parentLocationId = '4/5/6',
+                options = {api: this.capiMock};
+
+            Y.Mock.expect(this.capiMock, {
+                method: 'getContentService',
+                returns: this.contentServiceMock
+            });
+            Y.Mock.expect(this.contentServiceMock, {
+                method: 'moveSubtree',
+                args: [this.locationId, parentLocationId, callback],
+            });
+            this.model.move(options, parentLocationId, callback);
+            Y.Mock.verify(this.contentServiceMock);
+            Y.Mock.verify(this.capiMock);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(trashTest);
-
+    Y.Test.Runner.add(moveTest);
 }, '', {requires: ['test', 'model-tests', 'ez-locationmodel', 'ez-restmodel']});
