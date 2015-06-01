@@ -21,7 +21,7 @@ class SystemInfoController extends Controller
      */
     protected $systemInfoHelper;
 
-    public function __construct( SystemInfoHelperInterface $systemInfoHelper )
+    public function __construct(SystemInfoHelperInterface $systemInfoHelper)
     {
         $this->systemInfoHelper = $systemInfoHelper;
     }
@@ -33,18 +33,14 @@ class SystemInfoController extends Controller
      */
     public function infoAction()
     {
-        if ( !$this->hasAccess() )
-        {
-            return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
+        if (!$this->hasAccess()) {
+            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
         }
 
-        return $this->render(
-            'eZPlatformUIBundle:SystemInfo:info.html.twig',
-            array(
-                'ezplatformInfo' => $this->systemInfoHelper->getEzPlatformInfo(),
-                'systemInfo' => $this->systemInfoHelper->getSystemInfo(),
-            )
-        );
+        return $this->render('eZPlatformUIBundle:SystemInfo:info.html.twig', [
+            'ezplatformInfo' => $this->systemInfoHelper->getEzPlatformInfo(),
+            'systemInfo' => $this->systemInfoHelper->getSystemInfo(),
+        ]);
     }
 
     /**
@@ -56,14 +52,13 @@ class SystemInfoController extends Controller
      */
     public function phpinfoAction()
     {
-        if ( !$this->hasAccess() )
-        {
+        if (!$this->hasAccess()) {
             throw new AccessDeniedException();
         }
 
         ob_start();
         phpinfo();
-        $response = new Response( ob_get_clean() );
+        $response = new Response(ob_get_clean());
         return $response;
     }
 
@@ -76,7 +71,7 @@ class SystemInfoController extends Controller
     protected function hasAccess()
     {
         return $this->isGranted(
-            new AuthorizationAttribute( 'setup', 'system_info' )
+            new AuthorizationAttribute('setup', 'system_info')
         );
     }
 }

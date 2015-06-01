@@ -20,5 +20,5 @@ class SectionList
     /**
      * @var array of sections ids
      */
-    public $ids = array();
+    public $ids = [];
 }

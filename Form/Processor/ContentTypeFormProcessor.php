@@ -22,7 +22,7 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
      */
     private $router;
 
-    public function __construct( RouterInterface $router )
+    public function __construct(RouterInterface $router)
     {
         $this->router = $router;
     }
@@ -34,13 +34,13 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
         ];
     }
 
-    public function processPublishContentType( FormActionEvent $event )
+    public function processPublishContentType(FormActionEvent $event)
     {
         $url = $this->router->generate(
             'admin_contenttypeView',
-            ['contentTypeId' => $event->getData()->contentTypeDraft->id, 'languageCode' => $event->getOption( 'languageCode' )]
+            ['contentTypeId' => $event->getData()->contentTypeDraft->id, 'languageCode' => $event->getOption('languageCode')]
         );
-        $event->setResponse( new RedirectResponse( $url ) );
+        $event->setResponse(new RedirectResponse($url));
         // TODO: Add confirmation flash message.
     }
 }

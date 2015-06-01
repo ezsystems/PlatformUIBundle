@@ -21,22 +21,18 @@ class SectionDeleteType extends AbstractType
      */
     private $translator;
 
-    public function __construct( TranslatorInterface $translator )
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    public function buildForm( FormBuilderInterface $builder, array $options )
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $submitLabel = $this->translator->trans(
-            'section.view.delete',
-            array(),
-            'section'
-        );
+        $submitLabel = $this->translator->trans('section.view.delete', [], 'section');
 
         $builder
-            ->add( 'identifier', 'hidden' )
-            ->add( 'delete', 'submit', array( 'label' => $submitLabel ) );
+            ->add('identifier', 'hidden')
+            ->add('delete', 'submit', ['label' => $submitLabel]);
     }
 
     public function getName()
@@ -44,10 +40,10 @@ class SectionDeleteType extends AbstractType
         return 'sectiondelete';
     }
 
-    public function setDefaultOptions( OptionsResolverInterface $resolver )
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array( 'data_class' => 'eZ\Publish\API\Repository\Values\Content\SectionUpdateStruct' )
+            ['data_class' => 'eZ\Publish\API\Repository\Values\Content\SectionUpdateStruct']
         );
     }
 }

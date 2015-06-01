@@ -24,13 +24,13 @@ class TemplateController extends Controller
      */
     private $configResolver;
 
-    public function __construct( ConfigResolverInterface $configResolver )
+    public function __construct(ConfigResolverInterface $configResolver)
     {
         $this->configResolver = $configResolver;
     }
 
     /**
-     * Wraps the template file content in a YUI module. The generated module 
+     * Wraps the template file content in a YUI module. The generated module
      * also registers the template under the same name of the module.
      *
      * @throws \Symfony\Component\HttpKernel\Exception\BadRequestHttpException
@@ -40,27 +40,22 @@ class TemplateController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function wrapTemplateAction( $module )
+    public function wrapTemplateAction($module)
     {
-        if ( $this->getModuleSetting( $module, 'type' ) !== 'template' )
-        {
-            throw new BadRequestHttpException( $module . " is not declared as a template" );
+        if ($this->getModuleSetting($module, 'type') !== 'template') {
+            throw new BadRequestHttpException($module . " is not declared as a template");
         }
-        $path = $this->getModuleSetting( $module, 'path' );
+        $path = $this->getModuleSetting($module, 'path');
         $response = new Response();
-        return $this->render(
-            'eZPlatformUIBundle:Template:wraptemplate.js.twig',
-            array(
-                'path' => $path,
-                'module' => $module,
-                'templateCode' => file_get_contents( $path ),
-            ),
-            $response
-        );
+        return $this->render('eZPlatformUIBundle:Template:wraptemplate.js.twig', [
+            'path' => $path,
+            'module' => $module,
+            'templateCode' => file_get_contents($path),
+        ], $response);
     }
 
-    private function getModuleSetting( $module, $setting )
+    private function getModuleSetting($module, $setting)
     {
-        return $this->configResolver->getParameter( "yui.modules.$module.$setting", 'ez_platformui' );
+        return $this->configResolver->getParameter("yui.modules.$module.$setting", 'ez_platformui');
     }
 }

@@ -70,8 +70,7 @@ class SectionController extends Controller
         SectionListType $sectionListType,
         SectionService $sectionService,
         SectionDeleteType $sectionDeleteType
-    )
-    {
+    ) {
         $this->sectionHelper = $sectionHelper;
         $this->sectionType = $sectionType;
         $this->router = $router;
@@ -88,19 +87,13 @@ class SectionController extends Controller
      */
     public function listAction()
     {
-        try
-        {
-            return $this->render(
-                'eZPlatformUIBundle:Section:list.html.twig',
-                array(
-                    'canCreate' => $this->sectionHelper->canCreate(),
-                    'form' => $this->generateDeleteListForm( new SectionList() )->createView()
-                )
-            );
-        }
-        catch ( UnauthorizedException $e )
-        {
-            return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
+        try {
+            return $this->render('eZPlatformUIBundle:Section:list.html.twig', [
+                'canCreate' => $this->sectionHelper->canCreate(),
+                'form' => $this->generateDeleteListForm(new SectionList())->createView()
+            ]);
+        } catch (UnauthorizedException $e) {
+            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
         }
     }
 
@@ -111,18 +104,17 @@ class SectionController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteListAction( Request $request )
+    public function deleteListAction(Request $request)
     {
         $sectionListToDelete = new SectionList();
-        $form = $this->generateDeleteListForm( $sectionListToDelete );
-        $form->handleRequest( $request );
+        $form = $this->generateDeleteListForm($sectionListToDelete);
+        $form->handleRequest($request);
 
-        if ( $form->isValid() )
-        {
-            $this->sectionHelper->deleteSectionList( $sectionListToDelete );
+        if ($form->isValid()) {
+            $this->sectionHelper->deleteSectionList($sectionListToDelete);
         }
 
-        return $this->redirect( $this->generateUrl( 'admin_sectionlist' ) );
+        return $this->redirect($this->generateUrl('admin_sectionlist'));
     }
 
     /**
@@ -130,15 +122,11 @@ class SectionController extends Controller
      *
      * @return \Symfony\Component\Form\Form
      */
-    private function generateDeleteForm( SectionUpdateStruct $sectionUpdateStruct )
+    private function generateDeleteForm(SectionUpdateStruct $sectionUpdateStruct)
     {
-        return $this->createForm(
-            $this->sectionDeleteType,
-            $sectionUpdateStruct,
-            array(
-                'action' => $this->router->generate( 'admin_sectiondelete' )
-            )
-        );
+        return $this->createForm($this->sectionDeleteType, $sectionUpdateStruct, [
+            'action' => $this->router->generate('admin_sectiondelete')
+        ]);
     }
 
     /**
@@ -148,15 +136,11 @@ class SectionController extends Controller
      *
      * @return \Symfony\Component\Form\Form
      */
-    private function generateDeleteListForm( SectionList $sectionListToDelete )
+    private function generateDeleteListForm(SectionList $sectionListToDelete)
     {
-        return $this->createForm(
-            $this->sectionListType,
-            $sectionListToDelete,
-            array(
-                'action' => $this->router->generate( 'admin_sectiondeletelist' )
-            )
-        );
+        return $this->createForm($this->sectionListType, $sectionListToDelete, [
+            'action' => $this->router->generate('admin_sectiondeletelist')
+        ]);
     }
 
     /**
@@ -164,32 +148,26 @@ class SectionController extends Controller
      * @param mixed $sectionId
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewAction( $sectionId )
+    public function viewAction($sectionId)
     {
-        try
-        {
-            $section = $this->sectionHelper->loadSection( $sectionId );
-            $contentCount = $this->sectionHelper->contentCount( $section );
+        try {
+            $section = $this->sectionHelper->loadSection($sectionId);
+            $contentCount = $this->sectionHelper->contentCount($section);
 
             $sectionUpdateStruct = $this->sectionService->newSectionUpdateStruct();
             // Using identifier instead of id since SectionUpdateStruct doesn't provide id
             $sectionUpdateStruct->identifier = $section->identifier;
-            $form = $this->generateDeleteForm( $sectionUpdateStruct );
+            $form = $this->generateDeleteForm($sectionUpdateStruct);
 
-            return $this->render(
-                "eZPlatformUIBundle:Section:view.html.twig",
-                array(
-                    'section' => $section,
-                    'contentCount' => $contentCount,
-                    'canEdit' => $this->sectionHelper->canEdit(),
-                    'canDelete' => $this->sectionHelper->canDelete(),
-                    'form' => $form->createView()
-                )
-            );
-        }
-        catch ( UnauthorizedException $e )
-        {
-            return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
+            return $this->render("eZPlatformUIBundle:Section:view.html.twig", [
+                'section' => $section,
+                'contentCount' => $contentCount,
+                'canEdit' => $this->sectionHelper->canEdit(),
+                'canDelete' => $this->sectionHelper->canDelete(),
+                'form' => $form->createView()
+            ]);
+        } catch (UnauthorizedException $e) {
+            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
         }
     }
 
@@ -198,26 +176,22 @@ class SectionController extends Controller
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteAction( Request $request )
+    public function deleteAction(Request $request)
     {
-        try
-        {
+        try {
             $sectionUpdateStruct = $this->sectionService->newSectionUpdateStruct();
-            $form = $this->generateDeleteForm( $sectionUpdateStruct );
-            $form->handleRequest( $request );
+            $form = $this->generateDeleteForm($sectionUpdateStruct);
+            $form->handleRequest($request);
 
-            if ( $form->isValid() )
-            {
-                $section = $this->sectionService->loadSectionByIdentifier( $sectionUpdateStruct->identifier );
-                $this->sectionService->deleteSection( $section );
+            if ($form->isValid()) {
+                $section = $this->sectionService->loadSectionByIdentifier($sectionUpdateStruct->identifier);
+                $this->sectionService->deleteSection($section);
             }
-        }
-        catch ( UnauthorizedException $e )
-        {
-            return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
+        } catch (UnauthorizedException $e) {
+            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
         }
 
-        return $this->redirect( $this->generateUrl( 'admin_sectionlist' ) );
+        return $this->redirect($this->generateUrl('admin_sectionlist'));
     }
 
     /**
@@ -227,47 +201,34 @@ class SectionController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function createAction( Request $request)
+    public function createAction(Request $request)
     {
         $section = new Section();
 
-        $form = $this->createForm(
-            $this->sectionType,
-            $section,
-            array(
-                'action' => $this->router->generate( 'admin_sectioncreate' ),
-            )
-        );
+        $form = $this->createForm($this->sectionType, $section, [
+            'action' => $this->router->generate('admin_sectioncreate'),
+        ]);
 
-        $form->handleRequest( $request );
+        $form->handleRequest($request);
 
-        if ( $form->isValid() )
-        {
-            try
-            {
-                $newSection = $this->sectionHelper->createSection( $section );
+        if ($form->isValid()) {
+            try {
+                $newSection = $this->sectionHelper->createSection($section);
 
                 return $this->redirect(
                     $this->generateUrl(
                         'admin_sectionview',
-                        array( 'sectionId' => $newSection->id )
+                        ['sectionId' => $newSection->id]
                     )
                 );
-            }
-            catch ( UnauthorizedException $e )
-            {
-                return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
-            }
-            catch ( InvalidArgumentException $e )
-            {
+            } catch (UnauthorizedException $e) {
+                return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
+            } catch (InvalidArgumentException $e) {
                 $this->addAlreadyExistErrorMessage();
             }
         }
 
-        return $this->render(
-            'eZPlatformUIBundle:Section:create.html.twig',
-            array( 'form' => $form->createView() )
-        );
+        return $this->render('eZPlatformUIBundle:Section:create.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -278,24 +239,19 @@ class SectionController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction( Request $request, $sectionId )
+    public function editAction(Request $request, $sectionId)
     {
-        try
-        {
-            $sectionToUpdate = $this->sectionHelper->loadSection( $sectionId );
-        }
-        catch ( UnauthorizedException $e )
-        {
-            return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
-        }
-        catch ( NotFoundException $e )
-        {
+        try {
+            $sectionToUpdate = $this->sectionHelper->loadSection($sectionId);
+        } catch (UnauthorizedException $e) {
+            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
+        } catch (NotFoundException $e) {
             $response = new Response();
-            $response->setStatusCode( 404 );
+            $response->setStatusCode(404);
 
             return $this->render(
                 'eZPlatformUIBundle:Section:not_found.html.twig',
-                array( 'sectionId' => $sectionId ),
+                ['sectionId' => $sectionId],
                 $response
             );
         }
@@ -305,48 +261,33 @@ class SectionController extends Controller
         $section->identifier = $sectionToUpdate->identifier;
         $section->name = $sectionToUpdate->name;
 
-        $form = $this->createForm(
-            $this->sectionType,
-            $section,
-            array(
-                'action' => $this->router->generate(
-                    'admin_sectionedit', array( 'sectionId' => $sectionId )
-                )
-            )
-        );
+        $form = $this->createForm($this->sectionType, $section, [
+            'action' => $this->router->generate('admin_sectionedit', ['sectionId' => $sectionId])
+        ]);
 
-        $form->handleRequest( $request );
+        $form->handleRequest($request);
 
-        if ( $form->isValid() )
-        {
-            try
-            {
-                $updatedSection = $this->sectionHelper->updateSection( $sectionToUpdate, $section );
+        if ($form->isValid()) {
+            try {
+                $updatedSection = $this->sectionHelper->updateSection($sectionToUpdate, $section);
 
                 return $this->redirect(
                     $this->generateUrl(
                         'admin_sectionview',
-                        array( 'sectionId' => $updatedSection->id )
+                        ['sectionId' => $updatedSection->id]
                     )
                 );
-            }
-            catch ( UnauthorizedException $e )
-            {
-                return $this->forward( 'eZPlatformUIBundle:Pjax:accessDenied' );
-            }
-            catch ( InvalidArgumentException $e )
-            {
+            } catch (UnauthorizedException $e) {
+                return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
+            } catch (InvalidArgumentException $e) {
                 $this->addAlreadyExistErrorMessage();
             }
         }
 
-        return $this->render(
-            'eZPlatformUIBundle:Section:edit.html.twig',
-            array(
-                'form' => $form->createView(),
-                'section' => $sectionToUpdate
-            )
-        );
+        return $this->render('eZPlatformUIBundle:Section:edit.html.twig', [
+            'form' => $form->createView(),
+            'section' => $sectionToUpdate
+        ]);
     }
 
     /**
@@ -354,11 +295,11 @@ class SectionController extends Controller
      */
     private function addAlreadyExistErrorMessage()
     {
-        $this->get( 'session' )->getFlashBag()->add(
+        $this->get('session')->getFlashBag()->add(
             'error',
             $this->translator->trans(
                 'section.error.id_already_exist',
-                array(),
+                [],
                 'section'
             )
         );

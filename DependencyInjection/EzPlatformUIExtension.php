@@ -26,52 +26,52 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
         return 'ez_platformui';
     }
 
-    public function load( array $configs, ContainerBuilder $container )
+    public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $config = $this->processConfiguration( $configuration, $configs );
+        $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader( $container, new FileLocator( __DIR__ . '/../Resources/config' ) );
-        $loader->load( 'services.yml' );
-        $loader->load( 'default_settings.yml' );
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
+        $loader->load('default_settings.yml');
 
-        $processor = new ConfigurationProcessor( $container, 'ez_platformui' );
-        $processor->mapConfig( $config, new PlatformUIMapper() );
+        $processor = new ConfigurationProcessor($container, 'ez_platformui');
+        $processor->mapConfig($config, new PlatformUIMapper());
     }
 
-    public function prepend( ContainerBuilder $container )
+    public function prepend(ContainerBuilder $container)
     {
-        $container->prependExtensionConfig( 'assetic', array( 'bundles' => array( 'eZPlatformUIBundle' ) ) );
+        $container->prependExtensionConfig('assetic', ['bundles' => ['eZPlatformUIBundle']]);
 
-        $this->prependYui( $container );
-        $this->prependCss( $container );
-        $this->prependImageVariations( $container );
+        $this->prependYui($container);
+        $this->prependCss($container);
+        $this->prependImageVariations($container);
     }
 
-    private function prependYui( ContainerBuilder $container )
+    private function prependYui(ContainerBuilder $container)
     {
         # Directories where public resources are stored (relative to web/ directory).
-        $container->setParameter( 'ez_platformui.public_dir', 'bundles/ezplatformui' );
-        $container->setParameter( 'ez_platformui.external_assets_public_dir', 'bundles/ezplatformuiassets' );
+        $container->setParameter('ez_platformui.public_dir', 'bundles/ezplatformui');
+        $container->setParameter('ez_platformui.external_assets_public_dir', 'bundles/ezplatformuiassets');
         $yuiConfigFile = __DIR__ . '/../Resources/config/yui.yml';
-        $config = Yaml::parse( file_get_contents( $yuiConfigFile ) );
-        $container->prependExtensionConfig( 'ez_platformui', $config );
-        $container->addResource( new FileResource( $yuiConfigFile ) );
+        $config = Yaml::parse(file_get_contents($yuiConfigFile));
+        $container->prependExtensionConfig('ez_platformui', $config);
+        $container->addResource(new FileResource($yuiConfigFile));
     }
 
-    private function prependCss( ContainerBuilder $container )
+    private function prependCss(ContainerBuilder $container)
     {
         $cssConfigFile = __DIR__ . '/../Resources/config/css.yml';
-        $config = Yaml::parse( file_get_contents( $cssConfigFile ) );
-        $container->prependExtensionConfig( 'ez_platformui', $config );
-        $container->addResource( new FileResource( $cssConfigFile ) );
+        $config = Yaml::parse(file_get_contents($cssConfigFile));
+        $container->prependExtensionConfig('ez_platformui', $config);
+        $container->addResource(new FileResource($cssConfigFile));
     }
 
-    private function prependImageVariations( ContainerBuilder $container )
+    private function prependImageVariations(ContainerBuilder $container)
     {
         $imageConfigFile = __DIR__ . '/../Resources/config/image_variations.yml';
-        $config = Yaml::parse( file_get_contents( $imageConfigFile ) );
-        $container->prependExtensionConfig( 'ezpublish', $config );
-        $container->addResource( new FileResource( $imageConfigFile ) );
+        $config = Yaml::parse(file_get_contents($imageConfigFile));
+        $container->prependExtensionConfig('ezpublish', $config);
+        $container->addResource(new FileResource($imageConfigFile));
     }
 }

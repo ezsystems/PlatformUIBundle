@@ -19,13 +19,13 @@ class Configuration extends SiteAccessConfiguration
      *
      * @param $saNode \Symfony\Component\Config\Definition\Builder\NodeBuilder
      */
-    protected function defineCss( NodeBuilder $saNode )
+    protected function defineCss(NodeBuilder $saNode)
     {
         $saNode
-            ->arrayNode( 'css' )
+            ->arrayNode('css')
                 ->children()
-                    ->arrayNode( 'files' )
-                        ->prototype( 'scalar' )->end()
+                    ->arrayNode('files')
+                        ->prototype('scalar')->end()
                     ->end()
                 ->end()
             ->end();
@@ -36,39 +36,39 @@ class Configuration extends SiteAccessConfiguration
      *
      * @param $saNode \Symfony\Component\Config\Definition\Builder\NodeBuilder
      */
-    protected function defineYui( NodeBuilder $saNode )
+    protected function defineYui(NodeBuilder $saNode)
     {
         $saNode
-            ->arrayNode( 'yui' )
+            ->arrayNode('yui')
                 ->children()
-                    ->enumNode( 'filter' )
-                        ->values( array( 'raw', 'min', 'debug' ) )
-                        ->info( "Filter to apply to module urls. This filter will modify the default path for all modules.\nPossible values are 'raw', 'min' or 'debug''" )
+                    ->enumNode('filter')
+                        ->values(['raw', 'min', 'debug'])
+                        ->info("Filter to apply to module urls. This filter will modify the default path for all modules.\nPossible values are 'raw', 'min' or 'debug''")
                     ->end()
-                    ->arrayNode( 'modules' )
-                        ->useAttributeAsKey( 'yui_module_name' )
-                        ->normalizeKeys( false )
-                        ->prototype( 'array' )
-                            ->info( 'YUI module definitions' )
+                    ->arrayNode('modules')
+                        ->useAttributeAsKey('yui_module_name')
+                        ->normalizeKeys(false)
+                        ->prototype('array')
+                            ->info('YUI module definitions')
                             ->children()
-                                ->scalarNode( 'path' )
-                                    ->info( "Path to the module's JS file, relative to web/ directory." )
-                                    ->example( 'bundles/acmedemo/js/my_yui_module.js' )
+                                ->scalarNode('path')
+                                    ->info("Path to the module's JS file, relative to web/ directory.")
+                                    ->example('bundles/acmedemo/js/my_yui_module.js')
                                 ->end()
-                                ->arrayNode( 'requires' )
-                                    ->info( "Module's dependencies. Use modules' name to reference them." )
-                                    ->example( array( 'ez-capi', 'parallel' ) )
-                                    ->prototype( 'scalar' )->end()
+                                ->arrayNode('requires')
+                                    ->info("Module's dependencies. Use modules' name to reference them.")
+                                    ->example(['ez-capi', 'parallel'])
+                                    ->prototype('scalar')->end()
                                 ->end()
-                                ->arrayNode( 'dependencyOf' )
-                                    ->info( "Reverse dependencies.\nWhen loading modules referenced here, current module will be considered as a dependency." )
-                                    ->example( array( 'ez-capi', 'parallel' ) )
-                                    ->prototype( 'scalar' )->end()
+                                ->arrayNode('dependencyOf')
+                                    ->info("Reverse dependencies.\nWhen loading modules referenced here, current module will be considered as a dependency.")
+                                    ->example(['ez-capi', 'parallel'])
+                                    ->prototype('scalar')->end()
                                 ->end()
-                                ->enumNode( 'type' )
-                                    ->values( array( 'js', 'template' ) )
-                                    ->defaultValue( 'js' )
-                                    ->info( "Type of module, either 'js' or 'template'" )
+                                ->enumNode('type')
+                                    ->values(['js', 'template'])
+                                    ->defaultValue('js')
+                                    ->info("Type of module, either 'js' or 'template'")
                                 ->end()
                             ->end()
                         ->end()
@@ -80,12 +80,12 @@ class Configuration extends SiteAccessConfiguration
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root( 'ez_platformui' );
+        $rootNode = $treeBuilder->root('ez_platformui');
 
-        $saNode = $this->generateScopeBaseNode( $rootNode );
+        $saNode = $this->generateScopeBaseNode($rootNode);
 
-        $this->defineYui( $saNode );
-        $this->defineCss( $saNode );
+        $this->defineYui($saNode);
+        $this->defineCss($saNode);
 
         return $treeBuilder;
     }

@@ -35,33 +35,24 @@ class SectionListType extends AbstractType
     public function __construct(
         SectionHelperInterface $sectionHelper,
         TranslatorInterface $translator
-    )
-    {
+    ) {
         $this->sectionHelper = $sectionHelper;
         $this->translator = $translator;
     }
 
-    public function buildForm( FormBuilderInterface $builder, array $options )
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $sectionList = $this->sectionHelper->getSectionList();
 
-        $submitLabel = $this->translator->trans(
-            'section.remove.selected',
-            array(),
-            'section'
-        );
+        $submitLabel = $this->translator->trans('section.remove.selected', [], 'section');
 
         $builder
-            ->add(
-                'ids',
-                'choice',
-                array(
-                    'choices' => array( $sectionList ),
-                    'multiple' => true,
-                    'expanded' => true
-                )
-            )
-            ->add( 'delete', 'submit', array( 'label' => $submitLabel ) );
+            ->add('ids', 'choice', [
+                'choices' => [$sectionList],
+                'multiple' => true,
+                'expanded' => true
+            ])
+            ->add('delete', 'submit', ['label' => $submitLabel]);
     }
 
     public function getName()
@@ -69,10 +60,10 @@ class SectionListType extends AbstractType
         return 'sectionlist';
     }
 
-    public function setDefaultOptions( OptionsResolverInterface $resolver )
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array( 'data_class' => 'EzSystems\PlatformUIBundle\Entity\SectionList' )
+            ['data_class' => 'EzSystems\PlatformUIBundle\Entity\SectionList']
         );
     }
 }

@@ -40,7 +40,7 @@ class TwigYuiExtension extends Twig_Extension
      */
     private $router;
 
-    public function __construct( ConfigResolverInterface $configResolver, RouterInterface $router, LoggerInterface $logger = null )
+    public function __construct(ConfigResolverInterface $configResolver, RouterInterface $router, LoggerInterface $logger = null)
     {
         $this->configResolver = $configResolver;
         $this->router = $router;
@@ -49,16 +49,16 @@ class TwigYuiExtension extends Twig_Extension
 
     public function getFunctions()
     {
-        return array(
+        return [
             new Twig_SimpleFunction(
                 "ez_platformui_yui_config",
-                array( $this, "yuiConfigLoaderFunction" ),
-                array( "is_safe" => array( "html" ) )
-            )
-        );
+                [$this, "yuiConfigLoaderFunction"],
+                ["is_safe" => ["html"]]
+            ),
+        ];
     }
 
-    public function initRuntime( Twig_Environment $twig )
+    public function initRuntime(Twig_Environment $twig)
     {
         $this->twig = $twig;
     }
@@ -69,9 +69,9 @@ class TwigYuiExtension extends Twig_Extension
      * @param string $asset
      * @return mixed
      */
-    protected function asset( $asset )
+    protected function asset($asset)
     {
-        return call_user_func( $this->twig->getFunction( "asset" )->getCallable(), $asset );
+        return call_user_func($this->twig->getFunction("asset")->getCallable(), $asset);
     }
 
     /**
@@ -81,39 +81,34 @@ class TwigYuiExtension extends Twig_Extension
      *
      * @return string
      */
-    public function yuiConfigLoaderFunction( $configObject = '' )
+    public function yuiConfigLoaderFunction($configObject = '')
     {
-        $modules = array_fill_keys( $this->configResolver->getParameter( 'yui.modules', 'ez_platformui' ), true );
-        $yui = array(
-            'filter' => $this->configResolver->getParameter( 'yui.filter', 'ez_platformui' ),
-            'modules' => array()
-        );
+        $modules = array_fill_keys($this->configResolver->getParameter('yui.modules', 'ez_platformui'), true);
+        $yui = [
+            'filter' => $this->configResolver->getParameter('yui.filter', 'ez_platformui'),
+            'modules' => []
+        ];
 
-        foreach ( array_keys( $modules ) as $module )
-        {
-            if ( !isset( $yui['modules'][$module]['requires'] ) )
-                $yui['modules'][$module]['requires'] = array();
+        foreach (array_keys($modules) as $module) {
+            if (!isset($yui['modules'][$module]['requires'])) {
+                $yui['modules'][$module]['requires'] = [];
+            }
 
             // Module dependencies
-            if ( $this->configResolver->hasParameter( "yui.modules.$module.requires", 'ez_platformui' ) )
-            {
+            if ($this->configResolver->hasParameter("yui.modules.$module.requires", 'ez_platformui')) {
                 $yui['modules'][$module]['requires'] = array_merge(
                     $yui['modules'][$module]['requires'],
-                    $this->configResolver->getParameter( "yui.modules.$module.requires", 'ez_platformui' )
+                    $this->configResolver->getParameter("yui.modules.$module.requires", 'ez_platformui')
                 );
             }
 
             // Reverse dependencies
-            if ( $this->configResolver->hasParameter( "yui.modules.$module.dependencyOf", 'ez_platformui' ) )
-            {
-                foreach ( $this->configResolver->getParameter( "yui.modules.$module.dependencyOf", 'ez_platformui' ) as $dep )
-                {
+            if ($this->configResolver->hasParameter("yui.modules.$module.dependencyOf", 'ez_platformui')) {
+                foreach ($this->configResolver->getParameter("yui.modules.$module.dependencyOf", 'ez_platformui') as $dep) {
                     // Add reverse dependency only if referred module is declared in the modules list.
-                    if ( !isset( $modules[$dep] ) )
-                    {
-                        if ( $this->logger )
-                        {
-                            $this->logger->error( "'$module' is declared to be a dependency of undeclared module '$dep'. Ignoring." );
+                    if (!isset($modules[$dep])) {
+                        if ($this->logger) {
+                            $this->logger->error("'$module' is declared to be a dependency of undeclared module '$dep'. Ignoring.");
                         }
                         continue;
                     }
@@ -122,36 +117,30 @@ class TwigYuiExtension extends Twig_Extension
                 }
             }
 
-            if ( $this->configResolver->getParameter( "yui.modules.$module.type", 'ez_platformui' ) === 'template' )
-            {
+            if ($this->configResolver->getParameter("yui.modules.$module.type", 'ez_platformui') === 'template') {
                 $yui['modules'][$module]['requires'][] = 'template';
                 $yui['modules'][$module]['requires'][] = 'handlebars';
                 $yui['modules'][$module]['fullpath'] = $this->router->generate(
-                    'template_yui_module', array( 'module' => $module )
+                    'template_yui_module',
+                    ['module' => $module]
                 );
-            }
-            else
-            {
+            } else {
                 $yui['modules'][$module]['fullpath'] = $this->asset(
-                    $this->configResolver->getParameter(
-                        "yui.modules.$module.path", 'ez_platformui'
-                    )
+                    $this->configResolver->getParameter("yui.modules.$module.path", 'ez_platformui')
                 );
             }
         }
 
         // Now ensure that all requirements are unique
-        foreach ( $yui['modules'] as &$moduleConfig )
-        {
-            $moduleConfig['requires'] = array_unique( $moduleConfig['requires'] );
+        foreach ($yui['modules'] as &$moduleConfig) {
+            $moduleConfig['requires'] = array_unique($moduleConfig['requires']);
         }
 
         $res = '';
-        if ( $configObject != '' )
-        {
+        if ($configObject != '') {
             $res = $configObject . ' = ';
         }
-        return $res . ( defined( 'JSON_UNESCAPED_SLASHES' ) ? json_encode( $yui, JSON_UNESCAPED_SLASHES ) :  json_encode( $yui ) ) . ";";
+        return $res . (defined('JSON_UNESCAPED_SLASHES') ? json_encode($yui, JSON_UNESCAPED_SLASHES) :  json_encode($yui)) . ";";
     }
 
     /**
