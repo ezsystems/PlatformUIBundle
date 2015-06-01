@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationviewviewservice-tests', function (Y) {
-    var functionalTest, unitTest, eventTest, getViewParametersTest;
+    var functionalTest, unitTest, eventTest, getViewParametersTest, sendToTrashButtonTest,
+        Assert = Y.Assert, Mock = Y.Mock;
 
     functionalTest = new Y.Test.Case({
         name: "eZ Location View View Service 'functional' tests",
@@ -478,9 +479,316 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         },
     });
 
+    sendToTrashButtonTest = new Y.Test.Case({
+        name: "eZ Location View View Service send to trash button tests",
+
+        setUp: function () {
+            this.app = new Mock();
+            this.capi = new Mock();
+            this.location = new Mock();
+            this.service = new Y.eZ.LocationViewViewService({
+                app: this.app,
+                capi: this.capi,
+                location: this.location,
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+        },
+
+        "Should fire the confirBoxOpen event": function () {
+            var confirmBoxOpenEvent = false;
+
+            this.service.on('confirmBoxOpen', function (e) {
+                confirmBoxOpenEvent = true;
+                Assert.isObject(e.config, "The event facade should contain a config object");
+                Assert.isString(e.config.title, "The title should be defined");
+                Assert.isFunction(e.config.confirmHandler, "A confirmHandler should be provided");
+            });
+
+            this.service.fire('whatever:sendToTrashAction', {content: {}});
+            Assert.isTrue(confirmBoxOpenEvent, "The confirmBoxOpen event should have been fired");
+        },
+
+        "Should notify the user when starting to send to trash": function () {
+            var content = new Mock(),
+                parentLocation = new Mock(),
+                locationId = 'raul-gonzalez-blanco',
+                contentName = 'pierlugi-collina',
+                notified = false;
+
+            this.service.set('path', [{location: parentLocation}]);
+            this.service.set('content', content);
+
+            Mock.expect(this.location, {
+                method: 'get',
+                args: ['id'],
+                returns: locationId,
+            });
+
+            Mock.expect(content, {
+                method: 'get',
+                args: ['name'],
+                returns: contentName,
+            });
+
+            Mock.expect(parentLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: 'alan-shearer'
+            });
+
+            Mock.expect(this.location, {
+                method: 'trash',
+                args: [Mock.Value.Object, Mock.Value.Function],
+            });
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.once('notify', function (e) {
+                notified = true;
+
+                Assert.isObject(e.notification, "The event facade should provide a notification config");
+                Assert.areEqual(
+                    "started", e.notification.state,
+                    "The notification state should be 'started'"
+                );
+                Assert.isString(
+                    e.notification.text,
+                    "The notification text should be a string"
+                );
+                Assert.isTrue(
+                    e.notification.text.indexOf(contentName) !== -1,
+                    "The notification text should contain content name"
+                );
+                Assert.isTrue(
+                    e.notification.identifier.indexOf(locationId) !== -1,
+                    "The notification identifier should contain location id"
+                );
+                Assert.areSame(
+                    0, e.notification.timeout,
+                    "The notification timeout should be set to 0"
+                );
+            });
+
+            this.service.fire('whatever:sendToTrashAction', {content: content});
+            Assert.isTrue(notified, "The notified event should have been fired");
+        },
+
+        "Should notify user about error when sending to trash failed": function () {
+            var content = new Mock(),
+                parentLocation = new Mock(),
+                locationId = 'raul-gonzalez-blanco',
+                contentName = 'pierlugi-collina',
+                notified = false;
+
+            this.service.set('path', [{location: parentLocation}]);
+            this.service.set('content', content);
+
+            Mock.expect(this.location, {
+                method: 'get',
+                args: ['id'],
+                returns: locationId,
+            });
+
+            Mock.expect(content, {
+                method: 'get',
+                args: ['name'],
+                returns: contentName,
+            });
+
+            Mock.expect(parentLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: 'alan-shearer'
+            });
+
+            Mock.expect(this.location, {
+                method: 'trash',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (options, callback){
+                    callback(true);
+                }
+            });
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.once('notify', function (e) {
+                this.once('notify', function (e) {
+                    notified = true;
+
+                    Assert.isObject(e.notification, "The event facade should provide a notification config");
+                    Assert.areEqual(
+                        "error", e.notification.state,
+                        "The notification state should be 'error'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a string"
+                    );
+                    Assert.isTrue(
+                        e.notification.text.indexOf(contentName) !== -1,
+                        "The notification text should contain content name"
+                    );
+                    Assert.isTrue(
+                        e.notification.identifier.indexOf(locationId) !== -1,
+                        "The notification identifier should contain location id"
+                    );
+                    Assert.areSame(
+                        0, e.notification.timeout,
+                        "The notification timeout should be set to 0"
+                    );
+                });
+            });
+
+            this.service.fire('whatever:sendToTrashAction', {content: content});
+            Assert.isTrue(notified, "The notified event should have been fired");
+        },
+
+        "Should notify user about success of sending content to trash": function () {
+            var content = new Mock(),
+                parentLocation = new Mock(),
+                locationId = 'raul-gonzalez-blanco',
+                contentName = 'pierlugi-collina',
+                notified = false;
+
+            this.service.set('path', [{location: parentLocation}]);
+            this.service.set('content', content);
+
+            Mock.expect(this.location, {
+                method: 'get',
+                args: ['id'],
+                returns: locationId,
+            });
+
+            Mock.expect(content, {
+                method: 'get',
+                args: ['name'],
+                returns: contentName,
+            });
+
+            Mock.expect(parentLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: 'alan-shearer'
+            });
+
+            Mock.expect(this.location, {
+                method: 'trash',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (options, callback){
+                    callback(false);
+                }
+            });
+
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: [Mock.Value.String, Mock.Value.Object]
+            });
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.once('notify', function (e) {
+                this.once('notify', function (e) {
+                    notified = true;
+
+                    Assert.isObject(e.notification, "The event facade should provide a notification config");
+                    Assert.areEqual(
+                        "done", e.notification.state,
+                        "The notification state should be 'done'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a string"
+                    );
+                    Assert.isTrue(
+                        e.notification.text.indexOf(contentName) !== -1,
+                        "The notification text should contain content name"
+                    );
+                    Assert.isTrue(
+                        e.notification.identifier.indexOf(locationId) !== -1,
+                        "The notification identifier should contain location id"
+                    );
+                    Assert.areSame(
+                        5, e.notification.timeout,
+                        "The notification timeout should be set to 0"
+                    );
+                });
+            });
+
+            this.service.fire('whatever:sendToTrashAction', {content: content});
+            Assert.isTrue(notified, "The notified event should have been fired");
+        },
+
+        "Should navigate the app to view of parent location": function () {
+            var content = new Mock(),
+                parentLocation = new Mock(),
+                locationId = 'raul-gonzalez-blanco',
+                contentName = 'pierlugi-collina',
+                parentLocationId = 'alan-shearer';
+
+            this.service.set('path', [{location: parentLocation}]);
+
+            Mock.expect(this.location, {
+                method: 'get',
+                args: ['id'],
+                returns: locationId,
+            });
+
+            Mock.expect(content, {
+                method: 'get',
+                args: ['name'],
+                returns: contentName,
+            });
+
+            Mock.expect(parentLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: parentLocationId
+            });
+
+            Mock.expect(this.location, {
+                method: 'trash',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (options, callback){
+                    callback(false);
+                }
+            });
+
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: ['viewLocation', Mock.Value.Object],
+                run: function (routeName, params) {
+                    Assert.isObject(params, "Params passed to navigateTo should be an object");
+                    Assert.isString(params.id, "Params should provide id of location");
+                    Assert.areEqual(
+                        params.id, parentLocationId,
+                        "Id of location passed to navigateTo method should be the parent location id"
+                    );
+                }
+            });
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.fire('whatever:sendToTrashAction', {content: content});
+            Mock.verify(this.app);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location View View Service tests");
     Y.Test.Runner.add(unitTest);
     Y.Test.Runner.add(functionalTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(getViewParametersTest);
+    Y.Test.Runner.add(sendToTrashButtonTest);
 }, '', {requires: ['test', 'ez-locationviewviewservice']});

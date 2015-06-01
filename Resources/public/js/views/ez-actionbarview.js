@@ -51,6 +51,12 @@ YUI.add('ez-actionbarview', function (Y) {
                             label: 'Create a content',
                             priority: 210
                         }),
+                        new Y.eZ.ButtonActionView({
+                            actionId: 'sendToTrash',
+                            disabled: false,
+                            label: 'Send to Trash',
+                            priority: 10
+                        }),
                     ];
                 }
             },

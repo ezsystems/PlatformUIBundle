@@ -24,6 +24,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
     Y.eZ.LocationViewViewService = Y.Base.create('locationViewViewService', Y.eZ.ViewService, [], {
         initializer: function () {
             this.on('*:editAction', this._editContent);
+            this.on('*:sendToTrashAction', this._sendContentToTrashConfirmBox);
         },
 
         /**
@@ -40,6 +41,105 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             app.navigate(
                 app.routeUri('editContent', {id: e.content.get('id')})
             );
+        },
+
+        /**
+         * `sendToTrashAction` event handler, 
+         * it asks confirmation to the user before sending the location to the trash.
+         *
+         * @method _sendContentToTrashConfirmBox
+         * @protected
+         * @param {Object} e event facade of the sendToTrashAction event
+         */
+        _sendContentToTrashConfirmBox: function (e) {
+            e.preventDefault();
+            this.fire('confirmBoxOpen', {
+                config: {
+                    title: "Are you sure you want to send this content to trash?",
+                    confirmHandler: Y.bind(function () {
+                        this._sendToTrash(e.content);
+                    }, this)
+                },
+            });
+        },
+
+        /**
+         * Sends location to trash, triggering loading parent location and notifications
+         *
+         * @method _sendToTrash
+         * @protected
+         */
+        _sendToTrash: function () {
+            var that = this,
+                location = this.get('location'),
+                locationId = location.get('id'),
+                path = this.get('path'),
+                content = this.get('content'),
+                contentName = content.get('name'),
+                parentLocation = path[path.length - 1].location;
+
+            this._notify(
+                'Sending "' + contentName + '" to Trash',
+                'send-to-trash-' + locationId,
+                'started',
+                0
+            );
+
+            location.trash({api: this.get('capi')}, Y.bind(that._afterSendToTrashCallback, that, parentLocation, contentName));
+        },
+
+        /**
+         * Send to trash callback triggering notifications and making app to navigate to parent location
+         *
+         * @method _afterSendToTrashCallback
+         * @protected
+         * @param {eZ.Location} parentLocation the parent location to which app will navigate to
+         * @param {String} contentName the name of the content
+         * @param {Boolean} error
+         */
+        _afterSendToTrashCallback: function (parentLocation, contentName, error) {
+            var app = this.get('app'),
+                location = this.get('location'),
+                locationId = location.get('id');
+
+            if (error) {
+                this._notify(
+                    'An error occurred when sending "' + contentName + '" to Trash',
+                    'send-to-trash-' + locationId,
+                    'error',
+                    0
+                );
+                return;
+            }
+
+            this._notify(
+                '"' + contentName + '" sent to Trash',
+                'send-to-trash-' + locationId,
+                'done',
+                5
+            );
+            app.navigateTo('viewLocation', {id: parentLocation.get('id')});
+        },
+
+        /**
+         * Fire 'notify' event
+         *
+         * @method _notify
+         * @protected
+         * @param {String} text the text shown durring the notification
+         * @param {String} identifier the identifier of the notification
+         * @param {String} state the state of the notification
+         * @param {Integer} timeout the number of second, the notification will be shown
+         */
+        _notify: function (text, identifier, state, timeout) {
+            this.fire('notify', {
+                notification: {
+                    text: text,
+                    identifier: identifier,
+                    state: state,
+                    timeout: timeout,
+                }
+            });
         },
 
         /**

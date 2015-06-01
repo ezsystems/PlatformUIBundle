@@ -42,6 +42,32 @@ YUI.add('ez-locationmodel', function (Y) {
             } else {
                 callback("Only read operation is supported at the moment");
             }
+        },
+
+        /**
+         * Moves location to trash. Callback is directly passed to ContentService.moveSubtree location
+         *
+         * @method trash
+         * @param {Object} options the options for moving to trash
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Function} callback
+         */
+        trash: function (options, callback) {
+            var trashPath,
+                api = options.api,
+                location = this;
+
+            api.getContentService().loadRoot(function (error, response) {
+                if (error) {
+                    callback(error);
+                    return;
+                }
+
+                trashPath = response.document.Root.trash._href;
+                api.getContentService().moveSubtree(
+                    location.get('id'), trashPath, callback
+                );
+            });
         }
     }, {
         REST_STRUCT_ROOT: "Location",
