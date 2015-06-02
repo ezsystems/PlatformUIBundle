@@ -22,7 +22,7 @@ Feature: Remove content using te role of Editor
     ##
     @javascript
     Scenario: Remove one object and confirm the removal
-        Given an "News Flash" article exists
+        Given a "News Flash" article exists
         When I remove the "News Flash" article
         And I confirm the removal
         Then the "News Flash" is removed with message "'News Flash' sent to trash"
@@ -30,7 +30,7 @@ Feature: Remove content using te role of Editor
 
     @javascript
     Scenario: Remove one object and do not confirm the removal
-        Given an "News Flash" article exists
+        Given a "News Flash" article exists
         When I remove the "News Flash" article
         And I do not confirm the removal
         Then the article is not removed
