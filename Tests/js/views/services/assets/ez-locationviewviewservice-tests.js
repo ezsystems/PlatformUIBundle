@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationviewviewservice-tests', function (Y) {
-    var functionalTest, unitTest, eventTest, getViewParametersTest, sendToTrashButtonTest, moveContentTest,
+    var functionalTest, unitTest, eventTest, getViewParametersTest, sendToTrashButtonTest, moveContentTest, copyContentTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     functionalTest = new Y.Test.Case({
@@ -504,7 +504,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                     );
                 }
             });
-            
+
             this.service = new Y.eZ.LocationViewViewService({
                 app: this.app,
                 capi: this.capiMock,
@@ -666,6 +666,215 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 that._assertOnNotification(e,'started', 'done', 5, 5, that.parentLocationId, that.locationId);
             });
             this.service.fire('whatever:moveAction');
+            Assert.isTrue(notified, "The notify event should have been fired");
+        },
+    });
+
+    copyContentTest = new Y.Test.Case({
+        name: "eZ Location View View Service copy tests",
+
+        setUp: function () {
+            var that = this;
+            this.capiMock = new Y.Test.Mock();
+            this.locationMock = new Y.Test.Mock();
+            this.contentMock = new Y.Test.Mock();
+            this.responseMock = new Y.Test.Mock();
+            this.contentServiceMock = new Y.Test.Mock();
+            this.locationId = 'location/2/2/2/2';
+            this.parentLocationId = 'location/1/2/3/4';
+            this.finalLocation = 'finalLocation/4/5/6/7';
+            this.parentContentName = 'Mum';
+            this.contentName = 'content';
+            this.error = false;
+
+            Y.Mock.expect(this.responseMock, {
+                method: 'getHeader',
+                args: ['location'],
+                returns: this.finalLocation
+            });
+
+            Y.Mock.expect(this.capiMock, {
+                method: 'getContentService',
+                returns: this.contentServiceMock
+            });
+
+            Y.Mock.expect(this.locationMock, {
+                method: 'get',
+                args: ['id'],
+                returns: this.locationId
+            });
+
+            Y.Mock.expect(this.contentMock, {
+                method: 'copy',
+                args: [Y.Mock.Value.Object, this.parentLocationId, Y.Mock.Value.Function],
+                run: function (options, parentLocationId, callback) {
+                    Assert.areSame(
+                        options.api,
+                        that.capiMock,
+                        "option should have the JS REST client instance"
+                    );
+                    callback(that.error, that.responseMock);
+                }
+            });
+
+            Y.Mock.expect(this.contentMock, {
+                method: 'get',
+                args: ['name'],
+                returns: this.contentName
+            });
+
+            Y.Mock.expect(this.contentServiceMock, {
+                method: 'copyContent',
+                args: [this.locationId, this.parentLocationId, Y.Mock.Value.Function],
+                run: function (locationId, parentLocationId, callback) {
+                    callback(that.error, that.responseMock);
+                }
+            });
+
+            this.app = new Y.Mock();
+            this.activeView = new Y.View({});
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['activeView'],
+                returns: this.activeView
+            });
+            Y.Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: ['viewLocation', Y.Mock.Value.Object],
+                run: function (viewLocation, idObject) {
+                    Assert.areSame(
+                        idObject.id,
+                        that.finalLocation,
+                        "The application should have redirect the user to the new content's location"
+                    );
+                }
+            });
+
+            this.service = new Y.eZ.LocationViewViewService({
+                app: this.app,
+                capi: this.capiMock,
+                location: this.locationMock,
+                content: this.contentMock
+            });
+        },
+
+        _assertOnNotification: function (e, firstState, secondState, firstTimeout, secondTimeout, parentLocationId, locationId) {
+            Assert.areEqual(
+                firstState, e.notification.state,
+                "The notification state should be 'started'"
+            );
+            Assert.isString(
+                e.notification.text,
+                "The notification text should be a String"
+            );
+            Assert.areSame(
+                firstTimeout, e.notification.timeout,
+                "The notification timeout should be set to 0"
+            );
+            Assert.areSame(
+                'copy-notification-' + parentLocationId + '-' + locationId,
+                e.notification.identifier,
+                "The notification identifier should match"
+            );
+            this.service.once('notify', function (e) {
+                Assert.areEqual(
+                    secondState, e.notification.state,
+                    "The notification state should be 'error'"
+                );
+                Assert.isString(
+                    e.notification.text,
+                    "The notification text should be a String"
+                );
+                Assert.areSame(
+                    secondTimeout, e.notification.timeout,
+                    "The notification timeout should be set to 0"
+                );
+                Assert.areSame(
+                    'copy-notification-' + parentLocationId + '-' + locationId,
+                    e.notification.identifier,
+                    "The notification identifier should match"
+                );
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+            delete this.app;
+            delete this.locationMock;
+            delete this.capiMock;
+            delete this.contentServiceMock;
+            delete this.responseMock;
+        },
+
+        "Should launch the universal discovery widget when receiving an copyAction event": function () {
+            var contentDiscovered = false;
+
+            this.service.on('contentDiscover', function (e) {
+                contentDiscovered = true;
+                Y.Assert.isObject(e.config, "contentDiscover config should be an object");
+                Y.Assert.isFunction(e.config.contentDiscoveredHandler, "config should have a function named contentDiscoveredHandler");
+            });
+            this.service.fire('whatever:copyAction');
+            Assert.isTrue(contentDiscovered, "The contentDiscover event should have been fired");
+        },
+
+        "Should notify when trying to copy a content but get an error": function () {
+            var that = this,
+                notified = false,
+                parentLocationMock = new Y.Mock(),
+                parentContentMock = new Y.Mock(),
+                fakeEventFacade = {selection : {location : parentLocationMock, content : parentContentMock }};
+
+            Y.Mock.expect(parentLocationMock, {
+                method: 'get',
+                args: ['id'],
+                returns: this.parentLocationId
+            });
+            Y.Mock.expect(parentContentMock, {
+                method: 'get',
+                args: ['name'],
+                returns: this.parentContentName
+            });
+            this.error = true;
+            this.service.on('contentDiscover', function (e) {
+                e.config.contentDiscoveredHandler.call(this, fakeEventFacade);
+            });
+
+            this.service.once('notify', function (e) {
+                notified = true;
+                that._assertOnNotification(e,'started', 'error', 5, 0, that.parentLocationId, that.locationId);
+            });
+            this.service.fire('whatever:copyAction');
+            Assert.isTrue(notified, "The notify event should have been fired");
+        },
+
+        "Should notify when trying to move a content and redirect to new content's location": function () {
+            var that = this,
+                notified = false,
+                parentLocationMock = new Y.Mock(),
+                parentContentMock = new Y.Mock(),
+                fakeEventFacade = {selection : {location : parentLocationMock, content : parentContentMock }};
+
+            Y.Mock.expect(parentLocationMock, {
+                method: 'get',
+                args: ['id'],
+                returns: this.parentLocationId
+            });
+            Y.Mock.expect(parentContentMock, {
+                method: 'get',
+                args: ['name'],
+                returns: this.parentContentName
+            });
+            this.service.on('contentDiscover', function (e) {
+                e.config.contentDiscoveredHandler.call(this, fakeEventFacade);
+            });
+
+            this.service.once('notify', function (e) {
+                notified = true;
+                that._assertOnNotification(e,'started', 'done', 5, 5, that.parentLocationId, that.locationId);
+            });
+            this.service.fire('whatever:copyAction');
             Assert.isTrue(notified, "The notify event should have been fired");
         },
     });
@@ -1029,4 +1238,5 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
     Y.Test.Runner.add(getViewParametersTest);
     Y.Test.Runner.add(sendToTrashButtonTest);
     Y.Test.Runner.add(moveContentTest);
+    Y.Test.Runner.add(copyContentTest);
 }, '', {requires: ['test', 'ez-locationviewviewservice']});

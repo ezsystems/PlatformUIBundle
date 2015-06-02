@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contentmodel-tests', function (Y) {
-    var modelTest, relationsTest, createContent, loadResponse,
+    var modelTest, relationsTest, createContent, loadResponse, copyTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -347,6 +347,41 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    copyTest = new Y.Test.Case({
+        name: "eZ Content Model copy tests",
+
+        setUp: function () {
+            this.capiMock = new Y.Mock();
+            this.capiGetService = 'getContentService';
+            this.contentId = '1/2/3';
+            this.model = new Y.eZ.Content({id: this.contentId});
+            this.contentServiceMock = new Y.Mock();
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        "Should have a copy method": function () {
+            var callback = function () {},
+                parentLocationId = '4/5/6';
+
+            Y.Mock.expect(this.capiMock, {
+                method: 'getContentService',
+                returns: this.contentServiceMock
+            });
+            this.options = {api: this.capiMock};
+            Y.Mock.expect(this.contentServiceMock, {
+                method: 'copyContent',
+                args: [this.contentId, parentLocationId, callback],
+            });
+            this.model.copy(this.options, parentLocationId, callback);
+            Y.Mock.verify(this.contentServiceMock);
+            Y.Mock.verify(this.capiMock);
+        },
+    });
+
     createContent = new Y.Test.Case({
         name: "eZ Content Model create tests",
 
@@ -499,4 +534,5 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
     Y.Test.Runner.add(createContent);
+    Y.Test.Runner.add(copyTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

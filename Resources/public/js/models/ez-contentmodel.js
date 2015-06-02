@@ -188,6 +188,19 @@ YUI.add('ez-contentmodel', function (Y) {
             });
             return relations;
         },
+
+        /**
+         * copy implementation that relies on the JS REST client.
+         *
+         * @method copy
+         * @param {Object} options the options for the copy.
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {String} parentLocationId the location id where we should copy the content
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        copy: function (options, parentLocationId, callback) {
+            options.api.getContentService().copyContent(this.get('id'), parentLocationId, callback);
+        },
     }, {
         REST_STRUCT_ROOT: "Content",
         ATTRS_REST_MAP: [
