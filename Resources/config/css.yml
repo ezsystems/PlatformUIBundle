@@ -7,6 +7,7 @@ system:
                 - '@eZPlatformUIAssetsBundle/Resources/public/vendors/pure/grids-min.css'
                 - '@eZPlatformUIAssetsBundle/Resources/public/vendors/pure/buttons-min.css'
                 - '@eZPlatformUIAssetsBundle/Resources/public/vendors/pure/tables-min.css'
+                - '@eZPlatformUIAssetsBundle/Resources/public/vendors/alloy-editor/alloy-editor/assets/alloy-editor-ocean.css'
             # layout stylesheets
                 - '@eZPlatformUIBundle/Resources/public/css/layout.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/navigationhub.css'
@@ -66,6 +67,7 @@ system:
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/dateandtime.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/relation.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/relationlist.css'
+                - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/richtext.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/tabs.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/page-header.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/serverside-content.css'
