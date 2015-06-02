@@ -5,6 +5,11 @@ system:
             modules:
                 ez-capi:
                     path: %ez_platformui.external_assets_public_dir%/vendors/ez-js-rest-client/dist/CAPI.js
+                tinymce:
+                    path: %ez_platformui.external_assets_public_dir%/vendors/tinymce/tinymce.min.js
+                ez-tinymce:
+                    requires: ['tinymce']
+                    path: %ez_platformui.public_dir%/js/external/ez-tinymce.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -261,6 +266,7 @@ system:
                         - 'ez-textline-editview'
                         - 'ez-textblock-editview'
                         - 'ez-xmltext-editview'
+                        - 'ez-richtext-editview'
                         - 'ez-image-editview'
                         - 'ez-binaryfile-editview'
                         - 'ez-media-editview'
@@ -365,6 +371,12 @@ system:
                 xmltexteditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/xmltext.hbt
+                ez-richtext-editview:
+                    requires: ['ez-fieldeditview', 'ez-tinymce', 'richtexteditview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
+                richtexteditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/richtext.hbt
                 ez-image-editview:
                     requires: ['ez-binarybase-editview', 'imageeditview-ez-template', 'ez-asynchronousview', 'event-tap']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-image-editview.js
