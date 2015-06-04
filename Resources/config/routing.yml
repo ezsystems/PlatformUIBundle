@@ -1,6 +1,6 @@
 
 shell:
-    pattern: /shell
+    path: /shell
     defaults:
         _controller: ezsystems.platformui.controller:shellAction
 
@@ -9,23 +9,22 @@ template_yui_module:
     defaults:
         _controller: ezsystems.platformui.controller.template:wrapTemplateAction
         _format: js
-    requirements:
-        _method: GET
+    methods: [GET]
 
 admin_dashboard:
-    pattern: /pjax/dashboard
+    path: /pjax/dashboard
     defaults:
         _controller: ezsystems.platformui.controller.dashboard:dashboardAction
     methods: [GET]
 
 admin_systeminfo:
-    pattern: /pjax/systeminfo
+    path: /pjax/systeminfo
     defaults:
         _controller: ezsystems.platformui.controller.systeminfo:infoAction
     methods: [GET]
 
 admin_phpinfo:
-    pattern: /systeminfo/phpinfo
+    path: /systeminfo/phpinfo
     defaults:
         _controller: ezsystems.platformui.controller.systeminfo:phpinfoAction
     methods: [GET]

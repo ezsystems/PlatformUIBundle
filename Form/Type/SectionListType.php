@@ -11,7 +11,7 @@ namespace EzSystems\PlatformUIBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use EzSystems\PlatformUIBundle\Helper\SectionHelperInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -60,7 +60,7 @@ class SectionListType extends AbstractType
         return 'sectionlist';
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             ['data_class' => 'EzSystems\PlatformUIBundle\Entity\SectionList']

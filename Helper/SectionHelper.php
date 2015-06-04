@@ -12,7 +12,7 @@ use eZ\Publish\API\Repository\SectionService;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute as AuthorizationAttribute;
 use EzSystems\PlatformUIBundle\Entity\SectionList;
 use EzSystems\PlatformUIBundle\Entity\SectionListItem;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use eZ\Publish\API\Repository\Values\Content\Section;
 use EzSystems\PlatformUIBundle\Entity\Section as SectionEntity;
 
@@ -24,14 +24,14 @@ class SectionHelper implements SectionHelperInterface
     protected $sectionService;
 
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContextInterface
+     * @var \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface
      */
-    protected $securityContext;
+    protected $authChecker;
 
-    public function __construct(SectionService $sectionService, SecurityContextInterface $securityContext)
+    public function __construct(SectionService $sectionService, AuthorizationCheckerInterface $authChecker)
     {
         $this->sectionService = $sectionService;
-        $this->securityContext = $securityContext;
+        $this->authChecker = $authChecker;
     }
 
     /**
@@ -96,7 +96,7 @@ class SectionHelper implements SectionHelperInterface
      */
     protected function canUser($function)
     {
-        return $this->securityContext->isGranted(
+        return $this->authChecker->isGranted(
             new AuthorizationAttribute(
                 'section',
                 $function

@@ -73,7 +73,7 @@ services:
         class: %ezsystems.platformui.helper.section.class%
         arguments:
             - @ezpublish.api.service.section
-            - @security.context
+            - @security.authorization_checker
 
     ezsystems.platformui.form.type.section:
         class: %ezsystems.platformui.form.type.section.class%
