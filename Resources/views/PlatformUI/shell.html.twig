@@ -48,18 +48,6 @@
     <script>
         {{ ez_platformui_yui_config( "YUI.GlobalConfig" ) }}
 
-        YUI.GlobalConfig.onSuccess = function (e) {
-            for (var i = 0, len = e.data.length; i < len; ++i) {
-                if ( e.data[i] === 'ez-capi' ) {
-                    YUI.add('ez-capi', function (Y) {
-                        Y.namespace('eZ');
-                        Y.eZ.CAPI = eZ.CAPI;
-                        Y.eZ.SessionAuthAgent = eZ.SessionAuthAgent;
-                    });
-                }
-            }
-        };
-
         YUI().use('ez-platformuiapp', function (Y) {
             var app = new Y.eZ.PlatformUIApp({
                     container: '.ez-platformui-app',
