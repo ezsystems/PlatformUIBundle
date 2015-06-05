@@ -3,8 +3,11 @@ system:
         yui:
             filter: min
             modules:
-                ez-capi:
+                capi:
                     path: %ez_platformui.external_assets_public_dir%/vendors/ez-js-rest-client/dist/CAPI.js
+                ez-capi:
+                    requires: ['capi']
+                    path: %ez_platformui.public_dir%/js/external/ez-capi.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
