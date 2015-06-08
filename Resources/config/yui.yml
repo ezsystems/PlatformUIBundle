@@ -36,7 +36,6 @@ system:
                         - 'ez-confirmboxview'
                         - 'ez-notificationhubviewservice'
                         - 'ez-notificationhubview'
-                        - 'ez-errorview'
                         - 'ez-usermodel'
                         - 'ez-pluginregistry'
                         - 'ez-registerurlhelpersplugin'
@@ -284,12 +283,6 @@ system:
                 contenteditformview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/contenteditform.hbt
-                ez-errorview:
-                    requires: ['ez-templatebasedview', 'event-tap', 'errorview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/ez-errorview.js
-                errorview-ez-template:
-                    type: 'template'
-                    path: %ez_platformui.public_dir%/templates/error.hbt
                 ez-fieldeditview:
                     requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'node-style', 'fieldinfo-tooltip-ez-partial']
                     path: %ez_platformui.public_dir%/js/views/ez-fieldeditview.js
