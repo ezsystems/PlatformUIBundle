@@ -7,6 +7,8 @@ system:
                 - '@eZPlatformUIAssetsBundle/Resources/public/vendors/pure/grids-min.css'
                 - '@eZPlatformUIAssetsBundle/Resources/public/vendors/pure/buttons-min.css'
                 - '@eZPlatformUIAssetsBundle/Resources/public/vendors/pure/tables-min.css'
+            # "fork" of alloyeditor CSS produced by `grunt alloy-css`
+                - '@eZPlatformUIBundle/Resources/public/css/external/alloy-editor-ez.css'
             # layout stylesheets
                 - '@eZPlatformUIBundle/Resources/public/css/layout.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/navigationhub.css'
