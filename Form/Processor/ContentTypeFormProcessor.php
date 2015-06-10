@@ -9,6 +9,7 @@
 
 namespace EzSystems\PlatformUIBundle\Form\Processor;
 
+use eZ\Publish\API\Repository\Values\ContentType\ContentTypeDraft;
 use EzSystems\RepositoryForms\Event\FormActionEvent;
 use EzSystems\RepositoryForms\Event\RepositoryFormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -30,17 +31,39 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            RepositoryFormEvents::CONTENT_TYPE_PUBLISH => ['processPublishContentType', -10]
+            RepositoryFormEvents::CONTENT_TYPE_PUBLISH => ['processPublishContentType', -10],
+            RepositoryFormEvents::CONTENT_TYPE_REMOVE_DRAFT => ['processRemoveContentTypeDraft', -10],
         ];
     }
 
     public function processPublishContentType(FormActionEvent $event)
     {
+        $event->setResponse(
+            $this->generateRedirectResponse(
+                $event->getData()->contentTypeDraft,
+                $event->getOption('languageCode')
+            )
+        );
+        // TODO: Add confirmation flash message.
+    }
+
+    public function processRemoveContentTypeDraft(FormActionEvent $event)
+    {
+        $event->setResponse(
+            $this->generateRedirectResponse(
+                $event->getData()->contentTypeDraft,
+                $event->getOption('languageCode')
+            )
+        );
+    }
+
+    private function generateRedirectResponse(ContentTypeDraft $contentTypeDraft, $languageCode)
+    {
         $url = $this->router->generate(
             'admin_contenttypeView',
-            ['contentTypeId' => $event->getData()->contentTypeDraft->id, 'languageCode' => $event->getOption('languageCode')]
+            ['contentTypeId' => $contentTypeDraft->id, 'languageCode' => $languageCode]
         );
-        $event->setResponse(new RedirectResponse($url));
-        // TODO: Add confirmation flash message.
+
+        return new RedirectResponse($url);
     }
 }
