@@ -17,5 +17,10 @@
         "ezsystems/platform-ui-assets-bundle": "~0.2",
         "ezsystems/repository-forms": "dev-master",
         "zetacomponents/system-information": "~1.1"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.8.x-dev"
+        }
     }
 }
