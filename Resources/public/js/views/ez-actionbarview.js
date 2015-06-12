@@ -59,7 +59,7 @@ YUI.add('ez-actionbarview', function (Y) {
                         }),
                         new Y.eZ.CreateContentActionView({
                             actionId: 'createContent',
-                            disabled: false,
+                            disabled: !this.get('contentType').get('isContainer'),
                             label: 'Create a content',
                             priority: 210
                         }),
@@ -71,6 +71,17 @@ YUI.add('ez-actionbarview', function (Y) {
                         }),
                     ];
                 }
+            },
+
+            /**
+             * The content type of the content at the current location
+             *
+             * @attribute contentType
+             * @type Y.eZ.ContentType
+             * @writeOnce
+             */
+            contentType: {
+                writeOnce: "initOnly",
             },
         }
     });
