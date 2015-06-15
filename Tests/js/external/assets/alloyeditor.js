@@ -1,0 +1,1 @@
+window.AlloyEditor = window.AlloyEditor || {};
