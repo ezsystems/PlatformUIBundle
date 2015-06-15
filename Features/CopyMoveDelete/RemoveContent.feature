@@ -1,4 +1,4 @@
-Feature: Remove content using te role of Editor
+Feature: Remove content
     In order to validate the remove action
     As an Editor user
     I need to be able to remove an object that I am viewing
@@ -51,13 +51,4 @@ Feature: Remove content using te role of Editor
         When I remove the "News child" article
         And I confirm the removal
         Then the "News child" article is removed
-        Then I am on the "News" view form
-
-    @javascript
-    Scenario: Content tree is updated after the removal of an object
-        Given an "Origin" folder exists
-        And a "News Flash" article exists as a child of "Origin"
-        When I remove the "News Flash" article
-        And I confirm the removal
-        Then the "News Flash" article is removed
-        And I do not see "News flash" in content tree as child of "Origin" folder
+        Then I am on the "News" location view
