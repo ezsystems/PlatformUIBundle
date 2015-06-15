@@ -74,6 +74,7 @@ system:
                 - '@eZPlatformUIBundle/Resources/public/css/modules/table-data.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/breadcrumbs.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/yui-calendar.css'
+                - '@eZPlatformUIBundle/Resources/public/css/modules/content-table.css'
             # theme stylesheets
                 - '@eZPlatformUIBundle/Resources/public/css/theme/app.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/error.css'

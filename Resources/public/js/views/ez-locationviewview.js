@@ -81,6 +81,9 @@ YUI.add('ez-locationviewview', function (Y) {
             container.one('.ez-actionbar-container').append(
                 this.get('actionBar').render().get('container')
             );
+            container.one('.ez-subitems-container').append(
+                this.get('subitemsView').render().get('container')
+            );
 
             this._uiSetMinHeight();
             return this;
@@ -214,7 +217,16 @@ YUI.add('ez-locationviewview', function (Y) {
 
                     );
                 }
-            }
+            },
+
+            subitemsView: {
+                valueFn: function () {
+                    return new Y.eZ.SubitemsView({
+                        bubbleTargets: this,
+                        location: this.get('location'),
+                    });
+                },
+            },
         }
     });
 });

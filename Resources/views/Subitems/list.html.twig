@@ -1,0 +1,20 @@
+<table class="ez-content-table pure-table pure-table-striped">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Published</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for struct in contentsStruct %}
+        <tr>
+            <td><input type="checkbox"></td>
+            <td><a href="#" data-route-name="viewLocation" data-route-params-id="{{ struct.locationId }}">{{ struct.content.contentInfo.name }}</a></td>
+            <td>{{ struct.contentType.names['eng-GB'] }}</td>
+            <td>{{ struct.content.contentInfo.publishedDate|localizeddate('medium', 'short') }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

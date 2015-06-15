@@ -11,6 +11,11 @@ template_yui_module:
         _format: js
     methods: [GET]
 
+subitems:
+    pattern: /ajax/subitems
+    defaults:
+        _controller: ezsystems.platformui.subitems.controller:listAction
+
 admin_dashboard:
     path: /pjax/dashboard
     defaults:

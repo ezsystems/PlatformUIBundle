@@ -31,6 +31,7 @@
                 <div class="ez-tabs-panel" id="ez-tabs-analytics">Analytics content</div>
             </div>
         </section>
+        <div class="ez-subitems-container"></div>
     </div>
     <div class="ez-actionbar-container pure-u"></div>
 </div>
