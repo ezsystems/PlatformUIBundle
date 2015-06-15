@@ -256,6 +256,14 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             );
         },
 
+        "Should set the contentType of the action bar": function () {
+            Y.Assert.areSame(
+                this.view.get('contentType'),
+                this.view.get('actionBar').get('contentType'),
+                'The contentType should have been set to the actionBar'
+            );
+        },
+
         "Should set the content of the raw content view": function () {
             Y.Assert.areSame(
                 this.view.get('content'),
