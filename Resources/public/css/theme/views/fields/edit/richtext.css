@@ -1,0 +1,16 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-richtexteditview .ez-richtext-editable {
+    outline: 1px solid #ccc;
+    background: #fdfdfd;
+    transition: all 0.30s ease-in-out;
+}
+
+.ez-view-richtexteditview .ez-richtext-editable:focus {
+    outline: 1px solid #aaa;
+    box-shadow: inset 0 0 6px #CCC;
+    background: #fff;
+}

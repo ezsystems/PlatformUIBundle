@@ -12,3 +12,14 @@
     display: inline-block;
     vertical-align: top;
 }
+
+.ez-view-richtexteditview .ez-richtext-editable {
+    display: inline-block;
+    width: 100%;
+    padding: 0 0.4em;
+    box-sizing: border-box;
+}
+
+.ez-view-richtexteditview .ez-richtext-editable > section *:first-child {
+    margin-top: 0;
+}
