@@ -58,6 +58,42 @@
         <source>content_type.modified_date</source>
         <target>Modification date</target>
       </trans-unit>
+      <trans-unit id="39f42e02559368a6b6ea2bb9f6de6724" resname="content_type.last_modified">
+        <source>content_type.last_modified</source>
+        <target>Last modified: %date% by %modifier%</target>
+      </trans-unit>
+      <trans-unit id="7c0ab0f708330c0d934c7e53a0cff93e" resname="content_type.description">
+        <source>content_type.description</source>
+        <target>Description</target>
+      </trans-unit>
+      <trans-unit id="e1d223825a9bf3ad0d1f810b7426bf3d" resname="content_type.name_schema">
+        <source>content_type.name_schema</source>
+        <target>Content name schema</target>
+      </trans-unit>
+      <trans-unit id="ad868db1b7d6a228c3b83176a33fd8fc" resname="content_type.url_alias_schema">
+        <source>content_type.url_alias_schema</source>
+        <target>URLAlias schema</target>
+      </trans-unit>
+      <trans-unit id="b6a3aa854f989a0573db082c812c2d52" resname="content_type.container">
+        <source>content_type.container</source>
+        <target>Can contain sub-items</target>
+      </trans-unit>
+      <trans-unit id="975a8aa4deca92ef9cd5ffc42efd2467" resname="content_type.default_availability">
+        <source>content_type.default_availability</source>
+        <target>Default availability in primary language, if translation is absent</target>
+      </trans-unit>
+      <trans-unit id="6361724b046699bacda179f0e7397de0" resname="content_type.always_available">
+        <source>content_type.always_available</source>
+        <target>Available</target>
+      </trans-unit>
+      <trans-unit id="5e276b6da192df3e9c622c398fc03d6b" resname="content_type.no_always_available">
+        <source>content_type.no_always_available</source>
+        <target>Not available</target>
+      </trans-unit>
+      <trans-unit id="9297b47a2cead7403adaab0f0ee6fdb2" resname="content_type.default_children_sorting">
+        <source>content_type.default_children_sorting</source>
+        <target>Default children sorting</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
