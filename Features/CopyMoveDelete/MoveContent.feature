@@ -1,5 +1,5 @@
-Feature: Move content using te role of Editor
-    In order to validate the move action
+Feature: Move content
+    In order to move objects
     As an Editor user
     I need to be able to move an object that I am viewing
 
@@ -12,38 +12,20 @@ Feature: Move content using te role of Editor
     @javascript
     Scenario: Move one object without children objects
         Given an "Older News" folder exists
-        And a "News Flash" article exists
-        When I move the "News Flash" as a child of "Older News" folder
-        Then the "News Flash" is moved with message "'News flash' has been successfully moved under 'Older News'"
-        And I see "News Flash" as a child of "Older News" folder
+        And a "Origin/News Flash" article exists
+        And I am viewing the "News Flash" article
+        When I click on "Move" link on the "Action Bar"
+        And I select the "Older News" folder in Universal Discovery Widget
+        And I click the "Confirm selection" button
+        Then I see the message "News Flash' has been successfully moved under 'Older News'"
+        And I see "Older News/News Flash" in content tree
+        And I do not see "Origin/News flash" in content tree
 
     @javascript
     Scenario: Move one object that has children objects
         Given an "Older News" folder exists
-        And a "Tomorrow news" folder exists
-        And a "News Flash" article exists as a child of "Tomorrow news" folder
-        When I move the "Tomorrow news" as a child of "Older News" folder
+        And a "Tomorrow news/News Flash" article exists
+        And I am viewing the "News Flash" article
+        When I move the "Tomorrow news" into the "Older News" folder
         Then the "Tomorrow news" is moved
-        And I see "Tomorrow news" as a child of "Older News" folder
-        And I see "News Flash" as a child of "Tomorrow news" folder
-
-    @javascript
-    Scenario: Content tree is updated after the move of an object
-        Given an "Destiny" folder exists
-        And an "Origin" folder exists
-        And a "News Flash" article exists as a child of "Origin" folder
-        When I move the "News Flash" into "Destiny" folder
-        Then the "News Flash" is moved
-        And I see "News flash" in content tree as child of "Destiny" folder
-        And I do not see "News flash" in content tree as child of "Origin" folder
-
-    @javascript
-    Scenario: Move one object to an hidden location
-        Given an "Older News" folder exists
-        And "Older News" is hidden
-        And a "News Flash" article exists
-        And "News Flash"  is not hidden
-        When I move the "News Flash" as a child of "Older News" folder
-        Then the "News Flash" is moved
-        And I see "News Flash" as a child of "Older News" folder
-        And "News Flash" is hidden
+        And I see "Older News/Tomorrow news/News Flash" in content tree
