@@ -25,10 +25,7 @@ YUI.add('ez-richtext-editview', function (Y) {
         initializer: function () {
             this.after('activeChange', function (e) {
                 if ( this.get('active') ) {
-                    this._editor = Y.eZ.AlloyEditor.editable(
-                        this._getEditableArea().get('id')
-                    );
-                    // TODO on blur => validate
+                    this._initEditor();
                 } else {
                     this._editor.destroy();
                 }
@@ -36,28 +33,67 @@ YUI.add('ez-richtext-editview', function (Y) {
         },
 
         /**
-         * Validates the current input of the xml text
+         * Initializes the editor
          *
-         * @method validate
+         * @protected
+         * @method _initEditor
          */
-        validate: function () {
-            // TODO
-            // check isRequired vs. the actual content
-            this.set('errorStatus', false);
+        _initEditor: function () {
+            this._editor = Y.eZ.AlloyEditor.editable(
+                this._getEditableArea().getDOMNode()
+            );
+            this._getNativeEditor().on('blur', Y.bind(this.validate, this));
         },
 
+        validate: function () {
+            if ( !this.get('fieldDefinition').isRequired ) {
+                this.set('errorStatus', false);
+                return;
+            }
+            if ( this._isEmpty() ) {
+                this.set('errorStatus', "This field is required");
+            } else {
+                this.set('errorStatus', false);
+            }
+        },
+
+        /**
+         * Checks whether the field is empty. The field is considered empty if
+         * the editor handles a `section` element and this element has some
+         * child nodes.
+         *
+         * @method _isEmpty
+         * @protected
+         * @return {Boolean}
+         */
+        _isEmpty: function () {
+            var section = Y.Node.create(this._getNativeEditor().getData());
+
+            return (!section || !section.hasChildNodes());
+        },
+
+        /**
+         * Returns the editable area
+         *
+         * @method _getEditableArea
+         * @protected
+         * @return {Node}
+         */
         _getEditableArea: function () {
             return this.get('container').one('.ez-richtext-editable');
         },
 
         /**
-         * Defines the variables to be imported in the field edit template for xml
-         * text.
+         * Returns the native CKEditor instance
          *
+         * @method _getNativeEditor
          * @protected
-         * @method _variables
-         * @return {Object} containing isRequired entry
+         * @return CKEDITOR.editor
          */
+        _getNativeEditor: function () {
+            return this._editor.get('nativeEditor');
+        },
+
         _variables: function () {
             return {
                 "isRequired": this.get('fieldDefinition').isRequired,
@@ -75,7 +111,7 @@ YUI.add('ez-richtext-editview', function (Y) {
         _getDOMDocument: function () {
             var doc = (new DOMParser()).parseFromString(this.get('field').fieldValue.xhtml5edit, "text/xml");
 
-            if ( !doc || !doc.documentElement || doc.documentElement.nodeName === "parsererror" ) {
+            if ( !doc || !doc.documentElement || doc.querySelector("parsererror") ) {
                 console.warn(
                     "Unable to parse the content of the RichText field #" + this.get('field').id
                 );
@@ -84,7 +120,13 @@ YUI.add('ez-richtext-editview', function (Y) {
             return doc;
         },
 
-
+        /**
+         * Serializes the Document to a string
+         *
+         * @method _serializeFieldValue
+         * @protected
+         * @return {String}
+         */
         _serializeFieldValue: function () {
             var doc = this._getDOMDocument();
 
@@ -103,7 +145,7 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @return String
          */
         _getFieldValue: function () {
-            return {xml: this._getEditableArea().get('content')};
+            return {xml: this._getNativeEditor().getData()};
         },
     });
 
