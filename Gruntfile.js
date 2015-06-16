@@ -146,7 +146,12 @@ module.exports = function(grunt) {
             "alloy-generateskin": {
                 command: 'gulp build-css',
                 options: {
-                    cwd: alloyBase,
+                    stdout: true,
+                    stderr: true,
+                    failOnError: true,
+                    execOptions: {
+                        cwd: alloyBase,
+                    },
                 },
             }
         },
