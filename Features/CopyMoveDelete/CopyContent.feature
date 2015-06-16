@@ -1,5 +1,5 @@
-Feature: Copy content using te role of Editor
-    In order to validate the copy action
+Feature: Copy content
+    In order to copy objects
     As an Editor user
     I need to be able to copy an object that I am viewing
 
@@ -13,34 +13,19 @@ Feature: Copy content using te role of Editor
     Scenario: Copy one object without children objects
         Given a "Destiny" folder exists
         And a "News Flash" article exists
-        When I copy the "News Flash" into "Destiny" folder
-        Then the "News Flash" is copied with message "'News Flash' has been successfully copied under 'Destiny'"
-        And I see "News Flash" as a child of "Destiny" folder
+        And I am viewing the "News Flash" article
+        When I click on "Copy" link on the "Action Bar"
+        And I select the "Destiny" folder in Universal Discovery Widget
+        And I click the "Confirm selection" button
+        Then I see the message "'News Flash' has been successfully copied under 'Destiny'"
+        And I see "Destiny/News Flash" in content tree
 
     @javascript
     Scenario: Copy one object that has children objects
         Given an "Destiny" folder exists
-        And an "Origin" folder exists
-        And a "News Flash" article exists as a child of "Origin" folder
-        When I copy the "News Flash" into "Destiny" folder
+        And an "Origin/News Flash" article exists
+        And I am viewing the "News Flash" article
+        When I copy the "News Flash" into the "Destiny" folder
         Then the "News Flash" is copied
-        And I see "News Flash" as a child of "Origin" folder
-        And I see "News Flash" as a child of "Destiny" folder
-
-    @javascript
-    Scenario: Content tree is updated after the copy of an object
-        Given an "Destiny" folder exists
-        And an "Origin" folder exists
-        And a "News Flash" article exists as a child of "Origin" folder
-        When I copy the "News Flash" into "Destiny" folder
-        Then the "News Flash" is copied
-        And I see "News flash" in content tree as child of "Destiny" folder
-
-    @javascript
-    Scenario: Copy one object to an hidden location
-        Given an "Destiny" folder exists
-        And "Destiny" is hidden
-        And a "News Flash" article exists
-        When I copy the "News Flash" into "Destiny" folder
-        Then the "News Flash" is copied
-        And I see "News Flash" as a child of "Origin" folder
+        And I see "Origin/News Flash" in content tree
+        And I see "Destiny/News Flash" in content tree
