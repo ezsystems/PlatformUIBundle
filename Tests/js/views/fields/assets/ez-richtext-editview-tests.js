@@ -4,6 +4,7 @@
  */
 YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
+        editorTest,
         VALID_XHTML, INVALID_XHTML, RESULT_XHTML,
         Assert = Y.Assert, Mock = Y.Mock;
 
@@ -239,6 +240,64 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
     });
 
+    editorTest = new Y.Test.Case({
+        name: "eZ RichText View editor test",
+
+        setUp: function () {
+            this.field = {id: 42, fieldValue: {xhtml5edit: ""}};
+            this.model = new Mock();
+            Mock.expect(this.model, {
+                method: 'toJSON',
+                returns: {},
+            });
+
+            this.view = new Y.eZ.RichTextEditView({
+                container: '.container',
+                field: this.field,
+                fieldDefinition: {isRequired: true},
+                content: this.model,
+                version: this.model,
+                contentType: this.model,
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.set('active', false);
+            this.view.destroy();
+        },
+
+        "Should create an instance of AlloyEditor": function () {
+            this.view.set('active', true);
+
+            Assert.isInstanceOf(
+                Y.eZ.AlloyEditor.Core, this.view.get('editor'),
+                "An instance of AlloyEditor should have been created"
+            );
+        },
+
+        "Should set the toolbar configuration": function () {
+            this.view.set('active', true);
+            Assert.areSame(
+                this.view.get('toolbarsConfig'),
+                this.view.get('editor').get('toolbars'),
+                "The toolbarsConfig attribute should be used as the toolbars config"
+            );
+        },
+
+        "Should validate the input on blur": function () {
+            var validated = false;
+
+            this.view.after('errorStatusChange', function () {
+                validated = true;
+            });
+            this.view.set('active', true);
+            this.view.get('editor').get('nativeEditor').fire('blur');
+
+            Assert.isTrue(validated, "The input should have been validated");
+        },
+    });
+
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "RichText Edit View registration test";
     registerTest.viewType = Y.eZ.RichTextEditView;
@@ -248,5 +307,6 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(validateTest);
     Y.Test.Runner.add(getFieldTest);
+    Y.Test.Runner.add(editorTest);
     Y.Test.Runner.add(registerTest);
 }, '', {requires: ['test', 'editviewregister-tests', 'ez-richtext-editview']});

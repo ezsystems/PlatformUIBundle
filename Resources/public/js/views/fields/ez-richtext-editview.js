@@ -11,7 +11,8 @@ YUI.add('ez-richtext-editview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var FIELDTYPE_IDENTIFIER = 'ezrichtext';
+    var FIELDTYPE_IDENTIFIER = 'ezrichtext',
+        AlloyEditor = Y.eZ.AlloyEditor;
 
     /**
      * Rich Text edit view
@@ -27,7 +28,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                 if ( this.get('active') ) {
                     this._initEditor();
                 } else {
-                    this._editor.destroy();
+                    this.get('editor').destroy();
                 }
             });
         },
@@ -39,10 +40,15 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @method _initEditor
          */
         _initEditor: function () {
-            this._editor = Y.eZ.AlloyEditor.editable(
-                this._getEditableArea().getDOMNode()
+            var editor;
+
+            editor = Y.eZ.AlloyEditor.editable(
+                this._getEditableArea().getDOMNode(), {
+                    toolbars: this.get('toolbarsConfig'),
+                }
             );
-            this._getNativeEditor().on('blur', Y.bind(this.validate, this));
+            editor.get('nativeEditor').on('blur', Y.bind(this.validate, this));
+            this._set('editor', editor);
         },
 
         validate: function () {
@@ -67,7 +73,7 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @return {Boolean}
          */
         _isEmpty: function () {
-            var section = Y.Node.create(this._getNativeEditor().getData());
+            var section = Y.Node.create(this.get('editor').get('nativeEditor').getData());
 
             return (!section || !section.hasChildNodes());
         },
@@ -81,17 +87,6 @@ YUI.add('ez-richtext-editview', function (Y) {
          */
         _getEditableArea: function () {
             return this.get('container').one('.ez-richtext-editable');
-        },
-
-        /**
-         * Returns the native CKEditor instance
-         *
-         * @method _getNativeEditor
-         * @protected
-         * @return CKEDITOR.editor
-         */
-        _getNativeEditor: function () {
-            return this._editor.get('nativeEditor');
         },
 
         _variables: function () {
@@ -145,8 +140,55 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @return String
          */
         _getFieldValue: function () {
-            return {xml: this._getNativeEditor().getData()};
+            return {xml: this.get('editor').get('nativeEditor').getData()};
         },
+    }, {
+        ATTRS: {
+            /**
+             * The AlloyEditor
+             *
+             * @attribute editor
+             * @type AlloyEditor.Core
+             */
+            editor: {
+                value: null,
+                readOnly: true,
+            },
+
+            /**
+             * AlloyEditor toolbar configuration
+             *
+             * @attribute toolbarsConfig
+             * @type {Object}
+             */
+            toolbarsConfig: {
+                value: {
+                    styles: {
+                        selections: [{
+                            name: 'link',
+                            buttons: ['linkEdit'],
+                            test: AlloyEditor.SelectionTest.link
+                        }, {
+                            name: 'text',
+                            buttons: [
+                                'bold', 'italic', 'underline',
+                                'paragraphLeft', 'paragraphCenter', 'paragraphRight', 'paragraphJustify',
+                                'ul', 'ol',
+                                'link',
+                            ],
+                            test: AlloyEditor.SelectionTest.text
+                        }, {
+                            name: 'table',
+                            buttons: ['tableRow', 'tableColumn', 'tableCell', 'tableRemove'],
+                            getArrowBoxClasses: AlloyEditor.SelectionGetArrowBoxClasses.table,
+                            setPosition: AlloyEditor.SelectionSetPosition.table,
+                            test: AlloyEditor.SelectionTest.table
+                        }],
+                        tabIndex: 1
+                    }
+                }
+            },
+        }
     });
 
     Y.eZ.FieldEditView.registerFieldEditView(
