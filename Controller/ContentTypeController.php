@@ -14,6 +14,7 @@ use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
 use eZ\Publish\API\Repository\SearchService;
+use eZ\Publish\API\Repository\UserService;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\Core\Repository\Values\ContentType\ContentTypeCreateStruct;
@@ -35,6 +36,11 @@ class ContentTypeController extends Controller
     private $searchService;
 
     /**
+     * @var UserService
+     */
+    private $userService;
+
+    /**
      * @var ActionDispatcherInterface
      */
     private $actionDispatcher;
@@ -49,11 +55,13 @@ class ContentTypeController extends Controller
     public function __construct(
         ContentTypeService $contentTypeService,
         SearchService $searchService,
+        UserService $userService,
         ActionDispatcherInterface $actionDispatcher,
         FieldTypeFormMapperRegistryInterface $fieldTypeMapperRegistry
     ) {
         $this->contentTypeService = $contentTypeService;
         $this->searchService = $searchService;
+        $this->userService = $userService;
         $this->actionDispatcher = $actionDispatcher;
         $this->fieldTypeMapperRegistry = $fieldTypeMapperRegistry;
     }
@@ -107,6 +115,8 @@ class ContentTypeController extends Controller
             'language_code' => $languageCode,
             'content_type' => $contentType,
             'content_count' => $this->searchService->findContent($query, [], false)->totalCount,
+            'modifier' => $this->userService->loadUser($contentType->modifierId),
+            'can_edit' => $this->isGranted(new Attribute('class', 'update')),
         ]);
     }
 

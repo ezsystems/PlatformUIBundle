@@ -6,6 +6,7 @@
 
 {% set content_type_group = content_type.contentTypeGroups|first %}
 {% set content_type_name = ez_trans_prop(content_type, 'name', language_code) %}
+{% set content_type_description = ez_trans_prop(content_type, 'description', language_code) %}
 
 {% block header_breadcrumbs %}
     {% set breadcrumb_items = [
@@ -23,13 +24,69 @@
 
 {% block content %}
     <section class="ez-serverside-content">
-        <div class="ez-table-data is-flexible">
-            <div class="ez-table-data-container">
+        <div class="context-information">
+            <p class="modified">
+            {{
+                "content_type.last_modified"|trans({
+                    "%date%": content_type.modificationDate|localizeddate(locale=app.request.locale),
+                    "%modifier%": modifier.login
+                })
+            }}
+            </p>
+        </div>
+
+        <div class="pure-g">
+            <div class="pure-u-1-2">
+                <div>
+                    <h6>{{ "content_type.name"|trans }}</h6>
+                    {{ content_type_name }}
+                </div>
+
+                <div>
+                    <h6>{{ "content_type.identifier"|trans }}:</h6>
+                    {{ content_type.identifier }}
+                </div>
+
+                <div>
+                    <h6>{{ "content_type.description"|trans }}:</h6>
+                    {{ content_type_description }}
+                </div>
+
+                <div>
+                    <h6>{{ "content_type.name_schema"|trans }}:</h6>
+                    {{ content_type.nameSchema }}
+                </div>
+
+                <div>
+                    <h6>{{ "content_type.url_alias_schema"|trans }}:</h6>
+                    {{ content_type.urlAliasSchema }}
+                </div>
+            </div>
+
+            <div class="pure-u-1-2">
+                <div>
+                    <h6>{{ "content_type.container"|trans }}:</h6>
+                    <input type="checkbox" disabled{% if content_type.isContainer %} checked{% endif %}>
+                </div>
+
+                <div>
+                    <h6>{{ "content_type.default_availability"|trans }}:</h6>
+                    {{ content_type.defaultAlwaysAvailable ? "content_type.always_available"|trans : "content_type.no_always_available"|trans }}
+                </div>
+
+                <div>
+                    <h6>{{ "content_type.default_children_sorting"|trans }}:</h6>
+                    {{ ("content_type.sort_field." ~ content_type.defaultSortField)|trans(domain="ezrepoforms_content_type") }} / {{ ("content_type.sort_order." ~ content_type.defaultSortOrder)|trans(domain="ezrepoforms_content_type") }}
+                </div>
+            </div>
+
+            <div class="pure-u-1">
+                <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="pure-button ez-button{% if not can_edit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'content_type.edit'|trans }}</a>
             </div>
         </div>
     </section>
 {% endblock %}
 
-{% block title %}{{ 'content_type.group.list'|trans }}{% endblock %}
+{% block title %}{{ content_type_name }}{% endblock %}
 
 
