@@ -14,8 +14,7 @@ YUI.add('ez-platformuiapp', function (Y) {
 
     var L = Y.Lang,
         APP_OPEN = 'is-app-open',
-        APP_LOADING = 'is-app-loading',
-        ERROR_VIEW_CONTAINER = '.ez-errorview-container',
+        APP_LOADING = 'is-app-loading';
 
         /**
          * Fired whenever a fatal error occurs and application is not able to continue current action
@@ -35,8 +34,6 @@ YUI.add('ez-platformuiapp', function (Y) {
          *         }
          *     });
          */
-        EVT_FATALERROR = 'fatalError';
-
     /**
      * PlatformUI Application
      *
@@ -122,11 +119,6 @@ YUI.add('ez-platformuiapp', function (Y) {
             sectionServerSideView: {
                 type: Y.eZ.SectionServerSideView,
             },
-            errorView: {
-                instance: new Y.eZ.ErrorView({
-                    container: ERROR_VIEW_CONTAINER
-                })
-            }
         },
 
         /**
@@ -146,9 +138,6 @@ YUI.add('ez-platformuiapp', function (Y) {
             this._initialTitle = Y.config.doc.title;
 
             this.on({
-                '*:closeApp': this.close,
-                '*:fatalError': this._handleError,
-                '*:retryAction': this._retryAction,
                 'loadingChange': this._loading,
                 'navigate': function () {
                     this.set('loading', true);
@@ -164,8 +153,6 @@ YUI.add('ez-platformuiapp', function (Y) {
                 }
             });
             this._routeConfig();
-            // Listening for events fired on child views
-            this.views.errorView.instance.addTarget(this);
         },
 
         /**
@@ -237,37 +224,6 @@ YUI.add('ez-platformuiapp', function (Y) {
          */
         navigateTo: function (routeName, params) {
             this.navigate(this.routeUri(routeName, params));
-        },
-
-        /**
-         * Display the error view
-         *
-         * @method _handleError
-         * @param errorInfo {Object} Object containing additional info about the error
-         * @protected
-         */
-        _handleError: function (errorInfo) {
-            var errorView = this.views.errorView.instance;
-
-            this.set('loading', false);
-            errorView.setAttrs({
-                'retryAction': errorInfo.retryAction,
-                'additionalInfo': errorInfo.additionalInfo
-            });
-            errorView.render();
-            errorView.set('active', true);
-        },
-
-        /**
-         * Retry the action
-         *
-         * @method _retryAction
-         * @param retryAction {Object} Object containing full info about the action which should be retried
-         * @protected
-         */
-        _retryAction: function (retryAction) {
-            this.views.errorView.instance.set('active', false);
-            retryAction.run.apply(retryAction.context, retryAction.args);
         },
 
         /**
@@ -448,6 +404,7 @@ YUI.add('ez-platformuiapp', function (Y) {
         _showSideView: function (viewInfo, req, res, config, next) {
             var view, service,
                 container = this.get('container'),
+                app =  this,
                 createView = !viewInfo.instance;
 
             if ( !viewInfo.serviceInstance ) {
@@ -455,6 +412,16 @@ YUI.add('ez-platformuiapp', function (Y) {
                     app: this,
                     capi: this.get('capi'),
                     plugins: Y.eZ.PluginRegistry.getPlugins(viewInfo.service.NAME),
+                });
+                viewInfo.serviceInstance.on('error', function (e) {
+                    app.fire('notify', {
+                        notification: {
+                            text:  e.message,
+                            identifier: "notification-" + e.target.name,
+                            state: "error",
+                            timeout: 0,
+                        }
+                    });
                 });
             }
             service = viewInfo.serviceInstance;
@@ -609,30 +576,20 @@ YUI.add('ez-platformuiapp', function (Y) {
                 app._set('activeViewService', viewInfo.service);
 
                 viewInfo.service.on('error', function (e) {
-                    app.fire(EVT_FATALERROR, {
-                        retryAction: {
-                            run: app.handleMainView,
-                            args: [req, res, next],
-                            context: app
-                        },
-                        additionalInfo: {errorText: e.message}
+                    app.fire('notify', {
+                        notification: {
+                            text:  e.message,
+                            identifier: "ViewService-notification-error",
+                            state: "error",
+                            timeout: 0,
+                        }
                     });
+                    app.set('loading', false);
                 });
-
                 viewInfo.service.load(showView);
             } else {
                 showView();
             }
-        },
-
-        /**
-         * Changes the application state to be closed
-         *
-         * @method close
-         */
-        close: function () {
-            this.get('container').removeClass(APP_OPEN);
-            this.views.errorView.instance.hide();
         },
 
         /**

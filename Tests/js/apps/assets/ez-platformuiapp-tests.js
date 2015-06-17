@@ -41,27 +41,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             );
         },
 
-        "Should close the application": function () {
-            var errorViewHidden = false,
-                TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
-                    hide: function () {
-                        errorViewHidden = true;
-                    }
-                });
-            this.app.views.errorView.instance = new TestErrorViewConstructor();
-
-            this.app.close();
-
-            Y.assert(
-                !this.app.get('container').hasClass('is-app-open'),
-                "The app container should not have the class is-app-open"
-            );
-            Y.assert(
-                errorViewHidden,
-                "The error view should have been hidden"
-            );
-        },
-
         "Should set/unset the app in loading mode": function () {
             this.app.set('loading', true);
             Y.assert(
@@ -156,81 +135,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
 
             this.app.showView('simpleView');
             this.wait();
-        },
-
-
-        "Should show the error view, when catching 'fatalError' event": function () {
-            var rendered = false, initialized = false,
-                errorInfo = {'retryAction:': {}, 'additionalInfo': 1},
-                TestErrorViewConstructor = new Y.Base.create('testErrorView', Y.View, [], {
-                    initializer: function () {
-                        initialized = true;
-                    },
-
-                    render: function () {
-                        rendered = true;
-                        Y.Assert.areSame(
-                            this.get('additionalInfo'), errorInfo.additionalInfo,
-                            "The view attributes should be updated with the app variables attribute"
-                        );
-                    },
-                });
-
-            this.app.views.errorView.instance = new TestErrorViewConstructor();
-
-            this.app.set('loading', false);
-            this.app.fire('contentEditView:fatalError', errorInfo);
-
-            Y.assert(initialized, "The error view should have been initialized");
-            Y.assert(rendered, "The error view should have been rendered");
-            Y.assert(!this.app.get('loading'), "The app should not be in loading mode");
-            Y.Assert.isTrue(
-                this.app.views.errorView.instance.get('active'),
-                "The error view should be active"
-            );
-        },
-
-        "Should receive 'retryAction' event fired on the errorView": function () {
-            var retryActionReceived = false;
-
-            this.app.on('errorView:retryAction', function (retryAction) {
-                retryActionReceived = true;
-            });
-
-            this.app.views.errorView.instance.fire('retryAction',{
-                run: function () {},
-                args: [],
-                context: null
-            });
-
-            Y.assert(
-                retryActionReceived,
-                "The app should have received 'retryAction' event"
-            );
-        },
-
-        "Should correctly retry an action with  '_retryAction' method": function () {
-            var makeMeTheContext = {},
-                testArgumentInput1 = "abc",
-                testArgumentInput2 = "xyz",
-                actionRetried = false,
-                retryMe = function (testArgument1, testArgument2) {
-                    Y.Assert.areSame(testArgumentInput1, testArgument1);
-                    Y.Assert.areSame(testArgumentInput2, testArgument2);
-                    Y.Assert.areSame(this, makeMeTheContext);
-                    actionRetried = true;
-                };
-
-            this.app.fire('whatever:retryAction', {
-                run: retryMe,
-                args: [testArgumentInput1, testArgumentInput2],
-                context: makeMeTheContext
-            });
-
-            Y.assert(
-                actionRetried,
-                "Test action should have been retried"
-            );
         },
     });
 
@@ -548,9 +452,10 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.app.handleMainView(req, {});
         },
 
-        "Should catch the view service error and throw an app fatal error": function () {
+        "Should catch the view service error and fire an app notification": function () {
             var msg = 'test message',
-                fatalErrorTriggered = false,
+                notificationIdentifier = "ViewService-notification-error",
+                notified = false,
                 TestService = Y.Base.create('testService', Y.eZ.ViewService, [], {
                     load: function (callback) {
                         this.fire('error', {message: msg});
@@ -560,42 +465,36 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 req = {route: {service: TestService, view: 'testView'}},
                 res = {};
 
-            this.app.views.errorView.instance.destroy();
             this.app.views.testView = {
                 type: Y.View
             };
-            this.app.on('fatalError', function (e) {
-                fatalErrorTriggered = true;
+            this.app.on('notify', function (e) {
+                notified = true;
                 Y.Assert.areSame(
-                    e.additionalInfo.errorText, msg,
-                    "The fatal error message should be the same as the error message"
+                    e.notification.text,
+                    msg,
+                    'The notification text should match the error message'
+                );
+                Y.Assert.areSame(
+                    e.notification.identifier,
+                    notificationIdentifier,
+                    'The notification identifier should be correct'
+                );
+                Y.Assert.areSame(
+                    e.notification.state,
+                    "error",
+                    'The notification state should be "error"'
+                );
+                Y.Assert.areSame(
+                    e.notification.timeout,
+                    0,
+                    'The notification timeout should be 0'
                 );
 
-                Y.Assert.areSame(
-                    this.handleMainView, e.retryAction.run,
-                    "The retry action method should be runLoader"
-                );
-
-                Y.Assert.areSame(
-                    req, e.retryAction.args[0],
-                    "The request should be passed in the error facade"
-                );
-                Y.Assert.areSame(
-                    res, e.retryAction.args[1],
-                    "The response should be passed in the error facade"
-                );
-                Y.Assert.areSame(
-                    next, e.retryAction.args[2],
-                    "The next callback should be passed in the error facade"
-                );
-
-                Y.Assert.areSame(
-                    this, e.retryAction.context,
-                    "The retry action context should be set to the app"
-                );
             });
             this.app.handleMainView(req, res, next);
-            Y.Assert.isTrue(fatalErrorTriggered, "A fatal error should have been triggered");
+            Y.Assert.isTrue(notified, "A fatal error should have been triggered");
+            Y.assert(!this.app.get('loading'), "The app should not be in loading mode");
         },
 
         "Should inject the registered plugin in the view service": function () {
@@ -671,6 +570,52 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 this.app.sideViews.sideView1.serviceInstance.get('response'),
                 "The response should be null"
             );
+        },
+
+        "Should catch the side view error service and fire a notification": function () {
+            var config = {some: "config"},
+                notified = false,
+                serviceName = 'MI5',
+                msg = 'GodSaveTheQueen';
+            this.app.sideViews = {
+                sideView1: {
+                    hideClass: 'sideview1-hidden',
+                    type: Y.View,
+                    service: Y.Base.create(serviceName, Y.eZ.ViewService, [], {
+                        load: function (callback) {
+                            this.fire('error', {message: msg});
+                        }
+                    }),
+                    container: '.sideview1'
+                },
+            };
+
+            this.app.on('notify', function (e) {
+                notified = true;
+                Y.Assert.areSame(
+                    e.notification.text,
+                    msg,
+                    'The notification text should match the error message'
+                );
+                Y.Assert.areSame(
+                    e.notification.identifier,
+                    'notification-' + serviceName,
+                    'The notification identifier should be correct'
+                );
+                Y.Assert.areSame(
+                    e.notification.state,
+                    "error",
+                    'The notification state should be "error"'
+                );
+                Y.Assert.areSame(
+                    e.notification.timeout,
+                    0,
+                    'The notification timeout should be 0'
+                );
+            });
+
+            this.app.showSideView("sideView1", config);
+            Y.Assert.isTrue(notified, "A fatal error should have been triggered");
         },
 
         "Should show the side view (activeViewService is set)": function () {
