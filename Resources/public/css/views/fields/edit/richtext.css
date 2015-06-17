@@ -18,6 +18,7 @@
     width: 100%;
     padding: 0 0.4em;
     box-sizing: border-box;
+    min-height: 5em;
 }
 
 .ez-view-richtexteditview .ez-richtext-editable > section *:first-child {
