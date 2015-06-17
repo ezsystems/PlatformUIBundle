@@ -126,6 +126,33 @@ YUI.add('ez-versionmodel-tests', function (Y) {
             Y.Assert.isUndefined(
                 m.getField('doesnotexist')
             );
+        },
+
+        "Should return array with translations": function () {
+            var m = this.model,
+                languageCodes = 'eng-GB,pol-PL,ger-DE,fre-FR',
+                translationList;
+
+            m.set('languageCodes', languageCodes);
+            translationList = m.getTranslationsList();
+
+            Y.Assert.isArray(
+                translationList,
+                'The translation list should be an array'
+            );
+            Y.Assert.areEqual(
+                translationList.length,
+                4,
+                'The translation list should contain all translations'
+            );
+
+            Y.Array.each(translationList, function (translation) {
+                Y.Assert.isTrue(
+                    languageCodes.indexOf(translation) >= 0,
+                    'The translation should be included in languageCodes attribute'
+                );
+            });
+
         }
     }));
 

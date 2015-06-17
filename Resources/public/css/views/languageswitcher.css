@@ -1,0 +1,38 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-languageswitcherview {
+    position: absolute;
+    top: 0;
+    right: 1em;
+    line-height: 2.5em;
+    padding: 0 1em;
+}
+
+.ez-view-languageswitcherview .ez-expandable-area {
+    position: absolute;
+    top: 2.3em;
+    left: 0.5em;
+    overflow-y: auto;
+    display: none;
+    line-height: 1em;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ez-view-languageswitcherview.is-expanded .ez-expandable-area {
+    display: block;
+}
+
+.ez-view-languageswitcherview .ez-content-translation .ez-language-switch-link {
+    display: block;
+    padding: 0.5em 1.5em 0.5em 0.5em;
+    white-space: nowrap;
+}
+
+.ez-view-languageswitcherview .ez-language-flag {
+    margin-right: 0.5em;
+}

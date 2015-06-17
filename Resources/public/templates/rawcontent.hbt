@@ -1,4 +1,5 @@
 <h2 class="ez-raw-content-title"><a href="#">Content</a></h2>
+<div class="ez-language-switcher-container"></div>
 <div class="ez-fieldgroups">
 {{#each fieldGroups}}
     <h3 class="ez-fieldgroup-name"><a href="#">{{ fieldGroupName }}</a></h3>

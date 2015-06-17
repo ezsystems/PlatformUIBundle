@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Get Flag Code Helper tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-getflagcodehelper-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-getflagcodehelper'],
+        filter: loaderFilter,
+        modules: {
+            "ez-getflagcodehelper": {
+                requires: ['handlebars'],
+                fullpath: "../../../Resources/public/js/helpers/ez-getflagcodehelper.js"
+            }
+        }
+    }).use('ez-getflagcodehelper-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

@@ -24,6 +24,10 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
         setUp: function () {
             this.contentJson = {};
+            this.languageCode = "eng-GB";
+            this.currentVersion = {
+                "languageCodes": "eng-GB,ger-DE,pol-PL,fre-FR"
+            };
             this.fieldDefinitions = [{
                 fieldGroup: 'content',
                 fieldType: 'something',
@@ -36,6 +40,8 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             this.fieldGroups = [{fieldGroupName: 'content'}, {fieldGroupName: 'meta'}];
             this.fields = {'id1': {fieldValue: 'value1'}, 'id2': {fieldValue: 'value2'}};
 
+            this.currentVersion = this._getVersionMock();
+            this.location = this._getLocationMock();
             this.content = this._getContentMock();
             this.contentType = this._getContentTypeMock();
             this.config = {
@@ -45,14 +51,30 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             };
             this.view = new Y.eZ.RawContentView({
                 container: '.container',
+                location: this.location,
                 content: this.content,
                 contentType: this.contentType,
+                languageCode: this.languageCode,
                 config: this.config
             });
         },
 
         tearDown: function () {
             this.view.destroy();
+        },
+
+        _getVersionMock: function () {
+            var mock = new Y.Test.Mock();
+
+            Y.Mock.expect(mock, {
+                method: 'getTranslationsList',
+            });
+            Y.Mock.expect(mock, {
+                method: 'get',
+                args: ['languageCodes'],
+                returns: this.currentVersion.languageCodes
+            });
+            return mock;
         },
 
         _getContentMock: function () {
@@ -68,6 +90,23 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 run: function (id) {
                     return that.fields[id];
                 }
+            });
+            Y.Mock.expect(mock, {
+                method: 'get',
+                args: ['currentVersion'],
+                returns: that.currentVersion
+            });
+            return mock;
+        },
+
+        _getLocationMock: function () {
+            var mock = new Y.Test.Mock(),
+                locationJSON = {};
+
+            Y.Mock.expect(mock, {
+                method: "toJSON",
+                args: [],
+                returns: locationJSON,
             });
             return mock;
         },
@@ -221,6 +260,24 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 that.wait();
             });
         },
+
+        "Should instantiate LanguageSwitcherView with proper parameters": function () {
+            Y.Assert.areSame(
+                this.view.get('content'),
+                this.view.get('languageSwitcherView').get('content'),
+                'The content should have been set to languageSwitcherView'
+            );
+            Y.Assert.areSame(
+                this.view.get('location'),
+                this.view.get('languageSwitcherView').get('location'),
+                'The location should have been set to languageSwitcherView'
+            );
+            Y.Assert.areSame(
+                this.view.get('languageCode'),
+                this.view.get('languageSwitcherView').get('languageCode'),
+                'The location should have been set to languageSwitcherView'
+            );
+        }
     });
 
     eventTest = new Y.Test.Case({
@@ -230,6 +287,10 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             var that = this;
 
             this.contentJson = {};
+            this.languageCode = "eng-GB";
+            this.currentVersion = {
+                "languageCodes": "eng-GB,ger-DE,pol-PL,fre-FR"
+            };
             this.fieldDefinitions = [{
                 fieldGroup: 'content',
                 fieldType: 'something',
@@ -242,6 +303,8 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             this.fieldGroups = [{fieldGroupName: 'content'}, {fieldGroupName: 'meta'}];
             this.fields = {'id1': {fieldValue: 'value1'}, 'id2': {fieldValue: 'value2'}};
 
+            this.currentVersion = this._getVersionMock();
+            this.location = this._getLocationMock();
             this.content = this._getContentMock();
             this.contentType = this._getContentTypeMock();
             that = this;
@@ -253,8 +316,10 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             };
             this.view = new Y.eZ.RawContentView({
                 container: '.container',
+                location: this.location,
                 content: this.content,
                 contentType: this.contentType,
+                languageCode: this.languageCode,
                 config: this.config
             });
             this.eventFacade = {Something: 'something'};
@@ -298,6 +363,20 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
         _initializer :function () {},
 
+        _getVersionMock: function () {
+            var mock = new Y.Test.Mock();
+
+            Y.Mock.expect(mock, {
+                method: 'getTranslationsList',
+            });
+            Y.Mock.expect(mock, {
+                method: 'get',
+                args: ['languageCodes'],
+                returns: this.currentVersion.languageCodes
+            });
+            return mock;
+        },
+
         _getContentMock: function () {
             var mock = new Y.Test.Mock(), that = this;
 
@@ -312,6 +391,23 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                     return that.fields[id];
                 }
             });
+            Y.Mock.expect(mock, {
+                method: 'get',
+                args: ['currentVersion'],
+                returns: that.currentVersion
+            });
+            return mock;
+        },
+
+        _getLocationMock: function () {
+            var mock = new Y.Test.Mock(),
+                locationJSON = {};
+
+            Y.Mock.expect(mock, {
+                method: "toJSON",
+                args: [],
+                returns: locationJSON,
+            });
             return mock;
         },
 
@@ -324,8 +420,10 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
             this.view = new Y.eZ.RawContentView({
                 container: '.container',
+                location: this.location,
                 content: this.content,
                 contentType: this.contentType,
+                languageCode: this.languageCode,
                 config: {
                     fieldViews: {
                         something: 'hello'
@@ -353,8 +451,10 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
             this.view = new Y.eZ.RawContentView({
                 container: '.container',
+                location: this.location,
                 content: this.content,
                 contentType: this.contentType,
+                languageCode: this.languageCode,
                 config: {
                     fieldViews: {
                         something: 'hello'
@@ -383,8 +483,10 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
             this.view = new Y.eZ.RawContentView({
                 container: '.container',
+                location: this.location,
                 content: this.content,
                 contentType: this.contentType,
+                languageCode: this.languageCode,
                 config: {
                     fieldViews: {
                         ezthing: 'hello'

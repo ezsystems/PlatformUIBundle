@@ -202,6 +202,16 @@ YUI.add('ez-versionmodel', function (Y) {
             return this.get('fields')[identifier];
         },
 
+        /**
+         * Return list of translations of version as array of language codes
+         *
+         * @method getTranslationsList
+         * @returns {Array} language codes of translations
+         */
+        getTranslationsList: function () {
+            return this.get('languageCodes').split(',');
+        }
+
     }, {
         REST_STRUCT_ROOT: "Version.VersionInfo",
         ATTRS_REST_MAP: [
