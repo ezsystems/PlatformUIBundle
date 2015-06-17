@@ -5,7 +5,7 @@
 YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
         editorTest,
-        VALID_XHTML, INVALID_XHTML, RESULT_XHTML,
+        VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML,
         Assert = Y.Assert, Mock = Y.Mock;
 
     INVALID_XHTML = "I'm invalid";
@@ -13,6 +13,9 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     VALID_XHTML = '<?xml version="1.0" encoding="UTF-8"?>';
     VALID_XHTML += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
     VALID_XHTML += '<p>I\'m not empty</p></section>';
+
+    EMPTY_XHTML = '<?xml version="1.0" encoding="UTF-8"?>';
+    EMPTY_XHTML += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit"/>';
 
     RESULT_XHTML = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit"><p>I\'m not empty</p></section>';
 
@@ -156,9 +159,24 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             );
         },
 
+        "Should not validate a buggy and required field": function () {
+            var fieldDefinition = this._getFieldDefinition(true);
+
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.render();
+            this.view.set('active', true);
+            this.view.validate();
+
+            Assert.isFalse(
+                this.view.isValid(),
+                "A required and empty field should not be valid"
+            );
+        },
+
         "Should not validate an empty and required field": function () {
             var fieldDefinition = this._getFieldDefinition(true);
 
+            this.field.fieldValue.xhtml5edit = EMPTY_XHTML;
             this.view.set('fieldDefinition', fieldDefinition);
             this.view.render();
             this.view.set('active', true);

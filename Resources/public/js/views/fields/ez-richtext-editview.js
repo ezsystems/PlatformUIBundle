@@ -12,6 +12,7 @@ YUI.add('ez-richtext-editview', function (Y) {
     Y.namespace('eZ');
 
     var FIELDTYPE_IDENTIFIER = 'ezrichtext',
+        L = Y.Lang,
         AlloyEditor = Y.eZ.AlloyEditor;
 
     /**
@@ -64,18 +65,27 @@ YUI.add('ez-richtext-editview', function (Y) {
         },
 
         /**
-         * Checks whether the field is empty. The field is considered empty if
-         * the editor handles a `section` element and this element has some
-         * child nodes.
+         * Checks whether the field is empty. The field is considered empty if:
+         *   * there's no section element
+         *   * or the section element has no child
+         *   * or the section element has only child without content
          *
          * @method _isEmpty
          * @protected
          * @return {Boolean}
          */
         _isEmpty: function () {
-            var section = Y.Node.create(this.get('editor').get('nativeEditor').getData());
+            var section = Y.Node.create(this.get('editor').get('nativeEditor').getData()),
+                hasChildNodes = function (element) {
+                    return !!element.get('children').size();
+                },
+                hasChildWithContent = function (element) {
+                    return element.get('children').some(function (node) {
+                        return L.trim(node.get('text')) !== '';
+                    });
+                };
 
-            return (!section || !section.hasChildNodes());
+            return !section || !hasChildNodes(section) || !hasChildWithContent(section);
         },
 
         /**
@@ -127,6 +137,12 @@ YUI.add('ez-richtext-editview', function (Y) {
 
             if ( !doc ) {
                 return "";
+            }
+            if ( !doc.documentElement.hasChildNodes() ) {
+                // making sure to have at least a paragraph element
+                // otherwise CKEditor adds a br to make sure the editor can put
+                // the caret inside the element.
+                doc.documentElement.appendChild(doc.createElement('p'));
             }
             return (new XMLSerializer()).serializeToString(doc.documentElement);
         },
