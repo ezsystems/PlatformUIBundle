@@ -7,6 +7,8 @@ system:
                 - '@eZPlatformUIAssetsBundle/Resources/public/vendors/pure/grids-min.css'
                 - '@eZPlatformUIAssetsBundle/Resources/public/vendors/pure/buttons-min.css'
                 - '@eZPlatformUIAssetsBundle/Resources/public/vendors/pure/tables-min.css'
+            # "fork" of alloyeditor CSS produced by `grunt alloy-css`
+                - '@eZPlatformUIBundle/Resources/public/css/external/alloy-editor-ez.css'
             # layout stylesheets
                 - '@eZPlatformUIBundle/Resources/public/css/layout.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/navigationhub.css'
@@ -66,6 +68,7 @@ system:
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/dateandtime.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/relation.css'
                 - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/relationlist.css'
+                - '@eZPlatformUIBundle/Resources/public/css/views/fields/edit/richtext.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/tabs.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/page-header.css'
                 - '@eZPlatformUIBundle/Resources/public/css/modules/serverside-content.css'
@@ -124,6 +127,7 @@ system:
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/date.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/relation.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/relationlist.css'
+                - '@eZPlatformUIBundle/Resources/public/css/theme/views/fields/edit/richtext.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/modules/icons.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/modules/tabs.css'
                 - '@eZPlatformUIBundle/Resources/public/css/theme/modules/page-header.css'

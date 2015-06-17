@@ -113,6 +113,14 @@ interesting are:
   ```
   $ grunt livedoc
   ```
+* Update the custom AlloyEditor skin:
+  ```bash
+  $ composer install # or composer update
+  $ cd vendor/ezsystems/platform-ui-assets-bundle/Resources/public/vendors/alloy-editor/
+  $ npm install
+  $ cd -
+  $ grunt alloy-css
+  ```
 
 To run the PHP unit tests, you first need to install the dev dependencies of the
 bundle. To do that, from the bundle root, run:

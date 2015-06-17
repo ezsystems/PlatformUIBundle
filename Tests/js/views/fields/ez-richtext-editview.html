@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ RichText Edit view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="richtexteditview-ez-template">
+    <div class="ez-richtext-editable">{{{ xhtml }}}</div>
+    <p class="ez-editfield-error-message"></p>
+</script>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<!-- Function.bind polyfill for phantomjs 1.x -->
+<script type="text/javascript" src="../../assets/function.bind.polyfill.js"></script>
+<script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-richtext-editview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-richtext-editview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-richtext-editview": {
+                requires: ['ez-fieldeditview', 'ez-alloyeditor', 'node'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-richtext-editview.js"
+            },
+            "alloyeditor": {
+                fullpath: "../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"
+            },
+            "ez-alloyeditor": {
+                requires: ['alloyeditor'],
+                fullpath: "../../../../Resources/public/js/external/ez-alloyeditor.js"
+            },
+            "ez-fieldeditview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/ez-fieldeditview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-richtext-editview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

@@ -1,3 +1,5 @@
+var reworkUrl = require('rework-plugin-url');
+
 module.exports = function(grunt) {
     var reportDir = "./Tests/report",
         instrumentDir = "./Tests/instrument",
@@ -42,7 +44,20 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/actions/*-min.js",
             instrumentDir,
             reportDir
-        ];
+        ],
+        fontsDir = "Resources/public/fonts/",
+        alloyBase = "vendor/ezsystems/platform-ui-assets-bundle/Resources/public/vendors/alloy-editor/",
+        alloyDistAssets = alloyBase + "dist/alloy-editor/assets/",
+        alloySkinBasePath = alloyBase + "src/ui/react/src/assets/sass/skin/",
+        alloySkinCSS =alloyDistAssets + "alloy-editor-ez.css",
+        fixFontsUrl;
+
+    fixFontsUrl = function (url) {
+        if ( url.indexOf("fonts/") !== 0 ) {
+            return url;
+        }
+        return '../bundles/ezplatformui/' + url;
+    };
 
     environment.TZ = 'Europe/Paris';
     environment.LC_TIME = 'en_US';
@@ -127,6 +142,46 @@ module.exports = function(grunt) {
                     stdout: true,
                     stderr: true
                 }
+            },
+            "alloy-generateskin": {
+                command: 'gulp build-css',
+                options: {
+                    stdout: true,
+                    stderr: true,
+                    failOnError: true,
+                    execOptions: {
+                        cwd: alloyBase,
+                    },
+                },
+            }
+        },
+        copy: {
+            "alloy-skin": {
+                expand: true,
+                cwd: alloySkinBasePath + '/ocean/',
+                src: '**',
+                dest: alloySkinBasePath + '/ez/',
+            },
+            "alloy-override": {
+                expand: true,
+                cwd: "Resources/sass/alloy/",
+                src: "variables.scss",
+                dest: alloySkinBasePath,
+            },
+            "alloy-font": {
+                expand: true,
+                cwd: alloyDistAssets + "fonts/",
+                src: "*",
+                dest: fontsDir,
+            }
+        },
+        rework: {
+            "alloy-fontpath": {
+                files: {"Resources/public/css/external/alloy-editor-ez.css": alloySkinCSS},
+                options: {
+                    toString: {compress: false},
+                    use: [reworkUrl(fixFontsUrl)],
+                },
             }
         },
         watch: {
@@ -147,6 +202,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
     grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-rework');
 
     grunt.registerTask('lint', ['jshint']);
     grunt.registerTask('ugly', ['jshint', 'uglify']);
@@ -154,5 +211,8 @@ module.exports = function(grunt) {
     grunt.registerTask('coverage', ['jshint', 'clean', 'instrument', 'shell:groverCoverage'] );
     grunt.registerTask('doc', ['yuidoc'] );
     grunt.registerTask('livedoc', ['shell:livedoc'] );
-
+    grunt.registerTask('alloy-css', [
+        'copy:alloy-skin', 'copy:alloy-override', 'shell:alloy-generateskin',
+        'copy:alloy-font', 'rework:alloy-fontpath'
+    ]);
 };
