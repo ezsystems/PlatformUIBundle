@@ -314,6 +314,30 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
             Assert.isTrue(validated, "The input should have been validated");
         },
+
+        "Should validate the input on focus": function () {
+            var validated = false;
+
+            this.view.after('errorStatusChange', function () {
+                validated = true;
+            });
+            this.view.set('active', true);
+            this.view.get('editor').get('nativeEditor').fire('focus');
+
+            Assert.isTrue(validated, "The input should have been validated");
+        },
+
+        "Should validate the input on change": function () {
+            var validated = false;
+
+            this.view.after('errorStatusChange', function () {
+                validated = true;
+            });
+            this.view.set('active', true);
+            this.view.get('editor').get('nativeEditor').fire('change');
+
+            Assert.isTrue(validated, "The input should have been validated");
+        },
     });
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);

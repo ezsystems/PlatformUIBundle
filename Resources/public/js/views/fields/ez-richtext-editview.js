@@ -41,14 +41,19 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @method _initEditor
          */
         _initEditor: function () {
-            var editor;
+            var editor, nativeEd, valid;
 
             editor = Y.eZ.AlloyEditor.editable(
                 this._getEditableArea().getDOMNode(), {
                     toolbars: this.get('toolbarsConfig'),
                 }
             );
-            editor.get('nativeEditor').on('blur', Y.bind(this.validate, this));
+            nativeEd = editor.get('nativeEditor');
+            valid = Y.bind(this.validate, this);
+
+            nativeEd.on('blur', valid);
+            nativeEd.on('focus', valid);
+            nativeEd.on('change', valid);
             this._set('editor', editor);
         },
 
