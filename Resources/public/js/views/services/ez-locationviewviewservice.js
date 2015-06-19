@@ -217,7 +217,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 service = this,
                 location = this.get('location'), content = this.get('content'),
                 type = this.get('contentType'),
-                contentService = this.get('capi').getContentService();
+                discoveryService = this.get('capi').getDiscoveryService();
 
             location.set('id', request.params.id);
             location.load(loadOptions, function (error) {
@@ -248,7 +248,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 });
 
                 endLoadPath = tasks.add();
-                contentService.loadRoot(function (error, response) {
+                discoveryService.getInfoObject('rootLocation', function (error, response) {
                     var rootLocationId;
 
                     if ( error ) {
@@ -256,7 +256,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                         return;
                     }
 
-                    rootLocationId = response.document.Root.rootLocation._href;
+                    rootLocationId = response._href;
                     if ( rootLocationId === location.get('id') || location.get('depth') == 1 ) {
                         service.set('path', []);
                         endLoadPath();

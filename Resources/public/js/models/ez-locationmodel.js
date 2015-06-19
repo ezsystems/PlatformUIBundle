@@ -57,13 +57,13 @@ YUI.add('ez-locationmodel', function (Y) {
                 api = options.api,
                 location = this;
 
-            api.getContentService().loadRoot(function (error, response) {
+            api.getDiscoveryService().getInfoObject('trash', function (error, response) {
                 if (error) {
                     callback(error);
                     return;
                 }
 
-                trashPath = response.document.Root.trash._href;
+                trashPath = response._href;
                 api.getContentService().moveSubtree(
                     location.get('id'), trashPath, callback
                 );
