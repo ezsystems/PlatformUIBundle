@@ -166,7 +166,7 @@ class PlatformUI extends Context
     private function executeDelayedActions()
     {
         if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
-            $this->clickActionBar("Publish");
+            $this->clickEditActionBar("Publish");
         }
         $this->waitForLoadings();
     }
@@ -180,7 +180,12 @@ class PlatformUI extends Context
     protected function attachFile($fileName, $selector)
     {
         if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$fileName;
+            $fullPath = rtrim(
+                realpath(
+                    $this->getMinkParameter('files_path')
+                ),
+                DIRECTORY_SEPARATOR
+            ).DIRECTORY_SEPARATOR.$fileName;
 
             if (is_file($fullPath)) {
                 $fileInput = 'input[type="file"]' . $selector;

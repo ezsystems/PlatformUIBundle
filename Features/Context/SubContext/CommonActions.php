@@ -83,14 +83,36 @@ trait CommonActions
     }
 
     /**
-     * @Given I click (on) the actionbar action :action
+     * @Given I click (on) the discovery bar button :button
+     * Click on a PlatformUI discovery bar
+     *
+     * @param  string   $button     Text of the element to click
+     */
+    public function clickDiscoveryBar($button)
+    {
+        $this->clickElementByText($button, '.ez-view-discoverybarview .ez-action', '.action-label');
+    }
+
+    /**
+     * @Given I click (on) the action bar button :button
      * Click on a PlatformUI action bar
      *
-     * @param  string   $action     Text of the element to click
+     * @param  string   $button     Text of the element to click
      */
-    public function clickActionBar($action)
+    public function clickActionBar($button)
     {
-        $this->clickElementByText($action, '.ez-action', '.action-label');
+        $this->clickElementByText($button, '.ez-actionbar-container .ez-action', '.action-label');
+    }
+
+    /**
+     * @Given I click (on) the edit action bar button :button
+     * Click on a PlatformUI action bar
+     *
+     * @param  string   $button     Text of the element to click
+     */
+    public function clickEditActionBar($button)
+    {
+        $this->clickElementByText($button, '.ez-editactionbar-container .ez-action', '.action-label');
     }
 
     /**
@@ -112,7 +134,7 @@ trait CommonActions
      */
     public function openTreePath($path)
     {
-        $this->clickActionBar("Content tree");
+        $this->clickDiscoveryBar("Content tree");
         $this->waitForLoadings();
         $path = explode("/", $path);
         $node = null;
@@ -127,7 +149,7 @@ trait CommonActions
      * Opens a content tree node based on the root of the tree or a given node
      *
      * @param   string          $pathNode   The text of the node that is going to be opened
-     * @param   NodeElement     $node       The base node that I want to expand from, if null provided defaults to the content tree root
+     * @param   NodeElement     $node       The base node to expand from, if null defaults to the content tree root
      * @return  NodeElement                 The node that was opened
      */
     private function openTreeNode($pathNode, $node)

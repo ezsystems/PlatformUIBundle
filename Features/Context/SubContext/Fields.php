@@ -27,7 +27,7 @@ trait Fields
         $this->loggedAsAdminPlatformUi();
         $this->clickNavigationZone("Platform");
         $this->waitForLoadings();
-        $this->iClickAtLink("Content structure");
+        $this->clickNavigationItem("Content structure");
         $this->waitForLoadings();
         $this->clickActionBar("Create a content");
         $this->waitForLoadings();
@@ -48,7 +48,7 @@ trait Fields
         $this->loggedAsAdminPlatformUi();
         $this->clickNavigationZone("Platform");
         $this->waitForLoadings();
-        $this->iClickAtLink("Content structure");
+        $this->clickNavigationItem("Content structure");
         $this->waitForLoadings();
         $this->openTreePath($name);
         $this->waitForLoadings();
@@ -69,7 +69,7 @@ trait Fields
         $this->loggedAsAdminPlatformUi();
         $this->clickNavigationZone("Platform");
         $this->waitForLoadings();
-        $this->iClickAtLink("Content structure");
+        $this->clickNavigationItem("Content structure");
         $this->waitForLoadings();
         $this->openTreePath($name);
         $this->waitForLoadings();
@@ -93,7 +93,7 @@ trait Fields
     public function publishContent()
     {
         if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
-            $this->clickActionBar("Publish");
+            $this->clickEditActionBar("Publish");
         } else {
             throw new \Exception("Cannot publish content, application in wrong state");
         }
