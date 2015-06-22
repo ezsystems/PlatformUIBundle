@@ -25,9 +25,9 @@ trait Authentication
     /**
      * @Given I go to homepage
      */
-    public function goToPlatformUi()
+    public function goToPlatformUi($url = '')
     {
-        $this->visit($this->platformUiUri);
+        $this->visit($this->platformUiUri . $url);
     }
 
     /**
@@ -65,6 +65,8 @@ trait Authentication
     public function iLogout()
     {
         $this->shouldBeLoggedIn = false;
+        $this->goToPlatformUi('#/dashboard');
+        $this->waitForJs();
         $this->iClickAtLink("Logout");
     }
 
@@ -81,19 +83,7 @@ trait Authentication
     }
 
     /**
-     * Checks if the user is still logged in
-     *
-     * @AfterStep
-     */
-    public function runAfterStep()
-    {
-        if ($this->shouldBeLoggedIn) {
-            $this->iShouldBeLoggedIn();
-        }
-    }
-
-    /**
-     * Checks if the user is still logged in
+     * Logs the user out
      *
      * @AfterScenario
      */
