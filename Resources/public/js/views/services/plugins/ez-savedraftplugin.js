@@ -82,6 +82,13 @@ YUI.add('ez-savedraftplugin', function (Y) {
                 notification.text = 'The draft was stored successfully';
                 notification.state = 'done';
                 notification.timeout = 5;
+                /**
+                 * Fired when the draft is saved
+                 *
+                 * @event savedDraft
+                 * @param {eZ.Content} content
+                 */
+                service.fire('savedDraft', {content: content});
             }
 
             service.fire('notify', {

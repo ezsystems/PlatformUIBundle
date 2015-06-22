@@ -603,6 +603,43 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             Assert.isTrue(notified, "The notify event should have been fired");
         },
 
+        "Should NOT send movedContent event when trying to move a content but get an error": function () {
+            var that = this,
+                eventFired = false,
+                parentLocationMock = new Y.Mock(),
+                parentContentMock = new Y.Mock(),
+                fakeEventFacade = {selection : {location : parentLocationMock, content : parentContentMock }};
+
+            Y.Mock.expect(parentLocationMock, {
+                method: 'get',
+                args: ['id'],
+                returns: this.parentLocationId
+            });
+            Y.Mock.expect(parentContentMock, {
+                method: 'get',
+                args: ['name'],
+                returns: this.parentContentName
+            });
+            this.error = true;
+            this.service.on('contentDiscover', function (e) {
+                e.config.contentDiscoveredHandler.call(this, fakeEventFacade);
+            });
+
+            this.service.once('movedContent', function (e) {
+                eventFired = true;
+                Assert.areSame(
+                    that.service.get('location'), e.location,
+                    "movedDraft event should store the service location"
+                );
+                Assert.areSame(
+                    that.locationId, e.oldParentLocationId,
+                    "movedDraft event should store the service parentLocationId"
+                );
+            });
+            this.service.fire('whatever:moveAction');
+            Assert.isFalse(eventFired, "The movedContent event should NOT have been fired");
+        },
+
         "Should notify when trying to move a content without redirection": function () {
             var that = this,
                 notified = false,
@@ -667,6 +704,43 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             });
             this.service.fire('whatever:moveAction');
             Assert.isTrue(notified, "The notify event should have been fired");
+        },
+
+        "Should send movedContent event after moving a content and redirect to new content's location": function () {
+            var that = this,
+                eventFired = false,
+                parentLocationMock = new Y.Mock(),
+                parentContentMock = new Y.Mock(),
+                fakeEventFacade = {selection : {location : parentLocationMock, content : parentContentMock }};
+
+            Y.Mock.expect(parentLocationMock, {
+                method: 'get',
+                args: ['id'],
+                returns: this.parentLocationId
+            });
+            Y.Mock.expect(parentContentMock, {
+                method: 'get',
+                args: ['name'],
+                returns: this.parentContentName
+            });
+
+            this.service.on('contentDiscover', function (e) {
+                e.config.contentDiscoveredHandler.call(this, fakeEventFacade);
+            });
+
+            this.service.once('movedContent', function (e) {
+                eventFired = true;
+                Assert.areSame(
+                    that.service.get('location'), e.location,
+                    "movedDraft event should store the service location"
+                );
+                Assert.areSame(
+                    that.locationId, e.oldParentLocationId,
+                    "movedDraft event should store the service parentLocationId"
+                );
+            });
+            this.service.fire('whatever:moveAction');
+            Assert.isTrue(eventFired, "The moveContent event should have been fired");
         },
     });
 
@@ -888,6 +962,59 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             Assert.isTrue(notified, "The notified event should have been fired");
         },
 
+        "Should NOT fire sentToTrash event when sending to trash failed": function () {
+            var content = new Mock(),
+                parentLocation = new Mock(),
+                that = this,
+                locationId = 'raul-gonzalez-blanco',
+                contentName = 'pierlugi-collina',
+                eventFired = false;
+
+            this.service.set('path', [{location: parentLocation}]);
+            this.service.set('content', content);
+
+            Mock.expect(this.location, {
+                method: 'get',
+                args: ['id'],
+                returns: locationId,
+            });
+
+            Mock.expect(content, {
+                method: 'get',
+                args: ['name'],
+                returns: contentName,
+            });
+
+            Mock.expect(parentLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: 'alan-shearer'
+            });
+
+            Mock.expect(this.location, {
+                method: 'trash',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (options, callback){
+                    callback(true);
+                }
+            });
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.once('sentToTrash', function (e) {
+                eventFired = true;
+                Assert.areSame(
+                    that.service.get('location'), e.location,
+                    "sentToTrash event should store the service location"
+                );
+            });
+
+            this.service.fire('whatever:sendToTrashAction', {content: content});
+            Assert.isFalse(eventFired, "The sentToTrash event should NOT have been fired");
+        },
+
         "Should notify user about success of sending content to trash": function () {
             var content = new Mock(),
                 parentLocation = new Mock(),
@@ -963,6 +1090,64 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
 
             this.service.fire('whatever:sendToTrashAction', {content: content});
             Assert.isTrue(notified, "The notified event should have been fired");
+        },
+
+        "Should fire sentToTrash event after sending content to the trash": function () {
+            var content = new Mock(),
+                parentLocation = new Mock(),
+                that = this,
+                locationId = 'raul-gonzalez-blanco',
+                contentName = 'pierlugi-collina',
+                eventFired = false;
+
+            this.service.set('path', [{location: parentLocation}]);
+            this.service.set('content', content);
+
+            Mock.expect(this.location, {
+                method: 'get',
+                args: ['id'],
+                returns: locationId,
+            });
+
+            Mock.expect(content, {
+                method: 'get',
+                args: ['name'],
+                returns: contentName,
+            });
+
+            Mock.expect(parentLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: 'alan-shearer'
+            });
+
+            Mock.expect(this.location, {
+                method: 'trash',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (options, callback){
+                    callback(false);
+                }
+            });
+
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: [Mock.Value.String, Mock.Value.Object]
+            });
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.once('sentToTrash', function (e) {
+                eventFired = true;
+                Assert.areSame(
+                    that.service.get('location'), e.location,
+                    "sentToTrash event should store the service location"
+                );
+            });
+
+            this.service.fire('whatever:sendToTrashAction', {content: content});
+            Assert.isTrue(eventFired, "The sentToTrash event should have been fired");
         },
 
         "Should navigate the app to view of parent location": function () {

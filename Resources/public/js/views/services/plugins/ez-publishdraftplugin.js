@@ -61,6 +61,13 @@ YUI.add('ez-publishdraftplugin', function (Y) {
                 content = service.get('content');
 
             content.load({api: service.get('capi')}, function (error, response) {
+                /**
+                 * Fired when the draft is published
+                 *
+                 * @event publishedDraft
+                 * @param {eZ.Content} content
+                 */
+                service.fire('publishedDraft', {content: content});
                 app.navigate(service.get('publishRedirectionUrl'));
             });
         },
