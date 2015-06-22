@@ -106,7 +106,7 @@ trait CommonActions
 
     /**
      * @Given I click (on) the edit action bar button :button
-     * Click on a PlatformUI action bar
+     * Click on a PlatformUI edit action bar
      *
      * @param  string   $button     Text of the element to click
      */

@@ -1,9 +1,7 @@
 <?php
 
 /**
- * File containing the main context class for PlatformUI
- * This flie contains the mapping of the BDD sentences to the functions that implement them
- * Also contains the necessary initializations
+ * This file is part of the eZ PlatformUI package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
