@@ -470,14 +470,6 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 }
             });
 
-            Y.Mock.expect(this.contentServiceMock, {
-                method: 'moveSubtree',
-                args: [this.locationId, this.parentLocationId, Y.Mock.Value.Function],
-                run: function (locationId, parentLocationId, callback) {
-                    callback(that.error, that.responseMock);
-                }
-            });
-
             this.app = new Y.Mock();
             this.activeView = new Y.View({});
             Y.Mock.expect(this.app, {
