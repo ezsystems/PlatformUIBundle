@@ -71,27 +71,25 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         "Should move location to trash": function () {
             var capiMock = new Mock(),
                 contentServiceMock = new Mock(),
+                discoveryServiceMock = new Mock(),
                 locationId = 'ronaldo-luis-nazario-de-lima',
-                loadRootResponse = {
-                    "document": {
-                        "Root": {
-                            "trash": {
-                                "_href": 'gianfranco-zola'
-                            }
-                        }
-                    }
-                };
+                getInfoObjectResponse = {"_href": 'fabrizio-ravanelli'};
 
             Mock.expect(capiMock, {
                 method: 'getContentService',
                 returns: contentServiceMock,
             });
 
-            Mock.expect(contentServiceMock, {
-                method: 'loadRoot',
-                args: [Mock.Value.Function],
-                run: function (cb) {
-                    cb(false, loadRootResponse);
+            Mock.expect(capiMock, {
+                method: 'getDiscoveryService',
+                returns: discoveryServiceMock,
+            });
+
+            Mock.expect(discoveryServiceMock, {
+                method: 'getInfoObject',
+                args: ["trash", Mock.Value.Function],
+                run: function (object, cb) {
+                    cb(false, getInfoObjectResponse);
                 }
             });
 
@@ -103,7 +101,7 @@ YUI.add('ez-locationmodel-tests', function (Y) {
 
             Mock.expect(contentServiceMock, {
                 method: 'moveSubtree',
-                args: [locationId, loadRootResponse.document.Root.trash._href, Mock.Value.Function],
+                args: [locationId, getInfoObjectResponse._href, Mock.Value.Function],
                 run: function (id, trashPath, cb) {
                     cb(false);
                 }
@@ -119,19 +117,19 @@ YUI.add('ez-locationmodel-tests', function (Y) {
             });
         },
 
-        "Should catch error when loadRoot returns error": function () {
+        "Should catch error when getInfoObject returns error": function () {
             var capiMock = new Mock(),
-                contentServiceMock = new Mock();
+                discoveryServiceMock = new Mock();
 
             Mock.expect(capiMock, {
-                method: 'getContentService',
-                returns: contentServiceMock,
+                method: 'getDiscoveryService',
+                returns: discoveryServiceMock,
             });
 
-            Mock.expect(contentServiceMock, {
-                method: 'loadRoot',
-                args: [Mock.Value.Function],
-                run: function (cb) {
+            Mock.expect(discoveryServiceMock, {
+                method: 'getInfoObject',
+                args: ["trash", Mock.Value.Function],
+                run: function (object, cb) {
                     cb(true);
                 }
             });

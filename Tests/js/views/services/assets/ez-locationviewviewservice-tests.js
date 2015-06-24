@@ -15,15 +15,16 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             this.contentTypeId = '/api/ezp/v2/content/types/38';
             this.request = {};
             this.capiMock = new Y.Test.Mock();
-            this.contentServiceMock = new Y.Test.Mock();
             this.contentTypeServiceMock = new Y.Test.Mock();
-            Y.Mock.expect(this.capiMock, {
-                method: 'getContentService',
-                returns: this.contentServiceMock
-            });
+            this.discoveryServiceMock = new Y.Test.Mock();
+
             Y.Mock.expect(this.capiMock, {
                 method: 'getContentTypeService',
                 returns: this.contentTypeServiceMock
+            });
+            Y.Mock.expect(this.capiMock, {
+                method: 'getDiscoveryService',
+                returns: this.discoveryServiceMock
             });
 
             this.locationIds = [
@@ -42,25 +43,22 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             this.contents = {};
         },
 
-        _initContentService: function (fail) {
-            Y.Mock.expect(this.contentServiceMock, {
-                method: 'loadRoot',
-                args: [Y.Mock.Value.Function],
-                run: function (callback) {
-                    callback(
-                        fail ? true : false,
-                        {document: {Root: {rootLocation: {_href: functionalTest.rootLocationId}}}}
-                    );
-                }
-            });
-        },
-
         _initContentTypeService: function (fail) {
             Y.Mock.expect(this.contentTypeServiceMock, {
                 method: 'loadContentType',
                 args: [this.contenTypeId, Y.Mock.Value.Function],
                 run: function (typeId, callback) {
                     callback(fail ? true : false, {document: {ContentType: {}}});
+                }
+            });
+        },
+
+        _initDiscoveryService: function (fail) {
+            Y.Mock.expect(this.discoveryServiceMock, {
+                method: 'getInfoObject',
+                args: ['rootLocation', Y.Mock.Value.Function],
+                run: function (object, callback) {
+                    callback(fail ? true : false, {"_href": 'basile-boli'});
                 }
             });
         },
@@ -121,8 +119,8 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 response = {},
                 location, content;
 
-            this._initContentService();
             this._initContentTypeService();
+            this._initDiscoveryService();
             this._initTree();
             this.request = {params: {id: locationId}};
 
@@ -211,7 +209,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
 
             Y.Assert.isTrue(callbackCalled, "The load callback should have been called");
             Y.Mock.verify(this.capiMock);
-            Y.Mock.verify(this.contentServiceMock);
+            Y.Mock.verify(this.discoveryServiceMock);
         },
 
         _errorLoading: function (locationId, contentServiceError, locationIdError, contentIdError, contentTypeError) {
@@ -219,8 +217,8 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 response = {},
                 location, content;
 
-            this._initContentService(contentServiceError);
             this._initContentTypeService(contentTypeError);
+            this._initDiscoveryService(true);
             this._initTree(locationIdError, contentIdError);
             this.request = {params: {id: locationId}};
 
@@ -441,7 +439,6 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             this.capiMock = new Y.Test.Mock();
             this.locationMock = new Y.Test.Mock();
             this.responseMock = new Y.Test.Mock();
-            this.contentServiceMock = new Y.Test.Mock();
             this.locationId = 'location/2/2/2/2';
             this.parentLocationId = 'location/1/2/3/4';
             this.finalLocation = 'finalLocation/4/5/6/7';
@@ -452,11 +449,6 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 method: 'getHeader',
                 args: ['location'],
                 returns: this.finalLocation
-            });
-
-            Y.Mock.expect(this.capiMock, {
-                method: 'getContentService',
-                returns: this.contentServiceMock
             });
 
             Y.Mock.expect(this.locationMock, {
@@ -474,14 +466,6 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                         that.capiMock,
                         "option should have the JS REST client instance"
                     );
-                    callback(that.error, that.responseMock);
-                }
-            });
-
-            Y.Mock.expect(this.contentServiceMock, {
-                method: 'moveSubtree',
-                args: [this.locationId, this.parentLocationId, Y.Mock.Value.Function],
-                run: function (locationId, parentLocationId, callback) {
                     callback(that.error, that.responseMock);
                 }
             });
@@ -557,7 +541,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             delete this.app;
             delete this.locationMock;
             delete this.capiMock;
-            delete this.contentServiceMock;
+            delete this.discoveryServiceMock;
             delete this.responseMock;
         },
 
