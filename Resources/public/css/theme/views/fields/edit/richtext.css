@@ -14,3 +14,12 @@
     box-shadow: inset 0 0 6px #CCC;
     background: #fff;
 }
+
+.ez-view-richtexteditview.is-focused .ez-editfield-row,
+.ez-view-richtexteditview.is-focused .ez-editfield-input-area {
+    background: #f3f3f3;
+}
+
+.ez-view-richtexteditview .ez-focusmodeactionbar-container {
+    background: #333;
+}

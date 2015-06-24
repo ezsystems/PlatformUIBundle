@@ -369,8 +369,11 @@ system:
                 xmltexteditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/xmltext.hbt
+                ez-richtextfocusmodebarview:
+                    requires: ['ez-barview', 'ez-buttonactionview']
+                    path: %ez_platformui.public_dir%/js/views/ez-richtextfocusmodebarview.js
                 ez-richtext-editview:
-                    requires: ['ez-fieldeditview', 'ez-alloyeditor', 'richtexteditview-ez-template']
+                    requires: ['ez-fieldeditview', 'ez-alloyeditor', 'ez-richtextfocusmodebarview', 'richtexteditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
                 richtexteditview-ez-template:
                     type: 'template'

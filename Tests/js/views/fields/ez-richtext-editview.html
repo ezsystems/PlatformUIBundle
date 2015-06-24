@@ -7,9 +7,14 @@
 
 <div class="container"></div>
 
+<script type="text/x-handlebars-template" id="barview-ez-template"></script>
+<script type="text/x-handlebars-template" id="buttonactionview-ez-template"></script>
+
 <script type="text/x-handlebars-template" id="richtexteditview-ez-template">
     <div class="ez-richtext-editable">{{{ xhtml }}}</div>
     <p class="ez-editfield-error-message"></p>
+    <button class="ez-richtext-switch-focus">Focus</button>
+    <div class="ez-focusmodeactionbar-container"></div>
 </script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -35,7 +40,7 @@
         filter: loaderFilter,
         modules: {
             "ez-richtext-editview": {
-                requires: ['ez-fieldeditview', 'ez-alloyeditor', 'node'],
+                requires: ['ez-fieldeditview', 'ez-alloyeditor', 'ez-richtextfocusmodebarview', 'node'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-richtext-editview.js"
             },
             "alloyeditor": {
@@ -44,6 +49,18 @@
             "ez-alloyeditor": {
                 requires: ['alloyeditor'],
                 fullpath: "../../../../Resources/public/js/external/ez-alloyeditor.js"
+            },
+            "ez-richtextfocusmodebarview": {
+                requires: ['ez-barview', 'ez-buttonactionview'],
+                fullpath: "../../../../Resources/public/js/views/ez-richtextfocusmodebarview.js"
+            },
+            "ez-barview": {
+                requires: ['ez-templatebasedview', 'event-tap', 'event-resize'],
+                fullpath: "../../../../Resources/public/js/views/ez-barview.js"
+            },
+            "ez-buttonactionview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/actions/ez-buttonactionview.js"
             },
             "ez-fieldeditview": {
                 requires: ['ez-templatebasedview'],
