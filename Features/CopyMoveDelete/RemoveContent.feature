@@ -13,10 +13,10 @@ Feature: Remove content
     Scenario: Verify the existence of the removal confirmation request
         Given an article exists
         I am on the article full view
-        When I click "Send to Trash" button on the "Action Bar"
-        Then I see a "Are you sure you want to send this content to trash?" message
-        And I see a "Confirm" button
-        And I see a "Cancel" button
+        When I click a send to trash button on the Action Bar
+        Then I am asked to confirm if I am sure that I want to send the content to trash
+        And I see a confirmation button
+        And I see a cancel button
 
     ##
     #Delete objects
@@ -27,7 +27,7 @@ Feature: Remove content
         And I am on "News Flash" full view
         When I remove "News Flash" article
         And I confirm the removal
-        Then I am notified that "'News Flash' sent to trash"
+        Then I am notified that "News Flash" was sent to trash
         And I do not see "News flash" in the content tree
 
     @javascript
@@ -36,7 +36,7 @@ Feature: Remove content
         And I am on "News Flash" full view
         When I remove "News Flash" article
         And I do not confirm the removal
-        Then I am not notified that "'News Flash' sent to trash"
+        Then I am not notified that "News Flash" was sent to trash
         And I see "News flash" in the content tree
 
     @javascript
