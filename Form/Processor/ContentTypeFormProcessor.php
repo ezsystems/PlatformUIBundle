@@ -10,6 +10,8 @@
 namespace EzSystems\PlatformUIBundle\Form\Processor;
 
 use eZ\Publish\API\Repository\Values\ContentType\ContentTypeDraft;
+use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
+use EzSystems\PlatformUIBundle\Notification\TranslatableNotificationMessage;
 use EzSystems\RepositoryForms\Event\FormActionEvent;
 use EzSystems\RepositoryForms\Event\RepositoryFormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -23,17 +25,29 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
      */
     private $router;
 
-    public function __construct(RouterInterface $router)
+    /**
+     * @var NotificationPoolInterface
+     */
+    private $notificationPool;
+
+    public function __construct(RouterInterface $router, NotificationPoolInterface $notificationPool)
     {
         $this->router = $router;
+        $this->notificationPool = $notificationPool;
     }
 
     public static function getSubscribedEvents()
     {
         return [
+            RepositoryFormEvents::CONTENT_TYPE_UPDATE => ['processDefaultAction', -10],
             RepositoryFormEvents::CONTENT_TYPE_PUBLISH => ['processPublishContentType', -10],
             RepositoryFormEvents::CONTENT_TYPE_REMOVE_DRAFT => ['processRemoveContentTypeDraft', -10],
         ];
+    }
+
+    public function processDefaultAction(FormActionEvent $event)
+    {
+        $this->addNotification('content_type.notification.draft_updated');
     }
 
     public function processPublishContentType(FormActionEvent $event)
@@ -44,7 +58,8 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
                 $event->getOption('languageCode')
             )
         );
-        // TODO: Add confirmation flash message.
+
+        $this->addNotification('content_type.notification.published');
     }
 
     public function processRemoveContentTypeDraft(FormActionEvent $event)
@@ -55,6 +70,8 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
                 $event->getOption('languageCode')
             )
         );
+
+        $this->addNotification('content_type.notification.draft_removed');
     }
 
     private function generateRedirectResponse(ContentTypeDraft $contentTypeDraft, $languageCode)
@@ -65,5 +82,13 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
         );
 
         return new RedirectResponse($url);
+    }
+
+    private function addNotification($message)
+    {
+        $this->notificationPool->addNotification(new TranslatableNotificationMessage([
+            'message' => $message,
+            'domain' => 'content_type'
+        ]));
     }
 }

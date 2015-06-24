@@ -94,6 +94,18 @@
         <source>content_type.default_children_sorting</source>
         <target>Default children sorting</target>
       </trans-unit>
+      <trans-unit id="dc20866b714ed1642b9bce242bf460fd" resname="content_type.notification.draft_updated">
+          <source>content_type.notification.draft_updated</source>
+          <target>The ContentType draft was successfully updated.</target>
+      </trans-unit>
+      <trans-unit id="9706f09166fa56162a4558261b87a9e2" resname="content_type.notification.draft_removed">
+          <source>content_type.notification.draft_removed</source>
+          <target>The ContentType draft was successfully removed.</target>
+      </trans-unit>
+      <trans-unit id="ced84ba84fbde36bb688787c0562b1da" resname="content_type.notification.published">
+          <source>content_type.notification.published</source>
+          <target>The ContentType draft was successfully updated and published. Related Content has also been updated.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
