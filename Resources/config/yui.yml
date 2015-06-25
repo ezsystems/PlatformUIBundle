@@ -31,6 +31,7 @@ system:
                         - 'ez-locationviewview'
                         - 'ez-locationviewviewservice'
                         - 'ez-serversideview'
+                        - 'ez-contenttypeeditserversideview'
                         - 'ez-serversideviewservice'
                         - 'ez-sectionserversideview'
                         - 'ez-sectionserversideviewservice'
@@ -670,6 +671,9 @@ system:
                 ez-serversideview:
                     requires: ['ez-view', 'ez-tabs', 'ez-selection-table', 'event-tap']
                     path: %ez_platformui.public_dir%/js/views/ez-serversideview.js
+                ez-contenttypeeditserversideview:
+                    requires: ['ez-serversideview', 'event-tap']
+                    path: %ez_platformui.public_dir%/js/views/serverside/ez-contenttypeeditserversideview.js
                 ez-sectionserversideview:
                     requires: ['ez-serversideview', 'event-tap']
                     path: %ez_platformui.public_dir%/js/views/serverside/ez-sectionserversideview.js
