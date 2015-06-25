@@ -6,7 +6,19 @@
 .ez-view-richtexteditview .ez-richtext-editable {
     outline: 1px solid #ccc;
     background: #fdfdfd;
-    transition: all 0.30s ease-in-out;
+}
+
+.ez-view-richtexteditview .ez-richtext-editable,
+.ez-view-richtexteditview .ez-editfield-row,
+.ez-view-richtexteditview .ez-editfield-input-area {
+    transition: all 0.3s ease;
+}
+
+.ez-view-richtexteditview .ez-editfield-infos {
+    /* no transition on the margin left to keep the
+     * info and the input area on the same "line"
+     */
+    transition: background,width,height 0.3s ease;
 }
 
 .ez-view-richtexteditview .ez-richtext-editable:focus {
@@ -22,4 +34,16 @@
 
 .ez-view-richtexteditview .ez-focusmodeactionbar-container {
     background: #333;
+
+    display: block;
+    opacity: 0;
+    -webkit-transform: translateX(100%);
+            transform: translateX(100%);
+    transition: all 0.3s ease;
+}
+
+.ez-view-richtexteditview.is-focused .ez-focusmodeactionbar-container {
+    opacity: 1;
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
 }

@@ -37,6 +37,10 @@
     content: "\E619";
 }
 
+.ez-button-focus:before {
+    content: "\E989";
+}
+
 .ez-button.is-loading:before {
     content: "\E61C";
     -webkit-animation: spin 0.5s infinite linear;

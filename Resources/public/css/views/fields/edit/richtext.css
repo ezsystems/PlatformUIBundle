@@ -4,9 +4,6 @@
  */
 
 .alloy-editor-toolbars [role="toolbar"] {
-    /**
-     * TODO is it the correct place that ?
-     */
     z-index: 1200;
 }
 
@@ -32,6 +29,11 @@
     margin-top: 0;
 }
 
+.ez-view-richtexteditview .ez-richtext-toolbar {
+    text-align: right;
+    margin-bottom: 0.5em;
+}
+
 .ez-view-richtexteditview.is-focused {
     position: fixed;
     top: 0;
@@ -42,40 +44,49 @@
 }
 
 .ez-view-richtexteditview .ez-page-header-name {
+    display: none;
     margin: 0.5em 0 1em 0;
+}
+
+.ez-view-richtexteditview.is-focused .ez-page-header-name {
+    display: block;
+}
+
+.ez-view-richtexteditview .ez-editfield-infos {
+    overflow: hidden;
+}
+
+.ez-view-richtexteditview.is-focused .ez-editfield-infos {
+    height: 0;
+    width: 0;
+    margin-left: 0;
+}
+
+.ez-view-richtexteditview.is-focused .ez-richtext-toolbar {
+    display: none;
 }
 
 .ez-view-richtexteditview.is-focused .ez-editfield-row {
     padding-left: 0;
+    padding-right: 230px;
     height: 100%;
 }
 
 .ez-view-richtexteditview.is-focused .ez-editfield-input-area {
-    margin-right: 230px;
     height: 100%;
     overflow-y: auto;
 }
 
-.ez-view-richtexteditview.is-focused .ez-focusmodeactionbar-container {
+.ez-view-richtexteditview .ez-focusmodeactionbar-container {
     position: fixed;
     top: 0;
     right: 0;
     width: 230px;
     height: 100%;
-}
 
-.ez-view-richtexteditview .ez-richtext-focusmode-invisible {
-    display: block;
-}
-
-.ez-view-richtexteditview .ez-richtext-focusmode-visible {
     display: none;
 }
 
-.ez-view-richtexteditview.is-focused .ez-richtext-focusmode-invisible {
-    display: none;
-}
-
-.ez-view-richtexteditview.is-focused .ez-richtext-focusmode-visible {
+.ez-view-richtexteditview.is-focused .ez-focusmodeactionbar-container {
     display: block;
 }
