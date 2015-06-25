@@ -84,6 +84,7 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
             this.service.set('content', this.content);
             this.service.set('contentType', this.contentType);
             this.service.set('parentLocation', this.parentLocation);
+            this.service.set('location', this.location);
 
             this.view = new Y.View();
             this.view.addTarget(this.service);
@@ -178,6 +179,86 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
 
             Y.Mock.verify(this.version);
             Y.Mock.verify(this.app);
+        },
+
+        "Should fire event after publishing draft": function () {
+            var fields = [{}, {}],
+                contentId = 'the-pretender',
+                eventFired = false,
+                that = this;
+
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: false,
+            });
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId,
+            });
+            Y.Mock.expect(this.content, {
+                method: 'load',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Assert.areSame(
+                        that.capi,
+                        options.api,
+                        "The save options should contain the CAPI"
+                    );
+                    callback();
+                }
+            });
+            Y.Mock.expect(this.version, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Assert.areSame(
+                        that.capi,
+                        options.api,
+                        "The save options should contain the CAPI"
+                    );
+                    Assert.areSame(
+                        fields,
+                        options.fields,
+                        "The fields from the event facade should be passed in the save options"
+                    );
+                    Assert.isTrue(
+                        options.publish,
+                        "The publish option should be set true"
+                    );
+                    Assert.areEqual(contentId, options.contentId, "The content id should be passed");
+                    Assert.areSame(
+                        that.languageCode,
+                        options.languageCode,
+                        "The save options should contain the language code"
+                    );
+                    callback();
+                }
+            });
+
+            Y.Mock.expect(this.app, {
+                method: 'set',
+                args: ['loading', true]
+            });
+            Y.Mock.expect(this.app, {
+                method: 'navigate',
+                args: [this.publishRedirectionUrl],
+            });
+
+            this.service.once('publishedDraft', function (e) {
+                eventFired = true;
+                Assert.areSame(
+                    that.service.get('content'), e.content,
+                    "publishedDraft event should store the content"
+                );
+            });
+
+            this.view.fire('whatever:publishAction', {
+                formIsValid: true,
+                fields: fields
+            });
+
+            Assert.isTrue(eventFired, "The plugin should have fired the publishedDraft event");
         },
 
         "Should not do anything": function () {
@@ -289,6 +370,112 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
             Y.Mock.verify(this.content);
             Y.Mock.verify(this.version);
             Y.Mock.verify(this.app);
+        },
+
+        "Should fire publishedDraft event after publishing a draft": function () {
+            var that = this,
+                fields = [],
+                eventFired = false,
+                response = {document: this.createContentResponse},
+                versionAttrs = {};
+
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: true,
+            });
+            Y.Mock.expect(this.content, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Assert.areSame(
+                        that.capi,
+                        options.api,
+                        "The CAPI should be passed to save"
+                    );
+                    Assert.areEqual(
+                        that.languageCode,
+                        options.languageCode,
+                        "The language code should be passed to save"
+                    );
+                    Assert.areEqual(
+                        that.contentType,
+                        options.contentType,
+                        "The content type should be passed to save"
+                    );
+                    Assert.areEqual(
+                        that.parentLocation,
+                        options.parentLocation,
+                        "The parent location should be passed to save"
+                    );
+                    Assert.areEqual(
+                        fields,
+                        options.fields,
+                        "The fields should be passed to save"
+                    );
+                    callback(false, response);
+                }
+            });
+            Y.Mock.expect(this.content, {
+                method: 'load',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Assert.areSame(
+                        that.capi,
+                        options.api,
+                        "The CAPI should be passed to load"
+                    );
+                    callback();
+                }
+            });
+            Y.Mock.expect(this.version, {
+                method: 'parse',
+                args: [Y.Mock.Value.Object],
+                run: function (doc) {
+                    Assert.areSame(
+                        that.createContentResponse.Content.CurrentVersion,
+                        doc.document,
+                        "parse should have received a version response"
+                    );
+                    return versionAttrs;
+                }
+            });
+            Y.Mock.expect(this.version, {
+                method: 'setAttrs',
+                args: [versionAttrs],
+            });
+            Y.Mock.expect(this.version, {
+                method: 'publishVersion',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Assert.areSame(
+                        that.capi,
+                        options.api,
+                        "The CAPI should be passed to publishVersion"
+                    );
+                    callback();
+                }
+            });
+            Y.Mock.expect(this.app, {
+                method: 'set',
+                args: ['loading', true]
+            });
+            Y.Mock.expect(this.app, {
+                method: 'navigate',
+                args: [this.publishRedirectionUrl],
+            });
+            this.service.once('publishedDraft', function (e) {
+                eventFired = true;
+                Assert.areSame(
+                    that.service.get('content'), e.content,
+                    "publishedDraft event should store the content"
+                );
+            });
+            this.view.fire('whatever:publishAction', {
+                formIsValid: true,
+                fields: fields
+            });
+
+            Assert.isTrue(eventFired, "The plugin should have fired the publishedDraft event");
         },
     });
 

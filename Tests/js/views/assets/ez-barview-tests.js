@@ -116,6 +116,13 @@ YUI.add('ez-barview-tests', function (Y) {
             );
         },
 
+        "Should get action from actionsList": function () {
+            Y.Assert.areSame(
+                this.view.getAction("save"), this.view.get('actionsList')[1],
+                "Should get the actionView"
+            );
+        },
+
         "'View more' button should NOT be visible, when all the actions fit on the screen": function () {
             this.view.render();
             this.view.set('active', true);

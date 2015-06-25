@@ -268,6 +268,42 @@ YUI.add('ez-copycontentplugin-tests', function (Y) {
             Assert.isTrue(notified, "The notify event should have been fired");
         },
 
+        "Should fire copiedContent event after moving a content": function () {
+            var that = this,
+                eventFired = false,
+                parentLocationMock = new Y.Mock(),
+                parentContentMock = new Y.Mock(),
+                fakeEventFacade = {selection : {location : parentLocationMock, content : parentContentMock }};
+
+            Y.Mock.expect(parentLocationMock, {
+                method: 'get',
+                args: ['id'],
+                returns: this.parentLocationId
+            });
+            Y.Mock.expect(parentContentMock, {
+                method: 'get',
+                args: ['name'],
+                returns: this.parentContentName
+            });
+            this.service.on('contentDiscover', function (e) {
+                e.config.contentDiscoveredHandler.call(this, fakeEventFacade);
+            });
+
+            this.service.once('copiedContent', function (e) {
+                eventFired = true;
+                Assert.areSame(
+                    that.copiedContentMock, e.copiedContent,
+                    "copiedContent event should store the copiedContent"
+                );
+                Assert.areSame(
+                    that.contentMock, e.originalContent,
+                    "copiedContent event should store the originalContent"
+                );
+            });
+            this.view.fire('whatever:copyAction');
+            Assert.isTrue(eventFired, "The copiedContent event should have been fired");
+        },
+
         "Should notify when trying to move a content and redirect to new content's location but fail loading the content": function () {
             var that = this,
                 notified = false,

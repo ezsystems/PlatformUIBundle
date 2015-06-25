@@ -24,6 +24,7 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
             this.service.set('languageCode', this.languageCode);
             this.service.set('contentType', this.contentType);
             this.service.set('parentLocation', this.parentLocation);
+            this.service.set('location', this.location);
 
             this.view = new Y.View();
             this.view.addTarget(this.service);
@@ -331,6 +332,42 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                 formIsValid: true,
             });
             Assert.isTrue(notified, "The plugin should have fired the notify event");
+        },
+
+        "Should fire a savedDraft event on success of saving draft process": function () {
+            var contentId = "all-my-life",
+                eventFired = false,
+                that = this;
+
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: false
+            });
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['id'],
+                returns: contentId,
+            });
+            Y.Mock.expect(this.version, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    callback(false, {});
+                },
+            });
+
+            this.service.once('savedDraft', function (e) {
+               eventFired = true;
+                Assert.areSame(
+                    that.service.get('content'), e.content,
+                    "savedDraft event should store the service location"
+                );
+            });
+
+            this.view.fire('whatever:saveAction', {
+                formIsValid: true,
+            });
+            Assert.isTrue(eventFired, "The plugin should have fired the savedDraft event");
         },
 
         "Should notify about the failure of saving draft process": function () {

@@ -134,6 +134,21 @@ YUI.add('ez-barview', function (Y) {
         },
 
         /**
+         * Get an action view with the actionId
+         *
+         * @method getAction
+         * @param actionId {String}
+         * @return {eZ.ButtonActionView}
+         */
+        getAction: function (actionId) {
+            var actionsList = this.get('actionsList');
+
+            return Y.Array.find(actionsList, function (t) {
+                return t.get('actionId') === actionId;
+            });
+        },
+
+        /**
          * Handles container height update by rearranging the actions between
          * menus. We are filling-in the active menu, until the container becomes
          * higher than the available height, after that we are filling the

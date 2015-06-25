@@ -103,6 +103,14 @@ YUI.add('ez-copycontentplugin', function (Y) {
                     that._notify('An error occured while loading your content', 'loading-content-error', 'error', 0);
                     return;
                 }
+                /**
+                 * Fired when the content is copied
+                 *
+                 * @event copiedContent
+                 * @param {eZ.Content} copiedContent
+                 * @param {eZ.Content} originalContent
+                 */
+                service.fire('copiedContent', {copiedContent: that.get('copiedContent'), originalContent: service.get('content')});
                 app.navigateTo('viewLocation',
                     {
                         id: that.get('copiedContent').get('resources').MainLocation,

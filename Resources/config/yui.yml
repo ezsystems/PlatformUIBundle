@@ -52,6 +52,7 @@ system:
                         - 'ez-confirmboxplugin'
                         - 'ez-notificationhubplugin'
                         - 'ez-positionplugin'
+                        - 'ez-updatetreeplugin'
                     path: %ez_platformui.public_dir%/js/apps/ez-platformuiapp.js
                 ez-viewservice:
                     requires: ['base', 'parallel']
@@ -658,6 +659,9 @@ system:
                 ez-positionplugin:
                     requires: ['plugin', 'base', 'node-style', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-positionplugin.js
+                ez-updatetreeplugin:
+                    requires: ['plugin', 'base', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-updatetreeplugin.js
                 ez-notificationhubplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-notificationhubplugin.js

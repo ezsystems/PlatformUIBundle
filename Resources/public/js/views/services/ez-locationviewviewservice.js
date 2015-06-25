@@ -136,6 +136,13 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 'done',
                 5
             );
+            /**
+             * Fired when the content is sent to trash
+             *
+             * @event sentToTrash
+             * @param {eZ.Location} location
+             */
+            this.fire('sentToTrash', {location: location});
             app.navigateTo('viewLocation', {id: parentLocation.get('id')});
         },
 
@@ -150,6 +157,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             var app = this.get('app'),
                 initialActiveView = app.get('activeView'),
                 parentLocationId = e.selection.location.get('id'),
+                oldParentLocationId = this.get('location').get('id'),
                 locationId = this.get('location').get('id'),
                 that = this,
                 contentName =  this.get('content').get('name'),
@@ -170,7 +178,14 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                     'done',
                     5
                 );
-
+                /**
+                 * Fired when the content is moved
+                 *
+                 * @event movedContent
+                 * @param {eZ.Location} location
+                 * @param {String} oldParentLocationId
+                 */
+                that.fire('movedContent', {location: that.get('location'), oldParentLocationId: oldParentLocationId});
                 if ( app.get('activeView') === initialActiveView ) {
                     app.navigateTo(
                         'viewLocation',
