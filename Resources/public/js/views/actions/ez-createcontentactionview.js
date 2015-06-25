@@ -23,6 +23,7 @@ YUI.add('ez-createcontentactionview', function (Y) {
      */
     Y.eZ.CreateContentActionView = Y.Base.create('createContentActionView', Y.eZ.ButtonActionView, [Y.eZ.Expandable], {
         initializer: function () {
+            this.set('disabled', !this.get('contentType').get('isContainer'));
             this.get('contentTypeSelectorView').addTarget(this);
             this.after({
                 'contentTypeGroupsChange': this._renderContentTypeSelector,
@@ -127,6 +128,17 @@ YUI.add('ez-createcontentactionview', function (Y) {
                 valueFn: function () {
                     return new Y.eZ.ContentTypeSelectorView();
                 }
+            },
+
+            /**
+             * The content type of the content at the current location
+             *
+             * @attribute contentType
+             * @type Y.eZ.ContentType
+             * @writeOnce
+             */
+            contentType: {
+                writeOnce: "initOnly",
             },
         }
     });

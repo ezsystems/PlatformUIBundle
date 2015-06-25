@@ -59,9 +59,9 @@ YUI.add('ez-actionbarview', function (Y) {
                         }),
                         new Y.eZ.CreateContentActionView({
                             actionId: 'createContent',
-                            disabled: !this.get('contentType').get('isContainer'),
                             label: 'Create a content',
-                            priority: 210
+                            priority: 210,
+                            contentType: this.get('contentType')
                         }),
                         new Y.eZ.ButtonActionView({
                             actionId: 'sendToTrash',

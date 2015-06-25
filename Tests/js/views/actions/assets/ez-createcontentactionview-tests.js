@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-createcontentactionview-tests', function (Y) {
-    var viewTest, eventTest, renderTest, hideTest,
+    var viewTest, eventTest, renderTest, hideTest, disabledTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     viewTest = new Y.Test.Case(
@@ -15,6 +15,7 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
                 this.disabled = false;
                 this.templateVariablesCount = 4;
                 this.selectorMock = new Mock();
+                this.contentTypeMock = new Mock();
 
                 Mock.expect(this.selectorMock, {
                     method: 'addTarget',
@@ -22,6 +23,11 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
                 });
                 Mock.expect(this.selectorMock, {
                     method: 'destroy',
+                });
+                Mock.expect(this.contentTypeMock, {
+                    method: 'get',
+                    args: ['isContainer'],
+                    returns: true
                 });
 
                 this.view = new Y.eZ.CreateContentActionView({
@@ -31,6 +37,7 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
                     hint: this.hint,
                     disabled: this.disabled,
                     contentTypeSelectorView: this.selectorMock,
+                    contentType: this.contentTypeMock
                 });
             },
 
@@ -44,6 +51,7 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
     eventTest = new Y.Test.Case({
         setUp: function () {
             this.selectorMock = new Mock();
+            this.contentTypeMock = new Mock();
 
             Mock.expect(this.selectorMock, {
                 method: 'addTarget',
@@ -52,6 +60,10 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
             Mock.expect(this.selectorMock, {
                 method: 'destroy',
             });
+            Mock.expect(this.contentTypeMock, {
+                method: 'get',
+                args: ['isContainer']
+            });
 
             this.view = new Y.eZ.CreateContentActionView({
                 container: '.container',
@@ -59,6 +71,7 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
                 label: "Create",
                 disabled: false,
                 contentTypeSelectorView: this.selectorMock,
+                contentType: this.contentTypeMock
             });
         },
 
@@ -87,6 +100,7 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
     renderTest = new Y.Test.Case({
         setUp: function () {
             this.selectorMock = new Mock();
+            this.contentTypeMock = new Mock();
 
             Mock.expect(this.selectorMock, {
                 method: 'addTarget',
@@ -95,6 +109,10 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
             Mock.expect(this.selectorMock, {
                 method: 'destroy',
             });
+            Mock.expect(this.contentTypeMock, {
+                method: 'get',
+                args: ['isContainer']
+            });
 
             this.view = new Y.eZ.CreateContentActionView({
                 container: '.container',
@@ -102,6 +120,7 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
                 label: "Create",
                 disabled: false,
                 contentTypeSelectorView: this.selectorMock,
+                contentType: this.contentTypeMock
             });
         },
 
@@ -145,6 +164,7 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
     hideTest = new Y.Test.Case({
         setUp: function () {
             this.selectorMock = new Mock();
+            this.contentTypeMock = new Mock();
 
             Mock.expect(this.selectorMock, {
                 method: 'addTarget',
@@ -153,6 +173,10 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
             Mock.expect(this.selectorMock, {
                 method: 'destroy',
             });
+            Mock.expect(this.contentTypeMock, {
+                method: 'get',
+                args: ['isContainer']
+            });
 
             this.view = new Y.eZ.CreateContentActionView({
                 container: '.container',
@@ -160,6 +184,7 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
                 label: "Create",
                 disabled: false,
                 contentTypeSelectorView: this.selectorMock,
+                contentType: this.contentTypeMock
             });
         },
 
@@ -186,9 +211,75 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
         }
     });
 
+    disabledTest = new Y.Test.Case({
+        setUp: function () {
+            this.selectorMock = new Mock();
+            this.contentTypeMock = new Mock();
+
+            Mock.expect(this.selectorMock, {
+                method: 'addTarget',
+                args: [Mock.Value.Object],
+            });
+            Mock.expect(this.selectorMock, {
+                method: 'destroy',
+            });
+        },
+
+        tearDown: function () {
+            this.view.get('container').setHTML('');
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should disable button when content type of content is not container": function () {
+            Mock.expect(this.contentTypeMock, {
+                method: 'get',
+                args: ['isContainer'],
+                returns: false
+            });
+
+            this.view = new Y.eZ.CreateContentActionView({
+                container: '.container',
+                actionId: 'createContent',
+                label: "Create",
+                disabled: false,
+                contentTypeSelectorView: this.selectorMock,
+                contentType: this.contentTypeMock
+            });
+
+            Assert.isTrue(
+                this.view.get('disabled'),
+                "Create content button should be disabled"
+            );
+        },
+
+        "Should not disable button when content type of content is container": function () {
+            Mock.expect(this.contentTypeMock, {
+                method: 'get',
+                args: ['isContainer'],
+                returns: true
+            });
+
+            this.view = new Y.eZ.CreateContentActionView({
+                container: '.container',
+                actionId: 'createContent',
+                label: "Create",
+                disabled: false,
+                contentTypeSelectorView: this.selectorMock,
+                contentType: this.contentTypeMock
+            });
+
+            Assert.isFalse(
+                this.view.get('disabled'),
+                "Create content button should be disabled"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Create Content Action View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(hideTest);
+    Y.Test.Runner.add(disabledTest);
 }, '', {requires: ['test', 'ez-createcontentactionview', 'ez-genericbuttonactionview-tests', 'node-event-simulate']});
