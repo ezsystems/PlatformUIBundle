@@ -100,6 +100,10 @@
     content: "\E619";
 }
 
+.ez-view-buttonactionview .ez-action[data-action="saveReturn"] .action-icon:before {
+    content: "\EA10";
+}
+
 .ez-view-buttonactionview .ez-action[data-action="preview"] .action-trigger[data-action-option="desktop"]:before {
     content: "\E608";
 }

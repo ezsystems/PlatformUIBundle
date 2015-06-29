@@ -9,9 +9,15 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
-        <div class="ez-editfield-input"><div class="ez-richtext-input-ui"><div
-                class="ez-validated-input ez-richtext-editable"
-                id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
-{{{ xhtml }}}</div></div></div>
+        <div class="ez-editfield-input"><div class="ez-richtext-input-ui">
+            <h1 class="ez-page-header-name" data-icon="&#xe601;">{{ content.name }} &gt; {{ fieldDefinition.names.[eng-GB] }}</h1>
+
+            <div class="ez-richtext-toolbar">
+                <button class="pure-button ez-button ez-richtext-switch-focus ez-font-icon ez-button-focus">Focus</button>
+            </div>
+            <div class="ez-validated-input ez-richtext-editable"
+                    id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">{{{ xhtml }}}</div>
+        </div></div>
     </div>
 </div>
+<div class="ez-focusmodeactionbar-container"></div>
