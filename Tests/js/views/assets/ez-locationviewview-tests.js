@@ -4,6 +4,7 @@
  */
 YUI.add('ez-locationviewview-tests', function (Y) {
     var test, tabsTest, eventsTest, destroyTest, attrsToSubViewsTest,
+        selectedTest,
         addTabViewTest, removeTabViewTest,
         Mock = Y.Mock, Assert = Y.Assert,
         _getModelMock = function (serialized) {
@@ -601,6 +602,57 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         }
     });
 
+    selectedTest = new Y.Test.Case({
+        name: "eZ Location view view addTabView test",
+
+        setUp: function () {
+            this.barMock = new Y.View();
+            this.tabs = [
+                new Y.View({
+                    identifier: "lz-hills",
+                    title: "Led Zeppelin - Over the hills and far away",
+                    priority: 1000,
+                    selected: true,
+                }),
+                new Y.View({
+                    identifier: "lz-ramble",
+                    title: "Led Zeppelin - Ramble on",
+                    priority: 700,
+                    selected: false,
+                }),
+            ];
+            this.view = new Y.eZ.LocationViewView({
+                actionBar: this.barMock,
+                tabs: [],
+            });
+            Y.Array.each(this.tabs, function (tab) {
+                this.view.addTabView(tab);
+            }, this);
+            this.view._set('selectedTab', 'lz-hills');
+        },
+
+        tearDown: function () {
+            this.barMock.destroy();
+            Y.Array.each(this.tabs, function (t) {
+                t.destroy();
+            });
+            this.view.destroy();
+        },
+
+        "Should sync the selected tab attribute with selectedTab": function () {
+            this.view._set('selectedTab', this.tabs[1].get('identifier'));
+
+            Assert.isTrue(
+                this.tabs[1].get('selected'),
+                "The tab1 should be selected"
+            );
+            Assert.isFalse(
+                this.tabs[0].get('selected'),
+                "The tab0 should not be selected"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location View view tests");
     Y.Test.Runner.add(test);
     Y.Test.Runner.add(tabsTest);
@@ -609,4 +661,5 @@ YUI.add('ez-locationviewview-tests', function (Y) {
     Y.Test.Runner.add(attrsToSubViewsTest);
     Y.Test.Runner.add(addTabViewTest);
     Y.Test.Runner.add(removeTabViewTest);
+    Y.Test.Runner.add(selectedTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-locationviewview']});

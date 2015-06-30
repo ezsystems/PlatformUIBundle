@@ -25,6 +25,7 @@ YUI.add('ez-locationviewview', function (Y) {
         initializer: function () {
             this.on('*:minimizeActionBarAction', this._handleMinimizeActionBar);
             this.after('changeTab', this._syncSelectedTab);
+            this.after('selectedTabChange', this._syncTabSelectedAttr);
         },
 
         /**
@@ -130,6 +131,19 @@ YUI.add('ez-locationviewview', function (Y) {
          */
         _syncSelectedTab: function (e) {
             this._set('selectedTab', e.tabLabelNode.getAttribute('data-tab-identifier'));
+        },
+
+        /**
+         * `selectedTabChange` event handler. It makes sure the the `selectedTab`
+         * attribute and the tab view's `selected` attribute are in sync.
+         *
+         * @method _syncTabSelectedAttr
+         * @protected
+         */
+        _syncTabSelectedAttr: function () {
+            Y.Array.each(this.get('tabs'), function (tab) {
+                tab.set('selected', this.get('selectedTab') === tab.get('identifier'));
+            }, this);
         },
 
         /**
@@ -301,6 +315,7 @@ YUI.add('ez-locationviewview', function (Y) {
                             contentType: this.get('contentType'),
                             config: this.get('config'),
                             priority: 1000,
+                            selected: true,
                             bubbleTargets: this,
                         }),
                     ];
