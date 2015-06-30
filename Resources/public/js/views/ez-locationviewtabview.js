@@ -51,6 +51,18 @@ YUI.add('ez-locationviewtabview', function (Y) {
             priority: {
                 value: 0
             },
+
+            /**
+             * The current selected state of the tab. It becomes true when the
+             * tab is visible.
+             *
+             * @attribute selected
+             * @type {Boolean}
+             * @default false
+             */
+            selected: {
+                value: false,
+            },
         }
     });
 });
