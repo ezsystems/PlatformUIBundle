@@ -128,11 +128,27 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/dashboard.hbt
                 ez-locationviewview:
-                    requires: ['ez-templatebasedview', 'ez-actionbarview', 'ez-rawcontentview', 'ez-tabs', 'event-tap', 'array-extras', 'locationviewview-ez-template']
+                    requires:
+                        - 'ez-templatebasedview'
+                        - 'ez-actionbarview'
+                        - 'ez-locationviewviewtabview'
+                        - 'ez-tabs'
+                        - 'event-tap'
+                        - 'array-extras'
+                        - 'locationviewview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/ez-locationviewview.js
                 locationviewview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/locationview.hbt
+                ez-locationviewtabview:
+                    requires: ['ez-templatebasedview']
+                    path: %ez_platformui.public_dir%/js/views/ez-locationviewtabview.js
+                ez-locationviewviewtabview:
+                    requires: ['ez-locationviewtabview', 'ez-rawcontentview', 'locationviewviewtabview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/tabs/ez-locationviewviewtabview.js
+                locationviewviewtabview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/tabs/view.hbt
                 ez-studiopresentationview:
                     requires: ['ez-templatebasedview', 'studiopresentationview-ez-template', 'ez-height-fit']
                     path: %ez_platformui.public_dir%/js/views/ez-studiopresentationview.js

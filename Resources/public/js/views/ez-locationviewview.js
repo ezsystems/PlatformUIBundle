@@ -23,10 +23,8 @@ YUI.add('ez-locationviewview', function (Y) {
      */
     Y.eZ.LocationViewView = Y.Base.create('locationViewView', Y.eZ.TemplateBasedView, [Y.eZ.Tabs], {
         initializer: function () {
-            this.get('actionBar').addTarget(this);
-            this.get('rawContentView').addTarget(this);
-
             this.on('*:minimizeActionBarAction', this._handleMinimizeActionBar);
+            this.after('changeTab', this._syncSelectedTab);
         },
 
         /**
@@ -71,19 +69,67 @@ YUI.add('ez-locationviewview', function (Y) {
             container.setHTML(this.template({
                 location: this.get('location').toJSON(),
                 content: this.get('content').toJSON(),
+                tabs: this._getTabsList(),
                 path: this._pathToJSON()
             }));
-
-            container.one('.ez-tabs-panel').append(
-                this.get('rawContentView').render().get('container')
-            );
 
             container.one('.ez-actionbar-container').append(
                 this.get('actionBar').render().get('container')
             );
+            this._renderTabViews();
 
             this._uiSetMinHeight();
             return this;
+        },
+
+        /**
+         * Renders the tab views in their container.
+         *
+         * @method _renderTabViews
+         * @protected
+         */
+        _renderTabViews: function () {
+            var container = this.get('container');
+
+            Y.Array.each(this.get('tabs'), function (tab) {
+                container.one('#ez-tabs-' + tab.get('identifier')).append(
+                    tab.render().get('container')
+                );
+            });
+        },
+
+        /**
+         * Returns the tabs list suitable for the template. Each element in the
+         * returned array is an object containing the title, the identifier and
+         * whether the tab is selected.
+         *
+         * @method _getTabsList
+         * @protected
+         * @return {Array}
+         */
+        _getTabsList: function () {
+            var tabs = [];
+
+            Y.Array.each(this.get('tabs'), function (tab) {
+                tabs.push({
+                    title: tab.get('title'),
+                    identifier: tab.get('identifier'),
+                    selected: tab.get('identifier') === this.get('selectedTab'),
+                });
+            }, this);
+            return tabs;
+        },
+
+        /**
+         * `changeTab` event handler. It synchronizes the `selectedTab`
+         * attribute.
+         *
+         * @method _syncSelectedTab
+         * @protected
+         * @param {EventFacade} e the changeTab event facade
+         */
+        _syncSelectedTab: function (e) {
+            this._set('selectedTab', e.tabLabelNode.getAttribute('data-tab-identifier'));
         },
 
         /**
@@ -118,10 +164,12 @@ YUI.add('ez-locationviewview', function (Y) {
         destructor: function () {
             var bar = this.get('actionBar');
 
-            this.get('rawContentView').removeTarget(this);
-            this.get('rawContentView').destroy();
             bar.removeTarget(this);
             bar.destroy();
+            Y.Array.each(this.get('tabs'), function (tab) {
+                tab.removeTarget(this);
+                tab.destroy();
+            });
         }
     }, {
         ATTRS: {
@@ -159,7 +207,7 @@ YUI.add('ez-locationviewview', function (Y) {
             },
 
             /**
-             * The config at the current location
+             * The config
              *
              * @attribute config
              * @type Mixed
@@ -194,26 +242,43 @@ YUI.add('ez-locationviewview', function (Y) {
                     return new Y.eZ.ActionBarView({
                         content: this.get('content'),
                         contentType: this.get('contentType'),
+                        bubbleTargets: this,
                     });
                 }
             },
 
             /**
-             * The raw content view instance
+             * The list of the Location View tab Views
              *
-             * @attribute rawContentView
-             * @type eZ.RawContentView
+             * @attribute tabs
+             * @type {Array} of {eZ.LocationViewTabView}
+             * @writeOnce
              */
-            rawContentView: {
+            tabs: {
                 valueFn: function () {
-                    return new Y.eZ.RawContentView({
+                    return [
+                        new Y.eZ.LocationViewViewTabView({
                             content: this.get('content'),
                             contentType: this.get('contentType'),
-                            config: this.get('config')
-                        }
+                            config: this.get('config'),
+                            priority: 1000,
+                            bubbleTargets: this,
+                        }),
+                    ];
+                },
+                writeOnce: 'initOnly',
+            },
 
-                    );
-                }
+            /**
+             * Stores the identifier of the selected tab.
+             *
+             * @attribute selectedTab
+             * @type {String}
+             * @readOnly
+             */
+            selectedTab: {
+                value: "view",
+                readOnly: true,
             }
         }
     });
