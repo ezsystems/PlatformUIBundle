@@ -161,6 +161,43 @@ YUI.add('ez-locationviewview', function (Y) {
             );
         },
 
+        /**
+         * Adds a tabView to the list of tabs.
+         *
+         * @method addTabView
+         * @param {eZ.LocationViewTabView} tabView
+         */
+        addTabView: function (tabView) {
+            var tabs = this.get('tabs');
+
+            tabs.push(tabView);
+            tabView.addTarget(this);
+            tabs.sort(function (a, b) {
+                return b.get('priority') - a.get('priority');
+            });
+        },
+
+        /**
+         * Removes a tab from its identifier. When found, the location view is
+         * removed from the bubble targets list of the tabView.
+         *
+         * @method removeTabView
+         * @param {String} identifier
+         * @return {eZ.LocationViewTabView|Null} the removed tab view or null
+         */
+        removeTabView: function (identifier) {
+            var removed = null;
+
+            this._set('tabs', Y.Array.reject(this.get('tabs'), function (tab) {
+                if ( tab.get('identifier') === identifier ) {
+                    tab.removeTarget(this);
+                    removed = tab;
+                    return true;
+                }
+            }, this));
+            return removed;
+        },
+
         destructor: function () {
             var bar = this.get('actionBar');
 
@@ -248,7 +285,9 @@ YUI.add('ez-locationviewview', function (Y) {
             },
 
             /**
-             * The list of the Location View tab Views
+             * The list of the Location View tab Views.
+             * Do NOT change this attribute directly, use addTabView or
+             * removeTabView to handle the tabs list.
              *
              * @attribute tabs
              * @type {Array} of {eZ.LocationViewTabView}
