@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationviewview-tests', function (Y) {
-    var test, tabsTest, eventsTest, destroyTest, attrsToRawContentAndActionBarViewsTest,
+    var test, tabsTest, eventsTest, destroyTest, attrsToSubViewsTest,
+        addTabViewTest, removeTabViewTest,
         Mock = Y.Mock, Assert = Y.Assert,
         _getModelMock = function (serialized) {
             var mock = new Y.Test.Mock();
@@ -184,7 +185,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         },
     });
 
-    attrsToRawContentAndActionBarViewsTest = new Y.Test.Case({
+    attrsToSubViewsTest = new Y.Test.Case({
         name: "eZ Location View view tests",
 
         setUp: function () {
@@ -462,10 +463,171 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         }
     });
 
+    addTabViewTest = new Y.Test.Case({
+        name: "eZ Location view view addTabView test",
+
+        setUp: function () {
+            this.barMock = new Y.View();
+            this.view = new Y.eZ.LocationViewView({
+                actionBar: this.barMock,
+                tabs: [],
+            });
+        },
+
+        tearDown: function () {
+            this.barMock.destroy();
+            this.view.destroy();
+        },
+
+        "Should add the tab view to the list": function () {
+            var tab = new Y.View({
+                    identifier: "lz-hills",
+                    title: "Led Zeppelin - Over the hills and far away"
+                }),
+                tabs = this.view.get('tabs');
+
+            this.view.addTabView(tab);
+
+            Assert.areEqual(
+                1, tabs.length,
+                "The tab should have been added to the list"
+            );
+            Assert.areSame(tab, tabs[0], "The tab should be in the list");
+        },
+
+        "Should maintain the order by priority": function () {
+            var tab1 = new Y.View({
+                    identifier: "lz-hills",
+                    title: "Led Zeppelin - Over the hills and far away",
+                    priority: 1000,
+                }),
+                tab2 = new Y.View({
+                    identifier: "lz-stairway",
+                    title: "Led Zeppelin - Stairway to heaven",
+                    priority: 500,
+                }),
+                tab3 = new Y.View({
+                    identifier: "lz-ramble",
+                    title: "Led Zeppelin - Ramble on",
+                    priority: 700,
+                }),
+                tabs = this.view.get('tabs');
+
+            this.view.addTabView(tab3);
+            this.view.addTabView(tab1);
+            this.view.addTabView(tab2);
+
+            Assert.areEqual(
+                3, tabs.length,
+                "The tabs should have been added to the list"
+            );
+            Assert.areSame(tab1, tabs[0], "The tabs should be ordered by priority");
+            Assert.areSame(tab3, tabs[1], "The tabs should be ordered by priority");
+            Assert.areSame(tab2, tabs[2], "The tabs should be ordered by priority");
+        },
+
+        "Should set the location view a bubble target of the tab": function () {
+            var tab = new Y.View({
+                    identifier: "lz-hills",
+                    title: "Led Zeppelin - Over the hills and far away"
+                }),
+                evt = "whatever",
+                bubbled = false;
+
+            this.view.addTabView(tab);
+            this.view.on('*:' + evt, function () {
+                bubbled = true;
+            });
+            tab.fire(evt);
+            Assert.isTrue(
+                bubbled, "The location view should be a bubble target of the tab"
+            );
+        },
+    });
+
+    removeTabViewTest = new Y.Test.Case({
+        name: "eZ Location view view addTabView test",
+
+        setUp: function () {
+            this.barMock = new Y.View();
+            this.tabs = [
+                new Y.View({
+                    identifier: "lz-hills",
+                    title: "Led Zeppelin - Over the hills and far away",
+                    priority: 1000,
+                }),
+                new Y.View({
+                    identifier: "lz-ramble",
+                    title: "Led Zeppelin - Ramble on",
+                    priority: 700,
+                }),
+                new Y.View({
+                    identifier: "lz-stairway",
+                    title: "Led Zeppelin - Stairway to heaven",
+                    priority: 500,
+                }),
+            ];
+            this.view = new Y.eZ.LocationViewView({
+                actionBar: this.barMock,
+                tabs: [],
+            });
+            Y.Array.each(this.tabs, function (tab) {
+                this.view.addTabView(tab);
+            }, this);
+        },
+
+        tearDown: function () {
+            this.barMock.destroy();
+            Y.Array.each(this.tabs, function (t) {
+                t.destroy();
+            });
+            this.view.destroy();
+        },
+
+        "Should return null if the tabView is not found": function () {
+            Assert.isNull(
+                this.view.removeTabView('lady-gaga'),
+                "removeTabView should have returned null"
+            );
+        },
+
+        "Should remove the tab view from the list": function () {
+            this.view.removeTabView('lz-ramble');
+
+            Assert.areEqual(2, this.view.get('tabs').length, "Only 2 tabs should remain");
+        },
+
+        "Should return the found tab view": function () {
+            var tabView,
+                removedTabView;
+
+            tabView = this.tabs[1];
+            removedTabView = this.view.removeTabView(tabView.get('identifier'));
+
+            Assert.areSame(
+                tabView, removedTabView,
+                "The removed tab view should have been returned"
+            );
+        },
+
+        "Should remove the location view from the bubble targets of the tabView": function () {
+           var removedTabView, evt = 'whatever', bubbled = false;
+
+           this.view.on('*:' + evt, function () {
+                bubbled = true;
+           });
+           removedTabView = this.view.removeTabView(this.tabs[1].get('identifier'));
+           removedTabView.fire(evt);
+           Assert.isFalse(bubbled, "The event should not bubbled to the location view");
+        }
+    });
+
     Y.Test.Runner.setName("eZ Location View view tests");
     Y.Test.Runner.add(test);
     Y.Test.Runner.add(tabsTest);
     Y.Test.Runner.add(eventsTest);
     Y.Test.Runner.add(destroyTest);
-    Y.Test.Runner.add(attrsToRawContentAndActionBarViewsTest);
+    Y.Test.Runner.add(attrsToSubViewsTest);
+    Y.Test.Runner.add(addTabViewTest);
+    Y.Test.Runner.add(removeTabViewTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-locationviewview']});
