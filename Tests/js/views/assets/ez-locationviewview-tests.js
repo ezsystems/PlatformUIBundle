@@ -60,6 +60,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             this.locationJSON = {};
             this.contentJSON = {};
             this.path = [];
+            this.languageCode = 'eng-GB';
             Y.Mock.expect(this.locationMock, {
                 method: "toJSON",
                 args: [],
@@ -79,7 +80,8 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 rawContentView: this.rawMock,
                 location : this.locationMock,
                 content : this.contentMock,
-                path: this.path
+                path: this.path,
+                languageCode: this.languageCode
             });
         },
 
@@ -219,8 +221,11 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             Y.eZ.RawContentView = Y.Base.create('rawContentView', Y.View, [], {}, {
                 ATTRS: {
                     content: {},
+                    location: {},
                     contentType: {},
                     config: {},
+                    languageCode: {},
+                    bubbleTargets: {},
                 },
             });
 
@@ -239,6 +244,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 contentType: {},
                 config: {},
                 path: {},
+                languageCode: {},
             });
         },
 
@@ -276,7 +282,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             Y.Assert.areSame(
                 this.view.get('contentType'),
                 this.view.get('rawContentView').get('contentType'),
-                'The content should have been set to the rawContentview'
+                'The content type should have been set to the rawContentview'
             );
         },
 
@@ -284,7 +290,31 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             Y.Assert.areSame(
                 this.view.get('config'),
                 this.view.get('rawContentView').get('config'),
-                'The content should have been set to the rawContentview'
+                'The config should have been set to the rawContentview'
+            );
+        },
+
+        "Should set the language code of the raw content view": function () {
+            Y.Assert.areSame(
+                this.view.get('languageCode'),
+                this.view.get('rawContentView').get('languageCode'),
+                'The language code should have been set to the rawContentview'
+            );
+        },
+
+        "Should set the location of the raw content view": function () {
+            Y.Assert.areSame(
+                this.view.get('location'),
+                this.view.get('rawContentView').get('location'),
+                'The location should have been set to the rawContentview'
+            );
+        },
+
+        "Should set the bubble targets of the raw content view": function () {
+            Y.Assert.areSame(
+                this.view,
+                this.view.get('rawContentView').get('bubbleTargets'),
+                'The bubble targets should have been set to the rawContentview'
             );
         },
     });

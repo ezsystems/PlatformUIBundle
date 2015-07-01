@@ -1,0 +1,48 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-languageswitcherview .ez-dropdown-list-indicator {
+    color: #333;
+}
+
+.ez-view-languageswitcherview .ez-dropdown-list-indicator:after {
+    display: inline-block;
+    content: "\E602";
+    font-family: 'ez-platformui-icomoon';
+    color: #333;
+    padding-left: 0.1em;
+    vertical-align: bottom;
+}
+
+.ez-view-languageswitcherview .ez-expandable-area {
+    border: 1px solid #ccc;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    background: #fff;
+    display: block;
+            transform: scaleY(0);
+    -webkit-transform: scaleY(0);
+            transform-origin: 50% 0%;
+    -webkit-transform-origin: 50% 0%;
+    transition: all 0.2s ease;
+}
+
+.ez-view-languageswitcherview.is-expanded .ez-expandable-area {
+            transform: scaleY(1);
+    -webkit-transform: scaleY(1);
+}
+
+.ez-view-languageswitcherview .ez-content-translation .ez-language-switch-link {
+    background: #fff;
+    color: #999;
+    border-bottom: solid 1px #ccc;
+}
+
+.ez-view-languageswitcherview .ez-content-translation .ez-language-switch-link:hover {
+    background: #dbebf5;
+}
+
+.ez-view-languageswitcherview .ez-language-flag {
+    border: solid 1px #ccc;
+}

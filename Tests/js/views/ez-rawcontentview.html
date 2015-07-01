@@ -9,6 +9,7 @@
 
 <script type="text/x-handlebars-template" id="rawcontentview-ez-template">
     <a href="#" class="ez-raw-content-title">Content</a>
+    <div class="ez-language-switcher-container"></div>
     <div class="ez-fieldgroups">
     {{#each fieldGroups}}
         <a href="#" class="ez-fieldgroup-name">{{ fieldGroupName }}</a>
@@ -18,6 +19,8 @@
 </script>
 
 <script type="text/x-handlebars-template" id="fieldview-ez-template">fieldview</script>
+
+<script type="text/x-handlebars-template" id="languageswitcherview-ez-template"></script>
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-rawcontentview-tests.js"></script>
@@ -38,7 +41,7 @@
         filter: loaderFilter,
         modules: {
             "ez-rawcontentview": {
-                requires: ['ez-templatebasedview', 'ez-fieldview', 'ez-accordion-element', 'event-tap'],
+                requires: ['ez-templatebasedview', 'ez-fieldview', 'ez-languageswitcherview', 'ez-accordion-element', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-rawcontentview.js"
             },
             "ez-templatebasedview": {
@@ -61,6 +64,14 @@
                 requires: ['transition'],
                 fullpath: "../../../Resources/public/js/extensions/ez-accordion-element.js"
             },
+            "ez-languageswitcherview": {
+                requires: ['ez-templatebasedview', 'ez-expandable', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-languageswitcherview.js"
+            },
+            "ez-expandable": {
+                requires: ['view'],
+                fullpath: "../../../Resources/public/js/extensions/ez-expandable.js"
+            }
         }
     }).use('ez-rawcontentview-tests', function (Y) {
         Y.Test.Runner.run();

@@ -20,14 +20,14 @@
     width: 322px;
     height: 478px;
     padding: 118px 30px 118px 31px;
-    background: transparent url('../bundles/ezplatformui/img/preview-mobile.png') top left no-repeat;
+    background: transparent url('../../../img/preview-mobile.png') top left no-repeat;
 }
 
 .ez-preview-content .preview-device.tablet {
     width: 872px;
     height: 1263px;
     padding: 119px 0 0 103px;
-    background: transparent url('../bundles/ezplatformui/img/preview-tablet.png') top left no-repeat;
+    background: transparent url('../../../img/preview-tablet.png') top left no-repeat;
 }
 
 .ez-preview-content .preview-device.desktop {

@@ -49,6 +49,7 @@ YUI.add('ez-contentmodel', function (Y) {
             });
             attrs.relations = relations;
             attrs.fields = fields;
+            attrs.currentVersion = struct.CurrentVersion;
             return attrs;
         },
 
@@ -316,6 +317,21 @@ YUI.add('ez-contentmodel', function (Y) {
              */
             relations: {
                 value: {}
+            },
+
+            /**
+             * The current version of the content
+             *
+             * @attribute currentVersion
+             * @type eZ.Version
+             */
+            currentVersion: {
+                getter: function (value) {
+                    var version = new Y.eZ.Version();
+
+                    version.setAttrs(version.parse({document: value}));
+                    return version;
+                }
             }
         }
     });

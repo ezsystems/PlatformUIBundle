@@ -136,6 +136,10 @@ YUI.add('ez-rawcontentview', function (Y) {
                 fieldGroups: this.get('contentType').getFieldGroups(),
             }));
 
+            container.one('.ez-language-switcher-container').append(
+                this.get('languageSwitcherView').render().get('container')
+            );
+
             this._renderFieldViews();
             return this;
         },
@@ -166,6 +170,17 @@ YUI.add('ez-rawcontentview', function (Y) {
     }, {
         ATTRS: {
             /**
+             * The location being rendered
+             *
+             * @attribute location
+             * @type Y.eZ.Location
+             * @writeOnce
+             */
+            location: {
+                writeOnce: "initOnly",
+            },
+
+            /**
              * The content associated the current location
              *
              * @attribute content
@@ -188,6 +203,17 @@ YUI.add('ez-rawcontentview', function (Y) {
             },
 
             /**
+             * Language code of language currently active for the current location
+             *
+             * @attribute languageCode
+             * @type String
+             * @writeOnce
+             */
+            languageCode: {
+                writeOnce: "initOnly"
+            },
+
+            /**
              * The config at the current location
              *
              * @attribute config
@@ -196,6 +222,23 @@ YUI.add('ez-rawcontentview', function (Y) {
              */
             config: {
                 writeOnce: "initOnly",
+            },
+
+            /**
+             * The language switcher view instance
+             *
+             * @attribute languageSwitcherView
+             * @type eZ.LanguageSwitcherView
+             */
+            languageSwitcherView: {
+                valueFn: function () {
+                    return new Y.eZ.LanguageSwitcherView({
+                        content: this.get('content'),
+                        location: this.get('location'),
+                        languageCode: this.get('languageCode'),
+                        bubbleTargets: this
+                    });
+                }
             }
         }
     });

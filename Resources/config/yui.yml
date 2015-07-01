@@ -250,12 +250,19 @@ system:
                         - 'ez-date-view'
                         - 'ez-time-view'
                         - 'ez-richtext-view'
+                        - 'ez-languageswitcherview'
                         - 'event-tap'
                         - 'rawcontentview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/ez-rawcontentview.js
                 rawcontentview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/rawcontent.hbt
+                ez-languageswitcherview:
+                    requires: ['ez-templatebasedview', 'ez-expandable', 'ez-getflagcodehelper', 'event-tap', 'languageswitcherview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/ez-languageswitcherview.js
+                languageswitcherview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/languageswitcher.hbt
                 ez-contenteditview:
                     requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'event-tap', 'contenteditview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-contenteditview.js
@@ -559,7 +566,7 @@ system:
                     requires: ['model', 'json']
                     path: %ez_platformui.public_dir%/js/models/ez-restmodel.js
                 ez-contentmodel:
-                    requires: ['ez-restmodel', 'array-extras']
+                    requires: ['ez-restmodel', 'ez-versionmodel', 'array-extras']
                     path: %ez_platformui.public_dir%/js/models/ez-contentmodel.js
                 ez-versionmodel:
                     requires: ['ez-restmodel']
@@ -653,6 +660,9 @@ system:
                 ez-texthelper:
                     requires: ['handlebars']
                     path: %ez_platformui.public_dir%/js/helpers/ez-texthelper.js
+                ez-getflagcodehelper:
+                    requires: ['handlebars']
+                    path: %ez_platformui.public_dir%/js/helpers/ez-getflagcodehelper.js
                 ez-googlemapapiloader:
                     requires: ['jsonp', 'jsonp-url', 'event-custom']
                     path: %ez_platformui.public_dir%/js/services/ez-googlemapapiloader.js

@@ -6,6 +6,7 @@
 .ez-view-rawcontentview {
     position: static;
     margin-top: 2em;
+    position: relative;
 }
 
 .ez-view-rawcontentview .ez-raw-content-title {

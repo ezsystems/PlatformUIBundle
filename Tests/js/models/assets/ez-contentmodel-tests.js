@@ -185,7 +185,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             this.serviceMock = new Y.Mock();
             this.serviceLoad = 'loadContentInfoAndCurrentVersion';
             this.rootProperty = "Content";
-            this.parsedAttributeNumber = Y.eZ.Content.ATTRS_REST_MAP.length + 3; // links + fields + relations
+            this.parsedAttributeNumber = Y.eZ.Content.ATTRS_REST_MAP.length + 4; // links + fields + relations + currentVersion
         },
 
         setUp: function () {
@@ -196,6 +196,27 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         tearDown: function () {
             this.model.destroy();
             delete this.model;
+        },
+
+        "The current version should be instance of eZ.Version": function () {
+            var currentVersionStruct = loadResponse.Content.CurrentVersion;
+
+            this.model.set('currentVersion', currentVersionStruct);
+            Y.Assert.isInstanceOf(
+                Y.eZ.Version,
+                this.model.get('currentVersion'),
+                'Current version should be instance of eZ.Version'
+            );
+            Y.Assert.areEqual(
+                currentVersionStruct.Version.VersionInfo.versionNo,
+                this.model.get('currentVersion').get('versionNo'),
+                'Should instantiate current version with version no'
+            );
+            Y.Assert.areEqual(
+                currentVersionStruct.Version.VersionInfo.id,
+                this.model.get('currentVersion').get('versionId'),
+                'Should instantiate current version with version id'
+            );
         },
 
         "Should read the fields of the current version": function () {
@@ -250,6 +271,35 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                     "The ordering should be kept"
                 );
             });
+        },
+
+        "Should read the currentVersion": function () {
+            var m = this.model,
+                response = {
+                    document: this.loadResponse
+                },
+                currentVersion, res,
+                respCurrentVersion = this.loadResponse.Content.CurrentVersion;
+
+            res = m.parse(response);
+            currentVersion = res.currentVersion;
+
+            Y.Assert.isObject(
+                currentVersion,
+                "The currentVersion should be object"
+            );
+
+            Y.Assert.areEqual(
+                respCurrentVersion.languageCodes,
+                currentVersion.languageCodes,
+                "The languageCodes should be imported"
+            );
+
+            Y.Assert.areSame(
+                respCurrentVersion,
+                currentVersion,
+                "The currentVersion should be imported"
+            );
         },
 
         "Should return the fields": function () {
@@ -386,9 +436,11 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         name: "eZ Content Model create tests",
 
         setUp: function () {
-            var that = this;
+            var that = this,
+                currentVersionStruct = loadResponse.Content.CurrentVersion;
 
             this.model = new Y.eZ.Content();
+            this.model.set('currentVersion', currentVersionStruct);
 
             this.typeId = 'song';
             this.type = new Mock();

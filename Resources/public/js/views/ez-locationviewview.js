@@ -183,6 +183,18 @@ YUI.add('ez-locationviewview', function (Y) {
             },
 
             /**
+             * Language code of language currently active for the current location
+             *
+             * @attribute languageCode
+             * @type String
+             * @writeOnce
+             */
+            languageCode: {
+                writeOnce: "initOnly",
+                value: 'eng-GB'
+            },
+
+            /**
              * The action bar instance, by default an instance {{#crossLink
              * "eZ.ActionBarView"}}eZ.ActionBarView{{/crossLink}}
              *
@@ -208,8 +220,11 @@ YUI.add('ez-locationviewview', function (Y) {
                 valueFn: function () {
                     return new Y.eZ.RawContentView({
                             content: this.get('content'),
+                            location: this.get('location'),
                             contentType: this.get('contentType'),
-                            config: this.get('config')
+                            config: this.get('config'),
+                            languageCode: this.get('languageCode'),
+                            bubbleTargets: this
                         }
 
                     );
