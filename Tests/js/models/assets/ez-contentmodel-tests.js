@@ -198,6 +198,36 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             delete this.model;
         },
 
+        // overriding this test to take the languageCode into account
+        "Sync 'read' should load the content with CAPI": function () {
+            var m = this.model,
+                languageCode = 'fre-FR',
+                modelId = "/api/v2/ezp/model/mid",
+                callback = function () { };
+
+            Y.Mock.expect(this.capiMock, {
+                method: this.capiGetService,
+                returns: this.serviceMock
+            });
+            Y.Mock.expect(this.serviceMock, {
+                method: this.serviceLoad,
+                args: [
+                    modelId,
+                    languageCode,
+                    callback
+                ]
+            });
+
+            m.set('id', modelId);
+            m.sync('read', {
+                api: this.capiMock,
+                languageCode: languageCode,
+            }, callback);
+
+            Y.Mock.verify(this.capiMock);
+            Y.Mock.verify(this.serviceMock);
+        },
+
         "The current version should be instance of eZ.Version": function () {
             var currentVersionStruct = loadResponse.Content.CurrentVersion;
 

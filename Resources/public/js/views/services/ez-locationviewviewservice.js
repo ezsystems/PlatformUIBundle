@@ -242,8 +242,10 @@ YUI.add('ez-locationviewviewservice', function (Y) {
 
             location.set('id', request.params.id);
             location.load(loadOptions, function (error) {
-                var tasks, endLoadPath, endMainContentLoad;
+                var tasks, endLoadPath, endMainContentLoad,
+                    loadContentOptions = Y.merge(loadOptions);
 
+                loadContentOptions.languageCode = request.params.languageCode;
                 if ( error ) {
                     service._error("Failed to load the location " + location.get('id'));
                     return;
@@ -253,7 +255,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
 
                 endMainContentLoad = tasks.add();
                 content.set('id', location.get('resources').Content);
-                content.load(loadOptions, function (error) {
+                content.load(loadContentOptions, function (error) {
                     if ( error ) {
                         service._error("Failed to load the content " + content.get('id'));
                         return;
