@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.alloy-editor-toolbars [role="toolbar"] {
+.ae-toolbars [role="toolbar"] {
     z-index: 1200;
 }
 

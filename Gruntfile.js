@@ -56,7 +56,7 @@ module.exports = function(grunt) {
         if ( url.indexOf("fonts/") !== 0 ) {
             return url;
         }
-        return '../bundles/ezplatformui/' + url;
+        return '../../' + url;
     };
 
     environment.TZ = 'Europe/Paris';
