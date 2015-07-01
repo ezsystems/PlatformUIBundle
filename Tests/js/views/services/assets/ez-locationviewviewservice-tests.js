@@ -13,7 +13,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             this.rootLocationId = '/api/ezp/v2/content/locations/1/2';
             this.leafLocationId = '/api/ezp/v2/content/locations/1/2/67/68/111';
             this.contentTypeId = '/api/ezp/v2/content/types/38';
-            this.request = {};
+            this.request = {params: {languageCode: 'fre-FR'}};
             this.capiMock = new Y.Test.Mock();
             this.contentTypeServiceMock = new Y.Test.Mock();
             this.discoveryServiceMock = new Y.Test.Mock();
@@ -105,6 +105,11 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                         Y.Assert.areSame(
                             functionalTest.capiMock, options.api,
                             "The content load function should receive the CAPI"
+                        );
+                        Y.Assert.areEqual(
+                            functionalTest.request.params.languageCode,
+                            options.languageCode,
+                            "The content load function should receive the language"
                         );
                         callback(contentId === failContentId ? true : false);
                     }

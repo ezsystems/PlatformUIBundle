@@ -87,7 +87,7 @@ YUI.add('ez-contentmodel', function (Y) {
 
             if ( action === 'read' ) {
                 api.getContentService().loadContentInfoAndCurrentVersion(
-                    this.get('id'), callback
+                    this.get('id'), options.languageCode, callback
                 );
             } else if ( action === 'create' ) {
                 this._createContent(options, callback);
