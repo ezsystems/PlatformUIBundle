@@ -12,6 +12,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/fields/*.js", "!./Resources/public/js/views/fields/*-min.js",
             "./Resources/public/js/views/universaldiscovery/*.js", "!./Resources/public/js/views/universaldiscovery/*-min.js",
             "./Resources/public/js/views/actions/*.js", "!./Resources/public/js/views/actions/*-min.js",
+            "./Resources/public/js/views/tabs/*.js", "!./Resources/public/js/views/actions/*-min.js",
             "./Resources/public/js/views/navigation/*.js", "!./Resources/public/js/views/navigation/*-min.js",
             "./Resources/public/js/views/serverside/*.js", "!./Resources/public/js/views/serverside/*-min.js",
             "./Resources/public/js/views/services/*.js", "!./Resources/public/js/views/services/*-min.js",
@@ -42,6 +43,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/services/*-min.js",
             "./Resources/public/js/helpers/*-min.js",
             "./Resources/public/js/views/actions/*-min.js",
+            "./Resources/public/js/views/tabs/*-min.js",
             instrumentDir,
             reportDir
         ],
