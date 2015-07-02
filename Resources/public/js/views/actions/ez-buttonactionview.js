@@ -75,6 +75,7 @@ YUI.add('ez-buttonactionview', function (Y) {
          * @protected
          */
         _handleActionClick: function (e) {
+            e.preventDefault();
             /**
              * Fired when the action button is clicked. Name of the event
              * consists of the action view's 'actionId' attribute and 'Action'
