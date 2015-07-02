@@ -74,6 +74,12 @@ YUI.add('ez-genericbuttonactionview-tests', function (Y) {
             var that = this,
                 actionFired = false;
 
+            this.view.get('container').once('tap', function (e) {
+                Y.Assert.isTrue(
+                    !!e.prevented,
+                    "The tap event should have been prevented"
+                );
+            });
             this.view.on(this.actionId + 'Action', function (e) {
                 actionFired = true;
                 Y.Assert.areSame(
