@@ -54,13 +54,6 @@ YUI.add('ez-discoverybarview', function (Y) {
                             label: "Content tree",
                             priority: 800
                         }),
-                        new Y.eZ.ButtonActionView({
-                            actionId: "doSomething",
-                            disabled: false,
-                            label: "Do something",
-                            hint: "And that's useful",
-                            priority: 200
-                        }),
                     ];
                 }
             },
