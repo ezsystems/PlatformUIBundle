@@ -118,6 +118,6 @@ services:
 
     ezsystems.platformui.form_processor.content_type:
         class: %ezsystems.platformui.form_processor.content_type.class%
-        arguments: [@router, @ezsystems.platformui.notification_pool]
+        arguments: [@router, @ezsystems.platformui.notification_pool, @ezpublish.api.service.content_type]
         tags:
             - { name: kernel.event_subscriber }
