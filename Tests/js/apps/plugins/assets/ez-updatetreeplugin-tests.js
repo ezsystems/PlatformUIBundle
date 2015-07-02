@@ -7,11 +7,9 @@ YUI.add('ez-updatetreeplugin-tests', function (Y) {
         Mock = Y.Mock;
 
     eventTest = new Y.Test.Case({
-        name: 'eZ Tree update events tests',
+        name: 'eZ Update Tree Plugin events tests',
 
         setUp: function () {
-            var App;
-
             this.discoveryBarInstanceMock = new Mock();
             this.treeActionViewMock = new Mock();
             this.treeMock = new Mock();
@@ -30,15 +28,12 @@ YUI.add('ez-updatetreeplugin-tests', function (Y) {
                 returns: this.treeActionViewMock
             });
 
-            App = Y.Base.create('testApp', Y.Base, [], {
-                sideViews: {
-                    discoveryBar: {
-                        instance : this.discoveryBarInstanceMock
-                    },
-                }
-            }, {});
-
-            this.app = new App();
+            this.app = new Y.Base();
+            this.app.sideViews = {
+                discoveryBar: {
+                    instance: this.discoveryBarInstanceMock
+                },
+            };
             this.plugin = new Y.eZ.Plugin.UpdateTree({
                 host: this.app,
             });
@@ -55,6 +50,7 @@ YUI.add('ez-updatetreeplugin-tests', function (Y) {
             this.plugin.get('host').fire(eventName);
             Y.Mock.verify(this.treeMock);
         },
+
         _doNotClearTreeOnEvent: function (eventName) {
             Y.Mock.expect(this.treeActionViewMock, {
                 method: 'get',
