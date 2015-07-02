@@ -3,15 +3,13 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-updatetreeplugin-tests', function (Y) {
-    var registerTest, eventTest,
+    var registerTest, eventTest, noDiscoveryBarTest,
         Mock = Y.Mock;
 
     eventTest = new Y.Test.Case({
-        name: 'eZ Tree update events tests',
+        name: 'eZ Update Tree Plugin events tests',
 
         setUp: function () {
-            var App;
-
             this.discoveryBarInstanceMock = new Mock();
             this.treeActionViewMock = new Mock();
             this.treeMock = new Mock();
@@ -30,15 +28,12 @@ YUI.add('ez-updatetreeplugin-tests', function (Y) {
                 returns: this.treeActionViewMock
             });
 
-            App = Y.Base.create('testApp', Y.Base, [], {
-                sideViews: {
-                    discoveryBar: {
-                        instance : this.discoveryBarInstanceMock
-                    },
-                }
-            }, {});
-
-            this.app = new App();
+            this.app = new Y.Base();
+            this.app.sideViews = {
+                discoveryBar: {
+                    instance: this.discoveryBarInstanceMock
+                },
+            };
             this.plugin = new Y.eZ.Plugin.UpdateTree({
                 host: this.app,
             });
@@ -55,6 +50,7 @@ YUI.add('ez-updatetreeplugin-tests', function (Y) {
             this.plugin.get('host').fire(eventName);
             Y.Mock.verify(this.treeMock);
         },
+
         _doNotClearTreeOnEvent: function (eventName) {
             Y.Mock.expect(this.treeActionViewMock, {
                 method: 'get',
@@ -110,11 +106,35 @@ YUI.add('ez-updatetreeplugin-tests', function (Y) {
         },
     });
 
+    noDiscoveryBarTest = new Y.Test.Case({
+        name: 'eZ Update Tree Plugin no discovery bar tests',
+
+        setUp: function () {
+            this.app = new Y.Base();
+            this.app.sideViews = {discoveryBar: {}};
+            this.plugin = new Y.eZ.Plugin.UpdateTree({
+                host: this.app,
+            });
+        },
+
+        tearDown: function () {
+            this.plugin.destroy();
+            delete this.plugin;
+            this.app.destroy();
+            delete this.app;
+        },
+
+        "Should handle the case where the discoveryBar has not been created yet": function () {
+            this.plugin.get('host').fire('whatever:sentToTrash');
+        }
+    });
+
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.UpdateTree;
     registerTest.components = ['platformuiApp'];
 
-    Y.Test.Runner.setName("eZ Tree Update Plugin tests");
+    Y.Test.Runner.setName("eZ Update Tree Plugin tests");
     Y.Test.Runner.add(eventTest);
+    Y.Test.Runner.add(noDiscoveryBarTest);
     Y.Test.Runner.add(registerTest);
 }, '', {requires: ['test', 'base', 'ez-updatetreeplugin', 'ez-pluginregister-tests']});

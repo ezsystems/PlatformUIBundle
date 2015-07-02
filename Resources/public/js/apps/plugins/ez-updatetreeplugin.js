@@ -35,7 +35,8 @@ YUI.add('ez-updatetreeplugin', function (Y) {
          * @protected
          */
         _clearTree: function () {
-            var tree = this.get('host').sideViews.discoveryBar.instance.getAction('tree').get('tree');
+            var discoveryBarView = this.get('host').sideViews.discoveryBar.instance,
+                tree = discoveryBarView ? discoveryBarView.getAction('tree').get('tree') : null;
 
             if (tree) {
                 tree.clear();
