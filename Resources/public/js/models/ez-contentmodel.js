@@ -329,7 +329,9 @@ YUI.add('ez-contentmodel', function (Y) {
                 getter: function (value) {
                     var version = new Y.eZ.Version();
 
-                    version.setAttrs(version.parse({document: value}));
+                    if ( value ) {
+                        version.setAttrs(version.parse({document: value}));
+                    }
                     return version;
                 }
             }

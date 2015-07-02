@@ -219,6 +219,15 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             );
         },
 
+        "The current version should be instance of eZ.Version (not version)": function () {
+            this.model.set('currentVersion', undefined);
+            Y.Assert.isInstanceOf(
+                Y.eZ.Version,
+                this.model.get('currentVersion'),
+                'Current version should be instance of eZ.Version'
+            );
+        },
+
         "Should read the fields of the current version": function () {
             var m = this.model,
                 response = {
