@@ -5,8 +5,8 @@
 {% trans_default_domain "content_type" %}
 
 {% set content_type_group = content_type.contentTypeGroups|first %}
-{% set content_type_name = ez_trans_prop(content_type, 'name', language_code) %}
-{% set content_type_description = ez_trans_prop(content_type, 'description', language_code) %}
+{% set content_type_name = content_type.names[language_code]|default('') %}
+{% set content_type_description = content_type.descriptions[language_code]|default('') %}
 
 {% block header_breadcrumbs %}
     {% set breadcrumb_items = [
