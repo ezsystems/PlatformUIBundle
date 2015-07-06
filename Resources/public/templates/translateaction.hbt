@@ -1,0 +1,29 @@
+<button class="ez-action {{#if disabled}}is-disabled {{else}}{{#if actionId}}action-trigger {{/if}}{{/if}}{{#if hint}}with-hint{{/if}}" data-action="{{ actionId }}">
+    <div class="ez-font-icon action-icon">
+        <p class="action-label">{{ label }}</p>
+        {{#if hint}}
+        <p class="action-hint">{{ hint }}</p>
+        {{/if}}
+    </div>
+</button>
+<div class="ez-expandable-area">
+    <div class="ez-contenttranslations">
+        <h2 class="ez-contenttranslations-title">Existing Translations</h2>
+        <div class="ez-contenttranslations-content">
+            <ul class="ez-contenttranslations-list">
+                {{#each translations}}
+                <li class="ez-contenttranslation">
+                    <a class="ez-contenttranslation-view-link" href="{{ path "viewLocation" id=../location.id languageCode=this }}">
+                        <span class="ez-language-flag flag-icon flag-icon-{{{ getFlagCode this }}}"></span>
+                        {{ this }}
+                    </a>
+                    <a class="ez-contenttranslation-edit-link" href="{{ path "editContent" id=../content.id languageCode=this }}">
+                        Edit
+                    </a>
+                </li>
+                <hr class="ez-separator">
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>

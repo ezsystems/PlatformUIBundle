@@ -237,7 +237,11 @@ system:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview']
                     path: %ez_platformui.public_dir%/js/views/ez-discoverybarview.js
                 ez-actionbarview:
-                    requires: ['ez-barview', 'ez-buttonactionview', 'ez-createcontentactionview']
+                    requires:
+                        - 'ez-barview'
+                        - 'ez-buttonactionview'
+                        - 'ez-createcontentactionview'
+                        - 'ez-translateactionview'
                     path: %ez_platformui.public_dir%/js/views/ez-actionbarview.js
                 ez-rawcontentview:
                     requires:
@@ -629,6 +633,16 @@ system:
                 treeactionview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/treeaction.hbt
+                ez-translateactionview:
+                    requires:
+                        - 'ez-buttonactionview'
+                        - 'ez-expandable'
+                        - 'translateactionview-ez-template'
+                        - 'event-outside'
+                    path: %ez_platformui.public_dir%/js/views/actions/ez-translateactionview.js
+                translateactionview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/translateaction.hbt
                 ez-createcontentactionview:
                     requires:
                         - 'ez-buttonactionview'

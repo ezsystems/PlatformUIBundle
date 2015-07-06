@@ -10,6 +10,8 @@ YUI.add('ez-actionbarview-tests', function (Y) {
         name: "eZ Action Bar View test",
 
         setUp: function () {
+            this.location = {};
+            this.content = {};
             this.contentType = {};
 
             Y.eZ.CreateContentActionView = Y.Base.create('createContentActionView', Y.eZ.ButtonActionView, [Y.eZ.Expandable], {}, {
@@ -17,14 +19,21 @@ YUI.add('ez-actionbarview-tests', function (Y) {
                 contentTypeSelectorView: {},
                 contentType: {}
             });
+            Y.eZ.TranslateActionView = Y.Base.create('translateActionView', Y.eZ.ButtonActionView, [Y.eZ.Expandable], {}, {
+                location: {},
+                content: {}
+            });
 
             this.view = new Y.eZ.ActionBarView({
+                location: this.location,
+                content: this.content,
                 contentType: this.contentType
             });
         },
 
         tearDown: function () {
             delete Y.eZ.CreateContentActionView;
+            delete Y.eZ.TranslateActionView;
             this.view.destroy();
         },
 
@@ -44,6 +53,31 @@ YUI.add('ez-actionbarview-tests', function (Y) {
 
             Assert.isTrue(
                 createContentActionFound,
+                'The ActionBarView should contain createContent action'
+            );
+        },
+
+        "Should instantiate translateActionView": function () {
+            var translateActionFound = false;
+
+            for (var i = 0; i < this.view.get('actionsList').length; i++){
+                if (this.view.get('actionsList')[i].get('actionId') === 'translate'){
+                    translateActionFound = true;
+                    Assert.areSame(
+                        this.view.get('location'),
+                        this.view.get('actionsList')[i].get('location'),
+                        'The location should have been set to translateActionView'
+                    );
+                    Assert.areSame(
+                        this.view.get('content'),
+                        this.view.get('actionsList')[i].get('content'),
+                        'The content should have been set to translateActionView'
+                    );
+                }
+            }
+
+            Assert.isTrue(
+                translateActionFound,
                 'The ActionBarView should contain createContent action'
             );
         },

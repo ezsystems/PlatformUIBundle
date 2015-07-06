@@ -299,6 +299,7 @@ YUI.add('ez-locationviewview', function (Y) {
             actionBar: {
                 valueFn: function () {
                     return new Y.eZ.ActionBarView({
+                        location: this.get('location'),
                         content: this.get('content'),
                         contentType: this.get('contentType'),
                         bubbleTargets: this,
