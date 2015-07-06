@@ -67,9 +67,7 @@ class PlatformUIController extends Controller
             $sessionInfo['isStarted'] = true;
             $sessionInfo['name'] = $this->session->getName();
             $sessionInfo['identifier'] = $this->session->getId();
-            $sessionInfo['csrfToken'] = $this->csrfTokenManager->getToken(
-                $this->csrfTokenIntention
-            );
+            $sessionInfo['csrfToken'] = $this->csrfTokenManager->getToken($this->csrfTokenIntention)->getValue();
             $sessionInfo['href'] = $this->generateUrl(
                 'ezpublish_rest_deleteSession',
                 ['sessionId' => $this->session->getId()]
