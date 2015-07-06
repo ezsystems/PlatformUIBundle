@@ -210,6 +210,16 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 }
             });
 
+            Y.eZ.LocationViewDetailsTabView = Y.Base.create('locationViewDetailsTabView', Y.View, [], {}, {
+                ATTRS: {
+                    content: {},
+                    location: {},
+                    config: {},
+                    priority: {},
+                    languageCode: {},
+                }
+            });
+
             this.view = new Y.eZ.LocationViewView({
                 location: {},
                 content: {},
@@ -223,6 +233,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         tearDown: function () {
             delete Y.eZ.ActionBarView;
             delete Y.eZ.LocationViewViewTabView;
+            delete Y.eZ.LocationViewDetailsTabView;
             this.view.destroy();
             delete this.view;
         },
@@ -286,6 +297,48 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             Assert.isTrue(bubbled, "The location view should be a bubble target of the tab view");
         },
 
+        "Should set the content of the details tab view": function () {
+            Assert.areSame(
+                this.view.get('content'),
+                this.view.get('tabs')[1].get('content'),
+                'The content should have been set to the details tab view'
+            );
+        },
+
+        "Should set the location of the details tab view": function () {
+            Assert.areSame(
+                this.view.get('location'),
+                this.view.get('tabs')[1].get('location'),
+                'The location should have been set to the details tab view'
+            );
+        },
+
+        "Should set the config of the details tab view": function () {
+            Assert.areSame(
+                this.view.get('config'),
+                this.view.get('tabs')[1].get('config'),
+                'The config should have been set to the details tab view'
+            );
+        },
+
+        "Should set the priority of the details tab view": function () {
+            Assert.areSame(
+                2000,
+                this.view.get('tabs')[1].get('priority'),
+                'The priority should have been set to the details tab view'
+            );
+        },
+
+        "Should set the location view as a bubble target of the details tab view": function () {
+            var bubbled = false, evt = 'whatever';
+
+            this.view.on('*:' + evt, function () {
+                bubbled = true;
+            });
+            this.view.get('tabs')[1].fire(evt);
+
+            Assert.isTrue(bubbled, "The location view should be a bubble target of the details tab view");
+        },
 
         "Should set the content of the action bar": function () {
             Y.Assert.areSame(
