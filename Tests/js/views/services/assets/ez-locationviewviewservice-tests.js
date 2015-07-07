@@ -383,9 +383,12 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         setUp: function () {
             this.app = new Y.Mock();
             this.capi = {};
+            this.languageCode = 'pol-PL';
+            this.request = {params: {languageCode: this.languageCode}};
             this.service = new Y.eZ.LocationViewViewService({
                 app: this.app,
                 capi: this.capi,
+                request: this.request
             });
         },
 
@@ -398,8 +401,9 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
 
         "Should navigate to the content edit when receiving an editAction event": function () {
             var contentMock, contentId = 'aContentId',
-                editUri = '/i/want/to/edit/aContentId',
-                app = this.app;
+                editUri = '/i/want/to/edit/aContentId/pol-PL',
+                app = this.app,
+                that = this;
 
             contentMock = new Y.Test.Mock();
             Y.Mock.expect(contentMock, {
@@ -420,6 +424,11 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                         params.id,
                         contentId,
                         "routeUri should receive the content id in parameter"
+                    );
+                    Y.Assert.areEqual(
+                        params.languageCode,
+                        that.languageCode,
+                        "routeUri should receive the language code in parameter"
                     );
                     return editUri;
                 }

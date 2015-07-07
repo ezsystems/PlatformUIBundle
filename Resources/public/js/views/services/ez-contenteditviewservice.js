@@ -36,10 +36,12 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          */
         _load: function (next) {
             var request = this.get('request'),
-                service = this;
+                service = this,
+                languageCode = request.params.languageCode;
 
+            this.set('languageCode', languageCode);
             this.get('version').reset();
-            this._loadContent(request.params.id, function () {
+            this._loadContent(request.params.id, languageCode, function () {
                 var tasks,
                     version = service.get('version'),
                     content = service.get('content'),
@@ -67,10 +69,17 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @method _loadContent
          * @protected
          * @param {String} id
+         * @param {String} languageCode
          * @param {Function} callback
          */
-        _loadContent: function (id, callback) {
-            this._loadModel('content', id, "Could not load the content with id '" + id + "'", callback);
+        _loadContent: function (id, languageCode, callback) {
+            this._loadModel(
+                'content',
+                id,
+                {languageCode: languageCode},
+                "Could not load the content with id '" + id + "' and languageCode '" + languageCode + "'",
+                callback
+            );
         },
 
         /**
@@ -82,7 +91,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @param {Function} callback
          */
         _loadContentType: function (id, callback) {
-            this._loadModel('contentType', id, "Could not load the content type with id '" + id + "'", callback);
+            this._loadModel('contentType', id, {}, "Could not load the content type with id '" + id + "'", callback);
         },
 
         /**
@@ -94,7 +103,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @param {Function} callback
          */
         _loadLocation: function (id, callback) {
-            this._loadModel('location', id, "Could not load the location with id '" + id + "'", callback);
+            this._loadModel('location', id, {}, "Could not load the location with id '" + id + "'", callback);
         },
 
         /**
@@ -106,7 +115,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @param {Function} callback
          */
         _loadOwner: function (id, callback) {
-            this._loadModel('owner', id, "Could not load the user with id '" + id + "'", callback);
+            this._loadModel('owner', id, {}, "Could not load the user with id '" + id + "'", callback);
         },
 
         /**
@@ -116,14 +125,16 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @protected
          * @param {String} attr
          * @param {String} id
+         * @param {Object} options
          * @param {String} errorMsg
          * @param {Function} callback
          */
-        _loadModel: function (attr, modelId, errorMsg, callback) {
-            var model = this.get(attr);
+        _loadModel: function (attr, modelId, options, errorMsg, callback) {
+            var model = this.get(attr),
+                loadOptions = {api: this.get('capi')};
 
             model.set('id', modelId);
-            model.load({api: this.get('capi')}, Y.bind(function (error) {
+            model.load(Y.merge(loadOptions,options), Y.bind(function (error) {
                 if (!error) {
                     callback();
 
@@ -170,10 +181,10 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          */
         _redirectionUrl: function (value) {
             if ( !value ) {
-                return this.get('app').routeUri( 'viewLocation', {
-                    id: this.get('location').get('id'),
-                    languageCode: this.get('content').get('mainLanguageCode')
-                });
+                return this.get('app').routeUri(
+                    'viewLocation',
+                    {id: this.get('location').get('id'), languageCode: this.get('languageCode')}
+                );
             } else if ( typeof value === 'function' ) {
                 return value.call(this);
             }
@@ -276,11 +287,8 @@ YUI.add('ez-contenteditviewservice', function (Y) {
              *
              * @attribute languageCode
              * @type String
-             * @default eng-GB
              */
-            languageCode: {
-                value: 'eng-GB'
-            }
+            languageCode: {}
         }
     });
 });

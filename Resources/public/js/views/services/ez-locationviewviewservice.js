@@ -40,7 +40,10 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             var app = this.get('app');
 
             app.navigate(
-                app.routeUri('editContent', {id: e.content.get('id')})
+                app.routeUri('editContent', {
+                    id: e.content.get('id'),
+                    languageCode: this.get('request').params.languageCode
+                })
             );
         },
 
@@ -240,12 +243,13 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 type = this.get('contentType'),
                 discoveryService = this.get('capi').getDiscoveryService();
 
+            this.set('languageCode', request.params.languageCode);
             location.set('id', request.params.id);
             location.load(loadOptions, function (error) {
                 var tasks, endLoadPath, endMainContentLoad,
                     loadContentOptions = Y.merge(loadOptions);
 
-                loadContentOptions.languageCode = request.params.languageCode;
+                loadContentOptions.languageCode = service.get('languageCode');
                 if ( error ) {
                     service._error("Failed to load the location " + location.get('id'));
                     return;
@@ -456,7 +460,15 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                         return (a.location.get('depth') - b.location.get('depth'));
                     });
                 }
-            }
+            },
+
+            /**
+             * The language code in which the content is being viewed
+             *
+             * @attribute languageCode
+             * @type String
+             */
+            languageCode: {}
         }
     });
 });
