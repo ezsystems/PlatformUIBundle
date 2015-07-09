@@ -11,6 +11,12 @@ YUI.add('ez-sectionserversideview', function (Y) {
      */
     Y.namespace('eZ');
 
+    var events = {
+            '.ez-section-assign-button': {
+                'tap': '_pickSubtree'
+            },
+        };
+
     /**
      * The section server side view. It adds the handling of the section assign
      * button.
@@ -21,10 +27,8 @@ YUI.add('ez-sectionserversideview', function (Y) {
      * @extends eZ.ServerSideView
      */
     Y.eZ.SectionServerSideView = Y.Base.create('sectionServerSideView', Y.eZ.ServerSideView, [], {
-        events: {
-            '.ez-section-assign-button': {
-                'tap': '_pickSubtree'
-            },
+        initializer: function () {
+            this.events = Y.merge(this.events, events);
         },
 
         /**
