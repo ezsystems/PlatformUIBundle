@@ -1,7 +1,7 @@
 <ul class="ez-tree-level">
 {{#each children}}
     <li class="ez-tree-node{{#if state.leaf}} is-tree-node-leaf{{/if}} {{#if state.open}}is-tree-node-open{{else}}is-tree-node-close{{/if}}" data-node-id="{{id}}">
-        <a href="#" class="ez-tree-node-toggle ez-font-icon"></a><a href="{{path "viewLocation" id=data.location.id}}" class="ez-tree-navigate" data-icon="&#xe601;" title="{{ data.content.name }}">{{ data.content.name }}</a>
+        <a href="#" class="ez-tree-node-toggle ez-font-icon"></a><a href="{{path "viewLocation" id=data.location.id languageCode=data.content.mainLanguageCode}}" class="ez-tree-navigate" data-icon="&#xe601;" title="{{ data.content.name }}">{{ data.content.name }}</a>
     </li>
 {{/each}}
 </ul>

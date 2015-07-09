@@ -13,7 +13,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             this.rootLocationId = '/api/ezp/v2/content/locations/1/2';
             this.leafLocationId = '/api/ezp/v2/content/locations/1/2/67/68/111';
             this.contentTypeId = '/api/ezp/v2/content/types/38';
-            this.request = {};
+            this.request = {params: {languageCode: 'fre-FR'}};
             this.capiMock = new Y.Test.Mock();
             this.contentTypeServiceMock = new Y.Test.Mock();
             this.discoveryServiceMock = new Y.Test.Mock();
@@ -105,6 +105,11 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                         Y.Assert.areSame(
                             functionalTest.capiMock, options.api,
                             "The content load function should receive the CAPI"
+                        );
+                        Y.Assert.areEqual(
+                            functionalTest.request.params.languageCode,
+                            options.languageCode,
+                            "The content load function should receive the language"
                         );
                         callback(contentId === failContentId ? true : false);
                     }
@@ -739,6 +744,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             this.location = {};
             this.path = [];
             this.config = {};
+            this.request = {params: {languageCode: 'fre-FR'}};
             this.service = new Y.eZ.LocationViewViewService({
                 app: this.app,
                 capi: this.capi,
@@ -747,6 +753,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 location: this.location ,
                 path: this.path,
                 config: this.config,
+                request: this.request,
             });
         },
 
@@ -1004,6 +1011,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 parentLocation = new Mock(),
                 locationId = 'raul-gonzalez-blanco',
                 contentName = 'pierlugi-collina',
+                languageCode = 'eng-GB',
                 notified = false;
 
             this.service.set('path', [{location: parentLocation}]);
@@ -1017,8 +1025,17 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
 
             Mock.expect(content, {
                 method: 'get',
-                args: ['name'],
-                returns: contentName,
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === "name") {
+                        return contentName;
+                    } else if (attr === "mainLanguageCode") {
+                        return languageCode;
+                    } else {
+                        Y.fail("Unexpected parameter for content mock");
+                    }
+
+                }
             });
 
             Mock.expect(parentLocation, {
@@ -1082,6 +1099,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 that = this,
                 locationId = 'raul-gonzalez-blanco',
                 contentName = 'pierlugi-collina',
+                languageCode = "eng-GB",
                 eventFired = false;
 
             this.service.set('path', [{location: parentLocation}]);
@@ -1095,8 +1113,17 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
 
             Mock.expect(content, {
                 method: 'get',
-                args: ['name'],
-                returns: contentName,
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === "name") {
+                        return contentName;
+                    } else if (attr === "mainLanguageCode") {
+                        return languageCode;
+                    } else {
+                        Y.fail("Unexpected parameter for content mock");
+                    }
+
+                }
             });
 
             Mock.expect(parentLocation, {

@@ -7,7 +7,7 @@
                 This field is empty
             {{else}}
                 {{#if destinationContent }}
-                    <a class="ez-navigation-item" href="{{path "viewLocation" id=destinationContent.resources.MainLocation}}">{{ destinationContent.name }}</a></li>
+                    <a class="ez-navigation-item" href="{{path "viewLocation" id=destinationContent.resources.MainLocation languageCode=destinationContent.mainLanguageCode }}">{{ destinationContent.name }}</a></li>
                 {{else}}
                     {{#if loadingError}}
                         <p class="ez-asynchronousview-error ez-font-icon">

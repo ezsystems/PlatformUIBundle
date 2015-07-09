@@ -292,12 +292,8 @@ YUI.add('ez-locationviewview', function (Y) {
              *
              * @attribute languageCode
              * @type String
-             * @writeOnce
              */
-            languageCode: {
-                writeOnce: "initOnly",
-                value: 'eng-GB'
-            },
+            languageCode: {},
 
             /**
              * The action bar instance, by default an instance {{#crossLink
