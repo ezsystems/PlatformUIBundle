@@ -79,21 +79,18 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
             var app = this.get('app'),
                 viewParent;
 
-            viewParent = app.routeUri(
-                'viewLocation',
-                {
-                    id: this.get('parentLocation').get('id'),
-                    languageCode: this.get('parentContent').get('mainLanguageCode')
-                }
-            );
+            viewParent = app.routeUri('viewLocation', {
+                id: this.get('parentLocation').get('id'),
+                languageCode: this.get('parentContent').get('mainLanguageCode')
+            });
             this.set('discardRedirectionUrl', viewParent);
             this.set('closeRedirectionUrl', viewParent);
             this.set('publishRedirectionUrl', function () {
                 var content = this.get('content');
-                return app.routeUri(
-                    'viewLocation',
-                    {id: content.get('resources').MainLocation, languageCode: content.get('mainLanguageCode')}
-                );
+                return app.routeUri('viewLocation', {
+                    id: content.get('resources').MainLocation,
+                    languageCode: content.get('mainLanguageCode'),
+                });
             });
         },
     }, {

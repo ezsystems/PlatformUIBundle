@@ -145,10 +145,10 @@ YUI.add('ez-locationviewviewservice', function (Y) {
              */
             this.fire('sentToTrash', {location: location});
 
-            app.navigateTo(
-                'viewLocation',
-                {id: parentLocation.get('id'), languageCode: content.get('mainLanguageCode')}
-            );
+            app.navigateTo('viewLocation', {
+                id: parentLocation.get('id'),
+                languageCode: content.get('mainLanguageCode')
+            });
         },
 
         /**

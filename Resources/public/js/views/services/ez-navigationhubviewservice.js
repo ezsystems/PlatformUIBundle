@@ -60,7 +60,6 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                 discoveryService = api.getDiscoveryService(),
                 tasks = new Y.Parallel();
 
-            // Loading root
             discoveryService.getInfoObject('rootLocation', function (error, response){
                 var rootLocationId;
 
@@ -89,7 +88,6 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                 }));
             });
 
-            // Loading media root
             discoveryService.getInfoObject('rootMediaFolder', function (error, response){
                 var rootMediaLocationId;
 
@@ -373,7 +371,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         ATTRS: {
 
             /**
-             * Stores the root struct with it's `location` and `content`
+             * Stores the root struct with its `location` and `content`
              *
              * @attribute rootStruct
              * @type {Object}
@@ -385,7 +383,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
             },
 
             /**
-             * Stores the root media struct with it's `location` and `content`
+             * Stores the root media struct with its `location` and `content`
              *
              * @attribute rootMediaStruct
              * @type {Object}
