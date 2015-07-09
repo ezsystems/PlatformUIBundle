@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-serversideviewservice-tests', function (Y) {
-    var unitTest, rewriteTest, formTest,
+    var unitTest, rewriteTest, formTest, notificationTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     unitTest = new Y.Test.Case({
@@ -335,8 +335,135 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
         },
     });
 
+    notificationTest = new Y.Test.Case({
+        name: "eZ Server Side View Service notification test",
+
+        setUp: function () {
+            this.baseUri = '/Tests/js/views/services/';
+            this.app = new Y.Base();
+            this.app.set('baseUri', this.baseUri);
+            this.service = new Y.eZ.ServerSideViewService({
+                app: this.app
+            });
+        },
+
+        _notificationLoad: function (notificationState, notificationText) {
+            var pjaxResponse = '<div data-name="title"></div>' +
+                    '<div data-name="html"></div>' +
+                    '<ul data-name="notification">' +
+                    '<li data-state="' + notificationState +'">' + notificationText + '</li>' +
+                    '</ul>',
+                uri = 'echo/get/html/?response='+ Y.config.win.encodeURIComponent(pjaxResponse),
+                request = {'params': {'uri': uri}};
+
+            this.service.set('request', request);
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            this.app.destroy();
+            delete this.service;
+            delete this.app;
+            delete this.request;
+        },
+
+        "Should fire notify event with started state": function () {
+            var that = this,
+                notificationState = 'started',
+                notificationText = 'Emmanuel Olisadebe';
+
+            this._notificationLoad(notificationState, notificationText);
+
+            this.app.once('notify', function (e) {
+                that.resume(function () {
+                    Assert.areEqual(
+                        notificationState,
+                        e.notification.state,
+                        "The state should be passed to notification"
+                    );
+                    Assert.areEqual(
+                        notificationText,
+                        e.notification.text,
+                        "The text should be passed to notification"
+                    );
+                    Assert.areEqual(
+                        5,
+                        e.notification.timeout,
+                        "The timeout should be set to 5"
+                    );
+                });
+            });
+
+            this.service.load(function () {});
+            this.wait();
+        },
+
+        "Should fire notify event with done state": function () {
+            var that = this,
+                notificationState = 'done',
+                notificationText = 'Tomasz Hajto';
+
+            this._notificationLoad(notificationState, notificationText);
+
+            this.app.once('notify', function (e) {
+                that.resume(function () {
+                    Assert.areEqual(
+                        notificationState,
+                        e.notification.state,
+                        "The state should be passed to notification"
+                    );
+                    Assert.areEqual(
+                        notificationText,
+                        e.notification.text,
+                        "The text should be passed to notification"
+                    );
+                    Assert.areEqual(
+                        5,
+                        e.notification.timeout,
+                        "The timeout should be set to 5"
+                    );
+                });
+            });
+
+            this.service.load(function () {});
+            this.wait();
+        },
+
+        "Should fire notify event with error state": function () {
+            var that = this,
+                notificationState = 'error',
+                notificationText = 'Roman Kosecki';
+
+            this._notificationLoad(notificationState, notificationText);
+
+            this.app.once('notify', function (e) {
+                that.resume(function () {
+                    Assert.areEqual(
+                        notificationState,
+                        e.notification.state,
+                        "The state should be passed to notification"
+                    );
+                    Assert.areEqual(
+                        notificationText,
+                        e.notification.text,
+                        "The text should be passed to notification"
+                    );
+                    Assert.areEqual(
+                        0,
+                        e.notification.timeout,
+                        "The timeout should be set to 0"
+                    );
+                });
+            });
+
+            this.service.load(function () {});
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Server Side View Service tests");
     Y.Test.Runner.add(unitTest);
     Y.Test.Runner.add(rewriteTest);
     Y.Test.Runner.add(formTest);
+    Y.Test.Runner.add(notificationTest);
 }, '', {requires: ['test', 'ez-serversideviewservice', 'node', 'view']});

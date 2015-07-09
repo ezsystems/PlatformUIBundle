@@ -118,6 +118,7 @@ YUI.add('ez-serversideviewservice', function (Y) {
          */
         _parseResponse: function (response) {
             var frag = Y.Node.create(response.responseText),
+                that = this,
                 html, title;
 
             html = frag.one('[data-name="html"]');
@@ -129,6 +130,10 @@ YUI.add('ez-serversideviewservice', function (Y) {
             if ( title ) {
                 this.set('title', title.get('text'));
             }
+
+            frag.all('[data-name="notification"] li').each(function (notificationNode) {
+                that._responseNotify(notificationNode);
+            });
         },
 
         /**
@@ -158,6 +163,33 @@ YUI.add('ez-serversideviewservice', function (Y) {
                 link.setAttribute('href', app.routeUri('adminGenericRoute', {uri: href}));
             });
             return node;
+        },
+
+        /**
+         * Fires notify event basing on node
+         *
+         * @method _responseNotify
+         * @protected
+         * @param {Node} node
+         */
+        _responseNotify: function (node) {
+            var app = this.get('app'),
+                timeout = 5;
+
+            if (node.getAttribute('data-state') === 'error') {
+                timeout = 0;
+            }
+
+            // the app is not yet a bubble target of the view service,
+            // so we are using the app to fire the event
+            // see https://jira.ez.no/browse/EZP-23013
+            app.fire('notify', {
+                notification: {
+                    text: node.getContent(),
+                    state: node.getAttribute('data-state'),
+                    timeout: timeout
+                }
+            });
         },
 
         /**
