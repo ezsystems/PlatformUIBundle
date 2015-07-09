@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Content Type Edit Server Side view tests</title>
+</head>
+<body>
+
+<div class="container">
+    <input type="hidden" id="default_selection_item">
+    <button data-universaldiscovery-title="Pick root with UD"
+            class="ez-relation-pick-root-button"
+            data-relation-root-input-selector="#default_selection_item"
+            data-relation-selected-root-name-selector="#selected_item_name"
+            >Select item</button>
+    <div id="selected_item_name"></div>
+</div>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-contenttypeeditserversideview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-contenttypeeditserversideview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-contenttypeeditserversideview": {
+                requires: ['ez-serversideview', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/serverside/ez-contenttypeeditserversideview.js"
+            },
+            "ez-serversideview": {
+                requires: ['ez-view', 'ez-tabs', 'ez-selection-table', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/ez-serversideview.js"
+            },
+            "ez-tabs": {
+                requires: ['node'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-tabs.js"
+            },
+            "ez-selection-table": {
+                requires: ['node'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-selection-table.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-contenttypeeditserversideview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

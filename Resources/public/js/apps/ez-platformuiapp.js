@@ -119,6 +119,9 @@ YUI.add('ez-platformuiapp', function (Y) {
             sectionServerSideView: {
                 type: Y.eZ.SectionServerSideView,
             },
+            contentTypeEditServerSideView: {
+                type: Y.eZ.ContentTypeEditServerSideView,
+            },
         },
 
         /**
@@ -758,6 +761,15 @@ YUI.add('ez-platformuiapp', function (Y) {
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     service: Y.eZ.SectionServerSideViewService,
                     view: "sectionServerSideView",
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }, {
+                    name: "adminContentTypeEdit",
+                    regex: /\/admin\/(contenttype%2Fupdate%2F.*)/,
+                    keys: ['uri'],
+                    path: "/admin/:uri",
+                    sideViews: {'navigationHub': true, 'discoveryBar': false},
+                    service: Y.eZ.ServerSideViewService,
+                    view: "contentTypeEditServerSideView",
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "adminContentType",
