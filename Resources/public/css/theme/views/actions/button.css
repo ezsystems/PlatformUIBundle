@@ -62,6 +62,10 @@
     content: "\E61D";
 }
 
+.ez-view-buttonactionview .ez-action[data-action="translate"] .action-icon:before {
+    content: "\E9CA";
+}
+
 .ez-view-buttonactionview .ez-action[data-action="sendToTrash"] .action-icon:before {
     content: "\E615";
 }
