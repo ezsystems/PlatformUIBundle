@@ -26,6 +26,12 @@ YUI.add('ez-locationviewview', function (Y) {
             this.on('*:minimizeActionBarAction', this._handleMinimizeActionBar);
             this.after('changeTab', this._syncSelectedTab);
             this.after('selectedTabChange', this._syncTabSelectedAttr);
+
+            this.after('activeChange', function () {
+                Y.Array.each(this.get('tabs'), function (t) {
+                    t.set('active', this.get('active'));
+                }, this);
+            });
         },
 
         /**

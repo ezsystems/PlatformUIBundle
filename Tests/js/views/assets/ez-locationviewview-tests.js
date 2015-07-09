@@ -4,7 +4,7 @@
  */
 YUI.add('ez-locationviewview-tests', function (Y) {
     var test, tabsTest, eventsTest, destroyTest, attrsToSubViewsTest,
-        selectedTest,
+        selectedTest, forwardActiveTest,
         addTabViewTest, removeTabViewTest,
         Mock = Y.Mock, Assert = Y.Assert,
         _getModelMock = function (serialized) {
@@ -674,6 +674,66 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         },
     });
 
+    forwardActiveTest = new Y.Test.Case({
+        name: "eZ Location view view forward the active state test",
+
+        setUp: function () {
+            this.barMock = new Y.View();
+            this.tabs = [
+                new Y.View({
+                    identifier: "let-there-be-rock",
+                    title: "AC/DC - Let there be rock",
+                    priority: 1000,
+                    selected: true,
+                }),
+                new Y.View({
+                    identifier: "thunderstruck",
+                    title: "AC/DC - Thunderstruck",
+                    priority: 700,
+                    selected: false,
+                }),
+            ];
+            this.view = new Y.eZ.LocationViewView({
+                actionBar: this.barMock,
+                tabs: [],
+            });
+            Y.Array.each(this.tabs, function (tab) {
+                this.view.addTabView(tab);
+            }, this);
+        },
+
+        tearDown: function () {
+            this.barMock.destroy();
+            Y.Array.each(this.tabs, function (t) {
+                t.destroy();
+            });
+            this.view.destroy();
+        },
+
+        "Should forward the active state (true)": function () {
+            this.view.set('active', true);
+
+            Y.Array.each(this.view.get('tabs'), function (t) {
+                Assert.isTrue(
+                    t.get('active'),
+                    "The tab '" + t.get('identifier') + "' should be active"
+                );
+            });
+        },
+
+        "Should forward the active state (false)": function () {
+            this["Should forward the active state (true)"]();
+            this.view.set('active', false);
+
+            Y.Array.each(this.view.get('tabs'), function (t) {
+                Assert.isFalse(
+                    t.get('active'),
+                    "The tab '" + t.get('identifier') + "' should NOT be active"
+                );
+            });
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location View view tests");
     Y.Test.Runner.add(test);
     Y.Test.Runner.add(tabsTest);
@@ -683,4 +743,5 @@ YUI.add('ez-locationviewview-tests', function (Y) {
     Y.Test.Runner.add(addTabViewTest);
     Y.Test.Runner.add(removeTabViewTest);
     Y.Test.Runner.add(selectedTest);
+    Y.Test.Runner.add(forwardActiveTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-locationviewview']});
