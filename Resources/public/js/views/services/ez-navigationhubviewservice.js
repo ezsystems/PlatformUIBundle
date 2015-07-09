@@ -111,7 +111,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                     params.id = service.get('rootMediaStruct').location.get('id');
                     params.languageCode = service.get('rootMediaStruct').content.get('mainLanguageCode');
 
-                    service.getNavigationItem('content-structure').set(
+                    service.getNavigationItem('media-library').set(
                         'route',
                         {name: 'viewLocation', params: params}
                     );

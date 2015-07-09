@@ -626,7 +626,7 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             });
         },
 
-        _initContentMock: function (contentMock, fail) {
+        _initContentMock: function (contentMock, fail, languageCode) {
             Mock.expect(contentMock, {
                 method: 'set',
                 args: [Mock.Value.String, Mock.Value.String],
@@ -644,18 +644,29 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
                 method: 'get',
                 args: ['mainLanguageCode'],
                 callCount: 2,
-                returns: 'fre-FR',
+                returns: languageCode,
             });
         },
 
         "Load method retrieves root nodes": function () {
             this._initDiscoveryService(false);
             this._initLocationMock(this.locationRootMock, false);
-            this._initContentMock(this.contentRootMock, false);
+            this._initContentMock(this.contentRootMock, false, "fre-FR");
             this._initLocationMock(this.locationMediaMock, false);
-            this._initContentMock(this.contentMediaMock, false);
+            this._initContentMock(this.contentMediaMock, false, "fre-FR-media");
 
             this.service._load(function () {});
+
+            Assert.areSame(
+                "fre-FR",
+                this.service.getNavigationItem('content-structure').get('route').params.languageCode,
+                "content-structure has not been loaded properly"
+            );
+            Assert.areSame(
+                "fre-FR-media",
+                this.service.getNavigationItem('media-library').get('route').params.languageCode,
+                "media-library has not been loaded properly"
+            );
 
             Mock.verify(this.locationRootMock);
             Mock.verify(this.contentRootMock);
