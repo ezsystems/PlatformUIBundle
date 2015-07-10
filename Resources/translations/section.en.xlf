@@ -98,6 +98,18 @@
         <source>section.assign.contents</source>
         <target>Assign to contents</target>
       </trans-unit>
+      <trans-unit id="419a9a2e9f888d56b6aea6e4cbb09561">
+        <source>section.notification.created</source>
+        <target>The section "%sectionName%" was correctly created.</target>
+      </trans-unit>
+      <trans-unit id="b49dc3557e76c56e175d0e133afa05d4">
+        <source>section.notification.updated</source>
+        <target>The section "%sectionName%" was correctly saved.</target>
+      </trans-unit>
+      <trans-unit id="b93c76061ec3d7810f4175b3681a049e">
+        <source>section.notification.draft_removed</source>
+        <target>The section draft was removed.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

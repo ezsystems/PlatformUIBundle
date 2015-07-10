@@ -21,6 +21,8 @@ parameters:
     ezsystems.platformui.application_config.provider.anonymous_user_id.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\AnonymousUserId
     ezsystems.platformui.application_config.aggregator.class: EzSystems\PlatformUIBundle\ApplicationConfig\Aggregator
     ezsystems.platformui.application_config.provider.root_info.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\RootInfo
+    ezsystems.platformui.form_processor.section.class: EzSystems\PlatformUIBundle\Form\Processor\SectionFormProcessor
+
 services:
     ezsystems.platformui.twig.yui_extension:
         class: %ezsystems.platformui.twig.yui_extension.class%
@@ -99,9 +101,8 @@ services:
     ezsystems.platformui.controller.section:
         class: %ezsystems.platformui.controller.section.class%
         arguments:
+            - @ezrepoforms.action_dispatcher.section
             - @ezsystems.platformui.helper.section
-            - @ezsystems.platformui.form.type.section
-            - @translator
             - @ezsystems.platformui.form.type.section_list
             - @ezpublish.api.service.section
             - @ezsystems.platformui.form.type.section_delete
@@ -169,5 +170,11 @@ services:
     ezsystems.platformui.form_processor.role:
         class: %ezsystems.platformui.form_processor.role.class%
         arguments: [@router, @ezsystems.platformui.notification_pool, @ezpublish.api.service.role]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ezsystems.platformui.form_processor.section:
+        class: %ezsystems.platformui.form_processor.section.class%
+        arguments: [@ezsystems.platformui.notification_pool, @router]
         tags:
             - { name: kernel.event_subscriber }
