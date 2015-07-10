@@ -22,7 +22,6 @@ use Symfony\Component\HttpFoundation\Request;
 use EzSystems\PlatformUIBundle\Helper\SectionHelperInterface;
 use eZ\Publish\API\Repository\Exceptions\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class SectionController extends Controller
@@ -43,10 +42,6 @@ class SectionController extends Controller
     protected $sectionListType;
 
     /**
-     * @var \Symfony\Component\Routing\RouterInterface
-     */
-    private $router;
-
     /**
      * @var \Symfony\Component\Translation\TranslatorInterface
      */
@@ -65,7 +60,6 @@ class SectionController extends Controller
     public function __construct(
         SectionHelperInterface $sectionHelper,
         SectionType $sectionType,
-        RouterInterface $router,
         TranslatorInterface $translator,
         SectionListType $sectionListType,
         SectionService $sectionService,
@@ -73,7 +67,6 @@ class SectionController extends Controller
     ) {
         $this->sectionHelper = $sectionHelper;
         $this->sectionType = $sectionType;
-        $this->router = $router;
         $this->translator = $translator;
         $this->sectionListType = $sectionListType;
         $this->sectionService = $sectionService;
@@ -125,7 +118,7 @@ class SectionController extends Controller
     private function generateDeleteForm(SectionUpdateStruct $sectionUpdateStruct)
     {
         return $this->createForm($this->sectionDeleteType, $sectionUpdateStruct, [
-            'action' => $this->router->generate('admin_sectiondelete'),
+            'action' => $this->generateUrl('admin_sectiondelete'),
         ]);
     }
 
@@ -139,7 +132,7 @@ class SectionController extends Controller
     private function generateDeleteListForm(SectionList $sectionListToDelete)
     {
         return $this->createForm($this->sectionListType, $sectionListToDelete, [
-            'action' => $this->router->generate('admin_sectiondeletelist'),
+            'action' => $this->generateUrl('admin_sectiondeletelist'),
         ]);
     }
 

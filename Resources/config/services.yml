@@ -101,7 +101,6 @@ services:
         arguments:
             - @ezsystems.platformui.helper.section
             - @ezsystems.platformui.form.type.section
-            - @router
             - @translator
             - @ezsystems.platformui.form.type.section_list
             - @ezpublish.api.service.section
