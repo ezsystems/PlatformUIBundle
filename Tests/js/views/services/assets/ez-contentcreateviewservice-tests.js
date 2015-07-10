@@ -61,6 +61,8 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                     return that.viewParentLocation;
                 }
             });
+            this.languageCode = 'pol-PL';
+            this.request = {params: {languageCode: this.languageCode}};
             this.capi = {};
             this.service = new Y.eZ.ContentCreateViewService({
                 contentType: this.type,
@@ -68,6 +70,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 capi: this.capi,
                 parentLocation: this.parentLocation,
                 parentContent: this.parentContent,
+                request: this.request,
             });
         },
 

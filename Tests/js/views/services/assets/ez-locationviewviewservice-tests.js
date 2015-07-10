@@ -310,6 +310,16 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
     unitTest = new Y.Test.Case({
         name: "eZ Location View View Service unit test",
 
+        setUp: function () {
+            this.languageCode = 'pol-PL';
+            this.request = {params: {languageCode: this.languageCode}};
+        },
+
+        tearDown: function () {
+            delete this.request;
+            delete this.languageCode;
+        },
+
         "Should sort path by location depth": function () {
             var service,
                 pathInput = [], pathOut, i;
@@ -331,7 +341,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 content: {}
             });
 
-            service = new Y.eZ.LocationViewViewService();
+            service = new Y.eZ.LocationViewViewService({request: this.request});
             service.set('path', pathInput);
             pathOut = service.get('path');
 
@@ -357,7 +367,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 }
             });
 
-            service = new TestService();
+            service = new TestService({request: this.request});
             Y.Assert.isInstanceOf(Y.eZ.Location, service.testNewLocation());
             Y.Assert.areSame(id, service.testNewLocation({'id': id}).get('id'));
         },
@@ -371,7 +381,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 }
             });
 
-            service = new TestService();
+            service = new TestService({request: this.request});
             Y.Assert.isInstanceOf(Y.eZ.Content, service.testNewContent());
             Y.Assert.areSame(id, service.testNewContent({'id': id}).get('id'));
         }
@@ -383,9 +393,12 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         setUp: function () {
             this.app = new Y.Mock();
             this.capi = {};
+            this.languageCode = 'pol-PL';
+            this.request = {params: {languageCode: this.languageCode}};
             this.service = new Y.eZ.LocationViewViewService({
                 app: this.app,
                 capi: this.capi,
+                request: this.request,
             });
         },
 
@@ -398,7 +411,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
 
         "Should navigate to the content edit when receiving an editAction event": function () {
             var contentMock, contentId = 'aContentId',
-                editUri = '/i/want/to/edit/aContentId',
+                editUri = '/i/want/to/edit/aContentId/pol-PL',
                 app = this.app;
 
             contentMock = new Y.Test.Mock();
@@ -449,6 +462,8 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             this.finalLocation = 'finalLocation/4/5/6/7';
             this.parentContentName = 'Dad';
             this.error = false;
+            this.languageCode = 'pol-PL';
+            this.request = {params: {languageCode: this.languageCode}};
 
             Y.Mock.expect(this.responseMock, {
                 method: 'getHeader',
@@ -497,7 +512,8 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             this.service = new Y.eZ.LocationViewViewService({
                 app: this.app,
                 capi: this.capiMock,
-                location: this.locationMock
+                location: this.locationMock,
+                request: this.request
             });
         },
 
@@ -788,10 +804,13 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             this.app = new Mock();
             this.capi = new Mock();
             this.location = new Mock();
+            this.languageCode = 'pol-PL';
+            this.request = {params: {languageCode: this.languageCode}};
             this.service = new Y.eZ.LocationViewViewService({
                 app: this.app,
                 capi: this.capi,
                 location: this.location,
+                request: this.request
             });
         },
 

@@ -26,6 +26,9 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             this.on('*:editAction', this._editContent);
             this.on('*:sendToTrashAction', this._sendContentToTrashConfirmBox);
             this.on('*:moveAction', this._selectLocation);
+            this.after('*:requestChange', this._setLanguageCode);
+
+            this._setLanguageCode();
         },
 
         /**
@@ -40,7 +43,10 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             var app = this.get('app');
 
             app.navigate(
-                app.routeUri('editContent', {id: e.content.get('id')})
+                app.routeUri('editContent', {
+                    id: e.content.get('id'),
+                    languageCode: this.get('languageCode')
+                })
             );
         },
 
@@ -245,7 +251,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 var tasks, endLoadPath, endMainContentLoad,
                     loadContentOptions = Y.merge(loadOptions);
 
-                loadContentOptions.languageCode = request.params.languageCode;
+                loadContentOptions.languageCode = service.get('languageCode');
                 if ( error ) {
                     service._error("Failed to load the location " + location.get('id'));
                     return;
@@ -373,6 +379,16 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             });
         },
 
+        /**
+         * Set languageCode attribute basing on parameter from request
+         *
+         * @method _setLanguageCode
+         * @protected
+         */
+        _setLanguageCode: function () {
+            this.set('languageCode', this.get('request').params.languageCode);
+        },
+
         _getViewParameters: function () {
             return {
                 content: this.get('content'),
@@ -456,7 +472,15 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                         return (a.location.get('depth') - b.location.get('depth'));
                     });
                 }
-            }
+            },
+
+            /**
+             * The language code in which the content is being viewed
+             *
+             * @attribute languageCode
+             * @type String
+             */
+            languageCode: {}
         }
     });
 });

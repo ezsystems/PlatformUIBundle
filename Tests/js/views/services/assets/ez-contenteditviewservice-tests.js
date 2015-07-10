@@ -12,7 +12,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         setUp: function () {
             this.viewLocationRoute = '/view/something';
             this.locationId = 'something';
-            this.request = {params: {id: "/api/ezp/v2/content/objects/59"}};
+            this.languageCode = 'pol-PL';
+            this.request = {params: {id: "/api/ezp/v2/content/objects/59", languageCode: this.languageCode}};
             this.capiMock = new Y.Test.Mock();
             this.resources = {
                 'Owner': '/api/ezp/v2/user/users/14',
@@ -28,6 +29,44 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             this.version = new Y.Test.Mock();
             this.app = new Y.Test.Mock();
             this.fields = {};
+        },
+
+        "Should load content in active language": function () {
+            var service,
+                that = this;
+
+            Y.Mock.expect(this.version, {
+                method: 'reset'
+            });
+            Y.Mock.expect(this.content, {
+                method: 'set',
+                args: ['id', this.request.params.id]
+            });
+
+            Y.Mock.expect(this.content, {
+                method: 'load',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    Assert.areEqual(
+                        that.languageCode,
+                        options.languageCode,
+                        "Language code should be the same as in request"
+                    );
+                }
+            });
+
+            service = new Y.eZ.ContentEditViewService({
+                capi: this.capiMock,
+                request: this.request,
+                app: this.app,
+                location: this.mainLocation,
+                content: this.content,
+                version: this.version,
+            });
+
+            service.load();
+
+            Y.Mock.verify(this.content);
         },
 
         "Should load the content, the location, the content type and the owner": function () {
@@ -272,6 +311,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
 
         setUp: function () {
             this.viewLocationRoute = '/view/something';
+            this.languageCode = 'pol-PL';
+            this.request = {params: {languageCode: this.languageCode}};
 
             this.app = new Y.Mock();
 
@@ -283,6 +324,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             this.service = new Y.eZ.ContentEditViewService({
                 app: this.app,
                 closeRedirectionUrl: this.viewLocationRoute,
+                request: this.request
             });
         },
 
@@ -303,9 +345,12 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         setUp: function () {
             this.location = new Mock();
             this.app = new Mock();
+            this.languageCode = 'pol-PL';
+            this.request = {params: {languageCode: this.languageCode}};
             this.service = new Y.eZ.ContentEditViewService({
                 app: this.app,
                 location: this.location,
+                request: this.request
             });
         },
 
@@ -415,6 +460,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             this.owner = {};
             this.version = {};
             this.config = {};
+            this.languageCode = 'pol-PL';
+            this.request = {params: {languageCode: this.languageCode}};
             this.service = new Y.eZ.ContentEditViewService({
                 content: this.content,
                 contentType: this.contentType,
@@ -422,6 +469,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 config: this.config,
                 owner: this.owner,
                 version: this.version,
+                request: this.request
             });
         },
 
