@@ -58,20 +58,6 @@ trait CommonActions
     }
 
     /**
-     * @Given I over (on) the navigation zone :zone
-     * Over on a PlatformUI menu zone
-     *
-     * @param  string   $button     Text of the element to click
-     */
-    public function overNavigationZone($zone)
-    {
-        $selector = ".ez-zone-name";
-        $jsArgs = JsHelper::generateFuncArgs($zone, $selector);
-        $jsCode = "return BDD.mouseOverElementByText( $jsArgs );";
-        $this->execJavascript($jsCode);
-    }
-
-    /**
      * @Given I click (on) the navigation item :item
      * Click on a PlatformUI sub-menu option
      *

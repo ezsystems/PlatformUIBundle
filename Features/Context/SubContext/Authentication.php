@@ -10,7 +10,6 @@
 
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
-use EzSystems\PlatformUIBundle\Features\Helper\JavaScript as JsHelper;
 use Behat\Mink\WebAssert;
 
 trait Authentication
