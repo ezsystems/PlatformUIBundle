@@ -82,6 +82,32 @@
 
             <div class="pure-u-1">
                 <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="pure-button ez-button{% if not can_edit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'content_type.edit'|trans }}</a>
+                <form method="post" action="{{ path('admin_contenttypeRemove', {'contentTypeId': content_type.id}) }}">
+                    <button class="ez-button-remove ez-button pure-button ez-confirm-action{% if not can_remove %} pure-button-disabled{% endif %}"
+                            data-icon="&#xe606;"
+                            data-confirmbox-title="{{ "content_type.remove_dialog_title"|trans({ "%content_type_name%": content_type_name }) }}"
+                            data-confirmbox-details-selector=".ez-confirmbox-content-type-removal-details">
+                        {{ 'content_type.remove'|trans }}
+                    </button>
+                </form>
+                <div class="ez-confirmbox-content-type-removal-details hidden">
+                    <p>
+                    {% if content_count > 0 %}
+                        {{
+                            "content_type.remove_dialog_text_has_content"|trans({
+                                "%content_type_count%": "<b>" ~ content_count ~ "</b>",
+                                "%content_type_name%": content_type_name
+                            })
+                        }}
+                    {% else %}
+                        {{
+                            "content_type.remove_dialog_text_no_content"|trans({
+                                "%content_type_name%": content_type_name
+                            })
+                        }}
+                    {% endif %}
+                    </p>
+                </div>
             </div>
         </div>
     </section>

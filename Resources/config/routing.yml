@@ -109,3 +109,8 @@ admin_contenttypeUpdate:
     defaults:
         _controller: ezsystems.platformui.controller.content_type:updateContentTypeAction
         languageCode: ~
+
+admin_contenttypeRemove:
+    path: /contenttype/remove/{contentTypeId}
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:removeContentTypeAction

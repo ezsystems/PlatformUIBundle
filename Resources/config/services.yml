@@ -143,6 +143,7 @@ services:
             - @ezpublish.api.service.user
             - @ezrepoforms.action_dispatcher.content_type
             - @ezrepoforms.field_type_form_mapper.registry
+            - @ezpublish.api.service.content
         calls:
             - [setPrioritizedLanguages, ["$languages$"]]
 

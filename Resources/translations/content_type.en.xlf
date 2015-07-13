@@ -95,16 +95,32 @@
         <target>Default children sorting</target>
       </trans-unit>
       <trans-unit id="dc20866b714ed1642b9bce242bf460fd" resname="content_type.notification.draft_updated">
-          <source>content_type.notification.draft_updated</source>
-          <target>The ContentType draft was successfully updated.</target>
+        <source>content_type.notification.draft_updated</source>
+        <target>The ContentType draft was successfully updated.</target>
       </trans-unit>
       <trans-unit id="9706f09166fa56162a4558261b87a9e2" resname="content_type.notification.draft_removed">
-          <source>content_type.notification.draft_removed</source>
-          <target>The ContentType draft was successfully removed.</target>
+        <source>content_type.notification.draft_removed</source>
+        <target>The ContentType draft was successfully removed.</target>
       </trans-unit>
       <trans-unit id="ced84ba84fbde36bb688787c0562b1da" resname="content_type.notification.published">
-          <source>content_type.notification.published</source>
-          <target>The ContentType draft was successfully updated and published. Related Content has also been updated.</target>
+        <source>content_type.notification.published</source>
+        <target>The ContentType draft was successfully updated and published. Related Content has also been updated.</target>
+      </trans-unit>
+      <trans-unit id="a3d28939ac7922d373b06e94b1a2cde2" resname="content_type.remove">
+        <source>content_type.remove</source>
+        <target>Remove</target>
+      </trans-unit>
+      <trans-unit id="c0346eceb738c0f585e439c174e292b2" resname="content_type.remove_dialog_title">
+        <source>content_type.remove_dialog_title</source>
+        <target>Do you really want to remove the '%content_type_name%' content type?</target>
+      </trans-unit>
+      <trans-unit id="7fd3becbb9348e2be1614136d8ac0064" resname="content_type.remove_dialog_text_has_content">
+        <source>content_type.remove_dialog_text_has_content</source>
+        <target>The %content_type_count% '%content_type_name%' instances will be permanently removed by this operation.</target>
+      </trans-unit>
+      <trans-unit id="454d92c1b57f555b393689d79b075764" resname="content_type.remove_dialog_text_no_content">
+        <source>content_type.remove_dialog_text_no_content</source>
+        <target>No '%content_type_name%' instances will be removed by this operation, as none exist.</target>
       </trans-unit>
     </body>
   </file>
