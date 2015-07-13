@@ -11,6 +11,12 @@ YUI.add('ez-contenttypeeditserversideview', function (Y) {
      */
     Y.namespace('eZ');
 
+    var events = {
+            '.ez-relation-pick-root-button': {
+                'tap': '_pickRoot'
+            },
+        };
+
     /**
      * The content type server side view.
      *
@@ -20,10 +26,8 @@ YUI.add('ez-contenttypeeditserversideview', function (Y) {
      * @extends eZ.ServerSideView
      */
     Y.eZ.ContentTypeEditServerSideView = Y.Base.create('contentTypeEditServerSideView', Y.eZ.ServerSideView, [], {
-        events: {
-            '.ez-relation-pick-root-button': {
-                'tap': '_pickRoot'
-            },
+        initializer: function () {
+            this.events = Y.merge(this.events, events);
         },
 
         /**
