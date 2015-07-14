@@ -14,6 +14,12 @@
                 </ul>
                 <p class="ez-description">{{contentType.descriptions.[eng-GB]}}</p>
             </div>
+            <div class="ez-content-language-container">
+                <div class="ez-content-language-indicator">
+                    <span class="ez-content-current-language">{{ languageCode }}</span>
+                    <a href="#" class="ez-change-content-language-link">(change)</a>
+                </div>
+            </div>
         </header>
         <div class="ez-contenteditformview-container"></div>
     </div>

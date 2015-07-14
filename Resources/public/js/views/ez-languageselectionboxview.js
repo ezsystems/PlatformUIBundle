@@ -14,8 +14,8 @@ YUI.add('ez-languageselectionboxview', function (Y) {
     var LANGUAGE_SELECTED = 'languageSelected',
         CANCEL_LANGUAGE_SELECTION = 'cancelLanguageSelection',
         BASE_TRANSLATION_AVAILABLE_CLASS = 'is-base-translation-allowed',
-        BASE_TRANSLATIONS_LIST_VISIBLE_CLASS = 'is-base-translations-list-visible',
-        TRANSLATION_HIGHLIGHT_CLASS = 'is-translation-selected';
+        BASE_LANGUAGES_LIST_VISIBLE_CLASS = 'is-base-languages-list-visible',
+        TRANSLATION_HIGHLIGHT_CLASS = 'is-language-selected';
 
     /**
      * The language selection box view.
@@ -33,11 +33,11 @@ YUI.add('ez-languageselectionboxview', function (Y) {
             '.ez-languageselectionbox-confirm': {
                 'tap': '_confirmLanguageSelection',
             },
-            '.ez-new-translation': {
-                'tap': '_selectNewTranslation'
+            '.ez-language-element': {
+                'tap': '_selectLanguage'
             },
-            '.ez-base-translation': {
-                'tap': '_selectBaseTranslation'
+            '.ez-base-language': {
+                'tap': '_selectBaseLanguage'
             },
             '.ez-base-translation-checkbox': {
                 'change': '_toggleBaseTranslation'
@@ -57,12 +57,15 @@ YUI.add('ez-languageselectionboxview', function (Y) {
                     this.render();
                 }
             });
+            this.on('translationModeChange', function (e) {
+                this.render();
+            });
             this.on('canBaseTranslationChange', function (e) {
                 this._uiSetBaseTranslationVisibility(e.newVal);
             });
             this.on('selectedLanguageCodeChange', function (e) {
                 if ( this.get('active') ) {
-                    this._uiHighlightTranslation('new', e.newVal);
+                    this._uiHighlightLanguage(e.newVal, false);
                 }
             });
             this.after('selectedLanguageCodeChange', function (e) {
@@ -70,7 +73,7 @@ YUI.add('ez-languageselectionboxview', function (Y) {
             });
             this.on('selectedBaseLanguageCodeChange', function (e) {
                 if ( this.get('active') ) {
-                    this._uiHighlightTranslation('base', e.newVal);
+                    this._uiHighlightLanguage(e.newVal, true);
                 }
             });
             this.on('baseTranslationChange', function (e) {
@@ -81,26 +84,26 @@ YUI.add('ez-languageselectionboxview', function (Y) {
         },
 
         /**
-         * Tap event handler on language from new translations list
+         * Tap event handler on language from languages list
          *
-         * @method _selectNewTranslation
+         * @method _selectLanguage
          * @protected
          * @param {EventFacade} e
          */
-        _selectNewTranslation: function (e) {
+        _selectLanguage: function (e) {
             var languageCode = e.target.getAttribute('data-languagecode');
 
             this.set('selectedLanguageCode', languageCode);
         },
 
         /**
-         * Tap event handler on language from existing translations list
+         * Tap event handler on language from base languages list
          *
-         * @method _selectBaseTranslation
+         * @method _selectBaseLanguage
          * @protected
          * @param {EventFacade} e
          */
-        _selectBaseTranslation: function (e) {
+        _selectBaseLanguage: function (e) {
             var languageCode = e.target.getAttribute('data-languagecode');
 
             this.set('selectedBaseLanguageCode', languageCode);
@@ -171,21 +174,29 @@ YUI.add('ez-languageselectionboxview', function (Y) {
         },
 
         /**
-         * Highlights the selected translation
+         * Highlights the selected language
          *
-         * @method _uiHighlightTranslation
+         * @method _uiHighlightLanguage
          * @protected
-         * @param {String} section
          * @param {String} languageCode
+         * @param {Boolean} baseLanguage defines if language should be highlighted in base languages list
          */
-        _uiHighlightTranslation: function (section, languageCode) {
+        _uiHighlightLanguage: function (languageCode, baseLanguage) {
+            var languageElementSelector;
+
+            if (baseLanguage) {
+                languageElementSelector = '.ez-base-language';
+            } else {
+                languageElementSelector = '.ez-language-element';
+            }
+
             this.get('container')
-                .all('.ez-' + section + '-translation')
+                .all(languageElementSelector)
                 .removeClass(TRANSLATION_HIGHLIGHT_CLASS);
 
             if ( languageCode !== null ) {
                 this.get('container')
-                    .one('.ez-' + section + '-translation[data-languagecode="' + languageCode + '"]')
+                    .one(languageElementSelector + '[data-languagecode="' + languageCode + '"]')
                     .addClass(TRANSLATION_HIGHLIGHT_CLASS);
             }
         },
@@ -203,9 +214,9 @@ YUI.add('ez-languageselectionboxview', function (Y) {
 
             baseCheckbox.set('checked', baseTranslation);
             if (baseTranslation) {
-                c.addClass(BASE_TRANSLATIONS_LIST_VISIBLE_CLASS);
+                c.addClass(BASE_LANGUAGES_LIST_VISIBLE_CLASS);
             } else {
-                c.removeClass(BASE_TRANSLATIONS_LIST_VISIBLE_CLASS);
+                c.removeClass(BASE_LANGUAGES_LIST_VISIBLE_CLASS);
             }
         },
 
@@ -240,12 +251,18 @@ YUI.add('ez-languageselectionboxview', function (Y) {
         },
 
         render: function () {
-            var container = this.get('container');
+            var container = this.get('container'),
+                languages;
 
+            if (this.get('translationMode')) {
+                languages = this.get('newTranslations');
+            } else {
+                languages = this.get('referenceLanguageList');
+            }
             container.setHTML(this.template({
                 title: this.get('title'),
-                newTranslations: this.get('newTranslations'),
-                existingTranslations: this.get('existingTranslations'),
+                languages: languages,
+                referenceLanguageList: this.get('referenceLanguageList'),
                 canBaseTranslation: this.get('canBaseTranslation'),
             }));
 
@@ -293,19 +310,19 @@ YUI.add('ez-languageselectionboxview', function (Y) {
         },
 
         /**
-         * Returns list of languages that are available but content doesn't have translation
-         * in these languages
+         * Returns list of languages that are available but are not included in list passed
+         * in `referenceLanguageList` attribute
          *
          * @protected
          * @method _getNewTranslations
          * @return {Array}
          */
         _getNewTranslations: function () {
-            var translations = Y.Object.keys(this.get('availableTranslations')),
-                existingTranslations = this.get('existingTranslations');
+            var systemLanguages = Y.Object.keys(this.get('systemLanguageList')),
+                referenceLanguageList = this.get('referenceLanguageList');
 
-            return Y.Array.reject(translations, function (value) {
-                return existingTranslations.indexOf(value) >= 0;
+            return Y.Array.reject(systemLanguages, function (value) {
+                return referenceLanguageList.indexOf(value) >= 0;
             });
         },
     }, {
@@ -344,6 +361,14 @@ YUI.add('ez-languageselectionboxview', function (Y) {
             },
 
             /**
+             * List of active system languages. List contains language objects indexed by language code.
+             *
+             * @attribute systemLanguageList
+             * @type {Object}
+             */
+            systemLanguageList: {},
+
+            /**
              * List of available new translations
              *
              * @attribute newTranslations
@@ -354,13 +379,15 @@ YUI.add('ez-languageselectionboxview', function (Y) {
             },
 
             /**
-             * Already existing translations of content
+             * List of languages used as reference. When in translation mode, this is the list of existing
+             * translations and it is displayed as list of base languages on which new translation can be based.
+             * If not in translation mode, this is the list of languages that can be picked in.
              *
-             * @attribute existingTranslations
+             * @attribute referenceLanguageList
              * @type {Array|Null}
              * @default null
              */
-            existingTranslations: {
+            referenceLanguageList: {
                 value: null
             },
 
@@ -407,6 +434,21 @@ YUI.add('ez-languageselectionboxview', function (Y) {
              */
             selectedBaseLanguageCode: {
                 value: null
+            },
+
+            /**
+             * Translation mode flag. In translation mode, the referenceLanguageList attribute holds
+             * the list of existing translations, so the language selection box will allow to select
+             * the system language list but not yet the reference list. By default, the translation
+             * mode is disabled, the user will be able to select a language from the list in the
+             * referenceLanguageList attribute.
+             *
+             * @attribute translationMode
+             * @type {Boolean}
+             * @default false
+             */
+            translationMode: {
+                value: false
             }
         },
     });

@@ -42,3 +42,8 @@
 .ez-view-contenteditview .ez-description {
     font-size: 0.8em;
 }
+
+.ez-view-contenteditview .ez-change-content-language-link {
+    font-size: 80%;
+    color: #54A2D8;
+}

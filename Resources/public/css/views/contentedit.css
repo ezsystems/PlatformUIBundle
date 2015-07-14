@@ -76,3 +76,19 @@
     position: fixed;
     z-index: 1025;
 }
+
+.ez-view-contenteditview .ez-content-language-container {
+    display: block;
+    position:relative;
+}
+
+.ez-view-contenteditview .ez-content-language-indicator {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+}
+
+.ez-view-contenteditview .ez-change-content-language-link {
+    margin-left: 0.5em;
+}

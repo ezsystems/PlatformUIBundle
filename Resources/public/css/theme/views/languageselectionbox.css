@@ -40,15 +40,15 @@
     border-radius: 3px;
 }
 
-.ez-view-languageselectionboxview .ez-translation {
+.ez-view-languageselectionboxview .ez-language {
     cursor: pointer;
 }
 
-.ez-view-languageselectionboxview .ez-translation:hover {
+.ez-view-languageselectionboxview .ez-language:hover {
     background: #DDF5FF;
 }
 
-.ez-view-languageselectionboxview .ez-translation.is-translation-selected {
+.ez-view-languageselectionboxview .ez-language.is-language-selected {
     background: #CCE4FF;
 }
 

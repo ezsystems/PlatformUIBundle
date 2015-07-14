@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenteditview-tests', function (Y) {
-    var viewTest, titleTest, eventTest, attrsToFormViewAndActionBarTest;
+    var viewTest, titleTest, eventTest, domEventTest, attrsToFormViewAndActionBarTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Content Edit View test",
@@ -23,6 +23,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             this.formViewContents = '<form></form>';
             this.actionBar = new Y.Mock();
             this.actionBarContents = '<menu></menu>';
+            this.languageCode = 'eng-GB';
 
             Y.Mock.expect(this.formView, {
                 method: 'get',
@@ -70,7 +71,8 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 version: this.version,
                 owner: this.owner,
                 formView: this.formView,
-                actionBar: this.actionBar
+                actionBar: this.actionBar,
+                languageCode: this.languageCode
             });
             Y.Mock.expect(this.actionBar, {
                 method: 'removeTarget',
@@ -116,12 +118,13 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(5, Y.Object.keys(variables).length, "The template should receive 5 variables");
+                Y.Assert.areEqual(6, Y.Object.keys(variables).length, "The template should receive 6 variables");
                 Y.Assert.isObject(variables.content, "content should be available in the template and should be an object");
                 Y.Assert.isObject(variables.contentType, "contentType should be available in the template and should be an object");
                 Y.Assert.isObject(variables.mainLocation, "mainLocation should be available in the template and should be an object");
                 Y.Assert.isObject(variables.owner, "owner should be available in the template and should be an object");
                 Y.Assert.isObject(variables.version, "version should be available in the template and should be an object");
+                Y.Assert.isString(variables.languageCode, "languageCode should be available in the template and should be a string");
 
                 return  origTpl.call(this, variables);
             };
@@ -594,10 +597,132 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         }
     });
 
+    domEventTest = new Y.Test.Case({
+        name: "eZ Content Edit View DOM event tests",
+
+        setUp: function () {
+            var mockConf = {
+                    method: 'toJSON',
+                    returns: {}
+                };
+
+            Y.Array.each(['content', 'contentType', 'owner', 'mainLocation', 'version'], function (mock) {
+                this[mock] = new Y.Mock();
+                Y.Mock.expect(this[mock], mockConf);
+            }, this);
+
+            this.formView = new Y.Mock();
+            this.formViewContents = '<form></form>';
+            this.actionBar = new Y.Mock();
+            this.actionBarContents = '<menu></menu>';
+            this.languageCode = 'eng-GB';
+
+            Y.Mock.expect(this.formView, {
+                method: 'get',
+                args: ['container'],
+                returns: this.formViewContents
+            });
+
+            Y.Mock.expect(this.formView, {
+                method: 'addTarget',
+                args: [Y.Mock.Value.Object],
+                returns: true
+            });
+            Y.Mock.expect(this.formView, {
+                method: 'render',
+                returns: this.formView
+            });
+            Y.Mock.expect(this.formView, {
+                method: 'destroy'
+            });
+
+            Y.Mock.expect(this.actionBar, {
+                method: 'get',
+                args: ['container'],
+                returns: this.actionBarContents
+            });
+
+            Y.Mock.expect(this.actionBar, {
+                method: 'addTarget',
+                args: [Y.Mock.Value.Object],
+                returns: true
+            });
+            Y.Mock.expect(this.actionBar, {
+                method: 'render',
+                returns: this.actionBar
+            });
+            Y.Mock.expect(this.actionBar, {
+                method: 'destroy'
+            });
+
+            this.view = new Y.eZ.ContentEditView({
+                container: '.container',
+                content: this.content,
+                contentType: this.contentType,
+                mainLocation: this.mainLocation,
+                version: this.version,
+                owner: this.owner,
+                formView: this.formView,
+                actionBar: this.actionBar,
+                languageCode: this.languageCode
+            });
+            Y.Mock.expect(this.actionBar, {
+                method: 'removeTarget',
+                args: [this.view]
+            });
+            Y.Mock.expect(this.formView, {
+                method: 'removeTarget',
+                args: [this.view]
+            });
+
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should fire `changeLanguage` event": function () {
+            var changeLanguageFired = false,
+                changeLanguageLink = this.view.get('container').one('.ez-change-content-language-link'),
+                that = this;
+
+            this.view.on('changeLanguage', function (e) {
+                changeLanguageFired = true;
+            });
+
+            changeLanguageLink.simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.Assert.isTrue(
+                        changeLanguageFired,
+                        "The changeLanguage event should have been fired"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should update language indicator": function () {
+            var changedLanguageCode = 'pol-PL',
+                languageIndicator = this.view.get('container').one('.ez-content-current-language');
+
+            this.view.set('active', true);
+            this.view.set('languageCode', changedLanguageCode);
+            
+            Y.Assert.areEqual(
+                languageIndicator.getHTML(),
+                changedLanguageCode,
+                "The language indicator should be updated"
+            );
+        }
+    });
+
     Y.Test.Runner.setName("eZ Content Edit View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(titleTest);
     Y.Test.Runner.add(eventTest);
+    Y.Test.Runner.add(domEventTest);
     Y.Test.Runner.add(attrsToFormViewAndActionBarTest);
 
 }, '', {requires: ['test', 'node-event-simulate', 'ez-contenteditview']});

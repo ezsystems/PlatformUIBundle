@@ -53,7 +53,7 @@
     padding: 10px 0;
 }
 
-.ez-view-languageselectionboxview .ez-translation {
+.ez-view-languageselectionboxview .ez-language {
     float: left;
     width: 12em;
     margin: 0 1em;
@@ -74,7 +74,7 @@
     display: block;
 }
 
-.ez-view-languageselectionboxview.is-base-translations-list-visible .ez-languageselectionbox-existingtranslations-container {
+.ez-view-languageselectionboxview.is-base-languages-list-visible .ez-languageselectionbox-existingtranslations-container {
     display: block;
 }
 

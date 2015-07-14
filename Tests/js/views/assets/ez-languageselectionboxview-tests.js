@@ -5,7 +5,7 @@
 YUI.add('ez-languageselectionboxview-tests', function (Y) {
     var renderTest, domEventTest, eventHandlersTest, confirmButtonStateTest, eventsTest,
         Assert = Y.Assert,
-        availableTranslations = {
+        systemLanguageList = {
             'eng-GB': {id: 2, languageCode: 'eng-GB', name: 'English (United Kingdom)', enabled: true},
             'nno-NO': {id: 4, languageCode: 'nno-NO', name: 'Norwegian (Nynorsk)', enabled: true},
             'fre-FR': {id: 128, languageCode: 'fre-FR', name: 'French (France)', enabled: true},
@@ -18,14 +18,14 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
 
         setUp: function () {
             this.title = 'Artur Boruc';
-            this.existingTranslations = ['eng-GB', 'nno-NO'];
+            this.referenceLanguageList = ['eng-GB', 'nno-NO'];
             this.expectedNewTranslations = ['fre-FR', 'pol-PL', 'ger-DE'];
             this.canBaseTranslation = true;
             this.view = new Y.eZ.LanguageSelectionBoxView({
                 container: '.container',
                 title: this.title,
-                existingTranslations: this.existingTranslations,
-                availableTranslations: availableTranslations,
+                referenceLanguageList: this.referenceLanguageList,
+                systemLanguageList: systemLanguageList,
                 canBaseTranslation: this.canBaseTranslation
             });
         },
@@ -60,11 +60,11 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
                     "The title should be available in the template"
                 );
                 Assert.isArray(
-                    variables.newTranslations,
-                    "The array containing new translations should be available in the template"
+                    variables.languages,
+                    "The array containing languages should be available in the template"
                 );
                 Assert.areSame(
-                    that.existingTranslations, variables.existingTranslations,
+                    that.referenceLanguageList, variables.referenceLanguageList,
                     "The array containing existing translations should be available in the template"
                 );
                 Assert.areSame(
@@ -82,15 +82,16 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
 
         setUp: function () {
             this.title = 'Miroslav Klose';
-            this.existingTranslations = ['eng-GB', 'nno-NO'];
+            this.referenceLanguageList = ['eng-GB', 'nno-NO'];
             this.expectedNewTranslations = ['fre-FR', 'pol-PL', 'ger-DE'];
             this.canBaseTranslation = true;
             this.view = new Y.eZ.LanguageSelectionBoxView({
                 container: '.container',
                 title: this.title,
-                existingTranslations: this.existingTranslations,
-                availableTranslations: availableTranslations,
-                canBaseTranslation: this.canBaseTranslation
+                referenceLanguageList: this.referenceLanguageList,
+                systemLanguageList: systemLanguageList,
+                canBaseTranslation: this.canBaseTranslation,
+                translationMode: true
             });
         },
 
@@ -163,7 +164,7 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
         },
 
         "Should set the selectedLanguageCode attribute": function () {
-            var selector = '.ez-new-translation',
+            var selector = '.ez-language-element',
                 element = this.view.get('container').one(selector),
                 attributeName = 'selectedLanguageCode',
                 expectedAttributeValue = element.getAttribute('data-languagecode');
@@ -172,7 +173,7 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
         },
 
         "Should set the selectedBaseLanguageCode attribute": function () {
-            var selector = '.ez-base-translation',
+            var selector = '.ez-base-language',
                 element = this.view.get('container').one(selector),
                 attributeName = 'selectedBaseLanguageCode',
                 expectedAttributeValue = element.getAttribute('data-languagecode');
@@ -210,14 +211,14 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
 
         setUp: function () {
             this.title = 'Unforgiven';
-            this.existingTranslations = ['eng-GB', 'nno-NO'];
+            this.referenceLanguageList = ['eng-GB', 'nno-NO'];
             this.expectedNewTranslations = ['fre-FR', 'pol-PL', 'ger-DE'];
             this.canBaseTranslation = true;
             this.view = new Y.eZ.LanguageSelectionBoxView({
                 container: '.container',
                 title: this.title,
-                existingTranslations: this.existingTranslations,
-                availableTranslations: availableTranslations,
+                referenceLanguageList: this.referenceLanguageList,
+                systemLanguageList: systemLanguageList,
                 canBaseTranslation: this.canBaseTranslation
             });
             this.handler1 = false;
@@ -293,15 +294,16 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
 
         setUp: function () {
             this.title = 'Nothing Else Matters';
-            this.existingTranslations = ['eng-GB', 'nno-NO'];
+            this.referenceLanguageList = ['eng-GB', 'nno-NO'];
             this.expectedNewTranslations = ['fre-FR', 'pol-PL', 'ger-DE'];
             this.canBaseTranslation = true;
             this.view = new Y.eZ.LanguageSelectionBoxView({
                 container: '.container',
                 title: this.title,
-                existingTranslations: this.existingTranslations,
-                availableTranslations: availableTranslations,
+                referenceLanguageList: this.referenceLanguageList,
+                systemLanguageList: systemLanguageList,
                 canBaseTranslation: this.canBaseTranslation,
+                translationMode: true
             });
             this.defaultBaseTranslation = this.view.get('baseTranslation');
         },
@@ -385,18 +387,25 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
             );
         },
 
-        _highlightSelectedLanguageTest: function (section, languageCode) {
+        _highlightSelectedLanguageTest: function (languageCode, baseLanguage) {
             var c = this.view.get('container'),
-                highlightClass = 'is-translation-selected';
+                highlightClass = 'is-language-selected',
+                languageElementSelector;
+
+            if (baseLanguage) {
+                languageElementSelector = '.ez-base-language';
+            } else {
+                languageElementSelector = '.ez-language-element';
+            }
 
             Assert.isTrue(
-                c.one('.ez-' + section + '-translation[data-languagecode="' + languageCode + '"]')
+                c.one(languageElementSelector + '[data-languagecode="' + languageCode + '"]')
                     .hasClass(highlightClass),
                 "The selected translation should have been highlighted"
             );
             Assert.areEqual(
                 1,
-                c.all('.ez-' + section + '-translation.' + highlightClass).size(),
+                c.all(languageElementSelector + '.' + highlightClass).size(),
                 'There should be only one translation highlighted'
             );
         },
@@ -409,7 +418,7 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
             this.view.set('selectedLanguageCode', selectedLanguageCode1);
             this.view.set('selectedLanguageCode', selectedLanguageCode2);
 
-            this._highlightSelectedLanguageTest('new', selectedLanguageCode2);
+            this._highlightSelectedLanguageTest(selectedLanguageCode2, false);
         },
 
         "Should highlight selected base translation": function () {
@@ -420,7 +429,7 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
             this.view.set('selectedBaseLanguageCode', selectedBaseLanguageCode1);
             this.view.set('selectedBaseLanguageCode', selectedBaseLanguageCode2);
 
-            this._highlightSelectedLanguageTest('base', selectedBaseLanguageCode2);
+            this._highlightSelectedLanguageTest(selectedBaseLanguageCode2, true);
         },
 
         "Should show list of base translations": function () {
@@ -430,7 +439,7 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
             this.view.set('baseTranslation', true);
 
             Assert.isTrue(
-                c.hasClass('is-base-translations-list-visible'),
+                c.hasClass('is-base-languages-list-visible'),
                 "The list of base translations should be visible"
             );
         },
@@ -442,10 +451,23 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
             this.view.set('baseTranslation', false);
 
             Assert.isFalse(
-                c.hasClass('is-base-translations-list-visible'),
+                c.hasClass('is-base-languages-list-visible'),
                 "The list of base translations should not be visible"
             );
         },
+
+        "Should render the view when translationMode attribute changes": function () {
+            var renderTriggered = false;
+
+            this.view.render = function () {
+                renderTriggered = true;
+            };
+
+            this.view.set('translationMode', true);
+            this.view.set('translationMode', false);
+
+            Assert.isTrue(renderTriggered, "View should be rendered");
+        }
     });
 
     confirmButtonStateTest = new Y.Test.Case({
@@ -453,14 +475,14 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
 
         setUp: function () {
             this.title = 'Robert Lewandowski';
-            this.existingTranslations = ['eng-GB', 'nno-NO'];
+            this.referenceLanguageList = ['eng-GB', 'nno-NO'];
             this.expectedNewTranslations = ['fre-FR', 'pol-PL', 'ger-DE'];
             this.canBaseTranslation = true;
             this.view = new Y.eZ.LanguageSelectionBoxView({
                 container: '.container',
                 title: this.title,
-                existingTranslations: this.existingTranslations,
-                availableTranslations: availableTranslations,
+                referenceLanguageList: this.referenceLanguageList,
+                systemLanguageList: systemLanguageList,
                 canBaseTranslation: this.canBaseTranslation
             });
             this.view.render();

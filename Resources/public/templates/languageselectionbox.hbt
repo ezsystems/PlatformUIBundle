@@ -1,9 +1,9 @@
 <a href="#" class="ez-languageselectionbox-close-icon ez-languageselectionbox-close" data-icon-after="&#xe62a;"></a>
 <h2 class="ez-languageselectionbox-title">{{ title }}</h2>
 
-<ul class="ez-languageselectionbox-languages ez-languageselectionbox-newtranslations">
-    {{#each newTranslations}}
-        <li class="ez-translation ez-new-translation" data-languagecode="{{ this }}">{{ this }}</li>
+<ul class="ez-languageselectionbox-languages ez-languageselectionbox-languages-list">
+    {{#each languages}}
+        <li class="ez-language ez-language-element" data-languagecode="{{ this }}">{{ this }}</li>
     {{/each}}
 </ul>
 
@@ -19,8 +19,8 @@
     <div class="ez-languageselectionbox-existingtranslations-container">
         <h3 class="ez-languageselectionbox-title">Select a base language:</h3>
         <ul class="ez-languageselectionbox-languages ez-languageselectionbox-existingtranslations">
-            {{#each existingTranslations}}
-                <li class="ez-translation ez-base-translation" data-languagecode="{{ this }}">{{ this }}</li>
+            {{#each referenceLanguageList}}
+                <li class="ez-language ez-base-language" data-languagecode="{{ this }}">{{ this }}</li>
             {{/each}}
         </ul>
     </div>

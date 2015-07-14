@@ -35,6 +35,9 @@ YUI.add('ez-contenteditview', function (Y) {
             },
             '.ez-main-content': {
                 'keyup': '_handleKeyboard'
+            },
+            '.ez-change-content-language-link': {
+                'tap': '_changeLanguage',
             }
         },
 
@@ -51,6 +54,11 @@ YUI.add('ez-contenteditview', function (Y) {
             this.after('activeChange', function (e) {
                 if ( e.newVal ) {
                     this._setFocus();
+                }
+            });
+            this.on('languageCodeChange', function (e) {
+                if ( this.get('active') ) {
+                    this._setLanguageIndicator(e.newVal);
                 }
             });
 
@@ -101,7 +109,8 @@ YUI.add('ez-contenteditview', function (Y) {
                 version: this.get('version').toJSON(),
                 mainLocation: this.get('mainLocation').toJSON(),
                 contentType: this.get('contentType').toJSON(),
-                owner: this.get('owner').toJSON()
+                owner: this.get('owner').toJSON(),
+                languageCode: this.get('languageCode')
             }));
             if ( this._isTouch() ) {
                 container.addClass('is-using-touch-device');
@@ -210,6 +219,38 @@ YUI.add('ez-contenteditview', function (Y) {
          */
         _isTouch: function () {
             return Y.UA.touchEnabled;
+        },
+
+        /**
+         * Tap event handler on change language button. It fires `changeLanguage` event.
+         *
+         * @method _changeLanguage
+         * @private
+         * @param {EventFacade} e
+         */
+        _changeLanguage: function (e) {
+            e.preventDefault();
+
+            /**
+             * Fired when the change language link was tapped
+             *
+             * @event changeLanguage
+             */
+            this.fire('changeLanguage');
+        },
+
+        /**
+         * Sets language indicator
+         *
+         * @method setLanguageIndicator
+         * @private
+         * @param {String} languageCode
+         */
+        _setLanguageIndicator: function (languageCode) {
+            var c = this.get('container'),
+                languageContainer = c.one('.ez-content-current-language');
+
+            languageContainer.setHTML(languageCode);
         }
     }, {
         ATTRS: {
@@ -313,7 +354,16 @@ YUI.add('ez-contenteditview', function (Y) {
                         version: this.get('version')
                     });
                 }
-            }
+            },
+
+            /**
+             * The language code in which the content is edited.
+             *
+             * @attribute languageCode
+             * @type {String}
+             * @required
+             */
+            languageCode: {},
         }
     });
 });
