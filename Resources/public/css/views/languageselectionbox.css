@@ -1,0 +1,88 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-languageselectionbox-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 21000;
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.is-languageselectionbox-hidden .ez-languageselectionbox-container {
+    display: none;
+}
+
+.ez-view-languageselectionboxview {
+    position: relative;
+    display: inline-block;
+    margin: auto;
+    padding: 1.5em 2.2em;
+}
+
+.ez-view-languageselectionboxview .ez-languageselectionbox-title {
+    margin: 0;
+    padding-bottom: 0.2em;
+    text-align: left;
+}
+
+.ez-view-languageselectionboxview .ez-languageselectionbox-close-icon {
+    position: absolute;
+    top: 0.2em;
+    right: 0.2em;
+}
+
+.ez-view-languageselectionboxview .ez-languageselectionbox-basetranslation {
+    display: block;
+    text-align: right;
+    margin: 1em 0;
+}
+
+.ez-view-languageselectionboxview .ez-languageselectionbox-languages {
+    display: block;
+    width: 30em;
+    overflow: hidden;
+    padding: 10px 0;
+}
+
+.ez-view-languageselectionboxview .ez-translation {
+    float: left;
+    width: 12em;
+    margin: 0 1em;
+    padding: 0.3em 0.5em;
+    list-style-type: none;
+    line-height: 1.8em;
+}
+
+.ez-view-languageselectionboxview .ez-languageselectionbox-existingtranslations-container {
+    display: none;
+}
+
+.ez-view-languageselectionboxview .ez-languageselectionbox-basetranslation-area {
+    display: none;
+}
+
+.ez-view-languageselectionboxview.is-base-translation-allowed .ez-languageselectionbox-basetranslation-area {
+    display: block;
+}
+
+.ez-view-languageselectionboxview.is-base-translations-list-visible .ez-languageselectionbox-existingtranslations-container {
+    display: block;
+}
+
+.ez-view-languageselectionboxview .ez-languageselectionbox-tools {
+    text-align: right;
+    margin: 2em 0 0 0;
+}
+
+.ez-view-languageselectionboxview .ez-languageselectionbox-confirm {
+    margin-left: 2em;
+}

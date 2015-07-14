@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Language Selection Box view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="languageselectionboxview-ez-template">
+<a href="#" class="ez-languageselectionbox-close-icon ez-languageselectionbox-close"></a>
+<h2 class="ez-languageselectionbox-title">{{ title }}</h2>
+
+<ul class="ez-languageselectionbox-languages ez-languageselectionbox-newtranslations">
+    {{#each newTranslations}}
+        <li class="ez-translation ez-new-translation" data-languagecode="{{ this }}">{{ this }}</li>
+    {{/each}}
+</ul>
+
+<div class="ez-languageselectionbox-basetranslation-area">
+    <div class="ez-languageselectionbox-basetranslation">
+        <label for="ez-base-translation">
+            <input type="checkbox" value="1" class="ez-base-translation-checkbox" id="ez-base-translation"
+                name="baseTranslation" {{#if baseTranslation}}checked="checked"{{/if}}>
+            Base this translation on an existing translation
+        </label>
+    </div>
+
+    <div class="ez-languageselectionbox-existingtranslations-container">
+        <h3 class="ez-languageselectionbox-title">Select a base language:</h3>
+        <ul class="ez-languageselectionbox-languages ez-languageselectionbox-existingtranslations">
+            {{#each existingTranslations}}
+                <li class="ez-translation ez-base-translation" data-languagecode="{{ this }}">{{ this }}</li>
+            {{/each}}
+        </ul>
+    </div>
+</div>
+
+<p class="ez-languageselectionbox-tools">
+    <a href="#" class="ez-languageselectionbox-cancel ez-languageselectionbox-close">Cancel</a>
+    <button class="ez-languageselectionbox-confirm ez-button pure-button" disabled="disabled">Confirm</button>
+</p>
+</script>
+
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-languageselectionboxview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-languageselectionboxview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-languageselectionboxview": {
+                requires: ['ez-templatebasedview', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-languageselectionboxview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-languageselectionboxview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-translateactionview-tests', function (Y) {
-    var viewTest, eventTest, renderTest, hideTest, hintTest,
+    var viewTest, eventTest, renderTest, domEventTest, hideTest, hintTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     viewTest = new Y.Test.Case(
@@ -112,6 +112,125 @@ YUI.add('ez-translateactionview-tests', function (Y) {
 
             Assert.isFalse(this.view.get('expanded'), "The expanded state should be false");
         },
+    });
+
+    domEventTest = new Y.Test.Case({
+        name: 'eZ Translate Action View DOM event test',
+
+        setUp: function () {
+            this.contentMock = new Mock();
+            this.locationMock = new Mock();
+            this.versionMock = new Mock();
+            this.translationsList = ['eng-GB', 'pol-PL', 'ger-DE'];
+
+            Mock.expect(this.contentMock, {
+                method: 'get',
+                args: ['currentVersion'],
+                returns: this.versionMock
+            });
+            Mock.expect(this.versionMock, {
+                method: 'getTranslationsList',
+                returns: this.translationsList
+            });
+            Mock.expect(this.locationMock, {
+                method: 'toJSON',
+                returns: {}
+            });
+            Mock.expect(this.contentMock, {
+                method: 'toJSON',
+                returns: {}
+            });
+
+            this.view = new Y.eZ.TranslateActionView({
+                container: '.container',
+                actionId: 'translate',
+                label: 'Translations',
+                disabled: false,
+                content: this.contentMock,
+                location: this.locationMock
+            });
+
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        'Should fire languageSelect event': function () {
+            var that = this,
+                newTranslationButton = this.view.get('container').one('.ez-newtranslation-button'),
+                languageSelectFired = false;
+
+            this.view.on('languageSelect', function (e) {
+                languageSelectFired = true;
+
+                Assert.areSame(
+                    that.translationsList,
+                    e.config.existingTranslations,
+                    'The config of should pass the proper lista of translations'
+                );
+                Assert.isTrue(
+                    e.config.canBaseTranslation,
+                    'The canBaseTranslation in config should be set to true'
+                );
+            });
+
+            newTranslationButton.simulateGesture('tap', function () {
+                that.resume(function () {
+                    Assert.isTrue(
+                        languageSelectFired,
+                        "The languageSelect event should have been fired"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should fire translateContent event": function () {
+            var that = this,
+                newTranslationButton = this.view.get('container').one('.ez-newtranslation-button'),
+                translateContentFired = false,
+                selectedLanguageCode = 'fre-FR',
+                selectedBaseLanguageCode = 'eng-GB',
+                baseTranslation = true;
+
+            this.view.on('languageSelect', function (e) {
+                var config = {
+                    selectedLanguageCode: selectedLanguageCode,
+                    selectedBaseLanguageCode: selectedBaseLanguageCode,
+                    baseTranslation: baseTranslation,
+                };
+
+                e.config.languageSelectedHandler(config);
+            });
+
+            this.view.on('translateContent', function (e) {
+                translateContentFired = true;
+
+                Assert.areSame(
+                    selectedLanguageCode,
+                    e.toLanguageCode,
+                    'The selectedLanguageCode should match toLanguageCode in event facade'
+                );
+                Assert.areSame(
+                    selectedBaseLanguageCode,
+                    e.baseLanguageCode,
+                    'The selectedBaseLanguageCode should match baseLanguageCode in event facade'
+                );
+            });
+
+            newTranslationButton.simulateGesture('tap', function () {
+                that.resume(function () {
+                    Assert.isTrue(
+                        translateContentFired,
+                        "The translateContent event should have been fired"
+                    );
+                });
+            });
+            this.wait();
+        }
     });
 
     hideTest = new Y.Test.Case({
@@ -252,6 +371,7 @@ YUI.add('ez-translateactionview-tests', function (Y) {
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(renderTest);
+    Y.Test.Runner.add(domEventTest);
     Y.Test.Runner.add(hideTest);
     Y.Test.Runner.add(hintTest);
 }, '', {requires: ['test', 'ez-translateactionview', 'ez-genericbuttonactionview-tests', 'node-event-simulate']});

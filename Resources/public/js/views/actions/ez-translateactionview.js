@@ -11,6 +11,12 @@ YUI.add('ez-translateactionview', function (Y) {
      */
     Y.namespace('eZ');
 
+    var events = {
+            '.ez-newtranslation-button': {
+                'tap': '_newTranslationLanguageSelectionBox',
+            }
+        };
+
     /**
      * Translate Action View
      *
@@ -21,6 +27,7 @@ YUI.add('ez-translateactionview', function (Y) {
      */
     Y.eZ.TranslateActionView = Y.Base.create('translateActionView', Y.eZ.ButtonActionView, [Y.eZ.Expandable], {
         initializer: function () {
+            this.events = Y.merge(this.events, events);
             this.after({
                 'translateAction': this._toggleExpanded,
                 'expandedChange': this._setClickOutsideEventHandler,
@@ -103,7 +110,7 @@ YUI.add('ez-translateactionview', function (Y) {
         _getTranslateButtonHint: function () {
             var translations = this.get('content').get('currentVersion').getTranslationsList(),
                 countAll = translations.length,
-                moreTranslations = Y.clone(translations);
+                moreTranslations = Y.Object.values(Y.merge(translations));
 
             moreTranslations.splice(2, countAll-2);
 
@@ -112,6 +119,58 @@ YUI.add('ez-translateactionview', function (Y) {
             }
 
             return moreTranslations.join(', ');
+        },
+
+        /**
+         * Tap event handler on New Translation button. It opens language selection box.
+         *
+         * @method _newTranslationLanguageSelectionBox
+         * @private
+         * @param {EventFacade} e
+         */
+        _newTranslationLanguageSelectionBox: function (e) {
+            e.preventDefault();
+            this.fire('languageSelect', {
+                config: {
+                    title: "Select a language for your new translation:",
+                    languageSelectedHandler: Y.bind(this._newTranslation, this),
+                    cancelLanguageSelectionHandler: null,
+                    canBaseTranslation: true,
+                    existingTranslations: this.get('content').get('currentVersion').getTranslationsList()
+                },
+            });
+            this._hideView();
+        },
+
+        /**
+         * Fires `translate` event after making a selection on LanguageSelectionBox
+         *
+         * @method _newTranslation
+         * @private
+         * @param {EventFacade} e
+         */
+        _newTranslation: function (e) {
+            var languageCode = e.selectedLanguageCode,
+                isBaseLanguage = e.baseTranslation,
+                data = {
+                    content: this.get('content'),
+                    toLanguageCode: languageCode,
+                };
+
+            if (isBaseLanguage && e.selectedBaseLanguageCode !== null){
+                data.baseLanguageCode = e.selectedBaseLanguageCode;
+            }
+
+            /**
+             * Fired when content is being translated
+             *
+             * @event translateContent
+             * @param {Object} data
+             * @param {eZ.Content} data.content content object which will be translated
+             * @param {String} data.toLanguageCode language to which content will be translated
+             * @param {String} data.baseLanguageCode optional language on which translation will be basing
+             */
+            this.fire('translateContent', data);
         }
     }, {
         ATTRS: {
