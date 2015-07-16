@@ -3,7 +3,9 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-relation-view-tests', function (Y) {
-    var registerTest, viewTestWithContent, viewTestWithoutContent;
+    var registerTest, viewTestWithContent, viewTestWithoutContent,
+        loadFieldRelatedContentEvent,
+        Assert = Y.Assert;
 
     viewTestWithContent = new Y.Test.Case(
         Y.merge(Y.eZ.Test.FieldViewTestCases, {
@@ -36,24 +38,6 @@ YUI.add('ez-relation-view-tests', function (Y) {
             tearDown: function () {
                 this.view.destroy();
                 Y.one('.app').empty();
-            },
-
-            "Should fire the loadFieldRelatedContent event": function () {
-                var loadContentEvent = false,
-                    that = this;
-
-                this.view.on('loadFieldRelatedContent', function (e) {
-                    loadContentEvent = true;
-                    Y.Assert.areSame(
-                        that.fieldDefinitionIdentifier,
-                        e.fieldDefinitionIdentifier,
-                        "fieldDefinitionIdentifier is not the same than the one in the field"
-                    );
-
-                });
-                this.view.set('active', true);
-
-                Y.Assert.isTrue(loadContentEvent, "loadContentEvent should be called when changing active value");
             },
 
             "Should render the view when the destinationContent attribute changes": function () {
@@ -161,6 +145,56 @@ YUI.add('ez-relation-view-tests', function (Y) {
         })
     );
 
+    loadFieldRelatedContentEvent = new Y.Test.Case({
+        name: "eZ Relation View loadFieldRelatedContent event tests",
+
+        setUp: function () {
+            this.fieldDefinitionIdentifier = 'relation_field';
+            this.fieldDefinition = {
+                fieldType: "ezobjectrelation",
+                identifier: this.fieldDefinitionIdentifier
+            };
+            this.field = {fieldValue: {destinationContentId: 42}};
+            this.view = new Y.eZ.RelationView({
+                fieldDefinition: this.fieldDefinition,
+                field: this.field,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should fire the loadFieldRelatedContent when getting active": function () {
+            var loadContentEvent = false,
+                that = this;
+
+            this.view.once('loadFieldRelatedContent', function (e) {
+                loadContentEvent = true;
+                Assert.areSame(
+                    that.fieldDefinitionIdentifier,
+                    e.fieldDefinitionIdentifier,
+                    "fieldDefinitionIdentifier should be available in the event facade"
+                );
+
+            });
+            this.view.set('active', true);
+
+            Assert.isTrue(
+                loadContentEvent,
+                "loadContentEvent should be called when changing active value"
+            );
+        },
+
+        "Should not fire the loadFieldRelatedContent when getting inactive": function () {
+            this["Should fire the loadFieldRelatedContent when getting active"]();
+            this.view.on('loadFieldRelatedContent', function () {
+                Assert.fail("loadFieldRelatedContent event should not have been fired");
+            });
+            this.view.set('active', false);
+        },
+    });
+
     registerTest = new Y.Test.Case(Y.eZ.Test.RegisterFieldViewTestCases);
 
     registerTest.name = "Relation View registration test";
@@ -170,5 +204,6 @@ YUI.add('ez-relation-view-tests', function (Y) {
     Y.Test.Runner.setName('eZ Relation view tests');
     Y.Test.Runner.add(viewTestWithContent);
     Y.Test.Runner.add(viewTestWithoutContent);
+    Y.Test.Runner.add(loadFieldRelatedContentEvent);
     Y.Test.Runner.add(registerTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-relation-view', 'ez-genericfieldview-tests']});

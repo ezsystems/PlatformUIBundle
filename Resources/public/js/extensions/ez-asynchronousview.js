@@ -50,7 +50,11 @@ YUI.add('ez-asynchronousview', function (Y) {
         },
 
         initializer: function () {
-            this.after('activeChange', this._fireMethod);
+            this.after('activeChange', function (e) {
+                if ( this.get('active') ) {
+                    this._fireMethod(e);
+                }
+            });
 
             this.after('loadingErrorChange', function (e) {
                 this.render();
