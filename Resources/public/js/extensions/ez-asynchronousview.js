@@ -18,7 +18,8 @@ YUI.add('ez-asynchronousview', function (Y) {
      * The loading errors are also handled and such a view can also have a
      * *retry* button. When a view is extended with this extension, its
      * initializer method should set the required properties `_fireMethod` and
-     * `_watchAttribute`.
+     * optionally the `_watchAttribute` to subscribe to the corresponding change
+     * event.
      *
      * @namespace eZ
      * @class AsynchronousView
@@ -35,11 +36,10 @@ YUI.add('ez-asynchronousview', function (Y) {
 
         /**
          * Holds the attribute name which stores the data needed to render the
-         * view. The asynchronous view will subcribe the corresponding change
-         * event.
+         * view. If provided, the asynchronous view will subscribe to the
+         * corresponding change event.
          *
          * @property _watchAttribute
-         * @required
          * @type {String}
          */
 
@@ -50,7 +50,11 @@ YUI.add('ez-asynchronousview', function (Y) {
         },
 
         initializer: function () {
-            this.after('activeChange', this._fireMethod);
+            this.after('activeChange', function (e) {
+                if ( this.get('active') ) {
+                    this._fireMethod(e);
+                }
+            });
 
             this.after('loadingErrorChange', function (e) {
                 this.render();
