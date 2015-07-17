@@ -800,9 +800,9 @@ YUI.add('ez-platformuiapp', function (Y) {
             },
             transitions: {
                 value: {
-                    navigate: 'slideLeft',
-                    toChild: 'slideLeft',
-                    toParent: 'slideRight'
+                    navigate: 'fade',
+                    toChild: 'fade',
+                    toParent: 'fade'
                 }
             },
 
