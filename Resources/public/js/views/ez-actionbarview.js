@@ -42,7 +42,6 @@ YUI.add('ez-actionbarview', function (Y) {
                             actionId: "edit",
                             disabled: false,
                             label: "Edit",
-                            hint: "Edit this content",
                             priority: 200
                         }),
                         new Y.eZ.ButtonActionView({
