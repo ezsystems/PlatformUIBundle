@@ -13,7 +13,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         name: "eZ Platform UI App tests",
 
         setUp: function () {
-            this.root = '/shell';
+            this.root = '/ez';
             this.app = new Y.eZ.PlatformUIApp({
                 container: '.app',
                 viewContainer: '.view-container',

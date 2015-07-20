@@ -1,6 +1,6 @@
 
-shell:
-    path: /shell
+ez:
+    path: /ez
     defaults:
         _controller: ezsystems.platformui.controller:shellAction
 

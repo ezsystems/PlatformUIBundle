@@ -19,7 +19,7 @@ release) are required to run the PlatformUI.**
 
 If you are using a recent clone of the ezpublish-community repository,
 PlatformUIBundle is automatically setup. So you can directly open
-http://[uri\_of\_ez]/shell in your favorite browser.
+http://[uri\_of\_ez]/ez in your favorite browser.
 
 On an existing installation, here's what you need to do:
 
@@ -66,7 +66,7 @@ the assets for Assetic with:
 php ezpublish/console assetic:dump --env=prod
 ```
 
-Once this is done, you can go to http://[uri\_of\_ez]/shell to run the eZ Platform
+Once this is done, you can go to http://[uri\_of\_ez]/ez to run the eZ Platform
 UI application.
 
 ## Developers tasks
