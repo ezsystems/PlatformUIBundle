@@ -600,9 +600,9 @@ YUI.add('ez-navigationhubview', function (Y) {
              */
             zones: {
                 value: {
-                    'platform': 'Platform',
-                    'studio': 'Studio',
-                    'studioplus': 'Studio+',
+                    'platform': 'Content',
+                    'studio': 'Insite',
+                    'studioplus': 'Optimize',
                     'admin': 'Admin Panel',
                 },
                 readOnly: true,

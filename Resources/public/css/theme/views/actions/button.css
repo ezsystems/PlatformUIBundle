@@ -58,6 +58,11 @@
     content: "\E92c";
 }
 
+.ez-view-buttonactionview .ez-action[data-action="createContent"] .action-icon:before,
+.ez-view-buttonactionview .ez-action[data-action="createContent"] .action-label{
+    color: #1EDCB1;
+}
+
 .ez-view-buttonactionview .ez-action[data-action="createContent"] .action-icon:before {
     content: "\E61D";
 }
