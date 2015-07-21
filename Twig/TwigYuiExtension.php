@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the TwigYuiExtension class.
  *
@@ -16,7 +17,7 @@ use Twig_Extension;
 use Twig_SimpleFunction;
 
 /**
- * Class TwigYuiExtension
+ * Class TwigYuiExtension.
  */
 class TwigYuiExtension extends Twig_Extension
 {
@@ -51,9 +52,9 @@ class TwigYuiExtension extends Twig_Extension
     {
         return [
             new Twig_SimpleFunction(
-                "ez_platformui_yui_config",
-                [$this, "yuiConfigLoaderFunction"],
-                ["is_safe" => ["html"]]
+                'ez_platformui_yui_config',
+                [$this, 'yuiConfigLoaderFunction'],
+                ['is_safe' => ['html']]
             ),
         ];
     }
@@ -64,18 +65,19 @@ class TwigYuiExtension extends Twig_Extension
     }
 
     /**
-     * Calls the twig asset function
+     * Calls the twig asset function.
      *
      * @param string $asset
+     *
      * @return mixed
      */
     protected function asset($asset)
     {
-        return call_user_func($this->twig->getFunction("asset")->getCallable(), $asset);
+        return call_user_func($this->twig->getFunction('asset')->getCallable(), $asset);
     }
 
     /**
-     * Returns the YUI loader configuration
+     * Returns the YUI loader configuration.
      *
      * @param string $configObject
      *
@@ -86,7 +88,7 @@ class TwigYuiExtension extends Twig_Extension
         $modules = array_fill_keys($this->configResolver->getParameter('yui.modules', 'ez_platformui'), true);
         $yui = [
             'filter' => $this->configResolver->getParameter('yui.filter', 'ez_platformui'),
-            'modules' => []
+            'modules' => [],
         ];
 
         foreach (array_keys($modules) as $module) {
@@ -140,7 +142,8 @@ class TwigYuiExtension extends Twig_Extension
         if ($configObject != '') {
             $res = $configObject . ' = ';
         }
-        return $res . (defined('JSON_UNESCAPED_SLASHES') ? json_encode($yui, JSON_UNESCAPED_SLASHES) :  json_encode($yui)) . ";";
+
+        return $res . (defined('JSON_UNESCAPED_SLASHES') ? json_encode($yui, JSON_UNESCAPED_SLASHES) :  json_encode($yui)) . ';';
     }
 
     /**

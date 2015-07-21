@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the PlatformUIController class.
  *
@@ -30,15 +31,15 @@ class PlatformUIController extends Controller
     private $csrfTokenIntention;
 
     /**
-     * The configured anonymous user id
+     * The configured anonymous user id.
      *
      * @var int
      */
     private $anonymousUserId;
 
     /**
-    * @var array
-    */
+     * @var array
+     */
     protected $countriesInfo;
 
     public function __construct(
@@ -56,7 +57,7 @@ class PlatformUIController extends Controller
     }
 
     /**
-     * Renders the "shell" page to run the JavaScript application
+     * Renders the "shell" page to run the JavaScript application.
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -73,6 +74,7 @@ class PlatformUIController extends Controller
                 ['sessionId' => $this->session->getId()]
             );
         }
+
         return $this->render('eZPlatformUIBundle:PlatformUI:shell.html.twig', [
             'sessionInfo' => $sessionInfo,
             'anonymousUserId' => $this->generateUrl(

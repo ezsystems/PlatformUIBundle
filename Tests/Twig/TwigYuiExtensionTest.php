@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the TwigYuiExtensionTest class.
  *
@@ -14,7 +15,7 @@ use Twig_Environment;
 
 class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
 {
-    const PREFIX = "ezplatformui";
+    const PREFIX = 'ezplatformui';
 
     protected function getExtensions()
     {
@@ -67,7 +68,7 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                     "yui.modules.$name.dependencyOf",
                     'ez_platformui',
                     null,
-                    $config['dependencyOf']
+                    $config['dependencyOf'],
                 ];
                 $hasParameterValueMap[] = ["yui.modules.$name.dependencyOf", 'ez_platformui', null, true];
             }
@@ -141,15 +142,15 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
             [
                 [],
                 'min',
-                '{"filter":"min","modules":[]};'
+                '{"filter":"min","modules":[]};',
             ],
             [
                 [
                     'ez-test' => [
-                        'path' => 'bundles/ezplatformui/js/test.js'
+                        'path' => 'bundles/ezplatformui/js/test.js',
                     ],
                     'ez-test2' => [
-                        'path' => 'bundles/ezplatformui/js/test2.js'
+                        'path' => 'bundles/ezplatformui/js/test2.js',
                     ],
                     'ez-template' => [
                         'path' => 'bundles/ezplatformui/template/template.js',
@@ -161,42 +162,42 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                 '"ez-test":{"requires":[],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
                 '"ez-test2":{"requires":[],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"},' .
                 '"ez-template":{"requires":["template","handlebars"],"fullpath":"template_yui_module/ez-template"}' .
-                '}};'
+                '}};',
             ],
             [
                 [
                     'ez-test' => [
                         'path' => 'bundles/ezplatformui/js/test.js',
-                        'requires' => ['foo', 'bar']
+                        'requires' => ['foo', 'bar'],
                     ],
                     'ez-test2' => [
                         'path' => 'bundles/ezplatformui/js/test2.js',
-                        'requires' => ['ez-test']
+                        'requires' => ['ez-test'],
                     ],
                 ],
                 'raw',
                 '{"filter":"raw","modules":{' .
                 '"ez-test":{"requires":["foo","bar"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
                 '"ez-test2":{"requires":["ez-test"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"}' .
-                '}};'
+                '}};',
             ],
             [
                 [
                     'ez-test' => [
                         'path' => 'bundles/ezplatformui/js/test.js',
-                        'requires' => ['foo', 'bar']
+                        'requires' => ['foo', 'bar'],
                     ],
                     'ez-test2' => [
                         'path' => 'bundles/ezplatformui/js/test2.js',
                         'requires' => ['baz'],
-                        'dependencyOf' => ['ez-test']
+                        'dependencyOf' => ['ez-test'],
                     ],
                 ],
                 'raw',
                 '{"filter":"raw","modules":{' .
                 '"ez-test":{"requires":["foo","bar","ez-test2"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
                 '"ez-test2":{"requires":["baz"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"}' .
-                '}};'
+                '}};',
             ],
             [
                 [
@@ -206,12 +207,12 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                     'ez-test2' => [
                         'path' => 'bundles/ezplatformui/js/test2.js',
                         'requires' => ['baz'],
-                        'dependencyOf' => ['ez-test', 'another-module']
+                        'dependencyOf' => ['ez-test', 'another-module'],
                     ],
                     'another-module' => [
                         'path' => 'js/fork_me_im_famous.js',
                         'requires' => ['michaeljackson', 'is', 'from', 'venus'],
-                        'dependencyOf' => ['ez-test']
+                        'dependencyOf' => ['ez-test'],
                     ],
                 ],
                 'min',
@@ -219,7 +220,7 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                 '"ez-test":{"requires":["ez-test2","another-module"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
                 '"ez-test2":{"requires":["baz"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"},' .
                 '"another-module":{"requires":["ez-test2","michaeljackson","is","from","venus"],"fullpath":"' . self::PREFIX . '/js/fork_me_im_famous.js"}' .
-                '}};'
+                '}};',
             ],
             [
                 [
@@ -229,14 +230,14 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
                     'ez-test2' => [
                         'path' => 'bundles/ezplatformui/js/test2.js',
                         'requires' => ['baz'],
-                        'dependencyOf' => ['ez-test', 'another-module']
+                        'dependencyOf' => ['ez-test', 'another-module'],
                     ],
                 ],
                 'min',
                 '{"filter":"min","modules":{' .
                 '"ez-test":{"requires":["ez-test2"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test.js"},' .
                 '"ez-test2":{"requires":["baz"],"fullpath":"' . self::PREFIX . '/bundles/ezplatformui/js/test2.js"}' .
-                '}};'
+                '}};',
             ],
         ];
     }

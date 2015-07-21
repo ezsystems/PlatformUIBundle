@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the SectionHelperInterface interface.
  *
@@ -13,51 +14,49 @@ use EzSystems\PlatformUIBundle\Entity\Section as SectionEntity;
 use EzSystems\PlatformUIBundle\Entity\SectionList;
 
 /**
- * Interface SectionHelperInterface
+ * Interface SectionHelperInterface.
  *
  * Provides utility methods to handle section stored in the API
- *
- * @package EzSystems\PlatformUIBundle\Helper
  */
 interface SectionHelperInterface
 {
     /**
-     * Returns the section list
+     * Returns the section list.
      *
      * @return array[] key is section id and value a \EzSystems\PlatformUIBundle\Entity\SectionListItem
      */
     public function getSectionList();
 
     /**
-     * Returns whether the current user can create a new section
+     * Returns whether the current user can create a new section.
      *
-     * @return boolean
+     * @return bool
      */
     public function canCreate();
 
     /**
-     * Returns whether the current user can delete a section
+     * Returns whether the current user can delete a section.
      *
-     * @return boolean
+     * @return bool
      */
     public function canDelete();
 
     /**
-     * Returns whether the current user can Edit a section
+     * Returns whether the current user can Edit a section.
      *
-     * @return boolean
+     * @return bool
      */
     public function canEdit();
 
     /**
-     * Returns whether the current user can assign a section
+     * Returns whether the current user can assign a section.
      *
-     * @return boolean
+     * @return bool
      */
     public function canAssign();
 
     /**
-     * Returns a section
+     * Returns a section.
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException if section could not be found
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException If the current user user is not allowed to read a section
@@ -69,14 +68,16 @@ interface SectionHelperInterface
     public function loadSection($sectionId);
 
     /**
-     * Returns the number of contents assigned to a given $section
+     * Returns the number of contents assigned to a given $section.
+     *
      * @param \eZ\Publish\API\Repository\Values\Content\Section $section
+     *
      * @return int
      */
     public function contentCount(Section $section);
 
     /**
-     * Creates a new Section in the content repository
+     * Creates a new Section in the content repository.
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException If the current user is
      *  not allowed to create a section
@@ -90,7 +91,7 @@ interface SectionHelperInterface
     public function createSection(SectionEntity $section);
 
     /**
-     * Updates a Section in the content repository
+     * Updates a Section in the content repository.
      *
      * @throws \eZ\Publish\API\Repository\Exceptions\UnauthorizedException If the current user is
      *  not allowed to update a section
@@ -105,10 +106,9 @@ interface SectionHelperInterface
     public function updateSection(Section $sectionToUpdate, SectionEntity $section);
 
     /**
-     * Removes sections
+     * Removes sections.
      *
      * @param \EzSystems\PlatformUIBundle\Entity\SectionList $sectionList sections to be deleted
-     *
      */
     public function deleteSectionList(SectionList $sectionList);
 }

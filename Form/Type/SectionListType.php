@@ -1,9 +1,11 @@
 <?php
+
 /**
  * File containing the SectionListType class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
 
@@ -16,9 +18,7 @@ use EzSystems\PlatformUIBundle\Helper\SectionHelperInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * Class SectionListType
- *
- * @package EzSystems\PlatformUIBundle\Form\Type
+ * Class SectionListType.
  */
 class SectionListType extends AbstractType
 {
@@ -50,7 +50,7 @@ class SectionListType extends AbstractType
             ->add('ids', 'choice', [
                 'choices' => [$sectionList],
                 'multiple' => true,
-                'expanded' => true
+                'expanded' => true,
             ])
             ->add('delete', 'submit', ['label' => $submitLabel]);
     }

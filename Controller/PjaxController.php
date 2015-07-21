@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the PjaxController class.
  *
@@ -15,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 class PjaxController extends Controller
 {
     /**
-     * To be used when access is denied to a user
+     * To be used when access is denied to a user.
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -40,18 +41,19 @@ class PjaxController extends Controller
     }
 
     /**
-     * Checks whether the current user is anonymous
+     * Checks whether the current user is anonymous.
      *
-     * @return boolean
+     * @return bool
      */
     private function isAnonymous()
     {
         $user = $this->getUser();
+
         return (
             !$user
             || (
                 $user instanceof CoreUser
-                && $user->getAPIUser()->id == $this->getConfigResolver()->getParameter("anonymous_user_id")
+                && $user->getAPIUser()->id == $this->getConfigResolver()->getParameter('anonymous_user_id')
             )
         );
     }

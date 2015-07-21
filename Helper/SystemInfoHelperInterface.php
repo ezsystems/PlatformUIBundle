@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the SystemInfoHelperInterface interface.
  *
@@ -11,14 +12,14 @@ namespace EzSystems\PlatformUIBundle\Helper;
 interface SystemInfoHelperInterface
 {
     /**
-     * Returns information about the system running eZ Publish Platform
+     * Returns information about the system running eZ Publish Platform.
      *
      * @return array
      */
     public function getSystemInfo();
 
     /**
-     * Returns information about eZ Publish Platform itself
+     * Returns information about eZ Publish Platform itself.
      *
      * @return array
      */

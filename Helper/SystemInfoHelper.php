@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the SystemInfoHelper class.
  *
@@ -8,12 +9,9 @@
 
 namespace EzSystems\PlatformUIBundle\Helper;
 
-use EzSystems\PlatformUIBundle\Helper\SystemInfoHelperInterface;
 use Symfony\Component\HttpKernel\Kernel;
 use Doctrine\DBAL\Connection;
 use ezcSystemInfo;
-use eZExtension;
-use eZPublishSDK;
 
 class SystemInfoHelper implements SystemInfoHelperInterface
 {
@@ -45,7 +43,7 @@ class SystemInfoHelper implements SystemInfoHelperInterface
      *  - memory size
      *  - php version
      *  - php accelerator info
-     *  - database related info
+     *  - database related info.
      *
      * @return array
      */
@@ -58,9 +56,10 @@ class SystemInfoHelper implements SystemInfoHelperInterface
                 'name' => $info->phpAccelerator->name,
                 'url' => $info->phpAccelerator->url,
                 'enabled' => $info->phpAccelerator->isEnabled,
-                'versionString' => $info->phpAccelerator->versionString
+                'versionString' => $info->phpAccelerator->versionString,
             ];
         }
+
         return [
             'cpuType' => $info->cpuType,
             'cpuSpeed' => $info->cpuSpeed,
@@ -81,7 +80,7 @@ class SystemInfoHelper implements SystemInfoHelperInterface
      * Returns informations on the current eZ Platform install:
      *  - eZ Publish legacy version
      *  - eZ Publish legacy extensions
-     *  - Symfony bundles
+     *  - Symfony bundles.
      *
      * @return array
      */
@@ -90,9 +89,10 @@ class SystemInfoHelper implements SystemInfoHelperInterface
         $info = [
             'version' => 'dev',
             'symfony' => Kernel::VERSION,
-            'bundles' => $this->bundles
+            'bundles' => $this->bundles,
         ];
         ksort($info['bundles'], SORT_FLAG_CASE | SORT_STRING);
+
         return $info;
     }
 }

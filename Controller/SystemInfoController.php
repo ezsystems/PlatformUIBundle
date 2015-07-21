@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the SystemInfoController class.
  *
@@ -27,7 +28,7 @@ class SystemInfoController extends Controller
     }
 
     /**
-     * Renders the system information page
+     * Renders the system information page.
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -44,7 +45,7 @@ class SystemInfoController extends Controller
     }
 
     /**
-     * Renders a PHP info page
+     * Renders a PHP info page.
      *
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      *
@@ -59,6 +60,7 @@ class SystemInfoController extends Controller
         ob_start();
         phpinfo();
         $response = new Response(ob_get_clean());
+
         return $response;
     }
 
@@ -66,7 +68,7 @@ class SystemInfoController extends Controller
      * Checks whether the current user has access to the actions in this
      * controller, currently checks for the setup/system_info policy.
      *
-     * @return boolean
+     * @return bool
      */
     protected function hasAccess()
     {

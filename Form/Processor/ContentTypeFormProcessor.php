@@ -1,9 +1,11 @@
 <?php
+
 /**
  * This file is part of the eZ PlatformUI package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
 
@@ -108,7 +110,7 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
     {
         $this->notificationPool->addNotification(new TranslatableNotificationMessage([
             'message' => $message,
-            'domain' => 'content_type'
+            'domain' => 'content_type',
         ]));
     }
 }

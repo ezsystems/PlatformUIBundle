@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the EzSystemsPlatformUIBundle class.
  *
@@ -13,7 +14,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class EzSystemsPlatformUIBundle extends Bundle
 {
-    protected $name = "eZPlatformUIBundle";
+    protected $name = 'eZPlatformUIBundle';
 
     public function getContainerExtension()
     {

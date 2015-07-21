@@ -1,16 +1,17 @@
 <?php
+
 /**
  * File containing the EzPlatformUIExtensionTest class.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
 
 namespace EzSystems\PlatformUIBundle\Tests\DependencyInjection;
 
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\ConfigurationProcessor;
-use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\Contextualizer;
 use EzSystems\PlatformUIBundle\DependencyInjection\EzPlatformUIExtension;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -77,11 +78,11 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
         $foobarDefaultPath = 'js/foobar.js';
         $defaultModules = [
             'ez-capi' => [
-                'path' => $ezcapiDefaultPath
+                'path' => $ezcapiDefaultPath,
             ],
             'foobar' => [
-                'path' => $foobarDefaultPath
-            ]
+                'path' => $foobarDefaultPath,
+            ],
         ];
 
         $filterSa1 = 'min';
@@ -92,16 +93,16 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
         $moduleSa1Requires = ['foobar'];
         $modulesSa1 = [
             'ez-capi' => [
-                'requires' => $ezcapiRequiresSa1
+                'requires' => $ezcapiRequiresSa1,
             ],
             'module-sa1' => [
                 'path' => $moduleSa1Path,
                 'dependencyOf' => $moduleSa1DepOf,
-                'requires' => $moduleSa1Requires
+                'requires' => $moduleSa1Requires,
             ],
             'template-sa1' => [
                 'path' => $templateSa1Path,
-                'type' => $tplType
+                'type' => $tplType,
             ],
         ];
 
@@ -112,11 +113,11 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
         $modulesSa2 = [
             'module-sa2' => [
                 'path' => $moduleSa2Path,
-                'requires' => $moduleSa2Requires
+                'requires' => $moduleSa2Requires,
             ],
             'template-sa2' => [
                 'path' => $templateSa2Path,
-                'type' => $tplType
+                'type' => $tplType,
             ],
         ];
 
@@ -128,16 +129,16 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
         $templateGroupPath = 'template/template_sagroup.js';
         $modulesSaGroup = [
             'ez-capi' => [
-                'dependencyOf' => $ezcapiGroupDepOf
+                'dependencyOf' => $ezcapiGroupDepOf,
             ],
             'module-sagroup' => [
                 'path' => $moduleGroupPath,
                 'requires' => $moduleGroupRequires,
-                'dependencyOf' => $moduleGroupDepOf
+                'dependencyOf' => $moduleGroupDepOf,
             ],
             'template-sagroup' => [
                 'path' => $templateGroupPath,
-                'type' => $tplType
+                'type' => $tplType,
             ],
         ];
 
@@ -146,48 +147,48 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
                 'default' => [
                     'yui' => [
                         'filter' => $defaultFilter,
-                        'modules' => $defaultModules
-                    ]
+                        'modules' => $defaultModules,
+                    ],
                 ],
                 'sa1' => [
                     'yui' => [
                         'filter' => $filterSa1,
-                        'modules' => $modulesSa1
-                    ]
+                        'modules' => $modulesSa1,
+                    ],
                 ],
                 'sa2' => [
                     'yui' => [
                         'filter' => $filterSa2,
-                        'modules' => $modulesSa2
-                    ]
+                        'modules' => $modulesSa2,
+                    ],
                 ],
                 'sa_group' => [
                     'yui' => [
                         'filter' => $filterSaGroup,
-                        'modules' => $modulesSaGroup
-                    ]
-                ]
-            ]
+                        'modules' => $modulesSaGroup,
+                    ],
+                ],
+            ],
         ];
 
         $this->load($config);
 
         // Default
-        $this->assertContainerBuilderHasParameter("ez_platformui.default.yui.filter", $defaultFilter);
-        $this->assertContainerBuilderHasParameter("ez_platformui.default.yui.modules", array_keys($defaultModules));
-        $this->assertContainerBuilderHasParameter("ez_platformui.default.yui.modules.ez-capi.path", $ezcapiDefaultPath);
-        $this->assertContainerBuilderHasParameter("ez_platformui.default.yui.modules.ez-capi.type", $jsType);
+        $this->assertContainerBuilderHasParameter('ez_platformui.default.yui.filter', $defaultFilter);
+        $this->assertContainerBuilderHasParameter('ez_platformui.default.yui.modules', array_keys($defaultModules));
+        $this->assertContainerBuilderHasParameter('ez_platformui.default.yui.modules.ez-capi.path', $ezcapiDefaultPath);
+        $this->assertContainerBuilderHasParameter('ez_platformui.default.yui.modules.ez-capi.type', $jsType);
         $this->assertFalse($this->container->hasParameter('ez_platformui.default.yui.modules.ez-capi.requires'));
         $this->assertFalse($this->container->hasParameter('ez_platformui.default.yui.modules.ez-capi.dependencyOf'));
-        $this->assertContainerBuilderHasParameter("ez_platformui.default.yui.modules.foobar.path", $foobarDefaultPath);
-        $this->assertContainerBuilderHasParameter("ez_platformui.default.yui.modules.foobar.type", $jsType);
+        $this->assertContainerBuilderHasParameter('ez_platformui.default.yui.modules.foobar.path', $foobarDefaultPath);
+        $this->assertContainerBuilderHasParameter('ez_platformui.default.yui.modules.foobar.type', $jsType);
         $this->assertFalse($this->container->hasParameter('ez_platformui.default.yui.modules.foobar.requires'));
         $this->assertFalse($this->container->hasParameter('ez_platformui.default.yui.modules.foobar.dependencyOf'));
 
         // SA1
-        $this->assertContainerBuilderHasParameter("ez_platformui.sa1.yui.filter", $filterSa1);
+        $this->assertContainerBuilderHasParameter('ez_platformui.sa1.yui.filter', $filterSa1);
         $this->assertContainerBuilderHasParameter(
-            "ez_platformui.sa1.yui.modules",
+            'ez_platformui.sa1.yui.modules',
             ['ez-capi', 'foobar', 'module-sa1', 'template-sa1']
         );
         $this->assertContainerBuilderHasParameter(
@@ -224,9 +225,9 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
         );
 
         // SA2
-        $this->assertContainerBuilderHasParameter("ez_platformui.sa2.yui.filter", $filterSa2);
+        $this->assertContainerBuilderHasParameter('ez_platformui.sa2.yui.filter', $filterSa2);
         $this->assertContainerBuilderHasParameter(
-            "ez_platformui.sa2.yui.modules",
+            'ez_platformui.sa2.yui.modules',
             ['ez-capi', 'foobar', 'module-sagroup', 'template-sagroup', 'module-sa2', 'template-sa2']
         );
         $this->assertFalse($this->container->hasParameter('ez_platformui.sa2.yui.modules.ez-capi.path'));
@@ -249,7 +250,7 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
         // SA3
         $this->assertFalse($this->container->hasParameter('ez_platformui.sa3.yui.filter'));
         $this->assertContainerBuilderHasParameter(
-            "ez_platformui.sa3.yui.modules",
+            'ez_platformui.sa3.yui.modules',
             ['ez-capi', 'foobar', 'module-sagroup', 'template-sagroup']
         );
         $this->assertFalse($this->container->hasParameter('ez_platformui.sa3.yui.modules.ez-capi.path'));
@@ -304,17 +305,17 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $this->assertContainerBuilderHasParameter("ez_platformui.default.css.files", $defaultFiles);
+        $this->assertContainerBuilderHasParameter('ez_platformui.default.css.files', $defaultFiles);
         $this->assertContainerBuilderHasParameter(
-            "ez_platformui.sa1.css.files",
+            'ez_platformui.sa1.css.files',
             array_merge($defaultFiles, $sa1Files)
         );
         $this->assertContainerBuilderHasParameter(
-            "ez_platformui.sa2.css.files",
+            'ez_platformui.sa2.css.files',
             array_merge($defaultFiles, $groupFiles)
         );
         $this->assertContainerBuilderHasParameter(
-            "ez_platformui.sa3.css.files",
+            'ez_platformui.sa3.css.files',
             array_merge($defaultFiles, $groupFiles, $sa3Files)
         );
         $this->assertFalse($this->container->has('ez_platformui.sa_group.css.files'));
