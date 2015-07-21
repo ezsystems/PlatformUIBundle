@@ -6,4 +6,5 @@ node_modules/
 Resources/public/vendors/
 /vendor/
 composer.lock
+.php_cs.cache
 
