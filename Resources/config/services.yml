@@ -14,7 +14,11 @@ parameters:
     ezsystems.platformui.controller.content_type.class: EzSystems\PlatformUIBundle\Controller\ContentTypeController
     ezsystems.platforui.notification_pool.class: EzSystems\PlatformUIBundle\Notification\NotificationPool
     ezsystems.platformui.form_processor.content_type.class: EzSystems\PlatformUIBundle\Form\Processor\ContentTypeFormProcessor
-
+    ezsystems.platformui.application_config.provider.session_info.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\SessionInfo
+    ezsystems.platformui.application_config.provider.value.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\Value
+    ezsystems.platformui.application_config.provider.anonymous_user_id.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\AnonymousUserId
+    ezsystems.platformui.application_config.aggregator.class: EzSystems\PlatformUIBundle\ApplicationConfig\Aggregator
+    ezsystems.platformui.application_config.provider.root_info.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\RootInfo
 services:
     ezsystems.platformui.twig.yui_extension:
         class: %ezsystems.platformui.twig.yui_extension.class%
@@ -25,12 +29,44 @@ services:
     ezsystems.platformui.controller:
         class: %ezsystems.platformui.controller.class%
         arguments:
-            - %ezpublish.fieldType.ezcountry.data%
+            - @ezsystems.platformui.application_config.aggregator
+        parent: ezpublish.controller.base
+
+    ezsystems.platformui.application_config.aggregator:
+        class: %ezsystems.platformui.application_config.aggregator.class%
+
+    ezsystems.platformui.application_config.provider.session_info:
+        class: %ezsystems.platformui.application_config.provider.session_info.class%
+        arguments:
             - @session
             - @security.csrf.token_manager
             - %ezpublish_rest.csrf_token_intention%
+            - @router
+        tags:
+            - {name: ezsystems.platformui.application_config_provider, key: 'sessionInfo'}
+
+    ezsystems.platformui.application_config.provider.anonymous_user_id:
+        class: %ezsystems.platformui.application_config.provider.anonymous_user_id.class%
+        arguments:
+            - @router
             - $anonymous_user_id$
-        parent: ezpublish.controller.base
+        tags:
+            - {name: ezsystems.platformui.application_config_provider, key: 'anonymousUserId'}
+
+    ezsystems.platformui.application_config.provider.countries_info:
+        class: %ezsystems.platformui.application_config.provider.value.class%
+        arguments:
+            - %ezpublish.fieldType.ezcountry.data%
+        tags:
+            - {name: ezsystems.platformui.application_config_provider, key: 'countriesInfo'}
+
+    ezsystems.platformui.application_config.provider.root_info:
+        class: %ezsystems.platformui.application_config.provider.root_info.class%
+        arguments:
+            - @request_stack
+            - @templating.helper.assets
+        tags:
+            - {name: ezsystems.platformui.application_config_provider, key: 'rootInfo'}
 
     ezsystems.platformui.controller.template:
         class: %ezsystems.platformui.controller.template.class%
