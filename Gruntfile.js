@@ -51,8 +51,9 @@ module.exports = function(grunt) {
         alloyBase = "vendor/ezsystems/platform-ui-assets-bundle/Resources/public/vendors/alloy-editor/",
         alloyDistAssets = alloyBase + "dist/alloy-editor/assets/",
         alloySkinBasePath = alloyBase + "src/ui/react/src/assets/sass/skin/",
-        alloySkinCSS =alloyDistAssets + "alloy-editor-ez.css",
-        fixFontsUrl;
+        alloySkinCSS = alloyDistAssets + "alloy-editor-ez.css",
+        fixFontsUrl,
+        alloyPluginsDir = "Resources/public/js/alloyeditor/";
 
     fixFontsUrl = function (url) {
         if ( url.indexOf("fonts/") !== 0 ) {
@@ -186,6 +187,17 @@ module.exports = function(grunt) {
                 },
             }
         },
+        react: {
+            alloyplugins: {
+                files: [{
+                    expand: true,
+                    cwd: alloyPluginsDir,
+                    src: ['**/*.jsx'],
+                    dest: alloyPluginsDir,
+                    ext: '.js',
+                }],
+            }
+        },
         watch: {
             options: {
                 atBegin: true
@@ -193,6 +205,10 @@ module.exports = function(grunt) {
             test: {
                 files: [sourceFiles, testFiles, "Tests/js/**/*.html"],
                 tasks: ["shell:grover"]
+            },
+            jsx: {
+                files: [alloyPluginsDir + "/**/*.jsx"],
+                tasks: ["react:alloyplugins"],
             },
         },
     });
@@ -206,6 +222,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-rework');
+    grunt.loadNpmTasks('grunt-react');
 
     grunt.registerTask('lint', ['jshint']);
     grunt.registerTask('ugly', ['jshint', 'uglify']);

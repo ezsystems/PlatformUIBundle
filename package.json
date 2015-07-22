@@ -12,6 +12,7 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-contrib-yuidoc": "~0.4.0",
     "grunt-istanbul": "~0.2.1",
+    "grunt-react": "^0.12.2",
     "grunt-rework": "^0.1.0",
     "grunt-shell": "~0.3.1",
     "gulp": "^3.9.0",
