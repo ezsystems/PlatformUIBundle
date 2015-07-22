@@ -206,7 +206,7 @@ YUI.add('ez-versionmodel', function (Y) {
          * Return list of translations of version as array of language codes
          *
          * @method getTranslationsList
-         * @returns {Array} language codes of translations
+         * @return {Array} language codes of translations
          */
         getTranslationsList: function () {
             return this.get('languageCodes').split(',');
