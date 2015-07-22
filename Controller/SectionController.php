@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the SectionController class.
  *
@@ -81,7 +82,7 @@ class SectionController extends Controller
     }
 
     /**
-     * Renders the section list
+     * Renders the section list.
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -90,7 +91,7 @@ class SectionController extends Controller
         try {
             return $this->render('eZPlatformUIBundle:Section:list.html.twig', [
                 'canCreate' => $this->sectionHelper->canCreate(),
-                'form' => $this->generateDeleteListForm(new SectionList())->createView()
+                'form' => $this->generateDeleteListForm(new SectionList())->createView(),
             ]);
         } catch (UnauthorizedException $e) {
             return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
@@ -98,7 +99,7 @@ class SectionController extends Controller
     }
 
     /**
-     * Deletes sections
+     * Deletes sections.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
      *
@@ -125,12 +126,12 @@ class SectionController extends Controller
     private function generateDeleteForm(SectionUpdateStruct $sectionUpdateStruct)
     {
         return $this->createForm($this->sectionDeleteType, $sectionUpdateStruct, [
-            'action' => $this->router->generate('admin_sectiondelete')
+            'action' => $this->router->generate('admin_sectiondelete'),
         ]);
     }
 
     /**
-     * Generate the form object used to delete sections
+     * Generate the form object used to delete sections.
      *
      * @param \EzSystems\PlatformUIBundle\Entity\SectionList $sectionListToDelete sections to be populated/deleted
      *
@@ -139,13 +140,15 @@ class SectionController extends Controller
     private function generateDeleteListForm(SectionList $sectionListToDelete)
     {
         return $this->createForm($this->sectionListType, $sectionListToDelete, [
-            'action' => $this->router->generate('admin_sectiondeletelist')
+            'action' => $this->router->generate('admin_sectiondeletelist'),
         ]);
     }
 
     /**
-     * Renders the view of a section
+     * Renders the view of a section.
+     *
      * @param mixed $sectionId
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function viewAction($sectionId)
@@ -159,12 +162,12 @@ class SectionController extends Controller
             $sectionUpdateStruct->identifier = $section->identifier;
             $form = $this->generateDeleteForm($sectionUpdateStruct);
 
-            return $this->render("eZPlatformUIBundle:Section:view.html.twig", [
+            return $this->render('eZPlatformUIBundle:Section:view.html.twig', [
                 'section' => $section,
                 'contentCount' => $contentCount,
                 'canEdit' => $this->sectionHelper->canEdit(),
                 'canDelete' => $this->sectionHelper->canDelete(),
-                'form' => $form->createView()
+                'form' => $form->createView(),
             ]);
         } catch (UnauthorizedException $e) {
             return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
@@ -172,8 +175,10 @@ class SectionController extends Controller
     }
 
     /**
-     * Deletes a section
+     * Deletes a section.
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction(Request $request)
@@ -262,7 +267,7 @@ class SectionController extends Controller
         $section->name = $sectionToUpdate->name;
 
         $form = $this->createForm($this->sectionType, $section, [
-            'action' => $this->router->generate('admin_sectionedit', ['sectionId' => $sectionId])
+            'action' => $this->router->generate('admin_sectionedit', ['sectionId' => $sectionId]),
         ]);
 
         $form->handleRequest($request);
@@ -286,7 +291,7 @@ class SectionController extends Controller
 
         return $this->render('eZPlatformUIBundle:Section:edit.html.twig', [
             'form' => $form->createView(),
-            'section' => $sectionToUpdate
+            'section' => $sectionToUpdate,
         ]);
     }
 

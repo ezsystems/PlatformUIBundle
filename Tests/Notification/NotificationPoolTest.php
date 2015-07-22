@@ -1,9 +1,11 @@
 <?php
+
 /**
  * This file is part of the eZ PlatformUI package.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
+ *
  * @version //autogentag//
  */
 
@@ -101,7 +103,7 @@ class NotificationPoolTest extends PHPUnit_Framework_TestCase
             new TranslatableNotificationMessage([
                 'message' => $message,
                 'translationParams' => $params,
-                'domain' => $domain
+                'domain' => $domain,
             ]),
             $state
         );

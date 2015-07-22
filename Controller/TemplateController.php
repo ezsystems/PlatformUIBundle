@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the TemplateController class.
  *
@@ -15,7 +16,7 @@ use eZ\Publish\Core\MVC\ConfigResolverInterface;
 
 /**
  * Provides a controller to automatically wrap the Handlebars templates in a YUI
- * module
+ * module.
  */
 class TemplateController extends Controller
 {
@@ -43,10 +44,11 @@ class TemplateController extends Controller
     public function wrapTemplateAction($module)
     {
         if ($this->getModuleSetting($module, 'type') !== 'template') {
-            throw new BadRequestHttpException($module . " is not declared as a template");
+            throw new BadRequestHttpException($module . ' is not declared as a template');
         }
         $path = $this->getModuleSetting($module, 'path');
         $response = new Response();
+
         return $this->render('eZPlatformUIBundle:Template:wraptemplate.js.twig', [
             'path' => $path,
             'module' => $module,

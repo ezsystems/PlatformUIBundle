@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the Configuration class.
  *
@@ -15,7 +16,7 @@ use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAw
 class Configuration extends SiteAccessConfiguration
 {
     /**
-     * Defines the expected configuration for the CSS
+     * Defines the expected configuration for the CSS.
      *
      * @param $saNode \Symfony\Component\Config\Definition\Builder\NodeBuilder
      */
@@ -32,7 +33,7 @@ class Configuration extends SiteAccessConfiguration
     }
 
     /**
-     * Defines the expected configuration for the YUI modules
+     * Defines the expected configuration for the YUI modules.
      *
      * @param $saNode \Symfony\Component\Config\Definition\Builder\NodeBuilder
      */

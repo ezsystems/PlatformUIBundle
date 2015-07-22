@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the eZPlatformUIExtension class.
  *
@@ -9,7 +10,6 @@
 namespace EzSystems\PlatformUIBundle\DependencyInjection;
 
 use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\ConfigurationProcessor;
-use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAware\ContextualizerInterface;
 use EzSystems\PlatformUIBundle\DependencyInjection\Configuration\PlatformUIMapper;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

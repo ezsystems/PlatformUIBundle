@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File containing the SectionHelper class.
  *
@@ -42,7 +43,7 @@ class SectionHelper implements SectionHelperInterface
         $sections = $this->sectionService->loadSections();
         $list = [];
         foreach ($sections as $section) {
-            /** @var  $section Section  */
+            /* @var  $section Section  */
             $list[$section->id] = new SectionListItem(
                 $section,
                 $this->sectionService->countAssignedContents($section),
@@ -92,7 +93,8 @@ class SectionHelper implements SectionHelperInterface
      * section module.
      *
      * @param string $function
-     * @return boolean
+     *
+     * @return bool
      */
     protected function canUser($function)
     {
