@@ -734,7 +734,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "editContent",
-                    path: '/edit/:id',
+                    path: '/edit/:id/:languageCode',
                     service: Y.eZ.ContentEditViewService,
                     sideViews: {'navigationHub': false, 'discoveryBar': false},
                     view: 'contentEditView',
