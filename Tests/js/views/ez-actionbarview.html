@@ -65,6 +65,8 @@
 </div>
 </script>
 
+<script type="text/x-handlebars-template" id="translateactionview-ez-template"></script>
+
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-actionbarview-tests.js"></script>
 <script>
@@ -84,7 +86,7 @@
         filter: loaderFilter,
         modules: {
             "ez-actionbarview": {
-                requires: ['ez-barview', 'ez-buttonactionview', 'ez-createcontentactionview'],
+                requires: ['ez-barview', 'ez-buttonactionview', 'ez-createcontentactionview', 'ez-translateactionview'],
                 fullpath: "../../../Resources/public/js/views/ez-actionbarview.js"
             },
             "ez-buttonactionview": {
@@ -98,6 +100,10 @@
             "ez-contenttypeselectorview": {
                 requires: ['ez-templatebasedview'],
                 fullpath: "../../../Resources/public/js/views/ez-contenttypeselectorview.js"
+            },
+            "ez-translateactionview": {
+                requires: ['ez-buttonactionview', 'ez-expandable'],
+                fullpath: "../../../Resources/public/js/views/actions/ez-translateactionview.js"
             },
             "ez-barview": {
                 requires: ['ez-templatebasedview', 'event-tap', 'event-resize'],

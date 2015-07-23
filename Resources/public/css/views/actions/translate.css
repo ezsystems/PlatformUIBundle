@@ -1,0 +1,73 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-translateactionview {
+    position: relative;
+    width: 100%;
+}
+
+.ez-view-translateactionview.is-expanded {
+    margin-left: -10px;
+    padding-left: 10px;
+}
+
+.ez-view-translateactionview .ez-expandable-area {
+    position: absolute;
+    z-index: 1;
+    top: -60%;
+    left: 0;
+    width: 242px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    white-space: nowrap;
+    padding: 0.3em 0;
+
+    -webkit-transform: translateX(100%);
+            transform: translateX(100%);
+}
+
+.ez-view-translateactionview.is-expanded .ez-expandable-area {
+    -webkit-transform: translateX(-100%);
+            transform: translateX(-100%);
+}
+
+.ez-view-translateactionview .ez-contenttranslations {
+    padding: 0.3em 0.5em;
+}
+
+.ez-view-translateactionview .ez-contenttranslations-title {
+    margin: 0 0 0.5em 0;
+}
+
+.ez-view-translateactionview .ez-contenttranslations-list {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    line-height: 1.8em;
+}
+
+.ez-view-translateactionview .ez-contenttranslations-list .ez-contenttranslation {
+    display: block;
+    position: relative;
+}
+
+.ez-view-translateactionview .ez-contenttranslation-view-link {
+    display: block;
+    white-space: nowrap;
+    padding: 1em 1.5em;
+}
+
+.ez-view-translateactionview .ez-contenttranslation-edit-link {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    right: 1.5em;
+    top: 0.9em;
+}
+
+.ez-view-translateactionview .ez-contenttranslation:hover .ez-contenttranslation-edit-link {
+    display: block;
+    padding: 0.1em 0.5em;
+}

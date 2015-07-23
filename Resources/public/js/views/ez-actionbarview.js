@@ -62,6 +62,14 @@ YUI.add('ez-actionbarview', function (Y) {
                             priority: 210,
                             contentType: this.get('contentType')
                         }),
+                        new Y.eZ.TranslateActionView({
+                            actionId: "translate",
+                            disabled: false,
+                            label: "Translations",
+                            priority: 170,
+                            location: this.get('location'),
+                            content: this.get('content')
+                        }),
                         new Y.eZ.ButtonActionView({
                             actionId: 'sendToTrash',
                             disabled: false,
@@ -70,6 +78,28 @@ YUI.add('ez-actionbarview', function (Y) {
                         }),
                     ];
                 }
+            },
+
+            /**
+             * The location being rendered
+             *
+             * @attribute location
+             * @type Y.eZ.Location
+             * @writeOnce
+             */
+            location: {
+                writeOnce: "initOnly",
+            },
+
+            /**
+             * The content associated the current location
+             *
+             * @attribute content
+             * @type Y.eZ.Content
+             * @writeOnce
+             */
+            content: {
+                writeOnce: "initOnly",
             },
 
             /**
