@@ -52,33 +52,33 @@
             var app = new Y.eZ.PlatformUIApp({
                     container: '.ez-platformui-app',
                     viewContainer: '.ez-view-container',
-                    root: "{{ app.request.attributes.get( 'semanticPathinfo' ) }}",
-                    assetRoot: "{{ asset( '/' ) }}",
-                    anonymousUserId: "{{ anonymousUserId }}",
+                    root: "{{ parameters.rootInfo.root }}",
+                    assetRoot: "{{ parameters.rootInfo.assetRoot }}",
+                    anonymousUserId: "{{ parameters.anonymousUserId }}",
                     plugins: Y.eZ.PluginRegistry.getPlugins(Y.eZ.PlatformUIApp.NAME),
                     capi: new Y.eZ.CAPI(
                         "{{ app.request.uriForPath('/')|trim('/') }}",
-                        new Y.eZ.SessionAuthAgent({%if sessionInfo.isStarted %}{
-                                name: "{{ sessionInfo.name }}",
-                                identifier: "{{ sessionInfo.identifier }}",
-                                href: "{{ sessionInfo.href }}",
-                                csrfToken: "{{ sessionInfo.csrfToken }}",
+                        new Y.eZ.SessionAuthAgent({%if parameters.sessionInfo.isStarted %}{
+                                name: "{{ parameters.sessionInfo.name }}",
+                                identifier: "{{ parameters.sessionInfo.identifier }}",
+                                href: "{{ parameters.sessionInfo.href }}",
+                                csrfToken: "{{ parameters.sessionInfo.csrfToken }}",
                         }{% endif %})
                     ),
                     routeConfig: {
                         "viewLocation": {
                             "fieldViews": {
-                                "ezcountry": {{countriesInfo|json_encode|raw}}
+                                "ezcountry": {{parameters.countriesInfo|json_encode|raw}}
                             }
                         },
                         "editContent": {
                             "fieldEditViews": {
-                                "ezcountry": {{countriesInfo|json_encode|raw}}
+                                "ezcountry": {{parameters.countriesInfo|json_encode|raw}}
                             }
                         },
                         "createContent": {
                             "fieldEditViews": {
-                                "ezcountry": {{countriesInfo|json_encode|raw}}
+                                "ezcountry": {{parameters.countriesInfo|json_encode|raw}}
                             }
                         }
                     }

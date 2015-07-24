@@ -10,50 +10,16 @@
 namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Bundle\EzPublishCoreBundle\Controller;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use EzSystems\PlatformUIBundle\ApplicationConfig\Provider;
 
 class PlatformUIController extends Controller
 {
-    /**
-     * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
-     */
-    private $session;
+    /** @var Provider */
+    private $configAggregator;
 
-    /**
-     * @var \Symfony\Component\Security\Csrf\CsrfTokenManagerInterface
-     */
-    private $csrfTokenManager;
-
-    /**
-     * @var string
-     */
-    private $csrfTokenIntention;
-
-    /**
-     * The configured anonymous user id.
-     *
-     * @var int
-     */
-    private $anonymousUserId;
-
-    /**
-     * @var array
-     */
-    protected $countriesInfo;
-
-    public function __construct(
-        array $countriesInfo,
-        SessionInterface $session,
-        CsrfTokenManagerInterface $csrfTokenManager,
-        $restIntention = 'rest',
-        $anonymousUserId = 10
-    ) {
-        $this->session = $session;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->csrfTokenIntention = $restIntention;
-        $this->anonymousUserId = $anonymousUserId;
-        $this->countriesInfo = $countriesInfo;
+    public function __construct(Provider $configAggregator)
+    {
+        $this->configAggregator = $configAggregator;
     }
 
     /**
@@ -63,25 +29,9 @@ class PlatformUIController extends Controller
      */
     public function shellAction()
     {
-        $sessionInfo = ['isStarted' => false];
-        if ($this->session->isStarted()) {
-            $sessionInfo['isStarted'] = true;
-            $sessionInfo['name'] = $this->session->getName();
-            $sessionInfo['identifier'] = $this->session->getId();
-            $sessionInfo['csrfToken'] = $this->csrfTokenManager->getToken($this->csrfTokenIntention)->getValue();
-            $sessionInfo['href'] = $this->generateUrl(
-                'ezpublish_rest_deleteSession',
-                ['sessionId' => $this->session->getId()]
-            );
-        }
-
-        return $this->render('eZPlatformUIBundle:PlatformUI:shell.html.twig', [
-            'sessionInfo' => $sessionInfo,
-            'anonymousUserId' => $this->generateUrl(
-                'ezpublish_rest_loadUser',
-                ['userId' => $this->anonymousUserId]
-            ),
-            'countriesInfo' => $this->countriesInfo,
-        ]);
+        return $this->render(
+            'eZPlatformUIBundle:PlatformUI:shell.html.twig',
+            ['parameters' => $this->configAggregator->getConfig()]
+        );
     }
 }
