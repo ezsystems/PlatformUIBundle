@@ -14,6 +14,7 @@ YUI.add('ez-richtext-editview', function (Y) {
     var FIELDTYPE_IDENTIFIER = 'ezrichtext',
         L = Y.Lang,
         FOCUS_CLASS = 'is-focused',
+        EDITOR_FOCUSED_CLASS = 'is-editor-focused',
         AlloyEditor = Y.eZ.AlloyEditor;
 
     /**
@@ -101,20 +102,40 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @method _initEditor
          */
         _initEditor: function () {
-            var editor, nativeEd, valid;
+            var editor, nativeEd, valid, setEditorFocused, unsetEditorFocused;
 
-            editor = Y.eZ.AlloyEditor.editable(
-                this._getEditableArea().getDOMNode(), {
+            editor = AlloyEditor.editable(
+                this.get('container').one('.ez-richtext-editor').getDOMNode(), {
                     toolbars: this.get('toolbarsConfig'),
                 }
             );
             nativeEd = editor.get('nativeEditor');
             valid = Y.bind(this.validate, this);
+            setEditorFocused = Y.bind(this._uiHandleEditorFocus, this, true);
+            unsetEditorFocused = Y.bind(this._uiHandleEditorFocus, this, false);
 
             nativeEd.on('blur', valid);
             nativeEd.on('focus', valid);
             nativeEd.on('change', valid);
+            nativeEd.on('focus', setEditorFocused);
+            nativeEd.on('blur', unsetEditorFocused);
             this._set('editor', editor);
+        },
+
+        /**
+         * Adds or removes the editor focused class on the view container.
+         *
+         * @method _uiHandleEditorFocus
+         * @param {Boolean} focus
+         */
+        _uiHandleEditorFocus: function (focus) {
+            var container = this.get('container');
+
+            if ( focus ) {
+                container.addClass(EDITOR_FOCUSED_CLASS);
+            } else {
+                container.removeClass(EDITOR_FOCUSED_CLASS);
+            }
         },
 
         validate: function () {
@@ -140,7 +161,7 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @return {Boolean}
          */
         _isEmpty: function () {
-            var section = Y.Node.create(this.get('editor').get('nativeEditor').getData()),
+            var section = Y.Node.create(this._getEditorContent()),
                 hasChildNodes = function (element) {
                     return !!element.get('children').size();
                 },
@@ -151,17 +172,6 @@ YUI.add('ez-richtext-editview', function (Y) {
                 };
 
             return !section || !hasChildNodes(section) || !hasChildWithContent(section);
-        },
-
-        /**
-         * Returns the editable area
-         *
-         * @method _getEditableArea
-         * @protected
-         * @return {Node}
-         */
-        _getEditableArea: function () {
-            return this.get('container').one('.ez-richtext-editable');
         },
 
         _variables: function () {
@@ -221,8 +231,23 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @return String
          */
         _getFieldValue: function () {
-            return {xml: this.get('editor').get('nativeEditor').getData()};
+            return {xml: this._getEditorContent()};
         },
+
+        /**
+         * Returns the content of the editor by removing the markup needed for
+         * the static toolbar.
+         *
+         * @method _getEditorContent
+         * @protected
+         * @return {String}
+         */
+        _getEditorContent: function () {
+            var data = this.get('editor').get('nativeEditor').getData(),
+                section = Y.Node.create(data).one('.ez-richtext-editable section');
+
+            return (section ? section.get('outerHTML') : "");
+        }
     }, {
         ATTRS: {
             /**

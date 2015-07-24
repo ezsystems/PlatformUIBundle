@@ -3,13 +3,12 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenteditformview-tests', function (Y) {
-    var viewTest, isValidTest, getFieldsTest, activeFlagTest;
+    var viewTest, isValidTest, getFieldsTest, activeFlagTest, haltSubmitTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Content Edit Form View test",
 
         setUp: function () {
-
             Y.eZ.FieldEditView.registerFieldEditView('test1', Y.Base.create('test1FieldEditView', Y.View, [], {
                 render: function () {
                     this.get('container').setContent('test1 rendered');
@@ -509,10 +508,55 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
         }
     });
 
+    haltSubmitTest = new Y.Test.Case({
+        name: "eZ Content Edit Form View prevent submit tests",
+
+        setUp: function () {
+            this.contentType = new Y.Mock();
+            this.content = new Y.Mock();
+            this.version = new Y.Mock();
+
+            Y.Mock.expect(this.contentType, {
+                method: 'get',
+                args: ['fieldDefinitions'],
+                returns: {},
+            });
+            Y.Mock.expect(this.contentType, {
+                method: 'getFieldGroups',
+                returns: [],
+            });
+
+            this.view = new Y.eZ.ContentEditFormView({
+                container: '.container',
+                contentType: this.contentType,
+                content: this.content,
+                version: this.version,
+            });
+
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should prevent the form from being submitted": function () {
+            var form;
+
+            this.view.render();
+            form = this.view.get('container').one('form');
+            this.view.get('container').after('submit', function (e) {
+                Y.fail("The form submission should have been halted");
+            });
+            form.simulate('submit');
+        },
+    });
+
+
     Y.Test.Runner.setName("eZ Content Edit Form View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(isValidTest);
     Y.Test.Runner.add(getFieldsTest);
     Y.Test.Runner.add(activeFlagTest);
-
+    Y.Test.Runner.add(haltSubmitTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-contenteditformview']});

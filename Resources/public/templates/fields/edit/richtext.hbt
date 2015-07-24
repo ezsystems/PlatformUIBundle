@@ -15,8 +15,14 @@
             <div class="ez-richtext-toolbar">
                 <button class="pure-button ez-button ez-richtext-switch-focus ez-font-icon ez-button-focus">Focus</button>
             </div>
-            <div class="ez-validated-input ez-richtext-editable"
-                    id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">{{{ xhtml }}}</div>
+            <div class="ez-validated-input ez-richtext-editor"
+                    contenteditable="false"
+                    id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
+                <div class="ez-richtext-editable" contenteditable="true">{{{ xhtml }}}</div>
+                <div class="ez-ae-static-toolbar" contenteditable="false">
+                    <button class="ez-richtext-add-content">Add content</button>
+                </div>
+            </div>
         </div></div>
     </div>
 </div>

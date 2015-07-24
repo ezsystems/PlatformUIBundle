@@ -4,7 +4,7 @@
  */
 YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
-        editorTest, focusModeTest,
+        editorTest, focusModeTest, editorFocusHandlingTest,
         actionBarTest, destructorTest,
         VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML,
         Assert = Y.Assert, Mock = Y.Mock;
@@ -521,6 +521,61 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
     });
 
+    editorFocusHandlingTest = new Y.Test.Case({
+        name: "eZ RichText View editor focus handling test",
+
+        setUp: function () {
+            this.field = {id: 42, fieldValue: {xhtml5edit: ""}};
+            this.content = new Mock();
+            this.version = new Mock();
+            this.contentType = new Mock();
+            Mock.expect(this.content, {
+                method: 'toJSON',
+            });
+            Mock.expect(this.version, {
+                method: 'toJSON',
+            });
+            Mock.expect(this.contentType, {
+                method: 'toJSON',
+            });
+
+            this.view = new Y.eZ.RichTextEditView({
+                container: '.container',
+                field: this.field,
+                fieldDefinition: {isRequired: false},
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType,
+                actionBar: new Y.View(),
+            });
+            this.view.get('actionBar').addTarget(this.view);
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should add the editor focused class": function () {
+            this.view.render();
+            this.view.set('active', true);
+            this.view.get('editor').get('nativeEditor').fire('focus');
+            Assert.isTrue(
+                this.view.get('container').hasClass('is-editor-focused'),
+                "The editor focused class should be added to the container"
+            );
+        },
+
+        "Should remove the editor focused class": function () {
+            this["Should add the editor focused class"]();
+            this.view.get('editor').get('nativeEditor').fire('blur');
+            Assert.isFalse(
+                this.view.get('container').hasClass('is-editor-focused'),
+                "The editor focused class should be removed from the container"
+            );
+        },
+    });
+
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "RichText Edit View registration test";
     registerTest.viewType = Y.eZ.RichTextEditView;
@@ -535,4 +590,5 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(actionBarTest);
     Y.Test.Runner.add(destructorTest);
     Y.Test.Runner.add(registerTest);
+    Y.Test.Runner.add(editorFocusHandlingTest);
 }, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'editviewregister-tests', 'ez-richtext-editview']});

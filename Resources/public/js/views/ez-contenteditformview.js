@@ -27,7 +27,10 @@ YUI.add('ez-contenteditformview', function (Y) {
      */
     Y.eZ.ContentEditFormView = Y.Base.create('contentEditFormView', Y.eZ.TemplateBasedView, [Y.eZ.AccordionElement], {
         events: {
-            '.fieldgroup-name': {'tap': '_toggleFieldsetCollapse'}
+            '.fieldgroup-name': {'tap': '_toggleFieldsetCollapse'},
+            '.ez-form-content': {
+                'submit': '_haltSubmit'
+            },
         },
 
         initializer: function () {
@@ -184,7 +187,17 @@ YUI.add('ez-contenteditformview', function (Y) {
                 easing: TRANSITION_EASING,
                 collapseElement: fieldset.one(FIELDSET_FIELDS_CLASS)
             });
-        }
+        },
+
+        /**
+         * Form submit event handler to halt the form submission.
+         *
+         * @method _haltSubmit
+         * @param {EventFacade} e
+         */
+        _haltSubmit: function (e) {
+            e.halt(true);
+        },
     }, {
         ATTRS: {
             /**
