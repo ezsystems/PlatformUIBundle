@@ -101,7 +101,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Assert.isObject(variables, "The template should receive some variables");
-                Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 7 variables");
+                Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
 
                 Assert.areSame(
                      that.jsonContent, variables.content,
@@ -125,6 +125,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 );
                 Assert.areSame(expectRequired, variables.isRequired);
                 Assert.areSame(expectedXhtml, variables.xhtml);
+
+                Assert.areEqual(
+                    'ez-richtext-add-content', variables.addContentButtonClass,
+                    "The addContentButtonClass variable should be available"
+                );
 
                 return origTpl.call(this, variables);
             };

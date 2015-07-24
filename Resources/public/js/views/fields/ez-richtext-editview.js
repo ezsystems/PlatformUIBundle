@@ -15,6 +15,7 @@ YUI.add('ez-richtext-editview', function (Y) {
         L = Y.Lang,
         FOCUS_CLASS = 'is-focused',
         EDITOR_FOCUSED_CLASS = 'is-editor-focused',
+        ADD_CONTENT_BUTTON_CLASS = 'ez-richtext-add-content',
         AlloyEditor = Y.eZ.AlloyEditor;
 
     /**
@@ -178,6 +179,7 @@ YUI.add('ez-richtext-editview', function (Y) {
             return {
                 "isRequired": this.get('fieldDefinition').isRequired,
                 "xhtml": this._serializeFieldValue(),
+                "addContentButtonClass": ADD_CONTENT_BUTTON_CLASS,
             };
         },
 
@@ -319,7 +321,12 @@ YUI.add('ez-richtext-editview', function (Y) {
                             test: AlloyEditor.SelectionTest.table
                         }],
                         tabIndex: 1
-                    }
+                    },
+                    addcontent: {
+                        buttons: ['table'],
+                        tabIndex: 2,
+                        addContentButtonClass: ADD_CONTENT_BUTTON_CLASS,
+                    },
                 }
             },
         }
