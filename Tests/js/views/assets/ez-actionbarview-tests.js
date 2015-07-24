@@ -37,49 +37,46 @@ YUI.add('ez-actionbarview-tests', function (Y) {
             this.view.destroy();
         },
 
-        "Should instantiate createContentActionView with contentType": function () {
-            var createContentActionFound = false;
+        _isActionCreated: function (actionId, testedAttributes) {
+            var actionFound;
 
-            for (var i = 0; i < this.view.get('actionsList').length; i++){
-                if (this.view.get('actionsList')[i].get('actionId') === 'createContent'){
-                    createContentActionFound = true;
+            actionFound = Y.Array.find(this.view.get('actionsList'), function (actionView) {
+                return actionView.get('actionId') === actionId;
+            });
+
+            if (!!actionFound) {
+                Y.Object.each(testedAttributes, function (attrValue, attrName) {
                     Assert.areSame(
-                        this.view.get('contentType'),
-                        this.view.get('actionsList')[i].get('contentType'),
-                        'The contentType should have been set to createContentActionView'
+                        attrValue,
+                        actionFound.get(attrName),
+                        'The ' + attrName + ' should have been set to ' + actionId + 'ActionView'
                     );
-                }
+                });
             }
 
             Assert.isTrue(
-                createContentActionFound,
-                'The ActionBarView should contain createContent action'
+                !!actionFound,
+                'The ActionBarView should contain ' + actionId + ' action'
             );
         },
 
+        "Should instantiate edit buttonActionView": function () {
+            this._isActionCreated('edit', {
+                content: this.view.get('content')
+            });
+        },
+
+        "Should instantiate createContentActionView": function () {
+            this._isActionCreated('createContent', {
+                contentType: this.view.get('contentType')
+            });
+        },
+
         "Should instantiate translateActionView": function () {
-            var translateActionFound = false;
-
-            for (var i = 0; i < this.view.get('actionsList').length; i++){
-                if (this.view.get('actionsList')[i].get('actionId') === 'translate'){
-                    translateActionFound = true;
-                    Assert.areSame(
-                        this.view.get('location'),
-                        this.view.get('actionsList')[i].get('location'),
-                        'The location should have been set to translateActionView'
-                    );
-                    Assert.areSame(
-                        this.view.get('content'),
-                        this.view.get('actionsList')[i].get('content'),
-                        'The content should have been set to translateActionView'
-                    );
-                }
-            }
-
-            Assert.isTrue(
-                translateActionFound,
-                'The ActionBarView should contain createContent action'
-            );
+            this._isActionCreated('translate', {
+                content: this.view.get('content'),
+                location: this.view.get('location')
+            });
         },
     });
 
