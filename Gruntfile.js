@@ -4,46 +4,29 @@ module.exports = function(grunt) {
     var reportDir = "./Tests/report",
         instrumentDir = "./Tests/instrument",
         environment = process.env,
-        sourceFiles = [ // Syntax "!<whatever>" means - exclude whatever from the result set
-            "./Resources/public/js/apps/*.js", "!./Resources/public/js/apps/*-min.js",
-            "./Resources/public/js/apps/extensions/*.js", "!./Resources/public/js/apps/extensions/*-min.js",
-            "./Resources/public/js/apps/plugins/*.js", "!./Resources/public/js/apps/plugins/*-min.js",
-            "./Resources/public/js/views/*.js", "!./Resources/public/js/views/*-min.js",
-            "./Resources/public/js/views/fields/*.js", "!./Resources/public/js/views/fields/*-min.js",
-            "./Resources/public/js/views/universaldiscovery/*.js", "!./Resources/public/js/views/universaldiscovery/*-min.js",
-            "./Resources/public/js/views/actions/*.js", "!./Resources/public/js/views/actions/*-min.js",
-            "./Resources/public/js/views/tabs/*.js", "!./Resources/public/js/views/actions/*-min.js",
-            "./Resources/public/js/views/navigation/*.js", "!./Resources/public/js/views/navigation/*-min.js",
-            "./Resources/public/js/views/serverside/*.js", "!./Resources/public/js/views/serverside/*-min.js",
-            "./Resources/public/js/views/services/*.js", "!./Resources/public/js/views/services/*-min.js",
-            "./Resources/public/js/views/services/plugins/*.js", "!./Resources/public/js/views/services/plugins/*-min.js",
-            "./Resources/public/js/models/*.js", "!./Resources/public/js/models/*-min.js",
-            "./Resources/public/js/models/structs/*.js", "!./Resources/public/js/models/structs/*-min.js",
-            "./Resources/public/js/extensions/*.js", "!./Resources/public/js/extensions/*-min.js",
-            "./Resources/public/js/external/*.js", "!./Resources/public/js/external/*-min.js",
-            "./Resources/public/js/services/*.js", "!./Resources/public/js/services/*-min.js",
-            "./Resources/public/js/helpers/*.js", "!./Resources/public/js/helpers/*-min.js"
+        sourceFiles = [
+            "./Resources/public/js/apps/*.js",
+            "./Resources/public/js/apps/extensions/*.js",
+            "./Resources/public/js/apps/plugins/*.js",
+            "./Resources/public/js/views/*.js",
+            "./Resources/public/js/views/fields/*.js",
+            "./Resources/public/js/views/universaldiscovery/*.js",
+            "./Resources/public/js/views/actions/*.js",
+            "./Resources/public/js/views/tabs/*.js",
+            "./Resources/public/js/views/navigation/*.js",
+            "./Resources/public/js/views/serverside/*.js",
+            "./Resources/public/js/views/services/*.js",
+            "./Resources/public/js/views/services/plugins/*.js",
+            "./Resources/public/js/models/*.js",
+            "./Resources/public/js/models/structs/*.js",
+            "./Resources/public/js/extensions/*.js",
+            "./Resources/public/js/external/*.js",
+            "./Resources/public/js/services/*.js",
         ],
         testFiles = [
             "./Tests/js/**/*.js",
         ],
         trashFiles = [
-            "./Resources/public/js/apps/*-min.js",
-            "./Resources/public/js/apps/extensions/*-min.js",
-            "./Resources/public/js/apps/plugins/*-min.js",
-            "./Resources/public/js/views/*-min.js",
-            "./Resources/public/js/views/fields/*-min.js",
-            "./Resources/public/js/views/navigation/*-min.js",
-            "./Resources/public/js/views/services/*-min.js",
-            "./Resources/public/js/views/services/plugins/*-min.js",
-            "./Resources/public/js/models/*-min.js",
-            "./Resources/public/js/models/structs/*-min.js",
-            "./Resources/public/js/extensions/*-min.js",
-            "./Resources/public/js/external/*-min.js",
-            "./Resources/public/js/services/*-min.js",
-            "./Resources/public/js/helpers/*-min.js",
-            "./Resources/public/js/views/actions/*-min.js",
-            "./Resources/public/js/views/tabs/*-min.js",
             instrumentDir,
             reportDir
         ],
@@ -71,17 +54,6 @@ module.exports = function(grunt) {
                 jshintrc: 'jshint.json'
             },
             all: [sourceFiles, testFiles]
-        },
-        uglify: {
-            all: {
-                files: [
-                    {
-                        expand: true,     // Enable dynamic expansion.
-                        src: sourceFiles,
-                        ext: '-min.js'   // Dest filepaths will have this extension.
-                    }
-                ]
-            }
         },
         clean: {
             all: {
@@ -214,7 +186,6 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-istanbul');
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
@@ -225,7 +196,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-react');
 
     grunt.registerTask('lint', ['jshint']);
-    grunt.registerTask('ugly', ['jshint', 'uglify']);
     grunt.registerTask('test', ['jshint', 'shell:grover'] );
     grunt.registerTask('coverage', ['jshint', 'clean', 'instrument', 'shell:groverCoverage'] );
     grunt.registerTask('doc', ['yuidoc'] );
