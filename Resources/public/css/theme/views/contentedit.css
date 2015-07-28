@@ -24,13 +24,12 @@
     font-size: 200%;
 }
 
-.ez-view-contenteditview .ez-technical-infos {
+.ez-view-contenteditview .ez-infos {
     opacity: 0;
     visibility: visible;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
-.ez-view-contenteditview.is-showing-technicalinfos .ez-technical-infos,
-.ez-view-contenteditview.is-using-touch-device .ez-technical-infos {
+.ez-view-contenteditview.is-showing-infos .ez-infos {
     opacity: 1;
 }

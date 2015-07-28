@@ -40,11 +40,21 @@
     padding: 0;
     margin: 0;
     font-size: 80%;
+}
+
+.ez-view-contenteditview .ez-description {
+    padding-top: 0.3em;
+    margin: 0.3em 0 0 0;
+    font-style: italic;
+    font-weight: lighter;
+}
+
+.ez-view-contenteditview .ez-infos {
     visibility: hidden;
 }
 
-.ez-view-contenteditview.is-showing-technicalinfos .ez-technical-infos,
-.ez-view-contenteditview.is-using-touch-device .ez-technical-infos {
+.ez-view-contenteditview.is-showing-infos .ez-infos,
+.ez-view-contenteditview.is-using-touch-device .ez-infos {
     visibility: visible;
 }
 
