@@ -34,7 +34,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent', function (Y) {
         ],
 
         statics: {
-            key: 'addcontent'
+            key: 'ezaddcontent'
         },
 
         propTypes: {
