@@ -24,11 +24,11 @@ trait Fields
         $type = $fieldManager->getThisContentTypeName('eng-GB');
 
         $this->loggedAsAdminPlatformUi();
-        $this->clickNavigationZone("Platform");
+        $this->clickNavigationZone('Platform');
         $this->waitForLoadings();
-        $this->clickNavigationItem("Content structure");
+        $this->clickNavigationItem('Content structure');
         $this->waitForLoadings();
-        $this->clickActionBar("Create a content");
+        $this->clickActionBar('Create a content');
         $this->waitForLoadings();
         $this->clickContentType($type);
         $this->waitForLoadings();
@@ -45,13 +45,13 @@ trait Fields
         $name = $fieldManager->getThisContentName('eng-GB');
 
         $this->loggedAsAdminPlatformUi();
-        $this->clickNavigationZone("Platform");
+        $this->clickNavigationZone('Platform');
         $this->waitForLoadings();
-        $this->clickNavigationItem("Content structure");
+        $this->clickNavigationItem('Content structure');
         $this->waitForLoadings();
         $this->openTreePath($name);
         $this->waitForLoadings();
-        $this->clickActionBar("Edit");
+        $this->clickActionBar('Edit');
         $this->waitForLoadings();
         $this->platformStatus = self::WAITING_FOR_PUBLISHING;
     }
@@ -66,9 +66,9 @@ trait Fields
         $name = $fieldManager->getThisContentName('eng-GB');
 
         $this->loggedAsAdminPlatformUi();
-        $this->clickNavigationZone("Platform");
+        $this->clickNavigationZone('Platform');
         $this->waitForLoadings();
-        $this->clickNavigationItem("Content structure");
+        $this->clickNavigationItem('Content structure');
         $this->waitForLoadings();
         $this->openTreePath($name);
         $this->waitForLoadings();
@@ -92,9 +92,9 @@ trait Fields
     public function publishContent()
     {
         if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
-            $this->clickEditActionBar("Publish");
+            $this->clickEditActionBar('Publish');
         } else {
-            throw new \Exception("Cannot publish content, application in wrong state");
+            throw new \Exception('Cannot publish content, application in wrong state');
         }
     }
 
@@ -109,7 +109,7 @@ trait Fields
             $name = $fieldManager->getThisFieldTypeName('eng-GB');
             $this->checkOption($name);
         } else {
-            throw new \Exception("Cannot publish content, application in wrong state");
+            throw new \Exception('Cannot publish content, application in wrong state');
         }
     }
 
@@ -124,7 +124,7 @@ trait Fields
             $name = $fieldManager->getThisFieldTypeName('eng-GB');
             $this->uncheckOption($name);
         } else {
-            throw new \Exception("Cannot publish content, application in wrong state");
+            throw new \Exception('Cannot publish content, application in wrong state');
         }
     }
 
@@ -163,18 +163,17 @@ trait Fields
             $verification = new WebAssert($this->getSession());
             $verification->elementTextContains('css', '.ez-fielddefinition-name', $label . '*');
         } else {
-            throw new \Exception("Cannot publish content, application in wrong state");
+            throw new \Exception('Cannot publish content, application in wrong state');
         }
     }
 
     /**
      *  @Given I set an/a empty value as the Field Value
      *  @And I set an/a empty value as the Field Value
-     *
      */
     public function setFieldValueToNothing()
     {
-        $this->setFieldValue("");
+        $this->setFieldValue('');
     }
 
     /**

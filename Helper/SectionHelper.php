@@ -35,7 +35,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getSectionList()
     {
@@ -56,7 +56,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function canCreate()
     {
@@ -64,7 +64,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function canDelete()
     {
@@ -72,7 +72,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function canEdit()
     {
@@ -80,7 +80,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function canAssign()
     {
@@ -106,7 +106,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function loadSection($sectionId)
     {
@@ -114,7 +114,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function contentCount(Section $section)
     {
@@ -122,7 +122,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createSection(SectionEntity $section)
     {
@@ -134,7 +134,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function updateSection(Section $sectionToUpdate, SectionEntity $section)
     {
@@ -146,7 +146,7 @@ class SectionHelper implements SectionHelperInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function deleteSectionList(SectionList $sectionList)
     {
