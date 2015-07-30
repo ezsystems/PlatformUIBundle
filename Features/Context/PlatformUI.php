@@ -23,34 +23,34 @@ class PlatformUI extends Context
     use SubContext\Fields;
 
     /**
-     * PlatformUI relative URL path
+     * PlatformUI relative URL path.
      *
      * @var string
      */
     private $platformUiUri;
 
     /**
-     * User account name, admin by default
+     * User account name, admin by default.
      *
      * @var string
      */
-    private $user = "admin";
+    private $user = 'admin';
 
     /**
-     * User account password, publish by default
+     * User account password, publish by default.
      *
      * @var string
      */
-    private $password = "publish";
+    private $password = 'publish';
 
     /**
-     * Stores the status of the platform
+     * Stores the status of the platform.
      * @var int
      */
     private $platformStatus = self::NOT_WAITING;
 
     /**
-     * Waits for Javascript to finish by checking the loading tags of the page
+     * Waits for Javascript to finish by checking the loading tags of the page.
      */
     protected function waitForLoadings()
     {
@@ -63,7 +63,7 @@ class PlatformUI extends Context
             '.ez-view-treeactionview.is-expanded .ez-view-treeview:not(.is-tree-loaded)',
             '.is-tree-node-loading',
             // contenttype menu
-            '.ez-view-createcontentactionview.is-expanded:not(.is-contenttypeselector-loaded)'
+            '.ez-view-createcontentactionview.is-expanded:not(.is-contenttypeselector-loaded)',
         );
         $loadingSelector = implode(',', $loadingClasses);
         while ($page->find('css', $loadingSelector) != null) {
@@ -76,17 +76,17 @@ class PlatformUI extends Context
      */
     public function iCreateContentType($type, TableNode $fields)
     {
-        $this->clickNavigationZone("Platform");
+        $this->clickNavigationZone('Platform');
         $this->waitForLoadings();
-        $this->iClickAtLink("Content structure");
+        $this->iClickAtLink('Content structure');
         $this->waitForLoadings();
-        $this->clickActionBar("Create a content");
+        $this->clickActionBar('Create a content');
         $this->waitForLoadings();
         $this->clickContentType($type);
         $this->waitForLoadings();
         foreach ($fields as $fieldArray) {
             $keys = array_keys($fieldArray);
-            for ($i = 0; $i < count($keys); $i++) {
+            for ($i = 0; $i < count($keys); ++$i) {
                 $this->fillFieldWithValue($keys[$i], $fieldArray[$keys[$i]]);
             }
         }
@@ -101,8 +101,8 @@ class PlatformUI extends Context
         $content = $this->getContentManager()->loadContentWithLocationId($contentId);
         $contentInfo = $content->contentInfo;
         $contentTypeName = $this->getContentManager()->getContentType($content);
-        Assertion::assertEquals($contentName, $contentInfo->name, "Content has wrong name");
-        Assertion::assertEquals($contentType, $contentTypeName, "Content has wrong type");
+        Assertion::assertEquals($contentName, $contentInfo->name, 'Content has wrong name');
+        Assertion::assertEquals($contentType, $contentTypeName, 'Content has wrong type');
     }
 
     /**
@@ -112,7 +112,7 @@ class PlatformUI extends Context
     {
         $url = $this->getFileUrl($element, '.ez-fieldview-label');
         $fileContentActual = file_get_contents($url);
-        $file = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file;
+        $file = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
         $fileContentExpected = file_get_contents($file);
         Assertion::assertEquals($fileContentActual, $fileContentExpected);
     }
@@ -131,7 +131,7 @@ class PlatformUI extends Context
     }
 
     /**
-     * Runs a empty Javascript between step so that the next step is only executed when the previous Javascript finished
+     * Runs a empty Javascript between step so that the next step is only executed when the previous Javascript finished.
      *
      * @AfterStep
      */
@@ -141,7 +141,7 @@ class PlatformUI extends Context
     }
 
     /**
-     * Initialize class
+     * Initialize class.
      *
      * @param string $uri
      */
@@ -158,18 +158,18 @@ class PlatformUI extends Context
     }
 
     /**
-     * Checks if platform is waiting for publishing a content and if it is publishes it
+     * Checks if platform is waiting for publishing a content and if it is publishes it.
      */
     private function executeDelayedActions()
     {
         if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
-            $this->clickEditActionBar("Publish");
+            $this->clickEditActionBar('Publish');
         }
         $this->waitForLoadings();
     }
 
     /**
-     * Attaches a file to a input field on the HTML
+     * Attaches a file to a input field on the HTML.
      *
      * @param   string  $file       file name relative to mink definitions
      * @param   string $selector    CSS file upload element selector
@@ -182,7 +182,7 @@ class PlatformUI extends Context
                     $this->getMinkParameter('files_path')
                 ),
                 DIRECTORY_SEPARATOR
-            ).DIRECTORY_SEPARATOR.$fileName;
+            ) . DIRECTORY_SEPARATOR . $fileName;
 
             if (is_file($fullPath)) {
                 $fileInput = 'input[type="file"]' . $selector;

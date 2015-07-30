@@ -30,7 +30,7 @@ trait CommonActions
      */
     public function clickTab($tab)
     {
-        $this->clickElementByText($tab, ".ez-tabs-label a[href]");
+        $this->clickElementByText($tab, '.ez-tabs-label a[href]');
     }
 
     /**
@@ -41,7 +41,7 @@ trait CommonActions
      */
     public function clickNavigationZone($zone)
     {
-        $this->clickElementByText($zone, ".ez-zone-name");
+        $this->clickElementByText($zone, '.ez-zone-name');
     }
 
     /**
@@ -53,7 +53,7 @@ trait CommonActions
      */
     public function clickButtonWithIndex($button, $index)
     {
-        $this->clickElementByText($button, "button", $index);
+        $this->clickElementByText($button, 'button', $index);
     }
 
     /**
@@ -119,9 +119,9 @@ trait CommonActions
      */
     public function openTreePath($path)
     {
-        $this->clickDiscoveryBar("Content tree");
+        $this->clickDiscoveryBar('Content tree');
         $this->waitForLoadings();
-        $path = explode("/", $path);
+        $path = explode('/', $path);
         $node = null;
         foreach ($path as $pathNode) {
             $node = $this->openTreeNode($pathNode, $node);
@@ -131,7 +131,7 @@ trait CommonActions
     }
 
     /**
-     * Opens a content tree node based on the root of the tree or a given node
+     * Opens a content tree node based on the root of the tree or a given node.
      *
      * @param   string          $pathNode   The text of the node that is going to be opened
      * @param   NodeElement     $node       The base node to expand from, if null defaults to the content tree root
@@ -155,17 +155,19 @@ trait CommonActions
                         $toggleNode->click();
                     }
                 }
+
                 return $subNode;
             }
         }
         if ($notFound) {
             throw new \Exception("The path node: $pathNode was not found for the given path");
         }
+
         return $node;
     }
 
     /**
-     * Finds an HTML element by class and the text value and clicks it
+     * Finds an HTML element by class and the text value and clicks it.
      *
      * @param string $text Text value of the element
      * @param string $selector CSS selector of the element
@@ -182,7 +184,7 @@ trait CommonActions
     }
 
     /**
-     * Finds an HTML element by class and the text value and returns it
+     * Finds an HTML element by class and the text value and returns it.
      *
      * @param string    $text           Text value of the element
      * @param string    $selector       CSS selector of the element
@@ -203,6 +205,7 @@ trait CommonActions
                 return $element;
             }
         }
+
         return false;
     }
 }

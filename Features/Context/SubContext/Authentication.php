@@ -14,9 +14,9 @@ use Behat\Mink\WebAssert;
 trait Authentication
 {
     /**
-     * Control variable to check if logged in
+     * Control variable to check if logged in.
      *
-     * @var boolean
+     * @var bool
      */
     protected $shouldBeLoggedIn;
 
@@ -65,7 +65,7 @@ trait Authentication
         $this->shouldBeLoggedIn = false;
         $this->goToPlatformUi('#/dashboard');
         $this->waitForJs();
-        $this->iClickAtLink("Logout");
+        $this->iClickAtLink('Logout');
     }
 
     /**
@@ -81,7 +81,7 @@ trait Authentication
     }
 
     /**
-     * Logs the user out
+     * Logs the user out.
      *
      * @AfterScenario
      */
