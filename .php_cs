@@ -13,6 +13,7 @@ return Symfony\CS\Config\Config::create()
         '-phpdoc_to_comment',
         '-spaces_cast',
         '-blankline_after_open_tag',
+        '-single_blank_line_before_namespace',
     ])
     ->finder(
         Symfony\CS\Finder\DefaultFinder::create()
@@ -24,5 +25,6 @@ return Symfony\CS\Config\Config::create()
                 'Resources/public',
                 'Tests/js',
             ])
+            ->files()->name('*.php')
     )
 ;
