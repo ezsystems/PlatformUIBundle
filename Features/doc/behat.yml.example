@@ -1,0 +1,36 @@
+default:
+    extensions:
+        Behat\MinkExtension:
+            base_url: '<ezpublish main url example = http://ezpublish-community>'
+            # parameter for files directory used on testing such as upload
+            files_path: '<directory of files example = /var/www/html/ezpublish-community/public/files>'
+            goutte: ~
+            sahi:
+                limit: 1200
+            selenium2:
+                capabilities: { "browserName": "firefox", "version":  "35" }
+            javascript_session: selenium2
+            browser_name: firefox
+
+        Behat\Symfony2Extension:
+            kernel:
+                bootstrap: ezpublish/autoload.php
+                path: ezpublish/EzPublishKernel.php
+                class: EzPublishKernel
+                env: prod
+                debug: false
+
+    # default profile: no suites
+    suites: ~
+
+# suite for the standart features suite that comes with core
+platformui:
+        suites:
+            standard:
+                paths: [ vendor/ezsystems/platform-ui-bundle/Features/Standard ]
+                contexts:
+                    - EzSystems\PlatformUIBundle\Features\Context\PlatformUI:
+                        # URI of the PlatformUI application
+                        uri: /shell
+                        # Web driver in use, must match default:extensions:javascript_session 
+                        driver: Selenium2
