@@ -2,7 +2,6 @@
 /**
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  */
-
 namespace EzSystems\PlatformUIBundle\Tests\ApplicationConfig\Providers;
 
 use EzSystems\PlatformUIBundle\ApplicationConfig\Providers\AnonymousUserId;

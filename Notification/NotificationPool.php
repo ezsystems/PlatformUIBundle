@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\PlatformUIBundle\Notification;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

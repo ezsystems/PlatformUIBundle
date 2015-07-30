@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\PlatformUIBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;

@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\PlatformUIBundle\Form\Processor;
 
 use eZ\Publish\API\Repository\ContentTypeService;

@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Bundle\EzPublishCoreBundle\Controller;

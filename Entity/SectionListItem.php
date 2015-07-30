@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\PlatformUIBundle\Entity;
 
 use eZ\Publish\API\Repository\Values\Content\Section as ApiSection;

@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\PlatformUIBundle\Tests\Notification;
 
 use EzSystems\PlatformUIBundle\Notification\Notification;

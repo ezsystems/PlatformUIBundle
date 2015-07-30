@@ -8,7 +8,6 @@
  *
  * @version //autogentag//
  */
-
 namespace EzSystems\PlatformUIBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
