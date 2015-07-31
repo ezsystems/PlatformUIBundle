@@ -129,7 +129,7 @@ class ContentTypeController extends Controller
             $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
 
             $contentTypeCreateStruct = new ContentTypeCreateStruct([
-                'identifier' => 'new_content_type',
+                'identifier' => '__new__' . md5(microtime(true)),
                 'mainLanguageCode' => $languageCode,
                 'names' => [$languageCode => 'New ContentType'],
             ]);
