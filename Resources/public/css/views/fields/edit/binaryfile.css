@@ -24,3 +24,7 @@
 .ez-view-binaryfileeditview .ez-binaryfile-properties-download {
     margin-top: 1em;
 }
+
+.ez-view-binaryfileeditview .ez-field-description {
+    margin: 0;
+}

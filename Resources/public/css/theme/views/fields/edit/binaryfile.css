@@ -62,3 +62,14 @@
 .ez-view-binaryfileeditview.is-mimetype-application-msexcel .ez-binaryfile-content:before {
     content: "\E626";
 }
+
+.ez-view-binaryfileeditview .ez-binarybase-help {
+    font-size: 80%;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.ez-view-binaryfileeditview .ez-field-description {
+    font-weight: lighter;
+    font-size: 80%
+}

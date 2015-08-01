@@ -82,3 +82,7 @@
 .ez-view-relationeditview .ez-relation-remove {
     margin-left: 1em;
 }
+
+.ez-view-relationeditview .ez-field-description {
+    margin: 0;
+}

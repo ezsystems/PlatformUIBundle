@@ -43,6 +43,7 @@ YUI.add('ez-date-editview', function (Y) {
          * @method initializer
          */
         initializer: function () {
+            this._setDescriptionStandardDisplay = 'disable';
             this._syncDateAttribute();
             this.after('fieldChange', this._syncDateAttribute);
             this.after('activeChange', this._initializeCalendarWidget);

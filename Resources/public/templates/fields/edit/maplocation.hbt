@@ -1,6 +1,5 @@
 <div class="pure-g ez-editfield-row">
     <div class="pure-u ez-editfield-infos">
-        {{> ez_fieldinfo_tooltip }}
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-address">
             <p class="ez-fielddefinition-name">
                 {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
@@ -9,12 +8,19 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
+        {{#if fieldDefinition.descriptions.[eng-GB] }}
+            <div class="ez-fielddescription-tooltip ez-tail-down-tooltip">
+                <p class="ez-fielddescription-tooltip-text">
+                    {{ fieldDefinition.descriptions.[eng-GB] }}
+                </p>
+            </div>
+        {{/if}}
         <div class="ez-maplocation-input-area">
             <label class="ez-field-sublabel ez-maplocation-address-label" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-address">
                 Address:
             </label>
             <span class="ez-maplocation-errors"></span>
-            <div class="ez-maplocation-find-address-input pure-g">
+            <div class="ez-maplocation-find-address-input ez-editfield-input pure-g">
                 <div class="pure-u-5-8"><input type="text"
                      id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-address"
                      value="{{ field.fieldValue.address }}"
@@ -23,6 +29,7 @@
                     <button class="pure-button pure-button-disabled ez-button ez-maplocation-find-address-button">Locate Address <span class="ez-inline-loader"></span></button>
                 </div>
             </div>
+            <p class="ez-field-description">{{ fieldDefinition.descriptions.[eng-GB] }}</p>
             <div class="pure-g">
                 <div class="pure-u-5-8">
                     <div class="ez-maplocation-map-container"></div>

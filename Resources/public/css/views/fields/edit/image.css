@@ -91,3 +91,7 @@
 .ez-view-imageeditview .ez-image-alt-text-input {
     width: 100%;
 }
+
+.ez-view-imageeditview .ez-field-description {
+    margin: 0;
+}

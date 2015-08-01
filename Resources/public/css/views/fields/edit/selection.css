@@ -53,3 +53,25 @@
 .ez-view-selectioneditview.is-list-hidden .ez-selection-list {
     display: none;
 }
+
+.ez-view-selectioneditview .ez-field-description {
+    visibility: hidden;
+}
+
+.ez-view-selectioneditview.is-list-hidden.is-showing-description .ez-field-description {
+    visibility: visible;
+}
+
+.ez-view-selectioneditview .ez-field-description {
+    margin:  0 0 0 2.5em;
+}
+
+.ez-view-selectioneditview.is-top-list.is-list-hidden .ez-fielddescription-tooltip.is-visible {
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.ez-view-selectioneditview.is-top-list .ez-fielddescription-tooltip.is-visible {
+    opacity: 0;
+    transition: opacity 0.3s;
+}

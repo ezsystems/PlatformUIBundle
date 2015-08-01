@@ -1,0 +1,11 @@
+.ez-view-countryeditview .ez-field-description {
+    visibility: hidden;
+}
+
+.ez-view-countryeditview .ez-field-description {
+    margin:  0 0 0 2.5em;
+}
+
+.ez-view-countryeditview.is-list-hidden.is-showing-description .ez-field-description {
+    visibility: visible;
+}

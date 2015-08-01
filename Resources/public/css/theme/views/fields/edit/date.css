@@ -31,3 +31,19 @@
     font-family: "ez-platformui-icomoon";
     font-size: 90%;
 }
+
+.ez-view-dateeditview .ez-field-description {
+    opacity: 0;
+    visibility: visible;
+    transition: all 0.3s ease;
+}
+
+.ez-view-dateeditview.is-showing-description .ez-field-description {
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.ez-view-dateeditview .ez-field-description {
+    font-weight: lighter;
+    font-size: 80%
+}

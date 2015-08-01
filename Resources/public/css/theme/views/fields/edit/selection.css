@@ -65,3 +65,19 @@
     -webkit-transform: scaleY(0);
             transform: scaleY(0);
 }
+
+.ez-view-selectioneditview .ez-field-description {
+    opacity: 0;
+    visibility: visible;
+    transition: all 0.3s ease;
+}
+
+.ez-view-selectioneditview.is-list-hidden.is-showing-description .ez-field-description {
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.ez-view-selectioneditview .ez-field-description {
+    font-weight: lighter;
+    font-size: 80%
+}

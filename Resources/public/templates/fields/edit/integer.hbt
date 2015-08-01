@@ -1,6 +1,5 @@
 <div class="pure-g ez-editfield-row">
     <div class="pure-u ez-editfield-infos">
-        {{> ez_fieldinfo_tooltip }}
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
             <p class="ez-fielddefinition-name">
                 {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
@@ -9,6 +8,13 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
+        {{#if fieldDefinition.descriptions.[eng-GB] }}
+            <div class="ez-fielddescription-tooltip ez-tail-down-tooltip">
+                <p class="ez-fielddescription-tooltip-text">
+                    {{ fieldDefinition.descriptions.[eng-GB] }}
+                </p>
+            </div>
+        {{/if}}
         <div class="ez-editfield-input"><div class="ez-integer-input-ui"><input type="text"
                 class="ez-validated-input"
                 value="{{ field.fieldValue }}"
@@ -16,5 +22,6 @@
                 {{#if isRequired}} required{{/if}}
                 {{#if integerPattern}} pattern="{{ integerPattern }}"{{/if}}
                 ></div></div>
+        <p class="ez-field-description">{{ fieldDefinition.descriptions.[eng-GB] }}</p>
     </div>
 </div>

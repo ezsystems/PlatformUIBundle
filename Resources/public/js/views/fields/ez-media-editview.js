@@ -40,6 +40,7 @@ YUI.add('ez-media-editview', function (Y) {
                     'widthChange', 'heightChange'
                 ];
 
+            this._toggleFieldDefinitionDescription = 'disabled';
             this.events = Y.merge(this.events, events);
             if ( fieldValue ) {
                 this._set('autoplay', fieldValue.autoplay);

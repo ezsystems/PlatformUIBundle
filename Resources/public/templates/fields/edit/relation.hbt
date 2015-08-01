@@ -1,11 +1,14 @@
 <div class="pure-g ez-editfield-row ez-asynchronousview">
     <div class="pure-u ez-editfield-infos">
-        {{> ez_fieldinfo_tooltip }}
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
             <p class="ez-fielddefinition-name">
                 {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
             </p>
             <p class="ez-editfield-error-message">&nbsp;</p>
+            <p class="ez-field-description is-showing-description">
+                {{ fieldDefinition.descriptions.[eng-GB] }}
+            </p>
+            <p class="ez-binarybase-help">Select another content and link it up with your content type.</p>
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">

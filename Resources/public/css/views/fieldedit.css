@@ -27,7 +27,7 @@
 
 .ez-editfield-input,
 .ez-editfield-input-no-validation {
-    margin: 1em 2em;
+    margin: 1em 2em 0.3em 2em;
 }
 
 .ez-editfield-input:before {
@@ -53,54 +53,56 @@
     display: block;
 }
 
-.ez-editfield-infos .ez-editfield-i {
-    display: inline-block;
-    width: 2ex;
-    height: 2ex;
-    line-height: 2ex;
-    text-align: center;
-    float: left;
-    margin-left: 1em;
-    margin-top: 2em;
-}
-
-.ez-editfield-infos .ez-editfield-i:hover {
-    cursor: pointer;
-}
-
 .ez-editfield-infos .ez-editfield-error-message {
     line-height: 1.2em;
     min-height: 2.4em;
 }
 
-.ez-editfield-infos .ez-fielddefinition-tooltip {
+.ez-editfield-input-area .ez-fielddescription-tooltip {
     position: absolute;
+
+    left: 15.7em;
     height: 0;
     opacity: 0;
     margin-top: 3em;
-    margin-left: 0.5em;
-    width: 180px;
+    max-width: 48%;
     z-index: 10;
     transition: opacity 0.1s;
+    display: none;
+    margin-right: 2em;
 }
 
-.ez-editfield-infos .ez-fielddefinition-tooltip.is-displayed {
+.ez-editfield-input-area .ez-fielddescription-tooltip.is-displayed {
     height: auto;
+    margin-left: 0.5em;
+    display: inline;
 }
 
-.ez-editfield-infos .ez-fielddefinition-tooltip.is-visible {
+.ez-editfield-input-area .ez-fielddescription-tooltip.is-visible {
     opacity: 1;
-    transition: opacity 0.1s;
+    transition: opacity 0.3s;
 }
 
-.ez-editfield-infos .ez-fielddefinition-tooltip-text {
+.ez-editfield-input-area .ez-fielddescription-tooltip-text {
     display: block;
     margin: 0 0 0 -13px;
     padding: 8px;
     text-align: left;
 }
 
-.ez-editfield-infos .ez-fielddefinition-tooltip-close {
+.ez-editfield-input-area .ez-fielddescription-tooltip-close {
     float:right;
     font-size: 80%;
+}
+
+.ez-standard-description .ez-field-description {
+    margin:  0 0 0 2.5em;
+}
+
+.ez-standard-description .ez-field-description {
+    visibility: hidden;
+}
+
+.ez-standard-description.is-showing-description .ez-field-description {
+    visibility: visible;
 }

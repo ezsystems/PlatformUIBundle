@@ -14,15 +14,7 @@
     background: #FFF;
 }
 
-.ez-editfield-infos .ez-editfield-i {
-    color: #fff;
-    border-radius: 50%;
-    background: #888;
-    font-size: 80%;
-    font-weight: bold;
-}
-
-.ez-editfield-infos .ez-fielddefinition-tooltip-text {
+.ez-editfield-input-area .ez-fielddescription-tooltip-text {
     background: #fff;
     box-shadow: 0 2px 4px 0  #ddd;
     border-radius: 4px;
@@ -31,14 +23,13 @@
     font-size: 85%;
 }
 
-.ez-editfield-infos .ez-fielddefinition-tooltip-close {
+.ez-editfield-input-area .ez-fielddescription-tooltip-close {
     font-weight: bold;
     color: #999;
 }
 
 /* Tooltip tail styling */
-.ez-editfield-infos .ez-tail-up-tooltip:before,
-.ez-editfield-infos .ez-tail-down-tooltip:after {
+.ez-editfield-input-area .ez-tail-down-tooltip:after {
     content: "";
     display: block;
     width: 16px;
@@ -48,25 +39,18 @@
             transform: rotate(-45deg);
 }
 
-.ez-editfield-infos .ez-tail-up-tooltip:before {
-    margin-top:-5px;
-    margin-left: 4px;
-    border-top: 1px solid #ccc;
-    border-right: 1px solid #ccc;
+.ez-editfield-input-area .ez-tail-down-tooltip .ez-fielddescription-tooltip-text {
+    margin-left: 1.5em;
 }
 
-.ez-editfield-infos .ez-tail-up-tooltip .ez-fielddefinition-tooltip-text {
-    margin-top: -8px;
-}
-
-.ez-editfield-infos .ez-tail-down-tooltip:after {
+.ez-editfield-input-area .ez-tail-down-tooltip:after {
     margin-top:-9px;
-    margin-left: 4px;
+    margin-left: 4em;
     border-left: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
 }
 
-.ez-editfield-infos .ez-fielddefinition-name {
+.ez-editfield-input-area .ez-fielddescription-name {
     font-weight: bold;
 }
 
@@ -105,4 +89,20 @@
 
 .is-error .ez-default-error-style .ez-editfield-input:before {
     opacity: 1;
+}
+
+.ez-standard-description .ez-field-description {
+    font-weight: lighter;
+    font-size: 80%
+}
+
+.ez-standard-description .ez-field-description {
+    opacity: 0;
+    visibility: visible;
+    transition: all 0.3s ease;
+}
+
+.ez-standard-description.is-showing-description .ez-field-description{
+    opacity: 1;
+    transition: all 0.3s ease;
 }

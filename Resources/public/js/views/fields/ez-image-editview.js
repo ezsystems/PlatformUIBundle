@@ -37,6 +37,7 @@ YUI.add('ez-image-editview', function (Y) {
         initializer: function () {
             var fieldValue = this.get('field').fieldValue;
 
+            this._toggleFieldDefinitionDescription = 'disabled';
             this.events = Y.merge(this.events, events);
             this._fireMethod = this._fireLoadImageVariation;
             this._watchAttribute = false;

@@ -33,8 +33,9 @@ YUI.add('ez-relationlist-editview', function (Y) {
 
         initializer: function () {
             var fieldValue = this.get('field').fieldValue;
-
+            
             this._fireMethod = this._fireLoadObjectRelations;
+            this._toggleFieldDefinitionDescription = 'disabled';
             if( fieldValue.destinationContentIds ){
                 this._set('destinationContentsIds', fieldValue.destinationContentIds);
             }

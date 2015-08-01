@@ -1,6 +1,5 @@
 <div class="pure-g ez-editfield-row">
     <div class="pure-u ez-editfield-infos">
-        {{> ez_fieldinfo_tooltip }}
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-link">
             <p class="ez-fielddefinition-name">
                 {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
@@ -12,6 +11,13 @@
         <label class="ez-field-sublabel ez-first-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-link">
             URL{{#if isRequired}}*{{/if}}:
         </label>
+        {{#if fieldDefinition.descriptions.[eng-GB] }}
+            <div class="ez-fielddescription-tooltip ez-tail-down-tooltip">
+                <p class="ez-fielddescription-tooltip-text">
+                    {{ fieldDefinition.descriptions.[eng-GB] }}
+                </p>
+            </div>
+        {{/if}}
         <div class="ez-editfield-input"><div class="ez-url-input-ui"><input type="text"
             class="ez-url-field-value ez-validated-input"
             value="{{ field.fieldValue.link }}"
@@ -26,5 +32,6 @@
             value="{{ field.fieldValue.text }}"
             id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-text"
         ></div></div>
+        <p class="ez-field-description">{{ fieldDefinition.descriptions.[eng-GB] }}</p>
     </div>
 </div>

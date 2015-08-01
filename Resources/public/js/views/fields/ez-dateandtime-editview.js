@@ -57,6 +57,10 @@ YUI.add('ez-dateandtime-editview', function (Y) {
             }
         },
 
+        initializer: function () {
+            this._setDescriptionStandardDisplay = 'disable';
+        },
+
         /**
          * Validates the current input of date and time field
          *
