@@ -93,6 +93,14 @@ class PlatformUI extends Context
     }
 
     /**
+     * @Given I am on :name full view
+     */
+    public function onFullView($name)
+    {
+        $path = $this->getBasicContentManager()->getContentPath($name);
+        $this->openTreePath($path);
+    }
+    /**
      * @Then I see Content :contentName of type :contentType
      */
     public function contentExists($contentName, $contentType)
