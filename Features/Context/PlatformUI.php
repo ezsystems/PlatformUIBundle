@@ -98,6 +98,10 @@ class PlatformUI extends Context
     public function onFullView($name)
     {
         $path = $this->getBasicContentManager()->getContentPath($name);
+        $this->clickNavigationZone('Content');
+        $this->waitForLoadings();
+        $this->clickNavigationItem('Content structure');
+        $this->waitForLoadings();
         $this->openTreePath($path);
     }
     /**
