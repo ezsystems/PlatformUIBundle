@@ -12,7 +12,7 @@ Feature: Create, delete, update and View the Role UI
   #
   ##
   @javascript @common
-  Scenario: Verify the existence of Roles page and it's content
+  Scenario: Verify the existence of Roles page and its content
     Given I am on the Home page
     And I have an "Organizers" role
     When I click on the Administration Dashboard Navigation Item
@@ -147,7 +147,7 @@ Feature: Create, delete, update and View the Role UI
     And the Role is not published
 
   @javascript @common
-  Scenario: cancel the creation of a role
+  Scenario: cancel the update of a role
     Given I have an "Organizers" role
     And I edit the "Organizers" role
     And I set "Security" as the "Name"
