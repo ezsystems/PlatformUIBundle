@@ -3,7 +3,7 @@ Feature: Create, delete, update and View the Role UI
   As an Administrator user
   I need to be able to access and navigate through the Role UI interface
 
-  Background: 
+  Background:
     Given I am logged in as an Administrator in PlatformUI
 
   ##
@@ -43,7 +43,7 @@ Feature: Create, delete, update and View the Role UI
 
   @javascript @edge
   Scenario: Display the information of a role with empty policies
-    Given I have an "Organizers" role
+    Given an "Organizers" role exists
     And "Organizers" do not have any assigned policies
     And "Organizers" do not have any assigned Users and groups
     When I am viewing the "Organizers" role's details
@@ -70,6 +70,7 @@ Feature: Create, delete, update and View the Role UI
     And I set "Organizers" as the "Name"
     When I click on "Save" button
     Then the Role is successfully published
+    And I see that an "Organizers" role exists
 
   @javascript @edge
   Scenario: create a valid role with japanese characters
@@ -78,6 +79,7 @@ Feature: Create, delete, update and View the Role UI
     And I set "私は日本の名前で試してみる必要が" as the "Name"
     When I click on "Save" button
     Then the Role is successfully published
+    And I see that an "私は日本の名前で試してみる必要が" role exists
 
   @javascript @edge
   Scenario: creating a Role with an empty name triggers an obligation to fill the name
@@ -90,7 +92,7 @@ Feature: Create, delete, update and View the Role UI
 
   @javascript @edge
   Scenario: creating a Role with an existing identifier fails validation
-    Given I have an "Organizers" role
+    Given an "Organizers" role exists
     And I create a new role
     And I set "Organizers" as the "Name"
     When I click on "Save" button
@@ -104,6 +106,7 @@ Feature: Create, delete, update and View the Role UI
     And I set "Organizers" as the "Name"
     When I click on "Cancel" button
     Then the Role is not published
+    And I see that an "Organizers" role does not exist
 
   ##
   #
@@ -112,7 +115,7 @@ Feature: Create, delete, update and View the Role UI
   ##
   @javascript @common
   Scenario: Validate the existence of expected fields when editing a role
-    Given I have an "Organizers" role
+    Given an "Organizers" role exists
     When I edit the "Organizers" role
     Then I should see an "Edit <Organizers>" label
     And I should see a "Name" field
@@ -121,15 +124,16 @@ Feature: Create, delete, update and View the Role UI
 
   @javascript @common
   Scenario: Update a role
-    Given I have an "Organizers" role
+    Given an "Organizers" role exists
     And I edit the "Organizers" role
     And I set "old_Organizers" as the "Name"
     When I click on "Save" button
     Then the Role is successfully published
+    And I see that an "old_Organizers" role exists
 
   @javascript @edge
   Scenario: Updating a Role with an empty name triggers a message asking to fill the name
-    Given I have an "Organizers" role
+    Given an "Organizers" role exists
     And I edit the "Organizers" role
     And I set empty as the "Name"
     When I click on "Save" button
@@ -138,7 +142,7 @@ Feature: Create, delete, update and View the Role UI
 
   @javascript @edge
   Scenario: Updating a Role with an existing identifier fails validation
-    Given I have an "Organizers" role
+    Given an "Organizers" role exists
     And I have a "Security" role
     And I edit the "Organizers" role
     And I set "Security" as the "Name"
@@ -148,11 +152,12 @@ Feature: Create, delete, update and View the Role UI
 
   @javascript @common
   Scenario: cancel the update of a role
-    Given I have an "Organizers" role
+    Given an "Organizers" role exists
     And I edit the "Organizers" role
     And I set "Security" as the "Name"
     When I click on "Cancel" button
     Then the Role is not published
+    And I see that an "Security" role does not exist
 
   ##
   #
@@ -161,6 +166,7 @@ Feature: Create, delete, update and View the Role UI
   ##
   @javascript @common
   Scenario: Delete a role
-    Given I have an "Organizers" role
+    Given an "Organizers" role exists
     When I delete the "Organizers" role
     Then the Role is successfully deleted
+    And I see that an "Organizers" role does not exist
