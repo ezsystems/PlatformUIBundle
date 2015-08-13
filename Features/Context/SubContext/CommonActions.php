@@ -112,17 +112,13 @@ trait CommonActions
     }
 
     /**
-     * @Given I click (on) the content tree with path :path
-     * Explores the content tree, expanding it and click on the desired element
+     * Explores the content tree, expanding it and click on the desired element.
      *
      * @param   string  $path    The content tree path such as 'Content1/Content2/ContentIWantToClick'
      */
-    public function openTreePath($path)
+    public function openTreePath($path, $node)
     {
-        $this->clickDiscoveryBar('Content tree');
-        $this->waitForLoadings();
         $path = explode('/', $path);
-        $node = null;
         foreach ($path as $pathNode) {
             $node = $this->openTreeNode($pathNode, $node);
             $this->waitForLoadings();
@@ -141,9 +137,6 @@ trait CommonActions
     {
         $page = $this->getSession()->getPage();
         $notFound = true;
-        if ($node == null) {
-            $node = $page->find('css', '.ez-platformui-app-body');
-        }
         $subNodes = $node->findAll('css', '.ez-tree-node');
         foreach ($subNodes as $subNode) {
             $leafNode = $subNode->find('css', '.ez-tree-navigate');
@@ -174,7 +167,7 @@ trait CommonActions
      */
     protected function clickElementByText($text, $selector, $textSelector = null, $index = 1)
     {
-        $index + 1; //DO NOT FORGET SOMETHING THAT I DON'T REMENBER
+        $index + 1; //for selection of equal buttons
         $element = $this->getElementByText($text, $selector, $textSelector);
         if ($element) {
             $element->click();
@@ -189,7 +182,7 @@ trait CommonActions
      * @param string    $text           Text value of the element
      * @param string    $selector       CSS selector of the element
      * @param string    $textSelector   extra CSS selector for text of the element
-     * @return array
+     * @return mixed
      */
     protected function getElementByText($text, $selector, $textSelector = null)
     {

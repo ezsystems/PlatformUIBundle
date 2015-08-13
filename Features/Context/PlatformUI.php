@@ -21,6 +21,9 @@ class PlatformUI extends Context
     use SubContext\Authentication;
     use SubContext\CommonActions;
     use SubContext\Fields;
+    use SubContext\Move;
+    use SubContext\Copy;
+    use SubContext\Remove;
 
     /**
      * PlatformUI relative URL path.
@@ -50,6 +53,11 @@ class PlatformUI extends Context
     private $platformStatus = self::NOT_WAITING;
 
     /**
+     * Mapping of the new paths of contents after being moved.
+     */
+    private $newPathsMap = array();
+
+    /**
      * Waits for Javascript to finish by checking the loading tags of the page.
      */
     protected function waitForLoadings()
@@ -61,6 +69,7 @@ class PlatformUI extends Context
             '.is-app-transitioning',
             // content tree
             '.ez-view-treeactionview.is-expanded .ez-view-treeview:not(.is-tree-loaded)',
+            '.ez-view-universaldiscoverybrowseview .ez-view-treeview:not(.is-tree-loaded)',
             '.is-tree-node-loading',
             // contenttype menu
             '.ez-view-createcontentactionview.is-expanded:not(.is-contenttypeselector-loaded)',
@@ -93,17 +102,84 @@ class PlatformUI extends Context
     }
 
     /**
+     * @Given I click (on) the content tree with path :path
+     * @Then I see :path in the content tree
+     * Explores the content tree, expanding it and click on the desired element
+     *
+     * @param   string  $path    The content tree path such as 'Content1/Content2/ContentIWantToClick'
+     */
+    public function clickOnTreePath($path)
+    {
+        $this->clickDiscoveryBar('Content tree');
+        $this->waitForLoadings();
+        $page = $this->getSession()->getPage();
+        $node = $page->find('css', '.ez-view-discoverybarview');
+        $this->openTreePath($path, $node);
+    }
+
+    /**
+     * @Then I don't see :path in the content tree
+     * @Then I do not see :path in the content tree
+     * Explores the content tree, expanding it and click on the desired element
+     *
+     * @param   string  $path    The content tree path such as 'Content1/Content2/ContentIWantToClick'
+     */
+    public function dontSeeTreePath($path)
+    {
+        $found = true;
+        try {
+            $this->clickOnTreePath($path);
+        } catch (\Exception $e) {
+            $found = false;
+        }
+
+        if ($found) {
+            throw new \Exception("Tree path '$path' was found");
+        }
+
+        return true;
+    }
+
+    /**
+     * @When I select the :path folder in the Universal Discovery Widget
+     */
+    public function selectFromUniversalDiscovery($path)
+    {
+        $page = $this->getSession()->getPage();
+        $node = $page->find('css', '.ez-view-universaldiscoveryview');
+        $this->openTreePath($path, $node);
+    }
+
+    /**
+     * Confirm selection in Universal descovery.
+     * @When I confirm the selection
+     */
+    public function confirmSelection()
+    {
+        $this->clickElementByText('Confirm selection', '.ez-universaldiscovery-confirm');
+    }
+
+    /**
      * @Given I am on :name full view
      */
     public function onFullView($name)
     {
         $path = $this->getBasicContentManager()->getContentPath($name);
+        $this->goToContentWithPath($path);
+    }
+
+    /**
+     * Opens a content in PlatformUi.
+     */
+    private function goToContentWithPath($path)
+    {
         $this->clickNavigationZone('Content');
         $this->waitForLoadings();
         $this->clickNavigationItem('Content structure');
         $this->waitForLoadings();
-        $this->openTreePath($path);
+        $this->clickOnTreePath($path);
     }
+
     /**
      * @Then I see Content :contentName of type :contentType
      */
@@ -118,13 +194,44 @@ class PlatformUI extends Context
     }
 
     /**
+     * @Then I am notified that :message
+     */
+    public function iSeeNotification($message)
+    {
+        $result = $this->getElementByText($message, '.ez-notification-text');
+        if (!$result) {
+            throw new \Exception('The notification was not shown');
+        }
+    }
+
+    /**
+     * @Then I am not notified that :message
+     */
+    public function iDoNotSeeNotification($message)
+    {
+        $result = true;
+        try {
+            $this->iSeeNotification($message);
+        } catch (\Exception $e) {
+            $result = false;
+        }
+
+        if ($result) {
+            throw \Exception('Notification was shown');
+        }
+    }
+
+    /**
      * @Then I should see (an) element :element with (an) file :file
      */
     public function iSeeElementFile($element, $file)
     {
         $url = $this->getFileUrl($element, '.ez-fieldview-label');
         $fileContentActual = file_get_contents($url);
-        $file = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
+        $file = rtrim(
+            realpath($this->getMinkParameter('files_path')),
+            DIRECTORY_SEPARATOR
+        ) . DIRECTORY_SEPARATOR . $file;
         $fileContentExpected = file_get_contents($file);
         Assertion::assertEquals($fileContentActual, $fileContentExpected);
     }
@@ -143,7 +250,7 @@ class PlatformUI extends Context
     }
 
     /**
-     * Runs a empty Javascript between step so that the next step is only executed when the previous Javascript finished.
+     * Makes the application wait between steps.
      *
      * @AfterStep
      */
@@ -180,6 +287,21 @@ class PlatformUI extends Context
         $this->waitForLoadings();
     }
 
+    /**
+     * Setter for the new path of the content name.
+     */
+    private function mapDestinyPath($name, $path)
+    {
+        $this->newPathsMap[$name] = $path;
+    }
+
+    /**
+     * Getter for the maped path to the content name.
+     */
+    private function getDestinyPath($name)
+    {
+        return $this->newPathsMap[$name];
+    }
     /**
      * Attaches a file to a input field on the HTML.
      *
