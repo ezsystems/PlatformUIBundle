@@ -3,14 +3,14 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 /* global CKEDITOR */
-YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
+YUI.add('ez-alloyeditor-toolbar-appendcontent-tests', function (Y) {
     var renderTest, styleTest,
         AlloyEditor = Y.eZ.AlloyEditor,
         React = Y.eZ.React,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
-        name: "eZ AlloyEditor addcontent toolbar render test",
+        name: "eZ AlloyEditor appendcontent toolbar render test",
 
         setUp: function () {
             var nativeEditor = {
@@ -42,10 +42,9 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
             });
 
             toolbar = React.render(
-                <AlloyEditor.ToolbarAddContent editor={this.editor} config={config} />,
+                <AlloyEditor.ToolbarAppendContent editor={this.editor} config={config} />,
                 this.container
             );
-            console.log(toolbar);
 
             editorEvent.data = {
                 nativeEvent: {
@@ -55,7 +54,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
                 },
             };
             toolbar = React.render(
-                <AlloyEditor.ToolbarAddContent editor={this.editor} config={config} editorEvent={editorEvent} />,
+                <AlloyEditor.ToolbarAppendContent editor={this.editor} config={config} editorEvent={editorEvent} />,
                 this.container
             );
 
@@ -71,7 +70,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
                 config = {buttons: []};
 
             toolbar = React.render(
-                <AlloyEditor.ToolbarAddContent editor={this.editor} config={config} />,
+                <AlloyEditor.ToolbarAppendContent editor={this.editor} config={config} />,
                 this.container
             );
 
@@ -93,7 +92,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
             });
 
             toolbar = React.render(
-                <AlloyEditor.ToolbarAddContent editor={this.editor} config={config} />,
+                <AlloyEditor.ToolbarAppendContent editor={this.editor} config={config} />,
                 this.container
             );
 
@@ -105,7 +104,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
                 },
             };
             toolbar = React.render(
-                <AlloyEditor.ToolbarAddContent editor={this.editor} config={config} editorEvent={editorEvent} />,
+                <AlloyEditor.ToolbarAppendContent editor={this.editor} config={config} editorEvent={editorEvent} />,
                 this.container
             );
 
@@ -121,12 +120,12 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
                 config = {buttons: [], addContentButtonClass: "hurry-up-and-wait"};
 
             toolbar = React.render(
-                <AlloyEditor.ToolbarAddContent editor={this.editor} config={config} />,
+                <AlloyEditor.ToolbarAppendContent editor={this.editor} config={config} />,
                 this.container
             );
 
             toolbar = React.render(
-                <AlloyEditor.ToolbarAddContent editor={this.editor} config={config} />,
+                <AlloyEditor.ToolbarAppendContent editor={this.editor} config={config} />,
                 this.container
             );
 
@@ -138,7 +137,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
     });
 
     styleTest = new Y.Test.Case({
-        name: "eZ AlloyEditor addcontent toolbar style test",
+        name: "eZ AlloyEditor appendcontent toolbar style test",
 
         setUp: function () {
             var nativeEditor = {
@@ -171,7 +170,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
             });
 
             toolbar = React.render(
-                <AlloyEditor.ToolbarAddContent editor={this.editor} config={config} />,
+                <AlloyEditor.ToolbarAppendContent editor={this.editor} config={config} />,
                 this.container
             );
 
@@ -183,7 +182,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
                 },
             };
             toolbar = React.render(
-                <AlloyEditor.ToolbarAddContent editor={this.editor} config={config} editorEvent={editorEvent} />,
+                <AlloyEditor.ToolbarAppendContent editor={this.editor} config={config} editorEvent={editorEvent} />,
                 this.container
             );
 
@@ -207,7 +206,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
             });
 
             toolbar = React.render(
-                <AlloyEditor.ToolbarAddContent editor={this.editor} config={config} />,
+                <AlloyEditor.ToolbarAppendContent editor={this.editor} config={config} />,
                 this.container
             );
             editorEvent.data = {
@@ -218,7 +217,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
                 },
             };
             toolbar = React.render(
-                <AlloyEditor.ToolbarAddContent editor={this.editor} config={config} editorEvent={editorEvent} />,
+                <AlloyEditor.ToolbarAppendContent editor={this.editor} config={config} editorEvent={editorEvent} />,
                 this.container
             );
 
@@ -243,7 +242,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
             });
 
             toolbar = React.render(
-                <AlloyEditor.ToolbarAddContent editor={this.editor} config={config} />,
+                <AlloyEditor.ToolbarAppendContent editor={this.editor} config={config} />,
                 this.container
             );
             editorEvent.data = {
@@ -254,7 +253,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
                 },
             };
             toolbar = React.render(
-                <AlloyEditor.ToolbarAddContent editor={this.editor} config={config} editorEvent={editorEvent} />,
+                <AlloyEditor.ToolbarAppendContent editor={this.editor} config={config} editorEvent={editorEvent} />,
                 this.container
             );
 
@@ -264,7 +263,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent-tests', function (Y) {
 
     });
 
-    Y.Test.Runner.setName("eZ AlloyEditor addcontent toolbar tests");
+    Y.Test.Runner.setName("eZ AlloyEditor appendcontent toolbar tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(styleTest);
-}, '', {requires: ['test', 'node', 'node-screen', 'ez-alloyeditor-toolbar-addcontent']});
+}, '', {requires: ['test', 'node', 'node-screen', 'ez-alloyeditor-toolbar-appendcontent']});

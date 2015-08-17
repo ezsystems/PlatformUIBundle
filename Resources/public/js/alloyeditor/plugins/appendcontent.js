@@ -3,16 +3,16 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 /* global CKEDITOR */
-YUI.add('ez-alloyeditor-plugin-addcontent', function (Y) {
+YUI.add('ez-alloyeditor-plugin-appendcontent', function (Y) {
     "use strict";
 
-    var addContentCommand;
+    var appendContentCommand;
 
-    if (CKEDITOR.plugins.get('ezaddcontent')) {
+    if (CKEDITOR.plugins.get('ezappendcontent')) {
         return;
     }
 
-    addContentCommand = {
+    appendContentCommand = {
         _createElement: function (tagName, content, attributes) {
             var element;
 
@@ -51,9 +51,9 @@ YUI.add('ez-alloyeditor-plugin-addcontent', function (Y) {
         },
     };
     
-    CKEDITOR.plugins.add('ezaddcontent', {
+    CKEDITOR.plugins.add('ezappendcontent', {
         init: function (editor) {
-            editor.addCommand('ezAddContent', addContentCommand);
+            editor.addCommand('eZAppendContent', appendContentCommand);
         },
     });
 });

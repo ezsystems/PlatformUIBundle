@@ -108,7 +108,7 @@ YUI.add('ez-richtext-editview', function (Y) {
             editor = AlloyEditor.editable(
                 this.get('container').one('.ez-richtext-editor').getDOMNode(), {
                     toolbars: this.get('toolbarsConfig'),
-                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezaddcontent',
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezappendcontent',
                     ez: {
                         editableRegion: '.ez-richtext-editable',
                     },
@@ -326,7 +326,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                         }],
                         tabIndex: 1
                     },
-                    ezaddcontent: {
+                    ezappendcontent: {
                         buttons: ['ezheading'],
                         tabIndex: 2,
                         addContentButtonClass: ADD_CONTENT_BUTTON_CLASS,

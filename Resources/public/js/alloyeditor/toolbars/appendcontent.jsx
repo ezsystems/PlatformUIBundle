@@ -2,15 +2,15 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-YUI.add('ez-alloyeditor-toolbar-addcontent', function (Y) {
+YUI.add('ez-alloyeditor-toolbar-appendcontent', function (Y) {
     "use strict";
 
     var AlloyEditor = Y.eZ.AlloyEditor,
         React = Y.eZ.React,
-        ToolbarAddContent;
+        ToolbarAppendContent;
 
     /**
-     * The ToolbarAddContent is a toolbar displayed when the user clicks on the
+     * The ToolbarAppendContent is a toolbar displayed when the user clicks on the
      * add content button.
      *
      * @uses AlloyEditor.WidgetExclusive
@@ -18,9 +18,9 @@ YUI.add('ez-alloyeditor-toolbar-addcontent', function (Y) {
      * @uses AlloyEditor.WidgetFocusManager
      * @uses AlloyEditor.ToolbarButtons
      *
-     * @class eZ.AlloyEditor.ToolbarAddContent
+     * @class eZ.AlloyEditor.ToolbarAppendContent
      */
-    ToolbarAddContent = React.createClass({
+    ToolbarAppendContent = React.createClass({
         mixins: [
             AlloyEditor.WidgetExclusive,
             AlloyEditor.WidgetDropdown,
@@ -29,12 +29,12 @@ YUI.add('ez-alloyeditor-toolbar-addcontent', function (Y) {
         ],
 
         statics: {
-            key: 'ezaddcontent'
+            key: 'ezappendcontent'
         },
 
         propTypes: {
             /**
-             * Holds the configuration for the addcontent toolbar. It must
+             * Holds the configuration for the appendcontent toolbar. It must
              * contain a property `addContentButtonClass` with a string. If
              * an editorInteraction event occurs and the target element of the
              * corresponding native event has this class, the toolbar is shown.
@@ -130,7 +130,7 @@ YUI.add('ez-alloyeditor-toolbar-addcontent', function (Y) {
 
         render: function () {
             var buttons = this.getToolbarButtons(this.props.config.buttons),
-                css = "ae-toolbar-addcontent ae-toolbar-transition ae-arrow-box ae-arrow-box-bottom";
+                css = "ae-toolbar-appendcontent ae-toolbar-transition ae-arrow-box ae-arrow-box-bottom";
 
             if ( !this.state.visible ) {
                 return null;
@@ -149,5 +149,5 @@ YUI.add('ez-alloyeditor-toolbar-addcontent', function (Y) {
         },
     });
 
-    AlloyEditor.Toolbars[ToolbarAddContent.key] = AlloyEditor.ToolbarAddContent = ToolbarAddContent;
+    AlloyEditor.Toolbars[ToolbarAppendContent.key] = AlloyEditor.ToolbarAppendContent = ToolbarAppendContent;
 });

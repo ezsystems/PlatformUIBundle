@@ -30,12 +30,11 @@ YUI.add('ez-alloyeditor-button-heading', function (Y) {
         
         getDefaultProps: function () {
             return {
-                command: 'ezAddContent'
+                command: 'eZAppendContent'
             };
         },
 
         _addHeading: function () {
-            console.log('_addHeading');
             this.execCommand({
                 tagName: 'h1',
                 attributes: {
