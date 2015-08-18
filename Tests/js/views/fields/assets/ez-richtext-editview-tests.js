@@ -2,11 +2,12 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
+/* global CKEDITOR */
 YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
         editorTest, focusModeTest, editorFocusHandlingTest,
         actionBarTest, destructorTest,
-        VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML,
+        VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, FIELDVALUE_RESULT,
         Assert = Y.Assert, Mock = Y.Mock;
 
     INVALID_XHTML = "I'm invalid";
@@ -18,7 +19,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     EMPTY_XHTML = '<?xml version="1.0" encoding="UTF-8"?>';
     EMPTY_XHTML += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit"/>';
 
-    RESULT_XHTML = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit"><p>I\'m not empty</p></section>';
+    RESULT_XHTML = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit" contenteditable="true" class="ez-richtext-editable">';
+    RESULT_XHTML += '<p>I\'m not empty</p></section>';
+
+    FIELDVALUE_RESULT = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
+    FIELDVALUE_RESULT += '<p>I\'m not empty</p></section>';
 
     renderTest = new Y.Test.Case({
         name: "eZ RichText View render test",
@@ -289,7 +294,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             );
             Assert.isObject(field.fieldValue, "The fieldValue should be an object");
             Assert.areEqual(
-                RESULT_XHTML, field.fieldValue.xml,
+                FIELDVALUE_RESULT, field.fieldValue.xml,
                 "The xml property of the fieldValue should come from the editor"
             );
         },

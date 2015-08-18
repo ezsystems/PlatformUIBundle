@@ -16,6 +16,10 @@ YUI.add('ez-richtext-editview', function (Y) {
         FOCUS_CLASS = 'is-focused',
         EDITOR_FOCUSED_CLASS = 'is-editor-focused',
         ADD_CONTENT_BUTTON_CLASS = 'ez-richtext-add-content',
+        ROOT_SECTION_ATTRIBUTES = {
+            "contenteditable": 'true',
+            "class": 'ez-richtext-editable',
+        },
         AlloyEditor = Y.eZ.AlloyEditor;
 
     /**
@@ -225,6 +229,9 @@ YUI.add('ez-richtext-editview', function (Y) {
                 // the caret inside the element.
                 doc.documentElement.appendChild(doc.createElement('p'));
             }
+            Y.Object.each(ROOT_SECTION_ATTRIBUTES, function (value, key) {
+                doc.documentElement.setAttribute(key, value);
+            });
             return (new XMLSerializer()).serializeToString(doc.documentElement);
         },
 
@@ -250,9 +257,15 @@ YUI.add('ez-richtext-editview', function (Y) {
          */
         _getEditorContent: function () {
             var data = this.get('editor').get('nativeEditor').getData(),
-                section = Y.Node.create(data).one('.ez-richtext-editable section');
+                section = Y.Node.create(data).one('section');
 
-            return (section ? section.get('outerHTML') : "");
+            if ( section ) {
+                Y.Object.each(ROOT_SECTION_ATTRIBUTES, function (value, key) {
+                    section.removeAttribute(key);
+                });
+                return section.get('outerHTML');
+            }
+            return "";
         }
     }, {
         ATTRS: {
