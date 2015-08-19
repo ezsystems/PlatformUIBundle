@@ -10,6 +10,10 @@ YUI.add('ez-alloyeditor-button-heading', function (Y) {
         ButtonHeading;
 
     /**
+     * The ButtonHeading component represents a button to add a heading (h1).
+     *
+     * @uses AlloyEditor.ButtonCommand
+     * @uses AlloyEditor.ButtonStateClasses
      *
      * @class eZ.AlloyEditor.ButtonHeading
      */
@@ -22,34 +26,34 @@ YUI.add('ez-alloyeditor-button-heading', function (Y) {
         statics: {
             key: 'ezheading'
         },
-        
+
         getDefaultProps: function () {
             return {
-                command: 'eZAppendContent'
+                command: 'eZAppendContent',
+                modifiesSelection: true,
             };
         },
 
+        /**
+         * Executes the eZAppendContent to add a heading element in the editor.
+         *
+         * @method _addHeading
+         * @protected
+         */
         _addHeading: function () {
             this.execCommand({
                 tagName: 'h1',
-                attributes: {
-                    "data-ez-placeholder": "Heading 1",
-                },
             });
         },
 
         render: function () {
             var css = "ae-button " + this.getStateClasses();
 
-            // TODO: remove that config and switch to ESLint
-            // see https://jira.ez.no/browse/EZP-23209
-            /* jshint maxlen: false */
             return (
                 <button className={css} onClick={this._addHeading} tabIndex={this.props.tabIndex}>
                     <span className="ae-icon-h1"></span>
                 </button>
             );
-            /* jshint maxlen: 120 */
         },
     });
 
