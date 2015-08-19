@@ -79,7 +79,7 @@ YUI.add('ez-alloyeditor-toolbar-appendcontent', function (Y) {
             var nativeEventTarget,
                 visible = false;
 
-            if ( newProps.editorEvent ) {
+            if ( newProps.editorEvent && this.props.editorEvent !== newProps.editorEvent ) {
                 nativeEventTarget = newProps.editorEvent.data.nativeEvent.target;
                 visible = (
                     nativeEventTarget &&
