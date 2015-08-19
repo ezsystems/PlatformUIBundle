@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>eZ AlloyEditor appendcontent plugin tests</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="editable" contenteditable="true">
+        <p class="listening">Listening to Metallica - Fuel</p>
+    </div>
+    <div class="not-editable" contenteditable="false"></div>
+</div>
+
+<script type="text/javascript" src="../../assets/function.bind.polyfill.js"></script>
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
+<script type="text/javascript" src="./assets/ez-alloyeditor-plugin-appendcontent-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage') {
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-alloyeditor-plugin-appendcontent'],
+        filter: loaderFilter,
+        modules: {
+            "ez-alloyeditor-plugin-appendcontent": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/appendcontent.js",
+            },
+        }
+    }).use('ez-alloyeditor-plugin-appendcontent-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

@@ -25,6 +25,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     FIELDVALUE_RESULT = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
     FIELDVALUE_RESULT += '<p>I\'m not empty</p></section>';
 
+    CKEDITOR.plugins.add('ezappendcontent', {});
     renderTest = new Y.Test.Case({
         name: "eZ RichText View render test",
 
@@ -303,6 +304,14 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     editorTest = new Y.Test.Case({
         name: "eZ RichText View editor test",
 
+        _should: {
+            ignore: {
+                // this test will fail until we upgrade to AlloyEditor 0.4.x
+                // because of https://github.com/liferay/alloy-editor/issues/294
+                "Should add the ezappendcontent plugin": true,
+            }
+        },
+
         setUp: function () {
             this.field = {id: 42, fieldValue: {xhtml5edit: ""}};
             this.model = new Mock();
@@ -380,6 +389,32 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this.view.get('editor').get('nativeEditor').fire('change');
 
             Assert.isTrue(validated, "The input should have been validated");
+        },
+
+        "Should add the ezappendcontent plugin": function () {
+            this.view.set('active', true);
+
+            Assert.isTrue(
+                this.view.get('editor').get('extraPlugins').indexOf('ezappendcontent') !== -1,
+                "The ezappendcontent plugin should be loaded"
+            );
+        },
+
+        "Should pass the `eZ` configuration": function () {
+            var eZConfig;
+
+            this.view.set('active', true);
+
+            eZConfig = this.view.get('editor').get('nativeEditor').config.eZ;
+            Assert.isObject(
+                 eZConfig,
+                "The editor should have received the eZ configuration"
+            );
+            Assert.areEqual(
+                eZConfig.editableRegion,
+                '.ez-richtext-editable',
+                "The eZ configuration should contain the selector for the editable region"
+            );
         },
     });
 

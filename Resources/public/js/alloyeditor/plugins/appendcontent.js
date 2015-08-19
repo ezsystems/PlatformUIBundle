@@ -12,45 +12,52 @@ YUI.add('ez-alloyeditor-plugin-appendcontent', function (Y) {
         return;
     }
 
+    function createElement(doc, tagName, content, attributes) {
+        var element;
+
+        element = doc.createElement(tagName);
+        element.setAttributes(attributes);
+        element.setText(content ? content : "");
+
+        return element;
+    }
+
+    function moveCaretToEnd(editor) {
+        var range = editor.createRange(),
+            staticToobar = editor.editable().findOne(editor.config.eZ.editableRegion);
+
+        range.moveToPosition(staticToobar, CKEDITOR.POSITION_BEFORE_END);
+        editor.getSelection().selectRanges([range]);
+    }
+
+    function moveCaretToElement(editor, element) {
+        var range = editor.createRange();
+
+        range.moveToPosition(element, CKEDITOR.POSITION_AFTER_START);
+        editor.getSelection().selectRanges([range]);
+    }
+
     appendContentCommand = {
-        _createElement: function (tagName, content, attributes) {
-            var element;
-
-            element = new CKEDITOR.dom.element(
-                document.createElement(tagName) // TODO other ref to document
-            );
-
-            element.setText(content ? content : "");
-            element.setAttributes(attributes);
-
-            return element;
-        },
-
-        _moveCaretToEnd: function (editor) {
-            var range = editor.createRange(),
-                staticToobar = editor.editable().findOne(editor.config.ez.editableRegion);
-
-            range.moveToPosition(staticToobar, CKEDITOR.POSITION_BEFORE_END);
-            editor.getSelection().selectRanges([range]);
-        },
-
-        _moveCaretToElement: function (editor, element) {
-            var range = editor.createRange();
-
-            range.moveToPosition(element, CKEDITOR.POSITION_AFTER_START);
-            editor.getSelection().selectRanges([range]);
-        },
-
         exec: function (editor, data) {
-            var element = this._createElement(
-                    data.tagName, data.content, data.attributes
+            var element = createElement(
+                    editor.document, data.tagName, data.content, data.attributes
                 );
-            this._moveCaretToEnd(editor);
+
+            moveCaretToEnd(editor);
             editor.insertElement(element);
-            this._moveCaretToElement(editor, element);
+            moveCaretToElement(editor, element);
         },
     };
-    
+
+    /**
+     * CKEditor plugin providing the eZAppendContent command. This command
+     * allows to append content  to the editor content in the editable region
+     * pointed by the selector available under `eZ.editableRegion` in the
+     * configuration.
+     *
+     * @class CKEDITOR.plugins.ezappendcontent
+     * @constructor
+     */
     CKEDITOR.plugins.add('ezappendcontent', {
         init: function (editor) {
             editor.addCommand('eZAppendContent', appendContentCommand);
