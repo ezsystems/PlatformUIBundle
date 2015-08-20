@@ -47,11 +47,11 @@ YUI.add('ez-alloyeditor-button-heading', function (Y) {
         },
 
         render: function () {
-            var css = "ae-button " + this.getStateClasses();
+            var css = "ae-button ez-ae-labeled-button" + this.getStateClasses();
 
             return (
                 <button className={css} onClick={this._addHeading} tabIndex={this.props.tabIndex}>
-                    <span className="ae-icon-h1"></span>
+                    <span className="ae-icon-h1"></span><p className="ez-ae-label">Heading</p>
                 </button>
             );
         },

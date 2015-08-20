@@ -3,11 +3,6 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ae-toolbar-addcontent {
-    /* TODO: move that to a dedicated CSS file */
-    opacity: 0;
-}
-
 .ez-view-richtexteditview .ez-richtext-editor {
     outline: 1px solid #ccc;
     background: #fdfdfd;

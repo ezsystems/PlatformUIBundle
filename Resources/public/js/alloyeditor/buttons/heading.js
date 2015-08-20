@@ -52,11 +52,11 @@ YUI.add('ez-alloyeditor-button-heading', function (Y) {
         },
 
         render: function () {
-            var css = "ae-button " + this.getStateClasses();
+            var css = "ae-button ez-ae-labeled-button" + this.getStateClasses();
 
             return (
                 React.createElement("button", {className: css, onClick: this._addHeading, tabIndex: this.props.tabIndex}, 
-                    React.createElement("span", {className: "ae-icon-h1"})
+                    React.createElement("span", {className: "ae-icon-h1"}), React.createElement("p", {className: "ez-ae-label"}, "Heading")
                 )
             );
         },

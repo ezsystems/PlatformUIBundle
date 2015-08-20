@@ -135,7 +135,7 @@ YUI.add('ez-alloyeditor-toolbar-appendcontent', function (Y) {
 
         render: function () {
             var buttons = this.getToolbarButtons(this.props.config.buttons),
-                css = "ae-toolbar-appendcontent ae-toolbar-transition ae-arrow-box ae-arrow-box-bottom";
+                css = "ae-toolbar-appendcontent ez-ae-appendcontent ae-toolbar-transition ae-arrow-box ae-arrow-box-bottom";
 
             if ( !this.state.visible ) {
                 return null;
