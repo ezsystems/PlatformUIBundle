@@ -111,7 +111,7 @@ YUI.add('ez-alloyeditor-toolbar-appendcontent', function (Y) {
                 container = React.findDOMNode(this);
 
             if ( container ) {
-                container.style.top = (toolbarRect.top - container.clientHeight) + 'px';
+                container.style.top = (toolbarRect.top - container.clientHeight + window.scrollY) + 'px';
                 container.style.left = (toolbarRect.left + toolbarRect.width/2 - container.clientWidth/2) + 'px';
                 container.style.opacity = 1;
             }

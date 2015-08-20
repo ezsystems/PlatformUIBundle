@@ -194,6 +194,13 @@ YUI.add('ez-alloyeditor-toolbar-appendcontent-tests', function (Y) {
             );
         },
 
+        "Should position the toolbar on top of the static toolbar taking the scroll into account": function () {
+
+            Y.config.win.scrollTo(0, 500);
+            this["Should position the toolbar on top of the static toolbar"]();
+        },
+
+
         "Should position the toolbar in the middle of the editor": function () {
             var toolbar, toolbarNode,
                 editorEvent = {}, listMock = new Mock(),
