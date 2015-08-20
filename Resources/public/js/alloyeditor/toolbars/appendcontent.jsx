@@ -112,7 +112,7 @@ YUI.add('ez-alloyeditor-toolbar-appendcontent', function (Y) {
 
             if ( container ) {
                 container.style.top = (toolbarRect.top - container.clientHeight + window.scrollY) + 'px';
-                container.style.left = (toolbarRect.left + toolbarRect.width/2 - container.clientWidth/2) + 'px';
+                container.style.left = (toolbarRect.left + edRoot.getSize('width', true)/2 - container.clientWidth/2) + 'px';
                 container.style.opacity = 1;
             }
         },
