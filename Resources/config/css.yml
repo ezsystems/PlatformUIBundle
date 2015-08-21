@@ -80,6 +80,7 @@ system:
                 - 'bundles/ezplatformui/css/modules/table-data.css'
                 - 'bundles/ezplatformui/css/modules/breadcrumbs.css'
                 - 'bundles/ezplatformui/css/modules/yui-calendar.css'
+                - 'bundles/ezplatformui/css/alloyeditor/toolbars/appendcontent.css'
             # theme stylesheets
                 - 'bundles/ezplatformui/css/theme/app.css'
                 - 'bundles/ezplatformui/css/theme/views/error.css'
@@ -142,3 +143,4 @@ system:
                 - 'bundles/ezplatformui/css/theme/modules/selection-table.css'
                 - 'bundles/ezplatformui/css/theme/modules/breadcrumbs.css'
                 - 'bundles/ezplatformui/css/theme/modules/yui-calendar.css'
+                - 'bundles/ezplatformui/css/theme/alloyeditor/toolbars/appendcontent.css'

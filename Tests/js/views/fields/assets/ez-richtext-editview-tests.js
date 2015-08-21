@@ -2,11 +2,12 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
+/* global CKEDITOR */
 YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
-        editorTest, focusModeTest,
+        editorTest, focusModeTest, editorFocusHandlingTest,
         actionBarTest, destructorTest,
-        VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML,
+        VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, FIELDVALUE_RESULT,
         Assert = Y.Assert, Mock = Y.Mock;
 
     INVALID_XHTML = "I'm invalid";
@@ -18,8 +19,13 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     EMPTY_XHTML = '<?xml version="1.0" encoding="UTF-8"?>';
     EMPTY_XHTML += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit"/>';
 
-    RESULT_XHTML = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit"><p>I\'m not empty</p></section>';
+    RESULT_XHTML = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit" contenteditable="true" class="ez-richtext-editable">';
+    RESULT_XHTML += '<p>I\'m not empty</p></section>';
 
+    FIELDVALUE_RESULT = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
+    FIELDVALUE_RESULT += '<p>I\'m not empty</p></section>';
+
+    CKEDITOR.plugins.add('ezappendcontent', {});
     renderTest = new Y.Test.Case({
         name: "eZ RichText View render test",
 
@@ -101,7 +107,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Assert.isObject(variables, "The template should receive some variables");
-                Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 7 variables");
+                Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
 
                 Assert.areSame(
                      that.jsonContent, variables.content,
@@ -125,6 +131,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 );
                 Assert.areSame(expectRequired, variables.isRequired);
                 Assert.areSame(expectedXhtml, variables.xhtml);
+
+                Assert.areEqual(
+                    'ez-richtext-add-content', variables.addContentButtonClass,
+                    "The addContentButtonClass variable should be available"
+                );
 
                 return origTpl.call(this, variables);
             };
@@ -284,7 +295,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             );
             Assert.isObject(field.fieldValue, "The fieldValue should be an object");
             Assert.areEqual(
-                RESULT_XHTML, field.fieldValue.xml,
+                FIELDVALUE_RESULT, field.fieldValue.xml,
                 "The xml property of the fieldValue should come from the editor"
             );
         },
@@ -292,6 +303,14 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
     editorTest = new Y.Test.Case({
         name: "eZ RichText View editor test",
+
+        _should: {
+            ignore: {
+                // this test will fail until we upgrade to AlloyEditor 0.4.x
+                // because of https://github.com/liferay/alloy-editor/issues/294
+                "Should add the ezappendcontent plugin": true,
+            }
+        },
 
         setUp: function () {
             this.field = {id: 42, fieldValue: {xhtml5edit: ""}};
@@ -370,6 +389,32 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this.view.get('editor').get('nativeEditor').fire('change');
 
             Assert.isTrue(validated, "The input should have been validated");
+        },
+
+        "Should add the ezappendcontent plugin": function () {
+            this.view.set('active', true);
+
+            Assert.isTrue(
+                this.view.get('editor').get('extraPlugins').indexOf('ezappendcontent') !== -1,
+                "The ezappendcontent plugin should be loaded"
+            );
+        },
+
+        "Should pass the `eZ` configuration": function () {
+            var eZConfig;
+
+            this.view.set('active', true);
+
+            eZConfig = this.view.get('editor').get('nativeEditor').config.eZ;
+            Assert.isObject(
+                 eZConfig,
+                "The editor should have received the eZ configuration"
+            );
+            Assert.areEqual(
+                eZConfig.editableRegion,
+                '.ez-richtext-editable',
+                "The eZ configuration should contain the selector for the editable region"
+            );
         },
     });
 
@@ -521,6 +566,61 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
     });
 
+    editorFocusHandlingTest = new Y.Test.Case({
+        name: "eZ RichText View editor focus handling test",
+
+        setUp: function () {
+            this.field = {id: 42, fieldValue: {xhtml5edit: ""}};
+            this.content = new Mock();
+            this.version = new Mock();
+            this.contentType = new Mock();
+            Mock.expect(this.content, {
+                method: 'toJSON',
+            });
+            Mock.expect(this.version, {
+                method: 'toJSON',
+            });
+            Mock.expect(this.contentType, {
+                method: 'toJSON',
+            });
+
+            this.view = new Y.eZ.RichTextEditView({
+                container: '.container',
+                field: this.field,
+                fieldDefinition: {isRequired: false},
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType,
+                actionBar: new Y.View(),
+            });
+            this.view.get('actionBar').addTarget(this.view);
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should add the editor focused class": function () {
+            this.view.render();
+            this.view.set('active', true);
+            this.view.get('editor').get('nativeEditor').fire('focus');
+            Assert.isTrue(
+                this.view.get('container').hasClass('is-editor-focused'),
+                "The editor focused class should be added to the container"
+            );
+        },
+
+        "Should remove the editor focused class": function () {
+            this["Should add the editor focused class"]();
+            this.view.get('editor').get('nativeEditor').fire('blur');
+            Assert.isFalse(
+                this.view.get('container').hasClass('is-editor-focused'),
+                "The editor focused class should be removed from the container"
+            );
+        },
+    });
+
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "RichText Edit View registration test";
     registerTest.viewType = Y.eZ.RichTextEditView;
@@ -535,4 +635,5 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(actionBarTest);
     Y.Test.Runner.add(destructorTest);
     Y.Test.Runner.add(registerTest);
+    Y.Test.Runner.add(editorFocusHandlingTest);
 }, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'editviewregister-tests', 'ez-richtext-editview']});

@@ -3,12 +3,12 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-view-richtexteditview .ez-richtext-editable {
+.ez-view-richtexteditview .ez-richtext-editor {
     outline: 1px solid #ccc;
     background: #fdfdfd;
 }
 
-.ez-view-richtexteditview .ez-richtext-editable,
+.ez-view-richtexteditview .ez-richtext-editor,
 .ez-view-richtexteditview .ez-editfield-row,
 .ez-view-richtexteditview .ez-editfield-input-area {
     transition: all 0.3s ease;
@@ -21,10 +21,14 @@
     transition: background,width,height 0.3s ease;
 }
 
-.ez-view-richtexteditview .ez-richtext-editable:focus {
+.ez-view-richtexteditview.is-editor-focused .ez-richtext-editor {
     outline: 1px solid #aaa;
     box-shadow: inset 0 0 6px #CCC;
     background: #fff;
+}
+
+.ez-view-richtexteditview .ez-richtext-editable:focus {
+    outline: 0;
 }
 
 .ez-view-richtexteditview.is-focused .ez-editfield-row,
@@ -46,4 +50,25 @@
     opacity: 1;
     -webkit-transform: translateX(0);
             transform: translateX(0);
+}
+
+.ez-view-richtexteditview .ez-richtext-add-content {
+    color: #999;
+    background: transparent;
+    border: 0;
+}
+
+.ez-view-richtexteditview .ez-richtext-add-content:focus {
+    outline: 0;
+}
+
+.ez-view-richtexteditview .ez-richtext-add-content:before {
+    color: #aaa;
+    margin: 0 auto;
+    display: block;
+    content: "+";
+    font-size: 450%;
+    width: 0.8em;
+    height: 0.8em;
+    text-align: center;
 }

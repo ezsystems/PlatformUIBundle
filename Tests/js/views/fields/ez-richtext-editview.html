@@ -11,7 +11,10 @@
 <script type="text/x-handlebars-template" id="buttonactionview-ez-template"></script>
 
 <script type="text/x-handlebars-template" id="richtexteditview-ez-template">
-    <div class="ez-richtext-editable">{{{ xhtml }}}</div>
+    <div class="ez-richtext-editor" contenteditable="false">
+        <div class="ez-richtext-editable" contenteditable="true">{{{ xhtml }}}</div>
+        <div class="ez-ae-static-toolbar" contenteditable="false">A toolbar</div>
+    </div>
     <p class="ez-editfield-error-message"></p>
     <button class="ez-richtext-switch-focus">Focus</button>
     <div class="ez-focusmodeactionbar-container"></div>

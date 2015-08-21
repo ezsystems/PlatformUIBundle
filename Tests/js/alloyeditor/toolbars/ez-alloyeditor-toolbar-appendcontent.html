@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ AlloyEditor appendcontent toolbar tests</title>
+<style>
+    .ae-toolbar-appendcontent {
+        position: absolute;
+        opacity: 0;
+    }
+
+    .editor {
+        margin-top: 1000px;
+    }
+</style>
+</head>
+<body>
+
+<div class="editor">
+    <div class="ez-ae-static-toolbar"></div>
+</div>
+<div class="container"></div>
+
+<script type="text/javascript" src="../../assets/function.bind.polyfill.js"></script>
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
+<script type="text/javascript" src="./assets/ez-alloyeditor-toolbar-appendcontent-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage') {
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-alloyeditor-toolbar-appendcontent'],
+        filter: loaderFilter,
+        modules: {
+            "ez-alloyeditor-toolbar-appendcontent": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/toolbars/appendcontent.js",
+                requires: ['ez-alloyeditor'],
+            },
+            "ez-alloyeditor": {
+                fullpath: "../../../../Resources/public/js/external/ez-alloyeditor.js",
+            },
+        }
+    }).use('ez-alloyeditor-toolbar-appendcontent-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

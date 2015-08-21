@@ -4,46 +4,33 @@ module.exports = function(grunt) {
     var reportDir = "./Tests/report",
         instrumentDir = "./Tests/instrument",
         environment = process.env,
-        sourceFiles = [ // Syntax "!<whatever>" means - exclude whatever from the result set
-            "./Resources/public/js/apps/*.js", "!./Resources/public/js/apps/*-min.js",
-            "./Resources/public/js/apps/extensions/*.js", "!./Resources/public/js/apps/extensions/*-min.js",
-            "./Resources/public/js/apps/plugins/*.js", "!./Resources/public/js/apps/plugins/*-min.js",
-            "./Resources/public/js/views/*.js", "!./Resources/public/js/views/*-min.js",
-            "./Resources/public/js/views/fields/*.js", "!./Resources/public/js/views/fields/*-min.js",
-            "./Resources/public/js/views/universaldiscovery/*.js", "!./Resources/public/js/views/universaldiscovery/*-min.js",
-            "./Resources/public/js/views/actions/*.js", "!./Resources/public/js/views/actions/*-min.js",
-            "./Resources/public/js/views/tabs/*.js", "!./Resources/public/js/views/actions/*-min.js",
-            "./Resources/public/js/views/navigation/*.js", "!./Resources/public/js/views/navigation/*-min.js",
-            "./Resources/public/js/views/serverside/*.js", "!./Resources/public/js/views/serverside/*-min.js",
-            "./Resources/public/js/views/services/*.js", "!./Resources/public/js/views/services/*-min.js",
-            "./Resources/public/js/views/services/plugins/*.js", "!./Resources/public/js/views/services/plugins/*-min.js",
-            "./Resources/public/js/models/*.js", "!./Resources/public/js/models/*-min.js",
-            "./Resources/public/js/models/structs/*.js", "!./Resources/public/js/models/structs/*-min.js",
-            "./Resources/public/js/extensions/*.js", "!./Resources/public/js/extensions/*-min.js",
-            "./Resources/public/js/external/*.js", "!./Resources/public/js/external/*-min.js",
-            "./Resources/public/js/services/*.js", "!./Resources/public/js/services/*-min.js",
-            "./Resources/public/js/helpers/*.js", "!./Resources/public/js/helpers/*-min.js"
+        sourceFiles = [
+            "./Resources/public/js/apps/*.js",
+            "./Resources/public/js/apps/extensions/*.js",
+            "./Resources/public/js/apps/plugins/*.js",
+            "./Resources/public/js/views/*.js",
+            "./Resources/public/js/views/fields/*.js",
+            "./Resources/public/js/views/universaldiscovery/*.js",
+            "./Resources/public/js/views/actions/*.js",
+            "./Resources/public/js/views/tabs/*.js",
+            "./Resources/public/js/views/navigation/*.js",
+            "./Resources/public/js/views/serverside/*.js",
+            "./Resources/public/js/views/services/*.js",
+            "./Resources/public/js/views/services/plugins/*.js",
+            "./Resources/public/js/models/*.js",
+            "./Resources/public/js/models/structs/*.js",
+            "./Resources/public/js/extensions/*.js",
+            "./Resources/public/js/external/*.js",
+            "./Resources/public/js/services/*.js",
+            "./Resources/public/js/helpers/*.js",
+            "./Resources/public/js/alloyeditor/toolbars/*.js",
+            "./Resources/public/js/alloyeditor/buttons/*.js",
+            "./Resources/public/js/alloyeditor/plugins/*.js",
         ],
         testFiles = [
             "./Tests/js/**/*.js",
         ],
         trashFiles = [
-            "./Resources/public/js/apps/*-min.js",
-            "./Resources/public/js/apps/extensions/*-min.js",
-            "./Resources/public/js/apps/plugins/*-min.js",
-            "./Resources/public/js/views/*-min.js",
-            "./Resources/public/js/views/fields/*-min.js",
-            "./Resources/public/js/views/navigation/*-min.js",
-            "./Resources/public/js/views/services/*-min.js",
-            "./Resources/public/js/views/services/plugins/*-min.js",
-            "./Resources/public/js/models/*-min.js",
-            "./Resources/public/js/models/structs/*-min.js",
-            "./Resources/public/js/extensions/*-min.js",
-            "./Resources/public/js/external/*-min.js",
-            "./Resources/public/js/services/*-min.js",
-            "./Resources/public/js/helpers/*-min.js",
-            "./Resources/public/js/views/actions/*-min.js",
-            "./Resources/public/js/views/tabs/*-min.js",
             instrumentDir,
             reportDir
         ],
@@ -51,8 +38,10 @@ module.exports = function(grunt) {
         alloyBase = "vendor/ezsystems/platform-ui-assets-bundle/Resources/public/vendors/alloy-editor/",
         alloyDistAssets = alloyBase + "dist/alloy-editor/assets/",
         alloySkinBasePath = alloyBase + "src/ui/react/src/assets/sass/skin/",
-        alloySkinCSS =alloyDistAssets + "alloy-editor-ez.css",
-        fixFontsUrl;
+        alloySkinCSS = alloyDistAssets + "alloy-editor-ez.css",
+        fixFontsUrl,
+        alloyPluginsDir = "Resources/public/js/alloyeditor/",
+        alloyPluginsTestDir = "Tests/js/alloyeditor/";
 
     fixFontsUrl = function (url) {
         if ( url.indexOf("fonts/") !== 0 ) {
@@ -70,17 +59,6 @@ module.exports = function(grunt) {
                 jshintrc: 'jshint.json'
             },
             all: [sourceFiles, testFiles]
-        },
-        uglify: {
-            all: {
-                files: [
-                    {
-                        expand: true,     // Enable dynamic expansion.
-                        src: sourceFiles,
-                        ext: '-min.js'   // Dest filepaths will have this extension.
-                    }
-                ]
-            }
         },
         clean: {
             all: {
@@ -109,7 +87,8 @@ module.exports = function(grunt) {
                         "./Resources/public/js/extensions",
                         "./Resources/public/js/external",
                         "./Resources/public/js/services",
-                        "./Resources/public/js/helpers"
+                        "./Resources/public/js/helpers",
+                        "./Resources/public/js/alloyeditor"
                     ],
                     outdir: 'api/'
                 }
@@ -186,6 +165,41 @@ module.exports = function(grunt) {
                 },
             }
         },
+        react: {
+            alloyplugins: {
+                files: [{
+                    expand: true,
+                    cwd: alloyPluginsDir,
+                    src: ['**/*.jsx'],
+                    dest: alloyPluginsDir,
+                    ext: '.js',
+                }, {
+                    expand: true,
+                    cwd: alloyPluginsTestDir,
+                    src: ['**/*.jsx'],
+                    dest: alloyPluginsTestDir,
+                    ext: '.js',
+                }],
+            },
+        },
+        replace: {
+            autogeneratedfiles: {
+                src: [alloyPluginsDir + '/toolbars/*.js', alloyPluginsDir + '/buttons/*.js'],
+                overwrite: true,
+                replacements: [{
+                    from: 'YUI.add(',
+                    to: function (matched) {
+                        var notice = "// **NOTICE:**\n";
+
+                        notice += "// THIS IS AN AUTO-GENERATED FILE\n";
+                        notice += "// DO YOUR MODIFICATIONS IN THE CORRESPONDING .jsx FILE\n";
+                        notice += "// AND REGENERATE IT WITH: grunt jsx\n";
+                        notice += "// END OF NOTICE\n";
+                        return notice + matched;
+                    },
+                }],
+            },
+        },
         watch: {
             options: {
                 atBegin: true
@@ -194,11 +208,14 @@ module.exports = function(grunt) {
                 files: [sourceFiles, testFiles, "Tests/js/**/*.html"],
                 tasks: ["shell:grover"]
             },
+            jsx: {
+                files: [alloyPluginsDir + "/**/*.jsx", alloyPluginsTestDir + "/**/*.jsx"],
+                tasks: ["jsx"],
+            },
         },
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-istanbul');
     grunt.loadNpmTasks('grunt-contrib-yuidoc');
@@ -206,15 +223,17 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-rework');
+    grunt.loadNpmTasks('grunt-react');
+    grunt.loadNpmTasks('grunt-text-replace');
 
     grunt.registerTask('lint', ['jshint']);
-    grunt.registerTask('ugly', ['jshint', 'uglify']);
-    grunt.registerTask('test', ['jshint', 'shell:grover'] );
-    grunt.registerTask('coverage', ['jshint', 'clean', 'instrument', 'shell:groverCoverage'] );
+    grunt.registerTask('test', ['jshint', 'jsx', 'shell:grover'] );
+    grunt.registerTask('coverage', ['jshint', 'clean', 'jsx', 'instrument', 'shell:groverCoverage'] );
     grunt.registerTask('doc', ['yuidoc'] );
     grunt.registerTask('livedoc', ['shell:livedoc'] );
     grunt.registerTask('alloy-css', [
         'copy:alloy-skin', 'copy:alloy-override', 'shell:alloy-generateskin',
         'copy:alloy-font', 'rework:alloy-fontpath'
     ]);
+    grunt.registerTask('jsx', ['react:alloyplugins', 'replace:autogeneratedfiles']);
 };

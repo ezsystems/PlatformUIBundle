@@ -17,7 +17,7 @@
     vertical-align: top;
 }
 
-.ez-view-richtexteditview .ez-richtext-editable {
+.ez-view-richtexteditview .ez-richtext-editor {
     display: inline-block;
     width: 100%;
     padding: 0 0.4em;
@@ -89,4 +89,12 @@
 
 .ez-view-richtexteditview.is-focused .ez-focusmodeactionbar-container {
     display: block;
+}
+
+.ez-view-richtexteditview .ez-ae-static-toolbar {
+    text-align: center;
+}
+
+.ez-view-richtexteditview .ez-richtext-add-content {
+    margin-bottom: 0.3em;
 }
