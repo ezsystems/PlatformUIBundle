@@ -16,6 +16,14 @@ class Value implements Provider
     /** @var mixed */
     private $value;
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getCategoryName()
+    {
+        return 'ezplatform';
+    }
+
     public function __construct(array $value)
     {
         $this->value = $value;

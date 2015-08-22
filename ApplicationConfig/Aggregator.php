@@ -34,6 +34,13 @@ class Aggregator implements Provider
     }
 
     /**
+     * @inheritdoc
+     */
+    public function getCategoryName()
+    {
+    }
+
+    /**
      * Aggregates the config from the providers, and returns a hash with the namespace as the key, and the config
      * as the value.
      * @return array

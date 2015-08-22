@@ -23,6 +23,14 @@ class RootInfo implements Provider
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getCategoryName()
+    {
+        return 'ezplatform';
+    }
+
+    /**
      * @return array|string|int|\JsonSerializable
      */
     public function getConfig()

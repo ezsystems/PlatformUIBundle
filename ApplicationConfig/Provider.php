@@ -10,6 +10,11 @@ namespace EzSystems\PlatformUIBundle\ApplicationConfig;
 interface Provider
 {
     /**
+     * @return string Return category name this provider belongs to
+     */
+    public function getCategoryName();
+
+    /**
      * @return mixed Anything that is serializable via json_encode()
      */
     public function getConfig();
