@@ -9,6 +9,8 @@ namespace EzSystems\PlatformUIBundle\ApplicationConfig;
  */
 class Aggregator implements Provider
 {
+    const CATEGORY_NAME = 'ezsystems';
+
     /** @var Provider[] ApplicationConfigProviders, indexed by namespace string*/
     private $providers = [];
 
@@ -34,10 +36,11 @@ class Aggregator implements Provider
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getCategoryName()
     {
+        return self::CATEGORY_NAME;
     }
 
     /**
@@ -47,14 +50,20 @@ class Aggregator implements Provider
      */
     public function getConfig()
     {
-        $config = [];
+        $category = $this->getCategoryName();
+
+        $config = [$category => []];
+
         foreach ($this->providers as $key => $provider) {
             $config[$key] = $provider->getConfig();
         }
 
-        $config['bundles'] = [];
-        foreach ($this->bundleProviders as $bundleKey => $provider) {
-            $config['bundles'][$bundleKey] = $provider->getConfig();
+        foreach ($this->bundleProviders as $key => $provider) {
+            $providerCategory = $provider->getCategoryName();
+            if (!isset($config[$category][$providerCategory])) {
+                $config[$category][$providerCategory] = [];
+            }
+            $config[$category][$providerCategory][$key] = $provider->getConfig();
         }
 
         return $config;

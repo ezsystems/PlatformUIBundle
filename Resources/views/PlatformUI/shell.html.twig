@@ -82,7 +82,7 @@
                             }
                         }
                     },
-                    bundles: {{parameters.bundles|json_encode|raw}}
+                    extensions: {{parameters.ezsystems|json_encode|raw}}
                 });
             app.on('ready', function () {
                 Y.one(Y.config.doc.documentElement).addClass('ez-platformui-app-ready');
