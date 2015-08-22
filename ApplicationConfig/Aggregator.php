@@ -12,6 +12,9 @@ class Aggregator implements Provider
     /** @var Provider[] ApplicationConfigProviders, indexed by namespace string*/
     private $providers = [];
 
+    /** @var Provider[] ApplicationConfigProviders, indexed by namespace string*/
+    private $bundleProviders = [];
+
     /**
      * Adds an array of Provider to the aggregator.
      * @param \EzSystems\PlatformUIBundle\ApplicationConfig\Provider[] $providers
@@ -19,6 +22,15 @@ class Aggregator implements Provider
     public function addProviders(array $providers)
     {
         $this->providers = array_merge($this->providers, $providers);
+    }
+
+    /**
+     * Adds an array of custom bundle Provider to the aggregator.
+     * @param \EzSystems\PlatformUIBundle\ApplicationConfig\Provider[] $providers
+     */
+    public function addBundleProviders(array $providers)
+    {
+        $this->bundleProviders = array_merge($this->bundleProviders, $providers);
     }
 
     /**
@@ -31,6 +43,11 @@ class Aggregator implements Provider
         $config = [];
         foreach ($this->providers as $key => $provider) {
             $config[$key] = $provider->getConfig();
+        }
+
+        $config['bundles'] = [];
+        foreach ($this->bundleProviders as $bundleKey => $provider) {
+            $config['bundles'][$bundleKey] = $provider->getConfig();
         }
 
         return $config;
