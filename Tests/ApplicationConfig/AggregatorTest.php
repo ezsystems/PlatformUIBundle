@@ -12,18 +12,123 @@ use PHPUnit_Framework_TestCase;
  */
 class AggregatorTest extends PHPUnit_Framework_TestCase
 {
-    public function testAddProviders()
+    public function testCategoryNameSameAsConstant()
     {
         $aggregator = new Aggregator();
-        $aggregator->addProviders(['a' => $this->createProvider(), 'b' => $this->createProvider()]);
+
+        self::assertEquals($aggregator->getCategoryName(), Aggregator::CATEGORY_NAME);
     }
 
-    public function testGetConfig()
+    public function testEmptyAggregatorGetConfig()
     {
         $aggregator = new Aggregator();
-        $aggregator->addProviders(['a' => $this->createProvider(), 'b' => $this->createProvider()]);
+
         self::assertEquals(
-            ['a' => [], 'b' => []],
+            [
+                $aggregator->getCategoryName() => [],
+            ],
+            $aggregator->getConfig()
+        );
+    }
+
+    public function testProvidersGetConfig()
+    {
+        $aggregator = new Aggregator();
+
+        $aggregator->addProviders(
+            [
+                'a' => $this->createProvider(),
+                'b' => $this->createProvider(),
+            ]
+        );
+    }
+
+    public function testAddBundleProviders()
+    {
+        $aggregator = new Aggregator();
+
+        $aggregator->addBundleProviders(
+            [
+                'a' => $this->createProvider(),
+                'b' => $this->createProvider(),
+            ]
+        );
+    }
+
+    public function testProviderOnlyGetConfig()
+    {
+        $aggregator = new Aggregator();
+
+        $aggregator->addProviders(
+            [
+                'a' => $this->createProvider(),
+                'b' => $this->createProvider(),
+            ]
+        );
+
+        self::assertEquals(
+            [
+                'a' => [],
+                'b' => [],
+                Aggregator::CATEGORY_NAME => [],
+            ],
+            $aggregator->getConfig()
+        );
+    }
+
+    public function testBundleProviderOnlyGetConfig()
+    {
+        $aggregator = new Aggregator();
+
+        $aggregator->addBundleProviders(
+            [
+                'a' => $this->createProvider(),
+                'b' => $this->createProvider(),
+            ]
+        );
+
+        self::assertEquals(
+            [
+                $aggregator->getCategoryName() => [
+                    'test_category' => [
+                        'a' => [],
+                        'b' => [],
+                    ],
+                ],
+            ],
+            $aggregator->getConfig()
+        );
+    }
+
+    public function testAllProvidersGetConfig()
+    {
+        $aggregator = new Aggregator();
+
+        $aggregator->addProviders(
+            [
+                'a' => $this->createProvider(),
+                'b' => $this->createProvider(),
+            ]
+        );
+
+        $aggregator->addBundleProviders(
+            [
+                'c' => $this->createProvider(),
+                'd' => $this->createProvider(),
+            ]
+        );
+
+        self::assertEquals(
+            [
+                'a' => [],
+                'b' => [],
+                $aggregator->getCategoryName() => [
+                    'test_category' => [
+                        'c' => [],
+                        'd' => [],
+                    ],
+                ],
+            ],
             $aggregator->getConfig()
         );
     }
@@ -38,6 +143,11 @@ class AggregatorTest extends PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getConfig')
             ->will($this->returnValue([]));
+
+        $mock
+            ->expects($this->any())
+            ->method('getCategoryName')
+            ->will($this->returnValue('test_category'));
 
         return $mock;
     }
