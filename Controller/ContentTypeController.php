@@ -11,7 +11,9 @@
 namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Bundle\EzPublishCoreBundle\Controller;
+use eZ\Publish\API\Repository\ContentService;
 use eZ\Publish\API\Repository\ContentTypeService;
+use eZ\Publish\API\Repository\Exceptions\BadStateException;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
 use eZ\Publish\API\Repository\SearchService;
@@ -30,6 +32,11 @@ class ContentTypeController extends Controller
      * @var ContentTypeService
      */
     private $contentTypeService;
+
+    /**
+     * @var ContentService For deleting content prior to deleting content type
+     */
+    private $contentService;
 
     /**
      * @var SearchService
@@ -58,13 +65,15 @@ class ContentTypeController extends Controller
         SearchService $searchService,
         UserService $userService,
         ActionDispatcherInterface $actionDispatcher,
-        FieldTypeFormMapperRegistryInterface $fieldTypeMapperRegistry
+        FieldTypeFormMapperRegistryInterface $fieldTypeMapperRegistry,
+        ContentService $contentService
     ) {
         $this->contentTypeService = $contentTypeService;
         $this->searchService = $searchService;
         $this->userService = $userService;
         $this->actionDispatcher = $actionDispatcher;
         $this->fieldTypeMapperRegistry = $fieldTypeMapperRegistry;
+        $this->contentService = $contentService;
     }
 
     /**
@@ -119,6 +128,7 @@ class ContentTypeController extends Controller
             'content_count' => $this->searchService->findContent($query, [], false)->totalCount,
             'modifier' => $this->userService->loadUser($contentType->modifierId),
             'can_edit' => $this->isGranted(new Attribute('class', 'update')),
+            'can_remove' => $this->isGranted(new Attribute('class', 'remove')),
         ]);
     }
 
@@ -199,5 +209,58 @@ class ContentTypeController extends Controller
             'contentTypeDraft' => $contentTypeDraft,
             'languageCode' => $languageCode,
         ]);
+    }
+
+    /**
+     * Remove content type.
+     *
+     * TODO: Ask for confirmation: 'Are you really sure?' & warn: 'This will remove `$contentCount` content instances'.
+     * Handle this in PlatformUI?
+     *
+     * @param int $contentTypeId ID of content type to remove
+     */
+    public function removeContentTypeAction($contentTypeId)
+    {
+        try {
+            $contentType = $this->contentTypeService->loadContentType($contentTypeId);
+        } catch (UnauthorizedException $e) {
+            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
+        }
+
+        // We just need one, doesn't matter which one. Used for redirecting to group view after deletion.
+        $contentTypeGroup = $contentType->getContentTypeGroups()[0];
+
+        $query = new Query([
+            'filter' => new Query\Criterion\ContentTypeId($contentTypeId),
+        ]);
+        $contentList = $this->searchService->findContent($query, [], false);
+        $contentCount = $contentList->totalCount;
+
+        if ($contentCount > 0) {
+            foreach ($contentList->searchHits as $searchHit) {
+                try {
+                    $this->contentService->deleteContent($searchHit->valueObject->contentInfo);
+                } catch (UnauthorizedException $e) {
+                    // If the user is not allowed to delete the content (in one of the locations of the content object)
+                    return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
+                }
+            }
+        }
+
+        try {
+            $this->contentTypeService->deleteContentType($contentType);
+        } catch (BadStateException $e) {
+            // If there exist content objects of this type. This should not happen, as we deleted them above,
+            // unless we hit a race condition.
+            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied'); // This is wrong, use something else TODO
+        } catch (UnauthorizedException $e) {
+            // If the user is not allowed to delete a content type
+            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
+        }
+
+        return $this->redirectToRoute(
+            'admin_contenttypeGroupView',
+            ['contentTypeGroupId' => $contentTypeGroup->id]
+        );
     }
 }
