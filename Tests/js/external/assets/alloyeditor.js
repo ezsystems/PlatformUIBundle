@@ -1,2 +1,2 @@
 window.AlloyEditor = window.AlloyEditor || {};
-window.React = window.React || {};
+window.AlloyEditor.React = window.AlloyEditor.React || {};
