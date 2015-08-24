@@ -224,7 +224,7 @@
 .ae-ui .ae-toolbar,
 .ae-ui [class^=ae-toolbar-] {
   line-height: 1;
-  padding: 8px;
+  padding: 4px;
   position: absolute;
 }
 
@@ -346,7 +346,7 @@
   border-bottom: 8px solid currentColor;
   border-left: 9px solid transparent;
   border-right: 9px solid transparent;
-  left: 12px;
+  left: 6px;
   top: -8px;
 }
 
@@ -356,7 +356,7 @@
   border-bottom: 8px solid currentColor;
   border-left: 9px solid transparent;
   border-right: 9px solid transparent;
-  right: 12px;
+  right: 6px;
   top: -8px;
 }
 
@@ -622,7 +622,7 @@
   padding: 0;
   position: absolute;
   z-index: 1;
-  top: 48px;
+  top: 44px;
 }
 
 .ae-ui .ae-dropdown .ae-list-header,
@@ -633,7 +633,7 @@
 
 .ae-ui .ae-dropdown .ae-list-header:first-child,
 .ae-ui [class^=ae-dropdown-] .ae-list-header:first-child {
-  margin-top: 8px;
+  margin-top: 4px;
 }
 
 .ae-ui .ae-dropdown .ae-listbox,
@@ -668,7 +668,7 @@
 
 .ae-ui .ae-dropdown .ae-listbox .ae-toolbar-element[class^=ae-icon-]:before,
 .ae-ui [class^=ae-dropdown-] .ae-listbox .ae-toolbar-element[class^=ae-icon-]:before {
-  padding-right: 8px;
+  padding-right: 4px;
   vertical-align: middle;
 }
 
@@ -730,13 +730,13 @@
 /** TOOLBAR **/
 
 .ae-editable ::-moz-selection {
-  background: #aebcc8 !important;
+  background: #c0cbd4 !important;
   color: #fff;
   text-shadow: none;
 }
 
 .ae-editable ::selection {
-  background: #aebcc8 !important;
+  background: #c0cbd4 !important;
   color: #fff;
   text-shadow: none;
 }
@@ -751,27 +751,27 @@
 }
 
 .ae-ui .ae-arrow-box.ae-arrow-box-bottom:after {
-  color: #29353D;
+  color: #333;
 }
 
 .ae-ui .ae-arrow-box.ae-arrow-box-top:after {
-  color: #29353D;
+  color: #333;
 }
 
 .ae-ui .ae-arrow-box.ae-arrow-box-top-left:after {
-  color: #29353D;
+  color: #333;
 }
 
 .ae-ui .ae-arrow-box.ae-arrow-box-top-right:after {
-  color: #29353D;
+  color: #333;
 }
 
 .ae-ui .ae-arrow-box.ae-arrow-box-left:after {
-  color: #29353D;
+  color: #333;
 }
 
 .ae-ui .ae-arrow-box.ae-arrow-box-right:after {
-  color: #29353D;
+  color: #333;
 }
 
 .ae-ui .ae-container-dropdown > .ae-toolbar-element .ae-container .ae-icon-arrow,
@@ -807,22 +807,22 @@
 
 .ae-ui .ae-container-input input::-webkit-input-placeholder,
 .ae-ui .ae-container-input .ae-input::-webkit-input-placeholder {
-  color: #aebcc8;
+  color: #c0cbd4;
 }
 
 .ae-ui .ae-container-input input::-moz-placeholder,
 .ae-ui .ae-container-input .ae-input::-moz-placeholder {
-  color: #aebcc8;
+  color: #c0cbd4;
 }
 
 .ae-ui .ae-container-input input:-moz-placeholder,
 .ae-ui .ae-container-input .ae-input:-moz-placeholder {
-  color: #aebcc8;
+  color: #c0cbd4;
 }
 
 .ae-ui .ae-container-input input:-ms-input-placeholder,
 .ae-ui .ae-container-input .ae-input:-ms-input-placeholder {
-  color: #aebcc8;
+  color: #c0cbd4;
 }
 
 .ae-ui .ae-container-input input:focus,
@@ -876,8 +876,8 @@
 
 .ae-ui .ae-toolbar,
 .ae-ui [class^=ae-toolbar-] {
-  background-color: #29353D;
-  border-radius: 2px;
+  background-color: #333;
+  border-radius: 3px;
   color: #fff;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -900,7 +900,7 @@
 .ae-ui .ae-toolbar .ae-toolbar-element.ae-button-pressed,
 .ae-ui [class^=ae-toolbar-] .ae-button.ae-button-pressed,
 .ae-ui [class^=ae-toolbar-] .ae-toolbar-element.ae-button-pressed {
-  background-color: #394a55;
+  background-color: #575757;
 }
 
 .ae-ui .ae-toolbar .ae-button.ae-button-pressed:hover,
@@ -919,7 +919,7 @@
 
 .ae-ui .ae-toolbar-add {
   background-color: #fff;
-  border-color: #aebcc8;
+  border-color: #c0cbd4;
   border-radius: 4px;
   color: #869CAD;
 }
