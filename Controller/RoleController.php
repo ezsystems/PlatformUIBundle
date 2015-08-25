@@ -18,6 +18,7 @@ use EzSystems\RepositoryForms\Data\Mapper\PolicyMapper;
 use EzSystems\RepositoryForms\Data\Mapper\RoleMapper;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
 use EzSystems\RepositoryForms\Form\Type\Role\PolicyDeleteType;
+use EzSystems\RepositoryForms\Form\Type\Role\RoleAssignmentDeleteType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleCreateType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleDeleteType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleUpdateType;
@@ -71,6 +72,7 @@ class RoleController extends Controller
         return $this->render('eZPlatformUIBundle:Role:list_roles.html.twig', [
             'roles' => $this->roleService->loadRoles(),
             'can_edit' => $this->isGranted(new Attribute('role', 'update')),
+            'can_assign' => $this->isGranted(new Attribute('role', 'assign')),
             'can_create' => $this->isGranted(new Attribute('role', 'create')),
             'can_delete' => $this->isGranted(new Attribute('role', 'delete')),
             'create_form' => $createForm->createView(),
@@ -89,6 +91,7 @@ class RoleController extends Controller
         $role = $this->roleService->loadRole($roleId);
         $roleAssignments = $this->roleService->getRoleAssignments($role);
         $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
+
         $deleteFormsByPolicyId = [];
         foreach ($role->getPolicies() as $policy) {
             $policyId = $policy->id;
@@ -98,13 +101,23 @@ class RoleController extends Controller
             )->createView();
         }
 
+        $deleteFormsByAssignment = [];
+        foreach ($roleAssignments as $roleAssignment) {
+            $deleteFormsByAssignment[$roleAssignment->id] = $this->createForm(
+                new RoleAssignmentDeleteType(),
+                ['assignmentId' => $roleAssignment->id]
+            )->createView();
+        }
+
         return $this->render('eZPlatformUIBundle:Role:view_role.html.twig', [
             'role' => $role,
             'deleteFormsByPolicyId' => $deleteFormsByPolicyId,
             'role_assignments' => $roleAssignments,
             'deleteForm' => $deleteForm->createView(),
             'can_edit' => $this->isGranted(new Attribute('role', 'update')),
+            'can_assign' => $this->isGranted(new Attribute('role', 'assign')),
             'can_delete' => $this->isGranted(new Attribute('role', 'delete')),
+            'deleteFormsByAssignment' => $deleteFormsByAssignment,
         ]);
     }
 
@@ -290,5 +303,28 @@ class RoleController extends Controller
         }
 
         return $this->redirectToRouteAfterFormPost('admin_roleView', ['roleId' => $roleId]);
+    }
+
+    /**
+     * Deletes a role assignment.
+     *
+     * @param Request $request
+     * @param int $roleAssignmentId Role assignment ID
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteRoleAssignmentAction(Request $request, $roleAssignmentId)
+    {
+        $roleAssignment = $this->roleService->loadRoleAssignment($roleAssignmentId);
+        $deleteForm = $this->createForm(new RoleAssignmentDeleteType(), ['assignmentId' => $roleAssignmentId]);
+        $deleteForm->handleRequest($request);
+        if ($deleteForm->isValid()) {
+            $this->roleService->removeRoleAssignment($roleAssignment);
+            $this->notify('role.assignment.deleted', [], 'role');
+        } elseif ($deleteForm->isSubmitted()) {
+            $this->notifyError('role.assignment.error.delete', [], 'role');
+        }
+
+        return $this->redirectToRouteAfterFormPost('admin_roleView', ['roleId' => $roleAssignment->role->id]);
     }
 }

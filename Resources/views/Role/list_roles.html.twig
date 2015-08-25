@@ -24,7 +24,7 @@
                     <tr class="ez-selection-table-row">
                         <th>{{ 'role.name'|trans }}</th>
                         <th>{{ 'role.id'|trans }}</th>
-                        <th></th>
+                        <th colspan="2"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -34,6 +34,14 @@
                             <td class="ez-role-name"><a href="{{ path("admin_roleView", {"roleId": role.id}) }}">{{ role.identifier }}</a></td>
                             <td class="ez-role-id">{{ role.id }}</td>
                             <td class="ez-role-edit">
+                                <button
+                                    data-universaldiscovery-title="{{ 'role.assign.universaldiscovery.title'|trans({'%roleIdentifier%': role.identifier })|e('html_attr') }}"
+                                    data-role-rest-id="{{ path( 'ezpublish_rest_loadRole', {'roleId': role.id}) }}"
+                                    data-role-name="{{ role.identifier }}"
+                                    class="ez-role-assign-button ez-button-tree pure-button ez-font-icon ez-button"
+                                    {% if not can_assign %}disabled="disabled"{% endif %}>{{ 'role.assign.user_or_group'|trans }}</button>
+                            </td>
+                            <td>
                                 <a href="{{ path('admin_roleUpdate', {'roleId': role.id}) }}" class="pure-button ez-button{% if not can_edit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'role.edit'|trans }}</a>
                             </td>
                         </tr>
