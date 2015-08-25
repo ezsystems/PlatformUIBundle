@@ -10,6 +10,9 @@
  */
 namespace EzSystems\PlatformUIBundle\Form\Processor;
 
+use eZ\Publish\API\Repository\Exceptions\NotFoundException;
+use eZ\Publish\API\Repository\RoleService;
+use eZ\Publish\API\Repository\Values\User\RoleDraft;
 use EzSystems\PlatformUIBundle\Http\FormProcessingDoneResponse;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
@@ -27,10 +30,19 @@ class RoleFormProcessor implements EventSubscriberInterface
      */
     private $router;
 
-    public function __construct(RouterInterface $router, NotificationPoolInterface $notificationPool)
-    {
+    /**
+     * @var RoleService
+     */
+    private $roleService;
+
+    public function __construct(
+        RouterInterface $router,
+        NotificationPoolInterface $notificationPool,
+        RoleService $roleService
+    ) {
         $this->router = $router;
         $this->setNotificationPool($notificationPool);
+        $this->roleService = $roleService;
     }
 
     public static function getSubscribedEvents()
@@ -44,9 +56,7 @@ class RoleFormProcessor implements EventSubscriberInterface
 
     public function processDefaultAction(FormActionEvent $event)
     {
-        // TODO: When we have role versioning, save draft here.
-        // For now, processSaveRole takes care of saving. Follow-up: EZP-24701
-        //$this->addNotification('role.notification.draft_saved');
+        $this->notify('role.notification.draft_saved', [], 'role');
     }
 
     public function processSaveRole(FormActionEvent $event)
@@ -57,14 +67,26 @@ class RoleFormProcessor implements EventSubscriberInterface
 
     public function processRemoveDraft(FormActionEvent $event)
     {
-        $role = $event->getData()->role;
-        // TODO: This is just a temporary implementation of draft removal. To be done properly in follow-up: EZP-24701
-        if (preg_match('/^__new__[a-z0-9]{32}$/', $role->identifier) === 1) {
-            $this->notify('role.notification.draft_removed', [], 'role');
+        /** @var RoleDraft $roleDraft */
+        $roleDraft = $event->getData()->roleDraft;
+        // Redirect response will be different if we're dealing with an existing Role,
+        // or a newly created one which has been discarded.
+        try {
+            // This will throw a NotFoundException if a published version doesn't exist for this Role.
+            $this->roleService->loadRole($roleDraft->id);
+            $response = new FormProcessingDoneResponse(
+                $this->router->generate(
+                    'admin_roleView',
+                    ['roleId' => $roleDraft->id]
+                )
+            );
+        } catch (NotFoundException $e) {
+            // RoleDraft was newly created, but then discarded.
+            // Redirect to the role list view.
+            $response = new FormProcessingDoneResponse($this->router->generate('admin_roleList'));
         }
 
-        $event->setResponse(
-            new FormProcessingDoneResponse($this->router->generate('admin_roleList'))
-        );
+        $event->setResponse($response);
+        $this->notify('role.notification.draft_removed', [], 'role');
     }
 }

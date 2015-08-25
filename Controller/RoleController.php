@@ -8,6 +8,7 @@
  */
 namespace EzSystems\PlatformUIBundle\Controller;
 
+use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\RoleService;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\Core\Repository\Values\User\RoleCreateStruct;
@@ -116,8 +117,15 @@ class RoleController extends Controller
      */
     public function updateRoleAction(Request $request, $roleId)
     {
-        $role = $this->roleService->loadRole($roleId);
-        $roleData = (new RoleMapper())->mapToFormData($role);
+        try {
+            $roleDraft = $this->roleService->loadRoleDraft($roleId);
+        } catch (NotFoundException $e) {
+            // The draft doesn't exist, let's create one
+            $role = $this->roleService->loadRole($roleId);
+            $roleDraft = $this->roleService->createRoleDraft($role);
+        }
+
+        $roleData = (new RoleMapper())->mapToFormData($roleDraft);
         $form = $this->createForm(new RoleUpdateType(), $roleData);
         $actionUrl = $this->generateUrl('admin_roleUpdate', ['roleId' => $roleId]);
 
@@ -135,10 +143,11 @@ class RoleController extends Controller
             $hasErrors = true;
         }
 
-        // TODO: Just a temporary implementation of draft handling. To be done properly in follow-up: EZP-24701
         $formView = $form->createView();
-        $roleName = $role->identifier;
-        if (preg_match('/^__new__[a-z0-9]{32}$/', $roleName) === 1) {
+
+        // Show empty text input when name is not set, while showing "New role" in the page title
+        $roleName = $roleDraft->identifier;
+        if ($roleData->isNew()) {
             $roleName = 'role.name_new';
             $formView->vars['role_input_value'] = '';
         } else {
@@ -148,7 +157,7 @@ class RoleController extends Controller
         return $this->render('eZPlatformUIBundle:Role:update_role.html.twig', [
             'form' => $formView,
             'action_url' => $actionUrl,
-            'role' => $role,
+            'role_draft' => $roleDraft,
             'role_name' => $roleName,
             'hasErrors' => $hasErrors,
         ]);
