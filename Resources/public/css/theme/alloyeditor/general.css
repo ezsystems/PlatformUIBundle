@@ -3,10 +3,6 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-ae-appendcontent {
-    opacity: 0;
-}
-
-.ae-ui .ez-ae-appendcontent .ez-ae-label {
-    font-size: 80%;
+[class*="ae-icon-"], [class*=" ae-icon-"] {
+    font-size: 18px;
 }

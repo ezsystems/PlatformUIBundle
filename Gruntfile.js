@@ -139,20 +139,20 @@ module.exports = function(grunt) {
         copy: {
             "alloy-skin": {
                 expand: true,
-                cwd: alloySkinBasePath + '/ocean/',
+                cwd: alloySkinBasePath + '/atlas/',
                 src: '**',
                 dest: alloySkinBasePath + '/ez/',
             },
             "alloy-override": {
                 expand: true,
                 cwd: "Resources/sass/alloy/",
-                src: "variables.scss",
-                dest: alloySkinBasePath,
+                src: "*.scss",
+                dest: alloySkinBasePath + "/ez/variables/",
             },
             "alloy-font": {
                 expand: true,
                 cwd: alloyDistAssets + "fonts/",
-                src: "*",
+                src: "alloyeditor-ez*",
                 dest: fontsDir,
             }
         },
