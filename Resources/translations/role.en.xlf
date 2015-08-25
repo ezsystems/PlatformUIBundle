@@ -122,6 +122,10 @@
         <source>role.error.name_exists</source>
         <target>The role name already exists.</target>
       </trans-unit>
+      <trans-unit id="050c49e2a922c585b79243022076154c" resname="role.error.has_draft">
+        <source>role.error.has_draft</source>
+        <target>The role already has a draft, this must be deleted before a new one can be created.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
