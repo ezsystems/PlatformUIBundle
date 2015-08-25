@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="b51b764f4a4a4454ce7ae9aa09052a93" resname="role.dashboard_title">
+        <source>role.dashboard_title</source>
+        <target>Roles</target>
+      </trans-unit>
+      <trans-unit id="ace7da6f93a7ab5dc54784599bb75306" resname="role.list">
+        <source>role.list</source>
+        <target>Roles</target>
+      </trans-unit>
+      <trans-unit id="b58732e80ac7bacb157aabb444717b9a" resname="role.name">
+        <source>role.name</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="90b59527b434389b4a260bf31722fb30" resname="role.name_new">
+        <source>role.name_new</source>
+        <target>New Role</target>
+      </trans-unit>
+      <trans-unit id="612113d4677048958ebcf88e3fb0e1c0" resname="role.id">
+        <source>role.id</source>
+        <target>ID</target>
+      </trans-unit>
+      <trans-unit id="72e584ea4fbac71aa627215d16fff4e1" resname="role.edit">
+        <source>role.edit</source>
+        <target>Edit</target>
+      </trans-unit>
+      <trans-unit id="292d3fbfd0abb7bf81b957ce9e33adde" resname="role.delete">
+        <source>role.delete</source>
+        <target>Delete</target>
+      </trans-unit>
+      <trans-unit id="565405ab5f15e4274e9edf5301d567b1" resname="role.create">
+        <source>role.create</source>
+        <target>Create</target>
+      </trans-unit>
+      <trans-unit id="bf659b96c1661a99b71fcd42c9f68244" resname="role.policy_none">
+        <source>role.policy_none</source>
+        <target>There are no policies set up for this role.</target>
+      </trans-unit>
+      <trans-unit id="5b69eca365f73fcf779ddb30d7ed5358" resname="policy.module">
+        <source>policy.module</source>
+        <target>Module</target>
+      </trans-unit>
+      <trans-unit id="ab5d6ec0c733219997c1df13f1b096b6" resname="policy.module_all">
+        <source>policy.module_all</source>
+        <target>all modules</target>
+      </trans-unit>
+      <trans-unit id="50715d043d88dc13ada8c11dc0b13d59" resname="policy.function">
+        <source>policy.function</source>
+        <target>Function</target>
+      </trans-unit>
+      <trans-unit id="885108c36f44e5da60ecbfb166a91861" resname="policy.function_all">
+        <source>policy.function_all</source>
+        <target>all functions</target>
+      </trans-unit>
+      <trans-unit id="e9dcc92fcff6dd7fb07fa065eb135eb9" resname="policy.limitation">
+        <source>policy.limitation</source>
+        <target>Limitation</target>
+      </trans-unit>
+      <trans-unit id="c9e0a4132fdf9aa754d4933e94a61f30" resname="policy.limitation_none">
+        <source>policy.limitation_none</source>
+        <target>No limitations</target>
+      </trans-unit>
+      <trans-unit id="cd7cb53b91315c2c2f05ff6ae1d2d51b" resname="assignment.user_or_group_using">
+        <source>assignment.user_or_group_using</source>
+        <target>Users and groups using the &lt;%role%&gt; role (%count%)</target>
+      </trans-unit>
+      <trans-unit id="e41d365165963c4d8ad711e7d61b3300" resname="assignment.user_or_group">
+        <source>assignment.user_or_group</source>
+        <target>User/group</target>
+      </trans-unit>
+      <trans-unit id="56e0c31921f56f2ee08aa3eda9ac027b" resname="assignment.role_limitation">
+        <source>assignment.role_limitation</source>
+        <target>Limitation</target>
+      </trans-unit>
+      <trans-unit id="03412ff245644412579d21734cec155e" resname="assignment.role_limitation_none">
+        <source>assignment.role_limitation_none</source>
+        <target>No limitations</target>
+      </trans-unit>
+      <trans-unit id="3b90a6a797f05f1c028d2d67de33474a" resname="assignment.none">
+        <source>assignment.none</source>
+        <target>This role is not assigned to any users or user groups.</target>
+      </trans-unit>
+      <trans-unit id="7b6e13593aac4acd0d48890ce2eb84a9" resname="role.edit_title">
+        <source>role.edit_title</source>
+        <target>Edit &lt;%roleName%&gt;</target>
+      </trans-unit>
+      <trans-unit id="15a96bd8e517e1cfb6d989c69ccd4a07" resname="role.identifier">
+        <source>role.identifier</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="b240ba7952e3686902a0ea78ae3fec91" resname="role.save">
+        <source>role.save</source>
+        <target>Save</target>
+      </trans-unit>
+      <trans-unit id="97ccb80e8991c2b37daf50834a8d7a18" resname="role.remove_draft">
+        <source>role.remove_draft</source>
+        <target>Cancel</target>
+      </trans-unit>
+      <trans-unit id="54d0a4e8dc5f7f5feaf28c6787f206de" resname="role.notification.draft_saved">
+        <source>role.notification.draft_saved</source>
+        <target>The role draft was saved.</target>
+      </trans-unit>
+      <trans-unit id="394063152aa6d077fddc708429cf2bb0" resname="role.notification.published">
+        <source>role.notification.published</source>
+        <target>The role was published.</target>
+      </trans-unit>
+      <trans-unit id="c5bf1c22e52dcbb1a257d734d82d22ce" resname="role.notification.invalid_argument">
+        <source>role.notification.invalid_argument</source>
+        <target>Invalid argument: The role name must be unique.</target>
+      </trans-unit>
+      <trans-unit id="512da366dbe32968cf07dc7230e3d5d4" resname="role.notification.unauthorized">
+        <source>role.notification.unauthorized</source>
+        <target>Unauthorized: You do not have access to perform this action.</target>
+      </trans-unit>
+      <trans-unit id="f644208868353dea8a49b0ca3f84ccff" resname="role.error.role_not_found">
+        <source>role.error.role_not_found</source>
+        <target>The role could not be found.</target>
+      </trans-unit>
+      <trans-unit id="dd48a66df5743b59288691bda67d8cdf" resname="role.error.name_or_limitation">
+        <source>role.error.name_or_limitation</source>
+        <target>The role name already exists, or there are errors in the role limitations.</target>
+      </trans-unit>
+      <trans-unit id="36fc1bd67467678047021af1f6708b6b" resname="role.error.limitation_validation">
+        <source>role.error.limitation_validation</source>
+        <target>The policy limitation(s) are invalid.</target>
+      </trans-unit>
+      <trans-unit id="fd2b465d29cee04ec379edae001cff7e" resname="role.error.name_exists">
+        <source>role.error.name_exists</source>
+        <target>The role name already exists.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

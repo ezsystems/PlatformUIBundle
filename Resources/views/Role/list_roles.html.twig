@@ -1,0 +1,51 @@
+{# @var roles \eZ\Publish\API\Repository\Values\User\Role[] #}
+{% extends "eZPlatformUIBundle::pjax_admin.html.twig" %}
+
+{% trans_default_domain "role" %}
+
+{% block header_breadcrumbs %}
+    {% set breadcrumb_items = [
+        {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
+        {link: null, label: 'role.list'|trans}
+    ] %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header_title %}
+    <h1 class="ez-page-header-name" data-icon="&#xe62d;">{{ 'role.list'|trans }}</h1>
+{% endblock %}
+
+{% block content %}
+    <section class="ez-serverside-content">
+        <div class="ez-table-data is-flexible">
+            <div class="ez-table-data-container">
+                <table class="pure-table pure-table-striped ez-selection-table">
+                    <thead>
+                    <tr class="ez-selection-table-row">
+                        <th>{{ 'role.name'|trans }}</th>
+                        <th>{{ 'role.id'|trans }}</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for role in roles %}
+                        {# @var role \eZ\Publish\API\Repository\Values\User\Role #}
+                        <tr>
+                            <td><a href="{{ path("admin_roleView", {"roleId": role.id}) }}">{{ role.identifier }}</a></td>
+                            <td>{{ role.id }}</td>
+                            <td>
+                                <a href="{{ path('admin_roleUpdate', {'roleId': role.id}) }}" class="pure-button ez-button{% if not can_edit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'role.edit'|trans }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <p class="ez-table-data-buttons">
+                    <a href="{{ path('admin_roleCreate') }}" class="pure-button ez-button{% if not can_edit %} pure-button-disabled{% endif %}" data-icon="&#xe616;">{{ 'role.create'|trans }}</a>
+                </p>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block title %}{{ 'role.list'|trans }}{% endblock %}

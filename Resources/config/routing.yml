@@ -109,3 +109,35 @@ admin_contenttypeUpdate:
     defaults:
         _controller: ezsystems.platformui.controller.content_type:updateContentTypeAction
         languageCode: ~
+
+admin_role:
+    path: /role
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: admin_roleList
+        permanent: true
+
+admin_roleList:
+    path: /role/list
+    defaults:
+        _controller: ezsystems.platformui.controller.role:listRolesAction
+
+admin_roleView:
+    path: /role/view/{roleId}
+    defaults:
+        _controller: ezsystems.platformui.controller.role:viewRoleAction
+
+admin_roleCreate:
+    path: /role/create
+    defaults:
+        _controller: ezsystems.platformui.controller.role:createRoleAction
+
+admin_roleUpdate:
+    path: /role/update/{roleId}
+    defaults:
+        _controller: ezsystems.platformui.controller.role:updateRoleAction
+
+admin_roleDelete:
+    path: /role/delete/{roleId}
+    defaults:
+        _controller: ezsystems.platformui.controller.role:deleteRoleAction
