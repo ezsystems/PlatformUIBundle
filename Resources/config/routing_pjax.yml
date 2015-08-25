@@ -154,3 +154,8 @@ admin_roleAssignmentDelete:
     methods: [POST]
     defaults:
         _controller: ezsystems.platformui.controller.role:deleteRoleAssignmentAction
+
+admin_roleAssignSection:
+    path: /role/assignrolebysection/{roleId}
+    defaults:
+        _controller: ezsystems.platformui.controller.role:assignRoleBySectionLimitationAction
