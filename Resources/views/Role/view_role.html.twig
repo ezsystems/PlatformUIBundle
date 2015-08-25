@@ -192,10 +192,30 @@
                                 data-universaldiscovery-title="{{ 'role.assign.universaldiscovery.title'|trans({'%roleIdentifier%': role.identifier })|e('html_attr') }}"
                                 data-role-rest-id="{{ path( 'ezpublish_rest_loadRole', {'roleId': role.id}) }}"
                                 data-role-name="{{ role.identifier }}"
+                                data-role-assignment-limitation-type="{{ 'none' }}"
                                 class="ez-role-assign-button ez-button-tree pure-button ez-font-icon ez-button">
                             {% if not can_assign %}disabled{% endif %}
                             {{ 'role.assign.user_or_group'|trans }}
                         </button>
+                        <button
+                                data-universaldiscovery-title="{{ 'role.assign.universaldiscovery.title'|trans({'%roleIdentifier%': role.identifier })|e('html_attr') }}"
+                                data-universaldiscovery-limit-subtree-title="{{ 'role.assign_limit_subtree.universaldiscovery.title'|trans({'%roleIdentifier%': role.identifier })|e('html_attr') }}"
+                                data-role-rest-id="{{ path( 'ezpublish_rest_loadRole', {'roleId': role.id}) }}"
+                                data-role-name="{{ role.identifier }}"
+                                data-role-assignment-limitation-type="{{ 'Subtree' }}"
+                                class="ez-role-assign-limit-subtree-button ez-button-tree pure-button ez-font-icon ez-button">
+                            {% if not can_assign %}disabled{% endif %}
+                            {{ 'role.assign_limit_subtree.user_or_group'|trans }}
+                        </button>
+                        {% if can_assign %}
+                            <a href="{{ path('admin_roleAssignSection', {"roleId": role.id}) }}" class="ez-button-tree pure-button ez-font-icon ez-button">
+                                {{- 'role.assign_limit_section.user_or_group'|trans -}}
+                            </a>
+                        {% else %}
+                            <span class="ez-button-tree ez-font-icon pure-button ez-button pure-button-disabled">
+                                {{- 'role.assign_limit_section.user_or_group'|trans -}}
+                            </span>
+                        {% endif %}
                     </p>
                 </div>
             </div>
