@@ -5,14 +5,14 @@
 
 .ez-view-loginformview {
     background: #f5f4f2;
-    border-top: 3px solid #000;
+    border-top: 3px solid rgba(200,200,200,0.33);
 }
 
 .ez-view-loginformview .ez-loginform {
     background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    box-shadow: 0px 1px 2px #CCC;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px 1px rgba(175,175,175,.6);
 }
 
 .ez-view-loginformview .ez-loginform-link {
@@ -24,8 +24,9 @@
 }
 
 .ez-view-loginformview .ez-loginform-title {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: #444;
+    font-family: sans-serif;
 }
 
 .ez-view-loginformview .ez-loginform-button {
