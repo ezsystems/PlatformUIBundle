@@ -7,6 +7,7 @@ system:
                 - 'bundles/ezplatformuiassets/vendors/pure/grids-min.css'
                 - 'bundles/ezplatformuiassets/vendors/pure/buttons-min.css'
                 - 'bundles/ezplatformuiassets/vendors/pure/tables-min.css'
+                - 'bundles/ezplatformuiassets/vendors/pure/forms-min.css'
                 - 'bundles/ezplatformuiassets/vendors/flag-icon-css/css/flag-icon.min.css'
             # "fork" of alloyeditor CSS produced by `grunt alloy-css`
                 - 'bundles/ezplatformui/css/external/alloy-editor-ez.css'

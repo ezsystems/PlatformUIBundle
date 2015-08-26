@@ -197,6 +197,7 @@ class ContentTypeController extends Controller
             'action_url' => $actionUrl,
             'contentTypeName' => $contentTypeDraft->getName($languageCode),
             'contentTypeDraft' => $contentTypeDraft,
+            'modifier' => $this->userService->loadUser($contentTypeDraft->modifierId),
             'languageCode' => $languageCode,
         ]);
     }
