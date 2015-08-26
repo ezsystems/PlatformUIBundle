@@ -77,7 +77,7 @@ have several additional dependencies:
 * Install grunt, yuidoc, bower and grover globally (usually you need to be root):
 
   ```
-  # npm install -g grunt-cli yuidocjs grover bower
+  # npm install -g grunt-cli yuidocjs grover bower gulp
   ```
 * Install [phantomjs](http://phantomjs.org)
 * Install local npm and bower dependencies, from the bundle root, run:
@@ -114,6 +114,7 @@ interesting are:
   $ grunt livedoc
   ```
 * Update the custom AlloyEditor skin:
+
   ```bash
   $ composer install # or composer update
   $ cd vendor/ezsystems/platform-ui-assets-bundle/Resources/public/vendors/alloy-editor/
