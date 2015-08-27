@@ -324,6 +324,7 @@ system:
                         - 'ez-integer-editview'
                         - 'ez-selection-editview'
                         - 'ez-relation-editview'
+                        - 'ez-isbn-editview'
                         - 'ez-relationlist-editview'
                         - 'event-tap'
                         - 'contenteditformview-ez-template'
@@ -361,6 +362,12 @@ system:
                 dateandtimeview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/view/dateandtime.hbt
+                ez-isbn-editview:
+                    requires: ['ez-fieldeditview', 'isbneditview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-isbn-editview.js
+                isbneditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/isbn.hbt
                 ez-time-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'timeeditview-ez-template', 'datatype-date-format', 'datatype-date']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-time-editview.js
