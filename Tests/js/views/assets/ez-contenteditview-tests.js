@@ -263,30 +263,30 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             );
         },
 
-        "Should show the technical details when hover the header": function () {
+        "Should show the infos when hover the header": function () {
             var header, container = this.view.get('container');
 
             this.view._isTouch = function () { return false; };
             this.view.render();
 
-            header = container.one('header');
+            header = container.one('.ez-page-header');
             header.simulate('mouseover');
 
             Y.Assert.isTrue(
-                container.hasClass('is-showing-technicalinfos'),
-                "The technical infos should be shown"
+                container.hasClass('is-showing-infos'),
+                "The infos should be shown"
             );
         },
 
-        "Should hide the technical details when moving the mouse out of the header": function () {
+        "Should hide the infos when moving the mouse out of the header": function () {
             var container = this.view.get('container');
 
-            this["Should show the technical details when hover the header"]();
+            this["Should show the infos when hover the header"]();
             container.one('header').simulate('mouseout');
 
             Y.Assert.isFalse(
-                container.hasClass('is-showing-technicalinfos'),
-                "The technical infos should be hidden"
+                container.hasClass('is-showing-infos'),
+                "The infos should be hidden"
             );
         },
 
@@ -296,12 +296,57 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             this.view._isTouch = function () { return true; };
             this.view.render();
 
-            header = container.one('header');
+            header = container.one('.ez-page-header');
             header.simulate('mouseover');
 
             Y.Assert.isTrue(
                 container.hasClass('is-using-touch-device'),
                 "The container should have the 'is-using-touch-device' class"
+            );
+        },
+
+        "Should show the infos when tap on the header": function () {
+            var header, container = this.view.get('container'),
+                that = this;
+
+            this.view._isTouch = function () { return false; };
+            this.view.render();
+
+            header = container.one('.ez-page-header');
+
+            header.simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.Assert.isTrue(
+                        container.hasClass('is-showing-infos'),
+                        "The infos should be shown"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should hide the infos when clicking outside of the header": function () {
+            var container = this.view.get('container');
+
+            this["Should show the infos when tap on the header"]();
+            container.one('.ez-contenteditformview-container').simulate('click');
+
+            Y.Assert.isFalse(
+                container.hasClass('is-showing-infos'),
+                "The infos should be hidden"
+            );
+        },
+
+        "Should hide the infos when clicking outside of the header in touch mode": function () {
+            var container = this.view.get('container');
+
+            this["Should show the infos when tap on the header"]();
+            this.view._isTouch = function () { return true; };
+            container.one('.ez-contenteditformview-container').simulate('click');
+
+            Y.Assert.isFalse(
+                container.hasClass('is-showing-infos'),
+                "The infos should be hidden"
             );
         },
     });

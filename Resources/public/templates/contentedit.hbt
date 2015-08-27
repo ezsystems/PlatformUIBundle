@@ -3,14 +3,17 @@
         <header class="ez-page-header">
             <a href="#" class="ez-view-close" data-icon-after="&#xe62a;"></a>
             <h1 class="ez-page-header-name" data-icon="&#xe601;">{{ content.name }}</h1>
-            <ul class="ez-technical-infos">
-                <li>{{ contentType.names.[eng-GB] }}</li>
-                <li>Created by {{ owner.name }}</li>
-                {{#if content.contentId}}
-                <li>{{ content.lastModificationDate }}</li>
-                <li>Object ID: {{ content.contentId }}, Node ID: {{ mainLocation.locationId }}</li>
-                {{/if}}
-            </ul>
+            <div class="ez-infos">
+                <ul class="ez-technical-infos">
+                    <li>{{ contentType.names.[eng-GB] }}</li>
+                    <li>Created by {{ owner.name }}</li>
+                    {{#if content.contentId}}
+                    <li>{{ content.lastModificationDate }}</li>
+                    <li>Object ID: {{ content.contentId }}, Node ID: {{ mainLocation.locationId }}</li>
+                    {{/if}}
+                </ul>
+                <p class="ez-description">{{contentType.descriptions.[eng-GB]}}</p>
+            </div>
         </header>
         <div class="ez-contenteditformview-container"></div>
     </div>
