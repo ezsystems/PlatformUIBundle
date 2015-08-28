@@ -16,6 +16,9 @@ system:
                 ez-alloyeditor-plugin-appendcontent:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/plugins/appendcontent.js
+                ez-alloyeditor-plugin-embed:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/embed.js
                 ez-alloyeditor-toolbar-appendcontent:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/appendcontent.js
@@ -421,6 +424,7 @@ system:
                         - 'ez-fieldeditview'
                         - 'ez-alloyeditor'
                         - 'ez-richtextfocusmodebarview'
+                        - 'ez-alloyeditor-plugin-embed'
                         - 'ez-alloyeditor-plugin-appendcontent'
                         - 'ez-alloyeditor-toolbar-appendcontent'
                         - 'ez-alloyeditor-button-heading'
