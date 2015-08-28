@@ -304,14 +304,6 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     editorTest = new Y.Test.Case({
         name: "eZ RichText View editor test",
 
-        _should: {
-            ignore: {
-                // this test will fail until we upgrade to AlloyEditor 0.4.x
-                // because of https://github.com/liferay/alloy-editor/issues/294
-                "Should add the ezappendcontent plugin": true,
-            }
-        },
-
         setUp: function () {
             this.field = {id: 42, fieldValue: {xhtml5edit: ""}};
             this.model = new Mock();
