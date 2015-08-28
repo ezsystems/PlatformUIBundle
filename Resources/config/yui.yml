@@ -603,13 +603,13 @@ system:
                     requires: ['model', 'json']
                     path: %ez_platformui.public_dir%/js/models/ez-restmodel.js
                 ez-contentmodel:
-                    requires: ['ez-restmodel', 'ez-versionmodel', 'array-extras']
+                    requires: ['ez-restmodel', 'ez-versionmodel', 'array-extras', 'ez-contentinfo-attributes']
                     path: %ez_platformui.public_dir%/js/models/ez-contentmodel.js
                 ez-versionmodel:
                     requires: ['ez-restmodel']
                     path: %ez_platformui.public_dir%/js/models/ez-versionmodel.js
                 ez-locationmodel:
-                    requires: ['ez-restmodel']
+                    requires: ['ez-restmodel', 'ez-contentinfomodel']
                     path: %ez_platformui.public_dir%/js/models/ez-locationmodel.js
                 ez-usermodel:
                     requires: ['ez-restmodel']
@@ -620,6 +620,9 @@ system:
                 ez-contenttypegroupmodel:
                     requires: ['ez-restmodel', 'ez-contenttypemodel']
                     path: %ez_platformui.public_dir%/js/models/ez-contenttypegroupmodel.js
+                ez-contentinfomodel:
+                    requires: ['ez-restmodel', 'ez-contentinfo-attributes']
+                    path: %ez_platformui.public_dir%/js/models/ez-contentinfomodel.js
                 ez-contenttree:
                     requires: ['tree', 'tree-openable', 'tree-selectable', 'tree-lazy']
                     path: %ez_platformui.public_dir%/js/models/structs/ez-contenttree.js
@@ -785,6 +788,9 @@ system:
                 ez-expandable:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js
+                ez-contentinfo-attributes:
+                    requires: ['ez-restmodel']
+                    path: %ez_platformui.public_dir%/js/models/extensions/ez-contentinfo-attributes.js
                 ez-height-fit:
                     requires: ['view', 'node-screen', 'node-style']
                     path: %ez_platformui.public_dir%/js/extensions/ez-height-fit.js
