@@ -77,7 +77,7 @@ YUI.add('ez-contentmodel', function (Y) {
          * directly passed to the corresponding ContentService methods.
          *
          * @method sync
-         * @param {String} action the action, currently only 'read' is supported
+         * @param {String} action the action, currently only 'read' and 'create' are supported
          * @param {Object} options the options for the sync.
          * @param {Object} options.api (required) the JS REST client instance
          * @param {Function} callback a callback executed when the operation is finished
@@ -163,7 +163,7 @@ YUI.add('ez-contentmodel', function (Y) {
         },
 
         /**
-         * Filters the relations on this content by type or optionnally by field
+         * Filters the relations on this content by type or optionally by field
          * definition identifier.
          *
          * @method relations
