@@ -179,6 +179,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 version: this.model,
                 contentType: this.model,
                 actionBar: new Y.View(),
+                config: {
+                    alloyEditor: {
+                        externalPluginPath: '../../..',
+                    }
+                },
             });
         },
 
@@ -270,6 +275,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 version: this.model,
                 contentType: this.model,
                 actionBar: new Y.View(),
+                config: {
+                    alloyEditor: {
+                        externalPluginPath: '../../..',
+                    }
+                },
             });
         },
 
@@ -305,6 +315,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         name: "eZ RichText View editor test",
 
         setUp: function () {
+            this.config = {
+                alloyEditor: {
+                    externalPluginPath: '../../..',
+                }
+            };
             this.field = {id: 42, fieldValue: {xhtml5edit: ""}};
             this.model = new Mock();
             Mock.expect(this.model, {
@@ -320,6 +335,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 version: this.model,
                 contentType: this.model,
                 actionBar: new Y.View(),
+                config: this.config,
             });
             this.view.render();
         },
@@ -327,6 +343,25 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         tearDown: function () {
             this.view.set('active', false);
             this.view.destroy();
+        },
+
+        _testRegisterPlugin: function (plugin) {
+            Assert.isObject(
+                CKEDITOR.plugins.externals[plugin],
+                "The '" + plugin + "' plugin should be registered"
+            );
+            Assert.areEqual(
+                CKEDITOR.plugins.externals[plugin].dir,
+                this.view.get('config').alloyEditor.externalPluginPath + '/' + plugin + '/'
+            );
+        },
+
+        "Should register the 'widget' CKEditor plugin": function () {
+            this._testRegisterPlugin('widget');
+        },
+
+        "Should register the 'lineutils' CKEditor plugin": function () {
+            this._testRegisterPlugin('lineutils');
         },
 
         "Should create an instance of AlloyEditor": function () {
@@ -383,13 +418,21 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             Assert.isTrue(validated, "The input should have been validated");
         },
 
-        "Should add the ezappendcontent plugin": function () {
+        _testExtraPlugins: function (plugin) {
             this.view.set('active', true);
 
             Assert.isTrue(
-                this.view.get('editor').get('extraPlugins').indexOf('ezappendcontent') !== -1,
-                "The ezappendcontent plugin should be loaded"
+                this.view.get('editor').get('extraPlugins').indexOf(plugin) !== -1,
+                "The '" + plugin + "' plugin should be loaded"
             );
+        },
+
+        "Should add the ezappendcontent plugin": function () {
+            this._testExtraPlugins('ezappendcontent');
+        },
+
+        "Should add the widget plugin": function () {
+            this._testExtraPlugins('widget');
         },
 
         "Should pass the `eZ` configuration": function () {
@@ -584,6 +627,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 version: this.version,
                 contentType: this.contentType,
                 actionBar: new Y.View(),
+                config: {
+                    alloyEditor: {
+                        externalPluginPath: '../../..',
+                    }
+                },
             });
             this.view.get('actionBar').addTarget(this.view);
             this.view.render();

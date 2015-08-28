@@ -73,12 +73,22 @@
                         },
                         "editContent": {
                             "fieldEditViews": {
-                                "ezcountry": {{parameters.countriesInfo|json_encode|raw}}
+                                "ezcountry": {{parameters.countriesInfo|json_encode|raw}},
+                                "ezrichtext": {
+                                    "alloyEditor": {
+                                        "externalPluginPath": "{{ parameters.rootInfo.ckeditorPluginPath }}",
+                                    }
+                                }
                             }
                         },
                         "createContent": {
                             "fieldEditViews": {
-                                "ezcountry": {{parameters.countriesInfo|json_encode|raw}}
+                                "ezcountry": {{parameters.countriesInfo|json_encode|raw}},
+                                "ezrichtext": {
+                                    "alloyEditor": {
+                                        "externalPluginPath": "{{ parameters.rootInfo.ckeditorPluginPath }}",
+                                    }
+                                }
                             }
                         }
                     }

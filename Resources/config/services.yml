@@ -67,6 +67,7 @@ services:
         arguments:
             - @request_stack
             - @templating.helper.assets
+            - %ez_platformui.external_assets_public_dir%
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'rootInfo'}
 
