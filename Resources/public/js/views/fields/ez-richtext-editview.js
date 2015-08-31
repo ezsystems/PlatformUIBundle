@@ -355,7 +355,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                         tabIndex: 1
                     },
                     ezappendcontent: {
-                        buttons: ['ezheading'],
+                        buttons: ['ezheading', 'ezembed'],
                         tabIndex: 2,
                         addContentButtonClass: ADD_CONTENT_BUTTON_CLASS,
                     },

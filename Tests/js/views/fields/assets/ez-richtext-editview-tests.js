@@ -6,7 +6,7 @@
 YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
         editorTest, focusModeTest, editorFocusHandlingTest,
-        actionBarTest, destructorTest,
+        actionBarTest, destructorTest, appendToolbarConfigTest,
         VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, FIELDVALUE_RESULT,
         Assert = Y.Assert, Mock = Y.Mock;
 
@@ -667,6 +667,45 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
     });
 
+    appendToolbarConfigTest = new Y.Test.Case({
+        name: "eZ RichText View ezappendcontent toolbar config test",
+
+        setUp: function () {
+            this.view = new Y.eZ.RichTextEditView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        _testButton: function (identifier) {
+            var config = this.view.get('toolbarsConfig').ezappendcontent;
+
+            Assert.isTrue(
+                config.buttons.indexOf(identifier) !== -1,
+                "The '" + identifier + "' should be configured"
+            );
+        },
+
+        "Should configure the ezheading button": function () {
+            this._testButton('ezheading');
+        },
+
+        "Should configure the ezembed button": function () {
+            this._testButton('ezembed');
+        },
+
+        "Should configure the addContentButtonClass": function () {
+            var config = this.view.get('toolbarsConfig').ezappendcontent;
+
+            Assert.areEqual(
+                'ez-richtext-add-content',
+                config.addContentButtonClass,
+                "The toolbar config should contain the 'ez-richtext-add-content' class"
+            );
+        },
+    });
+
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "RichText Edit View registration test";
     registerTest.viewType = Y.eZ.RichTextEditView;
@@ -680,6 +719,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(focusModeTest);
     Y.Test.Runner.add(actionBarTest);
     Y.Test.Runner.add(destructorTest);
+    Y.Test.Runner.add(appendToolbarConfigTest);
     Y.Test.Runner.add(registerTest);
     Y.Test.Runner.add(editorFocusHandlingTest);
 }, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'editviewregister-tests', 'ez-richtext-editview']});

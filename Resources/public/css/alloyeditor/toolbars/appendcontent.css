@@ -6,8 +6,13 @@
 .ae-ui .ez-ae-appendcontent .ez-ae-labeled-button {
     width: auto;
     height: auto;
+    margin: 0.3em 0.8em;
 }
 
 .ae-ui .ez-ae-appendcontent .ez-ae-label {
-    margin: 0;
+    margin: 0.3em 0 0 0;
+}
+
+.ae-ui .ez-ae-icon:before {
+    display: block;
 }

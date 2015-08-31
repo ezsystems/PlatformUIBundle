@@ -10,3 +10,11 @@
 .ae-ui .ez-ae-appendcontent .ez-ae-label {
     font-size: 80%;
 }
+
+.ae-ui .ez-ae-icon:before {
+    font-size: 28px;
+}
+
+.ae-ui .ez-ae-icon-embed:before {
+    content: "\E62e";
+}
