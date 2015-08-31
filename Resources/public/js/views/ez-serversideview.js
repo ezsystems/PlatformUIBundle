@@ -22,8 +22,40 @@ YUI.add('ez-serversideview', function (Y) {
     Y.eZ.ServerSideView = Y.Base.create('serverSideView', Y.eZ.View, [Y.eZ.Tabs, Y.eZ.SelectionTable], {
         events: {
             'form': {
-                'submit': '_submitForm'
+                'submit': '_confirmSubmit'
             },
+        },
+
+        /**
+         * Check if the submit action requires a confirm box,
+         *
+         * @method _confirmSubmit
+         * @protected
+         * @param {EventFacade} e
+         */
+        _confirmSubmit: function (e) {
+            var focusedNode = e.target.get('ownerDocument').get('activeElement'),
+                details = '',
+                container = this.get('container'),
+                detailsAttr = focusedNode.getAttribute('data-confirmbox-details-selector');
+
+            if (focusedNode.hasClass('ez-confirm-action')) {
+                if (container.one(detailsAttr)) {
+                    details = container.one(detailsAttr).get('innerHTML');
+                }
+                e.preventDefault();
+                this.fire('confirmBoxOpen', {
+                    config: {
+                        title: focusedNode.getAttribute('data-confirmbox-title'),
+                        details: details,
+                        confirmHandler: Y.bind(function () {
+                            this._submitForm(e, focusedNode);
+                        }, this)
+                    },
+                });
+            } else {
+                this._submitForm(e, focusedNode);
+            }
         },
 
         /**
@@ -34,8 +66,9 @@ YUI.add('ez-serversideview', function (Y) {
          * @method _submitForm
          * @protected
          * @param {EventFacade} e
+         * @param {Node} focusedNode
          */
-        _submitForm: function (e) {
+        _submitForm: function (e, focusedNode) {
             /**
              * Fired when a form is submitted in the browser
              *
@@ -47,7 +80,7 @@ YUI.add('ez-serversideview', function (Y) {
              */
             this.fire('submitForm', {
                 form: e.target,
-                formData: this._serializeForm(e.target),
+                formData: this._serializeForm(e.target, focusedNode),
                 originalEvent: e,
             });
         },
@@ -59,11 +92,11 @@ YUI.add('ez-serversideview', function (Y) {
          *
          * @method _serializeForm
          * @param {Node} form
+         * @param {Node} focusedNode
          * @return {Object} key/value data of the form
          */
-        _serializeForm: function (form) {
-            var focusedNode = form.get('ownerDocument').get('activeElement'),
-                data = {};
+        _serializeForm: function (form, focusedNode) {
+            var data = {};
 
             if ( this._isSubmitButton(focusedNode, form) ) {
                 data[focusedNode.getAttribute('name')] = "";
