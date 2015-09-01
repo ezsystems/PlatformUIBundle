@@ -6,7 +6,6 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-
 namespace EzSystems\PlatformUIBundle\Form\Processor;
 
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
@@ -81,7 +80,7 @@ class SectionFormProcessor implements EventSubscriberInterface
         $this->notificationPool->addNotification(new TranslatableNotificationMessage([
             'message' => $message,
             'translationParams' => $params,
-            'domain' => 'section'
+            'domain' => 'section',
         ]));
     }
 }

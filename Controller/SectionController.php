@@ -187,9 +187,8 @@ class SectionController extends Controller
         try {
             $section = $this->sectionService->createSection(new SectionCreateStruct([
                 'identifier' => '__new__' . md5(microtime(true)),
-                'name' => 'New section'
+                'name' => 'New section',
             ]));
-
         } catch (UnauthorizedException $e) {
             return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
         }
