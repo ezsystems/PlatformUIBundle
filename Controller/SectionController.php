@@ -67,9 +67,18 @@ class SectionController extends Controller
     public function listAction()
     {
         try {
+            $sectionList = $this->sectionService->loadSections();
+            $contentCountBySectionId = [];
+
+            foreach ($sectionList as $section) {
+                $contentCountBySectionId[$section->id] = $this->sectionService->countAssignedContents($section);
+            }
+
             return $this->render('eZPlatformUIBundle:Section:list.html.twig', [
-                'canCreate' => $this->sectionHelper->canCreate(),
-                'form' => $this->generateDeleteListForm(new SectionList())->createView(),
+                'canEdit' => $this->isGranted(new Attribute('section', 'edit')),
+                'canAssign' => $this->isGranted(new Attribute('section', 'assign')),
+                'sectionList' => $sectionList,
+                'contentCountBySection' => $contentCountBySectionId,
             ]);
         } catch (UnauthorizedException $e) {
             return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
