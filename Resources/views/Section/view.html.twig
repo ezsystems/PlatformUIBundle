@@ -70,17 +70,14 @@
 
         <div class="ez-tabs-panel" id="ez-tabs-content">
             <p>
-            {% if not canAssign %}
                 <button
                     data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
                     data-section-rest-id="{{ path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
                     data-section-name="{{ section.name }}"
-                    class="ez-section-assign-button ez-button-tree pure-button ez-font-icon ez-button"
-                >{{ 'section.assign.contents'|trans }}</button>
-
-            {% else %}
-                <span class="ez-section-assign-button ez-button-tree pure-button ez-font-icon ez-button pure-button-disabled">{{ 'section.assign.contents'|trans }}</span>
-            {% endif %}
+                    class="ez-section-assign-button ez-button-tree pure-button ez-font-icon ez-button">
+                    {% if not canAssign %}disabled{% endif %}
+                    {{ 'section.assign.contents'|trans }}
+                </button>
             </p>
         </div>
     </section>
