@@ -11,46 +11,42 @@ Feature: Remove content
     ##
     @javascript
     Scenario: Verify the existence of the removal confirmation request
-        Given an article exists
-        I am on the article full view
-        When I click a send to trash button on the Action Bar
+        Given a "News Flash" article exists
+        And I am on "News Flash" full view
+        When I click on the action bar button "Send to Trash"
         Then I am asked to confirm if I am sure that I want to send the content to trash
         And I see a confirmation button
         And I see a cancel button
 
     ##
-    #Delete objects
+    # Delete objects
     ##
     @javascript
     Scenario: Remove one object and confirm the removal
         Given a "News Flash" article exists
-        And I am on "News Flash" full view
         When I remove "News Flash" article
         And I confirm the removal
-        Then I am notified that "News Flash" was sent to trash
-        And I do not see "News flash" in the content tree
+        Then I am notified that "News Flash was sent to trash"
+        And I do not see "News Flash" in the content tree
 
     @javascript
     Scenario: Remove one object and do not confirm the removal
         Given a "News Flash" article exists
-        And I am on "News Flash" full view
-        When I remove "News Flash" article
+        When I remove "News Flash"
         And I do not confirm the removal
-        Then I am not notified that "News Flash" was sent to trash
-        And I see "News flash" in the content tree
+        Then I am not notified that "News Flash was sent to trash"
+        And I see "News Flash" in the content tree
 
     @javascript
     Scenario: Delete one object that has children objects
         Given a "News/News child" article exists
-        And I am on "News" full view
-        When I remove "News" folder
+        When I remove "News"
         And I confirm the removal
         Then I do not see "News" in the content tree
 
     @javascript
     Scenario: Removing one object should redirect to it's parent location view
         Given a "News/News child" article exists
-        And I am on "News child" full view
         When I remove "News child" article
         And I confirm the removal
         Then I am on the "News" location view

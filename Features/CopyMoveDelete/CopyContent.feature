@@ -14,8 +14,8 @@ Feature: Copy content
         Given a "Destination" folder exists
         And a "News Flash" article exists
         And I am on "News Flash" full view
-        When I click on the Copy button on the Action Bar
-        And I select the "Destination" folder in the Universal Discovery Widget
+        When I click on the action bar button "Copy"
+        And I select the "Home/Destination" folder in the Universal Discovery Widget
         And I confirm the selection
         Then I am notified that "News Flash" has been copied under "Destination"
         And I see "Destination/News Flash" in the content tree
@@ -25,7 +25,7 @@ Feature: Copy content
         Given a "Destination" folder exists
         And an "Origin/News Flash" article exists
         And I am on "Origin" full view
-        When I click the Copy Subtree button on the Action Bar
+        When I click on the action bar button "Copy Subtree"
         And I select the "Destination" folder in the Universal Discovery Widget
         And I confirm the selection
         Then I am notified that "Origin" has been copied under "Destination"
