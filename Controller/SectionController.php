@@ -14,6 +14,7 @@ use eZ\Publish\API\Repository\SectionService;
 use eZ\Publish\API\Repository\Values\Content\SectionCreateStruct;
 use eZ\Publish\API\Repository\Values\Content\SectionUpdateStruct;
 use eZ\Bundle\EzPublishCoreBundle\Controller;
+use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use EzSystems\PlatformUIBundle\Entity\SectionList;
 use EzSystems\PlatformUIBundle\Form\Type\SectionDeleteType;
 use EzSystems\PlatformUIBundle\Form\Type\SectionListType;
@@ -42,10 +43,6 @@ class SectionController extends Controller
     protected $sectionService;
 
     /**
-     * @var \EzSystems\PlatformUIBundle\Form\Type\SectionDeleteType
-     */
-    protected $sectionDeleteType;
-    /**
      * @var ActionDispatcherInterface
      */
     private $actionDispatcher;
@@ -54,14 +51,12 @@ class SectionController extends Controller
         ActionDispatcherInterface $actionDispatcher,
         SectionHelperInterface $sectionHelper,
         SectionListType $sectionListType,
-        SectionService $sectionService,
-        SectionDeleteType $sectionDeleteType
+        SectionService $sectionService
     ) {
         $this->actionDispatcher = $actionDispatcher;
         $this->sectionHelper = $sectionHelper;
         $this->sectionListType = $sectionListType;
         $this->sectionService = $sectionService;
-        $this->sectionDeleteType = $sectionDeleteType;
     }
 
     /**
@@ -102,18 +97,6 @@ class SectionController extends Controller
     }
 
     /**
-     * @param SectionUpdateStruct $sectionUpdateStruct
-     *
-     * @return \Symfony\Component\Form\Form
-     */
-    private function generateDeleteForm(SectionUpdateStruct $sectionUpdateStruct)
-    {
-        return $this->createForm($this->sectionDeleteType, $sectionUpdateStruct, [
-            'action' => $this->generateUrl('admin_sectiondelete'),
-        ]);
-    }
-
-    /**
      * Generate the form object used to delete sections.
      *
      * @param \EzSystems\PlatformUIBundle\Entity\SectionList $sectionListToDelete sections to be populated/deleted
@@ -137,20 +120,13 @@ class SectionController extends Controller
     public function viewAction($sectionId)
     {
         try {
-            $section = $this->sectionHelper->loadSection($sectionId);
-            $contentCount = $this->sectionHelper->contentCount($section);
-
-            $sectionUpdateStruct = $this->sectionService->newSectionUpdateStruct();
-            // Using identifier instead of id since SectionUpdateStruct doesn't provide id
-            $sectionUpdateStruct->identifier = $section->identifier;
-            $form = $this->generateDeleteForm($sectionUpdateStruct);
+            $section = $this->sectionService->loadSection($sectionId);
 
             return $this->render('eZPlatformUIBundle:Section:view.html.twig', [
                 'section' => $section,
-                'contentCount' => $contentCount,
-                'canEdit' => $this->sectionHelper->canEdit(),
-                'canDelete' => $this->sectionHelper->canDelete(),
-                'form' => $form->createView(),
+                'contentCount' => $this->sectionService->countAssignedContents($section),
+                'canEdit' => $this->isGranted(new Attribute('section', 'edit')),
+                'canAssign' => $this->isGranted(new Attribute('section', 'assign')),
             ]);
         } catch (UnauthorizedException $e) {
             return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
@@ -164,17 +140,10 @@ class SectionController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteAction(Request $request)
+    public function deleteAction($sectionId)
     {
         try {
-            $sectionUpdateStruct = $this->sectionService->newSectionUpdateStruct();
-            $form = $this->generateDeleteForm($sectionUpdateStruct);
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $section = $this->sectionService->loadSectionByIdentifier($sectionUpdateStruct->identifier);
-                $this->sectionService->deleteSection($section);
-            }
+            $this->sectionService->deleteSection($this->sectionService->loadSection($sectionId));
         } catch (UnauthorizedException $e) {
             return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
         }

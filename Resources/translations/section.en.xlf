@@ -40,11 +40,11 @@
       </trans-unit>
       <trans-unit id="c56da0cc0963c5167293932e4409d502" resname="section.assigned.contentcount">
         <source>section.assigned.contentcount</source>
-        <target>This section is assigned to %contentCount% contents.</target>
+        <target>{0} This section is assigned to %contentCount% content items.|{1} This section is assigned to %contentCount% content item.|]1,Inf[ This section is assigned to %contentCount% content items</target>
       </trans-unit>
       <trans-unit id="8a8d0e8570dc63672a52d3aad782ae41" resname="section.content.translate">
         <source>section.content.translate</source>
-        <target>Contents in this section</target>
+        <target>Content items in this section (%contentCount%)</target>
       </trans-unit>
       <trans-unit id="967b7e408a5f43a03f44c7cf479855db" resname="section.create.title">
         <source>section.create.title</source>

@@ -66,7 +66,7 @@ admin_sectiondeletelist:
         _controller: ezsystems.platformui.controller.section:deleteListAction
 
 admin_sectiondelete:
-    path: /pjax/section/delete
+    path: /pjax/section/delete/{sectionId}
     defaults:
         _controller: ezsystems.platformui.controller.section:deleteAction
 
