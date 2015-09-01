@@ -9,6 +9,8 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
+use WebDriver\Exception\StaleElementReference;
+
 trait CommonActions
 {
     /**
@@ -181,24 +183,36 @@ trait CommonActions
      *
      * @param string    $text           Text value of the element
      * @param string    $selector       CSS selector of the element
-     * @param string    $textSelector   extra CSS selector for text of the element
-     * @return mixed
+     * @param string    $textSelector   Extra CSS selector for text of the element
+     * @param int       $iteration      Iteration number, used to control number of executions
+     * @return array
      */
-    protected function getElementByText($text, $selector, $textSelector = null)
+    protected function getElementByText($text, $selector, $textSelector = null, $iteration = 3)
     {
-        $page = $this->getSession()->getPage();
-        $elements = $page->findAll('css', $selector);
-        foreach ($elements as $element) {
-            if ($textSelector != null) {
-                $elementText = $element->find('css', $textSelector)->getText();
-            } else {
-                $elementText = $element->getText();
+        try {
+            $page = $this->getSession()->getPage();
+            $elements = $page->findAll('css', $selector);
+            foreach ($elements as $element) {
+                if ($textSelector != null) {
+                    $elementText = $element->find('css', $textSelector)->getText();
+                } else {
+                    $elementText = $element->getText();
+                }
+                if ($elementText == $text) {
+                    return $element;
+                }
             }
-            if ($elementText == $text) {
-                return $element;
+
+            return false;
+        } catch (StaleElementReference $e) {
+            // In case of the element changes, the reference becames stale
+            // re-run this method up to 3 times to account for this
+            if ($iteration > 0) {
+                usleep(5 * 1000); // 5ms
+                return $this->getElementByText($text, $selector, $textSelector, $iteration--);
+            } else {
+                throw new \Exception('Stale reference occured more than 3 times in a row, possible infinite loop');
             }
         }
-
-        return false;
     }
 }
