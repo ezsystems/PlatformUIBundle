@@ -78,7 +78,11 @@ YUI.add('model-tests', function (Y) {
 
             Y.Assert.isFalse(errorFired, "The error event should not have been fired");
 
-            Y.Assert.areEqual(Y.Object.size(res), this.parsedAttributeNumber);
+            Y.Assert.areEqual(
+                this.parsedAttributeNumber,
+                Y.Object.size(res),
+                "Parsed result doesn't match the provided attribute number"
+            );
             for (i = 0, len = this.model.constructor.ATTRS_REST_MAP.length; i != len; ++i) {
                 key = this.model.constructor.ATTRS_REST_MAP[i];
 
@@ -127,7 +131,11 @@ YUI.add('model-tests', function (Y) {
             Y.Assert.isFalse(errorFired, "The error event should not have been fired");
 
             linksMap = this.model.constructor.LINKS_MAP ? this.model.constructor.LINKS_MAP: [];
-            Y.Assert.areEqual(Y.Object.size(res.resources), linksMap.length, "resources length");
+            Y.Assert.areEqual(
+                linksMap.length,
+                Y.Object.size(res.resources),
+                "resources length"
+            );
             for (i = 0, len = linksMap.length; i != len; ++i) {
                 key = linksMap[i];
                 Y.Assert.areEqual(
