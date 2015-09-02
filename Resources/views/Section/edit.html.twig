@@ -30,6 +30,28 @@
 
 {% block content %}
     <section class="ez-serverside-content">
-        {{ form(form, {'action': actionUrl}) }}
+        {{ form_start(form, {'action': actionUrl, "attr": {"class": "pure-form pure-form-aligned"}}) }}
+            {{ form_errors(form) }}
+
+            <fieldset>
+                <div class="pure-control-group">
+                    {{ form_label(form.name) }}
+                    {{ form_errors(form.name) }}
+                    {{ form_widget(form.name) }}
+                </div>
+
+                <div class="pure-control-group">
+                    {{ form_label(form.identifier) }}
+                    {{ form_errors(form.identifier) }}
+                    {{ form_widget(form.identifier) }}
+                </div>
+            </fieldset>
+
+            <div class="pure-controls">
+                {{ form_widget(form.cancel, {"attr": {"class": "pure-button ez-button ez-button-delete ez-font-icon"}}) }}
+                {{ form_widget(form.save, {"attr": {"class": "pure-button ez-button"}}) }}
+            </div>
+
+        {{ form_end(form) }}
     </section>
 {% endblock %}
