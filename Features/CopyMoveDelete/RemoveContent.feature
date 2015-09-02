@@ -24,9 +24,9 @@ Feature: Remove content
     @javascript
     Scenario: Remove one object and confirm the removal
         Given a "News Flash" article exists
-        When I remove "News Flash" article
+        When I remove "News Flash"
         And I confirm the removal
-        Then I am notified that "News Flash was sent to trash"
+        Then I am notified that '"News Flash" sent to Trash'
         And I do not see "News Flash" in the content tree
 
     @javascript
@@ -34,7 +34,7 @@ Feature: Remove content
         Given a "News Flash" article exists
         When I remove "News Flash"
         And I do not confirm the removal
-        Then I am not notified that "News Flash was sent to trash"
+        Then I am not notified that '"News Flash" sent to Trash'
         And I see "News Flash" in the content tree
 
     @javascript
@@ -47,7 +47,7 @@ Feature: Remove content
     @javascript
     Scenario: Removing one object should redirect to it's parent location view
         Given a "News/News child" article exists
-        When I remove "News child" article
+        When I remove "News child"
         And I confirm the removal
         Then I am on the "News" location view
         And I do not see "News/News child" in the content tree

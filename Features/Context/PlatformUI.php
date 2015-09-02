@@ -181,6 +181,16 @@ class PlatformUI extends Context
     }
 
     /**
+     * @Then I am on the :name location view
+     */
+    public function onLocationView($name)
+    {
+        // little info about content in platformUI,
+        // for now only verifies if the title matches
+        $this->iSeeTitle($name);
+    }
+
+    /**
      * @Then I see Content :contentName of type :contentType
      */
     public function contentExists($contentName, $contentType)
