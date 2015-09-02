@@ -16,12 +16,18 @@ system:
                 ez-alloyeditor-plugin-appendcontent:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/plugins/appendcontent.js
+                ez-alloyeditor-plugin-embed:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/embed.js
                 ez-alloyeditor-toolbar-appendcontent:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/appendcontent.js
                 ez-alloyeditor-button-heading:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/heading.js
+                ez-alloyeditor-button-embed:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embed.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -421,9 +427,11 @@ system:
                         - 'ez-fieldeditview'
                         - 'ez-alloyeditor'
                         - 'ez-richtextfocusmodebarview'
+                        - 'ez-alloyeditor-plugin-embed'
                         - 'ez-alloyeditor-plugin-appendcontent'
                         - 'ez-alloyeditor-toolbar-appendcontent'
                         - 'ez-alloyeditor-button-heading'
+                        - 'ez-alloyeditor-button-embed'
                         - 'richtexteditview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
                 richtexteditview-ez-template:

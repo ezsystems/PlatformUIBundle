@@ -2,6 +2,8 @@
 Tests/report/
 *-coverage.js
 Tests/instrument/
+Tests/js/alloyeditor/toolbars/assets/*.js
+Tests/js/alloyeditor/buttons/assets/*.js
 node_modules/
 Resources/public/vendors/
 /vendor/

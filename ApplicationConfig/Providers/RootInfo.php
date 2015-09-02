@@ -16,10 +16,11 @@ class RootInfo implements Provider
     /** @var \Symfony\Component\Templating\Asset\PackageInterface */
     private $assetsHelper;
 
-    public function __construct(RequestStack $requestStack, AssetsHelper $assetsHelper)
+    public function __construct(RequestStack $requestStack, AssetsHelper $assetsHelper, $externalAssetsDirectory)
     {
         $this->requestStack = $requestStack;
         $this->assetsHelper = $assetsHelper;
+        $this->externalAssetsDirectory = $externalAssetsDirectory;
     }
 
     /**
@@ -30,6 +31,7 @@ class RootInfo implements Provider
         return [
             'root' => $this->requestStack->getMasterRequest()->attributes->get('semanticPathInfo'),
             'assetRoot' => $this->assetsHelper->getUrl('/'),
+            'ckeditorPluginPath' => $this->assetsHelper->getUrl($this->externalAssetsDirectory) . '/vendors/',
         ];
     }
 }

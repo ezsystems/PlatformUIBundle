@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>eZ AlloyEditor embed plugin tests</title>
+</head>
+<body>
+
+<div class="container">
+    <p>Listening to Led Zeppelin - When the levee breaks</p>
+    <ezembed href="ezlocation://2" data-ezview="line" />
+</div>
+
+<script type="text/javascript" src="../../assets/function.bind.polyfill.js"></script>
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
+<script type="text/javascript" src="./assets/ez-alloyeditor-plugin-embed-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage') {
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-alloyeditor-plugin-embed'],
+        filter: loaderFilter,
+        modules: {
+            "ez-alloyeditor-plugin-embed": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/embed.js",
+            },
+        }
+    }).use('ez-alloyeditor-plugin-embed-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

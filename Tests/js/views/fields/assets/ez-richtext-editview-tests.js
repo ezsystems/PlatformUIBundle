@@ -6,7 +6,7 @@
 YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
         editorTest, focusModeTest, editorFocusHandlingTest,
-        actionBarTest, destructorTest,
+        actionBarTest, destructorTest, appendToolbarConfigTest,
         VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, FIELDVALUE_RESULT,
         Assert = Y.Assert, Mock = Y.Mock;
 
@@ -26,6 +26,8 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     FIELDVALUE_RESULT += '<p>I\'m not empty</p></section>';
 
     CKEDITOR.plugins.add('ezappendcontent', {});
+    CKEDITOR.plugins.add('ezembed', {});
+
     renderTest = new Y.Test.Case({
         name: "eZ RichText View render test",
 
@@ -179,6 +181,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 version: this.model,
                 contentType: this.model,
                 actionBar: new Y.View(),
+                config: {
+                    alloyEditor: {
+                        externalPluginPath: '../../..',
+                    }
+                },
             });
         },
 
@@ -270,6 +277,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 version: this.model,
                 contentType: this.model,
                 actionBar: new Y.View(),
+                config: {
+                    alloyEditor: {
+                        externalPluginPath: '../../..',
+                    }
+                },
             });
         },
 
@@ -304,15 +316,12 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     editorTest = new Y.Test.Case({
         name: "eZ RichText View editor test",
 
-        _should: {
-            ignore: {
-                // this test will fail until we upgrade to AlloyEditor 0.4.x
-                // because of https://github.com/liferay/alloy-editor/issues/294
-                "Should add the ezappendcontent plugin": true,
-            }
-        },
-
         setUp: function () {
+            this.config = {
+                alloyEditor: {
+                    externalPluginPath: '../../..',
+                }
+            };
             this.field = {id: 42, fieldValue: {xhtml5edit: ""}};
             this.model = new Mock();
             Mock.expect(this.model, {
@@ -328,6 +337,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 version: this.model,
                 contentType: this.model,
                 actionBar: new Y.View(),
+                config: this.config,
             });
             this.view.render();
         },
@@ -335,6 +345,25 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         tearDown: function () {
             this.view.set('active', false);
             this.view.destroy();
+        },
+
+        _testRegisterPlugin: function (plugin) {
+            Assert.isObject(
+                CKEDITOR.plugins.externals[plugin],
+                "The '" + plugin + "' plugin should be registered"
+            );
+            Assert.areEqual(
+                CKEDITOR.plugins.externals[plugin].dir,
+                this.view.get('config').alloyEditor.externalPluginPath + '/' + plugin + '/'
+            );
+        },
+
+        "Should register the 'widget' CKEditor plugin": function () {
+            this._testRegisterPlugin('widget');
+        },
+
+        "Should register the 'lineutils' CKEditor plugin": function () {
+            this._testRegisterPlugin('lineutils');
         },
 
         "Should create an instance of AlloyEditor": function () {
@@ -391,13 +420,25 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             Assert.isTrue(validated, "The input should have been validated");
         },
 
-        "Should add the ezappendcontent plugin": function () {
+        _testExtraPlugins: function (plugin) {
             this.view.set('active', true);
 
             Assert.isTrue(
-                this.view.get('editor').get('extraPlugins').indexOf('ezappendcontent') !== -1,
-                "The ezappendcontent plugin should be loaded"
+                this.view.get('editor').get('extraPlugins').indexOf(plugin) !== -1,
+                "The '" + plugin + "' plugin should be loaded"
             );
+        },
+
+        "Should add the ezappendcontent plugin": function () {
+            this._testExtraPlugins('ezappendcontent');
+        },
+
+        "Should add the widget plugin": function () {
+            this._testExtraPlugins('widget');
+        },
+
+        "Should add the ezembed plugin": function () {
+            this._testExtraPlugins('ezembed');
         },
 
         "Should pass the `eZ` configuration": function () {
@@ -592,6 +633,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 version: this.version,
                 contentType: this.contentType,
                 actionBar: new Y.View(),
+                config: {
+                    alloyEditor: {
+                        externalPluginPath: '../../..',
+                    }
+                },
             });
             this.view.get('actionBar').addTarget(this.view);
             this.view.render();
@@ -621,6 +667,45 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
     });
 
+    appendToolbarConfigTest = new Y.Test.Case({
+        name: "eZ RichText View ezappendcontent toolbar config test",
+
+        setUp: function () {
+            this.view = new Y.eZ.RichTextEditView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        _testButton: function (identifier) {
+            var config = this.view.get('toolbarsConfig').ezappendcontent;
+
+            Assert.isTrue(
+                config.buttons.indexOf(identifier) !== -1,
+                "The '" + identifier + "' should be configured"
+            );
+        },
+
+        "Should configure the ezheading button": function () {
+            this._testButton('ezheading');
+        },
+
+        "Should configure the ezembed button": function () {
+            this._testButton('ezembed');
+        },
+
+        "Should configure the addContentButtonClass": function () {
+            var config = this.view.get('toolbarsConfig').ezappendcontent;
+
+            Assert.areEqual(
+                'ez-richtext-add-content',
+                config.addContentButtonClass,
+                "The toolbar config should contain the 'ez-richtext-add-content' class"
+            );
+        },
+    });
+
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "RichText Edit View registration test";
     registerTest.viewType = Y.eZ.RichTextEditView;
@@ -634,6 +719,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(focusModeTest);
     Y.Test.Runner.add(actionBarTest);
     Y.Test.Runner.add(destructorTest);
+    Y.Test.Runner.add(appendToolbarConfigTest);
     Y.Test.Runner.add(registerTest);
     Y.Test.Runner.add(editorFocusHandlingTest);
 }, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'editviewregister-tests', 'ez-richtext-editview']});

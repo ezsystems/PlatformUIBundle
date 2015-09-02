@@ -2,6 +2,7 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
+/* global CKEDITOR */
 YUI.add('ez-richtext-editview', function (Y) {
     "use strict";
     /**
@@ -101,6 +102,18 @@ YUI.add('ez-richtext-editview', function (Y) {
         },
 
         /**
+         * Registers the plugin which name is given in the given plugin dir.
+         *
+         * @method _registerExternalCKEditorPlugin
+         * @protected
+         */
+        _registerExternalCKEditorPlugin: function (pluginName, pluginDir) {
+            var path = this.get('config').alloyEditor.externalPluginPath;
+
+            CKEDITOR.plugins.addExternal(pluginName, path + '/' + pluginDir);
+        },
+
+        /**
          * Initializes the editor
          *
          * @protected
@@ -109,10 +122,12 @@ YUI.add('ez-richtext-editview', function (Y) {
         _initEditor: function () {
             var editor, nativeEd, valid, setEditorFocused, unsetEditorFocused;
 
+            this._registerExternalCKEditorPlugin('widget', 'widget/');
+            this._registerExternalCKEditorPlugin('lineutils', 'lineutils/');
             editor = AlloyEditor.editable(
                 this.get('container').one('.ez-richtext-editor').getDOMNode(), {
                     toolbars: this.get('toolbarsConfig'),
-                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezappendcontent',
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezappendcontent,widget,ezembed',
                     eZ: {
                         editableRegion: '.ez-richtext-editable',
                     },
@@ -340,7 +355,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                         tabIndex: 1
                     },
                     ezappendcontent: {
-                        buttons: ['ezheading'],
+                        buttons: ['ezheading', 'ezembed'],
                         tabIndex: 2,
                         addContentButtonClass: ADD_CONTENT_BUTTON_CLASS,
                     },
