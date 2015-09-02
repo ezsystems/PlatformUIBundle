@@ -60,11 +60,6 @@ admin_sectionedit:
     requirements:
         sectionId: \d+
 
-admin_sectiondeletelist:
-    path: /pjax/section/deletelist
-    defaults:
-        _controller: ezsystems.platformui.controller.section:deleteListAction
-
 admin_sectiondelete:
     path: /pjax/section/delete/{sectionId}
     defaults:

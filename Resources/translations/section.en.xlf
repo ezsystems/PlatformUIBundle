@@ -90,6 +90,10 @@
         <source>section.view.delete</source>
         <target>Delete this section</target>
       </trans-unit>
+      <trans-unit id="22e8e66a091b0c1227c4461e51e06443">
+        <source>section.deleted</source>
+        <target>The Section "%sectionName%" was correctly deleted.</target>
+      </trans-unit>
       <trans-unit id="1bf9bdce5e87c98df324d43e717d9d85" resname="section.assign.universaldiscovery.title">
         <source>section.assign.universaldiscovery.title</source>
         <target>Pick the contents to assign the section "%sectionName%"</target>

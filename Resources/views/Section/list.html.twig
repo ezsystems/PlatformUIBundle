@@ -51,20 +51,16 @@
             <table class="pure-table pure-table-striped ez-selection-table" data-selection-buttons=".ez-remove-section-button">
                 <thead>
                     <tr>
-                        <th></th>
                         <th>{{ 'section.name'|trans }}</th>
                         <th>{{ 'section.identifier'|trans }}</th>
                         <th>{{ 'section.id'|trans }}</th>
                         <th>{{ 'section.assigned.content'|trans }}</th>
-                        <th colspan="2"></th>
+                        <th colspan="3"></th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for section in sectionList %}
                     <tr class="ez-selection-table-row">
-                        <td>
-                            <input type="checkbox" class="ez-selection-table-checkbox"{% if not canEdit %} disabled{% endif %}>
-                        </td>
                         <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.name }}</a></td>
                         <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.identifier }}</a></td>
                         <td class="ez-table-data-id"><a href="{{ path( "admin_sectionview", {"sectionId": section.id} ) }}">{{ section.id }}</a></td>
@@ -72,7 +68,7 @@
                         <td>
                             <button
                                 data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
-                                data-section-rest-id="{{path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
+                                data-section-rest-id="{{ path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
                                 data-section-name="{{ section.name }}"
                                 class="ez-section-assign-button ez-button-tree pure-button ez-font-icon ez-button"
                                 {% if not canAssign %}disabled="disabled"{% endif %}>{{ 'section.assign.contents'|trans }}</button>
@@ -84,18 +80,20 @@
                             <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'section.edit'|trans }}</span>
                         {% endif %}
                         </td>
+                        <td>
+                        {% if canEdit %}
+                            <a href="{{ path('admin_sectiondelete', {'sectionId': section.id}) }}"
+                               class="pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"
+                               data-icon="&#xe606;">{{ 'section.view.delete'|trans }}</a>
+                        {% else %}
+                            <span class="pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete" data-icon="&#xe606;">{{ 'section.view.delete'|trans }}</span>
+                        {% endif %}
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
             <p class="ez-table-data-buttons">
-                {#{{ form_widget(#}
-                    {#form.delete,#}
-                    {#{#}
-                        {#'disabled': true,#}
-                        {#'attr': {'class': 'pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete'}#}
-                    {#}#}
-                {#)}}#}
             {% if canEdit %}
                 <a href="{{ path('admin_sectioncreate') }}" class="pure-button ez-button" data-icon="&#xe616;">{{ 'section.new'|trans }}</a>
             {% else %}

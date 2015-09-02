@@ -14,27 +14,16 @@ use eZ\Publish\API\Repository\SectionService;
 use eZ\Publish\API\Repository\Values\Content\SectionCreateStruct;
 use eZ\Bundle\EzPublishCoreBundle\Controller;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
-use EzSystems\PlatformUIBundle\Entity\SectionList;
-use EzSystems\PlatformUIBundle\Form\Type\SectionListType;
+use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
+use EzSystems\PlatformUIBundle\Notification\TranslatableNotificationMessage;
 use EzSystems\RepositoryForms\Data\Mapper\SectionMapper;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
 use EzSystems\RepositoryForms\Form\Type\SectionType;
 use Symfony\Component\HttpFoundation\Request;
-use EzSystems\PlatformUIBundle\Helper\SectionHelperInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class SectionController extends Controller
 {
-    /**
-     * @var \EzSystems\PlatformUIBundle\Helper\SectionHelperInterface
-     */
-    protected $sectionHelper;
-
-    /**
-     * @var \EzSystems\PlatformUIBundle\Form\Type\SectionListType
-     */
-    protected $sectionListType;
-
     /**
      * @var \eZ\Publish\API\Repository\SectionService
      */
@@ -45,16 +34,19 @@ class SectionController extends Controller
      */
     private $actionDispatcher;
 
+    /**
+     * @var NotificationPoolInterface
+     */
+    private $notificationPool;
+
     public function __construct(
         ActionDispatcherInterface $actionDispatcher,
-        SectionHelperInterface $sectionHelper,
-        SectionListType $sectionListType,
-        SectionService $sectionService
+        SectionService $sectionService,
+        NotificationPoolInterface $notificationPool
     ) {
         $this->actionDispatcher = $actionDispatcher;
-        $this->sectionHelper = $sectionHelper;
-        $this->sectionListType = $sectionListType;
         $this->sectionService = $sectionService;
+        $this->notificationPool = $notificationPool;
     }
 
     /**
@@ -84,40 +76,6 @@ class SectionController extends Controller
     }
 
     /**
-     * Deletes sections.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function deleteListAction(Request $request)
-    {
-        $sectionListToDelete = new SectionList();
-        $form = $this->generateDeleteListForm($sectionListToDelete);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $this->sectionHelper->deleteSectionList($sectionListToDelete);
-        }
-
-        return $this->redirect($this->generateUrl('admin_sectionlist'));
-    }
-
-    /**
-     * Generate the form object used to delete sections.
-     *
-     * @param \EzSystems\PlatformUIBundle\Entity\SectionList $sectionListToDelete sections to be populated/deleted
-     *
-     * @return \Symfony\Component\Form\Form
-     */
-    private function generateDeleteListForm(SectionList $sectionListToDelete)
-    {
-        return $this->createForm($this->sectionListType, $sectionListToDelete, [
-            'action' => $this->generateUrl('admin_sectiondeletelist'),
-        ]);
-    }
-
-    /**
      * Renders the view of a section.
      *
      * @param mixed $sectionId
@@ -143,18 +101,24 @@ class SectionController extends Controller
     /**
      * Deletes a section.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param mixed $sectionId
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction($sectionId)
     {
         try {
-            $this->sectionService->deleteSection($this->sectionService->loadSection($sectionId));
+            $section = $this->sectionService->loadSection($sectionId);
+            $this->sectionService->deleteSection($section);
         } catch (UnauthorizedException $e) {
             return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
         }
 
+        $this->notificationPool->addNotification(new TranslatableNotificationMessage([
+            'message' => 'section.deleted',
+            'translationParams' => ['%sectionName%' => $section->name],
+            'domain' => 'section',
+        ]));
         return $this->redirect($this->generateUrl('admin_sectionlist'));
     }
 

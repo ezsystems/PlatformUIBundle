@@ -102,39 +102,9 @@ services:
         class: %ezsystems.platformui.controller.section.class%
         arguments:
             - @ezrepoforms.action_dispatcher.section
-            - @ezsystems.platformui.helper.section
-            - @ezsystems.platformui.form.type.section_list
             - @ezpublish.api.service.section
-            - @ezsystems.platformui.form.type.section_delete
+            - @ezsystems.platformui.notification_pool
         parent: ezpublish.controller.base
-
-    ezsystems.platformui.helper.section:
-        class: %ezsystems.platformui.helper.section.class%
-        arguments:
-            - @ezpublish.api.service.section
-            - @security.authorization_checker
-
-    ezsystems.platformui.form.type.section:
-        class: %ezsystems.platformui.form.type.section.class%
-        tags:
-            - { name: form.section, alias: section }
-        arguments:
-            - @translator
-
-    ezsystems.platformui.form.type.section_delete:
-        class: %ezsystems.platformui.form.type.section_delete.class%
-        tags:
-            - { name: form.section, alias: section_delete }
-        arguments:
-            - @translator
-
-    ezsystems.platformui.form.type.section_list:
-        class: %ezsystems.platformui.form.type.section_list.class%
-        tags:
-            - { name: form.section, alias: section_list }
-        arguments:
-            - @ezsystems.platformui.helper.section
-            - @translator
 
     ezsystems.platformui.controller.content_type:
         class: %ezsystems.platformui.controller.content_type.class%
