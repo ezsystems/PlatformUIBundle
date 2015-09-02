@@ -119,6 +119,7 @@ class SectionController extends Controller
             'translationParams' => ['%sectionName%' => $section->name],
             'domain' => 'section',
         ]));
+
         return $this->redirect($this->generateUrl('admin_sectionlist'));
     }
 
