@@ -33,3 +33,12 @@
 .ez-view-contenteditview.is-showing-infos .ez-infos {
     opacity: 1;
 }
+
+.ez-view-contenteditview .ez-technical-infos {
+    font-size: 80%;
+    color: #6C6C70;
+}
+
+.ez-view-contenteditview .ez-description {
+    font-size: 0.8em;
+}
