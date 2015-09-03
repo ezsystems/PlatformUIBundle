@@ -23,7 +23,7 @@ trait Fields
         $fieldManager->setFieldContentState(FieldType::CONTENT_TYPE_PUBLISHED);
         $type = $fieldManager->getThisContentTypeName('eng-GB');
 
-        $this->loggedAsAdminPlatformUi();
+        $this->loggedAsUserPlatformUi();
         $this->clickNavigationZone('Platform');
         $this->waitForLoadings();
         $this->clickNavigationItem('Content structure');
@@ -44,7 +44,7 @@ trait Fields
         $fieldManager->setFieldContentState(FieldType::CONTENT_PUBLISHED);
         $name = $fieldManager->getThisContentName('eng-GB');
 
-        $this->loggedAsAdminPlatformUi();
+        $this->loggedAsUserPlatformUi();
         $this->clickNavigationZone('Platform');
         $this->waitForLoadings();
         $this->clickNavigationItem('Content structure');
@@ -65,7 +65,7 @@ trait Fields
         $fieldManager->setFieldContentState(FieldType::CONTENT_PUBLISHED);
         $name = $fieldManager->getThisContentName('eng-GB');
 
-        $this->loggedAsAdminPlatformUi();
+        $this->loggedAsUserPlatformUi();
         $this->clickNavigationZone('Platform');
         $this->waitForLoadings();
         $this->clickNavigationItem('Content structure');
