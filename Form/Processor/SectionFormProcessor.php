@@ -38,7 +38,6 @@ class SectionFormProcessor implements EventSubscriberInterface
     {
         return [
             RepositoryFormEvents::SECTION_UPDATE => 'processUpdate',
-            RepositoryFormEvents::SECTION_CANCEL => 'processCancel',
         ];
     }
 
@@ -57,22 +56,6 @@ class SectionFormProcessor implements EventSubscriberInterface
                 $this->router->generate('admin_sectionview', ['sectionId' => $sectionData->getId()])
             )
         );
-    }
-
-    public function processCancel(FormActionEvent $event)
-    {
-        /** @var \EzSystems\RepositoryForms\Data\SectionData $sectionData */
-        $sectionData = $event->getData();
-        if ($sectionData->isNew()) {
-            $this->addNotification('section.notification.draft_removed');
-            $event->setResponse(new RedirectResponse($this->router->generate('admin_sectionlist')));
-        } else {
-            $event->setResponse(
-                new RedirectResponse(
-                    $this->router->generate('admin_sectionview', ['sectionId' => $sectionData->getId()])
-                )
-            );
-        }
     }
 
     private function addNotification($message, array $params = [])

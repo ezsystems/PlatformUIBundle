@@ -48,7 +48,8 @@
             </fieldset>
 
             <div class="pure-controls">
-                {{ form_widget(form.cancel, {"attr": {"class": "pure-button ez-button ez-button-delete ez-font-icon"}}) }}
+                <a href="{{ section.new ? path("admin_sectionlist") : path("admin_sectionview", {"sectionId": section.id}) }}"
+                   class="pure-button ez-button ez-button-delete ez-font-icon">{{ "section.cancel"|trans }}</a>
                 {{ form_widget(form.save, {"attr": {"class": "pure-button ez-button"}}) }}
             </div>
 
