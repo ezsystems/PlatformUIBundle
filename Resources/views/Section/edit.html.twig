@@ -13,7 +13,7 @@
         {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
         {link: path('admin_sectionlist'), label: 'section.list'|trans({})},
         {
-            link: path('admin_sectionview', {'sectionId': section.id}),
+            link: section.new ? "" : path('admin_sectionview', {'sectionId': section.id}),
             label: 'section.view.title'|trans({'%sectionName%': section.name})
         },
         {link: '', label: editTitle}

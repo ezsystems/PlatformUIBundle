@@ -11,6 +11,7 @@ namespace EzSystems\PlatformUIBundle\Controller;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
 use eZ\Publish\API\Repository\SectionService;
+use eZ\Publish\API\Repository\Values\Content\Section;
 use eZ\Publish\API\Repository\Values\Content\SectionCreateStruct;
 use eZ\Bundle\EzPublishCoreBundle\Controller;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
@@ -123,20 +124,6 @@ class SectionController extends Controller
         return $this->redirect($this->generateUrl('admin_sectionlist'));
     }
 
-    public function createAction()
-    {
-        try {
-            $section = $this->sectionService->createSection(new SectionCreateStruct([
-                'identifier' => '__new__' . md5(microtime(true)),
-                'name' => 'New section',
-            ]));
-        } catch (UnauthorizedException $e) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
-
-        return $this->redirectToRoute('admin_sectionedit', ['sectionId' => $section->id]);
-    }
-
     /**
      * Displays the edit form and processes it once submitted.
      *
@@ -145,10 +132,14 @@ class SectionController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, $sectionId)
+    public function editAction(Request $request, $sectionId = null)
     {
         try {
-            $sectionData = (new SectionMapper())->mapToFormData($this->sectionService->loadSection($sectionId));
+            $section = $sectionId ? $this->sectionService->loadSection($sectionId) : new Section([
+                'identifier' => '__new__' . md5(microtime(true)),
+                'name' => 'New section',
+            ]);
+            $sectionData = (new SectionMapper())->mapToFormData($section);
         } catch (UnauthorizedException $e) {
             return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
         } catch (NotFoundException $e) {

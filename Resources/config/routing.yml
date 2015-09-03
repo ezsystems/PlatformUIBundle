@@ -48,15 +48,11 @@ admin_accessdenied:
     defaults:
         _controller: ezsystems.platformui.controller.pjax:accessDeniedAction
 
-admin_sectioncreate:
-    path: /pjax/section/create
-    defaults:
-        _controller: ezsystems.platformui.controller.section:createAction
-
 admin_sectionedit:
     path: /pjax/section/edit/{sectionId}
     defaults:
         _controller: ezsystems.platformui.controller.section:editAction
+        sectionId: ~
     requirements:
         sectionId: \d+
 

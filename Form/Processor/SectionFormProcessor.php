@@ -43,7 +43,7 @@ class SectionFormProcessor implements EventSubscriberInterface
 
     public function processUpdate(FormActionEvent $event)
     {
-        /** @var \EzSystems\RepositoryForms\Data\SectionData $sectionData */
+        /** @var \EzSystems\RepositoryForms\Data\Section\SectionUpdateData|\EzSystems\RepositoryForms\Data\Section\SectionCreateData $sectionData */
         $sectionData = $event->getData();
         if ($sectionData->isNew()) {
             $this->addNotification('section.notification.created', ['%sectionName%' => $sectionData->name]);
