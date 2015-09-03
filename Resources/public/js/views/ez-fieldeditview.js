@@ -160,7 +160,7 @@ YUI.add('ez-fieldeditview', function (Y) {
          */
         _showDescription: function () {
             var container = this.get('container');
-            if (this._toggleFieldDefinitionDescription === 'active') {
+            if (this._handleFieldDescriptionVisibility == true) {
                 if (this._isTouch() &&  container.one(TOOLTIP_DESCR)) {
                     this._setTooltipPosition(FIELD_INPUT);
                 } else {
@@ -199,7 +199,7 @@ YUI.add('ez-fieldeditview', function (Y) {
             var container = this.get('container'),
                 tooltip = container.one(TOOLTIP_DESCR);
 
-            if (this._toggleFieldDefinitionDescription === 'active') {
+            if (this._handleFieldDescriptionVisibility == true) {
                 container.removeClass(IS_SHOWING_DESCRIPTION);
                 if (tooltip) {
                     tooltip.removeClass(IS_DISPLAYED_CLASS);
@@ -224,7 +224,7 @@ YUI.add('ez-fieldeditview', function (Y) {
              * @type string
              * @default 'active'
              */
-            this._toggleFieldDefinitionDescription = 'active';
+            this._handleFieldDescriptionVisibility = true;
 
             /**
              * Set if the fieldDefinition description has the standard display

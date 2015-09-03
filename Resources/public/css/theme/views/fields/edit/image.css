@@ -43,12 +43,6 @@
     list-style-type: square;
 }
 
-.ez-view-imageeditview .ez-binarybase-help {
-    font-size: 80%;
-    font-style: italic;
-    font-weight: bold;
-}
-
 .ez-view-imageeditview .ez-field-description {
     font-weight: lighter;
     font-size: 80%

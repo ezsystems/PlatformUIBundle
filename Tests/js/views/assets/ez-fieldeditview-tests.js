@@ -312,9 +312,9 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             this.wait();
         },
 
-        "Should NOT show the description when hover the fieldInput if _toggleFieldDefinitionDescription flag is not active": function () {
+        "Should NOT show the description when hover the fieldInput if _handleFieldDescriptionVisibility flag is not active": function () {
             var fieldInput, container = this.view.get('container');
-            this.view._toggleFieldDefinitionDescription = 'disable';
+            this.view._handleFieldDescriptionVisibility = false;
             this.view._isTouch = function () { return false; };
             this.view.render();
 
@@ -327,11 +327,11 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             );
         },
 
-        "Should NOT hide the description when moving out of the fieldInput if _toggleFieldDefinitionDescription is not active": function () {
+        "Should NOT hide the description when moving out of the fieldInput if _handleFieldDescriptionVisibility is not active": function () {
             var container = this.view.get('container');
 
             this["Should show the description when hover the fieldInput"]();
-            this.view._toggleFieldDefinitionDescription = 'disable';
+            this.view._handleFieldDescriptionVisibility = false;
             this.view.render();
             container.one('.ez-editfield-input').simulate('mouseout');
 

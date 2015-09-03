@@ -85,8 +85,9 @@
 }
 
 .ez-binarybase-help {
-    font-size: 90%;
+    font-size: 80%;
     font-style: italic;
+    font-weight: bold;
 }
 
 .is-dragging-file .ez-binarybase-drop-area {

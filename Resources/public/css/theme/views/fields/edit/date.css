@@ -40,7 +40,6 @@
 
 .ez-view-dateeditview.is-showing-description .ez-field-description {
     opacity: 1;
-    transition: all 0.3s ease;
 }
 
 .ez-view-dateeditview .ez-field-description {

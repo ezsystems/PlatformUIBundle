@@ -33,7 +33,7 @@ YUI.add('ez-relation-editview', function (Y) {
         },
 
         initializer: function () {
-            this._toggleFieldDefinitionDescription = 'disabled';
+            this._handleFieldDescriptionVisibility = false;
             this._fireMethod = this._fireLoadFieldRelatedContent;
             this._watchAttribute = 'destinationContent';
             if( this.get('field').fieldValue.destinationContentId ){
