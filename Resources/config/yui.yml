@@ -31,6 +31,21 @@ system:
                 ez-alloyeditor-button-embed:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embed.js
+                ez-alloyeditor-button-blocktextalignleft:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignleft.js
+                ez-alloyeditor-button-blocktextaligncenter:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextaligncenter.js
+                ez-alloyeditor-button-blocktextalignright:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignright.js
+                ez-alloyeditor-button-blocktextalignjustify:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignjustify.js
+                ez-alloyeditor-button-mixin-blocktextalign:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/blocktextalign.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -449,6 +464,10 @@ system:
                         - 'ez-alloyeditor-toolbar-config-heading'
                         - 'ez-alloyeditor-button-heading'
                         - 'ez-alloyeditor-button-embed'
+                        - 'ez-alloyeditor-button-blocktextalignleft'
+                        - 'ez-alloyeditor-button-blocktextaligncenter'
+                        - 'ez-alloyeditor-button-blocktextalignright'
+                        - 'ez-alloyeditor-button-blocktextalignjustify'
                         - 'richtexteditview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
                 richtexteditview-ez-template:

@@ -39,6 +39,10 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
         name: 'heading',
         buttons: [
             styles,
+            'ezblocktextalignleft',
+            'ezblocktextaligncenter',
+            'ezblocktextalignright',
+            'ezblocktextalignjustify',
         ],
 
         /**
