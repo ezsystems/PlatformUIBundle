@@ -722,4 +722,4 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(appendToolbarConfigTest);
     Y.Test.Runner.add(registerTest);
     Y.Test.Runner.add(editorFocusHandlingTest);
-}, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'editviewregister-tests', 'ez-richtext-editview']});
+}, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'fake-toolbarconfig', 'editviewregister-tests', 'ez-richtext-editview']});

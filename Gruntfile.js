@@ -24,6 +24,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/services/*.js",
             "./Resources/public/js/helpers/*.js",
             "./Resources/public/js/alloyeditor/toolbars/*.js",
+            "./Resources/public/js/alloyeditor/toolbars/config/*.js",
             "./Resources/public/js/alloyeditor/buttons/*.js",
             "./Resources/public/js/alloyeditor/plugins/*.js",
         ],

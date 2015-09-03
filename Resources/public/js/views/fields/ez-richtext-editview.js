@@ -351,7 +351,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                             getArrowBoxClasses: AlloyEditor.SelectionGetArrowBoxClasses.table,
                             setPosition: AlloyEditor.SelectionSetPosition.table,
                             test: AlloyEditor.SelectionTest.table
-                        }],
+                        }, Y.eZ.AlloyEditorToolbarConfig.Heading],
                         tabIndex: 1
                     },
                     ezappendcontent: {

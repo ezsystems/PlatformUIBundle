@@ -13,6 +13,9 @@ system:
                 ez-alloyeditor:
                     requires: ['alloyeditor']
                     path: %ez_platformui.public_dir%/js/external/ez-alloyeditor.js
+                ez-alloyeditor-toolbar-config-heading:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/heading.js
                 ez-alloyeditor-plugin-appendcontent:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/plugins/appendcontent.js
@@ -443,6 +446,7 @@ system:
                         - 'ez-alloyeditor-plugin-embed'
                         - 'ez-alloyeditor-plugin-appendcontent'
                         - 'ez-alloyeditor-toolbar-appendcontent'
+                        - 'ez-alloyeditor-toolbar-config-heading'
                         - 'ez-alloyeditor-button-heading'
                         - 'ez-alloyeditor-button-embed'
                         - 'richtexteditview-ez-template'
