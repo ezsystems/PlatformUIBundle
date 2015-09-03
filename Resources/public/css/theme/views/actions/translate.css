@@ -49,3 +49,14 @@
     border-radius: 0.5em;
     font-weight: bold;
 }
+
+.ez-view-translateactionview .ez-newtranslation-button {
+    background: #B8E986;
+    color: #333333;
+    font-size: 90%;
+    font-weight: bold;
+}
+
+.ez-view-translateactionview .ez-newtranslation-button:hover {
+    background: #B8E986;
+}

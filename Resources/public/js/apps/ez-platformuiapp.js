@@ -84,6 +84,12 @@ YUI.add('ez-platformuiapp', function (Y) {
                 container: '.ez-confirmbox-container',
                 hideClass: 'is-confirmbox-hidden',
             },
+            languageSelectionBox: {
+                type: Y.eZ.LanguageSelectionBoxView,
+                service: Y.eZ.LanguageSelectionBoxViewService,
+                container: '.ez-languageselectionbox-container',
+                hideClass: 'is-languageselectionbox-hidden',
+            },
             notificationHub: {
                 type: Y.eZ.NotificationHubView,
                 service: Y.eZ.NotificationHubViewService,
@@ -731,6 +737,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                     path: "/studioplus/presentation",
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     view: 'studioPlusPresentationView',
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }, {
+                    name: "translateContent",
+                    path: '/edit/:id/:languageCode/:baseLanguageCode',
+                    service: Y.eZ.ContentEditViewService,
+                    sideViews: {'navigationHub': false, 'discoveryBar': false},
+                    view: 'contentEditView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "editContent",

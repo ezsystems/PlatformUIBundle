@@ -26,6 +26,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             this.on('*:editAction', this._editContent);
             this.on('*:sendToTrashAction', this._sendContentToTrashConfirmBox);
             this.on('*:moveAction', this._selectLocation);
+            this.on('*:translateContent', this._translateContent);
             this.after('*:requestChange', this._setLanguageCode);
 
             this._setLanguageCode();
@@ -205,6 +206,32 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                     );
                 }
             });
+        },
+
+        /**
+         * translate event handler, makes the application to navigate to edit content available
+         * in the facade with given language and base language
+         *
+         * @method _translateContent
+         * @protected
+         * @param {EventFacade} e
+         */
+        _translateContent: function (e) {
+            var app = this.get('app'),
+                routeName = 'editContent',
+                routeParams = {
+                    id: e.content.get('id'),
+                    languageCode: e.toLanguageCode,
+                };
+
+            if (e.baseLanguageCode) {
+                routeParams.baseLanguageCode = e.baseLanguageCode;
+                routeName = 'translateContent';
+            }
+
+            app.navigate(
+                app.routeUri(routeName, routeParams)
+            );
         },
 
         /**
