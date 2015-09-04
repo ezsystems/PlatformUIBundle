@@ -42,7 +42,7 @@ YUI.add('ez-confirmboxview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Assert.isObject(variables, "The template should receive some variables");
-                Assert.areEqual(1, Y.Object.keys(variables).length, "The template should receive 1 variable");
+                Assert.areEqual(2, Y.Object.keys(variables).length, "The template should receive 2 variables");
                 Assert.areSame(
                     that.title, variables.title,
                     "The title should be available in the template"

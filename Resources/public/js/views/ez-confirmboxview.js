@@ -127,6 +127,7 @@ YUI.add('ez-confirmboxview', function (Y) {
          */
         _resetState: function () {
             this.reset('title');
+            this.reset('details');
             this.reset('confirmHandler');
             this.reset('cancelHandler');
         },
@@ -136,6 +137,7 @@ YUI.add('ez-confirmboxview', function (Y) {
 
             container.setHTML(this.template({
                 title: this.get('title'),
+                details: this.get('details'),
             }));
             return this;
         },
@@ -159,6 +161,19 @@ YUI.add('ez-confirmboxview', function (Y) {
              * @type {String}
              */
             title: {
+                value: "",
+            },
+
+            /**
+             * Details of the confirmBox.
+             * This attribute is supposed to contain an HTML fragment
+             * that won't be escaped while rendering the confirm box view.
+             *
+             * @attribute details
+             * @default ""
+             * @type {String}
+             */
+            details: {
                 value: "",
             },
 

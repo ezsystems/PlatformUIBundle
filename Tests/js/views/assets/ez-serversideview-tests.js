@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-serversideview-tests', function (Y) {
-    var viewTest, tabTest, formTest, formSerializeTest,
+    var viewTest, tabTest, formTest, confirmBoxTest, formSerializeTest,
         Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
@@ -156,6 +156,146 @@ YUI.add('ez-serversideview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+        },
+    });
+
+    confirmBoxTest =  new Y.Test.Case({
+        name: "eZ Server Side view confirmBox tests",
+        setUp: function () {
+            this.view = new Y.eZ.ServerSideView({
+                container: Y.one('.form-test-container'),
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should launch a confirm box if the submit element has '.ez-confirm-action' class": function () {
+            var c = this.view.get('container'),
+                html,
+                confirmBoxEvent = false;
+
+            html = '<form method="post" action="">';
+            html += '<button class="ez-confirm-action" type="submit" name="submit">Submit!</button>';
+            html += '</form>';
+
+            this.view.set('html', html);
+            this.view.on('confirmBoxOpen', function (e) {
+                confirmBoxEvent = true;
+            });
+
+            this.view.render();
+            c.one('form button[type="submit"]').focus();
+            c.one('form button[type="submit"]').simulate('click');
+
+            Assert.isTrue(confirmBoxEvent, "The confirmBox should have been fired");
+        },
+
+        "Should submit the form after confirming action with the confirmBox": function () {
+            var c = this.view.get('container'),
+                html,
+                submitFormEvent = false;
+
+            html = '<form method="post" action="">';
+            html += '<button class="ez-confirm-action" type="submit" name="submit">Submit!</button>';
+            html += '</form>';
+
+            this.view.set('html', html);
+            this.view.on('submitForm', function (e) {
+                submitFormEvent = true;
+            });
+            this.view.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.call(this);
+            });
+
+            this.view.render();
+            c.one('form button[type="submit"]').focus();
+            c.one('form button[type="submit"]').simulate('click');
+
+            Assert.isTrue(submitFormEvent, "The submitForm should have been fired");
+        },
+
+        "Should NOT launch a confirm box if the submit element has NOT '.ez-confirm-action' class": function () {
+            var c = this.view.get('container'),
+                html,
+                confirmBoxEvent = false,
+                submitFormEvent = false;
+
+            html = '<form method="post" action="">';
+            html += '<button class="ez-not-confirm-action" type="submit" name="submit">Submit!</button>';
+            html += '</form>';
+
+            this.view.set('html', html);
+            this.view.on('submitForm', function (e) {
+                submitFormEvent = true;
+
+                e.originalEvent.preventDefault();
+            });
+
+            this.view.render();
+            c.one('form button[type="submit"]').focus();
+            c.one('form button[type="submit"]').simulate('click');
+
+            Assert.isFalse(confirmBoxEvent, "The confirmBox should NOT have been fired");
+            Assert.isTrue(submitFormEvent, "The submitForm should have been fired");
+        },
+
+        "Should take the title and the details from the markup": function () {
+            var c = this.view.get('container'),
+                html,
+                title = "Do you really want to remove this content type?",
+                details = '<p>The <b>34</b> this content type instances will be permanently removed by this operation.</p>';
+
+            html = '<form method="post" action="">';
+            html += '<button class ="ez-confirm-action" ' +
+            'data-confirmbox-title ="Do you really want to remove this content type?" ' +
+            'data-confirmbox-details-selector =".ez-confirmbox-content-type-removal-details" ' +
+            'type="submit" name="submit">Submit!</button>';
+            html += '</form>';
+            html += '<div class="ez-confirmbox-content-type-removal-details">';
+            html += details;
+            html += '</div>';
+
+            this.view.set('html', html);
+            this.view.on('confirmBoxOpen', function (e) {
+                Assert.areSame(
+                    e.config.details,
+                    details,
+                    'The details should appears in the confirmBox'
+                );
+                Assert.areSame(
+                    e.config.title,
+                    title,
+                    'The title should appear in the confirmBox'
+                );
+            });
+            this.view.render();
+            c.one('form button[type="submit"]').focus();
+            c.one('form button[type="submit"]').simulate('click');
+        },
+
+        "Should handle missing details": function () {
+            var c = this.view.get('container'),
+                html;
+
+            html = '<form method="post" action="">';
+            html += '<button class ="ez-confirm-action" ' +
+            'data-confirmbox-title ="Do you really want to remove this content type?" ' +
+            'type="submit" name="submit">Submit!</button>';
+            html += '</form>';
+
+            this.view.set('html', html);
+            this.view.on('confirmBoxOpen', function (e) {
+                Assert.areSame(
+                    e.config.details,
+                    '',
+                    'The details should be an empty string'
+                );
+            });
+            this.view.render();
+            c.one('form button[type="submit"]').focus();
+            c.one('form button[type="submit"]').simulate('click');
         },
     });
 
@@ -335,5 +475,6 @@ YUI.add('ez-serversideview-tests', function (Y) {
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(tabTest);
     Y.Test.Runner.add(formTest);
+    Y.Test.Runner.add(confirmBoxTest);
     Y.Test.Runner.add(formSerializeTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-serversideview']});
