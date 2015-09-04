@@ -67,7 +67,7 @@ trait Remove
     }
 
     /**
-     * @Then I see a cancel button.
+     * @Then I see a cancel button
      */
     public function iSeeCancel()
     {
