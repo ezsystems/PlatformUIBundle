@@ -151,3 +151,4 @@ system:
                 - 'bundles/ezplatformui/css/theme/alloyeditor/general.css'
                 - 'bundles/ezplatformui/css/theme/alloyeditor/content.css'
                 - 'bundles/ezplatformui/css/theme/alloyeditor/toolbars/appendcontent.css'
+                - 'bundles/ezplatformui/css/theme/alloyeditor/buttons/blockremove.css'

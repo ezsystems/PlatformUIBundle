@@ -19,6 +19,9 @@ system:
                 ez-alloyeditor-plugin-appendcontent:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/plugins/appendcontent.js
+                ez-alloyeditor-plugin-removeblock:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/removeblock.js
                 ez-alloyeditor-plugin-embed:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/plugins/embed.js
@@ -43,6 +46,9 @@ system:
                 ez-alloyeditor-button-blocktextalignjustify:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignjustify.js
+                ez-alloyeditor-button-blockremove:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blockremove.js
                 ez-alloyeditor-button-mixin-blocktextalign:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/blocktextalign.js
@@ -460,6 +466,7 @@ system:
                         - 'ez-richtextfocusmodebarview'
                         - 'ez-alloyeditor-plugin-embed'
                         - 'ez-alloyeditor-plugin-appendcontent'
+                        - 'ez-alloyeditor-plugin-removeblock'
                         - 'ez-alloyeditor-toolbar-appendcontent'
                         - 'ez-alloyeditor-toolbar-config-heading'
                         - 'ez-alloyeditor-button-heading'
@@ -468,6 +475,7 @@ system:
                         - 'ez-alloyeditor-button-blocktextaligncenter'
                         - 'ez-alloyeditor-button-blocktextalignright'
                         - 'ez-alloyeditor-button-blocktextalignjustify'
+                        - 'ez-alloyeditor-button-blockremove'
                         - 'richtexteditview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
                 richtexteditview-ez-template:

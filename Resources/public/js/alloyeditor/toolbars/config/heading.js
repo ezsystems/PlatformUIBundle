@@ -43,6 +43,7 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
             'ezblocktextaligncenter',
             'ezblocktextalignright',
             'ezblocktextalignjustify',
+            'ezblockremove',
         ],
 
         /**
