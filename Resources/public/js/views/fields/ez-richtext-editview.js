@@ -339,10 +339,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                         }, {
                             name: 'text',
                             buttons: [
-                                'bold', 'italic', 'underline',
-                                'paragraphLeft', 'paragraphCenter', 'paragraphRight', 'paragraphJustify',
-                                'ul', 'ol',
-                                'link',
+                                'bold', 'italic', 'underline', 'link',
                             ],
                             test: AlloyEditor.SelectionTest.text
                         }, {
