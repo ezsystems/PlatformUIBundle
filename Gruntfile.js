@@ -19,6 +19,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/services/plugins/*.js",
             "./Resources/public/js/models/*.js",
             "./Resources/public/js/models/structs/*.js",
+            "./Resources/public/js/models/extensions/*.js",
             "./Resources/public/js/extensions/*.js",
             "./Resources/public/js/external/*.js",
             "./Resources/public/js/services/*.js",

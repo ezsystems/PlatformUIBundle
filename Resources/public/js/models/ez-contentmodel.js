@@ -20,7 +20,7 @@ YUI.add('ez-contentmodel', function (Y) {
      * @constructor
      * @extends eZ.RestModel
      */
-    Y.eZ.Content = Y.Base.create('contentModel', Y.eZ.RestModel, [], {
+    Y.eZ.Content = Y.Base.create('contentModel', Y.eZ.RestModel, [Y.eZ.ContentInfoAttributes], {
         /**
          * Override of the eZ.RestModel _parseStruct method to also read the
          * fields of the current version
@@ -77,7 +77,7 @@ YUI.add('ez-contentmodel', function (Y) {
          * directly passed to the corresponding ContentService methods.
          *
          * @method sync
-         * @param {String} action the action, currently only 'read' is supported
+         * @param {String} action the action, currently only 'read' and 'create' are supported
          * @param {Object} options the options for the sync.
          * @param {Object} options.api (required) the JS REST client instance
          * @param {Function} callback a callback executed when the operation is finished
@@ -163,7 +163,7 @@ YUI.add('ez-contentmodel', function (Y) {
         },
 
         /**
-         * Filters the relations on this content by type or optionnally by field
+         * Filters the relations on this content by type or optionally by field
          * definition identifier.
          *
          * @method relations
@@ -216,86 +216,6 @@ YUI.add('ez-contentmodel', function (Y) {
             'Owner', 'MainLocation', 'ContentType'
         ],
         ATTRS: {
-            /**
-             * The content id of the content in the eZ Publish repository
-             *
-             * @attribute contentId
-             * @default ''
-             * @type string
-             */
-            contentId: {
-                value: ''
-            },
-
-            /**
-             * The name of the content
-             *
-             * @attribute name
-             * @default ''
-             * @type string
-             */
-            name: {
-                value: ''
-            },
-
-            /**
-             * The remote id of the content in the eZ Publish repository
-             *
-             * @attribute remoteId
-             * @default ''
-             * @type string
-             */
-            remoteId: {
-                value: ''
-            },
-
-            /**
-             * The always available flag of the content
-             *
-             * @attribute alwaysAvailable
-             * @default false
-             * @type boolean
-             */
-            alwaysAvailable: {
-                setter: '_setterBoolean',
-                value: false
-            },
-
-            /**
-             * The last modification date of the content
-             *
-             * @attribute lastModificationDate
-             * @default epoch
-             * @type Date
-             */
-            lastModificationDate: {
-                setter: '_setterDate',
-                value: new Date(0)
-            },
-
-            /**
-             * The main language code of the content (eng-GB, fre-FR, ...)
-             *
-             * @attribute mainLanguageCode
-             * @default ''
-             * @type string
-             */
-            mainLanguageCode: {
-                value: ''
-            },
-
-            /**
-             * The published date of the content
-             *
-             * @attribute publishedDate
-             * @default epoch
-             * @type Date
-             */
-            publishedDate: {
-                setter: '_setterDate',
-                value: ''
-            },
-
             /**
              * Fields in the current version of the content indexed by field
              * definition identifier

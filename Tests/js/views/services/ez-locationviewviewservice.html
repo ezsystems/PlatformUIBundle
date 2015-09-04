@@ -32,8 +32,12 @@
                 fullpath: "../../../../Resources/public/js/views/services/ez-viewservice.js"
             },
             "ez-contentmodel": {
-                requires: ['ez-restmodel', 'array-extras'],
+                requires: ['ez-restmodel', 'array-extras', 'ez-contentinfo-attributes'],
                 fullpath: "../../../../Resources/public/js/models/ez-contentmodel.js"
+            },
+            "ez-contentinfo-attributes": {
+                requires: ['ez-restmodel'],
+                fullpath: "../../../../Resources/public/js/models/extensions/ez-contentinfo-attributes.js"
             },
             "ez-contenttypemodel": {
                 requires: ['ez-restmodel'],
