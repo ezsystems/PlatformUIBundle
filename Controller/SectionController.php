@@ -14,11 +14,13 @@ use eZ\Publish\API\Repository\SectionService;
 use eZ\Publish\API\Repository\Values\Content\Section;
 use eZ\Bundle\EzPublishCoreBundle\Controller;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
+use EzSystems\PlatformUIBundle\Notification\Notification;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
 use EzSystems\PlatformUIBundle\Notification\TranslatableNotificationMessage;
 use EzSystems\RepositoryForms\Data\Mapper\SectionMapper;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
-use EzSystems\RepositoryForms\Form\Type\SectionType;
+use EzSystems\RepositoryForms\Form\Type\Section\SectionDeleteType;
+use EzSystems\RepositoryForms\Form\Type\Section\SectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -59,9 +61,15 @@ class SectionController extends Controller
         try {
             $sectionList = $this->sectionService->loadSections();
             $contentCountBySectionId = [];
+            $deleteFormsBySectionId = [];
 
             foreach ($sectionList as $section) {
-                $contentCountBySectionId[$section->id] = $this->sectionService->countAssignedContents($section);
+                $sectionId = $section->id;
+                $contentCountBySectionId[$sectionId] = $this->sectionService->countAssignedContents($section);
+                $deleteFormsBySectionId[$sectionId] = $this->createForm(
+                    new SectionDeleteType($this->sectionService),
+                    ['sectionId' => $sectionId]
+                )->createView();
             }
 
             return $this->render('eZPlatformUIBundle:Section:list.html.twig', [
@@ -69,6 +77,7 @@ class SectionController extends Controller
                 'canAssign' => $this->isGranted(new Attribute('section', 'assign')),
                 'sectionList' => $sectionList,
                 'contentCountBySection' => $contentCountBySectionId,
+                'deleteFormsBySectionId' => $deleteFormsBySectionId,
             ]);
         } catch (UnauthorizedException $e) {
             return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
@@ -86,9 +95,11 @@ class SectionController extends Controller
     {
         try {
             $section = $this->sectionService->loadSection($sectionId);
+            $deleteForm = $this->createForm(new SectionDeleteType($this->sectionService), ['sectionId' => $sectionId]);
 
             return $this->render('eZPlatformUIBundle:Section:view.html.twig', [
                 'section' => $section,
+                'deleteForm' => $deleteForm->createView(),
                 'contentCount' => $this->sectionService->countAssignedContents($section),
                 'canEdit' => $this->isGranted(new Attribute('section', 'edit')),
                 'canAssign' => $this->isGranted(new Attribute('section', 'assign')),
@@ -105,22 +116,38 @@ class SectionController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteAction($sectionId)
+    public function deleteAction(Request $request, $sectionId, $redirectErrorsTo = 'list')
     {
         try {
             $section = $this->sectionService->loadSection($sectionId);
-            $this->sectionService->deleteSection($section);
+            $deleteForm = $this->createForm(new SectionDeleteType($this->sectionService), ['sectionId' => $sectionId]);
         } catch (UnauthorizedException $e) {
             return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
         }
 
-        $this->notificationPool->addNotification(new TranslatableNotificationMessage([
-            'message' => 'section.deleted',
-            'translationParams' => ['%sectionName%' => $section->name],
-            'domain' => 'section',
-        ]));
+        $deleteForm->handleRequest($request);
+        if ($deleteForm->isValid()) {
+            $this->sectionService->deleteSection($section);
+            $this->notificationPool->addNotification(new TranslatableNotificationMessage([
+                'message' => 'section.deleted',
+                'translationParams' => ['%sectionName%' => $section->name],
+                'domain' => 'section',
+            ]));
 
-        return $this->redirect($this->generateUrl('admin_sectionlist'));
+            return $this->redirect($this->generateUrl('admin_sectionlist'));
+        }
+
+        // Form validation failed. Send errors as notifications.
+        foreach ($deleteForm->getErrors(true) as $error) {
+            $this->notificationPool->addNotification(new TranslatableNotificationMessage([
+                'message' => $error->getMessageTemplate(),
+                'translationParams' => $error->getMessageParameters(),
+                'number' => $error->getMessagePluralization(),
+                'domain' => 'ezrepoforms_section',
+            ]), Notification::STATE_ERROR);
+        }
+
+        return $this->redirect($this->generateUrl("admin_section{$redirectErrorsTo}", ['sectionId' => $sectionId]));
     }
 
     /**

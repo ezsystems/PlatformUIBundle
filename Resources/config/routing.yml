@@ -57,9 +57,13 @@ admin_sectionedit:
         sectionId: \d+
 
 admin_sectiondelete:
-    path: /pjax/section/delete/{sectionId}
+    path: /pjax/section/delete/{sectionId}/{redirectErrorsTo}
+    methods: [POST]
     defaults:
         _controller: ezsystems.platformui.controller.section:deleteAction
+        redirectErrorsTo: list
+    requirements:
+        redirectErrorsTo: (list|view)
 
 admin_contenttype:
     path: /contenttype

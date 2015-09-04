@@ -42,29 +42,29 @@
             </p>
 
             <div>
-            {% if canEdit %}
-                <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}"
-                   class="pure-button ez-button" data-icon="&#xe606;">
-                    {{ 'section.edit'|trans }}
-                </a>
+                {{ form_start(deleteForm, {"action": path("admin_sectiondelete", {"sectionId": section.id, "redirectErrorsTo": "view"})}) }}
+                {% if canEdit %}
+                    <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}"
+                       class="pure-button ez-button" data-icon="&#xe606;">
+                        {{ 'section.edit'|trans }}
+                    </a>
+                {% else %}
+                    <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">
+                        {{ 'section.edit'|trans }}
+                    </span>
+                {% endif %}
 
-                <a href="{{ path("admin_sectiondelete", {"sectionId": section.id}) }}"
-                   class="pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"
-                   data-icon="&#xe606;">
-                    {{ "section.view.delete"|trans }}
-                </a>
-
-            {% else %}
-                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">
-                    {{ 'section.edit'|trans }}
-                </span>
-
-                <span class="pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete pure-button-disabled"
-                      data-icon="&#xe606;">
-                    {{ "section.view.delete"|trans }}
-                </span>
-
-            {% endif %}
+                    {{ form_widget(deleteForm.sectionId) }}
+                    {{
+                        form_widget(
+                            deleteForm.delete,
+                            {
+                                "disabled": not canEdit,
+                                "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"}
+                            }
+                        )
+                    }}
+                {{ form_end(deleteForm) }}
             </div>
         </div>
 

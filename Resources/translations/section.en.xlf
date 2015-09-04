@@ -92,10 +92,6 @@
                 <source>section.cancel</source>
                 <target>Cancel</target>
             </trans-unit>
-            <trans-unit id="1a1e659cce751325d5267ae1c8be9b33" resname="section.view.delete">
-                <source>section.view.delete</source>
-                <target>Delete this section</target>
-            </trans-unit>
             <trans-unit id="22e8e66a091b0c1227c4461e51e06443">
                 <source>section.deleted</source>
                 <target>The Section "%sectionName%" was correctly deleted.</target>
