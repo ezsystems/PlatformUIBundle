@@ -11,7 +11,7 @@ env:
       BEFORE_GLOBAL="./bin/travis/prepare_behat.sh"
       BEFORE_LOCAL="pwd"
       BEFORE_TEST="cd $HOME/build/ezplatform"
-      TEST_CMD="php bin/behat -vv --profile demo --suite clean"
+      TEST_CMD="php bin/behat -vv --profile platformui --tags common"
     - TYPE="js-tests"
       BEFORE_GLOBAL="npm install -g grunt-cli grover bower"
       BEFORE_LOCAL="./bin/travis/localjsdeps.sh"
