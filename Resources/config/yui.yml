@@ -25,9 +25,6 @@ system:
                 ez-alloyeditor-plugin-embed:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/plugins/embed.js
-                ez-alloyeditor-toolbar-appendcontent:
-                    requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/appendcontent.js
                 ez-alloyeditor-button-heading:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/heading.js
@@ -467,7 +464,6 @@ system:
                         - 'ez-alloyeditor-plugin-embed'
                         - 'ez-alloyeditor-plugin-addcontent'
                         - 'ez-alloyeditor-plugin-removeblock'
-                        - 'ez-alloyeditor-toolbar-appendcontent'
                         - 'ez-alloyeditor-toolbar-config-heading'
                         - 'ez-alloyeditor-button-heading'
                         - 'ez-alloyeditor-button-embed'
