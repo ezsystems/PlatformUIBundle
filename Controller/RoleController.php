@@ -140,6 +140,7 @@ class RoleController extends Controller
 
         // Synchronize form and data.
         $form->handleRequest($request);
+        $hasErrors = false;
         if ($form->isValid()) {
             try {
                 $this->actionDispatcher->dispatchFormAction(
@@ -158,6 +159,8 @@ class RoleController extends Controller
             }
 
             return $this->redirect($actionUrl);
+        } elseif ($form->isSubmitted()) {
+            $hasErrors = true;
         }
 
         // TODO: Just a temporary implementation of draft handling. To be done properly in follow-up: EZP-24701
@@ -175,6 +178,7 @@ class RoleController extends Controller
             'action_url' => $actionUrl,
             'role' => $role,
             'role_name' => $roleName,
+            'hasErrors' => $hasErrors,
         ]);
     }
 

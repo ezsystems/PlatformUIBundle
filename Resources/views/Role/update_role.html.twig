@@ -54,3 +54,10 @@
         {{ form_end(form) }}
     </section>
 {% endblock %}
+
+{% block notification %}
+    {% if hasErrors|length %}
+        <li data-state="error">{{ "form.validation_error"|trans(domain="general") }}</li>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
