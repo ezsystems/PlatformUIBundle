@@ -56,6 +56,10 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
 
     public function processDefaultAction(FormActionEvent $event)
     {
+        if ($event->getClickedButton() === 'removeDraft') {
+            return;
+        }
+
         $this->addNotification('content_type.notification.draft_updated');
     }
 
