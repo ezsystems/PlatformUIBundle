@@ -55,7 +55,7 @@ YUI.add('ez-alloyeditor-button-heading-tests', function (Y) {
             });
             Mock.expect(nat, {
                 method: 'execCommand',
-                args: ['eZAppendContent', Mock.Value.Object],
+                args: ['eZAddContent', Mock.Value.Object],
                 run: function (command, data) {
                     Assert.areEqual(
                         data.tagName, 'h1',
@@ -78,7 +78,7 @@ YUI.add('ez-alloyeditor-button-heading-tests', function (Y) {
             delete this.editor;
         },
 
-        "Should execute the eZAppendContent command": function () {
+        "Should execute the eZAddContent command": function () {
             var button;
 
             button = React.render(

@@ -34,7 +34,7 @@ YUI.add('ez-alloyeditor-button-heading', function (Y) {
 
         getDefaultProps: function () {
             return {
-                command: 'eZAppendContent',
+                command: 'eZAddContent',
                 modifiesSelection: true,
             };
         },

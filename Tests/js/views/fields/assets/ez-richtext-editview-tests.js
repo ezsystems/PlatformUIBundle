@@ -25,7 +25,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     FIELDVALUE_RESULT = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
     FIELDVALUE_RESULT += '<p>I\'m not empty</p></section>';
 
-    CKEDITOR.plugins.add('ezappendcontent', {});
+    CKEDITOR.plugins.add('ezaddcontent', {});
     CKEDITOR.plugins.add('ezremoveblock', {});
     CKEDITOR.plugins.add('ezembed', {});
 
@@ -430,8 +430,8 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             );
         },
 
-        "Should add the ezappendcontent plugin": function () {
-            this._testExtraPlugins('ezappendcontent');
+        "Should add the ezaddcontent plugin": function () {
+            this._testExtraPlugins('ezaddcontent');
         },
 
         "Should add the ezremoveblock plugin": function () {

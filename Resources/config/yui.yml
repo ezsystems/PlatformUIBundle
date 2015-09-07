@@ -16,9 +16,9 @@ system:
                 ez-alloyeditor-toolbar-config-heading:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/heading.js
-                ez-alloyeditor-plugin-appendcontent:
+                ez-alloyeditor-plugin-addcontent:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/appendcontent.js
+                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/addcontent.js
                 ez-alloyeditor-plugin-removeblock:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/plugins/removeblock.js
@@ -465,7 +465,7 @@ system:
                         - 'ez-alloyeditor'
                         - 'ez-richtextfocusmodebarview'
                         - 'ez-alloyeditor-plugin-embed'
-                        - 'ez-alloyeditor-plugin-appendcontent'
+                        - 'ez-alloyeditor-plugin-addcontent'
                         - 'ez-alloyeditor-plugin-removeblock'
                         - 'ez-alloyeditor-toolbar-appendcontent'
                         - 'ez-alloyeditor-toolbar-config-heading'

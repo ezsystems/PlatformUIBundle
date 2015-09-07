@@ -127,7 +127,7 @@ YUI.add('ez-richtext-editview', function (Y) {
             editor = AlloyEditor.editable(
                 this.get('container').one('.ez-richtext-editor').getDOMNode(), {
                     toolbars: this.get('toolbarsConfig'),
-                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezappendcontent,widget,ezembed,ezremoveblock',
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezaddcontent,widget,ezembed,ezremoveblock',
                     eZ: {
                         editableRegion: '.ez-richtext-editable',
                     },

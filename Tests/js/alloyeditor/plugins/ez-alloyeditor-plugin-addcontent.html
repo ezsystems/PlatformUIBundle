@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>eZ AlloyEditor appendcontent plugin tests</title>
+<title>eZ AlloyEditor addcontent plugin tests</title>
 </head>
 <body>
 
@@ -16,7 +16,7 @@
 <script type="text/javascript" src="../../assets/function.bind.polyfill.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
-<script type="text/javascript" src="./assets/ez-alloyeditor-plugin-appendcontent-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-alloyeditor-plugin-addcontent-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -31,14 +31,14 @@
     }
 
     YUI({
-        coverage: ['ez-alloyeditor-plugin-appendcontent'],
+        coverage: ['ez-alloyeditor-plugin-addcontent'],
         filter: loaderFilter,
         modules: {
-            "ez-alloyeditor-plugin-appendcontent": {
-                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/appendcontent.js",
+            "ez-alloyeditor-plugin-addcontent": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/addcontent.js",
             },
         }
-    }).use('ez-alloyeditor-plugin-appendcontent-tests', function (Y) {
+    }).use('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>

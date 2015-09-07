@@ -57,7 +57,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
             });
             Mock.expect(nat, {
                 method: 'execCommand',
-                args: ['eZAppendContent', Mock.Value.Object],
+                args: ['eZAddContent', Mock.Value.Object],
                 run: function (command, data) {
                     Assert.areEqual(
                         data.tagName, 'ezembed',
@@ -102,7 +102,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
             delete this.editor;
         },
 
-        "Should execute the eZAppendContent command": function () {
+        "Should execute the eZAddContent command": function () {
             var button;
 
             button = React.render(
@@ -114,7 +114,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
         },
 
         "Should initialize the widget on the ezembed element": function () {
-            this["Should execute the eZAppendContent command"]();
+            this["Should execute the eZAddContent command"]();
 
             Mock.verify(this.widgets);
         },

@@ -34,13 +34,13 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
 
         getDefaultProps: function () {
             return {
-                command: 'eZAppendContent',
+                command: 'eZAddContent',
                 modifiesSelection: true,
             };
         },
 
         /**
-         * Executes the eZAppendContent to add an embed element in the editor.
+         * Executes the eZAddContent to add an embed element in the editor.
          *
          * @method _addEmbed
          * @protected
