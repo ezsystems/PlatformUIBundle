@@ -173,21 +173,13 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 );
                 Y.Array.each(variables.path, function (entry) {
                     Y.Assert.isInstanceOf(
-                        Y.eZ.Content, entry.content,
-                        "Each path entry should have Y.eZ.Content instance"
-                    );
-                    Y.Assert.isInstanceOf(
-                        Y.eZ.Location, entry.location,
-                        "Each path entry should have Y.eZ.Location instance"
-                    );
-                    Y.Assert.isTrue(
-                        entry.location.get('resources').Content === entry.content.get('id'),
-                        "The content and the location in each path entry should match"
+                        Y.eZ.Location, entry,
+                        "Each path entry should been a Y.eZ.Location instance"
                     );
                     if ( prevLocation ) {
                         Y.Assert.areSame(
                             prevLocation.get('id'),
-                            entry.location.get('resources').ParentLocation,
+                            entry.get('resources').ParentLocation,
                             "Each location entry should be the parent of the next one"
                         );
                     }
@@ -254,15 +246,15 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             Y.Assert.isTrue(errorCalled, "The error event should have been fired");
         },
 
-        "Should load the location, the content and the path for the leaf location": function () {
+        "Should load the location and the path for the leaf location": function () {
             this._normalLoading(this.leafLocationId);
         },
 
-        "Should load the location, the content and the path for an intermediate location": function () {
+        "Should load the location and the path for an intermediate location": function () {
             this._normalLoading('/api/ezp/v2/content/locations/1/2/67/68');
         },
 
-        "Should load the location, the content and the path for the root location": function () {
+        "Should load the location and the path for the root location": function () {
             this._normalLoading(this.rootLocationId);
         },
 
@@ -324,22 +316,10 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             var service,
                 pathInput = [], pathOut, i;
 
-            pathInput.push({
-                location: new Y.eZ.Location({depth: 2}),
-                content: {}
-            });
-            pathInput.push({
-                location: new Y.eZ.Location({depth: 3}),
-                content: {}
-            });
-            pathInput.push({
-                location: new Y.eZ.Location({depth: 1}),
-                content: {}
-            });
-            pathInput.push({
-                location: new Y.eZ.Location({depth: 0}),
-                content: {}
-            });
+            pathInput.push(new Y.eZ.Location({depth: 2}));
+            pathInput.push(new Y.eZ.Location({depth: 3}));
+            pathInput.push(new Y.eZ.Location({depth: 1}));
+            pathInput.push(new Y.eZ.Location({depth: 0}));
 
             service = new Y.eZ.LocationViewViewService({request: this.request});
             service.set('path', pathInput);
@@ -352,7 +332,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
 
             for (i = 0; i != pathOut.length; ++i) {
                 Y.Assert.areSame(
-                    i, pathOut[i].location.get('depth'),
+                    i, pathOut[i].get('depth'),
                     "The path should be sorted by depth"
                 );
             }
@@ -371,20 +351,6 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             Y.Assert.isInstanceOf(Y.eZ.Location, service.testNewLocation());
             Y.Assert.areSame(id, service.testNewLocation({'id': id}).get('id'));
         },
-
-        "Should create a content": function () {
-            var TestService, service, id = 'myid';
-
-            TestService = Y.Base.create('testService', Y.eZ.LocationViewViewService, [], {
-                testNewContent: function (conf) {
-                    return this._newContent(conf);
-                }
-            });
-
-            service = new TestService({request: this.request});
-            Y.Assert.isInstanceOf(Y.eZ.Content, service.testNewContent());
-            Y.Assert.areSame(id, service.testNewContent({'id': id}).get('id'));
-        }
     });
 
     eventTest = new Y.Test.Case({

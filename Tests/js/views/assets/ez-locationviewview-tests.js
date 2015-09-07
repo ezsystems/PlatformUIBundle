@@ -15,6 +15,25 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 returns: serialized
             });
             return mock;
+        },
+        _getLocationModelMock = function (serializedLocation, serializedContentInfo) {
+            var locationMock = new Y.Test.Mock(),
+                contentInfoMock = new Y.Test.Mock();
+
+            Y.Mock.expect(contentInfoMock, {
+                method: 'toJSON',
+                returns: serializedContentInfo
+            });
+            Y.Mock.expect(locationMock, {
+                method: 'toJSON',
+                returns: serializedLocation
+            });
+            Y.Mock.expect(locationMock, {
+                method: 'get',
+                args: ['contentInfo'],
+                returns: contentInfoMock
+            });
+            return locationMock;
         };
 
     test = new Y.Test.Case({
@@ -91,31 +110,27 @@ YUI.add('ez-locationviewview-tests', function (Y) {
 
         "Test available variables in the template": function () {
             var plainLocations = [{}, {}, {}],
-                plainContents = [{}, {}, {}],
+                plainContentInfos = [{}, {}, {}],
                 origTpl = this.view.template,
                 location = this.locationMock,
                 content = this.contentMock,
                 that = this;
 
             Y.Array.each(plainLocations, function (val, k) {
-                this.path.push({
-                    location: _getModelMock(plainLocations[k]),
-                    content: _getModelMock(plainContents[k])
-                });
+                this.path.push(_getLocationModelMock(plainLocations[k], plainContentInfos[k]));
             }, this);
 
             this.view.template = function (variables) {
                 Y.Array.each(variables.path, function (struct, k) {
                     Y.Mock.verify(struct.location);
-                    Y.Mock.verify(struct.content);
+                    Y.Mock.verify(struct.contentInfo);
                     Y.Assert.areSame(
                         struct.location, plainLocations[k],
                         "path[i].location.toJSON() be passed to the template"
                     );
-
                     Y.Assert.areSame(
-                        struct.content, plainContents[k],
-                        "path[i].content.toJSON() be passed to the template"
+                        struct.contentInfo, plainContentInfos[k],
+                        "path[i].contentInfo.toJSON() be passed to the template"
                     );
                 });
                 Y.Mock.verify(location);
@@ -160,16 +175,20 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 that = this;
 
             Y.Array.each(contentPathNames, function (val) {
-                var content = new Y.Mock();
-                Y.Mock.expect(content, {
+                var contentInfoMock = new Y.Mock(),
+                    locationMock = new Y.Mock();
+                Y.Mock.expect(contentInfoMock, {
                     method: 'get',
                     args: ['name'],
                     returns: val
                 });
-                that.path.push({
-                    location: {},
-                    content: content
+                Y.Mock.expect(locationMock, {
+                    method: 'get',
+                    args: ['contentInfo'],
+                    returns: contentInfoMock
                 });
+
+                that.path.push(locationMock);
             });
 
             Y.Mock.expect(content, {
