@@ -14,6 +14,10 @@
         <source>javascript.enable</source>
         <target>Please enable JavaScript to use the eZ Platform User Interface.</target>
       </trans-unit>
+      <trans-unit id="dba24ddba6fe8e0982045daf2f9d4e5d" resname="form.validation_error">
+        <source>form.validation_error</source>
+        <target>Form did not validate. Please review errors below.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

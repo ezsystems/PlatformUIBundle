@@ -26,12 +26,12 @@
     {% block content %}{% endblock %}
 </div>
 
-{% block notification %}
 <ul data-name="notification">
+{% block notification %}
     {% set notifications = app.session.flashBag.get("notification") %}
     {% for notification in notifications %}
         <li data-state="{{ notification.state }}">{{ notification.message }}</li>
 
     {% endfor %}
-</ul>
 {% endblock %}
+</ul>

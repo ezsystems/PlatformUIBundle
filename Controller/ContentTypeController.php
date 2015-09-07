@@ -177,6 +177,7 @@ class ContentTypeController extends Controller
 
         // Synchronize form and data.
         $form->handleRequest($request);
+        $hasErrors = false;
         if ($form->isValid()) {
             $this->actionDispatcher->dispatchFormAction(
                 $form,
@@ -190,6 +191,8 @@ class ContentTypeController extends Controller
             }
 
             return $this->redirect($actionUrl);
+        } elseif ($form->isSubmitted()) {
+            $hasErrors = true;
         }
 
         return $this->render('eZPlatformUIBundle:ContentType:update_content_type.html.twig', [
@@ -199,6 +202,7 @@ class ContentTypeController extends Controller
             'contentTypeDraft' => $contentTypeDraft,
             'modifier' => $this->userService->loadUser($contentTypeDraft->modifierId),
             'languageCode' => $languageCode,
+            'hasErrors' => $hasErrors,
         ]);
     }
 }
