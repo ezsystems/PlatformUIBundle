@@ -34,19 +34,9 @@ class RoleFormProcessor implements EventSubscriberInterface
      */
     private $notificationPool;
 
-    /**
-     * @var RoleService
-     */
-    private $roleService;
-
-    public function __construct(
-        RouterInterface $router,
-        NotificationPoolInterface $notificationPool,
-        RoleService $roleService
-    ) {
+    public function __construct(RouterInterface $router, NotificationPoolInterface $notificationPool) {
         $this->router = $router;
         $this->notificationPool = $notificationPool;
-        $this->roleService = $roleService;
     }
 
     public static function getSubscribedEvents()
@@ -67,20 +57,8 @@ class RoleFormProcessor implements EventSubscriberInterface
 
     public function processSaveRole(FormActionEvent $event)
     {
-        /** @var \EzSystems\RepositoryForms\Data\RoleData $roleData */
-        $roleData = $event->getData();
-        $role = $roleData->role;
-        try {
-            $this->roleService->updateRole($role, $roleData);
-            $event->setResponse(
-                new RedirectResponse($this->router->generate('admin_roleList'))
-            );
-            $this->addNotification('role.notification.published');
-        } catch (UnauthorizedException $e) {
-            $this->addError('role.notification.unauthorized');
-        } catch (InvalidArgumentException $e) {
-            $this->addError('role.notification.invalid_argument');
-        }
+        $event->setResponse(new RedirectResponse($this->router->generate('admin_roleList')));
+        $this->addNotification('role.notification.published');
     }
 
     public function processRemoveDraft(FormActionEvent $event)
@@ -88,11 +66,7 @@ class RoleFormProcessor implements EventSubscriberInterface
         $role = $event->getData()->role;
         // TODO: This is just a temporary implementation of draft removal. To be done properly in follow-up: EZP-24701
         if (preg_match('/^__new__[a-z0-9]{32}$/', $role->identifier) === 1) {
-            try {
-                $this->roleService->deleterole($role);
-            } catch (UnauthorizedException $e) {
-                $this->addError('role.notification.unauthorized');
-            }
+            $this->addNotification('role.notification.draft_removed');
         }
 
         $event->setResponse(
@@ -106,16 +80,5 @@ class RoleFormProcessor implements EventSubscriberInterface
             'message' => $message,
             'domain' => 'role',
         ]));
-    }
-
-    private function addError($message)
-    {
-        $this->notificationPool->addNotification(
-            new TranslatableNotificationMessage([
-                'message' => $message,
-                'domain' => 'role',
-            ]),
-            Notification::STATE_ERROR
-        );
     }
 }
