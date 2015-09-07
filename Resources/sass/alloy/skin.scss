@@ -59,8 +59,8 @@ $toolbar-border-radius: 3px;
 $toolbar-button-active-bg-color: $color-anchor-active;
 $toolbar-button-hover-color: $color-primary;
 
-$toolbar-add-bg-color: #fff;
-$toolbar-add-border-color: $color-secondary-light;
-$toolbar-add-border-radius: 4px;
-$toolbar-add-font-color: $color-secondary;
-$toolbar-add-icon-size: 22px;
+$toolbar-add-bg-color: $color-anchor-navy;
+$toolbar-add-border-color: $color-anchor-navy;
+$toolbar-add-border-radius: 50%;
+$toolbar-add-font-color: #fff;
+$toolbar-add-icon-size: 18px;

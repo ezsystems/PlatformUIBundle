@@ -308,8 +308,8 @@
 }
 
 .ae-ui .ae-toolbar-add .ae-button {
-  height: 44px;
-  width: 44px;
+  height: 40px;
+  width: 40px;
 }
 
 .ae-ui .ae-arrow-box:after {
@@ -918,10 +918,10 @@
 }
 
 .ae-ui .ae-toolbar-add {
-  background-color: #fff;
-  border-color: #c0cbd4;
-  border-radius: 4px;
-  color: #869CAD;
+  background-color: #333;
+  border-color: #333;
+  border-radius: 50%;
+  color: #fff;
 }
 
 .ae-ui .ae-toolbar-add:hover,
@@ -935,8 +935,8 @@
 }
 
 .ae-ui .ae-toolbar-add .ae-button-add .ae-icon-add {
-  font-size: 22px;
-  line-height: 22px;
+  font-size: 18px;
+  line-height: 18px;
 }
 
 [class*="ae-icon-"],
