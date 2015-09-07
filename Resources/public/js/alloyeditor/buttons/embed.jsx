@@ -59,13 +59,9 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
          */
         _refreshWidget: function () {
             var editor = this.props.editor.get('nativeEditor'),
-                embedElements;
+                embed = editor.getSelection().getStartElement();
 
-            embedElements = editor.element.find('ezembed');
-            editor.widgets.initOn(
-                embedElements.getItem(embedElements.count() - 1),
-                'ezembed'
-            );
+            editor.widgets.initOn(embed, 'ezembed');
         },
 
         render: function () {

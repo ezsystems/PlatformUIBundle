@@ -45,6 +45,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
 
         setUp: function () {
             var nat = new Mock(),
+                selection = new Mock(),
                 list = new Mock(),
                 ezembed = {};
 
@@ -73,22 +74,14 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
                 method: 'fire',
                 args: ['actionPerformed', Mock.Value.Object],
             });
-            nat.element = new Mock();
             nat.widgets = new Mock();
-
-            Mock.expect(nat.element, {
-                method: 'find',
-                args: ['ezembed'],
-                returns: list,
+            Mock.expect(nat, {
+                method: 'getSelection',
+                returns: selection,
             });
-            Mock.expect(list, {
-                method: 'count',
-                returns: 2,
-            });
-            Mock.expect(list, {
-                method: 'getItem',
-                args: [1],
-                returns: ezembed,
+            Mock.expect(selection, {
+                method: 'getStartElement',
+                returns: ezembed
             });
             Mock.expect(nat.widgets, {
                 method: 'initOn',
