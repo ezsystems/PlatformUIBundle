@@ -118,41 +118,30 @@ class RoleController extends Controller
      */
     public function updateRoleAction(Request $request, $roleId)
     {
+        if (!$this->isGranted(new Attribute('role', 'update'))) {
+            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
+        }
+
         try {
             $role = $this->roleService->loadRole($roleId);
         } catch (NotFoundException $e) {
             $this->addErrorMessage('role.error.role_not_found');
-
-            return $this->redirect(
-                $this->generateUrl('admin_roleList')
-            );
+            return $this->redirect($this->generateUrl('admin_roleList'));
         }
 
         $roleData = (new RoleMapper())->mapToFormData($role);
-        $form = $this->createForm(
-            'ezrepoforms_role_update',
-            $roleData
-        );
-        $actionUrl = $this->generateUrl(
-            'admin_roleUpdate',
-            ['roleId' => $roleId]
-        );
+        $form = $this->createForm('ezrepoforms_role_update', $roleData);
+        $actionUrl = $this->generateUrl('admin_roleUpdate', ['roleId' => $roleId]);
 
         // Synchronize form and data.
         $form->handleRequest($request);
         $hasErrors = false;
         if ($form->isValid()) {
-            try {
-                $this->actionDispatcher->dispatchFormAction(
-                    $form,
-                    $roleData,
-                    $form->getClickedButton()->getName()
-                );
-            } catch (InvalidArgumentException $e) {
-                $this->addErrorMessage('role.error.name_exists');
-            } catch (UnauthorizedException $e) {
-                return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-            }
+            $this->actionDispatcher->dispatchFormAction(
+                $form,
+                $roleData,
+                $form->getClickedButton()->getName()
+            );
 
             if ($response = $this->actionDispatcher->getResponse()) {
                 return $response;
