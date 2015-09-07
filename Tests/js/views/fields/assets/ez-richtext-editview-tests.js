@@ -26,6 +26,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     FIELDVALUE_RESULT += '<p>I\'m not empty</p></section>';
 
     CKEDITOR.plugins.add('ezappendcontent', {});
+    CKEDITOR.plugins.add('ezremoveblock', {});
     CKEDITOR.plugins.add('ezembed', {});
 
     renderTest = new Y.Test.Case({
@@ -433,6 +434,10 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this._testExtraPlugins('ezappendcontent');
         },
 
+        "Should add the ezremoveblock plugin": function () {
+            this._testExtraPlugins('ezremoveblock');
+        },
+
         "Should add the widget plugin": function () {
             this._testExtraPlugins('widget');
         },
@@ -722,4 +727,4 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(appendToolbarConfigTest);
     Y.Test.Runner.add(registerTest);
     Y.Test.Runner.add(editorFocusHandlingTest);
-}, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'editviewregister-tests', 'ez-richtext-editview']});
+}, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'fake-toolbarconfig', 'editviewregister-tests', 'ez-richtext-editview']});

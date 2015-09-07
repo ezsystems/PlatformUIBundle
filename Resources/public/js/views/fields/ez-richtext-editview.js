@@ -127,7 +127,7 @@ YUI.add('ez-richtext-editview', function (Y) {
             editor = AlloyEditor.editable(
                 this.get('container').one('.ez-richtext-editor').getDOMNode(), {
                     toolbars: this.get('toolbarsConfig'),
-                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezappendcontent,widget,ezembed',
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezappendcontent,widget,ezembed,ezremoveblock',
                     eZ: {
                         editableRegion: '.ez-richtext-editable',
                     },
@@ -339,10 +339,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                         }, {
                             name: 'text',
                             buttons: [
-                                'bold', 'italic', 'underline',
-                                'paragraphLeft', 'paragraphCenter', 'paragraphRight', 'paragraphJustify',
-                                'ul', 'ol',
-                                'link',
+                                'bold', 'italic', 'underline', 'link',
                             ],
                             test: AlloyEditor.SelectionTest.text
                         }, {
@@ -351,7 +348,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                             getArrowBoxClasses: AlloyEditor.SelectionGetArrowBoxClasses.table,
                             setPosition: AlloyEditor.SelectionSetPosition.table,
                             test: AlloyEditor.SelectionTest.table
-                        }],
+                        }, Y.eZ.AlloyEditorToolbarConfig.Heading],
                         tabIndex: 1
                     },
                     ezappendcontent: {

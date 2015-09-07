@@ -47,7 +47,9 @@ YUI.add('ez-alloyeditor-plugin-appendcontent-tests', function (Y) {
     commandTest = new Y.Test.Case({
         name: "eZ AlloyEditor appendcontent plugin command test",
 
-        setUp: function () {
+        "async:init": function () {
+            var startTest = this.callback();
+
             this.editor = AlloyEditor.editable(
                 Y.one('.container').getDOMNode(), {
                     extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezappendcontent',
@@ -56,6 +58,13 @@ YUI.add('ez-alloyeditor-plugin-appendcontent-tests', function (Y) {
                     },
                 }
             );
+            this.editor.get('nativeEditor').on('instanceReady', function () {
+                startTest();
+            });
+        },
+
+        destroy: function () {
+            this.editor.destroy();
         },
 
         "Should append the content to the editable region": function () {
@@ -67,36 +76,59 @@ YUI.add('ez-alloyeditor-plugin-appendcontent-tests', function (Y) {
                 tagDefinition2 = {
                     tagName: 'h1',
                     attributes: {'class': 'added2'},
-                };
+                },
+                res, node,
 
-            this.editor.get('nativeEditor').on('instanceReady', this.next(function () {
-                var res, node;
+            nativeEditor = this.editor.get('nativeEditor');
 
-                res = this.execCommand('eZAppendContent', tagDefinition);
-                Assert.isTrue(res, "The command should have been executed");
+            res = nativeEditor.execCommand('eZAppendContent', tagDefinition);
+            Assert.isTrue(res, "The command should have been executed");
 
-                node = Y.one('.added');
-                Assert.areEqual(
-                    tagDefinition.tagName, node.get('tagName').toLowerCase(),
-                    "A h1 should have been created"
-                );
-                Assert.areEqual(
-                    tagDefinition.content, node.get('text'),
-                    "A h1 should have been created with the content"
-                );
+            node = Y.one('.added');
+            Assert.areEqual(
+                tagDefinition.tagName, node.get('tagName').toLowerCase(),
+                "A h1 should have been created"
+            );
+            Assert.areEqual(
+                tagDefinition.content, node.get('text'),
+                "A h1 should have been created with the content"
+            );
 
-                res = this.execCommand('eZAppendContent', tagDefinition2);
-                Assert.isTrue(res, "The command should have been executed");
+            res = nativeEditor.execCommand('eZAppendContent', tagDefinition2);
+            Assert.isTrue(res, "The command should have been executed");
 
-                node = Y.one('.added2');
-                Assert.areEqual(
-                    tagDefinition2.tagName, node.get('tagName').toLowerCase(),
-                    "A h1 should have been created"
-                );
-            }));
-            this.wait();
+            node = Y.one('.added2');
+            Assert.areEqual(
+                tagDefinition2.tagName, node.get('tagName').toLowerCase(),
+                "A h1 should have been created"
+            );
         },
 
+        "Should fire the corresponding `editorInteraction` event": function () {
+            var tagDefinition = {
+                    tagName: 'h1',
+                    content: 'Hey, Johnny Park!',
+                    attributes: {'class': 'added-event'},
+                },
+                nativeEditor = this.editor.get('nativeEditor');
+
+            this.editor.get('nativeEditor').on('editorInteraction', function (e) {
+                Assert.areEqual(
+                    'eZAppendContentDone', e.data.nativeEvent.name,
+                    "The nativeEvent name should eZAppendContentDone"
+                );
+                Assert.areSame(
+                    nativeEditor, e.data.nativeEvent.editor,
+                    "The nativeEvent should provide the editor"
+                );
+                Assert.areSame(
+                    Y.one('.added-event').getDOMNode(), e.data.nativeEvent.target,
+                    "The nativeEvent should have the added node as target"
+                );
+            });
+
+            nativeEditor.execCommand('eZAppendContent', tagDefinition);
+        },
     });
 
     Y.Test.Runner.setName("eZ AlloyEditor appendcontent plugin tests");

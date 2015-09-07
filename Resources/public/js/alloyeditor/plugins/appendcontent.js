@@ -37,6 +37,26 @@ YUI.add('ez-alloyeditor-plugin-appendcontent', function (Y) {
         editor.getSelection().selectRanges([range]);
     }
 
+    /**
+     * Fires the `editorInteraction` event this is done to make sure the
+     * AlloyEditor's UI remains visible
+     *
+     * @method fireEditorInteractionEvent
+     * @private
+     */
+    function fireEditorInteractionEvent(editor, element) {
+        var e = {
+                editor: editor,
+                target: element.$,
+                name: 'eZAppendContentDone',
+            };
+
+        editor.fire('editorInteraction', {
+            nativeEvent: e,
+            selectionData: editor.getSelectionData(),
+        });
+    }
+
     appendContentCommand = {
         exec: function (editor, data) {
             var element = createElement(
@@ -46,6 +66,7 @@ YUI.add('ez-alloyeditor-plugin-appendcontent', function (Y) {
             moveCaretToEnd(editor);
             editor.insertElement(element);
             moveCaretToElement(editor, element);
+            fireEditorInteractionEvent(editor, element);
         },
     };
 
