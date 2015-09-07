@@ -261,8 +261,7 @@ YUI.add('ez-richtext-editview', function (Y) {
         },
 
         /**
-         * Returns the content of the editor by removing the markup needed for
-         * the static toolbar.
+         * Returns the content of the editor.
          *
          * @method _getEditorContent
          * @protected
@@ -270,7 +269,7 @@ YUI.add('ez-richtext-editview', function (Y) {
          */
         _getEditorContent: function () {
             var data = this.get('editor').get('nativeEditor').getData(),
-                section = Y.Node.create(data).one('section');
+                section = Y.Node.create(data);
 
             if ( section ) {
                 Y.Object.each(ROOT_SECTION_ATTRIBUTES, function (value, key) {
