@@ -19,9 +19,6 @@
                     contenteditable="false"
                     id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
                 {{{ xhtml }}}
-                <div class="ez-ae-static-toolbar" contenteditable="false">
-                    <button class="ez-richtext-add-content">Add content</button>
-                </div>
             </div>
         </div></div>
     </div>

@@ -110,7 +110,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Assert.isObject(variables, "The template should receive some variables");
-                Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
+                Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 7 variables");
 
                 Assert.areSame(
                      that.jsonContent, variables.content,
@@ -134,11 +134,6 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 );
                 Assert.areSame(expectRequired, variables.isRequired);
                 Assert.areSame(expectedXhtml, variables.xhtml);
-
-                Assert.areEqual(
-                    'ez-richtext-add-content', variables.addContentButtonClass,
-                    "The addContentButtonClass variable should be available"
-                );
 
                 return origTpl.call(this, variables);
             };
@@ -673,7 +668,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     });
 
     appendToolbarConfigTest = new Y.Test.Case({
-        name: "eZ RichText View ezappendcontent toolbar config test",
+        name: "eZ RichText View ezaddcontent toolbar config test",
 
         setUp: function () {
             this.view = new Y.eZ.RichTextEditView();
@@ -684,7 +679,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
 
         _testButton: function (identifier) {
-            var config = this.view.get('toolbarsConfig').ezappendcontent;
+            var config = this.view.get('toolbarsConfig').add;
 
             Assert.isTrue(
                 config.buttons.indexOf(identifier) !== -1,
@@ -698,16 +693,6 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
         "Should configure the ezembed button": function () {
             this._testButton('ezembed');
-        },
-
-        "Should configure the addContentButtonClass": function () {
-            var config = this.view.get('toolbarsConfig').ezappendcontent;
-
-            Assert.areEqual(
-                'ez-richtext-add-content',
-                config.addContentButtonClass,
-                "The toolbar config should contain the 'ez-richtext-add-content' class"
-            );
         },
     });
 
