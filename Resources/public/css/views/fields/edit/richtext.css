@@ -3,10 +3,6 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ae-toolbars [role="toolbar"] {
-    z-index: 1200;
-}
-
 .ez-view-richtexteditview .ez-editfield-input {
     margin: 1em 2em;
 }
