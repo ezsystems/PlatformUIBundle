@@ -8,8 +8,8 @@
  */
 namespace EzSystems\PlatformUIBundle\Form\Processor;
 
+use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
-use EzSystems\PlatformUIBundle\Notification\TranslatableNotificationMessage;
 use EzSystems\RepositoryForms\Event\FormActionEvent;
 use EzSystems\RepositoryForms\Event\RepositoryFormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -18,10 +18,7 @@ use Symfony\Component\Routing\RouterInterface;
 
 class SectionFormProcessor implements EventSubscriberInterface
 {
-    /**
-     * @var NotificationPoolInterface
-     */
-    private $notificationPool;
+    use NotificationPoolAware;
 
     /**
      * @var RouterInterface
@@ -30,7 +27,7 @@ class SectionFormProcessor implements EventSubscriberInterface
 
     public function __construct(NotificationPoolInterface $notificationPool, RouterInterface $router)
     {
-        $this->notificationPool = $notificationPool;
+        $this->setNotificationPool($notificationPool);
         $this->router = $router;
     }
 
@@ -46,9 +43,9 @@ class SectionFormProcessor implements EventSubscriberInterface
         /** @var \EzSystems\RepositoryForms\Data\Section\SectionUpdateData|\EzSystems\RepositoryForms\Data\Section\SectionCreateData $sectionData */
         $sectionData = $event->getData();
         if ($sectionData->isNew()) {
-            $this->addNotification('section.notification.created', ['%sectionName%' => $sectionData->name]);
+            $this->notify('section.notification.created', ['%sectionName%' => $sectionData->name], 'section');
         } else {
-            $this->addNotification('section.notification.updated', ['%sectionName%' => $sectionData->name]);
+            $this->notify('section.notification.updated', ['%sectionName%' => $sectionData->name], 'section');
         }
 
         $event->setResponse(
@@ -56,14 +53,5 @@ class SectionFormProcessor implements EventSubscriberInterface
                 $this->router->generate('admin_sectionview', ['sectionId' => $sectionData->getId()])
             )
         );
-    }
-
-    private function addNotification($message, array $params = [])
-    {
-        $this->notificationPool->addNotification(new TranslatableNotificationMessage([
-            'message' => $message,
-            'translationParams' => $params,
-            'domain' => 'section',
-        ]));
     }
 }
