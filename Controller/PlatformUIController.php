@@ -8,7 +8,6 @@
  */
 namespace EzSystems\PlatformUIBundle\Controller;
 
-use eZ\Bundle\EzPublishCoreBundle\Controller;
 use EzSystems\PlatformUIBundle\ApplicationConfig\Provider;
 
 class PlatformUIController extends Controller

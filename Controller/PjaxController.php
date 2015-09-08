@@ -9,7 +9,6 @@
 namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Publish\Core\MVC\Symfony\Security\User as CoreUser;
-use eZ\Bundle\EzPublishCoreBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 class PjaxController extends Controller

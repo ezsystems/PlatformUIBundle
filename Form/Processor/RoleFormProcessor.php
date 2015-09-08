@@ -10,9 +10,6 @@
  */
 namespace EzSystems\PlatformUIBundle\Form\Processor;
 
-use eZ\Publish\API\Repository\Exceptions\InvalidArgumentException;
-use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
-use eZ\Publish\API\Repository\RoleService;
 use EzSystems\PlatformUIBundle\Notification\Notification;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
 use EzSystems\PlatformUIBundle\Notification\TranslatableNotificationMessage;
@@ -34,7 +31,8 @@ class RoleFormProcessor implements EventSubscriberInterface
      */
     private $notificationPool;
 
-    public function __construct(RouterInterface $router, NotificationPoolInterface $notificationPool) {
+    public function __construct(RouterInterface $router, NotificationPoolInterface $notificationPool)
+    {
         $this->router = $router;
         $this->notificationPool = $notificationPool;
     }

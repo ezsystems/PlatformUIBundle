@@ -1,5 +1,6 @@
 parameters:
     ezsystems.platformui.twig.yui_extension.class: EzSystems\PlatformUIBundle\Twig\TwigYuiExtension
+    ezsystems.platformui.controller.base.class: EzSystems\PlatformUIBundle\Controller\Controller
     ezsystems.platformui.controller.class: EzSystems\PlatformUIBundle\Controller\PlatformUIController
     ezsystems.platformui.controller.dashboard.class: EzSystems\PlatformUIBundle\Controller\DashboardController
     ezsystems.platformui.helper.systeminfo.class: EzSystems\PlatformUIBundle\Helper\SystemInfoHelper
@@ -26,11 +27,18 @@ services:
         tags:
             - { name: twig.extension }
 
+    ezsystems.platformui.controller.base:
+        class: %ezsystems.platformui.controller.base.class%
+        abstract: true
+        calls:
+            - [setContainer, [@service_container]]
+            - [setNotificationPool, [@ezsystems.platformui.notification_pool]]
+
     ezsystems.platformui.controller:
         class: %ezsystems.platformui.controller.class%
         arguments:
             - @ezsystems.platformui.application_config.aggregator
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.application_config.aggregator:
         class: %ezsystems.platformui.application_config.aggregator.class%
@@ -72,11 +80,11 @@ services:
     ezsystems.platformui.controller.template:
         class: %ezsystems.platformui.controller.template.class%
         arguments: [@ezpublish.config.resolver]
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.dashboard:
         class: %ezsystems.platformui.controller.dashboard.class%
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.helper.systeminfo:
         class: %ezsystems.platformui.helper.systeminfo.class%
@@ -88,11 +96,11 @@ services:
         class: %ezsystems.platformui.controller.systeminfo.class%
         arguments:
             - @ezsystems.platformui.helper.systeminfo
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.pjax:
         class: %ezsystems.platformui.controller.pjax.class%
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ## Section related services
     ezsystems.platformui.controller.section:
@@ -101,11 +109,11 @@ services:
             - @ezrepoforms.action_dispatcher.section
             - @ezpublish.api.service.section
             - @ezsystems.platformui.notification_pool
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.content_type:
         class: %ezsystems.platformui.controller.content_type.class%
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
         arguments:
             - @ezpublish.api.service.content_type
             - @ezpublish.api.service.search
@@ -129,7 +137,7 @@ services:
 
     ezsystems.platformui.controller.role:
         class: %ezsystems.platformui.controller.role.class%
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
         arguments:
             - @ezpublish.api.service.role
             - @ezrepoforms.action_dispatcher.role

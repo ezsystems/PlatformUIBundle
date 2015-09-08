@@ -10,7 +10,6 @@ namespace EzSystems\PlatformUIBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use eZ\Bundle\EzPublishCoreBundle\Controller;
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
 
 /**
