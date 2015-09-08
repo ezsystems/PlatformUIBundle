@@ -72,10 +72,26 @@
                     </tbody>
                 </table>
 
-                <p class="ez-table-data-buttons">
-                    <a href="{{ path('admin_roleUpdate', {"roleId": role.id}) }}" class="pure-button ez-button{% if not can_edit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'role.edit'|trans }}</a>
-                    <a href="{{ path('admin_roleDelete', {"roleId": role.id}) }}" class="pure-button ez-button{% if not can_delete %} pure-button-disabled{% endif %}" data-icon="&#xe615;">{{ 'role.delete'|trans }}</a>
-                </p>
+                {{ form_start(deleteForm, {"action": path("admin_roleDelete", {"roleId": role.id})}) }}
+                    <p class="ez-table-data-buttons">
+                    {% if can_edit %}
+                        <a href="{{ path('admin_roleUpdate', {"roleId": role.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'role.edit'|trans }}</a>
+                    {% else %}
+                        <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'role.edit'|trans }}</span>
+                    {% endif %}
+
+                        {{ form_widget(deleteForm.roleId) }}
+                        {{
+                            form_widget(
+                                deleteForm.delete,
+                                {
+                                    "disabled": not can_delete,
+                                    "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"}
+                                }
+                            )
+                        }}
+                    </p>
+                {{ form_end(deleteForm) }}
 
                 <h2>{{ 'assignment.user_or_group_using'|trans({'%role%': role.identifier, '%count%': role_assignments|length }) }}</h2>
                 <table class="pure-table pure-table-striped ez-selection-table">

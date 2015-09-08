@@ -14,7 +14,8 @@ use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\Core\Repository\Values\User\RoleCreateStruct;
 use EzSystems\RepositoryForms\Data\Mapper\RoleMapper;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
-use EzSystems\RepositoryForms\Form\Type\RoleUpdateType;
+use EzSystems\RepositoryForms\Form\Type\Role\RoleDeleteType;
+use EzSystems\RepositoryForms\Form\Type\Role\RoleUpdateType;
 use Symfony\Component\HttpFoundation\Request;
 
 class RoleController extends Controller
@@ -68,6 +69,7 @@ class RoleController extends Controller
         try {
             $role = $this->roleService->loadRole($roleId);
             $roleAssignments = $this->roleService->getRoleAssignments($role);
+            $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
         } catch (NotFoundException $e) {
             $this->notifyError('role.error.role_not_found', [], 'role');
 
@@ -77,6 +79,7 @@ class RoleController extends Controller
         return $this->render('eZPlatformUIBundle:Role:view_role.html.twig', [
             'role' => $role,
             'role_assignments' => $roleAssignments,
+            'deleteForm' => $deleteForm->createView(),
             'can_edit' => $this->isGranted(new Attribute('role', 'update')),
             'can_delete' => $this->isGranted(new Attribute('role', 'delete')),
         ]);
@@ -160,11 +163,12 @@ class RoleController extends Controller
     /**
      * Deletes a role.
      *
+     * @param Request $request
      * @param int $roleId Role ID
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteRoleAction($roleId)
+    public function deleteRoleAction(Request $request, $roleId)
     {
         if (!$this->isGranted(new Attribute('role', 'delete'))) {
             return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
@@ -172,11 +176,19 @@ class RoleController extends Controller
 
         try {
             $role = $this->roleService->loadRole($roleId);
-            $this->roleService->deleterole($role);
         } catch (NotFoundException $e) {
             $this->notifyError('role.error.role_not_found', [], 'role');
 
             return $this->redirectToRoute('admin_roleList');
+        }
+
+        $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
+        $deleteForm->handleRequest($request);
+        if ($deleteForm->isValid()) {
+            $this->roleService->deleteRole($role);
+            $this->notify('role.deleted', ['%roleIdentifier%' => $role->identifier], 'role');
+        } elseif ($deleteForm->isSubmitted()) {
+            $this->notifyError('role.error.delete', ['%roleIdentifier%' => $role->identifier], 'role');
         }
 
         return $this->redirectToRoute('admin_roleList');
