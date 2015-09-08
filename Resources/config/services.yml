@@ -4,12 +4,8 @@ parameters:
     ezsystems.platformui.controller.dashboard.class: EzSystems\PlatformUIBundle\Controller\DashboardController
     ezsystems.platformui.helper.systeminfo.class: EzSystems\PlatformUIBundle\Helper\SystemInfoHelper
     ezsystems.platformui.controller.systeminfo.class: EzSystems\PlatformUIBundle\Controller\SystemInfoController
-    ezsystems.platformui.helper.section.class: EzSystems\PlatformUIBundle\Helper\SectionHelper
     ezsystems.platformui.controller.section.class: EzSystems\PlatformUIBundle\Controller\SectionController
     ezsystems.platformui.controller.template.class: EzSystems\PlatformUIBundle\Controller\TemplateController
-    ezsystems.platformui.form.type.section.class: EzSystems\PlatformUIBundle\Form\Type\SectionType
-    ezsystems.platformui.form.type.section_delete.class: EzSystems\PlatformUIBundle\Form\Type\SectionDeleteType
-    ezsystems.platformui.form.type.section_list.class: EzSystems\PlatformUIBundle\Form\Type\SectionListType
     ezsystems.platformui.controller.pjax.class: EzSystems\PlatformUIBundle\Controller\PjaxController
     ezsystems.platformui.controller.content_type.class: EzSystems\PlatformUIBundle\Controller\ContentTypeController
     ezsystems.platforui.notification_pool.class: EzSystems\PlatformUIBundle\Notification\NotificationPool
