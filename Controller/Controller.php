@@ -8,6 +8,7 @@
  */
 namespace EzSystems\PlatformUIBundle\Controller;
 
+use EzSystems\PlatformUIBundle\Http\PjaxRedirectResponse;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use eZ\Bundle\EzPublishCoreBundle\Controller as BaseController;
 
@@ -25,5 +26,30 @@ abstract class Controller extends BaseController
     public function performAccessChecks()
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+    }
+
+    /**
+     * Returns a PJAX sepcific redirect response (HTTP 205 with PJAX-Location header).
+     *
+     * @param string $url
+     *
+     * @return PjaxRedirectResponse
+     */
+    protected function pjaxRedirect($url)
+    {
+        return new PjaxRedirectResponse($url);
+    }
+
+    /**
+     * Returns a PJAX specific redirect response from $routeName.
+     *
+     * @param string $routeName
+     * @param array $params Hash of parameters to generate the route.
+     *
+     * @return PjaxRedirectResponse
+     */
+    protected function pjaxRedirectToRoute($routeName, array $params = [])
+    {
+        return $this->pjaxRedirect($this->generateUrl($routeName, $params));
     }
 }

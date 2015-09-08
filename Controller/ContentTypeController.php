@@ -140,7 +140,7 @@ class ContentTypeController extends Controller
                 [$contentTypeGroup]
             );
 
-            return $this->redirectToRoute(
+            return $this->pjaxRedirectToRoute(
                 'admin_contenttypeUpdate',
                 ['contentTypeId' => $contentTypeDraft->id, 'languageCode' => $languageCode]
             );
@@ -156,7 +156,7 @@ class ContentTypeController extends Controller
             );
         }
 
-        return $this->redirectToRoute('admin_contenttypeGroupView', ['contentTypeGroupId' => $contentTypeGroupId]);
+        return $this->pjaxRedirectToRoute('admin_contenttypeGroupView', ['contentTypeGroupId' => $contentTypeGroupId]);
     }
 
     public function updateContentTypeAction(Request $request, $contentTypeId, $languageCode = null)
@@ -198,7 +198,7 @@ class ContentTypeController extends Controller
                 return $response;
             }
 
-            return $this->redirect($actionUrl);
+            return $this->pjaxRedirect($actionUrl);
         } elseif ($form->isSubmitted()) {
             $hasErrors = true;
         }
