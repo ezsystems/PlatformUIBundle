@@ -109,7 +109,7 @@ services:
             - @ezrepoforms.action_dispatcher.section
             - @ezpublish.api.service.section
             - @ezsystems.platformui.notification_pool
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.content_type:
         class: %ezsystems.platformui.controller.content_type.class%

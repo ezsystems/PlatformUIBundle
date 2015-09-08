@@ -12,11 +12,7 @@ use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
 use eZ\Publish\API\Repository\SectionService;
 use eZ\Publish\API\Repository\Values\Content\Section;
-use eZ\Bundle\EzPublishCoreBundle\Controller;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
-use EzSystems\PlatformUIBundle\Notification\Notification;
-use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
-use EzSystems\PlatformUIBundle\Notification\TranslatableNotificationMessage;
 use EzSystems\RepositoryForms\Data\Mapper\SectionMapper;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
 use EzSystems\RepositoryForms\Form\Type\Section\SectionDeleteType;
@@ -36,19 +32,12 @@ class SectionController extends Controller
      */
     private $actionDispatcher;
 
-    /**
-     * @var NotificationPoolInterface
-     */
-    private $notificationPool;
-
     public function __construct(
         ActionDispatcherInterface $actionDispatcher,
-        SectionService $sectionService,
-        NotificationPoolInterface $notificationPool
+        SectionService $sectionService
     ) {
         $this->actionDispatcher = $actionDispatcher;
         $this->sectionService = $sectionService;
-        $this->notificationPool = $notificationPool;
     }
 
     /**
@@ -128,23 +117,19 @@ class SectionController extends Controller
         $deleteForm->handleRequest($request);
         if ($deleteForm->isValid()) {
             $this->sectionService->deleteSection($section);
-            $this->notificationPool->addNotification(new TranslatableNotificationMessage([
-                'message' => 'section.deleted',
-                'translationParams' => ['%sectionName%' => $section->name],
-                'domain' => 'section',
-            ]));
+            $this->notify('section.deleted', ['%sectionName%' => $section->name], 'section');
 
             return $this->redirect($this->generateUrl('admin_sectionlist'));
         }
 
         // Form validation failed. Send errors as notifications.
         foreach ($deleteForm->getErrors(true) as $error) {
-            $this->notificationPool->addNotification(new TranslatableNotificationMessage([
-                'message' => $error->getMessageTemplate(),
-                'translationParams' => $error->getMessageParameters(),
-                'number' => $error->getMessagePluralization(),
-                'domain' => 'ezrepoforms_section',
-            ]), Notification::STATE_ERROR);
+            $this->notifyErrorPlural(
+                $error->getMessageTemplate(),
+                $error->getMessagePluralization(),
+                $error->getMessageParameters(),
+                'ezrepoforms_section'
+            );
         }
 
         return $this->redirect($this->generateUrl("admin_section{$redirectErrorsTo}", ['sectionId' => $sectionId]));
