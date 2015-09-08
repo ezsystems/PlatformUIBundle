@@ -137,7 +137,7 @@ services:
 
     ezsystems.platformui.controller.role:
         class: %ezsystems.platformui.controller.role.class%
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
         arguments:
             - @ezpublish.api.service.role
             - @ezrepoforms.action_dispatcher.role
