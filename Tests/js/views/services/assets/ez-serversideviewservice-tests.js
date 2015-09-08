@@ -333,6 +333,48 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
             });
             this.wait();
         },
+
+        "Should handle PJAX custom redirection": function () {
+            var pjaxLocation = 'pjax/new/location';
+
+            this.form = '<form action="' + this.baseUri +
+                'echo/status/205" method="post"></form>';
+
+
+            Mock.expect(this.app, {
+                method: 'set',
+                args: ['loading', Mock.Value.Boolean],
+            });
+            Y.once('io:complete', function (tId, response) {
+                // That's ugly but unfortunately it seems it's impossible to
+                // send a custom header with the echoecho server
+                response.getResponseHeader = function (header) {
+                    Assert.areEqual(
+                        'PJAX-Location', header,
+                        'The PJAX Location header should be retrieved'
+                    );
+                    return pjaxLocation;
+                };
+            });
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: ['adminGenericRoute', Mock.Value.Object],
+                run: Y.bind(function (route, params) {
+                    this.resume(function () {
+                        Assert.areEqual(
+                            pjaxLocation, params.uri,
+                            "The user should be redirected to admin " + params.uri
+                        );
+                    });
+                }, this),
+            });
+
+            this.view.fire('submitForm', {
+                form: Y.Node.create(this.form),
+                originalEvent: this.originalEvent,
+            });
+            this.wait();
+        },
     });
 
     notificationTest = new Y.Test.Case({
