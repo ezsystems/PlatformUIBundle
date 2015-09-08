@@ -10,7 +10,6 @@ namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute as AuthorizationAttribute;
 use Symfony\Component\HttpFoundation\Response;
-use eZ\Bundle\EzPublishCoreBundle\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use EzSystems\PlatformUIBundle\Helper\SystemInfoHelperInterface;
 

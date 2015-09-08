@@ -8,8 +8,6 @@
  */
 namespace EzSystems\PlatformUIBundle\Controller;
 
-use eZ\Bundle\EzPublishCoreBundle\Controller;
-
 class DashboardController extends Controller
 {
     /**

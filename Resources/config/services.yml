@@ -38,7 +38,7 @@ services:
         class: %ezsystems.platformui.controller.class%
         arguments:
             - @ezsystems.platformui.application_config.aggregator
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.application_config.aggregator:
         class: %ezsystems.platformui.application_config.aggregator.class%
@@ -80,11 +80,11 @@ services:
     ezsystems.platformui.controller.template:
         class: %ezsystems.platformui.controller.template.class%
         arguments: [@ezpublish.config.resolver]
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.dashboard:
         class: %ezsystems.platformui.controller.dashboard.class%
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.helper.systeminfo:
         class: %ezsystems.platformui.helper.systeminfo.class%
@@ -96,11 +96,11 @@ services:
         class: %ezsystems.platformui.controller.systeminfo.class%
         arguments:
             - @ezsystems.platformui.helper.systeminfo
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.pjax:
         class: %ezsystems.platformui.controller.pjax.class%
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ## Section related services
     ezsystems.platformui.controller.section:
@@ -113,7 +113,7 @@ services:
 
     ezsystems.platformui.controller.content_type:
         class: %ezsystems.platformui.controller.content_type.class%
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
         arguments:
             - @ezpublish.api.service.content_type
             - @ezpublish.api.service.search
