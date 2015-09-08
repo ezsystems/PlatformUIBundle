@@ -21,6 +21,8 @@ parameters:
     ezsystems.platformui.application_config.provider.anonymous_user_id.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\AnonymousUserId
     ezsystems.platformui.application_config.aggregator.class: EzSystems\PlatformUIBundle\ApplicationConfig\Aggregator
     ezsystems.platformui.application_config.provider.root_info.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\RootInfo
+    ezsystems.platformui.form_processor.section.class: EzSystems\PlatformUIBundle\Form\Processor\SectionFormProcessor
+
 services:
     ezsystems.platformui.twig.yui_extension:
         class: %ezsystems.platformui.twig.yui_extension.class%
@@ -100,42 +102,10 @@ services:
     ezsystems.platformui.controller.section:
         class: %ezsystems.platformui.controller.section.class%
         arguments:
-            - @ezsystems.platformui.helper.section
-            - @ezsystems.platformui.form.type.section
-            - @router
-            - @translator
-            - @ezsystems.platformui.form.type.section_list
+            - @ezrepoforms.action_dispatcher.section
             - @ezpublish.api.service.section
-            - @ezsystems.platformui.form.type.section_delete
+            - @ezsystems.platformui.notification_pool
         parent: ezpublish.controller.base
-
-    ezsystems.platformui.helper.section:
-        class: %ezsystems.platformui.helper.section.class%
-        arguments:
-            - @ezpublish.api.service.section
-            - @security.authorization_checker
-
-    ezsystems.platformui.form.type.section:
-        class: %ezsystems.platformui.form.type.section.class%
-        tags:
-            - { name: form.section, alias: section }
-        arguments:
-            - @translator
-
-    ezsystems.platformui.form.type.section_delete:
-        class: %ezsystems.platformui.form.type.section_delete.class%
-        tags:
-            - { name: form.section, alias: section_delete }
-        arguments:
-            - @translator
-
-    ezsystems.platformui.form.type.section_list:
-        class: %ezsystems.platformui.form.type.section_list.class%
-        tags:
-            - { name: form.section, alias: section_list }
-        arguments:
-            - @ezsystems.platformui.helper.section
-            - @translator
 
     ezsystems.platformui.controller.content_type:
         class: %ezsystems.platformui.controller.content_type.class%
@@ -171,5 +141,11 @@ services:
     ezsystems.platformui.form_processor.role:
         class: %ezsystems.platformui.form_processor.role.class%
         arguments: [@router, @ezsystems.platformui.notification_pool]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ezsystems.platformui.form_processor.section:
+        class: %ezsystems.platformui.form_processor.section.class%
+        arguments: [@ezsystems.platformui.notification_pool, @router]
         tags:
             - { name: kernel.event_subscriber }
