@@ -11,6 +11,9 @@ YUI.add('ez-serversideviewservice', function (Y) {
      */
     Y.namespace('eZ');
 
+    var PJAX_DONE_REDIRECT = 205,
+        PJAX_LOCATION_HEADER = 'PJAX-Location';
+
     /**
      * The Server Side View Service class. It is meant to be used to load the
      * content of a server side view.
@@ -45,16 +48,7 @@ YUI.add('ez-serversideviewservice', function (Y) {
                 headers: {'Content-Type': form.get('encoding')},
                 data: e.formData,
                 on: {
-                    success: function (tId, response) {
-                        // TODO: in some cases, the server side form handling
-                        // should generate a kind of custom redirection so that
-                        // the redirection happens in PlatformUI rather than in
-                        // the XmlHttpRequest object. This would allow to
-                        // properly update the window title and the URL
-                        // https://jira.ez.no/browse/EZP-23700
-                        app.set('loading', false);
-                        this._updateView(e.target, response);
-                    },
+                    success: Y.bind(this._handleFormSubmitResponse, this, e.target),
                     failure: function () {
                         app.set('loading', false);
                         this._error('Failed to load the form');
@@ -62,6 +56,30 @@ YUI.add('ez-serversideviewservice', function (Y) {
                 },
                 context: this,
             });
+        },
+
+        /**
+         * Handles the response of a form submission. It detects if a
+         * redirection needs to happen in the application.
+         *
+         * @method _handleFormSubmitResponse
+         * @protected
+         * @param {Y.View} view
+         * @param {String} tId the transaction id
+         * @param {XMLHttpRequest} response
+         */
+        _handleFormSubmitResponse: function (view, tId, response) {
+            var app = this.get('app'),
+                pjaxLocation = response.getResponseHeader(PJAX_LOCATION_HEADER);
+
+            if ( response.status === PJAX_DONE_REDIRECT && pjaxLocation ) {
+                app.navigateTo('adminGenericRoute', {
+                    uri: pjaxLocation
+                });
+            } else {
+                app.set('loading', false);
+                this._updateView(view, response);
+            }
         },
 
         /**
