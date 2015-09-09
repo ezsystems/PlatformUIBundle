@@ -91,7 +91,7 @@ class RoleController extends Controller
             $roleCreateStruct = new RoleCreateStruct(['identifier' => '__new__' . md5(microtime(true))]);
             $role = $this->roleService->createRole($roleCreateStruct);
 
-            return $this->pjaxRedirectToRoute('admin_roleUpdate', ['roleId' => $role->id]);
+            return $this->redirectToRouteAfterFormPost('admin_roleUpdate', ['roleId' => $role->id]);
         }
 
         // Form validation failed. Send errors as notifications.
@@ -104,7 +104,7 @@ class RoleController extends Controller
             );
         }
 
-        return $this->pjaxRedirectToRoute('admin_roleList');
+        return $this->redirectToRouteAfterFormPost('admin_roleList');
     }
 
     /**
@@ -130,7 +130,7 @@ class RoleController extends Controller
                 return $response;
             }
 
-            return $this->pjaxRedirect($actionUrl);
+            return $this->redirectAfterFormPost($actionUrl);
         } elseif ($form->isSubmitted()) {
             $hasErrors = true;
         }
@@ -174,6 +174,6 @@ class RoleController extends Controller
             $this->notifyError('role.error.delete', ['%roleIdentifier%' => $role->identifier], 'role');
         }
 
-        return $this->pjaxRedirectToRoute('admin_roleList');
+        return $this->redirectToRouteAfterFormPost('admin_roleList');
     }
 }

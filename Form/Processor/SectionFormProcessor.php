@@ -8,7 +8,7 @@
  */
 namespace EzSystems\PlatformUIBundle\Form\Processor;
 
-use EzSystems\PlatformUIBundle\Http\PjaxRedirectResponse;
+use EzSystems\PlatformUIBundle\Http\FormProcessingDoneResponse;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
 use EzSystems\RepositoryForms\Event\FormActionEvent;
@@ -49,7 +49,7 @@ class SectionFormProcessor implements EventSubscriberInterface
         }
 
         $event->setResponse(
-            new PjaxRedirectResponse($this->router->generate('admin_sectionview', ['sectionId' => $sectionData->getId()]))
+            new FormProcessingDoneResponse($this->router->generate('admin_sectionview', ['sectionId' => $sectionData->getId()]))
         );
     }
 }

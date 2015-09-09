@@ -103,7 +103,7 @@ class SectionController extends Controller
             $this->sectionService->deleteSection($section);
             $this->notify('section.deleted', ['%sectionName%' => $section->name], 'section');
 
-            return $this->pjaxRedirect($this->generateUrl('admin_sectionlist'));
+            return $this->redirectToRouteAfterFormPost('admin_sectionlist');
         }
 
         // Form validation failed. Send errors as notifications.
@@ -116,7 +116,7 @@ class SectionController extends Controller
             );
         }
 
-        return $this->pjaxRedirect($this->generateUrl("admin_section{$redirectErrorsTo}", ['sectionId' => $sectionId]));
+        return $this->redirectToRouteAfterFormPost("admin_section{$redirectErrorsTo}", ['sectionId' => $sectionId]);
     }
 
     /**
@@ -143,7 +143,7 @@ class SectionController extends Controller
                 return $response;
             }
 
-            return $this->pjaxRedirect($actionUrl);
+            return $this->redirectAfterFormPost($actionUrl);
         }
 
         return $this->render('eZPlatformUIBundle:Section:edit.html.twig', [

@@ -13,7 +13,7 @@ namespace EzSystems\PlatformUIBundle\Form\Processor;
 use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\Values\ContentType\ContentTypeDraft;
-use EzSystems\PlatformUIBundle\Http\PjaxRedirectResponse;
+use EzSystems\PlatformUIBundle\Http\FormProcessingDoneResponse;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
 use EzSystems\RepositoryForms\Event\FormActionEvent;
@@ -85,7 +85,7 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
         } catch (NotFoundException $e) {
             // ContentTypeDraft was newly created, but then discarded.
             // Redirect to the ContentTypeGroup view.
-            $response = new PjaxRedirectResponse(
+            $response = new FormProcessingDoneResponse(
                 $this->router->generate('admin_contenttypeGroupView', [
                     'contentTypeGroupId' => $contentTypeDraft->contentTypeGroups[0]->id,
                 ])
@@ -98,7 +98,7 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
 
     private function generateRedirectResponse(ContentTypeDraft $contentTypeDraft, $languageCode)
     {
-        return new PjaxRedirectResponse($this->router->generate(
+        return new FormProcessingDoneResponse($this->router->generate(
             'admin_contenttypeView',
             ['contentTypeId' => $contentTypeDraft->id, 'languageCode' => $languageCode]
         ));
