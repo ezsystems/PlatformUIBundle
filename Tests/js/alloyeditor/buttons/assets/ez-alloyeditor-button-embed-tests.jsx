@@ -45,6 +45,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
 
         setUp: function () {
             var nat = new Mock(),
+                selection = new Mock(),
                 list = new Mock(),
                 ezembed = {};
 
@@ -57,7 +58,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
             });
             Mock.expect(nat, {
                 method: 'execCommand',
-                args: ['eZAppendContent', Mock.Value.Object],
+                args: ['eZAddContent', Mock.Value.Object],
                 run: function (command, data) {
                     Assert.areEqual(
                         data.tagName, 'ezembed',
@@ -73,22 +74,14 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
                 method: 'fire',
                 args: ['actionPerformed', Mock.Value.Object],
             });
-            nat.element = new Mock();
             nat.widgets = new Mock();
-
-            Mock.expect(nat.element, {
-                method: 'find',
-                args: ['ezembed'],
-                returns: list,
+            Mock.expect(nat, {
+                method: 'getSelection',
+                returns: selection,
             });
-            Mock.expect(list, {
-                method: 'count',
-                returns: 2,
-            });
-            Mock.expect(list, {
-                method: 'getItem',
-                args: [1],
-                returns: ezembed,
+            Mock.expect(selection, {
+                method: 'getStartElement',
+                returns: ezembed
             });
             Mock.expect(nat.widgets, {
                 method: 'initOn',
@@ -102,7 +95,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
             delete this.editor;
         },
 
-        "Should execute the eZAppendContent command": function () {
+        "Should execute the eZAddContent command": function () {
             var button;
 
             button = React.render(
@@ -114,7 +107,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
         },
 
         "Should initialize the widget on the ezembed element": function () {
-            this["Should execute the eZAppendContent command"]();
+            this["Should execute the eZAddContent command"]();
 
             Mock.verify(this.widgets);
         },

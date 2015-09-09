@@ -3,12 +3,12 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 /* global CKEDITOR */
-YUI.add('ez-alloyeditor-plugin-appendcontent', function (Y) {
+YUI.add('ez-alloyeditor-plugin-addcontent', function (Y) {
     "use strict";
 
-    var appendContentCommand;
+    var addContentCommand;
 
-    if (CKEDITOR.plugins.get('ezappendcontent')) {
+    if (CKEDITOR.plugins.get('ezaddcontent')) {
         return;
     }
 
@@ -20,14 +20,6 @@ YUI.add('ez-alloyeditor-plugin-appendcontent', function (Y) {
         element.setText(content ? content : "");
 
         return element;
-    }
-
-    function moveCaretToEnd(editor) {
-        var range = editor.createRange(),
-            staticToobar = editor.editable().findOne(editor.config.eZ.editableRegion);
-
-        range.moveToPosition(staticToobar, CKEDITOR.POSITION_BEFORE_END);
-        editor.getSelection().selectRanges([range]);
     }
 
     function moveCaretToElement(editor, element) {
@@ -48,7 +40,7 @@ YUI.add('ez-alloyeditor-plugin-appendcontent', function (Y) {
         var e = {
                 editor: editor,
                 target: element.$,
-                name: 'eZAppendContentDone',
+                name: 'eZAddContentDone',
             };
 
         editor.fire('editorInteraction', {
@@ -57,13 +49,12 @@ YUI.add('ez-alloyeditor-plugin-appendcontent', function (Y) {
         });
     }
 
-    appendContentCommand = {
+    addContentCommand = {
         exec: function (editor, data) {
             var element = createElement(
                     editor.document, data.tagName, data.content, data.attributes
                 );
 
-            moveCaretToEnd(editor);
             editor.insertElement(element);
             moveCaretToElement(editor, element);
             fireEditorInteractionEvent(editor, element);
@@ -71,17 +62,17 @@ YUI.add('ez-alloyeditor-plugin-appendcontent', function (Y) {
     };
 
     /**
-     * CKEditor plugin providing the eZAppendContent command. This command
-     * allows to append content  to the editor content in the editable region
+     * CKEditor plugin providing the eZAddContent command. This command
+     * allows to add content  to the editor content in the editable region
      * pointed by the selector available under `eZ.editableRegion` in the
      * configuration.
      *
-     * @class CKEDITOR.plugins.ezappendcontent
+     * @class CKEDITOR.plugins.ezaddcontent
      * @constructor
      */
-    CKEDITOR.plugins.add('ezappendcontent', {
+    CKEDITOR.plugins.add('ezaddcontent', {
         init: function (editor) {
-            editor.addCommand('eZAppendContent', appendContentCommand);
+            editor.addCommand('eZAddContent', addContentCommand);
         },
     });
 });

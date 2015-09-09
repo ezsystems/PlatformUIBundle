@@ -51,24 +51,3 @@
     -webkit-transform: translateX(0);
             transform: translateX(0);
 }
-
-.ez-view-richtexteditview .ez-richtext-add-content {
-    color: #999;
-    background: transparent;
-    border: 0;
-}
-
-.ez-view-richtexteditview .ez-richtext-add-content:focus {
-    outline: 0;
-}
-
-.ez-view-richtexteditview .ez-richtext-add-content:before {
-    color: #aaa;
-    margin: 0 auto;
-    display: block;
-    content: "+";
-    font-size: 450%;
-    width: 0.8em;
-    height: 0.8em;
-    text-align: center;
-}

@@ -3,12 +3,12 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 /* global CKEDITOR, AlloyEditor */
-YUI.add('ez-alloyeditor-plugin-appendcontent-tests', function (Y) {
+YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
     var definePluginTest, commandTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     definePluginTest = new Y.Test.Case({
-        name: "eZ AlloyEditor appendcontent plugin define test",
+        name: "eZ AlloyEditor addcontent plugin define test",
 
         setUp: function () {
             this.editor = new Mock();
@@ -18,26 +18,26 @@ YUI.add('ez-alloyeditor-plugin-appendcontent-tests', function (Y) {
             delete this.editor;
         },
 
-        "Should define the appendcontent plugin": function () {
-            var plugin = CKEDITOR.plugins.get('ezappendcontent');
+        "Should define the addcontent plugin": function () {
+            var plugin = CKEDITOR.plugins.get('ezaddcontent');
 
             Assert.isObject(
                 plugin,
-                "The ezappendcontent should be defined"
+                "The ezaddcontent should be defined"
             );
             Assert.areEqual(
                 plugin.name,
-                "ezappendcontent",
-                "The plugin name should be ezappendcontent"
+                "ezaddcontent",
+                "The plugin name should be ezaddcontent"
             );
         },
 
-        "Should define the eZAppendContent command": function () {
-            var plugin = CKEDITOR.plugins.get('ezappendcontent');
+        "Should define the eZAddContent command": function () {
+            var plugin = CKEDITOR.plugins.get('ezaddcontent');
 
             Mock.expect(this.editor, {
                 method: 'addCommand',
-                args: ['eZAppendContent', Mock.Value.Object],
+                args: ['eZAddContent', Mock.Value.Object],
             });
             plugin.init(this.editor);
             Mock.verify(this.editor);
@@ -45,14 +45,14 @@ YUI.add('ez-alloyeditor-plugin-appendcontent-tests', function (Y) {
     });
 
     commandTest = new Y.Test.Case({
-        name: "eZ AlloyEditor appendcontent plugin command test",
+        name: "eZ AlloyEditor addcontent plugin command test",
 
         "async:init": function () {
             var startTest = this.callback();
 
             this.editor = AlloyEditor.editable(
                 Y.one('.container').getDOMNode(), {
-                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezappendcontent',
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezaddcontent',
                     eZ: {
                         editableRegion: '.editable',
                     },
@@ -67,7 +67,7 @@ YUI.add('ez-alloyeditor-plugin-appendcontent-tests', function (Y) {
             this.editor.destroy();
         },
 
-        "Should append the content to the editable region": function () {
+        "Should add the content to the editable region": function () {
             var tagDefinition = {
                     tagName: 'h1',
                     content: 'The Memory Remains',
@@ -81,7 +81,7 @@ YUI.add('ez-alloyeditor-plugin-appendcontent-tests', function (Y) {
 
             nativeEditor = this.editor.get('nativeEditor');
 
-            res = nativeEditor.execCommand('eZAppendContent', tagDefinition);
+            res = nativeEditor.execCommand('eZAddContent', tagDefinition);
             Assert.isTrue(res, "The command should have been executed");
 
             node = Y.one('.added');
@@ -94,7 +94,7 @@ YUI.add('ez-alloyeditor-plugin-appendcontent-tests', function (Y) {
                 "A h1 should have been created with the content"
             );
 
-            res = nativeEditor.execCommand('eZAppendContent', tagDefinition2);
+            res = nativeEditor.execCommand('eZAddContent', tagDefinition2);
             Assert.isTrue(res, "The command should have been executed");
 
             node = Y.one('.added2');
@@ -114,8 +114,8 @@ YUI.add('ez-alloyeditor-plugin-appendcontent-tests', function (Y) {
 
             this.editor.get('nativeEditor').on('editorInteraction', function (e) {
                 Assert.areEqual(
-                    'eZAppendContentDone', e.data.nativeEvent.name,
-                    "The nativeEvent name should eZAppendContentDone"
+                    'eZAddContentDone', e.data.nativeEvent.name,
+                    "The nativeEvent name should eZAddContentDone"
                 );
                 Assert.areSame(
                     nativeEditor, e.data.nativeEvent.editor,
@@ -127,11 +127,11 @@ YUI.add('ez-alloyeditor-plugin-appendcontent-tests', function (Y) {
                 );
             });
 
-            nativeEditor.execCommand('eZAppendContent', tagDefinition);
+            nativeEditor.execCommand('eZAddContent', tagDefinition);
         },
     });
 
-    Y.Test.Runner.setName("eZ AlloyEditor appendcontent plugin tests");
+    Y.Test.Runner.setName("eZ AlloyEditor addcontent plugin tests");
     Y.Test.Runner.add(definePluginTest);
     Y.Test.Runner.add(commandTest);
-}, '', {requires: ['test', 'node', 'ez-alloyeditor-plugin-appendcontent']});
+}, '', {requires: ['test', 'node', 'ez-alloyeditor-plugin-addcontent']});

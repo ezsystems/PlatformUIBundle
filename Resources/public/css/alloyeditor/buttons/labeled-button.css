@@ -3,13 +3,13 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ae-ui .ez-ae-appendcontent .ez-ae-labeled-button {
+.ae-ui .ae-toolbar .ez-ae-labeled-button {
     width: auto;
     height: auto;
     margin: 0.3em 0.8em;
 }
 
-.ae-ui .ez-ae-appendcontent .ez-ae-label {
+.ae-ui .ae-toolbar .ez-ae-label {
     margin: 0.3em 0 0 0;
 }
 

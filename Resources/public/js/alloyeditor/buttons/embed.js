@@ -34,13 +34,13 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
 
         getDefaultProps: function () {
             return {
-                command: 'eZAppendContent',
+                command: 'eZAddContent',
                 modifiesSelection: true,
             };
         },
 
         /**
-         * Executes the eZAppendContent to add an embed element in the editor.
+         * Executes the eZAddContent to add an embed element in the editor.
          *
          * @method _addEmbed
          * @protected
@@ -64,13 +64,9 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
          */
         _refreshWidget: function () {
             var editor = this.props.editor.get('nativeEditor'),
-                embedElements;
+                embed = editor.getSelection().getStartElement();
 
-            embedElements = editor.element.find('ezembed');
-            editor.widgets.initOn(
-                embedElements.getItem(embedElements.count() - 1),
-                'ezembed'
-            );
+            editor.widgets.initOn(embed, 'ezembed');
         },
 
         render: function () {

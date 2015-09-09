@@ -16,7 +16,6 @@ YUI.add('ez-richtext-editview', function (Y) {
         L = Y.Lang,
         FOCUS_CLASS = 'is-focused',
         EDITOR_FOCUSED_CLASS = 'is-editor-focused',
-        ADD_CONTENT_BUTTON_CLASS = 'ez-richtext-add-content',
         ROOT_SECTION_ATTRIBUTES = {
             "contenteditable": 'true',
             "class": 'ez-richtext-editable',
@@ -127,7 +126,7 @@ YUI.add('ez-richtext-editview', function (Y) {
             editor = AlloyEditor.editable(
                 this.get('container').one('.ez-richtext-editor').getDOMNode(), {
                     toolbars: this.get('toolbarsConfig'),
-                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezappendcontent,widget,ezembed,ezremoveblock',
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezaddcontent,widget,ezembed,ezremoveblock',
                     eZ: {
                         editableRegion: '.ez-richtext-editable',
                     },
@@ -202,7 +201,6 @@ YUI.add('ez-richtext-editview', function (Y) {
             return {
                 "isRequired": this.get('fieldDefinition').isRequired,
                 "xhtml": this._serializeFieldValue(),
-                "addContentButtonClass": ADD_CONTENT_BUTTON_CLASS,
             };
         },
 
@@ -263,8 +261,7 @@ YUI.add('ez-richtext-editview', function (Y) {
         },
 
         /**
-         * Returns the content of the editor by removing the markup needed for
-         * the static toolbar.
+         * Returns the content of the editor.
          *
          * @method _getEditorContent
          * @protected
@@ -272,7 +269,7 @@ YUI.add('ez-richtext-editview', function (Y) {
          */
         _getEditorContent: function () {
             var data = this.get('editor').get('nativeEditor').getData(),
-                section = Y.Node.create(data).one('section');
+                section = Y.Node.create(data);
 
             if ( section ) {
                 Y.Object.each(ROOT_SECTION_ATTRIBUTES, function (value, key) {
@@ -351,10 +348,9 @@ YUI.add('ez-richtext-editview', function (Y) {
                         }, Y.eZ.AlloyEditorToolbarConfig.Heading],
                         tabIndex: 1
                     },
-                    ezappendcontent: {
+                    add: {
                         buttons: ['ezheading', 'ezembed'],
                         tabIndex: 2,
-                        addContentButtonClass: ADD_CONTENT_BUTTON_CLASS,
                     },
                 }
             },
