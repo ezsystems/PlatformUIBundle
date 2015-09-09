@@ -46,7 +46,6 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
         setUp: function () {
             var nat = new Mock(),
                 selection = new Mock(),
-                list = new Mock(),
                 ezembed = {};
 
             this.container = Y.one('.container');
