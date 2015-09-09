@@ -9,23 +9,22 @@ YUI.add('ez-alloyeditor-toolbar-config-heading-tests', function (Y) {
         AlloyEditor = Y.eZ.AlloyEditor,
         Assert = Y.Assert, Mock = Y.Mock;
 
-    defineTest = new Y.Test.Case({
+    defineTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ToolbarConfigDefineTest, {
         name: 'eZ AlloyEditor heading config toolbar define test',
+        toolbarConfig: Heading,
+        toolbarConfigName: "heading",
 
-        "Should define the toolbar configuration": function () {
-            Assert.isObject(
-                Heading,
-                "The heading toolbar configuration should be defined"
-            );
+        _should: {
+            ignore: {
+                // those are ignored because heading toolbar has custom
+                // test, setPosition and getArrowBoxClasses methods and those
+                // are tested below.
+                "Should have the correct `test` method": true,
+                "Should have the correct `setPosition` method": true,
+                "Should have the correct `getArrowBoxClasses` method": true,
+            },
         },
-
-        "Should have 'heading' as name": function () {
-            Assert.areEqual(
-                Heading.name, "heading",
-                "The name of the toolbar configuration should be 'heading'"
-            );
-        },
-    });
+    }));
 
     testTest = new Y.Test.Case({
         name: 'eZ AlloyEditor heading config toolbar test method test',
@@ -170,4 +169,4 @@ YUI.add('ez-alloyeditor-toolbar-config-heading-tests', function (Y) {
     Y.Test.Runner.add(testTest);
     Y.Test.Runner.add(arrowBoxClassesTest);
     Y.Test.Runner.add(setPositionTest);
-}, '', {requires: ['test', 'node', 'ez-alloyeditor-toolbar-config-heading']});
+}, '', {requires: ['test', 'toolbar-config-define-tests', 'node', 'ez-alloyeditor-toolbar-config-heading']});
