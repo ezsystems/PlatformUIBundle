@@ -16,7 +16,7 @@
 .ez-view-richtexteditview .ez-richtext-editor {
     display: inline-block;
     width: 100%;
-    padding: 0 0.4em;
+    padding: 0 0.5em;
     box-sizing: border-box;
     min-height: 5em;
 }

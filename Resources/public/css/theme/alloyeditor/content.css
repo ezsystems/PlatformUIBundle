@@ -24,3 +24,8 @@
 .ez-richtext-editable ezembed:after {
     content: attr(href);
 }
+
+.ez-richtext-editable .is-block-focused {
+    outline: 2px dashed #aaa;
+    outline-offset: 3px;
+}
