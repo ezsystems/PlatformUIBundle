@@ -230,8 +230,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-text-replace');
 
     grunt.registerTask('lint', ['jshint']);
-    grunt.registerTask('test', ['jshint', 'jsx', 'shell:grover'] );
-    grunt.registerTask('coverage', ['jshint', 'clean', 'jsx', 'instrument', 'shell:groverCoverage'] );
+    grunt.registerTask('test', ['jsx', 'jshint', 'shell:grover'] );
+    grunt.registerTask('coverage', ['clean', 'jsx', 'jshint', 'instrument', 'shell:groverCoverage'] );
     grunt.registerTask('doc', ['yuidoc'] );
     grunt.registerTask('livedoc', ['shell:livedoc'] );
     grunt.registerTask('alloy-css', [
