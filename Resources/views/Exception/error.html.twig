@@ -1,0 +1,5 @@
+{% extends "eZPlatformUIBundle::pjax_admin.html.twig" %}
+
+{% block notification %}
+    <li data-state="error">{{ exception.message|nl2br|format_file_from_text }}</li>
+{% endblock %}
