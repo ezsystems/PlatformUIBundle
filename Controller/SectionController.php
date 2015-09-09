@@ -8,7 +8,6 @@
  */
 namespace EzSystems\PlatformUIBundle\Controller;
 
-use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
 use eZ\Publish\API\Repository\SectionService;
 use eZ\Publish\API\Repository\Values\Content\Section;
@@ -18,7 +17,6 @@ use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
 use EzSystems\RepositoryForms\Form\Type\Section\SectionDeleteType;
 use EzSystems\RepositoryForms\Form\Type\Section\SectionType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class SectionController extends Controller
 {
@@ -153,12 +151,6 @@ class SectionController extends Controller
             $sectionData = (new SectionMapper())->mapToFormData($section);
         } catch (UnauthorizedException $e) {
             return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        } catch (NotFoundException $e) {
-            return $this->render(
-                'eZPlatformUIBundle:Section:not_found.html.twig',
-                ['sectionId' => $sectionId],
-                new Response('', 404)
-            );
         }
 
         $actionUrl = $this->generateUrl('admin_sectionedit', ['sectionId' => $sectionId]);
