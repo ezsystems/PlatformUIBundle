@@ -12,7 +12,8 @@ YUI.add('ez-serversideviewservice', function (Y) {
     Y.namespace('eZ');
 
     var PJAX_DONE_REDIRECT = 205,
-        PJAX_LOCATION_HEADER = 'PJAX-Location';
+        PJAX_LOCATION_HEADER = 'PJAX-Location',
+        DEFAULT_HEADERS = {'X-PJAX': 'true'};
 
     /**
      * The Server Side View Service class. It is meant to be used to load the
@@ -45,7 +46,7 @@ YUI.add('ez-serversideviewservice', function (Y) {
             e.originalEvent.preventDefault();
             Y.io(form.getAttribute('action'), {
                 method: form.getAttribute('method'),
-                headers: {'Content-Type': form.get('encoding')},
+                headers: Y.merge(DEFAULT_HEADERS, {'Content-Type': form.get('encoding')}),
                 data: e.formData,
                 on: {
                     success: Y.bind(this._handleFormSubmitResponse, this, e.target),
@@ -114,6 +115,7 @@ YUI.add('ez-serversideviewservice', function (Y) {
 
             Y.io(uri, {
                 method: 'GET',
+                headers: DEFAULT_HEADERS,
                 on: {
                     success: function (tId, response) {
                         this._parseResponse(response);
