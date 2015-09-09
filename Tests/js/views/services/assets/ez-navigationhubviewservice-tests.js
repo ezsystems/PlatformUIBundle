@@ -12,8 +12,14 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
         name: "eZ Navigation Hub View Service getViewParameters test",
 
         setUp: function () {
+            var that = this;
+
             this.app = new Y.Mock();
             this.user = {};
+            this.contentInfoMock = new Mock();
+            this.rootLocation = new Mock();
+            this.rootMediaLocation = new Mock();
+
             Y.Mock.expect(this.app, {
                 method: 'get',
                 args: ['user'],
@@ -29,35 +35,44 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
                 }
             };
 
-            this.rootStruct = {'location': new Mock(), 'content': new Mock()};
-
-            Mock.expect(this.rootStruct.location, {
-                method: 'get',
-                args: ['id']
-            });
-
-            Mock.expect(this.rootStruct.content, {
+            Mock.expect(this.contentInfoMock, {
                 method: 'get',
                 args: ['mainLanguageCode']
             });
 
-            this.rootMediaStruct = {'location': new Mock(), 'content': new Mock()};
-
-            Mock.expect(this.rootMediaStruct.location, {
+            Mock.expect(this.rootLocation, {
                 method: 'get',
-                args: ['id']
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'id') {
+                        return '42';
+                    } else if (attr === 'contentInfo') {
+                        return that.contentInfoMock;
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for rootLocation mock");
+                    }
+                }
             });
 
-            Mock.expect(this.rootMediaStruct.content, {
+            Mock.expect(this.rootMediaLocation, {
                 method: 'get',
-                args: ['mainLanguageCode']
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'id') {
+                        return '43';
+                    } else if (attr === 'contentInfo') {
+                        return that.contentInfoMock;
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for rootLocation mock");
+                    }
+                }
             });
 
             this.service = new Y.eZ.NavigationHubViewService({
                 app: this.app,
                 request: this.request,
-                rootStruct: this.rootStruct,
-                rootMediaStruct: this.rootMediaStruct,
+                rootLocation: this.rootLocation,
+                rootMediaLocation: this.rootMediaLocation,
             });
         },
 
@@ -67,8 +82,9 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             delete this.user;
             delete this.app;
             delete this.request;
-            delete this.rootStruct;
-            delete this.rootMediaStruct;
+            delete this.rootLocation;
+            delete this.rootMediaLocation;
+            delete this.contentInfoMock;
         },
 
         "Should return an object containing the application user": function () {
@@ -162,8 +178,8 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
             this.service = new Y.eZ.NavigationHubViewService({
                 app: this.app,
-                rootStruct: {},
-                rootMediaStruct: {},
+                rootLocation: {},
+                rootMediaLocation: {},
             });
         },
 
@@ -192,8 +208,8 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
             this.service = new Y.eZ.NavigationHubViewService({
                 app: this.app,
-                rootStruct: {},
-                rootMediaStruct: {},
+                rootLocation: {},
+                rootMediaLocation: {},
             });
         },
 
@@ -217,8 +233,8 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
         setUp: function () {
             this.service = new Y.eZ.NavigationHubViewService({
-                rootStruct: {},
-                rootMediaStruct: {},
+                rootLocation: {},
+                rootMediaLocation: {},
             });
         },
 
@@ -275,40 +291,57 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
         },
 
         "'platform' zone": function () {
-            var value;
+            var value,
+                that = this;
 
-            this.rootStruct = {'location': new Mock(), 'content': new Mock()};
+            this.contentInfoMock = new Mock();
+            this.mediaContentInfoMock = new Mock();
+            this.rootLocation = new Mock();
+            this.rootMediaLocation = new Mock();
 
-            Mock.expect(this.rootStruct.location, {
-                method: 'get',
-                args: ['id'],
-                returns: '/allez/om',
-            });
-
-            Mock.expect(this.rootStruct.content, {
+            Mock.expect(this.contentInfoMock, {
                 method: 'get',
                 args: ['mainLanguageCode'],
                 returns: 'fre-FR-root',
             });
 
-            this.service._set('rootStruct', this.rootStruct);
-
-
-            this.rootMediaStruct = {'location': new Mock(), 'content': new Mock()};
-
-            Mock.expect(this.rootMediaStruct.location, {
+            Mock.expect(this.rootLocation, {
                 method: 'get',
-                args: ['id'],
-                returns: '/allez/om/media',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'id') {
+                        return '/allez/om';
+                    } else if (attr === 'contentInfo') {
+                        return that.contentInfoMock;
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for rootLocation mock");
+                    }
+                }
             });
 
-            Mock.expect(this.rootMediaStruct.content, {
+            this.service._set('rootLocation', this.rootLocation);
+
+            Mock.expect(this.mediaContentInfoMock, {
                 method: 'get',
                 args: ['mainLanguageCode'],
                 returns: 'fre-FR-media',
             });
 
-            this.service._set('rootMediaStruct', this.rootMediaStruct);
+            Mock.expect(this.rootMediaLocation, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'id') {
+                        return '/allez/om/media';
+                    } else if (attr === 'contentInfo') {
+                        return that.mediaContentInfoMock;
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for rootLocation mock");
+                    }
+                }
+            });
+
+            this.service._set('rootMediaLocation', this.rootMediaLocation);
 
             value = this.service.get('platformNavigationItems');
 
@@ -379,8 +412,8 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
         setUp: function () {
             this.service = new Y.eZ.NavigationHubViewService({
-                rootStruct: {},
-                rootMediaStruct: {},
+                rootLocation: {},
+                rootMediaLocation: {},
             });
         },
 
@@ -408,38 +441,56 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
         },
 
         "Should add the navigation item to the 'platform' zone": function () {
-            this.rootStruct = {'location': new Mock(), 'content': new Mock()};
+            var that = this;
 
-            Mock.expect(this.rootStruct.location, {
-                method: 'get',
-                args: ['id'],
-                returns: '/allez/om',
-            });
+            this.contentInfoMock = new Mock();
+            this.rootLocation = new Mock();
+            this.mediaContentInfoMock = new Mock();
+            this.rootMediaLocation = new Mock();
 
-            Mock.expect(this.rootStruct.content, {
+            Mock.expect(this.contentInfoMock, {
                 method: 'get',
                 args: ['mainLanguageCode'],
                 returns: 'fre-FR-root',
             });
 
-            this.service._set('rootStruct', this.rootStruct);
-
-
-            this.rootMediaStruct = {'location': new Mock(), 'content': new Mock()};
-
-            Mock.expect(this.rootMediaStruct.location, {
+            Mock.expect(this.rootLocation, {
                 method: 'get',
-                args: ['id'],
-                returns: '/allez/om/media',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'id') {
+                        return '/allez/om';
+                    } else if (attr === 'contentInfo') {
+                        return that.contentInfoMock;
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for rootLocation mock");
+                    }
+                }
             });
 
-            Mock.expect(this.rootMediaStruct.content, {
+            this.service._set('rootLocation', this.rootLocation);
+
+            Mock.expect(this.mediaContentInfoMock, {
                 method: 'get',
                 args: ['mainLanguageCode'],
                 returns: 'fre-FR-media',
             });
 
-            this.service._set('rootMediaStruct', this.rootMediaStruct);
+            Mock.expect(this.rootMediaLocation, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'id') {
+                        return '/allez/om/media';
+                    } else if (attr === 'contentInfo') {
+                        return that.mediaContentInfoMock;
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for rootLocation mock");
+                    }
+                }
+            });
+
+            this.service._set('rootMediaLocation', this.rootMediaLocation);
 
             this._testAttribute('platform');
         },
@@ -462,8 +513,8 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
         setUp: function () {
             this.service = new Y.eZ.NavigationHubViewService({
-                rootStruct: {},
-                rootMediaStruct: {},
+                rootLocation: {},
+                rootMediaLocation: {},
             });
             this.platformIdentifier = 'peppa-pig';
             this.studioplusIdentifier = 'ben-et-holly';
@@ -519,38 +570,55 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
         },
 
         "Should remove the navigation item to the 'platform' zone": function () {
-            this.rootStruct = {'location': new Mock(), 'content': new Mock()};
+            var that = this;
+            this.contentInfoMock = new Mock();
+            this.rootLocation = new Mock();
+            this.mediaContentInfoMock = new Mock();
+            this.rootMediaLocation = new Mock();
 
-            Mock.expect(this.rootStruct.location, {
-                method: 'get',
-                args: ['id'],
-                returns:'/allez/om',
-            });
-
-            Mock.expect(this.rootStruct.content, {
+            Mock.expect(this.contentInfoMock, {
                 method: 'get',
                 args: ['mainLanguageCode'],
                 returns: 'fre-FR-root',
             });
 
-            this.service._set('rootStruct', this.rootStruct);
-
-
-            this.rootMediaStruct = {'location': new Mock(), 'content': new Mock()};
-
-            Mock.expect(this.rootMediaStruct.location, {
+            Mock.expect(this.rootLocation, {
                 method: 'get',
-                args: ['id'],
-                returns:'/allez/om/media',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'id') {
+                        return '/allez/om';
+                    } else if (attr === 'contentInfo') {
+                        return that.contentInfoMock;
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for rootLocation mock");
+                    }
+                }
             });
 
-            Mock.expect(this.rootMediaStruct.content, {
+            this.service._set('rootLocation', this.rootLocation);
+
+            Mock.expect(this.mediaContentInfoMock, {
                 method: 'get',
                 args: ['mainLanguageCode'],
                 returns: 'fre-FR-media',
             });
 
-            this.service._set('rootMediaStruct', this.rootMediaStruct);
+            Mock.expect(this.rootMediaLocation, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'id') {
+                        return '/allez/om/media';
+                    } else if (attr === 'contentInfo') {
+                        return that.mediaContentInfoMock;
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for rootLocation mock");
+                    }
+                }
+            });
+
+            this.service._set('rootMediaLocation', this.rootMediaLocation);
 
             this._testLocationAttribute('platform');
         },
@@ -574,15 +642,15 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
         setUp: function () {
             this.capiMock = new Mock();
             this.discoveryServiceMock = new Mock();
-            this.contentRootMock = new Mock();
             this.locationRootMock = new Mock();
-            this.contentMediaMock = new Mock();
+            this.contentInfoRootMock = new Mock();
             this.locationMediaMock = new Mock();
+            this.contentInfoMediaMock = new Mock();
 
             this.service = new Y.eZ.NavigationHubViewService({
                 capi: this.capiMock,
-                rootStruct: {content: this.contentRootMock, location: this.locationRootMock},
-                rootMediaStruct: {content: this.contentMediaMock, location: this.locationMediaMock},
+                rootLocation: this.locationRootMock,
+                rootMediaLocation: this.locationMediaMock,
             });
         },
 
@@ -610,7 +678,9 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             });
         },
 
-        _initLocationMock: function (locationMock, fail) {
+        _initLocationMock: function (locationMock, contentInfoMock, languageCode, fail) {
+            this._initContentInfoMock(contentInfoMock, languageCode);
+
             Mock.expect(locationMock, {
                 method: 'set',
                 args: ['id','david-seaman'],
@@ -632,12 +702,14 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             Mock.expect(locationMock, {
                 method: 'get',
                 args: [Mock.Value.String],
-                callCount: 3,
+                callCount: 4,
                 run: function (attr) {
                     if (attr === 'resources') {
                         return {'Content': 'ray-parlour'};
                     } else if (attr === 'id') {
                         return 'robert-pires';
+                    } else if (attr === 'contentInfo') {
+                        return contentInfoMock;
                     } else {
                         Y.fail("Unexpected parameter " + attr + " for content mock");
                     }
@@ -645,26 +717,8 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             });
         },
 
-        _initContentMock: function (contentMock, fail, languageCode) {
-            Mock.expect(contentMock, {
-                method: 'set',
-                args: ['id', 'ray-parlour'],
-            });
-
-            Mock.expect(contentMock, {
-                method: 'load',
-                args: [Mock.Value.Object, Mock.Value.Function],
-                run: function (loadOptions, cb) {
-                    Assert.areSame(
-                        this.capiMock,
-                        loadOptions.capi,
-                        "Load options should provide the CAPI"
-                    );
-                    cb(fail ? true : false, {});
-                }
-            });
-
-            Mock.expect(contentMock, {
+        _initContentInfoMock: function (contentInfoMock, languageCode) {
+            Mock.expect(contentInfoMock, {
                 method: 'get',
                 args: ['mainLanguageCode'],
                 callCount: 2,
@@ -674,10 +728,8 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
         "Load method retrieves root nodes": function () {
             this._initDiscoveryService(false);
-            this._initLocationMock(this.locationRootMock, false);
-            this._initContentMock(this.contentRootMock, false, "fre-FR");
-            this._initLocationMock(this.locationMediaMock, false);
-            this._initContentMock(this.contentMediaMock, false, "fre-FR-media");
+            this._initLocationMock(this.locationRootMock, this.contentInfoRootMock, "fre-FR", false);
+            this._initLocationMock(this.locationMediaMock, this.contentInfoMediaMock, "fre-FR-media", false);
 
             this.service._load(function () {});
 
@@ -693,9 +745,9 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             );
 
             Mock.verify(this.locationRootMock);
-            Mock.verify(this.contentRootMock);
+            Mock.verify(this.contentInfoRootMock);
             Mock.verify(this.locationMediaMock);
-            Mock.verify(this.contentMediaMock);
+            Mock.verify(this.contentInfoMediaMock);
         },
 
         "Load method can not reach the REST API": function () {
@@ -720,28 +772,8 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
             this._initDiscoveryService(false);
 
-            this._initLocationMock(this.locationRootMock, true);
-            this._initLocationMock(this.locationMediaMock, true);
-
-            this.service.on('error', function (e) {
-                Y.Assert.isObject(e, "An event facade should be provided");
-                Y.Assert.isString(e.message, "The message property should be filled");
-                errorCalled = true;
-            });
-
-            this.service._load(function () {});
-
-            Y.Assert.isTrue(errorCalled, "The error event should have been fired");
-        },
-
-        "Load method can not reach the REST API when loading content": function () {
-            var errorCalled = false;
-
-            this._initDiscoveryService(false);
-            this._initLocationMock(this.locationRootMock, false);
-            this._initLocationMock(this.locationMediaMock, false);
-            this._initContentMock(this.contentRootMock, false);
-            this._initContentMock(this.contentMediaMock, true);
+            this._initLocationMock(this.locationRootMock, this.contentInfoRootMock, "fre-FR", true);
+            this._initLocationMock(this.locationMediaMock, this.contentInfoMediaMock, "fre-FR-media", true);
 
             this.service.on('error', function (e) {
                 Y.Assert.isObject(e, "An event facade should be provided");
@@ -769,20 +801,15 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
         },
 
         _testAttribute: function (attribute) {
-
             Assert.areSame(
-                attribute.content.constructor, Y.eZ.Content,
-                "The attribute should contain a content"
-            );
-            Assert.areSame(
-                attribute.location.constructor, Y.eZ.Location,
+                attribute.constructor, Y.eZ.Location,
                 "The attribute should contain a location"
             );
         },
 
         "Root nodes are correctly initialized": function () {
-            this._testAttribute(this.service.get('rootStruct'));
-            this._testAttribute(this.service.get('rootMediaStruct'));
+            this._testAttribute(this.service.get('rootLocation'));
+            this._testAttribute(this.service.get('rootMediaLocation'));
         },
     });
 
@@ -790,38 +817,53 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
         name: "eZ Navigation Hub View Service getNavigationItem test",
 
         setUp: function () {
-            this.contentRootMock = new Mock();
+            var that = this;
+            this.contentInfoRootMock = new Mock();
             this.locationRootMock = new Mock();
-            this.contentMediaMock = new Mock();
+            this.contentInfoMediaMock = new Mock();
             this.locationMediaMock = new Mock();
+
+            Mock.expect(this.contentInfoRootMock, {
+                method: 'get',
+                args: ['mainLanguageCode']
+            });
 
             Mock.expect(this.locationRootMock, {
                 method: 'get',
-                args:['id'],
-                returns: "/root/Waldo",
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'id') {
+                        return '/root/Waldo';
+                    } else if (attr === 'contentInfo') {
+                        return that.contentInfoRootMock;
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for rootLocation mock");
+                    }
+                }
             });
 
-            Mock.expect(this.contentRootMock, {
+            Mock.expect(this.contentInfoMediaMock, {
                 method: 'get',
-                args:['mainLanguageCode'],
-                returns: "fre-FR",
+                args: ['mainLanguageCode']
             });
 
             Mock.expect(this.locationMediaMock, {
                 method: 'get',
-                args:['id'],
-                returns: "/media/Waldo",
-            });
-
-            Mock.expect(this.contentMediaMock, {
-                method: 'get',
-                args:['mainLanguageCode'],
-                returns: "fre-FR",
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'id') {
+                        return '/media/Waldo';
+                    } else if (attr === 'contentInfo') {
+                        return that.contentInfoMediaMock;
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for rootLocation mock");
+                    }
+                }
             });
 
             this.service = new Y.eZ.NavigationHubViewService({
-                rootStruct: {content: this.contentRootMock, location: this.locationRootMock},
-                rootMediaStruct: {content: this.contentMediaMock, location: this.locationMediaMock},
+                rootLocation: this.locationRootMock,
+                rootMediaLocation: this.locationMediaMock,
             });
         },
 

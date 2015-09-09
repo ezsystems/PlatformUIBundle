@@ -55,10 +55,10 @@ YUI.add('ez-locationviewview', function (Y) {
         _pathToJSON: function () {
             var path = [];
 
-            Y.Array.each(this.get('path'), function (struct, key) {
+            Y.Array.each(this.get('path'), function (location, key) {
                 path[key] = {
-                    location: struct.location.toJSON(),
-                    content: struct.content.toJSON()
+                    location: location.toJSON(),
+                    contentInfo: location.get('contentInfo').toJSON()
                 };
             });
             return path;
@@ -163,7 +163,7 @@ YUI.add('ez-locationviewview', function (Y) {
             var title = this.get('content').get('name');
 
             return Y.Array.reduce(this.get('path'), title, function (title, val) {
-                return title + ' / ' + val.content.get('name');
+                return title + ' / ' + val.get('contentInfo').get('name');
             });
         },
 
@@ -276,8 +276,7 @@ YUI.add('ez-locationviewview', function (Y) {
 
             /**
              * The path from the root location to the current location. Each
-             * entry of the path consists of the location and its content under
-             * the `location` and `content` keys.
+             * entry of the path consists of the location.
              *
              * @attribute path
              * @type Array

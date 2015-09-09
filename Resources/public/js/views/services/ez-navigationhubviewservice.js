@@ -70,7 +70,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
 
                 rootLocationId = response._href;
 
-                service._loadLocationAndContent(rootLocationId, 'rootStruct', tasks.add(function (error) {
+                service._loadLocation(rootLocationId, 'rootLocation', tasks.add(function (error) {
                     var params = {id: '', languageCode: ''};
 
                     if ( error ) {
@@ -78,8 +78,8 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                         return;
                     }
 
-                    params.id = service.get('rootStruct').location.get('id');
-                    params.languageCode = service.get('rootStruct').content.get('mainLanguageCode');
+                    params.id = service.get('rootLocation').get('id');
+                    params.languageCode = service.get('rootLocation').get('contentInfo').get('mainLanguageCode');
 
                     service.getNavigationItem('content-structure').set(
                         'route',
@@ -98,7 +98,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
 
                 rootMediaLocationId = response._href;
 
-                service._loadLocationAndContent(rootMediaLocationId, 'rootMediaStruct' , tasks.add(function (error){
+                service._loadLocation(rootMediaLocationId, 'rootMediaLocation' , tasks.add(function (error){
                     var params = {id: '', languageCode: ''};
 
                     if ( error ) {
@@ -106,8 +106,8 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                         return;
                     }
 
-                    params.id = service.get('rootMediaStruct').location.get('id');
-                    params.languageCode = service.get('rootMediaStruct').content.get('mainLanguageCode');
+                    params.id = service.get('rootMediaLocation').get('id');
+                    params.languageCode = service.get('rootMediaLocation').get('contentInfo').get('mainLanguageCode');
 
                     service.getNavigationItem('media-library').set(
                         'route',
@@ -118,7 +118,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
 
             tasks.done(function () {
                 if ( loadError ) {
-                    service._error("Failed to the load root contents and locations");
+                    service._error("Failed to the load root locations");
                     return;
                 }
 
@@ -127,46 +127,25 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         },
 
         /**
-         * Loads the given `locationId` and its content
+         * Loads the given `locationId`
          *
          * @protected
-         * @method _loadLocationAndContent
+         * @method _loadLocation
          * @param {Integer} locationId
-         * @param {string} attributeName where thisthings need to be loaded
-         * @param {Function} callback the function to call when the location and
-         *        the content are loaded
+         * @param {string} attributeName where data need to be loaded
+         * @param {Function} callback the function to call when the location is loaded
          * @param {Boolean} callback.error the error, true if an error occurred
-         * @param {Object} callback.result an object containing the
-         *        Y.eZ.Location and the Y.eZ.Content instances under the `location` and
-         *        the `content` keys.
+         * @param {ez.Location} callback.result the location object
          */
-        _loadLocationAndContent: function (locationId, attributeName, callback) {
+        _loadLocation: function (locationId, attributeName, callback) {
             var loadOptions = {
                     api: this.get('capi')
                 },
-                attribute = this.get(attributeName),
-                location = attribute.location,
-                content = attribute.content;
+                location = this.get(attributeName);
 
             location.set('id', locationId);
 
-            location.load(loadOptions, function (error) {
-                if ( error ) {
-                    callback(error);
-                    return;
-                }
-
-                content.set('id', location.get('resources').Content);
-
-                content.load(loadOptions, function (error) {
-                    if ( error ) {
-                        callback(error);
-                        return;
-                    }
-
-                    callback();
-                });
-            });
+            location.load(loadOptions, callback);
         },
 
         /**
@@ -219,6 +198,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
          * @param {String} title
          * @param {String} identifier
          * @param {String} locationId
+         * @param {String} languageCode
          * @return {Object}
          */
         _getSubtreeItem: function (title, identifier, locationId, languageCode) {
@@ -371,26 +351,26 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         ATTRS: {
 
             /**
-             * Stores the root struct with its `location` and `content`
+             * Stores the root `location`
              *
-             * @attribute rootStruct
-             * @type {Object}
+             * @attribute rootLocation
+             * @type {eZ.Location}
              */
-            rootStruct: {
+            rootLocation: {
                 valueFn: function () {
-                    return {location: new Y.eZ.Location(), content: new Y.eZ.Content()};
+                    return new Y.eZ.Location();
                 },
             },
 
             /**
-             * Stores the root media struct with its `location` and `content`
+             * Stores the root media `location`
              *
-             * @attribute rootMediaStruct
-             * @type {Object}
+             * @attribute rootMediaLocation
+             * @type {eZ.Location}
              */
-            rootMediaStruct: {
+            rootMediaLocation: {
                 valueFn: function () {
-                    return {location: new Y.eZ.Location(), content: new Y.eZ.Content()};
+                    return new Y.eZ.Location();
                 },
             },
 
@@ -418,14 +398,14 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                         this._getSubtreeItem(
                             "Content structure",
                             "content-structure",
-                            this.get('rootStruct').location.get('id'),
-                            this.get('rootStruct').content.get('mainLanguageCode')
+                            this.get('rootLocation').get('id'),
+                            this.get('rootLocation').get('contentInfo').get('mainLanguageCode')
                         ),
                         this._getSubtreeItem(
                             "Media library",
                             "media-library",
-                            this.get('rootMediaStruct').location.get('id'),
-                            this.get('rootMediaStruct').content.get('mainLanguageCode')
+                            this.get('rootMediaLocation').get('id'),
+                            this.get('rootMediaLocation').get('contentInfo').get('mainLanguageCode')
                         ),
                     ];
 
