@@ -219,7 +219,7 @@ YUI.add('ez-versionmodel', function (Y) {
             "creationDate", "modificationDate",
             "languageCodes", "initialLanguageCode", "names",
         ],
-        LINKS_MAP: ['Content'],
+        LINKS_MAP: ['Content', 'Creator'],
 
         ATTRS: {
             /**

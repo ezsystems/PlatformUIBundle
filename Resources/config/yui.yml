@@ -125,6 +125,7 @@ system:
                         - 'ez-contentmodel'
                         - 'ez-objectrelationloadplugin'
                         - 'ez-objectrelationlistloadplugin'
+                        - 'ez-userloadplugin'
                         - 'ez-imagevariationloadplugin'
                         - 'ez-contentcreateplugin'
                         - 'ez-copycontentplugin'
@@ -176,6 +177,7 @@ system:
                         - 'ez-templatebasedview'
                         - 'ez-actionbarview'
                         - 'ez-locationviewviewtabview'
+                        - 'ez-locationviewdetailstabview'
                         - 'ez-tabs'
                         - 'event-tap'
                         - 'array-extras'
@@ -193,6 +195,12 @@ system:
                 locationviewviewtabview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/tabs/view.hbt
+                ez-locationviewdetailstabview:
+                    requires: ['ez-locationviewtabview', 'locationviewdetailstabview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/tabs/ez-locationviewdetailstabview.js
+                locationviewdetailstabview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/tabs/details.hbt
                 ez-studiopresentationview:
                     requires: ['ez-templatebasedview', 'studiopresentationview-ez-template', 'ez-height-fit']
                     path: %ez_platformui.public_dir%/js/views/ez-studiopresentationview.js
@@ -807,6 +815,9 @@ system:
                 ez-objectrelationlistloadplugin:
                     requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationlistloadplugin.js
+                ez-userloadplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-userloadplugin.js
                 ez-objectrelationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationloadplugin.js

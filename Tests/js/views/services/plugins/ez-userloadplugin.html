@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ User Load Plugin tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../../../assets/pluginregister-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-userloadplugin-tests.js"></script>
+<script type="text/javascript" src="../assets/fake-models.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-userloadplugin'],
+        filter: loaderFilter,
+        modules: {
+            "ez-userloadplugin": {
+                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'fake-models'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-userloadplugin.js"
+            },
+            "ez-viewservicebaseplugin": {
+                requires: ['plugin', 'base'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-userloadplugin-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
