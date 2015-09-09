@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-serversideviewservice-tests', function (Y) {
-    var unitTest, rewriteTest, formTest, notificationTest,
+    var unitTest, rewriteTest, formTest, notificationTest, pjaxHeaderTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     unitTest = new Y.Test.Case({
@@ -503,9 +503,86 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
         },
     });
 
+    pjaxHeaderTest = new Y.Test.Case({
+        name: "eZ Server Side View Service X-PJAX Header test",
+
+        init: function () {
+            var origIO = Y.io,
+                that = this;
+
+            this.origIO = origIO;
+            Y.io = function (uri, config) {
+                that.XPJAXHeader = config.headers['X-PJAX'];
+                origIO.apply(this, arguments);
+            };
+            Y.io._map = origIO._map;
+        },
+
+        setUp: function () {
+            this.app = new Y.Base();
+            this.app.set('baseUri', '/Tests/js/views/services/');
+            this.request = {params: {uri: 'echo/status/200'}};
+            this.service = new Y.eZ.ServerSideViewService({
+                app: this.app,
+                request: this.request,
+            });
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            this.service.destroy();
+            delete this.app;
+            delete this.service;
+            delete this.XPJAXHeader;
+        },
+
+        destroy: function () {
+            Y.io = this.origIO;
+            Y.io._map = this.origIO._map;
+        },
+
+        "Should add the X-PJAX header to form requests": function () {
+            var view = new Y.Base(),
+                originalEvent = new Mock(),
+                form;
+
+            Mock.expect(originalEvent, {
+                method: 'preventDefault'
+            });
+            view.addTarget(this.service);
+
+            form = '<form action="' + this.app.get('baseUri') +
+                'echo/status/200" method="post"></form>';
+
+            view.on('titleChange', this.next(function () {
+                Assert.areEqual(
+                    "true", this.XPJAXHeader,
+                    "The X-PJAX header should set to true"
+                );
+            }, this));
+
+            view.fire('submitForm', {
+                form: Y.Node.create(form),
+                originalEvent: originalEvent,
+            });
+            this.wait();
+        },
+
+        "Should add the X-PJAX header to load requests": function () {
+            this.service.load(this.next(function () {
+                Assert.areEqual(
+                    "true", this.XPJAXHeader,
+                    "The X-PJAX header should set to true"
+                );
+            }, this));
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Server Side View Service tests");
     Y.Test.Runner.add(unitTest);
     Y.Test.Runner.add(rewriteTest);
     Y.Test.Runner.add(formTest);
     Y.Test.Runner.add(notificationTest);
+    Y.Test.Runner.add(pjaxHeaderTest);
 }, '', {requires: ['test', 'ez-serversideviewservice', 'node', 'view']});
