@@ -45,7 +45,6 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
         $this->prependYui($container);
         $this->prependCss($container);
         $this->prependImageVariations($container);
-        $this->prependSecurity($container);
     }
 
     private function prependYui(ContainerBuilder $container)
@@ -73,13 +72,5 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
         $config = Yaml::parse(file_get_contents($imageConfigFile));
         $container->prependExtensionConfig('ezpublish', $config);
         $container->addResource(new FileResource($imageConfigFile));
-    }
-
-    private function prependSecurity(ContainerBuilder $container)
-    {
-        $securityConfigFile = __DIR__ . '/../Resources/config/security.yml';
-        $config = Yaml::parse(file_get_contents($securityConfigFile));
-        $container->prependExtensionConfig('security', $config);
-        $container->addResource(new FileResource($securityConfigFile));
     }
 }
