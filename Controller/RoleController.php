@@ -61,10 +61,6 @@ class RoleController extends Controller
      */
     public function viewRoleAction($roleId)
     {
-        if (!$this->isGranted(new Attribute('role', 'read'))) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
-
         $role = $this->roleService->loadRole($roleId);
         $roleAssignments = $this->roleService->getRoleAssignments($role);
         $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
@@ -85,10 +81,6 @@ class RoleController extends Controller
      */
     public function createRoleAction()
     {
-        if (!$this->isGranted(new Attribute('role', 'update'))) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
-
         $roleCreateStruct = new RoleCreateStruct(['identifier' => '__new__' . md5(microtime(true))]);
         $role = $this->roleService->createRole($roleCreateStruct);
 
@@ -104,10 +96,6 @@ class RoleController extends Controller
      */
     public function updateRoleAction(Request $request, $roleId)
     {
-        if (!$this->isGranted(new Attribute('role', 'update'))) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
-
         $role = $this->roleService->loadRole($roleId);
         $roleData = (new RoleMapper())->mapToFormData($role);
         $form = $this->createForm(new RoleUpdateType(), $roleData);
@@ -156,10 +144,6 @@ class RoleController extends Controller
      */
     public function deleteRoleAction(Request $request, $roleId)
     {
-        if (!$this->isGranted(new Attribute('role', 'delete'))) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
-
         $role = $this->roleService->loadRole($roleId);
         $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
         $deleteForm->handleRequest($request);

@@ -12,7 +12,6 @@ namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
-use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
 use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\UserService;
 use eZ\Publish\API\Repository\Values\Content\Query;
@@ -101,11 +100,7 @@ class ContentTypeController extends Controller
     public function viewContentTypeAction($contentTypeId, $languageCode = null)
     {
         $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
-        try {
-            $contentType = $this->contentTypeService->loadContentType($contentTypeId);
-        } catch (UnauthorizedException $e) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
+        $contentType = $this->contentTypeService->loadContentType($contentTypeId);
 
         $query = new Query([
             'filter' => new Query\Criterion\ContentTypeId($contentTypeId),
@@ -124,21 +119,17 @@ class ContentTypeController extends Controller
     public function createContentTypeAction($contentTypeGroupId, $languageCode = null)
     {
         $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
-        try {
-            $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
+        $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
 
-            $contentTypeCreateStruct = new ContentTypeCreateStruct([
-                'identifier' => '__new__' . md5(microtime(true)),
-                'mainLanguageCode' => $languageCode,
-                'names' => [$languageCode => 'New ContentType'],
-            ]);
-            $contentTypeDraft = $this->contentTypeService->createContentType(
-                $contentTypeCreateStruct,
-                [$contentTypeGroup]
-            );
-        } catch (UnauthorizedException $e) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
+        $contentTypeCreateStruct = new ContentTypeCreateStruct([
+            'identifier' => '__new__' . md5(microtime(true)),
+            'mainLanguageCode' => $languageCode,
+            'names' => [$languageCode => 'New ContentType'],
+        ]);
+        $contentTypeDraft = $this->contentTypeService->createContentType(
+            $contentTypeCreateStruct,
+            [$contentTypeGroup]
+        );
 
         return $this->redirectToRoute(
             'admin_contenttypeUpdate',
@@ -154,13 +145,9 @@ class ContentTypeController extends Controller
         try {
             $contentTypeDraft = $this->contentTypeService->loadContentTypeDraft($contentTypeId);
         } catch (NotFoundException $e) {
-            try {
-                $contentTypeDraft = $this->contentTypeService->createContentTypeDraft(
-                    $this->contentTypeService->loadContentType($contentTypeId)
-                );
-            } catch (UnauthorizedException $e) {
-                return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-            }
+            $contentTypeDraft = $this->contentTypeService->createContentTypeDraft(
+                $this->contentTypeService->loadContentType($contentTypeId)
+            );
         }
 
         $contentTypeData = (new ContentTypeDraftMapper())->mapToFormData($contentTypeDraft);
