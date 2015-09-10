@@ -35,6 +35,7 @@ services:
         calls:
             - [setContainer, [@service_container]]
             - [setNotificationPool, [@ezsystems.platformui.notification_pool]]
+            - [performAccessChecks, []]
 
     ezsystems.platformui.controller:
         class: %ezsystems.platformui.controller.class%

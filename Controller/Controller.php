@@ -14,4 +14,16 @@ use eZ\Bundle\EzPublishCoreBundle\Controller as BaseController;
 abstract class Controller extends BaseController
 {
     use NotificationPoolAware;
+
+    /**
+     * Ensures that only authenticated users can access to controller.
+     * It is not needed to call this method from actions
+     * as it's already called from base controller service.
+     *
+     * @see ezsystems.platformui.controller.base service definition.
+     */
+    public function performAccessChecks()
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+    }
 }
