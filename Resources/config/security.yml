@@ -1,0 +1,2 @@
+access_control:
+    - { path: ^/pjax, roles: IS_AUTHENTICATED_REMEMBERED }

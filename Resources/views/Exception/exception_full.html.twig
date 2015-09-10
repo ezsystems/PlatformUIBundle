@@ -1,0 +1,17 @@
+{% extends "eZPlatformUIBundle::pjax_admin.html.twig" %}
+
+{% block content %}
+    <div class="sf-reset">
+        {{ include("TwigBundle:Exception:exception.html.twig") }}
+    </div>
+
+    <style type="text/css">
+        @import url('{{ absolute_url(asset('bundles/framework/css/structure.css')) }}');
+        @import url('{{ absolute_url(asset('bundles/framework/css/body.css')) }}');
+        @import url('{{ absolute_url(asset('bundles/framework/css/exception.css')) }}');
+    </style>
+{% endblock %}
+
+{% block notification %}
+    <li data-state="error">{{ exception.message|nl2br|format_file_from_text }}</li>
+{% endblock %}

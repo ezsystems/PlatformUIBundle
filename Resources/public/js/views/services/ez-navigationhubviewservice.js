@@ -513,7 +513,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                         ),
                         this._getNavigationItem(
                             "Content types", "admin-contenttypes",
-                            "adminContentType", {uri: "contenttype"}
+                            "adminContentType", {uri: "pjax/contenttype"}
                         ),
                     ];
 

@@ -7,7 +7,6 @@ parameters:
     ezsystems.platformui.controller.systeminfo.class: EzSystems\PlatformUIBundle\Controller\SystemInfoController
     ezsystems.platformui.controller.section.class: EzSystems\PlatformUIBundle\Controller\SectionController
     ezsystems.platformui.controller.template.class: EzSystems\PlatformUIBundle\Controller\TemplateController
-    ezsystems.platformui.controller.pjax.class: EzSystems\PlatformUIBundle\Controller\PjaxController
     ezsystems.platformui.controller.content_type.class: EzSystems\PlatformUIBundle\Controller\ContentTypeController
     ezsystems.platforui.notification_pool.class: EzSystems\PlatformUIBundle\Notification\NotificationPool
     ezsystems.platformui.form_processor.content_type.class: EzSystems\PlatformUIBundle\Form\Processor\ContentTypeFormProcessor
@@ -19,6 +18,9 @@ parameters:
     ezsystems.platformui.application_config.aggregator.class: EzSystems\PlatformUIBundle\ApplicationConfig\Aggregator
     ezsystems.platformui.application_config.provider.root_info.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\RootInfo
     ezsystems.platformui.form_processor.section.class: EzSystems\PlatformUIBundle\Form\Processor\SectionFormProcessor
+    ezsystems.platformui.exception_listener.class: EzSystems\PlatformUIBundle\EventListener\ExceptionListener
+    ezsystems.platformui.exception_controller: "ezsystems.platformui.controller.exception:showAction"
+    ezsystems.platformui.controller.exception.class: EzSystems\PlatformUIBundle\Controller\ExceptionController
 
 services:
     ezsystems.platformui.twig.yui_extension:
@@ -98,10 +100,6 @@ services:
             - @ezsystems.platformui.helper.systeminfo
         parent: ezsystems.platformui.controller.base
 
-    ezsystems.platformui.controller.pjax:
-        class: %ezsystems.platformui.controller.pjax.class%
-        parent: ezsystems.platformui.controller.base
-
     ## Section related services
     ezsystems.platformui.controller.section:
         class: %ezsystems.platformui.controller.section.class%
@@ -153,3 +151,16 @@ services:
         arguments: [@ezsystems.platformui.notification_pool, @router]
         tags:
             - { name: kernel.event_subscriber }
+
+    ezsystems.platformui.exception_listener:
+        class: %ezsystems.platformui.exception_listener.class%
+        arguments:
+            - %ezsystems.platformui.exception_controller%
+            - @?logger
+        tags:
+            - { name: kernel.event_subscriber }
+            - { name: monolog.logger, channel: request }
+
+    ezsystems.platformui.controller.exception:
+        class: %ezsystems.platformui.controller.exception.class%
+        parent: twig.controller.exception

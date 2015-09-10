@@ -8,7 +8,6 @@
  */
 namespace EzSystems\PlatformUIBundle\Controller;
 
-use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\RoleService;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\Core\Repository\Values\User\RoleCreateStruct;
@@ -62,19 +61,9 @@ class RoleController extends Controller
      */
     public function viewRoleAction($roleId)
     {
-        if (!$this->isGranted(new Attribute('role', 'read'))) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
-
-        try {
-            $role = $this->roleService->loadRole($roleId);
-            $roleAssignments = $this->roleService->getRoleAssignments($role);
-            $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
-        } catch (NotFoundException $e) {
-            $this->notifyError('role.error.role_not_found', [], 'role');
-
-            return $this->redirect($this->generateUrl('admin_roleList'));
-        }
+        $role = $this->roleService->loadRole($roleId);
+        $roleAssignments = $this->roleService->getRoleAssignments($role);
+        $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
 
         return $this->render('eZPlatformUIBundle:Role:view_role.html.twig', [
             'role' => $role,
@@ -92,10 +81,6 @@ class RoleController extends Controller
      */
     public function createRoleAction()
     {
-        if (!$this->isGranted(new Attribute('role', 'update'))) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
-
         $roleCreateStruct = new RoleCreateStruct(['identifier' => '__new__' . md5(microtime(true))]);
         $role = $this->roleService->createRole($roleCreateStruct);
 
@@ -111,18 +96,7 @@ class RoleController extends Controller
      */
     public function updateRoleAction(Request $request, $roleId)
     {
-        if (!$this->isGranted(new Attribute('role', 'update'))) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
-
-        try {
-            $role = $this->roleService->loadRole($roleId);
-        } catch (NotFoundException $e) {
-            $this->notifyError('role.error.role_not_found', [], 'role');
-
-            return $this->redirectToRoute('admin_roleList');
-        }
-
+        $role = $this->roleService->loadRole($roleId);
         $roleData = (new RoleMapper())->mapToFormData($role);
         $form = $this->createForm(new RoleUpdateType(), $roleData);
         $actionUrl = $this->generateUrl('admin_roleUpdate', ['roleId' => $roleId]);
@@ -170,18 +144,7 @@ class RoleController extends Controller
      */
     public function deleteRoleAction(Request $request, $roleId)
     {
-        if (!$this->isGranted(new Attribute('role', 'delete'))) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
-
-        try {
-            $role = $this->roleService->loadRole($roleId);
-        } catch (NotFoundException $e) {
-            $this->notifyError('role.error.role_not_found', [], 'role');
-
-            return $this->redirectToRoute('admin_roleList');
-        }
-
+        $role = $this->roleService->loadRole($roleId);
         $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
         $deleteForm->handleRequest($request);
         if ($deleteForm->isValid()) {

@@ -8,9 +8,7 @@
  */
 namespace EzSystems\PlatformUIBundle\Controller;
 
-use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute as AuthorizationAttribute;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use EzSystems\PlatformUIBundle\Helper\SystemInfoHelperInterface;
 
 class SystemInfoController extends Controller
@@ -32,10 +30,6 @@ class SystemInfoController extends Controller
      */
     public function infoAction()
     {
-        if (!$this->hasAccess()) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
-
         return $this->render('eZPlatformUIBundle:SystemInfo:info.html.twig', [
             'ezplatformInfo' => $this->systemInfoHelper->getEzPlatformInfo(),
             'systemInfo' => $this->systemInfoHelper->getSystemInfo(),
@@ -45,33 +39,14 @@ class SystemInfoController extends Controller
     /**
      * Renders a PHP info page.
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function phpinfoAction()
     {
-        if (!$this->hasAccess()) {
-            throw new AccessDeniedException();
-        }
-
         ob_start();
         phpinfo();
         $response = new Response(ob_get_clean());
 
         return $response;
-    }
-
-    /**
-     * Checks whether the current user has access to the actions in this
-     * controller, currently checks for the setup/system_info policy.
-     *
-     * @return bool
-     */
-    protected function hasAccess()
-    {
-        return $this->isGranted(
-            new AuthorizationAttribute('setup', 'system_info')
-        );
     }
 }

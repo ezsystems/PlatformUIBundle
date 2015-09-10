@@ -114,10 +114,6 @@
         <source>role.notification.unauthorized</source>
         <target>Unauthorized: You do not have access to perform this action.</target>
       </trans-unit>
-      <trans-unit id="f644208868353dea8a49b0ca3f84ccff" resname="role.error.role_not_found">
-        <source>role.error.role_not_found</source>
-        <target>The role could not be found.</target>
-      </trans-unit>
       <trans-unit id="dd48a66df5743b59288691bda67d8cdf" resname="role.error.name_or_limitation">
         <source>role.error.name_or_limitation</source>
         <target>The role name already exists, or there are errors in the role limitations.</target>
