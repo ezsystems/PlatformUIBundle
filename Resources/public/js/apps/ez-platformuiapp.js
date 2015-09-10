@@ -777,7 +777,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "adminContentTypeEdit",
-                    regex: /\/admin\/(contenttype%2Fupdate%2F.*)/,
+                    regex: /\/admin\/(pjax%2Fcontenttype%2Fupdate%2F.*)/,
                     keys: ['uri'],
                     path: "/admin/:uri",
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
@@ -786,7 +786,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "adminContentType",
-                    regex: /\/admin\/(contenttype.*)/,
+                    regex: /\/admin\/(pjax%2Fcontenttype.*)/,
                     keys: ['uri'],
                     path: "/admin/:uri",
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
