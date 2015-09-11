@@ -10,3 +10,7 @@
 .ae-toolbar-styles {
     z-index: 1201;
 }
+
+.ae-ui .ae-arrow-box.ae-arrow-box-bottom.ez-ae-arrow-box-left:after {
+    left: -75%;
+}
