@@ -46,10 +46,6 @@
         <source>content_type.edit_title</source>
         <target>Editing</target>
       </trans-unit>
-      <trans-unit id="c922cb4d7cf06dd353a1c42e5beaa942" resname="content_type.create">
-        <source>content_type.create</source>
-        <target>Create a content type</target>
-      </trans-unit>
       <trans-unit id="bd31df6edfdfe616bf43312ee6ed4814" resname="content_type.content_count">
         <source>content_type.content_count</source>
         <target>{0} %count% content items|{1} %count% content item|]1,Inf[ %count% content items</target>

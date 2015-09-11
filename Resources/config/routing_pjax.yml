@@ -77,6 +77,7 @@ admin_contenttypeView:
 
 admin_contenttypeCreate:
     path: /contenttype/create/{contentTypeGroupId}/{languageCode}
+    methods: [POST]
     defaults:
         _controller: ezsystems.platformui.controller.content_type:createContentTypeAction
         languageCode: ~
