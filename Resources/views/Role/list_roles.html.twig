@@ -40,9 +40,14 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {{ form_start(create_form, {"action": path("admin_roleCreate")}) }}
                 <p class="ez-table-data-buttons">
-                    <a href="{{ path('admin_roleCreate') }}" class="pure-button ez-button{% if not can_edit %} pure-button-disabled{% endif %}" data-icon="&#xe616;">{{ 'role.create'|trans }}</a>
+                    <button type="submit" class="pure-button ez-button" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
+                            name="{{ create_form.create.vars['full_name'] }}"
+                            id="{{ create_form.create.vars['id'] }}">{{ create_form.create.vars['label']|trans(domain="ezrepoforms_role") }}</button>
+                    {% do create_form.create.setRendered() %}
                 </p>
+                {{ form_end(create_form) }}
             </div>
         </div>
     </section>

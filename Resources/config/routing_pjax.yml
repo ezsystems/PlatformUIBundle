@@ -107,6 +107,7 @@ admin_roleView:
 
 admin_roleCreate:
     path: /role/create
+    methods: [POST]
     defaults:
         _controller: ezsystems.platformui.controller.role:createRoleAction
 
