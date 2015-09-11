@@ -51,6 +51,7 @@ class RoleController extends Controller
         return $this->render('eZPlatformUIBundle:Role:list_roles.html.twig', [
             'roles' => $this->roleService->loadRoles(),
             'can_edit' => $this->isGranted(new Attribute('role', 'update')),
+            'can_assign' => $this->isGranted(new Attribute('role', 'assign')),
             'can_create' => $this->isGranted(new Attribute('role', 'create')),
             'can_delete' => $this->isGranted(new Attribute('role', 'delete')),
             'create_form' => $createForm->createView(),
@@ -75,6 +76,7 @@ class RoleController extends Controller
             'role_assignments' => $roleAssignments,
             'deleteForm' => $deleteForm->createView(),
             'can_edit' => $this->isGranted(new Attribute('role', 'update')),
+            'can_assign' => $this->isGranted(new Attribute('role', 'assign')),
             'can_delete' => $this->isGranted(new Attribute('role', 'delete')),
         ]);
     }

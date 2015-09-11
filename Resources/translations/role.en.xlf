@@ -126,6 +126,14 @@
         <source>role.error.has_draft</source>
         <target>The role already has a draft, this must be deleted before a new one can be created.</target>
       </trans-unit>
+      <trans-unit id="23751a9239966ac8d8c91065938e3ea9" resname="role.assign.universaldiscovery.title">
+        <source>role.assign.universaldiscovery.title</source>
+        <target>Pick the users/groups to assign the role "%roleIdentifier%" to</target>
+      </trans-unit>
+      <trans-unit id="bedda6287c6ce333b45b0f080ff935c5" resname="role.assign.user_or_group">
+        <source>role.assign.user_or_group</source>
+        <target>Assign to users/groups</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
