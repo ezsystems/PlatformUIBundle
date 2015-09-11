@@ -21,10 +21,10 @@ YUI.add('toolbar-config-define-tests', function (Y) {
             );
         },
 
-        "Should have 'heading' as name": function () {
+        "Should have a correct name": function () {
             Assert.areEqual(
                 this.toolbarConfigName, this.toolbarConfig.name,
-                "The name of the toolbar configuration should be 'heading'"
+                "The name of the toolbar configuration should be '" + this.toolbarConfigName + "'"
             );
         },
 
