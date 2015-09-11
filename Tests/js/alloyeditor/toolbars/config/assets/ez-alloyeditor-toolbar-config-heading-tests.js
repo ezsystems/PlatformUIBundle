@@ -2,26 +2,24 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-/* global CKEDITOR */
 YUI.add('ez-alloyeditor-toolbar-config-heading-tests', function (Y) {
-    var defineTest, testTest, arrowBoxClassesTest, setPositionTest,
+    var defineTest, testTest,
         Heading = Y.eZ.AlloyEditorToolbarConfig.Heading,
-        AlloyEditor = Y.eZ.AlloyEditor,
+        BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockBase,
         Assert = Y.Assert, Mock = Y.Mock;
 
     defineTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ToolbarConfigDefineTest, {
         name: 'eZ AlloyEditor heading config toolbar define test',
         toolbarConfig: Heading,
         toolbarConfigName: "heading",
+        methods: {
+            getArrowBoxClasses: BlockBase.getArrowBoxClasses,
+            setPosition: BlockBase.setPosition,
+        },
 
         _should: {
             ignore: {
-                // those are ignored because heading toolbar has custom
-                // test, setPosition and getArrowBoxClasses methods and those
-                // are tested below.
                 "Should have the correct `test` method": true,
-                "Should have the correct `setPosition` method": true,
-                "Should have the correct `getArrowBoxClasses` method": true,
             },
         },
     }));
@@ -94,72 +92,13 @@ YUI.add('ez-alloyeditor-toolbar-config-heading-tests', function (Y) {
                 "The toolbar should be hidden"
             );
         },
-    });
 
-    arrowBoxClassesTest = new Y.Test.Case({
-        name: 'eZ AlloyEditor heading config toolbar getArrowBoxClasses method test',
-
-        "Should position the arrow in the bottom": function () {
-            Assert.areEqual(
-                "ae-arrow-box ae-arrow-box-bottom",
-                Heading.getArrowBoxClasses(),
-                "The arrow should be position at the bottom with the CSS classes"
-            );
-        },
-    });
-
-    setPositionTest = new Y.Test.Case({
-        name: 'eZ AlloyEditor heading config toolbar setPosition method test',
-
-        setUp: function () {
-            this.toolbarNode = Y.one('.toolbar').getDOMNode();
-            this.origFindDOMNode = AlloyEditor.React.findDOMNode;
-            this.toolbar = new Mock();
-            this.region = {
-                left: 42,
-                top: -42,
-            };
-            this.xy = [12, 11];
-
-            Mock.expect(this.toolbar, {
-                method: 'getWidgetXYPoint',
-                args: [this.region.left, this.region.top, CKEDITOR.SELECTION_BOTTOM_TO_TOP],
-                returns: this.xy
-            });
-            AlloyEditor.React.findDOMNode = Y.bind(function (arg) {
-                Assert.areSame(
-                    arg, this.toolbar,
-                    "findDOMNode should receive the toolbar"
-                );
-                return this.toolbarNode;
-            }, this);
-        },
-
-        tearDown: function () {
-            AlloyEditor.React.findDOMNode = this.origFindDOMNode;
-            delete this.toolbar;
-            Y.one(this.toolbarNode).removeAttribute('style').removeClass('ae-toolbar-transition');
-        },
-
-        "Should move the toolbar to the expected coordinates": function () {
-            Heading.setPosition.call(this.toolbar, {selectionData: {region: this.region}});
-
-            Assert.areEqual(
-                this.xy[0] + 'px', this.toolbarNode.style.left,
-                "The toolbar should have been moved (left)"
-            );
-            Assert.areEqual(
-                this.xy[1] + 'px', this.toolbarNode.style.top,
-                "The toolbar should have been moved (top)"
-            );
-        },
-
-        "Should add the transition class": function () {
-            Heading.setPosition.call(this.toolbar, {selectionData: {region: this.region}});
-
+        "Empty selection inside a heading": function () {
+            this.emptySelection = true;
+            this.insideHeading = true;
             Assert.isTrue(
-                Y.one(this.toolbarNode).hasClass('ae-toolbar-transition'),
-                "The toolbar container should get the transition class"
+                Heading.test({editor: this.editor}),
+                "The toolbar should be visible"
             );
         },
     });
@@ -167,6 +106,10 @@ YUI.add('ez-alloyeditor-toolbar-config-heading-tests', function (Y) {
     Y.Test.Runner.setName("eZ AlloyEditor heading config toolbar tests");
     Y.Test.Runner.add(defineTest);
     Y.Test.Runner.add(testTest);
-    Y.Test.Runner.add(arrowBoxClassesTest);
-    Y.Test.Runner.add(setPositionTest);
-}, '', {requires: ['test', 'toolbar-config-define-tests', 'node', 'ez-alloyeditor-toolbar-config-heading']});
+}, '', {
+    requires: [
+        'test', 'toolbar-config-define-tests', 'node',
+        'ez-alloyeditor-toolbar-config-heading',
+        'ez-alloyeditor-toolbar-config-block-base',
+    ]
+});

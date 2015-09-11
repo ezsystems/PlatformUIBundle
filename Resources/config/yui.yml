@@ -26,7 +26,7 @@ system:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/block-base.js
                 ez-alloyeditor-toolbar-config-heading:
-                    requires: ['ez-alloyeditor']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
                     path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/heading.js
                 ez-alloyeditor-toolbar-config-paragraph:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']

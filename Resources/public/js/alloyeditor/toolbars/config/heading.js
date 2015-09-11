@@ -2,7 +2,6 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-/* global CKEDITOR */
 YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
     "use strict";
      /**
@@ -12,7 +11,7 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
      */
     Y.namespace('eZ.AlloyEditorToolbarConfig');
 
-    var AlloyEditor = Y.eZ.AlloyEditor,
+    var BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockBase,
         styles = {
             name: 'styles',
             cfg: {
@@ -34,6 +33,7 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
      *
      * @namespace eZ.AlloyEditorToolbarConfig
      * @class Heading
+     * @extends BlockBase
      */
     Y.eZ.AlloyEditorToolbarConfig.Heading = {
         name: 'heading',
@@ -68,46 +68,8 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
             );
         },
 
-        /**
-         * Returns the arrow box classes for the toolbar. The toolbar is
-         * always positioned above the heading
-         *
-         * @method getArrowBoxClasses
-         * @return {String}
-         */
-        getArrowBoxClasses: function () {
-            return 'ae-arrow-box ae-arrow-box-bottom';
-        },
+        getArrowBoxClasses: BlockBase.getArrowBoxClasses,
 
-        /**
-         * Sets the position of the toolbar. It overrides the default styles
-         * toolbar positioning to take into account the fact that we don't
-         * have a selection but only the caret inside the heading.
-         *
-         * @method setPosition
-         * @param {Object} payload
-         * @param {AlloyEditor.Core} payload.editor
-         * @param {Object} payload.selectionData
-         * @param {Object} payload.editorEvent
-         * @return {Boolean} true if the method was able to position the
-         * toolbar
-         */
-        setPosition: function (payload) {
-            var region = payload.selectionData.region,
-                domNode = AlloyEditor.React.findDOMNode(this),
-                xy, domElement;
-
-            xy = this.getWidgetXYPoint(
-                region.left, region.top, CKEDITOR.SELECTION_BOTTOM_TO_TOP
-            );
-
-            domElement = new CKEDITOR.dom.element(domNode);
-            domElement.addClass('ae-toolbar-transition');
-            domElement.setStyles({
-                left: xy[0] + 'px',
-                top: xy[1] + 'px'
-            });
-            return true;
-        },
+        setPosition: BlockBase.setPosition,
     };
 });
