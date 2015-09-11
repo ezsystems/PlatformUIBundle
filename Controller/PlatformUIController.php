@@ -32,4 +32,9 @@ class PlatformUIController extends Controller
             ['parameters' => $this->configAggregator->getConfig()]
         );
     }
+
+    public function performAccessChecks()
+    {
+        return;
+    }
 }

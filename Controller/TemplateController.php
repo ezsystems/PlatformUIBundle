@@ -58,4 +58,9 @@ class TemplateController extends Controller
     {
         return $this->configResolver->getParameter("yui.modules.$module.$setting", 'ez_platformui');
     }
+
+    public function performAccessChecks()
+    {
+        return;
+    }
 }
