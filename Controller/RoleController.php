@@ -46,6 +46,7 @@ class RoleController extends Controller
     public function listRolesAction()
     {
         $createForm = $this->createForm(new RoleCreateType());
+
         return $this->render('eZPlatformUIBundle:Role:list_roles.html.twig', [
             'roles' => $this->roleService->loadRoles(),
             'can_edit' => $this->isGranted(new Attribute('role', 'update')),
