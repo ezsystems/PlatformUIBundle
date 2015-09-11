@@ -9,7 +9,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
         getFieldTest,
         getEmptyFieldTest,
         tapTest,
-        loadFieldRelatedContentsTest,
+        loadObjectRelationsTest,
         initializerTest;
 
     viewTest = new Y.Test.Case({
@@ -22,7 +22,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
         },
 
         setUp: function () {
-            this.destinationContents = [];
+            this.relatedContents = [];
             this.fieldDefinitionIdentifier= "niceField";
             this.fieldDefinition = {
                 fieldType: "ezobjectrelationlist",
@@ -58,7 +58,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                 content: this.content,
                 version: this.version,
                 contentType: this.contentType,
-                destinationContents: this.destinationContents,
+                relatedContents: this.relatedContents,
             });
         },
 
@@ -101,13 +101,13 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                     that.view.get('loadingError'), variables.loadingError,
                     "The field should be available in the field edit view template"
                 );
-                Y.Array.each(that.view.get('destinationContents'), function (destContent) {
+                Y.Array.each(that.view.get('relatedContents'), function (destContent) {
                     destContentToJSONArray.push(destContent.toJSON());
                 });
-                for ( var i = 0; i<= variables.destinationContents.length; i++){
+                for ( var i = 0; i<= variables.relatedContents.length; i++){
                     Y.Assert.areSame(
                         destContentToJSONArray[i],
-                        variables.destinationContents[i],
+                        variables.relatedContents[i],
                         "The field should be available in the field edit view template"
                     );
                 }
@@ -130,7 +130,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             var fieldDefinition = this._getFieldDefinition(false);
 
             this.view.set('fieldDefinition', fieldDefinition);
-            this.view.set('destinationContents', []);
+            this.view.set('relatedContents', []);
             this.view.render();
 
             this.view.validate();
@@ -144,7 +144,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             var fieldDefinition = this._getFieldDefinition(true);
 
             this.view.set('fieldDefinition', fieldDefinition);
-            this.view.set('destinationContents', []);
+            this.view.set('relatedContents', []);
             this.view.validate();
             this.view.render();
 
@@ -174,7 +174,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                 templateCalled = true;
                 return origTpl.apply(this, arguments);
             };
-            this.view.set('destinationContents', this.destinationContents);
+            this.view.set('relatedContents', this.relatedContents);
             Y.Assert.isTrue(templateCalled, "The template has not been used");
         },
     });
@@ -203,7 +203,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             this.view = new Y.eZ.RelationListEditView({
                 field: this.field,
                 fieldDefinition: this.fieldDefinition,
-                destinationContents: this.destinationContents,
+                relatedContents: this.relatedContents,
             });
         },
 
@@ -239,7 +239,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
         },
 
         setUp: function () {
-            this.destinationContents = [];
+            this.relatedContents = [];
             this.fieldDefinitionIdentifier= "niceField";
             this.fieldDefinition = {
                 fieldType: "ezobjectrelationlist",
@@ -274,7 +274,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                 content: this.content,
                 version: this.version,
                 contentType: this.contentType,
-                destinationContents: this.destinationContents,
+                relatedContents: this.relatedContents,
             });
         },
 
@@ -441,7 +441,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                 }
             });
 
-            this.destinationContents = [this.destinationContent1, this.destinationContent2];
+            this.relatedContents = [this.destinationContent1, this.destinationContent2];
             this.fieldDefinitionIdentifier= "niceField";
             this.fieldDefinition = {
                 fieldType: "ezobjectrelationlist",
@@ -476,7 +476,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                 content: this.content,
                 version: this.version,
                 contentType: this.contentType,
-                destinationContents: this.destinationContents,
+                relatedContents: this.relatedContents,
             });
         },
 
@@ -527,7 +527,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             var that = this,
                 contentId = 42;
 
-            this.view.set('destinationContents', [this.destinationContent2]);
+            this.view.set('relatedContents', [this.destinationContent2]);
             this.view.render();
             that.view.template = function () {
                 that.resume(function () {
@@ -542,7 +542,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             var that = this,
                 contentId = 42;
 
-            this.view.set('destinationContents', [this.destinationContent1, this.destinationContent2]);
+            this.view.set('relatedContents', [this.destinationContent1, this.destinationContent2]);
             this.view.render();
             that.view.get('container').onceAfter(['webkitTransitionEnd', 'transitionend'], Y.bind(function () {
                 that.resume(function () {
@@ -559,8 +559,8 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
 
     Y.Test.Runner.add(tapTest);
 
-    loadFieldRelatedContentsTest = new Y.Test.Case({
-        name: "eZ Relation list loadFieldRelatedContents event test",
+    loadObjectRelationsTest = new Y.Test.Case({
+        name: "eZ Relations list loadObjectRelations event test",
 
         _getFieldDefinition: function (required) {
             return {
@@ -588,11 +588,11 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             delete this.view;
         },
 
-        "Should fire the loadFieldRelatedContents event": function () {
+        "Should fire the loadObjectRelations event": function () {
             var loadContentEvent = false,
                 that = this;
 
-            this.view.on('loadFieldRelatedContents', function (e) {
+            this.view.on('loadObjectRelations', function (e) {
                 Y.Assert.areSame(
                     that.fieldDefinitionIdentifier,
                     e.fieldDefinitionIdentifier,
@@ -605,11 +605,11 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             Y.Assert.isTrue(loadContentEvent, "loadContentEvent should be called when changing active value");
         },
 
-        "Should NOT fire the loadFieldRelatedContents event if field is empty": function () {
+        "Should NOT fire the loadObjectRelations event if field is empty": function () {
             var loadContentEvent = false,
                 that = this;
 
-            this.view.on('loadFieldRelatedContents', function (e) {
+            this.view.on('loadObjectRelations', function (e) {
                 Y.Assert.areSame(
                     that.fieldDefinitionIdentifier,
                     e.fieldDefinitionIdentifier,
@@ -624,7 +624,7 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
         },
     });
 
-    Y.Test.Runner.add(loadFieldRelatedContentsTest);
+    Y.Test.Runner.add(loadObjectRelationsTest);
 
     getFieldTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.GetFieldTests, {

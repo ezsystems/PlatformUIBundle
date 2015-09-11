@@ -30,12 +30,20 @@ YUI.add('ez-objectrelationloadplugin-tests', function (Y) {
 
             this.service.set('capi', this.capi);
             this.service.set('content', new Y.eZ.Content());
-            this.service.get('content').set('relations', [{
-                id: this.relationId,
-                destination: this.destination,
-                type: 'ATTRIBUTE',
-                fieldDefinitionIdentifier: this.fieldDefinitionIdentifier,
-            }]);
+            this.service.get('content').set('relations', [
+                {
+                    id: this.relationId,
+                    destination: this.destination,
+                    type: 'ATTRIBUTE',
+                    fieldDefinitionIdentifier: this.fieldDefinitionIdentifier,
+                },
+                {
+                    id: this.relationId,
+                    destination: this.destination,
+                    type: 'EMBED',
+                    fieldDefinitionIdentifier: this.fieldDefinitionIdentifier,
+                }
+            ]);
 
             this.plugin = new Y.eZ.Plugin.ObjectRelationLoad({
                 host: this.service,

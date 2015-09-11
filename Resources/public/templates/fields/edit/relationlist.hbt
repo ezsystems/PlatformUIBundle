@@ -13,7 +13,7 @@
             {{#if isEmpty}}
                 <p class="ez-relation-empty">No relation.</p>
             {{else}}
-                {{#if destinationContents }}
+                {{#if relatedContents }}
                     <table class="pure-table pure-table-striped ez-relationlist-contents">
                         <thead>
                             <tr>
@@ -24,7 +24,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each destinationContents}}
+                            {{#each relatedContents}}
                                 <tr class="ez-relation-content" data-content-id="{{id}}">
                                     <td class="ez-relation-content-name" data-icon="&#xe601;">{{ name }}</td>
                                     <td class="ez-relation-property">{{ publishedDate }}</td>

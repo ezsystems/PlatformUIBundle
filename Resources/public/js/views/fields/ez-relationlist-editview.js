@@ -34,11 +34,11 @@ YUI.add('ez-relationlist-editview', function (Y) {
         initializer: function () {
             var fieldValue = this.get('field').fieldValue;
 
-            this._fireMethod = this._fireLoadFieldRelatedContents;
+            this._fireMethod = this._fireLoadObjectRelations;
             if( fieldValue.destinationContentIds ){
                 this._set('destinationContentsIds', fieldValue.destinationContentIds);
             }
-            this.after('destinationContentsChange', function (e) {
+            this.after('relatedContentsChange', function (e) {
                 this._syncDestinationContentsIds(e);
                 if (e.src === "remove") {
                     if (this.get('destinationContentsIds').length !== 0) {
@@ -92,14 +92,15 @@ YUI.add('ez-relationlist-editview', function (Y) {
         },
 
         /**
-         * Fire the `loadFieldRelatedContents` event
+         * Fire the `loadObjectRelations` event
          *
-         * @method _fireLoadFieldRelatedContents
+         * @method _fireLoadObjectRelations
          * @protected
          */
-        _fireLoadFieldRelatedContents: function () {
+        _fireLoadObjectRelations: function () {
             if ( !this._isFieldEmpty() ) {
-                this.fire('loadFieldRelatedContents', {
+                this.fire('loadObjectRelations', {
+                    relationType: 'ATTRIBUTE',
                     fieldDefinitionIdentifier: this.get('fieldDefinition').identifier
                 });
             }
@@ -127,15 +128,15 @@ YUI.add('ez-relationlist-editview', function (Y) {
          * @return Object
          */
         _variables: function () {
-            var dest = this.get('destinationContents'),
-                destinationContentsJSON = [];
+            var relatedContents = this.get('relatedContents'),
+                relatedContentsJSON = [];
 
-            Y.Array.each(dest, function (value) {
-                destinationContentsJSON.push(value.toJSON());
+            Y.Array.each(relatedContents, function (value) {
+                relatedContentsJSON.push(value.toJSON());
             });
 
             return {
-                destinationContents:  destinationContentsJSON,
+                relatedContents:  relatedContentsJSON,
                 loadingError: this.get('loadingError'),
                 isEmpty: this._isFieldEmpty(),
                 isRequired: this.get('fieldDefinition').isRequired,
@@ -155,10 +156,10 @@ YUI.add('ez-relationlist-editview', function (Y) {
                 removedContentId;
 
             e.preventDefault();
-            remainingContents =  Y.Array.reject(this.get('destinationContents'), function (val) {
+            remainingContents =  Y.Array.reject(this.get('relatedContents'), function (val) {
                 return ((removedContentId = e.target.getAttribute('data-content-id')) ==  val.get('id'));
             });
-            this.set('destinationContents', remainingContents, {src: "remove", contentId: removedContentId});
+            this.set('relatedContents', remainingContents, {src: "remove", contentId: removedContentId});
             this.validate();
         },
 
@@ -198,17 +199,17 @@ YUI.add('ez-relationlist-editview', function (Y) {
          * @param {EventFacade} e
          */
         _selectRelation: function (e) {
-            var destinationContents = this.get('destinationContents').concat();
+            var relatedContents = this.get('relatedContents').concat();
 
             Y.Array.each(e.selection, function (struct) {
                 if ( !this._isRelated(struct.content) ) {
-                    destinationContents.push(struct.content);
+                    relatedContents.push(struct.content);
                 }
             }, this);
 
             this.set('errorStatus', false);
 
-            this.set('destinationContents', destinationContents);
+            this.set('relatedContents', relatedContents);
         },
 
         /**
@@ -237,12 +238,12 @@ YUI.add('ez-relationlist-editview', function (Y) {
     },{
         ATTRS: {
             /**
-             * The destination contents of the relation list
+             * The related contents of the relation list
              *
-             * @attribute destinationContents
+             * @attribute relatedContents
              * @type Array (Y.eZ.Content)
              */
-            destinationContents: {
+            relatedContents: {
                 value: [],
             },
 

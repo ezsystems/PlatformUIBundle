@@ -6,9 +6,9 @@
             {{#if isEmpty}}
                 This field is empty
             {{else}}
-                {{#if destinationContents }}
+                {{#if relatedContents }}
                     <ul>
-                    {{#each destinationContents}}
+                    {{#each relatedContents}}
                         <li>
                             <a href="{{path "viewLocation" id=resources.MainLocation languageCode=mainLanguageCode}}">{{ name }}</a>
                         </li>
