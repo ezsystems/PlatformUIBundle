@@ -47,8 +47,8 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
         ],
 
         /**
-         * Tests whether the `heading` should be visible. It is visible when
-         * the selection is empty and when the caret is inside a heading.
+         * Tests whether the `heading` toolbar should be visible. It is visible
+         * when the selection is empty and when the caret is inside a heading.
          *
          * @method test
          * @param {Object} payload
