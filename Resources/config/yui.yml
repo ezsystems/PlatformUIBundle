@@ -13,9 +13,24 @@ system:
                 ez-alloyeditor:
                     requires: ['alloyeditor']
                     path: %ez_platformui.public_dir%/js/external/ez-alloyeditor.js
-                ez-alloyeditor-toolbar-config-heading:
+                ez-alloyeditor-toolbar-config-link:
                     requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/link.js
+                ez-alloyeditor-toolbar-config-text:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/text.js
+                ez-alloyeditor-toolbar-config-table:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/table.js
+                ez-alloyeditor-toolbar-config-block-base:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/block-base.js
+                ez-alloyeditor-toolbar-config-heading:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
                     path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/heading.js
+                ez-alloyeditor-toolbar-config-paragraph:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/paragraph.js
                 ez-alloyeditor-plugin-addcontent:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/plugins/addcontent.js
@@ -476,7 +491,11 @@ system:
                         - 'ez-alloyeditor-plugin-addcontent'
                         - 'ez-alloyeditor-plugin-removeblock'
                         - 'ez-alloyeditor-plugin-focusblock'
+                        - 'ez-alloyeditor-toolbar-config-link'
+                        - 'ez-alloyeditor-toolbar-config-text'
+                        - 'ez-alloyeditor-toolbar-config-table'
                         - 'ez-alloyeditor-toolbar-config-heading'
+                        - 'ez-alloyeditor-toolbar-config-paragraph'
                         - 'ez-alloyeditor-button-heading'
                         - 'ez-alloyeditor-button-embed'
                         - 'ez-alloyeditor-button-blocktextalignleft'

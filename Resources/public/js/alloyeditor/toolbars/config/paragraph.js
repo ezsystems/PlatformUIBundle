@@ -2,43 +2,29 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
+YUI.add('ez-alloyeditor-toolbar-config-paragraph', function (Y) {
     "use strict";
      /**
-     * Provides the AlloyEditor `styles` toolbar configuration for headings.
+     * Provides the AlloyEditor `styles` toolbar configuration for paragraphs.
      *
-     * @module ez-alloyeditor-toolbar-config-heading
+     * @module ez-alloyeditor-toolbar-config-paragraph
      */
     Y.namespace('eZ.AlloyEditorToolbarConfig');
 
-    var BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockBase,
-        styles = {
-            name: 'styles',
-            cfg: {
-                styles: [
-                    {name: 'Heading 1', style: {element: 'h1'}},
-                    {name: 'Heading 2', style: {element: 'h2'}},
-                    {name: 'Heading 3', style: {element: 'h3'}},
-                    {name: 'Heading 4', style: {element: 'h4'}},
-                    {name: 'Heading 5', style: {element: 'h5'}},
-                    {name: 'Heading 6', style: {element: 'h6'}},
-                ]
-            }
-        };
+    var BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockBase;
 
     /**
-     * `styles` toolbar configuration for heading. The `heading` toolbar is
-     * supposed to be shown when the user puts the caret inside an heading
+     * `styles` toolbar configuration for paragraph. The `paragraph` toolbar is
+     * supposed to be shown when the user puts the caret inside a paragraph
      * element and when the selection is empty.
      *
      * @namespace eZ.AlloyEditorToolbarConfig
-     * @class Heading
+     * @class Paragraph
      * @extends BlockBase
      */
-    Y.eZ.AlloyEditorToolbarConfig.Heading = {
-        name: 'heading',
+    Y.eZ.AlloyEditorToolbarConfig.Paragraph = {
+        name: 'paragraph',
         buttons: [
-            styles,
             'ezblocktextalignleft',
             'ezblocktextaligncenter',
             'ezblocktextalignright',
@@ -47,8 +33,9 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
         ],
 
         /**
-         * Tests whether the `heading` toolbar should be visible. It is visible
-         * when the selection is empty and when the caret is inside a heading.
+         * Tests whether the `paragraph` toolbar should be visible. It is
+         * visible when the selection is empty and when the caret is inside a
+         * paragraph.
          *
          * @method test
          * @param {Object} payload
@@ -64,7 +51,7 @@ YUI.add('ez-alloyeditor-toolbar-config-heading', function (Y) {
 
             return (
                 nativeEditor.isSelectionEmpty() &&
-                path.contains(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
+                path.contains('p')
             );
         },
 

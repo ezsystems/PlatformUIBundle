@@ -20,7 +20,8 @@ YUI.add('ez-richtext-editview', function (Y) {
             "contenteditable": 'true',
             "class": 'ez-richtext-editable',
         },
-        AlloyEditor = Y.eZ.AlloyEditor;
+        AlloyEditor = Y.eZ.AlloyEditor,
+        ToolbarConfig = Y.eZ.AlloyEditorToolbarConfig;
 
     /**
      * Rich Text edit view
@@ -329,23 +330,13 @@ YUI.add('ez-richtext-editview', function (Y) {
             toolbarsConfig: {
                 value: {
                     styles: {
-                        selections: [{
-                            name: 'link',
-                            buttons: ['linkEdit'],
-                            test: AlloyEditor.SelectionTest.link
-                        }, {
-                            name: 'text',
-                            buttons: [
-                                'bold', 'italic', 'underline', 'link',
-                            ],
-                            test: AlloyEditor.SelectionTest.text
-                        }, {
-                            name: 'table',
-                            buttons: ['tableRow', 'tableColumn', 'tableCell', 'tableRemove'],
-                            getArrowBoxClasses: AlloyEditor.SelectionGetArrowBoxClasses.table,
-                            setPosition: AlloyEditor.SelectionSetPosition.table,
-                            test: AlloyEditor.SelectionTest.table
-                        }, Y.eZ.AlloyEditorToolbarConfig.Heading],
+                        selections: [
+                            ToolbarConfig.Link,
+                            ToolbarConfig.Text,
+                            ToolbarConfig.Table,
+                            ToolbarConfig.Heading,
+                            ToolbarConfig.Paragraph,
+                        ],
                         tabIndex: 1
                     },
                     add: {
