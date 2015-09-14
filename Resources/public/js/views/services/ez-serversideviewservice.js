@@ -74,9 +74,7 @@ YUI.add('ez-serversideviewservice', function (Y) {
                 pjaxLocation = response.getResponseHeader(PJAX_LOCATION_HEADER);
 
             if ( response.status === PJAX_DONE_REDIRECT && pjaxLocation ) {
-                app.navigateTo('adminGenericRoute', {
-                    uri: pjaxLocation
-                });
+                app.navigate(this._getAdminRouteUri(pjaxLocation));
             } else {
                 app.set('loading', false);
                 this._updateView(view, response);
@@ -166,23 +164,46 @@ YUI.add('ez-serversideviewservice', function (Y) {
          * @return {Node}
          */
         _rewrite: function (node) {
-            var app = this.get('app');
-
             node.all('a[href]').each(function (link) {
-                var href = link.getAttribute('href');
-
-                if (
-                    href.charAt(0) === '#'
-                    || ( link.hasAttribute('target') && link.getAttribute('target') !== '_self' )
-                    || href.match(/^http(s)?:\/\//)
-                ) {
+                if ( !this._isPjaxLink(link) ) {
                     return;
                 }
-                // Remoove unnecessary slashes
-                href = href.replace(/^\/+/g, '');
-                link.setAttribute('href', app.routeUri('adminGenericRoute', {uri: href}));
-            });
+                link.setAttribute('href', this._getAdminRouteUri(link.getAttribute('href')));
+            }, this);
             return node;
+        },
+
+        /**
+         * Returns the URI in PlatformUI App from the PJAX URI
+         *
+         * @method _getAdminRouteUri
+         * @protected
+         * @param {String} uri
+         * @return {String}
+         */
+        _getAdminRouteUri: function (uri) {
+            var app = this.get('app'),
+                regexp = new RegExp('^' + app.get('baseUri'));
+
+            return app.routeUri('adminGenericRoute', {uri: uri.replace(regexp, '')});
+        },
+
+        /**
+         * Checks whether the link can be transformed in a PJAX link.
+         *
+         * @method _isPjaxLink
+         * @protected
+         * @param {Y.Node} link
+         * @return {Boolean}
+         */
+        _isPjaxLink: function (link) {
+            var href = link.getAttribute('href');
+
+            return (
+                href.charAt(0) !== '#'
+                && ( !link.hasAttribute('target') || link.getAttribute('target') === '_self' )
+                && !href.match(/^http(s)?:\/\//)
+            );
         },
 
         /**

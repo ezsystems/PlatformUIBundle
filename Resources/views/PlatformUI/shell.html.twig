@@ -55,10 +55,11 @@
                     viewContainer: '.ez-view-container',
                     root: "{{ parameters.rootInfo.root }}",
                     assetRoot: "{{ parameters.rootInfo.assetRoot }}",
+                    baseUri: "{{ parameters.rootInfo.baseUri }}",
                     anonymousUserId: "{{ parameters.anonymousUserId }}",
                     plugins: Y.eZ.PluginRegistry.getPlugins(Y.eZ.PlatformUIApp.NAME),
                     capi: new Y.eZ.CAPI(
-                        "{{ app.request.uriForPath('/')|trim('/') }}",
+                        "{{ parameters.rootInfo.baseUri|trim('/') }}",
                         new Y.eZ.SessionAuthAgent({%if parameters.sessionInfo.isStarted %}{
                                 name: "{{ parameters.sessionInfo.name }}",
                                 identifier: "{{ parameters.sessionInfo.identifier }}",
