@@ -61,7 +61,7 @@ YUI.add('ez-contenttreeplugin', function (Y) {
                     return;
                 }
                 Y.Array.each(response.document.LocationList.Location, function (loc) {
-                    var location, contentType,
+                    var location, content, contentType,
                         end = tasks.add(function (err) {
                             if ( err ) {
                                 loadError = true;
@@ -69,7 +69,7 @@ YUI.add('ez-contenttreeplugin', function (Y) {
                             }
                             children[location.get('id')] = {
                                 location: location,
-                                contentInfo: location.get('contentInfo'),
+                                content: content,
                                 contentType: contentType,
                             };
                         });
@@ -79,9 +79,14 @@ YUI.add('ez-contenttreeplugin', function (Y) {
                         if ( err ) {
                             end(err);
                         }
-
-                        contentType = new Y.eZ.ContentType({id: location.get('contentInfo').get('resources').ContentType});
-                        contentType.load(options, end);
+                        content = new Y.eZ.Content({id: location.get('resources').Content});
+                        content.load(options, function (err) {
+                            if ( err ) {
+                                end(err);
+                            }
+                            contentType = new Y.eZ.ContentType({id: content.get('resources').ContentType});
+                            contentType.load(options, end);
+                        });
                     });
                 });
 
