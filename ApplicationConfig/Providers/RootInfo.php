@@ -24,12 +24,12 @@ class RootInfo implements Provider
     }
 
     /**
-     * Returns the baseUri for the current application environment, ie the
+     * Returns the apiRoot for the current application environment, ie the
      * prefix to use for all api/AJAX calls
      *
      * @return string
      */
-    protected function getBaseUri()
+    protected function getApiRoot()
     {
         $request = $this->requestStack->getMasterRequest();
         $pathinfo = $request->getPathInfo();
@@ -45,7 +45,7 @@ class RootInfo implements Provider
     {
         return [
             'root' => $this->requestStack->getMasterRequest()->attributes->get('semanticPathinfo'),
-            'baseUri' => $this->getBaseUri(),
+            'apiRoot' => $this->getApiRoot(),
             'assetRoot' => $this->assetsHelper->getUrl('/'),
             'ckeditorPluginPath' => $this->assetsHelper->getUrl($this->externalAssetsDirectory) . '/vendors/',
         ];

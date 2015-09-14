@@ -18,7 +18,7 @@ class RootInfoTest extends PHPUnit_Framework_TestCase
     {
         $provider = new RootInfo($this->createRequestStack(), $this->getAssetsHelperMock(), self::ASSETS_DIR);
         self::assertEquals(
-            ['root' => self::URI, 'assetRoot' => '/', 'ckeditorPluginPath' => '/' . self::ASSETS_DIR . '/vendors/', 'baseUri' => '/'],
+            ['root' => self::URI, 'assetRoot' => '/', 'ckeditorPluginPath' => '/' . self::ASSETS_DIR . '/vendors/', 'apiRoot' => '/'],
             $provider->getConfig()
         );
     }

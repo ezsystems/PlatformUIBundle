@@ -109,7 +109,7 @@ YUI.add('ez-serversideviewservice', function (Y) {
          * @param {Function} next
          */
         _load: function (next) {
-            var uri = this.get('app').get('baseUri') + this.get('request').params.uri;
+            var uri = this.get('app').get('apiRoot') + this.get('request').params.uri;
 
             Y.io(uri, {
                 method: 'GET',
@@ -183,7 +183,7 @@ YUI.add('ez-serversideviewservice', function (Y) {
          */
         _getAdminRouteUri: function (uri) {
             var app = this.get('app'),
-                regexp = new RegExp('^' + app.get('baseUri'));
+                regexp = new RegExp('^' + app.get('apiRoot'));
 
             return app.routeUri('adminGenericRoute', {uri: uri.replace(regexp, '')});
         },
