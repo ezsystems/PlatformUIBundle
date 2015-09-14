@@ -8,6 +8,7 @@
  */
 namespace EzSystems\PlatformUIBundle\Controller;
 
+use EzSystems\PlatformUIBundle\Http\FormProcessingDoneResponse;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use eZ\Bundle\EzPublishCoreBundle\Controller as BaseController;
 
@@ -25,5 +26,33 @@ abstract class Controller extends BaseController
     public function performAccessChecks()
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+    }
+
+    /**
+     * Returns a PJAX specific redirect response (HTTP 205 with PJAX-Location header).
+     * Performs a redirect to $url.
+     * Use this method after form processing.
+     *
+     * @param string $url
+     *
+     * @return FormProcessingDoneResponse
+     */
+    protected function redirectAfterFormPost($url)
+    {
+        return new FormProcessingDoneResponse($url);
+    }
+
+    /**
+     * Performs a redirect to $routeName.
+     * Use this method after form processing.
+     *
+     * @param string $routeName
+     * @param array $params Hash of parameters to generate the route.
+     *
+     * @return FormProcessingDoneResponse
+     */
+    protected function redirectToRouteAfterFormPost($routeName, array $params = [])
+    {
+        return $this->redirectAfterFormPost($this->generateUrl($routeName, $params));
     }
 }

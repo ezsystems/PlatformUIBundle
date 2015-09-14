@@ -10,7 +10,7 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
         name: "eZ Server Side View Service test",
 
         setUp: function () {
-            this.baseUri = '/Tests/js/views/services/';
+            this.apiRoot = '/Tests/js/views/services/';
             this.title = 'Right Thoughts, Right Words, Right Actions';
             this.html = '<p>Right action</p>';
 
@@ -20,8 +20,8 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
             this.app = new Y.Mock();
             Y.Mock.expect(this.app, {
                 method: 'get',
-                args: ['baseUri'],
-                returns: this.baseUri,
+                args: ['apiRoot'],
+                returns: this.apiRoot,
             });
 
             this.request = {'params': {'uri': ''}};
@@ -139,13 +139,13 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
         name: "eZ Server Side View Service rewrite HTML test",
 
         setUp: function () {
-            this.baseUri = '/Tests/js/views/services/';
+            this.apiRoot = '/Tests/js/views/services/';
 
             this.app = new Y.Mock();
             Y.Mock.expect(this.app, {
                 method: 'get',
-                args: ['baseUri'],
-                returns: this.baseUri,
+                args: ['apiRoot'],
+                returns: this.apiRoot,
             });
 
             this.request = {'params': {'uri': ''}};
@@ -171,7 +171,7 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
                 run: function (routeName, params) {
                     Y.Assert.isString(params.uri);
                     Y.Assert.areNotEqual("", params.uri);
-                    return 'REWRITTEN ' + params.uri;
+                    return 'appUri ' + params.uri;
                 }
             });
 
@@ -220,26 +220,20 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
         },
 
         "Should rewrite links": function () {
-            var html = '<a href="pjax/link">Link</a>',
-                res = '<a href="REWRITTEN pjax/link">Link</a>';
+            var html = '<a href="/Tests/js/views/services/pjax/link">Link</a>',
+                res = '<a href="appUri pjax/link">Link</a>';
+            this._normalLoad(html, res);
+        },
+
+        "Should rewrite links (apiRoot value in the link)": function () {
+            var html = '<a href="/Tests/js/views/services/pjax/link/Tests/js/views/services/">Link</a>',
+                res = '<a href="appUri pjax/link/Tests/js/views/services/">Link</a>';
             this._normalLoad(html, res);
         },
 
         "Should rewrite targetted to self links": function () {
-            var html = '<a href="somewhere" target="_self">Somewhere</a>',
-                res = '<a href="REWRITTEN somewhere" target="_self">Somewhere</a>';
-            this._normalLoad(html, res);
-        },
-
-        "Should rewrite links when a path starting with a '/'": function () {
-            var html = '<a href="/somewhere">Somewhere</a>',
-                res = '<a href="REWRITTEN somewhere">Somewhere</a>';
-            this._normalLoad(html, res);
-        },
-
-        "Should rewrite links when a path starting with several '/'": function () {
-            var html = '<a href="////somewhere">Somewhere</a>',
-                res = '<a href="REWRITTEN somewhere">Somewhere</a>';
+            var html = '<a href="/Tests/js/views/services/somewhere" target="_self">Somewhere</a>',
+                res = '<a href="appUri somewhere" target="_self">Somewhere</a>';
             this._normalLoad(html, res);
         },
     });
@@ -248,16 +242,21 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
         name: "eZ Server Side View Service form test",
 
         setUp: function () {
-            this.baseUri = '/Tests/js/views/services/';
+            this.apiRoot = '/Tests/js/views/services/';
             this.title = 'Right Thoughts, Right Words, Right Actions';
             this.html = '<p>Right action</p>';
             this.pjaxResponse = '<div data-name="title">' + this.title + '</div>' +
                 '<div data-name="html">' + this.html + '</div>';
-            this.form = '<form action="' + this.baseUri + 'echo/post/html/?response=' +
+            this.form = '<form action="' + this.apiRoot + 'echo/post/html/?response=' +
                  Y.config.win.encodeURIComponent(this.pjaxResponse) +
                 '" method="post"></form>';
 
             this.app = new Mock();
+            Mock.expect(this.app, {
+                method: 'get',
+                args: ['apiRoot'],
+                returns: this.apiRoot
+            });
             this.service = new Y.eZ.ServerSideViewService({
                 app: this.app,
             });
@@ -276,7 +275,6 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
             Mock.expect(this.app, {
                 method: 'set',
                 args: ['loading', Mock.Value.Boolean],
-                callCount: 2,
             });
             this.view.after('htmlChange', function (e) {
                 that.resume(function () {
@@ -298,7 +296,6 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
                     );
 
                     Mock.verify(this.originalEvent);
-                    Mock.verify(this.app);
                 });
             });
 
@@ -312,7 +309,7 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
         "Should handle the submit error": function () {
             var that = this;
 
-            this.form = '<form action="' + this.baseUri +
+            this.form = '<form action="' + this.apiRoot +
                 'echo/status/404" method="post"></form>';
 
             Mock.expect(this.app, {
@@ -323,7 +320,6 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
             this.service.on('error', function () {
                 that.resume(function () {
                     Mock.verify(this.originalEvent);
-                    Mock.verify(this.app);
                 });
             });
 
@@ -335,11 +331,11 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
         },
 
         "Should handle PJAX custom redirection": function () {
-            var pjaxLocation = 'pjax/new/location';
+            var pjaxLocation = 'pjax/new/location',
+                adminRoute = '/ez/#' + pjaxLocation;
 
-            this.form = '<form action="' + this.baseUri +
+            this.form = '<form action="' + this.apiRoot +
                 'echo/status/205" method="post"></form>';
-
 
             Mock.expect(this.app, {
                 method: 'set',
@@ -357,16 +353,22 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
                 };
             });
             Mock.expect(this.app, {
-                method: 'navigateTo',
+                method: 'routeUri',
                 args: ['adminGenericRoute', Mock.Value.Object],
-                run: Y.bind(function (route, params) {
-                    this.resume(function () {
-                        Assert.areEqual(
-                            pjaxLocation, params.uri,
-                            "The user should be redirected to admin " + params.uri
-                        );
-                    });
-                }, this),
+                run: function (route, params) {
+                    Assert.areEqual(
+                        pjaxLocation, params.uri,
+                        "The user should be redirected to admin " + params.uri
+                    );
+                    return adminRoute;
+                },
+            });
+            Mock.expect(this.app, {
+                method: 'navigate',
+                args: [adminRoute],
+                run: Y.bind(function () {
+                    this.resume();
+                }, this)
             });
 
             this.view.fire('submitForm', {
@@ -381,9 +383,9 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
         name: "eZ Server Side View Service notification test",
 
         setUp: function () {
-            this.baseUri = '/Tests/js/views/services/';
+            this.apiRoot = '/Tests/js/views/services/';
             this.app = new Y.Base();
-            this.app.set('baseUri', this.baseUri);
+            this.app.set('apiRoot', this.apiRoot);
             this.service = new Y.eZ.ServerSideViewService({
                 app: this.app
             });
@@ -520,7 +522,7 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
 
         setUp: function () {
             this.app = new Y.Base();
-            this.app.set('baseUri', '/Tests/js/views/services/');
+            this.app.set('apiRoot', '/Tests/js/views/services/');
             this.request = {params: {uri: 'echo/status/200'}};
             this.service = new Y.eZ.ServerSideViewService({
                 app: this.app,
@@ -551,7 +553,7 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
             });
             view.addTarget(this.service);
 
-            form = '<form action="' + this.app.get('baseUri') +
+            form = '<form action="' + this.app.get('apiRoot') +
                 'echo/status/200" method="post"></form>';
 
             view.on('titleChange', this.next(function () {

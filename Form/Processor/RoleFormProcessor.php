@@ -10,12 +10,12 @@
  */
 namespace EzSystems\PlatformUIBundle\Form\Processor;
 
+use EzSystems\PlatformUIBundle\Http\FormProcessingDoneResponse;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
 use EzSystems\RepositoryForms\Event\FormActionEvent;
 use EzSystems\RepositoryForms\Event\RepositoryFormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 
 class RoleFormProcessor implements EventSubscriberInterface
@@ -51,7 +51,7 @@ class RoleFormProcessor implements EventSubscriberInterface
 
     public function processSaveRole(FormActionEvent $event)
     {
-        $event->setResponse(new RedirectResponse($this->router->generate('admin_roleList')));
+        $event->setResponse(new FormProcessingDoneResponse($this->router->generate('admin_roleList')));
         $this->notify('role.notification.published', [], 'role');
     }
 
@@ -64,7 +64,7 @@ class RoleFormProcessor implements EventSubscriberInterface
         }
 
         $event->setResponse(
-            new RedirectResponse($this->router->generate('admin_roleList'))
+            new FormProcessingDoneResponse($this->router->generate('admin_roleList'))
         );
     }
 }

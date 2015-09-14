@@ -24,12 +24,28 @@ class RootInfo implements Provider
     }
 
     /**
+     * Returns the apiRoot for the current application environment, ie the
+     * prefix to use for all api/AJAX calls.
+     *
+     * @return string
+     */
+    protected function getApiRoot()
+    {
+        $request = $this->requestStack->getMasterRequest();
+        $pathinfo = $request->getPathInfo();
+        $semanticPathinfo = $request->attributes->get('semanticPathinfo', $pathinfo);
+
+        return $request->getBaseUrl() . substr($pathinfo, 0, strpos($pathinfo, $semanticPathinfo)) . '/';
+    }
+
+    /**
      * @return array|string|int|\JsonSerializable
      */
     public function getConfig()
     {
         return [
-            'root' => $this->requestStack->getMasterRequest()->attributes->get('semanticPathInfo'),
+            'root' => $this->requestStack->getMasterRequest()->attributes->get('semanticPathinfo'),
+            'apiRoot' => $this->getApiRoot(),
             'assetRoot' => $this->assetsHelper->getUrl('/'),
             'ckeditorPluginPath' => $this->assetsHelper->getUrl($this->externalAssetsDirectory) . '/vendors/',
         ];

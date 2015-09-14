@@ -822,11 +822,11 @@ YUI.add('ez-platformuiapp', function (Y) {
             /**
              * The base URI to build the URI of the ajax request
              *
-             * @attribute baseUri
+             * @attribute apiRoot
              * @default "/"
              * @type String
              */
-            baseUri: {
+            apiRoot: {
                 value: "/"
             },
 
