@@ -567,14 +567,16 @@ YUI.add('ez-platformuiapp', function (Y) {
                 app._set('activeViewService', viewInfo.service);
 
                 viewInfo.service.on('error', function (e) {
-                    app.fire('notify', {
-                        notification: {
-                            text:  e.message,
-                            identifier: "ViewService-notification-error",
-                            state: "error",
-                            timeout: 0,
-                        }
-                    });
+                    if ( e.message ) {
+                        app.fire('notify', {
+                            notification: {
+                                text:  e.message,
+                                identifier: "ViewService-notification-error",
+                                state: "error",
+                                timeout: 0,
+                            }
+                        });
+                    }
                     app.set('loading', false);
                 });
                 viewInfo.service.load(showView);
