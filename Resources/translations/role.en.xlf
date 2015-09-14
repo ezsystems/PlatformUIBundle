@@ -38,10 +38,6 @@
         <source>role.error.delete</source>
         <target>An error occurred when trying to delete role "%roleIdentifier%".</target>
       </trans-unit>
-      <trans-unit id="565405ab5f15e4274e9edf5301d567b1" resname="role.create">
-        <source>role.create</source>
-        <target>Create</target>
-      </trans-unit>
       <trans-unit id="bf659b96c1661a99b71fcd42c9f68244" resname="role.policy_none">
         <source>role.policy_none</source>
         <target>There are no policies set up for this role.</target>

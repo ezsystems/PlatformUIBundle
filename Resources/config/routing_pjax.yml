@@ -77,6 +77,7 @@ admin_contenttypeView:
 
 admin_contenttypeCreate:
     path: /contenttype/create/{contentTypeGroupId}/{languageCode}
+    methods: [POST]
     defaults:
         _controller: ezsystems.platformui.controller.content_type:createContentTypeAction
         languageCode: ~
@@ -106,6 +107,7 @@ admin_roleView:
 
 admin_roleCreate:
     path: /role/create
+    methods: [POST]
     defaults:
         _controller: ezsystems.platformui.controller.role:createRoleAction
 

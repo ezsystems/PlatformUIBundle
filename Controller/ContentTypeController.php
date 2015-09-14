@@ -20,6 +20,7 @@ use eZ\Publish\Core\Repository\Values\ContentType\ContentTypeCreateStruct;
 use EzSystems\RepositoryForms\Data\Mapper\ContentTypeDraftMapper;
 use EzSystems\RepositoryForms\FieldType\FieldTypeFormMapperRegistryInterface;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
+use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeCreateType;
 use Symfony\Component\HttpFoundation\Request;
 
 class ContentTypeController extends Controller
@@ -84,12 +85,17 @@ class ContentTypeController extends Controller
     public function viewContentTypeGroupAction($contentTypeGroupId)
     {
         $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
+        $createForm = $this->createForm(
+            new ContentTypeCreateType($this->contentTypeService),
+            ['contentTypeGroupId' => $contentTypeGroupId]
+        );
 
         return $this->render('eZPlatformUIBundle:ContentType:view_content_type_group.html.twig', [
             'group' => $contentTypeGroup,
             'content_types' => $this->contentTypeService->loadContentTypes($contentTypeGroup),
             'can_edit' => $this->isGranted(new Attribute('class', 'update')),
             'can_create' => $this->isGranted(new Attribute('class', 'create')),
+            'create_form' => $createForm->createView(),
         ]);
     }
 
@@ -116,25 +122,41 @@ class ContentTypeController extends Controller
         ]);
     }
 
-    public function createContentTypeAction($contentTypeGroupId, $languageCode = null)
+    public function createContentTypeAction(Request $request, $contentTypeGroupId, $languageCode = null)
     {
-        $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
-        $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
+        $createForm = $this->createForm(new ContentTypeCreateType($this->contentTypeService), ['contentTypeGroupId' => $contentTypeGroupId]);
+        $createForm->handleRequest($request);
+        if ($createForm->isValid()) {
+            $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
+            $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($createForm->getData()['contentTypeGroupId']);
 
-        $contentTypeCreateStruct = new ContentTypeCreateStruct([
-            'identifier' => '__new__' . md5(microtime(true)),
-            'mainLanguageCode' => $languageCode,
-            'names' => [$languageCode => 'New ContentType'],
-        ]);
-        $contentTypeDraft = $this->contentTypeService->createContentType(
-            $contentTypeCreateStruct,
-            [$contentTypeGroup]
-        );
+            $contentTypeCreateStruct = new ContentTypeCreateStruct([
+                'identifier' => '__new__' . md5(microtime(true)),
+                'mainLanguageCode' => $languageCode,
+                'names' => [$languageCode => 'New ContentType'],
+            ]);
+            $contentTypeDraft = $this->contentTypeService->createContentType(
+                $contentTypeCreateStruct,
+                [$contentTypeGroup]
+            );
 
-        return $this->redirectToRoute(
-            'admin_contenttypeUpdate',
-            ['contentTypeId' => $contentTypeDraft->id, 'languageCode' => $languageCode]
-        );
+            return $this->redirectToRoute(
+                'admin_contenttypeUpdate',
+                ['contentTypeId' => $contentTypeDraft->id, 'languageCode' => $languageCode]
+            );
+        }
+
+        // Form validation failed. Send errors as notifications.
+        foreach ($createForm->getErrors(true) as $error) {
+            $this->notifyErrorPlural(
+                $error->getMessageTemplate(),
+                $error->getMessagePluralization(),
+                $error->getMessageParameters(),
+                'ezrepoforms_content_type'
+            );
+        }
+
+        return $this->redirectToRoute('admin_contenttypeGroupView', ['contentTypeGroupId' => $contentTypeGroupId]);
     }
 
     public function updateContentTypeAction(Request $request, $contentTypeId, $languageCode = null)

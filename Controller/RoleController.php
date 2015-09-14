@@ -13,6 +13,7 @@ use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\Core\Repository\Values\User\RoleCreateStruct;
 use EzSystems\RepositoryForms\Data\Mapper\RoleMapper;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
+use EzSystems\RepositoryForms\Form\Type\Role\RoleCreateType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleDeleteType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleUpdateType;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,11 +45,14 @@ class RoleController extends Controller
      */
     public function listRolesAction()
     {
+        $createForm = $this->createForm(new RoleCreateType());
+
         return $this->render('eZPlatformUIBundle:Role:list_roles.html.twig', [
             'roles' => $this->roleService->loadRoles(),
             'can_edit' => $this->isGranted(new Attribute('role', 'update')),
             'can_create' => $this->isGranted(new Attribute('role', 'create')),
             'can_delete' => $this->isGranted(new Attribute('role', 'delete')),
+            'create_form' => $createForm->createView(),
         ]);
     }
 
@@ -79,12 +83,28 @@ class RoleController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function createRoleAction()
+    public function createRoleAction(Request $request)
     {
-        $roleCreateStruct = new RoleCreateStruct(['identifier' => '__new__' . md5(microtime(true))]);
-        $role = $this->roleService->createRole($roleCreateStruct);
+        $createForm = $this->createForm(new RoleCreateType());
+        $createForm->handleRequest($request);
+        if ($createForm->isValid()) {
+            $roleCreateStruct = new RoleCreateStruct(['identifier' => '__new__' . md5(microtime(true))]);
+            $role = $this->roleService->createRole($roleCreateStruct);
 
-        return $this->redirectToRoute('admin_roleUpdate', ['roleId' => $role->id]);
+            return $this->redirectToRoute('admin_roleUpdate', ['roleId' => $role->id]);
+        }
+
+        // Form validation failed. Send errors as notifications.
+        foreach ($createForm->getErrors(true) as $error) {
+            $this->notifyErrorPlural(
+                $error->getMessageTemplate(),
+                $error->getMessagePluralization(),
+                $error->getMessageParameters(),
+                'ezrepoforms_content_type'
+            );
+        }
+
+        return $this->redirectToRoute('admin_roleList');
     }
 
     /**
