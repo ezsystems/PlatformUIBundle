@@ -25,7 +25,7 @@ class RootInfo implements Provider
 
     /**
      * Returns the apiRoot for the current application environment, ie the
-     * prefix to use for all api/AJAX calls
+     * prefix to use for all api/AJAX calls.
      *
      * @return string
      */

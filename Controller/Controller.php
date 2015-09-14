@@ -29,7 +29,7 @@ abstract class Controller extends BaseController
     }
 
     /**
-     * Returns a PJAX sepcific redirect response (HTTP 205 with PJAX-Location header).
+     * Returns a PJAX specific redirect response (HTTP 205 with PJAX-Location header).
      * Performs a redirect to $url.
      * Use this method after form processing.
      *
