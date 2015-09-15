@@ -86,7 +86,6 @@ Feature: Create, delete, update and View the Role UI
     And I set "Name" as empty
     When I click on "Save" button
     Then I am notified that the field "Name" needs to be filled
-    And the Role is not published
 
   @javascript @edge
   Scenario: creating a Role with an existing identifier fails validation
@@ -101,10 +100,10 @@ Feature: Create, delete, update and View the Role UI
   Scenario: cancel the creation of a role
     Given I am on the Roles page
     And I create a new role
-    And I fill in "Name" with "Organizers"
+    And I fill in "Name" with "Organizer"
     When I click on "Cancel" button
     Then the Role is not published
-    And I see that an "Organizers" role does not exist
+    And I see that an "Organizer" role does not exist
 
   ##
   #
@@ -136,7 +135,6 @@ Feature: Create, delete, update and View the Role UI
     And I set "Name" as empty
     When I click on "Save" button
     Then I am notified that the field "Name" needs to be filled
-    And the Role is not published
 
   @javascript @edge
   Scenario: Updating a Role with an existing identifier fails validation
@@ -146,7 +144,6 @@ Feature: Create, delete, update and View the Role UI
     And I fill in "Name" with "Security"
     When I click on "Save" button
     Then I am notified that the name already exists
-    And the Role is not published
 
   @javascript @common
   Scenario: cancel the update of a role
