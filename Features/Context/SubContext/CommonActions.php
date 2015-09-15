@@ -184,14 +184,17 @@ trait CommonActions
      * @param string    $text           Text value of the element
      * @param string    $selector       CSS selector of the element
      * @param string    $textSelector   Extra CSS selector for text of the element
+     * @param string    $baseElement    Element in which the search is based
      * @param int       $iteration      Iteration number, used to control number of executions
      * @return array
      */
     protected function getElementByText($text, $selector, $textSelector = null, $iteration = 3)
     {
         try {
-            $page = $this->getSession()->getPage();
-            $elements = $page->findAll('css', $selector);
+            if ($baseElement == null) {
+                $baseElement = $this->getSession()->getPage();
+            }
+            $elements = $baseElement->findAll('css', $selector);
             foreach ($elements as $element) {
                 if ($textSelector != null) {
                     $elementText = $element->find('css', $textSelector)->getText();
