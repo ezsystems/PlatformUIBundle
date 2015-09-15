@@ -18,7 +18,7 @@ YUI.add('ez-alloyeditor-tests', function (Y) {
 
         "Should import the React object": function () {
             Assert.areSame(
-                window.React,
+                window.AlloyEditor.React,
                 Y.eZ.React,
                 "The React object should have been imported in the sandbox"
             );

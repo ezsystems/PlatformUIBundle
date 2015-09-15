@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>eZ AlloyEditor removeblock plugin tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../assets/function.bind.polyfill.js"></script>
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
+<script type="text/javascript" src="./assets/ez-alloyeditor-plugin-removeblock-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage') {
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-alloyeditor-plugin-removeblock'],
+        filter: loaderFilter,
+        modules: {
+            "ez-alloyeditor-plugin-removeblock": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/removeblock.js",
+            },
+        }
+    }).use('ez-alloyeditor-plugin-removeblock-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

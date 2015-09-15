@@ -13,15 +13,60 @@ system:
                 ez-alloyeditor:
                     requires: ['alloyeditor']
                     path: %ez_platformui.public_dir%/js/external/ez-alloyeditor.js
-                ez-alloyeditor-plugin-appendcontent:
+                ez-alloyeditor-toolbar-config-link:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/appendcontent.js
-                ez-alloyeditor-toolbar-appendcontent:
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/link.js
+                ez-alloyeditor-toolbar-config-text:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/appendcontent.js
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/text.js
+                ez-alloyeditor-toolbar-config-table:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/table.js
+                ez-alloyeditor-toolbar-config-block-base:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/block-base.js
+                ez-alloyeditor-toolbar-config-heading:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/heading.js
+                ez-alloyeditor-toolbar-config-paragraph:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/paragraph.js
+                ez-alloyeditor-plugin-addcontent:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/addcontent.js
+                ez-alloyeditor-plugin-removeblock:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/removeblock.js
+                ez-alloyeditor-plugin-embed:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/embed.js
+                ez-alloyeditor-plugin-focusblock:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/focusblock.js
                 ez-alloyeditor-button-heading:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/heading.js
+                ez-alloyeditor-button-embed:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embed.js
+                ez-alloyeditor-button-blocktextalignleft:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignleft.js
+                ez-alloyeditor-button-blocktextaligncenter:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextaligncenter.js
+                ez-alloyeditor-button-blocktextalignright:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignright.js
+                ez-alloyeditor-button-blocktextalignjustify:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignjustify.js
+                ez-alloyeditor-button-blockremove:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blockremove.js
+                ez-alloyeditor-button-mixin-blocktextalign:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/blocktextalign.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -52,6 +97,8 @@ system:
                         - 'ez-universaldiscoveryview'
                         - 'ez-confirmboxviewservice'
                         - 'ez-confirmboxview'
+                        - 'ez-languageselectionboxviewservice'
+                        - 'ez-languageselectionboxview'
                         - 'ez-notificationhubviewservice'
                         - 'ez-notificationhubview'
                         - 'ez-usermodel'
@@ -60,6 +107,7 @@ system:
                         - 'ez-domstateplugin'
                         - 'ez-universaldiscoveryplugin'
                         - 'ez-confirmboxplugin'
+                        - 'ez-languageselectionboxplugin'
                         - 'ez-notificationhubplugin'
                         - 'ez-positionplugin'
                         - 'ez-updatetreeplugin'
@@ -82,6 +130,7 @@ system:
                         - 'ez-savedraftplugin'
                         - 'ez-publishdraftplugin'
                         - 'ez-discarddraftplugin'
+                        - 'array-extras'
                     path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
                 ez-contentcreateviewservice:
                     requires: ['ez-contenteditviewservice']
@@ -94,6 +143,7 @@ system:
                         - 'ez-contentmodel'
                         - 'ez-objectrelationloadplugin'
                         - 'ez-objectrelationlistloadplugin'
+                        - 'ez-userloadplugin'
                         - 'ez-imagevariationloadplugin'
                         - 'ez-contentcreateplugin'
                         - 'ez-copycontentplugin'
@@ -110,6 +160,9 @@ system:
                 ez-confirmboxviewservice:
                     requires: ['ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-confirmboxviewservice.js
+                ez-languageselectionboxviewservice:
+                    requires: ['ez-viewservice']
+                    path: %ez_platformui.public_dir%/js/views/services/ez-languageselectionboxviewservice.js
                 ez-notificationhubviewservice:
                     requires: ['ez-viewservice', 'ez-notificationlist']
                     path: %ez_platformui.public_dir%/js/views/services/ez-notificationhubviewservice.js
@@ -142,6 +195,7 @@ system:
                         - 'ez-templatebasedview'
                         - 'ez-actionbarview'
                         - 'ez-locationviewviewtabview'
+                        - 'ez-locationviewdetailstabview'
                         - 'ez-tabs'
                         - 'event-tap'
                         - 'array-extras'
@@ -159,6 +213,12 @@ system:
                 locationviewviewtabview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/tabs/view.hbt
+                ez-locationviewdetailstabview:
+                    requires: ['ez-locationviewtabview', 'locationviewdetailstabview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/tabs/ez-locationviewdetailstabview.js
+                locationviewdetailstabview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/tabs/details.hbt
                 ez-studiopresentationview:
                     requires: ['ez-templatebasedview', 'studiopresentationview-ez-template', 'ez-height-fit']
                     path: %ez_platformui.public_dir%/js/views/ez-studiopresentationview.js
@@ -216,6 +276,12 @@ system:
                 confirmboxview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/confirmbox.hbt
+                ez-languageselectionboxview:
+                    requires: ['ez-templatebasedview', 'languageselectionboxview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/ez-languageselectionboxview.js
+                languageselectionboxview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/languageselectionbox.hbt
                 ez-notificationhubview:
                     requires: ['ez-view', 'ez-notificationview', 'ez-notificationlist', 'ez-height-change']
                     path: %ez_platformui.public_dir%/js/views/ez-notificationhubview.js
@@ -324,6 +390,7 @@ system:
                         - 'ez-integer-editview'
                         - 'ez-selection-editview'
                         - 'ez-relation-editview'
+                        - 'ez-isbn-editview'
                         - 'ez-relationlist-editview'
                         - 'event-tap'
                         - 'contenteditformview-ez-template'
@@ -361,6 +428,12 @@ system:
                 dateandtimeview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/view/dateandtime.hbt
+                ez-isbn-editview:
+                    requires: ['ez-fieldeditview', 'isbneditview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-isbn-editview.js
+                isbneditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/isbn.hbt
                 ez-time-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'timeeditview-ez-template', 'datatype-date-format', 'datatype-date']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-time-editview.js
@@ -414,9 +487,22 @@ system:
                         - 'ez-fieldeditview'
                         - 'ez-alloyeditor'
                         - 'ez-richtextfocusmodebarview'
-                        - 'ez-alloyeditor-plugin-appendcontent'
-                        - 'ez-alloyeditor-toolbar-appendcontent'
+                        - 'ez-alloyeditor-plugin-embed'
+                        - 'ez-alloyeditor-plugin-addcontent'
+                        - 'ez-alloyeditor-plugin-removeblock'
+                        - 'ez-alloyeditor-plugin-focusblock'
+                        - 'ez-alloyeditor-toolbar-config-link'
+                        - 'ez-alloyeditor-toolbar-config-text'
+                        - 'ez-alloyeditor-toolbar-config-table'
+                        - 'ez-alloyeditor-toolbar-config-heading'
+                        - 'ez-alloyeditor-toolbar-config-paragraph'
                         - 'ez-alloyeditor-button-heading'
+                        - 'ez-alloyeditor-button-embed'
+                        - 'ez-alloyeditor-button-blocktextalignleft'
+                        - 'ez-alloyeditor-button-blocktextaligncenter'
+                        - 'ez-alloyeditor-button-blocktextalignright'
+                        - 'ez-alloyeditor-button-blocktextalignjustify'
+                        - 'ez-alloyeditor-button-blockremove'
                         - 'richtexteditview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
                 richtexteditview-ez-template:
@@ -603,13 +689,13 @@ system:
                     requires: ['model', 'json']
                     path: %ez_platformui.public_dir%/js/models/ez-restmodel.js
                 ez-contentmodel:
-                    requires: ['ez-restmodel', 'ez-versionmodel', 'array-extras']
+                    requires: ['ez-restmodel', 'ez-versionmodel', 'array-extras', 'ez-contentinfo-attributes']
                     path: %ez_platformui.public_dir%/js/models/ez-contentmodel.js
                 ez-versionmodel:
                     requires: ['ez-restmodel']
                     path: %ez_platformui.public_dir%/js/models/ez-versionmodel.js
                 ez-locationmodel:
-                    requires: ['ez-restmodel']
+                    requires: ['ez-restmodel', 'ez-contentinfomodel']
                     path: %ez_platformui.public_dir%/js/models/ez-locationmodel.js
                 ez-usermodel:
                     requires: ['ez-restmodel']
@@ -620,6 +706,9 @@ system:
                 ez-contenttypegroupmodel:
                     requires: ['ez-restmodel', 'ez-contenttypemodel']
                     path: %ez_platformui.public_dir%/js/models/ez-contenttypegroupmodel.js
+                ez-contentinfomodel:
+                    requires: ['ez-restmodel', 'ez-contentinfo-attributes']
+                    path: %ez_platformui.public_dir%/js/models/ez-contentinfomodel.js
                 ez-contenttree:
                     requires: ['tree', 'tree-openable', 'tree-selectable', 'tree-lazy']
                     path: %ez_platformui.public_dir%/js/models/structs/ez-contenttree.js
@@ -731,6 +820,9 @@ system:
                 ez-confirmboxplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-confirmboxplugin.js
+                ez-languageselectionboxplugin:
+                    requires: ['plugin', 'base', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-languageselectionboxplugin.js
                 ez-universaldiscoveryplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-universaldiscoveryplugin.js
@@ -746,6 +838,9 @@ system:
                 ez-objectrelationlistloadplugin:
                     requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationlistloadplugin.js
+                ez-userloadplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-userloadplugin.js
                 ez-objectrelationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationloadplugin.js
@@ -785,6 +880,9 @@ system:
                 ez-expandable:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js
+                ez-contentinfo-attributes:
+                    requires: ['ez-restmodel']
+                    path: %ez_platformui.public_dir%/js/models/extensions/ez-contentinfo-attributes.js
                 ez-height-fit:
                     requires: ['view', 'node-screen', 'node-style']
                     path: %ez_platformui.public_dir%/js/extensions/ez-height-fit.js

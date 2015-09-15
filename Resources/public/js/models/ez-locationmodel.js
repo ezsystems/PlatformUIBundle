@@ -22,6 +22,23 @@ YUI.add('ez-locationmodel', function (Y) {
      */
     Y.eZ.Location = Y.Base.create('locationModel', Y.eZ.RestModel, [], {
         /**
+         * Override of the eZ.RestModel _parseStruct method to also read the content info
+         *
+         * @protected
+         * @method _parseStruct
+         * @param {Object} struct the struct to transform
+         * @return {Object}
+         */
+        _parseStruct: function (struct) {
+            var attrs;
+
+            attrs = this.constructor.superclass._parseStruct.call(this, struct);
+            attrs.contentInfo = struct.ContentInfo;
+
+            return attrs;
+        },
+
+        /**
          * sync implementation that relies on the JS REST client.
          * For now, it only supports the 'read' action. The callback is
          * directly passed to the ContentService.loadLocation method.
@@ -199,7 +216,24 @@ YUI.add('ez-locationmodel', function (Y) {
              */
             sortOrder: {
                 value: "ASC"
-            }
+            },
+
+            /**
+             * The content info
+             *
+             * @attribute contentInfo
+             * @type eZ.ContentInfo
+             */
+            contentInfo: {
+                getter: function (value) {
+                    var contentInfo = new Y.eZ.ContentInfo();
+
+                    if ( value ) {
+                        contentInfo.setAttrs(contentInfo.parse({document: value}));
+                    }
+                    return contentInfo;
+                }
+            },
         }
     });
 });

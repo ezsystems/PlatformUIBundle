@@ -11,11 +11,14 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class RootInfoTest extends PHPUnit_Framework_TestCase
 {
+    const ASSETS_DIR = 'path/to/assets';
+    const URI = '/ez';
+
     public function testGetConfig()
     {
-        $provider = new RootInfo($this->createRequestStack(), $this->getAssetsHelperMock());
+        $provider = new RootInfo($this->createRequestStack(), $this->getAssetsHelperMock(), self::ASSETS_DIR);
         self::assertEquals(
-            ['root' => '', 'assetRoot' => '/'],
+            ['root' => self::URI, 'assetRoot' => '/', 'ckeditorPluginPath' => '/' . self::ASSETS_DIR . '/vendors/', 'apiRoot' => '/'],
             $provider->getConfig()
         );
     }
@@ -29,7 +32,10 @@ class RootInfoTest extends PHPUnit_Framework_TestCase
             ->getMockBuilder('Symfony\Bundle\FrameworkBundle\Templating\Helper\AssetsHelper')
             ->disableOriginalConstructor()
             ->getMock();
-        $assetsHelper->expects($this->any())->method('getUrl')->willReturn('/');
+        $assetsHelper->expects($this->any())->method('getUrl')->willReturnMap([
+            ['/', null, null, '/'],
+            [self::ASSETS_DIR, null, null, '/' . self::ASSETS_DIR],
+        ]);
 
         return $assetsHelper;
     }
@@ -40,7 +46,10 @@ class RootInfoTest extends PHPUnit_Framework_TestCase
     protected function createRequestStack()
     {
         $requestStack = new RequestStack();
-        $requestStack->push(new Request([], [], ['semanticPathInfo' => '']));
+        $attrs = ['semanticPathinfo' => self::URI];
+        $server = ['SCRIPT_URL' => self::URI];
+        $request = new Request([], [], $attrs, [], [], $server);
+        $requestStack->push($request);
 
         return $requestStack;
     }

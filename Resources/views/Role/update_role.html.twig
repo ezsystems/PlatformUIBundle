@@ -35,14 +35,29 @@
 
 {% block content %}
     <section class="ez-serverside-content">
-        {{ form_start(form, {"action": action_url}) }}
+        {{ form_start(form, {"action": action_url, "attr": {"class": "pure-form pure-form-aligned"}}) }}
             {{ form_errors(form) }}
 
-            <div>
-                {{ form_label(form.identifier) }}
-                {{ form_errors(form.identifier) }}
-                {{ form_widget(form.identifier) }}
+            <fieldset>
+                <div class="pure-control-group">
+                    {{ form_label(form.identifier) }}
+                    {{ form_errors(form.identifier) }}
+                    {{ form_widget(form.identifier) }}
+                </div>
+            </fieldset>
+
+            <div class="pure-controls">
+                {{ form_widget(form.removeDraft, {"attr": {"class": "pure-button ez-button ez-button-delete ez-font-icon", "formnovalidate": "formnovalidate"}}) }}
+                {{ form_widget(form.saveRole, {"attr": {"class": "pure-button ez-button"}}) }}
             </div>
+
         {{ form_end(form) }}
     </section>
+{% endblock %}
+
+{% block notification %}
+    {% if hasErrors|length %}
+        <li data-state="error">{{ "form.validation_error"|trans(domain="general") }}</li>
+    {% endif %}
+    {{ parent() }}
 {% endblock %}

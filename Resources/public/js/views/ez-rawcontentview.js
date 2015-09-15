@@ -47,7 +47,7 @@ YUI.add('ez-rawcontentview', function (Y) {
          *
          * @method _collapseView
          * @protected
-         * @param {Object} event face of the tap event
+         * @param {Object} e event face of the tap event
          */
         _collapseView: function (e) {
             var container = this.get('container');
@@ -65,7 +65,7 @@ YUI.add('ez-rawcontentview', function (Y) {
          *
          * @method _collapseFieldGroup
          * @protected
-         * @param {Object} event facade of the tap event
+         * @param {Object} e event facade of the tap event
          */
         _collapseFieldGroup: function (e) {
             var group = e.currentTarget.next('.ez-fieldgroup');

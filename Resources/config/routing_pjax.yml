@@ -1,0 +1,123 @@
+admin_dashboard:
+    path: /dashboard
+    defaults:
+        _controller: ezsystems.platformui.controller.dashboard:dashboardAction
+    methods: [GET]
+
+admin_systeminfo:
+    path: /systeminfo
+    defaults:
+        _controller: ezsystems.platformui.controller.systeminfo:infoAction
+    methods: [GET]
+
+admin_phpinfo:
+    path: /systeminfo/phpinfo
+    defaults:
+        _controller: ezsystems.platformui.controller.systeminfo:phpinfoAction
+    methods: [GET]
+
+admin_sectionlist:
+    path: /section/list
+    defaults:
+        _controller: ezsystems.platformui.controller.section:listAction
+    methods: [GET]
+
+admin_sectionview:
+    path: /section/view/{sectionId}
+    defaults:
+        _controller: ezsystems.platformui.controller.section:viewAction
+    methods: [GET]
+    requirements:
+        sectionId: \d+
+
+admin_sectionedit:
+    path: /section/edit/{sectionId}
+    defaults:
+        _controller: ezsystems.platformui.controller.section:editAction
+        sectionId: ~
+    requirements:
+        sectionId: \d+
+
+admin_sectiondelete:
+    path: /section/delete/{sectionId}/{redirectErrorsTo}
+    methods: [POST]
+    defaults:
+        _controller: ezsystems.platformui.controller.section:deleteAction
+        redirectErrorsTo: list
+    requirements:
+        redirectErrorsTo: (list|view)
+
+admin_contenttype:
+    path: /contenttype
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: admin_contenttypeGroupList
+        permanent: true
+
+admin_contenttypeGroupList:
+    path: /contenttype/group/list
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:listContentTypeGroupsAction
+
+admin_contenttypeGroupView:
+    path: /contenttype/group/{contentTypeGroupId}
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:viewContentTypeGroupAction
+
+admin_contenttypeGroupEdit:
+    path: /contenttype/group/edit/{contentTypeGroupId}
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:editContentTypeGroupAction
+
+admin_contenttypeView:
+    path: /contenttype/view/{contentTypeId}/{languageCode}
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:viewContentTypeAction
+        languageCode: ~
+
+admin_contenttypeCreate:
+    path: /contenttype/create/{contentTypeGroupId}/{languageCode}
+    methods: [POST]
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:createContentTypeAction
+        languageCode: ~
+
+admin_contenttypeUpdate:
+    path: /contenttype/update/{contentTypeId}/{languageCode}
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:updateContentTypeAction
+        languageCode: ~
+
+admin_role:
+    path: /role
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: admin_roleList
+        permanent: true
+
+admin_roleList:
+    path: /role/list
+    defaults:
+        _controller: ezsystems.platformui.controller.role:listRolesAction
+
+admin_roleView:
+    path: /role/view/{roleId}
+    defaults:
+        _controller: ezsystems.platformui.controller.role:viewRoleAction
+
+admin_roleCreate:
+    path: /role/create
+    methods: [POST]
+    defaults:
+        _controller: ezsystems.platformui.controller.role:createRoleAction
+
+admin_roleUpdate:
+    path: /role/update/{roleId}
+    defaults:
+        _controller: ezsystems.platformui.controller.role:updateRoleAction
+
+admin_roleDelete:
+    path: /role/delete/{roleId}
+    methods: [POST]
+    defaults:
+        _controller: ezsystems.platformui.controller.role:deleteRoleAction

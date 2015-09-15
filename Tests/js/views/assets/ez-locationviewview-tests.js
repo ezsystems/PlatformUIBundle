@@ -15,6 +15,25 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 returns: serialized
             });
             return mock;
+        },
+        _getLocationModelMock = function (serializedLocation, serializedContentInfo) {
+            var locationMock = new Y.Test.Mock(),
+                contentInfoMock = new Y.Test.Mock();
+
+            Y.Mock.expect(contentInfoMock, {
+                method: 'toJSON',
+                returns: serializedContentInfo
+            });
+            Y.Mock.expect(locationMock, {
+                method: 'toJSON',
+                returns: serializedLocation
+            });
+            Y.Mock.expect(locationMock, {
+                method: 'get',
+                args: ['contentInfo'],
+                returns: contentInfoMock
+            });
+            return locationMock;
         };
 
     test = new Y.Test.Case({
@@ -91,31 +110,27 @@ YUI.add('ez-locationviewview-tests', function (Y) {
 
         "Test available variables in the template": function () {
             var plainLocations = [{}, {}, {}],
-                plainContents = [{}, {}, {}],
+                plainContentInfos = [{}, {}, {}],
                 origTpl = this.view.template,
                 location = this.locationMock,
                 content = this.contentMock,
                 that = this;
 
             Y.Array.each(plainLocations, function (val, k) {
-                this.path.push({
-                    location: _getModelMock(plainLocations[k]),
-                    content: _getModelMock(plainContents[k])
-                });
+                this.path.push(_getLocationModelMock(plainLocations[k], plainContentInfos[k]));
             }, this);
 
             this.view.template = function (variables) {
                 Y.Array.each(variables.path, function (struct, k) {
                     Y.Mock.verify(struct.location);
-                    Y.Mock.verify(struct.content);
+                    Y.Mock.verify(struct.contentInfo);
                     Y.Assert.areSame(
                         struct.location, plainLocations[k],
                         "path[i].location.toJSON() be passed to the template"
                     );
-
                     Y.Assert.areSame(
-                        struct.content, plainContents[k],
-                        "path[i].content.toJSON() be passed to the template"
+                        struct.contentInfo, plainContentInfos[k],
+                        "path[i].contentInfo.toJSON() be passed to the template"
                     );
                 });
                 Y.Mock.verify(location);
@@ -160,16 +175,20 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 that = this;
 
             Y.Array.each(contentPathNames, function (val) {
-                var content = new Y.Mock();
-                Y.Mock.expect(content, {
+                var contentInfoMock = new Y.Mock(),
+                    locationMock = new Y.Mock();
+                Y.Mock.expect(contentInfoMock, {
                     method: 'get',
                     args: ['name'],
                     returns: val
                 });
-                that.path.push({
-                    location: {},
-                    content: content
+                Y.Mock.expect(locationMock, {
+                    method: 'get',
+                    args: ['contentInfo'],
+                    returns: contentInfoMock
                 });
+
+                that.path.push(locationMock);
             });
 
             Y.Mock.expect(content, {
@@ -210,6 +229,16 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 }
             });
 
+            Y.eZ.LocationViewDetailsTabView = Y.Base.create('locationViewDetailsTabView', Y.View, [], {}, {
+                ATTRS: {
+                    content: {},
+                    location: {},
+                    config: {},
+                    priority: {},
+                    languageCode: {},
+                }
+            });
+
             this.view = new Y.eZ.LocationViewView({
                 location: {},
                 content: {},
@@ -223,6 +252,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         tearDown: function () {
             delete Y.eZ.ActionBarView;
             delete Y.eZ.LocationViewViewTabView;
+            delete Y.eZ.LocationViewDetailsTabView;
             this.view.destroy();
             delete this.view;
         },
@@ -286,6 +316,48 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             Assert.isTrue(bubbled, "The location view should be a bubble target of the tab view");
         },
 
+        "Should set the content of the details tab view": function () {
+            Assert.areSame(
+                this.view.get('content'),
+                this.view.get('tabs')[1].get('content'),
+                'The content should have been set to the details tab view'
+            );
+        },
+
+        "Should set the location of the details tab view": function () {
+            Assert.areSame(
+                this.view.get('location'),
+                this.view.get('tabs')[1].get('location'),
+                'The location should have been set to the details tab view'
+            );
+        },
+
+        "Should set the config of the details tab view": function () {
+            Assert.areSame(
+                this.view.get('config'),
+                this.view.get('tabs')[1].get('config'),
+                'The config should have been set to the details tab view'
+            );
+        },
+
+        "Should set the priority of the details tab view": function () {
+            Assert.areSame(
+                2000,
+                this.view.get('tabs')[1].get('priority'),
+                'The priority should have been set to the details tab view'
+            );
+        },
+
+        "Should set the location view as a bubble target of the details tab view": function () {
+            var bubbled = false, evt = 'whatever';
+
+            this.view.on('*:' + evt, function () {
+                bubbled = true;
+            });
+            this.view.get('tabs')[1].fire(evt);
+
+            Assert.isTrue(bubbled, "The location view should be a bubble target of the details tab view");
+        },
 
         "Should set the content of the action bar": function () {
             Y.Assert.areSame(

@@ -13,25 +13,22 @@ namespace EzSystems\PlatformUIBundle\Form\Processor;
 use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\Values\ContentType\ContentTypeDraft;
+use EzSystems\PlatformUIBundle\Http\FormProcessingDoneResponse;
+use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
-use EzSystems\PlatformUIBundle\Notification\TranslatableNotificationMessage;
 use EzSystems\RepositoryForms\Event\FormActionEvent;
 use EzSystems\RepositoryForms\Event\RepositoryFormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 
 class ContentTypeFormProcessor implements EventSubscriberInterface
 {
+    use NotificationPoolAware;
+
     /**
      * @var RouterInterface
      */
     private $router;
-
-    /**
-     * @var NotificationPoolInterface
-     */
-    private $notificationPool;
 
     /**
      * @var ContentTypeService
@@ -41,7 +38,7 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
     public function __construct(RouterInterface $router, NotificationPoolInterface $notificationPool, ContentTypeService $contentTypeService)
     {
         $this->router = $router;
-        $this->notificationPool = $notificationPool;
+        $this->setNotificationPool($notificationPool);
         $this->contentTypeService = $contentTypeService;
     }
 
@@ -56,7 +53,11 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
 
     public function processDefaultAction(FormActionEvent $event)
     {
-        $this->addNotification('content_type.notification.draft_updated');
+        if ($event->getClickedButton() === 'removeDraft') {
+            return;
+        }
+
+        $this->notify('content_type.notification.draft_updated', [], 'content_type');
     }
 
     public function processPublishContentType(FormActionEvent $event)
@@ -68,7 +69,7 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
             )
         );
 
-        $this->addNotification('content_type.notification.published');
+        $this->notify('content_type.notification.published', [], 'content_type');
     }
 
     public function processRemoveContentTypeDraft(FormActionEvent $event)
@@ -84,7 +85,7 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
         } catch (NotFoundException $e) {
             // ContentTypeDraft was newly created, but then discarded.
             // Redirect to the ContentTypeGroup view.
-            $response = new RedirectResponse(
+            $response = new FormProcessingDoneResponse(
                 $this->router->generate('admin_contenttypeGroupView', [
                     'contentTypeGroupId' => $contentTypeDraft->contentTypeGroups[0]->id,
                 ])
@@ -92,24 +93,14 @@ class ContentTypeFormProcessor implements EventSubscriberInterface
         }
 
         $event->setResponse($response);
-        $this->addNotification('content_type.notification.draft_removed');
+        $this->notify('content_type.notification.draft_removed', [], 'content_type');
     }
 
     private function generateRedirectResponse(ContentTypeDraft $contentTypeDraft, $languageCode)
     {
-        $url = $this->router->generate(
+        return new FormProcessingDoneResponse($this->router->generate(
             'admin_contenttypeView',
             ['contentTypeId' => $contentTypeDraft->id, 'languageCode' => $languageCode]
-        );
-
-        return new RedirectResponse($url);
-    }
-
-    private function addNotification($message)
-    {
-        $this->notificationPool->addNotification(new TranslatableNotificationMessage([
-            'message' => $message,
-            'domain' => 'content_type',
-        ]));
+        ));
     }
 }

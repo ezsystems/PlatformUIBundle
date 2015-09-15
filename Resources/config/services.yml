@@ -1,16 +1,12 @@
 parameters:
     ezsystems.platformui.twig.yui_extension.class: EzSystems\PlatformUIBundle\Twig\TwigYuiExtension
+    ezsystems.platformui.controller.base.class: EzSystems\PlatformUIBundle\Controller\Controller
     ezsystems.platformui.controller.class: EzSystems\PlatformUIBundle\Controller\PlatformUIController
     ezsystems.platformui.controller.dashboard.class: EzSystems\PlatformUIBundle\Controller\DashboardController
     ezsystems.platformui.helper.systeminfo.class: EzSystems\PlatformUIBundle\Helper\SystemInfoHelper
     ezsystems.platformui.controller.systeminfo.class: EzSystems\PlatformUIBundle\Controller\SystemInfoController
-    ezsystems.platformui.helper.section.class: EzSystems\PlatformUIBundle\Helper\SectionHelper
     ezsystems.platformui.controller.section.class: EzSystems\PlatformUIBundle\Controller\SectionController
     ezsystems.platformui.controller.template.class: EzSystems\PlatformUIBundle\Controller\TemplateController
-    ezsystems.platformui.form.type.section.class: EzSystems\PlatformUIBundle\Form\Type\SectionType
-    ezsystems.platformui.form.type.section_delete.class: EzSystems\PlatformUIBundle\Form\Type\SectionDeleteType
-    ezsystems.platformui.form.type.section_list.class: EzSystems\PlatformUIBundle\Form\Type\SectionListType
-    ezsystems.platformui.controller.pjax.class: EzSystems\PlatformUIBundle\Controller\PjaxController
     ezsystems.platformui.controller.content_type.class: EzSystems\PlatformUIBundle\Controller\ContentTypeController
     ezsystems.platforui.notification_pool.class: EzSystems\PlatformUIBundle\Notification\NotificationPool
     ezsystems.platformui.form_processor.content_type.class: EzSystems\PlatformUIBundle\Form\Processor\ContentTypeFormProcessor
@@ -21,6 +17,11 @@ parameters:
     ezsystems.platformui.application_config.provider.anonymous_user_id.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\AnonymousUserId
     ezsystems.platformui.application_config.aggregator.class: EzSystems\PlatformUIBundle\ApplicationConfig\Aggregator
     ezsystems.platformui.application_config.provider.root_info.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\RootInfo
+    ezsystems.platformui.form_processor.section.class: EzSystems\PlatformUIBundle\Form\Processor\SectionFormProcessor
+    ezsystems.platformui.exception_listener.class: EzSystems\PlatformUIBundle\EventListener\ExceptionListener
+    ezsystems.platformui.exception_controller: "ezsystems.platformui.controller.exception:showAction"
+    ezsystems.platformui.controller.exception.class: EzSystems\PlatformUIBundle\Controller\ExceptionController
+
 services:
     ezsystems.platformui.twig.yui_extension:
         class: %ezsystems.platformui.twig.yui_extension.class%
@@ -28,11 +29,19 @@ services:
         tags:
             - { name: twig.extension }
 
+    ezsystems.platformui.controller.base:
+        class: %ezsystems.platformui.controller.base.class%
+        abstract: true
+        calls:
+            - [setContainer, [@service_container]]
+            - [setNotificationPool, [@ezsystems.platformui.notification_pool]]
+            - [performAccessChecks, []]
+
     ezsystems.platformui.controller:
         class: %ezsystems.platformui.controller.class%
         arguments:
             - @ezsystems.platformui.application_config.aggregator
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.application_config.aggregator:
         class: %ezsystems.platformui.application_config.aggregator.class%
@@ -67,17 +76,18 @@ services:
         arguments:
             - @request_stack
             - @templating.helper.assets
+            - %ez_platformui.external_assets_public_dir%
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'rootInfo'}
 
     ezsystems.platformui.controller.template:
         class: %ezsystems.platformui.controller.template.class%
         arguments: [@ezpublish.config.resolver]
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.dashboard:
         class: %ezsystems.platformui.controller.dashboard.class%
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.helper.systeminfo:
         class: %ezsystems.platformui.helper.systeminfo.class%
@@ -89,56 +99,20 @@ services:
         class: %ezsystems.platformui.controller.systeminfo.class%
         arguments:
             - @ezsystems.platformui.helper.systeminfo
-        parent: ezpublish.controller.base
-
-    ezsystems.platformui.controller.pjax:
-        class: %ezsystems.platformui.controller.pjax.class%
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
 
     ## Section related services
     ezsystems.platformui.controller.section:
         class: %ezsystems.platformui.controller.section.class%
         arguments:
-            - @ezsystems.platformui.helper.section
-            - @ezsystems.platformui.form.type.section
-            - @router
-            - @translator
-            - @ezsystems.platformui.form.type.section_list
+            - @ezrepoforms.action_dispatcher.section
             - @ezpublish.api.service.section
-            - @ezsystems.platformui.form.type.section_delete
-        parent: ezpublish.controller.base
-
-    ezsystems.platformui.helper.section:
-        class: %ezsystems.platformui.helper.section.class%
-        arguments:
-            - @ezpublish.api.service.section
-            - @security.authorization_checker
-
-    ezsystems.platformui.form.type.section:
-        class: %ezsystems.platformui.form.type.section.class%
-        tags:
-            - { name: form.section, alias: section }
-        arguments:
-            - @translator
-
-    ezsystems.platformui.form.type.section_delete:
-        class: %ezsystems.platformui.form.type.section_delete.class%
-        tags:
-            - { name: form.section, alias: section_delete }
-        arguments:
-            - @translator
-
-    ezsystems.platformui.form.type.section_list:
-        class: %ezsystems.platformui.form.type.section_list.class%
-        tags:
-            - { name: form.section, alias: section_list }
-        arguments:
-            - @ezsystems.platformui.helper.section
-            - @translator
+            - @ezsystems.platformui.notification_pool
+        parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.content_type:
         class: %ezsystems.platformui.controller.content_type.class%
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
         arguments:
             - @ezpublish.api.service.content_type
             - @ezpublish.api.service.search
@@ -162,13 +136,32 @@ services:
 
     ezsystems.platformui.controller.role:
         class: %ezsystems.platformui.controller.role.class%
-        parent: ezpublish.controller.base
+        parent: ezsystems.platformui.controller.base
         arguments:
             - @ezpublish.api.service.role
             - @ezrepoforms.action_dispatcher.role
 
     ezsystems.platformui.form_processor.role:
         class: %ezsystems.platformui.form_processor.role.class%
-        arguments: [@router, @ezsystems.platformui.notification_pool, @ezpublish.api.service.role]
+        arguments: [@router, @ezsystems.platformui.notification_pool]
         tags:
             - { name: kernel.event_subscriber }
+
+    ezsystems.platformui.form_processor.section:
+        class: %ezsystems.platformui.form_processor.section.class%
+        arguments: [@ezsystems.platformui.notification_pool, @router]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ezsystems.platformui.exception_listener:
+        class: %ezsystems.platformui.exception_listener.class%
+        arguments:
+            - %ezsystems.platformui.exception_controller%
+            - @?logger
+        tags:
+            - { name: kernel.event_subscriber }
+            - { name: monolog.logger, channel: request }
+
+    ezsystems.platformui.controller.exception:
+        class: %ezsystems.platformui.controller.exception.class%
+        parent: twig.controller.exception

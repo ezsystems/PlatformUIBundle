@@ -26,6 +26,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             this.on('*:editAction', this._editContent);
             this.on('*:sendToTrashAction', this._sendContentToTrashConfirmBox);
             this.on('*:moveAction', this._selectLocation);
+            this.on('*:translateContent', this._translateContent);
             this.after('*:requestChange', this._setLanguageCode);
 
             this._setLanguageCode();
@@ -208,6 +209,32 @@ YUI.add('ez-locationviewviewservice', function (Y) {
         },
 
         /**
+         * translate event handler, makes the application to navigate to edit content available
+         * in the facade with given language and base language
+         *
+         * @method _translateContent
+         * @protected
+         * @param {EventFacade} e
+         */
+        _translateContent: function (e) {
+            var app = this.get('app'),
+                routeName = 'editContent',
+                routeParams = {
+                    id: e.content.get('id'),
+                    languageCode: e.toLanguageCode,
+                };
+
+            if (e.baseLanguageCode) {
+                routeParams.baseLanguageCode = e.baseLanguageCode;
+                routeName = 'translateContent';
+            }
+
+            app.navigate(
+                app.routeUri(routeName, routeParams)
+            );
+        },
+
+        /**
          * Fire 'notify' event
          *
          * @method _notify
@@ -318,17 +345,17 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 loadParentCallback,
                 path = [];
 
-            loadParentCallback = function (error, parentStruct) {
+            loadParentCallback = function (error, parentLocation) {
                 if ( error ) {
                     service._error("Fail to load the path");
                     return;
                 }
-                path.push(parentStruct);
-                if ( rootLocationId === parentStruct.location.get('id') || parentStruct.location.get('depth') == 1 ) {
+                path.push(parentLocation);
+                if ( rootLocationId === parentLocation.get('id') || parentLocation.get('depth') == 1 ) {
                     service.set('path', path);
                     end();
                 } else {
-                    service._loadParent(parentStruct.location, loadParentCallback);
+                    service._loadParent(parentLocation, loadParentCallback);
                 }
             };
 
@@ -341,19 +368,16 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          * @protected
          * @method _loadParent
          * @param {Y.eZ.Location} location
-         * @param {Function} callback the function to call when the location and
-         *        the content are loaded
-         * @param {Boolean} callback.error the error, truthy if an error occured
-         * @param {Object} callback.result an object containing the
-         *        Y.eZ.Location and the Y.eZ.Content instances under the `location` and
-         *        the `content` keys.
+         * @param {Function} callback the function to call when the location is loaded
+         * @param {Boolean} callback.error the error, truthy if an error occurred
+         * @param {Object} callback.location an object containing the
+         *        Y.eZ.Location
          */
         _loadParent: function (location, callback) {
             var loadOptions = {
                     api: this.get('capi')
                 },
-                that = this,
-                parentLocation, parentContent;
+                parentLocation;
 
             parentLocation = this._newLocation({
                 'id': location.get('resources').ParentLocation
@@ -363,19 +387,8 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                     callback(error);
                     return;
                 }
-                parentContent = that._newContent({
-                    'id': parentLocation.get('resources').Content
-                });
-                parentContent.load(loadOptions, function (error) {
-                    if ( error ) {
-                        callback(error);
-                        return;
-                    }
-                    callback(error, {
-                        location: parentLocation,
-                        content: parentContent
-                    });
-                });
+
+                callback(error, parentLocation);
             });
         },
 
@@ -412,17 +425,6 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             return new Y.eZ.Location(params);
         },
 
-        /**
-         * Creates a new instance of Y.eZ.Content with the given params
-         *
-         * @method _newContent
-         * @protected
-         * @param {Object} params the parameters passed to the Y.eZ.Content
-         *        constructor
-         */
-        _newContent: function (params) {
-            return new Y.eZ.Content(params);
-        }
     }, {
         ATTRS: {
             /**
@@ -460,8 +462,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
 
             /**
              * The path from the root location to the current location. Each
-             * entry of the path consists of the location and its content under
-             * the `location` and `content` keys sorted by location depth
+             * entry of the path consists of the location sorted by location depth
              *
              * @attribute path
              * @type Array
@@ -469,7 +470,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             path: {
                 getter: function (value) {
                     return value.sort(function (a, b) {
-                        return (a.location.get('depth') - b.location.get('depth'));
+                        return (a.get('depth') - b.get('depth'));
                     });
                 }
             },

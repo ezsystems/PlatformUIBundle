@@ -51,8 +51,9 @@ trait Authentication
 
     /**
      * @Given I am logged in as admin on PlatformUI
+     * @Given I am logged in as an Editor in PlatformUI
      */
-    public function loggedAsAdminPlatformUi()
+    public function loggedAsUserPlatformUi()
     {
         $this->goToPlatformUiAndLogIn($this->user, $this->password);
     }

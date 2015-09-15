@@ -11,6 +11,10 @@ YUI.add('ez-serversideviewservice', function (Y) {
      */
     Y.namespace('eZ');
 
+    var PJAX_DONE_REDIRECT = 205,
+        PJAX_LOCATION_HEADER = 'PJAX-Location',
+        DEFAULT_HEADERS = {'X-PJAX': 'true'};
+
     /**
      * The Server Side View Service class. It is meant to be used to load the
      * content of a server side view.
@@ -42,26 +46,73 @@ YUI.add('ez-serversideviewservice', function (Y) {
             e.originalEvent.preventDefault();
             Y.io(form.getAttribute('action'), {
                 method: form.getAttribute('method'),
-                headers: {'Content-Type': form.get('encoding')},
+                headers: Y.merge(DEFAULT_HEADERS, {'Content-Type': form.get('encoding')}),
                 data: e.formData,
                 on: {
-                    success: function (tId, response) {
-                        // TODO: in some cases, the server side form handling
-                        // should generate a kind of custom redirection so that
-                        // the redirection happens in PlatformUI rather than in
-                        // the XmlHttpRequest object. This would allow to
-                        // properly update the window title and the URL
-                        // https://jira.ez.no/browse/EZP-23700
-                        app.set('loading', false);
-                        this._updateView(e.target, response);
-                    },
-                    failure: function () {
-                        app.set('loading', false);
-                        this._error('Failed to load the form');
-                    },
+                    success: Y.bind(this._handleFormSubmitResponse, this, e.target),
+                    failure: this._handleLoadFailure,
                 },
                 context: this,
             });
+        },
+
+        /**
+         * Handles the response of a form submission. It detects if a
+         * redirection needs to happen in the application.
+         *
+         * @method _handleFormSubmitResponse
+         * @protected
+         * @param {Y.View} view
+         * @param {String} tId the transaction id
+         * @param {XMLHttpRequest} response
+         */
+        _handleFormSubmitResponse: function (view, tId, response) {
+            var app = this.get('app'),
+                pjaxLocation = response.getResponseHeader(PJAX_LOCATION_HEADER);
+
+            if ( response.status === PJAX_DONE_REDIRECT && pjaxLocation ) {
+                app.navigate(this._getAdminRouteUri(pjaxLocation));
+            } else {
+                app.set('loading', false);
+                this._updateView(view, response);
+            }
+        },
+
+        /**
+         * Handles the loading error.
+         *
+         * @method _handleLoadFailure
+         * @param {String} tId
+         * @param {XMLHttpRequest} response
+         * @protected
+         */
+        _handleLoadFailure: function (tId, response) {
+            var frag = Y.Node.create(response.responseText),
+                notificationCount,
+                errorMsg = '';
+
+            this.get('app').set('loading', false);
+            notificationCount = this._parseNotifications(frag);
+            if ( notificationCount === 0 ) {
+                errorMsg = "Failed to load '" + response.responseURL + "'";
+            }
+            this._error(errorMsg);
+        },
+
+        /**
+         * Parses the notification node(s) in the PJAX response and sends the
+         * corresponding notify events.
+         *
+         * @method _parseNotifications
+         * @param {Y.Node} docFragment
+         * @return {Number} the number of notifications
+         * @protected
+         */
+        _parseNotifications: function (docFragment) {
+            var notifications = docFragment.all('[data-name="notification"] li');
+
+            notifications.each(this._notifyUser, this);
+            return notifications.size();
         },
 
         /**
@@ -92,18 +143,17 @@ YUI.add('ez-serversideviewservice', function (Y) {
          * @param {Function} next
          */
         _load: function (next) {
-            var uri = this.get('app').get('baseUri') + this.get('request').params.uri;
+            var uri = this.get('app').get('apiRoot') + this.get('request').params.uri;
 
             Y.io(uri, {
                 method: 'GET',
+                headers: DEFAULT_HEADERS,
                 on: {
                     success: function (tId, response) {
                         this._parseResponse(response);
                         next(this);
                     },
-                    failure: function () {
-                        this._error("Failed to load '" + uri + "'");
-                    },
+                    failure: this._handleLoadFailure,
                 },
                 context: this,
             });
@@ -118,7 +168,6 @@ YUI.add('ez-serversideviewservice', function (Y) {
          */
         _parseResponse: function (response) {
             var frag = Y.Node.create(response.responseText),
-                that = this,
                 html, title;
 
             html = frag.one('[data-name="html"]');
@@ -131,9 +180,7 @@ YUI.add('ez-serversideviewservice', function (Y) {
                 this.set('title', title.get('text'));
             }
 
-            frag.all('[data-name="notification"] li').each(function (notificationNode) {
-                that._responseNotify(notificationNode);
-            });
+            this._parseNotifications(frag);
         },
 
         /**
@@ -146,33 +193,56 @@ YUI.add('ez-serversideviewservice', function (Y) {
          * @return {Node}
          */
         _rewrite: function (node) {
-            var app = this.get('app');
-
             node.all('a[href]').each(function (link) {
-                var href = link.getAttribute('href');
-
-                if (
-                    href.charAt(0) === '#'
-                    || ( link.hasAttribute('target') && link.getAttribute('target') !== '_self' )
-                    || href.match(/^http(s)?:\/\//)
-                ) {
+                if ( !this._isPjaxLink(link) ) {
                     return;
                 }
-                // Remoove unnecessary slashes
-                href = href.replace(/^\/+/g, '');
-                link.setAttribute('href', app.routeUri('adminGenericRoute', {uri: href}));
-            });
+                link.setAttribute('href', this._getAdminRouteUri(link.getAttribute('href')));
+            }, this);
             return node;
         },
 
         /**
-         * Fires notify event basing on node
+         * Returns the URI in PlatformUI App from the PJAX URI
          *
-         * @method _responseNotify
+         * @method _getAdminRouteUri
+         * @protected
+         * @param {String} uri
+         * @return {String}
+         */
+        _getAdminRouteUri: function (uri) {
+            var app = this.get('app'),
+                regexp = new RegExp('^' + app.get('apiRoot'));
+
+            return app.routeUri('adminGenericRoute', {uri: uri.replace(regexp, '')});
+        },
+
+        /**
+         * Checks whether the link can be transformed in a PJAX link.
+         *
+         * @method _isPjaxLink
+         * @protected
+         * @param {Y.Node} link
+         * @return {Boolean}
+         */
+        _isPjaxLink: function (link) {
+            var href = link.getAttribute('href');
+
+            return (
+                href.charAt(0) !== '#'
+                && ( !link.hasAttribute('target') || link.getAttribute('target') === '_self' )
+                && !href.match(/^http(s)?:\/\//)
+            );
+        },
+
+        /**
+         * Fires notify event based on a notification node in the PJAX response.
+         *
+         * @method _notifyUser
          * @protected
          * @param {Node} node
          */
-        _responseNotify: function (node) {
+        _notifyUser: function (node) {
             var app = this.get('app'),
                 timeout = 5;
 

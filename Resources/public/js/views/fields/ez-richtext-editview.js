@@ -2,6 +2,7 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
+/* global CKEDITOR */
 YUI.add('ez-richtext-editview', function (Y) {
     "use strict";
     /**
@@ -15,12 +16,12 @@ YUI.add('ez-richtext-editview', function (Y) {
         L = Y.Lang,
         FOCUS_CLASS = 'is-focused',
         EDITOR_FOCUSED_CLASS = 'is-editor-focused',
-        ADD_CONTENT_BUTTON_CLASS = 'ez-richtext-add-content',
         ROOT_SECTION_ATTRIBUTES = {
             "contenteditable": 'true',
             "class": 'ez-richtext-editable',
         },
-        AlloyEditor = Y.eZ.AlloyEditor;
+        AlloyEditor = Y.eZ.AlloyEditor,
+        ToolbarConfig = Y.eZ.AlloyEditorToolbarConfig;
 
     /**
      * Rich Text edit view
@@ -101,6 +102,18 @@ YUI.add('ez-richtext-editview', function (Y) {
         },
 
         /**
+         * Registers the plugin which name is given in the given plugin dir.
+         *
+         * @method _registerExternalCKEditorPlugin
+         * @protected
+         */
+        _registerExternalCKEditorPlugin: function (pluginName, pluginDir) {
+            var path = this.get('config').alloyEditor.externalPluginPath;
+
+            CKEDITOR.plugins.addExternal(pluginName, path + '/' + pluginDir);
+        },
+
+        /**
          * Initializes the editor
          *
          * @protected
@@ -109,10 +122,12 @@ YUI.add('ez-richtext-editview', function (Y) {
         _initEditor: function () {
             var editor, nativeEd, valid, setEditorFocused, unsetEditorFocused;
 
+            this._registerExternalCKEditorPlugin('widget', 'widget/');
+            this._registerExternalCKEditorPlugin('lineutils', 'lineutils/');
             editor = AlloyEditor.editable(
                 this.get('container').one('.ez-richtext-editor').getDOMNode(), {
                     toolbars: this.get('toolbarsConfig'),
-                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezappendcontent',
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezaddcontent,widget,ezembed,ezremoveblock,ezfocusblock',
                     eZ: {
                         editableRegion: '.ez-richtext-editable',
                     },
@@ -187,7 +202,6 @@ YUI.add('ez-richtext-editview', function (Y) {
             return {
                 "isRequired": this.get('fieldDefinition').isRequired,
                 "xhtml": this._serializeFieldValue(),
-                "addContentButtonClass": ADD_CONTENT_BUTTON_CLASS,
             };
         },
 
@@ -248,8 +262,7 @@ YUI.add('ez-richtext-editview', function (Y) {
         },
 
         /**
-         * Returns the content of the editor by removing the markup needed for
-         * the static toolbar.
+         * Returns the content of the editor.
          *
          * @method _getEditorContent
          * @protected
@@ -257,7 +270,7 @@ YUI.add('ez-richtext-editview', function (Y) {
          */
         _getEditorContent: function () {
             var data = this.get('editor').get('nativeEditor').getData(),
-                section = Y.Node.create(data).one('section');
+                section = Y.Node.create(data);
 
             if ( section ) {
                 Y.Object.each(ROOT_SECTION_ATTRIBUTES, function (value, key) {
@@ -317,32 +330,18 @@ YUI.add('ez-richtext-editview', function (Y) {
             toolbarsConfig: {
                 value: {
                     styles: {
-                        selections: [{
-                            name: 'link',
-                            buttons: ['linkEdit'],
-                            test: AlloyEditor.SelectionTest.link
-                        }, {
-                            name: 'text',
-                            buttons: [
-                                'bold', 'italic', 'underline',
-                                'paragraphLeft', 'paragraphCenter', 'paragraphRight', 'paragraphJustify',
-                                'ul', 'ol',
-                                'link',
-                            ],
-                            test: AlloyEditor.SelectionTest.text
-                        }, {
-                            name: 'table',
-                            buttons: ['tableRow', 'tableColumn', 'tableCell', 'tableRemove'],
-                            getArrowBoxClasses: AlloyEditor.SelectionGetArrowBoxClasses.table,
-                            setPosition: AlloyEditor.SelectionSetPosition.table,
-                            test: AlloyEditor.SelectionTest.table
-                        }],
+                        selections: [
+                            ToolbarConfig.Link,
+                            ToolbarConfig.Text,
+                            ToolbarConfig.Table,
+                            ToolbarConfig.Heading,
+                            ToolbarConfig.Paragraph,
+                        ],
                         tabIndex: 1
                     },
-                    ezappendcontent: {
-                        buttons: ['ezheading'],
+                    add: {
+                        buttons: ['ezheading', 'ezembed'],
                         tabIndex: 2,
-                        addContentButtonClass: ADD_CONTENT_BUTTON_CLASS,
                     },
                 }
             },

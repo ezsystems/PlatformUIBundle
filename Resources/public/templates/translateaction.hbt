@@ -24,4 +24,5 @@
             </ul>
         </div>
     </div>
+    <button class="ez-button ez-newtranslation-button">+ New Translation</button>
 </div>

@@ -76,8 +76,8 @@ YUI.add('ez-viewservice', function (Y) {
         },
 
         /**
-         * Defaut load implementation of the service. This method is meant to be
-         * overriden in services. The default implementation does nothing except
+         * Default load implementation of the service. This method is meant to be
+         * overridden in services. The default implementation does nothing except
          * calling the passed callback.
          *
          * @method _load
@@ -113,7 +113,7 @@ YUI.add('ez-viewservice', function (Y) {
          *
          * @method setNextViewServiceParameters
          * @protected
-         * @param {eZ.ViewService} service the new active view service
+         * @param {eZ.ViewService} newService the new active view service
          * @return {eZ.ViewService} the new view service
          */
         setNextViewServiceParameters: function (newService) {
@@ -150,7 +150,7 @@ YUI.add('ez-viewservice', function (Y) {
 
         /**
          * Returns the parameters to pass to the view. This method is meant to
-         * be overriden in custom view services. The default implementation
+         * be overridden in custom view services. The default implementation
          * returns an empty object.
          *
          * @method _getViewParameters

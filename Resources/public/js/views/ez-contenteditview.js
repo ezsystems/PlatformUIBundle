@@ -11,7 +11,7 @@ YUI.add('ez-contenteditview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var IS_SHOWING_TECH = 'is-showing-technicalinfos',
+    var IS_SHOWING_INFOS = 'is-showing-infos',
         CONTENT_SEL = '.ez-main-content',
         ESCAPE_KEY = 27,
         FORM_CONTAINER = '.ez-contenteditformview-container',
@@ -30,7 +30,8 @@ YUI.add('ez-contenteditview', function (Y) {
             '.ez-view-close': {'tap': '_closeView'},
             'header': {
                 'mouseover': '_showDetails',
-                'mouseout': '_hideDetails'
+                'mouseout': '_hideDetails',
+                'tap': '_showDetails',
             },
             '.ez-main-content': {
                 'keyup': '_handleKeyboard'
@@ -156,7 +157,7 @@ YUI.add('ez-contenteditview', function (Y) {
          * @protected
          */
         _showDetails: function () {
-            this.get('container').addClass(IS_SHOWING_TECH);
+            this.get('container').addClass(IS_SHOWING_INFOS);
         },
 
         /**
@@ -166,7 +167,7 @@ YUI.add('ez-contenteditview', function (Y) {
          * @protected
          */
         _hideDetails: function () {
-            this.get('container').removeClass(IS_SHOWING_TECH);
+            this.get('container').removeClass(IS_SHOWING_INFOS);
         },
 
         /**

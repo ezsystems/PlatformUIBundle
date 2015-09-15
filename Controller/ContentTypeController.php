@@ -10,10 +10,8 @@
  */
 namespace EzSystems\PlatformUIBundle\Controller;
 
-use eZ\Bundle\EzPublishCoreBundle\Controller;
 use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
-use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
 use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\UserService;
 use eZ\Publish\API\Repository\Values\Content\Query;
@@ -22,6 +20,7 @@ use eZ\Publish\Core\Repository\Values\ContentType\ContentTypeCreateStruct;
 use EzSystems\RepositoryForms\Data\Mapper\ContentTypeDraftMapper;
 use EzSystems\RepositoryForms\FieldType\FieldTypeFormMapperRegistryInterface;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
+use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeCreateType;
 use Symfony\Component\HttpFoundation\Request;
 
 class ContentTypeController extends Controller
@@ -86,12 +85,17 @@ class ContentTypeController extends Controller
     public function viewContentTypeGroupAction($contentTypeGroupId)
     {
         $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
+        $createForm = $this->createForm(
+            new ContentTypeCreateType($this->contentTypeService),
+            ['contentTypeGroupId' => $contentTypeGroupId]
+        );
 
         return $this->render('eZPlatformUIBundle:ContentType:view_content_type_group.html.twig', [
             'group' => $contentTypeGroup,
             'content_types' => $this->contentTypeService->loadContentTypes($contentTypeGroup),
             'can_edit' => $this->isGranted(new Attribute('class', 'update')),
             'can_create' => $this->isGranted(new Attribute('class', 'create')),
+            'create_form' => $createForm->createView(),
         ]);
     }
 
@@ -102,11 +106,7 @@ class ContentTypeController extends Controller
     public function viewContentTypeAction($contentTypeId, $languageCode = null)
     {
         $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
-        try {
-            $contentType = $this->contentTypeService->loadContentType($contentTypeId);
-        } catch (UnauthorizedException $e) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
+        $contentType = $this->contentTypeService->loadContentType($contentTypeId);
 
         $query = new Query([
             'filter' => new Query\Criterion\ContentTypeId($contentTypeId),
@@ -122,11 +122,13 @@ class ContentTypeController extends Controller
         ]);
     }
 
-    public function createContentTypeAction($contentTypeGroupId, $languageCode = null)
+    public function createContentTypeAction(Request $request, $contentTypeGroupId, $languageCode = null)
     {
-        $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
-        try {
-            $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
+        $createForm = $this->createForm(new ContentTypeCreateType($this->contentTypeService), ['contentTypeGroupId' => $contentTypeGroupId]);
+        $createForm->handleRequest($request);
+        if ($createForm->isValid()) {
+            $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
+            $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($createForm->getData()['contentTypeGroupId']);
 
             $contentTypeCreateStruct = new ContentTypeCreateStruct([
                 'identifier' => '__new__' . md5(microtime(true)),
@@ -137,14 +139,24 @@ class ContentTypeController extends Controller
                 $contentTypeCreateStruct,
                 [$contentTypeGroup]
             );
-        } catch (UnauthorizedException $e) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
+
+            return $this->redirectToRouteAfterFormPost(
+                'admin_contenttypeUpdate',
+                ['contentTypeId' => $contentTypeDraft->id, 'languageCode' => $languageCode]
+            );
         }
 
-        return $this->redirectToRoute(
-            'admin_contenttypeUpdate',
-            ['contentTypeId' => $contentTypeDraft->id, 'languageCode' => $languageCode]
-        );
+        // Form validation failed. Send errors as notifications.
+        foreach ($createForm->getErrors(true) as $error) {
+            $this->notifyErrorPlural(
+                $error->getMessageTemplate(),
+                $error->getMessagePluralization(),
+                $error->getMessageParameters(),
+                'ezrepoforms_content_type'
+            );
+        }
+
+        return $this->redirectToRouteAfterFormPost('admin_contenttypeGroupView', ['contentTypeGroupId' => $contentTypeGroupId]);
     }
 
     public function updateContentTypeAction(Request $request, $contentTypeId, $languageCode = null)
@@ -155,13 +167,9 @@ class ContentTypeController extends Controller
         try {
             $contentTypeDraft = $this->contentTypeService->loadContentTypeDraft($contentTypeId);
         } catch (NotFoundException $e) {
-            try {
-                $contentTypeDraft = $this->contentTypeService->createContentTypeDraft(
-                    $this->contentTypeService->loadContentType($contentTypeId)
-                );
-            } catch (UnauthorizedException $e) {
-                return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-            }
+            $contentTypeDraft = $this->contentTypeService->createContentTypeDraft(
+                $this->contentTypeService->loadContentType($contentTypeId)
+            );
         }
 
         $contentTypeData = (new ContentTypeDraftMapper())->mapToFormData($contentTypeDraft);
@@ -177,6 +185,7 @@ class ContentTypeController extends Controller
 
         // Synchronize form and data.
         $form->handleRequest($request);
+        $hasErrors = false;
         if ($form->isValid()) {
             $this->actionDispatcher->dispatchFormAction(
                 $form,
@@ -189,7 +198,9 @@ class ContentTypeController extends Controller
                 return $response;
             }
 
-            return $this->redirect($actionUrl);
+            return $this->redirectAfterFormPost($actionUrl);
+        } elseif ($form->isSubmitted()) {
+            $hasErrors = true;
         }
 
         return $this->render('eZPlatformUIBundle:ContentType:update_content_type.html.twig', [
@@ -197,7 +208,9 @@ class ContentTypeController extends Controller
             'action_url' => $actionUrl,
             'contentTypeName' => $contentTypeDraft->getName($languageCode),
             'contentTypeDraft' => $contentTypeDraft,
+            'modifier' => $this->userService->loadUser($contentTypeDraft->modifierId),
             'languageCode' => $languageCode,
+            'hasErrors' => $hasErrors,
         ]);
     }
 }

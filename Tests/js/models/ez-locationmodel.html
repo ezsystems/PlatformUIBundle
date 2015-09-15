@@ -26,7 +26,8 @@
         modules: {
             "ez-locationmodel": {
                 requires: [
-                    'ez-restmodel'
+                    'ez-restmodel',
+                    'ez-contentinfomodel'
                 ],
                 fullpath: "../../../Resources/public/js/models/ez-locationmodel.js"
             },
@@ -35,6 +36,16 @@
                     'model'
                 ],
                 fullpath: "../../../Resources/public/js/models/ez-restmodel.js"
+            },
+            "ez-contentinfomodel": {
+                requires: [
+                    'ez-restmodel', 'ez-contentinfo-attributes'
+                ],
+                fullpath: "../../../Resources/public/js/models/ez-contentinfomodel.js"
+            },
+            "ez-contentinfo-attributes": {
+                requires: ['ez-restmodel'],
+                fullpath: "../../../Resources/public/js/models/extensions/ez-contentinfo-attributes.js"
             },
         }
     }).use('ez-locationmodel-tests', function (Y) {

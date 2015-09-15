@@ -16,24 +16,6 @@ YUI.add('ez-platformuiapp', function (Y) {
         APP_OPEN = 'is-app-open',
         APP_LOADING = 'is-app-loading';
 
-        /**
-         * Fired whenever a fatal error occurs and application is not able to continue current action
-         *
-         * @event fatalError
-         * @param retryAction {Object} Object describing the action which was interrupted by error, and could be retried
-         * @param additionalInfo {Object} Object containing additional information about the error
-         * @example
-         *     app.fire(EVT_FATALERROR, {
-         *         retryAction: {
-         *             run: app.loadContentForEdit,
-         *             args: [req, res, next],
-         *             context: app
-         *         },
-         *         additionalInfo: {
-         *             errorText: " Could not load the content with id '" + req.params.id + "'"
-         *         }
-         *     });
-         */
     /**
      * PlatformUI Application
      *
@@ -83,6 +65,12 @@ YUI.add('ez-platformuiapp', function (Y) {
                 service: Y.eZ.ConfirmBoxViewService,
                 container: '.ez-confirmbox-container',
                 hideClass: 'is-confirmbox-hidden',
+            },
+            languageSelectionBox: {
+                type: Y.eZ.LanguageSelectionBoxView,
+                service: Y.eZ.LanguageSelectionBoxViewService,
+                container: '.ez-languageselectionbox-container',
+                hideClass: 'is-languageselectionbox-hidden',
             },
             notificationHub: {
                 type: Y.eZ.NotificationHubView,
@@ -579,14 +567,16 @@ YUI.add('ez-platformuiapp', function (Y) {
                 app._set('activeViewService', viewInfo.service);
 
                 viewInfo.service.on('error', function (e) {
-                    app.fire('notify', {
-                        notification: {
-                            text:  e.message,
-                            identifier: "ViewService-notification-error",
-                            state: "error",
-                            timeout: 0,
-                        }
-                    });
+                    if ( e.message ) {
+                        app.fire('notify', {
+                            notification: {
+                                text:  e.message,
+                                identifier: "ViewService-notification-error",
+                                state: "error",
+                                timeout: 0,
+                            }
+                        });
+                    }
                     app.set('loading', false);
                 });
                 viewInfo.service.load(showView);
@@ -733,6 +723,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                     view: 'studioPlusPresentationView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
+                    name: "translateContent",
+                    path: '/edit/:id/:languageCode/:baseLanguageCode',
+                    service: Y.eZ.ContentEditViewService,
+                    sideViews: {'navigationHub': false, 'discoveryBar': false},
+                    view: 'contentEditView',
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }, {
                     name: "editContent",
                     path: '/edit/:id/:languageCode',
                     service: Y.eZ.ContentEditViewService,
@@ -764,7 +761,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "adminContentTypeEdit",
-                    regex: /\/admin\/(contenttype%2Fupdate%2F.*)/,
+                    regex: /\/admin\/(pjax%2Fcontenttype%2Fupdate%2F.*)/,
                     keys: ['uri'],
                     path: "/admin/:uri",
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
@@ -773,7 +770,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "adminContentType",
-                    regex: /\/admin\/(contenttype.*)/,
+                    regex: /\/admin\/(pjax%2Fcontenttype.*)/,
                     keys: ['uri'],
                     path: "/admin/:uri",
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
@@ -809,11 +806,11 @@ YUI.add('ez-platformuiapp', function (Y) {
             /**
              * The base URI to build the URI of the ajax request
              *
-             * @attribute baseUri
+             * @attribute apiRoot
              * @default "/"
              * @type String
              */
-            baseUri: {
+            apiRoot: {
                 value: "/"
             },
 

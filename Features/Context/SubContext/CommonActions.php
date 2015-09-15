@@ -9,6 +9,8 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
+use WebDriver\Exception\StaleElementReference;
+
 trait CommonActions
 {
     /**
@@ -112,17 +114,13 @@ trait CommonActions
     }
 
     /**
-     * @Given I click (on) the content tree with path :path
-     * Explores the content tree, expanding it and click on the desired element
+     * Explores the content tree, expanding it and click on the desired element.
      *
      * @param   string  $path    The content tree path such as 'Content1/Content2/ContentIWantToClick'
      */
-    public function openTreePath($path)
+    public function openTreePath($path, $node)
     {
-        $this->clickDiscoveryBar('Content tree');
-        $this->waitForLoadings();
         $path = explode('/', $path);
-        $node = null;
         foreach ($path as $pathNode) {
             $node = $this->openTreeNode($pathNode, $node);
             $this->waitForLoadings();
@@ -141,9 +139,6 @@ trait CommonActions
     {
         $page = $this->getSession()->getPage();
         $notFound = true;
-        if ($node == null) {
-            $node = $page->find('css', '.ez-platformui-app-body');
-        }
         $subNodes = $node->findAll('css', '.ez-tree-node');
         foreach ($subNodes as $subNode) {
             $leafNode = $subNode->find('css', '.ez-tree-navigate');
@@ -174,7 +169,7 @@ trait CommonActions
      */
     protected function clickElementByText($text, $selector, $textSelector = null, $index = 1)
     {
-        $index + 1; //DO NOT FORGET SOMETHING THAT I DON'T REMENBER
+        $index + 1; //for selection of equal buttons
         $element = $this->getElementByText($text, $selector, $textSelector);
         if ($element) {
             $element->click();
@@ -188,24 +183,39 @@ trait CommonActions
      *
      * @param string    $text           Text value of the element
      * @param string    $selector       CSS selector of the element
-     * @param string    $textSelector   extra CSS selector for text of the element
+     * @param string    $textSelector   Extra CSS selector for text of the element
+     * @param string    $baseElement    Element in which the search is based
+     * @param int       $iteration      Iteration number, used to control number of executions
      * @return array
      */
-    protected function getElementByText($text, $selector, $textSelector = null)
+    protected function getElementByText($text, $selector, $textSelector = null, $iteration = 3)
     {
-        $page = $this->getSession()->getPage();
-        $elements = $page->findAll('css', $selector);
-        foreach ($elements as $element) {
-            if ($textSelector != null) {
-                $elementText = $element->find('css', $textSelector)->getText();
-            } else {
-                $elementText = $element->getText();
+        try {
+            if ($baseElement == null) {
+                $baseElement = $this->getSession()->getPage();
             }
-            if ($elementText == $text) {
-                return $element;
+            $elements = $baseElement->findAll('css', $selector);
+            foreach ($elements as $element) {
+                if ($textSelector != null) {
+                    $elementText = $element->find('css', $textSelector)->getText();
+                } else {
+                    $elementText = $element->getText();
+                }
+                if ($elementText == $text) {
+                    return $element;
+                }
+            }
+
+            return false;
+        } catch (StaleElementReference $e) {
+            // In case of the element changes, the reference becames stale
+            // re-run this method up to 3 times to account for this
+            if ($iteration > 0) {
+                usleep(5 * 1000); // 5ms
+                return $this->getElementByText($text, $selector, $textSelector, $iteration--);
+            } else {
+                throw new \Exception('Stale reference occured more than 3 times in a row, possible infinite loop');
             }
         }
-
-        return false;
     }
 }

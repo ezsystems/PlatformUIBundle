@@ -4,7 +4,11 @@
  */
 
 .ez-serverside-content {
-    padding-bottom: 10em; /* just to test before having enough content */
+    padding: 0.5em 10% 5em 10%;
+}
+
+.ez-serverside-content.ez-tabs {
+    padding: 0 0 5em 0;
 }
 
 .ez-serverside-content h2 {

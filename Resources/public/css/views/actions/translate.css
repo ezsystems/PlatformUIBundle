@@ -71,3 +71,8 @@
     display: block;
     padding: 0.1em 0.5em;
 }
+
+.ez-view-translateactionview .ez-newtranslation-button {
+    width: 17em;
+    margin: 0.5em;
+}

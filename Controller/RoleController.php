@@ -8,16 +8,14 @@
  */
 namespace EzSystems\PlatformUIBundle\Controller;
 
-use eZ\Bundle\EzPublishCoreBundle\Controller;
-use eZ\Publish\API\Repository\Exceptions\InvalidArgumentException;
-use eZ\Publish\API\Repository\Exceptions\LimitationValidationException;
-use eZ\Publish\API\Repository\Exceptions\NotFoundException;
-use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
 use eZ\Publish\API\Repository\RoleService;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\Core\Repository\Values\User\RoleCreateStruct;
 use EzSystems\RepositoryForms\Data\Mapper\RoleMapper;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
+use EzSystems\RepositoryForms\Form\Type\Role\RoleCreateType;
+use EzSystems\RepositoryForms\Form\Type\Role\RoleDeleteType;
+use EzSystems\RepositoryForms\Form\Type\Role\RoleUpdateType;
 use Symfony\Component\HttpFoundation\Request;
 
 class RoleController extends Controller
@@ -47,11 +45,14 @@ class RoleController extends Controller
      */
     public function listRolesAction()
     {
+        $createForm = $this->createForm(new RoleCreateType());
+
         return $this->render('eZPlatformUIBundle:Role:list_roles.html.twig', [
             'roles' => $this->roleService->loadRoles(),
             'can_edit' => $this->isGranted(new Attribute('role', 'update')),
             'can_create' => $this->isGranted(new Attribute('role', 'create')),
             'can_delete' => $this->isGranted(new Attribute('role', 'delete')),
+            'create_form' => $createForm->createView(),
         ]);
     }
 
@@ -66,10 +67,12 @@ class RoleController extends Controller
     {
         $role = $this->roleService->loadRole($roleId);
         $roleAssignments = $this->roleService->getRoleAssignments($role);
+        $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
 
         return $this->render('eZPlatformUIBundle:Role:view_role.html.twig', [
             'role' => $role,
             'role_assignments' => $roleAssignments,
+            'deleteForm' => $deleteForm->createView(),
             'can_edit' => $this->isGranted(new Attribute('role', 'update')),
             'can_delete' => $this->isGranted(new Attribute('role', 'delete')),
         ]);
@@ -80,33 +83,28 @@ class RoleController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function createRoleAction()
+    public function createRoleAction(Request $request)
     {
-        try {
-            $roleCreateStruct = new RoleCreateStruct([
-                'identifier' => '__new__' . md5(microtime(true)),
-            ]);
+        $createForm = $this->createForm(new RoleCreateType());
+        $createForm->handleRequest($request);
+        if ($createForm->isValid()) {
+            $roleCreateStruct = new RoleCreateStruct(['identifier' => '__new__' . md5(microtime(true))]);
             $role = $this->roleService->createRole($roleCreateStruct);
-        } catch (UnauthorizedException $e) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        } catch (InvalidArgumentException $e) {
-            $this->addErrorMessage('role.error.name_or_limitation');
 
-            return $this->redirect(
-                $this->generateUrl('admin_roleList')
-            );
-        } catch (LimitationValidationException $e) {
-            $this->addErrorMessage('role.error.limitation_validation');
+            return $this->redirectToRouteAfterFormPost('admin_roleUpdate', ['roleId' => $role->id]);
+        }
 
-            return $this->redirect(
-                $this->generateUrl('admin_roleList')
+        // Form validation failed. Send errors as notifications.
+        foreach ($createForm->getErrors(true) as $error) {
+            $this->notifyErrorPlural(
+                $error->getMessageTemplate(),
+                $error->getMessagePluralization(),
+                $error->getMessageParameters(),
+                'ezrepoforms_content_type'
             );
         }
 
-        return $this->redirectToRoute(
-            'admin_roleUpdate',
-            ['roleId' => $role->id]
-        );
+        return $this->redirectToRouteAfterFormPost('admin_roleList');
     }
 
     /**
@@ -118,46 +116,23 @@ class RoleController extends Controller
      */
     public function updateRoleAction(Request $request, $roleId)
     {
-        try {
-            $role = $this->roleService->loadRole($roleId);
-        } catch (NotFoundException $e) {
-            $this->addErrorMessage('role.error.role_not_found');
-
-            return $this->redirect(
-                $this->generateUrl('admin_roleList')
-            );
-        }
-
+        $role = $this->roleService->loadRole($roleId);
         $roleData = (new RoleMapper())->mapToFormData($role);
-        $form = $this->createForm(
-            'ezrepoforms_role_update',
-            $roleData
-        );
-        $actionUrl = $this->generateUrl(
-            'admin_roleUpdate',
-            ['roleId' => $roleId]
-        );
+        $form = $this->createForm(new RoleUpdateType(), $roleData);
+        $actionUrl = $this->generateUrl('admin_roleUpdate', ['roleId' => $roleId]);
 
         // Synchronize form and data.
         $form->handleRequest($request);
+        $hasErrors = false;
         if ($form->isValid()) {
-            try {
-                $this->actionDispatcher->dispatchFormAction(
-                    $form,
-                    $roleData,
-                    $form->getClickedButton()->getName()
-                );
-            } catch (InvalidArgumentException $e) {
-                $this->addErrorMessage('role.error.name_exists');
-            } catch (UnauthorizedException $e) {
-                return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-            }
-
+            $this->actionDispatcher->dispatchFormAction($form, $roleData, $form->getClickedButton()->getName());
             if ($response = $this->actionDispatcher->getResponse()) {
                 return $response;
             }
 
-            return $this->redirect($actionUrl);
+            return $this->redirectAfterFormPost($actionUrl);
+        } elseif ($form->isSubmitted()) {
+            $hasErrors = true;
         }
 
         // TODO: Just a temporary implementation of draft handling. To be done properly in follow-up: EZP-24701
@@ -175,53 +150,30 @@ class RoleController extends Controller
             'action_url' => $actionUrl,
             'role' => $role,
             'role_name' => $roleName,
+            'hasErrors' => $hasErrors,
         ]);
     }
 
     /**
      * Deletes a role.
      *
+     * @param Request $request
      * @param int $roleId Role ID
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function deleteRoleAction($roleId)
+    public function deleteRoleAction(Request $request, $roleId)
     {
-        try {
-            $role = $this->roleService->loadRole($roleId);
-        } catch (NotFoundException $e) {
-            $this->addErrorMessage('role.error.role_not_found');
-
-            return $this->redirect(
-                $this->generateUrl('admin_roleList')
-            );
+        $role = $this->roleService->loadRole($roleId);
+        $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
+        $deleteForm->handleRequest($request);
+        if ($deleteForm->isValid()) {
+            $this->roleService->deleteRole($role);
+            $this->notify('role.deleted', ['%roleIdentifier%' => $role->identifier], 'role');
+        } elseif ($deleteForm->isSubmitted()) {
+            $this->notifyError('role.error.delete', ['%roleIdentifier%' => $role->identifier], 'role');
         }
 
-        try {
-            $this->roleService->deleterole($role);
-        } catch (UnauthorizedException $e) {
-            return $this->forward('eZPlatformUIBundle:Pjax:accessDenied');
-        }
-
-        return $this->redirect(
-            $this->generateUrl('admin_roleList')
-        );
-    }
-
-    /**
-     * Adds an error message to the flashbag.
-     *
-     * @param string $message Translatable error message
-     */
-    private function addErrorMessage($message)
-    {
-        $this->get('session')->getFlashBag()->add(
-            'error',
-            $this->translator->trans(
-                $message,
-                [],
-                'role'
-            )
-        );
+        return $this->redirectToRouteAfterFormPost('admin_roleList');
     }
 }

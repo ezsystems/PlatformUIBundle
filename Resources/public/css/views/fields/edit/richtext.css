@@ -3,10 +3,6 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ae-toolbars [role="toolbar"] {
-    z-index: 1200;
-}
-
 .ez-view-richtexteditview .ez-editfield-input {
     margin: 1em 2em;
 }
@@ -20,7 +16,7 @@
 .ez-view-richtexteditview .ez-richtext-editor {
     display: inline-block;
     width: 100%;
-    padding: 0 0.4em;
+    padding: 0 0.5em;
     box-sizing: border-box;
     min-height: 5em;
 }
@@ -89,12 +85,4 @@
 
 .ez-view-richtexteditview.is-focused .ez-focusmodeactionbar-container {
     display: block;
-}
-
-.ez-view-richtexteditview .ez-ae-static-toolbar {
-    text-align: center;
-}
-
-.ez-view-richtexteditview .ez-richtext-add-content {
-    margin-bottom: 0.3em;
 }

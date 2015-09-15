@@ -1,0 +1,62 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.is-languageselectionbox-hidden .ez-languageselectionbox-container {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+
+    background: #000;
+    -webkit-transform: translateY(-100%);
+            transform: translateY(-100%);
+}
+
+.ez-languageselectionbox-container {
+    background: rgba(0, 0, 0, 0.6);
+    transition: all 0.3s;
+
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+}
+
+.ez-view-languageselectionboxview {
+    background: #D8D8D8;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+}
+
+.ez-view-languageselectionboxview .ez-languageselectionbox-title {
+    font-size: 130%;
+    font-weight: normal;
+    color: #666;
+}
+
+.ez-view-languageselectionboxview .ez-languageselectionbox-languages {
+    background: #fff;
+    border: solid 1px #aaa;
+    border-radius: 3px;
+}
+
+.ez-view-languageselectionboxview .ez-translation {
+    cursor: pointer;
+}
+
+.ez-view-languageselectionboxview .ez-translation:hover {
+    background: #DDF5FF;
+}
+
+.ez-view-languageselectionboxview .ez-translation.is-translation-selected {
+    background: #CCE4FF;
+}
+
+.ez-view-languageselectionboxview .ez-languageselectionbox-close-icon:after {
+    color: #444;
+    font-size: 150%;
+}
+
+.ez-view-languageselectionboxview .ez-languageselectionbox-confirm {
+    font-weight: bold;
+}

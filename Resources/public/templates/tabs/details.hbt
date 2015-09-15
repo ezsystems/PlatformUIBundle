@@ -1,0 +1,74 @@
+<div class="ez-details-box">
+    <h2 class="ez-details-box-title">Content details</h2>
+    <dl class="ez-details-box-list ez-details-authors ez-asynchronousview pure-g"">
+        <dt class="ez-details-name pure-u-1-3">Creator</dt>
+        <dd class="ez-details-value pure-u-2-3">
+        {{#if loadingError}}
+            <p class="ez-asynchronousview-error ez-font-icon">
+                An error occurred while loading the creator.
+                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">
+                    Retry
+                </button>
+            </p>
+        {{else}}
+            {{#if contentCreator }}
+                {{contentCreator.name}} ({{content.publishedDate}})
+            {{else}}
+                <p class="ez-font-icon ez-asynchronousview-loading">Loading the creator</p>
+            {{/if}}
+        {{/if}}
+        </dd>
+
+        <dt class="ez-details-name pure-u-1-3">Last contributor</dt>
+        <dd class="ez-details-value pure-u-2-3">
+        {{#if loadingError}}
+            <p class="ez-asynchronousview-error ez-font-icon">
+                An error occurred while loading the last contributor.
+                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+            </p>
+        {{else}}
+            {{#if lastContributor}}
+                 {{lastContributor.name}} ({{content.lastModificationDate}})
+            {{else}}
+                <p class="ez-font-icon ez-asynchronousview-loading">Loading the last contributor</p>
+            {{/if}}
+        {{/if}}
+        </dd>
+
+        <dt class="ez-details-name pure-u-1-3">Visibility</dt>
+        <dd class="ez-details-value pure-u-2-3">
+        {{#if location.hidden}}
+            Hidden
+        {{else}}
+            {{#if location.invisible}}
+                Hidden by superior
+            {{else}}
+                Visible
+            {{/if}}
+        {{/if}}
+        </dd>
+        <dt class="ez-details-name pure-u-1-3">Versions</dt>
+        <dd class="ez-details-value pure-u-2-3">{{currentVersion.versionNo}}</dd>
+        <dt class="ez-details-name pure-u-1-3">Translations</dt>
+        <dd class="ez-details-value pure-u-2-3">
+            {{languageCount}}
+            <ul class="ez-details-language-list">{{#each translationsList}}<li class="ez-details-language"><a href="{{path "viewLocation" id=../location.id languageCode=.}}">{{.}}</a></li>{{/each}}</ul>
+        </dd>
+    </dl>
+</div>
+
+<div class="ez-details-box">
+    <h2 class="ez-details-box-title">Technical details</h2>
+    <dl class="ez-details-box-list pure-g">
+        <dt class="ez-details-name pure-u-1-3">Content Id</dt>
+        <dd class="ez-details-value pure-u-2-3">{{content.contentId}}</dd>
+        <dt class="ez-details-name pure-u-1-3">Location Id</dt>
+        <dd class="ez-details-value pure-u-2-3">{{location.locationId}}</dd>
+        <dt class="ez-details-name pure-u-1-3">Content remote Id</dt>
+        <dd class="ez-details-value pure-u-2-3">{{ content.remoteId}}</dd>
+        <dt class="ez-details-name pure-u-1-3">Location remote Id</dt>
+        <dd class="ez-details-value pure-u-2-3">{{location.remoteId}}</dd>
+    </dl>
+</div>
+
+

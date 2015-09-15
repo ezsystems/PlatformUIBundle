@@ -10,43 +10,27 @@
  */
 namespace EzSystems\PlatformUIBundle\Form\Processor;
 
-use eZ\Publish\API\Repository\Exceptions\InvalidArgumentException;
-use eZ\Publish\API\Repository\Exceptions\UnauthorizedException;
-use eZ\Publish\API\Repository\RoleService;
-use EzSystems\PlatformUIBundle\Notification\Notification;
+use EzSystems\PlatformUIBundle\Http\FormProcessingDoneResponse;
+use EzSystems\PlatformUIBundle\Notification\NotificationPoolAware;
 use EzSystems\PlatformUIBundle\Notification\NotificationPoolInterface;
-use EzSystems\PlatformUIBundle\Notification\TranslatableNotificationMessage;
 use EzSystems\RepositoryForms\Event\FormActionEvent;
 use EzSystems\RepositoryForms\Event\RepositoryFormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\RouterInterface;
 
 class RoleFormProcessor implements EventSubscriberInterface
 {
+    use NotificationPoolAware;
+
     /**
      * @var RouterInterface
      */
     private $router;
 
-    /**
-     * @var NotificationPoolInterface
-     */
-    private $notificationPool;
-
-    /**
-     * @var RoleService
-     */
-    private $roleService;
-
-    public function __construct(
-        RouterInterface $router,
-        NotificationPoolInterface $notificationPool,
-        RoleService $roleService
-    ) {
+    public function __construct(RouterInterface $router, NotificationPoolInterface $notificationPool)
+    {
         $this->router = $router;
-        $this->notificationPool = $notificationPool;
-        $this->roleService = $roleService;
+        $this->setNotificationPool($notificationPool);
     }
 
     public static function getSubscribedEvents()
@@ -67,20 +51,8 @@ class RoleFormProcessor implements EventSubscriberInterface
 
     public function processSaveRole(FormActionEvent $event)
     {
-        /** @var \EzSystems\RepositoryForms\Data\RoleData $roleData */
-        $roleData = $event->getData();
-        $role = $roleData->role;
-        try {
-            $this->roleService->updateRole($role, $roleData);
-            $event->setResponse(
-                new RedirectResponse($this->router->generate('admin_roleList'))
-            );
-            $this->addNotification('role.notification.published');
-        } catch (UnauthorizedException $e) {
-            $this->addError('role.notification.unauthorized');
-        } catch (InvalidArgumentException $e) {
-            $this->addError('role.notification.invalid_argument');
-        }
+        $event->setResponse(new FormProcessingDoneResponse($this->router->generate('admin_roleList')));
+        $this->notify('role.notification.published', [], 'role');
     }
 
     public function processRemoveDraft(FormActionEvent $event)
@@ -88,34 +60,11 @@ class RoleFormProcessor implements EventSubscriberInterface
         $role = $event->getData()->role;
         // TODO: This is just a temporary implementation of draft removal. To be done properly in follow-up: EZP-24701
         if (preg_match('/^__new__[a-z0-9]{32}$/', $role->identifier) === 1) {
-            try {
-                $this->roleService->deleterole($role);
-            } catch (UnauthorizedException $e) {
-                $this->addError('role.notification.unauthorized');
-            }
+            $this->notify('role.notification.draft_removed', [], 'role');
         }
 
         $event->setResponse(
-            new RedirectResponse($this->router->generate('admin_roleList'))
-        );
-    }
-
-    private function addNotification($message)
-    {
-        $this->notificationPool->addNotification(new TranslatableNotificationMessage([
-            'message' => $message,
-            'domain' => 'role',
-        ]));
-    }
-
-    private function addError($message)
-    {
-        $this->notificationPool->addNotification(
-            new TranslatableNotificationMessage([
-                'message' => $message,
-                'domain' => 'role',
-            ]),
-            Notification::STATE_ERROR
+            new FormProcessingDoneResponse($this->router->generate('admin_roleList'))
         );
     }
 }

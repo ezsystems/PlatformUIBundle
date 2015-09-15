@@ -8,7 +8,6 @@
  */
 namespace EzSystems\PlatformUIBundle\Controller;
 
-use eZ\Bundle\EzPublishCoreBundle\Controller;
 use EzSystems\PlatformUIBundle\ApplicationConfig\Provider;
 
 class PlatformUIController extends Controller
@@ -32,5 +31,10 @@ class PlatformUIController extends Controller
             'eZPlatformUIBundle:PlatformUI:shell.html.twig',
             ['parameters' => $this->configAggregator->getConfig()]
         );
+    }
+
+    public function performAccessChecks()
+    {
+        return;
     }
 }

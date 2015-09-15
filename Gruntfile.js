@@ -19,12 +19,15 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/services/plugins/*.js",
             "./Resources/public/js/models/*.js",
             "./Resources/public/js/models/structs/*.js",
+            "./Resources/public/js/models/extensions/*.js",
             "./Resources/public/js/extensions/*.js",
             "./Resources/public/js/external/*.js",
             "./Resources/public/js/services/*.js",
             "./Resources/public/js/helpers/*.js",
             "./Resources/public/js/alloyeditor/toolbars/*.js",
+            "./Resources/public/js/alloyeditor/toolbars/config/*.js",
             "./Resources/public/js/alloyeditor/buttons/*.js",
+            "./Resources/public/js/alloyeditor/buttons/mixins/*.js",
             "./Resources/public/js/alloyeditor/plugins/*.js",
         ],
         testFiles = [
@@ -139,20 +142,20 @@ module.exports = function(grunt) {
         copy: {
             "alloy-skin": {
                 expand: true,
-                cwd: alloySkinBasePath + '/ocean/',
+                cwd: alloySkinBasePath + '/atlas/',
                 src: '**',
                 dest: alloySkinBasePath + '/ez/',
             },
             "alloy-override": {
                 expand: true,
                 cwd: "Resources/sass/alloy/",
-                src: "variables.scss",
-                dest: alloySkinBasePath,
+                src: "*.scss",
+                dest: alloySkinBasePath + "/ez/variables/",
             },
             "alloy-font": {
                 expand: true,
                 cwd: alloyDistAssets + "fonts/",
-                src: "*",
+                src: "alloyeditor-ez*",
                 dest: fontsDir,
             }
         },
@@ -227,8 +230,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-text-replace');
 
     grunt.registerTask('lint', ['jshint']);
-    grunt.registerTask('test', ['jshint', 'jsx', 'shell:grover'] );
-    grunt.registerTask('coverage', ['jshint', 'clean', 'jsx', 'instrument', 'shell:groverCoverage'] );
+    grunt.registerTask('test', ['jsx', 'jshint', 'shell:grover'] );
+    grunt.registerTask('coverage', ['clean', 'jsx', 'jshint', 'instrument', 'shell:groverCoverage'] );
     grunt.registerTask('doc', ['yuidoc'] );
     grunt.registerTask('livedoc', ['shell:livedoc'] );
     grunt.registerTask('alloy-css', [

@@ -47,10 +47,16 @@
                     {% endfor %}
                     </tbody>
                 </table>
+                {{ form_start(create_form, {"action": path("admin_contenttypeCreate", {"contentTypeGroupId": group.id})}) }}
                 <p class="ez-table-data-buttons">
                     {# TODO: We should be able to select a language for ContentType creation #}
-                    <a href="{{ path('admin_contenttypeCreate', {"contentTypeGroupId": group.id}) }}" class="pure-button ez-button{% if not can_create %} pure-button-disabled{% endif %}" data-icon="&#xe616;">{{ 'content_type.create'|trans }}</a>
+                    {{ form_widget(create_form.contentTypeGroupId) }}
+                    <button type="submit" class="pure-button ez-button" data-icon="&#xe616;"{% if not can_create %} disabled="disabled"{% endif %}
+                            name="{{ create_form.create.vars['full_name'] }}"
+                            id="{{ create_form.create.vars['id'] }}">{{ create_form.create.vars['label']|trans(domain="ezrepoforms_content_type") }}</button>
+                    {% do create_form.create.setRendered() %}
                 </p>
+                {{ form_end(create_form) }}
             </div>
         </div>
     </section>

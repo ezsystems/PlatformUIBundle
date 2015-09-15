@@ -10,7 +10,6 @@ namespace EzSystems\PlatformUIBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use eZ\Bundle\EzPublishCoreBundle\Controller;
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
 
 /**
@@ -58,5 +57,10 @@ class TemplateController extends Controller
     private function getModuleSetting($module, $setting)
     {
         return $this->configResolver->getParameter("yui.modules.$module.$setting", 'ez_platformui');
+    }
+
+    public function performAccessChecks()
+    {
+        return;
     }
 }
