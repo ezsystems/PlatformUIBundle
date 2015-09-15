@@ -497,6 +497,27 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             Y.assert(!this.app.get('loading'), "The app should not be in loading mode");
         },
 
+        "Should catch the view service error and not fire an empty app notification": function () {
+            var TestService = Y.Base.create('testService', Y.eZ.ViewService, [], {
+                    load: function (callback) {
+                        this.fire('error', {message: ""});
+                    }
+                }),
+                next = function () { },
+                req = {route: {service: TestService, view: 'testView'}},
+                res = {};
+
+            this.app.views.testView = {
+                type: Y.View
+            };
+            this.app.on('notify', function (e) {
+                Y.Assert.fail("The user should not be notified with an empty message");
+            });
+            this.app.handleMainView(req, res, next);
+            Y.assert(!this.app.get('loading'), "The app should not be in loading mode");
+        },
+
+
         "Should inject the registered plugin in the view service": function () {
             var serviceName = 'testService', pluginNS = 'mainViewPluginNS',
                 TestService = Y.Base.create(serviceName, Y.eZ.ViewService, [], {}),

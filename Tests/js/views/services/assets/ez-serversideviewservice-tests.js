@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-serversideviewservice-tests', function (Y) {
-    var unitTest, rewriteTest, formTest, notificationTest, pjaxHeaderTest,
+    var unitTest, loadErrorTest, rewriteTest, formTest, notificationTest, pjaxHeaderTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     unitTest = new Y.Test.Case({
@@ -81,30 +81,6 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
             this._normalLoad('{"bla": "bla"}', "", "");
         },
 
-        "Should fire the 'error'": function () {
-            var uri = 'echo/status/404',
-                service,
-                that = this;
-
-            this.request.params.uri = uri;
-            service = new Y.eZ.ServerSideViewService({
-                request: this.request,
-                app: this.app
-            });
-
-            service.on('error', function () {
-                that.resume(function () {
-                    Y.Assert.pass();
-                });
-            });
-
-            service.load(function (serv) {
-                that.resume(function () {
-                    Y.Assert.fail("The 'normal' callback should not be called");
-                });
-            });
-            this.wait();
-        },
 
         "getViewParameters should return the title and html attribute values": function () {
             var title = 'Love Illumination',
@@ -133,6 +109,82 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
                 "getViewParameters() result should contain the html code"
             );
         }
+    });
+
+    loadErrorTest = new Y.Test.Case({
+        name: "eZ Server Side View Service loading error test",
+
+        setUp: function () {
+            this.app = new Y.Base();
+            this.app.set('baseUri', '');
+            this.request = {params: {uri: ""}};
+            this.service = new Y.eZ.ServerSideViewService({
+                app: this.app,
+                request: this.request
+            });
+            this.service.addTarget(this.app);
+            this.origIO = Y.io;
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            this.service.destroy();
+            delete this.app;
+            delete this.service;
+            delete this.request;
+
+            Y.io = this.origIO;
+        },
+
+        _loadingError: function (responseText) {
+            // overriding Y.io to simulate an error which a specific response
+            // grover's echoecho server does not allow that.
+            Y.io = function (uri, config) {
+                config.on.failure.call(config.context, "", {responseText: responseText});
+            };
+
+           this.service.load(function (serv) {
+                Y.Assert.fail("The 'normal' callback should not be called");
+            });
+        },
+
+        "Should fire the  'error'": function () {
+            this.service.on('error', function (e) {
+                Assert.areNotEqual(
+                    "", e.message,
+                    "An error message should have been generated"
+                );
+            });
+            this._loadingError("<div></div>");
+        },
+
+        "Should fire the notification and the  'error' events": function () {
+            var responseWithNotifications = '<div><ul data-name="notification">' +
+                    '<li data-state="error">error1</li>' +
+                    '<li data-state="error">error2</li>' +
+                    '</ul></div>',
+                notificationCount = 0,
+                msg = '';
+
+            this.app.on('notify', function (e) {
+                notificationCount++;
+                Assert.areEqual(
+                    'error', e.notification.state,
+                    "The notification state should be 'error'"
+                );
+                msg += e.notification.text;
+            });
+            this.service.on('error', function (e) {
+                Assert.areEqual(
+                    "", e.message,
+                    "An error message should have been generated"
+                );
+            });
+
+            this._loadingError(responseWithNotifications);
+            Assert.areEqual(2, notificationCount, "2 notifications should have been sent");
+            Assert.areEqual("error1error2", msg);
+        },
     });
 
     rewriteTest = new Y.Test.Case({
@@ -583,6 +635,7 @@ YUI.add('ez-serversideviewservice-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Server Side View Service tests");
     Y.Test.Runner.add(unitTest);
+    Y.Test.Runner.add(loadErrorTest);
     Y.Test.Runner.add(rewriteTest);
     Y.Test.Runner.add(formTest);
     Y.Test.Runner.add(notificationTest);

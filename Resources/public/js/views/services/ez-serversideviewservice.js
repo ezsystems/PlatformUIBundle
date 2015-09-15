@@ -50,10 +50,7 @@ YUI.add('ez-serversideviewservice', function (Y) {
                 data: e.formData,
                 on: {
                     success: Y.bind(this._handleFormSubmitResponse, this, e.target),
-                    failure: function () {
-                        app.set('loading', false);
-                        this._error('Failed to load the form');
-                    },
+                    failure: this._handleLoadFailure,
                 },
                 context: this,
             });
@@ -79,6 +76,43 @@ YUI.add('ez-serversideviewservice', function (Y) {
                 app.set('loading', false);
                 this._updateView(view, response);
             }
+        },
+
+        /**
+         * Handles the loading error.
+         *
+         * @method _handleLoadFailure
+         * @param {String} tId
+         * @param {XMLHttpRequest} response
+         * @protected
+         */
+        _handleLoadFailure: function (tId, response) {
+            var frag = Y.Node.create(response.responseText),
+                notificationCount,
+                errorMsg = '';
+
+            this.get('app').set('loading', false);
+            notificationCount = this._parseNotifications(frag);
+            if ( notificationCount === 0 ) {
+                errorMsg = "Failed to load '" + response.responseURL + "'";
+            }
+            this._error(errorMsg);
+        },
+
+        /**
+         * Parses the notification node(s) in the PJAX response and sends the
+         * corresponding notify events.
+         *
+         * @method _parseNotifications
+         * @param {Y.Node} docFragment
+         * @return {Number} the number of notifications
+         * @protected
+         */
+        _parseNotifications: function (docFragment) {
+            var notifications = docFragment.all('[data-name="notification"] li');
+
+            notifications.each(this._notifyUser, this);
+            return notifications.size();
         },
 
         /**
@@ -119,9 +153,7 @@ YUI.add('ez-serversideviewservice', function (Y) {
                         this._parseResponse(response);
                         next(this);
                     },
-                    failure: function () {
-                        this._error("Failed to load '" + uri + "'");
-                    },
+                    failure: this._handleLoadFailure,
                 },
                 context: this,
             });
@@ -136,7 +168,6 @@ YUI.add('ez-serversideviewservice', function (Y) {
          */
         _parseResponse: function (response) {
             var frag = Y.Node.create(response.responseText),
-                that = this,
                 html, title;
 
             html = frag.one('[data-name="html"]');
@@ -149,9 +180,7 @@ YUI.add('ez-serversideviewservice', function (Y) {
                 this.set('title', title.get('text'));
             }
 
-            frag.all('[data-name="notification"] li').each(function (notificationNode) {
-                that._responseNotify(notificationNode);
-            });
+            this._parseNotifications(frag);
         },
 
         /**
@@ -207,13 +236,13 @@ YUI.add('ez-serversideviewservice', function (Y) {
         },
 
         /**
-         * Fires notify event basing on node
+         * Fires notify event based on a notification node in the PJAX response.
          *
-         * @method _responseNotify
+         * @method _notifyUser
          * @protected
          * @param {Node} node
          */
-        _responseNotify: function (node) {
+        _notifyUser: function (node) {
             var app = this.get('app'),
                 timeout = 5;
 

@@ -16,24 +16,6 @@ YUI.add('ez-platformuiapp', function (Y) {
         APP_OPEN = 'is-app-open',
         APP_LOADING = 'is-app-loading';
 
-        /**
-         * Fired whenever a fatal error occurs and application is not able to continue current action
-         *
-         * @event fatalError
-         * @param retryAction {Object} Object describing the action which was interrupted by error, and could be retried
-         * @param additionalInfo {Object} Object containing additional information about the error
-         * @example
-         *     app.fire(EVT_FATALERROR, {
-         *         retryAction: {
-         *             run: app.loadContentForEdit,
-         *             args: [req, res, next],
-         *             context: app
-         *         },
-         *         additionalInfo: {
-         *             errorText: " Could not load the content with id '" + req.params.id + "'"
-         *         }
-         *     });
-         */
     /**
      * PlatformUI Application
      *
@@ -585,14 +567,16 @@ YUI.add('ez-platformuiapp', function (Y) {
                 app._set('activeViewService', viewInfo.service);
 
                 viewInfo.service.on('error', function (e) {
-                    app.fire('notify', {
-                        notification: {
-                            text:  e.message,
-                            identifier: "ViewService-notification-error",
-                            state: "error",
-                            timeout: 0,
-                        }
-                    });
+                    if ( e.message ) {
+                        app.fire('notify', {
+                            notification: {
+                                text:  e.message,
+                                identifier: "ViewService-notification-error",
+                                state: "error",
+                                timeout: 0,
+                            }
+                        });
+                    }
                     app.set('loading', false);
                 });
                 viewInfo.service.load(showView);
