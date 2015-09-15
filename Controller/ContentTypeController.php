@@ -17,10 +17,13 @@ use eZ\Publish\API\Repository\UserService;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\Core\Repository\Values\ContentType\ContentTypeCreateStruct;
+use eZ\Publish\Core\Repository\Values\ContentType\ContentTypeGroup;
 use EzSystems\RepositoryForms\Data\Mapper\ContentTypeDraftMapper;
+use EzSystems\RepositoryForms\Data\Mapper\ContentTypeGroupMapper;
 use EzSystems\RepositoryForms\FieldType\FieldTypeFormMapperRegistryInterface;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
 use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeCreateType;
+use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeGroupType;
 use Symfony\Component\HttpFoundation\Request;
 
 class ContentTypeController extends Controller
@@ -43,7 +46,12 @@ class ContentTypeController extends Controller
     /**
      * @var ActionDispatcherInterface
      */
-    private $actionDispatcher;
+    private $contentTypeActionDispatcher;
+
+    /**
+     * @var ActionDispatcherInterface
+     */
+    private $contentTypeGroupActionDispatcher;
 
     /**
      * @var FieldTypeFormMapperRegistryInterface
@@ -56,13 +64,15 @@ class ContentTypeController extends Controller
         ContentTypeService $contentTypeService,
         SearchService $searchService,
         UserService $userService,
-        ActionDispatcherInterface $actionDispatcher,
+        ActionDispatcherInterface $contentTypeGroupActionDispatcher,
+        ActionDispatcherInterface $contentTypeActionDispatcher,
         FieldTypeFormMapperRegistryInterface $fieldTypeMapperRegistry
     ) {
         $this->contentTypeService = $contentTypeService;
         $this->searchService = $searchService;
         $this->userService = $userService;
-        $this->actionDispatcher = $actionDispatcher;
+        $this->contentTypeGroupActionDispatcher = $contentTypeGroupActionDispatcher;
+        $this->contentTypeActionDispatcher = $contentTypeActionDispatcher;
         $this->fieldTypeMapperRegistry = $fieldTypeMapperRegistry;
     }
 
@@ -99,8 +109,32 @@ class ContentTypeController extends Controller
         ]);
     }
 
-    public function editContentTypeGroupAction($contentTypeGroupId)
+    public function editContentTypeGroupAction(Request $request, $contentTypeGroupId = null)
     {
+        if ($contentTypeGroupId) {
+            $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
+        } else {
+            $contentTypeGroup = new ContentTypeGroup(['identifier' => '__new__' . md5(microtime(true))]);
+        }
+
+        $data = (new ContentTypeGroupMapper())->mapToFormData($contentTypeGroup);
+        $actionUrl = $this->generateUrl('admin_contenttypeGroupEdit', ['contentTypeGroupId' => $contentTypeGroupId]);
+        $form = $this->createForm(new ContentTypeGroupType(), $data);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $this->contentTypeGroupActionDispatcher->dispatchFormAction($form, $data, $form->getClickedButton()->getName());
+            if ($response = $this->contentTypeGroupActionDispatcher->getResponse()) {
+                return $response;
+            }
+
+            return $this->redirectAfterFormPost($actionUrl);
+        }
+
+        return $this->render('eZPlatformUIBundle:ContentType:edit_content_type_group.html.twig', [
+            'form' => $form->createView(),
+            'contentTypeGroup' => $data,
+            'actionUrl' => $actionUrl,
+        ]);
     }
 
     public function viewContentTypeAction($contentTypeId, $languageCode = null)
@@ -187,14 +221,14 @@ class ContentTypeController extends Controller
         $form->handleRequest($request);
         $hasErrors = false;
         if ($form->isValid()) {
-            $this->actionDispatcher->dispatchFormAction(
+            $this->contentTypeActionDispatcher->dispatchFormAction(
                 $form,
                 $contentTypeData,
                 $form->getClickedButton()->getName(),
                 ['languageCode' => $languageCode]
             );
 
-            if ($response = $this->actionDispatcher->getResponse()) {
+            if ($response = $this->contentTypeActionDispatcher->getResponse()) {
                 return $response;
             }
 
