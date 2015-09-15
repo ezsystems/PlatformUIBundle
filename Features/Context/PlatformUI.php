@@ -24,6 +24,7 @@ class PlatformUI extends Context
     use SubContext\Move;
     use SubContext\Copy;
     use SubContext\Remove;
+    use SubContext\Role;
 
     /**
      * PlatformUI relative URL path.
@@ -277,6 +278,7 @@ class PlatformUI extends Context
     public function __construct($uri, $user = null, $password = null)
     {
         parent::__construct();
+        $this->pageIdentifierMap['Roles'] = '/ez#/admin/role';
         $this->platformUiUri = $uri;
         if ($user != null) {
             $this->user = $user;
