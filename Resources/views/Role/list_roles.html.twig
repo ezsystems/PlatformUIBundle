@@ -30,10 +30,10 @@
                     <tbody>
                     {% for role in roles %}
                         {# @var role \eZ\Publish\API\Repository\Values\User\Role #}
-                        <tr>
-                            <td><a href="{{ path("admin_roleView", {"roleId": role.id}) }}">{{ role.identifier }}</a></td>
-                            <td>{{ role.id }}</td>
-                            <td>
+                        <tr class="ez-role">
+                            <td class="ez-role-name"><a href="{{ path("admin_roleView", {"roleId": role.id}) }}">{{ role.identifier }}</a></td>
+                            <td class="ez-role-id">{{ role.id }}</td>
+                            <td class="ez-role-edit-button">
                                 <a href="{{ path('admin_roleUpdate', {'roleId': role.id}) }}" class="pure-button ez-button{% if not can_edit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'role.edit'|trans }}</a>
                             </td>
                         </tr>
