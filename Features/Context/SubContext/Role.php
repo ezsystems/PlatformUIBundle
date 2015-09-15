@@ -10,7 +10,6 @@
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
 use Behat\Gherkin\Node\TableNode;
-use PHPUnit_Framework_Assert as Assertion;
 
 trait Role
 {
@@ -46,12 +45,12 @@ trait Role
         $page = $this->getSession()->getPage();
         $elements = $page->findAll('css', '.ez-role');
         if (!$elements) {
-            throw new \Exception("No roles found");
+            throw new \Exception('No roles found');
         }
         foreach ($elements as $element) {
             $foundName = $this->getElementByText($name, '.ez-role-name', null, $element);
             if ($foundName) {
-                $this->getElementByText("Edit", '.ez-role-edit-button a', null, $element)->click();
+                $this->getElementByText('Edit', '.ez-role-edit-button a', null, $element)->click();
                 break;
             }
         }
@@ -147,7 +146,7 @@ trait Role
         $page = $this->getSession()->getPage();
         $elements = $page->findAll('css', '.ez-role');
         if (!$elements) {
-            throw new \Exception("No roles found");
+            throw new \Exception('No roles found');
         }
         foreach ($roles as $role) {
             $name = $role['Name'];
