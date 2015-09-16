@@ -340,7 +340,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                         tabIndex: 1
                     },
                     add: {
-                        buttons: ['ezheading', 'ezembed'],
+                        buttons: ['ezheading', 'ezparagraph', 'ezembed'],
                         tabIndex: 2,
                     },
                 }

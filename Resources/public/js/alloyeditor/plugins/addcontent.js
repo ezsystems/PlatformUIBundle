@@ -17,7 +17,7 @@ YUI.add('ez-alloyeditor-plugin-addcontent', function (Y) {
 
         element = doc.createElement(tagName);
         element.setAttributes(attributes);
-        element.setText(content ? content : "");
+        element.setHtml(content ? content : "");
 
         return element;
     }

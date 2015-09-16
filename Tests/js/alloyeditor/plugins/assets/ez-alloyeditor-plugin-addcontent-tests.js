@@ -112,7 +112,7 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
                 },
                 nativeEditor = this.editor.get('nativeEditor');
 
-            this.editor.get('nativeEditor').on('editorInteraction', function (e) {
+            this.editor.get('nativeEditor').once('editorInteraction', function (e) {
                 Assert.areEqual(
                     'eZAddContentDone', e.data.nativeEvent.name,
                     "The nativeEvent name should eZAddContentDone"
@@ -128,6 +128,30 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
             });
 
             nativeEditor.execCommand('eZAddContent', tagDefinition);
+        },
+
+        "Should add the content to the editable region with the expected HTML content": function () {
+            var tagDefinition = {
+                    tagName: 'p',
+                    content: '<b>The Memory Remains</b>',
+                    attributes: {'class': 'added-html'},
+                },
+                res, node,
+
+            nativeEditor = this.editor.get('nativeEditor');
+
+            res = nativeEditor.execCommand('eZAddContent', tagDefinition);
+            Assert.isTrue(res, "The command should have been executed");
+
+            node = Y.one('.added-html');
+            Assert.areEqual(
+                tagDefinition.tagName, node.get('tagName').toLowerCase(),
+                "A p should have been created"
+            );
+            Assert.areEqual(
+                "The Memory Remains", node.one('b').getContent(),
+                "The p should contain a <b> element"
+            );
         },
     });
 

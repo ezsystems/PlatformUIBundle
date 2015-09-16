@@ -46,6 +46,9 @@ system:
                 ez-alloyeditor-button-heading:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/heading.js
+                ez-alloyeditor-button-paragraph:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/paragraph.js
                 ez-alloyeditor-button-embed:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embed.js
@@ -497,6 +500,7 @@ system:
                         - 'ez-alloyeditor-toolbar-config-heading'
                         - 'ez-alloyeditor-toolbar-config-paragraph'
                         - 'ez-alloyeditor-button-heading'
+                        - 'ez-alloyeditor-button-paragraph'
                         - 'ez-alloyeditor-button-embed'
                         - 'ez-alloyeditor-button-blocktextalignleft'
                         - 'ez-alloyeditor-button-blocktextaligncenter'
