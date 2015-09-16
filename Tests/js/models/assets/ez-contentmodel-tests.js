@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contentmodel-tests', function (Y) {
-    var modelTest, relationsTest, createContent, loadResponse, copyTest,
+    var modelTest, relationsTest, createContent, loadResponse, copyTest, loadLoactionsTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -625,9 +625,145 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    loadLoactionsTest = new Y.Test.Case({
+        name: "eZ Content Model load locations tests",
+
+        setUp: function () {
+            this.model = new Y.eZ.Content();
+            this.contentId = 'Pele';
+
+            this.capi = new Mock();
+            this.contentService = new Mock();
+
+            Y.Mock.expect(this.capi, {
+                method: 'getContentService',
+                returns: this.contentService
+            });
+
+            Y.Mock.expect(this.model, {
+                method: 'get',
+                args: ['id'],
+                returns: this.contentId
+            });
+
+            this.loadLocationsResponse = {
+                document: {
+                    LocationList: {
+                        Location: [
+                            {_href: 'Milton Friedman'},
+                            {_href: 'JKM'}
+                        ]
+                    }
+                }
+            };
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+            delete this.capi;
+            delete this.contentService;
+        },
+
+        'Should load locations': function () {
+            var options = {api: this.capi},
+                callbackCalled = false,
+                that = this;
+
+            Y.eZ.Location = Y.Base.create('locationModel', Y.eZ.RestModel, [], {
+                load: function (opts, callback) {
+                    Assert.areSame(options, opts, 'Options with API should be the same');
+
+                    callback(false, this);
+                }
+            });
+
+            Y.Mock.expect(this.contentService, {
+                method: 'loadLocations',
+                args: [this.contentId, Y.Mock.Value.Function],
+                run: function (contentId, cb) {
+                    cb(false, that.loadLocationsResponse);
+                }
+            });
+
+            this.model.loadLocations(options, function (err, response) {
+                callbackCalled = true;
+
+                Assert.isFalse(err, 'Should not return the error');
+                Assert.areEqual(
+                    response.length,
+                    that.loadLocationsResponse.document.LocationList.Location.length,
+                    'Number of locations returned should be the same as in REST response'
+                );
+            });
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
+
+        'Should pass error to callback function when CAPI loadLocations fals': function () {
+            var options = {api: this.capi},
+                callbackCalled = false;
+
+            Y.eZ.Location = Y.Base.create('locationModel', Y.eZ.RestModel, [], {
+                load: function (opts, callback) {
+                    Assert.areSame(options, opts, 'Options with API should be the same');
+
+                    callback(false, this);
+                }
+            });
+
+            Y.Mock.expect(this.contentService, {
+                method: 'loadLocations',
+                args: [this.contentId, Y.Mock.Value.Function],
+                run: function (contentId, cb) {
+                    cb(true, {});
+                }
+            });
+
+            this.model.loadLocations(options, function (err, response) {
+                callbackCalled = true;
+
+                Assert.isTrue(err, 'Should return the error');
+            });
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
+
+        'Should pass error to callback function when loading the location fails': function () {
+            var options = {api: this.capi},
+                callbackCalled = false,
+                that = this;
+
+            Y.eZ.Location = Y.Base.create('locationModel', Y.eZ.RestModel, [], {
+                load: function (opts, callback) {
+                    Assert.areSame(options, opts, 'Options with API should be the same');
+
+                    callback(true, {});
+                }
+            });
+
+            Y.Mock.expect(this.contentService, {
+                method: 'loadLocations',
+                args: [this.contentId, Y.Mock.Value.Function],
+                run: function (contentId, cb) {
+                    cb(false, that.loadLocationsResponse);
+                }
+            });
+
+            this.model.loadLocations(options, function (err, response) {
+                callbackCalled = true;
+
+                Assert.isTrue(err, 'Should return the error');
+            });
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        }
+    });
+
     Y.Test.Runner.setName("eZ Content Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
     Y.Test.Runner.add(createContent);
     Y.Test.Runner.add(copyTest);
+    Y.Test.Runner.add(loadLoactionsTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

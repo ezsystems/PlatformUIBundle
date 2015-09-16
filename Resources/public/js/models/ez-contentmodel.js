@@ -209,6 +209,46 @@ YUI.add('ez-contentmodel', function (Y) {
         copy: function (options, parentLocationId, callback) {
             options.api.getContentService().copyContent(this.get('id'), parentLocationId, callback);
         },
+
+        /**
+         * Loads content's locations list
+         *
+         * @method loadLocations
+         * @param {Object} options
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Function} callback
+         */
+        loadLocations: function (options, callback) {
+            var api = options.api;
+
+            api.getContentService().loadLocations(this.get('id'), function (error, response) {
+                var tasks = new Y.Parallel(),
+                    loadError = false,
+                    locations = [];
+
+                if ( error ) {
+                    callback(error, response);
+                    return;
+                }
+                Y.Array.each(response.document.LocationList.Location, function (loc) {
+                    var location,
+                        end = tasks.add(function (err) {
+                            if ( err ) {
+                                loadError = true;
+                                return;
+                            }
+                            locations.push(location);
+                        });
+
+                    location = new Y.eZ.Location({id: loc._href});
+                    location.load(options, end);
+                });
+
+                tasks.done(function () {
+                    callback(loadError, locations);
+                });
+            });
+        }
     }, {
         REST_STRUCT_ROOT: "Content",
         ATTRS_REST_MAP: [

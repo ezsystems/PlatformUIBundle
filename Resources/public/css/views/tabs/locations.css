@@ -1,0 +1,22 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-locationviewlocationstabview .ez-locations-box {
+    margin-top: 2em;
+}
+
+.ez-view-locationviewlocationstabview .ez-locations-box-title {
+    margin: 0;
+    padding: 0 1em;
+    line-height: 2.5em;
+}
+
+.ez-view-locationviewlocationstabview .ez-locations-list-container {
+    padding: 1em;
+}
+
+.ez-view-locationviewlocationstabview .ez-locations-list-table {
+    width: 100%;
+}
