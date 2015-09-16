@@ -168,8 +168,8 @@ YUI.add('ez-translateactionview-tests', function (Y) {
 
                 Assert.areSame(
                     that.translationsList,
-                    e.config.existingTranslations,
-                    'The config of should pass the proper lista of translations'
+                    e.config.referenceLanguageList,
+                    'The config should contain the proper list of languages'
                 );
                 Assert.isTrue(
                     e.config.canBaseTranslation,

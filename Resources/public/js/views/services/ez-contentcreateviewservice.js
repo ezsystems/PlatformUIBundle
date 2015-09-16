@@ -22,6 +22,10 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
      * @extends eZ.ContentEditViewService
      */
     Y.eZ.ContentCreateViewService = Y.Base.create('contentCreateViewService', Y.eZ.ContentEditViewService, [], {
+        initializer: function () {
+            this.on('*:changeLanguage', this._selectLanguage);
+        },
+
         _load: function (next) {
             var type = this.get('contentType'),
                 service = this;
@@ -93,6 +97,48 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
                 });
             });
         },
+
+        /**
+         * changeLanguage event handler. It opens languageSelectionBox for selecting
+         * language of created content
+         *
+         * @method _selectLanguage
+         * @private
+         * @param {EventFacade} e
+         */
+        _selectLanguage: function (e) {
+            e.preventDefault();
+            this.fire('languageSelect', {
+                config: {
+                    title: "Change language to:",
+                    languageSelectedHandler: Y.bind(this._setLanguage, this, e.target),
+                    cancelLanguageSelectionHandler: null,
+                    canBaseTranslation: false,
+                    translationMode: true,
+                    referenceLanguageList: [this.get('languageCode')]
+                },
+            });
+        },
+
+        /**
+         * Sets language of created content to one given in event facade.
+         *
+         * @method _setLanguage
+         * @private
+         * @param {Y.eZ.View} view the view which triggered language selection box
+         * @param {EventFacade} e
+         * @param {String} e.selectedLanguageCode language code to which created content will be switched
+         */
+        _setLanguage: function (view, e) {
+            var version = this.get('version'),
+                service = this;
+
+            version.destroy({api: this.get('capi'), remove: true}, function () {
+                service.set('languageCode',e.selectedLanguageCode);
+                service.set('version', new Y.eZ.Version());
+                view.set('languageCode', e.selectedLanguageCode);
+            });
+        }
     }, {
         ATTRS: {
             /**

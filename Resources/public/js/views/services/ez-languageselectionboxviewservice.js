@@ -22,7 +22,7 @@ YUI.add('ez-languageselectionboxviewservice', function (Y) {
         getViewParameters: function () {
             var config = Y.merge(this.get('config'));
 
-            config.availableTranslations = this.get('availableTranslations');
+            config.systemLanguageList = this.get('availableTranslations');
 
             return config;
         }

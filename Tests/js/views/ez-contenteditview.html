@@ -12,9 +12,17 @@
         <header class="ez-page-header">
             <a href="#" class="ez-view-close">Close</a>
             <h1 class="ez-content-name">Content title</h1>
-            <ul class="ez-technical-infos"{{#unless isTouch}} style="opacity: 0;"{{/unless}}>
-                <li>Article</li>
-            </ul>
+            <div class="ez-infos">
+                <ul class="ez-technical-infos"{{#unless isTouch}} style="opacity: 0;"{{/unless}}>
+                    <li>Article</li>
+                </ul>
+            </div>
+            <div class="ez-content-language-container">
+                <div class="ez-content-language-indicator">
+                    <span class="ez-content-current-language">{{ languageCode }}</span>
+                    <a href="#" class="ez-change-content-language-link">(change)</a>
+                </div>
+            </div>
         </header>
         <div class="ez-contenteditformview-container"></div>
     </div>

@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenteditviewservice-tests', function (Y) {
-    var cevlTest, eventTest, redirectionUrlTest, getViewParametersTest,
+    var cevlTest, eventTest, redirectionUrlTest, getViewParametersTest, changeLanguageTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     cevlTest = new Y.Test.Case({
@@ -844,7 +844,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 config: this.config,
                 owner: this.owner,
                 version: this.version,
-                request: this.request
+                request: this.request,
+                languageCode: this.languageCode
             });
         },
 
@@ -868,7 +869,114 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             Y.Assert.areSame(this.version, params.version, 'The version should be available in the return value of getViewParameters');
             Y.Assert.areSame(this.owner, params.owner, 'The owner should be available in the return value of getViewParameters');
             Y.Assert.areSame(this.location, params.mainLocation, 'The location should be available in the return value of getViewParameters');
+            Y.Assert.areSame(this.languageCode, params.languageCode, 'The languageCode should be available in the return value of getViewParameters');
         },
+    });
+
+    changeLanguageTest = new Y.Test.Case({
+        name: 'eZ Content Edit View Service change language tests',
+
+        setUp: function () {
+            var that = this;
+
+            this.content = new Mock();
+            this.contentId = 'Zlatan Ibrahimovic';
+            this.currentVersion = new Mock();
+            this.translationsList = ['eng-GB', 'pol-PL'];
+            this.app = new Mock();
+            this.languageCode = 'eng-GB';
+            this.switchedLanguageCode = 'pol-PL';
+            this.editUrl = 'Diego Costa';
+            this.request = {params: {languageCode: this.languageCode}};
+
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: [Y.Mock.Value.String],
+                run: function (attr) {
+                    if ( attr === 'id' ) {
+                        return that.contentId;
+                    } else if ( attr === 'currentVersion' ) {
+                        return that.currentVersion;
+                    } else {
+                        Y.fail("Unexpected call to content.get(" + attr + ")");
+                    }
+                }
+            });
+
+            Mock.expect(this.currentVersion, {
+                method: 'getTranslationsList',
+                args: [],
+                returns: this.translationsList
+            });
+
+            this.service = new Y.eZ.ContentEditViewService({
+                content: this.content,
+                app: this.app,
+                request: this.request
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+            delete this.content;
+            delete this.currentVersion;
+        },
+
+        "Should fire 'languageSelect' event": function () {
+            var languageSelectFired = false,
+                that = this;
+
+            this.service.on('languageSelect', function (e) {
+                languageSelectFired = true;
+
+                Assert.areSame(
+                    e.config.referenceLanguageList,
+                    that.translationsList,
+                    "Array with translations list of content should be passed in event facade config"
+                );
+            });
+
+            this.service.fire('test:changeLanguage');
+
+            Assert.isTrue(languageSelectFired, "The 'languageSelect' should have been fired");
+        },
+
+        "Should navigate to edit content view with selected language": function () {
+            var that = this;
+
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: ['editContent', Y.Mock.Value.Object],
+                run: function (routeName, params) {
+                    Y.Assert.isObject(
+                        params,
+                        "routeUri should be called with an object in parameter"
+                    );
+                    Y.Assert.areEqual(
+                        params.id,
+                        that.contentId,
+                        "routeUri should receive the content id in parameter"
+                    );
+                    Y.Assert.areEqual(
+                        params.languageCode,
+                        that.switchedLanguageCode,
+                        "routeUri should receive the content id in parameter"
+                    );
+                    return that.editUrl;
+                }
+            });
+
+            this.service.on('languageSelect', function (e) {
+                var config = {selectedLanguageCode: that.switchedLanguageCode};
+
+                e.config.languageSelectedHandler(config);
+            });
+
+            this.service.fire('test:changeLanguage');
+
+            Mock.verify(this.app);
+        }
     });
 
     Y.Test.Runner.setName("eZ Content Edit View Service tests");
@@ -876,4 +984,5 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(redirectionUrlTest);
     Y.Test.Runner.add(getViewParametersTest);
+    Y.Test.Runner.add(changeLanguageTest);
 }, '', {requires: ['test', 'ez-contenteditviewservice']});

@@ -136,7 +136,8 @@ YUI.add('ez-translateactionview', function (Y) {
                     languageSelectedHandler: Y.bind(this._newTranslation, this),
                     cancelLanguageSelectionHandler: null,
                     canBaseTranslation: true,
-                    existingTranslations: this.get('content').get('currentVersion').getTranslationsList()
+                    translationMode: true,
+                    referenceLanguageList: this.get('content').get('currentVersion').getTranslationsList()
                 },
             });
             this._hideView();

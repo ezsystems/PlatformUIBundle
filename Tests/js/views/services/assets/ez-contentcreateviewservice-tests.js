@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contentcreateviewservice-tests', function (Y) {
-    var loadTest,
+    var loadTest, eventTest, changeLanguageTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     loadTest = new Y.Test.Case({
@@ -281,6 +281,93 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
         },
     });
 
+    changeLanguageTest = new Y.Test.Case({
+        name: 'eZ Content Create View Service change language test',
+
+        setUp: function () {
+            this.app = new Mock();
+            this.version = new Mock();
+            this.languageCode = 'pol-PL';
+            this.switchedLanguageCode = 'ger-DE';
+            this.request = {params: {languageCode: this.languageCode}};
+            this.capi = {};
+
+            this.service = new Y.eZ.ContentCreateViewService({
+                app: this.app,
+                capi: this.capi,
+                request: this.request,
+                version: this.version
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.app;
+            delete this.service;
+            delete this.version;
+        },
+
+        "Should fire 'languageSelect' event": function () {
+            var languageSelectFired = false,
+                that = this;
+
+            this.service.on('languageSelect', function (e) {
+                languageSelectFired = true;
+
+                Assert.areSame(
+                    e.config.referenceLanguageList[0],
+                    that.languageCode,
+                    "Currently selected language should be passed as existing translation"
+                );
+
+                Assert.isTrue(
+                    e.config.translationMode,
+                    "List of languages available for select should be the list of new translations"
+                );
+            });
+
+            this.service.fire('test:changeLanguage');
+
+            Assert.isTrue(languageSelectFired, "The 'languageSelect' should have been fired");
+        },
+
+        "Should remove currentVersion of content and set selected languageCode": function () {
+            var that = this;
+
+            Mock.expect(this.version, {
+                method: 'destroy',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (options, callback) {
+                    Assert.areSame(
+                        that.capi, options.api,
+                        "The CAPI should be passed to the type load method"
+                    );
+                    Assert.isTrue(
+                        options.remove,
+                        "The `remove` option should be set to true"
+                    );
+                    callback(true);
+                }
+            });
+
+            this.service.on('languageSelect', function (e) {
+                var config = {selectedLanguageCode: that.switchedLanguageCode};
+
+                e.config.languageSelectedHandler(config);
+            });
+
+            this.service.fire('test:changeLanguage');
+
+            Assert.areEqual(
+                this.service.get('languageCode'),
+                this.switchedLanguageCode,
+                'The attribute languageCode should be changed to the selected one'
+            );
+        }
+    });
+
     Y.Test.Runner.setName("eZ Content Create View Service tests");
     Y.Test.Runner.add(loadTest);
+    Y.Test.Runner.add(eventTest);
+    Y.Test.Runner.add(changeLanguageTest);
 }, '', {requires: ['test', 'ez-contentcreateviewservice']});

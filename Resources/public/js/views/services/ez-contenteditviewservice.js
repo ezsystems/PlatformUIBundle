@@ -28,6 +28,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 this._setLanguageCode();
                 this._setBaseLanguageCode();
             });
+            this.on('*:changeLanguage', this._selectLanguage);
 
             this._setLanguageCode();
             this._setBaseLanguageCode();
@@ -277,6 +278,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 contentType: this.get('contentType'),
                 owner: this.get('owner'),
                 config: this.get('config'),
+                languageCode: this.get('languageCode'),
             };
         },
 
@@ -331,6 +333,48 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 return value.call(this);
             }
             return value;
+        },
+
+        /**
+         * changeLanguage event handler. It opens languageSelectionBox for selecting
+         * language of edited content
+         *
+         * @method _selectLanguage
+         * @private
+         * @param {EventFacade} e
+         */
+        _selectLanguage: function (e) {
+            var that = this;
+
+            e.preventDefault();
+            this.fire('languageSelect', {
+                config: {
+                    title: "Change language to:",
+                    languageSelectedHandler: Y.bind(this._changeContentLanguage, this),
+                    cancelLanguageSelectionHandler: null,
+                    canBaseTranslation: false,
+                    translationMode: false,
+                    referenceLanguageList: that.get('content').get('currentVersion').getTranslationsList()
+                },
+            });
+        },
+
+        /**
+         * Changes language of edited content
+         *
+         * @method _changeContentLanguage
+         * @private
+         * @param {EventFacade} e
+         * @param {String} e.selectedLanguageCode language code to which edited ontent will be switched
+         */
+        _changeContentLanguage: function (e) {
+            var app = this.get('app'),
+                service = this;
+
+            app.navigateTo('editContent', {
+                id: service.get('content').get('id'),
+                languageCode: e.selectedLanguageCode
+            });
         }
     }, {
         ATTRS: {
