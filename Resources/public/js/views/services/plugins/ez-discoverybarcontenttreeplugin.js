@@ -65,8 +65,8 @@ YUI.add('ez-discoverybarcontenttreeplugin', function (Y) {
                 tree = this.get('tree'),
                 response = this.get('host').get('response');
 
-            Y.Array.each(response.view.path, function (element) {
-                path.push(element.location.get('id'));
+            Y.Array.each(response.view.path, function (location) {
+                path.push(location.get('id'));
             });
             path.push(response.view.location.get('id'));
 
