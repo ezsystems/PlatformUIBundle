@@ -4,11 +4,11 @@
     <body>
       <trans-unit id="4f1cfd17c4ea63fdcfb4a10fda0755ff" resname="content_type.dashboard_title">
         <source>content_type.dashboard_title</source>
-        <target>Content types</target>
+        <target>ContentTypes</target>
       </trans-unit>
       <trans-unit id="80d8a14d1f4ec432a49b7acf8af8f3d2" resname="content_type.group.list">
         <source>content_type.group.list</source>
-        <target>Content type groups</target>
+        <target>ContentType groups</target>
       </trans-unit>
       <trans-unit id="3dc2dbac68487a7d3f87f767fc4bbd2e" resname="content_type.group.name">
         <source>content_type.group.name</source>
@@ -28,7 +28,7 @@
       </trans-unit>
       <trans-unit id="7b24488c5d8ce01a3dd1a49ca7381d0b" resname="content_type.group">
         <source>content_type.group</source>
-        <target>Content type group</target>
+        <target>ContentType group</target>
       </trans-unit>
       <trans-unit id="d95b927203e077ad6f20662ae465821d">
         <source>content_type.group.create.title</source>
