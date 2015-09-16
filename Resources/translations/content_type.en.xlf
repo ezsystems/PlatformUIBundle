@@ -50,6 +50,14 @@
         <source>content_type.group.notification.updated</source>
         <target>ContentType group "%identifier%" was correctly updated.</target>
       </trans-unit>
+      <trans-unit id="20d385d52df00a6a1aa4d01c7e75f4e5">
+        <source>content_type.group.deleted</source>
+        <target>ContentType group "%identifier%" was correctly deleted.</target>
+      </trans-unit>
+      <trans-unit id="147661b50276b00ffac1bb715bdb4746">
+        <source>content_type.group.cannot_delete.has_content_types</source>
+        <target>Cannot delete ContentType group "%identifier%" as it still contains ContentTypes.</target>
+      </trans-unit>
       <trans-unit id="f04e48d37e0034d0db7c2fe532d0a98f" resname="content_type.name">
         <source>content_type.name</source>
         <target>Name</target>

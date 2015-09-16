@@ -11,6 +11,7 @@
 namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Publish\API\Repository\ContentTypeService;
+use eZ\Publish\API\Repository\Exceptions\InvalidArgumentException;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\UserService;
@@ -23,6 +24,7 @@ use EzSystems\RepositoryForms\Data\Mapper\ContentTypeGroupMapper;
 use EzSystems\RepositoryForms\FieldType\FieldTypeFormMapperRegistryInterface;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
 use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeCreateType;
+use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeGroupDeleteType;
 use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeGroupType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -86,9 +88,21 @@ class ContentTypeController extends Controller
 
     public function listContentTypeGroupsAction()
     {
+        $contentTypeGroups = $this->contentTypeService->loadContentTypeGroups();
+        $deleteFormsById = [];
+        foreach ($contentTypeGroups as $contentTypeGroup) {
+            $id = $contentTypeGroup->id;
+            $deleteFormsById[$id] = $this->createForm(
+                new ContentTypeGroupDeleteType(),
+                ['contentTypeGroupId' => $id]
+            )->createView();
+        }
+
         return $this->render('eZPlatformUIBundle:ContentType:list_content_type_groups.html.twig', [
-            'content_type_groups' => $this->contentTypeService->loadContentTypeGroups(),
+            'content_type_groups' => $contentTypeGroups,
+            'delete_forms_by_id' => $deleteFormsById,
             'can_edit' => $this->isGranted(new Attribute('class', 'update')),
+            'can_delete' => $this->isGranted(new Attribute('class', 'delete')),
         ]);
     }
 
@@ -135,6 +149,39 @@ class ContentTypeController extends Controller
             'contentTypeGroup' => $data,
             'actionUrl' => $actionUrl,
         ]);
+    }
+
+    public function deleteContentTypeGroupAction(Request $request, $contentTypeGroupId)
+    {
+        $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
+        $deleteForm = $this->createForm(new ContentTypeGroupDeleteType(), ['contentTypeGroupId' => $contentTypeGroupId]);
+        $deleteForm->handleRequest($request);
+        if ($deleteForm->isValid()) {
+            try {
+                $this->contentTypeService->deleteContentTypeGroup($contentTypeGroup);
+                $this->notify('content_type.group.deleted', ['%identifier%' => $contentTypeGroup->identifier], 'content_type');
+            } catch (InvalidArgumentException $e) {
+                $this->notifyError(
+                    'content_type.group.cannot_delete.has_content_types',
+                    ['%identifier%' => $contentTypeGroup->identifier],
+                    'content_type'
+                );
+            }
+
+            $this->redirectToRouteAfterFormPost('admin_contenttypeGroupList');
+        }
+
+        // Form validation failed. Send errors as notifications.
+        foreach ($deleteForm->getErrors(true) as $error) {
+            $this->notifyErrorPlural(
+                $error->getMessageTemplate(),
+                $error->getMessagePluralization(),
+                $error->getMessageParameters(),
+                'ezrepoforms_content_type'
+            );
+        }
+
+        return $this->redirectToRouteAfterFormPost('admin_contenttypeGroupList');
     }
 
     public function viewContentTypeAction($contentTypeId, $languageCode = null)
