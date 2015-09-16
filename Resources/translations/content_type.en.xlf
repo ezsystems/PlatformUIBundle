@@ -42,6 +42,14 @@
         <source>content_type.group.cancel</source>
         <target>Cancel</target>
       </trans-unit>
+      <trans-unit id="a8d0b6d82750581100743046985fcf80">
+        <source>content_type.group.notification.created</source>
+        <target>ContentType group "%identifier%" was correctly created.</target>
+      </trans-unit>
+      <trans-unit id="c20c719ac1ac6b400867977af4a0c6e1">
+        <source>content_type.group.notification.updated</source>
+        <target>ContentType group "%identifier%" was correctly updated.</target>
+      </trans-unit>
       <trans-unit id="f04e48d37e0034d0db7c2fe532d0a98f" resname="content_type.name">
         <source>content_type.name</source>
         <target>Name</target>
