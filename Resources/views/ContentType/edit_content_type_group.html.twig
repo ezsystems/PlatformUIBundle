@@ -1,0 +1,48 @@
+{% extends "eZPlatformUIBundle::pjax_admin.html.twig" %}
+
+{% trans_default_domain "content_type" %}
+
+{% set editTitle = contentTypeGroup.new ? "content_type.group.create.title"|trans() : "content_type.group.edit.title"|trans({"%identifier%": contentTypeGroup.identifier}) %}
+
+{% block title %}
+    {{ editTitle }}
+{% endblock %}
+
+{% block header_breadcrumbs %}
+    {% set breadcrumb_items = [
+        {link: path("admin_dashboard"), label: "dashboard.title"|trans({}, "dashboard")},
+        {link: path("admin_contenttype"), label: "content_type.dashboard_title"|trans()},
+        {link: null, label: editTitle}
+    ] %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block header_title %}
+    <h1 class="ez-page-header-name" data-icon="&#xe61a;">
+        {{ editTitle }}
+    </h1>
+{% endblock %}
+
+{% block content %}
+    <section class="ez-serverside-content">
+        {{ form_start(form, {'action': actionUrl, "attr": {"class": "pure-form pure-form-aligned"}}) }}
+        {{ form_errors(form) }}
+
+        <fieldset>
+            <div class="pure-control-group">
+                {{ form_label(form.identifier) }}
+                {{ form_errors(form.identifier) }}
+                {{ form_widget(form.identifier) }}
+            </div>
+        </fieldset>
+
+        <div class="pure-controls">
+            <a href="{{ path("admin_contenttypeGroupList") }}"
+               class="pure-button ez-button ez-button-delete ez-font-icon">{{ "content_type.group.cancel"|trans }}</a>
+            {{ form_widget(form.save, {"attr": {"class": "pure-button ez-button"}}) }}
+        </div>
+
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

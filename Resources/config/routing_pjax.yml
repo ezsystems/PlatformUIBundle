@@ -63,11 +63,20 @@ admin_contenttypeGroupView:
     path: /contenttype/group/{contentTypeGroupId}
     defaults:
         _controller: ezsystems.platformui.controller.content_type:viewContentTypeGroupAction
+    requirements:
+        contentTypeGroupId: \d+
 
 admin_contenttypeGroupEdit:
     path: /contenttype/group/edit/{contentTypeGroupId}
     defaults:
         _controller: ezsystems.platformui.controller.content_type:editContentTypeGroupAction
+        contentTypeGroupId: ~
+
+admin_contenttypeGroupDelete:
+    path: /contenttype/group/delete/{contentTypeGroupId}
+    methods: [POST]
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:deleteContentTypeGroupAction
 
 admin_contenttypeView:
     path: /contenttype/view/{contentTypeId}/{languageCode}

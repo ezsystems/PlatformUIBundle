@@ -4,11 +4,11 @@
     <body>
       <trans-unit id="4f1cfd17c4ea63fdcfb4a10fda0755ff" resname="content_type.dashboard_title">
         <source>content_type.dashboard_title</source>
-        <target>Content types</target>
+        <target>ContentTypes</target>
       </trans-unit>
       <trans-unit id="80d8a14d1f4ec432a49b7acf8af8f3d2" resname="content_type.group.list">
         <source>content_type.group.list</source>
-        <target>Content type groups</target>
+        <target>ContentType groups</target>
       </trans-unit>
       <trans-unit id="3dc2dbac68487a7d3f87f767fc4bbd2e" resname="content_type.group.name">
         <source>content_type.group.name</source>
@@ -22,9 +22,41 @@
         <source>content_type.group.edit</source>
         <target>Edit</target>
       </trans-unit>
+      <trans-unit id="2cf33e780bfbad13ad16fcf5634ec70c">
+        <source>content_type.group.new</source>
+        <target>Create a ContentType group</target>
+      </trans-unit>
       <trans-unit id="7b24488c5d8ce01a3dd1a49ca7381d0b" resname="content_type.group">
         <source>content_type.group</source>
-        <target>Content type group</target>
+        <target>ContentType group</target>
+      </trans-unit>
+      <trans-unit id="d95b927203e077ad6f20662ae465821d">
+        <source>content_type.group.create.title</source>
+        <target>Creating a new ContentType group</target>
+      </trans-unit>
+      <trans-unit id="80644ee5d10e849935daf17deddf5e6f">
+        <source>content_type.group.edit.title</source>
+        <target>Editing ContentType group "%identifier%"</target>
+      </trans-unit>
+      <trans-unit id="7a70af7dfe97699edb120836224eee1e">
+        <source>content_type.group.cancel</source>
+        <target>Cancel</target>
+      </trans-unit>
+      <trans-unit id="a8d0b6d82750581100743046985fcf80">
+        <source>content_type.group.notification.created</source>
+        <target>ContentType group "%identifier%" was correctly created.</target>
+      </trans-unit>
+      <trans-unit id="c20c719ac1ac6b400867977af4a0c6e1">
+        <source>content_type.group.notification.updated</source>
+        <target>ContentType group "%identifier%" was correctly updated.</target>
+      </trans-unit>
+      <trans-unit id="20d385d52df00a6a1aa4d01c7e75f4e5">
+        <source>content_type.group.deleted</source>
+        <target>ContentType group "%identifier%" was correctly deleted.</target>
+      </trans-unit>
+      <trans-unit id="147661b50276b00ffac1bb715bdb4746">
+        <source>content_type.group.cannot_delete.has_content_types</source>
+        <target>Cannot delete ContentType group "%identifier%" as it still contains ContentTypes.</target>
       </trans-unit>
       <trans-unit id="f04e48d37e0034d0db7c2fe532d0a98f" resname="content_type.name">
         <source>content_type.name</source>
