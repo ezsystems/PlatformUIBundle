@@ -860,6 +860,9 @@ system:
                 ez-contenttreeplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'parallel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
+                ez-locationsearchplugin:
+                    requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationsearchplugin.js
                 ez-contentcreateplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contentcreateplugin.js
