@@ -150,7 +150,20 @@ YUI.add('ez-locationmodel-tests', function (Y) {
                 contentInfo.Content.Name,
                 "The content info should be imported and have the same names"
             );
+        },
 
+        "Should parse the id": function () {
+            var m = this.model,
+                response = {document: this.loadResponse},
+                res;
+
+            res = m.parse(response);
+
+            Y.Assert.areEqual(
+                this.loadResponse.Location._href,
+                res.id,
+                "The _href property should be parsed and returned as the id"
+            );
         },
     }));
 
