@@ -207,6 +207,12 @@ system:
                 locationviewview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/locationview.hbt
+                ez-subitemlistview:
+                    requires: ['ez-templatebasedview', 'ez-asynchronousview', 'subitemlistview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/ez-subitemlistview.js
+                subitemlistview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/subitemlist.hbt
                 ez-locationviewtabview:
                     requires: ['ez-templatebasedview']
                     path: %ez_platformui.public_dir%/js/views/ez-locationviewtabview.js

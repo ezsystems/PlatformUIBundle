@@ -1,0 +1,42 @@
+<div class="ez-subitemlist-box ez-asynchronousview">
+    <h2 class="ez-subitemlist-title">Sub-items ({{location.childCount}})</h2>
+    <div class="ez-subitemlist-content">
+    {{#if location.childCount}}
+        {{#if loadingError}}
+            <p class="ez-asynchronousview-error ez-font-icon">
+                An error occurred while loading the sub-items list..
+                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+            </p>
+        {{else}}
+            {{#if subitems }}
+                <table class="ez-subitemlist-table pure-table pure-table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Visibility</th>
+                        <th>Published</th>
+                        <th>Modified</th>
+                        <th>Priority</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each subitems}}
+                    <tr>
+                        <td><a href={{path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode}}>{{contentInfo.name}}</a></td>
+                        <td>{{#if hidden}}Hidden{{else}}{{#if invisible}}Hidden by superior{{else}}Visible{{/if}}{{/if}}</td>
+                        <td>{{contentInfo.publishedDate}}</td>
+                        <td>{{contentInfo.lastModificationDate}}</td>
+                        <td>{{priority}}</td>
+                    </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            {{else}}
+                <p class="ez-font-icon ez-asynchronousview-loading">Loading the sub-items list...</p>
+            {{/if}}
+        {{/if}}
+    {{else}}
+        <p>This location has no sub-item.</p>
+    {{/if}}
+    </div>
+</div>
