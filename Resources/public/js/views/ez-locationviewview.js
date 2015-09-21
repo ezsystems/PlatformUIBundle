@@ -77,6 +77,9 @@ YUI.add('ez-locationviewview', function (Y) {
                 this.get('actionBar').render().get('container')
             );
             this._renderTabViews();
+            container.one('.ez-subitemlist-container').append(
+                this.get('subitemList').render().get('container')
+            );
 
             this._uiSetMinHeight();
             return this;
@@ -212,7 +215,8 @@ YUI.add('ez-locationviewview', function (Y) {
         },
 
         destructor: function () {
-            var bar = this.get('actionBar');
+            var bar = this.get('actionBar'),
+                subitemList = this.get('subitemList');
 
             bar.removeTarget(this);
             bar.destroy();
@@ -220,6 +224,8 @@ YUI.add('ez-locationviewview', function (Y) {
                 tab.removeTarget(this);
                 tab.destroy();
             });
+            subitemList.removeTarget(this);
+            subitemList.destroy();
         }
     }, {
         ATTRS: {
@@ -336,6 +342,24 @@ YUI.add('ez-locationviewview', function (Y) {
                             bubbleTargets: this,
                         }),
                     ];
+                },
+                writeOnce: 'initOnly',
+            },
+
+            /**
+             * The subitem list view.
+             *
+             * @attribute subitemList
+             * @type {eZ.SubitemListView}
+             * @writeOnce
+             */
+            subitemList: {
+                valueFn: function () {
+                    return new Y.eZ.SubitemListView({
+                        location: this.get('location'),
+                        config: this.get('config'),
+                        bubbleTargets: this,
+                    });
                 },
                 writeOnce: 'initOnly',
             },

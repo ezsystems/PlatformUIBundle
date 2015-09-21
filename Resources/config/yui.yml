@@ -200,6 +200,8 @@ system:
                         - 'ez-locationviewviewtabview'
                         - 'ez-locationviewdetailstabview'
                         - 'ez-tabs'
+                        - 'ez-subitemlistview'
+                        - 'ez-locationsearchplugin'
                         - 'event-tap'
                         - 'array-extras'
                         - 'locationviewview-ez-template'
