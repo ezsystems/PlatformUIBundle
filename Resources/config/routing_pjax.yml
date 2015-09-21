@@ -99,6 +99,7 @@ admin_contenttypeUpdate:
 
 admin_contenttypeDelete:
     path: /contenttype/delete/{contentTypeId}
+    methods: [POST]
     defaults:
         _controller: ezsystems.platformui.controller.content_type:deleteContentTypeAction
 
