@@ -97,6 +97,11 @@ admin_contenttypeUpdate:
         _controller: ezsystems.platformui.controller.content_type:updateContentTypeAction
         languageCode: ~
 
+admin_contenttypeDelete:
+    path: /contenttype/delete/{contentTypeId}
+    defaults:
+        _controller: ezsystems.platformui.controller.content_type:deleteContentTypeAction
+
 admin_role:
     path: /role
     defaults:
