@@ -64,7 +64,8 @@ YUI.add('ez-locationviewview', function (Y) {
          * @return {eZ.LocationViewView} the view itself
          */
         render: function () {
-            var container = this.get('container');
+            var container = this.get('container'),
+                subitemList = this.get('subitemList');
 
             container.setHTML(this.template({
                 location: this.get('location').toJSON(),
@@ -77,9 +78,11 @@ YUI.add('ez-locationviewview', function (Y) {
                 this.get('actionBar').render().get('container')
             );
             this._renderTabViews();
-            container.one('.ez-subitemlist-container').append(
-                this.get('subitemList').render().get('container')
-            );
+            if ( subitemList ) {
+                container.one('.ez-subitemlist-container').append(
+                    subitemList.render().get('container')
+                );
+            }
 
             this._uiSetMinHeight();
             return this;
@@ -224,8 +227,10 @@ YUI.add('ez-locationviewview', function (Y) {
                 tab.removeTarget(this);
                 tab.destroy();
             });
-            subitemList.removeTarget(this);
-            subitemList.destroy();
+            if ( subitemList ) {
+                subitemList.removeTarget(this);
+                subitemList.destroy();
+            }
         }
     }, {
         ATTRS: {
@@ -347,19 +352,25 @@ YUI.add('ez-locationviewview', function (Y) {
             },
 
             /**
-             * The subitem list view.
+             * The subitem list view or null if the content (type) is not
+             * configured to be a container.
              *
              * @attribute subitemList
-             * @type {eZ.SubitemListView}
+             * @type {eZ.SubitemListView|Null}
              * @writeOnce
              */
             subitemList: {
                 valueFn: function () {
-                    return new Y.eZ.SubitemListView({
-                        location: this.get('location'),
-                        config: this.get('config'),
-                        bubbleTargets: this,
-                    });
+                    var contentType = this.get('contentType');
+
+                    if ( contentType && contentType.get('isContainer') ) {
+                        return new Y.eZ.SubitemListView({
+                            location: this.get('location'),
+                            config: this.get('config'),
+                            bubbleTargets: this,
+                        });
+                    }
+                    return null;
                 },
                 writeOnce: 'initOnly',
             },

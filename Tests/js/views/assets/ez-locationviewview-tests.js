@@ -4,7 +4,7 @@
  */
 YUI.add('ez-locationviewview-tests', function (Y) {
     var test, tabsTest, eventsTest, destroyTest, attrsToSubViewsTest,
-        selectedTest, forwardActiveTest,
+        selectedTest, forwardActiveTest, subitemListAttr,
         addTabViewTest, removeTabViewTest,
         Mock = Y.Mock, Assert = Y.Assert,
         _getModelMock = function (serialized) {
@@ -78,6 +78,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete this.view;
         },
 
         "Test render": function () {
@@ -127,6 +128,16 @@ YUI.add('ez-locationviewview-tests', function (Y) {
 
         "Should render the action bar": function () {
             this._testRenderSubView('actionBar', 'actionbar');
+        },
+
+        "Should handle a null subitem list": function () {
+            this.view._set('subitemList', null);
+            this.view.render();
+
+            Assert.areEqual(
+                "", this.view.get('container').one('.ez-subitemlist-container').getContent(),
+                "The subitem list container should be empty"
+            );
         },
 
         "Test available variables in the template": function () {
@@ -224,6 +235,13 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         name: "eZ Location View view tests",
 
         setUp: function () {
+            var contentType = new Mock();
+
+            Mock.expect(contentType, {
+                method: 'get',
+                args: ['isContainer'],
+                returns: true
+            });
             Y.eZ.ActionBarView = Y.Base.create('actionBarView', Y.View, [], {}, {
                 ATTRS: {
                     content: {},
@@ -264,7 +282,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             this.view = new Y.eZ.LocationViewView({
                 location: {},
                 content: {},
-                contentType: {},
+                contentType: contentType,
                 config: {},
                 path: {},
                 languageCode: 'fre-FR',
@@ -275,6 +293,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             delete Y.eZ.ActionBarView;
             delete Y.eZ.LocationViewViewTabView;
             delete Y.eZ.LocationViewDetailsTabView;
+            delete Y.eZ.SubitemListView;
             this.view.destroy();
             delete this.view;
         },
@@ -875,6 +894,58 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         },
     });
 
+    subitemListAttr = new Y.Test.Case({
+        name: "eZ Location view view subitemList attribute test",
+
+        setUp: function () {
+            this.contentType = new Mock();
+
+            Mock.expect(this.contentType, {
+                method: 'get',
+                args: ['isContainer'],
+                run: Y.bind(function () {
+                    return this.isContainer;
+                }, this)
+            });
+            Y.eZ.SubitemListView = function () {};
+        },
+
+        tearDown: function () {
+            delete Y.eZ.SubitemListView;
+            this.view.destroy();
+        },
+
+        "Should not use a subitemList view": function () {
+            this.isContainer = false;
+
+            this.view = new Y.eZ.LocationViewView({
+                actionBar: new Y.View(),
+                tabs: [],
+                contentType: this.contentType,
+            });
+
+            Assert.isNull(
+                this.view.get('subitemList'),
+                "The subitemList attribute should be null"
+            );
+        },
+
+        "Should use a subitemList view": function () {
+            this.isContainer = true;
+
+            this.view = new Y.eZ.LocationViewView({
+                actionBar: new Y.View(),
+                tabs: [],
+                contentType: this.contentType,
+            });
+
+            Assert.isInstanceOf(
+                Y.eZ.SubitemListView, this.view.get('subitemList'),
+                "The subitemList attribute should be an instance of Y.eZ.SubitemListView"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location View view tests");
     Y.Test.Runner.add(test);
     Y.Test.Runner.add(tabsTest);
@@ -885,4 +956,5 @@ YUI.add('ez-locationviewview-tests', function (Y) {
     Y.Test.Runner.add(removeTabViewTest);
     Y.Test.Runner.add(selectedTest);
     Y.Test.Runner.add(forwardActiveTest);
+    Y.Test.Runner.add(subitemListAttr);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-locationviewview']});

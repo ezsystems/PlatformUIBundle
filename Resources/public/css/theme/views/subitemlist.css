@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-view-subitemlistview {
+.ez-view-subitemlistview .ez-subitemlist-box {
     border: 1px solid #ccc;
     background: #F5F4F2;
 }
