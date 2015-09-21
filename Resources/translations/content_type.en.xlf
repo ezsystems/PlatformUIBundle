@@ -134,6 +134,10 @@
           <source>content_type.notification.published</source>
           <target>The ContentType draft was successfully updated and published. Related Content has also been updated.</target>
       </trans-unit>
+      <trans-unit id="a44f54993f84d2d1a54f550bfd4f59e1">
+        <source>content_type.notification.deleted</source>
+        <target>The ContentType "%contentTypeName%" was successfully deleted.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

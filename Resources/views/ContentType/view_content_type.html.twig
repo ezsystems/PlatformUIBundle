@@ -80,7 +80,23 @@
             </div>
 
             <div class="pure-u-1">
-                <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="pure-button ez-button{% if not can_edit %} pure-button-disabled{% endif %}" data-icon="&#xe606;">{{ 'content_type.edit'|trans }}</a>
+            {% if can_edit %}
+                <a href="{{ path('admin_contenttypeUpdate', {'contentTypeId': content_type.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'content_type.edit'|trans }}</a>
+            {% else %}
+                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'content_type.edit'|trans }}</span>
+            {% endif %}
+                {{ form_start(delete_form, {"action": path("admin_contenttypeDelete", {"contentTypeId": content_type.id})}) }}
+                    {{ form_widget(delete_form.contentTypeId) }}
+                    {{
+                        form_widget(
+                            delete_form.delete,
+                            {
+                                "disabled": not can_delete,
+                                "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"}
+                            }
+                        )
+                    }}
+                {{ form_end(delete_form) }}
             </div>
         </div>
     </section>

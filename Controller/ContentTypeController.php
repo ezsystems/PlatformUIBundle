@@ -24,6 +24,7 @@ use EzSystems\RepositoryForms\Data\Mapper\ContentTypeGroupMapper;
 use EzSystems\RepositoryForms\FieldType\FieldTypeFormMapperRegistryInterface;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
 use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeCreateType;
+use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeDeleteType;
 use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeGroupDeleteType;
 use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeGroupType;
 use Symfony\Component\HttpFoundation\Request;
@@ -113,13 +114,31 @@ class ContentTypeController extends Controller
             new ContentTypeCreateType($this->contentTypeService),
             ['contentTypeGroupId' => $contentTypeGroupId]
         );
+        $contentTypes = $this->contentTypeService->loadContentTypes($contentTypeGroup);
+        $canDelete = $this->isGranted(new Attribute('class', 'delete'));
+        $deleteFormsById = [];
+        $canDeleteById = [];
+
+        foreach ($contentTypes as $contentType) {
+            $contentTypeId = $contentType->id;
+            $deleteFormsById[$contentTypeId] = $this->createForm(
+                new ContentTypeDeleteType(),
+                ['contentTypeId' => $contentTypeId]
+            )->createView();
+
+            $countQuery = new Query(['filter' => new Query\Criterion\ContentTypeId($contentTypeId), 'limit' => 0]);
+            $contentCount = $this->searchService->findContent($countQuery, [], false)->totalCount;
+            $canDeleteById[$contentTypeId] = $canDelete && $contentCount == 0;
+        }
 
         return $this->render('eZPlatformUIBundle:ContentType:view_content_type_group.html.twig', [
             'group' => $contentTypeGroup,
-            'content_types' => $this->contentTypeService->loadContentTypes($contentTypeGroup),
+            'content_types' => $contentTypes,
             'can_edit' => $this->isGranted(new Attribute('class', 'update')),
             'can_create' => $this->isGranted(new Attribute('class', 'create')),
+            'can_delete_by_id' => $canDeleteById,
             'create_form' => $createForm->createView(),
+            'delete_forms_by_id' => $deleteFormsById,
         ]);
     }
 
@@ -188,18 +207,21 @@ class ContentTypeController extends Controller
     {
         $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
         $contentType = $this->contentTypeService->loadContentType($contentTypeId);
-
-        $query = new Query([
+        $countQuery = new Query([
             'filter' => new Query\Criterion\ContentTypeId($contentTypeId),
             'limit' => 0,
         ]);
+        $contentCount = $this->searchService->findContent($countQuery, [], false)->totalCount;
+        $deleteForm = $this->createForm(new ContentTypeDeleteType(), ['contentTypeId' => $contentTypeId]);
 
         return $this->render('eZPlatformUIBundle:ContentType:view_content_type.html.twig', [
             'language_code' => $languageCode,
             'content_type' => $contentType,
-            'content_count' => $this->searchService->findContent($query, [], false)->totalCount,
+            'content_count' => $contentCount,
             'modifier' => $this->userService->loadUser($contentType->modifierId),
+            'delete_form' => $deleteForm->createView(),
             'can_edit' => $this->isGranted(new Attribute('class', 'update')),
+            'can_delete' => ($this->isGranted(new Attribute('class', 'delete')) && $contentCount == 0),
         ]);
     }
 
@@ -293,5 +315,37 @@ class ContentTypeController extends Controller
             'languageCode' => $languageCode,
             'hasErrors' => $hasErrors,
         ]);
+    }
+
+    public function deleteContentTypeAction(Request $request, $contentTypeId)
+    {
+        $contentType = $this->contentTypeService->loadContentType($contentTypeId);
+        $deleteForm = $this->createForm(new ContentTypeDeleteType(), ['contentTypeId' => $contentTypeId]);
+        $deleteForm->handleRequest($request);
+        if ($deleteForm->isValid()) {
+            $this->contentTypeService->deleteContentType($contentType);
+            $this->notify(
+                'content_type.notification.deleted',
+                ['%contentTypeName%' => $contentType->getName($contentType->mainLanguageCode)],
+                'content_type'
+            );
+
+            return $this->redirectToRouteAfterFormPost(
+                'admin_contenttypeGroupView',
+                ['contentTypeGroupId' => $contentType->getContentTypeGroups()[0]->id]
+            );
+        }
+
+        // Form validation failed. Send errors as notifications.
+        foreach ($deleteForm->getErrors(true) as $error) {
+            $this->notifyErrorPlural(
+                $error->getMessageTemplate(),
+                $error->getMessagePluralization(),
+                $error->getMessageParameters(),
+                'ezrepoforms_content_type'
+            );
+        }
+
+        return $this->redirectToRouteAfterFormPost('admin_contenttypeView', ['contentTypeId' => $contentTypeId]);
     }
 }
