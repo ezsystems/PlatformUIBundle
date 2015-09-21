@@ -45,23 +45,16 @@ YUI.add('ez-locationviewview', function (Y) {
         },
 
         /**
-         * Converts each location and content model in the path to a plain
-         * object representation
+         * Converts each location in the path to a plain object representation
          *
          * @method _pathToJSON
          * @private
          * @return Array
          */
         _pathToJSON: function () {
-            var path = [];
-
-            Y.Array.each(this.get('path'), function (location, key) {
-                path[key] = {
-                    location: location.toJSON(),
-                    contentInfo: location.get('contentInfo').toJSON()
-                };
+            return Y.Array.map(this.get('path'), function (location) {
+                return location.toJSON();
             });
-            return path;
         },
 
         /**

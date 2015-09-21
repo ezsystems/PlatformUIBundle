@@ -197,6 +197,24 @@ YUI.add('ez-restmodel', function (Y) {
             }
             return ret;
         },
+
+        /**
+         * Overrides the default implementation to make sure the models in
+         * attributes are also jsonified.
+         *
+         * @method toJSON
+         * @return {Object}
+         */
+        toJSON: function () {
+            var attrs = Y.Model.prototype.toJSON.call(this);
+
+            Y.Object.each(attrs, function (value, key) {
+                if ( L.isObject(value) && L.isFunction(value.toJSON) ) {
+                    attrs[key] = value.toJSON();
+                }
+            });
+            return attrs;
+        },
     }, {
         /**
          * Root element in the REST API response where the data is located.

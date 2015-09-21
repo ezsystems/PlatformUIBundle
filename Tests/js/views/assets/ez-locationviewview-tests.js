@@ -17,21 +17,11 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             return mock;
         },
         _getLocationModelMock = function (serializedLocation, serializedContentInfo) {
-            var locationMock = new Y.Test.Mock(),
-                contentInfoMock = new Y.Test.Mock();
+            var locationMock = new Y.Test.Mock();
 
-            Y.Mock.expect(contentInfoMock, {
-                method: 'toJSON',
-                returns: serializedContentInfo
-            });
             Y.Mock.expect(locationMock, {
                 method: 'toJSON',
                 returns: serializedLocation
-            });
-            Y.Mock.expect(locationMock, {
-                method: 'get',
-                args: ['contentInfo'],
-                returns: contentInfoMock
             });
             return locationMock;
         };
@@ -110,27 +100,21 @@ YUI.add('ez-locationviewview-tests', function (Y) {
 
         "Test available variables in the template": function () {
             var plainLocations = [{}, {}, {}],
-                plainContentInfos = [{}, {}, {}],
                 origTpl = this.view.template,
                 location = this.locationMock,
                 content = this.contentMock,
                 that = this;
 
             Y.Array.each(plainLocations, function (val, k) {
-                this.path.push(_getLocationModelMock(plainLocations[k], plainContentInfos[k]));
+                this.path.push(_getLocationModelMock(plainLocations[k]));
             }, this);
 
             this.view.template = function (variables) {
                 Y.Array.each(variables.path, function (struct, k) {
-                    Y.Mock.verify(struct.location);
-                    Y.Mock.verify(struct.contentInfo);
+                    Y.Mock.verify(struct);
                     Y.Assert.areSame(
-                        struct.location, plainLocations[k],
-                        "path[i].location.toJSON() be passed to the template"
-                    );
-                    Y.Assert.areSame(
-                        struct.contentInfo, plainContentInfos[k],
-                        "path[i].contentInfo.toJSON() be passed to the template"
+                        struct, plainLocations[k],
+                        "The jsonified location should be passed to the template"
                     );
                 });
                 Y.Mock.verify(location);
