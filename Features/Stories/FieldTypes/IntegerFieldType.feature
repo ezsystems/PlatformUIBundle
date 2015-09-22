@@ -3,8 +3,8 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
     As an Editor  user
     I need to be able to create and update content with integer fieldtypes
 
-    #Background:
-    #   Given I am logged in as an Editor in PlatformUI
+    Background:
+       Given I am logged in as an 'Editor' in PlatformUI
 
     ##
     # Validate the existence of expected fields from a field type when creating a content
