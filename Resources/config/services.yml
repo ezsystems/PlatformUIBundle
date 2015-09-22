@@ -151,7 +151,7 @@ services:
 
     ezsystems.platformui.form_processor.role:
         class: %ezsystems.platformui.form_processor.role.class%
-        arguments: [@router, @ezsystems.platformui.notification_pool]
+        arguments: [@router, @ezsystems.platformui.notification_pool, @ezpublish.api.service.role]
         tags:
             - { name: kernel.event_subscriber }
 
