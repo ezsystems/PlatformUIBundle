@@ -4,7 +4,7 @@
  */
 YUI.add('ez-publishdraftplugin-tests', function (Y) {
     var tests, registerTest,
-        Assert = Y.Assert;
+        Assert = Y.Assert, Mock = Y.Mock;
 
     tests = new Y.Test.Case({
         name: "eZ Publish Draft Plugin event tests",
@@ -283,6 +283,11 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                 returns: true,
             });
             Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['id'],
+                returns: "",
+            });
+            Y.Mock.expect(this.content, {
                 method: 'save',
                 args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
                 run: function (options, callback) {
@@ -373,9 +378,89 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
         },
 
         "Should fire publishedDraft event after publishing a draft": function () {
-            var that = this,
-                fields = [],
-                eventFired = false,
+            var eventFired = false;
+
+            this.service.once('publishedDraft', function (e) {
+                eventFired = true;
+                Assert.areSame(
+                    this.get('content'), e.content,
+                    "publishedDraft event should store the content"
+                );
+            });
+            this["Should create the content and publish it"]();
+            Assert.isTrue(eventFired, "The plugin should have fired the publishedDraft event");
+        },
+
+        "Should notify the user about the starting publishing process": function () {
+            var eventFired = false;
+
+            this.service.once('notify', function (e) {
+                eventFired = true;
+
+                Assert.areEqual(
+                    "started", e.notification.state,
+                    "The notification state should be 'started'"
+                );
+                Assert.areEqual(
+                    5, e.notification.timeout,
+                    "The notification timeout should be 5"
+                );
+            });
+            this["Should create the content and publish it"]();
+            Assert.isTrue(eventFired, "The user should have been notified");
+        },
+
+        "Should handle content creation error": function () {
+            var fields = [],
+                loading, errorNotification = false;
+
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: true,
+            });
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['id'],
+                returns: "",
+            });
+            Y.Mock.expect(this.content, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    callback(true);
+                }
+            });
+            Y.Mock.expect(this.app, {
+                method: 'set',
+                args: ['loading', Mock.Value.Boolean],
+                run: function (attr, value) {
+                    loading = value;
+                },
+            });
+            this.service.once('notify', function () {
+                this.once('notify', function (e) {
+                    errorNotification = true;
+                    Assert.areEqual(
+                        "error", e.notification.state,
+                        "The error notification should be fired"
+                    );
+                    Assert.areEqual(
+                        0, e.notification.timeout,
+                        "The error notification should have a zero timeout"
+                    );
+                });
+            });
+            this.view.fire('whatever:publishAction', {
+                formIsValid: true,
+                fields: fields
+            });
+
+            Assert.isFalse(loading, "The app should not be in loading mode");
+            Assert.isTrue(errorNotification, "The notification should have been fired");
+        },
+
+        "Should handle publishing error": function () {
+            var fields = [], loading, errorNotification = false,
                 response = {document: this.createContentResponse},
                 versionAttrs = {};
 
@@ -384,34 +469,14 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                 returns: true,
             });
             Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['id'],
+                returns: "",
+            });
+            Y.Mock.expect(this.content, {
                 method: 'save',
                 args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
                 run: function (options, callback) {
-                    Assert.areSame(
-                        that.capi,
-                        options.api,
-                        "The CAPI should be passed to save"
-                    );
-                    Assert.areEqual(
-                        that.languageCode,
-                        options.languageCode,
-                        "The language code should be passed to save"
-                    );
-                    Assert.areEqual(
-                        that.contentType,
-                        options.contentType,
-                        "The content type should be passed to save"
-                    );
-                    Assert.areEqual(
-                        that.parentLocation,
-                        options.parentLocation,
-                        "The parent location should be passed to save"
-                    );
-                    Assert.areEqual(
-                        fields,
-                        options.fields,
-                        "The fields should be passed to save"
-                    );
                     callback(false, response);
                 }
             });
@@ -419,11 +484,6 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                 method: 'load',
                 args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
                 run: function (options, callback) {
-                    Assert.areSame(
-                        that.capi,
-                        options.api,
-                        "The CAPI should be passed to load"
-                    );
                     callback();
                 }
             });
@@ -431,11 +491,6 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                 method: 'parse',
                 args: [Y.Mock.Value.Object],
                 run: function (doc) {
-                    Assert.areSame(
-                        that.createContentResponse.Content.CurrentVersion,
-                        doc.document,
-                        "parse should have received a version response"
-                    );
                     return versionAttrs;
                 }
             });
@@ -447,35 +502,37 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                 method: 'publishVersion',
                 args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
                 run: function (options, callback) {
-                    Assert.areSame(
-                        that.capi,
-                        options.api,
-                        "The CAPI should be passed to publishVersion"
-                    );
-                    callback();
+                    callback(true);
                 }
             });
             Y.Mock.expect(this.app, {
                 method: 'set',
-                args: ['loading', true]
+                args: ['loading', Mock.Value.Boolean],
+                run: function (attr, value) {
+                    loading = value;
+                }
             });
-            Y.Mock.expect(this.app, {
-                method: 'navigate',
-                args: [this.publishRedirectionUrl],
+            this.service.once('notify', function () {
+                this.once('notify', function (e) {
+                    errorNotification = true;
+                    Assert.areEqual(
+                        "error", e.notification.state,
+                        "The error notification should be fired"
+                    );
+                    Assert.areEqual(
+                        0, e.notification.timeout,
+                        "The error notification should have a zero timeout"
+                    );
+                });
             });
-            this.service.once('publishedDraft', function (e) {
-                eventFired = true;
-                Assert.areSame(
-                    that.service.get('content'), e.content,
-                    "publishedDraft event should store the content"
-                );
-            });
+
             this.view.fire('whatever:publishAction', {
                 formIsValid: true,
                 fields: fields
             });
 
-            Assert.isTrue(eventFired, "The plugin should have fired the publishedDraft event");
+            Assert.isFalse(loading, "The app should not be in loading mode");
+            Assert.isTrue(errorNotification, "The notification should have been fired");
         },
     });
 
