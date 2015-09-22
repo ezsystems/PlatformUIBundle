@@ -210,7 +210,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/locationview.hbt
                 ez-subitemlistview:
-                    requires: ['ez-templatebasedview', 'ez-asynchronousview', 'subitemlistview-ez-template']
+                    requires: ['ez-templatebasedview', 'ez-asynchronousview', 'event-tap', 'subitemlistview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-subitemlistview.js
                 subitemlistview-ez-template:
                     type: 'template'

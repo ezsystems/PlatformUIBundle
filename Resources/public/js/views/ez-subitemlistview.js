@@ -11,6 +11,13 @@ YUI.add('ez-subitemlistview', function (Y) {
      */
     Y.namespace('eZ');
 
+    var IS_PAGE_LOADING = 'is-page-loading',
+        IS_DISABLED = 'is-disabled';
+
+    function linkIsDisabled(link) {
+        return link.hasClass(IS_DISABLED);
+    }
+
     /**
      * The subitem list view.
      *
@@ -20,9 +27,113 @@ YUI.add('ez-subitemlistview', function (Y) {
      * @extends eZ.TemplateBasedView
      */
     Y.eZ.SubitemListView = Y.Base.create('subitemListView', Y.eZ.TemplateBasedView, [Y.eZ.AsynchronousView], {
+        events: {
+            '.ez-subitemlist-navigation-link': {
+                'tap': '_handlePagination',
+            },
+        },
+
         initializer: function () {
             this._fireMethod = this._fireLocationSearch;
             this._watchAttribute = 'subitems';
+
+            this.after(['subitemsChange', 'loadingErrorChange'], this._uiPageEndLoading);
+
+            this.after('offsetChange', function () {
+                this._uiPageLoading();
+                this._fireLocationSearch();
+            });
+        },
+
+        /**
+         * Sets the UI in the loading the state
+         *
+         * @protected
+         * @method _uiPageLoading
+         */
+        _uiPageLoading: function () {
+            this.get('container').addClass(IS_PAGE_LOADING);
+        },
+
+        /**
+         * Removes the loading state of the UI
+         *
+         * @method _uiPageEndLoading
+         * @protected
+         */
+        _uiPageEndLoading: function () {
+            this.get('container').removeClass(IS_PAGE_LOADING);
+        },
+
+        /**
+         * tap event handler on the navigation links. Changes the page if the
+         * link is not disabled
+         *
+         * @method _handlePagination
+         * @param {EventFacade} e
+         * @protected
+         */
+        _handlePagination: function (e) {
+            var type = e.target.getAttribute('rel');
+
+            e.preventDefault();
+            if ( !linkIsDisabled(e.target) ) {
+                this._getGotoMethod(type).call(this);
+            }
+        },
+
+        /**
+         * Returns the *goto* function for the given type operation
+         *
+         * @method _getGotoMethod
+         * @private
+         * @param {String} type
+         * @return {Function}
+         */
+        _getGotoMethod: function (type) {
+            return this['_goto' + type.charAt(0).toUpperCase() + type.substr(1)];
+        },
+
+        /**
+         * Go to the first page
+         *
+         * @method _gotoFirst
+         * @protected
+         */
+        _gotoFirst: function () {
+            this.set('offset', 0);
+        },
+
+        /**
+         * Go to the next page
+         *
+         * @method _gotoNext
+         * @protected
+         */
+        _gotoNext: function () {
+            this.set('offset', this.get('offset') + this.get('limit'));
+        },
+
+        /**
+         * Go to the previous page
+         *
+         * @method _gotoPrev
+         * @protected
+         */
+        _gotoPrev: function () {
+            this.set('offset', this.get('offset') - this.get('limit'));
+        },
+
+        /**
+         * Go to the last page
+         *
+         * @method _gotoLast
+         * @protected
+         */
+        _gotoLast: function () {
+            var limit = this.get('limit');
+
+            this.set('offset', Math.floor(this.get('location').get('childCount') / limit) * limit);
         },
 
         render: function () {
@@ -30,9 +141,45 @@ YUI.add('ez-subitemlistview', function (Y) {
                 location: this.get('location').toJSON(),
                 subitems: this._convertToJSONList(),
                 loadingError: this.get('loadingError'),
+                isFirst: this._isFirstPage(),
+                isLast: this._isLastPage(),
+                hasPages: this._hasPages(),
             }));
 
             return this;
+        },
+
+        /**
+         * Checks whether the pagination will be useful
+         *
+         * @method _hasPages
+         * @private
+         * @return {Boolean}
+         */
+        _hasPages: function () {
+            return this.get('location').get('childCount') > this.get('limit');
+        },
+
+        /**
+         * Checks whether the user is on the first "page".
+         *
+         * @method _isLastPage
+         * @private
+         * @return {Boolean}
+         */
+        _isFirstPage: function () {
+            return (this.get('offset') === 0);
+        },
+
+        /**
+         * Checks whether the user is on the last "page".
+         *
+         * @method _isLastPage
+         * @private
+         * @return {Boolean}
+         */
+        _isLastPage: function () {
+            return this.get('offset') >= (this.get('location').get('childCount') - this.get('limit'));
         },
 
         /**
@@ -69,6 +216,8 @@ YUI.add('ez-subitemlistview', function (Y) {
                     criteria: {
                         "ParentLocationIdCriterion": this.get('location').get('locationId'),
                     },
+                    offset: this.get('offset'),
+                    limit: this.get('limit'),
                     /*
                      * @TODO see https://jira.ez.no/browse/EZP-24315
                      * this is not yet supported by the views in the REST API
@@ -84,6 +233,29 @@ YUI.add('ez-subitemlistview', function (Y) {
         },
     }, {
         ATTRS: {
+            /**
+             * The max number of the Locations to display in the subitem list
+             * per "page".
+             *
+             * @attribute limit
+             * @default 10
+             * @type Number
+             */
+            limit: {
+                value: 10,
+            },
+
+            /**
+             * The offset in the Location list.
+             *
+             * @attribute offset
+             * @default 0
+             * @type Number
+             */
+            offset: {
+                value: 0,
+            },
+
             /**
              * The location being displayed
              *

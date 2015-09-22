@@ -6,7 +6,12 @@
 <body>
 <div class="container"></div>
 
-<script type="text/x-handlebars-template" id="subitemlistview-ez-template"></script>
+<script type="text/x-handlebars-template" id="subitemlistview-ez-template">
+    <a href="#" class="ez-subitemlist-navigation-link" rel="first">First</a>
+    <a href="#" class="ez-subitemlist-navigation-link" rel="prev">Previous</a>
+    <a href="#" class="ez-subitemlist-navigation-link" rel="next">Next</a>
+    <a href="#" class="ez-subitemlist-navigation-link" rel="last">Last</a>
+</script>
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-subitemlistview-tests.js"></script>
@@ -28,7 +33,7 @@
         filter: loaderFilter,
         modules: {
             "ez-subitemlistview": {
-                requires: ['ez-templatebasedview', 'ez-asynchronousview'],
+                requires: ['ez-templatebasedview', 'ez-asynchronousview', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-subitemlistview.js"
             },
             "ez-asynchronousview": {

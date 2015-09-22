@@ -9,6 +9,22 @@
             </p>
         {{else}}
             {{#if subitems }}
+                {{#if hasPages}}
+                <ul class="ez-subitemlist-navigation">
+                    <li class="ez-subitemlist-navigation-item">
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="first">First</a>
+                    </li>
+                    <li class="ez-subitemlist-navigation-item">
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="prev">Previous</a>
+                    </li>
+                    <li class="ez-subitemlist-navigation-item">
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="next">Next</a>
+                    </li>
+                    <li class="ez-subitemlist-navigation-item">
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="last">Last</a>
+                    </li>
+                </ul>
+                {{/if}}
                 <table class="ez-subitemlist-table pure-table pure-table-bordered">
                     <thead>
                     <tr>
@@ -31,6 +47,22 @@
                     {{/each}}
                     </tbody>
                 </table>
+                {{#if hasPages}}
+                <ul class="ez-subitemlist-navigation">
+                    <li class="ez-subitemlist-navigation-item">
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="first">First</a>
+                    </li>
+                    <li class="ez-subitemlist-navigation-item">
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="prev">Previous</a>
+                    </li>
+                    <li class="ez-subitemlist-navigation-item">
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="next">Next</a>
+                    </li>
+                    <li class="ez-subitemlist-navigation-item">
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="last">Last</a>
+                    </li>
+                </ul>
+                {{/if}}
             {{else}}
                 <p class="ez-font-icon ez-asynchronousview-loading">Loading the sub-items list...</p>
             {{/if}}
@@ -39,4 +71,5 @@
         <p>This location has no sub-item.</p>
     {{/if}}
     </div>
+    <div class="ez-subitemlist-loader-mask"></div>
 </div>

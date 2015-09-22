@@ -15,6 +15,15 @@
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
 }
 
+.ez-view-subitemlistview .ez-subitemlist-content {
+    transition: all ease 0.3s;
+    opacity: 1;
+}
+
+.ez-view-subitemlistview.is-page-loading .ez-subitemlist-content {
+    opacity: 0.3;
+}
+
 .ez-view-subitemlistview .ez-subitemlist-table {
     box-shadow: 0 0 2px #ccc;
 }
@@ -25,4 +34,34 @@
 
 .ez-view-subitemlistview .ez-subitemlist-table tr:nth-child(2n-1) td {
     background: #fafafa;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-navigation {
+    list-style-type: none;
+    font-size: 90%;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-navigation-link.is-disabled {
+    color: #999;
+    cursor: default;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-navigation-link[rel="first"]:before {
+    content: "«";
+    padding-right: 0.3em;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-navigation-link[rel="next"]:after {
+    content: "›";
+    padding-left: 0.3em;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-navigation-link[rel="prev"]:before {
+    content: "‹";
+    padding-right: 0.3em;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-navigation-link[rel="last"]:after {
+    content: "»";
+    padding-left: 0.3em;
 }
