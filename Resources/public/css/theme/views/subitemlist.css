@@ -65,3 +65,26 @@
     content: "»";
     padding-left: 0.3em;
 }
+
+.ez-view-subitemlistview .ez-subitemlist-loader-mask {
+    transition: all ease 0.3s;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-loader-mask:before {
+    -webkit-animation: spin 0.5s infinite linear;
+            animation: spin 0.5s infinite linear;
+    box-sizing: border-box;
+    border-radius: 100%;
+    border-width: 0.5em;
+    border-style: solid;
+    border-color: rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.1);
+    opacity: 1;
+    z-index: 10000;
+    width: 3em;
+    height: 3em;
+    content: " ";
+    display: block;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+}
