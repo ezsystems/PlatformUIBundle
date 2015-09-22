@@ -107,6 +107,9 @@ YUI.add('ez-platformuiapp', function (Y) {
             sectionServerSideView: {
                 type: Y.eZ.SectionServerSideView,
             },
+            roleServerSideView: {
+                type: Y.eZ.RoleServerSideView,
+            },
             contentTypeEditServerSideView: {
                 type: Y.eZ.ContentTypeEditServerSideView,
             },
@@ -758,6 +761,15 @@ YUI.add('ez-platformuiapp', function (Y) {
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     service: Y.eZ.SectionServerSideViewService,
                     view: "sectionServerSideView",
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }, {
+                    name: "adminRole",
+                    regex: /\/admin\/(pjax%2Frole$|pjax%2Frole%2F.*)/,
+                    keys: ['uri'],
+                    path: "/admin/:uri",
+                    sideViews: {'navigationHub': true, 'discoveryBar': false},
+                    service: Y.eZ.RoleServerSideViewService,
+                    view: "roleServerSideView",
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "adminContentTypeEdit",
