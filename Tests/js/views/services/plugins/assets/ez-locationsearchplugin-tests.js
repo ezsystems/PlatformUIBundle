@@ -44,8 +44,8 @@ YUI.add('ez-locationsearchplugin-tests', function (Y) {
             delete this.query;
         },
 
-        "Should create a LocationQuery with the given name and criteria": function () {
-            var criteria = {};
+        "Should create a LocationQuery with the given name and search properties": function () {
+            var criteria = {}, offset = 42, limit = 43;
 
             Mock.expect(this.contentService, {
                 method: 'createView',
@@ -56,13 +56,25 @@ YUI.add('ez-locationsearchplugin-tests', function (Y) {
                         query.body.ViewInput.LocationQuery.Criteria,
                         "The criteria should be set on the view create struct"
                     );
+                    Assert.areEqual(
+                        offset,
+                        query.body.ViewInput.LocationQuery.offset,
+                        "The offset should be set on the view create struct"
+                    );
+                    Assert.areEqual(
+                        limit,
+                        query.body.ViewInput.LocationQuery.limit,
+                        "The limit should be set on the view create struct"
+                    );
                 }
             });
 
             this.view.fire('locationSearch', {
                 viewName: this.viewName,
                 search: {
-                    criteria: criteria
+                    criteria: criteria,
+                    offset: offset,
+                    limit: limit,
                 }
             });
         },

@@ -43,6 +43,8 @@ YUI.add('ez-locationsearchplugin', function (Y) {
             // TODO ViewCreateStruct should expose an API
             // see https://jira.ez.no/browse/EZP-24808
             query.body.ViewInput.LocationQuery.Criteria = e.search.criteria;
+            query.body.ViewInput.LocationQuery.offset = e.search.offset;
+            query.body.ViewInput.LocationQuery.limit = e.search.limit;
 
             // not yet supported by the REST API
             // see eZ.SubItemListView and https://jira.ez.no/browse/EZP-24315
