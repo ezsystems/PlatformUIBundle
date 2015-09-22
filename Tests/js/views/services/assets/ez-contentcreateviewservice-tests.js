@@ -289,8 +289,15 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             this.version = new Mock();
             this.languageCode = 'pol-PL';
             this.switchedLanguageCode = 'ger-DE';
+            this.versionId = 'Michael Jackson';
             this.request = {params: {languageCode: this.languageCode}};
             this.capi = {};
+
+            Mock.expect(this.version, {
+                method: 'get',
+                args: ['versionId'],
+                returns: this.versionId
+            });
 
             this.service = new Y.eZ.ContentCreateViewService({
                 app: this.app,
@@ -363,6 +370,48 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 this.switchedLanguageCode,
                 'The attribute languageCode should be changed to the selected one'
             );
+        },
+
+        "Should fire notification about changing the language": function () {
+            var that = this,
+                notificationFired = false;
+
+            Mock.expect(this.version, {
+                method: 'destroy',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (options, callback) {
+                    callback(true);
+                }
+            });
+
+            this.service.on('languageSelect', function (e) {
+                var config = {selectedLanguageCode: that.switchedLanguageCode};
+
+                e.config.languageSelectedHandler(config);
+            });
+
+            this.service.on('notify', function (e) {
+                notificationFired = true;
+
+                Assert.isTrue(
+                    (e.notification.text.indexOf(that.switchedLanguageCode)>=0),
+                    'The notification text should contain info about the language'
+                );
+                Assert.areEqual(
+                    e.notification.state,
+                    'done',
+                    'The state should be set to done'
+                );
+                Assert.areEqual(
+                    e.notification.timeout,
+                    5,
+                    'The timeout should be set to 5'
+                );
+            });
+
+            this.service.fire('test:changeLanguage');
+
+            Assert.isTrue(notificationFired, "Should fire notification");
         }
     });
 

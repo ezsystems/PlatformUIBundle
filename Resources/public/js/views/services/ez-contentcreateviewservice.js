@@ -121,7 +121,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
         },
 
         /**
-         * Sets language of created content to one given in event facade.
+         * Sets language of created content to one given in event facade. After that notification is fired.
          *
          * @method _setLanguage
          * @private
@@ -130,13 +130,25 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
          * @param {String} e.selectedLanguageCode language code to which created content will be switched
          */
         _setLanguage: function (view, e) {
-            var version = this.get('version'),
-                service = this;
+            var version = this.get('version');
 
-            version.destroy({api: this.get('capi'), remove: true}, function () {
-                service.set('languageCode',e.selectedLanguageCode);
-                service.set('version', new Y.eZ.Version());
-                view.set('languageCode', e.selectedLanguageCode);
+            version.destroy({api: this.get('capi'), remove: true}, function (error) {
+                if ( error ) {
+                    console.warn('Failed to remove the version ' + version.get('versionId'));
+                }
+            });
+
+            this.set('version', new Y.eZ.Version());
+            this.set('languageCode',e.selectedLanguageCode);
+            view.set('languageCode', e.selectedLanguageCode);
+
+            this.fire('notify', {
+                notification: {
+                    text: 'Language has been changed to ' + e.selectedLanguageCode,
+                    identifier: 'create-content-change-language-to-' + e.selectedLanguageCode,
+                    state: 'done',
+                    timeout: 5,
+                }
             });
         }
     }, {
