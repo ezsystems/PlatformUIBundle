@@ -39,13 +39,23 @@ YUI.add('ez-publishdraftplugin', function (Y) {
                 content = service.get('content'),
                 app = service.get('app');
 
-            if ( e.formIsValid ) {
-                app.set('loading', true);
-                if ( content.isNew() ) {
-                    this._createPublishContent(e.fields);
-                } else {
-                    this._savePublishVersion(e.fields);
-                }
+            if ( !e.formIsValid ) {
+                return;
+            }
+            service.fire('notify', {
+                notification: {
+                    identifier: this._buildNotificationIdentifier(content.get('id')),
+                    text: 'Publishing the content',
+                    state: 'started',
+                    timeout: 5,
+                },
+            });
+
+            app.set('loading', true);
+            if ( content.isNew() ) {
+                this._createPublishContent(e.fields);
+            } else {
+                this._savePublishVersion(e.fields);
             }
         },
 
@@ -55,10 +65,16 @@ YUI.add('ez-publishdraftplugin', function (Y) {
          * @method _publishDraftCallback
          * @protected
          */
-        _publishDraftCallback: function () {
+        _publishDraftCallback: function (error) {
             var service = this.get('host'),
                 app = this.get('host').get('app'),
                 content = service.get('content');
+
+            if ( error ) {
+                this._notifyError(content.get('id'));
+                app.set('loading', false);
+                return;
+            }
 
             content.load({api: service.get('capi')}, function (error, response) {
                 /**
@@ -86,8 +102,7 @@ YUI.add('ez-publishdraftplugin', function (Y) {
                 capi = service.get('capi'),
                 version = service.get('version'),
                 content = service.get('content'),
-                options = {api: capi},
-                that = this;
+                options = {api: capi};
 
             content.save({
                 api: capi,
@@ -95,10 +110,15 @@ YUI.add('ez-publishdraftplugin', function (Y) {
                 contentType: service.get('contentType'),
                 parentLocation: service.get('parentLocation'),
                 fields: fields,
-            }, function (error, response) {
+            }, Y.bind(function (error, response) {
+                if ( error ) {
+                    this._notifyError(content.get('id'));
+                    service.get('app').set('loading', false);
+                    return;
+                }
                 version.setAttrs(version.parse({document: response.document.Content.CurrentVersion}));
-                version.publishVersion(options, Y.bind(that._publishDraftCallback, that));
-            });
+                version.publishVersion(options, Y.bind(this._publishDraftCallback, this));
+            }, this));
         },
 
         /**
@@ -124,6 +144,36 @@ YUI.add('ez-publishdraftplugin', function (Y) {
                 languageCode: service.get('languageCode'),
                 publish: true,
             }, Y.bind(that._publishDraftCallback, that));
+        },
+
+        /**
+         * Notifies the editor about a publishing error
+         *
+         * @method _notifyError
+         * @protected
+         * @param {String} contentId
+         */
+        _notifyError: function (contentId) {
+            this.get('host').fire('notify', {
+                notification: {
+                    identifier: this._buildNotificationIdentifier(contentId),
+                    text: 'An error occured while publishing the draft',
+                    state: 'error',
+                    timeout: 0,
+                },
+            });
+        },
+
+        /**
+         * Builds the notification identifier for the publish notification
+         *
+         * @method _buildNotificationIdentifier
+         * @param {Boolean} isNew
+         * @param {eZ.Content} content
+         * @protected
+         */
+        _buildNotificationIdentifier: function (contentId) {
+            return 'publish-' + contentId + '-' + this.get('host').get('languageCode');
         },
     }, {
         NS: 'publishDraft',
