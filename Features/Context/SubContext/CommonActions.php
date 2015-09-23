@@ -135,7 +135,7 @@ trait CommonActions
      * @param   NodeElement     $node       The base node to expand from, if null defaults to the content tree root
      * @return  NodeElement                 The node that was opened
      */
-    private function openTreeNode($pathNode, $node)
+    protected function openTreeNode($pathNode, $node)
     {
         $page = $this->getSession()->getPage();
         $notFound = true;
