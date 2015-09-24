@@ -515,6 +515,13 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                             "Content types", "admin-contenttypes",
                             "adminContentType", {uri: "pjax/contenttype"}
                         ),
+                        //TODO in EZP-24860. For now link to users node is defined in a static way.
+                        this._getSubtreeItem(
+                            "Users",
+                            "admin-users",
+                            "/api/ezp/v2/content/locations/1/5",
+                            "eng-GB"
+                        ),
                     ];
 
                     this._set('adminNavigationItems', val);
