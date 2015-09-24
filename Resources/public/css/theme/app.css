@@ -87,6 +87,15 @@
     background: #fff;
 }
 
+.ez-platformui-app input[readonly],
+.ez-platformui-app textarea[readonly],
+.ez-platformui-app input[readonly]:focus,
+.ez-platformui-app textarea[readonly]:focus {
+    background: #eee;
+    color: #888;
+    box-shadow: none;
+}
+
 .ez-platformui-app .is-error .ez-validated-input {
     border: 1px solid #BF3E33;
     box-shadow: none;

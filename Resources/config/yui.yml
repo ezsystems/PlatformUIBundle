@@ -418,6 +418,7 @@ system:
                         - 'ez-relation-editview'
                         - 'ez-isbn-editview'
                         - 'ez-relationlist-editview'
+                        - 'ez-user-editview'
                         - 'event-tap'
                         - 'contenteditformview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/ez-contenteditformview.js
@@ -562,6 +563,12 @@ system:
                 emailaddresseditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/emailaddress.hbt
+                ez-user-editview:
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'usereditview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-user-editview.js
+                usereditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/user.hbt
                 ez-relationlist-view:
                     requires: ['ez-fieldview', 'relationlistview-ez-template', 'ez-asynchronousview']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-relationlist-view.js

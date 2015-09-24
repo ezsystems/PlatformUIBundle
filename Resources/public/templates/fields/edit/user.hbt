@@ -1,0 +1,70 @@
+<div class="pure-g ez-editfield-row ez-editfield-row-login">
+    <div class="pure-u ez-editfield-infos">
+        {{> ez_fieldinfo_tooltip }}
+        <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-login">
+            <p class="ez-fielddefinition-name">
+                {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+            </p>
+            <p class="ez-editfield-login-error-message ez-editfield-error-message">&nbsp;</p>
+        </label>
+    </div>
+    <div class="pure-u ez-editfield-input-area ez-default-error-style">
+        <label class="ez-field-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-login">
+            Login{{#if loginRequired}}*{{/if}}:
+        </label>
+        <div class="ez-editfield-input"><div class="ez-user-input-ui"><input type="text"
+            class="ez-user-login-value ez-validated-input"
+            value="{{ field.fieldValue.login }}"
+            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-login"
+            {{#if loginRequired}} required{{/if}}
+            {{#if readOnlyLogin}} readonly{{/if}}
+        ></div></div>
+    </div>
+</div>
+<div class="pure-g ez-editfield-row ez-editfield-row-email">
+    <div class="pure-u ez-editfield-infos">
+        <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-email">
+            <p class="ez-editfield-email-error-message ez-editfield-error-message">&nbsp;</p>
+        </label>
+    </div>
+    <div class="pure-u ez-editfield-input-area ez-default-error-style">
+        <label class="ez-field-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-email">
+            Email{{#if isRequired}}*{{/if}}:
+        </label>
+        <div class="ez-editfield-input"><div class="ez-user-input-ui"><input type="email"
+            class="ez-user-email-value ez-validated-input"
+            value="{{ field.fieldValue.email }}"
+            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-email"
+            {{#if isRequired}} required{{/if}}
+        ></div></div>
+    </div>
+</div>
+<div class="pure-g ez-editfield-row ez-editfield-row-password">
+    <div class="pure-u ez-editfield-infos">
+        <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-password">
+            <p class="ez-editfield-password-error-message ez-editfield-error-message">&nbsp;</p>
+        </label>
+    </div>
+    <div class="pure-u ez-editfield-input-area ez-default-error-style">
+        <label class="ez-field-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-password">
+            Password{{#if passwordRequired}}*{{/if}}:
+        </label>
+        </label>
+        <div class="ez-editfield-input"><div class="ez-user-input-ui"><input type="password"
+            class="ez-user-password-value ez-validated-input"
+            value=""
+            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-password"
+            {{#if passwordRequired}} required{{/if}}
+        ></div></div>
+
+        <label class="ez-field-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-confirm">
+            Confirm password{{#if passwordRequired}}*{{/if}}:
+        </label>
+        <div class="ez-editfield-input"><div class="ez-user-input-ui"><input type="password"
+            class="ez-user-confirmpassword-value ez-validated-input"
+            value=""
+            id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-confirm"
+            {{#if passwordRequired}} required{{/if}}
+        ></div></div>
+    </div>
+</div>

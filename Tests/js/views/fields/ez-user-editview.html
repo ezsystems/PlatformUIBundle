@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ User Edit view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="usereditview-ez-template">
+<div class="ez-editfield-row-login">
+    <input type="text" class="ez-user-login-value">
+    <p class="ez-editfield-login-error-message"></p>
+</div>
+<div class="ez-editfield-row-email">
+    <input type="email" class="ez-user-email-value">
+    <p class="ez-editfield-email-error-message"></p>
+</div>
+<div class="ez-editfield-row-password">
+    <input type="password" class="ez-user-password-value">
+    <input type="password" class="ez-user-confirmpassword-value">
+    <p class="ez-editfield-password-error-message"></p>
+</div>
+
+</script>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/editviewregister-tests.js"></script>
+<script type="text/javascript" src="./assets/getfield-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-user-editview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-user-editview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-user-editview": {
+                requires: ['ez-fieldeditview', 'event-valuechange'],
+                fullpath: "../../../../Resources/public/js/views/fields/ez-user-editview.js"
+            },
+            "ez-fieldeditview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/ez-fieldeditview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-user-editview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
