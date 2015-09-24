@@ -9,11 +9,7 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
-        <div class="ez-fielddescription-tooltip ez-tail-down-tooltip">
-            <p class="ez-fielddescription-tooltip-text">
-                {{ fieldDefinition.descriptions.[eng-GB] }}
-            </p>
-        </div>
+        {{> ez_fielddescription_tooltip }}
         <div class="pure-g">
             <div class="pure-u-3-5">
                 <label class="ez-field-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-name">

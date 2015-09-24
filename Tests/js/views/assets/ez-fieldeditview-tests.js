@@ -272,12 +272,10 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                     var tooltip = container.one('.ez-fielddescription-tooltip');
 
                     Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should be visible before the tap");
-                    Y.Assert.isTrue(tooltip.hasClass("is-displayed"), "Tooltip node should be displayed inside DOM before the tap");
 
                     container.simulateGesture('tap', function () {
                         that.resume(function () {
                             Y.Assert.isFalse(tooltip.hasClass("is-visible"), "Tooltip node should NOT be visible after the tap");
-                            Y.Assert.isFalse(tooltip.hasClass("is-displayed"), "Tooltip node should NOT be displayed inside DOM after the tap");
                         });
                     });
                     that.wait();
@@ -298,12 +296,10 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                     var tooltip = container.one('.ez-fielddescription-tooltip');
 
                     Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should be visible before the tap");
-                    Y.Assert.isTrue(tooltip.hasClass("is-displayed"), "Tooltip node should be displayed inside DOM before the tap");
 
                     container.one('.ez-editfield-input').simulateGesture('tap', function () {
                         that.resume(function () {
                             Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should NOT be visible after the tap");
-                            Y.Assert.isTrue(tooltip.hasClass("is-displayed"), "Tooltip node should NOT be displayed inside DOM after the tap");
                         });
                     });
                     that.wait();

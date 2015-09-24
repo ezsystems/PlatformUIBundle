@@ -58,7 +58,7 @@ YUI.add('ez-dateandtime-editview', function (Y) {
         },
 
         initializer: function () {
-            this._setDescriptionStandardDisplay = 'disable';
+            this._useStandardFieldDefinitionDescription = 'false';
         },
 
         /**

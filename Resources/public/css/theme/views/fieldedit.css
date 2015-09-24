@@ -105,3 +105,17 @@
 .ez-standard-description.is-showing-description .ez-field-description {
     opacity: 1;
 }
+
+.ez-editfield-input-area .ez-fielddescription-tooltip {
+    display: inline;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.ez-editfield-input-area .ez-fielddescription-tooltip.is-visible {
+    opacity: 1;
+}
+
+.ez-editfield-input-area {
+    overflow: hidden;
+}

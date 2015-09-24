@@ -12,7 +12,6 @@ YUI.add('ez-fieldeditview', function (Y) {
     Y.namespace('eZ');
 
     var L = Y.Lang,
-        IS_DISPLAYED_CLASS = 'is-displayed',
         IS_VISIBLE_CLASS = 'is-visible',
         IS_SHOWING_DESCRIPTION = 'is-showing-description',
         FIELD_INPUT = '.ez-editfield-input',
@@ -77,7 +76,7 @@ YUI.add('ez-fieldeditview', function (Y) {
             },
                 container = this.get('container');
 
-            if (this._setDescriptionStandardDisplay === 'active') {
+            if (this._useStandardFieldDefinitionDescription === 'true') {
                 container.addClass(STANDARD_DESCR);
             }
             this.get('container').setHTML(
@@ -160,7 +159,7 @@ YUI.add('ez-fieldeditview', function (Y) {
          */
         _showDescription: function () {
             var container = this.get('container');
-            if (this._handleFieldDescriptionVisibility == true) {
+            if (this._handleFieldDescriptionVisibility === true) {
                 if (this._isTouch() &&  container.one(TOOLTIP_DESCR)) {
                     this._setTooltipPosition(FIELD_INPUT);
                 } else {
@@ -170,8 +169,8 @@ YUI.add('ez-fieldeditview', function (Y) {
         },
 
         /**
-         * Set the description tooltip position in Y axis.
-         * The tooltip position is modified by it's height.
+         * Set the description tooltip position.
+         * The tooltip position is modified by it's height and is relative to the field input.
          *
          * @method _setTooltipPosition
          * @protected
@@ -182,11 +181,14 @@ YUI.add('ez-fieldeditview', function (Y) {
                 fieldInput = container.one(fieldInputDomClass),
                 tooltipHeight;
 
-            tooltip.addClass(IS_DISPLAYED_CLASS);
-            tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
-            tooltip.setY(fieldInput.getY() - tooltipHeight);
-            tooltip.addClass(IS_VISIBLE_CLASS);
-            this._attachedViewEvents.push(container.one(FIELD_INPUT).on('clickoutside', Y.bind(this._hideDescription, this)));
+            if (!tooltip.hasClass(IS_VISIBLE_CLASS)){
+                this._tooltipInitialPosition = tooltip.getXY();
+                tooltipHeight = tooltip.get('offsetHeight');
+                tooltip.setXY([ fieldInput.getX(), fieldInput.getY() - tooltipHeight]);
+                tooltip.addClass(IS_VISIBLE_CLASS);
+                this._attachedViewEvents.push(container.one(FIELD_INPUT).on('clickoutside', Y.bind(this._hideDescription, this)));
+            }
+
         },
 
         /**
@@ -199,11 +201,11 @@ YUI.add('ez-fieldeditview', function (Y) {
             var container = this.get('container'),
                 tooltip = container.one(TOOLTIP_DESCR);
 
-            if (this._handleFieldDescriptionVisibility == true) {
+            if (this._handleFieldDescriptionVisibility === true) {
                 container.removeClass(IS_SHOWING_DESCRIPTION);
                 if (tooltip) {
-                    tooltip.removeClass(IS_DISPLAYED_CLASS);
                     tooltip.removeClass(IS_VISIBLE_CLASS);
+                    tooltip.setXY(this._tooltipInitialPosition);
                     tooltip.detach('clickoutside');
                 }
             }
@@ -216,6 +218,7 @@ YUI.add('ez-fieldeditview', function (Y) {
          * @method initializer
          */
         initializer: function () {
+            Y.eZ.TemplateBasedView.registerPartial('ez_fielddescription_tooltip', 'fielddescription-tooltip-ez-partial');
             /**
              * Set if the fieldDefinition description is active or not.
              *
@@ -227,14 +230,25 @@ YUI.add('ez-fieldeditview', function (Y) {
             this._handleFieldDescriptionVisibility = true;
 
             /**
-             * Set if the fieldDefinition description has the standard display
+             * Set if the fieldDefinition description has the standard display.
+             * Standard means it will use the ez-standard-description CSS rule from fieldedit.css
              *
-             * @property _setDescriptionStandardDisplay
+             * @property _useStandardFieldDefinitionDescription
              * @protected
              * @type string
              * @default 'active'
              */
-            this._setDescriptionStandardDisplay = 'active';
+            this._useStandardFieldDefinitionDescription = 'true';
+
+            /**
+             * Contains the initial X an Y position of a tooltip
+             * This will be used to restore its position when vanishing
+             *
+             * @property _tooltipInitialPosition
+             * @protected
+             * @type array
+             */
+            this._tooltipInitialPosition = [];
 
             this.after('errorStatusChange', this._errorUI);
 

@@ -60,27 +60,16 @@
 
 .ez-editfield-input-area .ez-fielddescription-tooltip {
     position: absolute;
-
-    left: 15.7em;
-    height: 0;
-    opacity: 0;
-    margin-top: 3em;
+    top: -100%;
     max-width: 48%;
     z-index: 10;
-    transition: opacity 0.1s;
     display: none;
     margin-right: 2em;
 }
 
-.ez-editfield-input-area .ez-fielddescription-tooltip.is-displayed {
-    height: auto;
-    margin-left: 0.5em;
-    display: inline;
-}
-
 .ez-editfield-input-area .ez-fielddescription-tooltip.is-visible {
-    opacity: 1;
-    transition: opacity 0.3s;
+    height: auto;
+    display: inline;
 }
 
 .ez-editfield-input-area .ez-fielddescription-tooltip-text {
