@@ -118,6 +118,45 @@ YUI.add('ez-platformuiapp', function (Y) {
          * @method initializer
          */
         initializer: function () {
+            var config = this.get('config'),
+                rootInfo = config.rootInfo,
+                sessionInfo =  config.sessionInfo,
+                session = {},
+                CAPI = this.get('capiModelConstructor'),
+                SessionAuthAgent = this.get('sessionAuthAgentModelConstructor'),
+                countriesInfo = config.countriesInfo,
+                routeConfig = {
+                    "viewLocation": {
+                        "fieldViews": {
+                            "ezcountry": countriesInfo
+                        }
+                    },
+                    "translateContent": {
+                        "fieldEditViews": {
+                            "ezcountry": countriesInfo
+                        }
+                    },
+                    "editContent": {
+                        "fieldEditViews": {
+                            "ezcountry": countriesInfo,
+                            "ezrichtext": {
+                                "alloyEditor": {
+                                    "externalPluginPath": rootInfo.ckeditorPluginPath,
+                                }
+                            }
+                        }
+                    },
+                    "createContent": {
+                        "fieldEditViews": {
+                            "ezcountry": countriesInfo,
+                            "ezrichtext": {
+                                "alloyEditor": {
+                                    "externalPluginPath": rootInfo.ckeditorPluginPath,
+                                }
+                            }
+                        }
+                    }
+                };
             /**
              * Stores the initial title of the page so it can be used when
              * generating the title depending on the active view
@@ -143,6 +182,24 @@ YUI.add('ez-platformuiapp', function (Y) {
                     oldService.setNextViewServiceParameters(newService);
                 }
             });
+
+            if (sessionInfo.isStarted) {
+                session = {
+                    name: sessionInfo.name,
+                    identifier: sessionInfo.identifier,
+                    href: sessionInfo.href,
+                    csrfToken: sessionInfo.csrfToken,
+                };
+            }
+            this._set('root', rootInfo.root);
+            this._set('assetRoot', rootInfo.assetRoot);
+            this._set('apiRoot', rootInfo.apiRoot);
+            this._set('anonymousUserId', config.anonymousUserId);
+            this._set('capi', new CAPI(
+                rootInfo.apiRoot.replace('/', ''),
+                new SessionAuthAgent(session)
+            ));
+            this._set('routeConfig', routeConfig);
             this._routeConfig();
         },
 
@@ -664,6 +721,17 @@ YUI.add('ez-platformuiapp', function (Y) {
     }, {
         ATTRS: {
             /**
+             * Stores all the application configuration in this attribute.
+             * The config is dispatched in the others attributes in the iniçtializer of the application
+             *
+             * @attribute config
+             * @type Array
+             */
+            config: {
+
+            },
+
+            /**
              * Stores the available routes for the application.
              *
              * In addition to what is described in the {{#crossLink "App"}}YUI
@@ -909,6 +977,26 @@ YUI.add('ez-platformuiapp', function (Y) {
              */
             anonymousUserId: {
                 writeOnce: "initOnly",
+            },
+
+            /**
+             * CAPI constructor
+             *
+             * @attribute capiModelConstructor
+             * @type eZ.CAPI
+             */
+            capiModelConstructor: {
+                value: Y.eZ.CAPI
+            },
+
+            /**
+             * SessionAuthAgent constructor
+             *
+             * @attribute sessionAuthModelConstructor
+             * @type eZ.SessionAuthAgent
+             */
+            sessionAuthAgentModelConstructor: {
+                value: Y.eZ.SessionAuthAgent
             },
         }
     });
