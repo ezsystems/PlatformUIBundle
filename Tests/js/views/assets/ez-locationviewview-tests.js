@@ -279,6 +279,15 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 }
             });
 
+            Y.eZ.LocationViewRelationsTabView = Y.Base.create('locationViewRelationsTabView', Y.View, [], {}, {
+                ATTRS: {
+                    content: {},
+                    contentType: {},
+                    config: {},
+                    priority: {},
+                }
+            });
+
             this.view = new Y.eZ.LocationViewView({
                 location: {},
                 content: {},

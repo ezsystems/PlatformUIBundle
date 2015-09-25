@@ -411,7 +411,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             );
 
             Y.Array.each(relations, function (relation, i) {
-                var elt = expected.shift();
+                var elt = expected[i];
 
                 Y.Assert.areEqual(
                     elt.id,
@@ -433,6 +433,10 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             this._testRelations(
                 this.relationAttribute1.concat(this.relationsAttribute2), "ATTRIBUTE"
             );
+        },
+
+        "Should return all relations (without a type and a field identifier)": function () {
+            this._testRelations(this.relations);
         },
     });
 

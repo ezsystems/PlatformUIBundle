@@ -1,0 +1,41 @@
+<div class="ez-relations-box">
+    <h2 class="ez-relations-box-title">Related content</h2>
+
+    {{#if loadingError}}
+    <p class="ez-asynchronousview-error ez-font-icon">
+        An error occurred while loading the related content list.
+        <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">
+            Retry
+        </button>
+    </p>
+    {{else}}
+    <div class="ez-relations-box-list">
+        <table class="ez-relations-box-table ez-asynchronousview pure-table pure-table-bordered">
+        <thead>
+            <tr>
+                <th>Content</th>
+                <th>Relation type</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each relatedContents}}
+            <tr>
+                <td>
+                    <a href="{{path "viewLocation" id=content.id languageCode=content.mainLanguageCode}}">{{content.name}}</a>
+                </td>
+                <td>
+                    <ul class="ez-relations-type-list">
+                        {{#each relationInfo}}
+                            <li class="ez-relations-type">
+                                {{relationTypeName}}{{#if fieldDefinitionName}} ({{fieldDefinitionName}}){{/if}}
+                            </li>
+                        {{/each}}
+                    </ul>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+        </table>
+    </div>
+    {{/if}}
+</div>

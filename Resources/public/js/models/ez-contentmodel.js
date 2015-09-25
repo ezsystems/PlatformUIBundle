@@ -167,13 +167,20 @@ YUI.add('ez-contentmodel', function (Y) {
          * definition identifier.
          *
          * @method relations
-         * @param {String} type of the relation ('ATTRIBUTE', 'COMMON', 'EMBED', 'LINK')
+         *
+         * @param {String} [type] type of relation to filter on
+         *        ('ATTRIBUTE', 'COMMON', 'EMBED', 'LINK'),
+         *        if omitted all relations are returned
          * @param {String} [fieldDefinitionIdentifier]
          * @return {Array}
          */
         relations: function (type, fieldDefinitionIdentifier) {
             var relations,
                 fieldDefFilter = (typeof fieldDefinitionIdentifier !== "undefined");
+
+            if (typeof type === "undefined") {
+                return this.get('relations');
+            }
 
             relations = Y.Array.filter(this.get('relations'), function (relation) {
                 if (

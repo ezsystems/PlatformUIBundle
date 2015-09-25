@@ -1,0 +1,31 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-locationviewrelationstabview .ez-relations-box {
+    margin-top: 2em;
+}
+
+.ez-view-locationviewrelationstabview .ez-relations-box-title {
+    margin: 0;
+    padding: 0 1em;
+    line-height: 2.5em;
+}
+
+.ez-view-locationviewrelationstabview .ez-relations-box-list {
+    padding: 1em;
+}
+
+.ez-view-locationviewrelationstabview .ez-relations-box-table {
+    width: 100%;
+}
+
+.ez-view-locationviewrelationstabview .ez-relations-type-list {
+    display: inline;
+    padding-left: 0;
+}
+
+.ez-view-locationviewrelationstabview .ez-relations-type {
+    display: inline;
+}

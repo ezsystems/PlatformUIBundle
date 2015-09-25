@@ -20,7 +20,7 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
                     method: 'toJSON',
                     returns: this.destinationContent2ToJSON
                 });
-                this.destinationContents = [this.destinationContent1, this.destinationContent2];
+                this.relatedContents = [this.destinationContent1, this.destinationContent2];
 
                 this.destinationContent1ToJSON = {anythingJSONed: 'somethingJSONed'};
                 this.destinationContent2ToJSON = {anythingJSONed: 'somethingJSONed'};
@@ -46,11 +46,11 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
                 Y.one('.app').empty();
             },
 
-            "Should fire the loadFieldRelatedContents event": function () {
+            "Should fire the loadObjectRelations event": function () {
                 var loadContentsEvent = false,
                     that = this;
 
-                this.view.on('loadFieldRelatedContents', function (e) {
+                this.view.on('loadObjectRelations', function (e) {
                     loadContentsEvent = true;
                     Y.Assert.areSame(
                         that.fieldDefinitionIdentifier,
@@ -63,7 +63,7 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
                 Y.Assert.isTrue(loadContentsEvent, "loadContentsEvent should be called when changing active value");
             },
 
-            "Should render the view when the destinationContents attribute changes": function () {
+            "Should render the view when the relatedContents attribute changes": function () {
                 var that = this,
                     templateCalled = false,
                     origTpl = this.view.template;
@@ -73,14 +73,14 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
 
                     templateCalled = true;
 
-                    Y.Assert.isArray(variables.destinationContents, 'destinationContents should be an array');
+                    Y.Assert.isArray(variables.relatedContents, 'relatedContents should be an array');
 
-                    Y.Array.each(that.destinationContents, function (value, i) {
+                    Y.Array.each(that.relatedContents, function (value, i) {
 
                         Y.Assert.areSame(
                             value.toJSON(),
-                            variables.destinationContents[i],
-                            'destinationContents should match the destinationContentsToJSON value'
+                            variables.relatedContents[i],
+                            'relatedContents should match the relatedContentsToJSON value'
                         );
                     });
 
@@ -91,7 +91,7 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
                     );
                     return origTpl.apply(this, arguments);
                 };
-                this.view.set('destinationContents', this.destinationContents);
+                this.view.set('relatedContents', this.relatedContents);
 
                 Y.Assert.isTrue(templateCalled, "The template has not been used");
             },
@@ -118,28 +118,28 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
 
             "Should try to reload the content when tapping on the retry button": function () {
                 var that = this,
-                    loadFieldRelatedContents = false;
+                    loadObjectRelations = false;
 
                 this.view.render();
                 this.view.set('active', true);
                 this.view.set('loadingError', true);
-                this.view.on('loadFieldRelatedContents', function () {
-                    loadFieldRelatedContents = true;
+                this.view.on('loadObjectRelations', function () {
+                    loadObjectRelations = true;
                 });
 
                 this.view.get('container').one('.ez-asynchronousview-retry').simulateGesture('tap', function () {
                     that.resume(function () {
                         Y.Assert.isNull(
-                            this.view.get('destinationContents'),
-                            "The `destinationContents` attribute should be resetted to null"
+                            this.view.get('relatedContents'),
+                            "The `relatedContents` attribute should be resetted to null"
                         );
                         Y.Assert.isFalse(
                             this.view.get('loadingError'),
                             "The `loadingError` attribute should be resetted to false"
                         );
                         Y.Assert.isTrue(
-                            loadFieldRelatedContents,
-                            "The loadFieldRelatedContents should have been fired"
+                            loadObjectRelations,
+                            "The loadObjectRelations should have been fired"
                         );
                     });
                 });
@@ -166,9 +166,9 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
             tearDown: function () {
                 this.view.destroy();
             },
-            "Should not fire the loadFieldRelatedContents event when the relation list is null": function () {
-                this.view.on('loadFieldRelatedContents', function () {
-                    Y.Assert.fail("loadFieldRelatedContents method should fail");
+            "Should not fire the loadObjectRelations event when the relation list is null": function () {
+                this.view.on('loadObjectRelations', function () {
+                    Y.Assert.fail("loadObjectRelations method should fail");
                 });
                 this.view.set('active', true);
             }
@@ -193,9 +193,9 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
             tearDown: function () {
                 this.view.destroy();
             },
-            "Should not fire the loadFieldRelatedContents event when the relation list is an empty array": function () {
-                this.view.on('loadFieldRelatedContents', function () {
-                    Y.Assert.fail("loadFieldRelatedContents method should fail");
+            "Should not fire the loadObjectRelations event when the relation list is an empty array": function () {
+                this.view.on('loadObjectRelations', function () {
+                    Y.Assert.fail("loadObjectRelations method should fail");
                 });
                 this.view.set('active', true);
             }
@@ -220,9 +220,9 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
             tearDown: function () {
                 this.view.destroy();
             },
-            "Should not fire the loadFieldRelatedContents event when there is no fieldValue": function () {
-                this.view.on('loadFieldRelatedContents', function () {
-                    Y.Assert.fail("loadFieldRelatedContents method should fail");
+            "Should not fire the loadObjectRelations event when there is no fieldValue": function () {
+                this.view.on('loadObjectRelations', function () {
+                    Y.Assert.fail("loadObjectRelations method should fail");
                 });
                 this.view.set('active', true);
             }

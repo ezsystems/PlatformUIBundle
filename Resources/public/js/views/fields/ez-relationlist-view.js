@@ -21,8 +21,8 @@ YUI.add('ez-relationlist-view', function (Y) {
      */
     Y.eZ.RelationListView = Y.Base.create('relationlistView', Y.eZ.FieldView, [Y.eZ.AsynchronousView], {
         initializer: function () {
-            this._fireMethod = this._fireLoadFieldRelatedContents;
-            this._watchAttribute = 'destinationContents';
+            this._fireMethod = this._fireLoadObjectRelations;
+            this._watchAttribute = 'relatedContents';
         },
 
         /**
@@ -39,14 +39,15 @@ YUI.add('ez-relationlist-view', function (Y) {
         },
 
         /**
-         * Fire the `loadFieldRelatedContents` event to retrieve the related contents
+         * Fire the `loadObjectRelations` event to retrieve the related contents
          *
-         * @method _fireLoadFieldRelatedContents
+         * @method _fireLoadObjectRelations
          * @protected
          */
-        _fireLoadFieldRelatedContents: function () {
+        _fireLoadObjectRelations: function () {
             if (!this._isFieldEmpty()){
-                this.fire('loadFieldRelatedContents', {
+                this.fire('loadObjectRelations', {
+                    relationType: 'ATTRIBUTE',
                     fieldDefinitionIdentifier: this.get('fieldDefinition').identifier
                 });
             }
@@ -60,27 +61,27 @@ YUI.add('ez-relationlist-view', function (Y) {
          * @return Object
          */
         _variables: function () {
-            var dest = this.get('destinationContents'),
-                destinationContentsJSON = [];
+            var relatedContents = this.get('relatedContents'),
+                relatedContentsJSON = [];
 
-            Y.Array.each(dest, function (value) {
-                destinationContentsJSON.push(value.toJSON());
+            Y.Array.each(relatedContents, function (value) {
+                relatedContentsJSON.push(value.toJSON());
             });
 
             return {
-                destinationContents: destinationContentsJSON,
+                relatedContents: relatedContentsJSON,
                 loadingError: this.get('loadingError'),
             };
         },
     },{
         ATTRS: {
             /**
-             * The destination contents of the relation list
+             * The related contents of the relation list
              *
-             * @attribute destinationContents
+             * @attribute relatedContents
              * @type Array
              */
-            destinationContents: {
+            relatedContents: {
                 value: null,
             },
         },
