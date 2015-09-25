@@ -151,6 +151,7 @@ system:
                         - 'ez-locationsloadplugin'
                         - 'ez-locationcreateplugin'
                         - 'ez-contentsetmainlocationplugin'
+                        - 'ez-visibilityswitcherplugin'
                         - 'ez-imagevariationloadplugin'
                         - 'ez-contentcreateplugin'
                         - 'ez-copycontentplugin'
@@ -878,6 +879,9 @@ system:
                 ez-userloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-userloadplugin.js
+                ez-visibilityswitcherplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-visibilityswitcherplugin.js
                 ez-locationsloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationsloadplugin.js

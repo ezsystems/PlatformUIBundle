@@ -15,7 +15,7 @@
                         <tr>
                             <th>Path</th>
                             <th>Sub items</th>
-                            <th>Visibility</th>
+                            <th colspan="2">Visibility</th>
                             <th>Main</th>
                         </tr>
                     </thead>
@@ -29,9 +29,19 @@
                                 <td class="ez-table-data-visibility">
                                     {{#if hidden}}Hidden{{else}}{{#if invisible}}Hidden by superior{{else}}Visible{{/if}}{{/if}}
                                 </td>
+                                <td class="ez-table-data-visibility">
+                                    <button
+                                        data-location-id="{{id}}"
+                                        class="ez-locations-hidden-button
+                                        {{#if hidden}}ez-locations-hidden-button-reveal{{else}}{{#if invisible}}ez-locations-hidden-button-hide{{else}}ez-locations-hidden-button-hide{{/if}}{{/if}}
+                                        pure-button ez-font-icon ez-button">
+
+                                        {{#if hidden}}Reveal{{else}}{{#if invisible}}Hide{{else}}Hide{{/if}}{{/if}}
+                                    </button>
+                                </td>
                                 <td class="ez-table-data-main-location">
                                     <input type="radio" value="1" class="ez-main-location-radio"
-                                        data-location-id="{{ id }}"{{#if isMainLocation}} checked="checked"{{/if}}>
+                                           data-location-id="{{ id }}"{{#if isMainLocation}} checked="checked"{{/if}}>
                                 </td>
                             </tr>
                         {{/each}}

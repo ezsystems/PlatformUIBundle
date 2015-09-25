@@ -18,3 +18,26 @@
 .ez-view-locationviewlocationstabview .ez-locations-list-table {
     background: #fff;
 }
+
+.ez-view-locationviewlocationstabview .ez-locations-hidden-button-reveal:before {
+    content: "\e607";
+}
+
+.ez-view-locationviewlocationstabview .ez-locations-hidden-button-hide:before {
+    content: "\e607";
+    opacity: 0.3;
+}
+
+.ez-view-locationviewlocationstabview .is-switching-visibility {
+    color: #888;
+    font-style: italic;
+}
+
+.ez-view-locationviewlocationstabview .is-switching-visibility:before {
+    display: inline-block;
+    -webkit-animation: spin 0.7s infinite linear;
+            animation: spin 0.7s infinite linear;
+    content: "\E61c";
+    padding: 0 0.2em;
+    opacity: 1;
+}
