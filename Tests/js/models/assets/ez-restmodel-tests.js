@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-restmodel-tests', function (Y) {
-    var modelTest, resetTest,
+    var modelTest, resetTest, toJSONTest,
+        Assert = Y.Assert, Mock = Y.Mock,
         Model, DeepModel;
 
     Model = Y.Base.create('testModel', Y.eZ.RestModel, [], {
@@ -390,7 +391,57 @@ YUI.add('ez-restmodel-tests', function (Y) {
         },
     });
 
+    toJSONTest = new Y.Test.Case({
+        name: "eZ Rest Model tests",
+
+        setUp: function () {
+            this.model = new Y.eZ.RestModel();
+            this.model.set('foo', 'bar');
+            this.model.set('obj', {});
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        "Should convert the model to a plain object": function () {
+            var json = this.model.toJSON();
+
+            Assert.isObject(json, "toJSON should generate an object");
+            Assert.areEqual(
+                this.model.get('foo'), json.foo,
+                "toJSON object should contain the attribute values"
+            );
+            Assert.areSame(
+                this.model.get('obj'), json.obj,
+                "toJSON object should contain the attribute values"
+            );
+        },
+
+        "Should convert model in attribute": function () {
+            var modelMock = new Mock(),
+                mockJSON = {'whatever': ''},
+                json;
+
+            Mock.expect(modelMock, {
+                method: 'toJSON',
+                returns: mockJSON,
+            });
+
+            this.model.set('model', modelMock);
+            json = this.model.toJSON();
+
+            Mock.verify(modelMock);
+            Assert.areSame(
+                mockJSON, json.model,
+                "The model in attribute should be jsonified"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Rest Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(resetTest);
+    Y.Test.Runner.add(toJSONTest);
 }, '', {requires: ['test', 'ez-restmodel']});

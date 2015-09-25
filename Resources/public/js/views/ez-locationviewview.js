@@ -45,23 +45,16 @@ YUI.add('ez-locationviewview', function (Y) {
         },
 
         /**
-         * Converts each location and content model in the path to a plain
-         * object representation
+         * Converts each location in the path to a plain object representation
          *
          * @method _pathToJSON
          * @private
          * @return Array
          */
         _pathToJSON: function () {
-            var path = [];
-
-            Y.Array.each(this.get('path'), function (location, key) {
-                path[key] = {
-                    location: location.toJSON(),
-                    contentInfo: location.get('contentInfo').toJSON()
-                };
+            return Y.Array.map(this.get('path'), function (location) {
+                return location.toJSON();
             });
-            return path;
         },
 
         /**
@@ -71,7 +64,8 @@ YUI.add('ez-locationviewview', function (Y) {
          * @return {eZ.LocationViewView} the view itself
          */
         render: function () {
-            var container = this.get('container');
+            var container = this.get('container'),
+                subitemList = this.get('subitemList');
 
             container.setHTML(this.template({
                 location: this.get('location').toJSON(),
@@ -84,6 +78,11 @@ YUI.add('ez-locationviewview', function (Y) {
                 this.get('actionBar').render().get('container')
             );
             this._renderTabViews();
+            if ( subitemList ) {
+                container.one('.ez-subitemlist-container').append(
+                    subitemList.render().get('container')
+                );
+            }
 
             this._uiSetMinHeight();
             return this;
@@ -219,7 +218,8 @@ YUI.add('ez-locationviewview', function (Y) {
         },
 
         destructor: function () {
-            var bar = this.get('actionBar');
+            var bar = this.get('actionBar'),
+                subitemList = this.get('subitemList');
 
             bar.removeTarget(this);
             bar.destroy();
@@ -227,6 +227,10 @@ YUI.add('ez-locationviewview', function (Y) {
                 tab.removeTarget(this);
                 tab.destroy();
             });
+            if ( subitemList ) {
+                subitemList.removeTarget(this);
+                subitemList.destroy();
+            }
         }
     }, {
         ATTRS: {
@@ -343,6 +347,30 @@ YUI.add('ez-locationviewview', function (Y) {
                             bubbleTargets: this,
                         }),
                     ];
+                },
+                writeOnce: 'initOnly',
+            },
+
+            /**
+             * The subitem list view or null if the content (type) is not
+             * configured to be a container.
+             *
+             * @attribute subitemList
+             * @type {eZ.SubitemListView|Null}
+             * @writeOnce
+             */
+            subitemList: {
+                valueFn: function () {
+                    var contentType = this.get('contentType');
+
+                    if ( contentType && contentType.get('isContainer') ) {
+                        return new Y.eZ.SubitemListView({
+                            location: this.get('location'),
+                            config: this.get('config'),
+                            bubbleTargets: this,
+                        });
+                    }
+                    return null;
                 },
                 writeOnce: 'initOnly',
             },

@@ -200,6 +200,8 @@ system:
                         - 'ez-locationviewviewtabview'
                         - 'ez-locationviewdetailstabview'
                         - 'ez-tabs'
+                        - 'ez-subitemlistview'
+                        - 'ez-locationsearchplugin'
                         - 'event-tap'
                         - 'array-extras'
                         - 'locationviewview-ez-template'
@@ -207,6 +209,12 @@ system:
                 locationviewview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/locationview.hbt
+                ez-subitemlistview:
+                    requires: ['ez-templatebasedview', 'ez-asynchronousview', 'event-tap', 'subitemlistview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/ez-subitemlistview.js
+                subitemlistview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/subitemlist.hbt
                 ez-locationviewtabview:
                     requires: ['ez-templatebasedview']
                     path: %ez_platformui.public_dir%/js/views/ez-locationviewtabview.js
@@ -860,6 +868,9 @@ system:
                 ez-contenttreeplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'parallel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
+                ez-locationsearchplugin:
+                    requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationsearchplugin.js
                 ez-contentcreateplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contentcreateplugin.js

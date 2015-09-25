@@ -1,0 +1,90 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-subitemlistview .ez-subitemlist-box {
+    border: 1px solid #ccc;
+    background: #F5F4F2;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-title {
+    background: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+}
+
+.ez-view-subitemlistview .ez-subitemlist-content {
+    transition: all ease 0.3s;
+    opacity: 1;
+}
+
+.ez-view-subitemlistview.is-page-loading .ez-subitemlist-content {
+    opacity: 0.3;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-table {
+    box-shadow: 0 0 2px #ccc;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-table td {
+    background: #fff;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-table tr:nth-child(2n-1) td {
+    background: #fafafa;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-navigation {
+    list-style-type: none;
+    font-size: 90%;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-navigation-link.is-disabled {
+    color: #999;
+    cursor: default;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-navigation-link[rel="first"]:before {
+    content: "«";
+    padding-right: 0.3em;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-navigation-link[rel="next"]:after {
+    content: "›";
+    padding-left: 0.3em;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-navigation-link[rel="prev"]:before {
+    content: "‹";
+    padding-right: 0.3em;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-navigation-link[rel="last"]:after {
+    content: "»";
+    padding-left: 0.3em;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-loader-mask {
+    transition: all ease 0.3s;
+}
+
+.ez-view-subitemlistview .ez-subitemlist-loader-mask:before {
+    -webkit-animation: spin 0.5s infinite linear;
+            animation: spin 0.5s infinite linear;
+    box-sizing: border-box;
+    border-radius: 100%;
+    border-width: 0.5em;
+    border-style: solid;
+    border-color: rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.1);
+    opacity: 1;
+    z-index: 10000;
+    width: 3em;
+    height: 3em;
+    content: " ";
+    display: block;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+}

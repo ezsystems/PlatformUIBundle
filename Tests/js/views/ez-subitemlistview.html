@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Subitem List view tests</title>
+</head>
+<body>
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="subitemlistview-ez-template">
+    <a href="#" class="ez-subitemlist-navigation-link" rel="first">First</a>
+    <a href="#" class="ez-subitemlist-navigation-link" rel="prev">Previous</a>
+    <a href="#" class="ez-subitemlist-navigation-link" rel="next">Next</a>
+    <a href="#" class="ez-subitemlist-navigation-link" rel="last">Last</a>
+</script>
+
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-subitemlistview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-subitemlistview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-subitemlistview": {
+                requires: ['ez-templatebasedview', 'ez-asynchronousview', 'event-tap'],
+                fullpath: "../../../Resources/public/js/views/ez-subitemlistview.js"
+            },
+            "ez-asynchronousview": {
+                requires: ['view', 'event-tap'],
+                fullpath: "../../../Resources/public/js/extensions/ez-asynchronousview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-subitemlistview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

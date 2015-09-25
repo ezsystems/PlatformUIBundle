@@ -25,3 +25,7 @@
 .ez-view-locationviewview .ez-locationview-content {
     width: 100%;
 }
+
+.ez-view-locationviewview .ez-subitemlist-container {
+    padding: 0 2em 2em 2em;
+}

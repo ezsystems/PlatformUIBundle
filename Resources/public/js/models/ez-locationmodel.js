@@ -104,7 +104,7 @@ YUI.add('ez-locationmodel', function (Y) {
         ATTRS_REST_MAP: [
             'childCount', 'depth', 'hidden', 'invisible', 'pathString',
             'priority', 'remoteId', 'sortField', 'sortOrder',
-            {'id': 'locationId'}
+            {'id': 'locationId'}, {'_href': 'id'},
         ],
         LINKS_MAP: ['ParentLocation', 'Content'],
         ATTRS: {
