@@ -6,7 +6,7 @@ YUI.add('ez-user-editview-tests', function (Y) {
     var registerTest, getFieldValueTest, getFieldValuePasswordTest,
         errorStatusTest, errorStatusAttributesTest, renderTest,
         validateTest, loginValidationTest, emailValidationTest,
-        passwordValidationTest,
+        passwordValidationTest, loginAvailableAttrTest,
         Assert = Y.Assert, Mock = Y.Mock,
         modelMock = new Mock();
 
@@ -209,6 +209,86 @@ YUI.add('ez-user-editview-tests', function (Y) {
                 "An error on the password should have been found"
             );
         },
+
+        "Should not check login availability": function () {
+            this.view.on('isLoginAvailable', function () {
+                Assert.fail("The isLoginAvailable should not have been fired");
+            });
+            this.view.validate();
+        },
+    });
+
+    loginAvailableAttrTest = new Y.Test.Case({
+        name: "eZ User Edit View loginAvailable attribute test",
+
+        setUp: function () {
+            this.view = new Y.eZ.UserEditView({
+                field: {fieldValue: null},
+                fieldDefinition: {isRequired: false},
+                content: modelMock,
+                version: modelMock,
+                contentType: modelMock,
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "checking login": function () {
+            this.view.setCheckingLogin();
+
+            Assert.isTrue(
+                this.view.get('container').hasClass('is-checking-login'),
+                "The checking class should be added on the container"
+            );
+        },
+
+        "login available": function () {
+            this['checking login']();
+            this.view.set('loginErrorStatus', 'An error');
+            this.view.setLoginAvailable();
+
+            Assert.isFalse(
+                this.view.get('container').hasClass('is-checking-login'),
+                "The checking class should be removed from the container"
+            );
+            Assert.isFalse(
+                this.view.get('loginErrorStatus'),
+                "The error status should be resetted"
+            );
+        },
+
+        "login not available": function () {
+            this['checking login']();
+            this.view.set('loginErrorStatus', false);
+            this.view.setLoginUnavailable();
+
+            Assert.isFalse(
+                this.view.get('container').hasClass('is-checking-login'),
+                "The checking class should be removed from the container"
+            );
+            Assert.isTrue(
+                !!this.view.get('loginErrorStatus'),
+                "The error status should contain an error"
+            );
+        },
+
+        "error while checking login": function () {
+            this['checking login']();
+            this.view.set('loginErrorStatus', false);
+            this.view.setUnableToCheckLogin();
+
+            Assert.isFalse(
+                this.view.get('container').hasClass('is-checking-login'),
+                "The checking class should be removed from the container"
+            );
+            Assert.isFalse(
+                this.view.get('loginErrorStatus'),
+                "The error status should contain false"
+            );
+        },
     });
 
     loginValidationTest = new Y.Test.Case({
@@ -239,6 +319,39 @@ YUI.add('ez-user-editview-tests', function (Y) {
             );
         },
 
+        "Should check login availability": function () {
+            var fired = false,
+                login = 'dave';
+
+            this.view.on('isLoginAvailable', function (e) {
+                fired = true;
+                Assert.areEqual(
+                    login, e.login,
+                    "The login should be checked"
+                );
+                Assert.areEqual(
+                    'checking', this.get('loginAvailabilityStatus'),
+                    "The login availability status should be 'checking"
+                );
+            });
+            this.view.render();
+            this.view.get('container').one('.ez-user-login-value')
+                .set('value', login)
+                .simulate('blur');
+            Assert.isTrue(
+                fired, "The isLoginAvailable event should have been fired"
+            );
+        },
+
+        "Should not check an empty login": function () {
+            this.view.on('isLoginAvailable', function (e) {
+                Assert.fail("An empty login should not be checked");
+            });
+            this.view.render();
+            this.view.get('container').one('.ez-user-login-value')
+                .simulate('blur');
+        },
+
         "Should make the login required if email is filled": function () {
             var container = this.view.get('container');
 
@@ -261,7 +374,7 @@ YUI.add('ez-user-editview-tests', function (Y) {
 
         "Should validate on valuechange": function () {
             var input;
-            
+
             this["Should validate on blur"]();
             input = this.view.get('container').one('.ez-user-login-value');
             input.simulate('focus');
@@ -342,7 +455,7 @@ YUI.add('ez-user-editview-tests', function (Y) {
 
         "Should validate on valuechange if invalid": function () {
             var input;
-            
+
             this.view.set('emailErrorStatus', 'An error');
             this.view.after('emailErrorStatusChange', this.next(function (e) {
                 Assert.isFalse(
@@ -360,7 +473,7 @@ YUI.add('ez-user-editview-tests', function (Y) {
 
         "Should not validate on valuechange if valid": function () {
             var input;
-            
+
             this.view.set('emailErrorStatus', false);
             this.view.after('emailErrorStatusChange', this.next(function (e) {
                 Assert.fail("No error should be detected");
@@ -421,7 +534,7 @@ YUI.add('ez-user-editview-tests', function (Y) {
 
         "Should validate on valuechange on the confirm field": function () {
             var input;
-            
+
             this.view.after('passwordErrorStatusChange', this.next(function (e) {
                 Assert.isTrue(
                     !!e.newVal,
@@ -655,6 +768,7 @@ YUI.add('ez-user-editview-tests', function (Y) {
     Y.Test.Runner.setName("eZ User Edit View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(validateTest);
+    Y.Test.Runner.add(loginAvailableAttrTest);
     Y.Test.Runner.add(loginValidationTest);
     Y.Test.Runner.add(emailValidationTest);
     Y.Test.Runner.add(passwordValidationTest);

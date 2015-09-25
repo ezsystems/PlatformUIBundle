@@ -133,6 +133,7 @@ system:
                         - 'ez-savedraftplugin'
                         - 'ez-publishdraftplugin'
                         - 'ez-discarddraftplugin'
+                        - 'ez-loginavailableplugin'
                         - 'array-extras'
                     path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
                 ez-contentcreateviewservice:
@@ -914,6 +915,9 @@ system:
                 ez-sideviewservice:
                     requires: ['base']
                     path: %ez_platformui.public_dir%/js/extensions/ez-sideviewservice.js
+                ez-loginavailableplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-loginavailableplugin.js
                 ez-height-change:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-height-change.js

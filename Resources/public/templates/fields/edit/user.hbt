@@ -9,7 +9,7 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
-        <label class="ez-field-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-login">
+        <label class="ez-field-sublabel ez-user-login-label ez-font-icon" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-login">
             Login{{#if loginRequired}}*{{/if}}:
         </label>
         <div class="ez-editfield-input"><div class="ez-user-input-ui"><input type="text"

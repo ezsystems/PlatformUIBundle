@@ -11,7 +11,12 @@ YUI.add('ez-user-editview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var FIELDTYPE_IDENTIFIER = 'ezuser';
+    var FIELDTYPE_IDENTIFIER = 'ezuser',
+        IS_CHECKING_LOGIN = 'is-checking-login',
+        AVAILABLE = 'available',
+        UNAVAILABLE = 'unavailable',
+        CHECKING = 'checking',
+        ERROR = 'error';
 
     /**
      * User edit field view
@@ -46,6 +51,64 @@ YUI.add('ez-user-editview', function (Y) {
                 ['loginErrorStatusChange', 'emailErrorStatusChange', 'passwordErrorStatusChange'],
                 this._uiUserError
             );
+
+            this.after('loginAvailabilityStatusChange', this._uiLoginAvailability);
+        },
+
+        /**
+         * `loginAvailabilityStatusChange` event handler.
+         *
+         * @method _uiLoginAvailability
+         * @protected
+         */
+        _uiLoginAvailability: function () {
+            var availability = this.get('loginAvailabilityStatus'),
+                handleClass = 'removeClass';
+
+            if ( availability === UNAVAILABLE ) {
+                this.set('loginErrorStatus', 'This login is not available');
+            } else if ( availability === AVAILABLE ) {
+                this.set('loginErrorStatus', false);
+            } else if ( availability === CHECKING ) {
+                handleClass = 'addClass';
+            }
+            this.get('container')[handleClass](IS_CHECKING_LOGIN);
+        },
+
+        /**
+         * Set the login availability status to available
+         *
+         * @method setLoginAvailable
+         */
+        setLoginAvailable: function () {
+            this._set('loginAvailabilityStatus', AVAILABLE);
+        },
+
+        /**
+         * Set the login availability status to unavailable
+         *
+         * @method setLoginUnavailable
+         */
+        setLoginUnavailable: function () {
+            this._set('loginAvailabilityStatus', UNAVAILABLE);
+        },
+
+        /**
+         * Set the login availability status to checking
+         *
+         * @method setCheckingLogin
+         */
+        setCheckingLogin: function () {
+            this._set('loginAvailabilityStatus', CHECKING);
+        },
+
+        /**
+         * Set the login availability status to error
+         *
+         * @method setUnableToCheckLogin
+         */
+        setUnableToCheckLogin: function () {
+            this._set('loginAvailabilityStatus', ERROR);
         },
 
         /**
@@ -98,7 +161,7 @@ YUI.add('ez-user-editview', function (Y) {
          * @method validate
          */
         validate: function () {
-            this._validateLogin();
+            this._validateLogin(false);
             this._validateEmail();
             this._validatePassword();
         },
@@ -108,21 +171,38 @@ YUI.add('ez-user-editview', function (Y) {
          * login is required if the field is required or if the email has
          * been filled by the editor.
          *
-         * TODO: add the unicity validation with the REST API.
-         *
          * @method _validateLogin
+         * @param {Boolean} checkUnicity
          * @protected
          */
-       _validateLogin: function () {
+       _validateLogin: function (checkUnicity) {
             var loginRequired = (this._isLoginRequired() || this._getInputFieldValue('email')),
                 login = this._getInputFieldValue('login');
 
-            if ( loginRequired && !login ) {
+            if ( checkUnicity && login ) {
+                this._checkLoginAvailability(login);
+                this.set('loginErrorStatus', false);
+            } else if ( loginRequired && !login ) {
                 this.set('loginErrorStatus', 'The login is required');
             } else {
                 this.set('loginErrorStatus', false);
             }
         },
+
+       /**
+        * Fires the `isLoginAvailable` to get the availability status of the
+        * given login.
+        *
+        * @method _checkLoginAvailability
+        * @protected
+        * @param {String} login
+        */
+        _checkLoginAvailability: function (login) {
+           this.setCheckingLogin();
+           this.fire('isLoginAvailable', {
+               login: login,
+           });
+       },
 
        /**
         * Validates the email input. The email should be a valid email and is
@@ -322,6 +402,20 @@ YUI.add('ez-user-editview', function (Y) {
              */
             loginErrorStatus: {
                 value: false,
+            },
+
+            /**
+             * Flag indicating whether the login availability status.
+             * Use `setLoginAvailable`, `setLoginUnavailable`,
+             * `setCheckingLogin` or `setUnableToCheckLogin` to set it to the
+             * correct value.
+             *
+             * @attribute loginAvailabilityStatus
+             * @type {String}
+             * @readOnly
+             */
+            loginAvailabilityStatus: {
+                value: '',
             },
 
             /**
