@@ -364,8 +364,8 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
             Assert.isArray(value, "The adminNavigationItems should contain an array");
             Assert.areEqual(
-                4, value.length,
-                "4 items should be configured by default for the admin zone"
+                5, value.length,
+                "5 items should be configured by default for the admin zone"
             );
         },
 
@@ -562,8 +562,16 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this.service.removeNavigationItem(identifier, zone);
 
             Y.Array.each(this.service.get(zone + "NavigationItems"), function (item) {
+                var itemIdentifier;
+
+                if (item instanceof Y.eZ.NavigationItemSubtreeView) {
+                    itemIdentifier = item.get('identifier');
+                } else {
+                    itemIdentifier = item.config.identifier;
+                }
+
                 Assert.areNotEqual(
-                    identifier, item.config.identifier,
+                    identifier, itemIdentifier,
                     identifier + " should have been removed"
                 );
             });
