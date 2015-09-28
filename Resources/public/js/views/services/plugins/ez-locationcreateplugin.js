@@ -26,24 +26,25 @@ YUI.add('ez-locationcreateplugin', function (Y) {
     Y.eZ.Plugin.LocationCreate = Y.Base.create('locationcreateplugin', Y.eZ.Plugin.ViewServiceBase, [], {
 
         initializer: function () {
-            this.onHostEvent('*:createLocation', this._createSelectLocation);
+            this.onHostEvent('*:createLocation', this._createLocationSelect);
         },
 
         /**
          * createLocation event handler, launch the universal discovery widget
-         * to choose a parent location for new location of given content
+         * to choose a parent location(s) for new location(s) of given content
          *
-         * @method _createSelectLocation
+         * @method _createLocationSelect
          * @private
          * @param {EventFacade} e createLocation event facade
          */
-        _createSelectLocation: function (e) {
+        _createLocationSelect: function (e) {
             var service = this.get('host');
 
             service.fire('contentDiscover', {
                 config: {
                     title: "Select the location where you want to create new location",
                     contentDiscoveredHandler: Y.bind(this._createLocation, this),
+                    multiple: true,
                     data: {
                         afterCreateCallback: e.afterCreateCallback
                     }
@@ -63,10 +64,10 @@ YUI.add('ez-locationcreateplugin', function (Y) {
                 capi = service.get('capi'),
                 contentService = capi.getContentService(),
                 content = service.get('content'),
-                parentLocationId = e.selection.location.get('id'),
-                locationCreateStruct = contentService.newLocationCreateStruct(parentLocationId),
-                notificationIdentifier = 'create-location-' + content.get('id') + '-' + parentLocationId,
+                locationsCreatedCounter = 0,
+                notificationIdentifier = 'create-location-' + content.get('id'),
                 data = e.target.get('data'),
+                stack = new Y.Parallel(),
                 that = this;
 
             this._notify(
@@ -76,25 +77,52 @@ YUI.add('ez-locationcreateplugin', function (Y) {
                 5
             );
 
-            contentService.createLocation(content.get('id'), locationCreateStruct, function (error, response) {
-                if (error) {
+            Y.Array.each(e.selection, function (selection) {
+                var parentLocationId = selection.location.get('id'),
+                    parentContent = selection.content,
+                    locationCreateStruct = contentService.newLocationCreateStruct(parentLocationId),
+                    errNotificationIdentifier = 'create-location-' + content.get('id') + '-' + parentContent.get('id'),
+                    end = stack.add( function (error) {
+                        if (error) {
+                            that._notify(
+                                "Creating new location for '" + content.get('name') + "' under '" + parentContent.get('name') + "' failed",
+                                errNotificationIdentifier,
+                                'error',
+                                0
+                            );
+                            return;
+                        }
+
+                        locationsCreatedCounter++;
+                    });
+
+                contentService.createLocation(content.get('id'), locationCreateStruct, end);
+            });
+
+            stack.done(function () {
+                if (locationsCreatedCounter > 0) {
+                    var msg = "New location for '" + content.get('name') + "' has been successfully created";
+
+                    if (locationsCreatedCounter > 1) {
+                        msg = locationsCreatedCounter + " new locations for '" + content.get('name') + "' have been successfully created";
+                    }
                     that._notify(
-                        "Creating new location for '" + content.get('name') + "' failed",
+                        msg,
+                        notificationIdentifier,
+                        'done',
+                        5
+                    );
+
+                    data.afterCreateCallback();
+                } else {
+                    that._notify(
+                        "Creating new location(s) for '" + content.get('name') + "' failed",
                         notificationIdentifier,
                         'error',
                         0
                     );
-                    return;
                 }
 
-                that._notify(
-                    "New location for '" + content.get('name') + "' has been successfully created",
-                    notificationIdentifier,
-                    'done',
-                    5
-                );
-
-                data.afterCreateCallback();
             });
         },
 
