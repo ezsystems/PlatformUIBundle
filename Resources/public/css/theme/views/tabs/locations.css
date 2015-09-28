@@ -1,0 +1,20 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-locationviewlocationstabview .ez-locations-box {
+    border: 1px solid #ccc;
+    background: #F5F4F2;
+}
+
+.ez-view-locationviewlocationstabview .ez-locations-box-title {
+    background: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+}
+
+.ez-view-locationviewlocationstabview .ez-locations-list-table {
+    background: #fff;
+}

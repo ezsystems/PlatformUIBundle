@@ -272,6 +272,15 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 }
             });
 
+            Y.eZ.LocationViewLocationsTabView = Y.Base.create('locationViewLocationsTabView', Y.View, [], {}, {
+                ATTRS: {
+                    content: {},
+                    locations: {},
+                    config: {},
+                    priority: {},
+                }
+            });
+
             Y.eZ.SubitemListView = Y.Base.create('subitemListView', Y.View, [], {}, {
                 ATTRS: {
                     location: {},
