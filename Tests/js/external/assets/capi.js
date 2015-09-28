@@ -1,3 +1,3 @@
 window.eZ = window.eZ || {};
-window.eZ.CAPI = {};
-window.eZ.SessionAuthAgent = {};
+window.eZ.CAPI = function () { };
+window.eZ.SessionAuthAgent = function () { };

@@ -7,6 +7,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         loginTest, logoutTest, isLoggedInTest, checkUserTest,
         showSideViewTest, hideSideViewTest,
         handleMainViewTest, titleTest, configRouteTest,
+        dispatchConfigTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     appTest = new Y.Test.Case({
@@ -17,7 +18,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.app = new Y.eZ.PlatformUIApp({
                 container: '.app',
                 viewContainer: '.view-container',
-                root: this.root
             });
             this.app.render();
         },
@@ -206,8 +206,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.app = new Y.eZ.PlatformUIApp({
                 container: '.app',
                 viewContainer: '.view-container',
-                capi: this.capiMock
             });
+            this.app._set('capi', this.capiMock);
         },
 
         tearDown: function () {
@@ -1151,7 +1151,11 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             ];
             this.root = '/this/is/the/root/';
             this.app = new Y.eZ.PlatformUIApp({
-                root: this.root,
+                config: {
+                    rootInfo: {
+                        root: this.root,
+                    },
+                },
                 container: '.app',
                 viewContainer: '.view-container'
             });
@@ -1266,10 +1270,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         setUp: function () {
             this.capiMock = new Y.Mock();
             this.userMock = new Y.Mock();
-            this.app = new Y.eZ.PlatformUIApp({
-                capi: this.capiMock
-            });
-
+            this.app = new Y.eZ.PlatformUIApp();
+            this.app._set('capi', this.capiMock);
             this.app._set('user', this.userMock);
         },
 
@@ -1438,10 +1440,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         setUp: function () {
             this.capiMock = new Y.Mock();
             this.userMock = new Y.Mock();
-            this.app = new Y.eZ.PlatformUIApp({
-                capi: this.capiMock
-            });
-
+            this.app = new Y.eZ.PlatformUIApp();
+            this.app._set('capi', this.capiMock);
             this.app._set('user', this.userMock);
         },
 
@@ -1492,10 +1492,11 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.userMock = new Y.Mock();
             this.anonymousUserId = "10";
             this.app = new Y.eZ.PlatformUIApp({
-                capi: this.capiMock,
-                anonymousUserId: this.anonymousUserId,
+                config: {
+                    anonymousUserId: this.anonymousUserId,
+                }
             });
-
+            this.app._set('capi', this.capiMock);
             this.app._set('user', this.userMock);
         },
 
@@ -1630,10 +1631,11 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.capiMock = new Y.Mock();
             this.userMock = new Y.Mock();
             this.app = new Y.eZ.PlatformUIApp({
-                capi: this.capiMock,
-                anonymousUserId: '10',
+                config: {
+                    anonymousUserId: '10',
+                },
             });
-
+            this.app._set('capi', this.capiMock);
             this.app._set('user', this.userMock);
         },
 
@@ -1798,54 +1800,151 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     });
 
     configRouteTest = new Y.Test.Case({
-        name: "eZ Platform UI App reverse routing tests",
+        name: "eZ Platform UI App route config tests",
 
         setUp: function () {
-
-            this.root = '/this/is/the/root/';
-            this.app = new Y.eZ.PlatformUIApp({
-                root: this.root,
-                container: '.app',
-                viewContainer: '.view-container',
-                routeConfig: {
-                    "loginForm": {
-                        "fieldsViews": {
-                            "ezthing": 'Something'
-                        }
-                    },
-                    "doesNotMatchAnything": {
-                        "fieldsViews": {
-                            "ezthing": 'Anything'
-                        }
-                    },
-                }
-            });
+            this.app = new Y.eZ.PlatformUIApp();
         },
 
         tearDown: function () {
             this.app.destroy();
         },
 
-        "Should enrich route with config": function () {
-            var that = this;
-
-            Y.Array.each(this.app.get('routes'), function (value) {
-                if (value.name == 'loginForm') {
-                    Y.Assert.areSame(value.config, that.app.get('routeConfig').loginForm, 'Route loginForm should be enrich with config');
-                }
+        _getRouteByName: function (name) {
+            return Y.Array.find(this.app.get('routes'), function (elt) {
+                return (elt.name === name);
             });
         },
 
-        "Should Not enrich route with config if routeConfig does NOT match": function () {
-            var that = this;
+        "Should enrich route with config": function () {
+            Y.Object.each(this.app.get('routeConfig'), function (value, routeName) {
+                var route = this._getRouteByName(routeName);
 
-            Y.Array.each(this.app.get('routes'), function (value) {
-                Y.Assert.areNotSame(
-                    value.config,
-                    that.app.get('routeConfig').doesNotMatchAnything,
-                    'routeConfig doesNotMatchAnything should Not enrich loginForm route'
+                Assert.areSame(
+                    value,
+                    route.config,
+                    'The route config should have received a config'
                 );
+            }, this);
+        },
+
+        "Should not enrich route with config if routeConfig does NOT match": function () {
+            var dashboard = this._getRouteByName('dashboard');
+
+            Assert.isUndefined(
+                dashboard.config,
+                'The dashboard route config should be undefined'
+            );
+        },
+    });
+
+    dispatchConfigTest = new Y.Test.Case({
+        name: "eZ Platform UI App reverse dispatch config tests",
+
+        setUp: function () {
+            this.origCAPI = Y.eZ.CAPI;
+            this.origSessionAuthAgent = Y.eZ.SessionAuthAgent;
+            this.apiRoot = 'apiRoot';
+            Y.eZ.CAPI = Y.bind(function (apiRoot, sessionAuthAgent) {
+                Assert.areEqual(
+                    this.apiRoot, apiRoot,
+                    "The CAPI constructor should receive a / trimed version of apiRoot"
+                );
+
+                this.sessionAuthAgent = sessionAuthAgent;
+            }, this);
+            Y.eZ.SessionAuthAgent = Y.bind(function (sessionInfo) {
+                this.sessionAuthAgentConfig = sessionInfo;
+            }, this);
+        },
+
+        tearDown: function () {
+            Y.eZ.CAPI = this.origCAPI;
+            Y.eZ.SessionAuthAgent = this.origSessionAuthAgent;
+            this.app.destroy();
+        },
+
+        _buildApp: function () {
+            this.app = new Y.eZ.PlatformUIApp({
+                config: {
+                    rootInfo: {
+                        root: 'root',
+                        apiRoot: this.apiRoot + '///',
+                        assetRoot: 'assetRoot',
+                        ckeditorPluginPath: 'ckeditorPluginPath',
+                    },
+                    anonymousUserId: 'anonymousUserId',
+                    sessionInfo: this.sessionInfo,
+                },
             });
+        },
+
+        "Should configure the CAPI": function () {
+            this._buildApp();
+            Assert.isInstanceOf(
+                Y.eZ.CAPI,
+                this.app.get('capi'),
+                "The CAPI object should be an instance of eZ.CAPI"
+            );
+            Assert.isInstanceOf(
+                Y.eZ.SessionAuthAgent,
+                this.sessionAuthAgent,
+                "The session auth agent should be an instance of eZ.SessionAuthAgent"
+            );
+            Assert.isObject(
+                this.sessionAuthAgentConfig,
+                "The sessionAuthAgent should have received an object"
+            );
+            Assert.isTrue(
+                Y.Object.isEmpty(this.sessionAuthAgentConfig),
+                "The sessionAuthAgent should have received an empty object"
+            );
+        },
+
+        "Should configure the SessionAuthAgent with the given sessionInfo": function () {
+            this.sessionInfo = {isStarted: true};
+            this._buildApp();
+            Assert.areSame(
+                this.sessionInfo,
+                this.sessionAuthAgentConfig,
+                "The sessionAuthAgent should have received the sessionInfo"
+            );
+        },
+
+        "Should configure the `root`": function () {
+            this._buildApp();
+            Assert.areSame(
+                this.app.get('config').rootInfo.root,
+                this.app.get('root'),
+                "The `root` should have been set"
+            );
+        },
+
+        "Should configure the `apiRoot`": function () {
+            this._buildApp();
+            Assert.areSame(
+                this.app.get('config').rootInfo.apiRoot,
+                this.app.get('apiRoot'),
+                "The `apiRoot` should have been set"
+            );
+        },
+
+        "Should configure the `assetRoot`": function () {
+            this._buildApp();
+            Assert.areSame(
+                this.app.get('config').rootInfo.assetRoot,
+                this.app.get('assetRoot'),
+                "The `assetRoot` should have been set"
+            );
+        },
+
+        "Should configure the `anonymousUserId`": function () {
+            this._buildApp();
+            Assert.areSame(
+                this.app.get('config').anonymousUserId,
+                this.app.get('anonymousUserId'),
+                "The `anonymousUserId` should have been set"
+            );
         },
     });
 
@@ -1863,4 +1962,5 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(isLoggedInTest);
     Y.Test.Runner.add(checkUserTest);
     Y.Test.Runner.add(configRouteTest);
+    Y.Test.Runner.add(dispatchConfigTest);
 }, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice', 'ez-viewservicebaseplugin']});

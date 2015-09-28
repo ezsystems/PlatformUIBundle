@@ -118,6 +118,7 @@ YUI.add('ez-platformuiapp', function (Y) {
          * @method initializer
          */
         initializer: function () {
+            this._dispatchConfig();
             /**
              * Stores the initial title of the page so it can be used when
              * generating the title depending on the active view
@@ -144,6 +145,76 @@ YUI.add('ez-platformuiapp', function (Y) {
                 }
             });
             this._routeConfig();
+        },
+
+        /**
+         * Dispatches the `config` attribute value so that the app is configured
+         * accordingly.
+         *
+         * @method _dispatchConfig
+         * @protected
+         */
+        _dispatchConfig: function () {
+            var config = this.get('config'),
+                rootInfo;
+
+            if ( !config ) {
+                return;
+            }
+            rootInfo = config.rootInfo;
+            // TODO change the whole routeConfig system
+            this._set('routeConfig', {
+                "viewLocation": {
+                    "fieldViews": {
+                        "ezcountry": config.countriesInfo,
+                    }
+                },
+                "translateContent": {
+                    "fieldEditViews": {
+                        "ezcountry": config.countriesInfo,
+                        "ezrichtext": {
+                            "alloyEditor": {
+                                "externalPluginPath": rootInfo ? rootInfo.ckeditorPluginPath : undefined,
+                            }
+                        }
+                    }
+                },
+                "editContent": {
+                    "fieldEditViews": {
+                        "ezcountry": config.countriesInfo,
+                        "ezrichtext": {
+                            "alloyEditor": {
+                                "externalPluginPath": rootInfo ? rootInfo.ckeditorPluginPath : undefined,
+                            }
+                        }
+                    }
+                },
+                "createContent": {
+                    "fieldEditViews": {
+                        "ezcountry": config.countriesInfo,
+                        "ezrichtext": {
+                            "alloyEditor": {
+                                "externalPluginPath": rootInfo ? rootInfo.ckeditorPluginPath : undefined,
+                            }
+                        }
+                    }
+                }
+            });
+            if ( rootInfo ) {
+                Y.Object.each(rootInfo, function (value, attrName) {
+                    if ( this.attrAdded(attrName) ) {
+                        this._set(attrName, value);
+                    }
+                }, this);
+            }
+            if ( config.anonymousUserId ) {
+                this._set('anonymousUserId', config.anonymousUserId);
+            }
+
+            this._set('capi', new Y.eZ.CAPI(
+                this.get('apiRoot').replace(/\/{1,}$/, ''),
+                new Y.eZ.SessionAuthAgent(config.sessionInfo ? config.sessionInfo : {})
+            ));
         },
 
         /**
@@ -804,13 +875,27 @@ YUI.add('ez-platformuiapp', function (Y) {
             },
 
             /**
+             * The application configuration. It is dispatched to the others
+             * application attributes/properties at build time.
+             *
+             * @attribute config
+             * @type {Object|undefined}
+             * @writeOnce
+             */
+            config: {
+                writeOnce: 'initOnly',
+            },
+
+            /**
              * The base URI to build the URI of the ajax request
              *
              * @attribute apiRoot
              * @default "/"
              * @type String
+             * @readOnly
              */
             apiRoot: {
+                readOnly: true,
                 value: "/"
             },
 
@@ -820,8 +905,10 @@ YUI.add('ez-platformuiapp', function (Y) {
              * @attribute assetRoot
              * @default "/"
              * @type String
+             * @readOnly
              */
             assetRoot: {
+                readOnly: true,
                 value: "/"
             },
 
@@ -854,24 +941,24 @@ YUI.add('ez-platformuiapp', function (Y) {
              * @attribute routeConfig
              * @default null
              * @type Object
-             * @writeOnce
+             * @readOnly
              */
             routeConfig: {
-                writeOnce: "initOnly",
+                readOnly: true,
                 value: null
             },
 
             /**
-             * eZ Publish REST client
+             * eZ Platform REST client
              *
              * @attribute capi
              * @default null
              * @type {eZ.CAPI}
-             * @writeOnce
+             * @readOnly
              * @required
              */
             capi: {
-                writeOnce: "initOnly",
+                readOnly: true,
                 value: null
             },
 
@@ -905,10 +992,11 @@ YUI.add('ez-platformuiapp', function (Y) {
              *
              * @attribute anonymousUserId
              * @type {String}
-             * @required
+             * @readOnly
              */
             anonymousUserId: {
-                writeOnce: "initOnly",
+                readOnly: true,
+                value: "/api/ezp/v2/user/users/10",
             },
         }
     });
