@@ -36,5 +36,9 @@
                 <p class="ez-font-icon ez-asynchronousview-loading">Loading the locations list</p>
             {{/if}}
         {{/if}}
+
+        <div class="ez-locations-tools">
+            <button class="ez-add-location-button ez-button pure-button">Add location</button>
+        </div>
     </div>
 </div>

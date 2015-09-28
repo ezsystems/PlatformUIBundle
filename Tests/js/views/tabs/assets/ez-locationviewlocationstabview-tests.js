@@ -7,6 +7,7 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
         renderTest,
         changeEventTest,
         fireLoadLocationsEventTest,
+        addLocationTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -202,9 +203,84 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
         },
     });
 
+    addLocationTest = new Y.Test.Case({
+        name: "eZ LocationViewLocationsTabView add location test",
+        setUp: function () {
+            this.contentMock = new Mock();
+            this.locations = [this.locationMock, this.locationMock];
+
+            this.view = new Y.eZ.LocationViewLocationsTabView({
+                content: this.contentMock,
+                container: '.container'
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should fire `createLocation` event": function () {
+            var createLocationFired = false,
+                that = this;
+
+            this.view.on('createLocation', function (e) {
+                createLocationFired = true;
+
+                Assert.areSame(
+                    e.content,
+                    that.contentMock,
+                    'The event facade should contain the content'
+                );
+                Assert.isFunction(e.afterCreateCallback, 'The event facade should contain callback function');
+            });
+
+            this.view.render();
+            this.view.get('container').one('.ez-add-location-button').simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.Assert.isTrue(
+                        createLocationFired,
+                        "The `createLocation` event should have been fired"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should fire `loadLocations` event after adding locations": function () {
+            var loadLocationsFired = false,
+                that = this;
+
+            this.view.on('createLocation', function (e) {
+                e.afterCreateCallback();
+            });
+            this.view.on('loadLocations', function (e) {
+                loadLocationsFired = true;
+
+                Assert.areSame(
+                    e.content,
+                    that.contentMock,
+                    'The event facade should contain the content'
+                );
+            });
+
+            this.view.render();
+            this.view.get('container').one('.ez-add-location-button').simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.Assert.isTrue(
+                        loadLocationsFired,
+                        "The `loadLocations` event should have been fired"
+                    );
+                });
+            });
+            this.wait();
+        }
+    });
+
     Y.Test.Runner.setName("eZ Location View Locations Tab View tests");
     Y.Test.Runner.add(attributesTest);
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(changeEventTest);
     Y.Test.Runner.add(fireLoadLocationsEventTest);
+    Y.Test.Runner.add(addLocationTest);
 }, '', {requires: ['test', 'ez-locationviewlocationstabview', 'node-event-simulate']});

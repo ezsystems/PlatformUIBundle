@@ -248,6 +248,23 @@ YUI.add('ez-contentmodel', function (Y) {
                     callback(loadError, locations);
                 });
             });
+        },
+
+        /**
+         * Adds new location for content
+         *
+         * @method addLocation
+         * @param {Object} options
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {eZ.Location} parentLocation the parent location under which new location will be created
+         * @param {Function} callback
+         */
+        addLocation: function (options, parentLocation, callback) {
+            var capi = options.api,
+                contentService = capi.getContentService(),
+                locationCreateStruct = contentService.newLocationCreateStruct(parentLocation.get('id'));
+
+            contentService.createLocation(this.get('id'), locationCreateStruct, callback);
         }
     }, {
         REST_STRUCT_ROOT: "Content",
