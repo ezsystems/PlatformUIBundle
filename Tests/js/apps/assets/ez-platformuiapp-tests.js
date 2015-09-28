@@ -13,15 +13,82 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         name: "eZ Platform UI App tests",
 
         setUp: function () {
+/*
+            this.SessionAuthAgent = function (session) {
+                return {};
+            };
+            this.CAPI = function (apiRoot, SessionAuthAgent) {
+                this.logOut = appTest.logOut;
+                this.isLoggedIn = appTest.isLoggedIn;
+            };
             this.root = '/ez';
+            this.apiRoot = 'the/api/root';
+            this.assetRoot = '/123/1';
+            this.session = {
+                name: 'name',
+                identifier: 'id',
+                href: 'href',
+                csrfToken: 'csrfToken',
+            };
             this.app = new Y.eZ.PlatformUIApp({
                 container: '.app',
                 viewContainer: '.view-container',
-                root: this.root
+                config: {
+                    rootInfo: {
+                        root: this.root,
+                        assetRoot: this.assetRoot,
+                        apiRoot: this.apiRoot
+                    },
+                    sessionInfo: this.session,
+                    anonymousUserId: '123',
+                    routeConfig: {
+                        "viewLocation": {
+                            "fieldViews": {
+                                "ezcountry": {}
+                            }
+                        },
+                        "translateContent": {
+                            "fieldEditViews": {
+                                "ezcountry": {}
+                            }
+                        },
+                        "editContent": {
+                            "fieldEditViews": {
+                                "ezcountry": {},
+                                "ezrichtext": {
+                                    "alloyEditor": {
+                                        "externalPluginPath": {}
+                                    }
+                                }
+                            }
+                        },
+                        "createContent": {
+                            "fieldEditViews": {
+                                "ezcountry": {},
+                                "ezrichtext": {
+                                    "alloyEditor": {
+                                        "externalPluginPath": {},
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             });
+
+            this.app.set('capiModelConstructor', this.CAPI(this.apiRoot.replace('/', ''), this.SessionAuthAgent(this.session)));
             this.app.render();
+*/
+        },
+/*
+        _isLoggedIn: function () {
+
         },
 
+        _logOut: function () {
+
+        },
+*/
         tearDown: function () {
             this.app.destroy();
             delete this.app;
