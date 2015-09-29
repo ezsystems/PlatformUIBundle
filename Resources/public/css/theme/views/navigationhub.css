@@ -79,15 +79,15 @@
 }
 
 .ez-view-navigationhubview .ez-platform-zone:before {
-    content: "\E611";
+    content: "\E62F";
 }
 
 .ez-view-navigationhubview .ez-studioplus-zone:before {
-    content: "\E612";
+    content: "\E631";
 }
 
 .ez-view-navigationhubview .ez-studio-zone:before {
-    content: "\E60D";
+    content: "\E630";
 }
 
 .ez-view-navigationhubview .ez-admin-zone:before {
