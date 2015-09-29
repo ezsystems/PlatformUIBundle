@@ -24,8 +24,12 @@
         filter: loaderFilter,
         modules: {
             "ez-universaldiscoveryviewservice": {
-                requires: ['ez-viewservice'],
+                requires: ['ez-viewservice', 'ez-sideviewservice'],
                 fullpath: "../../../../Resources/public/js/views/services/ez-universaldiscoveryviewservice.js"
+            },
+            "ez-sideviewservice": {
+                requires: ['base'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-sideviewservice.js"
             },
             "ez-viewservice": {
                 requires: ['base', 'parallel'],

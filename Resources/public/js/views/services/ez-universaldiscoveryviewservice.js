@@ -20,9 +20,9 @@ YUI.add('ez-universaldiscoveryviewservice', function (Y) {
      * @constructor
      * @extends eZ.ViewService
      */
-    Y.eZ.UniversalDiscoveryViewService = Y.Base.create('universalDiscoveryViewService', Y.eZ.ViewService, [], {
+    Y.eZ.UniversalDiscoveryViewService = Y.Base.create('universalDiscoveryViewService', Y.eZ.ViewService, [Y.eZ.SideViewService], {
         /**
-         * Returns the value of the `config` attribute. This attribute is set
+         * Returns the value of the `parameters` attribute. This attribute is set
          * when the app shows the universal discovery side view with the
          * configuration provided in the `contentDiscover` event.
          *
@@ -31,7 +31,7 @@ YUI.add('ez-universaldiscoveryviewservice', function (Y) {
          * @return mixed
          */
         _getViewParameters: function () {
-            return this.get('config');
+            return this.get('parameters');
         },
     });
 });

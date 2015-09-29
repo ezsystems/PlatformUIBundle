@@ -47,7 +47,7 @@ YUI.add('ez-notificationhubviewservice-tests', function (Y) {
                 },
                 list = this.service.get('notificationList');
 
-            this.service.set('config', {notification: notification});
+            this.service.set('parameters', {notification: notification});
             Assert.areEqual(
                 1, list.size(),
                 "The list should contain one notification"
@@ -64,7 +64,7 @@ YUI.add('ez-notificationhubviewservice-tests', function (Y) {
 
             this["Should add the new notification to the list"]();
 
-            this.service.set('config', {
+            this.service.set('parameters', {
                 notification: {
                     identifier: this.identifier,
                     state: newState,
@@ -76,8 +76,8 @@ YUI.add('ez-notificationhubviewservice-tests', function (Y) {
             );
         },
 
-        "Should ignore a config object without notification": function () {
-            this.service.set('config', {});
+        "Should ignore a parameters object without notification": function () {
+            this.service.set('parameters', {});
 
             Assert.areEqual(
                 0, this.service.get('notificationList').size(),

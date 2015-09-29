@@ -7,6 +7,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         loginTest, logoutTest, isLoggedInTest, checkUserTest,
         showSideViewTest, hideSideViewTest,
         handleMainViewTest, titleTest, configRouteTest,
+        dispatchConfigTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     appTest = new Y.Test.Case({
@@ -17,7 +18,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.app = new Y.eZ.PlatformUIApp({
                 container: '.app',
                 viewContainer: '.view-container',
-                root: this.root
             });
             this.app.render();
         },
@@ -206,8 +206,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.app = new Y.eZ.PlatformUIApp({
                 container: '.app',
                 viewContainer: '.view-container',
-                capi: this.capiMock
             });
+            this.app._set('capi', this.capiMock);
         },
 
         tearDown: function () {
@@ -322,9 +322,9 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                             "The response object should be passed to the service"
                         );
                         Y.Assert.areSame(
-                            req.route.config,
+                            test.app.get('config'),
                             this.get('config'),
-                            'The view service should have the config'
+                            'The view service should receive the config from the app'
                         );
                         serviceInit = true;
                     },
@@ -342,15 +342,13 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     route: {
                         view: 'myView',
                         service: TestService,
-                        config: {
-                            "fieldsViews": {
-                                "ezthing": 'Something'
-                            }
-                        }
                     },
                 },
                 res = {};
 
+            this.app.set('config', {
+                "countriesInfo": {},
+            });
             this.app.views.myView = {
                 type: Y.Base.create('myView', Y.View, [], {
                     render: function () {
@@ -572,16 +570,17 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
 
         "Should show the side view": function () {
-            var config = {some: "config"};
+            var parameters = {some: "parameters"};
 
-            this.app.showSideView("sideView1", config);
+            this.app.set('config', {});
+            this.app.showSideView("sideView1", parameters);
             Assert.isFalse(
                 this.app.get('container').hasClass(this.app.sideViews.sideView1.hideClass),
                 "The side view should not be hidden"
             );
             Assert.areSame(
-                config.some, this.app.sideViews.sideView1.serviceInstance.get('config').some,
-                "The configuration should be passed to the view service"
+                parameters.some, this.app.sideViews.sideView1.serviceInstance.get('parameters').some,
+                "The parameters should be passed to the view service"
             );
             Assert.isNull(
                 this.app.sideViews.sideView1.serviceInstance.get('request'),
@@ -591,11 +590,15 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 this.app.sideViews.sideView1.serviceInstance.get('response'),
                 "The response should be null"
             );
+            Assert.areSame(
+                this.app.get('config'),
+                this.app.sideViews.sideView1.serviceInstance.get('config'),
+                "The app config should be given to the view service"
+            );
         },
 
         "Should catch the side view error service and fire a notification": function () {
-            var config = {some: "config"},
-                notified = false,
+            var notified = false,
                 serviceName = 'MI5',
                 msg = 'GodSaveTheQueen';
             this.app.sideViews = {
@@ -635,12 +638,12 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 );
             });
 
-            this.app.showSideView("sideView1", config);
+            this.app.showSideView("sideView1");
             Y.Assert.isTrue(notified, "A fatal error should have been triggered");
         },
 
         "Should show the side view (activeViewService is set)": function () {
-            var config = {some: "config"},
+            var parameters = {some: "parameters"},
                 response = {},
                 request = {},
                 viewService = new Y.eZ.ViewService({
@@ -648,15 +651,16 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     request: request,
                 });
 
+            this.app.set('config', {});
             this.app._set('activeViewService', viewService);
-            this.app.showSideView("sideView1", config);
+            this.app.showSideView("sideView1", parameters);
             Assert.isFalse(
                 this.app.get('container').hasClass(this.app.sideViews.sideView1.hideClass),
                 "The side view should not be hidden"
             );
             Assert.areSame(
-                config.some, this.app.sideViews.sideView1.serviceInstance.get('config').some,
-                "The configuration should be passed to the view service"
+                parameters.some, this.app.sideViews.sideView1.serviceInstance.get('parameters').some,
+                "The parameters should be passed to the view service"
             );
             Assert.areSame(
                 request,
@@ -667,6 +671,11 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 response,
                 this.app.sideViews.sideView1.serviceInstance.get('response'),
                 "The response should be provided by the active view service"
+            );
+            Assert.areSame(
+                this.app.get('config'),
+                this.app.sideViews.sideView1.serviceInstance.get('config'),
+                "The app config should be given to the view service"
             );
         },
     });
@@ -1151,7 +1160,11 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             ];
             this.root = '/this/is/the/root/';
             this.app = new Y.eZ.PlatformUIApp({
-                root: this.root,
+                config: {
+                    rootInfo: {
+                        root: this.root,
+                    },
+                },
                 container: '.app',
                 viewContainer: '.view-container'
             });
@@ -1266,10 +1279,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         setUp: function () {
             this.capiMock = new Y.Mock();
             this.userMock = new Y.Mock();
-            this.app = new Y.eZ.PlatformUIApp({
-                capi: this.capiMock
-            });
-
+            this.app = new Y.eZ.PlatformUIApp();
+            this.app._set('capi', this.capiMock);
             this.app._set('user', this.userMock);
         },
 
@@ -1438,10 +1449,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         setUp: function () {
             this.capiMock = new Y.Mock();
             this.userMock = new Y.Mock();
-            this.app = new Y.eZ.PlatformUIApp({
-                capi: this.capiMock
-            });
-
+            this.app = new Y.eZ.PlatformUIApp();
+            this.app._set('capi', this.capiMock);
             this.app._set('user', this.userMock);
         },
 
@@ -1492,10 +1501,11 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.userMock = new Y.Mock();
             this.anonymousUserId = "10";
             this.app = new Y.eZ.PlatformUIApp({
-                capi: this.capiMock,
-                anonymousUserId: this.anonymousUserId,
+                config: {
+                    anonymousUserId: this.anonymousUserId,
+                }
             });
-
+            this.app._set('capi', this.capiMock);
             this.app._set('user', this.userMock);
         },
 
@@ -1630,10 +1640,11 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.capiMock = new Y.Mock();
             this.userMock = new Y.Mock();
             this.app = new Y.eZ.PlatformUIApp({
-                capi: this.capiMock,
-                anonymousUserId: '10',
+                config: {
+                    anonymousUserId: '10',
+                },
             });
-
+            this.app._set('capi', this.capiMock);
             this.app._set('user', this.userMock);
         },
 
@@ -1798,54 +1809,175 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     });
 
     configRouteTest = new Y.Test.Case({
-        name: "eZ Platform UI App reverse routing tests",
+        name: "eZ Platform UI App route config tests",
 
         setUp: function () {
-
-            this.root = '/this/is/the/root/';
-            this.app = new Y.eZ.PlatformUIApp({
-                root: this.root,
-                container: '.app',
-                viewContainer: '.view-container',
-                routeConfig: {
-                    "loginForm": {
-                        "fieldsViews": {
-                            "ezthing": 'Something'
-                        }
-                    },
-                    "doesNotMatchAnything": {
-                        "fieldsViews": {
-                            "ezthing": 'Anything'
-                        }
-                    },
-                }
-            });
+            this.app = new Y.eZ.PlatformUIApp();
         },
 
         tearDown: function () {
             this.app.destroy();
         },
 
-        "Should enrich route with config": function () {
-            var that = this;
-
-            Y.Array.each(this.app.get('routes'), function (value) {
-                if (value.name == 'loginForm') {
-                    Y.Assert.areSame(value.config, that.app.get('routeConfig').loginForm, 'Route loginForm should be enrich with config');
-                }
+        _getRouteByName: function (name) {
+            return Y.Array.find(this.app.get('routes'), function (elt) {
+                return (elt.name === name);
             });
         },
 
-        "Should Not enrich route with config if routeConfig does NOT match": function () {
-            var that = this;
+        "Should enrich route with config": function () {
+            Y.Object.each(this.app.get('routeConfig'), function (value, routeName) {
+                var route = this._getRouteByName(routeName);
 
-            Y.Array.each(this.app.get('routes'), function (value) {
-                Y.Assert.areNotSame(
-                    value.config,
-                    that.app.get('routeConfig').doesNotMatchAnything,
-                    'routeConfig doesNotMatchAnything should Not enrich loginForm route'
+                Assert.areSame(
+                    value,
+                    route.config,
+                    'The route config should have received a config'
                 );
+            }, this);
+        },
+
+        "Should not enrich route with config if routeConfig does NOT match": function () {
+            var dashboard = this._getRouteByName('dashboard');
+
+            Assert.isUndefined(
+                dashboard.config,
+                'The dashboard route config should be undefined'
+            );
+        },
+    });
+
+    dispatchConfigTest = new Y.Test.Case({
+        name: "eZ Platform UI App reverse dispatch config tests",
+
+        setUp: function () {
+            this.origCAPI = Y.eZ.CAPI;
+            this.origSessionAuthAgent = Y.eZ.SessionAuthAgent;
+            this.apiRoot = 'apiRoot';
+            this.anonymousUserId = 'anonymousUserId';
+            this.assetRoot = 'assetRoot';
+            this.ckeditorPluginPath = 'ckeditorPluginPath';
+            this.root = 'root';
+            Y.eZ.CAPI = Y.bind(function (apiRoot, sessionAuthAgent) {
+                Assert.areEqual(
+                    this.apiRoot, apiRoot,
+                    "The CAPI constructor should receive a / trimed version of apiRoot"
+                );
+
+                this.sessionAuthAgent = sessionAuthAgent;
+            }, this);
+            Y.eZ.SessionAuthAgent = Y.bind(function (sessionInfo) {
+                this.sessionAuthAgentConfig = sessionInfo;
+            }, this);
+        },
+
+        tearDown: function () {
+            Y.eZ.CAPI = this.origCAPI;
+            Y.eZ.SessionAuthAgent = this.origSessionAuthAgent;
+            this.app.destroy();
+        },
+
+        _buildApp: function () {
+            this.app = new Y.eZ.PlatformUIApp({
+                config: {
+                    rootInfo: {
+                        root: this.root,
+                        apiRoot: this.apiRoot + '/',
+                        assetRoot: this.assetRoot,
+                        ckeditorPluginPath: this.ckeditorPluginPath,
+                    },
+                    anonymousUserId: this.anonymousUserId,
+                    sessionInfo: this.sessionInfo,
+                },
             });
+        },
+
+        "Should configure the CAPI": function () {
+            this._buildApp();
+            Assert.isInstanceOf(
+                Y.eZ.CAPI,
+                this.app.get('capi'),
+                "The CAPI object should be an instance of eZ.CAPI"
+            );
+            Assert.isInstanceOf(
+                Y.eZ.SessionAuthAgent,
+                this.sessionAuthAgent,
+                "The session auth agent should be an instance of eZ.SessionAuthAgent"
+            );
+            Assert.isObject(
+                this.sessionAuthAgentConfig,
+                "The sessionAuthAgent should have received an object"
+            );
+            Assert.isTrue(
+                Y.Object.isEmpty(this.sessionAuthAgentConfig),
+                "The sessionAuthAgent should have received an empty object"
+            );
+        },
+
+        "Should configure the SessionAuthAgent with the given sessionInfo": function () {
+            this.sessionInfo = {isStarted: true};
+            this._buildApp();
+            Assert.areSame(
+                this.sessionInfo,
+                this.sessionAuthAgentConfig,
+                "The sessionAuthAgent should have received the sessionInfo"
+            );
+            Assert.isUndefined(
+                this.app.get('config').sessionInfo,
+                "The sessionInfo should have been removed from the configuration"
+            );
+        },
+
+        "Should configure the `root`": function () {
+            this._buildApp();
+            Assert.areSame(
+                this.root,
+                this.app.get('root'),
+                "The `root` should have been set"
+            );
+            Assert.isUndefined(
+                this.app.get('config').root,
+                "The root should have been removed from the configuration"
+            );
+        },
+
+        "Should configure the `apiRoot`": function () {
+            this._buildApp();
+            Assert.areSame(
+                this.apiRoot + '/',
+                this.app.get('apiRoot'),
+                "The `apiRoot` should have been set"
+            );
+            Assert.isUndefined(
+                this.app.get('config').apiRoot,
+                "The apiRoot should have been removed from the configuration"
+            );
+        },
+
+        "Should configure the `assetRoot`": function () {
+            this._buildApp();
+            Assert.areSame(
+                this.assetRoot,
+                this.app.get('assetRoot'),
+                "The `assetRoot` should have been set"
+            );
+            Assert.isUndefined(
+                this.app.get('config').assetRoot,
+                "The assetRoot should have been removed from the configuration"
+            );
+        },
+
+        "Should configure the `anonymousUserId`": function () {
+            this._buildApp();
+            Assert.areSame(
+                this.anonymousUserId,
+                this.app.get('anonymousUserId'),
+                "The `anonymousUserId` should have been set"
+            );
+            Assert.isUndefined(
+                this.app.get('config').anonymousUserId,
+                "The anonymousUserId should have been removed from the configuration"
+            );
         },
     });
 
@@ -1863,4 +1995,5 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(isLoggedInTest);
     Y.Test.Runner.add(checkUserTest);
     Y.Test.Runner.add(configRouteTest);
+    Y.Test.Runner.add(dispatchConfigTest);
 }, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice', 'ez-viewservicebaseplugin']});

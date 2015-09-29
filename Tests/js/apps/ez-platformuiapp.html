@@ -18,6 +18,7 @@
 </div>
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../external/assets/capi.js"></script>
 <script type="text/javascript" src="./assets/ez-platformuiapp-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
@@ -38,17 +39,12 @@
             "ez-platformuiapp": {
                 requires: [
                     'app', 'app-transitions', 'node-screen', 'parallel',
-                    'ez-errorview', 'ez-viewservice', 'ez-usermodel', 'ez-pluginregistry'
+                    'ez-capi', 'ez-view', 'ez-viewservice', 'ez-usermodel', 'ez-pluginregistry'
                 ],
                 fullpath: "../../../Resources/public/js/apps/ez-platformuiapp.js"
             },
-            "ez-errorview": {
-                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
-                fullpath: "../../../Resources/public/js/views/ez-errorview.js"
-            },
-            "ez-templatebasedview": {
-                requires: ['ez-view', 'handlebars', 'template'],
-                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            "ez-capi": {
+                fullpath: "../../../Resources/public/js/external/ez-capi.js"
             },
             "ez-viewservice": {
                 requires: ['base'],

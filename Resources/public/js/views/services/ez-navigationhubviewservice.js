@@ -19,7 +19,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
      * @constructor
      * @extends eZ.ViewService
      */
-    Y.eZ.NavigationHubViewService = Y.Base.create('navigationHubViewService', Y.eZ.ViewService, [], {
+    Y.eZ.NavigationHubViewService = Y.Base.create('navigationHubViewService', Y.eZ.ViewService, [Y.eZ.SideViewService], {
         initializer: function () {
             this.on('*:logOut', this._logOut);
             this.after('*:navigateTo', this._navigateTo);

@@ -39,6 +39,11 @@ YUI.add('ez-richtext-editview', function (Y) {
         },
 
         initializer: function () {
+            var config = this.get('config');
+
+            if ( config && config.rootInfo && config.rootInfo.ckeditorPluginPath ) {
+                this._set('ckeditorPluginPath', config.rootInfo.ckeditorPluginPath);
+            }
             this.after('activeChange', function (e) {
                 if ( this.get('active') ) {
                     this._initEditor();
@@ -108,9 +113,7 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @protected
          */
         _registerExternalCKEditorPlugin: function (pluginName, pluginDir) {
-            var path = this.get('config').alloyEditor.externalPluginPath;
-
-            CKEDITOR.plugins.addExternal(pluginName, path + '/' + pluginDir);
+            CKEDITOR.plugins.addExternal(pluginName, this.get('ckeditorPluginPath') + '/' + pluginDir);
         },
 
         /**
@@ -344,6 +347,19 @@ YUI.add('ez-richtext-editview', function (Y) {
                         tabIndex: 2,
                     },
                 }
+            },
+
+            /**
+             * The path to use to load the CKEditor plugins
+             *
+             * @attribute ckeditorPluginPath
+             * @readOnly
+             * @type {String}
+             * @default '/bundle/ezplatformuiassets/vendors'
+             */
+            ckeditorPluginPath: {
+                value: '/bundle/ezplatformuiassets/vendors',
+                readOnly: true,
             },
         }
     });

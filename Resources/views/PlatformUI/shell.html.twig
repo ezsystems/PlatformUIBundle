@@ -53,52 +53,8 @@
             var app = new Y.eZ.PlatformUIApp({
                     container: '.ez-platformui-app',
                     viewContainer: '.ez-view-container',
-                    root: "{{ parameters.rootInfo.root }}",
-                    assetRoot: "{{ parameters.rootInfo.assetRoot }}",
-                    apiRoot: "{{ parameters.rootInfo.apiRoot }}",
-                    anonymousUserId: "{{ parameters.anonymousUserId }}",
+                    config: {{ parameters|json_encode|raw }},
                     plugins: Y.eZ.PluginRegistry.getPlugins(Y.eZ.PlatformUIApp.NAME),
-                    capi: new Y.eZ.CAPI(
-                        "{{ parameters.rootInfo.apiRoot|trim('/') }}",
-                        new Y.eZ.SessionAuthAgent({%if parameters.sessionInfo.isStarted %}{
-                                name: "{{ parameters.sessionInfo.name }}",
-                                identifier: "{{ parameters.sessionInfo.identifier }}",
-                                href: "{{ parameters.sessionInfo.href }}",
-                                csrfToken: "{{ parameters.sessionInfo.csrfToken }}",
-                        }{% endif %})
-                    ),
-                    routeConfig: {
-                        "viewLocation": {
-                            "fieldViews": {
-                                "ezcountry": {{parameters.countriesInfo|json_encode|raw}}
-                            }
-                        },
-                        "translateContent": {
-                            "fieldEditViews": {
-                                "ezcountry": {{parameters.countriesInfo|json_encode|raw}}
-                            }
-                        },
-                        "editContent": {
-                            "fieldEditViews": {
-                                "ezcountry": {{parameters.countriesInfo|json_encode|raw}},
-                                "ezrichtext": {
-                                    "alloyEditor": {
-                                        "externalPluginPath": "{{ parameters.rootInfo.ckeditorPluginPath }}",
-                                    }
-                                }
-                            }
-                        },
-                        "createContent": {
-                            "fieldEditViews": {
-                                "ezcountry": {{parameters.countriesInfo|json_encode|raw}},
-                                "ezrichtext": {
-                                    "alloyEditor": {
-                                        "externalPluginPath": "{{ parameters.rootInfo.ckeditorPluginPath }}",
-                                    }
-                                }
-                            }
-                        }
-                    }
                 });
             app.on('ready', function () {
                 Y.one(Y.config.doc.documentElement).addClass('ez-platformui-app-ready');

@@ -58,21 +58,18 @@ YUI.add('ez-contenteditformview', function (Y) {
                 config = this.get('config');
 
             Y.Object.each(fieldDefinitions, function (def) {
-                var EditView, view, fieldConfig;
+                var EditView, view;
 
                 try {
                     EditView = Y.eZ.FieldEditView.getFieldEditView(def.fieldType);
 
-                    if (config && config.fieldEditViews && config.fieldEditViews[def.fieldType]) {
-                        fieldConfig = config.fieldEditViews[def.fieldType];
-                    }
                     view = new EditView({
                         content: content,
                         version: version,
                         contentType: contentType,
                         fieldDefinition: def,
                         field: version.getField(def.identifier),
-                        config: fieldConfig,
+                        config: config,
                     });
                     views.push(view);
                     view.addTarget(that);

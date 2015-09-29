@@ -3,13 +3,22 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenteditformview-tests', function (Y) {
-    var viewTest, isValidTest, getFieldsTest, activeFlagTest, haltSubmitTest;
+    var viewTest, isValidTest, getFieldsTest, activeFlagTest, haltSubmitTest,
+        Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
         name: "eZ Content Edit Form View test",
 
         setUp: function () {
             Y.eZ.FieldEditView.registerFieldEditView('test1', Y.Base.create('test1FieldEditView', Y.View, [], {
+                initializer: function () {
+                    Assert.areSame(
+                        viewTest.config,
+                        this.get('config'),
+                        "The field edit view should receive the config"
+                    );
+                },
+
                 render: function () {
                     this.get('container').setContent('test1 rendered');
                     this.fire('test1Event');
@@ -18,6 +27,14 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             }));
 
             Y.eZ.FieldEditView.registerFieldEditView('test2', Y.Base.create('test2FieldEditView', Y.View, [], {
+                initializer: function () {
+                    Assert.areSame(
+                        viewTest.config,
+                        this.get('config'),
+                        "The field edit view should receive the config"
+                    );
+                },
+
                 render: function () {
                     this.get('container').setContent('test2 rendered');
                     return this;
@@ -27,11 +44,7 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
             this.contentType = new Y.Mock();
             this.content = new Y.Mock();
             this.version = new Y.Mock();
-            this.config = {
-                fieldEditViews: {
-                    test1: 'hello'
-                }
-            };
+            this.config = {};
 
             Y.Mock.expect(this.contentType, {
                 method: 'getFieldGroups',
@@ -170,36 +183,6 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
                 });
             });
             this.wait();
-        },
-
-        "Should give the config to the fieldEditView": function () {
-            var that = this;
-
-            this.view = new Y.eZ.ContentEditFormView({
-                container: '.container',
-                contentType: this.contentType,
-                content: this.content,
-                version: this.version,
-                config: {
-                    fieldEditViews: {
-                        test1: 'hello'
-                    }
-                }
-            });
-
-            this.view.set('active', true);
-
-            Y.Array.each(this.fieldDefinitions, function (def) {
-                if (that.view.get('config').fieldEditViews[def.fieldType]){
-                    Y.Assert.areSame(
-                        that.config[def.fieldType],
-                        that.view.get('config').fieldEditViews[def.fieldType],
-                        "The config should be passed to the fieldView if fieldType match"
-                    );
-                } else {
-                    Y.Assert.isUndefined(that.config[def.fieldType], 'The fieldView should NOT have config if fieldType do Not match');
-                }
-            });
         },
     });
 

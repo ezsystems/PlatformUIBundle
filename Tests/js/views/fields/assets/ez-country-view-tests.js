@@ -51,17 +51,19 @@ YUI.add('ez-country-view-tests', function (Y) {
                     fieldDefinition: this.fieldDefinition,
                     field: this.field,
                     config: {
-                        "AD": {
-                            "Alpha2": "AD",
-                            "Alpha3": "AND",
-                            "IDC": "376",
-                            "Name": "Andorra"
-                        },
-                        SC: {
-                            "Alpha2": "SC",
-                            "Alpha3": "SUC",
-                            "IDC": "377",
-                            "Name": "Super Country"
+                        countriesInfo: {
+                            "AD": {
+                                "Alpha2": "AD",
+                                "Alpha3": "AND",
+                                "IDC": "376",
+                                "Name": "Andorra"
+                            },
+                            SC: {
+                                "Alpha2": "SC",
+                                "Alpha3": "SUC",
+                                "IDC": "377",
+                                "Name": "Super Country"
+                            },
                         },
                     }
                 });
@@ -91,17 +93,19 @@ YUI.add('ez-country-view-tests', function (Y) {
                     fieldDefinition: this.fieldDefinition,
                     field: this.field,
                     config: {
-                        "AD": {
-                            "Alpha2": "AD",
-                            "Alpha3": "AND",
-                            "IDC": "376",
-                            "Name": "Andorra"
-                        },
-                        SC: {
-                            "Alpha2": "SC",
-                            "Alpha3": "SUC",
-                            "IDC": "377",
-                            "Name": "Super Country"
+                        countriesInfo: {
+                            "AD": {
+                                "Alpha2": "AD",
+                                "Alpha3": "AND",
+                                "IDC": "376",
+                                "Name": "Andorra"
+                            },
+                            SC: {
+                                "Alpha2": "SC",
+                                "Alpha3": "SUC",
+                                "IDC": "377",
+                                "Name": "Super Country"
+                            },
                         },
                     }
                 });
@@ -131,17 +135,19 @@ YUI.add('ez-country-view-tests', function (Y) {
                     fieldDefinition: this.fieldDefinition,
                     field: this.field,
                     config: {
-                        "AD": {
-                            "Alpha2": "AD",
-                            "Alpha3": "AND",
-                            "IDC": "376",
-                            "Name": "Andorra"
-                        },
-                        SC: {
-                            "Alpha2": "SC",
-                            "Alpha3": "SUC",
-                            "IDC": "377",
-                            "Name": "Super Country"
+                        countriesInfo: {
+                            "AD": {
+                                "Alpha2": "AD",
+                                "Alpha3": "AND",
+                                "IDC": "376",
+                                "Name": "Andorra"
+                            },
+                            SC: {
+                                "Alpha2": "SC",
+                                "Alpha3": "SUC",
+                                "IDC": "377",
+                                "Name": "Super Country"
+                            },
                         },
                     }
                 });

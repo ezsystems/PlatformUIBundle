@@ -24,8 +24,12 @@
         filter: loaderFilter,
         modules: {
             "ez-confirmboxviewservice": {
-                requires: ['ez-viewservice'],
+                requires: ['ez-viewservice', 'ez-sideviewservice'],
                 fullpath: "../../../../Resources/public/js/views/services/ez-confirmboxviewservice.js"
+            },
+            "ez-sideviewservice": {
+                requires: ['base'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-sideviewservice.js"
             },
             "ez-viewservice": {
                 requires: ['view'],

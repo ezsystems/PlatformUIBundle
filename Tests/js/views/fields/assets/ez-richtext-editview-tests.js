@@ -179,8 +179,8 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 contentType: this.model,
                 actionBar: new Y.View(),
                 config: {
-                    alloyEditor: {
-                        externalPluginPath: '../../..',
+                    rootInfo: {
+                        ckeditorPluginPath: '../../..',
                     }
                 },
             });
@@ -275,8 +275,8 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 contentType: this.model,
                 actionBar: new Y.View(),
                 config: {
-                    alloyEditor: {
-                        externalPluginPath: '../../..',
+                    rootInfo: {
+                        ckeditorPluginPath: '../../..',
                     }
                 },
             });
@@ -315,8 +315,8 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
         setUp: function () {
             this.config = {
-                alloyEditor: {
-                    externalPluginPath: '../../..',
+                rootInfo: {
+                    ckeditorPluginPath: '../../..',
                 }
             };
             this.field = {id: 42, fieldValue: {xhtml5edit: ""}};
@@ -351,7 +351,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             );
             Assert.areEqual(
                 CKEDITOR.plugins.externals[plugin].dir,
-                this.view.get('config').alloyEditor.externalPluginPath + '/' + plugin + '/'
+                this.view.get('ckeditorPluginPath') + '/' + plugin + '/'
             );
         },
 
@@ -639,8 +639,8 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 contentType: this.contentType,
                 actionBar: new Y.View(),
                 config: {
-                    alloyEditor: {
-                        externalPluginPath: '../../..',
+                    rootInfo: {
+                        ckeditorPluginPath: '../../..',
                     }
                 },
             });

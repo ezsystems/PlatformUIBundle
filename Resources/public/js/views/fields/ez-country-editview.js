@@ -23,11 +23,16 @@ YUI.add('ez-country-editview', function (Y) {
      * @extends eZ.SelectionEditView
      */
     Y.eZ.CountryEditView = Y.Base.create('countryEditView', Y.eZ.SelectionEditView, [], {
-
         initializer: function () {
+            var config = this.get('config');
+
             this.containerTemplate = '<div class="' +
                 this._generateViewClassName(this._getName()) + ' ' +
                 this._generateViewClassName(Y.eZ.SelectionEditView.NAME) + '"/>';
+
+            if ( config && config.countriesInfo ) {
+                this._set('countryList', config.countriesInfo);
+            }
         },
 
         /**
@@ -40,7 +45,7 @@ YUI.add('ez-country-editview', function (Y) {
          * @return {String}
          */
         _getCountryName: function (alpha2Code) {
-            var countryList = this.get('config');
+            var countryList = this.get('countryList');
 
             if (countryList[alpha2Code]) {
                 return countryList[alpha2Code].Name;
@@ -85,7 +90,7 @@ YUI.add('ez-country-editview', function (Y) {
         _getSource: function () {
             var countriesArray = [];
 
-            Y.Object.each(this.get('config'), function (country) {
+            Y.Object.each(this.get('countryList'), function (country) {
                 countriesArray.push(country);
             });
             return countriesArray;
@@ -124,6 +129,18 @@ YUI.add('ez-country-editview', function (Y) {
              * @default []
              * @type Array
              */
+
+            /**
+             * The country list indexed by alpha2 code
+             *
+             * @attribute countryList
+             * @readOnly
+             * @type {Object}
+             */
+            countryList: {
+                value: {},
+                readOnly: true,
+            },
         }
     });
 

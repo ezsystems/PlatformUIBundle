@@ -17,13 +17,13 @@ YUI.add('ez-confirmboxviewservice-tests', function (Y) {
             delete this.service;
         },
 
-        "Should return the config object": function () {
-            this.service.set('config', {});
+        "Should return the parameters object": function () {
+            this.service.set('parameters', {param: 'param'});
 
-            Y.Assert.areSame(
-                this.service.get('config'),
-                this.service.getViewParameters(),
-                "getViewParameters should return the config object"
+            Y.Assert.areEqual(
+                'param',
+                this.service.getViewParameters().param,
+                "getViewParameters should return the parameters object"
             );
         },
     });

@@ -118,6 +118,7 @@ YUI.add('ez-platformuiapp', function (Y) {
          * @method initializer
          */
         initializer: function () {
+            this._dispatchConfig();
             /**
              * Stores the initial title of the page so it can be used when
              * generating the title depending on the active view
@@ -143,35 +144,38 @@ YUI.add('ez-platformuiapp', function (Y) {
                     oldService.setNextViewServiceParameters(newService);
                 }
             });
-            this._routeConfig();
         },
 
         /**
-         * Reads the `routeConfig` configuration object and applies the given
-         * settings to the correct route.
+         * Dispatches the `config` attribute value so that the app is configured
+         * accordingly. The values consumed by the app are removed from the
+         * configuration.
          *
+         * @method _dispatchConfig
          * @protected
-         * @method _routeConfig
          */
-        _routeConfig: function () {
-            if (this.get('routeConfig')) {
-                Y.Array.each(this.get('routes'), Y.bind(this._enrichRoute, this));
-            }
-        },
+        _dispatchConfig: function () {
+            var config = this.get('config');
 
-        /**
-         * Enrich the route with the route configuration
-         *
-         * @protected
-         * @method _enrichRoute
-         * @param {Object} route a route object (an entry in the `routes`
-         * attribute)
-         * @param {Number} index
-         */
-        _enrichRoute: function (route, index) {
-            if (this.get('routeConfig')[route.name]) {
-                this.get('routes')[index].config = this.get('routeConfig')[route.name];
+            if ( !config ) {
+                return;
             }
+            Y.Object.each(config.rootInfo, function (value, attrName) {
+                if ( this.attrAdded(attrName) ) {
+                    this._set(attrName, value);
+                    delete config.rootInfo[attrName];
+                }
+            }, this);
+            if ( config.anonymousUserId ) {
+                this._set('anonymousUserId', config.anonymousUserId);
+                delete config.anonymousUserId;
+            }
+
+            this._set('capi', new Y.eZ.CAPI(
+                this.get('apiRoot').replace(/\/{1,}$/, ''),
+                new Y.eZ.SessionAuthAgent(config.sessionInfo ? config.sessionInfo : {})
+            ));
+            delete config.sessionInfo;
         },
 
         /**
@@ -351,22 +355,22 @@ YUI.add('ez-platformuiapp', function (Y) {
 
         /**
          * Shows a side view based on its identifier in the sideViews hash.
-         * This method also allows to pass a configuration hash that will stored
-         * in the `config` attribute of the view service.
+         * This method also allows to pass a parameters hash that can be used to
+         * set some params to view service/view while showing it.
          *
          * @method showSideView
          * @param {String} sideViewKey
-         * @param {Mixed} config
+         * @param {Mixed} parameters
          * @param {Function} next
          */
-        showSideView: function (sideViewKey, config, next) {
+        showSideView: function (sideViewKey, parameters, next) {
             var activeViewService = this.get('activeViewService');
 
             this._showSideView(
                 this.sideViews[sideViewKey],
                 activeViewService ? activeViewService.get('request') : null,
                 activeViewService ? activeViewService.get('response') : null,
-                config,
+                parameters,
                 next
              );
         },
@@ -388,11 +392,13 @@ YUI.add('ez-platformuiapp', function (Y) {
          * @param {Object} viewInfo the info hash of the side view to show
          * @param {Object} req the request
          * @param {Object} res the response
+         * @param {Object} parameters the parameters to set when showing the
+         * side view
          * @param {Function} next a callback function to call when the view is
          * shown
          * @protected
          */
-        _showSideView: function (viewInfo, req, res, config, next) {
+        _showSideView: function (viewInfo, req, res, parameters, next) {
             var view, service,
                 container = this.get('container'),
                 app =  this,
@@ -403,6 +409,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     app: this,
                     capi: this.get('capi'),
                     plugins: Y.eZ.PluginRegistry.getPlugins(viewInfo.service.NAME),
+                    config: this.get('config'),
                 });
                 viewInfo.serviceInstance.on('error', function (e) {
                     app.fire('notify', {
@@ -417,7 +424,7 @@ YUI.add('ez-platformuiapp', function (Y) {
             }
             service = viewInfo.serviceInstance;
             service.setAttrs({
-                config: config,
+                parameters: parameters,
                 request: req,
                 response: res,
             });
@@ -560,7 +567,6 @@ YUI.add('ez-platformuiapp', function (Y) {
                     request: req,
                     response: res,
                     plugins: Y.eZ.PluginRegistry.getPlugins(ServiceContructor.NAME),
-                    config: route.config,
                 });
 
                 viewInfo.service = route.serviceInstance;
@@ -804,13 +810,27 @@ YUI.add('ez-platformuiapp', function (Y) {
             },
 
             /**
+             * The application configuration. It is dispatched to the others
+             * application attributes/properties at build time.
+             *
+             * @attribute config
+             * @type {Object|undefined}
+             * @writeOnce
+             */
+            config: {
+                writeOnce: 'initOnly',
+            },
+
+            /**
              * The base URI to build the URI of the ajax request
              *
              * @attribute apiRoot
              * @default "/"
              * @type String
+             * @readOnly
              */
             apiRoot: {
+                readOnly: true,
                 value: "/"
             },
 
@@ -820,8 +840,10 @@ YUI.add('ez-platformuiapp', function (Y) {
              * @attribute assetRoot
              * @default "/"
              * @type String
+             * @readOnly
              */
             assetRoot: {
+                readOnly: true,
                 value: "/"
             },
 
@@ -839,39 +861,16 @@ YUI.add('ez-platformuiapp', function (Y) {
             },
 
             /**
-             * Routes configuration
-             *
-             * It's an object supposed to contain the configuration of a route,
-             * the key is the name of the route it should match
-             * For example if you want to match "loginForm" route:
-             *
-             *    "loginForm": {
-             *         "fieldsViews": {
-             *             "ezthing": 'Something'
-             *         }
-             *     },
-             *
-             * @attribute routeConfig
-             * @default null
-             * @type Object
-             * @writeOnce
-             */
-            routeConfig: {
-                writeOnce: "initOnly",
-                value: null
-            },
-
-            /**
-             * eZ Publish REST client
+             * eZ Platform REST client
              *
              * @attribute capi
              * @default null
              * @type {eZ.CAPI}
-             * @writeOnce
+             * @readOnly
              * @required
              */
             capi: {
-                writeOnce: "initOnly",
+                readOnly: true,
                 value: null
             },
 
@@ -905,10 +904,11 @@ YUI.add('ez-platformuiapp', function (Y) {
              *
              * @attribute anonymousUserId
              * @type {String}
-             * @required
+             * @readOnly
              */
             anonymousUserId: {
-                writeOnce: "initOnly",
+                readOnly: true,
+                value: "/api/ezp/v2/user/users/10",
             },
         }
     });
