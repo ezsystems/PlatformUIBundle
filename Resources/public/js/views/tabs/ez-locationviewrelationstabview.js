@@ -99,6 +99,7 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
          * @param {ez.Content[]} relationList List of related content
          * @return {Array} of RelationsListItems struct:
          *              struct.content: JSONified related content
+         *              struct.mainLocationId: main location Id of the content
          *              struct.relationInfo.relationTypeName: Ready to be displayed name of the relation type
          *              struct.relationInfo.fieldDefinitionName: Name of the field definition if any ("" if none)
          */
@@ -108,6 +109,7 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
             Y.Array.each(relationList, function (content) {
                 relationListToJSON.push({
                     content: content.toJSON(),
+                    mainLocationId: content.get('resources').MainLocation,
                     relationInfo: this._lookupRelationInfo(content),
                 });
             }, this);

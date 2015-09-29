@@ -108,15 +108,16 @@ YUI.add('ez-locationviewrelationstabview-tests', function (Y) {
             });
 
             this._configureRelatedContentMock(
-                this.relatedContent1Mock, '/relatedcontent/1', 'eng-GB'
+                this.relatedContent1Mock, '/relatedcontent/1', 'eng-GB', '/rc/loc/1'
             );
             this._configureRelatedContentMock(
-                this.relatedContent2Mock, '/relatedcontent/2', 'eng-GB'
+                this.relatedContent2Mock, '/relatedcontent/2', 'eng-GB', '/rc/loc/2'
             );
 
             this.expectedRelatedContent = [
                 {
                     content: this.relatedContent1Mock.toJSON(),
+                    mainLocationId: '/rc/loc/1',
                     relationInfo: [
                         {
                             relationTypeName: "Content level relation",
@@ -130,6 +131,7 @@ YUI.add('ez-locationviewrelationstabview-tests', function (Y) {
                 },
                 {
                     content: this.relatedContent2Mock.toJSON(),
+                    mainLocationId: '/rc/loc/2',
                     relationInfo: [
                         {
                             relationTypeName: "Unknown relation type",
@@ -157,7 +159,7 @@ YUI.add('ez-locationviewrelationstabview-tests', function (Y) {
             delete this.view;
         },
 
-        _configureRelatedContentMock: function(relatedContentMock, id, languageCode) {
+        _configureRelatedContentMock: function(relatedContentMock, id, languageCode, mainLocation) {
             Mock.expect(relatedContentMock, {
                 method: 'toJSON',
                 returns: {}
@@ -171,6 +173,8 @@ YUI.add('ez-locationviewrelationstabview-tests', function (Y) {
                         return id;
                     } else if (attr === 'mainLanguageCode') {
                         return languageCode;
+                    } else if (attr === 'resources') {
+                        return {MainLocation: mainLocation};
                     } else {
                         Y.fail("Unexpected parameter " + attr + " for content mock");
                     }
@@ -195,6 +199,11 @@ YUI.add('ez-locationviewrelationstabview-tests', function (Y) {
             Assert.areSame(
                 expectedRelatedContentItem.content, relatedContentItem.content,
                 "Expected relatedContent (" + index + ") content should be available in the template"
+            );
+
+            Assert.areSame(
+                expectedRelatedContentItem.mainLocationId, relatedContentItem.mainLocationId,
+                "Expected mainLocationId (" + index + ") content should be available in the template"
             );
 
             Assert.areSame(
