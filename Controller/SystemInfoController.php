@@ -8,6 +8,7 @@
  */
 namespace EzSystems\PlatformUIBundle\Controller;
 
+use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use Symfony\Component\HttpFoundation\Response;
 use EzSystems\PlatformUIBundle\Helper\SystemInfoHelperInterface;
 
@@ -21,6 +22,12 @@ class SystemInfoController extends Controller
     public function __construct(SystemInfoHelperInterface $systemInfoHelper)
     {
         $this->systemInfoHelper = $systemInfoHelper;
+    }
+
+    public function performAccessChecks()
+    {
+        parent::performAccessChecks();
+        $this->denyAccessUnlessGranted(new Attribute('setup', 'system_info'));
     }
 
     /**
