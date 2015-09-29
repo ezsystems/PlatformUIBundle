@@ -11,13 +11,16 @@ namespace EzSystems\PlatformUIBundle\Controller;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\RoleService;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
+use eZ\Publish\Core\Repository\Values\User\Policy;
 use eZ\Publish\Core\Repository\Values\User\RoleCreateStruct;
+use EzSystems\RepositoryForms\Data\Mapper\PolicyMapper;
 use EzSystems\RepositoryForms\Data\Mapper\RoleMapper;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleCreateType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleDeleteType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleUpdateType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class RoleController extends Controller
 {
@@ -29,14 +32,21 @@ class RoleController extends Controller
     /**
      * @var ActionDispatcherInterface
      */
-    private $actionDispatcher;
+    private $roleActionDispatcher;
+
+    /**
+     * @var ActionDispatcherInterface
+     */
+    private $policyActionDispatcher;
 
     public function __construct(
         RoleService $roleService,
-        ActionDispatcherInterface $actionDispatcher
+        ActionDispatcherInterface $roleActionDispatcher,
+        ActionDispatcherInterface $policyActionDispatcher
     ) {
         $this->roleService = $roleService;
-        $this->actionDispatcher = $actionDispatcher;
+        $this->roleActionDispatcher = $roleActionDispatcher;
+        $this->policyActionDispatcher = $policyActionDispatcher;
     }
 
     /**
@@ -133,8 +143,8 @@ class RoleController extends Controller
         $form->handleRequest($request);
         $hasErrors = false;
         if ($form->isValid()) {
-            $this->actionDispatcher->dispatchFormAction($form, $roleData, $form->getClickedButton()->getName());
-            if ($response = $this->actionDispatcher->getResponse()) {
+            $this->roleActionDispatcher->dispatchFormAction($form, $roleData, $form->getClickedButton()->getName());
+            if ($response = $this->roleActionDispatcher->getResponse()) {
                 return $response;
             }
 
@@ -184,5 +194,46 @@ class RoleController extends Controller
         }
 
         return $this->redirectToRouteAfterFormPost('admin_roleList');
+    }
+
+    public function editPolicyAction(Request $request, $roleId, $policyId = null)
+    {
+        try {
+            $roleDraft = $this->roleService->loadRoleDraft($roleId);
+        } catch (NotFoundException $e) {
+            // The draft doesn't exist, let's create one
+            $role = $this->roleService->loadRole($roleId);
+            $roleDraft = $this->roleService->createRoleDraft($role);
+        }
+
+        $policy = new Policy();
+        if ($policyId) {
+            foreach ($roleDraft->getPolicies() as $policy) {
+                if ($policy->id === $policyId) {
+                    break;
+                }
+            }
+
+            throw new BadRequestHttpException("Role #$roleId doesn't contain any policy with ID #$policyId");
+        }
+
+        $policyData = (new PolicyMapper())->mapToFormData($policy, ['roleDraft' => $roleDraft]);
+        $actionUrl = $this->generateUrl('admin_policyEdit', ['roleId' => $roleId, 'policyId' => $policyId]);
+        $form = $this->createForm('ezrepoforms_policy_edit', $policyData);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $this->policyActionDispatcher->dispatchFormAction($form, $policyData, $form->getClickedButton()->getName());
+            if ($response = $this->policyActionDispatcher->getResponse()) {
+                return $response;
+            }
+
+            return $this->redirectAfterFormPost($actionUrl);
+        }
+
+        return $this->render('eZPlatformUIBundle:Role:edit_policy.html.twig', [
+            'form' => $form->createView(),
+            'actionUrl' => $actionUrl,
+            'policy' => $policyData,
+        ]);
     }
 }

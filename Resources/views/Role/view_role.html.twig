@@ -27,6 +27,7 @@
                         <th>{{ 'policy.module'|trans }}</th>
                         <th>{{ 'policy.function'|trans }}</th>
                         <th>{{ 'policy.limitation'|trans }}</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -62,6 +63,13 @@
                                 {%- else -%}
                                     {{- 'policy.limitation_none'|trans -}}
                                 {%- endfor -%}
+                            </td>
+                            <td>
+                            {% if can_edit %}
+                                <a href="{{ path('admin_policyEdit', {'roleId': role.id, 'policyId': policy.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'role.edit'|trans }}</a>
+                            {% else %}
+                                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'role.edit'|trans }}</span>
+                            {% endif %}
                             </td>
                         </tr>
                     {% else %}

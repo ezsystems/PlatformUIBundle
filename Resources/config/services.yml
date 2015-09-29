@@ -156,6 +156,7 @@ services:
         arguments:
             - @ezpublish.api.service.role
             - @ezrepoforms.action_dispatcher.role
+            - @ezrepoforms.action_dispatcher.policy
 
     ezsystems.platformui.form_processor.role:
         class: %ezsystems.platformui.form_processor.role.class%
