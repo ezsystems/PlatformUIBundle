@@ -52,17 +52,19 @@ YUI.add('ez-country-editview-tests', function (Y) {
                 version: this.version,
                 contentType: this.contentType,
                 config: {
-                    "AD": {
-                        "Alpha2": "AD",
-                        "Alpha3": "AND",
-                        "IDC": "376",
-                        "Name": "Andorra"
-                    },
-                    "SC": {
-                        "Alpha2": "SC",
-                        "Alpha3": "SUC",
-                        "IDC": "377",
-                        "Name": "Super Country"
+                    countriesInfo: {
+                        "AD": {
+                            "Alpha2": "AD",
+                            "Alpha3": "AND",
+                            "IDC": "376",
+                            "Name": "Andorra"
+                        },
+                        "SC": {
+                            "Alpha2": "SC",
+                            "Alpha3": "SUC",
+                            "IDC": "377",
+                            "Name": "Super Country"
+                        },
                     },
                 },
                 value: this.value,
@@ -326,18 +328,20 @@ YUI.add('ez-country-editview-tests', function (Y) {
                 version: this.version,
                 contentType: this.contentType,
                 config: {
-                    "AD": {
-                        "Alpha2": "AD",
-                        "Alpha3": "AND",
-                        "IDC": "376",
-                        "Name": "Andorra"
+                    countriesInfo: {
+                        "AD": {
+                            "Alpha2": "AD",
+                            "Alpha3": "AND",
+                            "IDC": "376",
+                            "Name": "Andorra"
+                        },
+                        "SC": {
+                            "Alpha2": "SC",
+                            "Alpha3": "SUC",
+                            "IDC": "377",
+                            "Name": "Super Country"
+                        },
                     },
-                    "SC": {
-                        "Alpha2": "SC",
-                        "Alpha3": "SUC",
-                        "IDC": "377",
-                        "Name": "Super Country"
-                    }
                 }
             });
         },
@@ -355,7 +359,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
             this.view.render();
             this.view.set('active', true);
 
-            Y.Object.each(this.view.get('config'), function (country) {
+            Y.Object.each(this.view.get('config').countriesInfo, function (country) {
                 countriesArray.push(country);
             });
             Y.Assert.areEqual(

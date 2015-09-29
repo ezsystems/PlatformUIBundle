@@ -144,105 +144,38 @@ YUI.add('ez-platformuiapp', function (Y) {
                     oldService.setNextViewServiceParameters(newService);
                 }
             });
-            this._routeConfig();
         },
 
         /**
          * Dispatches the `config` attribute value so that the app is configured
-         * accordingly.
+         * accordingly. The values consumed by the app are removed from the
+         * configuration.
          *
          * @method _dispatchConfig
          * @protected
          */
         _dispatchConfig: function () {
-            var config = this.get('config'),
-                rootInfo;
+            var config = this.get('config');
 
             if ( !config ) {
                 return;
             }
-            rootInfo = config.rootInfo;
-            // TODO change the whole routeConfig system
-            this._set('routeConfig', {
-                "viewLocation": {
-                    "fieldViews": {
-                        "ezcountry": config.countriesInfo,
-                    }
-                },
-                "translateContent": {
-                    "fieldEditViews": {
-                        "ezcountry": config.countriesInfo,
-                        "ezrichtext": {
-                            "alloyEditor": {
-                                "externalPluginPath": rootInfo ? rootInfo.ckeditorPluginPath : undefined,
-                            }
-                        }
-                    }
-                },
-                "editContent": {
-                    "fieldEditViews": {
-                        "ezcountry": config.countriesInfo,
-                        "ezrichtext": {
-                            "alloyEditor": {
-                                "externalPluginPath": rootInfo ? rootInfo.ckeditorPluginPath : undefined,
-                            }
-                        }
-                    }
-                },
-                "createContent": {
-                    "fieldEditViews": {
-                        "ezcountry": config.countriesInfo,
-                        "ezrichtext": {
-                            "alloyEditor": {
-                                "externalPluginPath": rootInfo ? rootInfo.ckeditorPluginPath : undefined,
-                            }
-                        }
-                    }
+            Y.Object.each(config.rootInfo, function (value, attrName) {
+                if ( this.attrAdded(attrName) ) {
+                    this._set(attrName, value);
+                    delete config.rootInfo[attrName];
                 }
-            });
-            if ( rootInfo ) {
-                Y.Object.each(rootInfo, function (value, attrName) {
-                    if ( this.attrAdded(attrName) ) {
-                        this._set(attrName, value);
-                    }
-                }, this);
-            }
+            }, this);
             if ( config.anonymousUserId ) {
                 this._set('anonymousUserId', config.anonymousUserId);
+                delete config.anonymousUserId;
             }
 
             this._set('capi', new Y.eZ.CAPI(
                 this.get('apiRoot').replace(/\/{1,}$/, ''),
                 new Y.eZ.SessionAuthAgent(config.sessionInfo ? config.sessionInfo : {})
             ));
-        },
-
-        /**
-         * Reads the `routeConfig` configuration object and applies the given
-         * settings to the correct route.
-         *
-         * @protected
-         * @method _routeConfig
-         */
-        _routeConfig: function () {
-            if (this.get('routeConfig')) {
-                Y.Array.each(this.get('routes'), Y.bind(this._enrichRoute, this));
-            }
-        },
-
-        /**
-         * Enrich the route with the route configuration
-         *
-         * @protected
-         * @method _enrichRoute
-         * @param {Object} route a route object (an entry in the `routes`
-         * attribute)
-         * @param {Number} index
-         */
-        _enrichRoute: function (route, index) {
-            if (this.get('routeConfig')[route.name]) {
-                this.get('routes')[index].config = this.get('routeConfig')[route.name];
-            }
+            delete config.sessionInfo;
         },
 
         /**
@@ -631,7 +564,6 @@ YUI.add('ez-platformuiapp', function (Y) {
                     request: req,
                     response: res,
                     plugins: Y.eZ.PluginRegistry.getPlugins(ServiceContructor.NAME),
-                    config: route.config,
                 });
 
                 viewInfo.service = route.serviceInstance;
@@ -923,29 +855,6 @@ YUI.add('ez-platformuiapp', function (Y) {
             loading: {
                 validator: L.isBoolean,
                 value: false
-            },
-
-            /**
-             * Routes configuration
-             *
-             * It's an object supposed to contain the configuration of a route,
-             * the key is the name of the route it should match
-             * For example if you want to match "loginForm" route:
-             *
-             *    "loginForm": {
-             *         "fieldsViews": {
-             *             "ezthing": 'Something'
-             *         }
-             *     },
-             *
-             * @attribute routeConfig
-             * @default null
-             * @type Object
-             * @readOnly
-             */
-            routeConfig: {
-                readOnly: true,
-                value: null
             },
 
             /**

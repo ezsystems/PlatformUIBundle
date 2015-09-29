@@ -20,6 +20,14 @@ YUI.add('ez-country-view', function (Y) {
      * @extends eZ.FieldView
      */
     Y.eZ.CountryView = Y.Base.create('countryView', Y.eZ.FieldView, [], {
+        initializer: function () {
+            var config = this.get('config');
+
+            if ( config && config.countriesInfo ) {
+                this._set('countryList', config.countriesInfo);
+            }
+        },
+
         /**
          * Returns the name of the countries that will be used in the template.
          * If a country is missing, it returns a country code (alpha2)
@@ -57,10 +65,10 @@ YUI.add('ez-country-view', function (Y) {
          * @return {String}
          */
         _getCountryName: function (alpha2Code) {
-            var config = this.get('config');
+            var list = this.get('countryList');
 
-            if (config[alpha2Code]) {
-                return config[alpha2Code].Name;
+            if (list[alpha2Code]) {
+                return list[alpha2Code].Name;
             } else {
                 console.warn("Unknown country code: " + alpha2Code);
                 return alpha2Code;
@@ -85,18 +93,20 @@ YUI.add('ez-country-view', function (Y) {
                 "isMultiple": this.get('fieldDefinition').fieldSettings.isMultiple
             };
         },
-    },{
+    }, {
         ATTRS: {
             /**
-             * Stores the country list, indexed by alpha2 code
+             * The country list indexed by alpha2 code
              *
-             * @type Object
-             * @attribute config
+             * @attribute countryList
+             * @readOnly
+             * @type {Object}
              */
-            config: {
+            countryList: {
+                readOnly: true,
                 value: {},
             },
-        }
+        },
     });
 
     Y.eZ.FieldView.registerFieldView('ezcountry', Y.eZ.CountryView);

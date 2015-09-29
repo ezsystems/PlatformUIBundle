@@ -322,9 +322,9 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                             "The response object should be passed to the service"
                         );
                         Y.Assert.areSame(
-                            req.route.config,
+                            test.app.get('config'),
                             this.get('config'),
-                            'The view service should have the config'
+                            'The view service should receive the config from the app'
                         );
                         serviceInit = true;
                     },
@@ -342,15 +342,13 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     route: {
                         view: 'myView',
                         service: TestService,
-                        config: {
-                            "fieldsViews": {
-                                "ezthing": 'Something'
-                            }
-                        }
                     },
                 },
                 res = {};
 
+            this.app.set('config', {
+                "countriesInfo": {},
+            });
             this.app.views.myView = {
                 type: Y.Base.create('myView', Y.View, [], {
                     render: function () {
@@ -1845,6 +1843,10 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.origCAPI = Y.eZ.CAPI;
             this.origSessionAuthAgent = Y.eZ.SessionAuthAgent;
             this.apiRoot = 'apiRoot';
+            this.anonymousUserId = 'anonymousUserId';
+            this.assetRoot = 'assetRoot';
+            this.ckeditorPluginPath = 'ckeditorPluginPath';
+            this.root = 'root';
             Y.eZ.CAPI = Y.bind(function (apiRoot, sessionAuthAgent) {
                 Assert.areEqual(
                     this.apiRoot, apiRoot,
@@ -1868,12 +1870,12 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.app = new Y.eZ.PlatformUIApp({
                 config: {
                     rootInfo: {
-                        root: 'root',
-                        apiRoot: this.apiRoot + '///',
-                        assetRoot: 'assetRoot',
-                        ckeditorPluginPath: 'ckeditorPluginPath',
+                        root: this.root,
+                        apiRoot: this.apiRoot + '/',
+                        assetRoot: this.assetRoot,
+                        ckeditorPluginPath: this.ckeditorPluginPath,
                     },
-                    anonymousUserId: 'anonymousUserId',
+                    anonymousUserId: this.anonymousUserId,
                     sessionInfo: this.sessionInfo,
                 },
             });
@@ -1909,41 +1911,61 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 this.sessionAuthAgentConfig,
                 "The sessionAuthAgent should have received the sessionInfo"
             );
+            Assert.isUndefined(
+                this.app.get('config').sessionInfo,
+                "The sessionInfo should have been removed from the configuration"
+            );
         },
 
         "Should configure the `root`": function () {
             this._buildApp();
             Assert.areSame(
-                this.app.get('config').rootInfo.root,
+                this.root,
                 this.app.get('root'),
                 "The `root` should have been set"
+            );
+            Assert.isUndefined(
+                this.app.get('config').root,
+                "The root should have been removed from the configuration"
             );
         },
 
         "Should configure the `apiRoot`": function () {
             this._buildApp();
             Assert.areSame(
-                this.app.get('config').rootInfo.apiRoot,
+                this.apiRoot + '/',
                 this.app.get('apiRoot'),
                 "The `apiRoot` should have been set"
+            );
+            Assert.isUndefined(
+                this.app.get('config').apiRoot,
+                "The apiRoot should have been removed from the configuration"
             );
         },
 
         "Should configure the `assetRoot`": function () {
             this._buildApp();
             Assert.areSame(
-                this.app.get('config').rootInfo.assetRoot,
+                this.assetRoot,
                 this.app.get('assetRoot'),
                 "The `assetRoot` should have been set"
+            );
+            Assert.isUndefined(
+                this.app.get('config').assetRoot,
+                "The assetRoot should have been removed from the configuration"
             );
         },
 
         "Should configure the `anonymousUserId`": function () {
             this._buildApp();
             Assert.areSame(
-                this.app.get('config').anonymousUserId,
+                this.anonymousUserId,
                 this.app.get('anonymousUserId'),
                 "The `anonymousUserId` should have been set"
+            );
+            Assert.isUndefined(
+                this.app.get('config').anonymousUserId,
+                "The anonymousUserId should have been removed from the configuration"
             );
         },
     });

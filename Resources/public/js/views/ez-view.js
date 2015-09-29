@@ -71,7 +71,15 @@ YUI.add('ez-view', function (Y) {
              */
             active: {
                 value: false
-            }
+            },
+
+            /**
+             * An arbitrary config object
+             *
+             * @attribute config
+             * @type {Object}
+             */
+            config: {},
         }
     });
 });
