@@ -21,7 +21,7 @@
             {{#each relatedContents}}
             <tr>
                 <td>
-                    <a href="{{path "viewLocation" id=content.id languageCode=content.mainLanguageCode}}">{{content.name}}</a>
+                    <a href="{{path "viewLocation" id=mainLocationId languageCode=content.mainLanguageCode}}">{{content.name}}</a>
                 </td>
                 <td>
                     <ul class="ez-relations-type-list">
