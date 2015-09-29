@@ -48,7 +48,7 @@ YUI.add('ez-notificationhubviewservice', function (Y) {
             }
         },
 
-        getViewParameters: function () {
+        _getViewParameters: function () {
             return {
                 notificationList: this.get('notificationList'),
             };

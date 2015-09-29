@@ -19,7 +19,7 @@ YUI.add('ez-confirmboxviewservice', function (Y) {
      * @extends eZ.ViewService
      */
     Y.eZ.ConfirmBoxViewService = Y.Base.create('confirmBoxViewService', Y.eZ.ViewService, [Y.eZ.SideViewService], {
-        getViewParameters: function () {
+        _getViewParameters: function () {
             return this.get('parameters');
         }
     });
