@@ -9,8 +9,13 @@ namespace EzSystems\PlatformUIBundle\ApplicationConfig;
  */
 class Aggregator implements Provider
 {
+    const CATEGORY_NAME = 'ezsystems';
+
     /** @var Provider[] ApplicationConfigProviders, indexed by namespace string*/
     private $providers = [];
+
+    /** @var Provider[] ApplicationConfigProviders, indexed by namespace string*/
+    private $bundleProviders = [];
 
     /**
      * Adds an array of Provider to the aggregator.
@@ -22,15 +27,43 @@ class Aggregator implements Provider
     }
 
     /**
+     * Adds an array of custom bundle Provider to the aggregator.
+     * @param \EzSystems\PlatformUIBundle\ApplicationConfig\Provider[] $providers
+     */
+    public function addBundleProviders(array $providers)
+    {
+        $this->bundleProviders = array_merge($this->bundleProviders, $providers);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCategoryName()
+    {
+        return self::CATEGORY_NAME;
+    }
+
+    /**
      * Aggregates the config from the providers, and returns a hash with the namespace as the key, and the config
      * as the value.
      * @return array
      */
     public function getConfig()
     {
-        $config = [];
+        $category = $this->getCategoryName();
+
+        $config = [$category => []];
+
         foreach ($this->providers as $key => $provider) {
             $config[$key] = $provider->getConfig();
+        }
+
+        foreach ($this->bundleProviders as $key => $provider) {
+            $providerCategory = $provider->getCategoryName();
+            if (!isset($config[$category][$providerCategory])) {
+                $config[$category][$providerCategory] = [];
+            }
+            $config[$category][$providerCategory][$key] = $provider->getConfig();
         }
 
         return $config;

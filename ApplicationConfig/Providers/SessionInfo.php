@@ -39,6 +39,14 @@ class SessionInfo implements Provider
         $this->router = $router;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getCategoryName()
+    {
+        return 'ezplatform';
+    }
+
     public function getConfig()
     {
         $sessionInfo = ['isStarted' => false];

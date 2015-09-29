@@ -27,6 +27,14 @@ class AnonymousUserId implements Provider
         $this->anonymousUserId = $anonymousUserId;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getCategoryName()
+    {
+        return 'ezplatform';
+    }
+
     public function getConfig()
     {
         return $this->generateUrl('ezpublish_rest_loadUser', ['userId' => $this->anonymousUserId]);
