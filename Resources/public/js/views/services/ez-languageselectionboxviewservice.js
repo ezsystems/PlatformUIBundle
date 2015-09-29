@@ -18,9 +18,9 @@ YUI.add('ez-languageselectionboxviewservice', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.LanguageSelectionBoxViewService = Y.Base.create('languageSelectionBoxViewService', Y.eZ.ViewService, [], {
+    Y.eZ.LanguageSelectionBoxViewService = Y.Base.create('languageSelectionBoxViewService', Y.eZ.ViewService, [Y.eZ.SideViewService], {
         getViewParameters: function () {
-            var config = Y.merge(this.get('config'));
+            var config = Y.merge(this.get('parameters'));
 
             config.systemLanguageList = this.get('availableTranslations');
 

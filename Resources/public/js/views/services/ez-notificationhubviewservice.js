@@ -19,13 +19,13 @@ YUI.add('ez-notificationhubviewservice', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.NotificationHubViewService = Y.Base.create('notificationHubViewService', Y.eZ.ViewService, [], {
+    Y.eZ.NotificationHubViewService = Y.Base.create('notificationHubViewService', Y.eZ.ViewService, [Y.eZ.SideViewService], {
         initializer: function () {
-            this.after('configChange', function () {
-                var config = this.get('config');
+            this.after('parametersChange', function () {
+                var parameters = this.get('parameters');
 
-                if ( config.notification ) {
-                    this._handleNotification(config.notification);
+                if ( parameters.notification ) {
+                    this._handleNotification(parameters.notification);
                 }
             });
         },

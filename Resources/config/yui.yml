@@ -152,22 +152,22 @@ system:
                         - 'ez-copycontentplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
-                    requires: ['ez-viewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras', 'ez-height-change']
+                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras', 'ez-height-change']
                     path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
                 ez-discoverybarviewservice:
-                    requires: ['ez-viewservice', 'ez-discoverybarcontenttreeplugin']
+                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-discoverybarcontenttreeplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js
                 ez-universaldiscoveryviewservice:
-                    requires: ['ez-viewservice', 'ez-universaldiscoverycontenttreeplugin']
+                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-universaldiscoverycontenttreeplugin']
                     path: %ez_platformui.public_dir%/js/views/services/ez-universaldiscoveryviewservice.js
                 ez-confirmboxviewservice:
-                    requires: ['ez-viewservice']
+                    requires: ['ez-viewservice', 'ez-sideviewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-confirmboxviewservice.js
                 ez-languageselectionboxviewservice:
-                    requires: ['ez-viewservice']
+                    requires: ['ez-viewservice', 'ez-sideviewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-languageselectionboxviewservice.js
                 ez-notificationhubviewservice:
-                    requires: ['ez-viewservice', 'ez-notificationlist']
+                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-notificationlist']
                     path: %ez_platformui.public_dir%/js/views/services/ez-notificationhubviewservice.js
                 ez-serversideviewservice:
                     requires: ['io-base', 'io-form', 'ez-viewservice']
@@ -893,6 +893,9 @@ system:
                 ez-publishdraftplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-publishdraftplugin.js
+                ez-sideviewservice:
+                    requires: ['base']
+                    path: %ez_platformui.public_dir%/js/extensions/ez-sideviewservice.js
                 ez-height-change:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-height-change.js

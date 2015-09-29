@@ -18,15 +18,15 @@ YUI.add('ez-universaldiscoveryviewservice-tests', function (Y) {
             delete this.service;
         },
 
-        "Should return the config": function () {
-            var config = {some: "config"};
+        "Should return the parameters": function () {
+            var parameters = {some: "params"};
 
-            this.service.set('config', config);
+            this.service.set('parameters', parameters);
             Assert.isObject(this.service.getViewParameters());
             Assert.areEqual(1, Y.Object.keys(this.service.getViewParameters()).length);
             Assert.areSame(
-                config.some, this.service.getViewParameters().some,
-                "The view parameters should be the conf"
+                parameters.some, this.service.getViewParameters().some,
+                "The view parameters should be the parameters"
             );
         },
     });

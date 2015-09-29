@@ -24,8 +24,12 @@
         filter: loaderFilter,
         modules: {
             "ez-notificationhubviewservice": {
-                requires: ['ez-viewservice', 'ez-notificationlist'],
+                requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-notificationlist'],
                 fullpath: "../../../../Resources/public/js/views/services/ez-notificationhubviewservice.js"
+            },
+            "ez-sideviewservice": {
+                requires: ['base'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-sideviewservice.js"
             },
             "ez-viewservice": {
                 requires: ['view'],

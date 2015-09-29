@@ -27,8 +27,12 @@
         filter: loaderFilter,
         modules: {
             "ez-navigationhubviewservice": {
-                requires: ['ez-viewservice', 'ez-navigationitemview', 'array-extras', 'ez-navigationitemsubtreeview', 'parallel', 'fake-models'],
+                requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemview', 'array-extras', 'ez-navigationitemsubtreeview', 'parallel', 'fake-models'],
                 fullpath: "../../../../Resources/public/js/views/services/ez-navigationhubviewservice.js"
+            },
+            "ez-sideviewservice": {
+                requires: ['base'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-sideviewservice.js"
             },
             "ez-navigationitemsubtreeview": {
                 requires: ['ez-navigationitemview'],

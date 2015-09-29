@@ -355,22 +355,22 @@ YUI.add('ez-platformuiapp', function (Y) {
 
         /**
          * Shows a side view based on its identifier in the sideViews hash.
-         * This method also allows to pass a configuration hash that will stored
-         * in the `config` attribute of the view service.
+         * This method also allows to pass a parameters hash that can be used to
+         * set some params to view service/view while showing it.
          *
          * @method showSideView
          * @param {String} sideViewKey
-         * @param {Mixed} config
+         * @param {Mixed} parameters
          * @param {Function} next
          */
-        showSideView: function (sideViewKey, config, next) {
+        showSideView: function (sideViewKey, parameters, next) {
             var activeViewService = this.get('activeViewService');
 
             this._showSideView(
                 this.sideViews[sideViewKey],
                 activeViewService ? activeViewService.get('request') : null,
                 activeViewService ? activeViewService.get('response') : null,
-                config,
+                parameters,
                 next
              );
         },
@@ -392,11 +392,13 @@ YUI.add('ez-platformuiapp', function (Y) {
          * @param {Object} viewInfo the info hash of the side view to show
          * @param {Object} req the request
          * @param {Object} res the response
+         * @param {Object} parameters the parameters to set when showing the
+         * side view
          * @param {Function} next a callback function to call when the view is
          * shown
          * @protected
          */
-        _showSideView: function (viewInfo, req, res, config, next) {
+        _showSideView: function (viewInfo, req, res, parameters, next) {
             var view, service,
                 container = this.get('container'),
                 app =  this,
@@ -407,6 +409,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     app: this,
                     capi: this.get('capi'),
                     plugins: Y.eZ.PluginRegistry.getPlugins(viewInfo.service.NAME),
+                    config: this.get('config'),
                 });
                 viewInfo.serviceInstance.on('error', function (e) {
                     app.fire('notify', {
@@ -421,7 +424,7 @@ YUI.add('ez-platformuiapp', function (Y) {
             }
             service = viewInfo.serviceInstance;
             service.setAttrs({
-                config: config,
+                parameters: parameters,
                 request: req,
                 response: res,
             });

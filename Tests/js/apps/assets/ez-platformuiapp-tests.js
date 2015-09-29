@@ -570,16 +570,17 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
 
         "Should show the side view": function () {
-            var config = {some: "config"};
+            var parameters = {some: "parameters"};
 
-            this.app.showSideView("sideView1", config);
+            this.app.set('config', {});
+            this.app.showSideView("sideView1", parameters);
             Assert.isFalse(
                 this.app.get('container').hasClass(this.app.sideViews.sideView1.hideClass),
                 "The side view should not be hidden"
             );
             Assert.areSame(
-                config.some, this.app.sideViews.sideView1.serviceInstance.get('config').some,
-                "The configuration should be passed to the view service"
+                parameters.some, this.app.sideViews.sideView1.serviceInstance.get('parameters').some,
+                "The parameters should be passed to the view service"
             );
             Assert.isNull(
                 this.app.sideViews.sideView1.serviceInstance.get('request'),
@@ -589,11 +590,15 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 this.app.sideViews.sideView1.serviceInstance.get('response'),
                 "The response should be null"
             );
+            Assert.areSame(
+                this.app.get('config'),
+                this.app.sideViews.sideView1.serviceInstance.get('config'),
+                "The app config should be given to the view service"
+            );
         },
 
         "Should catch the side view error service and fire a notification": function () {
-            var config = {some: "config"},
-                notified = false,
+            var notified = false,
                 serviceName = 'MI5',
                 msg = 'GodSaveTheQueen';
             this.app.sideViews = {
@@ -633,12 +638,12 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 );
             });
 
-            this.app.showSideView("sideView1", config);
+            this.app.showSideView("sideView1");
             Y.Assert.isTrue(notified, "A fatal error should have been triggered");
         },
 
         "Should show the side view (activeViewService is set)": function () {
-            var config = {some: "config"},
+            var parameters = {some: "parameters"},
                 response = {},
                 request = {},
                 viewService = new Y.eZ.ViewService({
@@ -646,15 +651,16 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     request: request,
                 });
 
+            this.app.set('config', {});
             this.app._set('activeViewService', viewService);
-            this.app.showSideView("sideView1", config);
+            this.app.showSideView("sideView1", parameters);
             Assert.isFalse(
                 this.app.get('container').hasClass(this.app.sideViews.sideView1.hideClass),
                 "The side view should not be hidden"
             );
             Assert.areSame(
-                config.some, this.app.sideViews.sideView1.serviceInstance.get('config').some,
-                "The configuration should be passed to the view service"
+                parameters.some, this.app.sideViews.sideView1.serviceInstance.get('parameters').some,
+                "The parameters should be passed to the view service"
             );
             Assert.areSame(
                 request,
@@ -665,6 +671,11 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 response,
                 this.app.sideViews.sideView1.serviceInstance.get('response'),
                 "The response should be provided by the active view service"
+            );
+            Assert.areSame(
+                this.app.get('config'),
+                this.app.sideViews.sideView1.serviceInstance.get('config'),
+                "The app config should be given to the view service"
             );
         },
     });
