@@ -303,6 +303,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 serviceInit = false, serviceLoad = false,
                 viewParameters = {'myVar': 1},
                 test = this,
+                appConf = {countriesInfo: {}},
                 TestService = Y.Base.create('testService', Y.eZ.ViewService, [], {
                     initializer: function () {
                         Y.Assert.areSame(
@@ -322,7 +323,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                             "The response object should be passed to the service"
                         );
                         Y.Assert.areSame(
-                            test.app.get('config'),
+                            appConf,
                             this.get('config'),
                             'The view service should receive the config from the app'
                         );
@@ -346,9 +347,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 },
                 res = {};
 
-            this.app.set('config', {
-                "countriesInfo": {},
-            });
+            this.app._set('config', appConf);
             this.app.views.myView = {
                 type: Y.Base.create('myView', Y.View, [], {
                     render: function () {
