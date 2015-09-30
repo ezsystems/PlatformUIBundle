@@ -1857,6 +1857,14 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.assetRoot = 'assetRoot';
             this.ckeditorPluginPath = 'ckeditorPluginPath';
             this.root = 'root';
+            this.configLanguages = [
+                {'languageCode': 'eng-GB', 'name': 'English'},
+                {'languageCode': 'pol-PL', 'name': 'Polish'}
+            ];
+            this.systemLanguageList = {
+                'eng-GB': {'languageCode': 'eng-GB', 'name': 'English'},
+                'pol-PL': {'languageCode': 'pol-PL', 'name': 'Polish'}
+            };
             Y.eZ.CAPI = Y.bind(function (apiRoot, sessionAuthAgent) {
                 Assert.areEqual(
                     this.apiRoot, apiRoot,
@@ -1887,6 +1895,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     },
                     anonymousUserId: this.anonymousUserId,
                     sessionInfo: this.sessionInfo,
+                    languages: this.configLanguages
                 },
             });
         },
@@ -1985,6 +1994,20 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             Assert.isUndefined(
                 this.app.get('config').anonymousUserId,
                 "The anonymousUserId should have been removed from the configuration"
+            );
+        },
+
+        "Should configure the `systemLanguageList`": function () {
+            this._buildApp();
+
+            Assert.areSame(
+                JSON.stringify(this.systemLanguageList),
+                JSON.stringify(this.app.get('systemLanguageList')),
+                "The `systemLanguageList` should have been set"
+            );
+            Assert.isUndefined(
+                this.app.get('config').languages,
+                "The languages should have been removed from the configuration"
             );
         },
     });
