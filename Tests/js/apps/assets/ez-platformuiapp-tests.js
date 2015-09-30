@@ -303,6 +303,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 serviceInit = false, serviceLoad = false,
                 viewParameters = {'myVar': 1},
                 test = this,
+                appConf = {countriesInfo: {}},
                 TestService = Y.Base.create('testService', Y.eZ.ViewService, [], {
                     initializer: function () {
                         Y.Assert.areSame(
@@ -322,7 +323,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                             "The response object should be passed to the service"
                         );
                         Y.Assert.areSame(
-                            test.app.get('config'),
+                            appConf,
                             this.get('config'),
                             'The view service should receive the config from the app'
                         );
@@ -346,9 +347,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 },
                 res = {};
 
-            this.app.set('config', {
-                "countriesInfo": {},
-            });
+            this.app._set('config', appConf);
             this.app.views.myView = {
                 type: Y.Base.create('myView', Y.View, [], {
                     render: function () {
@@ -1904,13 +1903,9 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 this.sessionAuthAgent,
                 "The session auth agent should be an instance of eZ.SessionAuthAgent"
             );
-            Assert.isObject(
+            Assert.isUndefined(
                 this.sessionAuthAgentConfig,
-                "The sessionAuthAgent should have received an object"
-            );
-            Assert.isTrue(
-                Y.Object.isEmpty(this.sessionAuthAgentConfig),
-                "The sessionAuthAgent should have received an empty object"
+                "The sessionAuthAgent should not have received any sessionInfo"
             );
         },
 
@@ -1921,6 +1916,19 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 this.sessionInfo,
                 this.sessionAuthAgentConfig,
                 "The sessionAuthAgent should have received the sessionInfo"
+            );
+            Assert.isUndefined(
+                this.app.get('config').sessionInfo,
+                "The sessionInfo should have been removed from the configuration"
+            );
+        },
+
+        "Should not configure the SessionAuthAgent": function () {
+            this.sessionInfo = {isStarted: false};
+            this._buildApp();
+            Assert.isUndefined(
+                this.sessionAuthAgentConfig,
+                "The sessionAuthAgent should not have received any sessionInfo"
             );
             Assert.isUndefined(
                 this.app.get('config').sessionInfo,

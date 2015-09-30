@@ -173,7 +173,9 @@ YUI.add('ez-platformuiapp', function (Y) {
 
             this._set('capi', new Y.eZ.CAPI(
                 this.get('apiRoot').replace(/\/{1,}$/, ''),
-                new Y.eZ.SessionAuthAgent(config.sessionInfo ? config.sessionInfo : {})
+                new Y.eZ.SessionAuthAgent(
+                    (config.sessionInfo && config.sessionInfo.isStarted) ? config.sessionInfo : undefined
+                )
             ));
             delete config.sessionInfo;
         },
@@ -567,6 +569,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     request: req,
                     response: res,
                     plugins: Y.eZ.PluginRegistry.getPlugins(ServiceContructor.NAME),
+                    config: this.get('config'),
                 });
 
                 viewInfo.service = route.serviceInstance;

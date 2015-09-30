@@ -232,17 +232,6 @@ YUI.add('ez-contenteditformview', function (Y) {
             version: {
                 writeOnce: "initOnly",
             },
-
-            /**
-             * A configuration object for the field edit views.
-             *
-             * @attribute config
-             * @type Mixed
-             * @writeOnce
-             */
-            config: {
-                writeOnce: "initOnly",
-            },
         }
     });
 });
