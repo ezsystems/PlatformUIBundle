@@ -133,6 +133,7 @@ system:
                         - 'ez-savedraftplugin'
                         - 'ez-publishdraftplugin'
                         - 'ez-discarddraftplugin'
+                        - 'ez-loginavailableplugin'
                         - 'array-extras'
                     path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
                 ez-contentcreateviewservice:
@@ -418,6 +419,7 @@ system:
                         - 'ez-relation-editview'
                         - 'ez-isbn-editview'
                         - 'ez-relationlist-editview'
+                        - 'ez-user-editview'
                         - 'event-tap'
                         - 'contenteditformview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/ez-contenteditformview.js
@@ -562,6 +564,12 @@ system:
                 emailaddresseditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/emailaddress.hbt
+                ez-user-editview:
+                    requires: ['ez-fieldeditview', 'event-valuechange', 'usereditview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/fields/ez-user-editview.js
+                usereditview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/fields/edit/user.hbt
                 ez-relationlist-view:
                     requires: ['ez-fieldview', 'relationlistview-ez-template', 'ez-asynchronousview']
                     path: %ez_platformui.public_dir%/js/views/fields/ez-relationlist-view.js
@@ -907,6 +915,9 @@ system:
                 ez-sideviewservice:
                     requires: ['base']
                     path: %ez_platformui.public_dir%/js/extensions/ez-sideviewservice.js
+                ez-loginavailableplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-loginavailableplugin.js
                 ez-height-change:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-height-change.js

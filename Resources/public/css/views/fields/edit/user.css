@@ -1,0 +1,24 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-usereditview .ez-editfield-input,
+.ez-view-usereditview .ez-editfield-input-no-validation {
+    margin-top: 0.3em;
+}
+
+.ez-view-usereditview .ez-editfield-row:first-of-type .ez-field-sublabel {
+    padding-top: 1.5em;
+}
+
+.ez-view-usereditview .ez-user-input-ui {
+    width: 100%;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+.ez-view-usereditview .ez-user-input-ui input {
+    width: 100%;
+    max-width: 25em;
+}

@@ -1,0 +1,18 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-usereditview .ez-user-login-label:after {
+    content: "\E61c";
+    font-size: 80%;
+    opacity: 0;
+    transition: all ease 0.2s;
+}
+
+.ez-view-usereditview.is-checking-login .ez-user-login-label:after {
+    opacity: 1;
+    -webkit-animation: spin 0.5s infinite linear;
+            animation: spin 0.5s infinite linear;
+    content: "\E61c";
+}
