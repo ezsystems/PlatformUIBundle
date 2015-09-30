@@ -268,17 +268,6 @@ YUI.add('ez-subitemlistview', function (Y) {
             },
 
             /**
-             * The config
-             *
-             * @attribute config
-             * @type mixed
-             * @writeOnce
-             */
-            config: {
-                writeOnce: "initOnly",
-            },
-
-            /**
              * The subitems list.
              *
              * @attribute subitems

@@ -210,17 +210,6 @@ YUI.add('ez-rawcontentview', function (Y) {
             },
 
             /**
-             * The config at the current location
-             *
-             * @attribute config
-             * @type Mixed
-             * @writeOnce
-             */
-            config: {
-                writeOnce: "initOnly",
-            },
-
-            /**
              * The language switcher view instance
              *
              * @attribute languageSwitcherView

@@ -310,17 +310,6 @@ YUI.add('ez-contenteditview', function (Y) {
             },
 
             /**
-             * A configuration object coming from the application route configuration
-             *
-             * @attribute config
-             * @type Mixed
-             * @writeOnce
-             */
-            config: {
-                writeOnce: "initOnly",
-            },
-
-            /**
              * The ContentEditFormView (by default) instance which will be used to render form
              *
              * @attribute formView

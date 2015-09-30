@@ -268,17 +268,6 @@ YUI.add('ez-locationviewview', function (Y) {
             },
 
             /**
-             * The config
-             *
-             * @attribute config
-             * @type Mixed
-             * @writeOnce
-             */
-            config: {
-                writeOnce: "initOnly",
-            },
-
-            /**
              * The path from the root location to the current location. Each
              * entry of the path consists of the location.
              *
