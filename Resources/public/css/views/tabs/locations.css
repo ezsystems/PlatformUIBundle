@@ -20,3 +20,8 @@
 .ez-view-locationviewlocationstabview .ez-locations-list-table {
     width: 100%;
 }
+
+.ez-view-locationviewlocationstabview .ez-locations-tools {
+    text-align: right;
+    margin: 1em 0 0 0;
+}

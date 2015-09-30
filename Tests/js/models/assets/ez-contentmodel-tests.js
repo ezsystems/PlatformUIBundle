@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contentmodel-tests', function (Y) {
-    var modelTest, relationsTest, createContent, loadResponse, copyTest, loadLoactionsTest,
+    var modelTest, relationsTest, createContent, loadResponse, copyTest,
+        loadLoactionsTest, addLocationTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -700,7 +701,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             Assert.isTrue(callbackCalled, 'Should call callback function');
         },
 
-        'Should pass error to callback function when CAPI loadLocations fals': function () {
+        'Should pass error to callback function when CAPI loadLocations fails': function () {
             var options = {api: this.capi},
                 callbackCalled = false;
 
@@ -760,10 +761,105 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         }
     });
 
+    addLocationTest = new Y.Test.Case({
+        name: "eZ Content Model add location test",
+
+        setUp: function () {
+            this.model = new Y.eZ.Content();
+            this.contentId = 'Pele';
+            this.parentLocation = new Mock();
+            this.parentLocationId = '/parent/location/id';
+
+            this.capi = new Mock();
+            this.contentService = new Mock();
+
+            Y.Mock.expect(this.capi, {
+                method: 'getContentService',
+                returns: this.contentService
+            });
+
+            Y.Mock.expect(this.parentLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: this.parentLocationId
+            });
+
+            Y.Mock.expect(this.model, {
+                method: 'get',
+                args: ['id'],
+                returns: this.contentId
+            });
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+            delete this.capi;
+            delete this.contentService;
+        },
+
+        'Should create location': function () {
+            var options = {api: this.capi},
+                locationCreateStruct = {},
+                callbackCalled = false;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'newLocationCreateStruct',
+                args: [this.parentLocationId],
+                returns: locationCreateStruct
+            });
+
+            Y.Mock.expect(this.contentService, {
+                method: 'createLocation',
+                args: [this.contentId, locationCreateStruct, Y.Mock.Value.Function],
+                run: function (contentId, struct, cb) {
+                    cb(false, {});
+                }
+            });
+
+            this.model.addLocation(options, this.parentLocation, function (err, response) {
+                callbackCalled = true;
+
+                Assert.isFalse(err, 'Should not return the error');
+            });
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
+
+        'Should pass error to callback function when CAPI createLocation fails': function () {
+            var options = {api: this.capi},
+                locationCreateStruct = {},
+                callbackCalled = false;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'newLocationCreateStruct',
+                args: [this.parentLocationId],
+                returns: locationCreateStruct
+            });
+
+            Y.Mock.expect(this.contentService, {
+                method: 'createLocation',
+                args: [this.contentId, locationCreateStruct, Y.Mock.Value.Function],
+                run: function (contentId, struct, cb) {
+                    cb(true, {});
+                }
+            });
+
+            this.model.addLocation(options, this.parentLocation, function (err, response) {
+                callbackCalled = true;
+
+                Assert.isTrue(err, 'Should return the error');
+            });
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
     Y.Test.Runner.add(createContent);
     Y.Test.Runner.add(copyTest);
     Y.Test.Runner.add(loadLoactionsTest);
+    Y.Test.Runner.add(addLocationTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

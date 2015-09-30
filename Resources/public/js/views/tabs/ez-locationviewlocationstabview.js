@@ -11,6 +11,12 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
      */
     Y.namespace('eZ');
 
+    var events = {
+            '.ez-add-location-button': {
+                'tap': '_addLocation'
+            }
+        };
+
     /**
      * The Location View Locations Tab View class.
      *
@@ -21,6 +27,7 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
      */
     Y.eZ.LocationViewLocationsTabView = Y.Base.create('locationViewLocationsTabView', Y.eZ.LocationViewTabView, [Y.eZ.AsynchronousView], {
         initializer: function () {
+            this.events = Y.merge(this.events, events);
             this._fireMethod = this._fireLoadLocations;
             this._watchAttribute = 'locations';
         },
@@ -58,6 +65,40 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
                 content: this.get('content')
             });
         },
+
+        /**
+         * Tap event handler on the `Add location` button. It fires the
+         * `createLocation` event
+         *
+         * @method _addLocation
+         * @protected
+         * @param {EventFacade} e
+         */
+        _addLocation: function (e) {
+            /**
+             * Fired when the user clicks on `Add location` button
+             *
+             * @event createLocation
+             * @param {eZ.Content} content the content for which locations will be created
+             * @param {Function} afterCreateCallback callback function that will be called after
+             *                   creating location(s)
+             */
+            this.fire('createLocation', {
+                content: this.get('content'),
+                afterCreateCallback: Y.bind(this._refresh, this)
+            });
+        },
+
+        /**
+         * After create location callback function. It fires `loadLocations` event
+         * for refresh the view.
+         *
+         * @method _refresh
+         * @protected
+         */
+        _refresh: function () {
+            this._fireLoadLocations();
+        }
     }, {
         ATTRS: {
             /**
