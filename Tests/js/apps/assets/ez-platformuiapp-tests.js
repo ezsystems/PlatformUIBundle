@@ -1903,13 +1903,9 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 this.sessionAuthAgent,
                 "The session auth agent should be an instance of eZ.SessionAuthAgent"
             );
-            Assert.isObject(
+            Assert.isUndefined(
                 this.sessionAuthAgentConfig,
-                "The sessionAuthAgent should have received an object"
-            );
-            Assert.isTrue(
-                Y.Object.isEmpty(this.sessionAuthAgentConfig),
-                "The sessionAuthAgent should have received an empty object"
+                "The sessionAuthAgent should not have received any sessionInfo"
             );
         },
 
@@ -1920,6 +1916,19 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 this.sessionInfo,
                 this.sessionAuthAgentConfig,
                 "The sessionAuthAgent should have received the sessionInfo"
+            );
+            Assert.isUndefined(
+                this.app.get('config').sessionInfo,
+                "The sessionInfo should have been removed from the configuration"
+            );
+        },
+
+        "Should not configure the SessionAuthAgent": function () {
+            this.sessionInfo = {isStarted: false};
+            this._buildApp();
+            Assert.isUndefined(
+                this.sessionAuthAgentConfig,
+                "The sessionAuthAgent should not have received any sessionInfo"
             );
             Assert.isUndefined(
                 this.app.get('config').sessionInfo,
