@@ -355,10 +355,10 @@ YUI.add('ez-richtext-editview', function (Y) {
              * @attribute ckeditorPluginPath
              * @readOnly
              * @type {String}
-             * @default '/bundle/ezplatformuiassets/vendors'
+             * @default '/bundles/ezplatformuiassets/vendors'
              */
             ckeditorPluginPath: {
-                value: '/bundle/ezplatformuiassets/vendors',
+                value: '/bundles/ezplatformuiassets/vendors',
                 readOnly: true,
             },
         }
