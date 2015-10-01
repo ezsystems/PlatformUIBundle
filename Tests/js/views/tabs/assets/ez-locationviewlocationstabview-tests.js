@@ -8,6 +8,7 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
         changeEventTest,
         fireLoadLocationsEventTest,
         addLocationTest,
+        setMainLocationTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -56,6 +57,15 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
             this.locationMock = new Mock();
             this.contentInfoMock = new Mock();
             this.locations = [this.locationMock, this.locationMock];
+            this.resources = {
+                MainLocation: '/main/location/id'
+            };
+
+            Mock.expect(this.contentMock, {
+                'method': 'get',
+                'args': ['resources'],
+                returns: this.resources
+            });
 
             Mock.expect(this.locationMock, {
                 'method': 'toJSON',
@@ -145,6 +155,15 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
         setUp: function () {
             this.contentMock = new Mock();
             this.locations = [this.locationMock, this.locationMock];
+            this.resources = {
+                MainLocation: '/main/location/id'
+            };
+
+            Mock.expect(this.contentMock, {
+                'method': 'get',
+                'args': ['resources'],
+                returns: this.resources
+            });
 
             this.view = new Y.eZ.LocationViewLocationsTabView({
                 content: this.contentMock,
@@ -208,6 +227,15 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
         setUp: function () {
             this.contentMock = new Mock();
             this.locations = [this.locationMock, this.locationMock];
+            this.resources = {
+                MainLocation: '/main/location/id'
+            };
+
+            Mock.expect(this.contentMock, {
+                'method': 'get',
+                'args': ['resources'],
+                returns: this.resources
+            });
 
             this.view = new Y.eZ.LocationViewLocationsTabView({
                 content: this.contentMock,
@@ -277,10 +305,132 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
         }
     });
 
+    setMainLocationTest = new Y.Test.Case({
+        name: "eZ LocationViewLocationsTabView set main location test",
+        setUp: function () {
+            this.contentMock = new Mock();
+            this.locations = [this.locationMock, this.locationMock];
+            this.resources = {
+                MainLocation: '/main/location/id'
+            };
+
+            Mock.expect(this.contentMock, {
+                'method': 'get',
+                'args': ['resources'],
+                returns: this.resources
+            });
+
+            this.view = new Y.eZ.LocationViewLocationsTabView({
+                content: this.contentMock,
+                container: '.container'
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should fire `setMainLocation` event": function () {
+            var eventFired = false,
+                that = this,
+                mainLocationRadio,
+                newMainLocationId;
+
+            this.view.render();
+
+            mainLocationRadio = this.view.get('container').one('#ez-not-main-location-radio');
+            newMainLocationId = mainLocationRadio.getAttribute('data-location-id');
+
+            this.view.on('setMainLocation', function (e) {
+                eventFired = true;
+
+                Y.Assert.areEqual(
+                    e.locationId,
+                    newMainLocationId,
+                    "The event facade should contain the location id"
+                );
+                Assert.isFunction(e.afterSetMainLocationCallback, 'The event facade should contain callback function');
+            });
+
+            mainLocationRadio.simulateGesture('tap', function () {
+                that.resume(function (e) {
+                    Y.Assert.isTrue(
+                        eventFired,
+                        "The `setMainLocation` event should have been fired"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should fire `loadLocations` event after changing main location": function () {
+            var loadLocationsFired = false,
+                that = this,
+                mainLocationRadio,
+                newMainLocationId;
+
+            this.view.render();
+
+            mainLocationRadio = this.view.get('container').one('#ez-not-main-location-radio');
+            newMainLocationId = mainLocationRadio.getAttribute('data-location-id');
+
+            this.view.on('setMainLocation', function (e) {
+                e.afterSetMainLocationCallback();
+            });
+            this.view.on('loadLocations', function (e) {
+                loadLocationsFired = true;
+
+                Assert.areSame(
+                    e.content,
+                    that.contentMock,
+                    'The event facade should contain the content'
+                );
+            });
+
+            mainLocationRadio.simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.Assert.isTrue(
+                        loadLocationsFired,
+                        "The `loadLocations` event should have been fired"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should not fire `setMainLocation` event when clicking current main location radio": function () {
+            var eventFired = false,
+                that = this,
+                mainLocationRadio,
+                newMainLocationId;
+
+            this.view.render();
+
+            mainLocationRadio = this.view.get('container').one('#ez-main-location-radio');
+            newMainLocationId = mainLocationRadio.getAttribute('data-location-id');
+
+            this.view.on('setMainLocation', function (e) {
+                eventFired = true;
+            });
+
+            mainLocationRadio.simulateGesture('tap', function () {
+                that.resume(function (e) {
+                    Y.Assert.isFalse(
+                        eventFired,
+                        "The `setMainLocation` event should not have been fired"
+                    );
+                });
+            });
+            this.wait();
+        }
+    });
+
     Y.Test.Runner.setName("eZ Location View Locations Tab View tests");
     Y.Test.Runner.add(attributesTest);
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(changeEventTest);
     Y.Test.Runner.add(fireLoadLocationsEventTest);
     Y.Test.Runner.add(addLocationTest);
+    Y.Test.Runner.add(setMainLocationTest);
 }, '', {requires: ['test', 'ez-locationviewlocationstabview', 'node-event-simulate']});
