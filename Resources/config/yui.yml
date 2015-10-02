@@ -50,7 +50,7 @@ system:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/paragraph.js
                 ez-alloyeditor-button-embed:
-                    requires: ['ez-alloyeditor']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embed.js
                 ez-alloyeditor-button-blocktextalignleft:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
@@ -70,6 +70,9 @@ system:
                 ez-alloyeditor-button-mixin-blocktextalign:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/blocktextalign.js
+                ez-alloyeditor-button-mixin-embeddiscovercontent:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embeddiscovercontent.js
                 ez-platformuiapp:
                     requires:
                         - 'app'

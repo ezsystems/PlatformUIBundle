@@ -5,6 +5,7 @@
 </head>
 <body>
 
+<div class="editorContainer"></div>
 <div class="container"></div>
 <script type="text/javascript" src="../../assets/function.bind.polyfill.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -29,7 +30,14 @@
         modules: {
             "ez-alloyeditor-button-embed": {
                 fullpath: "../../../../Resources/public/js/alloyeditor/buttons/embed.js",
+                requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent'],
+            },
+            "ez-alloyeditor-button-mixin-embeddiscovercontent": {
                 requires: ['ez-alloyeditor'],
+                fullpath: "../../../../Resources/public/js/alloyeditor/buttons/mixins/embeddiscovercontent.js",
+            },
+            "ez-alloyeditor-plugin-embed": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/embed.js",
             },
             "ez-alloyeditor": {
                 fullpath: "../../../../Resources/public/js/external/ez-alloyeditor.js",
