@@ -364,8 +364,8 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
             Assert.isArray(value, "The adminNavigationItems should contain an array");
             Assert.areEqual(
-                5, value.length,
-                "5 items should be configured by default for the admin zone"
+                6, value.length,
+                "6 items should be configured by default for the admin zone"
             );
         },
 

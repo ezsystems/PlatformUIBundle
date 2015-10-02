@@ -522,6 +522,10 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                             "/api/ezp/v2/content/locations/1/5",
                             "eng-GB"
                         ),
+                        this._getNavigationItem(
+                            "Roles", "admin-roles",
+                            "adminRole", {uri: "pjax/role"}
+                        ),
                     ];
 
                     this._set('adminNavigationItems', val);

@@ -4,7 +4,7 @@
         <body>
             <trans-unit id="36aaf69db32866a9c2dd745ef9f7a643" resname="section.list">
                 <source>section.list</source>
-                <target>Section list</target>
+                <target>Sections</target>
             </trans-unit>
             <trans-unit id="d588dd1c265006f31dbb8368dda58226" resname="section.name">
                 <source>section.name</source>
