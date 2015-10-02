@@ -164,13 +164,15 @@ trait CommonActions
     /**
      * Finds an HTML element by class and the text value and clicks it.
      *
-     * @param string $text Text value of the element
-     * @param string $selector CSS selector of the element
+     * @param string    $text           Text value of the element
+     * @param string    $selector       CSS selector of the element
+     * @param string    $textSelector   Extra CSS selector for text of the element
+     * @param string    $baseElement    Element in which the search is based
      */
-    protected function clickElementByText($text, $selector, $textSelector = null, $index = 1)
+    protected function clickElementByText($text, $selector, $textSelector = null, $baseElement = null, $index = 1)
     {
         $index + 1; //for selection of equal buttons
-        $element = $this->getElementByText($text, $selector, $textSelector);
+        $element = $this->getElementByText($text, $selector, $textSelector, $baseElement);
         if ($element) {
             $element->click();
         } else {
@@ -184,14 +186,17 @@ trait CommonActions
      * @param string    $text           Text value of the element
      * @param string    $selector       CSS selector of the element
      * @param string    $textSelector   Extra CSS selector for text of the element
+     * @param string    $baseElement    Element in which the search is based
      * @param int       $iteration      Iteration number, used to control number of executions
      * @return array
      */
-    protected function getElementByText($text, $selector, $textSelector = null, $iteration = 3)
+    protected function getElementByText($text, $selector, $textSelector = null, $baseElement = null, $iteration = 3)
     {
         try {
-            $page = $this->getSession()->getPage();
-            $elements = $page->findAll('css', $selector);
+            if ($baseElement == null) {
+                $baseElement = $this->getSession()->getPage();
+            }
+            $elements = $baseElement->findAll('css', $selector);
             foreach ($elements as $element) {
                 if ($textSelector != null) {
                     $elementText = $element->find('css', $textSelector)->getText();
@@ -209,7 +214,7 @@ trait CommonActions
             // re-run this method up to 3 times to account for this
             if ($iteration > 0) {
                 usleep(5 * 1000); // 5ms
-                return $this->getElementByText($text, $selector, $textSelector, $iteration--);
+                return $this->getElementByText($text, $selector, $textSelector, null, $iteration--);
             } else {
                 throw new \Exception('Stale reference occured more than 3 times in a row, possible infinite loop');
             }

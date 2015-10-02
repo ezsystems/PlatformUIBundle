@@ -24,6 +24,7 @@ class PlatformUI extends Context
     use SubContext\Move;
     use SubContext\Copy;
     use SubContext\Remove;
+    use SubContext\Role;
 
     /**
      * PlatformUI relative URL path.
@@ -78,6 +79,8 @@ class PlatformUI extends Context
         while ($page->find('css', $loadingSelector) != null) {
             usleep(100 * 1000); // 100ms
         }
+        //Temporary solution for race conditions errors with selenium2, TO BE IMPROVED
+        sleep(1);
     }
 
     /**
@@ -277,6 +280,7 @@ class PlatformUI extends Context
     public function __construct($uri, $user = null, $password = null)
     {
         parent::__construct();
+        $this->pageIdentifierMap['roles'] = '/ez#/admin/pjax%2Frole';
         $this->platformUiUri = $uri;
         if ($user != null) {
             $this->user = $user;
