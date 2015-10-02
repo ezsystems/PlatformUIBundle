@@ -8,7 +8,6 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
-        {{> ez_fielddescription_tooltip }}
         <div class="ez-editfield-input"><div class="ez-integer-input-ui"><input type="text"
                 class="ez-validated-input"
                 value="{{ field.fieldValue }}"
@@ -16,6 +15,6 @@
                 {{#if isRequired}} required{{/if}}
                 {{#if integerPattern}} pattern="{{ integerPattern }}"{{/if}}
                 ></div></div>
-        <p class="ez-field-description">{{ fieldDefinition.descriptions.[eng-GB] }}</p>
+        {{> ez_fielddescription_tooltip }}
     </div>
 </div>

@@ -11,7 +11,6 @@
         <label class="ez-field-sublabel ez-first-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-link">
             URL{{#if isRequired}}*{{/if}}:
         </label>
-        {{> ez_fielddescription_tooltip }}
         <div class="ez-editfield-input"><div class="ez-url-input-ui"><input type="text"
             class="ez-url-field-value ez-validated-input"
             value="{{ field.fieldValue.link }}"
@@ -26,6 +25,6 @@
             value="{{ field.fieldValue.text }}"
             id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-text"
         ></div></div>
-        <p class="ez-field-description">{{ fieldDefinition.descriptions.[eng-GB] }}</p>
+        {{> ez_fielddescription_tooltip }}
     </div>
 </div>

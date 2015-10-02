@@ -89,5 +89,6 @@
 
 .ez-view-mediaeditview .ez-field-description {
     font-weight: lighter;
-    font-size: 80%
+    font-size: 80%;
+    opacity: 1;
 }

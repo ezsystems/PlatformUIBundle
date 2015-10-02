@@ -25,8 +25,8 @@ YUI.add('ez-country-editview', function (Y) {
     Y.eZ.CountryEditView = Y.Base.create('countryEditView', Y.eZ.SelectionEditView, [], {
         initializer: function () {
             var config = this.get('config');
-            
-            this._useStandardFieldDefinitionDescription = 'false';
+
+            this._useStandardFieldDefinitionDescription = false;
             this.containerTemplate = '<div class="' +
                 this._generateViewClassName(this._getName()) + ' ' +
                 this._generateViewClassName(Y.eZ.SelectionEditView.NAME) + '"/>';

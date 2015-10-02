@@ -8,7 +8,6 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
-        {{> ez_fielddescription_tooltip }}
         <div class="ez-editfield-input"><div class="ez-selection-input-ui" id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
             <ul class="ez-selection-values">{{#each selected}}<li class="ez-selection-value" data-text="{{ . }}">{{ . }}</li>{{/each}}</ul>
             <div class="ez-selection-list">
@@ -16,6 +15,6 @@
                 <ul class="ez-selection-options"></ul>
             </div>
         </div></div>
-        <p class="ez-field-description">{{ fieldDefinition.descriptions.[eng-GB] }}</p>
+        {{> ez_fielddescription_tooltip }}
     </div>
 </div>

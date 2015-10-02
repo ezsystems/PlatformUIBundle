@@ -8,7 +8,7 @@
             <p class="ez-field-description is-showing-description">
                 {{ fieldDefinition.descriptions.[eng-GB] }}
             </p>
-            <p class="ez-binarybase-help">Set up multiple relations with several content types.</p>
+            <p class="ez-relationlist-help">Set up multiple relations with several contents.</p>
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">

@@ -8,7 +8,6 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
-        {{> ez_fielddescription_tooltip }}
         <div class="ez-editfield-input"><div class="ez-dateandtime-date-input-ui"><input type="date"
                 value="{{ html5InputDate }}"
                 class="ez-validated-input"
@@ -20,6 +19,6 @@
                 class="ez-validated-input"
                 {{#if isRequired}} required{{/if}}
             ></div></div>
-        <p class="ez-field-description">{{ fieldDefinition.descriptions.[eng-GB] }}</p>
+        {{> ez_fielddescription_tooltip }}
     </div>
 </div>

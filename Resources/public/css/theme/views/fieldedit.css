@@ -14,7 +14,7 @@
     background: #FFF;
 }
 
-.ez-editfield-input-area .ez-fielddescription-tooltip-text {
+.is-using-touch-device .ez-editfield-input-area .ez-fielddescription-tooltip-text {
     background: #fff;
     box-shadow: 0 2px 4px 0  #ddd;
     border-radius: 4px;
@@ -23,13 +23,8 @@
     font-size: 85%;
 }
 
-.ez-editfield-input-area .ez-fielddescription-tooltip-close {
-    font-weight: bold;
-    color: #999;
-}
-
 /* Tooltip tail styling */
-.ez-editfield-input-area .ez-tail-down-tooltip:after {
+.is-using-touch-device .ez-editfield-input-area .ez-tail-down-tooltip:after {
     content: "";
     display: block;
     width: 16px;
@@ -39,8 +34,12 @@
             transform: rotate(-45deg);
 }
 
-.ez-editfield-input-area .ez-tail-down-tooltip .ez-fielddescription-tooltip-text {
+.is-using-touch-device .ez-editfield-input-area .ez-tail-down-tooltip .ez-fielddescription-tooltip-text {
     margin-left: 1.5em;
+}
+
+.ez-editfield-input-area .ez-tail-down-tooltip .ez-fielddescription-tooltip-text {
+    margin-top: 0;
 }
 
 .ez-editfield-input-area .ez-tail-down-tooltip:after {
@@ -106,13 +105,13 @@
     opacity: 1;
 }
 
-.ez-editfield-input-area .ez-fielddescription-tooltip {
+.is-using-touch-device .ez-editfield-input-area .ez-field-description {
     display: inline;
     opacity: 0;
     transition: opacity 0.3s;
 }
 
-.ez-editfield-input-area .ez-fielddescription-tooltip.is-visible {
+.is-using-touch-device .ez-editfield-input-area .ez-field-description.is-visible {
     opacity: 1;
 }
 

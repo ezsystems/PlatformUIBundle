@@ -19,7 +19,7 @@
     color: #BF3E33;
 }
 
-.ez-view-relationeditview .ez-binarybase-help {
+.ez-view-relationeditview .ez-relation-help {
     font-size: 80%;
     font-style: italic;
     font-weight: bold;
@@ -27,5 +27,6 @@
 
 .ez-view-relationeditview .ez-field-description {
     font-weight: lighter;
-    font-size: 80%
+    font-size: 80%;
+    opacity: 1;
 }

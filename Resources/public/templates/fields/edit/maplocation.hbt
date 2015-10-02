@@ -8,7 +8,6 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
-        {{> ez_fielddescription_tooltip }}
         <div class="ez-maplocation-input-area">
             <label class="ez-field-sublabel ez-maplocation-address-label" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-address">
                 Address:
@@ -23,7 +22,7 @@
                     <button class="pure-button pure-button-disabled ez-button ez-maplocation-find-address-button">Locate Address <span class="ez-inline-loader"></span></button>
                 </div>
             </div>
-            <p class="ez-field-description">{{ fieldDefinition.descriptions.[eng-GB] }}</p>
+            {{> ez_fielddescription_tooltip }}
             <div class="pure-g">
                 <div class="pure-u-5-8">
                     <div class="ez-maplocation-map-container"></div>

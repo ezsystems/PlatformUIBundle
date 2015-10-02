@@ -8,7 +8,7 @@
             <p class="ez-field-description is-showing-description">
                 {{ fieldDefinition.descriptions.[eng-GB] }}
             </p>
-            <p class="ez-binarybase-help">Select another content and link it up with your content type.</p>
+            <p class="ez-relation-help">Select another content and link it up with your content.</p>
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">

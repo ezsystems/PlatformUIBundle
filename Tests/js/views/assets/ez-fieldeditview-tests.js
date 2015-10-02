@@ -269,7 +269,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
 
             container.one('.ez-editfield-input').simulateGesture('tap', function () {
                 that.resume(function () {
-                    var tooltip = container.one('.ez-fielddescription-tooltip');
+                    var tooltip = container.one('.ez-field-description');
 
                     Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should be visible before the tap");
 
@@ -293,7 +293,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
 
             container.one('.ez-editfield-input').simulateGesture('tap', function () {
                 that.resume(function () {
-                    var tooltip = container.one('.ez-fielddescription-tooltip');
+                    var tooltip = container.one('.ez-field-description');
 
                     Y.Assert.isTrue(tooltip.hasClass("is-visible"), "Tooltip node should be visible before the tap");
 

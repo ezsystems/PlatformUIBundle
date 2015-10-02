@@ -8,7 +8,6 @@
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
-        {{> ez_fielddescription_tooltip }}
         <div class="ez-editfield-input"><div class="ez-xmltext-input-ui">
             <textarea
             class="ez-validated-input"
@@ -17,6 +16,6 @@
             {{#if isRequired}} required{{/if}}>
 {{ field.fieldValue.xml }}</textarea>
         </div></div>
-        <p class="ez-field-description">{{ fieldDefinition.descriptions.[eng-GB] }}</p>
+        {{> ez_fielddescription_tooltip }}
     </div>
 </div>

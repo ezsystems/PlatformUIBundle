@@ -58,7 +58,7 @@
     min-height: 2.4em;
 }
 
-.ez-editfield-input-area .ez-fielddescription-tooltip {
+.is-using-touch-device .ez-editfield-input-area .ez-field-description {
     position: absolute;
     top: -100%;
     max-width: 48%;
@@ -67,21 +67,16 @@
     margin-right: 2em;
 }
 
-.ez-editfield-input-area .ez-fielddescription-tooltip.is-visible {
+.is-using-touch-device .ez-editfield-input-area .ez-field-description.is-visible {
     height: auto;
     display: inline;
 }
 
-.ez-editfield-input-area .ez-fielddescription-tooltip-text {
+.is-using-touch-device .ez-editfield-input-area .ez-fielddescription-tooltip-text {
     display: block;
     margin: 0 0 0 -13px;
     padding: 8px;
     text-align: left;
-}
-
-.ez-editfield-input-area .ez-fielddescription-tooltip-close {
-    float:right;
-    font-size: 80%;
 }
 
 .ez-standard-description .ez-field-description {

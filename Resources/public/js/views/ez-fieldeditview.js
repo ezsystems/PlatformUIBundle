@@ -15,7 +15,7 @@ YUI.add('ez-fieldeditview', function (Y) {
         IS_VISIBLE_CLASS = 'is-visible',
         IS_SHOWING_DESCRIPTION = 'is-showing-description',
         FIELD_INPUT = '.ez-editfield-input',
-        TOOLTIP_DESCR = '.ez-fielddescription-tooltip',
+        TOOLTIP_DESCR = '.ez-field-description',
         STANDARD_DESCR = 'ez-standard-description',
 
         _events= {
@@ -73,10 +73,10 @@ YUI.add('ez-fieldeditview', function (Y) {
                     content: this.get('content').toJSON(),
                     version: this.get('version').toJSON(),
                     contentType: this.get('contentType').toJSON()
-            },
+                },
                 container = this.get('container');
 
-            if (this._useStandardFieldDefinitionDescription === 'true') {
+            if (this._useStandardFieldDefinitionDescription) {
                 container.addClass(STANDARD_DESCR);
             }
             this.get('container').setHTML(
@@ -159,7 +159,8 @@ YUI.add('ez-fieldeditview', function (Y) {
          */
         _showDescription: function () {
             var container = this.get('container');
-            if (this._handleFieldDescriptionVisibility === true) {
+
+            if (this._handleFieldDescriptionVisibility) {
                 if (this._isTouch() &&  container.one(TOOLTIP_DESCR)) {
                     this._setTooltipPosition(FIELD_INPUT);
                 } else {
@@ -181,7 +182,7 @@ YUI.add('ez-fieldeditview', function (Y) {
                 fieldInput = container.one(fieldInputDomClass),
                 tooltipHeight;
 
-            if (!tooltip.hasClass(IS_VISIBLE_CLASS)){
+            if (!tooltip.hasClass(IS_VISIBLE_CLASS)) {
                 this._tooltipInitialPosition = tooltip.getXY();
                 tooltipHeight = tooltip.get('offsetHeight');
                 tooltip.setXY([ fieldInput.getX(), fieldInput.getY() - tooltipHeight]);
@@ -201,9 +202,9 @@ YUI.add('ez-fieldeditview', function (Y) {
             var container = this.get('container'),
                 tooltip = container.one(TOOLTIP_DESCR);
 
-            if (this._handleFieldDescriptionVisibility === true) {
+            if (this._handleFieldDescriptionVisibility) {
                 container.removeClass(IS_SHOWING_DESCRIPTION);
-                if (tooltip) {
+                if (tooltip && this._isTouch()) {
                     tooltip.removeClass(IS_VISIBLE_CLASS);
                     tooltip.setXY(this._tooltipInitialPosition);
                     tooltip.detach('clickoutside');
@@ -222,10 +223,10 @@ YUI.add('ez-fieldeditview', function (Y) {
             /**
              * Set if the fieldDefinition description is active or not.
              *
-             * @property _toggleFieldDefinitionDescription
+             * @property _handleFieldDescriptionVisibility
              * @protected
-             * @type string
-             * @default 'active'
+             * @type boolean
+             * @default true
              */
             this._handleFieldDescriptionVisibility = true;
 
@@ -235,10 +236,10 @@ YUI.add('ez-fieldeditview', function (Y) {
              *
              * @property _useStandardFieldDefinitionDescription
              * @protected
-             * @type string
-             * @default 'active'
+             * @type boolean
+             * @default true
              */
-            this._useStandardFieldDefinitionDescription = 'true';
+            this._useStandardFieldDefinitionDescription = true;
 
             /**
              * Contains the initial X an Y position of a tooltip

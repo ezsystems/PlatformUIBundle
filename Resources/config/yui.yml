@@ -431,8 +431,8 @@ system:
                     requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'node-style', 'fielddescription-tooltip-ez-partial']
                     path: %ez_platformui.public_dir%/js/views/ez-fieldeditview.js
                 fielddescription-tooltip-ez-partial:
-                     type: 'template'
-                     path: %ez_platformui.public_dir%/templates/partials/fielddescription_tooltip.hbt
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/partials/fielddescription_tooltip.hbt
                 ez-fieldview:
                     requires: ['ez-templatebasedview', 'fieldview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-fieldview.js

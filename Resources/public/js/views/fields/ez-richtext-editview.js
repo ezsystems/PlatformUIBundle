@@ -41,6 +41,7 @@ YUI.add('ez-richtext-editview', function (Y) {
         initializer: function () {
             var config = this.get('config');
 
+            this._handleFieldDescriptionVisibility = false;
             if ( config && config.rootInfo && config.rootInfo.ckeditorPluginPath ) {
                 this._set('ckeditorPluginPath', config.rootInfo.ckeditorPluginPath);
             }

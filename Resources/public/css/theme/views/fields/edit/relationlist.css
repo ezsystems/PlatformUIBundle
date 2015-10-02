@@ -22,7 +22,7 @@
     color: #BF3E33;
 }
 
-.ez-view-relationlisteditview .ez-binarybase-help {
+.ez-view-relationlisteditview .ez-relationlist-help {
     font-size: 80%;
     font-style: italic;
     font-weight: bold;
@@ -30,5 +30,6 @@
 
 .ez-view-relationlisteditview .ez-field-description {
     font-weight: lighter;
-    font-size: 80%
+    font-size: 80%;
+    opacity: 1;
 }

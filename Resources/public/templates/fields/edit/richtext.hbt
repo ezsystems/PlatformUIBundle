@@ -5,6 +5,9 @@
                 {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
             </p>
             <p class="ez-editfield-error-message">&nbsp;</p>
+            <p class="ez-field-description is-showing-description">
+                {{ fieldDefinition.descriptions.[eng-GB] }}
+            </p>
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
