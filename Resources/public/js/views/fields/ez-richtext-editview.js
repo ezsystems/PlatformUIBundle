@@ -142,12 +142,25 @@ YUI.add('ez-richtext-editview', function (Y) {
             setEditorFocused = Y.bind(this._uiHandleEditorFocus, this, true);
             unsetEditorFocused = Y.bind(this._uiHandleEditorFocus, this, false);
 
+            nativeEd.on('contentDiscover', Y.bind(this._forwardEditorEvent, this));
+
             nativeEd.on('blur', valid);
             nativeEd.on('focus', valid);
             nativeEd.on('change', valid);
             nativeEd.on('focus', setEditorFocused);
             nativeEd.on('blur', unsetEditorFocused);
             this._set('editor', editor);
+        },
+
+        /**
+         * Forwards the given event to the YUI stack
+         *
+         * @method _forwardEditorEvent
+         * @param {Object} e the CKEditor event info
+         * @protected
+         */
+        _forwardEditorEvent: function (e) {
+            this.fire(e.name, e.data);
         },
 
         /**
