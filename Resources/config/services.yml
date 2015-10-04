@@ -18,6 +18,7 @@ parameters:
     ezsystems.platformui.application_config.provider.anonymous_user_id.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\AnonymousUserId
     ezsystems.platformui.application_config.aggregator.class: EzSystems\PlatformUIBundle\ApplicationConfig\Aggregator
     ezsystems.platformui.application_config.provider.root_info.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\RootInfo
+    ezsystems.platformui.application_config.provider.languages.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\Languages
     ezsystems.platformui.form_processor.section.class: EzSystems\PlatformUIBundle\Form\Processor\SectionFormProcessor
     ezsystems.platformui.exception_listener.class: EzSystems\PlatformUIBundle\EventListener\ExceptionListener
     ezsystems.platformui.exception_controller: "ezsystems.platformui.controller.exception:showAction"
@@ -80,6 +81,13 @@ services:
             - %ez_platformui.external_assets_public_dir%
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'rootInfo'}
+
+    ezsystems.platformui.application_config.provider.languages:
+        class: %ezsystems.platformui.application_config.provider.languages.class%
+        arguments:
+            - @ezpublish.api.service.language
+        tags:
+            - {name: ezsystems.platformui.application_config_provider, key: 'languages'}
 
     ezsystems.platformui.controller.template:
         class: %ezsystems.platformui.controller.template.class%
