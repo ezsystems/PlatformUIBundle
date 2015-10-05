@@ -155,7 +155,8 @@ YUI.add('ez-platformuiapp', function (Y) {
          * @protected
          */
         _dispatchConfig: function () {
-            var config = this.get('config');
+            var config = this.get('config'),
+                systemLanguageList = {};
 
             if ( !config ) {
                 return;
@@ -178,6 +179,14 @@ YUI.add('ez-platformuiapp', function (Y) {
                 )
             ));
             delete config.sessionInfo;
+
+            if ( config.languages ) {
+                Y.Array.each(config.languages, function (language) {
+                    systemLanguageList[language.languageCode] = language;
+                });
+                this._set('systemLanguageList', systemLanguageList);
+                delete config.languages;
+            }
         },
 
         /**
@@ -921,6 +930,20 @@ YUI.add('ez-platformuiapp', function (Y) {
             anonymousUserId: {
                 readOnly: true,
                 value: "/api/ezp/v2/user/users/10",
+            },
+
+            /**
+             * System language list provided with config. The list is hash
+             * containing language objects and is indexed by languageCode.
+             *
+             * @attribute systemLanguageList
+             * @default {}
+             * @type {Object}
+             * @readOnly
+             */
+            systemLanguageList: {
+                readOnly: true,
+                value: {}
             },
         }
     });
