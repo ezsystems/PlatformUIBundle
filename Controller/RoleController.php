@@ -12,6 +12,7 @@ use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\RoleService;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\Core\Repository\Values\User\Policy;
+use eZ\Publish\Core\Repository\Values\User\PolicyDraft;
 use eZ\Publish\Core\Repository\Values\User\RoleCreateStruct;
 use EzSystems\RepositoryForms\Data\Mapper\PolicyMapper;
 use EzSystems\RepositoryForms\Data\Mapper\RoleMapper;
@@ -21,6 +22,7 @@ use EzSystems\RepositoryForms\Form\Type\Role\RoleDeleteType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleUpdateType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class RoleController extends Controller
 {
@@ -39,14 +41,21 @@ class RoleController extends Controller
      */
     private $policyActionDispatcher;
 
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
     public function __construct(
         RoleService $roleService,
         ActionDispatcherInterface $roleActionDispatcher,
-        ActionDispatcherInterface $policyActionDispatcher
+        ActionDispatcherInterface $policyActionDispatcher,
+        TranslatorInterface $translator
     ) {
         $this->roleService = $roleService;
         $this->roleActionDispatcher = $roleActionDispatcher;
         $this->policyActionDispatcher = $policyActionDispatcher;
+        $this->translator = $translator;
     }
 
     /**
@@ -128,7 +137,7 @@ class RoleController extends Controller
     public function updateRoleAction(Request $request, $roleId)
     {
         try {
-            $roleDraft = $this->roleService->loadRoleDraft($roleId);
+            $roleDraft = $this->roleService->loadRoleDraftByRoleId($roleId);
         } catch (NotFoundException $e) {
             // The draft doesn't exist, let's create one
             $role = $this->roleService->loadRole($roleId);
@@ -198,26 +207,27 @@ class RoleController extends Controller
 
     public function editPolicyAction(Request $request, $roleId, $policyId = null)
     {
+        $role = $this->roleService->loadRole($roleId);
         try {
-            $roleDraft = $this->roleService->loadRoleDraft($roleId);
+            $roleDraft = $this->roleService->loadRoleDraftByRoleId($roleId);
         } catch (NotFoundException $e) {
             // The draft doesn't exist, let's create one
-            $role = $this->roleService->loadRole($roleId);
             $roleDraft = $this->roleService->createRoleDraft($role);
         }
 
-        $policy = new Policy();
+        $policy = new PolicyDraft(['innerPolicy' => new Policy()]);
         if ($policyId) {
             foreach ($roleDraft->getPolicies() as $policy) {
-                if ($policy->id === $policyId) {
-                    break;
+                if ($policy->originalId == $policyId) {
+                    goto buildFormData;
                 }
             }
 
-            throw new BadRequestHttpException("Role #$roleId doesn't contain any policy with ID #$policyId");
+            throw new BadRequestHttpException('role.error.policy_not_found', ['%policyId%' => $policyId]);
         }
 
-        $policyData = (new PolicyMapper())->mapToFormData($policy, ['roleDraft' => $roleDraft]);
+        buildFormData:
+        $policyData = (new PolicyMapper())->mapToFormData($policy, ['roleDraft' => $roleDraft, 'initialRole' => $role]);
         $actionUrl = $this->generateUrl('admin_policyEdit', ['roleId' => $roleId, 'policyId' => $policyId]);
         $form = $this->createForm('ezrepoforms_policy_edit', $policyData);
         $form->handleRequest($request);

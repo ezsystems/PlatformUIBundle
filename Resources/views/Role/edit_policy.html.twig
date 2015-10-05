@@ -35,14 +35,13 @@
                 <div class="pure-control-group">
                     {{ form_label(form.moduleFunction) }}
                     {{ form_errors(form.moduleFunction) }}
-                    {{ form_widget(form.moduleFunction) }}
+                    {{ form_widget(form.moduleFunction, {"disabled": not policy.new}) }}
                 </div>
             </fieldset>
 
             <div class="pure-controls">
-                <a href="{{ path("admin_roleView", {"roleId": policy.roleDraft.id}) }}"
-                   class="pure-button ez-button ez-button-delete ez-font-icon">{{ "role.policy.cancel"|trans }}</a>
-                {{ form_widget(form.save, {"attr": {"class": "pure-button ez-button"}}) }}
+                {{ form_widget(form.removeDraft, {"attr": {"class": "pure-button ez-button ez-button-delete ez-font-icon"}}) }}
+                {{ form_widget(form.savePolicy, {"attr": {"class": "pure-button ez-button"}}) }}
             </div>
 
         {{ form_end(form) }}

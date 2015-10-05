@@ -122,6 +122,26 @@
         <source>role.error.name_exists</source>
         <target>The role name already exists.</target>
       </trans-unit>
+      <trans-unit id="df4bf1b27476f996e2feb6b836920bf7">
+        <source>role.error.policy_not_found</source>
+        <target>Role #%policyId% doesn't contain any policy with ID #%policyId%</target>
+      </trans-unit>
+      <trans-unit id="8483958b5b33d86e797ab02903e90126">
+        <source>role.policy.create.title</source>
+        <target>New policy</target>
+      </trans-unit>
+      <trans-unit id="3033eea6a0c9f35cec56b90a187ab5e4">
+        <source>role.policy.edit.title</source>
+        <target>Edit %policy%</target>
+      </trans-unit>
+      <trans-unit id="c40e607f6b6c9f13fb2d68fe23f713d9">
+        <source>role.policy.notification.draft_saved</source>
+        <target>The policy draft was saved.</target>
+      </trans-unit>
+      <trans-unit id="4e4b4523818f00b0ac036dcc8cca1de2">
+        <source>role.policy.notification.draft_removed</source>
+        <target>The policy draft was removed.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
