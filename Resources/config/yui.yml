@@ -31,6 +31,9 @@ system:
                 ez-alloyeditor-toolbar-config-paragraph:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
                     path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/paragraph.js
+                ez-alloyeditor-toolbar-config-embed:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/embed.js
                 ez-alloyeditor-plugin-addcontent:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/plugins/addcontent.js
@@ -531,6 +534,7 @@ system:
                         - 'ez-alloyeditor-toolbar-config-table'
                         - 'ez-alloyeditor-toolbar-config-heading'
                         - 'ez-alloyeditor-toolbar-config-paragraph'
+                        - 'ez-alloyeditor-toolbar-config-embed'
                         - 'ez-alloyeditor-button-heading'
                         - 'ez-alloyeditor-button-paragraph'
                         - 'ez-alloyeditor-button-embed'

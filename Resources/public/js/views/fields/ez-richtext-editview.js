@@ -359,6 +359,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                             ToolbarConfig.Table,
                             ToolbarConfig.Heading,
                             ToolbarConfig.Paragraph,
+                            ToolbarConfig.Embed,
                         ],
                         tabIndex: 1
                     },
