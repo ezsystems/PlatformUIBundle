@@ -40,7 +40,7 @@
             </fieldset>
 
             <div class="pure-controls">
-                {{ form_widget(form.removeDraft, {"attr": {"class": "pure-button ez-button ez-button-delete ez-font-icon"}}) }}
+                {{ form_widget(form.removeDraft, {"attr": {"class": "pure-button ez-button ez-button-delete ez-font-icon", "formnovalidate": "formnovalidate"}}) }}
                 {{ form_widget(form.savePolicy, {"attr": {"class": "pure-button ez-button"}}) }}
             </div>
 
