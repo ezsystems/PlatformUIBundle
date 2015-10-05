@@ -4,7 +4,7 @@
  */
 YUI.add('ez-contentmodel-tests', function (Y) {
     var modelTest, relationsTest, createContent, loadResponse, copyTest,
-        loadLoactionsTest, addLocationTest,
+        loadLoactionsTest, addLocationTest, setMainLocationTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -855,6 +855,93 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    setMainLocationTest = new Y.Test.Case({
+        name: "eZ Content Model set main location test",
+
+        setUp: function () {
+            this.model = new Y.eZ.Content();
+            this.contentId = 'Pele';
+
+            this.capi = new Mock();
+            this.contentService = new Mock();
+            this.contentMetadataUpdateStruct = new Mock();
+
+            Y.Mock.expect(this.capi, {
+                method: 'getContentService',
+                returns: this.contentService
+            });
+
+            Y.Mock.expect(this.model, {
+                method: 'get',
+                args: ['id'],
+                returns: this.contentId
+            });
+
+            Y.Mock.expect(this.contentService, {
+                method: 'newContentMetadataUpdateStruct',
+                args: [],
+                returns: this.contentMetadataUpdateStruct
+            });
+
+            Y.Mock.expect(this.contentMetadataUpdateStruct, {
+                method: 'setMainLocation',
+                args: [Mock.Value.String],
+            });
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+            delete this.capi;
+            delete this.contentService;
+            delete this.contentMetadataUpdateStruct;
+        },
+
+        'Should set main location': function () {
+            var options = {api: this.capi},
+                locationId = '/new/main/location/id',
+                callbackCalled = false;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'updateContentMetadata',
+                args: [this.contentId, this.contentMetadataUpdateStruct, Y.Mock.Value.Function],
+                run: function (contentId, struct, cb) {
+                    cb(false, {});
+                }
+            });
+
+            this.model.setMainLocation(options, locationId, function (err, response) {
+                callbackCalled = true;
+
+                Assert.isFalse(err, 'Should not return the error');
+            });
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
+
+        'Should pass error to callback function when CAPI setMainLocation fails': function () {
+            var options = {api: this.capi},
+                locationId = '/new/main/location/id',
+                callbackCalled = false;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'updateContentMetadata',
+                args: [this.contentId, this.contentMetadataUpdateStruct, Y.Mock.Value.Function],
+                run: function (contentId, struct, cb) {
+                    cb(true);
+                }
+            });
+
+            this.model.setMainLocation(options, locationId, function (err, response) {
+                callbackCalled = true;
+
+                Assert.isTrue(err, 'Should return the error');
+            });
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
@@ -862,4 +949,5 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(copyTest);
     Y.Test.Runner.add(loadLoactionsTest);
     Y.Test.Runner.add(addLocationTest);
+    Y.Test.Runner.add(setMainLocationTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

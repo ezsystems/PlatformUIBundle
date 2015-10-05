@@ -14,6 +14,9 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
     var events = {
             '.ez-add-location-button': {
                 'tap': '_addLocation'
+            },
+            '.ez-main-location-radio': {
+                'tap': '_setMainLocation'
             }
         };
 
@@ -34,10 +37,14 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
 
         render: function () {
             var container = this.get('container'),
+                mainLocationId = this.get('content').get('resources').MainLocation,
                 locations = [];
 
             Y.Array.each(this.get('locations'), function (loc) {
-                locations.push(loc.toJSON());
+                var locJSON = loc.toJSON();
+
+                locJSON.isMainLocation = (locJSON.id === mainLocationId);
+                locations.push(locJSON);
             });
 
             container.setHTML(this.template({
@@ -98,6 +105,42 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
          */
         _refresh: function () {
             this._fireLoadLocations();
+        },
+
+        /**
+         * Tap event handler on the main location radio input. It fires the
+         * `setMainLocation` event
+         *
+         * @method _setMainLocation
+         * @protected
+         * @param {EventFacade} e
+         */
+        _setMainLocation: function (e) {
+            var locationId = e.target.getAttribute('data-location-id');
+
+            e.preventDefault();
+
+            if (locationId === this.get('content').get('resources').MainLocation) {
+                return;
+            }
+
+            this.get('container').all('.ez-main-location-radio').set('disabled', true);
+
+            this.fire('setMainLocation', {
+                locationId: locationId,
+                afterSetMainLocationCallback: Y.bind(this._refresh, this),
+                cancelSetMainLocationCallback: Y.bind(this._enableSetMainLocationRadios, this)
+            });
+        },
+
+        /**
+         * Turns off disabled state for main location radio inputs.
+         *
+         * @method _enableSetMainLocationRadios
+         * @private
+         */
+        _enableSetMainLocationRadios: function () {
+            this.get('container').all('.ez-main-location-radio').set('disabled', false);
         }
     }, {
         ATTRS: {

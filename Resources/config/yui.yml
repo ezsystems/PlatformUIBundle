@@ -150,6 +150,7 @@ system:
                         - 'ez-userloadplugin'
                         - 'ez-locationsloadplugin'
                         - 'ez-locationcreateplugin'
+                        - 'ez-contentsetmainlocationplugin'
                         - 'ez-imagevariationloadplugin'
                         - 'ez-contentcreateplugin'
                         - 'ez-copycontentplugin'
@@ -887,6 +888,9 @@ system:
                         - 'ez-contentmodel'
                         - 'parallel'
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationcreateplugin.js
+                ez-contentsetmainlocationplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contentsetmainlocationplugin.js
                 ez-objectrelationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationloadplugin.js
