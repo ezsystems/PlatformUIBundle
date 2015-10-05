@@ -4,7 +4,7 @@
  */
 
 .ez-editpreviewview-container {
-    position: absolute;
+    position: fixed;
 
     -webkit-transform: translateX(0);
             transform: translateX(0);
