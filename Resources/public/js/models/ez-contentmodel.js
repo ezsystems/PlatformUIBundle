@@ -270,6 +270,7 @@ YUI.add('ez-contentmodel', function (Y) {
         /**
          * Sets main location for content
          *
+         * @method setMainLocation
          * @param {Object} options
          * @param {Object} options.api (required) the JS REST client instance
          * @param {String} locationId the location id of location that will be set as main location

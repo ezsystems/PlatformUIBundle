@@ -56,7 +56,6 @@ YUI.add('ez-contentsetmainlocationplugin-tests', function (Y) {
             this.view = new Y.View();
             this.view.addTarget(this.service);
             this.capi = new Mock();
-            this.contentServiceMock = new Mock();
             this.contentJson = {
                 'id': '/content/Lonely/Day',
                 'name': 'Lonely Day',
@@ -65,27 +64,16 @@ YUI.add('ez-contentsetmainlocationplugin-tests', function (Y) {
             this.newMainLocationId = '/locations/SOAD/Hypnotize/Lonely/Day';
             this.oldMainLocationId = '/location/Metallica/S&M/Nothing/Else/Matters';
             this.content = this._getContentMock(this.contentJson);
-            this.updateStruct = {
-                body: {
-                    ContentUpdate: {
-                        MainLocation: this.oldMainLocationId
-                    }
-                }
-            };
+//            this.updateStruct = {
+//                body: {
+//                    ContentUpdate: {
+//                        MainLocation: this.oldMainLocationId
+//                    }
+//                }
+//            };
 
             this.service.set('capi', this.capi);
             this.service.set('content', this.content);
-
-            Mock.expect(this.capi, {
-                'method': 'getContentService',
-                'returns': this.contentServiceMock
-            });
-
-            Mock.expect(this.contentServiceMock, {
-                'method': 'newContentMetadataUpdateStruct',
-                'args': [this.contentJson.mainLanguageCode],
-                'returns': this.updateStruct
-            });
 
             this.plugin = new Y.eZ.Plugin.ContentSetMainLocation({
                 host: this.service
@@ -139,10 +127,16 @@ YUI.add('ez-contentsetmainlocationplugin-tests', function (Y) {
                 e.config.confirmHandler();
             });
 
-            Mock.expect(this.contentServiceMock, {
-                'method': 'updateContentMetadata',
-                'args': [this.contentJson.id, this.updateStruct, Mock.Value.Function],
-                'run': function (contentId, updateStruct, callback) {
+            Mock.expect(this.content, {
+                method: 'setMainLocation',
+                args: [Mock.Value.Object, this.newMainLocationId, Mock.Value.Function],
+                run: function (options, locationId, callback) {
+                    Assert.areSame(
+                        options.api,
+                        that.capi,
+                        "The CAPI should be passed"
+                    );
+
                     callback(false);
                 }
             });
@@ -216,10 +210,16 @@ YUI.add('ez-contentsetmainlocationplugin-tests', function (Y) {
                 e.config.confirmHandler();
             });
 
-            Mock.expect(this.contentServiceMock, {
-                'method': 'updateContentMetadata',
-                'args': [this.contentJson.id, this.updateStruct, Mock.Value.Function],
-                'run': function (contentId, updateStruct, callback) {
+            Mock.expect(this.content, {
+                method: 'setMainLocation',
+                args: [Mock.Value.Object, this.newMainLocationId, Mock.Value.Function],
+                run: function (options, locationId, callback) {
+                    Assert.areSame(
+                        options.api,
+                        that.capi,
+                        "The CAPI should be passed"
+                    );
+
                     callback(true);
                 }
             });
