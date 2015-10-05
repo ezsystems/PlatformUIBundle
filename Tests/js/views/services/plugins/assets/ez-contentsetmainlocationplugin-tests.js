@@ -64,13 +64,6 @@ YUI.add('ez-contentsetmainlocationplugin-tests', function (Y) {
             this.newMainLocationId = '/locations/SOAD/Hypnotize/Lonely/Day';
             this.oldMainLocationId = '/location/Metallica/S&M/Nothing/Else/Matters';
             this.content = this._getContentMock(this.contentJson);
-//            this.updateStruct = {
-//                body: {
-//                    ContentUpdate: {
-//                        MainLocation: this.oldMainLocationId
-//                    }
-//                }
-//            };
 
             this.service.set('capi', this.capi);
             this.service.set('content', this.content);
