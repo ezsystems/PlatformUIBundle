@@ -265,6 +265,24 @@ YUI.add('ez-contentmodel', function (Y) {
                 locationCreateStruct = contentService.newLocationCreateStruct(parentLocation.get('id'));
 
             contentService.createLocation(this.get('id'), locationCreateStruct, callback);
+        },
+
+        /**
+         * Sets main location for content
+         *
+         * @param {Object} options
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {String} locationId the location id of location that will be set as main location
+         * @param {Function} callback
+         */
+        setMainLocation: function (options, locationId, callback) {
+            var capi = options.api,
+                contentService = capi.getContentService(),
+                updateStruct = contentService.newContentMetadataUpdateStruct();
+
+            updateStruct.setMainLocation(locationId);
+
+            contentService.updateContentMetadata(this.get('id'), updateStruct, callback);
         }
     }, {
         REST_STRUCT_ROOT: "Content",

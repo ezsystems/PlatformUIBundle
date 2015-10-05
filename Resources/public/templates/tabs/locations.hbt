@@ -31,7 +31,7 @@
                                 </td>
                                 <td class="ez-table-data-main-location">
                                     <input type="radio" value="1" class="ez-main-location-radio"
-                                        data-location-id="{{ id }}" {{#if isMainLocation}}checked="checked"{{/if}}>
+                                        data-location-id="{{ id }}"{{#if isMainLocation}} checked="checked"{{/if}}>
                                 </td>
                             </tr>
                         {{/each}}

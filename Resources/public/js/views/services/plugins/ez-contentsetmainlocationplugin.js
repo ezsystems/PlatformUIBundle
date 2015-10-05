@@ -61,13 +61,9 @@ YUI.add('ez-contentsetmainlocationplugin', function (Y) {
         _setMainLocation: function (locationId, callback) {
             var service = this.get('host'),
                 capi = service.get('capi'),
-                contentService = capi.getContentService(),
                 content = service.get('content'),
                 notificationIdentifier = 'set-main-location-' + content.get('id') + '-' + locationId,
-                updateStruct = contentService.newContentMetadataUpdateStruct(content.get('mainLanguageCode')),
                 that = this;
-
-            updateStruct.body.ContentUpdate.MainLocation = {_href: locationId};
 
             this._notify(
                 "Changing the main location of '" + content.get('name') + "'",
@@ -76,7 +72,7 @@ YUI.add('ez-contentsetmainlocationplugin', function (Y) {
                 5
             );
 
-            contentService.updateContentMetadata(content.get('id'), updateStruct, function (error, response) {
+            content.setMainLocation({api: capi}, locationId, function (error, response) {
                 if (error) {
                     that._notify(
                         "Changing main location of '" + content.get('name') + "' failed",
