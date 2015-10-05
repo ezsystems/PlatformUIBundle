@@ -423,6 +423,56 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
                 });
             });
             this.wait();
+        },
+
+        "Should disable set main location radio inputs after cancel confirm box question": function () {
+            var that = this,
+                mainLocationRadio,
+                newMainLocationId;
+
+            this.view.render();
+
+            mainLocationRadio = this.view.get('container').one('#ez-not-main-location-radio');
+            newMainLocationId = mainLocationRadio.getAttribute('data-location-id');
+
+            mainLocationRadio.simulateGesture('tap', function () {
+                that.resume(function () {
+                    that.view.get('container').all('.ez-main-location-radio').each(function (radio) {
+                        Assert.isTrue(
+                            radio.get('disabled'),
+                            "Radio input should be disabled"
+                        );
+                    });
+                });
+            });
+            this.wait();
+        },
+
+        "Should enable set main location radio inputs after cancel confirm box question": function () {
+            var that = this,
+                mainLocationRadio,
+                newMainLocationId;
+
+            this.view.render();
+
+            mainLocationRadio = this.view.get('container').one('#ez-not-main-location-radio');
+            newMainLocationId = mainLocationRadio.getAttribute('data-location-id');
+
+            this.view.on('setMainLocation', function (e) {
+                e.cancelSetMainLocationCallback();
+            });
+
+            mainLocationRadio.simulateGesture('tap', function () {
+                that.resume(function () {
+                    that.view.get('container').all('.ez-main-location-radio').each(function (radio) {
+                        Assert.isFalse(
+                            radio.get('disabled'),
+                            "Radio input should not be disabled"
+                        );
+                    });
+                });
+            });
+            this.wait();
         }
     });
 

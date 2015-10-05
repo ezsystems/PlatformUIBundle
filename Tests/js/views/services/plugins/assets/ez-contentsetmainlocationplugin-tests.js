@@ -269,7 +269,7 @@ YUI.add('ez-contentsetmainlocationplugin-tests', function (Y) {
             Assert.isTrue(startNotificationFired, 'Should fire notification with `started` state');
             Assert.isFalse(successNotificationFired, 'Should not fire notification with `done` state');
             Assert.isTrue(errorNotificationFired, 'Should fire notification with `error` state');
-            Assert.isFalse(afterSetMainLocationCallbackCalled, 'Should not call afterSetMainLocationCallback function');
+            Assert.isTrue(afterSetMainLocationCallbackCalled, 'Should call afterSetMainLocationCallback function');
         },
 
     });

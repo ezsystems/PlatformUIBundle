@@ -45,7 +45,8 @@ YUI.add('ez-contentsetmainlocationplugin', function (Y) {
                     title: "Are you sure you want to set this location as main location of content?",
                     confirmHandler: Y.bind(function () {
                         this._setMainLocation(e.locationId, e.afterSetMainLocationCallback);
-                    }, this)
+                    }, this),
+                    cancelHandler: Y.bind(e.cancelSetMainLocationCallback, this)
                 }
             });
         },
@@ -73,6 +74,8 @@ YUI.add('ez-contentsetmainlocationplugin', function (Y) {
             );
 
             content.setMainLocation({api: capi}, locationId, function (error, response) {
+                callback();
+
                 if (error) {
                     that._notify(
                         "Changing main location of '" + content.get('name') + "' failed",
@@ -89,7 +92,6 @@ YUI.add('ez-contentsetmainlocationplugin', function (Y) {
                     'done',
                     5
                 );
-                callback();
             });
 
         },

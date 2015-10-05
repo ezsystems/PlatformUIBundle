@@ -124,10 +124,23 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
                 return;
             }
 
+            this.get('container').all('.ez-main-location-radio').set('disabled', true);
+
             this.fire('setMainLocation', {
                 locationId: locationId,
-                afterSetMainLocationCallback: Y.bind(this._refresh, this)
+                afterSetMainLocationCallback: Y.bind(this._refresh, this),
+                cancelSetMainLocationCallback: Y.bind(this._enableSetMainLocationRadios, this)
             });
+        },
+
+        /**
+         * Turns off disabled state for main location radio inputs.
+         *
+         * @method _enableSetMainLocationRadios
+         * @private
+         */
+        _enableSetMainLocationRadios: function () {
+            this.get('container').all('.ez-main-location-radio').set('disabled', false);
         }
     }, {
         ATTRS: {
