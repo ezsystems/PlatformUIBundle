@@ -13,6 +13,7 @@ parameters:
     ezsystems.platformui.form_processor.content_type_group.class: EzSystems\PlatformUIBundle\Form\Processor\ContentTypeGroupFormProcessor
     ezsystems.platformui.controller.role.class: EzSystems\PlatformUIBundle\Controller\RoleController
     ezsystems.platformui.form_processor.role.class: EzSystems\PlatformUIBundle\Form\Processor\RoleFormProcessor
+    ezsystems.platformui.form_processor.policy.class: EzSystems\PlatformUIBundle\Form\Processor\PolicyFormProcessor
     ezsystems.platformui.application_config.provider.session_info.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\SessionInfo
     ezsystems.platformui.application_config.provider.value.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\Value
     ezsystems.platformui.application_config.provider.anonymous_user_id.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\AnonymousUserId
@@ -162,6 +163,12 @@ services:
     ezsystems.platformui.form_processor.role:
         class: %ezsystems.platformui.form_processor.role.class%
         arguments: [@router, @ezsystems.platformui.notification_pool, @ezpublish.api.service.role]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ezsystems.platformui.form_processor.policy:
+        class: %ezsystems.platformui.form_processor.policy.class%
+        arguments: [@router, @ezsystems.platformui.notification_pool]
         tags:
             - { name: kernel.event_subscriber }
 
