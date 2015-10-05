@@ -3,19 +3,18 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-richtext-editable ezembed {
+.ez-richtext-editable [data-ezelement="embed"] {
     display: block;
     margin: 1em 0.1em;
     line-height: 2em;
     height: 2em;
 }
 
-.ez-richtext-editable ezembed:before {
+.ez-richtext-editable [data-ezelement="embed"]:before {
     padding: 0 0.2em 0 0.5em;
 }
 
-.ez-richtext-editable ezembed:before,
-.ez-richtext-editable ezembed:after {
+.ez-richtext-editable [data-ezelement="embed"]:before {
     line-height: 100%;
     height: 100%;
     display: inline-block;

@@ -12,7 +12,7 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
 
     /**
      * CKEditor plugin to configure the widget plugin so that it recognizes the
-     * `ezembed` elements as widget.
+     * `div[data-ezelement="embed"]` elements as widget.
      *
      * @class CKEDITOR.plugins.ezembed
      * @constructor
@@ -22,11 +22,44 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
 
         init: function (editor) {
             editor.widgets.add('ezembed', {
-                template: '<ezembed href="ezlocation://2" data-ezview="embed" />',
-                requiredContent: 'ezembed',
+                defaults: {
+                    href: "ezcontent://57",
+                    content: "home",
+                    view: "ezembed",
+                },
+                template: '<div data-ezelement="embed" data-href="{href}" data-ezview="{view}">{content}</div>',
+                requiredContent: 'div',
 
                 upcast: function (element) {
-                    return element.name === 'ezembed';
+                    return (
+                        element.name === 'div' &&
+                        element.attributes['data-ezelement'] === 'embed'
+                    );
+                },
+
+                init: function () {
+                    this.on('focus', this._fireEditorInteraction);
+                },
+
+                /**
+                 * Fires the editorInteraction event so that AlloyEditor editor
+                 * UI remains visible and is updated.
+                 *
+                 * @method _fireEditorInteraction
+                 * @protected
+                 * @param {Object} evt this initial event info object
+                 */
+                _fireEditorInteraction: function (evt) {
+                    var e = {
+                            editor: editor,
+                            target: this.element.$,
+                            name: "widget" + evt.name,
+                        };
+
+                    editor.fire('editorInteraction', {
+                        nativeEvent: e,
+                        selectionData: {},
+                    });
                 },
             });
         },

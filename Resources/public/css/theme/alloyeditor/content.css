@@ -3,13 +3,13 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-richtext-editable ezembed {
+.ez-richtext-editable [data-ezelement="embed"] {
     background: #eee;
     border: 1px solid #aaa;
     font-size: 1.1em;
 }
 
-.ez-richtext-editable ezembed:before {
+.ez-richtext-editable [data-ezelement="embed"]:before {
     font-family: 'ez-platformui-icomoon';
     speak: none;
     font-weight: normal;
@@ -19,10 +19,6 @@
     -webkit-font-smoothing: antialiased;
 
     content: "\E62e";
-}
-
-.ez-richtext-editable ezembed:after {
-    content: attr(href);
 }
 
 .ez-richtext-editable .is-block-focused {
