@@ -104,6 +104,7 @@ class ContentUserGateway implements EventSubscriberInterface
         foreach ($requestHeaders as $headerName => $headerValue) {
             $headers[$this->fixHeaderCase($headerName)] = implode('; ', $headerValue);
         }
+        $headers['Url'] = $request->getPathInfo();
 
         return new Message($headers, $request->getContent());
     }
