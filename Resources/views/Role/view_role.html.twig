@@ -28,6 +28,7 @@
                         <th>{{ 'policy.function'|trans }}</th>
                         <th>{{ 'policy.limitation'|trans }}</th>
                         <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -66,15 +67,31 @@
                             </td>
                             <td>
                             {% if can_edit %}
-                                <a href="{{ path('admin_policyEdit', {'roleId': role.id, 'policyId': policy.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'role.edit'|trans }}</a>
+                                <a href="{{ path('admin_policyEdit', {'roleId': role.id, 'policyId': policy.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'role.policy.edit_limitations'|trans }}</a>
                             {% else %}
-                                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'role.edit'|trans }}</span>
+                                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'role.policy.edit_limitations'|trans }}</span>
                             {% endif %}
+                            </td>
+                            <td>
+                                {% set policyDeleteForm = deleteFormsByPolicyId[policy.id] %}
+                                {{ form_start(policyDeleteForm, {"action": path("admin_policyDelete", {"roleId": role.id, "policyId": policy.id})}) }}
+                                {{ form_widget(policyDeleteForm.policyId) }}
+                                {{ form_widget(policyDeleteForm.roleId) }}
+                                {{
+                                    form_widget(
+                                        policyDeleteForm.delete,
+                                        {
+                                            "disabled": not can_edit,
+                                            "attr": {"class": "pure-button ez-button ez-font-icon ez-button-delete"}
+                                        }
+                                    )
+                                }}
+                                {{ form_end(policyDeleteForm) }}
                             </td>
                         </tr>
                     {% else %}
                         <tr>
-                            <td colspan="3">{{ 'role.policy_none'|trans }}</td>
+                            <td colspan="5">{{ 'role.policy_none'|trans }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -83,6 +100,7 @@
                 {{ form_start(deleteForm, {"action": path("admin_roleDelete", {"roleId": role.id})}) }}
                     <p class="ez-table-data-buttons">
                     {% if can_edit %}
+                        <a href="{{ path('admin_policyEdit', {"roleId": role.id}) }}" class="pure-button ez-button" data-icon="&#xe616;">{{ 'role.policy.add'|trans }}</a>
                         <a href="{{ path('admin_roleUpdate', {"roleId": role.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'role.edit'|trans }}</a>
                     {% else %}
                         <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'role.edit'|trans }}</span>

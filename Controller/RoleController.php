@@ -17,6 +17,7 @@ use eZ\Publish\Core\Repository\Values\User\RoleCreateStruct;
 use EzSystems\RepositoryForms\Data\Mapper\PolicyMapper;
 use EzSystems\RepositoryForms\Data\Mapper\RoleMapper;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
+use EzSystems\RepositoryForms\Form\Type\Role\PolicyDeleteType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleCreateType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleDeleteType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleUpdateType;
@@ -88,9 +89,18 @@ class RoleController extends Controller
         $role = $this->roleService->loadRole($roleId);
         $roleAssignments = $this->roleService->getRoleAssignments($role);
         $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
+        $deleteFormsByPolicyId = [];
+        foreach ($role->getPolicies() as $policy) {
+            $policyId = $policy->id;
+            $deleteFormsByPolicyId[$policyId] = $this->createForm(
+                new PolicyDeleteType(),
+                ['policyId' => $policyId, 'roleId' => $roleId]
+            )->createView();
+        }
 
         return $this->render('eZPlatformUIBundle:Role:view_role.html.twig', [
             'role' => $role,
+            'deleteFormsByPolicyId' => $deleteFormsByPolicyId,
             'role_assignments' => $roleAssignments,
             'deleteForm' => $deleteForm->createView(),
             'can_edit' => $this->isGranted(new Attribute('role', 'update')),
@@ -223,7 +233,9 @@ class RoleController extends Controller
                 }
             }
 
-            throw new BadRequestHttpException('role.error.policy_not_found', ['%policyId%' => $policyId]);
+            throw new BadRequestHttpException(
+                $this->translator->trans('role.error.policy_not_found', ['%policyId%' => $policyId, '%roleId%' => $roleId], 'role')
+            );
         }
 
         buildFormData:
@@ -245,5 +257,47 @@ class RoleController extends Controller
             'actionUrl' => $actionUrl,
             'policy' => $policyData,
         ]);
+    }
+
+    public function deletePolicyAction(Request $request, $roleId, $policyId)
+    {
+        $role = $this->roleService->loadRole($roleId);
+        $deleteForm = $this->createForm(
+            new PolicyDeleteType(),
+            ['policyId' => $policyId, 'roleId' => $roleId]
+        );
+        $deleteForm->handleRequest($request);
+
+        if ($deleteForm->isValid()) {
+            try {
+                $roleDraft = $this->roleService->loadRoleDraftByRoleId($roleId);
+            } catch (NotFoundException $e) {
+                // The draft doesn't exist, let's create one
+                $roleDraft = $this->roleService->createRoleDraft($role);
+            }
+
+            $foundPolicy = false;
+            /** @var PolicyDraft $policy */
+            foreach ($roleDraft->getPolicies() as $policy) {
+                if ($policy->originalId == $policyId) {
+                    $foundPolicy = true;
+                    break;
+                }
+            }
+
+            if (!$foundPolicy) {
+                throw new BadRequestHttpException(
+                    $this->translator->trans('role.error.policy_not_found', ['%policyId%' => $policyId, '%roleId%' => $roleId], 'role')
+                );
+            }
+
+            $this->roleService->removePolicyByRoleDraft($roleDraft, $policy);
+            $this->roleService->publishRoleDraft($roleDraft);
+            $this->notify('role.policy.deleted', ['%roleIdentifier%' => $role->identifier, '%policyId%' => $policyId], 'role');
+        } elseif ($deleteForm->isSubmitted()) {
+            $this->notifyError('role.policy.error.delete', ['%roleIdentifier%' => $role->identifier, '%policyId%' => $policyId], 'role');
+        }
+
+        return $this->redirectToRouteAfterFormPost('admin_roleView', ['roleId' => $roleId]);
     }
 }

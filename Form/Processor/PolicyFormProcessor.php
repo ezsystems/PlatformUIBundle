@@ -51,7 +51,7 @@ class PolicyFormProcessor implements EventSubscriberInterface
         $data = $event->getData();
         $event->setResponse(
             new FormProcessingDoneResponse(
-                $this->router->generate('admin_roleView', ['roleId' => $data->getId()])
+                $this->router->generate('admin_roleView', ['roleId' => $data->initialRole->id])
             )
         );
 

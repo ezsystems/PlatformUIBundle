@@ -24,7 +24,7 @@
       </trans-unit>
       <trans-unit id="72e584ea4fbac71aa627215d16fff4e1" resname="role.edit">
         <source>role.edit</source>
-        <target>Edit</target>
+        <target>Edit role name</target>
       </trans-unit>
       <trans-unit id="292d3fbfd0abb7bf81b957ce9e33adde" resname="role.delete">
         <source>role.delete</source>
@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="df4bf1b27476f996e2feb6b836920bf7">
         <source>role.error.policy_not_found</source>
-        <target>Role #%policyId% doesn't contain any policy with ID #%policyId%</target>
+        <target>Role #%roleId% doesn't contain any policy with ID #%policyId%</target>
       </trans-unit>
       <trans-unit id="8483958b5b33d86e797ab02903e90126">
         <source>role.policy.create.title</source>
@@ -134,6 +134,14 @@
         <source>role.policy.edit.title</source>
         <target>Edit %policy%</target>
       </trans-unit>
+      <trans-unit id="e5cad95e7e4a9e50c68dae5020daf2fd">
+        <source>role.policy.add</source>
+        <target>Add a new policy</target>
+      </trans-unit>
+      <trans-unit id="364b9bb8f177edb24bf5569751dee3c0">
+        <source>role.policy.edit_limitations</source>
+        <target>Edit limitations</target>
+      </trans-unit>
       <trans-unit id="c40e607f6b6c9f13fb2d68fe23f713d9">
         <source>role.policy.notification.draft_saved</source>
         <target>The policy draft was saved.</target>
@@ -141,6 +149,14 @@
       <trans-unit id="4e4b4523818f00b0ac036dcc8cca1de2">
         <source>role.policy.notification.draft_removed</source>
         <target>The policy draft was removed.</target>
+      </trans-unit>
+      <trans-unit id="a240eb45d946f91511737ad29c7cbbfb">
+        <source>role.policy.deleted</source>
+        <target>Policy #%policyId% for role "%roleIdentifier%" was correctly deleted.</target>
+      </trans-unit>
+      <trans-unit id="e3f78c1d66fd4a7a1fcc4fe2a60e48be">
+        <source>role.policy.error.delete</source>
+        <target>An error occurred when trying to delete policy #%policyId% for role "%roleIdentifier%".</target>
       </trans-unit>
     </body>
   </file>

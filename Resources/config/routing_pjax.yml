@@ -137,6 +137,12 @@ admin_roleDelete:
     defaults:
         _controller: ezsystems.platformui.controller.role:deleteRoleAction
 
+admin_policyDelete:
+    path: /role/policy/delete/{roleId}/{policyId}
+    methods: [POST]
+    defaults:
+        _controller: ezsystems.platformui.controller.role:deletePolicyAction
+
 admin_policyEdit:
     path: /role/policy/{roleId}/{policyId}
     defaults:
