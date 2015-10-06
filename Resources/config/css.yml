@@ -167,3 +167,4 @@ system:
                 - 'bundles/ezplatformui/css/theme/alloyeditor/content.css'
                 - 'bundles/ezplatformui/css/theme/alloyeditor/buttons/labeled-button.css'
                 - 'bundles/ezplatformui/css/theme/alloyeditor/buttons/blockremove.css'
+                - 'bundles/ezplatformui/css/theme/alloyeditor/buttons/embedhref.css'

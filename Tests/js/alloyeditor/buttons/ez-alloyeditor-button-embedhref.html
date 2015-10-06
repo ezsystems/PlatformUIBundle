@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ AlloyEditor embedhref button tests</title>
+</head>
+<body>
+
+<div class="editorContainer">
+    <div data-ezelement="embed" data-href="content://2" data-ezview="embed">Times like these</div>
+</div>
+<div class="container"></div>
+<script type="text/javascript" src="../../assets/function.bind.polyfill.js"></script>
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
+<script type="text/javascript" src="./assets/ez-alloyeditor-button-embedhref-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage') {
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-alloyeditor-button-embedhref'],
+        filter: loaderFilter,
+        modules: {
+            "ez-alloyeditor-button-embedhref": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/buttons/embedhref.js",
+                requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent'],
+            },
+            "ez-alloyeditor-button-mixin-embeddiscovercontent": {
+                requires: ['ez-alloyeditor'],
+                fullpath: "../../../../Resources/public/js/alloyeditor/buttons/mixins/embeddiscovercontent.js",
+            },
+            "ez-alloyeditor-plugin-embed": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/embed.js",
+            },
+            "ez-alloyeditor": {
+                fullpath: "../../../../Resources/public/js/external/ez-alloyeditor.js",
+            },
+        }
+    }).use('ez-alloyeditor-button-embedhref-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

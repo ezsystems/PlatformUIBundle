@@ -70,6 +70,9 @@ system:
                 ez-alloyeditor-button-blockremove:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blockremove.js
+                ez-alloyeditor-button-embedhref:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embedhref.js
                 ez-alloyeditor-button-mixin-blocktextalign:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/blocktextalign.js
@@ -543,6 +546,7 @@ system:
                         - 'ez-alloyeditor-button-blocktextalignright'
                         - 'ez-alloyeditor-button-blocktextalignjustify'
                         - 'ez-alloyeditor-button-blockremove'
+                        - 'ez-alloyeditor-button-embedhref'
                         - 'richtexteditview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
                 richtexteditview-ez-template:
