@@ -14,7 +14,7 @@
 }
 
 .ez-view-locationviewrelationstabview .ez-relations-box-list {
-    padding: 1em;
+    margin: 1em;
 }
 
 .ez-view-locationviewrelationstabview .ez-relations-box-table {
@@ -28,4 +28,8 @@
 
 .ez-view-locationviewrelationstabview .ez-relations-type {
     display: inline;
+}
+
+.ez-view-locationviewrelationstabview .ez-relations-box-list-no-content {
+    font-style: italic;
 }
