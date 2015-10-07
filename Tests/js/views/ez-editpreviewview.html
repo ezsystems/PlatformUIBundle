@@ -5,21 +5,11 @@
 </head>
 <body>
 
-<div class="editpreviewview-container is-editpreview-hidden"><div class="container"></div></div>
+<div class="editpreviewview-container is-editpreview-hidden" style="margin-top: 2000px;"><div class="container"></div></div>
 
 <script type="text/x-handlebars-template" id="editpreviewview-ez-template">
-    <div class="ez-preview-content" tabindex="0">
-        <header>
-            <button class="ez-preview-hide" data-icon-after="&#xe000;">Close preview</button>
-            <h2>Previewing: <strong>{{ legend }}</strong></h2>
-        </header>
-        <div class="preview-device loading {{ mode.id }}">
-            <div class="iframe-wrapper">
-                <div class="ez-loader is-loading"></div>
-                <iframe class="preview-iframe" width="{{ mode.width }}" height="{{ mode.height }}" src="{{ source }}" frameBorder="0" marginwidth="0"></iframe>
-            </div>
-        </div>
-    </div>
+    <iframe class="ez-preview-iframe" width="{{ mode.width }}" height="{{ mode.height }}" src="{{ source }}"></iframe>
+    <button class="ez-preview-hide" data-icon-after="&#xe000;">Close preview</button>
 </script>
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -41,7 +31,7 @@
         filter: loaderFilter,
         modules: {
             "ez-editpreviewview": {
-                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
+                requires: ['ez-templatebasedview', 'transition', 'event-tap', 'node-screen'],
                 fullpath: "../../../Resources/public/js/views/ez-editpreviewview.js"
             },
             "ez-templatebasedview": {

@@ -12,8 +12,7 @@ YUI.add('ez-editpreviewview', function (Y) {
     Y.namespace('eZ');
 
     var IS_HIDDEN_CLASS = 'is-editpreview-hidden',
-        IS_LOADING_CLASS = 'is-loading',
-        LOADER_NODE = '.ez-loader';
+        IS_LOADING_CLASS = 'is-loading';
 
     /**
      * The edit preview view
@@ -37,21 +36,16 @@ YUI.add('ez-editpreviewview', function (Y) {
         render: function () {
             var container = this.get('container'),
                 content = this.get('content'),
-                version = this.get('version'),
-                loader;
+                version = this.get('version');
 
             container.setHTML(this.template({
                 mode: this.get('previewModes')[this.get('currentModeId')],
                 source: '/content/versionview/' + content.get('contentId') + '/' + version.get('versionNo') + '/eng-GB',
                 legend: version.get('names')['eng-GB']
-            }));
+            })).addClass(IS_LOADING_CLASS);
 
-            // loader node for the iframe
-            loader = container.one(LOADER_NODE);
-            loader.addClass(IS_LOADING_CLASS);
-
-            this._attachedViewEvents.push(container.one('.preview-iframe').on('load', function () {
-                loader.removeClass(IS_LOADING_CLASS);
+            this._attachedViewEvents.push(container.one('.ez-preview-iframe').on('load', function () {
+                container.removeClass(IS_LOADING_CLASS);
             }));
 
             return this;
@@ -66,9 +60,11 @@ YUI.add('ez-editpreviewview', function (Y) {
             var previewContainer = this.get('container').get('parentNode');
 
             if (previewContainer.hasClass(IS_HIDDEN_CLASS)) {
-                previewContainer.setStyle('width', newWidth + 'px');
-                previewContainer.setXY([newWidth * 2, 0]);
-
+                previewContainer.setStyles({
+                    'width': newWidth + 'px',
+                    'height': previewContainer.get('winHeight') + 'px',
+                });
+                previewContainer.setXY([newWidth * 2, previewContainer.get('docScrollY')]);
                 previewContainer.removeClass(IS_HIDDEN_CLASS);
             }
 
