@@ -67,7 +67,7 @@ YUI.add('ez-editpreviewview', function (Y) {
 
             if (previewContainer.hasClass(IS_HIDDEN_CLASS)) {
                 previewContainer.setStyle('width', newWidth + 'px');
-                previewContainer.setXY([0, 0]);
+                previewContainer.setXY([newWidth * 2, 0]);
 
                 previewContainer.removeClass(IS_HIDDEN_CLASS);
             }
