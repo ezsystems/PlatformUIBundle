@@ -5,7 +5,7 @@
 <title>eZ AlloyEditor removeblock plugin tests</title>
 </head>
 <body>
-
+<div class="container"></div>
 <script type="text/javascript" src="../../assets/function.bind.polyfill.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
@@ -29,6 +29,9 @@
         modules: {
             "ez-alloyeditor-plugin-removeblock": {
                 fullpath: "../../../../Resources/public/js/alloyeditor/plugins/removeblock.js",
+            },
+            "ez-alloyeditor-plugin-embed": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/embed.js",
             },
         }
     }).use('ez-alloyeditor-plugin-removeblock-tests', function (Y) {
