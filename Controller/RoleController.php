@@ -174,20 +174,11 @@ class RoleController extends Controller
 
         $formView = $form->createView();
 
-        // Show empty text input when name is not set, while showing "New role" in the page title
-        $roleName = $roleDraft->identifier;
-        if ($roleData->isNew()) {
-            $roleName = 'role.name_new';
-            $formView->vars['role_input_value'] = '';
-        } else {
-            $formView->vars['role_input_value'] = $roleName;
-        }
-
         return $this->render('eZPlatformUIBundle:Role:update_role.html.twig', [
             'form' => $formView,
             'action_url' => $actionUrl,
             'role_draft' => $roleDraft,
-            'role_name' => $roleName,
+            'role_name' => $roleData->isNew() ? 'role.name_new' : $roleDraft->identifier,
             'hasErrors' => $hasErrors,
         ]);
     }
