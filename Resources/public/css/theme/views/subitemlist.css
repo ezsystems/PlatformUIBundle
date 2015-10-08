@@ -36,6 +36,10 @@
     background: #fafafa;
 }
 
+.ez-view-subitemlistview .ez-subitemlist-no-sub-items {
+    font-style: italic;
+}
+
 .ez-view-subitemlistview .ez-subitemlist-navigation {
     list-style-type: none;
     font-size: 90%;
