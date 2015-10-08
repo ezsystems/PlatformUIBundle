@@ -53,7 +53,7 @@ class ContentUserGateway implements EventSubscriberInterface
         }
 
         list($mediaType) = explode('+', $contentTypeHeaderValue);
-        if (strtolower($mediaType) ==! 'application/vnd.ez.api.contentcreate') {
+        if (strtolower($mediaType) !== 'application/vnd.ez.api.contentcreate') {
             return;
         }
 
