@@ -33,19 +33,10 @@ trait Authentication
      */
     public function goToPlatformUiAndLogIn($username, $password)
     {
-        // Given I go to PlatformUI app
         $this->goToPlatformUi();
-        //wait fos JS
-        $this->waitForJs();
-        // And I fill in "Username" with "admin"
         $this->fillFieldWithValue('Username', $username);
-        //And I fill in "Password" with "publish"
         $this->fillFieldWithValue('Password', $password);
-        //And I click on the "Login" button
         $this->iClickAtButton('Login');
-        //wait fos JS
-        $this->waitForJs();
-        //Then I should be logged in
         $this->iShouldBeLoggedIn();
     }
 
@@ -60,7 +51,7 @@ trait Authentication
     /**
      * @Given I am logged in as an :role in PlatformUI
      */
-    public function loggedAsEditorPlatformUI($role)
+    public function loggedAsRolePlatformUI($role)
     {
         $credentials = $this->getCredentialsFor($role);
         $this->goToPlatformUiAndLogIn($credentials['login'], $credentials['password']);
@@ -73,7 +64,6 @@ trait Authentication
     {
         $this->shouldBeLoggedIn = false;
         $this->goToPlatformUi('#/dashboard');
-        $this->waitForJs();
         $this->iClickAtLink('Logout');
     }
 
@@ -82,11 +72,16 @@ trait Authentication
      */
     public function iShouldBeLoggedIn()
     {
-        $this->shouldBeLoggedIn = true;
-
-        $verification = new WebAssert($this->getSession());
-        $verification->elementNotExists('css', '.ez-loginform');
-        $jsCode = "return (document.querySelector('.ez-loginform') === null);";
+        $this->spin(
+            function () {
+                $logoutElement = $this->getSession()->getPage()->find('css', '.ez-logout');
+                if ($logoutElement == null) {
+                    return false;
+                }
+                $logoutElement->getValue(); // make sure object is available and not stale
+                return true;
+            }
+        );
     }
 
     /**

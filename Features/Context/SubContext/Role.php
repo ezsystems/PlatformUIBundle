@@ -65,7 +65,7 @@ trait Role
     public function roleDetailsView($role)
     {
         $this->onRolesPage();
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
         $this->clickElementByText($role, '.ez-role-name a');
     }
 
@@ -83,7 +83,7 @@ trait Role
     public function deleteRole($name)
     {
         $this->clickElementByText($name, '.ez-role-name a');
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
         $this->clickElementByText('Delete', '.ez-button');
     }
 

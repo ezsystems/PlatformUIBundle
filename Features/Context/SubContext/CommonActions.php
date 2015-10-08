@@ -122,8 +122,12 @@ trait CommonActions
     {
         $path = explode('/', $path);
         foreach ($path as $pathNode) {
-            $node = $this->openTreeNode($pathNode, $node);
-            $this->waitForLoadings();
+            $node = $this->spin(
+                function () use ($node, $pathNode) {
+                    $node = $this->openTreeNode($pathNode, $node);
+                    return $node;
+                }
+            );
         }
         $node->find('css', '.ez-tree-navigate')->click();
     }
@@ -139,13 +143,32 @@ trait CommonActions
     {
         $page = $this->getSession()->getPage();
         $notFound = true;
-        $subNodes = $node->findAll('css', '.ez-tree-node');
+
+        $subNodes = $this->spin(
+            function () use ($node) {
+                $subNodes = $node->findAll('css', '.ez-tree-node');
+                return $subNodes;
+            }
+        );
+
         foreach ($subNodes as $subNode) {
-            $leafNode = $subNode->find('css', '.ez-tree-navigate');
+            $leafNode = $this->spin(
+                function () use ($subNode) {
+                    $leafNode = $subNode->find('css', '.ez-tree-navigate');
+                    return $leafNode;
+                }
+            );
+
             if ($leafNode->getText() == $pathNode) {
                 $notFound = false;
                 if ($subNode->hasClass('is-tree-node-close')) {
-                    $toggleNode = $subNode->find('css', '.ez-tree-node-toggle');
+                    $toggleNode = $this->spin(
+                        function () use ($subNode) {
+                            $toggleNode = $subNode->find('css', '.ez-tree-node-toggle');
+                            return $toggleNode;
+                        }
+                    );
+
                     if ($toggleNode->isVisible()) {
                         $toggleNode->click();
                     }
@@ -171,13 +194,15 @@ trait CommonActions
      */
     protected function clickElementByText($text, $selector, $textSelector = null, $baseElement = null, $index = 1)
     {
-        $index + 1; //for selection of equal buttons
+        /*$index + 1; //for selection of equal buttons
         $element = $this->getElementByText($text, $selector, $textSelector, $baseElement);
         if ($element) {
             $element->click();
         } else {
             throw new \Exception("Can't click \" $text \" element: Not Found");
-        }
+        }*/
+        $element = $this->spinGet($text, $selector, $textSelector, $baseElement);
+        $element->click();
     }
 
     /**
@@ -190,34 +215,32 @@ trait CommonActions
      * @param int       $iteration      Iteration number, used to control number of executions
      * @return array
      */
-    protected function getElementByText($text, $selector, $textSelector = null, $baseElement = null, $iteration = 3)
+    protected function getElementByText($text, $selector, $textSelector = null, $baseElement = null)
     {
-        try {
-            if ($baseElement == null) {
-                $baseElement = $this->getSession()->getPage();
-            }
-            $elements = $baseElement->findAll('css', $selector);
-            foreach ($elements as $element) {
-                if ($textSelector != null) {
-                    $elementText = $element->find('css', $textSelector)->getText();
-                } else {
-                    $elementText = $element->getText();
-                }
-                if ($elementText == $text) {
-                    return $element;
-                }
-            }
-
-            return false;
-        } catch (StaleElementReference $e) {
-            // In case of the element changes, the reference becames stale
-            // re-run this method up to 3 times to account for this
-            if ($iteration > 0) {
-                usleep(5 * 1000); // 5ms
-                return $this->getElementByText($text, $selector, $textSelector, null, $iteration--);
+        if ($baseElement == null) {
+            $baseElement = $this->getSession()->getPage();
+        }
+        $elements = $baseElement->findAll('css', $selector);
+        foreach ($elements as $element) {
+            if ($textSelector != null) {
+                $elementText = $element->find('css', $textSelector)->getText();
             } else {
-                throw new \Exception('Stale reference occured more than 3 times in a row, possible infinite loop');
+                $elementText = $element->getText();
+            }
+            if ($elementText == $text) {
+                return $element;
             }
         }
+
+        return false;
+    }
+    protected function spinGet($text, $selector, $textSelector = null, $baseElement = null)
+    {
+        $context = $this;
+        return $this->spin(
+            function () use ($context, $text, $selector, $textSelector, $baseElement) {
+                return $context->getElementByText($text, $selector, $textSelector, $baseElement);
+            }
+        );
     }
 }

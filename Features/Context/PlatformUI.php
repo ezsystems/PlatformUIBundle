@@ -27,6 +27,8 @@ class PlatformUI extends Context
     use SubContext\Role;
     use SubContext\Users;
 
+    use Override\Override;
+
     /**
      * PlatformUI relative URL path.
      *
@@ -60,28 +62,31 @@ class PlatformUI extends Context
     private $newPathsMap = array();
 
     /**
-     * Waits for Javascript to finish by checking the loading tags of the page.
+     * Behat spin functions
+     * causes waiting while a a certain function does not return true
+     * waits while an element is not present
      */
-    protected function waitForLoadings()
+    public function spin($lambda, $wait = 20)
     {
-        $page = $this->getSession()->getPage();
-        $loadingClasses = array(
-            '.yui3-app-transitioning',
-            '.is-app-loading',
-            '.is-app-transitioning',
-            // content tree
-            '.ez-view-treeactionview.is-expanded .ez-view-treeview:not(.is-tree-loaded)',
-            '.ez-view-universaldiscoverybrowseview .ez-view-treeview:not(.is-tree-loaded)',
-            '.is-tree-node-loading',
-            // contenttype menu
-            '.ez-view-createcontentactionview.is-expanded:not(.is-contenttypeselector-loaded)',
-        );
-        $loadingSelector = implode(',', $loadingClasses);
-        while ($page->find('css', $loadingSelector) != null) {
-            usleep(100 * 1000); // 100ms
+        for ($i = 0; $i < $wait; $i++) {
+            try {
+                $return = $lambda($this);
+                if ($return) {
+                    return $return;
+                }
+            } catch (\Exception $e) {
+                // do nothing
+            }
+
+            usleep(100 * 5000); //500ms
         }
-        //Temporary solution for race conditions errors with selenium2, TO BE IMPROVED
-        sleep(1);
+
+        $backtrace = debug_backtrace();
+
+        throw new \Exception(
+            "Timeout thrown by " . $backtrace[1]['class'] . "::" . $backtrace[1]['function'] . "()\n" .
+            $backtrace[1]['file'] . ", line " . $backtrace[1]['line']
+        );
     }
 
     /**
@@ -90,13 +95,13 @@ class PlatformUI extends Context
     public function iCreateContentType($type, TableNode $fields)
     {
         $this->clickNavigationZone('Platform');
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
         $this->iClickAtLink('Content structure');
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
         $this->clickActionBar('Create a content');
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
         $this->clickContentType($type);
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
         foreach ($fields as $fieldArray) {
             $keys = array_keys($fieldArray);
             for ($i = 0; $i < count($keys); ++$i) {
@@ -115,9 +120,17 @@ class PlatformUI extends Context
     public function clickOnTreePath($path)
     {
         $this->clickDiscoveryBar('Content tree');
-        $this->waitForLoadings();
-        $page = $this->getSession()->getPage();
-        $node = $page->find('css', '.ez-view-discoverybarview');
+        //$this->waitForLoadings();
+        $node = $this->spin(
+            function () {
+                $page = $this->getSession()->getPage();
+                $node = $page->find('css', '.ez-view-discoverybarview');
+                if ($node == null) {
+                    return false;
+                }
+                return $node;
+            }
+        );
         $this->openTreePath($path, $node);
     }
 
@@ -178,9 +191,9 @@ class PlatformUI extends Context
     private function goToContentWithPath($path)
     {
         $this->clickNavigationZone('Content');
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
         $this->clickNavigationItem('Content structure');
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
         $this->clickOnTreePath($path);
     }
 
@@ -264,16 +277,6 @@ class PlatformUI extends Context
     }
 
     /**
-     * Makes the application wait between steps.
-     *
-     * @AfterStep
-     */
-    public function waitForJs()
-    {
-        $this->waitForLoadings();
-    }
-
-    /**
      * Initialize class.
      *
      * @param string $uri
@@ -300,7 +303,7 @@ class PlatformUI extends Context
         if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
             $this->clickEditActionBar('Publish');
         }
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
     }
 
     /**
@@ -318,6 +321,7 @@ class PlatformUI extends Context
     {
         return $this->newPathsMap[$name];
     }
+
     /**
      * Attaches a file to a input field on the HTML.
      *

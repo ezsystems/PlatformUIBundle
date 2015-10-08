@@ -4,7 +4,7 @@ Feature: Copy content
     I need to be able to copy an object that I am viewing
 
     Background:
-        Given I am logged in as an 'Editor' in PlatformUI
+        Given I am logged in as an 'Administrator' in PlatformUI
 
     ##
     #Copy objects to valid locations

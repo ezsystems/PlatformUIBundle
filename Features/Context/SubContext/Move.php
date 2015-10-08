@@ -17,17 +17,17 @@ trait Move
     public function moveInto($name, $destiny)
     {
         $this->onFullView($name);
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
         $this->clickActionBar('Move');
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
         $this->selectFromUniversalDiscovery("Home/$destiny");
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
         $this->confirmSelection();
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
         $destinyName = explode('/', $destiny);
         $destinyName = end($destinyName);
         $this->iSeeMovedNotification($name, $destinyName);
-        $this->waitForLoadings();
+        //$this->waitForLoadings();
         $this->mapDestinyPath($name, "$destiny/$name");
     }
 

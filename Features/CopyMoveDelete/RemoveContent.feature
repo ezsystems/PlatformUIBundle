@@ -4,7 +4,7 @@ Feature: Remove content
     I need to be able to remove an object that I am viewing
 
     Background:
-        Given I am logged in as an 'Editor' in PlatformUI
+        Given I am logged in as an 'Administrator' in PlatformUI
 
     ##
     # Validate dialogs
@@ -21,7 +21,7 @@ Feature: Remove content
     ##
     # Delete objects
     ##
-    @javascript
+    @javascript @now
     Scenario: Remove one object and confirm the removal
         Given a "News Flash" article exists
         When I remove "News Flash"
