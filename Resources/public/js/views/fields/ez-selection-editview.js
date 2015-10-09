@@ -64,6 +64,7 @@ YUI.add('ez-selection-editview', function (Y) {
                 this._set('values', this._getSelectedTextValues());
             });
             this.after('valuesChange', this._uiSyncSelectionValues);
+            this.after('valuesChange', this._validateAddedRemovedValues);
             this.after('showSelectionUIChange', this._uiShowSelectionList);
         },
 
@@ -228,7 +229,6 @@ YUI.add('ez-selection-editview', function (Y) {
          */
         _removeValue: function (e) {
             this._removeSelection(e.target.getAttribute('data-text'), e.target);
-            this.validate();
         },
 
         destructor: function () {
@@ -326,6 +326,20 @@ YUI.add('ez-selection-editview', function (Y) {
                     node = selectionValues.one('.ez-selection-value[data-text="' + e.removed + '"]');
                 }
                 node.remove(true);
+            }
+        },
+
+        /**
+         * Check if there is a value that has been added or removed with the event facade.
+         * If it is, then call validate().
+         *
+         * @method _validateAddedRemovedValues
+         * @protected
+         * @param {Object} e event facade
+         */
+        _validateAddedRemovedValues: function (e) {
+            if ( e.added || e.removed ) {
+                this.validate();
             }
         },
 
