@@ -81,6 +81,7 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
                 'ezcontent://' + content.get('contentId')
             );
             embedWidget.element.setText(content.get('name'));
+            embedWidget.focus();
         },
     };
 });

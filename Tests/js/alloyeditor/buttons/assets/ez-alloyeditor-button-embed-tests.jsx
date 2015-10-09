@@ -145,6 +145,10 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
                     widget.element.getText(),
                     "The ezembed should be filled with the content name"
                 );
+                Assert.areSame(
+                    widget, this.widgets.focused,
+                    "The ezembed widget should have the focus"
+                );
             });
             button = React.render(
                 <AlloyEditor.ButtonEmbed editor={this.editor} />,
