@@ -804,7 +804,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/contenttypeselector.hbt
                 ez-editpreviewview:
-                    requires: ['ez-templatebasedview', 'event-tap', 'editpreviewview-ez-template']
+                    requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'editpreviewview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-editpreviewview.js
                 editpreviewview-ez-template:
                     type: 'template'
