@@ -23,10 +23,28 @@ trait Override
     {
         $this->spin(
             function () use ($field, $value) {
-                parent::fillFieldWithValue($field, $value);
+                // parent:fillFieldWhitValue($field,$value);
+                $this->fillFieldHelper($field, $value);
                 return true;
             }
         );
+    }
 
+    /**
+     * Temporary helper
+     */
+    private function fillFieldHelper($field, $value)
+    {
+        $fieldNode = $this->getSession()->getPage()->findField($field);
+        if ($fieldNode == null) {
+            throw new \Exception('Field not found');
+        }
+
+        $fieldNode->setValue($value);
+        $fieldNode = $this->getSession()->getPage()->findField($field);
+        // verication that the field was really filled
+        if ($fieldNode->getValue() != $value) {
+            throw new \Exception('Failed to set the field value');
+        }
     }
 }
