@@ -5,7 +5,8 @@
 YUI.add('ez-editpreviewview-tests', function (Y) {
     var IS_HIDDEN_CLASS = 'is-editpreview-hidden',
         IS_LOADING_CLASS = 'is-loading',
-        viewTest;
+        viewTest,
+        Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
         name: "eZ Edit Preview View test",
@@ -43,6 +44,11 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
             this.view.render();
             Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
             Y.Assert.areNotEqual("", this.view.get('container').getHTML(), "View container should contain the result of the this.view");
+
+            Assert.isTrue(
+                this.view.get('container').hasClass(IS_LOADING_CLASS),
+                "The container should have the loading class"
+            );
         },
 
         "Test available variable in template": function () {
@@ -59,43 +65,86 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         },
 
         "Should show itself when needed": function () {
-            var previewNode = this.view.get('container').get('parentNode'),
+            var previewNode,
+                height,
                 newWidth = 600,
-                oneMoreWidth = 700;
+                oneMoreWidth = 700,
+                xy;
 
+            this.view.render();
             this.view.show(newWidth);
+            previewNode = this.view.get('container').get('parentNode');
+            previewNode.scrollIntoView();
+            xy = previewNode.getXY();
 
-            Y.Assert.areEqual(parseInt(previewNode.getComputedStyle('width'),10), newWidth);
-            Y.assert(!previewNode.hasClass(IS_HIDDEN_CLASS), "Container's parent node should NOT have certain class" );
+            height = previewNode.get('winHeight');
+            Assert.areEqual(
+                newWidth, previewNode.get('offsetWidth'),
+                "The width of the preview should be set to the expected with"
+            );
+            Assert.areEqual(
+                height, previewNode.get('offsetHeight'),
+                "The height of the preview should be set to the viewport height"
+            );
+            Assert.areEqual(
+                newWidth*2, xy[0],
+                "x should be twice the width"
+            );
+            Assert.areEqual(
+                previewNode.get('docScrollY'), xy[1],
+                "y should be the Y scroll position"
+            );
+            Assert.isFalse(
+                previewNode.hasClass(IS_HIDDEN_CLASS),
+                "Container's parent node should NOT have the hidden class"
+            );
 
             this.view.show(oneMoreWidth);
 
-            Y.assert(
-                parseInt(previewNode.getComputedStyle('width'),10) == newWidth,
-                "Should correctly interpret 'show' command even if already visible"
+            Assert.areEqual(
+                newWidth, previewNode.get('offsetWidth'),
+                "The width of the preview should be set to the expected with"
             );
-            Y.assert(!previewNode.hasClass(IS_HIDDEN_CLASS), "Container's parent node should NOT have certain class" );
+            Assert.areEqual(
+                height, previewNode.get('offsetHeight'),
+                "The height of the preview should be set to the viewport height"
+            );
+            Assert.areEqual(
+                newWidth*2, xy[0],
+                "x should be twice the width"
+            );
+            Assert.areEqual(
+                previewNode.get('docScrollY'), xy[1],
+                "y should be the Y scroll position"
+            );
+
         },
 
         "Should show iframe loader once it begins to load": function () {
-            var loader;
-
             this.view.render();
-            loader = this.view.get('container').one('.ez-loader');
 
-            Y.assert(loader.hasClass(IS_LOADING_CLASS), "Right after rendering, iframe loader should have certain class");
+            Assert.isTrue(
+                this.view.get('container').hasClass(IS_LOADING_CLASS),
+                "The view should be in loading mode"
+            );
 
         },
 
         "Should hide iframe loader once it is done loading": function () {
-            var loader;
+            var iframeLoaded = false;
 
             this.view.render();
-            loader = this.view.get('container').one('.ez-loader');
-
-            this.wait(function () {
-                Y.assert(!loader.hasClass(IS_LOADING_CLASS), "After iframe is done loading, iframe loader should NOT have certain class");
-            }, 800);
+            this.view.get('container').one('iframe').onceAfter('load', function () {
+                iframeLoaded = true;
+            });
+            this.waitFor(function () {
+                return iframeLoaded;
+            }, function () {
+                Assert.isFalse(
+                    this.view.get('container').hasClass(IS_LOADING_CLASS),
+                    "The view should not be in loading mode when the iframe is loaded"
+                );
+            });
         },
 
         "Should hide itself once 'Close preview' link is tapped": function () {

@@ -4,7 +4,7 @@
  */
 
 .ez-editpreviewview-container {
-    position: fixed;
+    position: absolute;
 
     -webkit-transform: translateX(0);
             transform: translateX(0);
@@ -14,7 +14,6 @@
 
     -webkit-transform-style: preserve-3d; /* increasing performance on mobile devices */
             transform-style: preserve-3d;
-    height: 100%;
 }
 
 .ez-editpreviewview-container.is-editpreview-hidden {
@@ -24,19 +23,39 @@
 
 .ez-view-editpreviewview {
     height: 100%;
-    overflow: hidden;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
 }
 
-.ez-preview-content header  {
-    min-height: 0;
+.ez-view-editpreviewview .ez-preview-header {
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+        -ms-flex: none;
+            flex: none;
 }
 
-.ez-preview-content header h2 {
+.ez-view-editpreviewview .ez-preview-device {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    overflow: auto;
+}
+
+.ez-view-editpreviewview .ez-preview-title {
     font-size: 150%;
     text-align: center;
+    margin: 0.5em 0;
 }
 
-.ez-preview-content .ez-preview-hide {
+.ez-view-editpreviewview .ez-preview-hide {
     display: block;
     cursor: pointer;
     float: right;
@@ -47,35 +66,17 @@
     border: none;
 }
 
-.ez-preview-content .ez-preview-hide:after {
+.ez-view-editpreviewview .ez-preview-hide:after {
     font-size: 90%;
     padding-left: 0.5em;
 }
 
-.ez-preview-content .preview-device {
-    margin: 20px auto;
-    overflow: hidden;
+.ez-view-editpreviewview .ez-preview-iframe-wrapper {
+    box-sizing: border-box;
+    margin: 0 auto;
 }
 
-.ez-preview-content .iframe-wrapper {
-    position: relative;
-    overflow: hidden;
-}
-
-.ez-preview-content .preview-device.tablet .iframe-wrapper {
-    width: 769px;
-}
-
-.ez-preview-content .ez-loader.is-loading {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    z-index: 1011;
-}
-
-.ez-preview-content .preview-iframe {
+.ez-view-editpreviewview .ez-preview-iframe {
     display: block;
-    margin: 0;
+    margin: 0 auto;
 }

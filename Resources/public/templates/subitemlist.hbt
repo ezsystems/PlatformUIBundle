@@ -68,7 +68,7 @@
             {{/if}}
         {{/if}}
     {{else}}
-        <p>This location has no sub-item.</p>
+        <p class="ez-subitemlist-no-sub-items">This location has no sub-item.</p>
     {{/if}}
     </div>
     <div class="ez-subitemlist-loader-mask"></div>

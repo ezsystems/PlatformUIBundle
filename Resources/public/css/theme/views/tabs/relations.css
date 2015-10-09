@@ -5,6 +5,7 @@
 
 .ez-view-locationviewrelationstabview .ez-relations-box {
     border: 1px solid #ccc;
+    background: #F5F4F2;
 }
 
 .ez-view-locationviewrelationstabview .ez-relations-box-title {
@@ -12,10 +13,6 @@
     font-size: 1.1em;
     font-weight: bold;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
-}
-
-.ez-view-locationviewrelationstabview .ez-relations-box-list {
-    background: #F5F4F2;
 }
 
 .ez-view-locationviewrelationstabview .ez-relations-box-table {

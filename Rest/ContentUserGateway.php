@@ -53,7 +53,7 @@ class ContentUserGateway implements EventSubscriberInterface
         }
 
         list($mediaType) = explode('+', $contentTypeHeaderValue);
-        if (strtolower($mediaType) ==! 'application/vnd.ez.api.contentcreate') {
+        if (strtolower($mediaType) !== 'application/vnd.ez.api.contentcreate') {
             return;
         }
 
@@ -104,6 +104,7 @@ class ContentUserGateway implements EventSubscriberInterface
         foreach ($requestHeaders as $headerName => $headerValue) {
             $headers[$this->fixHeaderCase($headerName)] = implode('; ', $headerValue);
         }
+        $headers['Url'] = $request->getPathInfo();
 
         return new Message($headers, $request->getContent());
     }
