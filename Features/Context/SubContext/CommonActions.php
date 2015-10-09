@@ -9,8 +9,6 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
-use WebDriver\Exception\StaleElementReference;
-
 trait CommonActions
 {
     /**
@@ -125,6 +123,7 @@ trait CommonActions
             $node = $this->spin(
                 function () use ($node, $pathNode) {
                     $node = $this->openTreeNode($pathNode, $node);
+
                     return $node;
                 }
             );
@@ -147,6 +146,7 @@ trait CommonActions
         $subNodes = $this->spin(
             function () use ($node) {
                 $subNodes = $node->findAll('css', '.ez-tree-node');
+
                 return $subNodes;
             }
         );
@@ -155,6 +155,7 @@ trait CommonActions
             $leafNode = $this->spin(
                 function () use ($subNode) {
                     $leafNode = $subNode->find('css', '.ez-tree-navigate');
+
                     return $leafNode;
                 }
             );
@@ -165,6 +166,7 @@ trait CommonActions
                     $toggleNode = $this->spin(
                         function () use ($subNode) {
                             $toggleNode = $subNode->find('css', '.ez-tree-node-toggle');
+
                             return $toggleNode;
                         }
                     );
@@ -237,6 +239,7 @@ trait CommonActions
     protected function spinGet($text, $selector, $textSelector = null, $baseElement = null)
     {
         $context = $this;
+
         return $this->spin(
             function () use ($context, $text, $selector, $textSelector, $baseElement) {
                 return $context->getElementByText($text, $selector, $textSelector, $baseElement);

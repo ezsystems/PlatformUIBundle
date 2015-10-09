@@ -9,8 +9,6 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
-use Behat\Mink\WebAssert;
-
 trait Authentication
 {
     /**

@@ -25,13 +25,14 @@ trait Override
             function () use ($field, $value) {
                 // parent:fillFieldWhitValue($field,$value);
                 $this->fillFieldHelper($field, $value);
+
                 return true;
             }
         );
     }
 
     /**
-     * Temporary helper
+     * Temporary helper.
      */
     private function fillFieldHelper($field, $value)
     {

@@ -64,11 +64,11 @@ class PlatformUI extends Context
     /**
      * Behat spin functions
      * causes waiting while a a certain function does not return true
-     * waits while an element is not present
+     * waits while an element is not present.
      */
-    public function spin($lambda, $wait = 20)
+    public function spin($lambda, $wait = 30)
     {
-        for ($i = 0; $i < $wait; $i++) {
+        for ($i = 0; $i < $wait; ++$i) {
             try {
                 $return = $lambda($this);
                 if ($return) {
@@ -78,14 +78,14 @@ class PlatformUI extends Context
                 // do nothing
             }
 
-            usleep(100 * 5000); //500ms
+            usleep(100 * 3000); //100ms
         }
 
         $backtrace = debug_backtrace();
 
         throw new \Exception(
-            "Timeout thrown by " . $backtrace[1]['class'] . "::" . $backtrace[1]['function'] . "()\n" .
-            $backtrace[1]['file'] . ", line " . $backtrace[1]['line']
+            'Timeout thrown by ' . $backtrace[1]['class'] . '::' . $backtrace[1]['function'] . '()\n' .
+            $backtrace[1]['file'] . ', line ' . $backtrace[1]['line']
         );
     }
 
@@ -128,6 +128,7 @@ class PlatformUI extends Context
                 if ($node == null) {
                     return false;
                 }
+
                 return $node;
             }
         );
@@ -137,7 +138,7 @@ class PlatformUI extends Context
     /**
      * @Then I don't see :path in the content tree
      * @Then I do not see :path in the content tree
-     * Explores the content tree, expanding it and click on the desired element
+     * Explores the content tree, expanding it and click on the desired element.
      *
      * @param   string  $path    The content tree path such as 'Content1/Content2/ContentIWantToClick'
      */
