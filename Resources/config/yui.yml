@@ -152,6 +152,7 @@ system:
                         - 'ez-locationcreateplugin'
                         - 'ez-contentsetmainlocationplugin'
                         - 'ez-visibilityswitcherplugin'
+                        - 'ez-locationremoveplugin'
                         - 'ez-imagevariationloadplugin'
                         - 'ez-contentcreateplugin'
                         - 'ez-copycontentplugin'
@@ -244,7 +245,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/tabs/relations.hbt
                 ez-locationviewlocationstabview:
-                    requires: ['ez-locationviewtabview', 'locationviewlocationstabview-ez-template']
+                    requires: ['ez-locationviewtabview', 'locationviewlocationstabview-ez-template', 'array-extras']
                     path: %ez_platformui.public_dir%/js/views/tabs/ez-locationviewlocationstabview.js
                 locationviewlocationstabview-ez-template:
                     type: 'template'
@@ -895,6 +896,9 @@ system:
                 ez-contentsetmainlocationplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contentsetmainlocationplugin.js
+                ez-locationremoveplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'parallel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationremoveplugin.js
                 ez-objectrelationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationloadplugin.js

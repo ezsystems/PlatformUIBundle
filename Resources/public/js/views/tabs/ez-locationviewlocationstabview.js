@@ -21,6 +21,9 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
             '.ez-locations-hidden-button': {
                 'tap': '_switchVisibility'
             },
+            '.ez-remove-locations-button': {
+                'tap': '_removeSelectedLocations'
+            }
         };
 
     /**
@@ -186,6 +189,73 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
                 }
             }, this);
         },
+
+        /**
+         * Tap event handler on the `Remove selected` button. It fires the
+         * `removeLocations` event
+         *
+         * @method _removeSelectedLocations
+         * @protected
+         * @param {EventFacade} e
+         */
+        _removeSelectedLocations: function (e) {
+            var c = this.get('container'),
+                locations = [];
+
+            locations = Y.Array.reject(this.get('locations'), function (location) {
+                var checkbox = c.one('.ez-location-checkbox[data-location-id="' + location.get('id') + '"]');
+
+                if (checkbox && checkbox.get('checked')) {
+                    return false;
+                }
+                return true;
+            });
+
+            if (locations.length > 0) {
+                this._disableLocationsCheckboxes();
+                this.fire('removeLocations', {
+                    locations: locations,
+                    afterRemoveLocationsCallback: Y.bind(this._afterRemoveLocationCallback, this)
+                });
+            }
+        },
+
+        /**
+         * Callback function called after removing location(s).
+         *
+         * @method _afterRemoveLocationCallback
+         * @protected
+         * @param {Boolean} locationsRemoved if TRUE the view is reloaded, if FALSE it just enables checkboxes
+         */
+        _afterRemoveLocationCallback: function (locationsRemoved) {
+            if (locationsRemoved) {
+                this._refresh();
+            } else {
+                this._enableLocationsCheckboxes();
+            }
+        },
+
+        /**
+         * Disables all checkboxes on locations list preventing from making use of them.
+         *
+         * @method _disableLocationsCheckboxes
+         * @private
+         */
+        _disableLocationsCheckboxes: function () {
+            this.get('container').all('.ez-location-checkbox').set('disabled', true);
+        },
+
+        /**
+         * Enables checkboxes on locations list. Checkbox of main location remains disabled.
+         *
+         * @method _enableLocationsCheckboxes
+         * @private
+         */
+        _enableLocationsCheckboxes: function () {
+            var c = this.get('container');
+
+            c.all('.ez-location-checkbox[data-main-location="0"]').set('disabled', false);
+        }
     }, {
         ATTRS: {
             /**
