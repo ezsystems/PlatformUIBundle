@@ -11,13 +11,19 @@ namespace EzSystems\PlatformUIBundle\Controller;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\RoleService;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
+use eZ\Publish\Core\Repository\Values\User\Policy;
+use eZ\Publish\Core\Repository\Values\User\PolicyDraft;
 use eZ\Publish\Core\Repository\Values\User\RoleCreateStruct;
+use EzSystems\RepositoryForms\Data\Mapper\PolicyMapper;
 use EzSystems\RepositoryForms\Data\Mapper\RoleMapper;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
+use EzSystems\RepositoryForms\Form\Type\Role\PolicyDeleteType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleCreateType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleDeleteType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleUpdateType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class RoleController extends Controller
 {
@@ -29,14 +35,28 @@ class RoleController extends Controller
     /**
      * @var ActionDispatcherInterface
      */
-    private $actionDispatcher;
+    private $roleActionDispatcher;
+
+    /**
+     * @var ActionDispatcherInterface
+     */
+    private $policyActionDispatcher;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
     public function __construct(
         RoleService $roleService,
-        ActionDispatcherInterface $actionDispatcher
+        ActionDispatcherInterface $roleActionDispatcher,
+        ActionDispatcherInterface $policyActionDispatcher,
+        TranslatorInterface $translator
     ) {
         $this->roleService = $roleService;
-        $this->actionDispatcher = $actionDispatcher;
+        $this->roleActionDispatcher = $roleActionDispatcher;
+        $this->policyActionDispatcher = $policyActionDispatcher;
+        $this->translator = $translator;
     }
 
     /**
@@ -69,9 +89,18 @@ class RoleController extends Controller
         $role = $this->roleService->loadRole($roleId);
         $roleAssignments = $this->roleService->getRoleAssignments($role);
         $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
+        $deleteFormsByPolicyId = [];
+        foreach ($role->getPolicies() as $policy) {
+            $policyId = $policy->id;
+            $deleteFormsByPolicyId[$policyId] = $this->createForm(
+                new PolicyDeleteType(),
+                ['policyId' => $policyId, 'roleId' => $roleId]
+            )->createView();
+        }
 
         return $this->render('eZPlatformUIBundle:Role:view_role.html.twig', [
             'role' => $role,
+            'deleteFormsByPolicyId' => $deleteFormsByPolicyId,
             'role_assignments' => $roleAssignments,
             'deleteForm' => $deleteForm->createView(),
             'can_edit' => $this->isGranted(new Attribute('role', 'update')),
@@ -118,7 +147,7 @@ class RoleController extends Controller
     public function updateRoleAction(Request $request, $roleId)
     {
         try {
-            $roleDraft = $this->roleService->loadRoleDraft($roleId);
+            $roleDraft = $this->roleService->loadRoleDraftByRoleId($roleId);
         } catch (NotFoundException $e) {
             // The draft doesn't exist, let's create one
             $role = $this->roleService->loadRole($roleId);
@@ -133,8 +162,8 @@ class RoleController extends Controller
         $form->handleRequest($request);
         $hasErrors = false;
         if ($form->isValid()) {
-            $this->actionDispatcher->dispatchFormAction($form, $roleData, $form->getClickedButton()->getName());
-            if ($response = $this->actionDispatcher->getResponse()) {
+            $this->roleActionDispatcher->dispatchFormAction($form, $roleData, $form->getClickedButton()->getName());
+            if ($response = $this->roleActionDispatcher->getResponse()) {
                 return $response;
             }
 
@@ -145,20 +174,11 @@ class RoleController extends Controller
 
         $formView = $form->createView();
 
-        // Show empty text input when name is not set, while showing "New role" in the page title
-        $roleName = $roleDraft->identifier;
-        if ($roleData->isNew()) {
-            $roleName = 'role.name_new';
-            $formView->vars['role_input_value'] = '';
-        } else {
-            $formView->vars['role_input_value'] = $roleName;
-        }
-
         return $this->render('eZPlatformUIBundle:Role:update_role.html.twig', [
             'form' => $formView,
             'action_url' => $actionUrl,
             'role_draft' => $roleDraft,
-            'role_name' => $roleName,
+            'role_name' => $roleData->isNew() ? 'role.name_new' : $roleDraft->identifier,
             'hasErrors' => $hasErrors,
         ]);
     }
@@ -184,5 +204,91 @@ class RoleController extends Controller
         }
 
         return $this->redirectToRouteAfterFormPost('admin_roleList');
+    }
+
+    public function editPolicyAction(Request $request, $roleId, $policyId = null)
+    {
+        $role = $this->roleService->loadRole($roleId);
+        try {
+            $roleDraft = $this->roleService->loadRoleDraftByRoleId($roleId);
+        } catch (NotFoundException $e) {
+            // The draft doesn't exist, let's create one
+            $roleDraft = $this->roleService->createRoleDraft($role);
+        }
+
+        $policy = new PolicyDraft(['innerPolicy' => new Policy()]);
+        if ($policyId) {
+            foreach ($roleDraft->getPolicies() as $policy) {
+                if ($policy->originalId == $policyId) {
+                    goto buildFormData;
+                }
+            }
+
+            throw new BadRequestHttpException(
+                $this->translator->trans('role.error.policy_not_found', ['%policyId%' => $policyId, '%roleId%' => $roleId], 'role')
+            );
+        }
+
+        buildFormData:
+        $policyData = (new PolicyMapper())->mapToFormData($policy, ['roleDraft' => $roleDraft, 'initialRole' => $role]);
+        $actionUrl = $this->generateUrl('admin_policyEdit', ['roleId' => $roleId, 'policyId' => $policyId]);
+        $form = $this->createForm('ezrepoforms_policy_edit', $policyData);
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $this->policyActionDispatcher->dispatchFormAction($form, $policyData, $form->getClickedButton()->getName());
+            if ($response = $this->policyActionDispatcher->getResponse()) {
+                return $response;
+            }
+
+            return $this->redirectAfterFormPost($actionUrl);
+        }
+
+        return $this->render('eZPlatformUIBundle:Role:edit_policy.html.twig', [
+            'form' => $form->createView(),
+            'actionUrl' => $actionUrl,
+            'policy' => $policyData,
+        ]);
+    }
+
+    public function deletePolicyAction(Request $request, $roleId, $policyId)
+    {
+        $role = $this->roleService->loadRole($roleId);
+        $deleteForm = $this->createForm(
+            new PolicyDeleteType(),
+            ['policyId' => $policyId, 'roleId' => $roleId]
+        );
+        $deleteForm->handleRequest($request);
+
+        if ($deleteForm->isValid()) {
+            try {
+                $roleDraft = $this->roleService->loadRoleDraftByRoleId($roleId);
+            } catch (NotFoundException $e) {
+                // The draft doesn't exist, let's create one
+                $roleDraft = $this->roleService->createRoleDraft($role);
+            }
+
+            $foundPolicy = false;
+            /** @var PolicyDraft $policy */
+            foreach ($roleDraft->getPolicies() as $policy) {
+                if ($policy->originalId == $policyId) {
+                    $foundPolicy = true;
+                    break;
+                }
+            }
+
+            if (!$foundPolicy) {
+                throw new BadRequestHttpException(
+                    $this->translator->trans('role.error.policy_not_found', ['%policyId%' => $policyId, '%roleId%' => $roleId], 'role')
+                );
+            }
+
+            $this->roleService->removePolicyByRoleDraft($roleDraft, $policy);
+            $this->roleService->publishRoleDraft($roleDraft);
+            $this->notify('role.policy.deleted', ['%roleIdentifier%' => $role->identifier, '%policyId%' => $policyId], 'role');
+        } elseif ($deleteForm->isSubmitted()) {
+            $this->notifyError('role.policy.error.delete', ['%roleIdentifier%' => $role->identifier, '%policyId%' => $policyId], 'role');
+        }
+
+        return $this->redirectToRouteAfterFormPost('admin_roleView', ['roleId' => $roleId]);
     }
 }

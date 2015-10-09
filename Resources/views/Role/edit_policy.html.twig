@@ -1,0 +1,49 @@
+{# @var policy \EzSystems\RepositoryForms\Data\Role\PolicyCreateData|\EzSystems\RepositoryForms\Data\Role\PolicyUpdateData #}
+{% extends "eZPlatformUIBundle::pjax_admin.html.twig" %}
+
+{% trans_default_domain "role" %}
+
+{% set editTitle = policy.new ? "role.policy.create.title"|trans() : "role.policy.edit.title"|trans({"%policy%": policy.module ~ "/" ~ policy.function}) %}
+
+{% block title %}
+    {{ editTitle }}
+{% endblock %}
+
+{% block header_breadcrumbs %}
+    {% set breadcrumb_items = [
+        {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
+        {link: path('admin_role'), label: 'role.dashboard_title'|trans},
+        {link: null, label: policy.roleDraft.identifier},
+        {link: '', label: editTitle}
+    ] %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block header_title %}
+    <h1 class="ez-page-header-name" data-icon="&#xe61a;">
+        {{ editTitle }}
+    </h1>
+{% endblock %}
+
+{% block content %}
+    <section class="ez-serverside-content">
+        {{ form_start(form, {'action': actionUrl, "attr": {"class": "pure-form pure-form-aligned"}}) }}
+            {{ form_errors(form) }}
+
+            <fieldset>
+                <div class="pure-control-group">
+                    {{ form_label(form.moduleFunction) }}
+                    {{ form_errors(form.moduleFunction) }}
+                    {{ form_widget(form.moduleFunction, {"disabled": not policy.new}) }}
+                </div>
+            </fieldset>
+
+            <div class="pure-controls">
+                {{ form_widget(form.removeDraft, {"attr": {"class": "pure-button ez-button ez-button-delete ez-font-icon", "formnovalidate": "formnovalidate"}}) }}
+                {{ form_widget(form.savePolicy, {"attr": {"class": "pure-button ez-button"}}) }}
+            </div>
+
+        {{ form_end(form) }}
+    </section>
+{% endblock %}

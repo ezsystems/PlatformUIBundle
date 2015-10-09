@@ -2,17 +2,6 @@
 {# @var role_draft \eZ\Publish\API\Repository\Values\User\RoleDraft #}
 {# @var role_name string #}
 
-{% form_theme form _self %}
-
-{# Overriding the default template, to modify the role identifier input value. See follow-up: EZP-24701 #}
-{% block form_widget_simple %}
-    {% set type = type|default('text') %}
-    {% if form.vars.id == 'ezrepoforms_role_update_identifier' %}
-        {% set value = form.parent.vars.role_input_value %}
-    {% endif %}
-    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
-{% endblock form_widget_simple %}
-
 {% trans_default_domain "role" %}
 
 {% set edit_title = "role.edit_title"|trans({"%roleName%": role_name|trans}) %}
