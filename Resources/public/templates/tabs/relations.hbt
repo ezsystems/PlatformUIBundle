@@ -10,6 +10,7 @@
     </p>
     {{else}}
     <div class="ez-relations-box-list">
+        {{#if relatedContents}}
         <table class="ez-relations-box-table ez-asynchronousview pure-table pure-table-bordered">
         <thead>
             <tr>
@@ -36,6 +37,9 @@
             {{/each}}
         </tbody>
         </table>
+        {{else}}
+            <p class="ez-relations-box-list-no-content">This content has no related content.</p>
+        {{/if}}
     </div>
     {{/if}}
 </div>
