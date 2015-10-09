@@ -4,7 +4,7 @@
  */
 YUI.add('ez-author-editview-tests', function (Y) {
     "use strict";
-    var registerTest, removeButtonTests, validationTests, getFieldTest;
+    var registerTest, removeButtonTests, validationTests, getFieldTest, getEmptyFieldTest;
 
     removeButtonTests = new Y.Test.Case({
         name: "eZ Author Edit view remove button handling",
@@ -452,6 +452,21 @@ YUI.add('ez-author-editview-tests', function (Y) {
         })
     );
     Y.Test.Runner.add(getFieldTest);
+
+    getEmptyFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {isRequired: false},
+            ViewConstructor: Y.eZ.AuthorEditView,
+            newValue: "",
+            valuesArray: [],
+
+            _assertCorrectFieldValue: function (fieldValue, msg) {
+                Y.Assert.isArray(fieldValue, 'fieldValue should be an array');
+                Y.Assert.areEqual(fieldValue.length, 0,  msg);
+            },
+        })
+    );
+    Y.Test.Runner.add(getEmptyFieldTest);
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Author Edit View registration test";
