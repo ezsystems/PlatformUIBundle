@@ -7,6 +7,7 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
         renderTest,
         changeEventTest,
         fireLoadLocationsEventTest,
+        fireSwitchVisibilityEventTest,
         addLocationTest,
         setMainLocationTest,
         Assert = Y.Assert,
@@ -151,7 +152,7 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
     });
 
     fireLoadLocationsEventTest = new Y.Test.Case({
-        name: "eZ LocationViewLocationsTabView fire load user event test",
+        name: "eZ LocationViewLocationsTabView fire load locations event test",
         setUp: function () {
             this.contentMock = new Mock();
             this.locations = [this.locationMock, this.locationMock];
@@ -215,6 +216,153 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
                     Y.Assert.isTrue(
                         loadLocationsFired,
                         "The loadLocations event should have been fired"
+                    );
+                });
+            });
+            this.wait();
+        },
+    });
+
+    fireSwitchVisibilityEventTest = new Y.Test.Case({
+        name: "eZ LocationViewLocationsTabView fire switch visibility event test",
+        setUp: function () {
+            this.contentMock = new Mock();
+            this.locationMock1 = new Mock();
+            this.locationMock2 = new Mock();
+            this.locations = [this.locationMock1, this.locationMock2];
+            this.refreshCalled = false;
+
+            Mock.expect(this.contentMock, {
+                'method': 'get',
+                'args': ['resources'],
+                returns: '/main/location/id'
+            });
+
+            this._initLocationMock(this.locationMock1, '43');
+            this._initLocationMock(this.locationMock2, '42');
+
+            this.view = new Y.eZ.LocationViewLocationsTabView({
+                content: this.contentMock,
+                container: '.container',
+                locations: this.locations,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        _initLocationMock: function (locationMock, locationId) {
+            Mock.expect(locationMock, {
+                'method': 'get',
+                args: ['id'],
+                returns: locationId
+            });
+
+            Mock.expect(locationMock, {
+                'method': 'toJSON',
+                returns: {}
+            });
+        },
+
+        "Should trigger switchVisibility when tapping on the hide/reveal button": function () {
+            var that = this,
+                switchVisibilityFired = false;
+
+            this.view.render();
+            this.view.set('active', true);
+
+            this.view.on('switchVisibility', function () {
+                switchVisibilityFired = true;
+            });
+
+            this.view.get('container').one('.ez-locations-hidden-button').simulateGesture('tap', function () {
+                that.resume(function () {
+                    Assert.isTrue(switchVisibilityFired, "switchVisibility should have been called");
+                });
+            });
+            this.wait();
+        },
+
+        "Should provide the location to the `switchVisibility` event when tapping on the hide/reveal button": function () {
+            var that = this,
+                location = {},
+                button;
+
+            this.view.render();
+            this.view.set('active', true);
+
+            this.view.on('loadLocations', function () {
+                that.refreshCalled = true;
+            });
+
+            this.view.on('switchVisibility', function (e) {
+                location = e.location;
+                e.callback(false);
+            });
+
+            button = this.view.get('container').one('.ez-locations-hidden-button');
+
+            button.simulateGesture('tap', function () {
+                that.resume(function () {
+                    Assert.areSame(
+                        that.locationMock2, location,
+                        "Location object should identical (with id 42)"
+                    );
+                    Assert.isTrue(
+                        button.get('disabled'),
+                        "The button should have been disabled"
+                    );
+                    Assert.isTrue(
+                        button.hasClass('is-switching-visibility'),
+                        "The button should have the ez-locations-visibility-pending class"
+                    );
+                    Assert.isTrue(
+                        that.refreshCalled,
+                        "The location list should have been refreshed"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should reactivate the button after error after tapping on the hide/reveal button": function () {
+            var that = this,
+                location = {},
+                button;
+
+            this.view.render();
+            this.view.set('active', true);
+
+            this.view.on('loadLocations', function () {
+                that.refreshCalled = true;
+            });
+
+            this.view.on('switchVisibility', function (e) {
+                location = e.location;
+                e.callback(true);
+            });
+
+            button = this.view.get('container').one('.ez-locations-hidden-button');
+
+            button.simulateGesture('tap', function () {
+                that.resume(function () {
+                    Assert.areSame(
+                        that.locationMock2, location,
+                        "Location object should identical (with id 42)"
+                    );
+                    Assert.isFalse(
+                        button.get('disabled'),
+                        "The button should have been re enabled"
+                    );
+                    Assert.isFalse(
+                        button.hasClass('is-switching-visibility'),
+                        "The class ez-locations-visibility-pending class should have been removed from the button"
+                    );
+                    Assert.isFalse(
+                        that.refreshCalled,
+                        "The location list should not be refreshed"
                     );
                 });
             });
@@ -481,6 +629,7 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(changeEventTest);
     Y.Test.Runner.add(fireLoadLocationsEventTest);
+    Y.Test.Runner.add(fireSwitchVisibilityEventTest);
     Y.Test.Runner.add(addLocationTest);
     Y.Test.Runner.add(setMainLocationTest);
 }, '', {requires: ['test', 'ez-locationviewlocationstabview', 'node-event-simulate']});

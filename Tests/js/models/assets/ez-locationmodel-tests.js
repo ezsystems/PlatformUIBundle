@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationmodel-tests', function (Y) {
-    var modelTest, trashTest, moveTest,
+    var modelTest, trashTest, moveTest, hideTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
@@ -291,8 +291,87 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         },
     });
 
+    hideTest = new Y.Test.Case({
+        name: "eZ location model hide tests",
+
+        setUp: function () {
+            this.capiMock = new Y.Mock();
+            this.capiGetService = 'getContentService';
+            this.locationId = '1/2/3';
+            this.sortField = "choucroute";
+            this.sortOrder = "couscous";
+            this.contentServiceMock = new Y.Mock();
+            this.updateStruct = {
+                body: {
+                    LocationUpdate: {
+                        hidden: "nothing",
+                        sortField: this.sortField,
+                        sortOrder: this.sortOrder
+                    }
+                }
+            };
+            this.model = new Y.eZ.Location({
+                id: this.locationId,
+                sortField: this.sortField,
+                sortOrder: this.sortOrder,
+            });
+
+            Mock.expect(this.capiMock, {
+                method: 'getContentService',
+                callCount: 2,
+                returns: this.contentServiceMock
+            });
+
+            Mock.expect(this.contentServiceMock, {
+                method: 'newLocationUpdateStruct',
+                returns: this.updateStruct
+            });
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        _configureUpdateLocationMock: function (hidden, callback) {
+            this.updateStruct.body.LocationUpdate.hidden = hidden;
+
+            Mock.expect(this.contentServiceMock, {
+                method: 'updateLocation',
+                args: [this.locationId, this.updateStruct, callback],
+            });
+        },
+
+        "Should hide the location": function () {
+            var callback = function () {},
+                options = {api: this.capiMock},
+                hidden = 'true';
+
+            this._configureUpdateLocationMock(hidden, callback);
+
+            this.model.hide(options, callback);
+
+            Mock.verify(this.contentServiceMock);
+            Mock.verify(this.capiMock);
+        },
+
+        "Should unhide the location": function () {
+            var callback = function () {},
+                options = {api: this.capiMock},
+                hidden = 'false';
+
+            this._configureUpdateLocationMock(hidden, callback);
+
+            this.model.unhide(options, callback);
+
+            Mock.verify(this.contentServiceMock);
+            Mock.verify(this.capiMock);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(trashTest);
     Y.Test.Runner.add(moveTest);
+    Y.Test.Runner.add(hideTest);
 }, '', {requires: ['test', 'model-tests', 'ez-locationmodel', 'ez-restmodel']});

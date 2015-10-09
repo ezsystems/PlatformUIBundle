@@ -98,7 +98,51 @@ YUI.add('ez-locationmodel', function (Y) {
          */
         move: function (options, parentLocationId, callback) {
             options.api.getContentService().moveSubtree(this.get('id'), parentLocationId, callback);
-        }
+        },
+
+        /**
+         * Updates the hidden status of the location
+         *
+         * @protected
+         * @method _updatehidden
+         * @param {Object} options the required for the update
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {String} hidden `true` or `false` value to be set on the hidden attribute
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        _updateHidden: function (options, hidden, callback) {
+            var locationUpdateStruct = options.api.getContentService().newLocationUpdateStruct();
+
+            locationUpdateStruct.body.LocationUpdate.hidden = hidden;
+            //Remove the 2 line bellow once EZP-24899 is fixed and update unit test
+            locationUpdateStruct.body.LocationUpdate.sortField = this.get('sortField');
+            locationUpdateStruct.body.LocationUpdate.sortOrder = this.get('sortOrder');
+            options.api.getContentService().updateLocation(this.get('id'), locationUpdateStruct, callback);
+        },
+
+        /**
+         * Hides the location
+         *
+         * @method hide
+         * @param {Object} options the required for the update
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        hide: function (options, callback) {
+            this._updateHidden(options, 'true', callback);
+        },
+
+        /**
+         * Reverse the hidden status of the location
+         *
+         * @method unhide
+         * @param {Object} options the required for the update
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        unhide: function (options, callback) {
+            this._updateHidden(options, 'false', callback);
+        },
     }, {
         REST_STRUCT_ROOT: "Location",
         ATTRS_REST_MAP: [

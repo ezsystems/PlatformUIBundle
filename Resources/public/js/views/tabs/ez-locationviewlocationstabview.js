@@ -17,7 +17,10 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
             },
             '.ez-main-location-radio': {
                 'tap': '_setMainLocation'
-            }
+            },
+            '.ez-locations-hidden-button': {
+                'tap': '_switchVisibility'
+            },
         };
 
     /**
@@ -141,7 +144,48 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
          */
         _enableSetMainLocationRadios: function () {
             this.get('container').all('.ez-main-location-radio').set('disabled', false);
-        }
+        },
+
+        /**
+         * Switches the visibility of the location provided in the `switchVisibility` event
+         *
+         * @method _switchVisibility
+         * @protected
+         * @param {EventFacade} e
+         */
+        _switchVisibility: function (e) {
+            var locationId = e.target.getAttribute('data-location-id'),
+                callback = Y.bind(function (error) {
+                    if (error) {
+                        e.target.set('disabled', false).removeClass('is-switching-visibility');
+                    } else {
+                        this._refresh();
+                    }
+                }, this);
+
+
+            Y.Array.every(this.get('locations'), function (location) {
+                if(location.get('id') === locationId) {
+                    e.target.set('disabled', true).addClass('is-switching-visibility');
+
+                    /**
+                     * Fired when the user clicks on the hide/reveal button
+                     *
+                     * @event switchVisibility
+                     * @param {eZ.Location} location Location who's visibility needs to be changed
+                     *        callback called ones the visibility has been updated
+                     *
+                     */
+                    this.fire('switchVisibility', {
+                        location: location,
+                        callback: callback
+                    });
+                    return false;
+                } else {
+                    return true;
+                }
+            }, this);
+        },
     }, {
         ATTRS: {
             /**
