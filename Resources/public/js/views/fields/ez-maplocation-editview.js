@@ -48,7 +48,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
                 'tap': '_findAddress'
             },
             '.ez-maplocation-find-address-input input': {
-                'keyup': '_findAddressInputKeyUp'
+                'keyup': '_findAddressInputKeyUp',
             },
             '.ez-maplocation-locate-me-button': {
                 'tap': '_locateMe'

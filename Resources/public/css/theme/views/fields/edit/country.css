@@ -1,0 +1,19 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-countryeditview .ez-field-description {
+    opacity: 0;
+    visibility: visible;
+    transition: all 0.3s ease;
+}
+
+.ez-view-countryeditview.is-list-hidden.is-showing-description .ez-field-description {
+    opacity: 1;
+}
+
+.ez-view-countryeditview .ez-field-description {
+    font-weight: lighter;
+    font-size: 80%
+}

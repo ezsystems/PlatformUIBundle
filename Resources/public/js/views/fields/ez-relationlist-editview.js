@@ -35,6 +35,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
             var fieldValue = this.get('field').fieldValue;
 
             this._fireMethod = this._fireLoadObjectRelations;
+            this._handleFieldDescriptionVisibility = false;
             if( fieldValue.destinationContentIds ){
                 this._set('destinationContentsIds', fieldValue.destinationContentIds);
             }

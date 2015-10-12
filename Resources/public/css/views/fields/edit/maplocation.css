@@ -58,3 +58,11 @@
     display: block;
     margin: 0 auto;
 }
+
+.ez-view-maplocationeditview .ez-editfield-input {
+    margin:  0;
+}
+
+.ez-view-maplocationeditview .ez-field-description {
+    margin-left:  0;
+}

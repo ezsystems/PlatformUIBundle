@@ -12,3 +12,7 @@
     display: inline-block;
     line-height: 1.4em;
 }
+
+.ez-view-checkboxeditview .ez-field-description {
+    display: none;
+}

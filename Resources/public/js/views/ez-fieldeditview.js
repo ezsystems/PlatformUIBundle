@@ -12,18 +12,18 @@ YUI.add('ez-fieldeditview', function (Y) {
     Y.namespace('eZ');
 
     var L = Y.Lang,
-        FIELD_INFO_ICON_SEL = '.ez-editfield-i',
-        TOOLTIP_SEL = '.ez-fielddefinition-tooltip',
-        TOOLTIP_TAIL_UP_CLASS = 'ez-tail-up-tooltip',
-        TOOLTIP_TAIL_DOWN_CLASS = 'ez-tail-down-tooltip',
-        IS_DISPLAYED_CLASS = 'is-displayed',
         IS_VISIBLE_CLASS = 'is-visible',
+        IS_SHOWING_DESCRIPTION = 'is-showing-description',
+        FIELD_INPUT = '.ez-editfield-input',
+        TOOLTIP_DESCR = '.ez-field-description',
+        STANDARD_DESCR = 'ez-standard-description',
+
         _events= {
-            ".ez-editfield-i": {
-                "tap": "_showTooltip"
-            },
-            ".ez-fielddefinition-tooltip-close": {
-                "tap": "_handleCloseTooltipTap"
+            ".ez-editfield-input": {
+                "keypress": "_checkValidityDescription",
+                "mouseover": "_showDescription",
+                "mouseout": "_hideDescription",
+                "tap": "_showDescription",
             }
         };
 
@@ -73,11 +73,20 @@ YUI.add('ez-fieldeditview', function (Y) {
                     content: this.get('content').toJSON(),
                     version: this.get('version').toJSON(),
                     contentType: this.get('contentType').toJSON()
-                };
+                },
+                container = this.get('container');
 
+            if (this._useStandardFieldDefinitionDescription) {
+                container.addClass(STANDARD_DESCR);
+            }
             this.get('container').setHTML(
                 this.template(Y.mix(this._variables(), defaultVariables, true))
             );
+
+            if ( this._isTouch() ) {
+                container.addClass('is-using-touch-device');
+            }
+
             return this;
         },
 
@@ -109,6 +118,7 @@ YUI.add('ez-fieldeditview', function (Y) {
                 if ( L.isString(e.newVal) ) {
                     this._errorDefaultContent = container.one('.ez-editfield-error-message').getContent();
                     this._setErrorMessage(e.newVal);
+                    this._showDescription();
                 }
             } else {
                 container.removeClass(this._errorClass);
@@ -130,95 +140,75 @@ YUI.add('ez-fieldeditview', function (Y) {
         },
 
         /**
-         * Show the tooltip taking into account distance between it's supposed
-         * position and bottom of the screen
+         * Check if the fieldValue is valid, and if it is, hide de description
          *
-         * @method _showTooltip
+         * @method _checkValidityDescription
          * @protected
          */
-        _showTooltip: function () {
+        _checkValidityDescription: function () {
+            if (this.isValid()) {
+                this._hideDescription();
+            }
+        },
+
+        /**
+         * Show the field description
+         *
+         * @method _showDescription
+         * @protected
+         */
+        _showDescription: function () {
+            var container = this.get('container');
+
+            if (this._handleFieldDescriptionVisibility) {
+                if (this._isTouch() &&  container.one(TOOLTIP_DESCR)) {
+                    this._setTooltipPosition(FIELD_INPUT);
+                } else {
+                    container.addClass(IS_SHOWING_DESCRIPTION);
+                }
+            }
+        },
+
+        /**
+         * Set the description tooltip position.
+         * The tooltip position is modified by it's height and is relative to the field input.
+         *
+         * @method _setTooltipPosition
+         * @protected
+         */
+        _setTooltipPosition: function (fieldInputDomClass) {
             var container = this.get('container'),
-                tooltip = container.one(TOOLTIP_SEL),
-                infoIcon = container.one(FIELD_INFO_ICON_SEL),
+                tooltip = container.one(TOOLTIP_DESCR),
+                fieldInput = container.one(fieldInputDomClass),
                 tooltipHeight;
 
-            tooltip.addClass(IS_DISPLAYED_CLASS);
-
-            if (this._tooltipFitsTailUp()) {
-                // making sure, that the default tail state is in place
-                // and removing changes to the tooltip position (if any)
-                if (tooltip.hasClass(TOOLTIP_TAIL_DOWN_CLASS)) {
-                    tooltip.addClass(TOOLTIP_TAIL_UP_CLASS);
-                    tooltip.removeClass(TOOLTIP_TAIL_DOWN_CLASS);
-                    tooltip.setStyle('top', 'auto');
-                }
-            } else {
-                // switching tooltip to the tail-down state
-                tooltip.addClass(TOOLTIP_TAIL_DOWN_CLASS);
-                tooltip.removeClass(TOOLTIP_TAIL_UP_CLASS);
-                tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10);
-                tooltip.setY(infoIcon.getY() - tooltipHeight);
+            if (!tooltip.hasClass(IS_VISIBLE_CLASS)) {
+                this._tooltipInitialPosition = tooltip.getXY();
+                tooltipHeight = tooltip.get('offsetHeight');
+                tooltip.setXY([ fieldInput.getX(), fieldInput.getY() - tooltipHeight]);
+                tooltip.addClass(IS_VISIBLE_CLASS);
+                this._attachedViewEvents.push(container.one(FIELD_INPUT).on('clickoutside', Y.bind(this._hideDescription, this)));
             }
-            tooltip.addClass(IS_VISIBLE_CLASS);
-            this._attachedViewEvents.push(tooltip.on('clickoutside', Y.bind(this._handleClickOutside, this)));
+
         },
 
         /**
-         * Hides the tooltip
+         * Hide the field description or the tooltip
          *
-         * @method _hideTooltip
+         * @method _hideDescription
          * @protected
          */
-        _hideTooltip: function () {
-            var tooltip = this.get('container').one(TOOLTIP_SEL);
-
-            tooltip.removeClass(IS_VISIBLE_CLASS);
-            tooltip.removeClass(IS_DISPLAYED_CLASS);
-            tooltip.detach('clickoutside');
-        },
-
-        /**
-         * Considers tooltip's height and position on the screen to decide if it
-         * fits on the screen in current conditions
-         *
-         * @method _tooltipFitsTailUp
-         * @protected
-         * @return {boolean} true, if the tooltip fits in tail-up state
-         */
-        _tooltipFitsTailUp: function () {
+        _hideDescription: function () {
             var container = this.get('container'),
-                tooltip = container.one(TOOLTIP_SEL),
-                infoIcon = container.one(FIELD_INFO_ICON_SEL),
-                screenHeight = container.get('winHeight'),
-                scrollHeight = container.get('docScrollY'),
-                tooltipHeight = parseInt(tooltip.getComputedStyle('height'), 10),
-                infoIconHeight = parseInt(infoIcon.getComputedStyle('height'), 10);
+                tooltip = container.one(TOOLTIP_DESCR);
 
-            return (infoIcon.getY() - scrollHeight + infoIconHeight + tooltipHeight < screenHeight);
-        },
-
-        /**
-         * Event handler for a tap on the "close" link of a tooltip
-         *
-         * @method _handleCloseTooltipTap
-         * @param e {Object} Event facade object
-         * @protected
-         */
-        _handleCloseTooltipTap: function (e) {
-            e.preventDefault();
-            this._hideTooltip();
-        },
-
-        /**
-         * Event handler for a click anywhere outside of the tooltip
-         *
-         * @method _handleClickOutside
-         * @param e {Object} Event facade object
-         * @protected
-         */
-        _handleClickOutside: function (e) {
-            if (e.target.generateID() != this.get('container').one(FIELD_INFO_ICON_SEL).generateID()) {
-                this._hideTooltip();
+            if (this._handleFieldDescriptionVisibility) {
+                container.removeClass(IS_SHOWING_DESCRIPTION);
+                if (tooltip && this._isTouch()) {
+                    tooltip.removeClass(IS_VISIBLE_CLASS);
+                    tooltip.setXY(this._tooltipInitialPosition);
+                    tooltip.detach('clickoutside');
+                }
             }
         },
 
@@ -229,7 +219,38 @@ YUI.add('ez-fieldeditview', function (Y) {
          * @method initializer
          */
         initializer: function () {
-            Y.eZ.TemplateBasedView.registerPartial('ez_fieldinfo_tooltip', 'fieldinfo-tooltip-ez-partial');
+            Y.eZ.TemplateBasedView.registerPartial('ez_fielddescription_tooltip', 'fielddescription-tooltip-ez-partial');
+            /**
+             * Set if the fieldDefinition description is active or not.
+             *
+             * @property _handleFieldDescriptionVisibility
+             * @protected
+             * @type boolean
+             * @default true
+             */
+            this._handleFieldDescriptionVisibility = true;
+
+            /**
+             * Set if the fieldDefinition description has the standard display.
+             * Standard means it will use the ez-standard-description CSS rule from fieldedit.css
+             *
+             * @property _useStandardFieldDefinitionDescription
+             * @protected
+             * @type boolean
+             * @default true
+             */
+            this._useStandardFieldDefinitionDescription = true;
+
+            /**
+             * Contains the initial X an Y position of a tooltip
+             * This will be used to restore its position when vanishing
+             *
+             * @property _tooltipInitialPosition
+             * @protected
+             * @type array
+             */
+            this._tooltipInitialPosition = [];
+
             this.after('errorStatusChange', this._errorUI);
 
             this.events = Y.merge(_events, this.events);
@@ -294,6 +315,17 @@ YUI.add('ez-fieldeditview', function (Y) {
             field.fieldValue = value;
 
             return field;
+        },
+
+        /**
+         * Returns whether the current browser is a touch device or not
+         *
+         * @method _isTouch
+         * @private
+         * @return {Boolean}
+         */
+        _isTouch: function () {
+            return Y.UA.touchEnabled;
         },
     }, {
         ATTRS: {

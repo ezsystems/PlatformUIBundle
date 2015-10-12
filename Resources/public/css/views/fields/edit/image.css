@@ -1,3 +1,8 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
 .ez-view-imageeditview .ez-image-input-ui {
     width: 100%;
     display: inline-block;
@@ -90,4 +95,8 @@
 
 .ez-view-imageeditview .ez-image-alt-text-input {
     width: 100%;
+}
+
+.ez-view-imageeditview .ez-field-description {
+    margin: 0;
 }

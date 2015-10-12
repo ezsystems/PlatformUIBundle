@@ -1,12 +1,14 @@
 <div class="pure-g ez-editfield-row ez-default-error-style">
     <div class="pure-u ez-editfield-infos">
-        {{> ez_fieldinfo_tooltip }}
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
             <p class="ez-fielddefinition-name">
                 {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
             </p>
             <p class="ez-editfield-error-message">&nbsp;</p>
-            <p class="ez-binarybase-help">You can drag and drop a file to add or replace the document.</p>
+            <p class="ez-field-description is-showing-description">
+                {{ fieldDefinition.descriptions.[eng-GB] }}
+            </p>
+            <p class="ez-binarybase-help">Drag and drop your file here or simply click on the buttons and select your file manually.</p>
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area">
