@@ -98,7 +98,7 @@ YUI.add('ez-alloyeditor-plugin-removeblock-tests', function (Y) {
 
         "Should remove the widget element": function () {
             this._removeWidget(
-                '<div data-ezelement="embed" id="remove-me">Remove me</div>',
+                '<div data-ezelement="ezembed" id="remove-me">Remove me</div>',
                 '#remove-me'
             );
             Assert.isNull(

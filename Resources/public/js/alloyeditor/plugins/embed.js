@@ -25,16 +25,16 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                 defaults: {
                     href: "ezcontent://57",
                     content: "home",
-                    view: "ezembed",
+                    view: "embed",
                 },
                 draggable: false,
-                template: '<div data-ezelement="embed" data-href="{href}" data-ezview="{view}">{content}</div>',
+                template: '<div data-ezelement="ezembed" data-href="{href}" data-ezview="{view}">{content}</div>',
                 requiredContent: 'div',
 
                 upcast: function (element) {
                     return (
                         element.name === 'div' &&
-                        element.attributes['data-ezelement'] === 'embed'
+                        element.attributes['data-ezelement'] === 'ezembed'
                     );
                 },
 
