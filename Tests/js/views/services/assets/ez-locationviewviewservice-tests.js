@@ -995,17 +995,23 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             var content = new Mock(),
                 parentLocation = new Mock(),
                 locationId = 'raul-gonzalez-blanco',
+                parentLocationId = 'real-madrid',
                 contentName = 'pierlugi-collina',
                 languageCode = 'eng-GB',
                 notified = false;
 
-            this.service.set('path', [{location: parentLocation}]);
+            this.service.set('path', [parentLocation]);
             this.service.set('content', content);
 
             Mock.expect(this.location, {
                 method: 'get',
                 args: ['id'],
                 returns: locationId,
+            });
+            Mock.expect(parentLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: parentLocationId
             });
 
             Mock.expect(content, {
@@ -1021,12 +1027,6 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                     }
 
                 }
-            });
-
-            Mock.expect(parentLocation, {
-                method: 'get',
-                args: ['id'],
-                returns: 'alan-shearer'
             });
 
             Mock.expect(this.location, {
@@ -1083,17 +1083,24 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 parentLocation = new Mock(),
                 that = this,
                 locationId = 'raul-gonzalez-blanco',
+                parentLocationId = 'real-madrid',
                 contentName = 'pierlugi-collina',
                 languageCode = "eng-GB",
                 eventFired = false;
 
-            this.service.set('path', [{location: parentLocation}]);
+            this.service.set('path', [parentLocation]);
             this.service.set('content', content);
 
             Mock.expect(this.location, {
                 method: 'get',
                 args: ['id'],
                 returns: locationId,
+            });
+
+            Mock.expect(parentLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: parentLocationId
             });
 
             Mock.expect(content, {
@@ -1109,12 +1116,6 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                     }
 
                 }
-            });
-
-            Mock.expect(parentLocation, {
-                method: 'get',
-                args: ['id'],
-                returns: 'alan-shearer'
             });
 
             Mock.expect(this.location, {
@@ -1151,9 +1152,11 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 parentLocation = new Mock(),
                 locationId = 'raul-gonzalez-blanco',
                 contentName = 'pierlugi-collina',
-                parentLocationId = 'alan-shearer';
+                parentLocationId = 'alan-shearer',
+                mainLanguageCode = 'eng-GB';
 
-            this.service.set('path', [{location: parentLocation}]);
+            this.service.set('path', [parentLocation]);
+            this.service.set('content', content);
 
             Mock.expect(this.location, {
                 method: 'get',
@@ -1163,8 +1166,17 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
 
             Mock.expect(content, {
                 method: 'get',
-                args: ['name'],
-                returns: contentName,
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === "name") {
+                        return contentName;
+                    } else if (attr === "mainLanguageCode") {
+                        return mainLanguageCode;
+                    } else {
+                        Y.fail("Unexpected parameter `" + attr + "` for content mock");
+                    }
+
+                }
             });
 
             Mock.expect(parentLocation, {
@@ -1185,11 +1197,17 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 method: 'navigateTo',
                 args: ['viewLocation', Mock.Value.Object],
                 run: function (routeName, params) {
+                    Assert.areEqual(routeName, 'viewLocation', 'The route should be `viewLocation`');
                     Assert.isObject(params, "Params passed to navigateTo should be an object");
-                    Assert.isString(params.id, "Params should provide id of location");
                     Assert.areEqual(
-                        params.id, parentLocationId,
-                        "Id of location passed to navigateTo method should be the parent location id"
+                        params.id,
+                        parentLocationId,
+                        'The id of location should be the parent location id'
+                    );
+                    Assert.areEqual(
+                        params.languageCode,
+                        mainLanguageCode,
+                        'The languageCode should be the main language code of content'
                     );
                 }
             });
