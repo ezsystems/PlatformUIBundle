@@ -267,6 +267,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 method: 'toJSON',
                 returns: {},
             });
+            Y.Mock.expect(this.model, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: 'eng-GB'
+            });
 
             this.view = new Y.eZ.RichTextEditView({
                 container: '.container',

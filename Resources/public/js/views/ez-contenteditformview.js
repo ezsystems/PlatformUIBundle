@@ -55,7 +55,8 @@ YUI.add('ez-contenteditformview', function (Y) {
                 fieldDefinitions = contentType.get('fieldDefinitions'),
                 views = [],
                 that = this,
-                config = this.get('config');
+                config = this.get('config'),
+                languageCode = this.get('languageCode');
 
             Y.Object.each(fieldDefinitions, function (def) {
                 var EditView, view,
@@ -72,6 +73,7 @@ YUI.add('ez-contenteditformview', function (Y) {
                             fieldDefinition: def,
                             field: field,
                             config: config,
+                            languageCode: languageCode
                         });
                         views.push(view);
                         view.addTarget(that);
@@ -237,6 +239,17 @@ YUI.add('ez-contenteditformview', function (Y) {
             version: {
                 writeOnce: "initOnly",
             },
+
+            /**
+             * The language code in which the content is edited
+             *
+             * @attribute languageCode
+             * @type {String}
+             * @required
+             */
+            languageCode: {
+                writeOnce: "initOnly",
+            }
         }
     });
 });
