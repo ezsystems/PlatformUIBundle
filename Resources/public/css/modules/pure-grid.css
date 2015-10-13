@@ -1,0 +1,15 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+/*
+ * TODO: remove that once https://github.com/yahoo/pure/issues/436 is fixed
+ * and/or reconsider usage of Pure Grid, see https://jira.ez.no/browse/EZP-24963
+ */
+@supports(flex-flow: row wrap) {
+    .pure-g {
+        display: flex;
+        flex-flow: row wrap;
+    }
+}
