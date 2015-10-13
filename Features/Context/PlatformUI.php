@@ -78,7 +78,7 @@ class PlatformUI extends Context
                 // do nothing
             }
 
-            usleep(100 * 3000); //100ms
+            usleep(1000 * 300); //300ms
         }
 
         $backtrace = debug_backtrace();
@@ -90,18 +90,54 @@ class PlatformUI extends Context
     }
 
     /**
+     */
+    public function findAllWithWait($locator, $baseElement = null)
+    {
+        if (!$baseElement) {
+            $baseElement = $this->getSession()->getPage();
+        }
+        $elements = $this->spin(
+            function () use ($locator, $baseElement) {
+                $elements = $baseElement->findAll('css', $locator);
+                foreach ($elements as $element) {
+                    $element->getValue();
+                }
+                return $elements;
+            }
+        );
+
+        return $elements;
+    }
+
+    /**
+     */
+    public function findWithWait($locator, $baseElement = null)
+    {
+        if (!$baseElement) {
+            $baseElement = $this->getSession()->getPage();
+        }
+        $element = $this->spin(
+            function () use ($locator, $baseElement) {
+                $element = $baseElement->find('css', $locator);
+                if ($element) {
+                    $element->getValue();
+                }
+                return $element;
+            }
+        );
+
+        return $element;
+    }
+
+    /**
      * @Given I create a content of content type :type with:
      */
     public function iCreateContentType($type, TableNode $fields)
     {
         $this->clickNavigationZone('Platform');
-        //$this->waitForLoadings();
         $this->iClickAtLink('Content structure');
-        //$this->waitForLoadings();
         $this->clickActionBar('Create a content');
-        //$this->waitForLoadings();
         $this->clickContentType($type);
-        //$this->waitForLoadings();
         foreach ($fields as $fieldArray) {
             $keys = array_keys($fieldArray);
             for ($i = 0; $i < count($keys); ++$i) {
@@ -120,18 +156,7 @@ class PlatformUI extends Context
     public function clickOnTreePath($path)
     {
         $this->clickDiscoveryBar('Content tree');
-        //$this->waitForLoadings();
-        $node = $this->spin(
-            function () {
-                $page = $this->getSession()->getPage();
-                $node = $page->find('css', '.ez-view-discoverybarview');
-                if ($node == null) {
-                    return false;
-                }
-
-                return $node;
-            }
-        );
+        $node = $this->findWithWait('.ez-view-discoverybarview');
         $this->openTreePath($path, $node);
     }
 
@@ -163,8 +188,7 @@ class PlatformUI extends Context
      */
     public function selectFromUniversalDiscovery($path)
     {
-        $page = $this->getSession()->getPage();
-        $node = $page->find('css', '.ez-view-universaldiscoveryview');
+        $node = $this->findWithWait('.ez-view-universaldiscoveryview');
         $this->openTreePath($path, $node);
     }
 
@@ -192,9 +216,7 @@ class PlatformUI extends Context
     private function goToContentWithPath($path)
     {
         $this->clickNavigationZone('Content');
-        //$this->waitForLoadings();
         $this->clickNavigationItem('Content structure');
-        //$this->waitForLoadings();
         $this->clickOnTreePath($path);
     }
 
@@ -304,7 +326,6 @@ class PlatformUI extends Context
         if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
             $this->clickEditActionBar('Publish');
         }
-        //$this->waitForLoadings();
     }
 
     /**

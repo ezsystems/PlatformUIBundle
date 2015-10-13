@@ -42,8 +42,7 @@ trait Role
      */
     public function iEditRole($name)
     {
-        $page = $this->getSession()->getPage();
-        $elements = $page->findAll('css', '.ez-role');
+        $elements = $this->findAllWithWaiting('.ez-role');
         if (!$elements) {
             throw new \Exception('No roles found');
         }
@@ -65,7 +64,6 @@ trait Role
     public function roleDetailsView($role)
     {
         $this->onRolesPage();
-        //$this->waitForLoadings();
         $this->clickElementByText($role, '.ez-role-name a');
     }
 
@@ -83,7 +81,6 @@ trait Role
     public function deleteRole($name)
     {
         $this->clickElementByText($name, '.ez-role-name a');
-        //$this->waitForLoadings();
         $this->clickElementByText('Delete', '.ez-button');
     }
 
@@ -159,8 +156,7 @@ trait Role
      */
     public function iSeeRolesList(TableNode $roles, $button)
     {
-        $page = $this->getSession()->getPage();
-        $elements = $page->findAll('css', '.ez-role');
+        $elements = $this->findAllWithWait('.ez-role');
         if (!$elements) {
             throw new \Exception('No roles found');
         }

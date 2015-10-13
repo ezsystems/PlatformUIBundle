@@ -17,9 +17,7 @@ trait Remove
     public function removeContent($name)
     {
         $this->onFullView($name);
-        //$this->waitForLoadings();
         $this->clickActionBar('Send to Trash');
-        //$this->waitForLoadings();
     }
 
     /**

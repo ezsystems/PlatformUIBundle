@@ -120,15 +120,10 @@ trait CommonActions
     {
         $path = explode('/', $path);
         foreach ($path as $pathNode) {
-            $node = $this->spin(
-                function () use ($node, $pathNode) {
-                    $node = $this->openTreeNode($pathNode, $node);
-
-                    return $node;
-                }
-            );
+            $node = $this->openTreeNode($pathNode, $node);
         }
-        $node->find('css', '.ez-tree-navigate')->click();
+
+        $this->findWithWait('.ez-tree-navigate', $node)->click();
     }
 
     /**
@@ -140,36 +135,15 @@ trait CommonActions
      */
     protected function openTreeNode($pathNode, $node)
     {
-        $page = $this->getSession()->getPage();
         $notFound = true;
-
-        $subNodes = $this->spin(
-            function () use ($node) {
-                $subNodes = $node->findAll('css', '.ez-tree-node');
-
-                return $subNodes;
-            }
-        );
-
+        $subNodes = $this->findAllWithWait('.ez-tree-level .ez-tree-node', $node);
         foreach ($subNodes as $subNode) {
-            $leafNode = $this->spin(
-                function () use ($subNode) {
-                    $leafNode = $subNode->find('css', '.ez-tree-navigate');
-
-                    return $leafNode;
-                }
-            );
+            $leafNode = $this->findWithWait('.ez-tree-navigate', $subNode);
 
             if ($leafNode->getText() == $pathNode) {
                 $notFound = false;
                 if ($subNode->hasClass('is-tree-node-close')) {
-                    $toggleNode = $this->spin(
-                        function () use ($subNode) {
-                            $toggleNode = $subNode->find('css', '.ez-tree-node-toggle');
-
-                            return $toggleNode;
-                        }
-                    );
+                    $toggleNode = $this->findWithWait('.ez-tree-node-toggle', $subNode);
 
                     if ($toggleNode->isVisible()) {
                         $toggleNode->click();
@@ -179,6 +153,7 @@ trait CommonActions
                 return $subNode;
             }
         }
+
         if ($notFound) {
             throw new \Exception("The path node: $pathNode was not found for the given path");
         }
@@ -196,16 +171,14 @@ trait CommonActions
      */
     protected function clickElementByText($text, $selector, $textSelector = null, $baseElement = null, $index = 1)
     {
-        /*$index + 1; //for selection of equal buttons
         $element = $this->getElementByText($text, $selector, $textSelector, $baseElement);
         if ($element) {
             $element->click();
         } else {
             throw new \Exception("Can't click \" $text \" element: Not Found");
-        }*/
-        $element = $this->spinGet($text, $selector, $textSelector, $baseElement);
-        $element->click();
+        }
     }
+
 
     /**
      * Finds an HTML element by class and the text value and returns it.
@@ -222,10 +195,10 @@ trait CommonActions
         if ($baseElement == null) {
             $baseElement = $this->getSession()->getPage();
         }
-        $elements = $baseElement->findAll('css', $selector);
+        $elements = $this->findAllWithWait($selector);
         foreach ($elements as $element) {
             if ($textSelector != null) {
-                $elementText = $element->find('css', $textSelector)->getText();
+                $elementText = $this->findWithWait($textSelector, $element)->getText();
             } else {
                 $elementText = $element->getText();
             }
@@ -236,6 +209,7 @@ trait CommonActions
 
         return false;
     }
+
     protected function spinGet($text, $selector, $textSelector = null, $baseElement = null)
     {
         $context = $this;

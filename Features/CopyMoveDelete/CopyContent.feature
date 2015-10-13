@@ -15,7 +15,7 @@ Feature: Copy content
         And a "News Flash" article exists
         And I am on "News Flash" full view
         When I click on the action bar button "Copy"
-        And I select the "Home/Destination" folder in the Universal Discovery Widget
+        And I select the "HomePage/Destination" folder in the Universal Discovery Widget
         And I confirm the selection
         Then I am notified that "News Flash" has been copied under "Destination"
         And I see "Destination/News Flash" in the content tree

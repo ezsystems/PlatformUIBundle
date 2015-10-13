@@ -15,7 +15,7 @@ Feature: Move content
         And a "Origin/News Flash" article exists
         And I am on "News Flash" full view
         When I click on the action bar button "Move"
-        And I select the "Home/Older News" folder in the Universal Discovery Widget
+        And I select the "HomePage/Older News" folder in the Universal Discovery Widget
         And I confirm the selection
         Then I am notified that "News Flash" has been moved under "Older News"
         And I see "Older News/News Flash" in the content tree
