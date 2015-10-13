@@ -188,6 +188,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
             fieldDefinition: {isRequired: false},
             fieldValue: {
                 fileName: "original.jpg",
+                url: "some url",
             },
             newValue: {
                 name: "me.jpg",
@@ -227,6 +228,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
                 Assert.areEqual(this.newValue.size, fieldValue.fileSize, msg);
                 Assert.areEqual(this.newValue.data, fieldValue.data, msg);
                 Assert.areEqual(this.fieldValue.alternativeText, fieldValue.alternativeText, msg);
+                Assert.isUndefined(fieldValue.url, msg);
             },
 
             "Should reset the updated attribute after version save": function () {

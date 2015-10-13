@@ -141,6 +141,21 @@ YUI.add('ez-binaryfile-editview', function (Y) {
                 "binaryfile": this.get('file'),
             };
         },
+
+        /**
+         * Removes the `url` property from the fieldValue so that the fieldValue
+         * represents a valid BinaryFile\Value object.
+         *
+         * @method _completeFieldValue
+         * @param {Object} fieldValue
+         * @protected
+         * @return {Object}
+         */
+        _completeFieldValue: function (fieldValue) {
+            delete fieldValue.url;
+
+            return fieldValue;
+        },
     });
 
     Y.eZ.FieldEditView.registerFieldEditView(
