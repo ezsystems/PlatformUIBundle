@@ -25,7 +25,7 @@
     -webkit-box-flex: 1;
     -webkit-flex: 1;
         -ms-flex: 1;
-            flex: 1;
+            flex: 1 1 auto;
 }
 
 .ez-view-universaldiscoverybrowseview .ez-ud-browse-selected {
@@ -46,6 +46,11 @@
 }
 
 .ez-view-universaldiscoverybrowseview .ez-ud-browse-tree {
+    /* setting a height so that overflow auto has an effect,
+     * otherwise the vertical scrollbar does not appear.
+     * The actual height won't be 200px, it is computed with the flexbox model
+     */
+    height: 200px;
     overflow: auto;
     white-space: nowrap;
 }
