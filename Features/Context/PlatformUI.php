@@ -15,8 +15,17 @@ use PHPUnit_Framework_Assert as Assertion;
 
 class PlatformUI extends Context
 {
+    /**
+     * Constants used for the delayed publishing mechanism.
+     */
     const NOT_WAITING = 0;
     const WAITING_FOR_PUBLISHING = 1;
+
+    /**
+     * Constants used for waiting mechanism.
+     */
+    const WAIT_TIMEOUT = 30; // seconds
+    const WAIT_SLEEP_TIME = 300000; // 300ms
 
     use SubContext\Authentication;
     use SubContext\CommonActions;
@@ -35,6 +44,11 @@ class PlatformUI extends Context
      * @var string
      */
     private $platformUiUri;
+
+    /**
+     * Last exception thrown in spin method.
+     */
+    private $lastException;
 
     /**
      * User account name, admin by default.
@@ -66,30 +80,34 @@ class PlatformUI extends Context
      * causes waiting while a a certain function does not return true
      * waits while an element is not present.
      */
-    public function spin($lambda, $wait = 30)
+    public function spin($lambda)
     {
-        for ($i = 0; $i < $wait; ++$i) {
+        $timeLimit = time() + self::WAIT_TIMEOUT;
+        do {
             try {
                 $return = $lambda($this);
                 if ($return) {
                     return $return;
                 }
             } catch (\Exception $e) {
-                // do nothing
+                $this->lastException = $e;
             }
-
-            usleep(1000 * 300); //300ms
-        }
-
-        $backtrace = debug_backtrace();
+            usleep(self::WAIT_SLEEP_TIME);
+        } while ($timeLimit > time());
 
         throw new \Exception(
-            'Timeout thrown by ' . $backtrace[1]['class'] . '::' . $backtrace[1]['function'] . '()\n' .
-            $backtrace[1]['file'] . ', line ' . $backtrace[1]['line']
+            'Timeout reached (' . self::WAIT_TIMEOUT . ' seconds). Last exception catched: ' .
+            $this->lastException->getMessage()
         );
     }
 
     /**
+     * Adpted Mink find function combined with a spin function
+     * to find all element with a given css selector that might still be loading.
+     *
+     * @param   string      $locator        css selector for the element
+     * @param   NodeElement $baseElement    base Mink node element from where the find should be called
+     * @return  NodeElement[]
      */
     public function findAllWithWait($locator, $baseElement = null)
     {
@@ -102,6 +120,7 @@ class PlatformUI extends Context
                 foreach ($elements as $element) {
                     $element->getValue();
                 }
+
                 return $elements;
             }
         );
@@ -110,6 +129,12 @@ class PlatformUI extends Context
     }
 
     /**
+     * Adpted Mink find function combined with a spin function
+     * to find one element that might still be loading.
+     *
+     * @param   string      $locator        css selector for the element
+     * @param   NodeElement $baseElement    base Mink node element from where the find should be called
+     * @return  NodeElement
      */
     public function findWithWait($locator, $baseElement = null)
     {
@@ -122,6 +147,7 @@ class PlatformUI extends Context
                 if ($element) {
                     $element->getValue();
                 }
+
                 return $element;
             }
         );

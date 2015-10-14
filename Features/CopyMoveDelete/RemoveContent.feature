@@ -21,7 +21,7 @@ Feature: Remove content
     ##
     # Delete objects
     ##
-    @javascript @now
+    @javascript
     Scenario: Remove one object and confirm the removal
         Given a "News Flash" article exists
         When I remove "News Flash"

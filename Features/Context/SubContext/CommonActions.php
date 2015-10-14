@@ -179,7 +179,6 @@ trait CommonActions
         }
     }
 
-
     /**
      * Finds an HTML element by class and the text value and returns it.
      *
@@ -208,16 +207,5 @@ trait CommonActions
         }
 
         return false;
-    }
-
-    protected function spinGet($text, $selector, $textSelector = null, $baseElement = null)
-    {
-        $context = $this;
-
-        return $this->spin(
-            function () use ($context, $text, $selector, $textSelector, $baseElement) {
-                return $context->getElementByText($text, $selector, $textSelector, $baseElement);
-            }
-        );
     }
 }
