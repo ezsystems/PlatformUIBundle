@@ -24,6 +24,8 @@ YUI.add('ez-sectionserversideviewservice', function (Y) {
             this.on('*:contentDiscover', function (e) {
                 e.config.contentDiscoveredHandler = Y.bind(this._assignSection, this);
             });
+
+            this.on('*:refreshView', this._refreshView);
         },
 
         /**
@@ -142,6 +144,21 @@ YUI.add('ez-sectionserversideviewservice', function (Y) {
                 contentIds.push(struct.content.get('id'));
             });
             return action + '-' + sectionId + '-' + contentIds.join('_');
+        },
+
+        /**
+         * Refreshes the section view
+         *
+         * @method _refreshView
+         * @protected
+         * @param {EventFacade} e
+         */
+        _refreshView: function (e) {
+            this.get('app').set('loading', true);
+            this.load(Y.bind(function () {
+                e.target.set('html', this.get('html'));
+                this.get('app').set('loading', false);
+            }, this));
         },
     });
 });

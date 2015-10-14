@@ -41,6 +41,7 @@ YUI.add('ez-sectionserversideview', function (Y) {
          */
         _pickSubtree: function (e) {
             var button = e.target,
+                refreshView = Y.bind(this._refreshView, this),
                 unsetLoading = Y.bind(this._uiUnsetAssignSectionLoading, this, button);
 
             e.preventDefault();
@@ -53,7 +54,7 @@ YUI.add('ez-sectionserversideview', function (Y) {
                     data: {
                         sectionId: button.getAttribute('data-section-rest-id'),
                         sectionName: button.getAttribute('data-section-name'),
-                        afterUpdateCallback: unsetLoading,
+                        afterUpdateCallback: refreshView,
                     },
                 },
             });
@@ -81,6 +82,20 @@ YUI.add('ez-sectionserversideview', function (Y) {
          */
         _uiUnsetAssignSectionLoading: function (button) {
             button.removeClass('is-loading').set('disabled', false);
+        },
+
+        /**
+         * Refreshes the view
+         *
+         * @method _refreshView
+         * @protected
+         */
+        _refreshView: function () {
+            /**
+             * Fired when the view needs to be refreshed
+             * @event refreshView
+             */
+            this.fire('refreshView');
         },
     });
 });
