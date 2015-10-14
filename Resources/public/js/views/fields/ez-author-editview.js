@@ -654,14 +654,16 @@ YUI.add('ez-author-editview', function (Y) {
         _getFieldValue: function () {
             var value = [];
 
-            this._authorList.each(function (author) {
-                var a = author.toJSON();
+            if ( this._hasContent() ) {
+                this._authorList.each(function (author) {
+                    var a = author.toJSON();
 
-                if ( a.emailValid ) {
-                    delete a.emailValid;
-                    value.push(a);
-                }
-            });
+                    if ( a.emailValid ) {
+                        delete a.emailValid;
+                        value.push(a);
+                    }
+                });
+            }
             return value;
         },
     });

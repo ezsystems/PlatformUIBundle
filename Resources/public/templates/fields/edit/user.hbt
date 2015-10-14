@@ -1,6 +1,5 @@
 <div class="pure-g ez-editfield-row ez-editfield-row-login">
     <div class="pure-u ez-editfield-infos">
-        {{> ez_fieldinfo_tooltip }}
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-login">
             <p class="ez-fielddefinition-name">
                 {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
@@ -66,5 +65,6 @@
             id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-confirm"
             {{#if passwordRequired}} required{{/if}}
         ></div></div>
+        {{> ez_fielddescription_tooltip }}
     </div>
 </div>

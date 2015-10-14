@@ -151,6 +151,8 @@ system:
                         - 'ez-locationsloadplugin'
                         - 'ez-locationcreateplugin'
                         - 'ez-contentsetmainlocationplugin'
+                        - 'ez-visibilityswitcherplugin'
+                        - 'ez-locationremoveplugin'
                         - 'ez-imagevariationloadplugin'
                         - 'ez-contentcreateplugin'
                         - 'ez-copycontentplugin'
@@ -243,7 +245,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/tabs/relations.hbt
                 ez-locationviewlocationstabview:
-                    requires: ['ez-locationviewtabview', 'locationviewlocationstabview-ez-template']
+                    requires: ['ez-locationviewtabview', 'locationviewlocationstabview-ez-template', 'array-extras']
                     path: %ez_platformui.public_dir%/js/views/tabs/ez-locationviewlocationstabview.js
                 locationviewlocationstabview-ez-template:
                     type: 'template'
@@ -429,11 +431,11 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/contenteditform.hbt
                 ez-fieldeditview:
-                    requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'node-style', 'fieldinfo-tooltip-ez-partial']
+                    requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'node-style', 'fielddescription-tooltip-ez-partial']
                     path: %ez_platformui.public_dir%/js/views/ez-fieldeditview.js
-                fieldinfo-tooltip-ez-partial:
+                fielddescription-tooltip-ez-partial:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/partials/fieldinfo_tooltip.hbt
+                    path: %ez_platformui.public_dir%/templates/partials/fielddescription_tooltip.hbt
                 ez-fieldview:
                     requires: ['ez-templatebasedview', 'fieldview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-fieldview.js
@@ -878,6 +880,9 @@ system:
                 ez-userloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-userloadplugin.js
+                ez-visibilityswitcherplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-visibilityswitcherplugin.js
                 ez-locationsloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationsloadplugin.js
@@ -891,6 +896,9 @@ system:
                 ez-contentsetmainlocationplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contentsetmainlocationplugin.js
+                ez-locationremoveplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'parallel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationremoveplugin.js
                 ez-objectrelationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationloadplugin.js

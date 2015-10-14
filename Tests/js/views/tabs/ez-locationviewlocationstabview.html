@@ -13,10 +13,20 @@
 
     <button class="ez-add-location-button">Add location</button>
 
-    <input type="radio" value="1" class="ez-main-location-radio"
-        id="ez-not-main-location-radio" data-location-id="/another/location/id">
-    <input type="radio" value="1" class="ez-main-location-radio"
-        id="ez-main-location-radio" data-location-id="/main/location/id" checked="checked">
+    <button class="ez-remove-locations-button">Remove selected</button>
+    <div>
+        <input type="checkbox" value="/another/location/id" class="ez-location-checkbox"
+            data-location-id="/another/location/id" data-main-location="0">
+        <input type="radio" value="1" class="ez-main-location-radio"
+            id="ez-not-main-location-radio" data-location-id="/another/location/id">
+    </div>
+    <div>
+        <input type="checkbox" value="/main/location/id" class="ez-location-checkbox"
+            data-location-id="/main/location/id" disabled data-main-location="1">
+        <input type="radio" value="1" class="ez-main-location-radio"
+            id="ez-main-location-radio" data-location-id="/main/location/id" checked="checked">
+    </div>
+    <button class="ez-locations-hidden-button" data-location-id="42">Hide/reveal</button>
 </script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -40,7 +50,7 @@
         filter: loaderFilter,
         modules: {
             "ez-locationviewlocationstabview": {
-                requires: ['ez-locationviewtabview', 'ez-asynchronousview', 'fake-models'],
+                requires: ['ez-locationviewtabview', 'ez-asynchronousview', 'array-extras', 'fake-models'],
                 fullpath: "../../../../Resources/public/js/views/tabs/ez-locationviewlocationstabview.js"
             },
             "ez-asynchronousview": {

@@ -1,6 +1,5 @@
 <div class="pure-g ez-editfield-row">
     <div class="pure-u ez-editfield-infos">
-        {{> ez_fieldinfo_tooltip }}
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
             <p class="ez-fielddefinition-name">
                 {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
@@ -26,5 +25,6 @@
                 {{#if isRequired}} required{{/if}}
                 >
         </div></div>
+        {{> ez_fielddescription_tooltip }}
     </div>
 </div>

@@ -5,6 +5,7 @@
 YUI.add('ez-sectionserversideviewservice-tests', function (Y) {
     var contentDiscoverEventTest,
         assignSectionTest,
+        refreshViewTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     contentDiscoverEventTest = new Y.Test.Case({
@@ -287,7 +288,63 @@ YUI.add('ez-sectionserversideviewservice-tests', function (Y) {
         },
     });
 
+    refreshViewTest = new Y.Test.Case({
+        name: "eZ Section Server Side View Service refresh view test",
+
+        setUp: function () {
+            this.apiRoot = '/Tests/js/views/services/';
+            this.title = 'Right Thoughts, Right Words, Right Actions';
+            this.html = '<p>Right action</p>';
+
+            this.pjaxResponse = '<div data-name="title">' + this.title + '</div>' +
+            '<div data-name="html">' + this.html + '</div>';
+
+            this.app = new Y.Mock();
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['apiRoot'],
+                returns: this.apiRoot,
+            });
+
+            this.request = {'params': {'uri': ''}};
+
+            Mock.expect(this.app, {
+                method: 'set',
+                args: ['loading', Mock.Value.Boolean],
+            });
+
+            this.view = new Y.Base();
+
+            this.request.params.uri = 'echo/get/html/?response='+ this.pjaxResponse;
+            this.service = new Y.eZ.SectionServerSideViewService({
+                request: this.request,
+                app: this.app,
+            });
+
+            this.view.addTarget(this.service);
+        },
+
+        tearDown: function () {
+            delete this.service;
+            delete this.view;
+        },
+
+        "Should update the html attribute": function () {
+            this.view.after('htmlChange', this.next(function () {
+                Assert.areSame(
+                    this.html,
+                    this.view.get('html'),
+                    "`html` attribute should have been updated"
+                );
+            }), this);
+
+            this.view.fire('whatever:refreshView');
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Section Server Side View Service tests");
     Y.Test.Runner.add(contentDiscoverEventTest);
     Y.Test.Runner.add(assignSectionTest);
+    Y.Test.Runner.add(refreshViewTest);
 }, '', {requires: ['test', 'ez-sectionserversideviewservice']});

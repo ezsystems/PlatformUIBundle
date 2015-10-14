@@ -1,6 +1,5 @@
 <div class="pure-g ez-editfield-row">
     <div class="pure-u ez-editfield-infos">
-        {{> ez_fieldinfo_tooltip }}
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-name">
             <p class="ez-fielddefinition-name">
                 {{ fieldDefinition.names.[eng-GB] }}{{#if fieldDefinition.isRequired}}*{{/if}}:
@@ -28,6 +27,7 @@
                     value="{{ author.email }}"
                     id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-email"
                 ></div></div>
+                {{> ez_fielddescription_tooltip }}
             </div>
             <div class="pure-u-2-5">
                 <button data-icon="&#xe615;" class="ez-field-author-remove ez-button pure-button"{{#unless canRemove }} disabled="disabled"{{/unless}}>Remove this author</button>

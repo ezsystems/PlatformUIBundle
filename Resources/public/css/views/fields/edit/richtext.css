@@ -86,3 +86,7 @@
 .ez-view-richtexteditview.is-focused .ez-focusmodeactionbar-container {
     display: block;
 }
+
+.ez-view-richtexteditview .ez-field-description {
+    margin: 0;
+}

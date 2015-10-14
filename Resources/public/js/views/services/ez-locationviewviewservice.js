@@ -100,7 +100,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 locationId = location.get('id'),
                 path = this.get('path'),
                 content = this.get('content'),
-                parentLocation = path[path.length - 1].location;
+                parentLocation = path[path.length - 1];
 
             this._notify(
                 'Sending "' + content.get('name') + '" to Trash',

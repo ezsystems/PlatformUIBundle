@@ -9,12 +9,21 @@
 
 <script type="text/x-handlebars-template" id="fieldeditview-ez-template">
     <div>
-        {{#if fieldDefinition.descriptions.[eng-GB]}}
-        {{> ez_fieldinfo_tooltip }}
-        {{/if}}
         <div class="ez-fielddefinition-name">
         </div>
         <div class="ez-editfield-error-message">default content</div>
+        <div class="ez-editfield-input-area ez-default-error-style">
+            {{#if fieldDefinition.descriptions.[eng-GB] }}
+            <div class="ez-fielddescription-tooltip ez-tail-down-tooltip">
+                <p class="ez-fielddescription-tooltip-text">
+                    {{ fieldDefinition.descriptions.[eng-GB] }}
+                </p>
+            </div>
+            {{/if}}
+            <div class="ez-editfield-input">
+            </div>
+        </div>
+        <p class="ez-field-description">{{ fieldDefinition.descriptions.[eng-GB] }}</p>
     </div>
 </script>
 

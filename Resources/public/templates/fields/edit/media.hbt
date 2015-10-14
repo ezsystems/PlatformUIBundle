@@ -1,15 +1,17 @@
 <div class="pure-g ez-editfield-row ez-default-error-style">
     <div class="pure-u ez-editfield-infos">
-        {{> ez_fieldinfo_tooltip }}
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
             <p class="ez-fielddefinition-name">
                 {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
             </p>
             <p class="ez-editfield-error-message">&nbsp;</p>
+            <p class="ez-field-description is-showing-description">
+                {{ fieldDefinition.descriptions.[eng-GB] }}
+            </p>
             {{#if isAudio }}
-            <p class="ez-binarybase-help">You can drag and drop a file to add or replace the audio file.</p>
+            <p class="ez-binarybase-help">Drag and drop your audio file here or simply click on the buttons and select your audio file manually.</p>
             {{else}}
-            <p class="ez-binarybase-help">You can drag and drop a file to add or replace the video file.</p>
+            <p class="ez-binarybase-help">Drag and drop your video here or simply click on the buttons and select your video manually. Customize size, controls & view.</p>
             {{/if}}
         </label>
     </div>

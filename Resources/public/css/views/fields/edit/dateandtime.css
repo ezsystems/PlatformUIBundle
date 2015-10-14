@@ -13,3 +13,19 @@
     display: inline-block;
     vertical-align: bottom;
 }
+
+.ez-view-dateandtimeeditview .ez-field-description {
+    visibility: hidden;
+}
+
+.ez-view-dateandtimeeditview.is-showing-description .ez-field-description {
+    visibility: visible;
+}
+
+.ez-view-dateandtimeeditview.is-calendar-visible.is-showing-description .ez-field-description {
+    visibility: hidden;
+}
+
+.ez-view-dateandtimeeditview .ez-field-description {
+    margin:  0 0 0 2.5em;
+}

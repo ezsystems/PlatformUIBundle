@@ -24,6 +24,7 @@ YUI.add('ez-binaryfile-editview', function (Y) {
      */
     Y.eZ.BinaryFileEditView = Y.Base.create('binaryfileEditView', Y.eZ.BinaryBaseEditView, [], {
         initializer: function () {
+            this._handleFieldDescriptionVisibility = false;
             this.after('fileChange', this._uiBinaryFileChange);
         },
 

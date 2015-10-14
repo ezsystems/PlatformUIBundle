@@ -56,10 +56,9 @@ YUI.add('ez-sectionserversideview-tests', function (Y) {
                         e.config.data.sectionName,
                         "The section name should be available in the config data"
                     );
-                    Assert.areSame(
-                        e.config.cancelDiscoverHandler,
+                    Assert.isFunction(
                         e.config.data.afterUpdateCallback,
-                        "The config data should contain the unset loading function"
+                        "The event facade should contain the afterUpdateCallback event handler"
                     );
                     Assert.isTrue(
                         e.config.multiple,
@@ -91,10 +90,15 @@ YUI.add('ez-sectionserversideview-tests', function (Y) {
             this.wait();
         },
 
-        "Should unset the loading state of button": function () {
+        "Should unset the loading state of button when cancel is pressed": function () {
             var container = this.view.get('container'),
                 button = container.one('.ez-section-assign-button'),
-                that = this;
+                that = this,
+                refreshViewCalled = false;
+
+            this.view.on('refreshView', function (e) {
+                refreshViewCalled = true;
+            });
 
             this.view.on('contentDiscover', function (e) {
                 that.resume(function () {
@@ -106,6 +110,34 @@ YUI.add('ez-sectionserversideview-tests', function (Y) {
                     Assert.isFalse(
                         button.hasClass('is-loading'),
                         "The button should not have the loading class"
+                    );
+                    Assert.isFalse(
+                        refreshViewCalled,
+                        "Event `refreshView` should have been fired"
+                    );
+                });
+            });
+            button.simulateGesture('tap');
+            this.wait();
+        },
+
+        "Should refresh the list after section is assigned": function () {
+            var container = this.view.get('container'),
+                button = container.one('.ez-section-assign-button'),
+                that = this,
+                refreshViewCalled = false;
+
+            this.view.on('refreshView', function (e) {
+                refreshViewCalled = true;
+            });
+
+            this.view.on('contentDiscover', function (e) {
+                that.resume(function () {
+                    e.config.data.afterUpdateCallback.apply(this);
+
+                    Assert.isTrue(
+                        refreshViewCalled,
+                        "Event `refreshView` should have been fired"
                     );
                 });
             });

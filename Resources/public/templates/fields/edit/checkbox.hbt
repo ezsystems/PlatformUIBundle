@@ -11,9 +11,6 @@
         <div class="ez-editfield-input"><div class="ez-checkbox-input-ui"><input type="checkbox"
                 id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
                 {{#if field.fieldValue}}checked="checked"{{/if}}/>
-            <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
-                {{ fieldDefinition.descriptions.[eng-GB] }}
-            </label>
         </div></div>
     </div>
 </div>

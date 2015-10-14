@@ -51,6 +51,7 @@ YUI.add('ez-selection-editview', function (Y) {
              * @type eZ.SelectionFilterView
              */
             this._selectionFilter = null;
+            this._useStandardFieldDefinitionDescription = false;
 
             this.after('activeChange', function (e) {
                 if ( e.newVal ) {

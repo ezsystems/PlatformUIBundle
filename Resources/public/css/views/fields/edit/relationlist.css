@@ -36,3 +36,7 @@
 .ez-view-relationlisteditview .ez-relation-remove-content {
     text-align: center;
 }
+
+.ez-view-relationlisteditview .ez-field-description {
+    margin: 0;
+}

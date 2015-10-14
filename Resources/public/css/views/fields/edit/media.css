@@ -95,3 +95,7 @@
 .ez-view-mediaeditview .ez-media-settings-size {
     width: 4.2em;
 }
+
+.ez-view-mediaeditview .ez-field-description {
+    margin: 0;
+}

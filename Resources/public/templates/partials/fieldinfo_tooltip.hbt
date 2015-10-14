@@ -1,9 +1,0 @@
-{{#if fieldDefinition.descriptions.[eng-GB]}}
-    <span class="ez-editfield-i">?</span>
-    <div class="ez-fielddefinition-tooltip ez-tail-up-tooltip">
-        <p class="ez-fielddefinition-tooltip-text">
-            <a class="ez-fielddefinition-tooltip-close" href="#close-tooltip" title="Close tooltip" data-icon="&#xe600;"></a>
-            {{ fieldDefinition.descriptions.[eng-GB] }}
-        </p>
-    </div>
-{{/if}}

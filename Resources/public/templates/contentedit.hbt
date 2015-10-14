@@ -9,7 +9,7 @@
                     <li>Created by {{ owner.name }}</li>
                     {{#if content.contentId}}
                     <li>{{ content.lastModificationDate }}</li>
-                    <li>Object ID: {{ content.contentId }}, Node ID: {{ mainLocation.locationId }}</li>
+                    <li>Content ID: {{ content.contentId }}, Location ID: {{ mainLocation.locationId }}</li>
                     {{/if}}
                 </ul>
                 <p class="ez-description">{{contentType.descriptions.[eng-GB]}}</p>

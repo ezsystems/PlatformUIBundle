@@ -27,3 +27,19 @@
 .ez-view-dateeditview .ez-date-cancel-button {
     margin-left: -1.8em;
 }
+
+.ez-view-dateeditview .ez-field-description {
+    visibility: hidden;
+}
+
+.ez-view-dateeditview.is-showing-description .ez-field-description {
+    visibility: visible;
+}
+
+.ez-view-dateeditview.is-calendar-visible.is-showing-description .ez-field-description {
+    visibility: hidden;
+}
+
+.ez-view-dateeditview .ez-field-description {
+    margin:  0 0 0 2.5em;
+}

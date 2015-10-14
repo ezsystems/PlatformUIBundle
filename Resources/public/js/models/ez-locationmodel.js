@@ -40,11 +40,11 @@ YUI.add('ez-locationmodel', function (Y) {
 
         /**
          * sync implementation that relies on the JS REST client.
-         * For now, it only supports the 'read' action. The callback is
+         * For now, it supports the 'read' and 'delete' actions. The callback is
          * directly passed to the ContentService.loadLocation method.
          *
          * @method sync
-         * @param {String} action the action, currently only 'read' is supported
+         * @param {String} action the action, currently 'read' and 'delete' are supported
          * @param {Object} options the options for the sync.
          * @param {Object} options.api (required) the JS REST client instance
          * @param {Function} callback a callback executed when the operation is finished
@@ -56,6 +56,8 @@ YUI.add('ez-locationmodel', function (Y) {
                 api.getContentService().loadLocation(
                     this.get('id'), callback
                 );
+            } else if ( action === 'delete' ) {
+                this._deleteLocation(options, callback);
             } else {
                 callback("Only read operation is supported at the moment");
             }
@@ -98,6 +100,77 @@ YUI.add('ez-locationmodel', function (Y) {
          */
         move: function (options, parentLocationId, callback) {
             options.api.getContentService().moveSubtree(this.get('id'), parentLocationId, callback);
+        },
+
+        /**
+         * Updates the hidden status of the location
+         *
+         * @protected
+         * @method _updatehidden
+         * @param {Object} options the required for the update
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {String} hidden `true` or `false` value to be set on the hidden attribute
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        _updateHidden: function (options, hidden, callback) {
+            var locationUpdateStruct = options.api.getContentService().newLocationUpdateStruct();
+
+            locationUpdateStruct.body.LocationUpdate.hidden = hidden;
+            //Remove the 2 line bellow once EZP-24899 is fixed and update unit test
+            locationUpdateStruct.body.LocationUpdate.sortField = this.get('sortField');
+            locationUpdateStruct.body.LocationUpdate.sortOrder = this.get('sortOrder');
+            options.api.getContentService().updateLocation(this.get('id'), locationUpdateStruct, callback);
+        },
+
+        /**
+         * Hides the location
+         *
+         * @method hide
+         * @param {Object} options the required for the update
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        hide: function (options, callback) {
+            this._updateHidden(options, 'true', callback);
+        },
+
+        /**
+         * Reverse the hidden status of the location
+         *
+         * @method unhide
+         * @param {Object} options the required for the update
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        unhide: function (options, callback) {
+            this._updateHidden(options, 'false', callback);
+        },
+
+        /**
+         * Deletes the location in the repository.
+         *
+         * @protected
+         * @method _deleteLocation
+         * @param {Object} options
+         * @param {Object} options.api the JS REST client instance
+         * @param {Function} callback
+         */
+        _deleteLocation: function (options, callback) {
+            var contentService = options.api.getContentService(),
+                location = this;
+
+            if ( !this.get('id') ) {
+                callback(false);
+                return;
+            }
+            contentService.deleteLocation(this.get('id'), function (error, response) {
+                if ( error ) {
+                    callback(error);
+                    return;
+                }
+                location.reset();
+                callback(error, response);
+            });
         }
     }, {
         REST_STRUCT_ROOT: "Location",
