@@ -1,6 +1,7 @@
 v: 0
  
-meta_repo: "https://github.com/ezsystems/ezplatform.git"
+meta:
+  repo: "https://github.com/ezsystems/ezplatform.git"
 
 #require: "ezsystems/demobundle:dev-master as 6.0.x-dev"
 
