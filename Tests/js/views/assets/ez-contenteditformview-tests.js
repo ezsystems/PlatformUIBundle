@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenteditformview-tests', function (Y) {
-    var viewTest, isValidTest, getFieldsTest, activeFlagTest, haltSubmitTest,
+    var viewTest, isValidTest, getFieldsTest, activeFlagTest, haltSubmitTest, incosistencyFieldsTest,
         Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
@@ -535,6 +535,66 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
         },
     });
 
+    incosistencyFieldsTest = new Y.Test.Case({
+        name: "eZ Raw Content View incosistency fields test",
+
+        setUp: function () {
+            var fields = {};
+
+            this.content = new Y.Mock();
+            this.contentType = new Y.Mock();
+            this.version = new Y.Mock();
+            this.fieldType = 'test1';
+            this.fieldDefinitions = [{
+                fieldGroup: 'content',
+                fieldType: this.fieldType,
+                identifier: 'id1',
+            }];
+            this.fieldGroups = [{fieldGroupName: 'content'}, {fieldGroupName: 'meta'}];
+
+            Y.Mock.expect(this.content, {
+                method: 'getField',
+                args: [Y.Mock.Value.String],
+                run: function (id) {
+                    return fields[id];
+                }
+            });
+
+            Y.Mock.expect(this.contentType, {
+                method: 'get',
+                args: ['fieldDefinitions'],
+                returns: this.fieldDefinitions
+            });
+
+            Y.Mock.expect(this.version, {
+                method: 'getField',
+                args: [Y.Mock.Value.String],
+                run: function (id) {
+                    return fields[id];
+                }
+            });
+
+            Y.eZ.FieldEditView.registerFieldEditView(this.fieldType, Y.Base.create('somethingView', Y.eZ.FieldEditView, [], {
+                initializer: function () {
+                    Y.fail("The field edit view for test1 field type should not be initialized");
+                }
+            }));
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            Y.eZ.FieldEditView.registerFieldEditView(this.fieldType , undefined);
+        },
+
+        "Should not initialize the field view": function () {
+            this.view = new Y.eZ.ContentEditFormView({
+                content: this.content,
+                contentType: this.contentType,
+                version: this.version,
+                config: {}
+            });
+        }
+    });
 
     Y.Test.Runner.setName("eZ Content Edit Form View tests");
     Y.Test.Runner.add(viewTest);
@@ -542,4 +602,5 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
     Y.Test.Runner.add(getFieldsTest);
     Y.Test.Runner.add(activeFlagTest);
     Y.Test.Runner.add(haltSubmitTest);
+    Y.Test.Runner.add(incosistencyFieldsTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-contenteditformview']});

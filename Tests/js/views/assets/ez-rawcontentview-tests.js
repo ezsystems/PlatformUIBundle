@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-rawcontentview-tests', function (Y) {
-    var viewTest, destroyTest, eventTest, configFieldViewTest,
+    var viewTest, destroyTest, eventTest, configFieldViewTest, incosistencyFieldsTest,
         Assert = Y.Assert, Mock = Y.Mock,
         _getContentTypeMock = function (fieldDefinitions, fieldGroups) {
             var mock = new Y.Test.Mock();
@@ -489,13 +489,15 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 identifier: 'id2',
             }];
             this.fieldGroups = [{fieldGroupName: 'content'}, {fieldGroupName: 'meta'}];
+            this.fields = {'id1': {fieldValue: 'value1'}, 'id2': {fieldValue: 'value2'}};
 
         },
 
         "Should destroy the field views": function () {
             var somethingDestroyed = false,
                 somethingElseDestroyed = false,
-                content = new Y.Mock();
+                content = new Y.Mock(),
+                that = this;
 
             Y.eZ.FieldView.registerFieldView('something', Y.Base.create('somethingView', Y.eZ.FieldView, [], {
                 destructor: function () {
@@ -510,7 +512,10 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
             Y.Mock.expect(content, {
                 method: 'getField',
-                args: [Y.Mock.Value.String]
+                args: [Y.Mock.Value.String],
+                run: function (id) {
+                    return that.fields[id];
+                }
             });
 
             this.view = new Y.eZ.RawContentView({
@@ -536,7 +541,8 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
         name: "eZ Raw Content View config field view test",
 
         setUp: function () {
-            var content = new Mock();
+            var content = new Mock(),
+                fields = {'id1': {fieldValue: 'value1'}};
 
             this.fieldDefinitions = [{
                 fieldGroup: 'content',
@@ -544,10 +550,14 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 identifier: 'id1',
             }];
             this.fieldGroups = [{fieldGroupName: 'content'}];
+
             this.config = {};
             Mock.expect(content, {
                 method: 'getField',
-                args: [Mock.Value.String]
+                args: [Mock.Value.String],
+                run: function (id) {
+                    return fields[id];
+                }
             });
 
             Y.eZ.FieldView.registerFieldView('something', Y.Base.create('somethingView', Y.eZ.FieldView, [], {
@@ -577,9 +587,54 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
         },
     });
 
+    incosistencyFieldsTest = new Y.Test.Case({
+        name: "eZ Raw Content View incosistency fields test",
+
+        setUp: function () {
+            var fields = {};
+
+            this.content = new Mock();
+            this.fieldType = 'something';
+            this.fieldDefinitions = [{
+                fieldGroup: 'content',
+                fieldType: this.fieldType,
+                identifier: 'id1',
+            }];
+            this.fieldGroups = [{fieldGroupName: 'content'}, {fieldGroupName: 'meta'}];
+
+            Mock.expect(this.content, {
+                method: 'getField',
+                args: [Mock.Value.String],
+                run: function (id) {
+                    return fields[id];
+                }
+            });
+
+            Y.eZ.FieldView.registerFieldView(this.fieldType, Y.Base.create('somethingView', Y.eZ.FieldView, [], {
+                initializer: function () {
+                    Y.fail("The field view for something field type should not be initialized");
+                }
+            }));
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            Y.eZ.FieldView.registerFieldView(this.fieldType , undefined);
+        },
+
+        "Should not initialize the field view": function () {
+            this.view = new Y.eZ.RawContentView({
+                content: this.content,
+                contentType: _getContentTypeMock(this.fieldDefinitions, this.fieldGroups),
+                config: {}
+            });
+        }
+    });
+
     Y.Test.Runner.setName("eZ Raw Content View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(destroyTest);
     Y.Test.Runner.add(configFieldViewTest);
+    Y.Test.Runner.add(incosistencyFieldsTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-rawcontentview']});
