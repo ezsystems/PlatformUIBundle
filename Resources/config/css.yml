@@ -89,6 +89,7 @@ system:
                 - 'bundles/ezplatformui/css/modules/table-data.css'
                 - 'bundles/ezplatformui/css/modules/breadcrumbs.css'
                 - 'bundles/ezplatformui/css/modules/yui-calendar.css'
+                - 'bundles/ezplatformui/css/modules/pure-grid.css'
                 - 'bundles/ezplatformui/css/alloyeditor/general.css'
                 - 'bundles/ezplatformui/css/alloyeditor/content.css'
                 - 'bundles/ezplatformui/css/alloyeditor/buttons/labeled-button.css'
