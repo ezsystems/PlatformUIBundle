@@ -245,7 +245,13 @@ YUI.add('ez-richtext-editview', function (Y) {
                 // making sure to have at least a paragraph element
                 // otherwise CKEditor adds a br to make sure the editor can put
                 // the caret inside the element.
-                doc.documentElement.appendChild(doc.createElement('p'));
+                // We don't use the DOM API here otherwise, the p element will
+                // have an empty `xmlns` attribute in Firefox which then breaks
+                // the RichText parser when saving the field value... This is
+                // happening because of our custom namespace even though we are
+                // handling some XHTML... With `innerHTML`, this does not occur.
+                // see https://jira.ez.no/browse/EZP-24907
+                doc.documentElement.innerHTML = '<p></p>';
             }
             Y.Object.each(ROOT_SECTION_ATTRIBUTES, function (value, key) {
                 doc.documentElement.setAttribute(key, value);
