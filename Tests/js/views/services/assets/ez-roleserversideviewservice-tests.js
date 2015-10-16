@@ -6,7 +6,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
     var contentDiscoverEventTest,
         assignRoleTest, notificationTest,
         Mock = Y.Mock, Assert = Y.Assert,
-        getContentMock = function (contentJson) {
+        getMockForJson = function (contentJson) {
             var content = new Mock();
 
             Mock.expect(content, {
@@ -16,29 +16,12 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                     if (contentJson[attr]!==undefined) {
                         return contentJson[attr];
                     } else {
-                        Y.fail('Trying to `get` incorrect attribute `' + attr + '` from content mock');
+                        Y.fail('Trying to `get` incorrect attribute `' + attr + '` from mock');
                     }
                 }
             });
 
             return content;
-        },
-        getContentTypeMock = function (contentTypeJson) {
-            var contentType = new Mock();
-
-            Mock.expect(contentType, {
-                method: 'get',
-                args: [Mock.Value.String],
-                run: function (attr) {
-                    if (contentTypeJson[attr]!==undefined) {
-                        return contentTypeJson[attr];
-                    } else {
-                        Y.fail('Trying to `get` incorrect attribute `' + attr + '` from content type mock');
-                    }
-                }
-            });
-
-            return contentType;
         };
 
     contentDiscoverEventTest = new Y.Test.Case({
@@ -138,11 +121,11 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                         MainLocation: '/1/5/14'
                     }
                 },
-                content = getContentMock(contentJson),
+                content = getMockForJson(contentJson),
                 contentTypeJson = {
                     identifier: 'user'
                 },
-                contentType = getContentTypeMock(contentTypeJson),
+                contentType = getMockForJson(contentTypeJson),
                 selection = [{content: content, contentType: contentType}],
                 universalDiscovery = new Mock(),
                 callbackCalled = false,
@@ -191,11 +174,11 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                         MainLocation: '/1/5/14'
                     }
                 },
-                content = getContentMock(contentJson),
+                content = getMockForJson(contentJson),
                 contentTypeJson = {
                     identifier: 'user_group'
                 },
-                contentType = getContentTypeMock(contentTypeJson),
+                contentType = getMockForJson(contentTypeJson),
                 selection = [{content: content, contentType: contentType}],
                 universalDiscovery = new Mock(),
                 callbackCalled = false,
@@ -320,11 +303,11 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                         MainLocation: '/1/5/14'
                     }
                 },
-                content = getContentMock(contentJson),
+                content = getMockForJson(contentJson),
                 contentTypeJson = {
                     identifier: 'user_group'
                 },
-                contentType = getContentTypeMock(contentTypeJson),
+                contentType = getMockForJson(contentTypeJson),
                 selection = [{content: content, contentType: contentType}],
                 universalDiscovery = new Mock(),
                 config = {},
@@ -413,11 +396,11 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                         MainLocation: '/1/5/14'
                     }
                 },
-                content = getContentMock(contentJson),
+                content = getMockForJson(contentJson),
                 contentTypeJson = {
                     identifier: 'user_group'
                 },
-                contentType = getContentTypeMock(contentTypeJson),
+                contentType = getMockForJson(contentTypeJson),
                 selection = [{content: content, contentType: contentType}],
                 universalDiscovery = new Mock(),
                 config = {},
@@ -489,7 +472,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
             var contentJson = {
                     id: 'c-id',
                 },
-                content = getContentMock(contentJson),
+                content = getMockForJson(contentJson),
                 selection = [{content: content}],
                 universalDiscovery = new Mock(),
                 config = {},
@@ -571,11 +554,11 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                         MainLocation: '/1/5/14'
                     }
                 },
-                content = getContentMock(contentJson),
+                content = getMockForJson(contentJson),
                 contentTypeJson = {
                     identifier: contentTypeString
                 },
-                contentType = getContentTypeMock(contentTypeJson),
+                contentType = getMockForJson(contentTypeJson),
                 selection = [{content: content, contentType: contentType}],
                 universalDiscovery = new Mock(),
                 config = {},
