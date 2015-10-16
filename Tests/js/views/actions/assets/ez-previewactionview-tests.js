@@ -85,6 +85,7 @@ YUI.add('ez-previewactionview-tests', function (Y) {
         setUp: function () {
             this.editPreview = new Y.Mock();
             this.contentMock = new Y.Mock();
+            this.languageCode = 'fr-FR';
 
             Y.Mock.expect(this.editPreview, {
                 method: 'get',
@@ -164,6 +165,27 @@ YUI.add('ez-previewactionview-tests', function (Y) {
 
             this.view.set('content', this.contentMock);
             Y.Assert.areSame(previewContent, this.contentMock, "editPreview should set correct content attribute");
+            Y.Mock.verify(this.editPreview);
+        },
+
+        "Should set languageCode attribute for the PreviewView": function () {
+            var previewLanguage;
+
+            Y.Mock.expect(this.editPreview, {
+                method: 'set',
+                callCount: 2,
+                args: [Y.Mock.Value.String, Y.Mock.Value.Any],
+                run: function (param, value) {
+                    previewLanguage = value;
+                }
+            });
+            Y.Mock.expect(this.editPreview, {
+                method: 'get',
+                callCount: 0
+            });
+
+            this.view.set('languageCode', this.languageCode);
+            Y.Assert.areSame(previewLanguage, this.languageCode, "editPreview should set correct languageCode attribute");
             Y.Mock.verify(this.editPreview);
         },
 
