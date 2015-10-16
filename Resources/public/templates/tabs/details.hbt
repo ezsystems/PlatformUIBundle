@@ -35,18 +35,6 @@
         {{/if}}
         </dd>
 
-        <dt class="ez-details-name pure-u-1-3">Visibility</dt>
-        <dd class="ez-details-value pure-u-2-3">
-        {{#if location.hidden}}
-            Hidden
-        {{else}}
-            {{#if location.invisible}}
-                Hidden by superior
-            {{else}}
-                Visible
-            {{/if}}
-        {{/if}}
-        </dd>
         <dt class="ez-details-name pure-u-1-3">Versions</dt>
         <dd class="ez-details-value pure-u-2-3">{{currentVersion.versionNo}}</dd>
         <dt class="ez-details-name pure-u-1-3">Translations</dt>
