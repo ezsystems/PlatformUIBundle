@@ -28,6 +28,7 @@ YUI.add('ez-editactionbarview', function (Y) {
         initializer: function () {
             this.after('actionsListChange', function (e) {
                 this._setVersion(this.get('version'));
+                this._setLanguageCode(this.get('languageCode'));
             });
         },
 
@@ -41,6 +42,19 @@ YUI.add('ez-editactionbarview', function (Y) {
         _setVersion: function (version) {
             Y.Array.each(this.get('actionsList'), function (action) {
                 action.set('version', version);
+            });
+        },
+
+        /**
+         * Sets the languageCode on all the action list
+         *
+         * @protected
+         * @method _setLanguageCode
+         * @param {String} languageCode
+         */
+        _setLanguageCode: function (languageCode) {
+            Y.Array.each(this.get('actionsList'), function (action) {
+                action.set('languageCode', languageCode);
             });
         },
     }, {
@@ -81,7 +95,7 @@ YUI.add('ez-editactionbarview', function (Y) {
                                 {option: "desktop"},
                                 {option: "tablet"},
                                 {option: "mobile"}
-                            ]
+                            ],
                         })
                     ];
                 }
@@ -98,6 +112,19 @@ YUI.add('ez-editactionbarview', function (Y) {
                 value: {},
                 setter: function (val, name) {
                     this._setVersion(val);
+                }
+            },
+
+            /**
+             * The language code of the content currently edited
+             *
+             * @attribute languageCode
+             * @type {String}
+             */
+            languageCode: {
+                value: '',
+                setter: function (val, name) {
+                    this._setLanguageCode(val);
                 }
             }
 

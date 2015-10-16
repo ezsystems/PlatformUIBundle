@@ -12,19 +12,23 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         name: "eZ Edit Preview View test",
 
         setUp: function () {
+            this.contentId = 59;
+            this.versionNo = 42;
             this.mockContent = new Y.eZ.Content({
-                contentId: 59,
+                contentId: this.contentId,
                 name: "Test name"
             });
             this.mockVersion = new Y.eZ.Version({
-                versionNo: 42,
+                versionNo: this.versionNo,
                 names: {value: [{'_languageCode': 'eng-GB', '#text': 'Test name'}]}
             });
+            this.languageCode = 'quenya';
 
             this.view = new Y.eZ.EditPreviewView({
                 container: '.container',
                 content: this.mockContent,
-                version: this.mockVersion
+                version: this.mockVersion,
+                languageCode: this.languageCode
             });
         },
 
@@ -52,13 +56,18 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         },
 
         "Test available variable in template": function () {
-            var origTpl = this.view.template;
+            var origTpl = this.view.template,
+                that = this;
             this.view.template = function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
                 Y.Assert.areEqual(3, Y.Object.keys(variables).length, "The template should receive 3 variables");
                 Y.Assert.isObject(variables.mode, "mode should be available in the template and should be an object");
                 Y.Assert.isString(variables.legend, "legend should be available in the template and should be a string");
                 Y.Assert.isString(variables.source, "source should be available in the template and should be a string");
+                Y.Assert.areSame(
+                    '/content/versionview/' + that.contentId + '/' + that.versionNo + '/' + that.view.get('languageCode'),
+                    variables.source,
+                    "source should be made with versionNo, contentID, and languageCode");
                 return origTpl.apply(this, arguments);
             };
             this.view.render();
