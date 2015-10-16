@@ -4,8 +4,42 @@
  */
 YUI.add('ez-roleserversideviewservice-tests', function (Y) {
     var contentDiscoverEventTest,
-        assignRoleTest,
-        Mock = Y.Mock, Assert = Y.Assert;
+        assignRoleTest, notificationTest,
+        Mock = Y.Mock, Assert = Y.Assert,
+        getContentMock = function (contentJson) {
+            var content = new Mock();
+
+            Mock.expect(content, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (contentJson[attr]!==undefined) {
+                        return contentJson[attr];
+                    } else {
+                        Y.fail('Trying to `get` incorrect attribute `' + attr + '` from content mock');
+                    }
+                }
+            });
+
+            return content;
+        },
+        getContentTypeMock = function (contentTypeJson) {
+            var contentType = new Mock();
+
+            Mock.expect(contentType, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (contentTypeJson[attr]!==undefined) {
+                        return contentTypeJson[attr];
+                    } else {
+                        Y.fail('Trying to `get` incorrect attribute `' + attr + '` from content type mock');
+                    }
+                }
+            });
+
+            return contentType;
+        };
 
     contentDiscoverEventTest = new Y.Test.Case({
         name: "eZ Role Server Side View Service contentDiscover event handler test",
@@ -36,20 +70,21 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
         name: "eZ Role Server Side View Service assign role test",
 
         setUp: function () {
-            this.id = 'nyarlathotep';
-            this.content = new Mock();
-            this.contentId = '31';
-            this.contentName = 'The Crawling Chaos';
-            this.userId = 'azathoth';
-            this.userGroupId = 'yog-sothoth';
-            this.roleId = '42';
-            this.roleName = 'Shub-niggurath';
+            var loadRoleResponse;
+
             this.capi = new Mock();
             this.userService = new Mock();
             this.discoveryService = new Mock();
-            this.service = new Y.eZ.RoleServerSideViewService({
-                capi: this.capi
-            });
+            this.role = new Mock();
+            this.roleId = 'role-id';
+            this.roleName = 'role-name';
+            this.roleAssignInputStruct = {};
+
+            loadRoleResponse = {
+                document: {
+                    Role: this.role
+                }
+            };
 
             Mock.expect(this.capi, {
                 method: 'getUserService',
@@ -70,22 +105,21 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                     }
                 },
             });
-            Mock.expect(this.content, {
-                method: 'get',
-                args: [Mock.Value.String],
-                run: function (attr) {
-                    if (attr === 'id') {
-                        return this.id;
-                    } else if (attr === 'contentId') {
-                        return this.contentId;
-                    } else if (attr === 'name') {
-                        return this.contentName;
-                    } else if (attr === 'resources') {
-                        return {
-                            MainLocation: '/1/5/14'
-                        };
-                    }
+            Mock.expect(this.userService, {
+                method: 'loadRole',
+                args: [this.roleId, Mock.Value.Function],
+                run: function (roleId, callback) {
+                    callback(false, loadRoleResponse);
                 }
+            });
+            Mock.expect(this.userService, {
+                method: 'newRoleAssignInputStruct',
+                args: [this.role, Mock.Value.Any],
+                returns: this.roleAssignInputStruct
+            });
+
+            this.service = new Y.eZ.RoleServerSideViewService({
+                capi: this.capi
             });
         },
 
@@ -95,73 +129,45 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
             delete this.userService;
         },
 
-        "Should assign the role to the discovered user": function () {
-            var that = this,
-                config = {},
-                content = this.content,
-                contentType = new Mock(),
-                role = new Mock(),
-                roleId = this.roleId,
-                roleName = this.roleName,
-                roleAssignInputStruct = new Mock(),
-                universalDiscovery = new Mock(),
-                // TODO UDW should be limited to the Users subtree, and return User/UserGroup objects: EZP-24917
-                selection = [{content: content, contentType: contentType}],
-                loadRoleResponse = {
-                    document: {
-                        Role: role
+        "Should assign role to the user and call the callback": function () {
+            var contentJson = {
+                    id: 'c-id',
+                    contentId: 'content-contentId',
+                    name: 'The Crawling Chaos',
+                    resources: {
+                        MainLocation: '/1/5/14'
                     }
                 },
+                content = getContentMock(contentJson),
+                contentTypeJson = {
+                    identifier: 'user'
+                },
+                contentType = getContentTypeMock(contentTypeJson),
+                selection = [{content: content, contentType: contentType}],
+                universalDiscovery = new Mock(),
                 callbackCalled = false,
                 callback = function () {
                     callbackCalled = true;
-                    Assert.areSame(
-                        that.service, this,
-                        "The callback should be executed in the service context"
-                    );
-                };
+                },
+                config = {},
+                that = this;
 
-            Mock.expect(contentType, {
-                method: 'get',
-                args: ['identifier'],
-                returns: 'user',
-            });
             Mock.expect(universalDiscovery, {
                 method: 'get',
                 args: ['data'],
                 returns: {
-                    roleId: roleId,
-                    roleName: roleName,
+                    roleId: that.roleId,
+                    roleName: that.roleName,
                     afterUpdateCallback: callback,
                 },
             });
-            Mock.expect(this.userService, {
-                method: 'loadRole',
-                args: [this.roleId, Mock.Value.Function],
-                run: function (id, cb) {
-                    cb(false, loadRoleResponse);
-                },
-            });
-            Mock.expect(this.userService, {
-                method: 'newRoleAssignInputStruct',
-                args: [Mock.Value.Object, null],
-                run: function (role, limitation) {
-                    return roleAssignInputStruct;
-                }
-            });
+
             Mock.expect(this.userService, {
                 method: 'assignRoleToUser',
-                args: [Mock.Value.String, roleAssignInputStruct, Mock.Value.Function],
-                run: function (content, struct, cb) {
-                    cb();
-                },
-            });
-            Mock.expect(this.userService, {
-                method: 'assignRoleToUserGroup',
-                args: [Mock.Value.String, roleAssignInputStruct, Mock.Value.Function],
-                run: function (content, struct, cb) {
-                    cb();
-                },
+                args: [Mock.Value.String, this.roleAssignInputStruct, Mock.Value.Function],
+                run: function (userId, roleAssignInputStruct, cb) {
+                    cb(false);
+                }
             });
 
             this.service.fire('whatever:contentDiscover', {
@@ -173,78 +179,48 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 selection: selection
             });
 
-            Assert.isTrue(callbackCalled, "The afterUpdateCallback should have been called");
-            Mock.verify(universalDiscovery);
-            Mock.verify(roleAssignInputStruct);
+            Assert.isTrue(callbackCalled, 'The callback should be called');
         },
 
-        "Should assign the role to the discovered group": function () {
-            var that = this,
-                config = {},
-                content = this.content,
-                contentType = new Mock(),
-                role = new Mock(),
-                roleId = this.roleId,
-                roleName = this.roleName,
-                roleAssignInputStruct = new Mock(),
-                universalDiscovery = new Mock(),
-                // TODO UDW should be limited to the Users subtree, and return User/UserGroup objects: EZP-24917
-                selection = [{content: content, contentType: contentType}],
-                loadRoleResponse = {
-                    document: {
-                        Role: role
+        "Should assign role to the user group and call the callback": function () {
+            var contentJson = {
+                    id: 'c-id',
+                    contentId: 'content-contentId',
+                    name: 'The Crawling Chaos',
+                    resources: {
+                        MainLocation: '/1/5/14'
                     }
                 },
+                content = getContentMock(contentJson),
+                contentTypeJson = {
+                    identifier: 'user_group'
+                },
+                contentType = getContentTypeMock(contentTypeJson),
+                selection = [{content: content, contentType: contentType}],
+                universalDiscovery = new Mock(),
                 callbackCalled = false,
                 callback = function () {
                     callbackCalled = true;
-                    Assert.areSame(
-                        that.service, this,
-                        "The callback should be executed in the service context"
-                    );
-                };
+                },
+                config = {},
+                that = this;
 
-            Mock.expect(contentType, {
-                method: 'get',
-                args: ['identifier'],
-                returns: 'user_group',
-            });
             Mock.expect(universalDiscovery, {
                 method: 'get',
                 args: ['data'],
                 returns: {
-                    roleId: roleId,
-                    roleName: roleName,
+                    roleId: that.roleId,
+                    roleName: that.roleName,
                     afterUpdateCallback: callback,
                 },
             });
-            Mock.expect(this.userService, {
-                method: 'loadRole',
-                args: [this.roleId, Mock.Value.Function],
-                run: function (id, cb) {
-                    cb(false, loadRoleResponse);
-                },
-            });
-            Mock.expect(this.userService, {
-                method: 'newRoleAssignInputStruct',
-                args: [Mock.Value.Object, null],
-                run: function (role, limitation) {
-                    return roleAssignInputStruct;
-                }
-            });
-            Mock.expect(this.userService, {
-                method: 'assignRoleToUser',
-                args: [Mock.Value.String, roleAssignInputStruct, Mock.Value.Function],
-                run: function (content, struct, cb) {
-                    cb();
-                },
-            });
+
             Mock.expect(this.userService, {
                 method: 'assignRoleToUserGroup',
-                args: [Mock.Value.String, roleAssignInputStruct, Mock.Value.Function],
-                run: function (content, struct, cb) {
-                    cb();
-                },
+                args: [Mock.Value.String, this.roleAssignInputStruct, Mock.Value.Function],
+                run: function (userGroupId, roleAssignInputStruct, cb) {
+                    cb(false);
+                }
             });
 
             this.service.fire('whatever:contentDiscover', {
@@ -256,106 +232,162 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 selection: selection
             });
 
-            Assert.isTrue(callbackCalled, "The afterUpdateCallback should have been called");
-            Mock.verify(universalDiscovery);
-            Mock.verify(roleAssignInputStruct);
+            Assert.isTrue(callbackCalled, 'The callback should be called');
+        },
+    });
+
+    notificationTest = new Y.Test.Case({
+        name: "eZ Role Server Side View Service notification test",
+
+        setUp: function () {
+            this.capi = new Mock();
+            this.userService = new Mock();
+            this.discoveryService = new Mock();
+            this.role = new Mock();
+            this.roleId = 'role-id';
+            this.roleName = 'role-name';
+            this.roleAssignInputStruct = {};
+            this.loadRoleResponse = {
+                document: {
+                    Role: this.role
+                }
+            };
+
+
+            Mock.expect(this.capi, {
+                method: 'getUserService',
+                returns: this.userService,
+            });
+            Mock.expect(this.capi, {
+                method: 'getDiscoveryService',
+                returns: this.discoveryService,
+            });
+            Mock.expect(this.userService, {
+                method: 'newRoleAssignInputStruct',
+                args: [this.role, Mock.Value.Any],
+                returns: this.roleAssignInputStruct
+            });
+
+            this.service = new Y.eZ.RoleServerSideViewService({
+                capi: this.capi
+            });
         },
 
-        "Should notify about the start of assigning user/group to the role process": function () {
-            var that = this,
-                config = {},
-                content = this.content,
-                contentType = new Mock(),
-                contentId = this.contentId,
-                role = new Mock(),
-                roleId = this.roleId,
-                roleName = this.roleName,
-                roleAssignInputStruct = new Mock(),
-                universalDiscovery = new Mock(),
-                // TODO UDW should be limited to the Users subtree, and return User/UserGroup objects: EZP-24917
-                selection = [{content: content, contentType: contentType}],
-                loadRoleResponse = {
-                    document: {
-                        Role: role
+        tearDown: function () {
+            delete this.service;
+            delete this.capi;
+            delete this.userService;
+        },
+
+        _setLoadRoleStatus: function (isError, loadRoleResponse) {
+            Mock.expect(this.userService, {
+                method: 'loadRole',
+                args: [this.roleId, Mock.Value.Function],
+                run: function (roleId, callback) {
+                    if (isError) {
+                        callback(true);
+                    } else {
+                        callback(false, loadRoleResponse);
+                    }
+                }
+            });
+        },
+
+        _setgetInfoObjectStatus: function (isError) {
+            Mock.expect(this.discoveryService, {
+                method: 'getInfoObject',
+                args: [Mock.Value.String, Mock.Value.Function],
+                run: function (infObjStr, cb) {
+                    if (isError) {
+                        cb(true);
+                    } else {
+                        if (infObjStr === 'users') {
+                            cb(false, { _href: '/api/ezp/v2/user/users' });
+                        } else if (infObjStr === 'rootUserGroup') {
+                            cb(false, { _href: '/api/ezp/v2/user/groups' });
+                        }
                     }
                 },
-                callbackCalled = false,
-                callback = function () {
-                    callbackCalled = true;
-                    Assert.areSame(
-                        that.service, this,
-                        "The callback should be executed in the service context"
-                    );
-                },
-                notified = false;
-
-            Mock.expect(contentType, {
-                method: 'get',
-                args: ['identifier'],
-                returns: contentId,
             });
+        },
+
+        "Should notify about the success of assignment": function () {
+            var contentJson = {
+                    id: 'c-id',
+                    contentId: 'content-contentId',
+                    name: 'The Crawling Chaos',
+                    resources: {
+                        MainLocation: '/1/5/14'
+                    }
+                },
+                content = getContentMock(contentJson),
+                contentTypeJson = {
+                    identifier: 'user_group'
+                },
+                contentType = getContentTypeMock(contentTypeJson),
+                selection = [{content: content, contentType: contentType}],
+                universalDiscovery = new Mock(),
+                config = {},
+                startNotificationFired = false,
+                successNotificationFired = false,
+                errorNotificationFired = false,
+                that = this;
+
+            this._setLoadRoleStatus(false, this.loadRoleResponse);
+            this._setgetInfoObjectStatus(false);
+
             Mock.expect(universalDiscovery, {
                 method: 'get',
                 args: ['data'],
                 returns: {
-                    roleId: roleId,
-                    roleName: roleName,
-                    afterUpdateCallback: callback,
+                    roleId: that.roleId,
+                    roleName: that.roleName,
+                    afterUpdateCallback: function () {},
                 },
             });
-            Mock.expect(this.userService, {
-                method: 'loadRole',
-                args: [this.roleId, Mock.Value.Function],
-                run: function (id, cb) {
-                    cb(false, loadRoleResponse);
-                },
-            });
-            Mock.expect(this.userService, {
-                method: 'newRoleAssignInputStruct',
-                args: [Mock.Value.Object, null],
-                run: function (role, limitation) {
-                    return roleAssignInputStruct;
-                },
-            });
-            Mock.expect(this.userService, {
-                method: 'assignRoleToUser',
-                args: [this.userId, roleAssignInputStruct, Mock.Value.Function],
-                run: function (id, struct, cb) {
-                    cb();
-                },
-            });
+
             Mock.expect(this.userService, {
                 method: 'assignRoleToUserGroup',
-                args: [this.userGroupId, roleAssignInputStruct, Mock.Value.Function],
-                run: function (id, struct, cb) {
-                    cb();
-                },
+                args: [Mock.Value.String, this.roleAssignInputStruct, Mock.Value.Function],
+                run: function (userGroupId, roleAssignInputStruct, cb) {
+                    cb(false);
+                }
             });
 
             this.service.on('notify', function (e) {
-                notified = true;
-                this.once('notify', function (e) {
+                if (e.notification.state === 'started') {
+                    startNotificationFired = true;
+                    Assert.isTrue(
+                        (e.notification.text.indexOf(that.roleName) >= 0),
+                        "The notification should contain name of the role"
+                    );
+                    Assert.isTrue(
+                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        "The notification identifier should contain id of assigned role"
+                    );
                     Assert.areEqual(
-                        "started", e.notification.state,
-                        "The notification state should be 'started'"
+                        e.notification.timeout, 5,
+                        "The timeout of notification should be set to 5"
                     );
-                    Assert.isString(
-                        e.notification.text,
-                        "The notification text should be a String"
+                }
+                if (e.notification.state === 'done') {
+                    successNotificationFired = true;
+                    Assert.isTrue(
+                        (e.notification.text.indexOf(that.roleName) >= 0),
+                        "The notification should contain name of the role"
                     );
                     Assert.isTrue(
-                        e.notification.identifier.indexOf(contentId) !== -1,
-                        "The notification identifier should contain the content id" + e.notification.identifier
+                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        "The notification identifier should contain id of assigned role"
                     );
-                    Assert.isTrue(
-                        e.notification.identifier.indexOf(roleId) !== -1,
-                        "The notification identifier should contain the role id"
+                    Assert.areEqual(
+                        e.notification.timeout, 5,
+                        "The timeout of notification should be set to 5"
                     );
-                    Assert.areSame(
-                        0, e.notification.timeout,
-                        "The notification timeout should be set to 0"
-                    );
-                });
+                }
+                if (e.notification.state === 'error') {
+                    errorNotificationFired = true;
+                }
             });
 
             this.service.fire('whatever:contentDiscover', {
@@ -364,107 +396,79 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
 
             config.contentDiscoveredHandler.call(this, {
                 target: universalDiscovery,
-                selection: selection
+                selection: selection,
             });
 
-            Assert.isTrue(notified, "The notify event should have been fired");
+            Assert.isTrue(startNotificationFired, 'Should fire notification with `started` state');
+            Assert.isTrue(successNotificationFired, 'Should fire notification with `done` state');
+            Assert.isFalse(errorNotificationFired, 'Should not fire notification with `error` state');
         },
 
-        "Should notify about the success of assigning user/group to the role": function () {
-            var that = this,
-                config = {},
-                content = this.content,
-                contentType = new Mock(),
-                contentId = this.contentId,
-                role = new Mock(),
-                roleId = this.roleId,
-                roleName = this.roleName,
-                roleAssignInputStruct = new Mock(),
-                universalDiscovery = new Mock(),
-                // TODO UDW should be limited to the Users subtree, and return User/UserGroup objects: EZP-24917
-                selection = [{content: content, contentType: contentType}],
-                loadRoleResponse = {
-                    document: {
-                        Role: role
+        "Should notify about the error when assigning the role": function () {
+            var contentJson = {
+                    id: 'c-id',
+                    contentId: 'content-contentId',
+                    name: 'The Crawling Chaos',
+                    resources: {
+                        MainLocation: '/1/5/14'
                     }
                 },
-                callbackCalled = false,
-                callback = function () {
-                    callbackCalled = true;
-                    Assert.areSame(
-                        that.service, this,
-                        "The callback should be executed in the service context"
-                    );
+                content = getContentMock(contentJson),
+                contentTypeJson = {
+                    identifier: 'user_group'
                 },
-                notified = false;
+                contentType = getContentTypeMock(contentTypeJson),
+                selection = [{content: content, contentType: contentType}],
+                universalDiscovery = new Mock(),
+                config = {},
+                startNotificationFired = false,
+                successNotificationFired = false,
+                errorNotificationFired = false,
+                that = this;
 
-            Mock.expect(contentType, {
-                method: 'get',
-                args: ['identifier'],
-                returns: contentId,
-            });
+            this._setLoadRoleStatus(false, this.loadRoleResponse);
+            this._setgetInfoObjectStatus(false);
+
             Mock.expect(universalDiscovery, {
                 method: 'get',
                 args: ['data'],
                 returns: {
-                    roleId: roleId,
-                    roleName: roleName,
-                    afterUpdateCallback: callback,
-                },
-            });
-            Mock.expect(this.userService, {
-                method: 'loadRole',
-                args: [this.roleId, Mock.Value.Function],
-                run: function (id, cb) {
-                    cb(false, loadRoleResponse);
-                },
-            });
-            Mock.expect(this.userService, {
-                method: 'newRoleAssignInputStruct',
-                args: [Mock.Value.Object, null],
-                run: function (role, limitation) {
-                    return roleAssignInputStruct;
-                },
-            });
-            Mock.expect(this.userService, {
-                method: 'assignRoleToUser',
-                args: [this.userId, roleAssignInputStruct, Mock.Value.Function],
-                run: function (id, struct, cb) {
-                    cb();
-                },
-            });
-            Mock.expect(this.userService, {
-                method: 'assignRoleToUserGroup',
-                args: [this.userGroupId, roleAssignInputStruct, Mock.Value.Function],
-                run: function (id, struct, cb) {
-                    cb();
+                    roleId: that.roleId,
+                    roleName: that.roleName,
+                    afterUpdateCallback: function () {},
                 },
             });
 
+            Mock.expect(this.userService, {
+                method: 'assignRoleToUserGroup',
+                args: [Mock.Value.String, this.roleAssignInputStruct, Mock.Value.Function],
+                run: function (userGroupId, roleAssignInputStruct, cb) {
+                    cb(true);
+                }
+            });
+
             this.service.on('notify', function (e) {
-                notified = true;
-                this.once('notify', function (e) {
+                if (e.notification.state === 'started') {
+                    startNotificationFired = true;
+                    Assert.isTrue(
+                        (e.notification.text.indexOf(that.roleName) >= 0),
+                        "The notification should contain name of the role"
+                    );
+                    Assert.isTrue(
+                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        "The notification identifier should contain id of assigned role"
+                    );
                     Assert.areEqual(
-                        "done", e.notification.state,
-                        "The notification state should be 'done'"
+                        e.notification.timeout, 5,
+                        "The timeout of notification should be set to 5"
                     );
-                    Assert.isString(
-                        e.notification.text,
-                        "The notification text should be a String"
-                    );
-                    Assert.isTrue(
-                        e.notification.identifier.indexOf(contentId) !== -1,
-                        "The notification identifier should contain the content id"
-                    );
-                    Assert.isTrue(
-                        e.notification.identifier.indexOf(roleId) !== -1,
-                        "The notification identifier should contain the role id"
-                    );
-                    Assert.areSame(
-                        5, e.notification.timeout,
-                        "The notification timeout should be set to 5"
-                    );
-                });
+                }
+                if (e.notification.state === 'done') {
+                    successNotificationFired = true;
+                }
+                if (e.notification.state === 'error') {
+                    errorNotificationFired = true;
+                }
             });
 
             this.service.fire('whatever:contentDiscover', {
@@ -473,14 +477,192 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
 
             config.contentDiscoveredHandler.call(this, {
                 target: universalDiscovery,
-                selection: selection
+                selection: selection,
             });
 
-            Assert.isTrue(notified, "The notify event should have been fired");
+            Assert.isTrue(startNotificationFired, 'Should fire notification with `started` state');
+            Assert.isFalse(successNotificationFired, 'Should not fire notification with `done` state');
+            Assert.isTrue(errorNotificationFired, 'Should fire notification with `error` state');
         },
+
+        "Should handle the error if unable to load the role": function () {
+            var contentJson = {
+                    id: 'c-id',
+                },
+                content = getContentMock(contentJson),
+                selection = [{content: content}],
+                universalDiscovery = new Mock(),
+                config = {},
+                startNotificationFired = false,
+                successNotificationFired = false,
+                errorNotificationFired = false,
+                that = this;
+
+            this._setLoadRoleStatus(true, {});
+            this._setgetInfoObjectStatus(false);
+
+            Mock.expect(universalDiscovery, {
+                method: 'get',
+                args: ['data'],
+                returns: {
+                    roleId: that.roleId,
+                    roleName: that.roleName,
+                    afterUpdateCallback: function () {},
+                },
+            });
+
+            Mock.expect(this.userService, {
+                method: 'assignRoleToUserGroup',
+                args: [Mock.Value.String, this.roleAssignInputStruct, Mock.Value.Function],
+            });
+
+            this.service.on('notify', function (e) {
+                if (e.notification.state === 'started') {
+                    startNotificationFired = true;
+                    Assert.isTrue(
+                        (e.notification.text.indexOf(that.roleName) >= 0),
+                        "The notification should contain name of the role"
+                    );
+                    Assert.isTrue(
+                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        "The notification identifier should contain id of assigned role"
+                    );
+                    Assert.areEqual(
+                        e.notification.timeout, 5,
+                        "The timeout of notification should be set to 5"
+                    );
+                }
+                if (e.notification.state === 'done') {
+                    successNotificationFired = true;
+                }
+                if (e.notification.state === 'error') {
+                    errorNotificationFired = true;
+                    Assert.isTrue(
+                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        "The notification identifier should contain id of assigned role"
+                    );
+                    Assert.areEqual(
+                        e.notification.timeout, 0,
+                        "The timeout of notification should be set to 0"
+                    );
+                }
+            });
+
+            this.service.fire('whatever:contentDiscover', {
+                config: config,
+            });
+
+            config.contentDiscoveredHandler.call(this, {
+                target: universalDiscovery,
+                selection: selection,
+            });
+
+            Assert.isTrue(startNotificationFired, 'Should fire notification with `started` state');
+            Assert.isFalse(successNotificationFired, 'Should not fire notification with `done` state');
+            Assert.isTrue(errorNotificationFired, 'Should fire notification with `error` state');
+        },
+
+        _handleGetInfoObjectError: function (contentTypeString) {
+            var contentJson = {
+                    id: 'c-id',
+                    contentId: 'content-contentId',
+                    name: 'The Crawling Chaos',
+                    resources: {
+                        MainLocation: '/1/5/14'
+                    }
+                },
+                content = getContentMock(contentJson),
+                contentTypeJson = {
+                    identifier: contentTypeString
+                },
+                contentType = getContentTypeMock(contentTypeJson),
+                selection = [{content: content, contentType: contentType}],
+                universalDiscovery = new Mock(),
+                config = {},
+                startNotificationFired = false,
+                successNotificationFired = false,
+                errorNotificationFired = false,
+                that = this;
+
+            this._setLoadRoleStatus(false, this.loadRoleResponse);
+            this._setgetInfoObjectStatus(true);
+
+            Mock.expect(universalDiscovery, {
+                method: 'get',
+                args: ['data'],
+                returns: {
+                    roleId: that.roleId,
+                    roleName: that.roleName,
+                    afterUpdateCallback: function () {},
+                },
+            });
+
+            Mock.expect(this.userService, {
+                method: 'assignRoleToUserGroup',
+                args: [Mock.Value.String, this.roleAssignInputStruct, Mock.Value.Function],
+            });
+            Mock.expect(this.userService, {
+                method: 'assignRoleToUser',
+                args: [Mock.Value.String, this.roleAssignInputStruct, Mock.Value.Function],
+            });
+
+            this.service.on('notify', function (e) {
+                if (e.notification.state === 'started') {
+                    startNotificationFired = true;
+                    Assert.isTrue(
+                        (e.notification.text.indexOf(that.roleName) >= 0),
+                        "The notification should contain name of the role"
+                    );
+                    Assert.isTrue(
+                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        "The notification identifier should contain id of assigned role"
+                    );
+                    Assert.areEqual(
+                        e.notification.timeout, 5,
+                        "The timeout of notification should be set to 5"
+                    );
+                }
+                if (e.notification.state === 'done') {
+                    successNotificationFired = true;
+                }
+                if (e.notification.state === 'error') {
+                    errorNotificationFired = true;
+                    Assert.areEqual(
+                        e.notification.timeout, 0,
+                        "The timeout of notification should be set to 0"
+                    );
+                }
+            });
+
+            this.service.fire('whatever:contentDiscover', {
+                config: config,
+            });
+
+            config.contentDiscoveredHandler.call(this, {
+                target: universalDiscovery,
+                selection: selection,
+            });
+
+            Assert.isTrue(startNotificationFired, 'Should fire notification with `started` state');
+            Assert.isFalse(successNotificationFired, 'Should not fire notification with `done` state');
+            Assert.isTrue(errorNotificationFired, 'Should fire notification with `error` state');
+        },
+
+        "Should handle error if unable to get info object from discoveryService when assigning role to user group": function () {
+            this._handleGetInfoObjectError('user_group');
+        },
+
+        "Should handle error if unable to get info object from discoveryService when assigning role to user": function () {
+            this._handleGetInfoObjectError('user');
+        },
+
+        "Should handle error if trying to assign role to content that is not user nor user group": function () {
+            this._handleGetInfoObjectError('folder');
+        }
     });
 
     Y.Test.Runner.setName("eZ Role Server Side View Service tests");
     Y.Test.Runner.add(contentDiscoverEventTest);
     Y.Test.Runner.add(assignRoleTest);
+    Y.Test.Runner.add(notificationTest);
 }, '', {requires: ['test', 'ez-roleserversideviewservice']});

@@ -37,6 +37,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
         _assignRole: function (e) {
             var data = e.target.get('data'),
                 userService = this.get('capi').getUserService(),
+                countAssigned = 0,
                 service = this;
 
             this._assignRoleNotificationStarted(
@@ -45,22 +46,37 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
 
             userService.loadRole(data.roleId, function (error, response) {
                 var tasks = new Y.Parallel(),
-                    end = tasks.add(function (err, response) {
-                        if (err) {
-                            service._error('The role could not be assigned: ' + err.message);
-                        }
-                    });
+                    role;
 
                 if (error) {
-                    service._error('The role could not be loaded: ' + error.message);
+                    service._loadRoleErrorNotification(
+                        data.roleId, data.roleName, e.selection
+                    );
                     return;
                 }
 
-                service._assignRoleToEachAssignee(e, response.document.Role, end);
+                role = response.document.Role;
+
+                Y.Array.each(e.selection, function (struct) {
+                    var end = tasks.add(function (err, response) {
+                            if (err) {
+                                service._notify(
+                                    'Role has not been assigned to "' + struct.content.get('name') + '": ' + err.message,
+                                    'assign-role-failed-' + struct.content.get('id'),
+                                    'error',
+                                    0
+                                );
+                                return;
+                            }
+                            countAssigned++;
+                        });
+
+                    service._assignRoleToAssignee(struct, role, end);
+                });
 
                 tasks.done(function () {
                     service._assignRoleCallback(
-                        data.roleId, data.roleName, e.selection,
+                        data.roleId, data.roleName, e.selection, countAssigned,
                         Y.bind(data.afterUpdateCallback, service)
                     );
                 });
@@ -68,37 +84,28 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
         },
 
         /**
-         * Assign the role to each user/group
+         * Assign the role to selected content
          *
-         * @method _assignRoleToEachAssignee
+         * @method _assignRoleToAssignee
          * @protected
-         * @param {EventFacade} e
+         * @param {Object} struct the object selected with content discovery
          * @param {Role} role
-         * @param {Function} end Callback function
+         * @param {Function} callback the callback function
          */
-        _assignRoleToEachAssignee: function (e, role, end) {
-            var userService = this.get('capi').getUserService(),
-                service = this,
-                roleAssignInputStruct;
-
-            Y.Array.each(e.selection, function (struct) {
-                var limitation = null,
-                    contentTypeIdentifier = struct.contentType.get('identifier');
-
-                // TODO: EZP-24905 Role assignment limitations
+        _assignRoleToAssignee: function (struct, role, callback) {
+            var // TODO: EZP-24905 Role assignment limitations
                 // limitation will be filled like example in UserService.prototype.newRoleAssignInputStruct()
                 // hrefs in the limitation must be converted to IDs, as expected by the API
+                limitation = null,
+                contentTypeIdentifier = struct.contentType.get('identifier');
 
-                roleAssignInputStruct = userService.newRoleAssignInputStruct(role, limitation);
-
-                if (contentTypeIdentifier === 'user') {
-                    service._assignRoleToUser(roleAssignInputStruct, struct.content, end);
-                } else if (contentTypeIdentifier === 'user_group') {
-                    service._assignRoleToUserGroup(roleAssignInputStruct, struct.content, end);
-                } else {
-                    end({message:'The select content is not a user or group.'});
-                }
-            });
+            if (contentTypeIdentifier === 'user') {
+                this._assignRoleToUser(role, limitation, struct.content, callback);
+            } else if (contentTypeIdentifier === 'user_group') {
+                this._assignRoleToUserGroup(role, limitation, struct.content, callback);
+            } else {
+                callback({message:'Selected content is not a user or group.'});
+            }
         },
 
         /**
@@ -106,18 +113,20 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          *
          * @method _assignRoleToUser
          * @protected
-         * @param {RoleAssignInputStruct} roleAssignInputStruct
+         * @param {Object} role
+         * @param {Object|null} limitation
          * @param {Content} content
-         * @param {Function} end Callback function
+         * @param {Function} callback the callback function
          */
-        _assignRoleToUser: function (roleAssignInputStruct, content, end) {
+        _assignRoleToUser: function (role, limitation, content, callback) {
             var userService = this.get('capi').getUserService(),
                 discoveryService = this.get('capi').getDiscoveryService(),
+                roleAssignInputStruct= userService.newRoleAssignInputStruct(role, limitation),
                 userIdStr;
 
             discoveryService.getInfoObject('users', function (error, usersInfoObject) {
                 if (error) {
-                    end(error);
+                    callback(error);
                     return;
                 }
 
@@ -126,7 +135,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                 userIdStr = usersInfoObject._href + '/' + content.get('contentId');
 
                 userService.assignRoleToUser(
-                    userIdStr, roleAssignInputStruct, end
+                    userIdStr, roleAssignInputStruct, callback
                 );
             });
         },
@@ -136,19 +145,21 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          *
          * @method _assignRoleToUserGroup
          * @protected
-         * @param {RoleAssignInputStruct} roleAssignInputStruct
+         * @param {Object} role
+         * @param {Object|null} limitation
          * @param {Content} content
-         * @param {Function} end Callback function
+         * @param {Function} callback the callback function
          */
-        _assignRoleToUserGroup: function (roleAssignInputStruct, content, end) {
+        _assignRoleToUserGroup: function (role, limitation, content, callback) {
             var userService = this.get('capi').getUserService(),
                 discoveryService = this.get('capi').getDiscoveryService(),
+                roleAssignInputStruct= userService.newRoleAssignInputStruct(role, limitation),
                 location,
                 groupIdStr;
 
             discoveryService.getInfoObject('rootUserGroup', function (error, rootUserGroup) {
                 if (error) {
-                    end(error);
+                    callback(error);
                     return;
                 }
 
@@ -161,7 +172,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                 groupIdStr = /.+user\/groups/.exec(rootUserGroup._href) + /(\/\d+)+$/g.exec(location)[0];
 
                 userService.assignRoleToUserGroup(
-                    groupIdStr, roleAssignInputStruct, end
+                    groupIdStr, roleAssignInputStruct, callback
                 );
             });
         },
@@ -174,10 +185,30 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          * @param {String} roleId the role id
          * @param {String} roleName the role name
          * @param {Array} contents the array of Content items to which role is being assigned to
+         * @param {Integer} countAssigned number of successfully assignments
          * @param {Function} callback the callback to call when other tasks are done
          */
-        _assignRoleCallback: function (roleId, roleName, contents, callback) {
-            this._assignRoleNotificationDone(roleId, roleName, contents);
+        _assignRoleCallback: function (roleId, roleName, contents, countAssigned, callback) {
+            var notificationIdentifier = this._getAssignRoleNotificationIdentifier(
+                    'assign-role', roleId, contents
+                );
+
+            if (countAssigned>0) {
+                this._notify(
+                    '"' + roleName + '" role has been assigned to ' + countAssigned + ' Content items',
+                    notificationIdentifier,
+                    'done',
+                    5
+                );
+            } else {
+                this._notify(
+                    'Role has not been assigned to any Content item',
+                    notificationIdentifier,
+                    'error',
+                    0
+                );
+            }
+
             callback();
         },
 
@@ -195,38 +226,34 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                     'assign-role', roleId, contents
                 );
 
-            this.fire('notify', {
-                notification: {
-                    identifier: notificationIdentifier,
-                    text: 'Assigning the role "' + roleName + '" to ' + contents.length + ' Content items',
-                    state: 'started',
-                    timeout: 0
-                },
-            });
+            this._notify(
+                'Assigning the role "' + roleName + '" to ' + contents.length + ' Content items',
+                notificationIdentifier,
+                'started',
+                5
+            );
         },
 
         /**
-         * Notification changed to *done* after assigning role to Content items
+         * Notification with *error* state when loadRole fails
          *
-         * @method _assignRoleNotificationDone
+         * @method _loadRoleErrorNotification
          * @protected
          * @param {String} roleId the role id
          * @param {String} roleName the role name
          * @param {Array} contents the array of Content items to which role is being assigned to
          */
-        _assignRoleNotificationDone: function (roleId, roleName, contents) {
+        _loadRoleErrorNotification: function (roleId, roleName, contents) {
             var notificationIdentifier = this._getAssignRoleNotificationIdentifier(
                     'assign-role', roleId, contents
                 );
 
-            this.fire('notify', {
-                notification: {
-                    identifier: notificationIdentifier,
-                    text: 'Role "' + roleName + '" assigned to ' + contents.length + ' Content items',
-                    state: 'done',
-                    timeout: 5
-                },
-            });
+            this._notify(
+                'The role "' + roleName + '" could not be loaded',
+                notificationIdentifier,
+                'error',
+                0
+            );
         },
 
         /**
@@ -247,6 +274,27 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                 contentIds.push(struct.content.get('id'));
             });
             return action + '-' + roleId + '-' + contentIds.join('_');
+        },
+
+        /**
+         * Fire 'notify' event
+         *
+         * @method _notify
+         * @protected
+         * @param {String} text the text shown during the notification
+         * @param {String} identifier the identifier of the notification
+         * @param {String} state the state of the notification
+         * @param {Integer} timeout the number of second, the notification will be shown
+         */
+        _notify: function (text, identifier, state, timeout) {
+            this.fire('notify', {
+                notification: {
+                    text: text,
+                    identifier: identifier,
+                    state: state,
+                    timeout: timeout,
+                }
+            });
         },
     });
 });
