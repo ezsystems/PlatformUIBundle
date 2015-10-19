@@ -184,7 +184,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          * @protected
          * @param {String} roleId the role id
          * @param {String} roleName the role name
-         * @param {Array} contents the array of Content items to which role is being assigned to
+         * @param {Array} contents the array of users/groups to which role is being assigned to
          * @param {Integer} countAssigned number of successfully assignments
          * @param {Function} callback the callback to call when other tasks are done
          */
@@ -195,14 +195,14 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
 
             if (countAssigned>0) {
                 this._notify(
-                    '"' + roleName + '" role has been assigned to ' + countAssigned + ' Content items',
+                    '"' + roleName + '" role has been assigned to ' + countAssigned + ' users/groups',
                     notificationIdentifier,
                     'done',
                     5
                 );
             } else {
                 this._notify(
-                    'Role has not been assigned to any Content item',
+                    'Role has not been assigned to any users/groups',
                     notificationIdentifier,
                     'error',
                     0
@@ -213,13 +213,13 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
         },
 
         /**
-         * Notification changed to *started* before assigning role to Content items
+         * Notification changed to *started* before assigning role to users/groups
          *
          * @method _assignRoleNotificationStarted
          * @protected
          * @param {String} roleId the role id
          * @param {String} roleName the role name
-         * @param {Array} contents the array of Content items to which role is being assigned to
+         * @param {Array} contents the array of users/groups to which role is being assigned to
          */
         _assignRoleNotificationStarted: function (roleId, roleName, contents) {
             var notificationIdentifier = this._getAssignRoleNotificationIdentifier(
@@ -227,7 +227,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                 );
 
             this._notify(
-                'Assigning the role "' + roleName + '" to ' + contents.length + ' Content items',
+                'Assigning the role "' + roleName + '" to ' + contents.length + ' users/groups',
                 notificationIdentifier,
                 'started',
                 5
@@ -241,7 +241,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          * @protected
          * @param {String} roleId the role id
          * @param {String} roleName the role name
-         * @param {Array} contents the array of Content items to which role is being assigned to
+         * @param {Array} contents the array of users/groups to which role is being assigned to
          */
         _loadRoleErrorNotification: function (roleId, roleName, contents) {
             var notificationIdentifier = this._getAssignRoleNotificationIdentifier(
@@ -258,13 +258,13 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
 
         /**
          * Generates identifier for notifications which is unique basing on
-         * role ID and IDs of Content items which role is being assigned to.
+         * role ID and IDs of users/groups which role is being assigned to.
          *
          * @method _getAssignRoleNotificationIdentifier
          * @protected
          * @param {String} action custom string describing action which is being taken
          * @param {String} roleId the role id
-         * @param {Array} contents the array of Content items to which role is being assigned to
+         * @param {Array} contents the array of users/groups to which role is being assigned to
          * @return {String} unique notification identifier based on passed parameters
          */
         _getAssignRoleNotificationIdentifier: function (action, roleId, contents) {
