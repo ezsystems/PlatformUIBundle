@@ -12,7 +12,10 @@ YUI.add('ez-emailaddress-editview', function (Y) {
 
     Y.namespace('eZ');
 
-    var FIELDTYPE_IDENTIFIER = 'ezemail';
+    /* jshint -W101 */
+    var FIELDTYPE_IDENTIFIER = 'ezemail',
+        VALIDATION_PATTERN = /^((\"[^\"\f\n\r\t\v\b]+\")|([A-Za-z0-9_\!\#\$\%\&\'\*\+\-\~\/\^\`\|\{\}]+(\.[A-Za-z0-9_\!\#\$\%\&\'\*\+\-\~\/\^\`\|\{\}]+)*))@((\[(((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9])))\])|(((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9]))\.((25[0-5])|(2[0-4][0-9])|([0-1]?[0-9]?[0-9])))|((([A-Za-z0-9\-])+\.)+[A-Za-z\-]{2,}))$/;
+    /* jshint +W101 */
 
     /**
      * Email Address edit view
@@ -38,7 +41,7 @@ YUI.add('ez-emailaddress-editview', function (Y) {
         validate: function () {
             var validity = this._getInputValidity();
 
-            if ( validity.typeMismatch ) {
+            if ( validity.typeMismatch || !this._isValidEmail() ) {
                 this.set('errorStatus', 'The value should be a valid email address');
             } else if ( validity.valueMissing ) {
                 this.set('errorStatus', 'This field is required');
@@ -101,6 +104,20 @@ YUI.add('ez-emailaddress-editview', function (Y) {
         _getFieldValue: function () {
             return this.get('container').one('.ez-emailaddress-input-ui input').get('value');
         },
+
+        /**
+         * Checks email address validity based on the same regexp as
+         * the one used in the EmailAddress FieldType.
+         * Otherwise, the email address edit view could accept email
+         * that will be considered invalid when creating/updating a content.
+         *
+         * @protected
+         * @method _isValidEmail
+         * @return {Boolean}
+         */
+        _isValidEmail: function () {
+            return VALIDATION_PATTERN.test(this._getFieldValue());
+        }
     });
 
     Y.eZ.FieldEditView.registerFieldEditView(
