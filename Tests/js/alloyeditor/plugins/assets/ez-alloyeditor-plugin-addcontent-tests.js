@@ -102,6 +102,10 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
                 tagDefinition2.tagName, node.get('tagName').toLowerCase(),
                 "A h1 should have been created"
             );
+            Assert.areEqual(
+                "<br>", node.getHTML(),
+                "The element should have a <br> as unique child"
+            );
         },
 
         "Should fire the corresponding `editorInteraction` event": function () {
