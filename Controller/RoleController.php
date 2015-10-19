@@ -230,7 +230,12 @@ class RoleController extends Controller
         }
 
         buildFormData:
-        $policyData = (new PolicyMapper())->mapToFormData($policy, ['roleDraft' => $roleDraft, 'initialRole' => $role]);
+        $limitationTypes = $policy->module ? $this->roleService->getLimitationTypesByModuleFunction($policy->module, $policy->function) : [];
+        $policyData = (new PolicyMapper())->mapToFormData($policy, [
+            'roleDraft' => $roleDraft,
+            'initialRole' => $role,
+            'availableLimitationTypes' => $limitationTypes,
+        ]);
         $actionUrl = $this->generateUrl('admin_policyEdit', ['roleId' => $roleId, 'policyId' => $policyId]);
         $form = $this->createForm('ezrepoforms_policy_edit', $policyData);
         $form->handleRequest($request);
