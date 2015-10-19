@@ -1,15 +1,18 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>eZ AlloyEditor removeblock plugin tests</title>
+<title>eZ AlloyEditor embedhref button tests</title>
 </head>
 <body>
+
+<div class="editorContainer">
+    <div data-ezelement="ezembed" data-href="content://2" data-ezview="embed">Times like these</div>
+</div>
 <div class="container"></div>
 <script type="text/javascript" src="../../assets/function.bind.polyfill.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
-<script type="text/javascript" src="./assets/ez-alloyeditor-plugin-removeblock-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-alloyeditor-button-embedhref-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -24,17 +27,25 @@
     }
 
     YUI({
-        coverage: ['ez-alloyeditor-plugin-removeblock'],
+        coverage: ['ez-alloyeditor-button-embedhref'],
         filter: loaderFilter,
         modules: {
-            "ez-alloyeditor-plugin-removeblock": {
-                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/removeblock.js",
+            "ez-alloyeditor-button-embedhref": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/buttons/embedhref.js",
+                requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent'],
+            },
+            "ez-alloyeditor-button-mixin-embeddiscovercontent": {
+                requires: ['ez-alloyeditor'],
+                fullpath: "../../../../Resources/public/js/alloyeditor/buttons/mixins/embeddiscovercontent.js",
             },
             "ez-alloyeditor-plugin-embed": {
                 fullpath: "../../../../Resources/public/js/alloyeditor/plugins/embed.js",
             },
+            "ez-alloyeditor": {
+                fullpath: "../../../../Resources/public/js/external/ez-alloyeditor.js",
+            },
         }
-    }).use('ez-alloyeditor-plugin-removeblock-tests', function (Y) {
+    }).use('ez-alloyeditor-button-embedhref-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>

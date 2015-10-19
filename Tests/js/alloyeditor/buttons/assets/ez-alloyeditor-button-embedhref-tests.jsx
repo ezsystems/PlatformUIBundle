@@ -3,14 +3,14 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 /* global CKEDITOR */
-YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
+YUI.add('ez-alloyeditor-button-embedhref-tests', function (Y) {
     var renderTest, clickTest,
         AlloyEditor = Y.eZ.AlloyEditor,
         React = Y.eZ.React,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
-        name: "eZ AlloyEditor embed button render test",
+        name: "eZ AlloyEditor embedhref button render test",
 
         setUp: function () {
             this.container = Y.one('.container').getDOMNode();
@@ -26,7 +26,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
             var button;
 
             button = React.render(
-                <AlloyEditor.ButtonEmbed editor={this.editor} />,
+                <Y.eZ.AlloyEditorButton.ButtonEmbedHref editor={this.editor} />,
                 this.container
             );
 
@@ -42,7 +42,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
     });
 
     clickTest= new Y.Test.Case({
-        name: "eZ AlloyEditor embed button click test",
+        name: "eZ AlloyEditor embedhref button click test",
 
         "async:init": function () {
             var startTest = this.callback();
@@ -89,7 +89,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
                 );
             });
             button = React.render(
-                <AlloyEditor.ButtonEmbed editor={this.editor} />,
+                <Y.eZ.AlloyEditorButton.ButtonEmbedHref editor={this.editor} />,
                 this.container.getDOMNode()
             );
 
@@ -101,9 +101,9 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
             );
         },
 
-        "Should add the embed after choosing the content": function () {
+        "Should update the embed": function () {
             var button, content = new Mock(),
-                contentName = 'I Am the Highway',
+                contentName = 'Wheels',
                 contentId = 42;
 
             Mock.expect(content, {
@@ -119,22 +119,18 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
                 }
             });
 
-            this.editor.get('nativeEditor').on('contentDiscover', function (evt) {
-                var wrapper, widget;
 
+            this.editor.get('nativeEditor').on('contentDiscover', function (evt) {
+                var wrapper = this.element.findOne('.cke_widget_element'),
+                    widget = this.widgets.getByElement(wrapper);
+
+                widget.focus();
                 evt.data.config.contentDiscoveredHandler.call(this, {
                     selection: {
-                        content: content,
-                    },
+                        content: content
+                    }
                 });
 
-                wrapper = this.element.findOne('.cke_widget_element');
-                widget = this.widgets.getByElement(wrapper);
-
-                Assert.areEqual(
-                    'ezembed', widget.name,
-                    "An ezembed widget should have been added"
-                );
                 Assert.areEqual(
                     'ezcontent://' + contentId,
                     widget.element.data('href'),
@@ -143,7 +139,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
                 Assert.areEqual(
                     contentName,
                     widget.element.getText(),
-                    "The ezembed should be filled with the content name"
+                    "The embed should be filled with the content name"
                 );
                 Assert.areSame(
                     widget, this.widgets.focused,
@@ -151,7 +147,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
                 );
             });
             button = React.render(
-                <AlloyEditor.ButtonEmbed editor={this.editor} />,
+                <Y.eZ.AlloyEditorButton.ButtonEmbedHref editor={this.editor} />,
                 this.container.getDOMNode()
             );
 
@@ -159,7 +155,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
         },
     });
 
-    Y.Test.Runner.setName("eZ AlloyEditor embed button tests");
+    Y.Test.Runner.setName("eZ AlloyEditor embedhref button tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(clickTest);
-}, '', {requires: ['test', 'node', 'node-event-simulate', 'ez-alloyeditor-button-embed', 'ez-alloyeditor-plugin-embed']});
+}, '', {requires: ['test', 'node', 'node-event-simulate', 'ez-alloyeditor-button-embedhref', 'ez-alloyeditor-plugin-embed']});

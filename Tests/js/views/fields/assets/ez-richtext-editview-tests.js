@@ -7,6 +7,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
         editorTest, focusModeTest, editorFocusHandlingTest,
         actionBarTest, destructorTest, appendToolbarConfigTest,
+        eventForwardTest,
         VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, FIELDVALUE_RESULT,
         Assert = Y.Assert, Mock = Y.Mock;
 
@@ -672,6 +673,66 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
     });
 
+    eventForwardTest = new Y.Test.Case({
+        name: "eZ RichText View eventForward test",
+
+        setUp: function () {
+            this.field = {id: 42, fieldValue: {xhtml5edit: ""}};
+            this.content = new Mock();
+            this.version = new Mock();
+            this.contentType = new Mock();
+            Mock.expect(this.content, {
+                method: 'toJSON',
+            });
+            Mock.expect(this.version, {
+                method: 'toJSON',
+            });
+            Mock.expect(this.contentType, {
+                method: 'toJSON',
+            });
+
+            this.view = new Y.eZ.RichTextEditView({
+                container: '.container',
+                field: this.field,
+                fieldDefinition: {isRequired: false},
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType,
+                actionBar: new Y.View(),
+                config: {
+                    rootInfo: {
+                        ckeditorPluginPath: '../../..',
+                    }
+                },
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should forward the contentDiscover event": function () {
+            var eventInfo = {title: "I Am the Highway"},
+                contentDiscoverFired = false;
+
+            this.view.once('contentDiscover', function (e) {
+                contentDiscoverFired = true;
+                Assert.areEqual(
+                    eventInfo.title,
+                    e.title,
+                    "The event should provide the eventInfo"
+                );
+            });
+            this.view.set('active', true);
+            this.view.get('editor').get('nativeEditor').fire('contentDiscover', eventInfo);
+            Assert.isTrue(
+                contentDiscoverFired,
+                "The contentDiscover event should have been fired"
+            );
+        },
+    });
+
     appendToolbarConfigTest = new Y.Test.Case({
         name: "eZ RichText View ezaddcontent toolbar config test",
 
@@ -717,4 +778,5 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(appendToolbarConfigTest);
     Y.Test.Runner.add(registerTest);
     Y.Test.Runner.add(editorFocusHandlingTest);
+    Y.Test.Runner.add(eventForwardTest);
 }, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'fake-toolbarconfig', 'editviewregister-tests', 'ez-richtext-editview']});
