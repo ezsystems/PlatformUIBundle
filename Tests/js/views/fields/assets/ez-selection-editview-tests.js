@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-selection-editview-tests', function (Y) {
-    var viewTest, registerTest, getFieldTest, uiFunctionalTest,
+    var viewTest, registerTest, getFieldTest, uiFunctionalTest, validateAddedValuesTest,
         options = [
             'Mont Myon', 'Signal de Nivigne', 'Mont Verjon', 'Mont July',
             'Mont Grillerin', 'Croix Rousse', 'Vergongeat'
@@ -575,9 +575,101 @@ YUI.add('ez-selection-editview-tests', function (Y) {
         },
     });
 
+    validateAddedValuesTest = new Y.Test.Case({
+        name: "eZ Selection View regression test concerning EZP-24716",
+
+        _getFieldDefinition: function (required, multiple, options) {
+            return {
+                isRequired: required,
+                fieldSettings: {
+                    isMultiple: multiple,
+                    options: options,
+                }
+            };
+        },
+
+        _getField: function (fieldValues) {
+            return {
+                fieldValue: fieldValues,
+            };
+        },
+
+        setUp: function () {
+            this.field = {};
+            this.jsonContent = {};
+            this.jsonContentType = {};
+            this.jsonVersion = {};
+            this.content = new Y.Mock();
+            this.version = new Y.Mock();
+            this.contentType = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: this.jsonContent
+            });
+            Y.Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: this.jsonVersion
+            });
+            Y.Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: this.jsonContentType
+            });
+
+            this.view = new Y.eZ.SelectionEditView({
+                container: '.container',
+                field: this.field,
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should validate after adding a selection": function () {
+            var container = this.view.get('container'),
+                option,
+                that = this;
+
+            this.view.set('fieldDefinition', this._getFieldDefinition(true, false, options));
+            this.view.render();
+            this.view.set('active', true);
+            this.view.set('showSelectionUI', true);
+
+            this.view.validate();
+            Y.Assert.isTrue(!!this.view.get('errorStatus'), "An error should be detected because field is requiered and empty");
+
+            option = container.one('.ez-selection-options li');
+            option.simulateGesture('tap', function () {
+                that.resume(function () {
+                    var text = option.getAttribute('data-text');
+
+                    Y.Assert.areEqual(
+                        1, this.view.get('values').length,
+                        "The selection should contain one element"
+                    );
+                    Y.Assert.areEqual(
+                        text, this.view.get('values')[0],
+                        "The option should be selected"
+                    );
+                    Y.Assert.isObject(
+                        container.one('.ez-selection-values .ez-selection-value[data-text="' + text + '"]'),
+                        "The selection should be visible in the DOM"
+                    );
+                    Y.Assert.isFalse(!!this.view.get('errorStatus'), "No error should be detected because validate should have been called");
+                });
+            });
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Selection Edit View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(uiFunctionalTest);
+    Y.Test.Runner.add(validateAddedValuesTest);
 
     getFieldTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.GetFieldTests, {
