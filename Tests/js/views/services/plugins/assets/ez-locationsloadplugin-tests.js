@@ -20,6 +20,8 @@ YUI.add('ez-locationsloadplugin-tests', function (Y) {
             this.locations = [{id: 'Location 1'},{id: 'Location 2'}];
 
             this.content = new Mock();
+            this.location = new Mock();
+
             Mock.expect(this.content, {
                 method: 'loadLocations',
                 args: [Mock.Value.Object, Mock.Value.Function],
@@ -49,6 +51,11 @@ YUI.add('ez-locationsloadplugin-tests', function (Y) {
                 method: 'loadLocations',
                 args: [Mock.Value.Object, Mock.Value.Function],
                 run: function (options, callback) {
+                    Assert.isUndefined(
+                        options.location,
+                        "Location should not be defined"
+                    );
+
                     callback(false, that.locations);
                 }
             });
@@ -75,6 +82,11 @@ YUI.add('ez-locationsloadplugin-tests', function (Y) {
                 method: 'loadLocations',
                 args: [Mock.Value.Object, Mock.Value.Function],
                 run: function (options, callback) {
+                    Assert.isUndefined(
+                        options.location,
+                        "Location should not be defined"
+                    );
+
                     callback(true);
                 }
             });
@@ -91,7 +103,41 @@ YUI.add('ez-locationsloadplugin-tests', function (Y) {
                 this.view.get('loadingError'),
                 "The error event should be fired"
             );
-        }
+        },
+
+        "Should allow passing the location into options": function () {
+            var that = this;
+
+            Mock.expect(this.content, {
+                method: 'loadLocations',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (options, callback) {
+                    Assert.areSame(
+                        that.location,
+                        options.location,
+                        "Location should be provided in options"
+                    );
+
+                    callback(false, that.locations);
+                }
+            });
+
+            this.view.fire('loadLocations', {
+                content: that.content,
+                location: that.location,
+            });
+
+            Assert.areSame(
+                this.locations,
+                this.view.get('locations'),
+                "The locations should be retrieved"
+            );
+
+            Assert.isFalse(
+                this.view.get('loadingError'),
+                "The error event should not be fired"
+            );
+        },
     });
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);

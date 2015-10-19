@@ -4,7 +4,7 @@
  */
 YUI.add('ez-contentmodel-tests', function (Y) {
     var modelTest, relationsTest, createContent, loadResponse, copyTest,
-        loadLoactionsTest, addLocationTest, setMainLocationTest,
+        loadLocationsTest, addLocationTest, setMainLocationTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -626,12 +626,14 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
-    loadLoactionsTest = new Y.Test.Case({
+    loadLocationsTest = new Y.Test.Case({
         name: "eZ Content Model load locations tests",
 
         setUp: function () {
             this.model = new Y.eZ.Content();
             this.contentId = 'Pele';
+            this.locationId = 'Maradona';
+            this.currentLocation = new Mock();
 
             this.capi = new Mock();
             this.contentService = new Mock();
@@ -647,12 +649,19 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                 returns: this.contentId
             });
 
+            Mock.expect(this.currentLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: this.locationId
+            });
+
             this.loadLocationsResponse = {
                 document: {
                     LocationList: {
                         Location: [
                             {_href: 'Milton Friedman'},
-                            {_href: 'JKM'}
+                            {_href: 'JKM'},
+                            {_href: this.locationId}
                         ]
                     }
                 }
@@ -667,7 +676,10 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
 
         'Should load locations': function () {
-            var options = {api: this.capi},
+            var options = {
+                    api: this.capi,
+                    location: this.currentLocation
+                },
                 callbackCalled = false,
                 that = this;
 
@@ -947,7 +959,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(relationsTest);
     Y.Test.Runner.add(createContent);
     Y.Test.Runner.add(copyTest);
-    Y.Test.Runner.add(loadLoactionsTest);
+    Y.Test.Runner.add(loadLocationsTest);
     Y.Test.Runner.add(addLocationTest);
     Y.Test.Runner.add(setMainLocationTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

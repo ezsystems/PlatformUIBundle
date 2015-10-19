@@ -40,7 +40,10 @@ YUI.add('ez-locationsloadplugin', function (Y) {
         _loadLocations: function (e) {
             var service = this.get('host'),
                 capi = service.get('capi'),
-                options = {api: capi};
+                options = {
+                    api: capi,
+                    location: e.location,
+                };
 
             e.content.loadLocations(options, function (error, locations) {
                 if (error) {
