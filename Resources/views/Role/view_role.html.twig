@@ -50,13 +50,15 @@
                                 {%- endif -%}
                             </td>
                             <td>
-                                {%- for limitation in policy.limitations -%}
-                                    {# @var limitation \eZ\Publish\API\Repository\Values\User\Limitation #}
-                                    {{- limitation.identifier -}}
-                                    {%- for limitationValue in limitation.limitationValues -%}
+                                {%- for limitation in display_policy_limitations[policy.id] -%}
+                                    {{- limitation.name|trans -}}
+                                    {%- for limitationValue in limitation.values -%}
                                         {%- if loop.first -%}( {% endif -%}
-                                        {# TODO: https://jira.ez.no/browse/EZP-24699 Enrich Role limitations view with links and human readable names #}
-                                        {{- limitationValue -}}
+                                        {%- if limitationValue.href -%}
+                                            <a href="{{ limitationValue.href }}" title="{{ limitationValue.name }}">{{ limitationValue.name }}</a>
+                                        {%- else -%}
+                                            {{ limitationValue.name }}
+                                        {%- endif -%}
                                         {%- if not loop.last -%}, {% endif -%}
                                         {%- if loop.last %} ){%- endif -%}
                                     {%- endfor -%}
