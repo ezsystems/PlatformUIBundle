@@ -49,9 +49,27 @@ YUI.add('ez-contenttreeplugin', function (Y) {
         _loadNode: function (node, callback) {
             var capi = this.get('host').get('capi'),
                 options = {api: capi},
-                contentService = capi.getContentService();
+                contentService = capi.getContentService(),
+                levelLocation = node.data.location,
+                query;
 
-            contentService.loadLocationChildren(node.id, function (err, response) {
+            query = contentService.newViewCreateStruct('children_' + levelLocation.get('locationId'), 'LocationQuery');
+            query.body.ViewInput.LocationQuery.Criteria = {
+                "ParentLocationIdCriterion": levelLocation.get('locationId'),
+            };
+
+            /*
+             * @TODO sort correctly the sub-items of the levelLocation
+             * see https://jira.ez.no/browse/EZP-24998
+            query.body.ViewInput.LocationQuery.SortClauses = {
+                "SortClause": {
+                    "SortField": levelLocation.get('sortField'),
+                    "SortOrder": levelLocation.get('sortOrder'),
+                },
+            };
+            */
+
+            contentService.createView(query, function (err, response) {
                 var tasks = new Y.Parallel(),
                     loadError = false,
                     children = {};
@@ -60,34 +78,37 @@ YUI.add('ez-contenttreeplugin', function (Y) {
                     callback({node: node});
                     return;
                 }
-                Y.Array.each(response.document.LocationList.Location, function (loc) {
-                    var location, content, contentType,
+                Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit) {
+                    var loc, contentInfo, contentType,
                         end = tasks.add(function (err) {
                             if ( err ) {
                                 loadError = true;
                                 return;
                             }
-                            children[location.get('id')] = {
-                                location: location,
-                                content: content,
-                                contentType: contentType,
-                            };
+                            node.append({
+                                data: children[loc.get('id')],
+                                id: loc.get('id'),
+                                canHaveChildren: children[loc.get('id')].contentType.get('isContainer'),
+                                state: {
+                                    leaf: (loc.get('childCount') === 0),
+                                },
+                            });
                         });
 
-                    location = new Y.eZ.Location({id: loc._href});
-                    location.load(options, function (err) {
-                        if ( err ) {
-                            end(err);
-                        }
-                        content = new Y.eZ.Content({id: location.get('resources').Content});
-                        content.load(options, function (err) {
-                            if ( err ) {
-                                end(err);
-                            }
-                            contentType = new Y.eZ.ContentType({id: content.get('resources').ContentType});
-                            contentType.load(options, end);
-                        });
-                    });
+                    loc = new Y.eZ.Location({id: hit.value.Location._href});
+                    loc.loadFromHash(hit.value.Location);
+
+                    // TODO we should be a bit smarter here to not load again
+                    // and again the same content type at least for a given level.
+                    contentInfo = loc.get('contentInfo');
+                    contentType = new Y.eZ.ContentType({id: contentInfo.get('resources').ContentType});
+
+                    children[loc.get('id')] = {
+                        "location": loc,
+                        "contentInfo": contentInfo,
+                        "contentType": contentType,
+                    };
+                    contentType.load(options, end);
                 });
 
                 tasks.done(function () {
@@ -95,16 +116,6 @@ YUI.add('ez-contenttreeplugin', function (Y) {
                         callback({node: node});
                         return;
                     }
-                    Y.Array.each(response.document.LocationList.Location, function (key) {
-                        node.append({
-                            data: children[key._href],
-                            id: key._href,
-                            canHaveChildren: children[key._href].contentType.get('isContainer'),
-                            state: {
-                                leaf: (children[key._href].location.get('childCount') === 0),
-                            },
-                        });
-                    });
                     callback();
                 });
             });

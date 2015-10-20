@@ -925,13 +925,13 @@ system:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-imagevariationloadplugin.js
                 ez-universaldiscoverycontenttreeplugin:
-                    requires: ['ez-contenttreeplugin', 'ez-pluginregistry']
+                    requires: ['ez-contenttreeplugin', 'ez-pluginregistry', 'ez-locationmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-universaldiscoverycontenttreeplugin.js
                 ez-discoverybarcontenttreeplugin:
                     requires: ['ez-contenttreeplugin', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-discoverybarcontenttreeplugin.js
                 ez-contenttreeplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'parallel']
+                    requires: ['ez-viewservicebaseplugin', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'parallel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
                 ez-locationsearchplugin:
                     requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel']
