@@ -159,6 +159,9 @@ services:
             - @ezrepoforms.action_dispatcher.role
             - @ezrepoforms.action_dispatcher.policy
             - @translator
+            - @ezpublish.api.service.content_type
+            - @ezpublish.api.service.section
+            - %ezpublish.siteaccess.list%
 
     ezsystems.platformui.form_processor.role:
         class: %ezsystems.platformui.form_processor.role.class%

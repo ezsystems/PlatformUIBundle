@@ -9,7 +9,10 @@
 namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
+use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\RoleService;
+use eZ\Publish\API\Repository\SectionService;
+use eZ\Publish\API\Repository\Values\User\Role;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\Core\Repository\Values\User\Policy;
 use eZ\Publish\Core\Repository\Values\User\PolicyDraft;
@@ -47,16 +50,39 @@ class RoleController extends Controller
      */
     private $translator;
 
+    /**
+     * @var \eZ\Publish\API\Repository\ContentTypeService
+     */
+    private $contentTypeService;
+
+    /**
+     * @var \eZ\Publish\API\Repository\SectionService
+     */
+    private $sectionService;
+
+    /**
+     * List of configured siteaccesses.
+     *
+     * @var array
+     */
+    protected $siteAccessList;
+
     public function __construct(
         RoleService $roleService,
         ActionDispatcherInterface $roleActionDispatcher,
         ActionDispatcherInterface $policyActionDispatcher,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        ContentTypeService $contentTypeService,
+        SectionService $sectionService,
+        array $siteAccessList
     ) {
         $this->roleService = $roleService;
         $this->roleActionDispatcher = $roleActionDispatcher;
         $this->policyActionDispatcher = $policyActionDispatcher;
         $this->translator = $translator;
+        $this->contentTypeService = $contentTypeService;
+        $this->sectionService = $sectionService;
+        $this->siteAccessList = $siteAccessList;
     }
 
     /**
@@ -98,6 +124,9 @@ class RoleController extends Controller
             )->createView();
         }
 
+        // Populate policy limitations with links and translated identifiers
+        $displayPolicyLimitations = $this->buildDisplayPolicyLimitations($role);
+
         return $this->render('eZPlatformUIBundle:Role:view_role.html.twig', [
             'role' => $role,
             'deleteFormsByPolicyId' => $deleteFormsByPolicyId,
@@ -105,7 +134,113 @@ class RoleController extends Controller
             'deleteForm' => $deleteForm->createView(),
             'can_edit' => $this->isGranted(new Attribute('role', 'update')),
             'can_delete' => $this->isGranted(new Attribute('role', 'delete')),
+            'display_policy_limitations' => $displayPolicyLimitations,
         ]);
+    }
+
+    /**
+     * Build the policy limitation values to be displayed, enriched with translations and links.
+     *
+     * @param Role $role Role
+     *
+     * @return array
+     */
+    protected function buildDisplayPolicyLimitations(Role $role)
+    {
+        $displayPolicyLimitations = [];
+
+        foreach ($role->getPolicies() as $policy) {
+            $displayPolicyLimitations[$policy->id] = [];
+            foreach ($policy->getLimitations() as $limitation) {
+                $limitationValues = [];
+                switch ($limitation->getIdentifier()) {
+                    case 'Class':
+                        $limitationName = 'role.policy.limitation.identifier.class';
+                        foreach ($limitation->limitationValues as $limitationValue) {
+                            $contentType = $this->contentTypeService->loadContentType($limitationValue);
+                            $limitationValues[] = [
+                                'href' => $this->generateUrl(
+                                    'admin_contenttypeView',
+                                    ['contentTypeId' => $limitationValue]
+                                ),
+                                'name' => $contentType->getName($contentType->mainLanguageCode),
+                            ];
+                        }
+                        break;
+                    case 'ParentClass':
+                        $limitationName = 'role.policy.limitation.identifier.parentclass';
+                        foreach ($limitation->limitationValues as $limitationValue) {
+                            $contentType = $this->contentTypeService->loadContentType($limitationValue);
+                            $limitationValues[] = [
+                                'href' => $this->generateUrl(
+                                    'admin_contenttypeView',
+                                    ['contentTypeId' => $limitationValue]
+                                ),
+                                'name' => $contentType->getName($contentType->mainLanguageCode),
+                            ];
+                        }
+                        break;
+                    case 'Section':
+                        $limitationName = 'role.policy.limitation.identifier.section';
+                        foreach ($limitation->limitationValues as $limitationValue) {
+                            $limitationValues[] = [
+                                'href' => $this->generateUrl(
+                                    'admin_sectionview',
+                                    ['sectionId' => $limitationValue]
+                                ),
+                                'name' => $this->sectionService->loadSection($limitationValue)->name,
+                            ];
+                        }
+                        break;
+                    case 'SiteAccess':
+                        $limitationName = 'role.policy.limitation.identifier.siteaccess';
+                        foreach ($limitation->limitationValues as $limitationValue) {
+                            $foundSiteaccessName = 'undefined:' . $limitationValue;
+                            foreach ($this->siteAccessList as $siteaccessName) {
+                                if ($limitationValue === sprintf('%u', crc32($siteaccessName))) {
+                                    $foundSiteaccessName = $siteaccessName;
+                                    break;
+                                }
+                            }
+                            $limitationValues[] = [
+                                'href' => false,
+                                'name' => $foundSiteaccessName,
+                            ];
+                        }
+                        break;
+                    case 'Owner':
+                        $limitationName = 'role.policy.limitation.identifier.owner';
+                        foreach ($limitation->limitationValues as $limitationValue) {
+                            // '2:session' is the same as '1:self', see https://doc.ez.no/display/EZP/OwnerLimitation
+                            if ($limitationValue === '1' || $limitationValue === '2') {
+                                $ownerName = $this->translator->trans(
+                                    'role.policy.limitation.identifier.owner.self',
+                                    [],
+                                    'role'
+                                );
+                            } else {
+                                $ownerName = $limitationValue;
+                            }
+                            $limitationValues[] = [
+                                'href' => false,
+                                'name' => $ownerName,
+                            ];
+                        }
+                        break;
+                    // TODO are there any others?
+                    default:
+                        $limitationName = $limitation->getIdentifier();
+                        $limitationValues = [];
+                }
+                $displayPolicyLimitations[$policy->id][] = [
+                    'identifier' => $limitation->getIdentifier(),
+                    'name' => $limitationName,
+                    'values' => $limitationValues,
+                ];
+            }
+        }
+
+        return $displayPolicyLimitations;
     }
 
     /**

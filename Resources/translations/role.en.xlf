@@ -158,6 +158,34 @@
         <source>role.policy.error.delete</source>
         <target>An error occurred when trying to delete policy #%policyId% for role "%roleIdentifier%".</target>
       </trans-unit>
+      <trans-unit id="25bf6fcaa4e6a20b5eb6e2368cd98903">
+        <source>role.policy.limitation.identifier.class</source>
+        <target>Content type</target>
+      </trans-unit>
+      <trans-unit id="4fedd3075ea2caf4ea1ebbad9fee12a5">
+        <source>role.policy.limitation.identifier.parentclass</source>
+        <target>Parent content type</target>
+      </trans-unit>
+      <trans-unit id="25f8ba219bf6b63a9825e3d1e0c4d195">
+        <source>role.policy.limitation.identifier.section</source>
+        <target>Section</target>
+      </trans-unit>
+      <trans-unit id="b58b9a7fec027fbfd1e0d53a6e4b7c80">
+        <source>role.policy.limitation.identifier.siteaccess</source>
+        <target>Site access</target>
+      </trans-unit>
+      <trans-unit id="dfd01f05b280364878f90403ab963ce2">
+        <source>role.policy.limitation.identifier.owner</source>
+        <target>Owner</target>
+      </trans-unit>
+      <trans-unit id="f80d955b9cb350d9b6351e1b3f73f3af">
+        <source>role.policy.limitation.identifier.owner.any</source>
+        <target>Any</target>
+      </trans-unit>
+      <trans-unit id="8e73badbaded2cde137f488922c2b3e3">
+        <source>role.policy.limitation.identifier.owner.self</source>
+        <target>Self</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
