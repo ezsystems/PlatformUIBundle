@@ -15,8 +15,17 @@ use PHPUnit_Framework_Assert as Assertion;
 
 class PlatformUI extends Context
 {
+    /**
+     * Constants used for the delayed publishing mechanism.
+     */
     const NOT_WAITING = 0;
     const WAITING_FOR_PUBLISHING = 1;
+
+    /**
+     * Constants used for waiting mechanism.
+     */
+    const WAIT_TIMEOUT = 30; // seconds
+    const WAIT_SLEEP_TIME = 300000; // 300ms
 
     use SubContext\Authentication;
     use SubContext\CommonActions;
@@ -27,12 +36,19 @@ class PlatformUI extends Context
     use SubContext\Role;
     use SubContext\Users;
 
+    use Override\Override;
+
     /**
      * PlatformUI relative URL path.
      *
      * @var string
      */
     private $platformUiUri;
+
+    /**
+     * Last exception thrown in spin method.
+     */
+    private $lastException;
 
     /**
      * User account name, admin by default.
@@ -60,28 +76,83 @@ class PlatformUI extends Context
     private $newPathsMap = array();
 
     /**
-     * Waits for Javascript to finish by checking the loading tags of the page.
+     * Behat spin functions
+     * causes waiting while a a certain function does not return true
+     * waits while an element is not present.
      */
-    protected function waitForLoadings()
+    public function spin($lambda)
     {
-        $page = $this->getSession()->getPage();
-        $loadingClasses = array(
-            '.yui3-app-transitioning',
-            '.is-app-loading',
-            '.is-app-transitioning',
-            // content tree
-            '.ez-view-treeactionview.is-expanded .ez-view-treeview:not(.is-tree-loaded)',
-            '.ez-view-universaldiscoverybrowseview .ez-view-treeview:not(.is-tree-loaded)',
-            '.is-tree-node-loading',
-            // contenttype menu
-            '.ez-view-createcontentactionview.is-expanded:not(.is-contenttypeselector-loaded)',
+        $timeLimit = time() + self::WAIT_TIMEOUT;
+        do {
+            try {
+                $return = $lambda($this);
+                if ($return) {
+                    return $return;
+                }
+            } catch (\Exception $e) {
+                $this->lastException = $e;
+            }
+            usleep(self::WAIT_SLEEP_TIME);
+        } while ($timeLimit > time());
+
+        throw new \Exception(
+            'Timeout reached (' . self::WAIT_TIMEOUT . ' seconds). Last exception catched: ' .
+            $this->lastException->getMessage()
         );
-        $loadingSelector = implode(',', $loadingClasses);
-        while ($page->find('css', $loadingSelector) != null) {
-            usleep(100 * 1000); // 100ms
+    }
+
+    /**
+     * Adpted Mink find function combined with a spin function
+     * to find all element with a given css selector that might still be loading.
+     *
+     * @param   string      $locator        css selector for the element
+     * @param   NodeElement $baseElement    base Mink node element from where the find should be called
+     * @return  NodeElement[]
+     */
+    public function findAllWithWait($locator, $baseElement = null)
+    {
+        if (!$baseElement) {
+            $baseElement = $this->getSession()->getPage();
         }
-        //Temporary solution for race conditions errors with selenium2, TO BE IMPROVED
-        sleep(1);
+        $elements = $this->spin(
+            function () use ($locator, $baseElement) {
+                $elements = $baseElement->findAll('css', $locator);
+                foreach ($elements as $element) {
+                    $element->getValue();
+                }
+
+                return $elements;
+            }
+        );
+
+        return $elements;
+    }
+
+    /**
+     * Adpted Mink find function combined with a spin function
+     * to find one element that might still be loading.
+     *
+     * @param   string      $locator        css selector for the element
+     * @param   NodeElement $baseElement    base Mink node element from where the find should be called
+     * @return  NodeElement
+     */
+    public function findWithWait($locator, $baseElement = null)
+    {
+        if (!$baseElement) {
+            $baseElement = $this->getSession()->getPage();
+        }
+        $element = $this->spin(
+            function () use ($locator, $baseElement) {
+                $element = $baseElement->find('css', $locator);
+                if ($element) {
+                    $element->getValue();
+                }
+
+                return $element;
+            }
+        );
+
+        return $element;
     }
 
     /**
@@ -90,13 +161,9 @@ class PlatformUI extends Context
     public function iCreateContentType($type, TableNode $fields)
     {
         $this->clickNavigationZone('Platform');
-        $this->waitForLoadings();
         $this->iClickAtLink('Content structure');
-        $this->waitForLoadings();
         $this->clickActionBar('Create a content');
-        $this->waitForLoadings();
         $this->clickContentType($type);
-        $this->waitForLoadings();
         foreach ($fields as $fieldArray) {
             $keys = array_keys($fieldArray);
             for ($i = 0; $i < count($keys); ++$i) {
@@ -115,16 +182,14 @@ class PlatformUI extends Context
     public function clickOnTreePath($path)
     {
         $this->clickDiscoveryBar('Content tree');
-        $this->waitForLoadings();
-        $page = $this->getSession()->getPage();
-        $node = $page->find('css', '.ez-view-discoverybarview');
+        $node = $this->findWithWait('.ez-view-discoverybarview');
         $this->openTreePath($path, $node);
     }
 
     /**
      * @Then I don't see :path in the content tree
      * @Then I do not see :path in the content tree
-     * Explores the content tree, expanding it and click on the desired element
+     * Explores the content tree, expanding it and click on the desired element.
      *
      * @param   string  $path    The content tree path such as 'Content1/Content2/ContentIWantToClick'
      */
@@ -149,8 +214,7 @@ class PlatformUI extends Context
      */
     public function selectFromUniversalDiscovery($path)
     {
-        $page = $this->getSession()->getPage();
-        $node = $page->find('css', '.ez-view-universaldiscoveryview');
+        $node = $this->findWithWait('.ez-view-universaldiscoveryview');
         $this->openTreePath($path, $node);
     }
 
@@ -178,9 +242,7 @@ class PlatformUI extends Context
     private function goToContentWithPath($path)
     {
         $this->clickNavigationZone('Content');
-        $this->waitForLoadings();
         $this->clickNavigationItem('Content structure');
-        $this->waitForLoadings();
         $this->clickOnTreePath($path);
     }
 
@@ -264,16 +326,6 @@ class PlatformUI extends Context
     }
 
     /**
-     * Makes the application wait between steps.
-     *
-     * @AfterStep
-     */
-    public function waitForJs()
-    {
-        $this->waitForLoadings();
-    }
-
-    /**
      * Initialize class.
      *
      * @param string $uri
@@ -300,7 +352,6 @@ class PlatformUI extends Context
         if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
             $this->clickEditActionBar('Publish');
         }
-        $this->waitForLoadings();
     }
 
     /**
@@ -318,6 +369,7 @@ class PlatformUI extends Context
     {
         return $this->newPathsMap[$name];
     }
+
     /**
      * Attaches a file to a input field on the HTML.
      *
