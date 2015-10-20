@@ -39,10 +39,14 @@
                 </div>
             </fieldset>
 
-            <h2>{{ form_label(form.limitationsData) }}</h2>
-            {% for limitationForm in form.limitationsData %}
-                {{ form_row(limitationForm) }}
-            {% endfor %}
+            <fieldset>
+                <legend>{{ form_label(form.limitationsData) }}</legend>
+                {% for limitationForm in form.limitationsData %}
+                    <div class="pure-control-group">
+                        {{ include(limitationForm.vars.template, {form: limitationForm}, with_context = false) }}
+                    </div>
+                {% endfor %}
+            </fieldset>
 
             <div class="pure-controls">
                 {{ form_widget(form.removeDraft, {"attr": {"class": "pure-button ez-button ez-button-delete ez-font-icon", "formnovalidate": "formnovalidate"}}) }}
