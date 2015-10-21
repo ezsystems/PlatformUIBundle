@@ -274,15 +274,15 @@ YUI.add('ez-relation-editview-tests', function (Y) {
 
         "Should fill the relation with the universal discovery widget selection": function () {
             var that = this,
-                contentMock = new Y.Mock(),
-                fakeEventFacade = {selection : {content : contentMock}};
+                contentInfoMock = new Y.Mock(),
+                fakeEventFacade = {selection: {contentInfo: contentInfoMock}};
 
-            Y.Mock.expect(contentMock, {
+            Y.Mock.expect(contentInfoMock, {
                 method: 'toJSON',
                 returns: {name: 'me', publishedDate: 'yesterday', lastModificationDate: 'tomorrow'}
             });
 
-            Y.Mock.expect(contentMock, {
+            Y.Mock.expect(contentInfoMock, {
                 method: 'get',
                 args: ['contentId'],
                 returns: 51
@@ -292,12 +292,12 @@ YUI.add('ez-relation-editview-tests', function (Y) {
 
                     e.config.contentDiscoveredHandler.call(this, fakeEventFacade);
                     Y.Assert.areSame(
-                        contentMock.get('contentId'),
+                        contentInfoMock.get('contentId'),
                         this.view.get('destinationContentId'),
                         'destinationContentId should match the contentId of the selected relation'
                     );
                     Y.Assert.areSame(
-                        contentMock,
+                        contentInfoMock,
                         this.view.get('destinationContent'),
                         'destinationContent should match the content of the selected relation'
                     );
