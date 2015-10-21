@@ -52,17 +52,17 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
         },
 
         _getStructMocks: function () {
-            var content = new Mock(),
+            var contentInfo = new Mock(),
                 location = new Mock(),
                 contentType = new Mock(),
-                contentJson = {},
+                contentInfoJson = {},
                 locationJson = {},
                 contentTypeJson = {},
                 struct, structJson;
 
-            Mock.expect(content, {
+            Mock.expect(contentInfo, {
                 method: 'toJSON',
-                returns: contentJson,
+                returns: contentInfoJson,
             });
             Mock.expect(location, {
                 method: 'toJSON',
@@ -74,12 +74,12 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
             });
 
             struct = {
-                content: content,
+                contentInfo: contentInfo,
                 location: location,
                 contentType: contentType,
             };
             structJson = {
-                content: contentJson,
+                contentInfo: contentInfoJson,
                 location: locationJson,
                 contentType: contentTypeJson,
             };
@@ -121,8 +121,8 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
                 );
                 Y.Array.each(variables.miniDisplayList, function (struct, i) {
                     Assert.areSame(
-                        struct.content, that.structsJson[size - i - 1].content,
-                        "The content toJSON result should be provided"
+                        struct.contentInfo, that.structsJson[size - i - 1].contentInfo,
+                        "The contentInfo toJSON result should be provided"
                     );
                     Assert.areSame(
                         struct.location, that.structsJson[size - i - 1].location,
@@ -135,8 +135,8 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
                 });
                 Y.Array.each(variables.confirmedList, function (struct, i) {
                     Assert.areSame(
-                        struct.content, that.structsJson[size - i - 1].content,
-                        "The content toJSON result should be provided"
+                        struct.contentInfo, that.structsJson[size - i - 1].contentInfo,
+                        "The contentInfo toJSON result should be provided"
                     );
                     Assert.areSame(
                         struct.location, that.structsJson[size - i - 1].location,
@@ -204,7 +204,7 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
                 return origTpl.apply(this, arguments);
             };
             this.view.set('confirmedList', [{
-                content: this._getModelMock(),
+                contentInfo: this._getModelMock(),
                 location: this._getModelMock(),
                 contentType: this._getModelMock(),
             }]);
@@ -216,7 +216,7 @@ YUI.add('ez-universaldiscoveryconfirmedlistview-tests', function (Y) {
             var origTpl = this.view.template;
 
             this.view.set('confirmedList', [{
-                content: this._getModelMock(),
+                contentInfo: this._getModelMock(),
                 location: this._getModelMock(),
                 contentType: this._getModelMock(),
             }]);
