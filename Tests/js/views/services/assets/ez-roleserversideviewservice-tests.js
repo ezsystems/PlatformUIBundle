@@ -6,22 +6,22 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
     var contentDiscoverEventTest,
         assignRoleTest, notificationTest,
         Mock = Y.Mock, Assert = Y.Assert,
-        getMockForJson = function (contentJson) {
-            var content = new Mock();
+        getMockForJson = function (modelJson) {
+            var model = new Mock();
 
-            Mock.expect(content, {
+            Mock.expect(model, {
                 method: 'get',
                 args: [Mock.Value.String],
                 run: function (attr) {
-                    if (contentJson[attr]!==undefined) {
-                        return contentJson[attr];
+                    if (modelJson[attr]!==undefined) {
+                        return modelJson[attr];
                     } else {
                         Y.fail('Trying to `get` incorrect attribute `' + attr + '` from mock');
                     }
                 }
             });
 
-            return content;
+            return model;
         };
 
     contentDiscoverEventTest = new Y.Test.Case({
@@ -117,16 +117,13 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                     id: 'c-id',
                     contentId: 'content-contentId',
                     name: 'The Crawling Chaos',
-                    resources: {
-                        MainLocation: '/1/5/14'
-                    }
                 },
-                content = getMockForJson(contentJson),
+                contentInfo = getMockForJson(contentJson),
                 contentTypeJson = {
                     identifier: 'user'
                 },
                 contentType = getMockForJson(contentTypeJson),
-                selection = [{content: content, contentType: contentType}],
+                selection = [{contentInfo: contentInfo, contentType: contentType}],
                 universalDiscovery = new Mock(),
                 callbackCalled = false,
                 callback = function () {
@@ -170,16 +167,14 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                     id: 'c-id',
                     contentId: 'content-contentId',
                     name: 'The Crawling Chaos',
-                    resources: {
-                        MainLocation: '/1/5/14'
-                    }
                 },
-                content = getMockForJson(contentJson),
+                location = getMockForJson({id: "/1/5/14"}),
+                contentInfo = getMockForJson(contentJson),
                 contentTypeJson = {
                     identifier: 'user_group'
                 },
                 contentType = getMockForJson(contentTypeJson),
-                selection = [{content: content, contentType: contentType}],
+                selection = [{contentInfo: contentInfo, contentType: contentType, location: location}],
                 universalDiscovery = new Mock(),
                 callbackCalled = false,
                 callback = function () {
@@ -299,16 +294,14 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                     id: 'c-id',
                     contentId: 'content-contentId',
                     name: 'The Crawling Chaos',
-                    resources: {
-                        MainLocation: '/1/5/14'
-                    }
                 },
-                content = getMockForJson(contentJson),
+                location = getMockForJson({id: "/1/5/14"}),
+                contentInfo = getMockForJson(contentJson),
                 contentTypeJson = {
                     identifier: 'user_group'
                 },
                 contentType = getMockForJson(contentTypeJson),
-                selection = [{content: content, contentType: contentType}],
+                selection = [{contentInfo: contentInfo, contentType: contentType, location: location}],
                 universalDiscovery = new Mock(),
                 config = {},
                 startNotificationFired = false,
@@ -392,16 +385,14 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                     id: 'c-id',
                     contentId: 'content-contentId',
                     name: 'The Crawling Chaos',
-                    resources: {
-                        MainLocation: '/1/5/14'
-                    }
                 },
-                content = getMockForJson(contentJson),
+                location = getMockForJson({id: "/1/5/14"}),
+                contentInfo = getMockForJson(contentJson),
                 contentTypeJson = {
                     identifier: 'user_group'
                 },
                 contentType = getMockForJson(contentTypeJson),
-                selection = [{content: content, contentType: contentType}],
+                selection = [{contentInfo: contentInfo, contentType: contentType, location: location}],
                 universalDiscovery = new Mock(),
                 config = {},
                 startNotificationFired = false,
@@ -472,8 +463,8 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
             var contentJson = {
                     id: 'c-id',
                 },
-                content = getMockForJson(contentJson),
-                selection = [{content: content}],
+                contentInfo = getMockForJson(contentJson),
+                selection = [{contentInfo: contentInfo}],
                 universalDiscovery = new Mock(),
                 config = {},
                 startNotificationFired = false,
@@ -550,16 +541,13 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                     id: 'c-id',
                     contentId: 'content-contentId',
                     name: 'The Crawling Chaos',
-                    resources: {
-                        MainLocation: '/1/5/14'
-                    }
                 },
-                content = getMockForJson(contentJson),
+                contentInfo = getMockForJson(contentJson),
                 contentTypeJson = {
                     identifier: contentTypeString
                 },
                 contentType = getMockForJson(contentTypeJson),
-                selection = [{content: content, contentType: contentType}],
+                selection = [{contentInfo: contentInfo, contentType: contentType}],
                 universalDiscovery = new Mock(),
                 config = {},
                 startNotificationFired = false,
