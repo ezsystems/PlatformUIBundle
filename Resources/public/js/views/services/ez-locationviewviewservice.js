@@ -174,7 +174,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 that = this,
                 content = this.get('content'),
                 contentName =  content.get('name'),
-                parentContentName = e.selection.content.get('name'),
+                parentContentName = e.selection.contentInfo.get('name'),
                 notificationIdentifier =  'move-notification-' + parentLocationId + '-' + locationId;
 
             this._notify("'" + contentName + "' is being moved under '" + parentContentName + "'", notificationIdentifier, 'started', 5);
