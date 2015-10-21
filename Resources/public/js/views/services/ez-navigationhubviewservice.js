@@ -515,6 +515,10 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                             "Content types", "admin-contenttypes",
                             "adminContentType", {uri: "pjax/contenttype"}
                         ),
+                        this._getNavigationItem(
+                            "Languages", "admin-languages",
+                            "adminLanguage", {uri: "pjax/language/list"}
+                        ),
                         //TODO in EZP-24860. For now link to users node is defined in a static way.
                         this._getSubtreeItem(
                             "Users",

@@ -1,0 +1,73 @@
+{% extends "eZPlatformUIBundle::pjax_admin.html.twig" %}
+
+{% trans_default_domain "language" %}
+
+{% block header_breadcrumbs %}
+    {% set breadcrumb_items = [
+        {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
+        {link: path('admin_languagelist'), label: 'language.list'|trans({}, 'language')},
+        {link: '', label: 'language.view.title'|trans({'%languageName%': language.name}, 'language')}
+    ] %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block header_title %}
+    <h1 class="ez-page-header-name" data-icon="&#xe61a;">{{ 'language.view.title'|trans({'%languageName%': language.name}) }}</h1>
+{% endblock %}
+
+{% block content %}
+    <section class="ez-tabs ez-serverside-content">
+        <ul class="ez-tabs-list">
+            <li class="ez-tabs-label is-tab-selected"><a href="#ez-tabs-language-name">{{ language.name }}</a></li>
+        </ul>
+        <div class="ez-tabs-panel is-tab-selected" id="ez-tabs-language-name">
+            <ul>
+                <li>
+                    <strong>{{ 'language.name.label'|trans }}</strong>
+                    {{ language.name }}
+                </li>
+                <li>
+                    <strong>{{ 'language.code.label'|trans }}</strong>
+                    {{ language.languageCode }}
+                </li>
+                <li>
+                    <strong>{{ 'language.id.label'|trans }}</strong>
+                    {{ language.id }}
+                </li>
+                <li>
+                    <strong>{{ 'language.enabled.label'|trans }}</strong>
+                    <input type="checkbox" disabled {% if language.enabled %}checked title="{{ 'language.enabled'|trans }}"{% else %}title="{{ 'language.disabled'|trans }}"{% endif %}>
+                </li>
+            </ul>
+
+            <div>
+                {{ form_start(deleteForm, {"action": path("admin_languagedelete", {"languageId": language.id, "redirectErrorsTo": "view"})}) }}
+                {% if canEdit %}
+                    <a href="{{ path('admin_languageedit', {'languageId': language.id}) }}"
+                       class="pure-button ez-button" data-icon="&#xe606;">
+                        {{ 'language.edit'|trans }}
+                    </a>
+                {% else %}
+                    <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">
+                        {{ 'language.edit'|trans }}
+                    </span>
+                {% endif %}
+
+                    {{ form_widget(deleteForm.languageId) }}
+                    {{
+                        form_widget(
+                            deleteForm.delete,
+                            {
+                                "disabled": not canEdit,
+                                "attr": {"class": "pure-button ez-button ez-remove-language-button ez-font-icon ez-button-delete"}
+                            }
+                        )
+                    }}
+                {{ form_end(deleteForm) }}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block title %}{{ 'language.view.title'|trans({'%languageName%': language.name}) }}{% endblock %}

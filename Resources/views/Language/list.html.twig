@@ -1,0 +1,78 @@
+{% extends "eZPlatformUIBundle::pjax_admin.html.twig" %}
+
+{% trans_default_domain "language" %}
+
+{% block choice_row %}
+    {{ form_widget(form) }}
+{% endblock choice_row %}
+
+{% block header_breadcrumbs %}
+    {% set breadcrumb_items = [
+        {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
+        {link: '', label: 'language.list'|trans({}, 'language')}
+    ] %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header_title %}
+    <h1 class="ez-page-header-name" data-icon="&#xe61a;">{{ 'language.list'|trans }}</h1>
+{% endblock %}
+
+{% block content %}
+    <section class="ez-serverside-content">
+        <div class="ez-table-data is-flexible ez-table-data-container">
+            <table class="pure-table pure-table-striped ez-selection-table" data-selection-buttons=".ez-remove-language-button">
+                <thead>
+                    <tr>
+                        <th>{{ 'language.name'|trans }}</th>
+                        <th>{{ 'language.code'|trans }}</th>
+                        <th>{{ 'language.id'|trans }}</th>
+                        <th>{{ 'language.enabled'|trans }}</th>
+                        <th colspan="2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for language in languageList %}
+                    <tr class="ez-selection-table-row">
+                        <td><a href="{{ path( 'admin_languageview', {'languageId': language.id} ) }}">{{ language.name }}</a></td>
+                        <td><a href="{{ path( 'admin_languageview', {'languageId': language.id} ) }}">{{ language.languageCode }}</a></td>
+                        <td class="ez-table-data-id"><a href="{{ path( "admin_languageview", {"languageId": language.id} ) }}">{{ language.id }}</a></td>
+                        <td><input type="checkbox" disabled {% if language.enabled %}checked title="{{ 'language.enabled'|trans }}"{% else %}title="{{ 'language.disabled'|trans }}"{% endif %}></td>
+                        <td>
+                        {% if canEdit %}
+                            <a href="{{ path('admin_languageedit', {'languageId': language.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'language.edit'|trans }}</a>
+                        {% else %}
+                            <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'language.edit'|trans }}</span>
+                        {% endif %}
+                        </td>
+                        <td>
+                            {% set deleteForm = deleteFormsByLanguageId[language.id] %}
+                            {{ form_start(deleteForm, {"action": path("admin_languagedelete", {"languageId": language.id, "redirectErrorsTo": "list"})}) }}
+                                {{ form_widget(deleteForm.languageId) }}
+                                {{
+                                    form_widget(
+                                        deleteForm.delete,
+                                        {
+                                            "disabled": not canEdit,
+                                            "attr": {"class": "pure-button ez-button ez-remove-language-button ez-font-icon ez-button-delete"}
+                                        }
+                                    )
+                                }}
+                            {{ form_end(deleteForm) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <p class="ez-table-data-buttons">
+            {% if canEdit %}
+                <a href="{{ path('admin_languageedit') }}" class="pure-button ez-button" data-icon="&#xe616;">{{ 'language.new'|trans }}</a>
+            {% else %}
+                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe616;">{{ 'language.new'|trans }}</span>
+            {% endif %}
+            </p>
+        </div>
+    </section>
+{% endblock %}
+
+{% block title %}{{ 'language.list'|trans }}{% endblock %}
