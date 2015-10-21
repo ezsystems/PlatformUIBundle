@@ -191,8 +191,17 @@ services:
         class: %ezsystems.platformui.controller.exception.class%
         parent: twig.controller.exception
 
-    ezsystems.platformui.rest.content_user_gateway:
-        class: EzSystems\PlatformUIBundle\Rest\ContentUserGateway
+    ezsystems.platformui.rest.content_publish_user_gateway:
+        class: EzSystems\PlatformUIBundle\Rest\ContentPublishUserGateway
+        arguments:
+            - @ezpublish_rest.input.dispatcher
+            - @ezpublish_rest.output.visitor.dispatcher
+            - @ezpublish.api.repository
+        tags:
+        - {name: kernel.event_subscriber}
+
+    ezsystems.platformui.rest.content_create_user_gateway:
+        class: EzSystems\PlatformUIBundle\Rest\ContentCreateUserGateway
         arguments:
             - @ezpublish_rest.input.dispatcher
             - @ezpublish_rest.output.visitor.dispatcher
