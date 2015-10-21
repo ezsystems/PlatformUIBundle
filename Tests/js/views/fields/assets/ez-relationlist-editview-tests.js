@@ -324,29 +324,29 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
 
         "Should fill the relation with the universal discovery widget selection": function () {
             var that = this,
-                contentMock1 = new Y.Mock(),
-                contentMock2 = new Y.Mock(),
-                fakeEventFacade = {selection : [{content : contentMock1}, {content : contentMock2}]},
+                contentInfoMock1 = new Y.Mock(),
+                contentInfoMock2 = new Y.Mock(),
+                fakeEventFacade = {selection: [{contentInfo: contentInfoMock1}, {contentInfo: contentInfoMock2}]},
                 contentIdsArray;
             this.view._set('destinationContentsIds', [42, 45]);
             contentIdsArray = Y.Array.dedupe(that.view.get('destinationContentsIds'));
-            Y.Mock.expect(contentMock1, {
+            Y.Mock.expect(contentInfoMock1, {
                 method: 'toJSON',
                 returns: {name: 'me', publishedDate: 'yesterday', lastModificationDate: 'tomorrow'}
             });
 
-            Y.Mock.expect(contentMock1, {
+            Y.Mock.expect(contentInfoMock1, {
                 method: 'get',
                 args: ['contentId'],
                 returns: 42
             });
 
-            Y.Mock.expect(contentMock2, {
+            Y.Mock.expect(contentInfoMock2, {
                 method: 'toJSON',
                 returns: {name: 'me', publishedDate: 'yesterday', lastModificationDate: 'tomorrow'}
             });
 
-            Y.Mock.expect(contentMock2, {
+            Y.Mock.expect(contentInfoMock2, {
                 method: 'get',
                 args: ['contentId'],
                 returns: 51
@@ -354,8 +354,8 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             this.view.on('contentDiscover', function (e) {
                 that.resume(function () {
                     Y.Array.each(fakeEventFacade.selection, function (selection) {
-                        if ( that.view.get('destinationContentsIds').indexOf(selection.content.get('contentId')) == -1) {
-                            contentIdsArray.push(selection.content.get('contentId'));
+                        if ( that.view.get('destinationContentsIds').indexOf(selection.contentInfo.get('contentId')) == -1) {
+                            contentIdsArray.push(selection.contentInfo.get('contentId'));
                         }
                     });
                     e.config.contentDiscoveredHandler.call(this, fakeEventFacade);
