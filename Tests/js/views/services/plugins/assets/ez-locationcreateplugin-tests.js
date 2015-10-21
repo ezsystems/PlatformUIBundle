@@ -125,9 +125,13 @@ YUI.add('ez-locationcreateplugin-tests', function (Y) {
         },
 
         _getContentMock: function (attrs) {
-            var contentMock = new Mock();
+            return this._getContentInfoMock(attrs);
+        },
 
-            Mock.expect(contentMock, {
+        _getContentInfoMock: function (attrs) {
+            var contentInfoMock = new Mock();
+
+            Mock.expect(contentInfoMock, {
                 'method': 'get',
                 'args': [Mock.Value.String],
                 'run': function (attr) {
@@ -143,7 +147,7 @@ YUI.add('ez-locationcreateplugin-tests', function (Y) {
                 }
             });
 
-            return contentMock;
+            return contentInfoMock;
         },
 
         _getSelection: function () {
@@ -155,11 +159,11 @@ YUI.add('ez-locationcreateplugin-tests', function (Y) {
             return [
                 {
                     location: this._getLocationMock(this.parentLocation1),
-                    content: this._getContentMock(this.parentContent1)
+                    contentInfo: this._getContentInfoMock(this.parentContent1)
                 },
                 {
                     location: this._getLocationMock(this.parentLocation2),
-                    content: this._getContentMock(this.parentContent2)
+                    contentInfo: this._getContentInfoMock(this.parentContent2)
                 }
             ];
         },
