@@ -72,8 +72,8 @@ YUI.add('ez-discoverybarcontenttreeplugin', function (Y) {
 
             tree.clear({
                 data: {
-                    location: response.view.location.toJSON(),
-                    content: response.view.content.toJSON(),
+                    location: response.view.location, //.toJSON(),
+                    content: response.view.content, //.toJSON(),
                 },
                 id: path[0],
                 state: {
