@@ -66,11 +66,11 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
          * Sets the href and the content of the ezembed widget based on the
          * given content
          *
-         * @method _setContent
+         * @method _setContentInfo
          * @protected
-         * @param {eZ.Content} content
+         * @param {eZ.ContentInfo} contentInfo
          */
-        _setContent: function (content) {
+        _setContentInfo: function (contentInfo) {
             var editor = this.props.editor.get('nativeEditor'),
                 wrapper, embedWidget;
 
@@ -78,9 +78,9 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
             embedWidget = editor.widgets.getByElement(wrapper);
             embedWidget.element.data(
                 'href',
-                'ezcontent://' + content.get('contentId')
+                'ezcontent://' + contentInfo.get('contentId')
             );
-            embedWidget.element.setText(content.get('name'));
+            embedWidget.element.setText(contentInfo.get('name'));
             embedWidget.focus();
         },
     };

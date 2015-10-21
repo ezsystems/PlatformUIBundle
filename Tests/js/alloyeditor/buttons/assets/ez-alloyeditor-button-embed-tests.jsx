@@ -102,11 +102,11 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
         },
 
         "Should add the embed after choosing the content": function () {
-            var button, content = new Mock(),
+            var button, contentInfo = new Mock(),
                 contentName = 'I Am the Highway',
                 contentId = 42;
 
-            Mock.expect(content, {
+            Mock.expect(contentInfo, {
                 method: 'get',
                 args: [Mock.Value.String],
                 run: function (attr) {
@@ -124,7 +124,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
 
                 evt.data.config.contentDiscoveredHandler.call(this, {
                     selection: {
-                        content: content,
+                        contentInfo: contentInfo,
                     },
                 });
 

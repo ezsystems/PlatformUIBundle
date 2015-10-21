@@ -102,11 +102,11 @@ YUI.add('ez-alloyeditor-button-embedhref-tests', function (Y) {
         },
 
         "Should update the embed": function () {
-            var button, content = new Mock(),
+            var button, contentInfo = new Mock(),
                 contentName = 'Wheels',
                 contentId = 42;
 
-            Mock.expect(content, {
+            Mock.expect(contentInfo, {
                 method: 'get',
                 args: [Mock.Value.String],
                 run: function (attr) {
@@ -127,7 +127,7 @@ YUI.add('ez-alloyeditor-button-embedhref-tests', function (Y) {
                 widget.focus();
                 evt.data.config.contentDiscoveredHandler.call(this, {
                     selection: {
-                        content: content
+                        contentInfo: contentInfo,
                     }
                 });
 
