@@ -213,15 +213,15 @@ YUI.add('ez-copycontentplugin-tests', function (Y) {
             var that = this,
                 notified = false,
                 parentLocationMock = new Y.Mock(),
-                parentContentMock = new Y.Mock(),
-                fakeEventFacade = {selection : {location : parentLocationMock, content : parentContentMock }};
+                parentContentInfoMock = new Y.Mock(),
+                fakeEventFacade = {selection : {location : parentLocationMock, contentInfo: parentContentInfoMock }};
 
             Y.Mock.expect(parentLocationMock, {
                 method: 'get',
                 args: ['id'],
                 returns: this.parentLocationId
             });
-            Y.Mock.expect(parentContentMock, {
+            Y.Mock.expect(parentContentInfoMock, {
                 method: 'get',
                 args: ['name'],
                 returns: this.parentContentName
@@ -243,15 +243,15 @@ YUI.add('ez-copycontentplugin-tests', function (Y) {
             var that = this,
                 notified = false,
                 parentLocationMock = new Y.Mock(),
-                parentContentMock = new Y.Mock(),
-                fakeEventFacade = {selection : {location : parentLocationMock, content : parentContentMock }};
+                parentContentInfoMock = new Y.Mock(),
+                fakeEventFacade = {selection : {location : parentLocationMock, contentInfo: parentContentInfoMock}};
 
             Y.Mock.expect(parentLocationMock, {
                 method: 'get',
                 args: ['id'],
                 returns: this.parentLocationId
             });
-            Y.Mock.expect(parentContentMock, {
+            Y.Mock.expect(parentContentInfoMock, {
                 method: 'get',
                 args: ['name'],
                 returns: this.parentContentName
@@ -272,15 +272,15 @@ YUI.add('ez-copycontentplugin-tests', function (Y) {
             var that = this,
                 eventFired = false,
                 parentLocationMock = new Y.Mock(),
-                parentContentMock = new Y.Mock(),
-                fakeEventFacade = {selection : {location : parentLocationMock, content : parentContentMock }};
+                parentContentInfoMock = new Y.Mock(),
+                fakeEventFacade = {selection: {location: parentLocationMock, contentInfo: parentContentInfoMock}};
 
             Y.Mock.expect(parentLocationMock, {
                 method: 'get',
                 args: ['id'],
                 returns: this.parentLocationId
             });
-            Y.Mock.expect(parentContentMock, {
+            Y.Mock.expect(parentContentInfoMock, {
                 method: 'get',
                 args: ['name'],
                 returns: this.parentContentName
@@ -308,8 +308,8 @@ YUI.add('ez-copycontentplugin-tests', function (Y) {
             var that = this,
                 notified = false,
                 parentLocationMock = new Y.Mock(),
-                parentContentMock = new Y.Mock(),
-                fakeEventFacade = {selection : {location : parentLocationMock, content : parentContentMock }};
+                parentContentInfoMock = new Y.Mock(),
+                fakeEventFacade = {selection : {location : parentLocationMock, contentInfo: parentContentInfoMock }};
 
             Y.Mock.expect(this.copiedContentMock, {
                 method: 'load',
@@ -328,7 +328,7 @@ YUI.add('ez-copycontentplugin-tests', function (Y) {
                 args: ['id'],
                 returns: this.parentLocationId
             });
-            Y.Mock.expect(parentContentMock, {
+            Y.Mock.expect(parentContentInfoMock, {
                 method: 'get',
                 args: ['name'],
                 returns: this.parentContentName
