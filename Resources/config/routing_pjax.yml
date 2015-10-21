@@ -148,3 +148,9 @@ admin_policyEdit:
     defaults:
         _controller: ezsystems.platformui.controller.role:editPolicyAction
         policyId: ~
+
+admin_roleAssignmentDelete:
+    path: /role/deleteroleassignment/{roleAssignmentId}
+    methods: [POST]
+    defaults:
+        _controller: ezsystems.platformui.controller.role:deleteRoleAssignmentAction

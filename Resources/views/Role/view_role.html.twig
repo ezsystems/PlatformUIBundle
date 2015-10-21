@@ -18,152 +18,186 @@
 {% endblock %}
 
 {% block content %}
-    <section class="ez-serverside-content">
-        <div class="ez-table-data is-flexible">
-            <div class="ez-table-data-container">
-                <table class="pure-table pure-table-striped ez-selection-table">
-                    <thead>
-                    <tr class="ez-selection-table-row">
-                        <th>{{ 'policy.module'|trans }}</th>
-                        <th>{{ 'policy.function'|trans }}</th>
-                        <th>{{ 'policy.limitation'|trans }}</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for policy in role.policies %}
-                        {# @var policy \eZ\Publish\API\Repository\Values\User\Policy #}
-                        <tr>
-                            <td>
-                                {%- if policy.module == '*' -%}
-                                    {{- 'policy.module_all'|trans -}}
-                                {%- else -%}
-                                    {{- policy.module -}}
-                                {%- endif -%}
-                            </td>
-                            <td>
-                                {%- if policy.function == '*' -%}
-                                    {{- 'policy.function_all'|trans -}}
-                                {%- else -%}
-                                    {{- policy.function -}}
-                                {%- endif -%}
-                            </td>
-                            <td>
-                                {%- for limitation in policy.limitations -%}
-                                    {# @var limitation \eZ\Publish\API\Repository\Values\User\Limitation #}
-                                    {{- limitation.identifier -}}
-                                    {%- for limitationValue in limitation.limitationValues -%}
-                                        {%- if loop.first -%}( {% endif -%}
-                                        {# TODO: https://jira.ez.no/browse/EZP-24699 Enrich Role limitations view with links and human readable names #}
-                                        {{- limitationValue -}}
+    <section class="ez-tabs ez-serverside-content">
+        <ul class="ez-tabs-list">
+            <li class="ez-tabs-label is-tab-selected"><a href="#ez-tabs-role-name">{{ role.identifier }}</a></li>
+            <li class="ez-tabs-label"><a href="#ez-tabs-content">{{ 'assignment.user_or_group_using'|trans({'%role%': role.identifier, '%count%': role_assignments|length }) }}</a></li>
+        </ul>
+        <div class="ez-tabs-panel is-tab-selected" id="ez-tabs-role-name">
+            <div class="ez-table-data is-flexible">
+                <div class="ez-table-data-container">
+                    <table class="pure-table pure-table-striped ez-selection-table">
+                        <thead>
+                        <tr class="ez-selection-table-row">
+                            <th>{{ 'policy.module'|trans }}</th>
+                            <th>{{ 'policy.function'|trans }}</th>
+                            <th>{{ 'policy.limitation'|trans }}</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for policy in role.policies %}
+                            {# @var policy \eZ\Publish\API\Repository\Values\User\Policy #}
+                            <tr>
+                                <td>
+                                    {%- if policy.module == '*' -%}
+                                        {{- 'policy.module_all'|trans -}}
+                                    {%- else -%}
+                                        {{- policy.module -}}
+                                    {%- endif -%}
+                                </td>
+                                <td>
+                                    {%- if policy.function == '*' -%}
+                                        {{- 'policy.function_all'|trans -}}
+                                    {%- else -%}
+                                        {{- policy.function -}}
+                                    {%- endif -%}
+                                </td>
+                                <td>
+                                    {%- for limitation in policy.limitations -%}
+                                        {# @var limitation \eZ\Publish\API\Repository\Values\User\Limitation #}
+                                        {{- limitation.identifier -}}
+                                        {%- for limitationValue in limitation.limitationValues -%}
+                                            {%- if loop.first -%}( {% endif -%}
+                                            {# TODO: https://jira.ez.no/browse/EZP-24699 Enrich Role limitations view with links and human readable names #}
+                                            {{- limitationValue -}}
+                                            {%- if not loop.last -%}, {% endif -%}
+                                            {%- if loop.last %} ){%- endif -%}
+                                        {%- endfor -%}
                                         {%- if not loop.last -%}, {% endif -%}
-                                        {%- if loop.last %} ){%- endif -%}
+                                    {%- else -%}
+                                        {{- 'policy.limitation_none'|trans -}}
                                     {%- endfor -%}
-                                    {%- if not loop.last -%}, {% endif -%}
-                                {%- else -%}
-                                    {{- 'policy.limitation_none'|trans -}}
-                                {%- endfor -%}
-                            </td>
-                            <td>
-                            {% if can_edit %}
-                                <a href="{{ path('admin_policyEdit', {'roleId': role.id, 'policyId': policy.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'role.policy.edit_limitations'|trans }}</a>
-                            {% else %}
-                                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'role.policy.edit_limitations'|trans }}</span>
-                            {% endif %}
-                            </td>
-                            <td>
-                                {% set policyDeleteForm = deleteFormsByPolicyId[policy.id] %}
-                                {{ form_start(policyDeleteForm, {"action": path("admin_policyDelete", {"roleId": role.id, "policyId": policy.id})}) }}
-                                {{ form_widget(policyDeleteForm.policyId) }}
-                                {{ form_widget(policyDeleteForm.roleId) }}
-                                {{
-                                    form_widget(
-                                        policyDeleteForm.delete,
-                                        {
-                                            "disabled": not can_edit,
-                                            "attr": {"class": "pure-button ez-button ez-font-icon ez-button-delete"}
-                                        }
-                                    )
-                                }}
-                                {{ form_end(policyDeleteForm) }}
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5">{{ 'role.policy_none'|trans }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                                </td>
+                                <td>
+                                {% if can_edit %}
+                                    <a href="{{ path('admin_policyEdit', {'roleId': role.id, 'policyId': policy.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'role.policy.edit_limitations'|trans }}</a>
+                                {% else %}
+                                    <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'role.policy.edit_limitations'|trans }}</span>
+                                {% endif %}
+                                </td>
+                                <td>
+                                    {% set policyDeleteForm = deleteFormsByPolicyId[policy.id] %}
+                                    {{ form_start(policyDeleteForm, {"action": path("admin_policyDelete", {"roleId": role.id, "policyId": policy.id})}) }}
+                                    {{ form_widget(policyDeleteForm.policyId) }}
+                                    {{ form_widget(policyDeleteForm.roleId) }}
+                                    {{
+                                        form_widget(
+                                            policyDeleteForm.delete,
+                                            {
+                                                "disabled": not can_edit,
+                                                "attr": {"class": "pure-button ez-button ez-font-icon ez-button-delete"}
+                                            }
+                                        )
+                                    }}
+                                    {{ form_end(policyDeleteForm) }}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="5">{{ 'role.policy_none'|trans }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
 
-                {{ form_start(deleteForm, {"action": path("admin_roleDelete", {"roleId": role.id})}) }}
-                    <p class="ez-table-data-buttons">
-                    {% if can_edit %}
-                        <a href="{{ path('admin_policyEdit', {"roleId": role.id}) }}" class="pure-button ez-button" data-icon="&#xe616;">{{ 'role.policy.add'|trans }}</a>
-                        <a href="{{ path('admin_roleUpdate', {"roleId": role.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'role.edit'|trans }}</a>
-                    {% else %}
-                        <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'role.edit'|trans }}</span>
-                    {% endif %}
+                    {{ form_start(deleteForm, {"action": path("admin_roleDelete", {"roleId": role.id})}) }}
+                        <p class="ez-table-data-buttons">
+                        {% if can_edit %}
+                            <a href="{{ path('admin_policyEdit', {"roleId": role.id}) }}" class="pure-button ez-button" data-icon="&#xe616;">{{ 'role.policy.add'|trans }}</a>
+                            <a href="{{ path('admin_roleUpdate', {"roleId": role.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'role.edit'|trans }}</a>
+                        {% else %}
+                            <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'role.edit'|trans }}</span>
+                        {% endif %}
 
-                        {{ form_widget(deleteForm.roleId) }}
-                        {{
-                            form_widget(
-                                deleteForm.delete,
-                                {
-                                    "disabled": not can_delete,
-                                    "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"}
-                                }
-                            )
-                        }}
+                            {{ form_widget(deleteForm.roleId) }}
+                            {{
+                                form_widget(
+                                    deleteForm.delete,
+                                    {
+                                        "disabled": not can_delete,
+                                        "attr": {"class": "pure-button ez-button ez-remove-role-button ez-font-icon ez-button-delete"}
+                                    }
+                                )
+                            }}
+                        </p>
+                    {{ form_end(deleteForm) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="ez-tabs-panel" id="ez-tabs-content">
+            <div class="ez-table-data is-flexible">
+                <div class="ez-table-data-container">
+                    <table class="pure-table pure-table-striped ez-selection-table">
+                        <thead>
+                        <tr class="ez-selection-table-row">
+                            <th>{{ 'assignment.user_or_group'|trans }}</th>
+                            <th>{{ 'assignment.role_limitation'|trans }}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for role_assignment in role_assignments %}
+                            {# @var role_assignment \eZ\Publish\API\Repository\Values\User\RoleAssignment #}
+                            <tr>
+                                <td>
+                                    {%- if role_assignment.getUserGroup is defined -%}
+                                        <a href="{{ path( 'ez_urlalias', { 'locationId': role_assignment.usergroup.contentInfo.mainLocationId } ) }}" title="{{ ez_content_name( role_assignment.usergroup ) }}">{{ ez_content_name( role_assignment.usergroup ) }}</a>
+                                    {%- else -%}
+                                        <a href="{{ path( 'ez_urlalias', { 'locationId': role_assignment.user.contentInfo.mainLocationId } ) }}" title="{{ ez_content_name( role_assignment.user ) }}">{{ ez_content_name( role_assignment.user ) }}</a>
+                                    {%- endif -%}
+                                </td>
+                                <td>
+                                    {%- if role_assignment.rolelimitation -%}
+                                        {{- role_assignment.rolelimitation.identifier -}}
+                                        {%- for limitationValue in role_assignment.rolelimitation.limitationValues -%}
+                                            {%- if loop.first -%}( {% endif -%}
+                                            {# TODO: https://jira.ez.no/browse/EZP-24699 Enrich Role limitations view with links and human readable names #}
+                                            {{- limitationValue -}}
+                                            {%- if not loop.last -%}, {% endif -%}
+                                            {%- if loop.last %} ){%- endif -%}
+                                        {%- endfor -%}
+                                        {%- if not loop.last -%}, {% endif -%}
+                                    {%- else -%}
+                                        {{- 'assignment.role_limitation_none'|trans -}}
+                                    {%- endif -%}
+                                </td>
+                                <td>
+                                    {% set deleteForm = deleteFormsByAssignment[role_assignment.id] %}
+                                    {{ form_start(deleteForm, {"action": path("admin_roleAssignmentDelete", {"roleAssignmentId": role_assignment.id, "redirectErrorsTo": "view"})}) }}
+                                    {{ form_widget(deleteForm.assignmentId) }}
+                                    {{
+                                        form_widget(
+                                            deleteForm.delete,
+                                            {
+                                                "disabled": not can_assign,
+                                                "attr": {"class": "pure-button ez-button ez-remove-roleassignment-button ez-font-icon ez-button-delete"}
+                                            }
+                                        )
+                                    }}
+                                    {{ form_end(deleteForm) }}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="3">{{ 'assignment.none'|trans }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <p>
+                        <button
+                                data-universaldiscovery-title="{{ 'role.assign.universaldiscovery.title'|trans({'%roleIdentifier%': role.identifier })|e('html_attr') }}"
+                                data-role-rest-id="{{ path( 'ezpublish_rest_loadRole', {'roleId': role.id}) }}"
+                                data-role-name="{{ role.identifier }}"
+                                class="ez-role-assign-button ez-button-tree pure-button ez-font-icon ez-button">
+                            {% if not can_assign %}disabled{% endif %}
+                            {{ 'role.assign.user_or_group'|trans }}
+                        </button>
                     </p>
-                {{ form_end(deleteForm) }}
-
-                <h2>{{ 'assignment.user_or_group_using'|trans({'%role%': role.identifier, '%count%': role_assignments|length }) }}</h2>
-                <table class="pure-table pure-table-striped ez-selection-table">
-                    <thead>
-                    <tr class="ez-selection-table-row">
-                        <th></th>
-                        <th>{{ 'assignment.user_or_group'|trans }}</th>
-                        <th>{{ 'assignment.role_limitation'|trans }}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for role_assignment in role_assignments %}
-                        {# @var role_assignment \eZ\Publish\API\Repository\Values\User\RoleAssignment #}
-                        <tr>
-                            <td></td>
-                            <td>
-                                {%- if role_assignment.getUserGroup is defined -%}
-                                    <a href="{{ path( 'ez_urlalias', { 'locationId': role_assignment.usergroup.contentInfo.mainLocationId } ) }}" title="{{ ez_content_name( role_assignment.usergroup ) }}">{{ ez_content_name( role_assignment.usergroup ) }}</a>
-                                {%- else -%}
-                                    <a href="{{ path( 'ez_urlalias', { 'locationId': role_assignment.user.contentInfo.mainLocationId } ) }}" title="{{ ez_content_name( role_assignment.user ) }}">{{ ez_content_name( role_assignment.user ) }}</a>
-                                {%- endif -%}
-                            </td>
-                            <td>
-                                {%- for role_limitation in role_assignment.rolelimitation -%}
-                                    {# @var role_limitation \eZ\Publish\API\Repository\Values\User\Limitation\RoleLimitation #}
-                                    {{- role_limitation.identifier -}}
-                                    {%- for limitationValue in role_limitation.limitationValues -%}
-                                        {%- if loop.first -%}( {% endif -%}
-                                        {# TODO: https://jira.ez.no/browse/EZP-24699 Enrich Role limitations view with links and human readable names #}
-                                        {{- limitationValue -}}
-                                        {%- if not loop.last -%}, {% endif -%}
-                                        {%- if loop.last %} ){%- endif -%}
-                                    {%- endfor -%}
-                                    {%- if not loop.last -%}, {% endif -%}
-                                {%- else -%}
-                                    {{- 'assignment.role_limitation_none'|trans -}}
-                                {%- endfor -%}
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="3">{{ 'assignment.none'|trans }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                </div>
             </div>
         </div>
     </section>
