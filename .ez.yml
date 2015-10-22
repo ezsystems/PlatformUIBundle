@@ -12,4 +12,4 @@ integrate:
   command: "bin/behat"
   matrix:
   # Run 'common' tagged behat scenarios on ezplatform install
-   - {arguments: "-vc behat.yml.dist --profile platformui --tags common"}
+   - {arguments: "-v --profile platformui --tags common"}
