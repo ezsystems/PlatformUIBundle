@@ -122,9 +122,19 @@ YUI.add('ez-serversideview', function (Y) {
                             data[name] = field.get('value');
                         }
                         break;
+                    case 'select-multiple':
+                        if ( field.get('selectedIndex') >= 0 ) {
+                            data[name] = [];
+                            field.get('options').each(function (opt) {
+                                if ( opt.get('selected') ) {
+                                    data[name].push(opt.get('value'));
+                                }
+                            });
+                        }
+                        break;
                     default:
                         // `.get('value')` returns the expected field value for
-                        // inputs, select and even textarea.
+                        // inputs, select-one and even textarea.
                         data[name] = field.get('value');
                 }
                 /* jshint +W015 */

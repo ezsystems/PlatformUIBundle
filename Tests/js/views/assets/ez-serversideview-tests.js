@@ -344,6 +344,31 @@ YUI.add('ez-serversideview-tests', function (Y) {
             this._serializeTest(html, {"one": "1"}, 'form input[type="submit"]');
         },
 
+        "Should serialize the multiple select without selection": function () {
+            var html;
+
+            html = '<form method="post" action="">';
+            html += '<select name="one" multiple><option value="1">really 1</option>';
+            html += '<option value="2">2</option></select>';
+            html += '<input type="submit" value="Submit">';
+            html += '</form>';
+
+            this._serializeTest(html, {}, 'form input[type="submit"]');
+        },
+
+        "Should serialize the multiple select": function () {
+            var html;
+
+            html = '<form method="post" action="">';
+            html += '<select name="multiple[]" multiple><option value="1" selected>really 1</option>';
+            html += '<option value="2" selected>2</option>';
+            html += '<option value="3">3</option></select>';
+            html += '<input type="submit" value="Submit">';
+            html += '</form>';
+
+            this._serializeTest(html, {"multiple[]": ["1", "2"]}, 'form input[type="submit"]');
+        },
+
         "Should serialize the checkbox input": function () {
             var html;
 
@@ -459,10 +484,23 @@ YUI.add('ez-serversideview-tests', function (Y) {
                 "The formData should have " + expectedLength + " entries"
             );
             Y.Object.each(formData, function (data, key) {
-                Assert.areSame(
-                    data, expected[key],
-                    "The " + key + " entry should be '" + expected[key] + "'"
-                );
+                if ( Y.Lang.isArray(expected[key]) ) {
+                    Assert.areEqual(
+                        expected[key].length, data.length,
+                        "The " + key + " entry should have '" + expected[key].length + "' entries"
+                    );
+                    Y.Array.each(data, function (entry, i) {
+                        Assert.areEqual(
+                            expected[key][i], entry,
+                            "The " + key + "[" + i + "] entry should  '" + expected[key][i] + "'"
+                        );
+                    });
+                } else {
+                    Assert.areSame(
+                        expected[key], data,
+                        "The " + key + " entry should be '" + expected[key] + "'"
+                    );
+                }
             });
         },
 
