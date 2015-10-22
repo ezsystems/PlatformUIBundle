@@ -25,6 +25,9 @@ parameters:
     ezsystems.platformui.exception_controller: "ezsystems.platformui.controller.exception:showAction"
     ezsystems.platformui.controller.exception.class: EzSystems\PlatformUIBundle\Controller\ExceptionController
 
+    # override of the REST content controller
+    ezpublish_rest.controller.content.class: EzSystems\PlatformUIBundle\Controller\Rest\ContentController
+
 services:
     ezsystems.platformui.twig.yui_extension:
         class: %ezsystems.platformui.twig.yui_extension.class%
