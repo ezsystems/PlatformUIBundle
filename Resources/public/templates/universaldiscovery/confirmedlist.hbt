@@ -3,17 +3,17 @@
         <h2 class="ez-ud-full-list-title"><a href="#" class="ez-ud-full-list-close" data-icon-after="&#xe62a;"></a>Confirmed items</h2>
         <div class="ez-ud-full-list-items">
             {{#each confirmedList}}
-            <div class="ez-ud-full-list-item" data-content-id="{{ content.id }}">
+            <div class="ez-ud-full-list-item" data-content-id="{{ contentInfo.id }}">
                 <div class="ez-ud-full-list-item-actions">
                     <button
                         class="ez-ud-full-list-item-action ez-ud-full-list-item-remove"
-                        data-content-id="{{ content.id }}"
+                        data-content-id="{{ contentInfo.id }}"
                         data-icon="&#xe600;"></button>
                 </div>
                 <div class="ez-ud-full-list-item-icon" data-icon="&#xe601;">
                 </div>
                 <div class="ez-ud-full-list-item-content">
-                    <h3 class="ez-ud-full-list-item-title">{{ content.name }}</h3>
+                    <h3 class="ez-ud-full-list-item-title">{{ contentInfo.name }}</h3>
                     <p class="ez-ud-full-list-item-details"><strong>{{ contentType.names.[eng-GB] }}</strong></p>
                 </div>
             </div>
@@ -25,7 +25,7 @@
     <h2 class="ez-ud-mini-display-title">Confirmed items:</h2>
     <ul class="ez-ud-mini-display-list">
     {{#each miniDisplayList}}
-        <li class="ez-ud-mini-display-item" title="{{ content.name }} ({{ contentType.names.[eng-GB] }})">{{ content.name }}</li>
+        <li class="ez-ud-mini-display-item" title="{{ contentInfo.name }} ({{ contentType.names.[eng-GB] }})">{{ contentInfo.name }}</li>
     {{/each}}
     {{#if remainingCount}}
         <li class="ez-ud-mini-display-item ez-ud-mini-display-remaining-count">+{{ remainingCount }} more</li>

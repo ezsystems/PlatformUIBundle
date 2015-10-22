@@ -170,6 +170,22 @@
         <source>role.assign.user_or_group</source>
         <target>Assign to users/groups</target>
       </trans-unit>
+      <trans-unit id="4dd4a317356777a62362650a13665a0b">
+        <source>role.assign_limit_subtree.universaldiscovery.title</source>
+        <target>Pick the location to use as subtree limitation when assigning the role "%roleIdentifier%"</target>
+      </trans-unit>
+      <trans-unit id="dd19e8f30f0e543fd652a3bdeb40b2ad">
+        <source>role.assign_limit_subtree.user_or_group</source>
+        <target>Assign to users/groups with subtree limitation</target>
+      </trans-unit>
+      <trans-unit id="1d954ab85e833b31cd32c7c610508760">
+        <source>role.assign_limit_section.user_or_group</source>
+        <target>Assign to users/groups with section limitation</target>
+      </trans-unit>
+      <trans-unit id="2f0ff626ea979316acaaae8eb6f786a8">
+        <source>role.assign_limit_section.user_or_group.pagetitle</source>
+        <target>Assign role "%roleIdentifier%" to users/groups with limitation on section</target>
+      </trans-unit>
       <trans-unit id="6ed6a4fae680d7df596efde3f0aad03b" resname="role.assignment.deleted">
         <source>role.assignment.deleted</source>
         <target>The role assignment was correctly deleted.</target>
@@ -181,6 +197,18 @@
       <trans-unit id="5251a34b2652d32806ced95c1c2ed7b9" resname="role.view.delete_assignment">
         <source>role.view.delete_assignment</source>
         <target>Delete assignment</target>
+      </trans-unit>
+      <trans-unit id="12425d540fb051d80d5f8f488dd0aef1">
+        <source>role.assign_role_limit_section</source>
+        <target>Assign role with section limitation</target>
+      </trans-unit>
+      <trans-unit id="46b02b7a13e0b6f3bc520c793846fb6d">
+        <source>role.assign_limit_section.cancel</source>
+        <target>Cancel</target>
+      </trans-unit>
+      <trans-unit id="ff97d1e318e564092e1372a06fc47572">
+        <source>role.choose_section</source>
+        <target>Choose a section:</target>
       </trans-unit>
     </body>
   </file>

@@ -21,13 +21,23 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             this.view.destroy();
         },
 
-        "Should set the version to new action list": function () {
+        "Should set the version and the languageCode to new action list": function () {
             var newActionList = [new Y.Mock(), new Y.Mock(), new Y.Mock()];
 
             Y.Array.each(newActionList, function (mock) {
                 Y.Mock.expect(mock, {
                     method: 'set',
-                    args: ['version', this.view.get('version')]
+                    callCount: 4,
+                    args: [Y.Mock.Value.String, Y.Mock.Value.Any],
+                    run: function (name, object) {
+                        if (name === 'version') {
+                            Y.Assert.isObject(object);
+                        } else if (name === 'languageCode') {
+                            Y.Assert.isString(object);
+                        } else {
+                            Y.fail("Unexpected parameter name " + name + " for content mock");
+                        }
+                    }
                 });
 
                 Y.Mock.expect(mock, {

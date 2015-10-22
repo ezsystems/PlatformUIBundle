@@ -461,6 +461,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 ATTRS: {
                     content: {},
                     version: {},
+                    languageCode: {},
                 },
             });
 
@@ -472,6 +473,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 version: {},
                 config: {},
                 owner: {},
+                languageCode: {},
             });
         },
 
@@ -494,6 +496,14 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 this.view.get('content'),
                 this.view.get('actionBar').get('content'),
                 'The content should have been set to the actionBar'
+            );
+        },
+
+        "Should set the languageCode of the action bar": function () {
+            Y.Assert.areSame(
+                this.view.get('languageCode'),
+                this.view.get('actionBar').get('languageCode'),
+                'The languageCode should have been set to the actionBar'
             );
         },
 

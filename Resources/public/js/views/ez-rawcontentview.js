@@ -94,18 +94,23 @@ YUI.add('ez-rawcontentview', function (Y) {
                 config = this.get('config');
 
             Y.Object.each(definitions, function (def) {
-                var View, fieldView;
+                var View, fieldView,
+                    field = content.getField(def.identifier);
 
-                View = Y.eZ.FieldView.getFieldView(def.fieldType);
-                fieldView = new View({
-                    fieldDefinition: def,
-                    field: content.getField(def.identifier),
-                    config: config,
-                });
-                fieldView.addTarget(this);
-                views.push(
-                    fieldView
-                );
+                if (field) {
+                    View = Y.eZ.FieldView.getFieldView(def.fieldType);
+                    fieldView = new View({
+                        fieldDefinition: def,
+                        field: field,
+                        config: config,
+                    });
+                    fieldView.addTarget(this);
+                    views.push(
+                        fieldView
+                    );
+                } else {
+                    console.warn('Content doesn\'t contain field "' + def.identifier + '"');
+                }
             }, this);
 
             /**

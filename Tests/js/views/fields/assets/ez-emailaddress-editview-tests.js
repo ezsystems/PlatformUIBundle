@@ -110,6 +110,13 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
                 "An invalid email is NOT valid"
             );
 
+            input.set('value', 'foobar@foobar');
+            this.view.validate();
+            Y.Assert.isFalse(
+                this.view.isValid(),
+                "An invalid email is NOT valid"
+            );
+
             input.set('value', 'foobar@foobar.com');
             this.view.validate();
             Y.Assert.isTrue(

@@ -340,7 +340,8 @@ YUI.add('ez-contenteditview', function (Y) {
                 valueFn: function () {
                     return new Y.eZ.EditActionBarView({
                         content: this.get('content'),
-                        version: this.get('version')
+                        version: this.get('version'),
+                        languageCode: this.get('languageCode')
                     });
                 }
             },
@@ -352,7 +353,7 @@ YUI.add('ez-contenteditview', function (Y) {
              * @type {String}
              * @required
              */
-            languageCode: {},
+            languageCode: '',
         }
     });
 });

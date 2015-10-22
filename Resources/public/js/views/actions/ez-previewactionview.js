@@ -154,6 +154,21 @@ YUI.add('ez-previewactionview', function (Y) {
                     this.get('editPreview').set('version', val);
                     return val;
                 }
+            },
+
+            /**
+             * The languageCode
+             *
+             * @attribute languageCode
+             * @type {String}
+             * @default ''
+             */
+            languageCode: {
+                value: '',
+                setter: function (val, name) {
+                    this.get('editPreview').set('languageCode', val);
+                    return val;
+                }
             }
         }
     });

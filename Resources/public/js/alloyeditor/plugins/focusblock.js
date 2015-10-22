@@ -20,10 +20,12 @@ YUI.add('ez-alloyeditor-plugin-focusblock', function (Y) {
         var block = e.data.path.block,
             oldBlock = findFocusedBlock(e.editor);
 
-        if ( oldBlock && block.$ !== oldBlock.$ ) {
+        if ( oldBlock && (!block || block.$ !== oldBlock.$) ) {
             oldBlock.removeClass(FOCUSED_CLASS);
         }
-        block.addClass(FOCUSED_CLASS);
+        if ( block ) {
+            block.addClass(FOCUSED_CLASS);
+        }
     }
 
     function clearFocusedBlock(e) {

@@ -58,7 +58,7 @@ YUI.add('ez-copycontentplugin', function (Y) {
                 locationId = service.get('location').get('id'),
                 that = this,
                 contentName =  service.get('content').get('name'),
-                parentContentName = e.selection.content.get('name'),
+                parentContentName = e.selection.contentInfo.get('name'),
                 notificationIdentifier =  'copy-notification-' + parentLocationId + '-' + locationId;
 
             this._notify(

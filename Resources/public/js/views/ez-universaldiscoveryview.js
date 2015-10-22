@@ -107,7 +107,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
 
             if ( this.get('multiple') ) {
                 newSelection = Y.Array.filter(this.get('selection'), function (struct) {
-                    return struct.content.get('id') !== contentId;
+                    return struct.contentInfo.get('id') !== contentId;
                 });
             }
             this._notifyMethodsUnselectContent(contentId);
@@ -145,7 +145,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                 return false;
             }
             return !!Y.Array.find(this.get('selection'), function (struct) {
-                return struct.content.get('id') === contentStruct.content.get('id');
+                return struct.contentInfo.get('id') === contentStruct.contentInfo.get('id');
             });
         },
 

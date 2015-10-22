@@ -149,7 +149,7 @@ YUI.add('ez-relation-editview', function (Y) {
          * @param {EventFacade} e
          */
         _selectRelation: function (e) {
-            var selectedContent = e.selection.content;
+            var selectedContent = e.selection.contentInfo;
 
             this.set('errorStatus', false);
             this.set('destinationContent', selectedContent);
@@ -174,10 +174,10 @@ YUI.add('ez-relation-editview', function (Y) {
     },{
         ATTRS: {
             /**
-             * The destination content of the relation
+             * The destination content or content info of the relation
              *
              * @attribute destinationContent
-             * @type Y.eZ.Content
+             * @type {eZ.Content|eZ.ContentInfo}
              */
             destinationContent: {
                 value: null,

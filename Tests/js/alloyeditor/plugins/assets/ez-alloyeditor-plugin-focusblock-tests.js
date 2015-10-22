@@ -39,9 +39,11 @@ YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
         "async:init": function () {
             var startTest = this.callback();
 
+            CKEDITOR.plugins.addExternal('lineutils', '../../../lineutils/');
+            CKEDITOR.plugins.addExternal('widget', '../../../widget/');
             this.editor = AlloyEditor.editable(
                 Y.one('.container').getDOMNode(), {
-                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezfocusblock',
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezfocusblock,widget,ezembed',
                 }
             );
             this.editor.get('nativeEditor').on('instanceReady', function () {
@@ -71,6 +73,18 @@ YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
             Assert.isTrue(
                 Y.one('blockquote').hasClass('is-block-focused'),
                 "The blockquote should have the focus class"
+            );
+        },
+
+        "Should handle the case where there's no focus block": function () {
+            var editor = this.editor.get('nativeEditor');
+
+            this["Should add the focus block class"]();
+            editor.widgets.getByElement(editor.element.findOne('#embed')).focus();
+
+            Assert.areEqual(
+                0, Y.all('.is-block-focused').size(),
+                "No element should have the focused class"
             );
         },
 
@@ -146,4 +160,4 @@ YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
     Y.Test.Runner.add(definePluginTest);
     Y.Test.Runner.add(selectionChangeTest);
     Y.Test.Runner.add(blurTest);
-}, '', {requires: ['test', 'node', 'ez-alloyeditor-plugin-focusblock']});
+}, '', {requires: ['test', 'node', 'ez-alloyeditor-plugin-embed', 'ez-alloyeditor-plugin-focusblock']});

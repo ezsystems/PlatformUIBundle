@@ -40,7 +40,7 @@ YUI.add('ez-editpreviewview', function (Y) {
 
             container.setHTML(this.template({
                 mode: this.get('previewModes')[this.get('currentModeId')],
-                source: '/content/versionview/' + content.get('contentId') + '/' + version.get('versionNo') + '/eng-GB',
+                source: '/content/versionview/' + content.get('contentId') + '/' + version.get('versionNo') + '/' + this.get('languageCode'),
                 legend: version.get('names')['eng-GB']
             })).addClass(IS_LOADING_CLASS);
 
@@ -152,7 +152,19 @@ YUI.add('ez-editpreviewview', function (Y) {
              */
             version: {
                 value: {}
+            },
+
+            /**
+             * The languageCode of the content previewed
+             *
+             * @attribute languageCode
+             * @type String
+             * @required
+             */
+            languageCode: {
+                value: ''
             }
+
         }
     });
 });

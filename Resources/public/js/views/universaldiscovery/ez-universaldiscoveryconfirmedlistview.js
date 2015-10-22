@@ -262,7 +262,7 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
 
             Y.Array.each(list, function (struct, i) {
                 res[i] = {
-                    content: struct.content.toJSON(),
+                    contentInfo: struct.contentInfo.toJSON(),
                     location: struct.location.toJSON(),
                     contentType: struct.contentType.toJSON(),
                 };
@@ -299,7 +299,7 @@ YUI.add('ez-universaldiscoveryconfirmedlistview', function (Y) {
         ATTRS: {
             /**
              * The current confirmed list. It's an array containing one or
-             * several content structure (ie an object with a content, a
+             * several content structure (ie an object with a contentInfo, a
              * location and a content type models) or null.
              *
              * @attribute confirmedList

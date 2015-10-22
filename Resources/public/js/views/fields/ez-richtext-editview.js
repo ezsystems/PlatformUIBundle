@@ -142,12 +142,25 @@ YUI.add('ez-richtext-editview', function (Y) {
             setEditorFocused = Y.bind(this._uiHandleEditorFocus, this, true);
             unsetEditorFocused = Y.bind(this._uiHandleEditorFocus, this, false);
 
+            nativeEd.on('contentDiscover', Y.bind(this._forwardEditorEvent, this));
+
             nativeEd.on('blur', valid);
             nativeEd.on('focus', valid);
             nativeEd.on('change', valid);
             nativeEd.on('focus', setEditorFocused);
             nativeEd.on('blur', unsetEditorFocused);
             this._set('editor', editor);
+        },
+
+        /**
+         * Forwards the given event to the YUI stack
+         *
+         * @method _forwardEditorEvent
+         * @param {Object} e the CKEditor event info
+         * @protected
+         */
+        _forwardEditorEvent: function (e) {
+            this.fire(e.name, e.data);
         },
 
         /**
@@ -245,7 +258,13 @@ YUI.add('ez-richtext-editview', function (Y) {
                 // making sure to have at least a paragraph element
                 // otherwise CKEditor adds a br to make sure the editor can put
                 // the caret inside the element.
-                doc.documentElement.appendChild(doc.createElement('p'));
+                // We don't use the DOM API here otherwise, the p element will
+                // have an empty `xmlns` attribute in Firefox which then breaks
+                // the RichText parser when saving the field value... This is
+                // happening because of our custom namespace even though we are
+                // handling some XHTML... With `innerHTML`, this does not occur.
+                // see https://jira.ez.no/browse/EZP-24907
+                doc.documentElement.innerHTML = '<p></p>';
             }
             Y.Object.each(ROOT_SECTION_ATTRIBUTES, function (value, key) {
                 doc.documentElement.setAttribute(key, value);
@@ -340,6 +359,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                             ToolbarConfig.Table,
                             ToolbarConfig.Heading,
                             ToolbarConfig.Paragraph,
+                            ToolbarConfig.Embed,
                         ],
                         tabIndex: 1
                     },

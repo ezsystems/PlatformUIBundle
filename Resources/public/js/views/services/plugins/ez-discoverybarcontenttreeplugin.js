@@ -58,24 +58,20 @@ YUI.add('ez-discoverybarcontenttreeplugin', function (Y) {
          * @method _buildTree
          * @protected
          * @param {View} view
-         * @todo improve performances!
          */
         _buildTree: function (view) {
             var path = [], subscription,
                 tree = this.get('tree'),
                 response = this.get('host').get('response');
 
-            Y.Array.each(response.view.path, function (location) {
-                path.push(location.get('id'));
-            });
-            path.push(response.view.location.get('id'));
+            path = response.view.path.concat([response.view.location]);
 
             tree.clear({
                 data: {
-                    location: response.view.location.toJSON(),
-                    content: response.view.content.toJSON(),
+                    location: path[0],
+                    contentInfo: path[0].get('contentInfo'),
                 },
-                id: path[0],
+                id: path[0].get('id'),
                 state: {
                     leaf: false,
                 },
@@ -86,9 +82,9 @@ YUI.add('ez-discoverybarcontenttreeplugin', function (Y) {
             subscription = tree.lazy.on('load', function (evt) {
                 path.shift();
                 if ( path[0] ) {
-                    tree.getNodeById(path[0]).open();
+                    tree.getNodeById(path[0].get('id')).open();
                     if ( path.length === 1 ) {
-                        tree.getNodeById(path[0]).select();
+                        tree.getNodeById(path[0].get('id')).select();
                     }
                 } else {
                     subscription.detach();
