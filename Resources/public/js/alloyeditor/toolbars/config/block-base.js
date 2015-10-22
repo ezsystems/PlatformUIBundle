@@ -22,6 +22,28 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base', function (Y) {
         );
     }
 
+    function setPositionFor(block) {
+        /* jshint validthis: true */
+        var blockRect = block.getClientRect(),
+            outlineWidth = outlineTotalWidth(block),
+            domNode = AlloyEditor.React.findDOMNode(this),
+            xy, domElement;
+
+        xy = this.getWidgetXYPoint(
+            blockRect.left - outlineWidth,
+            blockRect.top + block.getWindow().getScrollPosition().y - outlineWidth,
+            CKEDITOR.SELECTION_BOTTOM_TO_TOP
+        );
+
+        domElement = new CKEDITOR.dom.element(domNode);
+        domElement.addClass('ae-toolbar-transition');
+        domElement.setStyles({
+            left: (blockRect.left - outlineWidth) + 'px',
+            top: xy[1] + 'px'
+        });
+        return true;
+    }
+
     Y.eZ.AlloyEditorToolbarConfig.BlockBase = {
         /**
          * Returns the arrow box classes for the toolbar. The toolbar is
@@ -38,7 +60,8 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base', function (Y) {
         /**
          * Sets the position of the toolbar. It overrides the default styles
          * toolbar positioning to position the toolbar just above its related
-         * block element.
+         * block element. The related block element is the block indicated in
+         * CKEditor's path or the target of the editorEvent event.
          *
          * @method setPosition
          * @param {Object} payload
@@ -49,25 +72,12 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base', function (Y) {
          * toolbar
          */
         setPosition: function (payload) {
-            var block = payload.editor.get('nativeEditor').elementPath().block,
-                blockRect = block.getClientRect(),
-                outlineWidth = outlineTotalWidth(block),
-                domNode = AlloyEditor.React.findDOMNode(this),
-                xy, domElement;
+            var block = payload.editor.get('nativeEditor').elementPath().block;
 
-            xy = this.getWidgetXYPoint(
-                blockRect.left - outlineWidth,
-                blockRect.top + block.getWindow().getScrollPosition().y - outlineWidth,
-                CKEDITOR.SELECTION_BOTTOM_TO_TOP
-            );
-
-            domElement = new CKEDITOR.dom.element(domNode);
-            domElement.addClass('ae-toolbar-transition');
-            domElement.setStyles({
-                left: (blockRect.left - outlineWidth) + 'px',
-                top: xy[1] + 'px'
-            });
-            return true;
+            if ( !block ) {
+                block = new CKEDITOR.dom.element(payload.editorEvent.data.nativeEvent.target);
+            }
+            return setPositionFor.call(this, block);
         },
     };
 });

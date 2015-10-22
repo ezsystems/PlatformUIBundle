@@ -57,15 +57,15 @@ YUI.add('ez-contenttypeeditserversideview-tests', function (Y) {
                 button = container.one('.ez-relation-pick-root-button'),
                 that = this,
                 locationMock = new Mock(),
-                contentMock = new Mock(),
-                fakeEventFacade = {selection : {location : locationMock, content: contentMock}};
+                contentInfoMock = new Mock(),
+                fakeEventFacade = {selection: {location: locationMock, contentInfo: contentInfoMock}};
 
             Mock.expect(locationMock, {
                 method: 'get',
                 args: ['locationId'],
                 returns: 57
             });
-            Mock.expect(contentMock, {
+            Mock.expect(contentInfoMock, {
                 method: 'get',
                 args: ['name'],
                 returns: 'jerzy-engel'
@@ -98,7 +98,7 @@ YUI.add('ez-contenttypeeditserversideview-tests', function (Y) {
                     );
                     Assert.areEqual(
                         container.one(button.getAttribute('data-relation-selected-root-name-selector')).getContent(),
-                        contentMock.get('name'),
+                        contentInfoMock.get('name'),
                         "Name of selected content should be set"
                     );
                 });

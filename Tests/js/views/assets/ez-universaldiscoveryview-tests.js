@@ -698,16 +698,16 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
 
         _getMockStruct: function (contentId) {
-            var content = new Mock();
+            var contentInfo = new Mock();
 
-            Mock.expect(content, {
+            Mock.expect(contentInfo, {
                 method: 'get',
                 args: ['id'],
                 returns: contentId,
             });
 
             return {
-                content: content,
+                contentInfo: contentInfo,
             };
         },
 
@@ -1056,16 +1056,16 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
 
         _getMockStruct: function (contentId) {
-            var content = new Mock();
+            var contentInfo = new Mock();
 
-            Mock.expect(content, {
+            Mock.expect(contentInfo, {
                 method: 'get',
                 args: ['id'],
                 returns: contentId,
             });
 
             return {
-                content: content,
+                contentInfo: contentInfo,
             };
         },
 
@@ -1110,16 +1110,16 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
 
         _getMockStruct: function (contentId) {
-            var content = new Mock();
+            var contentInfo = new Mock();
 
-            Mock.expect(content, {
+            Mock.expect(contentInfo, {
                 method: 'get',
                 args: ['id'],
                 returns: contentId,
             });
 
             return {
-                content: content,
+                contentInfo: contentInfo
             };
         },
 
@@ -1184,12 +1184,12 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 removeContentId = 42;
 
             selection.push({
-                content: new Mock(),
+                contentInfo: new Mock(),
             });
             selection.push({
-                content: remainingContent,
+                contentInfo: remainingContent,
             });
-            Mock.expect(selection[0].content, {
+            Mock.expect(selection[0].contentInfo, {
                 method: 'get',
                 args: ['id'],
                 returns: removeContentId,
@@ -1210,7 +1210,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 "The selection should contain only one content"
             );
             Assert.areSame(
-                remainingContent, this.view.get('selection')[0].content,
+                remainingContent, this.view.get('selection')[0].contentInfo,
                 "The 42 content should have been removed"
             );
             Assert.isTrue(
@@ -1223,9 +1223,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 removeContentId = 42;
 
             selection.push({
-                content: new Mock(),
+                contentInfo: new Mock(),
             });
-            Mock.expect(selection[0].content, {
+            Mock.expect(selection[0].contentInfo, {
                 method: 'get',
                 args: ['id'],
                 returns: removeContentId,
@@ -1250,9 +1250,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 removeContentId = 42;
 
             selection = {
-                content: new Mock(),
+                contentInfo: new Mock(),
             };
-            Mock.expect(selection.content, {
+            Mock.expect(selection.contentInfo, {
                 method: 'get',
                 args: ['id'],
                 returns: removeContentId,

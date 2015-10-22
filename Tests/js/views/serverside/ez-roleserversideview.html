@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Role Server Side view tests</title>
+</head>
+<body>
+
+<div class="container">
+    <button class="ez-role-assign-button" data-universaldiscovery-title="UD title" data-role-rest-id="role-id" data-role-name="role-name">Assign</button>
+</div>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-roleserversideview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-roleserversideview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-roleserversideview": {
+                requires: ['ez-serversideview', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/serverside/ez-roleserversideview.js"
+            },
+            "ez-serversideview": {
+                requires: ['ez-view', 'ez-tabs', 'ez-selection-table', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/ez-serversideview.js"
+            },
+            "ez-tabs": {
+                requires: ['node'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-tabs.js"
+            },
+            "ez-selection-table": {
+                requires: ['node'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-selection-table.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-roleserversideview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

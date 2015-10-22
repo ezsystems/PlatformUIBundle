@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Role Server Side View Service tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-roleserversideviewservice-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-roleserversideviewservice'],
+        filter: loaderFilter,
+        modules: {
+            "ez-roleserversideviewservice": {
+                requires: ['ez-serversideviewservice', 'parallel'],
+                fullpath: "../../../../Resources/public/js/views/services/ez-roleserversideviewservice.js"
+            },
+            "ez-serversideviewservice": {
+                requires: ['ez-viewservice', 'io-base', 'io-form'],
+                fullpath: "../../../../Resources/public/js/views/services/ez-serversideviewservice.js"
+            },
+            "ez-viewservice": {
+                requires: ['base', 'parallel'],
+                fullpath: "../../../../Resources/public/js/views/services/ez-viewservice.js"
+            },
+        }
+    }).use('ez-roleserversideviewservice-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

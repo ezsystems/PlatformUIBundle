@@ -39,8 +39,20 @@
                 </div>
             </fieldset>
 
+            <fieldset>
+                <legend>{{ form_label(form.limitationsData) }}</legend>
+                {% for limitationForm in form.limitationsData %}
+                    <div class="pure-control-group">
+                        {{ include(limitationForm.vars.template, {form: limitationForm}, with_context = false) }}
+                    </div>
+                {% endfor %}
+            </fieldset>
+
             <div class="pure-controls">
                 {{ form_widget(form.removeDraft, {"attr": {"class": "pure-button ez-button ez-button-delete ez-font-icon", "formnovalidate": "formnovalidate"}}) }}
+                {% if form.saveAndAddLimitation is defined %}
+                    {{ form_widget(form.saveAndAddLimitation, {"attr": {"class": "pure-button ez-button"}}) }}
+                {% endif %}
                 {{ form_widget(form.savePolicy, {"attr": {"class": "pure-button ez-button"}}) }}
             </div>
 

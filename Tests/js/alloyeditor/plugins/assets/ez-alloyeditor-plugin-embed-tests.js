@@ -4,7 +4,7 @@
  */
 /* global CKEDITOR, AlloyEditor */
 YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
-    var definePluginTest, embedWidgetTest,
+    var definePluginTest, embedWidgetTest, focusTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     definePluginTest = new Y.Test.Case({
@@ -47,37 +47,79 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
 
     embedWidgetTest = new Y.Test.Case({
         name: "eZ AlloyEditor embed widget test",
-    
-        init: function () {
+
+        "async:init": function () {
+            var startTest = this.callback();
+
             CKEDITOR.plugins.addExternal('lineutils', '../../../lineutils/');
             CKEDITOR.plugins.addExternal('widget', '../../../widget/');
-        },
-
-        setUp: function () {
             this.container = Y.one('.container');
             this.editor = AlloyEditor.editable(
                 this.container.getDOMNode(), {
                     extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',widget,ezembed',
+                    eZ: {
+                        editableRegion: '.editable',
+                    },
                 }
+            );
+            this.editor.get('nativeEditor').on('instanceReady', function () {
+                startTest();
+            });
+        },
+
+        destroy: function () {
+            this.editor.destroy();
+        },
+
+        "Should recognize embed element as a widget": function () {
+            var container = this.container;
+
+            Assert.isTrue(
+                CKEDITOR.plugins.widget.isDomWidgetElement(
+                    new CKEDITOR.dom.node(container.one('#embed').getDOMNode())
+                )
             );
         },
 
-        "Should recognize ezembed element as a widget": function () {
-            var container = this.container;
+        "Should fire editorInteraction on focus": function () {
+            var container = this.container,
+                editorInteractionFired = false,
+                nativeEditor = this.editor.get('nativeEditor'),
+                widget, embedDOM;
 
-            this.editor.get('nativeEditor').on('instanceReady', this.next(function () {
-                Assert.isTrue(
-                    CKEDITOR.plugins.widget.isDomWidgetElement(
-                        new CKEDITOR.dom.node(container.one('ezembed').getDOMNode())
-                    )
+            embedDOM = container.one('#embed').getDOMNode();
+
+            widget = nativeEditor.widgets.getByElement(
+                new CKEDITOR.dom.node(embedDOM)
+            );
+
+            nativeEditor.on('editorInteraction', function (evt) {
+                editorInteractionFired = true;
+
+                Assert.areSame(
+                    embedDOM, evt.data.nativeEvent.target,
+                    "The embed dom node should be the event target"
                 );
-            }));
-            this.wait();
-        },
+                Assert.isObject(
+                    evt.data.selectionData,
+                    "selectionData should be an object"
+                );
+                Assert.areEqual(
+                    0, Y.Object.size(evt.data.selectionData),
+                    "selectionData should be empty"
+                );
+            });
 
+            widget.fire('focus');
+            Assert.isTrue(
+                editorInteractionFired,
+                "The editorInteraction event should have been fired"
+            );
+        },
     });
 
     Y.Test.Runner.setName("eZ AlloyEditor embed plugin tests");
     Y.Test.Runner.add(definePluginTest);
     Y.Test.Runner.add(embedWidgetTest);
-}, '', {requires: ['test', 'node', 'ez-alloyeditor-plugin-embed']});
+    Y.Test.Runner.add(focusTest);
+}, '', {requires: ['test', 'node-event-simulate', 'ez-alloyeditor-plugin-embed']});

@@ -6,6 +6,10 @@
         <source>role.dashboard_title</source>
         <target>Roles</target>
       </trans-unit>
+      <trans-unit id="116fe107715e06c5f0b283003ff9f23f" resname="role">
+        <source>role</source>
+        <target>Role</target>
+      </trans-unit>
       <trans-unit id="ace7da6f93a7ab5dc54784599bb75306" resname="role.list">
         <source>role.list</source>
         <target>Roles</target>
@@ -157,6 +161,26 @@
       <trans-unit id="e3f78c1d66fd4a7a1fcc4fe2a60e48be">
         <source>role.policy.error.delete</source>
         <target>An error occurred when trying to delete policy #%policyId% for role "%roleIdentifier%".</target>
+      </trans-unit>
+      <trans-unit id="23751a9239966ac8d8c91065938e3ea9" resname="role.assign.universaldiscovery.title">
+        <source>role.assign.universaldiscovery.title</source>
+        <target>Pick the users/groups to assign the role "%roleIdentifier%" to</target>
+      </trans-unit>
+      <trans-unit id="bedda6287c6ce333b45b0f080ff935c5" resname="role.assign.user_or_group">
+        <source>role.assign.user_or_group</source>
+        <target>Assign to users/groups</target>
+      </trans-unit>
+      <trans-unit id="6ed6a4fae680d7df596efde3f0aad03b" resname="role.assignment.deleted">
+        <source>role.assignment.deleted</source>
+        <target>The role assignment was correctly deleted.</target>
+      </trans-unit>
+      <trans-unit id="ef8986cfecad00ae81a92f3cdf8d0621" resname="role.assignment.error.delete">
+        <source>role.assignment.error.delete</source>
+        <target>An error occurred when trying to delete the role assignment.</target>
+      </trans-unit>
+      <trans-unit id="5251a34b2652d32806ced95c1c2ed7b9" resname="role.view.delete_assignment">
+        <source>role.view.delete_assignment</source>
+        <target>Delete assignment</target>
       </trans-unit>
     </body>
   </file>

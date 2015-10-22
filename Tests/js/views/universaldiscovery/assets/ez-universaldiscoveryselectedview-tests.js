@@ -26,22 +26,22 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
             Assert.isTrue(templateCalled, "render should use the template");
         },
 
-        "Should pass the content, location and contentType to the template": function () {
+        "Should pass the contentInfo, location and contentType to the template": function () {
             var origTpl = this.view.template,
-                location, content, type,
-                tplLocation = {}, tplContent = {}, tplType = {};
+                location, contentInfo, type,
+                tplLocation = {}, tplContentInfo = {}, tplType = {};
                 
             location = new Mock();
-            content = new Mock();
+            contentInfo = new Mock();
             type = new Mock();
 
             Mock.expect(location, {
                 method: 'toJSON',
                 returns: tplLocation,
             });
-            Mock.expect(content, {
+            Mock.expect(contentInfo, {
                 method: 'toJSON',
-                returns: tplContent,
+                returns: tplContentInfo,
             });
             Mock.expect(type, {
                 method: 'toJSON',
@@ -49,7 +49,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
             });
             this.view.set('contentStruct', {
                 location: location,
-                content: content,
+                contentInfo: contentInfo,
                 contentType: type,
             });
             this.view.set('addConfirmButton', true);
@@ -59,7 +59,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                     "The toJSON result of the location should be available in the template"
                 );
                 Assert.areSame(
-                    tplContent, variables.content,
+                    tplContentInfo, variables.contentInfo,
                     "The toJSON result of the content should be available in the template"
                 );
                 Assert.areSame(
@@ -80,11 +80,11 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
             this.view.render();
         },
 
-        "Should pass false as the content, location and type if no content struct is set": function () {
+        "Should pass false as the contentInfo, location and type if no content struct is set": function () {
             var origTpl = this.view.template;
             
             this.view.template = function (variables) {
-                Assert.isFalse(variables.content, "The content variable should be false");
+                Assert.isFalse(variables.contentInfo, "The content variable should be false");
                 Assert.isFalse(variables.location, "The location variable should be false");
                 Assert.isFalse(variables.contentType, "The contentType variable should be false");
                 return origTpl.apply(this, arguments);

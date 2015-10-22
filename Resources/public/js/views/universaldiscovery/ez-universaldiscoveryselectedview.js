@@ -85,7 +85,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
 
         render: function () {
             this.get('container').setHTML(this.template({
-                content: this._modelJson('content'),
+                contentInfo: this._modelJson('contentInfo'),
                 location: this._modelJson('location'),
                 contentType: this._modelJson('contentType'),
                 addConfirmButton: this.get('addConfirmButton'),
@@ -159,8 +159,9 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
         ATTRS: {
             /**
              * The content structure representing the content to display. It
-             * should contain the content, the location and the content type
-             * models under the key `content`, `location` and `contentType`.
+             * should contain the content info, the location and the content
+             * type models under the key `contentInfo`, `location` and
+             * `contentType`.
              *
              * @attribute contentStruct
              * @type {null|Object}

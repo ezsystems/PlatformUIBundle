@@ -188,6 +188,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
             fieldDefinition: {isRequired: false},
             fieldValue: {
                 fileName: "original.jpg",
+                url: "some url",
             },
             newValue: {
                 name: "me.jpg",
@@ -224,9 +225,8 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
                     "The original field value should be cloned"
                 );
                 Assert.areEqual(this.newValue.name, fieldValue.fileName, msg);
-                Assert.areEqual(this.newValue.size, fieldValue.fileSize, msg);
                 Assert.areEqual(this.newValue.data, fieldValue.data, msg);
-                Assert.areEqual(this.fieldValue.alternativeText, fieldValue.alternativeText, msg);
+                Assert.isUndefined(fieldValue.url, msg);
             },
 
             "Should reset the updated attribute after version save": function () {
@@ -278,8 +278,6 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
 
             _assertCorrectFieldValue: function (fieldValue, msg) {
                 Assert.areEqual(this.newValue.name, fieldValue.fileName, msg);
-                Assert.areEqual(this.newValue.size, fieldValue.fileSize, msg);
-                Assert.areEqual(this.fieldValue.alternativeText, fieldValue.alternativeText, msg);
             },
 
             "Should reset the updated attribute after version save": function () {
@@ -314,7 +312,6 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
                     this.view.get('container').hasClass('is-type-audio'),
                     "The container should get the is-type-audio class"
                 );
-                console.log(this.view.get('container').getAttribute('class'));
                 Assert.isTrue(
                     this.view.get('container').hasClass('is-mimetype-audio-ogg-whatever-special-chars-in-it'),
                     "The container should get a sanitized class based on the full mimetype"

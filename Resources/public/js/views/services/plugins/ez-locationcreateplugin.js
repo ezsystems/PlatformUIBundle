@@ -78,12 +78,12 @@ YUI.add('ez-locationcreateplugin', function (Y) {
 
             Y.Array.each(e.selection, function (selection) {
                 var parentLocation = selection.location,
-                    parentContent = selection.content,
-                    errNotificationIdentifier = 'create-location-' + content.get('id') + '-' + parentContent.get('id'),
+                    parentContentInfo = selection.contentInfo,
+                    errNotificationIdentifier = 'create-location-' + content.get('id') + '-' + parentContentInfo.get('id'),
                     end = stack.add(function (error) {
                         if (error) {
                             that._notify(
-                                "Creating new location for '" + content.get('name') + "' under '" + parentContent.get('name') + "' failed",
+                                "Creating new location for '" + content.get('name') + "' under '" + parentContentInfo.get('name') + "' failed",
                                 errNotificationIdentifier,
                                 'error',
                                 0

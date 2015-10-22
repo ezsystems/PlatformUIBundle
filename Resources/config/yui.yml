@@ -31,6 +31,9 @@ system:
                 ez-alloyeditor-toolbar-config-paragraph:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
                     path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/paragraph.js
+                ez-alloyeditor-toolbar-config-embed:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/embed.js
                 ez-alloyeditor-plugin-addcontent:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/plugins/addcontent.js
@@ -50,7 +53,7 @@ system:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/paragraph.js
                 ez-alloyeditor-button-embed:
-                    requires: ['ez-alloyeditor']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embed.js
                 ez-alloyeditor-button-blocktextalignleft:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
@@ -67,9 +70,15 @@ system:
                 ez-alloyeditor-button-blockremove:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blockremove.js
+                ez-alloyeditor-button-embedhref:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embedhref.js
                 ez-alloyeditor-button-mixin-blocktextalign:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/blocktextalign.js
+                ez-alloyeditor-button-mixin-embeddiscovercontent:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embeddiscovercontent.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -92,6 +101,8 @@ system:
                         - 'ez-serversideviewservice'
                         - 'ez-sectionserversideview'
                         - 'ez-sectionserversideviewservice'
+                        - 'ez-roleserversideview'
+                        - 'ez-roleserversideviewservice'
                         - 'ez-navigationhubviewservice'
                         - 'ez-navigationhubview'
                         - 'ez-discoverybarviewservice'
@@ -181,6 +192,9 @@ system:
                 ez-sectionserversideviewservice:
                     requires: ['ez-serversideviewservice', 'parallel']
                     path: %ez_platformui.public_dir%/js/views/services/ez-sectionserversideviewservice.js
+                ez-roleserversideviewservice:
+                    requires: ['ez-serversideviewservice', 'parallel']
+                    path: %ez_platformui.public_dir%/js/views/services/ez-roleserversideviewservice.js
                 ez-view:
                     requires: ['view', 'base-pluginhost', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/views/ez-view.js
@@ -528,6 +542,7 @@ system:
                         - 'ez-alloyeditor-toolbar-config-table'
                         - 'ez-alloyeditor-toolbar-config-heading'
                         - 'ez-alloyeditor-toolbar-config-paragraph'
+                        - 'ez-alloyeditor-toolbar-config-embed'
                         - 'ez-alloyeditor-button-heading'
                         - 'ez-alloyeditor-button-paragraph'
                         - 'ez-alloyeditor-button-embed'
@@ -536,6 +551,7 @@ system:
                         - 'ez-alloyeditor-button-blocktextalignright'
                         - 'ez-alloyeditor-button-blocktextalignjustify'
                         - 'ez-alloyeditor-button-blockremove'
+                        - 'ez-alloyeditor-button-embedhref'
                         - 'richtexteditview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
                 richtexteditview-ez-template:
@@ -835,6 +851,9 @@ system:
                 ez-sectionserversideview:
                     requires: ['ez-serversideview', 'event-tap']
                     path: %ez_platformui.public_dir%/js/views/serverside/ez-sectionserversideview.js
+                ez-roleserversideview:
+                    requires: ['ez-serversideview', 'event-tap']
+                    path: %ez_platformui.public_dir%/js/views/serverside/ez-roleserversideview.js
                 ez-texthelper:
                     requires: ['handlebars']
                     path: %ez_platformui.public_dir%/js/helpers/ez-texthelper.js
@@ -906,13 +925,13 @@ system:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-imagevariationloadplugin.js
                 ez-universaldiscoverycontenttreeplugin:
-                    requires: ['ez-contenttreeplugin', 'ez-pluginregistry']
+                    requires: ['ez-contenttreeplugin', 'ez-pluginregistry', 'ez-locationmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-universaldiscoverycontenttreeplugin.js
                 ez-discoverybarcontenttreeplugin:
                     requires: ['ez-contenttreeplugin', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-discoverybarcontenttreeplugin.js
                 ez-contenttreeplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'parallel']
+                    requires: ['ez-viewservicebaseplugin', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'parallel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
                 ez-locationsearchplugin:
                     requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel']

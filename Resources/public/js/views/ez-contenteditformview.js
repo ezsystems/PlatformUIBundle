@@ -58,23 +58,28 @@ YUI.add('ez-contenteditformview', function (Y) {
                 config = this.get('config');
 
             Y.Object.each(fieldDefinitions, function (def) {
-                var EditView, view;
+                var EditView, view,
+                    field = version.getField(def.identifier);
 
-                try {
-                    EditView = Y.eZ.FieldEditView.getFieldEditView(def.fieldType);
+                if (field) {
+                    try {
+                        EditView = Y.eZ.FieldEditView.getFieldEditView(def.fieldType);
 
-                    view = new EditView({
-                        content: content,
-                        version: version,
-                        contentType: contentType,
-                        fieldDefinition: def,
-                        field: version.getField(def.identifier),
-                        config: config,
-                    });
-                    views.push(view);
-                    view.addTarget(that);
-                } catch (e) {
-                    console.error(e.message);
+                        view = new EditView({
+                            content: content,
+                            version: version,
+                            contentType: contentType,
+                            fieldDefinition: def,
+                            field: field,
+                            config: config,
+                        });
+                        views.push(view);
+                        view.addTarget(that);
+                    } catch (e) {
+                        console.error(e.message);
+                    }
+                } else {
+                    console.warn('Version doesn\'t contain field "' + def.identifier + '"');
                 }
             });
 

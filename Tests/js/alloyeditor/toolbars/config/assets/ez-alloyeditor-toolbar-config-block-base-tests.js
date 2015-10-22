@@ -27,7 +27,6 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base-tests', function (Y) {
         setUp: function () {
             var toolbar = Y.one('.toolbar'),
                 block = Y.one('.block'),
-                blockElement = new CKEDITOR.dom.element(block.getDOMNode()),
                 nativeEditor = new Mock();
 
             this.outlineWidth = 20;
@@ -42,9 +41,13 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base-tests', function (Y) {
             this.blockNode = block.getDOMNode();
             this.toolbarNode = toolbar.getDOMNode();
 
+            this.blockElement = new CKEDITOR.dom.element(block.getDOMNode());
+            this.eventTarget = block.getDOMNode();
             Mock.expect(nativeEditor, {
                 method: 'elementPath',
-                returns: {block: blockElement},
+                run: Y.bind(function () {
+                    return {block: this.blockElement};
+                }, this),
             });
             this.editor = new Mock();
             Mock.expect(this.editor, {
@@ -95,6 +98,30 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base-tests', function (Y) {
                 "The toolbar should be aligned with its block on the left taking the outline into account"
             );
         },
+
+        "Should move the toolbar to the expected coordinates based on the event target": function () {
+            this.blockElement = null;
+            BlockBase.setPosition.call(this.toolbar, {
+                editor: this.editor,
+                editorEvent: {
+                    data: {
+                        nativeEvent: {
+                            target: this.eventTarget,
+                        }
+                    }
+                }
+            });
+
+            Assert.areEqual(
+                Y.one(this.blockNode).getComputedStyle('top'), Y.one(this.toolbarNode).getComputedStyle('bottom'),
+                "The toolbar bottom position should be its block top position"
+            );
+            Assert.areEqual(
+                Y.one(this.blockNode).get('region').left - this.outlineWidth - this.outlineOffset  + 'px', this.toolbarNode.style.left,
+                "The toolbar should be aligned with its block on the left taking the outline into account"
+            );
+        },
+
 
         "Should add the transition class": function () {
             BlockBase.setPosition.call(this.toolbar, {editor: this.editor});

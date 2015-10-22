@@ -60,9 +60,9 @@ YUI.add('ez-sectionserversideviewservice-tests', function (Y) {
             var that = this,
                 config = {},
                 updateStruct = new Mock(),
-                content = new Mock(),
+                contentInfo = new Mock(),
                 universalDiscovery = new Mock(),
-                selection = [{content: content}],
+                selection = [{contentInfo: contentInfo}],
                 callbackCalled = false,
                 callback = function () {
                     callbackCalled = true;
@@ -72,7 +72,7 @@ YUI.add('ez-sectionserversideviewservice-tests', function (Y) {
                     );
                 };
 
-            Mock.expect(content, {
+            Mock.expect(contentInfo, {
                 method: 'get',
                 args: ['id'],
                 returns: this.contentId
@@ -120,9 +120,9 @@ YUI.add('ez-sectionserversideviewservice-tests', function (Y) {
                 updateStruct = new Mock(),
                 contentId = this.contentId,
                 sectionId = this.sectionId,
-                content = new Mock(),
+                contentInfo = new Mock(),
                 universalDiscovery = new Mock(),
-                selection = [{content: content}],
+                selection = [{contentInfo: contentInfo}],
                 callbackCalled = false,
                 callback = function () {
                     callbackCalled = true;
@@ -133,7 +133,7 @@ YUI.add('ez-sectionserversideviewservice-tests', function (Y) {
                 },
                 notified = false;
 
-            Mock.expect(content, {
+            Mock.expect(contentInfo, {
                 method: 'get',
                 args: ['id'],
                 returns: this.contentId
@@ -203,9 +203,9 @@ YUI.add('ez-sectionserversideviewservice-tests', function (Y) {
                 updateStruct = new Mock(),
                 contentId = this.contentId,
                 sectionId = this.sectionId,
-                content = new Mock(),
+                contentInfo = new Mock(),
                 universalDiscovery = new Mock(),
-                selection = [{content: content}],
+                selection = [{contentInfo: contentInfo}],
                 callbackCalled = false,
                 callback = function () {
                     callbackCalled = true;
@@ -217,7 +217,7 @@ YUI.add('ez-sectionserversideviewservice-tests', function (Y) {
                 notificationId,
                 notified = false;
 
-            Mock.expect(content, {
+            Mock.expect(contentInfo, {
                 method: 'get',
                 args: ['id'],
                 returns: this.contentId

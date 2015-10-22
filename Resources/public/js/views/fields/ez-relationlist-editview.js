@@ -203,8 +203,8 @@ YUI.add('ez-relationlist-editview', function (Y) {
             var relatedContents = this.get('relatedContents').concat();
 
             Y.Array.each(e.selection, function (struct) {
-                if ( !this._isRelated(struct.content) ) {
-                    relatedContents.push(struct.content);
+                if ( !this._isRelated(struct.contentInfo) ) {
+                    relatedContents.push(struct.contentInfo);
                 }
             }, this);
 
@@ -214,15 +214,15 @@ YUI.add('ez-relationlist-editview', function (Y) {
         },
 
         /**
-         * Checks if the content is already in the relation.
+         * Checks if the content info is already in the relation.
          *
          * @method _isRelated
          * @protected
-         * @param {eZ.Content} content
+         * @param {eZ.ContentInfo} contentInfo
          * @return Boolean
          */
-        _isRelated: function (content) {
-            return ( this.get('destinationContentsIds').indexOf(content.get('contentId')) !== -1 );
+        _isRelated: function (contentInfo) {
+            return (this.get('destinationContentsIds').indexOf(contentInfo.get('contentId')) !== -1);
         },
 
         /**
@@ -242,7 +242,7 @@ YUI.add('ez-relationlist-editview', function (Y) {
              * The related contents of the relation list
              *
              * @attribute relatedContents
-             * @type Array (Y.eZ.Content)
+             * @type Array of (eZ.ContentInfo) or {eZ.Content}
              */
             relatedContents: {
                 value: [],

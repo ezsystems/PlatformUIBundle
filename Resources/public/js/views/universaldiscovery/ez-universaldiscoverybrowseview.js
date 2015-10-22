@@ -61,7 +61,7 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
         onUnselectContent: function (contentId) {
             var selectedViewStruct = this.get('selectedView').get('contentStruct');
 
-            if ( selectedViewStruct && selectedViewStruct.content.get('id') === contentId ) {
+            if ( selectedViewStruct && selectedViewStruct.contentInfo.get('id') === contentId ) {
                 this.get('selectedView').set('confirmButtonEnabled', true);
             }
         },
@@ -117,12 +117,12 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
         _fireSelectContent: function (selection) {
             /**
              * Fired when a content is selected or unselected. The event facade
-             * provides the content structure (the content, location and content
+             * provides the content structure (the contentInfo, location and content
              * type models) if a selection was made.
              *
              * @event selectContent
              * @param selection {Object|Null}
-             * @param selection.content {eZ.Content}
+             * @param selection.contentInfo {eZ.ContentInfo}
              * @param selection.location {eZ.Location}
              * @param selection.contentType {eZ.ContentType}
              */
