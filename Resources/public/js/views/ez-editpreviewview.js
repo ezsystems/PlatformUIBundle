@@ -36,12 +36,13 @@ YUI.add('ez-editpreviewview', function (Y) {
         render: function () {
             var container = this.get('container'),
                 content = this.get('content'),
-                version = this.get('version');
+                version = this.get('version'),
+                languageCode = this.get('languageCode');
 
             container.setHTML(this.template({
                 mode: this.get('previewModes')[this.get('currentModeId')],
-                source: '/content/versionview/' + content.get('contentId') + '/' + version.get('versionNo') + '/' + this.get('languageCode'),
-                legend: version.get('names')['eng-GB']
+                source: '/content/versionview/' + content.get('contentId') + '/' + version.get('versionNo') + '/' + languageCode,
+                legend: version.get('names')[languageCode]
             })).addClass(IS_LOADING_CLASS);
 
             this._attachedViewEvents.push(container.one('.ez-preview-iframe').on('load', function () {
