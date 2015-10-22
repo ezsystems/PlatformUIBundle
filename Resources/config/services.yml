@@ -194,15 +194,6 @@ services:
         class: %ezsystems.platformui.controller.exception.class%
         parent: twig.controller.exception
 
-    ezsystems.platformui.rest.content_user_gateway:
-        class: EzSystems\PlatformUIBundle\Rest\ContentUserGateway
-        arguments:
-            - @ezpublish_rest.input.dispatcher
-            - @ezpublish_rest.output.visitor.dispatcher
-            - @ezpublish.api.repository
-        tags:
-        - {name: kernel.event_subscriber}
-
     ezsystems.platformui.rest.user_field_type_processor:
         class: EzSystems\PlatformUIBundle\Rest\UserFieldTypeProcessor
         tags:
