@@ -160,11 +160,17 @@ class RoleController extends Controller
     public function updateRoleAction(Request $request, $roleId)
     {
         try {
-            $roleDraft = $this->roleService->loadRoleDraftByRoleId($roleId);
+            // If the draft is not yet published, we load it directly.
+            $roleDraft = $this->roleService->loadRoleDraft($roleId);
         } catch (NotFoundException $e) {
-            // The draft doesn't exist, let's create one
-            $role = $this->roleService->loadRole($roleId);
-            $roleDraft = $this->roleService->createRoleDraft($role);
+            try {
+                // If the draft has been published, we load it by the published ID
+                $roleDraft = $this->roleService->loadRoleDraftByRoleId($roleId);
+            } catch (NotFoundException $e) {
+                // The draft doesn't exist, let's create one
+                $role = $this->roleService->loadRole($roleId);
+                $roleDraft = $this->roleService->createRoleDraft($role);
+            }
         }
 
         $roleData = (new RoleMapper())->mapToFormData($roleDraft);
