@@ -2,11 +2,15 @@ language: node_js
 node_js:
     - "0.10"
 env:
-    - CODE="php"
+    - TYPE="phpunit"
       BEFORE_GLOBAL="sudo ./bin/travis/setupphp.sh"
       BEFORE_LOCAL="./bin/travis/composer.sh"
       TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml"
-    - CODE="js"
+    - TYPE="behat"
+      BEFORE_GLOBAL="sudo -E ./bin/travis/prepare_behat.sh"
+      BEFORE_LOCAL="pwd"
+      TEST_CMD="cd $HOME/build/ezplatform && php bin/behat -vc behat.yml.dist --profile platformui --tags common"
+    - TYPE="js-tests"
       BEFORE_GLOBAL="npm install -g grunt-cli grover bower"
       BEFORE_LOCAL="./bin/travis/localjsdeps.sh"
       TEST_CMD="grunt test"
