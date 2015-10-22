@@ -66,7 +66,7 @@ YUI.add('ez-contenttypeeditserversideview', function (Y) {
                 selectedRootName = this.get('container').one(button.getAttribute('data-relation-selected-root-name-selector'));
 
             selectionRootInput.setAttribute('value', e.selection.location.get('locationId'));
-            selectedRootName.setHTML(e.selection.content.get('name'));
+            selectedRootName.setHTML(e.selection.contentInfo.get('name'));
         },
     });
 });

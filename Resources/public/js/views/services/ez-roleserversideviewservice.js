@@ -61,8 +61,8 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                     var end = tasks.add(function (err, response) {
                             if (err) {
                                 service._notify(
-                                    'Role has not been assigned to "' + struct.content.get('name') + '": ' + err.message,
-                                    'assign-role-failed-' + struct.content.get('id'),
+                                    'Role has not been assigned to "' + struct.contentInfo.get('name') + '": ' + err.message,
+                                    'assign-role-failed-' + struct.contentInfo.get('id'),
                                     'error',
                                     0
                                 );
@@ -100,9 +100,9 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                 contentTypeIdentifier = struct.contentType.get('identifier');
 
             if (contentTypeIdentifier === 'user') {
-                this._assignRoleToUser(role, limitation, struct.content, callback);
+                this._assignRoleToUser(role, limitation, struct.contentInfo, callback);
             } else if (contentTypeIdentifier === 'user_group') {
-                this._assignRoleToUserGroup(role, limitation, struct.content, callback);
+                this._assignRoleToUserGroup(role, limitation, struct.contentInfo, struct.location, callback);
             } else {
                 callback({message:'Selected content is not a user or group.'});
             }
@@ -115,10 +115,10 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          * @protected
          * @param {Object} role
          * @param {Object|null} limitation
-         * @param {Content} content
+         * @param {eZ.ContentInfo} contentInfo
          * @param {Function} callback the callback function
          */
-        _assignRoleToUser: function (role, limitation, content, callback) {
+        _assignRoleToUser: function (role, limitation, contentInfo, callback) {
             var userService = this.get('capi').getUserService(),
                 discoveryService = this.get('capi').getDiscoveryService(),
                 roleAssignInputStruct= userService.newRoleAssignInputStruct(role, limitation),
@@ -132,7 +132,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
 
                 // We got a Content, but we need a user ID, e.g.: /api/ezp/v2/user/users/10
                 // TODO UDW should be limited to the Users subtree, and return User/UserGroup objects: EZP-24917
-                userIdStr = usersInfoObject._href + '/' + content.get('contentId');
+                userIdStr = usersInfoObject._href + '/' + contentInfo.get('contentId');
 
                 userService.assignRoleToUser(
                     userIdStr, roleAssignInputStruct, callback
@@ -147,14 +147,14 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          * @protected
          * @param {Object} role
          * @param {Object|null} limitation
-         * @param {Content} content
+         * @param {eZ.ContentInfo} content
+         * @param {eZ.Location} location
          * @param {Function} callback the callback function
          */
-        _assignRoleToUserGroup: function (role, limitation, content, callback) {
+        _assignRoleToUserGroup: function (role, limitation, contentInfo, location, callback) {
             var userService = this.get('capi').getUserService(),
                 discoveryService = this.get('capi').getDiscoveryService(),
                 roleAssignInputStruct= userService.newRoleAssignInputStruct(role, limitation),
-                location,
                 groupIdStr;
 
             discoveryService.getInfoObject('rootUserGroup', function (error, rootUserGroup) {
@@ -168,8 +168,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                  into this: /api/ezp/v2/user/groups/1/5/14
                  */
                 // TODO UDW should be limited to the Users subtree, and return User/UserGroup objects: EZP-24917
-                location = content.get('resources').MainLocation;
-                groupIdStr = /.+user\/groups/.exec(rootUserGroup._href) + /(\/\d+)+$/g.exec(location)[0];
+                groupIdStr = /.+user\/groups/.exec(rootUserGroup._href) + /(\/\d+)+$/g.exec(location.get('id'))[0];
 
                 userService.assignRoleToUserGroup(
                     groupIdStr, roleAssignInputStruct, callback
@@ -271,7 +270,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
             var contentIds = [];
 
             Y.Array.each(contents, function (struct) {
-                contentIds.push(struct.content.get('id'));
+                contentIds.push(struct.contentInfo.get('id'));
             });
             return action + '-' + roleId + '-' + contentIds.join('_');
         },

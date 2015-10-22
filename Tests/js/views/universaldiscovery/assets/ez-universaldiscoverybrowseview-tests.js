@@ -366,10 +366,10 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
         },
 
         "Should ignore when the selectedView displays a different content": function () {
-            var content = new Mock(),
+            var contentInfo = new Mock(),
                 contentId = 42;
 
-            Mock.expect(content, {
+            Mock.expect(contentInfo, {
                 method: 'get',
                 args: ['id'],
                 returns: (contentId + 1),
@@ -377,18 +377,18 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
             Mock.expect(this.selectedView, {
                 method: 'get',
                 args: ['contentStruct'],
-                returns: {content: content},
+                returns: {contentInfo: contentInfo},
             });
             this.view.onUnselectContent(contentId);
-            Mock.verify(content);
+            Mock.verify(contentInfo);
             Mock.verify(this.selectedView);
         },
 
         "Should enable the button and reset the animated element": function () {
-            var content = new Mock(),
+            var contentInfo = new Mock(),
                 contentId = 42;
 
-            Mock.expect(content, {
+            Mock.expect(contentInfo, {
                 method: 'get',
                 args: ['id'],
                 returns: contentId,
@@ -396,14 +396,14 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
             Mock.expect(this.selectedView, {
                 method: 'get',
                 args: ['contentStruct'],
-                returns: {content: content},
+                returns: {contentInfo: contentInfo},
             });
             Mock.expect(this.selectedView, {
                 method: 'set',
                 args: ['confirmButtonEnabled', true],
             });
             this.view.onUnselectContent(contentId);
-            Mock.verify(content);
+            Mock.verify(contentInfo);
             Mock.verify(this.selectedView);
         },
     });

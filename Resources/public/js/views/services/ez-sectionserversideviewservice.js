@@ -51,7 +51,7 @@ YUI.add('ez-sectionserversideviewservice', function (Y) {
                 update.setSection(data.sectionId);
                 // TODO error handling, see https://jira.ez.no/browse/EZP-23992
                 contentService.updateContentMetadata(
-                    struct.content.get('id'), update, tasks.add()
+                    struct.contentInfo.get('id'), update, tasks.add()
                 );
             });
 
@@ -85,17 +85,17 @@ YUI.add('ez-sectionserversideviewservice', function (Y) {
          * @protected
          * @param {String} sectionId the section id
          * @param {String} sectionName the section name
-         * @param {Array} contents the array of contents to which section is being assigned to
+         * @param {Array} selection the UDW selection
          */
-        _assignSectionNotificationStarted: function (sectionId, sectionName, contents) {
+        _assignSectionNotificationStarted: function (sectionId, sectionName, selection) {
             var notificationIdentifier = this._getAssignSectionNotificationIdentifier(
-                    'assign-section', sectionId, contents
+                    'assign-section', sectionId, selection
                 );
 
             this.fire('notify', {
                 notification: {
                     identifier: notificationIdentifier,
-                    text: 'Assigning the section "' + sectionName + '" to ' + contents.length + ' contents',
+                    text: 'Assigning the section "' + sectionName + '" to ' + selection.length + ' contents',
                     state: 'started',
                     timeout: 0
                 },
@@ -109,17 +109,17 @@ YUI.add('ez-sectionserversideviewservice', function (Y) {
          * @protected
          * @param {String} sectionId the section id
          * @param {String} sectionName the section name
-         * @param {Array} contents the array of contents to which section is being assigned to
+         * @param {Array} selection the UDW selection
          */
-        _assignSectionNotificationDone: function (sectionId, sectionName, contents) {
+        _assignSectionNotificationDone: function (sectionId, sectionName, selection) {
             var notificationIdentifier = this._getAssignSectionNotificationIdentifier(
-                    'assign-section', sectionId, contents
+                    'assign-section', sectionId, selection
                 );
 
             this.fire('notify', {
                 notification: {
                     identifier: notificationIdentifier,
-                    text: 'Section "' + sectionName + '" assigned to ' + contents.length + ' contents',
+                    text: 'Section "' + sectionName + '" assigned to ' + selection.length + ' contents',
                     state: 'done',
                     timeout: 5
                 },
@@ -134,14 +134,14 @@ YUI.add('ez-sectionserversideviewservice', function (Y) {
          * @protected
          * @param {String} action custom string describing action which is being taken
          * @param {String} sectionId the section id
-         * @param {Array} contents the array of contents to which section is being assigned to
+         * @param {Array} selection the UDW selection
          * @return {String} unique notification identifier based on passed parameters
          */
         _getAssignSectionNotificationIdentifier: function (action, sectionId, contents) {
             var contentIds = [];
 
             Y.Array.each(contents, function (struct) {
-                contentIds.push(struct.content.get('id'));
+                contentIds.push(struct.contentInfo.get('id'));
             });
             return action + '-' + sectionId + '-' + contentIds.join('_');
         },

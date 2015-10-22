@@ -1,8 +1,8 @@
-{{#if content}}
+{{#if contentInfo}}
     <div class="ez-ud-pane ez-ud-pane-selected">
         <h2 class="ez-ud-pane-title">Selected item</h2>
         <div class="ez-ud-pane-content">
-            <h3>{{ content.name }} ({{ contentType.names.[eng-GB] }})</h3>
+            <h3>{{ contentInfo.name }} ({{ contentType.names.[eng-GB] }})</h3>
 
             {{#if addConfirmButton}}
             <p>

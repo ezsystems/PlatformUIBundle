@@ -6,6 +6,7 @@
 <body>
 
 <script type="text/javascript" src="../../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../../../assets/pluginregister-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-contenttreeplugin-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
@@ -24,28 +25,24 @@
         filter: loaderFilter,
         modules: {
             "ez-contenttreeplugin": {
-                requires: ['ez-viewservicebaseplugin', 'ez-contentmodel', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'parallel'],
+                requires: ['ez-viewservicebaseplugin', 'ez-locationmodel', 'ez-contenttree', 'parallel'],
                 fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-contenttreeplugin.js"
             },
             "ez-viewservicebaseplugin": {
                 requires: ['plugin', 'base'],
                 fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js"
             },
-            "ez-contentmodel": {
-                requires: ['ez-restmodel', 'array-extras', 'ez-contentinfo-attributes'],
-                fullpath: "../../../../../Resources/public/js/models/ez-contentmodel.js"
-            },
             "ez-contentinfo-attributes": {
                 requires: ['ez-restmodel'],
                 fullpath: "../../../../../Resources/public/js/models/extensions/ez-contentinfo-attributes.js"
             },
-            "ez-contenttypemodel": {
-                requires: ['ez-restmodel'],
-                fullpath: "../../../../../Resources/public/js/models/ez-contentypemodel.js"
-            },
             "ez-locationmodel": {
-                requires: ['ez-restmodel'],
+                requires: ['ez-restmodel', 'ez-contentinfomodel'],
                 fullpath: "../../../../../Resources/public/js/models/ez-locationmodel.js"
+            },
+            "ez-contentinfomodel": {
+                requires: ['ez-restmodel', 'ez-contentinfo-attributes'],
+                fullpath: "../../../../../Resources/public/js/models/ez-contentinfomodel.js"
             },
             "ez-contenttree": {
                 requires: ['tree', 'tree-selectable', 'tree-openable', 'tree-lazy'],

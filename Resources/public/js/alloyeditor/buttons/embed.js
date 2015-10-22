@@ -53,7 +53,7 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
          */
         _addEmbed: function (e) {
             this.execCommand();
-            this._setContent(e.selection.content);
+            this._setContentInfo(e.selection.contentInfo);
         },
 
         render: function () {
