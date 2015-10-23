@@ -3,17 +3,17 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-editactionbarview-tests', function (Y) {
-    var viewTest;
+    var actionListChangeTest, actionListTest,
+        Assert = Y.Assert, Mock = Y.Mock;
 
-    viewTest = new Y.Test.Case({
-        name: "eZ Edit Action Bar View test",
+    actionListChangeTest = new Y.Test.Case({
+        name: "eZ Edit Action Bar View actionList Change test",
 
         setUp: function () {
-            this.version = new Y.Mock();
             this.view = new Y.eZ.EditActionBarView({
-                container: '.container',
                 actionsList: [],
-                version: this.version
+                version: {},
+                languageCode: 'fre-FR',
             });
         },
 
@@ -22,43 +22,73 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
         },
 
         "Should set the version and the languageCode to new action list": function () {
-            var newActionList = [new Y.Mock(), new Y.Mock(), new Y.Mock()];
-
-            Y.Array.each(newActionList, function (mock) {
-                Y.Mock.expect(mock, {
-                    method: 'set',
-                    callCount: 4,
-                    args: [Y.Mock.Value.String, Y.Mock.Value.Any],
-                    run: function (name, object) {
-                        if (name === 'version') {
-                            Y.Assert.isObject(object);
-                        } else if (name === 'languageCode') {
-                            Y.Assert.isString(object);
-                        } else {
-                            Y.fail("Unexpected parameter name " + name + " for content mock");
-                        }
-                    }
-                });
-
-                Y.Mock.expect(mock, {
-                    method: 'removeTarget',
-                    args: [this.view]
-                });
-                Y.Mock.expect(mock, {
-                    method: 'destroy',
-                });
-            }, this);
-
+            var newActionList = [new Y.View(), new Y.View()];
 
             this.view.set('actionsList', newActionList);
-            this.view.destroy();
 
-            Y.Array.each(newActionList, function (mock) {
-                Y.Mock.verify(mock);
-            });
+            Y.Array.each(newActionList, function (view) {
+                Assert.areSame(
+                    this.view.get('version'), view.get('version'),
+                    "The version should set on the action list view"
+                );
+                Assert.areSame(
+                    this.view.get('languageCode'), view.get('languageCode'),
+                    "The languageCode should set on the action list view"
+                );
+            }, this);
         }
     });
 
+    actionListTest = new Y.Test.Case({
+        name: "eZ Edit Action Bar View actionList test",
+
+        setUp: function () {
+            this.contentType = new Mock();
+            Y.eZ.ButtonActionView = Y.View;
+            Y.eZ.PreviewActionView = Y.View;
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+
+            delete Y.eZ.ButtonActionView;
+            delete Y.eZ.PreviewActionView;
+        },
+
+        "Should include the Save button action view": function () {
+            Mock.expect(this.contentType, {
+                method: 'hasFieldType',
+                args: ['ezuser'],
+                returns: false,
+            });
+            this.view = new Y.eZ.EditActionBarView({
+                contentType: this.contentType,
+            });
+
+            Assert.isObject(
+                this.view.getAction('save'),
+                "The Save button should be added"
+            );
+        },
+
+        "Should not include the Save button action": function () {
+            Mock.expect(this.contentType, {
+                method: 'hasFieldType',
+                args: ['ezuser'],
+                returns: true,
+            });
+            this.view = new Y.eZ.EditActionBarView({
+                contentType: this.contentType,
+            });
+
+            Assert.isNull(
+                this.view.getAction('save'),
+                "The Save button should not be added"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Edit Action Bar View tests");
-    Y.Test.Runner.add(viewTest);
+    Y.Test.Runner.add(actionListChangeTest);
+    Y.Test.Runner.add(actionListTest);
 }, '', {requires: ['test', 'ez-editactionbarview']});

@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenttypemodel-tests', function (Y) {
-    var modelTest;
+    var modelTest, hasFieldTypeTest,
+        Assert = Y.Assert;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
         name: "eZ ContentType Model tests",
@@ -298,7 +299,45 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
         },
     }));
 
+    hasFieldTypeTest = new Y.Test.Case({
+        name: "eZ ContentType Model hasFieldType tests",
+
+        setUp: function () {
+            this.contentType = new Y.eZ.ContentType({
+                fieldDefinitions: {
+                    'name': {
+                        fieldType: 'ezstring',
+                    },
+                    'user_account': {
+                        fieldType: 'ezuser',
+                    },
+                    'avatar': {
+                        fieldType: 'ezimage',
+                    },
+                },
+            });
+        },
+
+        tearDown: function () {
+            this.contentType.destroy();
+        },
+
+        "Should find the ezuser fieldtype": function () {
+            Assert.isTrue(
+                this.contentType.hasFieldType('ezuser'),
+                "The ezuser field type should be detected in the content type"
+            );
+        },
+
+        "Should not find the ezwhatever fieldtype": function () {
+            Assert.isFalse(
+                this.contentType.hasFieldType('ezwhatever'),
+                "The ezwhatever field type should not be detected in the content type"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ ContentType Model tests");
     Y.Test.Runner.add(modelTest);
-
+    Y.Test.Runner.add(hasFieldTypeTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contenttypemodel', 'ez-restmodel']});

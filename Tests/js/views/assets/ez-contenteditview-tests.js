@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenteditview-tests', function (Y) {
-    var viewTest, titleTest, eventTest, domEventTest, attrsToFormViewAndActionBarTest;
+    var viewTest, titleTest, eventTest, domEventTest, attrsToFormViewAndActionBarTest,
+        Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
         name: "eZ Content Edit View test",
@@ -32,11 +33,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             });
 
             Y.Mock.expect(this.formView, {
-                method: 'addTarget',
-                args: [Y.Mock.Value.Object],
-                returns: true
-            });
-            Y.Mock.expect(this.formView, {
                 method: 'render',
                 returns: this.formView
             });
@@ -50,11 +46,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 returns: this.actionBarContents
             });
 
-            Y.Mock.expect(this.actionBar, {
-                method: 'addTarget',
-                args: [Y.Mock.Value.Object],
-                returns: true
-            });
             Y.Mock.expect(this.actionBar, {
                 method: 'render',
                 returns: this.actionBar
@@ -74,15 +65,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 actionBar: this.actionBar,
                 languageCode: this.languageCode
             });
-            Y.Mock.expect(this.actionBar, {
-                method: 'removeTarget',
-                args: [this.view]
-            });
-            Y.Mock.expect(this.formView, {
-                method: 'removeTarget',
-                args: [this.view]
-            });
-
         },
 
         tearDown: function () {
@@ -167,52 +149,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             this.view.destroy();
             Y.Mock.verify(this.formView);
             Y.Mock.verify(this.actionBar);
-        },
-
-        "Should receive events fired on it's child formView": function () {
-            Y.Mock.expect(this.contentType, {
-                method: 'get',
-                args: ['fieldDefinitions']
-            });
-            // We need another (not as in "setUp") view initialization sequence to test that
-            var testEventReceived = false,
-                view = new Y.eZ.ContentEditView({
-                    container: '.container',
-                    content: this.content,
-                    contentType: this.contentType,
-                    mainLocation: this.mainLocation,
-                    owner: this.owner,
-                    actionBar: this.actionBar
-                });
-
-            view.on('contentEditFormView:testEvent', function () {
-                testEventReceived = true;
-            });
-
-            view.get('formView').fire('testEvent');
-
-            Y.assert(testEventReceived, "Should have received the 'testEvent' from child contentEditFormView");
-        },
-
-        "Should receive events fired on it's child actionBar": function () {
-            // We need another (not as in "setUp") view initialization sequence to test that
-            var view = new Y.eZ.ContentEditView({
-                    container: '.container',
-                    content: this.content,
-                    contentType: this.contentType,
-                    mainLocation: this.mainLocation,
-                    owner: this.owner,
-                    formView: this.formView
-                }),
-                testEventReceived = false;
-
-            view.on('editActionBarView:testEvent', function () {
-                testEventReceived = true;
-            });
-
-            view.get('actionBar').fire('testEvent');
-
-            Y.assert(testEventReceived, "Should have received the 'testEvent' from child editActionBarView");
         },
 
         "Should fire a closeView event when tapping 'close' link": function () {
@@ -380,11 +316,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             });
 
             Y.Mock.expect(this.formView, {
-                method: 'addTarget',
-                args: [Y.Mock.Value.Object],
-                returns: true
-            });
-            Y.Mock.expect(this.formView, {
                 method: 'render',
                 returns: this.formView
             });
@@ -398,11 +329,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 returns: this.actionBarContents
             });
 
-            Y.Mock.expect(this.actionBar, {
-                method: 'addTarget',
-                args: [Y.Mock.Value.Object],
-                returns: true
-            });
             Y.Mock.expect(this.actionBar, {
                 method: 'render',
                 returns: this.actionBar
@@ -447,7 +373,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         name: "eZ Content Edit View event tests",
 
         setUp: function () {
-
+            this.origFormView = Y.eZ.ContentEditFormView;
             Y.eZ.ContentEditFormView = Y.Base.create('contentEditFormView', Y.View, [], {}, {
                 ATTRS: {
                     content: {},
@@ -457,10 +383,12 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 },
             });
 
-            Y.eZ.ActionBarView = Y.Base.create('actionBarView', Y.View, [], {}, {
+            this.origActionBarView = Y.eZ.ActionBarView;
+            Y.eZ.EditActionBarView = Y.Base.create('actionBarView', Y.View, [], {}, {
                 ATTRS: {
                     content: {},
                     version: {},
+                    contentType: {},
                     languageCode: {},
                 },
             });
@@ -478,9 +406,35 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
 
         tearDown: function () {
-            delete Y.eZ.ActionBarView;
+            delete Y.eZ.EditActionBarView;
             delete Y.eZ.ContentEditFormView;
+            Y.eZ.EditActionBarView = this.origActionBarView;
+            Y.eZ.ContentEditFormView = this.origFormView;
             this.view.destroy();
+        },
+
+        "Should set the view as a bubble target of the formView": function () {
+            var testEventReceived = false;
+
+            this.view.on('contentEditFormView:testEvent', function () {
+                testEventReceived = true;
+            });
+
+            this.view.get('formView').fire('testEvent');
+
+            Assert.isTrue(testEventReceived, "Should have received the 'testEvent' from child contentEditFormView");
+        },
+
+        "Should set the view as a bubble target of the actionBar": function () {
+            var testEventReceived = false;
+
+            this.view.on('actionBarView:testEvent', function () {
+                testEventReceived = true;
+            });
+
+            this.view.get('actionBar').fire('testEvent');
+
+            Assert.isTrue(testEventReceived, "Should have received the 'testEvent' from child editActionBarView");
         },
 
         "Should set the version of the action bar": function () {
@@ -496,6 +450,14 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 this.view.get('content'),
                 this.view.get('actionBar').get('content'),
                 'The content should have been set to the actionBar'
+            );
+        },
+
+        "Should set the contentType of the action bar": function () {
+            Y.Assert.areSame(
+                this.view.get('contentType'),
+                this.view.get('actionBar').get('contentType'),
+                'The contentType should have been set to the actionBar'
             );
         },
 
@@ -557,10 +519,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
 
         _configureSubViewMock: function (view) {
-            Y.Mock.expect(view, {
-                method: 'addTarget',
-                args: [Y.Mock.Value.Object]
-            });
             Y.Mock.expect(view, {
                 method: 'set',
                 args: [Y.Mock.Value.String, Y.Mock.Value.Any]
@@ -634,11 +592,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             });
 
             Y.Mock.expect(this.formView, {
-                method: 'addTarget',
-                args: [Y.Mock.Value.Object],
-                returns: true
-            });
-            Y.Mock.expect(this.formView, {
                 method: 'render',
                 returns: this.formView
             });
@@ -652,11 +605,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 returns: this.actionBarContents
             });
 
-            Y.Mock.expect(this.actionBar, {
-                method: 'addTarget',
-                args: [Y.Mock.Value.Object],
-                returns: true
-            });
             Y.Mock.expect(this.actionBar, {
                 method: 'render',
                 returns: this.actionBar
@@ -675,14 +623,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 formView: this.formView,
                 actionBar: this.actionBar,
                 languageCode: this.languageCode
-            });
-            Y.Mock.expect(this.actionBar, {
-                method: 'removeTarget',
-                args: [this.view]
-            });
-            Y.Mock.expect(this.formView, {
-                method: 'removeTarget',
-                args: [this.view]
             });
 
             this.view.render();
@@ -734,5 +674,4 @@ YUI.add('ez-contenteditview-tests', function (Y) {
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(domEventTest);
     Y.Test.Runner.add(attrsToFormViewAndActionBarTest);
-
 }, '', {requires: ['test', 'node-event-simulate', 'ez-contenteditview']});

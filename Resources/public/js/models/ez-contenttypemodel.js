@@ -82,8 +82,21 @@ YUI.add('ez-contenttypemodel', function (Y) {
             });
 
             return fieldGroups;
-        }
+        },
 
+        /**
+         * Checks whether the content type has a field definition which field
+         * type is the given fieldTypeIdentifier (ezstring, ezuser, ...)
+         *
+         * @method hasFieldType
+         * @param {String} fieldTypeIdentifier
+         * @return {Boolean}
+         */
+        hasFieldType: function (fieldTypeIdentifier) {
+            return Y.Object.some(this.get('fieldDefinitions'), function (fieldDef) {
+                return (fieldDef.fieldType === fieldTypeIdentifier);
+            });
+        },
     }, {
         REST_STRUCT_ROOT: 'ContentType',
         ATTRS_REST_MAP: [
