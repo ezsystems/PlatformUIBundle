@@ -301,6 +301,7 @@ YUI.add('ez-locationmodel-tests', function (Y) {
             this.sortField = "choucroute";
             this.sortOrder = "couscous";
             this.contentServiceMock = new Y.Mock();
+            this.hidden = 'tartiflette';
             this.updateStruct = {
                 body: {
                     LocationUpdate: {
@@ -314,7 +315,13 @@ YUI.add('ez-locationmodel-tests', function (Y) {
                 id: this.locationId,
                 sortField: this.sortField,
                 sortOrder: this.sortOrder,
+                hidden: this.hidden,
             });
+            this.callbackCalled = false;
+
+            this.callback = Y.bind(function () {
+                this.callbackCalled = true;
+            }, this);
 
             Mock.expect(this.capiMock, {
                 method: 'getContentService',
@@ -333,36 +340,72 @@ YUI.add('ez-locationmodel-tests', function (Y) {
             delete this.model;
         },
 
-        _configureUpdateLocationMock: function (hidden, callback) {
-            this.updateStruct.body.LocationUpdate.hidden = hidden;
-
+        _configureUpdateLocationMock: function (cbError) {
             Mock.expect(this.contentServiceMock, {
                 method: 'updateLocation',
-                args: [this.locationId, this.updateStruct, callback],
+                args: [this.locationId, this.updateStruct, Mock.Value.Function],
+                run: function (id, struct, cb) {
+                    cb(cbError);
+                },
             });
         },
 
         "Should hide the location": function () {
-            var callback = function () {},
-                options = {api: this.capiMock},
-                hidden = 'true';
+            var options = {api: this.capiMock};
 
-            this._configureUpdateLocationMock(hidden, callback);
+            this._configureUpdateLocationMock(false);
 
-            this.model.hide(options, callback);
+            this.model.hide(options, this.callback);
+
+            Assert.isTrue(
+                this.model.get('hidden'),
+                "Attribute hidden should have been set to true"
+            );
+            Assert.isTrue(
+                this.callbackCalled,
+                "Callback should have been called"
+            );
 
             Mock.verify(this.contentServiceMock);
             Mock.verify(this.capiMock);
         },
 
         "Should unhide the location": function () {
-            var callback = function () {},
-                options = {api: this.capiMock},
-                hidden = 'false';
+            var options = {api: this.capiMock};
 
-            this._configureUpdateLocationMock(hidden, callback);
+            this._configureUpdateLocationMock(false);
 
-            this.model.unhide(options, callback);
+            this.model.unhide(options, this.callback);
+
+            Assert.isFalse(
+                this.model.get('hidden'),
+                "Attribute hidden should have been set to false"
+            );
+            Assert.isTrue(
+                this.callbackCalled,
+                "Callback should have been called"
+            );
+
+            Mock.verify(this.contentServiceMock);
+            Mock.verify(this.capiMock);
+        },
+
+        "Should not update hidden attribute on error": function () {
+            var options = {api: this.capiMock};
+
+            this._configureUpdateLocationMock(true);
+
+            this.model.unhide(options, this.callback);
+
+            Assert.areSame(
+                this.hidden,
+                this.model.get('hidden'),
+                "Attribute hidden should not have been modified"
+            );
+            Assert.isTrue(
+                this.callbackCalled,
+                "Callback should have been called"
+            );
 
             Mock.verify(this.contentServiceMock);
             Mock.verify(this.capiMock);

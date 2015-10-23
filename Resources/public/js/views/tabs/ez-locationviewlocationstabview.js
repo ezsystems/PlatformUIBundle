@@ -73,9 +73,11 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
              *
              * @event loadLocations
              * @param {eZ.Content} content the content for which locations will be loaded
+             * @param {eZ.Location} location currently being displayed
              */
             this.fire('loadLocations', {
-                content: this.get('content')
+                content: this.get('content'),
+                location: this.get('location')
             });
         },
 
@@ -292,6 +294,17 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
              * @writeOnce
              */
             content: {
+                writeOnce: 'initOnly',
+            },
+
+            /**
+             * The location being displayed in the location view.
+             *
+             * @attribute location
+             * @type {eZ.Location}
+             * @writeOnce
+             */
+            location: {
                 writeOnce: 'initOnly',
             },
 

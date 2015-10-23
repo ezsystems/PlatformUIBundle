@@ -39,10 +39,20 @@ YUI.add('ez-subitemlistview', function (Y) {
 
             this.after(['subitemsChange', 'loadingErrorChange'], this._uiPageEndLoading);
 
-            this.after('offsetChange', function () {
-                this._uiPageLoading();
-                this._fireLocationSearch();
-            });
+            this.after('offsetChange', this._refresh);
+
+            this.get('location').after(['hiddenChange', 'invisibleChange'], Y.bind(this._refresh, this));
+        },
+
+        /**
+         * Refreshes the subitem list
+         *
+         * @protected
+         * @method _refresh
+         */
+        _refresh: function () {
+            this._uiPageLoading();
+            this._fireLocationSearch();
         },
 
         /**

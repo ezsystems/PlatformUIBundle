@@ -119,7 +119,14 @@ YUI.add('ez-locationmodel', function (Y) {
             //Remove the 2 line bellow once EZP-24899 is fixed and update unit test
             locationUpdateStruct.body.LocationUpdate.sortField = this.get('sortField');
             locationUpdateStruct.body.LocationUpdate.sortOrder = this.get('sortOrder');
-            options.api.getContentService().updateLocation(this.get('id'), locationUpdateStruct, callback);
+            options.api.getContentService().updateLocation(this.get('id'), locationUpdateStruct,
+                Y.bind(function (error, response) {
+                    if (!error) {
+                        this.set('hidden', (hidden === 'true'));
+                    }
+                    callback(error, response);
+                }, this)
+            );
         },
 
         /**
