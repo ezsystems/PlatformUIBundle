@@ -14,13 +14,14 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         setUp: function () {
             this.contentId = 59;
             this.versionNo = 42;
+            this.previewName = 'Test elvish name';
             this.mockContent = new Y.eZ.Content({
                 contentId: this.contentId,
                 name: "Test name"
             });
             this.mockVersion = new Y.eZ.Version({
                 versionNo: this.versionNo,
-                names: {value: [{'_languageCode': 'eng-GB', '#text': 'Test name'}]}
+                names: {value: [{'_languageCode': 'eng-GB', '#text': 'Test name'}, {'_languageCode': 'quenya', '#text': this.previewName}]}
             });
             this.languageCode = 'quenya';
 
@@ -64,6 +65,11 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
                 Y.Assert.isObject(variables.mode, "mode should be available in the template and should be an object");
                 Y.Assert.isString(variables.legend, "legend should be available in the template and should be a string");
                 Y.Assert.isString(variables.source, "source should be available in the template and should be a string");
+                Y.Assert.areSame(
+                    variables.legend,
+                    that.previewName,
+                    "preview title should be translated"
+                );
                 Y.Assert.areSame(
                     '/content/versionview/' + that.contentId + '/' + that.versionNo + '/' + that.view.get('languageCode'),
                     variables.source,
