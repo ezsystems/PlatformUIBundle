@@ -71,6 +71,22 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             );
         },
 
+        "Should include the Preview buttons action view": function () {
+            Mock.expect(this.contentType, {
+                method: 'hasFieldType',
+                args: ['ezuser'],
+                returns: false,
+            });
+            this.view = new Y.eZ.EditActionBarView({
+                contentType: this.contentType,
+            });
+
+            Assert.isObject(
+                this.view.getAction('preview'),
+                "The Preview buttons should be added"
+            );
+        },
+
         "Should not include the Save button action": function () {
             Mock.expect(this.contentType, {
                 method: 'hasFieldType',
@@ -84,6 +100,22 @@ YUI.add('ez-editactionbarview-tests', function (Y) {
             Assert.isNull(
                 this.view.getAction('save'),
                 "The Save button should not be added"
+            );
+        },
+
+        "Should not include the Preview buttons action": function () {
+            Mock.expect(this.contentType, {
+                method: 'hasFieldType',
+                args: ['ezuser'],
+                returns: true,
+            });
+            this.view = new Y.eZ.EditActionBarView({
+                contentType: this.contentType,
+            });
+
+            Assert.isNull(
+                this.view.getAction('preview'),
+                "The Preview buttons should not be added"
             );
         },
     });

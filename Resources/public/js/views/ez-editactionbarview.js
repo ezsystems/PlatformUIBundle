@@ -81,16 +81,6 @@ YUI.add('ez-editactionbarview', function (Y) {
                                 label: "Discard changes",
                                 priority: 180
                             }),
-                            new Y.eZ.PreviewActionView({
-                                actionId: "preview",
-                                label: "Preview",
-                                priority: 170,
-                                buttons: [
-                                    {option: "desktop"},
-                                    {option: "tablet"},
-                                    {option: "mobile"}
-                                ],
-                            })
                         ];
 
                     if ( !this.get('contentType').hasFieldType('ezuser') ) {
@@ -103,6 +93,18 @@ YUI.add('ez-editactionbarview', function (Y) {
                                 disabled: false,
                                 label: "Save",
                                 priority: 190
+                            })
+                        );
+                        list.push(
+                            new Y.eZ.PreviewActionView({
+                                actionId: "preview",
+                                label: "Preview",
+                                priority: 170,
+                                buttons: [
+                                    {option: "desktop"},
+                                    {option: "tablet"},
+                                    {option: "mobile"}
+                                ],
                             })
                         );
                     }
