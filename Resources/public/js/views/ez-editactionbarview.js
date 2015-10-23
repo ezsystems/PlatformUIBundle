@@ -68,38 +68,58 @@ YUI.add('ez-editactionbarview', function (Y) {
              */
             actionsList: {
                 valueFn: function () {
-                    return [
-                        new Y.eZ.ButtonActionView({
-                            actionId: "publish",
-                            disabled: false,
-                            label: "Publish",
-                            priority: 200
-                        }),
-                        new Y.eZ.ButtonActionView({
-                            actionId: "save",
-                            disabled: false,
-                            label: "Save",
-                            priority: 190
-                        }),
-                        new Y.eZ.ButtonActionView({
-                            actionId: "discard",
-                            disabled: false,
-                            label: "Discard changes",
-                            priority: 180
-                        }),
-                        new Y.eZ.PreviewActionView({
-                            actionId: "preview",
-                            label: "Preview",
-                            priority: 170,
-                            buttons: [
-                                {option: "desktop"},
-                                {option: "tablet"},
-                                {option: "mobile"}
-                            ],
-                        })
-                    ];
+                    var list = [
+                            new Y.eZ.ButtonActionView({
+                                actionId: "publish",
+                                disabled: false,
+                                label: "Publish",
+                                priority: 200
+                            }),
+                            new Y.eZ.ButtonActionView({
+                                actionId: "discard",
+                                disabled: false,
+                                label: "Discard changes",
+                                priority: 180
+                            }),
+                        ];
+
+                    if ( !this.get('contentType').hasFieldType('ezuser') ) {
+                        // for now users are considered as "normal" Content but
+                        // the UserService does not support "user draft"
+                        // see https://jira.ez.no/browse/EZP-24908
+                        list.push(
+                            new Y.eZ.ButtonActionView({
+                                actionId: "save",
+                                disabled: false,
+                                label: "Save",
+                                priority: 190
+                            })
+                        );
+                        list.push(
+                            new Y.eZ.PreviewActionView({
+                                actionId: "preview",
+                                label: "Preview",
+                                priority: 170,
+                                buttons: [
+                                    {option: "desktop"},
+                                    {option: "tablet"},
+                                    {option: "mobile"}
+                                ],
+                            })
+                        );
+                    }
+                    return list;
                 }
             },
+
+            /**
+             * The content type of the content being edited
+             *
+             * @attribute contentType
+             * @type {eZ.ContentType}
+             * @required
+             */
+            contentType: {},
 
             /**
              * The version currently being edited

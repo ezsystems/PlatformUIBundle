@@ -48,9 +48,6 @@ YUI.add('ez-contenteditview', function (Y) {
          * @method initializer
          */
         initializer: function () {
-            this.get('formView').addTarget(this);
-            this.get('actionBar').addTarget(this);
-
             this.after('activeChange', function (e) {
                 if ( e.newVal ) {
                     this._setFocus();
@@ -88,10 +85,7 @@ YUI.add('ez-contenteditview', function (Y) {
          * @method destructor
          */
         destructor: function () {
-            this.get('formView').removeTarget(this);
             this.get('formView').destroy();
-
-            this.get('actionBar').removeTarget(this);
             this.get('actionBar').destroy();
         },
 
@@ -323,7 +317,8 @@ YUI.add('ez-contenteditview', function (Y) {
                         config: this.get('config'),
                         contentType: this.get('contentType'),
                         content: this.get('content'),
-                        version: this.get('version')
+                        version: this.get('version'),
+                        bubbleTargets: this,
                     });
                 }
             },
@@ -341,7 +336,9 @@ YUI.add('ez-contenteditview', function (Y) {
                     return new Y.eZ.EditActionBarView({
                         content: this.get('content'),
                         version: this.get('version'),
-                        languageCode: this.get('languageCode')
+                        contentType: this.get('contentType'),
+                        languageCode: this.get('languageCode'),
+                        bubbleTargets: this,
                     });
                 }
             },
