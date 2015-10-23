@@ -2,9 +2,8 @@
 
 [![Build Status](https://travis-ci.org/ezsystems/PlatformUIBundle.svg?branch=master)](https://travis-ci.org/ezsystems/PlatformUIBundle)
 
-PlatformUIBundle is a bundle for eZ Publish Platform providing a webapp
-application to manage your content and administrate your eZ Publish Platform
-install.
+PlatformUIBundle is a bundle for eZ Platform providing a web application
+to manage your content and administrate your eZ Platform install.
 
 If you find a bug, please create an issue [in JIRA](https://jira.ez.no/) and
 don't forget to add as much details as you can (steps to reproduce, OS and
@@ -14,10 +13,9 @@ issues on https://doc.ez.no/Security
 
 ## Installation
 
-**eZ Publish Platform 5.4 or community release 2014.11 (or later community
-release) are required to run the PlatformUI.**
+**eZ Platform 1.0 (2015.11) or higher are required to run the PlatformUI.**
 
-If you are using a recent clone of the ezpublish-community repository,
+If you are using a recent clone of the ezplatform repository,
 PlatformUIBundle is automatically setup. So you can directly open
 http://[uri\_of\_ez]/ez in your favorite browser.
 
@@ -29,8 +27,7 @@ On an existing installation, here's what you need to do:
   $ composer require ezsystems/platform-ui-bundle:dev-master
   ```
 
-* In `ezpublish/EzPublishKernel.php` add an instance of
-  `EzSystemsPlatformUIBundle` and `EzSystemsPlatformUIAssetsBundle` classes to
+* In `ezpublish/EzPublishKernel.php` add an instance of the following classes to
   the list of registered bundles:
 
   ```php
@@ -42,6 +39,7 @@ On an existing installation, here's what you need to do:
 
           new EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle(),
           new EzSystems\PlatformUIAssetsBundle\EzSystemsPlatformUIAssetsBundle(),
+          new  EzSystems\RepositoryFormsBundle\EzSystemsRepositoryFormsBundle(),
       );
   }
   ```
