@@ -114,7 +114,3 @@
 .is-using-touch-device .ez-editfield-input-area .ez-field-description.is-visible {
     opacity: 1;
 }
-
-.ez-editfield-input-area {
-    overflow: hidden;
-}
