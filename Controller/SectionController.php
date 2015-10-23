@@ -138,7 +138,11 @@ class SectionController extends Controller
         $form = $this->createForm(new SectionType(), $sectionData);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->actionDispatcher->dispatchFormAction($form, $sectionData, $form->getClickedButton()->getName());
+            $this->actionDispatcher->dispatchFormAction(
+                $form,
+                $sectionData,
+                $form->getClickedButton() ? $form->getClickedButton()->getName() : null
+            );
             if ($response = $this->actionDispatcher->getResponse()) {
                 return $response;
             }
