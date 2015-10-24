@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use eZ\Publish\Core\FieldType\User\Value as UserFieldValue;
 
-class ContentUserGateway implements EventSubscriberInterface
+class ContentCreateUserGateway implements EventSubscriberInterface
 {
     /** @var \eZ\Publish\Core\REST\Common\Input\Dispatcher */
     private $restInputDispatcher;
