@@ -55,10 +55,16 @@ YUI.add('ez-restmodel', function (Y) {
          * @return {Date}
          */
         _setterDate: function (val) {
+            var parsed;
+
             if ( val instanceof Date ) {
                 return val;
             }
-            return new Date(val);
+            parsed = Date.parse(val);
+            if ( !isNaN(parsed) ) {
+                return new Date(val);
+            }
+            return new Date();
         },
 
         /**
