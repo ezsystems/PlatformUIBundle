@@ -143,10 +143,11 @@
                             {# @var role_assignment \eZ\Publish\API\Repository\Values\User\RoleAssignment #}
                             <tr>
                                 <td>
+                                    {# These should be linked to the user/group views. See follow-up EZP-25030 #}
                                     {%- if role_assignment.getUserGroup is defined -%}
-                                        <a href="{{ path( 'ez_urlalias', { 'locationId': role_assignment.usergroup.contentInfo.mainLocationId } ) }}" title="{{ ez_content_name( role_assignment.usergroup ) }}">{{ ez_content_name( role_assignment.usergroup ) }}</a>
+                                        {{ ez_content_name( role_assignment.usergroup ) }}
                                     {%- else -%}
-                                        <a href="{{ path( 'ez_urlalias', { 'locationId': role_assignment.user.contentInfo.mainLocationId } ) }}" title="{{ ez_content_name( role_assignment.user ) }}">{{ ez_content_name( role_assignment.user ) }}</a>
+                                        {{ ez_content_name( role_assignment.user ) }}
                                     {%- endif -%}
                                 </td>
                                 <td>
