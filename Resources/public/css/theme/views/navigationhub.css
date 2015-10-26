@@ -48,16 +48,10 @@
 }
 
 .ez-view-navigationhubview .ez-zone:before {
-    width: 2rem;
-    height: 2rem;
-    line-height: 2rem;
-    margin: 0;
     background: #528036;
     color: #fff;
-    display: inline-block;
     border-radius: 3px;
-    float: left;
-    text-align: center;
+    padding: 0.25em;
     font-family: 'ez-platformui-icomoon';
     font-size: 135%;
     -webkit-font-smoothing: antialiased;
@@ -66,7 +60,7 @@
 .ez-view-navigationhubview .ez-admin-zone:before {
     background: transparent;
     color: #444;
-    font-size: 100%;
+    font-size: 1rem;
 }
 
 @media (max-width: 58em) {

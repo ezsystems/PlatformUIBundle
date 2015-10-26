@@ -35,11 +35,12 @@
 .ez-view-navigationhubview .ez-zone-name {
     height: 2rem;
     line-height: 2rem;
-    margin: 0 0 0 2.6rem;
+    margin: 0 0 0 0.2rem;
+    display: inline-block;
 }
 
 .ez-view-navigationhubview .ez-admin-zone .ez-zone-name {
-    margin: 0 0 0 2rem;
+    margin: 0;
 }
 
 .ez-view-navigationhubview .ez-logo {
@@ -47,10 +48,13 @@
 }
 
 .ez-view-navigationhubview .ez-zone,
-.ez-view-navigationhubview .ez-zones-navigation .ez-logo,
 .ez-view-navigationhubview .ez-user-info {
     font-size: 1rem;
-    padding: 0.8rem 1rem;
+    padding: 0.9rem 1rem 0.7rem 1rem;
+}
+
+.ez-view-navigationhubview .ez-zones-navigation .ez-logo {
+    padding: 0.6rem 1rem 1rem 1rem;
 }
 
 .ez-view-navigationhubview .ez-zones-navigation .ez-logo,
@@ -170,7 +174,7 @@
     }
 
     .ez-view-navigationhubview .ez-zone-name {
-        margin: 0 0 0 1.9rem;
+        margin: 0 0 0 0.1rem;
     }
 
     .ez-view-navigationhubview .ez-admin-zone {
