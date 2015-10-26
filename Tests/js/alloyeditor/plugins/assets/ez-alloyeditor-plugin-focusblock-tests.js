@@ -4,7 +4,7 @@
  */
 /* global CKEDITOR, AlloyEditor */
 YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
-    var definePluginTest, selectionChangeTest, blurTest,
+    var definePluginTest, selectionChangeTest, blurTest, getDataTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     definePluginTest = new Y.Test.Case({
@@ -41,8 +41,9 @@ YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
 
             CKEDITOR.plugins.addExternal('lineutils', '../../../lineutils/');
             CKEDITOR.plugins.addExternal('widget', '../../../widget/');
+            this.container = Y.one('.container-selectionchange');
             this.editor = AlloyEditor.editable(
-                Y.one('.container').getDOMNode(), {
+                this.container.getDOMNode(), {
                     extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezfocusblock,widget,ezembed',
                 }
             );
@@ -53,9 +54,6 @@ YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
 
         destroy: function () {
             this.editor.destroy();
-            Y.one('.container').all('.is-block-focused').each(function (node) {
-                node.removeClass('is-block-focused');
-            });
         },
 
         _moveCaretToElement: function (editor, element) {
@@ -71,7 +69,7 @@ YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
             this._moveCaretToElement(editor, editor.element.findOne('blockquote'));
 
             Assert.isTrue(
-                Y.one('blockquote').hasClass('is-block-focused'),
+                this.container.one('blockquote').hasClass('is-block-focused'),
                 "The blockquote should have the focus class"
             );
         },
@@ -83,7 +81,7 @@ YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
             editor.widgets.getByElement(editor.element.findOne('#embed')).focus();
 
             Assert.areEqual(
-                0, Y.all('.is-block-focused').size(),
+                0, this.container.all('.is-block-focused').size(),
                 "No element should have the focused class"
             );
         },
@@ -95,11 +93,11 @@ YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
             this._moveCaretToElement(editor, editor.element.findOne('p'));
 
             Assert.isFalse(
-                Y.one('blockquote').hasClass('is-block-focused'),
+                this.container.one('blockquote').hasClass('is-block-focused'),
                 "The blockquote should NOT have the focus class"
             );
             Assert.isTrue(
-                Y.one('p').hasClass('is-block-focused'),
+                this.container.one('p').hasClass('is-block-focused'),
                 "The p should have the focus class"
             );
         },
@@ -111,8 +109,9 @@ YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
         "async:init": function () {
             var startTest = this.callback();
 
+            this.container = Y.one('.container-blur');
             this.editor = AlloyEditor.editable(
-                Y.one('.container').getDOMNode(), {
+                this.container.getDOMNode(), {
                     extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezfocusblock',
                 }
             );
@@ -123,22 +122,19 @@ YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
 
         destroy: function () {
             this.editor.destroy();
-            Y.one('.container').all('.is-block-focused').each(function (node) {
-                node.removeClass('is-block-focused');
-            });
         },
 
         "Should remove the focus block class": function () {
             var editor = this.editor.get('nativeEditor');
 
-            Y.one('blockquote').addClass('is-block-focused');
+            this.container.one('blockquote').addClass('is-block-focused');
             editor.fire('blur');
             Assert.isFalse(
-                Y.one('blockquote').hasClass('is-block-focused'),
+                this.container.one('blockquote').hasClass('is-block-focused'),
                 "The blockquote should NOT have the focus class"
             );
             Assert.isFalse(
-                Y.one('p').hasClass('is-block-focused'),
+                this.container.one('p').hasClass('is-block-focused'),
                 "The p should NOT have the focus class"
             );
         },
@@ -146,13 +142,74 @@ YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
         "Should handle no focus block case": function () {
             this.editor.get('nativeEditor').fire('blur');
             Assert.isFalse(
-                Y.one('blockquote').hasClass('is-block-focused'),
+                this.container.one('blockquote').hasClass('is-block-focused'),
                 "The blockquote should NOT have the focus class"
             );
             Assert.isFalse(
-                Y.one('p').hasClass('is-block-focused'),
+                this.container.one('p').hasClass('is-block-focused'),
                 "The p should NOT have the focus class"
             );
+        },
+    });
+
+    getDataTest = new Y.Test.Case({
+        name: "eZ AlloyEditor focusblock plugin getData event test",
+
+        "async:init": function () {
+            var startTest = this.callback();
+
+            this.editor = AlloyEditor.editable(
+                Y.one('.container-getdata').getDOMNode(), {
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezfocusblock',
+                }
+            );
+            this.editor.get('nativeEditor').on('instanceReady', function () {
+                startTest();
+            });
+        },
+
+        destroy: function () {
+            this.editor.destroy();
+        },
+
+        _moveCaretToElement: function (editor, element) {
+            var range = editor.createRange();
+
+            range.moveToPosition(element, CKEDITOR.POSITION_AFTER_START);
+            editor.getSelection().selectRanges([range]);
+        },
+
+        "Should remove the focus block class": function () {
+            var content, editor = this.editor.get('nativeEditor');
+
+            this._moveCaretToElement(editor, editor.element.findOne('#additional-classes'));
+
+            content = Y.Node.create(editor.getData());
+            Assert.areEqual(
+                0, content.all('.is-focused-block').size(),
+                "The is-focused-block class should be removed"
+            );
+            Assert.isTrue(
+                content.one('#additional-classes').hasClass('additional'),
+                "The others classes should be kept"
+            );
+        },
+
+        "Should remove the empty class attribute": function () {
+            // test of the workaround to https://jira.ez.no/browse/EZP-25028
+            var content, editor = this.editor.get('nativeEditor');
+
+            this._moveCaretToElement(editor, editor.element.findOne('#only-focusedblock'));
+
+            content = Y.Node.create(editor.getData());
+            Assert.areEqual(
+                0, content.all('[class=""]').size(),
+                "The empty class attribute should be removed"
+            );
+        },
+
+        "Should handle an invalid DOM structure": function () {
+            this.editor.get('nativeEditor').fire('getData', {data: {dataValue: '<invalid></xml>'}});
         },
     });
 
@@ -160,4 +217,5 @@ YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
     Y.Test.Runner.add(definePluginTest);
     Y.Test.Runner.add(selectionChangeTest);
     Y.Test.Runner.add(blurTest);
+    Y.Test.Runner.add(getDataTest);
 }, '', {requires: ['test', 'node', 'ez-alloyeditor-plugin-embed', 'ez-alloyeditor-plugin-focusblock']});
