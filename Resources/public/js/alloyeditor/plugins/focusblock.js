@@ -15,7 +15,7 @@ YUI.add('ez-alloyeditor-plugin-focusblock', function (Y) {
     function findFocusedBlock(editor) {
         return editor.element.findOne('.' + FOCUSED_CLASS);
     }
-    
+
     function updateFocusedBlock(e) {
         var block = e.data.path.block,
             oldBlock = findFocusedBlock(e.editor);
@@ -36,6 +36,31 @@ YUI.add('ez-alloyeditor-plugin-focusblock', function (Y) {
         }
     }
 
+    function clearFocusedBlockFromData(e) {
+        var doc = document.createDocumentFragment(),
+            root, element, list, i;
+
+        root = document.createElement('div');
+        doc.appendChild(root);
+        root.innerHTML = e.data.dataValue;
+        list = root.querySelectorAll('.' + FOCUSED_CLASS);
+        if ( list.length ) {
+            for (i = 0; i != list.length; ++i) {
+                element = list[i];
+
+                element.classList.remove(FOCUSED_CLASS);
+                // Workaround to https://jira.ez.no/browse/EZP-25028
+                // RichText xhtml5edit parser does not accept empty class
+                // attributes...
+                // @TODO remove once fixed.
+                if ( !element.getAttribute('class') ) {
+                    element.removeAttribute('class');
+                }
+            }
+            e.data.dataValue = root.innerHTML;
+        }
+    }
+
     /**
      * CKEditor plugin to add/remove the focused class on the block holding the
      * caret.
@@ -47,6 +72,7 @@ YUI.add('ez-alloyeditor-plugin-focusblock', function (Y) {
         init: function (editor) {
             editor.on('selectionChange', updateFocusedBlock);
             editor.on('blur', clearFocusedBlock);
+            editor.on('getData', clearFocusedBlockFromData);
         },
     });
 });
