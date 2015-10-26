@@ -118,6 +118,15 @@ YUI.add('ez-restmodel-tests', function (Y) {
             Y.Assert.areEqual(+m.get('date'), ts);
         },
 
+        "Should ignore unrecognized date": function () {
+            var now = +(new Date()),
+                m = this.model;
+
+            m.set('date', '');
+            Y.Assert.isInstanceOf(Date, m.get('date'));
+            Y.Assert.areEqual(+m.get('date'), now);
+        },
+
         "Should transform a localized value": function () {
             var m = this.model,
                 val = {
