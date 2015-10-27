@@ -76,6 +76,15 @@ YUI.add('ez-publishdraftplugin', function (Y) {
                 return;
             }
 
+            service.fire('notify', {
+                notification: {
+                    identifier: this._buildNotificationIdentifier(content.get('id')),
+                    text: 'Content has been published',
+                    state: 'done',
+                    timeout: 5,
+                },
+            });
+
             content.load({api: service.get('capi')}, function (error, response) {
                 /**
                  * Fired when the draft is published

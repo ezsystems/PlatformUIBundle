@@ -12,6 +12,7 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
         setUp: function () {
             this.publishRedirectionUrl = '/something';
             this.languageCode = 'eng-GB';
+            this.contentId = '/reamonn/supergirl';
             this.app = new Y.Mock();
             this.capi = {};
             this.version = new Y.Mock();
@@ -285,7 +286,8 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
             Y.Mock.expect(this.content, {
                 method: 'get',
                 args: ['id'],
-                returns: "",
+                returns: this.contentId,
+                callCount: 2
             });
             Y.Mock.expect(this.content, {
                 method: 'save',
@@ -391,23 +393,30 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
             Assert.isTrue(eventFired, "The plugin should have fired the publishedDraft event");
         },
 
-        "Should notify the user about the starting publishing process": function () {
-            var eventFired = false;
+        "Should notify the user about the states of publishing process": function () {
+            var publishStartedNotification = false,
+                publishDoneNotification = false,
+                that = this;
 
-            this.service.once('notify', function (e) {
-                eventFired = true;
+            this.service.on('notify', function (e) {
+                if (e.notification.state === 'started') {
+                    publishStartedNotification = true;
+                } else if (e.notification.state === 'done') {
+                    publishDoneNotification = true;
+                }
 
-                Assert.areEqual(
-                    "started", e.notification.state,
-                    "The notification state should be 'started'"
-                );
                 Assert.areEqual(
                     5, e.notification.timeout,
                     "The notification timeout should be 5"
                 );
+                Assert.isTrue(
+                    (e.notification.identifier.indexOf(that.contentId) >= 0 ),
+                    "The notification identifier should contain content's id"
+                );
             });
             this["Should create the content and publish it"]();
-            Assert.isTrue(eventFired, "The user should have been notified");
+            Assert.isTrue(publishStartedNotification, "The user should have been notified when publish process starts");
+            Assert.isTrue(publishDoneNotification, "The user should have been notified when publish process finishes");
         },
 
         "Should handle content creation error": function () {
