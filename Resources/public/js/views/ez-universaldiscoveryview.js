@@ -40,8 +40,14 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             this.after('multipleChange', this._uiMultipleMode);
             this.after('visibleMethodChange', this._updateMethods);
             this.after('*:selectContent', function (e) {
-                if ( !this.get('multiple') ) {
-                    this._storeSelection(e.selection);
+                var isSelectable = this.get('isSelectable');
+
+                if (!this.get('multiple')) {
+                    if (e.selection !== null && isSelectable(e.selection)) {
+                        this._storeSelection(e.selection);
+                    } else {
+                        this._resetSelection();
+                    }
                 }
             });
             this.after('*:unselectContent', function (e) {
@@ -52,9 +58,6 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     this._uiAnimateSelection(e.target);
                     this._storeSelection(e.selection);
                 }
-            });
-            this.after('universalDiscoverySelectedView:contentStructChange', function (e) {
-                e.target.set('confirmButtonEnabled', !this._isAlreadySelected(e.newVal));
             });
             this.after('selectionChange', function () {
                 this._uiSetConfirmButtonState();
@@ -256,7 +259,8 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         /**
          * Updates the method views depending on the value so that their
          * `visible` flag is consistent with the `visibleMethod` attribute value
-         * and so that they get the correct `multiple` flag value as well.
+         * and so that they get the correct `multiple` flag value as well. What's more
+         * the `isSelectable` function registered in UDW is passed to the method view.
          *
          * @method _updateMethods
          * @protected
@@ -277,7 +281,8 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
 
                 method.setAttrs({
                     'multiple': this.get('multiple'),
-                    'visible': visible
+                    'visible': visible,
+                    'isSelectable': Y.bind(this.get('isSelectable'), this)
                 });
                 if ( visible ) {
                     this._visibleMethodView = method;
@@ -528,6 +533,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             bubbleTargets: this,
                             priority: 100,
                             multiple: this.get('multiple'),
+                            isAlreadySelected: Y.bind(this._isAlreadySelected, this)
                         }),
                     ];
                 },
@@ -587,7 +593,22 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
              */
             data: {
                 value: {},
-            }
+            },
+
+            /**
+             * Checks wether the content is selectable. Function can be provided in the config
+             * when firing the `contentDiscover` event so it can check if content is selectable
+             * depending on the context where UDW is triggered.
+             *
+             * @attribute isSelectable
+             * @type {Function}
+             */
+            isSelectable: {
+                validator: Y.Lang.isFunction,
+                value: function (contentStruct) {
+                    return true;
+                }
+            },
         }
     });
 });

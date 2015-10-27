@@ -246,7 +246,55 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 style, elt.getAttribute('style'),
                 "The style attribute should be removed"
             );
-        }
+        },
+
+        "Should set confirm button state when the contentStruct changes": function () {
+            var isAlreadySelected1 = function (contentStruct) {return false;},
+                isAlreadySelected2 = function (contentStruct) {return true;},
+                isselectable1 = function (contentStruct) {return false;},
+                isselectable2 = function (contentStruct) {return true;},
+                location = new Mock(),
+                contentInfo = new Mock(),
+                type = new Mock(),
+                contentStruct = {
+                    location: location,
+                    contentInfo: contentInfo,
+                    contentType: type,
+                };
+
+            Mock.expect(location, {
+                method: 'toJSON',
+                returns: {},
+            });
+            Mock.expect(contentInfo, {
+                method: 'toJSON',
+                returns: {},
+            });
+            Mock.expect(type, {
+                method: 'toJSON',
+                returns: {},
+            });
+
+            this.view.set('isAlreadySelected', isAlreadySelected1);
+            this.view.set('isSelectable', isselectable1);
+            this.view.set('contentStruct', contentStruct);
+            Assert.isFalse(this.view.get('confirmButtonEnabled'), "The confirm button should be disabled");
+
+            this.view.set('isAlreadySelected', isAlreadySelected2);
+            this.view.set('isSelectable', isselectable1);
+            this.view.set('contentStruct', contentStruct);
+            Assert.isFalse(this.view.get('confirmButtonEnabled'), "The confirm button should be disabled");
+
+            this.view.set('isAlreadySelected', isAlreadySelected1);
+            this.view.set('isSelectable', isselectable2);
+            this.view.set('contentStruct', contentStruct);
+            Assert.isTrue(this.view.get('confirmButtonEnabled'), "The confirm button should be enabled");
+
+            this.view.set('isAlreadySelected', isAlreadySelected2);
+            this.view.set('isSelectable', isselectable2);
+            this.view.set('contentStruct', contentStruct);
+            Assert.isFalse(this.view.get('confirmButtonEnabled'), "The confirm button should be disabled");
+        },
     });
 
     Y.Test.Runner.setName("eZ Universal Discovery Selected View tests");

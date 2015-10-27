@@ -6,8 +6,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     var renderTest, domEventTest, eventHandlersTest, eventsTest, visibleMethodTest,
         tabTest, defaultMethodsTest, selectContentTest, confirmButtonStateTest,
         updateTitleTest, confirmSelectedContentTest, resetTest, selectionUpdateConfirmViewTest,
-        defaultConfirmedListTest, multipleClassTest, animatedSelectionTest,
-        selectedViewButtonStateTest, unselectContentTest,
+        defaultConfirmedListTest, multipleClassTest, animatedSelectionTest, unselectContentTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -443,6 +442,57 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 "The method2 should not be visible"
             );
         },
+
+        "Should initialize the isSelected function of the method views": function () {
+            var isSelectableResult = false,
+                isSelectable = function (contentStruct) {return isSelectableResult;},
+                contentStruct = {},
+                isSelectableInMethod1, isSelectableInMethod2;
+
+            this.view.set('isSelectable', isSelectable);
+            this.view.render();
+            this.view.set('active', true);
+
+            isSelectableInMethod1 = this.method1.get('isSelectable');
+            isSelectableInMethod2 = this.method2.get('isSelectable');
+
+            Assert.areSame(
+                isSelectableInMethod1(contentStruct),
+                isSelectable(contentStruct),
+                "The method1 should contain current isSelectable function"
+            );
+            Assert.areSame(
+                isSelectableInMethod2(contentStruct),
+                isSelectable(contentStruct),
+                "The method2 should contain current isSelectable function"
+            );
+        },
+
+        "Should change the isSelected function of method views": function () {
+            var isSelectableResult1 = false,
+                isSelectableResult2 = true,
+                isSelectable1 = function (contentStruct) {return isSelectableResult1;},
+                isSelectable2 = function (contentStruct) {return isSelectableResult2;},
+                contentStruct = {},
+                isSelectableInMethod1, isSelectableInMethod2;
+
+            this.view.set('isSelectable', isSelectable1);
+            this.view.set('isSelectable', isSelectable2);
+
+            isSelectableInMethod1 = this.method1.get('isSelectable');
+            isSelectableInMethod2 = this.method2.get('isSelectable');
+
+            Assert.areSame(
+                isSelectableInMethod1(contentStruct),
+                isSelectable2(contentStruct),
+                "The method1 should contain updated isSelectable function"
+            );
+            Assert.areSame(
+                isSelectableInMethod2(contentStruct),
+                isSelectable2(contentStruct),
+                "The method2 should contain updated isSelectable function"
+            );
+        },
     });
 
     tabTest = new Y.Test.Case({
@@ -599,6 +649,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 this.multiple, methods[0].get('multiple'),
                 "The selection mode should be passed to the method views"
             );
+            Assert.isFunction(
+                methods[0].get('isAlreadySelected'),
+                "The isAlreadySelected function should be passed to the method views"
+            );
         },
 
         "Should add the universal discovery view as a bubble target": function () {
@@ -647,8 +701,20 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             );
         },
 
-        "Should reset the selection": function () {
+        "Should reset the selection if selection is null": function () {
             this.view.fire('selectContent', {selection: null});
+
+            Assert.isNull(
+                this.view.get('selection'),
+                "The selection should have been resetted"
+            );
+        },
+
+        "Should reset the selection if selection is not selectable": function () {
+            var selection = {};
+            this.view.set('isSelectable', function (contentStruct) {return false;});
+
+            this.view.fire('selectContent', {selection: selection});
 
             Assert.isNull(
                 this.view.get('selection'),
@@ -1083,70 +1149,6 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
     });
 
-    selectedViewButtonStateTest = new Y.Test.Case({
-        name: "eZ Universal Discovery View selected view button state test",
-
-        setUp: function () {
-            var SelectedView = Y.Base.create('universalDiscoverySelectedView', Y.View, [], {});
-
-            this.confirmedList = new Y.View();
-            this.view = new Y.eZ.UniversalDiscoveryView({
-                methods: [],
-                confirmedListView: this.confirmedList,
-            });
-            this.selectedView = new SelectedView({
-                bubbleTargets: this.view,
-            });
-            this.view.render();
-        },
-
-        tearDown: function () {
-            this.view.destroy();
-            this.confirmedList.destroy();
-            this.selectedView.destroy();
-            delete this.view;
-            delete this.confirmedList;
-            delete this.selectedView;
-        },
-
-        _getMockStruct: function (contentId) {
-            var contentInfo = new Mock();
-
-            Mock.expect(contentInfo, {
-                method: 'get',
-                args: ['id'],
-                returns: contentId,
-            });
-
-            return {
-                contentInfo: contentInfo
-            };
-        },
-
-        "Should enable the button of the selected view": function () {
-            var content = this._getMockStruct(1);
-
-            this.view._set('selection', [content]);
-            this.selectedView.set('contentStruct', content);
-
-            Assert.isFalse(
-                this.selectedView.get('confirmButtonEnabled'),
-                "The confirm button should have been disabled"
-            );
-        },
-
-        "Should disable the button of the selected view": function () {
-            var content = this._getMockStruct(1);
-
-            this.selectedView.set('contentStruct', content);
-
-            Assert.isTrue(
-                this.selectedView.get('confirmButtonEnabled'),
-                "The confirm button should be enabled"
-            );
-        },
-    });
-
     unselectContentTest = new Y.Test.Case({
         name: "eZ Universal Discovery View confirm unselectContent event test",
 
@@ -1289,6 +1291,5 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     Y.Test.Runner.add(defaultConfirmedListTest);
     Y.Test.Runner.add(multipleClassTest);
     Y.Test.Runner.add(animatedSelectionTest);
-    Y.Test.Runner.add(selectedViewButtonStateTest);
     Y.Test.Runner.add(unselectContentTest);
 }, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'ez-universaldiscoveryview']});
