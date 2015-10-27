@@ -7,8 +7,8 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
         editorTest, focusModeTest, editorFocusHandlingTest,
         actionBarTest, destructorTest, appendToolbarConfigTest,
-        eventForwardTest,
-        VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, FIELDVALUE_RESULT,
+        eventForwardTest, removeYuiIdTest,
+        VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, FIELDVALUE_RESULT, VALID_XHTML_ID,
         Assert = Y.Assert, Mock = Y.Mock;
 
     INVALID_XHTML = "I'm invalid";
@@ -19,6 +19,10 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
     EMPTY_XHTML = '<?xml version="1.0" encoding="UTF-8"?>';
     EMPTY_XHTML += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit"/>';
+
+    VALID_XHTML_ID = '<?xml version="1.0" encoding="UTF-8"?>';
+    VALID_XHTML_ID += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit" id="yui_3_18_1_1_1445609502229_4087">';
+    VALID_XHTML_ID += '<p id="stuff">I\'m not empty</p></section>';
 
     RESULT_XHTML = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit" contenteditable="true" class="ez-richtext-editable">';
     RESULT_XHTML += '<p>I\'m not empty</p></section>';
@@ -314,6 +318,29 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 "The xml property of the fieldValue should come from the editor"
             );
         },
+
+        "Should remove id attributes": function () {
+            var fieldDefinition = this._getFieldDefinition(true),
+                field;
+
+            this.field.fieldValue.xhtml5edit = VALID_XHTML_ID;
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.render();
+            this.view.set('active', true);
+            field = this.view.getField();
+
+            Assert.isObject(field, "The field should be an object");
+            Assert.areNotSame(
+                this.field, field,
+                "The getField method should be return a different object"
+            );
+            Assert.isObject(field.fieldValue, "The fieldValue should be an object");
+            Assert.areEqual(
+                FIELDVALUE_RESULT, field.fieldValue.xml,
+                "Ids should have been removed"
+            );
+        },
+
     });
 
     editorTest = new Y.Test.Case({
@@ -779,6 +806,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(editorTest);
     Y.Test.Runner.add(focusModeTest);
     Y.Test.Runner.add(actionBarTest);
+    Y.Test.Runner.add(removeYuiIdTest);
     Y.Test.Runner.add(destructorTest);
     Y.Test.Runner.add(appendToolbarConfigTest);
     Y.Test.Runner.add(registerTest);

@@ -293,15 +293,26 @@ YUI.add('ez-richtext-editview', function (Y) {
          */
         _getEditorContent: function () {
             var data = this.get('editor').get('nativeEditor').getData(),
-                section = Y.Node.create(data);
+                root, i, list, section,
+                doc = document.createDocumentFragment();
 
-            if ( section ) {
-                Y.Object.each(ROOT_SECTION_ATTRIBUTES, function (value, key) {
-                    section.removeAttribute(key);
-                });
-                return section.get('outerHTML');
+            root = document.createElement('div');
+            doc.appendChild(root);
+            root.innerHTML = data;
+            list = root.querySelectorAll('[id]');
+
+            for (i = 0; i != list.length; ++i) {
+                list[i].removeAttribute("id");
             }
-            return "";
+
+            section = root.querySelector('section');
+            if (section) {
+                Y.Object.each(ROOT_SECTION_ATTRIBUTES, function (attributeValue, attributeName) {
+                    section.removeAttribute(attributeName);
+                });
+            }
+
+            return root.innerHTML.trim();
         }
     }, {
         ATTRS: {
