@@ -306,6 +306,9 @@ YUI.add('ez-fieldeditview', function (Y) {
          */
         getField: function () {
             var value = this._getFieldValue(),
+                fieldDefinition = this.get('fieldDefinition'),
+                mainLanguageCode = this.get('content').get('mainLanguageCode'),
+                editLanguageCode = this.get('languageCode'),
                 field;
 
             if ( L.isUndefined(value) ) {
@@ -313,6 +316,10 @@ YUI.add('ez-fieldeditview', function (Y) {
             }
             field = Y.clone(this.get('field'));
             field.fieldValue = value;
+            field.languageCode = editLanguageCode;
+            if (!fieldDefinition.isTranslatable) {
+                field.languageCode = mainLanguageCode;
+            }
 
             return field;
         },
@@ -394,6 +401,17 @@ YUI.add('ez-fieldeditview', function (Y) {
              * @default null
              */
             contentType: {
+                value: null
+            },
+
+            /**
+             * The language code in which the content is edited.
+             *
+             * @attribute languageCode
+             * @type {String}
+             * @default null
+             */
+            languageCode: {
                 value: null
             }
         },

@@ -318,6 +318,7 @@ YUI.add('ez-contenteditview', function (Y) {
                         contentType: this.get('contentType'),
                         content: this.get('content'),
                         version: this.get('version'),
+                        languageCode: this.get('languageCode'),
                         bubbleTargets: this,
                     });
                 }

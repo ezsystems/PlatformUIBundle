@@ -393,12 +393,19 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             this.jsonContent = {};
             this.jsonContentType = {};
             this.jsonVersion = {};
+            this.mainLanguageCode = 'eng-GB';
+            this.languageCode = 'pol-PL';
             this.content = new Y.Mock();
             this.contentType = new Y.Mock();
             this.version = new Y.Mock();
             Y.Mock.expect(this.content, {
                 method: 'toJSON',
                 returns: this.jsonContent
+            });
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: this.mainLanguageCode
             });
             Y.Mock.expect(this.contentType, {
                 method: 'toJSON',
@@ -421,7 +428,8 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                 field: this.field,
                 content: this.content,
                 version: this.version,
-                contentType: this.contentType
+                contentType: this.contentType,
+                languageCode: this.languageCode
             });
         },
 
@@ -490,6 +498,30 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             this.fieldValue = undefined;
             updatedField = this.view.getField();
             Y.Assert.isUndefined(updatedField, "The field should be undefined");
+        },
+
+        "getField should set content's mainLanguageCode as field's languageCode if field is not translatable": function () {
+            var updatedField;
+
+            this.view.set('fieldDefinition', {descriptions: {"eng-GB": "Test description"}, isTranslatable: false});
+            updatedField = this.view.getField();
+            Y.Assert.areSame(
+                updatedField.languageCode,
+                this.mainLanguageCode,
+                "The languageCode should be the same as mainLanguageCode of edited content"
+            );
+        },
+
+        "getField should set given languageCode as field's languageCode if field is translatable": function () {
+            var updatedField;
+
+            this.view.set('fieldDefinition', {descriptions: {"eng-GB": "Test description"}, isTranslatable: true});
+            updatedField = this.view.getField();
+            Y.Assert.areSame(
+                updatedField.languageCode,
+                this.languageCode,
+                "The languageCode should be the same as languageCode given to the edit view"
+            );
         },
     });
 
