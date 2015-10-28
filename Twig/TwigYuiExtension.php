@@ -90,6 +90,14 @@ class TwigYuiExtension extends Twig_Extension
             'modules' => [],
         ];
 
+        $combine = $this->configResolver->getParameter('yui.combine', 'ez_platformui');
+
+        if ($combine === true) {
+            $yui['combine'] = true;
+            $yui['root'] = '';
+            $yui['comboBase'] = $this->router->generate('yui_combo_loader') . '?';
+        }
+
         foreach (array_keys($modules) as $module) {
             if (!isset($yui['modules'][$module]['requires'])) {
                 $yui['modules'][$module]['requires'] = [];
@@ -129,6 +137,10 @@ class TwigYuiExtension extends Twig_Extension
                 $yui['modules'][$module]['fullpath'] = $this->asset(
                     $this->configResolver->getParameter("yui.modules.$module.path", 'ez_platformui')
                 );
+
+                if ($combine === true) {
+                    $yui['modules'][$module]['combine'] = true;
+                }
             }
         }
 
