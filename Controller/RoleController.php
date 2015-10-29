@@ -181,7 +181,11 @@ class RoleController extends Controller
         $form->handleRequest($request);
         $hasErrors = false;
         if ($form->isValid()) {
-            $this->roleActionDispatcher->dispatchFormAction($form, $roleData, $form->getClickedButton()->getName());
+            $this->roleActionDispatcher->dispatchFormAction(
+                $form,
+                $roleData,
+                $form->getClickedButton() ? $form->getClickedButton()->getName() : null
+            );
             if ($response = $this->roleActionDispatcher->getResponse()) {
                 return $response;
             }
@@ -259,7 +263,11 @@ class RoleController extends Controller
         $form = $this->createForm('ezrepoforms_policy_edit', $policyData);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->policyActionDispatcher->dispatchFormAction($form, $policyData, $form->getClickedButton()->getName());
+            $this->policyActionDispatcher->dispatchFormAction(
+                $form,
+                $policyData,
+                $form->getClickedButton() ? $form->getClickedButton()->getName() : null
+            );
             if ($response = $this->policyActionDispatcher->getResponse()) {
                 return $response;
             }
