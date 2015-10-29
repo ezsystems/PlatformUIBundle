@@ -1,11 +1,10 @@
-<div class="pure-g ez-editfield-row">
+<div class="pure-g ez-editfield-row ez-author-name">
     <div class="pure-u ez-editfield-infos">
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-name">
             <p class="ez-fielddefinition-name">
                 {{ fieldDefinition.names.[eng-GB] }}{{#if fieldDefinition.isRequired}}*{{/if}}:
             </p>
             <p class="ez-editfield-error-message ez-editfield-error-name">&nbsp;</p>
-            <p class="ez-editfield-error-message ez-editfield-error-email">&nbsp;</p>
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
@@ -19,6 +18,23 @@
                     value="{{ author.name }}"
                     id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-name"
                 ></div></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pure-g ez-editfield-row ez-author-email">
+    <div class="pure-u ez-editfield-infos">
+        <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-email">
+            <p class="ez-fielddefinition-name">
+                {{ fieldDefinition.names.[eng-GB] }}{{#if fieldDefinition.isRequired}}*{{/if}}:
+            </p>
+            <p class="ez-editfield-error-message ez-editfield-error-email">&nbsp;</p>
+        </label>
+    </div>
+    <div class="pure-u ez-editfield-input-area ez-default-error-style">
+        <div class="pure-g">
+            <div class="pure-u-3-5">
                 <label class="ez-field-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-{{ author.id }}-email">
                     Email:
                 </label>

@@ -23,24 +23,9 @@
 
 .ez-view-authoreditview .ez-author-secondary .ez-fielddefinition-name,
 .ez-view-authoreditview .ez-author-secondary .ez-fielddefinition-tooltip,
-.ez-view-authoreditview .ez-author-secondary .ez-editfield-i {
+.ez-view-authoreditview .ez-author-secondary .ez-editfield-i,
+.ez-view-authoreditview .ez-author-email .ez-fielddefinition-name {
     visibility: hidden;
-}
-
-.ez-view-authoreditview .ez-editfield-infos {
-    position: relative;
-}
-
-.ez-view-authoreditview .ez-editfield-infos .ez-editfield-error-name {
-    position: absolute;
-    right: 0.5em;
-    top: 3.8em;
-}
-
-.ez-view-authoreditview .ez-editfield-infos .ez-editfield-error-email {
-    position: absolute;
-    right: 0.5em;
-    top: 9em;
 }
 
 .ez-view-authoreditview .ez-field-author-remove {
