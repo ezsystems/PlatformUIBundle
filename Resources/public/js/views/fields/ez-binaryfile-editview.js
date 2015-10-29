@@ -153,6 +153,7 @@ YUI.add('ez-binaryfile-editview', function (Y) {
          */
         _completeFieldValue: function (fieldValue) {
             delete fieldValue.url;
+            delete fieldValue.mimeType;
 
             return fieldValue;
         },
