@@ -64,7 +64,7 @@
                         <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.name }}</a></td>
                         <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.identifier }}</a></td>
                         <td class="ez-table-data-id"><a href="{{ path( "admin_sectionview", {"sectionId": section.id} ) }}">{{ section.id }}</a></td>
-                        <td class="ez-table-data-count">{{ contentCountBySection[section.id] }}</td>
+                        <td class="ez-table-data-count">{{ contentCountBySectionId[section.id] }}</td>
                         <td>
                             <button
                                 data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
@@ -88,7 +88,7 @@
                                     form_widget(
                                         deleteForm.delete,
                                         {
-                                            "disabled": not canEdit,
+                                            "disabled": deletableSections[section.id] is not defined,
                                             "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"}
                                         }
                                     )

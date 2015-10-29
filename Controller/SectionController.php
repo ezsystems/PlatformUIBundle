@@ -46,11 +46,15 @@ class SectionController extends Controller
     {
         $sectionList = $this->sectionService->loadSections();
         $contentCountBySectionId = [];
+        $deletableSections = [];
         $deleteFormsBySectionId = [];
 
         foreach ($sectionList as $section) {
             $sectionId = $section->id;
             $contentCountBySectionId[$sectionId] = $this->sectionService->countAssignedContents($section);
+            if (!$this->sectionService->isSectionUsed($section)) {
+                $deletableSections[$sectionId] = true;
+            }
             $deleteFormsBySectionId[$sectionId] = $this->createForm(
                 new SectionDeleteType($this->sectionService),
                 ['sectionId' => $sectionId]
@@ -61,7 +65,8 @@ class SectionController extends Controller
             'canEdit' => $this->isGranted(new Attribute('section', 'edit')),
             'canAssign' => $this->isGranted(new Attribute('section', 'assign')),
             'sectionList' => $sectionList,
-            'contentCountBySection' => $contentCountBySectionId,
+            'contentCountBySectionId' => $contentCountBySectionId,
+            'deletableSections' => $deletableSections,
             'deleteFormsBySectionId' => $deleteFormsBySectionId,
         ]);
     }
@@ -82,6 +87,7 @@ class SectionController extends Controller
             'section' => $section,
             'deleteForm' => $deleteForm->createView(),
             'contentCount' => $this->sectionService->countAssignedContents($section),
+            'deletable' => !$this->sectionService->isSectionUsed($section),
             'canEdit' => $this->isGranted(new Attribute('section', 'edit')),
             'canAssign' => $this->isGranted(new Attribute('section', 'assign')),
         ]);
