@@ -7,11 +7,11 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
+namespace EzSystems\PlatformUIBundle\Features\Context;
 
 use Behat\Gherkin\Node\TableNode;
 
-trait Users
+class Users extends PlatformUI
 {
     /**
      * @When I create a new User
@@ -20,10 +20,9 @@ trait Users
     public function iCreateUser(TableNode $users = null)
     {
         $this->clickActionBar('Create');
-        $this->waitForLoadings();
+        $this->waitWhileLoading('.ez-contenttypes-loading');
         $this->checkOption('Users');
         $this->clickContentType('User');
-        $this->waitForLoadings();
         if ($users) {
             foreach ($users as $user) {
                 $this->fillFieldWithValue('First name', $user['First name']);
@@ -42,7 +41,8 @@ trait Users
     public function editUserUser($username)
     {
         $this->clickOnTreePath("$username $username");
-        $this->waitForLoadings();
+        $this->sleep(); //safegaurd for application delays
+        $this->waitWhileLoading();
         $this->clickActionBar('Edit');
     }
 
@@ -51,6 +51,7 @@ trait Users
      */
     public function iSeeUsersPage()
     {
+        $this->sleep(); // safegaurd for application delays
         $this->iSeeTitle('Users');
     }
 

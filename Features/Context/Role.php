@@ -7,18 +7,19 @@
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
+namespace EzSystems\PlatformUIBundle\Features\Context;
 
 use Behat\Gherkin\Node\TableNode;
 
-trait Role
+class Role extends PlatformUI
 {
     /**
      * @Given I am on the RolesUI
      */
     public function onRolesPage()
     {
-        $this->visit('/ez#/admin/pjax%2Frole');
+        $this->clickNavigationZone('Admin Panel');
+        $this->clickNavigationItem('Roles');
     }
 
     /**
@@ -27,6 +28,7 @@ trait Role
     public function createRole()
     {
         $this->clickElementByText('Create a role', '.ez-button');
+        $this->waitWhileLoading();
     }
 
     /**
@@ -35,22 +37,26 @@ trait Role
     public function clickRoles()
     {
         $this->clickElementByText('Roles', 'li a');
+        $this->waitWhileLoading();
     }
 
     /**
-     * @When I edit the :name role
+     * @When I edit the :name role name
      */
     public function iEditRole($name)
     {
-        $page = $this->getSession()->getPage();
-        $elements = $page->findAll('css', '.ez-role');
+        $elements = $this->findAllWithWait('.ez-role');
         if (!$elements) {
             throw new \Exception('No roles found');
         }
         foreach ($elements as $element) {
             $foundName = $this->getElementByText($name, '.ez-role-name', null, $element);
             if ($foundName) {
-                $this->getElementByText('Edit', '.ez-role-edit a', null, $element)->click();
+                $button = $this->getElementByText('Edit role name', '.ez-button', null, $element);
+                if (!$button) {
+                    throw new \Exception("Role name edit button not found for '$name'");
+                }
+                $button->click();
                 break;
             }
         }
@@ -65,7 +71,6 @@ trait Role
     public function roleDetailsView($role)
     {
         $this->onRolesPage();
-        $this->waitForLoadings();
         $this->clickElementByText($role, '.ez-role-name a');
     }
 
@@ -83,7 +88,6 @@ trait Role
     public function deleteRole($name)
     {
         $this->clickElementByText($name, '.ez-role-name a');
-        $this->waitForLoadings();
         $this->clickElementByText('Delete', '.ez-button');
     }
 
@@ -159,8 +163,7 @@ trait Role
      */
     public function iSeeRolesList(TableNode $roles, $button)
     {
-        $page = $this->getSession()->getPage();
-        $elements = $page->findAll('css', '.ez-role');
+        $elements = $this->findAllWithWait('.ez-role');
         if (!$elements) {
             throw new \Exception('No roles found');
         }
@@ -168,7 +171,7 @@ trait Role
             $name = $role['Name'];
             foreach ($elements as $element) {
                 $foundName = $this->getElementByText($name, '.ez-role-name', null, $element);
-                $foundButton = $this->getElementByText($button, '.ez-role-edit', null, $element);
+                $foundButton = $this->getElementByText($button, '.ez-button', null, $element);
                 if ($foundName) {
                     break;
                 }
