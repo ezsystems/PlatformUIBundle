@@ -29,11 +29,11 @@
         filter: loaderFilter,
         modules: {
             "ez-time-view": {
-                requires: ['ez-dateandtime-view'],
+                requires: ['ez-dateandtime-view', 'datatype-date-format'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-time-view.js"
             },
             "ez-dateandtime-view": {
-                requires: ['ez-fieldview'],
+                requires: ['ez-fieldview', 'datatype-date-format'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-dateandtime-view.js"
             },
             "ez-fieldview": {

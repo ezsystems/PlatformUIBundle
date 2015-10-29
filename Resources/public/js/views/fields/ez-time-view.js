@@ -32,6 +32,39 @@ YUI.add('ez-time-view', function (Y) {
         },
 
         /**
+         * Returns a timestamps in UTC
+         *
+         * @protected
+         * @method _getUtcTimeStamp
+         * @param {Number} localizedTimestamp
+         * @return {Number} Timestamp converted to UTC in millisecond
+         */
+        _getUtcTimeStamp: function (localizedTimestamp) {
+            var tzOffset = new Date(localizedTimestamp).getTimezoneOffset() * 60000;
+            return localizedTimestamp + tzOffset;
+        },
+
+        /**
+         * Formats the time in a human readable format. Locale is not taken into account.
+         *
+         * @method _formatDate
+         * @protected
+         * @param {Date} date
+         * @return String
+         */
+        _formatTime: function (date) {
+            var format;
+
+            if (!this.get('fieldDefinition').fieldSettings.useSeconds) {
+                format = "%R";
+            } else {
+                format = "%T";
+            }
+
+            return Y.Date.format(new Date(this._getUtcTimeStamp(date.getTime())), {format:format});
+        },
+
+        /**
          * Returns the actual value of the time field as a formatted string
          * suitable to be displayed to the user. If the field is not filled, it
          * returns an empty string.
