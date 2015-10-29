@@ -5,6 +5,7 @@ parameters:
     ezsystems.platformui.controller.dashboard.class: EzSystems\PlatformUIBundle\Controller\DashboardController
     ezsystems.platformui.helper.systeminfo.class: EzSystems\PlatformUIBundle\Helper\SystemInfoHelper
     ezsystems.platformui.controller.systeminfo.class: EzSystems\PlatformUIBundle\Controller\SystemInfoController
+    ezsystems.platformui.controller.language.class: EzSystems\PlatformUIBundle\Controller\LanguageController
     ezsystems.platformui.controller.section.class: EzSystems\PlatformUIBundle\Controller\SectionController
     ezsystems.platformui.controller.template.class: EzSystems\PlatformUIBundle\Controller\TemplateController
     ezsystems.platformui.controller.content_type.class: EzSystems\PlatformUIBundle\Controller\ContentTypeController
@@ -20,6 +21,7 @@ parameters:
     ezsystems.platformui.application_config.aggregator.class: EzSystems\PlatformUIBundle\ApplicationConfig\Aggregator
     ezsystems.platformui.application_config.provider.root_info.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\RootInfo
     ezsystems.platformui.application_config.provider.languages.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\Languages
+    ezsystems.platformui.form_processor.language.class: EzSystems\PlatformUIBundle\Form\Processor\LanguageFormProcessor
     ezsystems.platformui.form_processor.section.class: EzSystems\PlatformUIBundle\Form\Processor\SectionFormProcessor
     ezsystems.platformui.exception_listener.class: EzSystems\PlatformUIBundle\EventListener\ExceptionListener
     ezsystems.platformui.exception_controller: "ezsystems.platformui.controller.exception:showAction"
@@ -111,15 +113,6 @@ services:
             - @ezsystems.platformui.helper.systeminfo
         parent: ezsystems.platformui.controller.base
 
-    ## Section related services
-    ezsystems.platformui.controller.section:
-        class: %ezsystems.platformui.controller.section.class%
-        arguments:
-            - @ezrepoforms.action_dispatcher.section
-            - @ezpublish.api.service.section
-            - @ezsystems.platformui.notification_pool
-        parent: ezsystems.platformui.controller.base
-
     ezsystems.platformui.controller.content_type:
         class: %ezsystems.platformui.controller.content_type.class%
         parent: ezsystems.platformui.controller.base
@@ -172,12 +165,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    ezsystems.platformui.form_processor.section:
-        class: %ezsystems.platformui.form_processor.section.class%
-        arguments: [@ezsystems.platformui.notification_pool, @router]
-        tags:
-            - { name: kernel.event_subscriber }
-
     ezsystems.platformui.exception_listener:
         class: %ezsystems.platformui.exception_listener.class%
         arguments:
@@ -204,3 +191,33 @@ services:
         class: EzSystems\PlatformUIBundle\Rest\UserFieldTypeProcessor
         tags:
             - { name: ezpublish_rest.field_type_processor, alias: ezuser }
+
+    ## Section related services
+    ezsystems.platformui.controller.section:
+        class: %ezsystems.platformui.controller.section.class%
+        arguments:
+            - @ezrepoforms.action_dispatcher.section
+            - @ezpublish.api.service.section
+            - @ezsystems.platformui.notification_pool
+        parent: ezsystems.platformui.controller.base
+
+    ezsystems.platformui.form_processor.section:
+        class: %ezsystems.platformui.form_processor.section.class%
+        arguments: [@ezsystems.platformui.notification_pool, @router]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ## Language related services
+    ezsystems.platformui.controller.language:
+        class: %ezsystems.platformui.controller.language.class%
+        arguments:
+            - @ezrepoforms.action_dispatcher.language
+            - @ezpublish.api.service.language
+            - @ezsystems.platformui.notification_pool
+        parent: ezsystems.platformui.controller.base
+
+    ezsystems.platformui.form_processor.language:
+        class: %ezsystems.platformui.form_processor.language.class%
+        arguments: [@ezsystems.platformui.notification_pool, @router]
+        tags:
+            - { name: kernel.event_subscriber }

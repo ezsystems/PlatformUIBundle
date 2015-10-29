@@ -808,8 +808,8 @@ YUI.add('ez-platformuiapp', function (Y) {
                     view: "serverSideView",
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
-                    name: "adminRole",
-                    regex: /\/admin\/(pjax%2Frole.*)/,
+                    name: "adminLanguage",
+                    regex: /\/admin\/(pjax%2Flanguage.*)/,
                     keys: ['uri'],
                     path: "/admin/:uri",
                     sideViews: {'navigationHub': true, 'discoveryBar': false},

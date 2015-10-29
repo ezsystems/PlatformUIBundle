@@ -47,6 +47,37 @@ admin_sectiondelete:
     requirements:
         redirectErrorsTo: (list|view)
 
+admin_languagelist:
+    path: /language/list
+    defaults:
+        _controller: ezsystems.platformui.controller.language:listAction
+    methods: [GET]
+
+admin_languageview:
+    path: /language/view/{languageId}
+    defaults:
+        _controller: ezsystems.platformui.controller.language:viewAction
+    methods: [GET]
+    requirements:
+        languageId: \d+
+
+admin_languageedit:
+    path: /language/edit/{languageId}
+    defaults:
+        _controller: ezsystems.platformui.controller.language:editAction
+        languageId: ~
+    requirements:
+        languageId: \d+
+
+admin_languagedelete:
+    path: /language/delete/{languageId}/{redirectErrorsTo}
+    methods: [POST]
+    defaults:
+        _controller: ezsystems.platformui.controller.language:deleteAction
+        redirectErrorsTo: list
+    requirements:
+        redirectErrorsTo: (list|view)
+
 admin_contenttype:
     path: /contenttype
     defaults:
