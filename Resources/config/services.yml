@@ -27,6 +27,9 @@ parameters:
     ezsystems.platformui.exception_controller: "ezsystems.platformui.controller.exception:showAction"
     ezsystems.platformui.controller.exception.class: EzSystems\PlatformUIBundle\Controller\ExceptionController
 
+    # override of the REST content controller
+    ezpublish_rest.controller.content.class: EzSystems\PlatformUIBundle\Controller\Rest\ContentController
+
 services:
     ezsystems.platformui.twig.yui_extension:
         class: %ezsystems.platformui.twig.yui_extension.class%
@@ -177,15 +180,6 @@ services:
     ezsystems.platformui.controller.exception:
         class: %ezsystems.platformui.controller.exception.class%
         parent: twig.controller.exception
-
-    ezsystems.platformui.rest.content_user_gateway:
-        class: EzSystems\PlatformUIBundle\Rest\ContentUserGateway
-        arguments:
-            - @ezpublish_rest.input.dispatcher
-            - @ezpublish_rest.output.visitor.dispatcher
-            - @ezpublish.api.repository
-        tags:
-        - {name: kernel.event_subscriber}
 
     ezsystems.platformui.rest.user_field_type_processor:
         class: EzSystems\PlatformUIBundle\Rest\UserFieldTypeProcessor
