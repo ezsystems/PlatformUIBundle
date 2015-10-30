@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="36aaf69db32866a9c2dd745ef9f7a643" resname="language.list">
+                <source>language.list</source>
+                <target>Languages</target>
+            </trans-unit>
+            <trans-unit id="d588dd1c265006f31dbb8368dda58226" resname="language.name">
+                <source>language.name</source>
+                <target>Language name</target>
+            </trans-unit>
+            <trans-unit id="6bb9217795bc1c5903f07476a0db6478" resname="language.code">
+                <source>language.code</source>
+                <target>Language code</target>
+            </trans-unit>
+            <trans-unit id="1fdda1fb639ca79024d03e086790198c" resname="language.id">
+                <source>language.id</source>
+                <target>Language ID</target>
+            </trans-unit>
+            <trans-unit id="dc994226679dddc5cb5a96c45976850a" resname="language.enabled">
+                <source>language.enabled</source>
+                <target>Enabled</target>
+            </trans-unit>
+            <trans-unit id="3a19ad2a3a91525fd4e43cfcb99176fe" resname="language.disabled">
+                <source>language.disabled</source>
+                <target>Disabled</target>
+            </trans-unit>
+            <trans-unit id="bd9bc055699bd779f27ce1c3b2e0121d" resname="language.edit">
+                <source>language.edit</source>
+                <target>Edit</target>
+            </trans-unit>
+            <trans-unit id="8a0af0dc53d7aae987d698237d39b11a" resname="language.new">
+                <source>language.new</source>
+                <target>Create a new language</target>
+            </trans-unit>
+            <trans-unit id="b2e01fb6617d17c162d59f0fb93da661" resname="language.remove.selected">
+                <source>language.remove.selected</source>
+                <target>Remove the selection</target>
+            </trans-unit>
+            <trans-unit id="a1388bfac224ede1622fd041e51384e0" resname="language.view.title">
+                <source>language.view.title</source>
+                <target>Language: %languageName%</target>
+            </trans-unit>
+            <trans-unit id="967b7e408a5f43a03f44c7cf479855db" resname="language.create.title">
+                <source>language.create.title</source>
+                <target>Creating a new language</target>
+            </trans-unit>
+            <trans-unit id="f3c4115b0fe3b3ada04e69e775c2db2c" resname="language.edit.title">
+                <source>language.edit.title</source>
+                <target>Editing the language "%languageName%"</target>
+            </trans-unit>
+            <trans-unit id="007cd5845351d36a9ec70173d2b44bb2" resname="language.name.label">
+                <source>language.name.label</source>
+                <target>Language name:</target>
+            </trans-unit>
+            <trans-unit id="3de80c254c9555ad1347b034f93f3095" resname="language.code.label">
+                <source>language.code.label</source>
+                <target>Language code:</target>
+            </trans-unit>
+            <trans-unit id="d208054b19a3954a9113b088c36d80f0" resname="language.enabled.label">
+                <source>language.enabled.label</source>
+                <target>Language enabled:</target>
+            </trans-unit>
+            <trans-unit id="f066f9960df2f81907c3680c9148cef5" resname="language.id.label">
+                <source>language.id.label</source>
+                <target>Language ID:</target>
+            </trans-unit>
+            <trans-unit id="751bbc52342db46a046c52c4dc0b6b00" resname="language.label.edit">
+                <source>language.label.edit</source>
+                <target>Language edit</target>
+            </trans-unit>
+            <trans-unit id="60ff6d8b447be276d65797a5244d79c3" resname="language.error.code_already_exist">
+                <source>language.error.code_already_exist</source>
+                <target>A language with this code already exists, please enter a different one</target>
+            </trans-unit>
+            <trans-unit id="85af0dc2a9b83eb5cfc7871a73cbeab9" resname="language.create.submit">
+                <source>language.create.submit</source>
+                <target>Save</target>
+            </trans-unit>
+            <trans-unit id="94bfbed9c62011b82e87a97ea9ea9499">
+                <source>language.cancel</source>
+                <target>Cancel</target>
+            </trans-unit>
+            <trans-unit id="22e8e66a091b0c1227c4461e51e06443">
+                <source>language.deleted</source>
+                <target>The Language "%languageName%" was correctly deleted.</target>
+            </trans-unit>
+            <trans-unit id="419a9a2e9f888d56b6aea6e4cbb09561">
+                <source>language.notification.created</source>
+                <target>The language "%languageName%" was correctly created.</target>
+            </trans-unit>
+            <trans-unit id="b49dc3557e76c56e175d0e133afa05d4">
+                <source>language.notification.updated</source>
+                <target>The language "%languageName%" was correctly saved.</target>
+            </trans-unit>
+            <trans-unit id="b93c76061ec3d7810f4175b3681a049e">
+                <source>language.notification.draft_removed</source>
+                <target>The language draft was removed.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

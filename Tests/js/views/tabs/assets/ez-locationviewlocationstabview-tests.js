@@ -156,6 +156,7 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
         name: "eZ LocationViewLocationsTabView fire load locations event test",
         setUp: function () {
             this.contentMock = new Mock();
+            this.locationMock = new Mock();
             this.locations = [this.locationMock, this.locationMock];
             this.resources = {
                 MainLocation: '/main/location/id'
@@ -169,6 +170,7 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
 
             this.view = new Y.eZ.LocationViewLocationsTabView({
                 content: this.contentMock,
+                location: this.locationMock,
                 container: '.container'
             });
         },
@@ -188,6 +190,11 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
                     that.contentMock,
                     e.content,
                     "The event facade should contain the content"
+                );
+                Assert.areSame(
+                    that.locationMock,
+                    e.location,
+                    "The event facade should contain the location"
                 );
             });
 

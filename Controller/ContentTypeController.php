@@ -155,7 +155,11 @@ class ContentTypeController extends Controller
         $form = $this->createForm(new ContentTypeGroupType(), $data);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->contentTypeGroupActionDispatcher->dispatchFormAction($form, $data, $form->getClickedButton()->getName());
+            $this->contentTypeGroupActionDispatcher->dispatchFormAction(
+                $form,
+                $data,
+                $form->getClickedButton() ? $form->getClickedButton()->getName() : null
+            );
             if ($response = $this->contentTypeGroupActionDispatcher->getResponse()) {
                 return $response;
             }
@@ -293,7 +297,7 @@ class ContentTypeController extends Controller
             $this->contentTypeActionDispatcher->dispatchFormAction(
                 $form,
                 $contentTypeData,
-                $form->getClickedButton()->getName(),
+                $form->getClickedButton() ? $form->getClickedButton()->getName() : null,
                 ['languageCode' => $languageCode]
             );
 

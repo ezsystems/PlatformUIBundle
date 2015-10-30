@@ -97,7 +97,7 @@ YUI.add('ez-contentinfo-attributes', function (Y) {
              */
             publishedDate: {
                 setter: '_setterDate',
-                value: ''
+                value: new Date(0)
             },
         }
     });

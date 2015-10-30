@@ -216,10 +216,12 @@ YUI.add('ez-contentmodel', function (Y) {
          * @method loadLocations
          * @param {Object} options
          * @param {Object} options.api (required) the JS REST client instance
+         * @param {Object} [options.location] current location. If present it will be used instead of loading it from the API.
          * @param {Function} callback
          */
         loadLocations: function (options, callback) {
-            var api = options.api;
+            var api = options.api,
+                currentLocation = options.location;
 
             api.getContentService().loadLocations(this.get('id'), function (error, response) {
                 var tasks = new Y.Parallel(),
@@ -232,6 +234,12 @@ YUI.add('ez-contentmodel', function (Y) {
                 }
                 Y.Array.each(response.document.LocationList.Location, function (loc) {
                     var location,
+                        end;
+
+                    if (currentLocation && currentLocation.get('id') === loc._href) {
+                        locations.push(currentLocation);
+                    } else {
+                        location = new Y.eZ.Location({id: loc._href});
                         end = tasks.add(function (err) {
                             if ( err ) {
                                 loadError = true;
@@ -240,8 +248,8 @@ YUI.add('ez-contentmodel', function (Y) {
                             locations.push(location);
                         });
 
-                    location = new Y.eZ.Location({id: loc._href});
-                    location.load(options, end);
+                        location.load(options, end);
+                    }
                 });
 
                 tasks.done(function () {

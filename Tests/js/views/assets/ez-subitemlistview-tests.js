@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-subitemlistview-tests', function (Y) {
-    var renderTest, locationSearchEvent, offsetAttrTest, paginationTest,
+    var renderTest, locationSearchEvent, offsetAttrTest, paginationTest, visibilityChangeTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     function _configureSubitemsMock() {
@@ -45,6 +45,12 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
                     Y.fail("Unexpected attr '" + attr + "'");
                 }, this)
             });
+
+            Mock.expect(this.location, {
+                method: 'after',
+                args: [Mock.Value.Any, Mock.Value.Function],
+            });
+
             _configureSubitemsMock.call(this);
 
             this.view = new Y.eZ.SubitemListView({
@@ -207,6 +213,10 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
                 args: ['locationId'],
                 returns: this.locationId
             });
+            Mock.expect(this.location, {
+                method: 'after',
+                args: [Mock.Value.Any, Mock.Value.Function],
+            });
             this.view = new Y.eZ.SubitemListView({
                 container: '.container',
                 location: this.location,
@@ -268,6 +278,11 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
                 args: ['locationId'],
                 returns: this.locationId
             });
+            Mock.expect(this.location, {
+                method: 'after',
+                args: [Mock.Value.Any, Mock.Value.Function],
+            });
+
             this.view = new Y.eZ.SubitemListView({
                 container: '.container',
                 location: this.location,
@@ -278,7 +293,7 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
             this.view.destroy();
         },
 
-        "Should fire the locationSearch event": function () {
+        "Should fire the locationSearch event when offset is changed": function () {
             var fired = false,
                 offset = 20;
 
@@ -305,6 +320,66 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
         },
     });
 
+    visibilityChangeTest = new Y.Test.Case({
+        name: "eZ Subitem List View visibility change test",
+
+        setUp: function () {
+            this.locationId = 42;
+            this.location = new Y.Base({
+                'id': this.locationId,
+                'hidden': false,
+                'invisible': false,
+            });
+
+            this.view = new Y.eZ.SubitemListView({
+                container: '.container',
+                location: this.location,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        _testFire: function (attributeName) {
+            var fired = false;
+
+            this.view.on('locationSearch', function (e) {
+                fired = true;
+            });
+
+            this.location.set(attributeName, true);
+
+            Assert.isTrue(
+                fired, "The locationSearch event should have been fired"
+            );
+        },
+
+        "Should fire the locationSearch event when hidden is changed": function () {
+            this._testFire('hidden');
+        },
+
+        "Should fire the locationSearch event when invisible is changed": function () {
+            this._testFire('invisible');
+        },
+
+        _testLoading: function (attributeName) {
+            this.view.set(attributeName, true);
+            Assert.isTrue(
+                this.view.get('container').hasClass('is-page-loading'),
+                "The container should get the is-page-loading state"
+            );
+        },
+
+        "Should set the ui in loading state for hidden": function () {
+            this._testLoading('hidden');
+        },
+
+        "Should set the ui in loading state for invisible": function () {
+            this._testLoading('invisible');
+        },
+    });
+
     paginationTest = new Y.Test.Case({
         name: "eZ Subitem List View pagination test",
 
@@ -314,6 +389,10 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
             Mock.expect(this.location, {
                 method: 'toJSON',
                 returns: this.locationJSON,
+            });
+            Mock.expect(this.location, {
+                method: 'after',
+                args: [Mock.Value.Any, Mock.Value.Function],
             });
             this.childCount = 49;
             this.lastOffset = 40;
@@ -438,5 +517,6 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(locationSearchEvent);
     Y.Test.Runner.add(offsetAttrTest);
+    Y.Test.Runner.add(visibilityChangeTest);
     Y.Test.Runner.add(paginationTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-subitemlistview']});

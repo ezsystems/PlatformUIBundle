@@ -49,38 +49,12 @@
         filter: loaderFilter,
         modules: {
             "ez-contenteditview": {
-                requires: [ 'ez-templatebasedview', 'ez-contenteditformview',  'ez-editactionbarview', 'ez-buttonactionview',
-                            'ez-previewactionview', 'transition', 'event-tap'],
+                requires: [ 'ez-templatebasedview', 'transition', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-contenteditview.js"
-            },
-            "ez-contenteditformview": {
-                requires: ['ez-templatebasedview', 'ez-accordion-element', 'event-tap'],
-                fullpath: "../../../Resources/public/js/views/ez-contenteditformview.js"
-            },
-            "ez-editactionbarview": {
-                requires: ['ez-barview', 'ez-buttonactionview', 'ez-previewactionview'],
-                fullpath: "../../../Resources/public/js/views/ez-editactionbarview.js"
-            },
-            "ez-buttonactionview": {
-                requires: ['ez-templatebasedview'],
-                fullpath: "../../../Resources/public/js/views/actions/ez-buttonactionview.js"
-            },
-            "ez-previewactionview": {
-                requires: ['ez-buttonactionview', 'ez-editpreviewview'],
-                fullpath: "../../../Resources/public/js/views/actions/ez-previewactionview.js"
-            },
-
-            "ez-editpreviewview": {
-                requires: ['ez-templatebasedview', 'transition', 'event-tap'],
-                fullpath: "../../../Resources/public/js/views/ez-editpreviewview.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
-            },
-            "ez-barview": {
-                requires: ['ez-templatebasedview', 'event-tap', 'event-resize'],
-                fullpath: "../../../Resources/public/js/views/ez-barview.js"
             },
             "ez-accordion-element": {
                 requires: ['transition'],

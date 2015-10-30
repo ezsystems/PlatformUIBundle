@@ -17,6 +17,11 @@ YUI.add('getfield-tests', function (Y) {
                     method: 'toJSON',
                     returns: {}
                 });
+                Y.Mock.expect(this.content, {
+                    method: 'get',
+                    args: ['mainLanguageCode'],
+                    returns: 'eng-GB'
+                });
             }
             if ( !this.contentType ) {
                 this.contentType = new Y.Mock();
