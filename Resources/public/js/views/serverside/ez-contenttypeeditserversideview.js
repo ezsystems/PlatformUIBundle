@@ -15,6 +15,12 @@ YUI.add('ez-contenttypeeditserversideview', function (Y) {
             '.ez-relation-pick-root-button': {
                 'tap': '_pickRoot'
             },
+            '.ez-selection-add-option-button': {
+                'tap': '_addSelectionOption'
+            },
+            '.ez-selection-delete-option-button': {
+                'tap': '_deleteSelectionOption'
+            },
         };
 
     /**
@@ -67,6 +73,44 @@ YUI.add('ez-contenttypeeditserversideview', function (Y) {
 
             selectionRootInput.setAttribute('value', e.selection.location.get('locationId'));
             selectedRootName.setHTML(e.selection.contentInfo.get('name'));
+        },
+
+        /**
+         * tap event handler on the ezselection add option button. It adds a
+         * new option field to the form.
+         *
+         * @method _addSelectionOption
+         * @protected
+         * @param {EventFacade} e
+         */
+        _addSelectionOption: function (e) {
+            var button = e.target,
+                rootOptionsList = this.get('container').one(button.getAttribute('data-relation-root-options-list-id')),
+                prototype = rootOptionsList.getAttribute('data-prototype'),
+                newOptionDiv = document.createElement('div'),
+                optionItemClass = button.getAttribute('data-relation-option-item-class'),
+                index = this.get('container').all('.' + optionItemClass).size();
+
+            e.preventDefault();
+            newOptionDiv.setAttribute('id', optionItemClass + '-' + index);
+            newOptionDiv.setAttribute('class', optionItemClass + ' ezselection-settings-option');
+            newOptionDiv.innerHTML = prototype.replace(/__prototype__/g, index);
+            rootOptionsList.appendChild(newOptionDiv);
+        },
+
+        /**
+         * tap event handler on the ezselection delete option buttons. It deletes the given option field.
+         *
+         * @method _deleteSelectionOption
+         * @protected
+         * @param {EventFacade} e
+         */
+        _deleteSelectionOption: function (e) {
+            var button = e.target,
+                optionItem = this.get('container').one(button.getAttribute('data-relation-option-item-id'));
+
+            e.preventDefault();
+            optionItem.remove();
         },
     });
 });
