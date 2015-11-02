@@ -107,6 +107,32 @@ YUI.add('ez-universaldiscoverymethodbaseview', function (Y) {
             visible: {
                 value: false,
             },
+
+            /**
+             * Checks wether the content is already selected.
+             *
+             * @attribute isAlreadySelected
+             * @type {Function}
+             */
+            isAlreadySelected: {
+                validator: Y.Lang.isFunction,
+                value: function (contentStruct) {
+                    return false;
+                }
+            },
+
+            /**
+             * Checks wether the content is selectable.
+             *
+             * @attribute isSelectable
+             * @type {Function}
+             */
+            isSelectable: {
+                validator: Y.Lang.isFunction,
+                value: function (contentStruct) {
+                    return true;
+                }
+            },
         },
     });
 });

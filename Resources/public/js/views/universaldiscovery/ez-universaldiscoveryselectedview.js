@@ -31,6 +31,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
 
         initializer: function () {
             this.after('contentStructChange', function (e) {
+                this._setConfirmButtonState(e.newVal);
                 this.render();
             });
             this.after('confirmButtonEnabledChange', function (e) {
@@ -42,6 +43,25 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
         },
 
         /**
+         * Sets the confirm selection button state depending on wether content
+         * is selectable and is not already selected.
+         *
+         * @method _setConfirmButtonState
+         * @protected
+         */
+        _setConfirmButtonState: function (contentStruct) {
+            var isAlreadySelected = this.get('isAlreadySelected'),
+                isSelectable = this.get('isSelectable');
+
+            if (this.get('contentStruct')) {
+                this.set(
+                    'confirmButtonEnabled',
+                    (!isAlreadySelected(contentStruct) && isSelectable(contentStruct))
+                );
+            }
+        },
+
+        /**
          * `confirmButtonEnabledChange` event handler. It sets the confirm
          * button state depending on the value of the `confirmButtonEnabled`
          * attribute
@@ -50,37 +70,44 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
          * @protected
          */
         _uiButtonState: function () {
-            if ( this.get('addConfirmButton') ) {
-                this.get('container').one('.ez-ud-selected-confirm').set(
+            var confirmButton = this.get('container').one('.ez-ud-selected-confirm');
+
+            if ( this.get('addConfirmButton') && confirmButton ) {
+                confirmButton.set(
                     'disabled', !this.get('confirmButtonEnabled')
                 );
             }
         },
 
         /**
-         * tap event handler on the confirm button. It disables the confirm
-         * button and  fires the `confirmSelectedContent` event meaning that the
-         * user wants the content to be added to his confirmed content list.
+         * tap event handler on the confirm button. If the given content is not already selected
+         * it disables the confirm button and  fires the `confirmSelectedContent` event
+         * meaning that the user wants the content to be added to his confirmed content list.
          *
          * @method _confirmSelected
          * @protected
          * @param {EventFacade} e
          */
         _confirmSelected: function (e) {
-            this.set('confirmButtonEnabled', false);
-            /**
-             * Fired when the user has confirmed that he wants the content to be
-             * added in the confirmed list. This event will be fired/used only
-             * when the universal discovery widget is configured to allow
-             * several contents to be selected.
-             *
-             * @event confirmSelectedContent
-             * @param selection {Object} the content structure for the content
-             * which is selected
-             */
-            this.fire('confirmSelectedContent', {
-                selection: this.get('contentStruct'),
-            });
+            var isAlreadySelected = this.get('isAlreadySelected'),
+                contentStruct = this.get('contentStruct');
+
+            if (!isAlreadySelected(contentStruct)) {
+                this.set('confirmButtonEnabled', false);
+                /**
+                 * Fired when the user has confirmed that he wants the content to be
+                 * added in the confirmed list. This event will be fired/used only
+                 * when the universal discovery widget is configured to allow
+                 * several contents to be selected.
+                 *
+                 * @event confirmSelectedContent
+                 * @param selection {Object} the content structure for the content
+                 * which is selected
+                 */
+                this.fire('confirmSelectedContent', {
+                    selection: contentStruct,
+                });
+            }
         },
 
         render: function () {
@@ -192,6 +219,32 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
              */
             confirmButtonEnabled: {
                 value: true,
+            },
+
+            /**
+             * Checks wether the content is already selected.
+             *
+             * @attribute isAlreadySelected
+             * @type {Function}
+             */
+            isAlreadySelected: {
+                validator: Y.Lang.isFunction,
+                value: function (contentStruct) {
+                    return false;
+                }
+            },
+
+            /**
+             * Checks wether the content is selectable.
+             *
+             * @attribute isSelectable
+             * @type {Function}
+             */
+            isSelectable: {
+                validator: Y.Lang.isFunction,
+                value: function (contentStruct) {
+                    return true;
+                }
             },
         }
     });
