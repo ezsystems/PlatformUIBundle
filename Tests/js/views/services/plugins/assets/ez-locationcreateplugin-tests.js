@@ -29,7 +29,20 @@ YUI.add('ez-locationcreateplugin-tests', function (Y) {
 
         "Should trigger content discovery widget on `createLocation` event": function () {
             var contentDiscoverTriggered = false,
-                afterCreateCallback = function () {};
+                afterCreateCallback = function () {},
+                containerContentType = new Y.Mock(),
+                nonContainerContentType = new Y.Mock();
+
+            Y.Mock.expect(containerContentType, {
+                method: 'get',
+                args: ['isContainer'],
+                returns: true
+            });
+            Y.Mock.expect(nonContainerContentType, {
+                method: 'get',
+                args: ['isContainer'],
+                returns: false
+            });
 
             this.service.on('contentDiscover', function (e) {
                 contentDiscoverTriggered = true;
@@ -47,6 +60,15 @@ YUI.add('ez-locationcreateplugin-tests', function (Y) {
                     afterCreateCallback,
                     e.config.data.afterCreateCallback,
                     '`afterCreateCallback` function in config.data should be the one passed in `createLocation` event'
+                );
+                Assert.isFunction(e.config.isSelectable, "config should have a function named isSelectable");
+                Assert.isTrue(
+                    e.config.isSelectable({contentType: containerContentType}),
+                    "isSelectable should return TRUE if selected content is container"
+                );
+                Assert.isFalse(
+                    e.config.isSelectable({contentType: nonContainerContentType}),
+                    "isSelectable should return FALSE if selected content is container"
                 );
             });
 

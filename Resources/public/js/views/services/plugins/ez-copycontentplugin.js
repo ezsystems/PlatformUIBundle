@@ -40,6 +40,9 @@ YUI.add('ez-copycontentplugin', function (Y) {
                 config: {
                     title: "Select the location you want to copy your content into",
                     contentDiscoveredHandler: Y.bind(this._copyContent, this),
+                    isSelectable: function (contentStruct) {
+                        return contentStruct.contentType.get('isContainer');
+                    },
                 },
             });
         },

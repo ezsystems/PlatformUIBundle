@@ -533,12 +533,35 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         },
 
         "Should launch the universal discovery widget when receiving an moveAction event": function () {
-            var contentDiscovered = false;
+            var contentDiscovered = false,
+                containerContentType = new Y.Mock(),
+                nonContainerContentType = new Y.Mock();
+
+            Y.Mock.expect(containerContentType, {
+                method: 'get',
+                args: ['isContainer'],
+                returns: true
+            });
+            Y.Mock.expect(nonContainerContentType, {
+                method: 'get',
+                args: ['isContainer'],
+                returns: false
+            });
 
             this.service.on('contentDiscover', function (e) {
                 contentDiscovered = true;
                 Y.Assert.isObject(e.config, "contentDiscover config should be an object");
                 Y.Assert.isFunction(e.config.contentDiscoveredHandler, "config should have a function named contentDiscoveredHandler");
+                Y.Assert.isFunction(e.config.isSelectable, "config should have a function named isSelectable");
+
+                Y.Assert.isTrue(
+                    e.config.isSelectable({contentType: containerContentType}),
+                    "isSelectable should return TRUE if selected content is container"
+                );
+                Y.Assert.isFalse(
+                    e.config.isSelectable({contentType: nonContainerContentType}),
+                    "isSelectable should return FALSE if selected content is container"
+                );
             });
             this.service.fire('whatever:moveAction');
             Assert.isTrue(contentDiscovered, "The contentDiscover event should have been fired");

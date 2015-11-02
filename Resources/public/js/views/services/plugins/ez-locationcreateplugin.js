@@ -45,6 +45,9 @@ YUI.add('ez-locationcreateplugin', function (Y) {
                     title: "Select the location where you want to create new location",
                     contentDiscoveredHandler: Y.bind(this._createLocation, this),
                     multiple: true,
+                    isSelectable: function (contentStruct) {
+                        return contentStruct.contentType.get('isContainer');
+                    },
                     data: {
                         afterCreateCallback: e.afterCreateCallback
                     }

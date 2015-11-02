@@ -84,6 +84,9 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 config: {
                     title: "Select the location you want to move your content into",
                     contentDiscoveredHandler: Y.bind(this._moveContent, this),
+                    isSelectable: function (contentStruct) {
+                        return contentStruct.contentType.get('isContainer');
+                    },
                 },
             });
         },
