@@ -244,7 +244,10 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
             this.fieldDefinition = {
                 fieldType: "ezobjectrelationlist",
                 identifier: this.fieldDefinitionIdentifier,
-                isRequired: false
+                isRequired: false,
+                fieldSettings: {
+                    selectionContentTypes: ['allowed_content_type_identifier']
+                }
             };
             this.field = {fieldValue: {destinationContentIds: [45, 42]}};
 
@@ -372,13 +375,35 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
         },
 
         "Should run the UniversalDiscoveryWidget": function () {
-            var that = this;
+            var that = this,
+                allowedContentType = new Y.Mock(),
+                notAllowedContentType = new Y.Mock();
+
+            Y.Mock.expect(allowedContentType, {
+                method: 'get',
+                args: ['identifier'],
+                returns: this.fieldDefinition.fieldSettings.selectionContentTypes[0]
+            });
+            Y.Mock.expect(notAllowedContentType, {
+                method: 'get',
+                args: ['identifier'],
+                returns: 'not_allowed_content_type_identifier'
+            });
 
             this.view.on('contentDiscover', function (e) {
                 that.resume(function () {
                     Y.Assert.isObject(e.config, "contentDiscover config should be an object");
                     Y.Assert.isFunction(e.config.contentDiscoveredHandler, "config should have a function named contentDiscoveredHandler");
                     Y.Assert.isFunction(e.config.cancelDiscoverHandler, "config should have a function named cancelDiscoverHandler");
+                    Y.Assert.isFunction(e.config.isSelectable, "config should have a function named isSelectable");
+                    Y.Assert.isTrue(
+                        e.config.isSelectable({contentType: allowedContentType}),
+                        "isSelectable should return TRUE if selected content's content type is on allowed content types list"
+                    );
+                    Y.Assert.isFalse(
+                        e.config.isSelectable({contentType: notAllowedContentType}),
+                        "isSelectable should return FALSE if selected content's content type is not on allowed content types list"
+                    );
                 });
             });
 
