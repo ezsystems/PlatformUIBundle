@@ -17,10 +17,16 @@ YUI.add('ez-author-editview-tests', function (Y) {
             ];
             this.fieldDefinition = {isRequired: true};
 
+            this.isNew = false;
+
             this.content = new Y.Mock();
             Y.Mock.expect(this.content, {
                 method: 'toJSON',
                 returns: {}
+            });
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: this.isNew
             });
 
             this.contentType = new Y.Mock();
@@ -162,12 +168,17 @@ YUI.add('ez-author-editview-tests', function (Y) {
                 {id: "0", name: "Angel", email: "angel@example.com"},
             ];
 
+            this.isNew = false;
+
             this.content = new Y.Mock();
             Y.Mock.expect(this.content, {
                 method: 'toJSON',
                 returns: {}
             });
-
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: this.isNew
+            });
             this.version = new Y.Mock();
             Y.Mock.expect(this.version, {
                 method: 'toJSON',
@@ -179,6 +190,14 @@ YUI.add('ez-author-editview-tests', function (Y) {
                 method: 'toJSON',
                 returns: {}
             });
+
+            this.user = new Y.Base();
+            this.userId = '32';
+            this.userName = 'notSoCold';
+            this.userEmail = 'privateJoke@NY.conf';
+            this.user.set('id', this.userId);
+            this.user.set('name', this.userName);
+            this.user.set('email', this.userEmail);
         },
 
         tearDown: function () {
@@ -195,6 +214,7 @@ YUI.add('ez-author-editview-tests', function (Y) {
                 version: this.version,
                 content: this.content,
                 contentType: this.contentType,
+                user: this.user
             });
         },
 
@@ -372,6 +392,27 @@ YUI.add('ez-author-editview-tests', function (Y) {
 
             Y.Assert.isFalse(view.isValid(), "The input is not valid");
         },
+
+        "Should prefill with current user when new content": function () {
+            var view,
+                container;
+
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: true
+            });
+
+            view =  this.view = this._getView([], true);
+            container = this.view.get('container');
+            view.render();
+
+            this._assertNoNameError();
+            this._assertNoEmailError();
+            this._assertFieldError();
+            Y.Assert.areSame(container.one('.ez-field-author-email').get('value'),this.userEmail, 'Author mail should be the current user one' );
+            Y.Assert.areSame(container.one('.ez-field-author-name').get('value'), this.userName, 'Author mail should be the current user one' );
+            Y.Assert.isTrue(view.isValid(), "The input is valid");
+        },
     });
     Y.Test.Runner.setName("eZ Author Edit View tests");
     Y.Test.Runner.add(removeButtonTests);
@@ -379,6 +420,13 @@ YUI.add('ez-author-editview-tests', function (Y) {
 
     getFieldTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.GetFieldTests, {
+            _additionalConstructorParameters: {
+                user: new Y.Base({
+                    id: '32',
+                    name: 'notSoCold',
+                    email: 'privateJoke@NY.conf'
+                })
+            },
             fieldDefinition: {isRequired: false},
             ViewConstructor: Y.eZ.AuthorEditView,
             newValue: [
@@ -429,6 +477,23 @@ YUI.add('ez-author-editview-tests', function (Y) {
                 this.wait();
             },
 
+            init: function () {
+                this.content = new Y.Mock();
+                Y.Mock.expect(this.content, {
+                    method: 'toJSON',
+                    returns: {}
+                });
+                Y.Mock.expect(this.content, {
+                    method: 'get',
+                    args: ['mainLanguageCode'],
+                    returns: 'eng-GB'
+                });
+                Y.Mock.expect(this.content, {
+                    method: 'isNew',
+                    returns: true
+                });
+            },
+
             _fillAuthor: function (author, i) {
                 var container = this.view.get('container');
 
@@ -455,10 +520,33 @@ YUI.add('ez-author-editview-tests', function (Y) {
 
     getEmptyFieldTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.GetFieldTests, {
+            _additionalConstructorParameters: {
+                user: new Y.Base({
+                    id: '32',
+                    name: 'notSoCold',
+                    email: 'privateJoke@NY.conf'
+                })
+            },
             fieldDefinition: {isRequired: false},
             ViewConstructor: Y.eZ.AuthorEditView,
-            newValue: "",
-            valuesArray: [],
+            newValue: [],
+
+            init: function () {
+                this.content = new Y.Mock();
+                Y.Mock.expect(this.content, {
+                    method: 'toJSON',
+                    returns: {}
+                });
+                Y.Mock.expect(this.content, {
+                    method: 'get',
+                    args: ['mainLanguageCode'],
+                    returns: 'eng-GB'
+                });
+                Y.Mock.expect(this.content, {
+                    method: 'isNew',
+                    returns: true
+                });
+            },
 
             _assertCorrectFieldValue: function (fieldValue, msg) {
                 Y.Assert.isArray(fieldValue, 'fieldValue should be an array');

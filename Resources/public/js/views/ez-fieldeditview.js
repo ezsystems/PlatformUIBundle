@@ -72,7 +72,7 @@ YUI.add('ez-fieldeditview', function (Y) {
                     field: this.get('field'),
                     content: this.get('content').toJSON(),
                     version: this.get('version').toJSON(),
-                    contentType: this.get('contentType').toJSON()
+                    contentType: this.get('contentType').toJSON(),
                 },
                 container = this.get('container');
 
@@ -392,6 +392,15 @@ YUI.add('ez-fieldeditview', function (Y) {
             version: {
                 value: null
             },
+
+            /**
+             * The logged in user
+             *
+             * @attribute user
+             * @type {eZ.User}
+             * @required
+             */
+            user: {},
 
             /**
              * The content type of the content

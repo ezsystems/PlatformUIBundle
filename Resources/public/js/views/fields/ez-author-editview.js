@@ -416,10 +416,15 @@ YUI.add('ez-author-editview', function (Y) {
          * @method _fillAuthorList
          */
         _fillAuthorList: function () {
-            var authors = this.get('field').fieldValue;
+            var authors = this.get('field').fieldValue,
+                user = this.get('user');
 
             if ( authors.length === 0 ) {
-                this._authorList.add({id: 0});
+                if (this.get('content').isNew()) {
+                    this._authorList.add({id: 0, name: user.get('name'), email: user.get('email'), emailValid: true});
+                } else {
+                    this._authorList.add({id: 0});
+                }
             } else {
                 Y.Array.each(authors, function (author) {
                     var a = {

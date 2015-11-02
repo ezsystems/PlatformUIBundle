@@ -257,6 +257,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 owner: this.get('owner'),
                 config: this.get('config'),
                 languageCode: this.get('languageCode'),
+                user: this.get('app').get('user'),
             };
         },
 
