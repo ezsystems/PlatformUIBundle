@@ -299,7 +299,13 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @protected
          */
         _setLanguageCode: function () {
-            this.set('languageCode', this.get('request').params.languageCode);
+            var languageCode = this.get('content').get('mainLanguageCode');
+
+            if (this.get('request').params.languageCode) {
+                languageCode = this.get('request').params.languageCode;
+            }
+
+            this.set('languageCode', languageCode);
         },
 
         /**

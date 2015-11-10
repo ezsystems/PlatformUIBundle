@@ -59,6 +59,12 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                     fieldValue: 'Roman Dmowski'
                 }
             };
+
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: this.languageCode
+            });
         },
 
         "Should load content using languageCode": function () {
@@ -176,6 +182,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                         return that.resources;
                     } else if ( attr === 'fields' ) {
                         return that.fields;
+                    } else if ( attr === 'mainLanguageCode' ) {
+                        return that.languageCode;
                     } else if ( attr === 'currentVersion' ) {
                         return that.contentCurrentVersion;
                     } else if ( attr === 'alwaysAvailable' ) {
@@ -261,6 +269,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                             return that.fieldsForBaseTranslation;
                         }
                         return that.fields;
+                    } else if ( attr === 'mainLanguageCode' ) {
+                        return that.languageCode;
                     } else if ( attr === 'currentVersion' ) {
                         return that.contentCurrentVersion;
                     } else if ( attr === 'alwaysAvailable' ) {
@@ -426,13 +436,15 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             });
             Y.Mock.expect(this.content, {
                 method: 'get',
-                callCount: 3,
+                callCount: 4,
                 args: [Y.Mock.Value.String],
                 run: function (attr) {
                     if ( attr === 'resources' ) {
                         return that.resources;
                     } else if ( attr === 'fields' ) {
                         return that.fields;
+                    } else if ( attr === 'mainLanguageCode' ) {
+                        return that.languageCode;
                     } else if ( attr === 'currentVersion' ) {
                         return that.contentCurrentVersion;
                     } else {
@@ -590,6 +602,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                         return that.resources;
                     } else if ( attr === 'fields' ) {
                         return that.fields;
+                    } else if ( attr === 'mainLanguageCode' ) {
+                        return that.languageCode;
                     } else if ( attr === 'currentVersion' ) {
                         return that.contentCurrentVersion;
                     } else {
@@ -829,23 +843,20 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         name: "eZ Content edit View Service getViewParameters tests",
 
         setUp: function () {
-            this.content = {};
+            this.content = new Mock();
             this.contentType = {};
             this.location = {};
             this.owner = {};
             this.version = {};
             this.config = {};
             this.languageCode = 'pol-PL';
+            this.mainLanguageCode = 'ger-DE';
             this.request = {params: {languageCode: this.languageCode}};
-            this.service = new Y.eZ.ContentEditViewService({
-                content: this.content,
-                contentType: this.contentType,
-                location: this.location,
-                config: this.config,
-                owner: this.owner,
-                version: this.version,
-                request: this.request,
-                languageCode: this.languageCode
+
+            Mock.expect(this.content, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: this.mainLanguageCode
             });
         },
 
@@ -861,7 +872,20 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         },
 
         "Should get the view parameters": function () {
-            var params = this.service.getViewParameters();
+            var params;
+
+            this.service = new Y.eZ.ContentEditViewService({
+                content: this.content,
+                contentType: this.contentType,
+                location: this.location,
+                config: this.config,
+                owner: this.owner,
+                version: this.version,
+                request: this.request,
+                languageCode: this.languageCode
+            });
+
+            params = this.service.getViewParameters();
 
             Y.Assert.areSame(this.content, params.content, 'The content should be available in the return value of getViewParameters');
             Y.Assert.areSame(this.contentType, params.contentType, 'The contentType should be available in the return value of getViewParameters');
@@ -870,6 +894,23 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             Y.Assert.areSame(this.owner, params.owner, 'The owner should be available in the return value of getViewParameters');
             Y.Assert.areSame(this.location, params.mainLocation, 'The location should be available in the return value of getViewParameters');
             Y.Assert.areSame(this.languageCode, params.languageCode, 'The languageCode should be available in the return value of getViewParameters');
+        },
+
+        "Should return content's main language code in the view parameters": function () {
+            var params;
+
+            this.service = new Y.eZ.ContentEditViewService({
+                content: this.content,
+                request: {params: {}},
+            });
+
+            params = this.service.getViewParameters();
+
+            Y.Assert.areSame(
+                this.mainLanguageCode,
+                params.languageCode,
+                'The languageCode in the return value of getViewParameters should be the same as content\'s mainLanguageCode'
+            );
         },
     });
 
@@ -895,6 +936,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 run: function (attr) {
                     if ( attr === 'id' ) {
                         return that.contentId;
+                    } else if ( attr === 'mainLanguageCode' ) {
+                        return that.languageCode;
                     } else if ( attr === 'currentVersion' ) {
                         return that.currentVersion;
                     } else {
