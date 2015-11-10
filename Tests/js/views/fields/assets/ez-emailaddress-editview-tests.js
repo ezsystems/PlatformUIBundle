@@ -130,6 +130,16 @@ YUI.add('ez-emailaddress-editview-tests', function (Y) {
                 this.view.isValid(),
                 "An empty input is NOT valid"
             );
+
+            this.view.set('fieldDefinition', this._getFieldDefinition(false));
+            this.view.render();
+
+            input.set('value', '');
+            this.view.validate();
+            Y.Assert.isTrue(
+                this.view.isValid(),
+                "An empty input is valid"
+            );
         },
 
         "Test validation triggering on change when not valid": function () {
