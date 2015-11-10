@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationmodel-tests', function (Y) {
-    var modelTest, trashTest, moveTest, hideTest, removeTest,
+    var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
@@ -504,10 +504,142 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         }
     });
 
+    loadPathTest = new Y.Test.Case({
+        name: "eZ location model load path tests",
+
+        setUp: function () {
+            this.capiMock = new Y.Mock();
+            this.contentService = new Y.Mock();
+            this.locationId = '/1/2/3/4';
+            this.pathString = '/path/string/1/2/3';
+            this.model = new Y.eZ.Location({id: this.locationId, pathString: this.pathString});
+            this.loadAncestorsResponse = {
+                document: {
+                    View: {
+                        Result: {
+                            searchHits: {
+                                searchHit: [
+                                    {value: { Location: {_href: '/parent/location', depth: 2}}},
+                                    {value: { Location: {_href: '/grand/parent/location', depth: 1}}},
+                                    {value: { Location: {_href: this.locationId, depth: 3}}},
+                                    {value: { Location: {_href: '/home/location', depth: 0}}},
+                                ]
+                            }
+                        }
+                    }
+                }
+            };
+            this.viewCreateStruct = {
+                body: {
+                    ViewInput: {
+                        LocationQuery : {
+
+                        }
+                    }
+                }
+            };
+
+            Y.Mock.expect(this.capiMock, {
+                method: 'getContentService',
+                returns: this.contentService,
+            });
+
+            Y.Mock.expect(this.contentService, {
+                method: 'newViewCreateStruct',
+                args: [Y.Mock.Value.String, 'LocationQuery'],
+                returns: this.viewCreateStruct
+            });
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        "Should load path for the location": function () {
+            var that = this, i;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (query, callback) {
+                    Assert.isString(
+                        query.body.ViewInput.LocationQuery.Criteria.AncestorCriterion,
+                        "The query should contain AncestorCriterion"
+                    );
+                    Assert.areSame(
+                        query.body.ViewInput.LocationQuery.Criteria.AncestorCriterion,
+                        that.pathString,
+                        "The AncestorCriterion of query should be set to the location's pathString"
+                    );
+                    callback(false, that.loadAncestorsResponse);
+                }
+            });
+
+            this.model.loadPath({
+                api: this.capiMock
+            }, function (error, locations) {
+                Assert.isFalse(
+                    error,
+                    "No error should be detected"
+                );
+                Assert.isArray(
+                    locations,
+                    "The result in callback should be an array"
+                );
+                Assert.areEqual(
+                    that.loadAncestorsResponse.document.View.Result.searchHits.searchHit.length-1,
+                    locations.length,
+                    "The result array should be reduced by current location"
+                );
+                Y.Array.each(locations, function (location) {
+                    Assert.isObject(location, "The item included in result array should be an object");
+                    Assert.areEqual(
+                        location.name,
+                        'locationModel',
+                        "The item included in result array should be the locationModel instance"
+                    );
+                    Assert.areNotEqual(
+                        location.get('id'),
+                        that.model.get('id'),
+                        "Current location should not be included in the result"
+                    );
+                });
+
+                for (i = 0; i != locations.length; ++i) {
+                    Y.Assert.areSame(
+                        i, locations[i].get('depth'),
+                        "The path should be sorted by depth"
+                    );
+                }
+            });
+        },
+
+        "Should handle the error if create REST view fails": function () {
+            Y.Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    callback(true);
+                }
+            });
+
+            this.model.loadPath({
+                api: this.capiMock
+            }, function (error) {
+                Assert.isTrue(
+                    error,
+                    "Error should be detected"
+                );
+            });
+        }
+    });
+
     Y.Test.Runner.setName("eZ Location Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(trashTest);
     Y.Test.Runner.add(moveTest);
     Y.Test.Runner.add(hideTest);
     Y.Test.Runner.add(removeTest);
+    Y.Test.Runner.add(loadPathTest);
 }, '', {requires: ['test', 'model-tests', 'ez-locationmodel', 'ez-restmodel']});
