@@ -2,7 +2,7 @@ system:
     default:
         yui:
             filter: min
-            combine: false
+            combine: true
             modules:
                 capi:
                     path: %ez_platformui.external_assets_public_dir%/vendors/ez-js-rest-client/dist/CAPI.js
