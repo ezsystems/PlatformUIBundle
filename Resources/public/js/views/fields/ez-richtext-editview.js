@@ -16,10 +16,7 @@ YUI.add('ez-richtext-editview', function (Y) {
         L = Y.Lang,
         FOCUS_CLASS = 'is-focused',
         EDITOR_FOCUSED_CLASS = 'is-editor-focused',
-        ROOT_SECTION_ATTRIBUTES = {
-            "contenteditable": 'true',
-            "class": 'ez-richtext-editable',
-        },
+        EDITABLE_CLASS = 'ez-richtext-editable',
         AlloyEditor = Y.eZ.AlloyEditor,
         ToolbarConfig = Y.eZ.AlloyEditorToolbarConfig;
 
@@ -133,7 +130,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                     toolbars: this.get('toolbarsConfig'),
                     extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezaddcontent,widget,ezembed,ezremoveblock,ezfocusblock',
                     eZ: {
-                        editableRegion: '.ez-richtext-editable',
+                        editableRegion: '.' + EDITABLE_CLASS,
                     },
                 }
             );
@@ -219,18 +216,23 @@ YUI.add('ez-richtext-editview', function (Y) {
             return {
                 "isRequired": this.get('fieldDefinition').isRequired,
                 "xhtml": this._serializeFieldValue(),
+                "editableClass": EDITABLE_CLASS,
             };
         },
 
         /**
-         * Returns a Document object or null if the parser failed to load the
-         * xhtml5edit version of the rich text field.
+         * Returns a DocumentFragment object or null if the parser failed to
+         * load the xhtml5edit version of the rich text field. The document
+         * fragment only contains the content of the root <section> element.
          *
-         * @method _getDOMDocument
-         * @return {Document}
+         * @method _getHTMLDocumentFragment
+         * @return {DocumentFragment}
          */
-        _getDOMDocument: function () {
-            var doc = (new DOMParser()).parseFromString(this.get('field').fieldValue.xhtml5edit, "text/xml");
+        _getHTMLDocumentFragment: function () {
+            var fragment = Y.config.doc.createDocumentFragment(),
+                root = Y.config.doc.createElement('div'),
+                doc = (new DOMParser()).parseFromString(this.get('field').fieldValue.xhtml5edit, "text/xml"),
+                i;
 
             if ( !doc || !doc.documentElement || doc.querySelector("parsererror") ) {
                 console.warn(
@@ -238,7 +240,21 @@ YUI.add('ez-richtext-editview', function (Y) {
                 );
                 return null;
             }
-            return doc;
+
+            /**
+             * Holds the namespace of the xhtml5edit format
+             *
+             * @property _namespace
+             * @type {String}
+             * @default undefined
+             */
+            this._namespace = doc.documentElement.getAttribute('xmlns');
+
+            fragment.appendChild(root);
+            for (i = 0; i != doc.documentElement.childNodes.length; i++) {
+                root.appendChild(doc.documentElement.childNodes.item(i).cloneNode(true));
+            }
+            return fragment;
         },
 
         /**
@@ -249,27 +265,19 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @return {String}
          */
         _serializeFieldValue: function () {
-            var doc = this._getDOMDocument();
+            var doc = this._getHTMLDocumentFragment(), section;
 
             if ( !doc ) {
                 return "";
             }
-            if ( !doc.documentElement.hasChildNodes() ) {
+            section = doc.childNodes.item(0);
+            if ( !section.hasChildNodes() ) {
                 // making sure to have at least a paragraph element
                 // otherwise CKEditor adds a br to make sure the editor can put
                 // the caret inside the element.
-                // We don't use the DOM API here otherwise, the p element will
-                // have an empty `xmlns` attribute in Firefox which then breaks
-                // the RichText parser when saving the field value... This is
-                // happening because of our custom namespace even though we are
-                // handling some XHTML... With `innerHTML`, this does not occur.
-                // see https://jira.ez.no/browse/EZP-24907
-                doc.documentElement.innerHTML = '<p></p>';
+                doc.childNodes.item(0).appendChild(Y.config.doc.createElement('p'));
             }
-            Y.Object.each(ROOT_SECTION_ATTRIBUTES, function (value, key) {
-                doc.documentElement.setAttribute(key, value);
-            });
-            return (new XMLSerializer()).serializeToString(doc.documentElement);
+            return section.innerHTML;
         },
 
         /**
@@ -293,10 +301,10 @@ YUI.add('ez-richtext-editview', function (Y) {
          */
         _getEditorContent: function () {
             var data = this.get('editor').get('nativeEditor').getData(),
-                root, i, list, section,
+                root, i, list,
                 doc = document.createDocumentFragment();
 
-            root = document.createElement('div');
+            root = document.createElement('section');
             doc.appendChild(root);
             root.innerHTML = data;
             list = root.querySelectorAll('[id]');
@@ -304,15 +312,8 @@ YUI.add('ez-richtext-editview', function (Y) {
             for (i = 0; i != list.length; ++i) {
                 list[i].removeAttribute("id");
             }
-
-            section = root.querySelector('section');
-            if (section) {
-                Y.Object.each(ROOT_SECTION_ATTRIBUTES, function (attributeValue, attributeName) {
-                    section.removeAttribute(attributeName);
-                });
-            }
-
-            return root.innerHTML.trim();
+            root.setAttribute('xmlns', this._namespace);
+            return root.outerHTML.trim();
         }
     }, {
         ATTRS: {
