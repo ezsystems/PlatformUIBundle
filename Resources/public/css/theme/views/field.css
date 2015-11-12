@@ -11,7 +11,7 @@
     background: #fafafa;
     color: #333;
     border-right: 1px solid #ccc;
-    margin-left: -161px; /* 140 + 1 to compensate the border */
+    box-sizing: border-box
 }
 
 .ez-view-fieldview.ez-fieldview-is-empty .ez-fieldview-value-content {
