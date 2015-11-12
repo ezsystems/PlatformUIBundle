@@ -42,7 +42,18 @@ class PolicyFormProcessor implements EventSubscriberInterface
 
     public function processDefaultAction(FormActionEvent $event)
     {
+        /** @var \EzSystems\RepositoryForms\Data\Role\PolicyCreateData|\EzSystems\RepositoryForms\Data\Role\PolicyUpdateData $data */
+        $data = $event->getData();
         $this->notify('role.policy.notification.draft_saved', [], 'role');
+        // Set a default redirect response to policy edit route, with the new policy draft ID
+        $event->setResponse(
+            new FormProcessingDoneResponse(
+                $this->router->generate('admin_policyEdit', [
+                    'roleId' => $data->initialRole->id,
+                    'policyId' => $data->policyDraft->id,
+                ])
+            )
+        );
     }
 
     public function processSavePolicy(FormActionEvent $event)
