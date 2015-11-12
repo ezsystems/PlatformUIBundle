@@ -487,11 +487,19 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             this.model.set('currentVersion', currentVersionStruct);
 
             this.typeId = 'song';
+            this.alwaysAvailable = true;
             this.type = new Mock();
             Y.Mock.expect(this.type, {
                 method: 'get',
-                args: ['id'],
-                returns: this.typeId
+                args: [Mock.Value.String],
+                run: Y.bind(function (attr) {
+                    if ( attr === 'defaultAlwaysAvailable' ) {
+                        return this.alwaysAvailable;
+                    } else if ( attr === 'id' ) {
+                        return this.typeId;
+                    }
+                    Y.fail('Unexpected call to get("' + attr + '")');
+                }, this),
             });
 
             this.parentLocationId = 'foo-fighters';
@@ -520,7 +528,12 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             });
             Y.Mock.expect(this.contentService, {
                 method: 'newContentCreateStruct',
-                args: [this.typeId, this.locationCreateStruct, this.languageCode],
+                args: [
+                    this.typeId,
+                    this.locationCreateStruct,
+                    this.languageCode,
+                    this.alwaysAvailable
+                ],
                 returns: this.createStruct,
             });
             Y.Mock.expect(this.contentService, {
