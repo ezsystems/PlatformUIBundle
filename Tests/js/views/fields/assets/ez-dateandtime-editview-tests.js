@@ -870,7 +870,6 @@ YUI.add('ez-dateandtime-editview-tests', function (Y) {
             ViewConstructor: Y.eZ.DateAndTimeEditView,
             expectedDateValue: '1986-09-08',
             expectedTimeValue: '10:10',
-            convertedValue: 526521600 + 36600,
 
             _setNewValue: function () {
                 var c = this.view.get('container');
@@ -879,8 +878,11 @@ YUI.add('ez-dateandtime-editview-tests', function (Y) {
             },
 
             _assertCorrectFieldValue: function (fieldValue, msg) {
+                var expected = 526558200, // '1986-09-08' '10:10' in UTC
+                    tzOffset =  new Date(expected * 1000).getTimezoneOffset() * 60;
+
                 Y.Assert.isObject(fieldValue, 'the fieldValue should be an object');
-                Y.Assert.areSame(this.convertedValue, fieldValue.timestamp, 'the converted date should match the fieldValue timestamp');
+                Y.Assert.areSame(expected + tzOffset, fieldValue.timestamp, 'the converted date should match the fieldValue timestamp');
             },
         })
     );
