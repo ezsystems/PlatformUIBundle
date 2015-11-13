@@ -44,6 +44,10 @@ class PlatformUIMapper implements HookableConfigurationMapperInterface
             $contextualizer->setContextualParameter('yui.filter', $currentScope, $scopeSettings['yui']['filter']);
         }
 
+        if (isset($scopeSettings['yui']['combine'])) {
+            $contextualizer->setContextualParameter('yui.combine', $currentScope, $scopeSettings['yui']['combine']);
+        }
+
         if (isset($scopeSettings['yui']['modules'])) {
             // Adding entries in $scopeSettings, so that they can be merged across scopes further on,
             // as $contextualizer->mapConfigArray() can only merge with 1st level settings in the configuration tree.
