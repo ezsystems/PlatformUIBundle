@@ -163,6 +163,17 @@ YUI.add('ez-contentmodel', function (Y) {
         },
 
         /**
+         * Checks whether the content is translated into `languageCode`
+         *
+         * @method hasTranslation
+         * @param {String} languageCode
+         * @return {Boolean}
+         */
+        hasTranslation: function (languageCode) {
+            return (this.get('currentVersion').getTranslationsList().indexOf(languageCode) !== -1);
+        },
+
+        /**
          * Filters the relations on this content by type or optionally by field
          * definition identifier.
          *

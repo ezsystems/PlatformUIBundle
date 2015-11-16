@@ -137,6 +137,7 @@ system:
                         - 'parallel'
                         - 'ez-viewservice'
                         - 'ez-contentmodel'
+                        - 'ez-contentinfomodel'
                         - 'ez-locationmodel'
                         - 'ez-contenttypemodel'
                         - 'ez-usermodel'

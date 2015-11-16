@@ -56,7 +56,7 @@ YUI.add('ez-contentinfomodel', function (Y) {
             {'_href': 'id'},
         ],
         LINKS_MAP: [
-            'Owner', 'ContentType'
+            'Owner', 'ContentType', 'MainLocation',
         ],
     });
 });
