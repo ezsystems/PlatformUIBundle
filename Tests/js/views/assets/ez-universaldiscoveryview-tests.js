@@ -614,7 +614,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.multiple = true;
 
             Y.eZ.UniversalDiscoveryBrowseView = Y.Base.create(
-                'testView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
+                'testBrowseView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
+            );
+            Y.eZ.UniversalDiscoverySearchView = Y.Base.create(
+                'testSearchView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
             );
             this.view = new Y.eZ.UniversalDiscoveryView({
                 multiple: this.multiple,
@@ -638,8 +641,8 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 "The method list should be an array"
             );
             Assert.areEqual(
-                1, methods.length,
-                "The default method list should contain 1 element"
+                2, methods.length,
+                "The default method list should contain 2 elements"
             );
             Assert.isInstanceOf(
                 Y.eZ.UniversalDiscoveryBrowseView, methods[0],

@@ -550,6 +550,13 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             loadContent: this.get('loadContent'),
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this)
                         }),
+                        new Y.eZ.UniversalDiscoverySearchView({
+                            bubbleTargets: this,
+                            priority: 200,
+                            multiple: this.get('multiple'),
+                            loadContent: this.get('loadContent'),
+                            isAlreadySelected: Y.bind(this._isAlreadySelected, this)
+                        }),
                     ];
                 },
             },

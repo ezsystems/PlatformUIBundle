@@ -204,8 +204,8 @@ YUI.add('ez-subitemlistview', function (Y) {
             if ( !this.get('subitems') ) {
                 return this.get('subitems');
             }
-            return Y.Array.map(this.get('subitems'), function (loc) {
-                return loc.toJSON();
+            return Y.Array.map(this.get('subitems'), function (locStruct) {
+                return locStruct.location.toJSON();
             });
         },
 
@@ -281,7 +281,7 @@ YUI.add('ez-subitemlistview', function (Y) {
              * The subitems list.
              *
              * @attribute subitems
-             * @type Array of {eZ.Location}
+             * @type Array of {Object} array containing location structs
              */
             subitems: {},
         }
