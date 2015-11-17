@@ -141,7 +141,8 @@ YUI.add('ez-contentmodel', function (Y) {
             struct = options.api.getContentService().newContentCreateStruct(
                 type.get('id'),
                 contentService.newLocationCreateStruct(options.parentLocation.get('id')),
-                options.languageCode
+                options.languageCode,
+                type.get('defaultAlwaysAvailable')
             );
 
             Y.Array.each(options.fields, function (field) {
