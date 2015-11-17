@@ -273,8 +273,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 request = this.get('request'),
                 service = this,
                 location = this.get('location'), content = this.get('content'),
-                type = this.get('contentType'),
-                discoveryService = this.get('capi').getDiscoveryService();
+                type = this.get('contentType');
 
             location.set('id', request.params.id);
             location.load(loadOptions, function (error) {
@@ -307,21 +306,14 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 });
 
                 endLoadPath = tasks.add();
-                discoveryService.getInfoObject('rootLocation', function (error, response) {
-                    var rootLocationId;
-
+                location.loadPath(loadOptions, function(error, path) {
                     if ( error ) {
-                        service._error("Failed to contact the REST API");
+                        service._error("Failed to load locations's path with REST API");
                         return;
                     }
 
-                    rootLocationId = response._href;
-                    if ( rootLocationId === location.get('id') || location.get('depth') == 1 ) {
-                        service.set('path', []);
-                        endLoadPath();
-                        return;
-                    }
-                    service._loadPath(rootLocationId, endLoadPath);
+                    service.set('path', path);
+                    endLoadPath();
                 });
 
                 tasks.done(function () {
@@ -332,66 +324,6 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                     };
                     next(service);
                 });
-            });
-        },
-
-        /**
-         * Recursively loads the path to the current location
-         *
-         * @protected
-         * @method _loadPath
-         * @param {String} rootLocationId the root location id
-         * @param {Function} end the callback to call when the just is done
-         */
-        _loadPath: function (rootLocationId, end) {
-            var service = this,
-                loadParentCallback,
-                path = [];
-
-            loadParentCallback = function (error, parentLocation) {
-                if ( error ) {
-                    service._error("Fail to load the path");
-                    return;
-                }
-                path.push(parentLocation);
-                if ( rootLocationId === parentLocation.get('id') || parentLocation.get('depth') == 1 ) {
-                    service.set('path', path);
-                    end();
-                } else {
-                    service._loadParent(parentLocation, loadParentCallback);
-                }
-            };
-
-            this._loadParent(this.get('location'), loadParentCallback);
-        },
-
-        /**
-         * Loads the parent location and its content
-         *
-         * @protected
-         * @method _loadParent
-         * @param {Y.eZ.Location} location
-         * @param {Function} callback the function to call when the location is loaded
-         * @param {Boolean} callback.error the error, truthy if an error occurred
-         * @param {Object} callback.location an object containing the
-         *        Y.eZ.Location
-         */
-        _loadParent: function (location, callback) {
-            var loadOptions = {
-                    api: this.get('capi')
-                },
-                parentLocation;
-
-            parentLocation = this._newLocation({
-                'id': location.get('resources').ParentLocation
-            });
-            parentLocation.load(loadOptions, function (error) {
-                if ( error ) {
-                    callback(error);
-                    return;
-                }
-
-                callback(error, parentLocation);
             });
         },
 
@@ -415,19 +347,6 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                 languageCode: this.get('request').params.languageCode,
             };
         },
-
-        /**
-         * Creates a new instance of Y.eZ.Location with the given params
-         *
-         * @method _newLocation
-         * @protected
-         * @param {Object} params the parameters passed to the Y.eZ.Location
-         *        constructor
-         */
-        _newLocation: function (params) {
-            return new Y.eZ.Location(params);
-        },
-
     }, {
         ATTRS: {
             /**
@@ -471,11 +390,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
              * @type Array
              */
             path: {
-                getter: function (value) {
-                    return value.sort(function (a, b) {
-                        return (a.get('depth') - b.get('depth'));
-                    });
-                }
+                value: []
             },
 
             /**
