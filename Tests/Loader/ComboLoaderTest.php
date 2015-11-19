@@ -15,9 +15,29 @@ class ComboLoaderTest extends PHPUnit_Framework_TestCase
     /** @var \EzSystems\PlatformUIBundle\Loader\ComboLoader */
     private $comboLoader;
 
+    /** @var \eZ\Publish\Core\MVC\ConfigResolverInterface */
+    private $configResolver;
+
+    /** @var \Symfony\Component\Templating\EngineInterface */
+    private $templating;
+
     public function setUp()
     {
-        $this->comboLoader = new ComboLoader('/yui/', 'Tests/fixtures');
+        $this->configResolver = $this->getMockBuilder('\eZ\Publish\Core\MVC\ConfigResolverInterface')
+            ->getMock();
+
+        $this->configResolver
+            ->method('getParameter')
+            ->willReturn('Tests/fixtures/template_module.js');
+
+        $this->templating = $this->getMockBuilder('\Symfony\Component\Templating\EngineInterface')
+            ->getMock();
+
+        $this->templating
+            ->method('render')
+            ->willReturn('template');
+
+        $this->comboLoader = new ComboLoader($this->configResolver, $this->templating, '/yui/', 'Tests/fixtures');
     }
 
     public function combineFilesContentData()
@@ -43,6 +63,12 @@ class ComboLoaderTest extends PHPUnit_Framework_TestCase
                 [
                     'style1_css',
                     'style2_css',
+                ],
+            ],
+            [
+                'template',
+                [
+                    '/tpl/handlebars/template_module_js',
                 ],
             ],
         ];
