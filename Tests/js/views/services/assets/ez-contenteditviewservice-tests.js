@@ -10,6 +10,15 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         name: "eZ Content Edit View Service tests",
 
         setUp: function () {
+            this.capiMock = {};
+            this.contentInfo = new Mock();
+            this.content = new Mock();
+            this.mainLocation = new Mock();
+            this.contentType = new Mock();
+            this.owner = new Mock();
+            this.version = new Mock();
+            this.app = {};
+
             this.viewLocationRoute = '/view/something';
             this.locationId = 'something';
             this.versionTranslationsList = ['eng-GB', 'pol-PL'];
@@ -24,29 +33,12 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                     baseLanguageCode: this.baseLanguageCode
                 }
             };
-            this.capiMock = new Y.Test.Mock();
+
             this.resources = {
                 'Owner': '/api/ezp/v2/user/users/14',
                 'MainLocation': '/api/ezp/v2/content/locations/1/2/61',
                 'ContentType': '/api/ezp/v2/content/types/23'
             };
-            this.fieldDefinitions = {
-                'name': {
-                    "id": 230,
-                    "identifier": "name",
-                    "fieldType": "ezstring",
-                    "defaultValue": 'default name'
-                }
-            };
-
-            this.mocks = ['content', 'mainLocation', 'contentType', 'owner'];
-            this.content = new Y.Test.Mock();
-            this.mainLocation = new Y.Test.Mock();
-            this.contentType = new Y.Test.Mock();
-            this.owner = new Y.Test.Mock();
-            this.version = new Y.Test.Mock();
-            this.contentCurrentVersion = new Y.Test.Mock();
-            this.app = new Y.Test.Mock();
             this.fields = {
                 name: {
                     languageCode: this.languageCode,
@@ -60,607 +52,391 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 }
             };
 
-            Y.Mock.expect(this.content, {
-                method: 'get',
-                args: ['mainLanguageCode'],
-                returns: this.languageCode
-            });
-        },
-
-        "Should load content using languageCode": function () {
-            var service,
-                that = this;
-
-            Y.Mock.expect(this.version, {
-                method: 'reset'
-            });
-            Y.Mock.expect(this.content, {
+            Mock.expect(this.contentInfo, {
                 method: 'set',
                 args: ['id', this.request.params.id]
             });
-
-            Y.Mock.expect(this.content, {
+            Mock.expect(this.contentInfo, {
                 method: 'load',
-                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
-                run: function (options, callback) {
-                    Assert.areEqual(
-                        that.languageCode,
-                        options.languageCode,
-                        "Language code should be the same as in request"
-                    );
-                }
-            });
-
-            service = new Y.eZ.ContentEditViewService({
-                capi: this.capiMock,
-                request: this.request,
-                app: this.app,
-                location: this.mainLocation,
-                content: this.content,
-                version: this.version,
-            });
-
-            service.load();
-
-            Y.Mock.verify(this.content);
-        },
-
-        "Should load content using baseLanguageCode": function () {
-            var service,
-                that = this;
-
-            Y.Mock.expect(this.version, {
-                method: 'reset'
-            });
-            Y.Mock.expect(this.content, {
-                method: 'set',
-                args: ['id', this.requestBaseLanguage.params.id]
-            });
-
-            Y.Mock.expect(this.content, {
-                method: 'load',
-                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
-                run: function (options, callback) {
-                    Assert.areEqual(
-                        that.baseLanguageCode,
-                        options.languageCode,
-                        "Language code should be the same as baseLanguageCode in request"
-                    );
-                }
-            });
-
-            service = new Y.eZ.ContentEditViewService({
-                capi: this.capiMock,
-                request: this.requestBaseLanguage,
-                app: this.app,
-                location: this.mainLocation,
-                content: this.content,
-                version: this.version,
-            });
-
-            service.load();
-
-            Y.Mock.verify(this.content);
-        },
-
-        "Should fire the 'error' event when translation on which translation is based doesn't exist": function () {
-            var service,
-                that = this,
-                errorTriggered = false,
-                newTranslation = 'jpn-JP',
-                notExistingTranslation = 'fre-FR',
-                contentAlwaysAvailable = false,
-                callback = function () {},
-                request = {
-                    params: {
-                        id: "/api/ezp/v2/content/objects/59",
-                        languageCode: newTranslation,
-                        baseLanguageCode: notExistingTranslation
-                    }
-                },
-                runLoadCallback = function (options, callback) {
-                    Y.Assert.areSame(
-                        options.api, cevlTest.capiMock,
-                        "The 'api' property should be the CAPI"
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (options, callback) {
+                    Assert.areSame(
+                        this.capiMock,
+                        options.api,
+                        "The CAPI should be provided"
                     );
                     callback(false);
-                };
+                }, this),
+            });
+            Mock.expect(this.contentInfo, {
+                method: 'get',
+                args: ['resources'],
+                returns: this.resources,
+            });
 
-            Y.Mock.expect(this.version, {
+            Mock.expect(this.content, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: Y.bind(function (attr) {
+                    if ( attr === 'mainLanguageCode' ) {
+                        return this.languageCode;
+                    } else if ( attr === 'fields' ) {
+                        return this.fields;
+                    }
+                    Y.fail('Unexpected call to content.get("' + attr + '")');
+                }, this),
+            });
+
+            Mock.expect(this.version, {
                 method: 'reset'
             });
-            Y.Mock.expect(this.version, {
+            Mock.expect(this.version, {
                 method: 'set',
-                args: ['fields', Y.Mock.Value.Object]
-            });
-            Y.Mock.expect(this.content, {
-                method: 'get',
-                callCount: 4,
-                args: [Y.Mock.Value.String],
-                run: function (attr) {
-                    if ( attr === 'resources' ) {
-                        return that.resources;
-                    } else if ( attr === 'fields' ) {
-                        return that.fields;
-                    } else if ( attr === 'mainLanguageCode' ) {
-                        return that.languageCode;
-                    } else if ( attr === 'currentVersion' ) {
-                        return that.contentCurrentVersion;
-                    } else if ( attr === 'alwaysAvailable' ) {
-                        return contentAlwaysAvailable;
-                    } else if ( attr === 'contentId' ) {
-                        return request.params.id;
-                    } else {
-                        Y.fail("Unexpected call to content.get(" + attr + ")");
-                    }
-                }
-            });
-            Y.Mock.expect(this.content, {
-                method: 'load',
-                args: [Y.Mock.Value.Object, Y.Mock.Value.Function]
-            });
-            Y.Array.each(this.mocks, function (val) {
-                Y.Mock.expect(cevlTest[val], {
-                    method: 'load',
-                    args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
-                    run: runLoadCallback
-                });
-            });
-            Y.Object.each(this.resources, function (val, key) {
-                var attr = key.charAt(0).toLowerCase() + key.substr(1);
-                Y.Mock.expect(cevlTest[attr], {
-                    method: 'set',
-                    args: ['id',  val]
-                });
-            });
-            Y.Mock.expect(this.contentCurrentVersion, {
-                method: 'getTranslationsList',
-                args: [],
-                returns: this.versionTranslationsList
-            });
-            Y.Mock.expect(this.content, {
-                method: 'set',
-                args: ['id', this.request.params.id]
+                args: ['fields', Mock.Value.Object],
             });
 
-            service = new Y.eZ.ContentEditViewService({
-                capi: this.capiMock,
-                request: request,
-                app: this.app,
-                location: this.mainLocation,
-                content: this.content,
-                version: this.version,
-            });
-
-            service.on('error', function (e) {
-                errorTriggered = true;
-            });
-
-            service.load(callback);
-
-            Y.Assert.isTrue(errorTriggered, 'Should fire `error` event');
+            this.mocks = ['content', 'mainLocation', 'contentType', 'owner'];
+            this.mocksId = {
+                'content': this.request.params.id,
+                'mainLocation': this.resources.MainLocation,
+                'contentType': this.resources.ContentType,
+                'owner': this.resources.Owner,
+            };
         },
 
-        _testSetFields: function (request, expectedFields) {
-            var service,
-                that = this,
-                contentAlwaysAvailable = false,
-                runLoadCallback = function (options, callback) {
-                    Y.Assert.areSame(
-                        options.api, cevlTest.capiMock,
-                        "The 'api' property should be the CAPI"
-                    );
-                    callback(false);
-                },
-                callback = function () {};
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+            delete this.capiMock;
+            delete this.contentInfo;
+            delete this.content;
+            delete this.mainLocation;
+            delete this.contentType;
+            delete this.owner;
+            delete this.version;
+            delete this.app;
+        },
 
-            Y.Mock.expect(this.version, {
-                method: 'reset'
-            });
-            Y.Mock.expect(this.content, {
-                method: 'get',
-                callCount: 4,
-                args: [Y.Mock.Value.String],
-                run: function (attr) {
-                    if ( attr === 'resources' ) {
-                        return that.resources;
-                    } else if ( attr === 'fields' ) {
-                        if (request.params.baseLanguageCode) {
-                            return that.fieldsForBaseTranslation;
-                        }
-                        return that.fields;
-                    } else if ( attr === 'mainLanguageCode' ) {
-                        return that.languageCode;
-                    } else if ( attr === 'currentVersion' ) {
-                        return that.contentCurrentVersion;
-                    } else if ( attr === 'alwaysAvailable' ) {
-                        return contentAlwaysAvailable;
-                    } else if ( attr === 'contentId' ) {
-                        return request.params.id;
-                    } else {
-                        Y.fail("Unexpected call to content.get(" + attr + ")");
-                    }
-                }
-            });
-            Y.Mock.expect(this.content, {
-                method: 'load',
-                args: [Y.Mock.Value.Object, Y.Mock.Value.Function]
-            });
-            Y.Array.each(this.mocks, function (val) {
-                Y.Mock.expect(cevlTest[val], {
-                    method: 'load',
-                    args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
-                    run: runLoadCallback
-                });
-            });
-            Y.Object.each(this.resources, function (val, key) {
-                var attr = key.charAt(0).toLowerCase() + key.substr(1);
-                Y.Mock.expect(cevlTest[attr], {
-                    method: 'set',
-                    args: ['id',  val]
-                });
-            });
-            Y.Mock.expect(this.contentCurrentVersion, {
-                method: 'getTranslationsList',
-                args: [],
-                returns: this.versionTranslationsList
-            });
-            Y.Mock.expect(this.content, {
-                method: 'set',
-                args: ['id', this.request.params.id]
-            });
-            Y.Mock.expect(this.contentType, {
-                method: 'get',
-                args: ['fieldDefinitions'],
-                returns: this.fieldDefinitions
-            });
-            Y.Mock.expect(this.version, {
-                method: 'set',
-                args: ['fields', Y.Mock.Value.Object],
-                run: function (attr, fields) {
-                    Y.Object.each(fields, function (field, identifier) {
-                        Y.Assert.areSame(
-                            field.fieldValue,
-                            expectedFields[identifier].fieldValue,
-                            "The field value should be the same as expected"
-                        );
-                        Y.Assert.areSame(
-                            field.languageCode,
-                            expectedFields[identifier].languageCode,
-                            "The field languageCode should be the same as expected"
-                        );
-                    });
-                }
-            });
-
-            service = new Y.eZ.ContentEditViewService({
+        _getService: function (request) {
+            return new Y.eZ.ContentEditViewService({
                 capi: this.capiMock,
-                request: request,
+                request: (request ? request : this.request),
                 app: this.app,
                 location: this.mainLocation,
+                contentInfo: this.contentInfo,
                 content: this.content,
-                version: this.version,
                 contentType: this.contentType,
+                owner: this.owner,
+                version: this.version,
+            });
+        },
+
+        "Should load the content info": function () {
+            var service, loaded = false;
+
+            Mock.expect(this.contentInfo, {
+                method: 'load',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (options, callback) {
+                    Assert.areSame(
+                        this.capiMock,
+                        options.api,
+                        "The CAPI should be provided"
+                    );
+                    loaded = true;
+                }, this),
             });
 
-            service.load(callback);
+            this.service = service = this._getService();
+            service.load();
+            Assert.isTrue(loaded, "The content info should have been loaded");
         },
 
-        "Should set default version fields for given content type": function () {
-            var newTranslation = 'ger-DE',
-                expectedFields = {
-                    name: {
-                        languageCode: newTranslation,
-                        fieldValue: this.fieldDefinitions.name.defaultValue
+        "Should check content info loading error": function () {
+            var service,
+                errorFired = false;
+
+            Mock.expect(this.contentInfo, {
+                method: 'load',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (options, callback) {
+                    Assert.areSame(
+                        this.capiMock,
+                        options.api,
+                        "The CAPI should be provided"
+                    );
+                    callback(true);
+                }, this),
+            });
+
+            this.service = service = this._getService();
+            service.on('error', function () {
+                errorFired = true;
+            });
+            service.load();
+
+            Assert.isTrue(errorFired, "The error event should have been fired");
+        },
+
+        /**
+         * Configure the mocks references in the `mocks` property to be
+         * "loadable".
+         *
+         * @method _configureMocksLoading
+         * @params {String} [fail] the identifier of the mock that needs to
+         * simulate a loading failure
+         * @params {Function} [mockAssert] additional assert to execute on the
+         * options passed to the load method.
+         */
+        _configureMocksLoading: function (fail, mockAssert) {
+            var runLoadCallbackSuccess = function (assert, options, callback) {
+                    Assert.areSame(
+                        this.capiMock, options.api,
+                        "The CAPI should be passed to the load methods"
+                    );
+                    if ( assert ) {
+                        assert.call(this, options, callback);
                     }
+                    callback(false);
                 },
-                request = {
-                    params: {
-                        id: "/api/ezp/v2/content/objects/59",
-                        languageCode: newTranslation,
+                runLoadCallbackFail = function (assert, options, callback) {
+                    Assert.areSame(
+                        this.capiMock, options.api,
+                        "The CAPI should be passed to the load methods"
+                    );
+                    if ( assert ) {
+                        assert.call(this, options, callback);
                     }
+                    callback(true);
                 };
-            this._testSetFields(request, expectedFields);
-        },
 
-        "Should set values from content loaded with base language code": function () {
-            var newTranslation = 'jpn-JP',
-                baseLanguageCode = this.baseLanguageCode,
-                expectedFields = {
-                    name: {
-                        languageCode: newTranslation,
-                        fieldValue: this.fieldsForBaseTranslation.name.fieldValue
-                    }
-                },
-                request = {
-                    params: {
-                        id: "/api/ezp/v2/content/objects/59",
-                        languageCode: newTranslation,
-                        baseLanguageCode: baseLanguageCode
-                    }
-                };
-            this._testSetFields(request, expectedFields);
-        },
+            if ( !mockAssert ) {
+                mockAssert = {};
+            }
+            Y.Array.each(this.mocks, function (val) {
+                var run = Y.bind(runLoadCallbackSuccess, this, mockAssert[val]);
 
-        "Should set values from content loaded with existing language code": function () {
-            var existingTranslation = this.languageCode,
-                expectedFields = this.fields,
-                request = {
-                    params: {
-                        id: "/api/ezp/v2/content/objects/59",
-                        languageCode: existingTranslation,
-                    }
-                };
-            this._testSetFields(request, expectedFields);
+                if ( fail === val ) {
+                    run = Y.bind(runLoadCallbackFail, this, mockAssert[val]);
+                }
+                Mock.expect(this[val], {
+                    method: 'load',
+                    args: [Mock.Value.Object, Mock.Value.Function],
+                    run: run,
+                });
+
+                Mock.expect(this[val], {
+                    method: 'set',
+                    args: ['id', this.mocksId[val]],
+                });
+            }, this);
         },
 
         "Should load the content, the location, the content type and the owner": function () {
-            var response = {}, service, callback,
+            var service,
                 callbackCalled = false,
-                that = this,
-                runLoadCallback = function (options, callback) {
-                    Y.Assert.areSame(
-                        options.api, cevlTest.capiMock,
-                        "The 'api' property should be the CAPI"
+                contentLoadingAssert = function (options) {
+                    Assert.areEqual(
+                        this.baseLanguageCode, options.languageCode,
+                        "The content should be loaded in the baseLanguageCode"
                     );
-                    callback(false);
                 };
 
-            Y.Mock.expect(this.contentCurrentVersion, {
-                method: 'getTranslationsList',
-                args: [],
-                returns: this.versionTranslationsList
-            });
-            Y.Mock.expect(this.content, {
-                method: 'set',
-                args: ['id', this.request.params.id]
-            });
-            Y.Mock.expect(this.version, {
-                method: 'set',
-                args: ['fields', Y.Mock.Value.Object],
-                run: function(attr, fields) {
-                    Y.Assert.areSame(
-                        fields.name.languageCode,
-                        that.fields.name.languageCode,
-                        'The languageCode should match'
-                    );
-                    Y.Assert.areSame(
-                        fields.name.fieldValue,
-                        that.fields.name.fieldValue,
-                        'The fieldValue should match'
-                    );
-                }
-            });
-            Y.Mock.expect(this.version, {
-                method: 'reset'
-            });
-            Y.Mock.expect(this.content, {
-                method: 'get',
-                callCount: 4,
-                args: [Y.Mock.Value.String],
-                run: function (attr) {
-                    if ( attr === 'resources' ) {
-                        return that.resources;
-                    } else if ( attr === 'fields' ) {
-                        return that.fields;
-                    } else if ( attr === 'mainLanguageCode' ) {
-                        return that.languageCode;
-                    } else if ( attr === 'currentVersion' ) {
-                        return that.contentCurrentVersion;
-                    } else {
-                        Y.fail("Unexpected call to content.get(" + attr + ")");
-                    }
-                }
-            });
-            Y.Mock.expect(this.contentType, {
-                method: 'get',
-                callCount: 2,
-                args: ['fieldDefinitions'],
-                returns: that.fieldDefinitions
+            Mock.expect(this.content, {
+                method: 'hasTranslation',
+                args: [this.requestBaseLanguage.params.baseLanguageCode],
+                returns: true,
             });
 
-            Y.Object.each(this.resources, function (val, key) {
-                var attr = key.charAt(0).toLowerCase() + key.substr(1);
-                Y.Mock.expect(cevlTest[attr], {
-                    method: 'set',
-                    args: ['id',  val]
-                });
-            });
-
-            Y.Array.each(this.mocks, function (val) {
-                Y.Mock.expect(cevlTest[val], {
-                    method: 'load',
-                    args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
-                    run: runLoadCallback
-                });
-            });
-
-            callback = function (param) {
-                var variables = service.getViewParameters();
-
-                Y.Assert.areSame(
-                    service, param,
-                    "The service should be available in the parameter of the load callback"
-                );
-                Y.Assert.areSame(variables.content, cevlTest.content);
+            this._configureMocksLoading('none', {'content': contentLoadingAssert});
+            this.service = service = this._getService(this.requestBaseLanguage);
+            service.load(function () {
                 callbackCalled = true;
-            };
-
-            service = new Y.eZ.ContentEditViewService({
-                capi: this.capiMock,
-                app: this.app,
-                request: this.request,
-                response: response,
-
-                content: this.content,
-                location: this.mainLocation,
-                contentType: this.contentType,
-                owner: this.owner,
-                version: this.version
             });
 
-            service.load(callback);
-
-            Y.Mock.verify(this.app);
-            Y.Mock.verify(this.content);
-            Y.Mock.verify(this.mainLocation);
-            Y.Mock.verify(this.owner);
-            Y.Mock.verify(this.version);
-
-            Y.Assert.isTrue(callbackCalled, "The load callback should have been called");
+            Assert.isTrue(callbackCalled, "The next function should have been called");
         },
 
-        "Should fire the 'error' event when the content loading fails": function () {
-            var service, callback,
-                errorTriggered = false,
-                that = this;
+        "Should check the content translation when edition is based on one": function () {
+            var service,
+                errorTriggered = false;
 
-            Y.Mock.expect(this.version, {
-                method: 'reset'
-            });
-            Y.Mock.expect(this.content, {
-                method: 'set',
-                args: ['id', this.request.params.id]
+            Mock.expect(this.content, {
+                method: 'hasTranslation',
+                args: [this.requestBaseLanguage.params.baseLanguageCode],
+                returns: false,
             });
 
-            Y.Mock.expect(this.content, {
-                method: 'load',
-                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
-                run: function (options, callback) {
-                    callback(true);
-                }
-            });
-
-            Y.Mock.expect(this.contentType, {
-                method: 'get',
-                args: ['fieldDefinitions'],
-                returns: that.fieldDefinitions
-            });
-
-            callback = function () {
-                Y.Assert.fail("The load callback should not be called");
-            };
-
-            service = new Y.eZ.ContentEditViewService({
-                capi: this.capiMock,
-                request: this.request,
-                app: this.app,
-                location: this.mainLocation,
-                content: this.content,
-                version: this.version,
-                contentType: this.contentType,
-            });
-
-            service.on('error', function (e) {
+            this._configureMocksLoading();
+            this.service = service = this._getService(this.requestBaseLanguage);
+            service.once('error', function (e) {
                 errorTriggered = true;
             });
-
-            service.load(callback);
-
-            Y.Mock.verify(this.app);
-            Y.Mock.verify(this.content);
-            Y.Mock.verify(this.mainLocation);
-            Y.Mock.verify(this.version);
-            Y.Assert.isTrue(errorTriggered, "The error event should have been triggered");
+            service.load(function () {
+                Y.fail("The callback should not be called");
+            });
+            Assert.isTrue(errorTriggered, "The error event should have been triggered");
         },
+
+        "Should load the content in edited language": function () {
+            var service,
+                callbackCalled = false,
+                contentLoadingAssert = function (options) {
+                    Assert.areEqual(
+                        this.languageCode, options.languageCode,
+                        "The content should be loaded in the request languageCode"
+                    );
+                };
+
+            this._configureMocksLoading('none', {'content': contentLoadingAssert});
+            this.service = service = this._getService();
+            service.once('error', function (e) {
+                Y.fail("No error should be detected");
+            });
+            service.load(function () {
+                callbackCalled = true;
+            });
+            Assert.isTrue(callbackCalled, "The callback should be called");
+        },
+
+        "Should handle the first creation of a translation": function () {
+            var service,
+                contentInfoAttrs = {},
+                callbackCalled = false;
+
+            this._configureMocksLoading('content');
+            Mock.expect(this.contentInfo, {
+                method: 'getAttrs',
+                returns: contentInfoAttrs,
+            });
+            Mock.expect(this.content, {
+                method: 'setAttrs',
+                args: [contentInfoAttrs],
+            });
+            this.service = service = this._getService();
+            service.once('error', function (e) {
+                Y.fail("No error should be detected");
+            });
+            service.load(function () {
+                callbackCalled = true;
+            });
+            Assert.isTrue(callbackCalled, "The callback should be called");
+        },
+
+        "Should set the version fields based on the default values": function () {
+            var fields,
+                fieldDefinitions = {
+                    'name': {
+                        'identifier': 'name',
+                        'defaultValue': 'default name',
+                    },
+                    'short_name': {
+                        'identifier': 'short_name',
+                        'defaultValue': 'default short name',
+                    },
+            };
+
+
+            Mock.expect(this.version, {
+                method: 'set',
+                args: ['fields', Mock.Value.Object],
+                run: function (attr, f) {
+                    fields = f;
+                },
+            });
+            Mock.expect(this.content, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: Y.bind(function (attr) {
+                    if ( attr === 'mainLanguageCode' ) {
+                        return this.languageCode;
+                    } else if ( attr === 'fields' ) {
+                        return {};
+                    }
+                    Y.fail('Unexpected call to content.get("' + attr + '")');
+                }, this),
+            });
+            Mock.expect(this.contentType, {
+                method: 'get',
+                args: ['fieldDefinitions'],
+                returns: fieldDefinitions,
+            });
+
+            this["Should handle the first creation of a translation"]();
+
+            Assert.areEqual(
+                Y.Object.size(fieldDefinitions), Y.Object.size(fields),
+                "The version fields should have the same size of the fieldDefinitions"
+            );
+            Y.Object.each(fields, function (field, identifier) {
+                Assert.areEqual(
+                    identifier, field.fieldDefinitionIdentifier,
+                    "The fieldDefinition identifier should be set on the fields"
+                );
+                Assert.areEqual(
+                    fieldDefinitions[identifier].defaultValue, field.fieldValue,
+                    "The field should have the default value of the fieldDefinition"
+                );
+                Assert.areEqual(
+                    this.languageCode, field.languageCode,
+                    "The languageCode should be set on the field"
+                );
+            }, this);
+        },
+
+        "Should set the version fields based on the loaded content": function () {
+            var fields;
+
+            Mock.expect(this.version, {
+                method: 'set',
+                args: ['fields', Mock.Value.Object],
+                run: function (attr, f) {
+                    fields = f;
+                },
+            });
+
+            this["Should load the content, the location, the content type and the owner"]();
+
+            Assert.areEqual(
+                Y.Object.size(this.fields), Y.Object.size(fields),
+                "The version fields should be created from the content fields"
+            );
+            Y.Object.each(fields, function (field, identifier) {
+                var contentField = this.fields[identifier];
+
+                Assert.areEqual(
+                    contentField.languageCode, field.languageCode,
+                    "The language code of the version field should match the one of content field"
+                );
+                Assert.areEqual(
+                    contentField.fieldValue, field.fieldValue,
+                    "The field value of the version field should match the one of content field"
+                );
+            }, this);
+        },
+
         /**
          * @param {String} fail one of the value in this.mocks
          */
         _testSubloadError: function (fail) {
-            var response = {}, service, callback,
-                that = this,
-                errorTriggered = false,
-                runLoadCallbackSuccess = function (options, callback) {
-                    callback(false);
-                },
-                runLoadCallbackFail = function (options, callback) {
-                    callback(true);
-                };
+            var service,
+                errorTriggered = false;
 
-            Y.Mock.expect(this.contentCurrentVersion, {
-                method: 'getTranslationsList',
-                args: [],
-                returns: this.versionTranslationsList
-            });
-            Y.Mock.expect(this.version, {
-                method: 'reset'
-            });
-            Y.Mock.expect(this.content, {
-                method: 'set',
-                args: ['id', this.request.params.id]
-            });
-            Y.Mock.expect(this.version, {
-                method: 'set',
-                args: ['fields', Y.Mock.Value.Object]
-            });
-            Y.Mock.expect(this.content, {
-                method: 'get',
-                callCount: 4,
-                args: [Y.Mock.Value.String],
-                run: function (attr) {
-                    if ( attr === 'resources' ) {
-                        return that.resources;
-                    } else if ( attr === 'fields' ) {
-                        return that.fields;
-                    } else if ( attr === 'mainLanguageCode' ) {
-                        return that.languageCode;
-                    } else if ( attr === 'currentVersion' ) {
-                        return that.contentCurrentVersion;
-                    } else {
-                        Y.fail("Unexpected call to content.get(" + attr + ")");
-                    }
-                }
-            });
-            Y.Mock.expect(this.contentType, {
-                method: 'get',
-                args: ['fieldDefinitions'],
-                returns: that.fieldDefinitions
-            });
-
-            Y.Object.each(this.resources, function (val, key) {
-                var attr = key.charAt(0).toLowerCase() + key.substr(1);
-                Y.Mock.expect(cevlTest[attr], {
-                    method: 'set',
-                    args: ['id',  val]
-                });
-            });
-
-            Y.Array.each(this.mocks, function (val) {
-                Y.Mock.expect(cevlTest[val], {
-                    method: 'load',
-                    args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
-                    run: fail === val ? runLoadCallbackFail : runLoadCallbackSuccess
-                });
-            });
-
-            callback = function () {
-                Y.Assert.fail("The load callback should not be called");
-            };
-
-            service = new Y.eZ.ContentEditViewService({
-                capi: this.capiMock,
-                request: this.request,
-                response: response,
-                app: this.app,
-                content: this.content,
-                location: this.mainLocation,
-                contentType: this.contentType,
-                owner: this.owner,
-                version: this.version
-            });
-
-
-            service.on('error', function (e) {
+            this._configureMocksLoading(fail);
+            this.service = service = this._getService(this.requestBaseLanguage);
+            service.once('error', function (e) {
                 errorTriggered = true;
             });
 
-            service.load(callback);
+            service.load(function () {
+                Y.fail("The load callback should not be called");
+            });
 
-            Y.Mock.verify(this.app);
-            Y.Mock.verify(this.mainLocation);
-            Y.Mock.verify(this.owner);
+            Assert.isTrue(errorTriggered, "The error event should have been triggered");
+        },
 
-            Y.Assert.isTrue(errorTriggered, "The error event should have been triggered");
+        "Should fire the error event when the content loading fails":  function () {
+            this._testSubloadError('content');
         },
 
         "Should fire the error event when the location loading fails":  function () {
