@@ -44,6 +44,20 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
              * @property {String} udwContentDiscoveredMethod
              */
             udwContentDiscoveredMethod: React.PropTypes.string,
+
+            /**
+             * The isSelectable function to pass to the UDW.
+             *
+             * @property {Function} udwIsSelectable
+             */
+            udwIsSelectable: React.PropTypes.func,
+
+            /**
+             * The loadContent flag to pass to the UDW
+             *
+             * @property {Boolean} udwLoadContent
+             */
+            udwLoadContent: React.PropTypes.bool,
         },
 
         /**
@@ -58,6 +72,8 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
                     title: this.props.udwTitle,
                     multiple: false,
                     contentDiscoveredHandler: this[this.props.udwContentDiscoveredMethod],
+                    isSelectable: this.props.udwIsSelectable,
+                    loadContent: this.props.udwLoadContent,
                 }
             });
         },

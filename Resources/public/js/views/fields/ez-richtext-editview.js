@@ -378,7 +378,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                         tabIndex: 1
                     },
                     add: {
-                        buttons: ['ezheading', 'ezparagraph', 'ezembed'],
+                        buttons: ['ezheading', 'ezparagraph', 'ezimage', 'ezembed'],
                         tabIndex: 2,
                     },
                 }
@@ -403,10 +403,10 @@ YUI.add('ez-richtext-editview', function (Y) {
              * @attribute forwardEvents
              * @readOnly
              * @type {Array}
-             * @default ['contentDiscover']
+             * @default ['contentDiscover', 'loadImageVariation']
              */
             forwardEvents: {
-                value: ['contentDiscover'],
+                value: ['contentDiscover', 'loadImageVariation'],
                 readOnly: true,
             },
         }

@@ -7,7 +7,9 @@
     display: block;
     margin: 1em 0.1em;
     line-height: 2em;
-    height: 2em;
+    min-height: 2em;
+    padding: 0.3em;
+    box-sizing: border-box;
 }
 
 .ez-richtext-editable [data-ezelement="ezembed"]:before {

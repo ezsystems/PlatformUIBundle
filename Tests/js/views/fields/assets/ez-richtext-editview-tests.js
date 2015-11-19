@@ -760,12 +760,12 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this.view.destroy();
         },
 
-        "Should forward the contentDiscover event": function () {
+        _testForwardEvent: function (evtName) {
             var eventInfo = {title: "I Am the Highway"},
-                contentDiscoverFired = false;
+                eventFired = false;
 
-            this.view.once('contentDiscover', function (e) {
-                contentDiscoverFired = true;
+            this.view.once(evtName, function (e) {
+                eventFired = true;
                 Assert.areEqual(
                     eventInfo.title,
                     e.title,
@@ -773,11 +773,19 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 );
             });
             this.view.set('active', true);
-            this.view.get('editor').get('nativeEditor').fire('contentDiscover', eventInfo);
+            this.view.get('editor').get('nativeEditor').fire(evtName, eventInfo);
             Assert.isTrue(
-                contentDiscoverFired,
-                "The contentDiscover event should have been fired"
+                eventFired,
+                "The " + evtName + " event should have been fired"
             );
+        },
+
+        "Should forward the contentDiscover event": function () {
+            this._testForwardEvent('contentDiscover');
+        },
+
+        "Should forward the loadImageVariation event": function () {
+            this._testForwardEvent('loadImageVariation');
         },
     });
 
