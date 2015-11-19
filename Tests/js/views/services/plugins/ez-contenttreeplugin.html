@@ -25,7 +25,7 @@
         filter: loaderFilter,
         modules: {
             "ez-contenttreeplugin": {
-                requires: ['ez-viewservicebaseplugin', 'ez-locationmodel', 'ez-contenttree', 'parallel'],
+                requires: ['ez-viewservicebaseplugin', 'ez-locationmodel', 'ez-contenttree', 'ez-contentmodel', 'parallel'],
                 fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-contenttreeplugin.js"
             },
             "ez-viewservicebaseplugin": {
@@ -39,6 +39,14 @@
             "ez-locationmodel": {
                 requires: ['ez-restmodel', 'ez-contentinfomodel'],
                 fullpath: "../../../../../Resources/public/js/models/ez-locationmodel.js"
+            },
+            "ez-contentmodel": {
+                requires: ['ez-restmodel', 'ez-contentinfomodel', 'ez-versionmodel'],
+                fullpath: "../../../../../Resources/public/js/models/ez-contentmodel.js"
+            },
+            "ez-versionmodel": {
+                requires: ['ez-restmodel'],
+                fullpath: "../../../../../Resources/public/js/models/ez-versionmodel.js"
             },
             "ez-contentinfomodel": {
                 requires: ['ez-restmodel', 'ez-contentinfo-attributes'],
