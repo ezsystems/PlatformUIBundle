@@ -5,9 +5,8 @@
 /* global CKEDITOR */
 YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
-        editorTest, focusModeTest, editorFocusHandlingTest,
-        actionBarTest, destructorTest, appendToolbarConfigTest,
-        eventForwardTest, removeYuiIdTest,
+        editorTest, focusModeTest, editorFocusHandlingTest, appendToolbarConfigTest,
+        eventForwardTest,
         VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, FIELDVALUE_RESULT, VALID_XHTML_ID, RESULT_EMPTY_XHTML,
         Assert = Y.Assert, Mock = Y.Mock;
 
@@ -46,16 +45,6 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
 
         setUp: function () {
-            var Bar, that = this;
-
-            this.barRendered = false;
-            Bar = Y.Base.create('testBarView', Y.View, [], {
-                render: function () {
-                    that.barRendered = true;
-                    return this;
-                },
-            });
-
             this.field = {id: 42, fieldValue: {xhtml5edit: ""}};
             this.jsonContent = {};
             this.jsonContentType = {};
@@ -82,29 +71,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 content: this.content,
                 version: this.version,
                 contentType: this.contentType,
-                actionBar: new Bar(),
             });
         },
 
         tearDown: function () {
             this.view.destroy();
-        },
-
-        "Should render the actionBar": function () {
-            var barContainer;
-
-            this.view.set('fieldDefinition', this._getFieldDefinition(false));
-            this.view.render();
-
-            Assert.isTrue(
-                this.barRendered,
-                "The action bar should have been rendered"
-            );
-            barContainer = this.view.get('container').one('.ez-focusmodeactionbar-container');
-            Assert.isTrue(
-                barContainer.contains(this.view.get('actionBar').get('container')),
-                "The action bar should be added to the bar container"
-            );
         },
 
         _testAvailableVariables: function (required, expectRequired, xhtml5edit, expectedXhtml) {
@@ -191,7 +162,6 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 content: this.model,
                 version: this.model,
                 contentType: this.model,
-                actionBar: new Y.View(),
                 config: {
                     rootInfo: {
                         ckeditorPluginPath: '../../..',
@@ -292,7 +262,6 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 content: this.model,
                 version: this.model,
                 contentType: this.model,
-                actionBar: new Y.View(),
                 config: {
                     rootInfo: {
                         ckeditorPluginPath: '../../..',
@@ -382,7 +351,6 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 content: this.model,
                 version: this.model,
                 contentType: this.model,
-                actionBar: new Y.View(),
                 config: this.config,
             });
             this.view.render();
@@ -513,42 +481,6 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
     });
 
-    actionBarTest  = new Y.Test.Case({
-        name: "eZ RichText View action bar test",
-
-        setUp: function () {
-            this.content = new Mock();
-
-            this.view = new Y.eZ.RichTextEditView({
-                content: this.content,
-            });
-        },
-
-        tearDown: function () {
-            this.view.destroy();
-        },
-
-        "Should pass the content to the action bar": function () {
-            Assert.areSame(
-                this.view.get('content'),
-                this.view.get('actionBar').get('content'),
-                "The action bar should get the content"
-            );
-        },
-
-        "Should set the view as a bubble target of the action bar": function () {
-            var bubbled = false,
-                evt = 'test';
-
-            this.view.on('*:' + evt, function () {
-                bubbled = true;
-            });
-            this.view.get('actionBar').fire(evt);
-
-            Assert.isTrue(bubbled, "The event should bubble to the view");
-        },
-    });
-
     focusModeTest = new Y.Test.Case({
         name: "eZ RichText View focus mode test",
 
@@ -574,9 +506,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 content: this.content,
                 version: this.version,
                 contentType: this.contentType,
-                actionBar: new Y.View(),
             });
-            this.view.get('actionBar').addTarget(this.view);
             this.view.render();
         },
 
@@ -612,14 +542,26 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this.wait();
         },
 
-        "Should disbale the focus mode on saveReturnAction event": function () {
-            this.view._set('focusMode', true);
+        "Should disable the focus mode on tap on the save and return button": function () {
+            var that = this,
+                button = this.view.get('container').one('.ez-richtext-save-and-return');
 
-            this.view.get('actionBar').fire('saveReturnAction');
-            Assert.isFalse(
-                this.view.get('focusMode'),
-                "The focus mode should be disabled"
-            );
+            this.view._set('focusMode', true);
+            this.view.get('container').once('tap', function (e) {
+                that.resume(function () {
+                    Assert.isTrue(
+                        !!e.prevented,
+                        "The tap event should be prevented"
+                    );
+                    Assert.isFalse(
+                        this.view.get('focusMode'),
+                        "The focus mode should be disabled"
+                    );
+                });
+            });
+
+            button.simulateGesture('tap');
+            this.wait();
         },
 
         "Should add the focused class": function () {
@@ -639,26 +581,6 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             );
         },
 
-    });
-
-    destructorTest = new Y.Test.Case({
-        name: "eZ RichText View destructor test",
-
-        setUp: function () {
-            this.view = new Y.eZ.RichTextEditView();
-        },
-
-        tearDown: function () {
-            this.view.destroy();
-        },
-
-        "Should destroy the action bar": function () {
-            this.view.destroy();
-            Assert.isTrue(
-                this.view.get('actionBar').get('destroyed'),
-                "The action bar should have been destroyed"
-            );
-        },
     });
 
     editorFocusHandlingTest = new Y.Test.Case({
@@ -686,14 +608,12 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 content: this.content,
                 version: this.version,
                 contentType: this.contentType,
-                actionBar: new Y.View(),
                 config: {
                     rootInfo: {
                         ckeditorPluginPath: '../../..',
                     }
                 },
             });
-            this.view.get('actionBar').addTarget(this.view);
             this.view.render();
         },
 
@@ -746,7 +666,6 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 content: this.content,
                 version: this.version,
                 contentType: this.contentType,
-                actionBar: new Y.View(),
                 config: {
                     rootInfo: {
                         ckeditorPluginPath: '../../..',
@@ -821,11 +740,19 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(getFieldTest);
     Y.Test.Runner.add(editorTest);
     Y.Test.Runner.add(focusModeTest);
-    Y.Test.Runner.add(actionBarTest);
-    Y.Test.Runner.add(removeYuiIdTest);
-    Y.Test.Runner.add(destructorTest);
     Y.Test.Runner.add(appendToolbarConfigTest);
     Y.Test.Runner.add(registerTest);
     Y.Test.Runner.add(editorFocusHandlingTest);
     Y.Test.Runner.add(eventForwardTest);
-}, '', {requires: ['test', 'base', 'view', 'node-event-simulate', 'fake-toolbarconfig', 'editviewregister-tests', 'ez-richtext-editview']});
+}, '', {
+    requires: [
+        'test',
+        'base',
+        'view',
+        'event-tap',
+        'node-event-simulate',
+        'fake-toolbarconfig',
+        'editviewregister-tests',
+        'ez-richtext-editview'
+    ]
+});

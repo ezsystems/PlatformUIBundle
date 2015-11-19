@@ -32,6 +32,9 @@ YUI.add('ez-richtext-editview', function (Y) {
         events: {
             '.ez-richtext-switch-focus': {
                 'tap': '_setFocusMode',
+            },
+            '.ez-richtext-save-and-return': {
+                'tap': '_unsetFocusMode',
             }
         },
 
@@ -49,20 +52,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                     this.get('editor').destroy();
                 }
             });
-            this.after('*:saveReturnAction', this._unsetFocusMode);
             this.after('focusModeChange', this._uiFocusMode);
-        },
-
-        destructor: function () {
-            this.get('actionBar').destroy();
-        },
-
-        render: function () {
-            Y.eZ.RichTextEditView.superclass.render.call(this);
-            this.get('container').one('.ez-focusmodeactionbar-container').append(
-                this.get('actionBar').render().get('container')
-            );
-            return this;
         },
 
         /**
@@ -95,12 +85,14 @@ YUI.add('ez-richtext-editview', function (Y) {
         },
 
         /**
-         * `saveReturnAction` event handler.
+         * tap event handler on the save and return button.
          *
          * @method _unsetFocusMode
          * @protected
+         * @param {EventFacade} e
          */
-        _unsetFocusMode: function () {
+        _unsetFocusMode: function (e) {
+            e.preventDefault();
             this._set('focusMode', false);
         },
 
@@ -317,20 +309,6 @@ YUI.add('ez-richtext-editview', function (Y) {
         }
     }, {
         ATTRS: {
-            /**
-             * The action bar displayed when in focus mode.
-             *
-             * @attribute actionBar
-             * @type {eZ.RichTextFocusModeBarView}
-             */
-            actionBar: {
-                valueFn: function () {
-                    return new Y.eZ.RichTextFocusModeBarView({
-                        content: this.get('content'),
-                        bubbleTargets: this,
-                    });
-                },
-            },
 
             /**
              * Stores the focus mode state. When true, the rich text UI is

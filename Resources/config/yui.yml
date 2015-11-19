@@ -527,14 +527,10 @@ system:
                 xmltexteditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/xmltext.hbt
-                ez-richtextfocusmodebarview:
-                    requires: ['ez-barview', 'ez-buttonactionview']
-                    path: %ez_platformui.public_dir%/js/views/ez-richtextfocusmodebarview.js
                 ez-richtext-editview:
                     requires:
                         - 'ez-fieldeditview'
                         - 'ez-alloyeditor'
-                        - 'ez-richtextfocusmodebarview'
                         - 'ez-alloyeditor-plugin-embed'
                         - 'ez-alloyeditor-plugin-addcontent'
                         - 'ez-alloyeditor-plugin-removeblock'

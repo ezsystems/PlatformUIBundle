@@ -36,21 +36,6 @@
     background: #f3f3f3;
 }
 
-.ez-view-richtexteditview .ez-focusmodeactionbar-container {
-    background: #333;
-
-    display: block;
-    opacity: 0;
-    -webkit-transform: translateX(100%);
-            transform: translateX(100%);
-    transition: all 0.3s ease;
-}
-
-.ez-view-richtexteditview.is-focused .ez-focusmodeactionbar-container {
-    opacity: 1;
-    -webkit-transform: translateX(0);
-            transform: translateX(0);
-}
 
 .ez-view-richtexteditview .ez-field-description {
     font-weight: lighter;
