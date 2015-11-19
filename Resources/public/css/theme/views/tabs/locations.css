@@ -41,3 +41,24 @@
     padding: 0 0.2em;
     opacity: 1;
 }
+
+.ez-view-locationviewlocationstabview .ez-breadcrumbs-list {
+    font-size: 90%;
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 0.5em;
+}
+
+.ez-view-locationviewlocationstabview .ez-breadcrumbs-item {
+    display: inline;
+}
+
+.ez-view-locationviewlocationstabview .ez-breadcrumbs-item:after {
+    content: "/";
+    padding: 0 0.1em 0 0.1em;
+}
+
+.ez-view-locationviewlocationstabview .ez-breadcrumbs-item:last-of-type:after {
+    content: "";
+    padding: 0;
+}

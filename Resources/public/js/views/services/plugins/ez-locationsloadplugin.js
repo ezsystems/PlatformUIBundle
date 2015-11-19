@@ -36,6 +36,10 @@ YUI.add('ez-locationsloadplugin', function (Y) {
          * @method _loadLocations
          * @private
          * @param {EventFacade} e loadLocations event facade
+         * @param {eZ.Location} e.location the current location
+         * @param {eZ.Content} e.content the content
+         * @param {Boolean} e.loadPath (optional) will also load the path if set to `true`
+         *
          */
         _loadLocations: function (e) {
             var service = this.get('host'),
@@ -43,16 +47,27 @@ YUI.add('ez-locationsloadplugin', function (Y) {
                 options = {
                     api: capi,
                     location: e.location,
-                };
+                },
+                tasks = new Y.Parallel();
 
             e.content.loadLocations(options, function (error, locations) {
                 if (error) {
                     e.target.set('loadingError', true);
                 } else {
-                    e.target.set('locations', locations);
+                    if (e.loadPath) {
+                        Y.Array.each(locations, function (item) {
+                            item.loadPath(options, tasks.add(function (error) {
+                                if (error) {
+                                    e.target.set('loadingError', true);
+                                }
+                            }));
+                        });
+                    }
+                    tasks.done(function () {
+                        e.target.set('locations', locations);
+                    });
                 }
             });
-
         },
     }, {
         NS: 'locationsLoad'
