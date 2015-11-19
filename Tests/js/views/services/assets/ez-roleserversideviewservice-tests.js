@@ -5,6 +5,7 @@
 YUI.add('ez-roleserversideviewservice-tests', function (Y) {
     var contentDiscoverEventTest,
         assignRoleTest, notificationTest,
+        refreshAssignmentsTabTest,
         Mock = Y.Mock, Assert = Y.Assert,
         getMockForJson = function (modelJson) {
             var model = new Mock();
@@ -59,7 +60,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
             this.userService = new Mock();
             this.discoveryService = new Mock();
             this.role = new Mock();
-            this.roleId = 'role-id';
+            this.roleRestId = 'role-id';
             this.roleName = 'role-name';
             this.roleAssignInputStruct = {};
 
@@ -90,8 +91,8 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
             });
             Mock.expect(this.userService, {
                 method: 'loadRole',
-                args: [this.roleId, Mock.Value.Function],
-                run: function (roleId, callback) {
+                args: [this.roleRestId, Mock.Value.Function],
+                run: function (roleRestId, callback) {
                     callback(false, loadRoleResponse);
                 }
             });
@@ -136,7 +137,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 method: 'get',
                 args: ['data'],
                 returns: {
-                    roleId: that.roleId,
+                    roleRestId: that.roleRestId,
                     roleName: that.roleName,
                     afterUpdateCallback: callback,
                 },
@@ -187,7 +188,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 method: 'get',
                 args: ['data'],
                 returns: {
-                    roleId: that.roleId,
+                    roleRestId: that.roleRestId,
                     roleName: that.roleName,
                     afterUpdateCallback: callback,
                 },
@@ -222,7 +223,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
             this.userService = new Mock();
             this.discoveryService = new Mock();
             this.role = new Mock();
-            this.roleId = 'role-id';
+            this.roleRestId = 'role-id';
             this.roleName = 'role-name';
             this.roleAssignInputStruct = {};
             this.loadRoleResponse = {
@@ -260,8 +261,8 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
         _setLoadRoleStatus: function (isError, loadRoleResponse) {
             Mock.expect(this.userService, {
                 method: 'loadRole',
-                args: [this.roleId, Mock.Value.Function],
-                run: function (roleId, callback) {
+                args: [this.roleRestId, Mock.Value.Function],
+                run: function (roleRestId, callback) {
                     if (isError) {
                         callback(true);
                     } else {
@@ -316,7 +317,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 method: 'get',
                 args: ['data'],
                 returns: {
-                    roleId: that.roleId,
+                    roleRestId: that.roleRestId,
                     roleName: that.roleName,
                     afterUpdateCallback: function () {},
                 },
@@ -338,7 +339,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                         "The notification should contain name of the role"
                     );
                     Assert.isTrue(
-                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        (e.notification.identifier.indexOf(that.roleRestId) >= 0),
                         "The notification identifier should contain id of assigned role"
                     );
                     Assert.areEqual(
@@ -353,7 +354,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                         "The notification should contain name of the role"
                     );
                     Assert.isTrue(
-                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        (e.notification.identifier.indexOf(that.roleRestId) >= 0),
                         "The notification identifier should contain id of assigned role"
                     );
                     Assert.areEqual(
@@ -407,7 +408,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 method: 'get',
                 args: ['data'],
                 returns: {
-                    roleId: that.roleId,
+                    roleRestId: that.roleRestId,
                     roleName: that.roleName,
                     afterUpdateCallback: function () {},
                 },
@@ -429,7 +430,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                         "The notification should contain name of the role"
                     );
                     Assert.isTrue(
-                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        (e.notification.identifier.indexOf(that.roleRestId) >= 0),
                         "The notification identifier should contain id of assigned role"
                     );
                     Assert.areEqual(
@@ -479,7 +480,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 method: 'get',
                 args: ['data'],
                 returns: {
-                    roleId: that.roleId,
+                    roleRestId: that.roleRestId,
                     roleName: that.roleName,
                     afterUpdateCallback: function () {},
                 },
@@ -498,7 +499,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                         "The notification should contain name of the role"
                     );
                     Assert.isTrue(
-                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        (e.notification.identifier.indexOf(that.roleRestId) >= 0),
                         "The notification identifier should contain id of assigned role"
                     );
                     Assert.areEqual(
@@ -512,7 +513,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 if (e.notification.state === 'error') {
                     errorNotificationFired = true;
                     Assert.isTrue(
-                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        (e.notification.identifier.indexOf(that.roleRestId) >= 0),
                         "The notification identifier should contain id of assigned role"
                     );
                     Assert.areEqual(
@@ -562,7 +563,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 method: 'get',
                 args: ['data'],
                 returns: {
-                    roleId: that.roleId,
+                    roleRestId: that.roleRestId,
                     roleName: that.roleName,
                     afterUpdateCallback: function () {},
                 },
@@ -585,7 +586,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                         "The notification should contain name of the role"
                     );
                     Assert.isTrue(
-                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        (e.notification.identifier.indexOf(that.roleRestId) >= 0),
                         "The notification identifier should contain id of assigned role"
                     );
                     Assert.areEqual(
@@ -632,8 +633,74 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
         }
     });
 
+    refreshAssignmentsTabTest = new Y.Test.Case({
+        name: "eZ Role Server Side View Service refresh assignments tab test",
+
+        setUp: function () {
+            this.capi = new Mock();
+            this.app = new Mock();
+            this.request = {params: {uri: ''}};
+            this.apiRoot = '/Tests/js/views/services/';
+            this.view = new Y.Base();
+            this.roleId = 42;
+
+            this.service = new Y.eZ.RoleServerSideViewService({
+                capi: this.capi,
+                app: this.app,
+                request: this.request,
+            });
+
+            this.view.addTarget(this.service);
+
+            Mock.expect(this.service, {
+                method: 'get',
+                args: ['app'],
+                returns: this.app,
+            });
+            Mock.expect(this.app, {
+                method: 'set',
+                args: ['loading', Mock.Value.Boolean],
+            });
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: ['adminRole', Mock.Value.Object],
+            });
+        },
+
+        tearDown: function () {
+            delete this.capi;
+            delete this.app;
+            delete this.service;
+            delete this.view;
+        },
+
+        "Should refresh the page with tabId parameter added": function () {
+            var data = {roleId: this.roleId},
+                that = this,
+                redirectUri = 'pjax/role/view/' + data.roleId + '/ez-tabs-content';
+
+            this.view.on('refreshAssignmentsTab', function (data) {
+                Mock.expect(that.app, {
+                    method: 'navigateTo',
+                    args: ['adminRole', {uri: redirectUri}],
+                    run: Y.bind(function (routeName, params) {
+                        Assert.areEqual(
+                            redirectUri, params.uri,
+                            "The user should be redirected to the role view and the content tab"
+                        );
+                    }, this),
+                });
+            });
+
+            this.view.fire('whatever:refreshAssignmentsTab', data);
+
+            Mock.verify(this.app);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Role Server Side View Service tests");
     Y.Test.Runner.add(contentDiscoverEventTest);
     Y.Test.Runner.add(assignRoleTest);
     Y.Test.Runner.add(notificationTest);
+    Y.Test.Runner.add(refreshAssignmentsTabTest);
 }, '', {requires: ['test', 'ez-roleserversideviewservice']});

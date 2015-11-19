@@ -41,7 +41,8 @@ YUI.add('ez-roleserversideview', function (Y) {
          */
         _pickSubtree: function (e) {
             var button = e.target,
-                unsetLoading = Y.bind(this._uiUnsetAssignRoleLoading, this, button);
+                unsetLoading = Y.bind(this._uiUnsetAssignRoleLoading, this, button),
+                refreshAssignmentsTab = Y.bind(this._refreshAssignmentsTab, this, button);
 
             e.preventDefault();
             this._uiSetAssignRoleLoading(button);
@@ -51,9 +52,10 @@ YUI.add('ez-roleserversideview', function (Y) {
                     cancelDiscoverHandler: unsetLoading,
                     multiple: true,
                     data: {
-                        roleId: button.getAttribute('data-role-rest-id'),
+                        roleId: button.getAttribute('data-role-id'),
+                        roleRestId: button.getAttribute('data-role-rest-id'),
                         roleName: button.getAttribute('data-role-name'),
-                        afterUpdateCallback: unsetLoading,
+                        afterUpdateCallback: refreshAssignmentsTab,
                     },
                 },
             });
@@ -81,6 +83,24 @@ YUI.add('ez-roleserversideview', function (Y) {
          */
         _uiUnsetAssignRoleLoading: function (button) {
             button.removeClass('is-loading').set('disabled', false);
+        },
+
+        /**
+         * Refreshes the role view, showing the assignments tab.
+         *
+         * @method _refreshAssignmentsTab
+         * @protected
+         * @param {Y.Node} button
+         */
+        _refreshAssignmentsTab: function (button) {
+            /**
+             * Fired when the view needs to be refreshed.
+             * @event refreshAssignmentsTab
+             * @param roleId {String} The ID of the role we are showing assignments for
+             */
+            this.fire('refreshAssignmentsTab', {
+                roleId: button.getAttribute('data-role-id')
+            });
         },
     });
 });
