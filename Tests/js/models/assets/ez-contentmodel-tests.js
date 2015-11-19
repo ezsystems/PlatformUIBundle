@@ -4,7 +4,7 @@
  */
 YUI.add('ez-contentmodel-tests', function (Y) {
     var modelTest, relationsTest, createContent, loadResponse, copyTest,
-        loadLocationsTest, addLocationTest, setMainLocationTest,
+        loadLocationsTest, addLocationTest, setMainLocationTest, hasTranslationTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -487,11 +487,19 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             this.model.set('currentVersion', currentVersionStruct);
 
             this.typeId = 'song';
+            this.alwaysAvailable = true;
             this.type = new Mock();
             Y.Mock.expect(this.type, {
                 method: 'get',
-                args: ['id'],
-                returns: this.typeId
+                args: [Mock.Value.String],
+                run: Y.bind(function (attr) {
+                    if ( attr === 'defaultAlwaysAvailable' ) {
+                        return this.alwaysAvailable;
+                    } else if ( attr === 'id' ) {
+                        return this.typeId;
+                    }
+                    Y.fail('Unexpected call to get("' + attr + '")');
+                }, this),
             });
 
             this.parentLocationId = 'foo-fighters';
@@ -520,7 +528,12 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             });
             Y.Mock.expect(this.contentService, {
                 method: 'newContentCreateStruct',
-                args: [this.typeId, this.locationCreateStruct, this.languageCode],
+                args: [
+                    this.typeId,
+                    this.locationCreateStruct,
+                    this.languageCode,
+                    this.alwaysAvailable
+                ],
                 returns: this.createStruct,
             });
             Y.Mock.expect(this.contentService, {
@@ -954,6 +967,34 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    hasTranslationTest = new Y.Test.Case({
+        name: "eZ Content Model hasTranslation test",
+
+        setUp: function () {
+            this.content = new Y.eZ.Content();
+        },
+
+        tearDown: function () {
+            this.content.destroy();
+            delete this.content;
+        },
+
+        "Should find the translation": function () {
+            this.content.set('currentVersion', {Version: {VersionInfo: {languageCodes: 'fre-FR'}, Fields: {field: {}}}});
+            Assert.isTrue(
+                this.content.hasTranslation('fre-FR'),
+                "The translation should have been found"
+            );
+        },
+
+        "Should not find the translation": function () {
+            Assert.isFalse(
+                this.content.hasTranslation('fre-FR'),
+                "The translation should not have been found"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
@@ -962,4 +1003,5 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(loadLocationsTest);
     Y.Test.Runner.add(addLocationTest);
     Y.Test.Runner.add(setMainLocationTest);
+    Y.Test.Runner.add(hasTranslationTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

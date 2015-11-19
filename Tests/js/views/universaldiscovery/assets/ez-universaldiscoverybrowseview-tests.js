@@ -16,6 +16,10 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
             Mock.expect(this.selectedView, {
                 method: 'reset',
             });
+            Mock.expect(this.selectedView, {
+                method: 'setAttrs',
+                args: [Mock.Value.Object]
+            });
             Mock.expect(this.treeView, {
                 method: 'reset',
             });
@@ -330,10 +334,35 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
             var multipleValue = true;
 
             Mock.expect(this.selectedView, {
-                method: 'set',
-                args: ['addConfirmButton', multipleValue],
+                method: 'setAttrs',
+                args: [Mock.Value.Object],
+                run: function (atrrs) {
+                    Assert.areSame(
+                        atrrs.addConfirmButton,
+                        multipleValue,
+                        "addConfirmButton attribute should be the same as `multiple` flag"
+                    );
+                }
             });
             this.view.set('multiple', multipleValue);
+            Mock.verify(this.selectedView);
+        },
+
+        "Should forward the isSelectable function to the selectedView": function () {
+            var isSelectable = function (contentStruct) {return true;};
+
+            Mock.expect(this.selectedView, {
+                method: 'setAttrs',
+                args: [Mock.Value.Object],
+                run: function (atrrs) {
+                    Assert.areSame(
+                        atrrs.isSelectable,
+                        isSelectable,
+                        "isSelectable function should be passed to the view"
+                    );
+                }
+            });
+            this.view.set('isSelectable', isSelectable);
             Mock.verify(this.selectedView);
         },
     });

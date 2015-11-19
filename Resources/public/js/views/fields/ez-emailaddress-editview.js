@@ -107,7 +107,8 @@ YUI.add('ez-emailaddress-editview', function (Y) {
 
         /**
          * Checks email address validity based on the same regexp as
-         * the one used in the EmailAddress FieldType.
+         * the one used in the EmailAddress FieldType. Regexp is tested only
+         * if field is not empty.
          * Otherwise, the email address edit view could accept email
          * that will be considered invalid when creating/updating a content.
          *
@@ -116,7 +117,10 @@ YUI.add('ez-emailaddress-editview', function (Y) {
          * @return {Boolean}
          */
         _isValidEmail: function () {
-            return VALIDATION_PATTERN.test(this._getFieldValue());
+            if (this._getFieldValue().length > 0) {
+                return VALIDATION_PATTERN.test(this._getFieldValue());
+            }
+            return true;
         }
     });
 

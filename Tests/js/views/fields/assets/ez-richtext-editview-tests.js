@@ -8,7 +8,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         editorTest, focusModeTest, editorFocusHandlingTest,
         actionBarTest, destructorTest, appendToolbarConfigTest,
         eventForwardTest, removeYuiIdTest,
-        VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, FIELDVALUE_RESULT, VALID_XHTML_ID,
+        VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, FIELDVALUE_RESULT, VALID_XHTML_ID, RESULT_EMPTY_XHTML,
         Assert = Y.Assert, Mock = Y.Mock;
 
     INVALID_XHTML = "I'm invalid";
@@ -20,12 +20,13 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     EMPTY_XHTML = '<?xml version="1.0" encoding="UTF-8"?>';
     EMPTY_XHTML += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit"/>';
 
+    RESULT_EMPTY_XHTML = '<p></p>';
+
     VALID_XHTML_ID = '<?xml version="1.0" encoding="UTF-8"?>';
     VALID_XHTML_ID += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit" id="yui_3_18_1_1_1445609502229_4087">';
     VALID_XHTML_ID += '<p id="stuff">I\'m not empty</p></section>';
 
-    RESULT_XHTML = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit" contenteditable="true" class="ez-richtext-editable">';
-    RESULT_XHTML += '<p>I\'m not empty</p></section>';
+    RESULT_XHTML = '<p>I\'m not empty</p>';
 
     FIELDVALUE_RESULT = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
     FIELDVALUE_RESULT += '<p>I\'m not empty</p></section>';
@@ -116,7 +117,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
             this.view.template = function (variables) {
                 Assert.isObject(variables, "The template should receive some variables");
-                Assert.areEqual(7, Y.Object.keys(variables).length, "The template should receive 7 variables");
+                Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
 
                 Assert.areSame(
                      that.jsonContent, variables.content,
@@ -138,6 +139,10 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                     that.field, variables.field,
                     "The field should be available in the field edit view template"
                 );
+                Assert.areEqual(
+                    "ez-richtext-editable", variables.editableClass,
+                    "The editable class should be available in the template"
+                );
                 Assert.areSame(expectRequired, variables.isRequired);
                 Assert.areSame(expectedXhtml, variables.xhtml);
 
@@ -156,7 +161,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
         "Should handle the parsing error": function () {
             this._testAvailableVariables(false, false, INVALID_XHTML, "");
-        }
+        },
+
+        "Should add a paragraph in empty document": function () {
+            this._testAvailableVariables(false, false, EMPTY_XHTML, RESULT_EMPTY_XHTML);
+        },
     });
 
     validateTest = new Y.Test.Case({
@@ -299,7 +308,8 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
         "Should return an object": function () {
             var fieldDefinition = this._getFieldDefinition(true),
-                field;
+                field,
+                xml;
 
             this.field.fieldValue.xhtml5edit = VALID_XHTML;
             this.view.set('fieldDefinition', fieldDefinition);
@@ -313,15 +323,20 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 "The getField method should be return a different object"
             );
             Assert.isObject(field.fieldValue, "The fieldValue should be an object");
+            xml = field.fieldValue.xml.replace(/\n/g, '');
             Assert.areEqual(
-                FIELDVALUE_RESULT, field.fieldValue.xml,
+                FIELDVALUE_RESULT, xml.replace(/>  *</g, '><'),
                 "The xml property of the fieldValue should come from the editor"
             );
         },
 
         "Should remove id attributes": function () {
             var fieldDefinition = this._getFieldDefinition(true),
-                field;
+                field,
+                fragment = Y.config.doc.createDocumentFragment(),
+                root = Y.config.doc.createElement('div');
+
+            fragment.appendChild(root);
 
             this.field.fieldValue.xhtml5edit = VALID_XHTML_ID;
             this.view.set('fieldDefinition', fieldDefinition);
@@ -335,8 +350,9 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 "The getField method should be return a different object"
             );
             Assert.isObject(field.fieldValue, "The fieldValue should be an object");
-            Assert.areEqual(
-                FIELDVALUE_RESULT, field.fieldValue.xml,
+            root.innerHTML = field.fieldValue.xml;
+            Assert.isNull(
+                fragment.querySelector('[id]'),
                 "Ids should have been removed"
             );
         },

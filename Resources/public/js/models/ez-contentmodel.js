@@ -141,7 +141,8 @@ YUI.add('ez-contentmodel', function (Y) {
             struct = options.api.getContentService().newContentCreateStruct(
                 type.get('id'),
                 contentService.newLocationCreateStruct(options.parentLocation.get('id')),
-                options.languageCode
+                options.languageCode,
+                type.get('defaultAlwaysAvailable')
             );
 
             Y.Array.each(options.fields, function (field) {
@@ -160,6 +161,17 @@ YUI.add('ez-contentmodel', function (Y) {
         getField: function (identifier) {
             var fields = this.get('fields');
             return fields[identifier];
+        },
+
+        /**
+         * Checks whether the content is translated into `languageCode`
+         *
+         * @method hasTranslation
+         * @param {String} languageCode
+         * @return {Boolean}
+         */
+        hasTranslation: function (languageCode) {
+            return (this.get('currentVersion').getTranslationsList().indexOf(languageCode) !== -1);
         },
 
         /**

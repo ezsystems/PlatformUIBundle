@@ -178,6 +178,73 @@ YUI.add('ez-locationmodel', function (Y) {
                 location.reset();
                 callback(error, response);
             });
+        },
+
+        /**
+         * Loads path of the current location. The result is the array containing
+         * eZ.Location objects present on the path sorted by depth.
+         * The array doesn't contain current location.
+         *
+         * @method loadPath
+         * @param {Object} options
+         * @param {Object} options.api the JS REST client instance
+         * @param {Function} callback
+         * @param {false|Error} callback.error
+         * @param {Array} callback.locations the array of Locations
+         */
+        loadPath: function (options, callback) {
+            var locations = [],
+                that = this;
+
+            this._loadAncestors(options, function (error, response) {
+                var hits;
+
+                if (error) {
+                    callback(error);
+                    return;
+                }
+
+                hits = response.document.View.Result.searchHits.searchHit;
+
+                Y.Array.each(hits, function (hit) {
+                    if (hit.value.Location._href !== this.get('id')) {
+                        var location = new Y.eZ.Location();
+
+                        location.setAttrs(location.parse({document: hit.value}));
+                        locations.push(location);
+                    }
+                }, that);
+
+                locations.sort(function (a, b) {
+                    return (a.get('depth') - b.get('depth'));
+                });
+
+                callback(error, locations);
+            });
+        },
+
+        /**
+         * Loads ancestors of the location basing on the `pathString`. The result is the REST API view
+         * containing locations from the path.
+         *
+         * @method _loadAncestors
+         * @protected
+         * @param {Object} options
+         * @param {Object} options.api the JS REST client instance
+         * @param {Function} callback
+         */
+        _loadAncestors: function (options, callback) {
+            var contentService = options.api.getContentService(),
+                query = contentService.newViewCreateStruct('ancestors-' + this.get('locationId'), 'LocationQuery');
+
+            query.body.ViewInput.LocationQuery.Criteria = {
+                AncestorCriterion: this.get('pathString')
+            };
+
+            contentService.createView(
+                query,
+                callback
+            );
         }
     }, {
         REST_STRUCT_ROOT: "Location",

@@ -7,7 +7,7 @@
     background: #FAFAFA;
     border-right: 1px solid #ccc;
     border-left: 1px solid #ccc;
-    margin-left: -202px; /* 200 + 2 to compensate the borders */
+    box-sizing: border-box
 }
 
 .ez-editfield-row {

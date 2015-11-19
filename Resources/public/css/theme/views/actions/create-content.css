@@ -29,5 +29,5 @@
     -webkit-animation: spin 0.7s infinite linear;
             animation: spin 0.7s infinite linear;
     content: "\E61C";
-    padding-right: 0.5em;
+    font-style: normal;
 }

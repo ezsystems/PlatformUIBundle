@@ -28,6 +28,10 @@ YUI.add('ez-contentinfomodel-tests', function (Y) {
                 "_media-type": "application/vnd.ez.api.Section+json",
                 "_href": "/api/ezp/v2/content/sections/1"
             },
+            "MainLocation": {
+                "_media-type": "application/vnd.ez.api.Location+json",
+                "_href": "/api/ezp/v2/content/locations/1/2/124"
+            },
             "Locations": {
                 "_media-type": "application/vnd.ez.api.LocationList+json",
                 "_href": "/api/ezp/v2/content/objects/123/locations"

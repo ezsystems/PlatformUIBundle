@@ -23,7 +23,7 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
     Y.eZ.UniversalDiscoveryBrowseView = Y.Base.create('universalDiscoveryBrowseView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {
         initializer: function () {
             this.on('*:treeNavigate', this._selectContent);
-            this.after('multipleChange', this._setSelectedViewConfirmButton);
+            this.after(['multipleChange', 'isSelectableChange'], this._setSelectedViewAttrs);
             this.after('visibleChange', this._unselectContent);
         },
 
@@ -67,14 +67,18 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
         },
 
         /**
-         * `multipleChange` event handler. It sets the selected view
-         * `addConfirmButton` flag according to the new `multiple` attribute value.
+         * `multipleChange` and `isSelectableChange` events handler. It sets the selected view
+         * `addConfirmButton` flag according to the new `multiple` attribute value and passes
+         * new `isSelectable` function to the selected view.
          *
-         * @method _setSelectedViewConfirmButton
+         * @method _setSelectedViewAttrs
          * @protected
          */
-        _setSelectedViewConfirmButton: function () {
-            this.get('selectedView').set('addConfirmButton', this.get('multiple'));
+        _setSelectedViewAttrs: function () {
+            this.get('selectedView').setAttrs({
+                'addConfirmButton': this.get('multiple'),
+                'isSelectable': this.get('isSelectable')
+            });
         },
 
         /**
@@ -176,6 +180,7 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
                     return new Y.eZ.UniversalDiscoverySelectedView({
                         bubbleTargets: this,
                         addConfirmButton: this.get('multiple'),
+                        isAlreadySelected: this.get('isAlreadySelected'),
                     });
                 },
             },

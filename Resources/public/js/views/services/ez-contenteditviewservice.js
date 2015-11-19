@@ -46,61 +46,48 @@ YUI.add('ez-contenteditviewservice', function (Y) {
             var request = this.get('request'),
                 service = this,
                 languageCode = this.get('languageCode'),
-                baseLanguageCode = this.get('baseLanguageCode'),
-                languageCodeForLoadContent = baseLanguageCode ? baseLanguageCode : languageCode;
+                baseLanguageCode = this.get('baseLanguageCode');
 
             this.get('version').reset();
-            this._loadContent(request.params.id, languageCodeForLoadContent, function () {
-                var tasks,
-                    content = service.get('content'),
-                    translationExists,
-                    resources;
-
-                translationExists = service._checkIfTranslationExists(content, languageCodeForLoadContent);
-
-                if (baseLanguageCode && !translationExists) {
-                    service._error(
-                        "Could not load the content with id '" + content.get('contentId')
-                        + "' and languageCode '" + baseLanguageCode + "'"
-                    );
-                    return;
-                }
-
-                resources = content.get('resources');
-
-                tasks = new Y.Parallel();
+            this._loadContentInfo(request.params.id, function () {
+                var resources = service.get('contentInfo').get('resources'),
+                    tasks = new Y.Parallel(),
+                    content = service.get('content');
 
                 service._loadOwner(resources.Owner, tasks.add());
                 service._loadLocation(resources.MainLocation, tasks.add());
                 service._loadContentType(resources.ContentType, tasks.add());
 
+                if ( baseLanguageCode ) {
+                    service._loadContent(request.params.id, baseLanguageCode, tasks.add());
+                } else {
+                    content.set('id', request.params.id);
+                    content.load({api: service.get('capi'), languageCode: languageCode}, tasks.add(function (error) {
+                        if ( error ) {
+                            // this is the first time we translate the content
+                            // into languageCode, so it's not really an error,
+                            // in this case, the content is initialized from the
+                            // contentInfo.
+                            content.setAttrs(service.get('contentInfo').getAttrs());
+                        }
+                    }));
+                }
+
                 tasks.done(function () {
-                    service._setVersionFields(content, translationExists);
+                    if ( baseLanguageCode && !content.hasTranslation(baseLanguageCode) ) {
+                        // this can happen if the content is always
+                        // available and the user manipulated with URI to pass
+                        // any language code.
+                        service._error(
+                            "Could not load the content with id '" + request.params.id
+                            + "' and languageCode '" + baseLanguageCode + "'"
+                        );
+                        return;
+                    }
+                    service._setVersionFields();
                     next(service);
                 });
             });
-        },
-
-        /**
-         * Checks if given languageCode is included in translations list of given content
-         *
-         * @method _checkIfTranslationExists
-         * @private
-         * @param {Y.eZ.Content} content
-         * @param {String} languageCode
-         * @return {Boolean}
-         */
-        _checkIfTranslationExists: function (content, languageCode) {
-            var translationExists;
-
-            translationExists = Y.Array.find(
-                content.get('currentVersion').getTranslationsList(),
-                function (translation) {
-                    return (translation === languageCode);
-                }
-            );
-
-            return !!translationExists;
         },
 
         /**
@@ -108,59 +95,37 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          *
          * @method _setVersionFields
          * @private
-         * @param {Y.eZ.Content} content
-         * @param {Boolean} translationExists defines if fields will be set for existing translation
          */
-        _setVersionFields: function (content, translationExists) {
-            var fields,
-                version = this.get('version');
-
-            fields = this._getFieldsForEdit(content, translationExists);
-
-            version.set('fields', fields);
+        _setVersionFields: function () {
+            this.get('version').set('fields', this._getFieldsForEdit());
         },
 
         /**
-         * Returns object containing fields definitions for given content.
-         * If editing content in context of creating new translation it returns fields based on default field
-         * defitnitions of ContentType if no baseLanguageCode was set, otherwise if baseLanguageCode was set
-         * it returns fields cloned from loaded content with setting proper languageCode.
-         * If editing content in context of editing existing translation it returns fields from loaded content
-         * which is default behaviour.
+         * Returns the fields for the newly created version. Depending on the
+         * loaded content, it creates the fields from the content type or from
+         * the content.
          *
          * @method _getFieldsForEdit
          * @private
-         * @param {Y.eZ.Content} content
-         * @param {Boolean} translationExists
          * @return {Object}
          */
-        _getFieldsForEdit: function (content, translationExists) {
-            var baseLanguageCode = this.get('baseLanguageCode'),
-                languageCode = this.get('languageCode'),
-                contentFields = content.get('fields'),
-                setDefaultFields = false,
+        _getFieldsForEdit: function () {
+            var languageCode = this.get('languageCode'),
+                content = this.get('content'),
                 fields;
 
-            if (!baseLanguageCode && !translationExists) {
-                setDefaultFields = true;
-            }
-
-            if (setDefaultFields) {
+            if ( Y.Object.isEmpty(content.get('fields')) ) {
                 fields = this._getDefaultFields(languageCode);
             } else {
-                fields = Y.clone(contentFields);
-
-                Y.each(fields, function (field) {
-                    field.languageCode = languageCode;
-                });
+                fields = Y.clone(content.get('fields'));
             }
 
             return fields;
         },
 
         /**
-         * Returns collection of default fields for ContentType of edited content and sets
-         * for them given languageCode
+         * Returns collection of default fields from the ContentType of edited
+         * content and sets for them given languageCode
          *
          * @method _getDefaultFields
          * @private
@@ -200,6 +165,19 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 callback
             );
          },
+
+        /**
+         * Loads a content info by its id
+         *
+         * @method _loadContentInfo
+         * @protected
+         * @param {String} id
+         * @param {Function} callback
+         */
+        _loadContentInfo: function (id, callback) {
+            this._loadModel('contentInfo', id, {}, "Could not find the content id '" + id + "'", callback);
+        },
+
 
         /**
          * Loads a content type by its id
@@ -299,7 +277,13 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @protected
          */
         _setLanguageCode: function () {
-            this.set('languageCode', this.get('request').params.languageCode);
+            var languageCode = this.get('content').get('mainLanguageCode');
+
+            if (this.get('request').params.languageCode) {
+                languageCode = this.get('request').params.languageCode;
+            }
+
+            this.set('languageCode', languageCode);
         },
 
         /**
@@ -388,6 +372,18 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 valueFn: function () {
                     return new Y.eZ.Content();
                 }
+            },
+
+            /**
+             * The content info the content being edited
+             *
+             * @attribute contentInfo
+             * @type Y.eZ.ContentInfo
+             */
+            contentInfo: {
+                valueFn: function () {
+                    return new Y.eZ.ContentInfo();
+                },
             },
 
             /**
