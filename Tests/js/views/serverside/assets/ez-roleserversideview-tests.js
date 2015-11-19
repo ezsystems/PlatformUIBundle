@@ -46,20 +46,24 @@ YUI.add('ez-roleserversideview-tests', function (Y) {
                         e.config.cancelDiscoverHandler,
                         "The event facade should contain the cancelDiscover event handler"
                     );
+                    Assert.isFunction(
+                        e.config.data.afterUpdateCallback,
+                        "The config data should contain the refresh function"
+                    );
                     Assert.areEqual(
-                        button.getAttribute('data-role-rest-id'),
+                        button.getAttribute('data-role-id'),
                         e.config.data.roleId,
                         "The role id should be available in the config data"
+                    );
+                    Assert.areEqual(
+                        button.getAttribute('data-role-rest-id'),
+                        e.config.data.roleRestId,
+                        "The role REST id should be available in the config data"
                     );
                     Assert.areEqual(
                         button.getAttribute('data-role-name'),
                         e.config.data.roleName,
                         "The role name should be available in the config data"
-                    );
-                    Assert.areSame(
-                        e.config.cancelDiscoverHandler,
-                        e.config.data.afterUpdateCallback,
-                        "The config data should contain the unset loading function"
                     );
                     Assert.isTrue(
                         e.config.multiple,
@@ -111,6 +115,20 @@ YUI.add('ez-roleserversideview-tests', function (Y) {
             });
             button.simulateGesture('tap');
             this.wait();
+        },
+
+        "Should fire the refreshAssignmentsTab event": function () {
+            var container = this.view.get('container'),
+                button = container.one('.ez-role-assign-button');
+
+            this.view.on('refreshAssignmentsTab', function (data) {
+                Assert.areEqual(
+                    button.getAttribute('data-role-id'),
+                    data.roleId,
+                    "The role id should be available in the config data"
+                );
+            });
+            this.view._refreshAssignmentsTab(button);
         },
     });
 

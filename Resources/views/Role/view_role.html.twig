@@ -20,10 +20,14 @@
 {% block content %}
     <section class="ez-tabs ez-serverside-content">
         <ul class="ez-tabs-list">
-            <li class="ez-tabs-label is-tab-selected"><a href="#ez-tabs-role-name">{{ role.identifier }}</a></li>
-            <li class="ez-tabs-label"><a href="#ez-tabs-content">{{ 'assignment.user_or_group_using'|trans({'%role%': role.identifier, '%count%': role_assignments|length }) }}</a></li>
+            <li class="ez-tabs-label {%- if not tab_id or tab_id == 'ez-tabs-role-name' %} is-tab-selected{% endif %}">
+                <a href="#ez-tabs-role-name">{{ role.identifier }}</a>
+            </li>
+            <li class="ez-tabs-label {%- if tab_id == 'ez-tabs-content' %} is-tab-selected{% endif %}">
+                <a href="#ez-tabs-content" id="ez-tabs-content-link">{{ 'assignment.user_or_group_using'|trans({'%role%': role.identifier, '%count%': role_assignments|length }) }}</a>
+            </li>
         </ul>
-        <div class="ez-tabs-panel is-tab-selected" id="ez-tabs-role-name">
+        <div class="ez-tabs-panel {%- if not tab_id or tab_id == 'ez-tabs-role-name' %} is-tab-selected{% endif %} id="ez-tabs-role-name">
             <div class="ez-table-data is-flexible">
                 <div class="ez-table-data-container">
                     <table class="pure-table pure-table-striped ez-selection-table">
@@ -127,7 +131,7 @@
             </div>
         </div>
 
-        <div class="ez-tabs-panel" id="ez-tabs-content">
+        <div class="ez-tabs-panel {%- if tab_id == 'ez-tabs-content' %} is-tab-selected{% endif %}" id="ez-tabs-content">
             <div class="ez-table-data is-flexible">
                 <div class="ez-table-data-container">
                     <table class="pure-table pure-table-striped ez-selection-table">
@@ -191,6 +195,7 @@
                     <p>
                         <button
                                 data-universaldiscovery-title="{{ 'role.assign.universaldiscovery.title'|trans({'%roleIdentifier%': role.identifier })|e('html_attr') }}"
+                                data-role-id="{{ role.id }}"
                                 data-role-rest-id="{{ path( 'ezpublish_rest_loadRole', {'roleId': role.id}) }}"
                                 data-role-name="{{ role.identifier }}"
                                 class="ez-role-assign-button ez-button-tree pure-button ez-font-icon ez-button">
