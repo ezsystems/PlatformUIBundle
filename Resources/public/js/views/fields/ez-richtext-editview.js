@@ -139,7 +139,9 @@ YUI.add('ez-richtext-editview', function (Y) {
             setEditorFocused = Y.bind(this._uiHandleEditorFocus, this, true);
             unsetEditorFocused = Y.bind(this._uiHandleEditorFocus, this, false);
 
-            nativeEd.on('contentDiscover', Y.bind(this._forwardEditorEvent, this));
+            Y.Array.each(this.get('forwardEvents'), function (evtName) {
+                nativeEd.on(evtName, Y.bind(this._forwardEditorEvent, this));
+            }, this);
 
             nativeEd.on('blur', valid);
             nativeEd.on('focus', valid);
@@ -392,6 +394,19 @@ YUI.add('ez-richtext-editview', function (Y) {
              */
             ckeditorPluginPath: {
                 value: '/bundles/ezplatformuiassets/vendors',
+                readOnly: true,
+            },
+
+            /**
+             * Editor events to forward to the YUI stack
+             *
+             * @attribute forwardEvents
+             * @readOnly
+             * @type {Array}
+             * @default ['contentDiscover']
+             */
+            forwardEvents: {
+                value: ['contentDiscover'],
                 readOnly: true,
             },
         }
