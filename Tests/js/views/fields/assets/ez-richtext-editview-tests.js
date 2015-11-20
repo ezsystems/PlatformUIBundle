@@ -816,6 +816,14 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         "Should configure the ezembed button": function () {
             this._testButton('ezembed');
         },
+
+        "Should configure the ezparagraph button": function () {
+            this._testButton('ezparagraph');
+        },
+
+        "Should configure the ezimage button": function () {
+            this._testButton('ezimage');
+        },
     });
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
