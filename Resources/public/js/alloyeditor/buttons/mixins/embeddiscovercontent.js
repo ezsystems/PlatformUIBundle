@@ -46,11 +46,11 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
             udwContentDiscoveredMethod: React.PropTypes.string,
 
             /**
-             * The isSelectable function to pass to the UDW.
+             * The method to use as the isSelectable function in the UDW
              *
-             * @property {Function} udwIsSelectable
+             * @property {String} udwIsSelectableMethod
              */
-            udwIsSelectable: React.PropTypes.func,
+            udwIsSelectableMethod: React.PropTypes.string,
 
             /**
              * The loadContent flag to pass to the UDW
@@ -67,12 +67,14 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
          * @protected
          */
         _chooseContent: function () {
+            var selectable = this.props.udwIsSelectableMethod;
+
             this.props.editor.get('nativeEditor').fire('contentDiscover', {
                 config: {
                     title: this.props.udwTitle,
                     multiple: false,
                     contentDiscoveredHandler: this[this.props.udwContentDiscoveredMethod],
-                    isSelectable: this.props.udwIsSelectable,
+                    isSelectable: selectable ? this[selectable] : undefined,
                     loadContent: this.props.udwLoadContent,
                 }
             });

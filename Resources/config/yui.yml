@@ -57,7 +57,7 @@ system:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/paragraph.js
                 ez-alloyeditor-button-image:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/image.js
                 ez-alloyeditor-button-embed:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent']
@@ -80,12 +80,18 @@ system:
                 ez-alloyeditor-button-embedhref:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embedhref.js
+                ez-alloyeditor-button-imagehref:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/imagehref.js
                 ez-alloyeditor-button-mixin-blocktextalign:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/blocktextalign.js
                 ez-alloyeditor-button-mixin-embeddiscovercontent:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embeddiscovercontent.js
+                ez-alloyeditor-button-mixin-embedimage:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embedimage.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -562,6 +568,7 @@ system:
                         - 'ez-alloyeditor-button-blocktextalignjustify'
                         - 'ez-alloyeditor-button-blockremove'
                         - 'ez-alloyeditor-button-embedhref'
+                        - 'ez-alloyeditor-button-imagehref'
                         - 'richtexteditview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
                 richtexteditview-ez-template:

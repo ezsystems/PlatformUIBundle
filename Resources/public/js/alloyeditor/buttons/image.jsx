@@ -2,18 +2,12 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-/* global CKEDITOR */
 YUI.add('ez-alloyeditor-button-image', function (Y) {
     "use strict";
 
     var AlloyEditor = Y.eZ.AlloyEditor,
         React = Y.eZ.React,
-        ButtonImage,
-        getImageField = function (contentType, content) {
-            var imageIdentifier = contentType.getFieldDefinitionIdentifiers('ezimage');
-
-            return content.get('fields')[imageIdentifier[0]];
-        };
+        ButtonImage;
 
     /**
      * The ButtonImage component represents a button to add an image in the
@@ -30,6 +24,7 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
             AlloyEditor.ButtonCommand,
             AlloyEditor.ButtonStateClasses,
             Y.eZ.AlloyEditorButton.ButtonEmbedDiscoverContent,
+            Y.eZ.AlloyEditorButton.ButtonEmbedImage,
         ],
 
         statics: {
@@ -42,15 +37,7 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
                 modifiesSelection: true,
                 udwTitle: "Select an image to embed",
                 udwContentDiscoveredMethod: '_addImage',
-                udwIsSelectable: function (contentStruct) {
-                    var contentType = contentStruct.contentType,
-                        content = contentStruct.content;
-
-                    return !!(
-                        contentType.hasFieldType('ezimage')
-                        && getImageField(contentType, content).fieldValue
-                    );
-                },
+                udwIsSelectableMethod: '_isImage',
                 udwLoadContent: true,
             };
         },
@@ -69,42 +56,6 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
 
             this._getWidget().setWidgetContent('Loading the image...');
             this._loadEmbedImage(e.selection);
-        },
-
-        /**
-         * Creates the <img> element with the provided image variation.
-         *
-         * @method _insertImage
-         * @protected
-         * @param {false|CAPIError} imgVariation
-         * @param {Object} imgVariation
-         */
-        _insertImage: function (error, imgVariation) {
-            var img = new CKEDITOR.dom.element('img');
-
-            // TODO error handling
-            img.setAttribute('src', imgVariation.uri);
-            this._getWidget().setWidgetContent(img);
-        },
-
-        /**
-         * Loads the 'medium' variation of the embed image by firing the
-         * `loadImageVariation`event.
-         *
-         * @method _loadEmbedImage
-         * @param {Object} selection
-         * @protected
-         */
-        _loadEmbedImage: function (selection) {
-            var editor = this.props.editor.get('nativeEditor'),
-                variation = 'medium'; // TODO make the default variation configurable
-
-            this._getWidget().setConfig('size', variation);
-            editor.fire('loadImageVariation', {
-                variation: variation,
-                field: getImageField(selection.contentType, selection.content),
-                callback: this._insertImage,
-            });
         },
 
         render: function () {

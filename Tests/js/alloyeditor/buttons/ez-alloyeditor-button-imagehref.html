@@ -1,16 +1,20 @@
 <!doctype html>
 <html>
 <head>
-<title>eZ AlloyEditor image button tests</title>
+<title>eZ AlloyEditor imagehref button tests</title>
 </head>
 <body>
 
-<div class="editorContainer"></div>
+<div class="editorContainer">
+    <div data-ezelement="ezembed" data-href="content://2" data-ezview="embed" id="image">
+        <img src="http://www.reactiongifs.com/r/ewis1.gif" />
+    </div>
+</div>
 <div class="container"></div>
 <script type="text/javascript" src="../../assets/function.bind.polyfill.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
-<script type="text/javascript" src="./assets/ez-alloyeditor-button-image-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-alloyeditor-button-imagehref-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -25,11 +29,11 @@
     }
 
     YUI({
-        coverage: ['ez-alloyeditor-button-image'],
+        coverage: ['ez-alloyeditor-button-imagehref'],
         filter: loaderFilter,
         modules: {
-            "ez-alloyeditor-button-image": {
-                fullpath: "../../../../Resources/public/js/alloyeditor/buttons/image.js",
+            "ez-alloyeditor-button-imagehref": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/buttons/imagehref.js",
                 requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage'],
             },
             "ez-alloyeditor-button-mixin-embeddiscovercontent": {
@@ -47,7 +51,7 @@
                 fullpath: "../../../../Resources/public/js/external/ez-alloyeditor.js",
             },
         }
-    }).use('ez-alloyeditor-button-image-tests', function (Y) {
+    }).use('ez-alloyeditor-button-imagehref-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>

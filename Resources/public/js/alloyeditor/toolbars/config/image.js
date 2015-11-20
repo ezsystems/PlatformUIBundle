@@ -25,6 +25,7 @@ YUI.add('ez-alloyeditor-toolbar-config-image', function (Y) {
     Y.eZ.AlloyEditorToolbarConfig.Image = {
         name: 'image',
         buttons: [
+            'ezimagehref',
             'ezblockremove',
         ],
 
