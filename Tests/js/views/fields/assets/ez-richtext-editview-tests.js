@@ -9,6 +9,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         actionBarTest, destructorTest, appendToolbarConfigTest,
         eventForwardTest, removeYuiIdTest,
         VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, FIELDVALUE_RESULT, VALID_XHTML_ID, RESULT_EMPTY_XHTML,
+        IMG_CONTENT, IMG_XHTML,
         Assert = Y.Assert, Mock = Y.Mock;
 
     INVALID_XHTML = "I'm invalid";
@@ -27,6 +28,10 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     VALID_XHTML_ID += '<p id="stuff">I\'m not empty</p></section>';
 
     RESULT_XHTML = '<p>I\'m not empty</p>';
+
+    IMG_CONTENT = '<img src="http://www.reactiongifs.com/r/dstfp.gif">';
+    IMG_XHTML = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
+    IMG_XHTML += '<p><img src="http://www.reactiongifs.com/r/dstfp.gif"/></p></section>';
 
     FIELDVALUE_RESULT = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
     FIELDVALUE_RESULT += '<p>I\'m not empty</p></section>';
@@ -357,6 +362,21 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             );
         },
 
+        "Should return an XHTML document": function () {
+            var fieldDefinition = this._getFieldDefinition(true);
+
+            this.field.fieldValue.xhtml5edit = EMPTY_XHTML;
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.render();
+            this.view.set('active', true);
+            this.view.get('editor').get('nativeEditor').setData(IMG_CONTENT, Y.bind(function () {
+                Assert.areEqual(
+                    IMG_XHTML,
+                    this.view.getField().fieldValue.xml,
+                    "The auto-closing tag should be closed"
+                );
+            }, this));
+        },
     });
 
     editorTest = new Y.Test.Case({
