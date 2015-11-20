@@ -128,6 +128,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 contentType: this.contentType,
                 owner: this.owner,
                 version: this.version,
+                user: this.user,
             });
         },
 
@@ -295,6 +296,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             });
             service.load(function () {
                 callbackCalled = true;
+
             });
             Assert.isTrue(callbackCalled, "The callback should be called");
         },
@@ -620,11 +622,20 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
 
         setUp: function () {
             this.content = new Mock();
+            this.app = new Mock();
+            this.user = {};
+            Mock.expect(this.app, {
+                method: 'get',
+                args: ['user'],
+                returns: this.user,
+            });
+
             this.contentType = {};
             this.location = {};
             this.owner = {};
             this.version = {};
             this.config = {};
+
             this.languageCode = 'pol-PL';
             this.mainLanguageCode = 'ger-DE';
             this.request = {params: {languageCode: this.languageCode}};
@@ -645,12 +656,14 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             delete this.config;
             delete this.owner;
             delete this.version;
+            delete this.user;
         },
 
         "Should get the view parameters": function () {
             var params;
 
             this.service = new Y.eZ.ContentEditViewService({
+                app: this.app,
                 content: this.content,
                 contentType: this.contentType,
                 location: this.location,
@@ -658,7 +671,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 owner: this.owner,
                 version: this.version,
                 request: this.request,
-                languageCode: this.languageCode
+                languageCode: this.languageCode,
+                user: this.user,
             });
 
             params = this.service.getViewParameters();
@@ -670,12 +684,14 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             Y.Assert.areSame(this.owner, params.owner, 'The owner should be available in the return value of getViewParameters');
             Y.Assert.areSame(this.location, params.mainLocation, 'The location should be available in the return value of getViewParameters');
             Y.Assert.areSame(this.languageCode, params.languageCode, 'The languageCode should be available in the return value of getViewParameters');
+            Y.Assert.areSame(this.user, params.user, 'The user should be available in the return value of getViewParameters');
         },
 
         "Should return content's main language code in the view parameters": function () {
             var params;
 
             this.service = new Y.eZ.ContentEditViewService({
+                app: this.app,
                 content: this.content,
                 request: {params: {}},
             });

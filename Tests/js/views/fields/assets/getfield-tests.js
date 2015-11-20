@@ -40,22 +40,27 @@ YUI.add('getfield-tests', function (Y) {
             if ( L.isUndefined(this.fieldValue) ) {
                 this.fieldValue = "";
             }
-
-            this.view = new this.ViewConstructor({
-                container: '.container',
-                field: {
-                    fieldDefinitionIdentifier: "name",
-                    id: 186,
-                    fieldValue: this.fieldValue,
-                    languageCode: "eng-GB"
-                },
-                fieldDefinition: this.fieldDefinition,
-                content: this.content,
-                version: this.version,
-                contentType: this.contentType
-            });
+            this.view = new this.ViewConstructor(
+                Y.merge({
+                    container: '.container',
+                    field: {
+                        fieldDefinitionIdentifier: "name",
+                        id: 186,
+                        fieldValue: this.fieldValue,
+                        languageCode: "eng-GB"
+                    },
+                    fieldDefinition: this.fieldDefinition,
+                    content: this.content,
+                    version: this.version,
+                    contentType: this.contentType,
+                    },
+                    this._additionalConstructorParameters
+                )
+            );
             this._afterSetup();
         },
+
+        _additionalConstructorParameters: {},
 
         _afterSetup: function () {
         },

@@ -52,6 +52,7 @@ YUI.add('ez-contenteditformview', function (Y) {
             var content = this.get('content'),
                 version = this.get('version'),
                 contentType = this.get('contentType'),
+                user = this.get('user'),
                 fieldDefinitions = contentType.get('fieldDefinitions'),
                 views = [],
                 that = this,
@@ -73,7 +74,8 @@ YUI.add('ez-contenteditformview', function (Y) {
                             fieldDefinition: def,
                             field: field,
                             config: config,
-                            languageCode: languageCode
+                            languageCode: languageCode,
+                            user: user,
                         });
                         views.push(view);
                         view.addTarget(that);
@@ -249,7 +251,16 @@ YUI.add('ez-contenteditformview', function (Y) {
              */
             languageCode: {
                 writeOnce: "initOnly",
-            }
+            },
+
+            /**
+             * The logged in user
+             *
+             * @attribute user
+             * @type {eZ.User}
+             * @required
+             */
+            user: {},
         }
     });
 });

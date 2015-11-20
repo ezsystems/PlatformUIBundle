@@ -304,6 +304,15 @@ YUI.add('ez-contenteditview', function (Y) {
             },
 
             /**
+             * The logged in user
+             *
+             * @attribute user
+             * @type {eZ.User}
+             * @required
+             */
+            user: {},
+
+            /**
              * The ContentEditFormView (by default) instance which will be used to render form
              *
              * @attribute formView
@@ -320,6 +329,7 @@ YUI.add('ez-contenteditview', function (Y) {
                         version: this.get('version'),
                         languageCode: this.get('languageCode'),
                         bubbleTargets: this,
+                        user: this.get('user'),
                     });
                 }
             },
