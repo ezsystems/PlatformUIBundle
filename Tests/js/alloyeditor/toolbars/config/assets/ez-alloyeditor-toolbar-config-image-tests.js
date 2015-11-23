@@ -89,16 +89,13 @@ YUI.add('ez-alloyeditor-toolbar-config-image-tests', function (Y) {
             );
         },
 
-        "Should check the content of the widget": function () {
-            this.widget = {
-                name: "ezembed",
-                element: new Mock(),
-            };
-            Mock.expect(this.widget.element, {
-                method: 'findOne',
-                args: ['> img'],
+        "Should use the widget isImage method": function () {
+            this.widget = new Mock();
+            Mock.expect(this.widget, {
+                method: 'isImage',
                 returns: true,
             });
+            this.widget.name = 'ezembed';
             Assert.isTrue(
                 Image.test({
                     editor: this.editor,
@@ -110,6 +107,7 @@ YUI.add('ez-alloyeditor-toolbar-config-image-tests', function (Y) {
                 }),
                 "test should return true on an ezembed widget containing an image"
             );
+            Mock.verify(this.widget);
         },
     });
 

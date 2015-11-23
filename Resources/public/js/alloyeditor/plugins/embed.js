@@ -6,6 +6,8 @@
 YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
     "use strict";
 
+    var IMAGE_TYPE_CLASS = 'ez-embed-type-image';
+
     if (CKEDITOR.plugins.get('ezembed')) {
         return;
     }
@@ -40,6 +42,27 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
 
                 init: function () {
                     this.on('focus', this._fireEditorInteraction);
+                },
+
+                /**
+                 * Set the embed as an embed representing an image
+                 *
+                 * @method setImageType
+                 * @return {CKEDITOR.plugins.widget}
+                 */
+                setImageType: function () {
+                    this.element.addClass(IMAGE_TYPE_CLASS);
+                    return this;
+                },
+
+                /**
+                 * Check whether the embed widget represents an image or not.
+                 *
+                 * @method isImage
+                 * @return {Boolean}
+                 */
+                isImage: function () {
+                    return this.element.hasClass(IMAGE_TYPE_CLASS);
                 },
 
                 /**

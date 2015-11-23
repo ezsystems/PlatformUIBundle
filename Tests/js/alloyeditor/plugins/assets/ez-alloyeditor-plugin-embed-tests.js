@@ -5,7 +5,7 @@
 /* global CKEDITOR, AlloyEditor */
 YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
     var definePluginTest, embedWidgetTest, focusTest,
-        setHrefTest, setWidgetContentTest, setConfigTest,
+        setHrefTest, setWidgetContentTest, setConfigTest, imageTypeTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     definePluginTest = new Y.Test.Case({
@@ -322,6 +322,61 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
         },
     });
 
+    imageTypeTest = new Y.Test.Case({
+        name: "eZ AlloyEditor embed widget setImageType / isImage test",
+
+        "async:init": function () {
+            var startTest = this.callback();
+
+            CKEDITOR.plugins.addExternal('lineutils', '../../../lineutils/');
+            CKEDITOR.plugins.addExternal('widget', '../../../widget/');
+            this.container = Y.one('.container');
+            this.containerContent = this.container.getHTML();
+            this.editor = AlloyEditor.editable(
+                this.container.getDOMNode(), {
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',widget,ezembed',
+                    eZ: {
+                        editableRegion: '.editable',
+                    },
+                }
+            );
+            this.editor.get('nativeEditor').on('instanceReady', function () {
+                startTest();
+            });
+        },
+
+        destroy: function () {
+            this.editor.destroy();
+            this.container.setHTML(this.containerContent);
+        },
+
+        _getWidget: function (embedSelector) {
+            return this.editor.get('nativeEditor').widgets.getByElement(
+                new CKEDITOR.dom.node(this.container.one(embedSelector).getDOMNode())
+            );
+        },
+
+        "Should detect image embed": function () {
+            var widget = this._getWidget('#image-embed');
+
+            Assert.isTrue(
+                widget.isImage(), "The widget should be detected as an image"
+            );
+        },
+
+        "Should set the widget as an image": function () {
+            var widget = this._getWidget('#embed');
+
+            Assert.isFalse(
+                widget.isImage(), "The widget should not be detected as an image"
+            );
+            widget.setImageType();
+            Assert.isTrue(
+                widget.isImage(), "The widget should be detected as an image"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ AlloyEditor embed plugin tests");
     Y.Test.Runner.add(definePluginTest);
     Y.Test.Runner.add(embedWidgetTest);
@@ -329,4 +384,5 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
     Y.Test.Runner.add(setHrefTest);
     Y.Test.Runner.add(setWidgetContentTest);
     Y.Test.Runner.add(setConfigTest);
+    Y.Test.Runner.add(imageTypeTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-alloyeditor-plugin-embed']});

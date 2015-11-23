@@ -54,8 +54,11 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
             this.execCommand();
             this._setContentInfo(e.selection.contentInfo);
 
-            this._getWidget().setWidgetContent('Loading the image...');
+            this._getWidget()
+                .setWidgetContent('Loading the image...')
+                .setImageType();
             this._loadEmbedImage(e.selection);
+            this.props.editor.get('nativeEditor').fire('actionPerformed', this);
         },
 
         render: function () {

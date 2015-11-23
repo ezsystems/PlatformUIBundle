@@ -264,6 +264,7 @@ YUI.add('ez-alloyeditor-button-image-tests', function (Y) {
                 'medium', widget.element.findOne('[data-ezvalue-key="size"]').getText(),
                 "The ezembed widget should be configured with the medium variation"
             );
+            Assert.isTrue(widget.isImage(), "The widget should be an image embed");
         },
 
         "Should fire the loadImageVariation event": function () {
