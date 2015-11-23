@@ -48,9 +48,11 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                  *
                  * @method setHref
                  * @param {String} href
+                 * @return {CKEDITOR.plugins.widget}
                  */
                 setHref: function (href) {
                     this.element.data('href', href);
+                    return this;
                 },
 
                 /**
@@ -59,6 +61,7 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                  *
                  * @method setWidgetContent
                  * @param {String|CKEDITOR.dom.node} content
+                 * @return {CKEDITOR.plugins.widget}
                  */
                 setWidgetContent: function (content) {
                     var element = this.element.getFirst(), next;
@@ -75,6 +78,7 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                     } else {
                         this.element.appendText(content);
                     }
+                    return this;
                 },
 
                 /**
@@ -83,6 +87,7 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                  * @method setConfig
                  * @param {String} key
                  * @param {String} value
+                 * @return {CKEDITOR.plugins.widget}
                  */
                 setConfig: function (key, value) {
                     var valueElement = this.element.findOne('[data-ezelement="ezvalue"][data-ezvalue-key="' + key + '"]');
@@ -93,6 +98,7 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                         this._getEzConfigElement().append(valueElement);
                     }
                     valueElement.setText(value);
+                    return this;
                 },
 
                 /**

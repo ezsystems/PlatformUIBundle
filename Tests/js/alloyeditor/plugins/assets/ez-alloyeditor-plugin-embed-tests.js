@@ -150,12 +150,17 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
                 href = 'ezcontent://42',
                 widget = this.editor.get('nativeEditor').widgets.getByElement(
                     new CKEDITOR.dom.node(embed.getDOMNode())
-                );
+                ),
+                ret;
 
-            widget.setHref(href);
+            ret = widget.setHref(href);
             Assert.areEqual(
                 href, embed.getData('href'),
                 "The data-href attribute should have been updated"
+            );
+            Assert.areSame(
+                widget, ret,
+                "The widget should be returned"
             );
         },
     });
@@ -193,12 +198,17 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
                 content = 'Foo Fighters',
                 widget = this.editor.get('nativeEditor').widgets.getByElement(
                     new CKEDITOR.dom.node(embed.getDOMNode())
-                );
+                ),
+                ret;
 
-            widget.setWidgetContent(content);
+            ret = widget.setWidgetContent(content);
             Assert.areEqual(
                 content, embed.getContent(),
                 "The text content should have been updated"
+            );
+            Assert.areSame(
+                widget, ret,
+                "The widget should be returned"
             );
         },
 
@@ -280,9 +290,9 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
                 widget = this.editor.get('nativeEditor').widgets.getByElement(
                     new CKEDITOR.dom.node(embed.getDOMNode())
                 ),
-                valueElement, configElement;
+                ret, valueElement, configElement;
 
-            widget.setConfig(key, value);
+            ret = widget.setConfig(key, value);
 
             configElement = embed.one('[data-ezelement="ezconfig"]');
             Assert.isNotNull(configElement, "The config element should be available in the widget DOM");
@@ -292,6 +302,10 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
             Assert.areEqual(
                 value, valueElement.get('text'),
                 "The text content of the value element should be the config value"
+            );
+            Assert.areSame(
+                widget, ret,
+                "The widget should be returned"
             );
         },
 
