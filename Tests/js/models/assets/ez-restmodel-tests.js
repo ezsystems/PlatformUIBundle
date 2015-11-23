@@ -115,7 +115,7 @@ YUI.add('ez-restmodel-tests', function (Y) {
 
             m.set('date', ts);
             Y.Assert.isInstanceOf(Date, m.get('date'));
-            Y.Assert.areEqual(+m.get('date'), ts);
+            Y.Assert.areEqual(ts, +m.get('date'));
         },
 
         "Should ignore unrecognized date": function () {
