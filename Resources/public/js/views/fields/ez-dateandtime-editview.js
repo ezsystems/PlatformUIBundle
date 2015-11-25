@@ -264,6 +264,19 @@ YUI.add('ez-dateandtime-editview', function (Y) {
         },
 
         /**
+         * Returns a timestamps in UTC
+         *
+         * @protected
+         * @method _getUtcTimeStamp
+         * @param {Number} localizedTimestamp
+         * @return {Number} Timestamp converted to UTC in millisecond
+         */
+        _getUtcTimeStamp: function (localizedTimestamp) {
+            var tzOffset = new Date(localizedTimestamp).getTimezoneOffset() * 60000;
+            return localizedTimestamp + tzOffset;
+        },
+
+        /**
          * Returns the currently filled date and time value
          *
          * @protected
@@ -272,14 +285,17 @@ YUI.add('ez-dateandtime-editview', function (Y) {
          */
         _getFieldValue: function () {
             var valueOfDateInput = this._getDateInputNode().get('valueAsNumber'),
-                valueOfTimeInput = this._getTimeInputNode().get('valueAsNumber');
+                valueOfTimeInput = this._getTimeInputNode().get('valueAsNumber'),
+                utcTimeStamp,
+                localizedTimeStamps;
 
             if (valueOfDateInput && valueOfTimeInput){
-                return {timestamp: ( valueOfDateInput + valueOfTimeInput )/1000};
+                localizedTimeStamps = valueOfDateInput + valueOfTimeInput;
+                utcTimeStamp = this._getUtcTimeStamp(localizedTimeStamps);
+                return {timestamp: utcTimeStamp/1000};
             } else {
                 return null;
             }
-
         },
     },{
         ATTRS: {

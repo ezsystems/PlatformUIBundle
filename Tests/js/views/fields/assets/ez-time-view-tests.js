@@ -19,8 +19,11 @@ YUI.add('ez-time-view-tests', function (Y) {
 
             setUp: function () {
                 this.fieldValue = 374388330;
-                this.time = '05:45:30 AM';
-                this.timeNoSeconds = '05:45 AM';
+                this.tzOffset = new Date(this.fieldValue * 1000).getTimezoneOffset() * 60000;
+                this.utcDate = new Date((this.fieldValue * 1000) + this.tzOffset);
+
+                this.time = Y.Date.format(this.utcDate, {format:"%T"});
+                this.timeNoSeconds = Y.Date.format(this.utcDate, {format:"%R"});
                 this.templateVariablesCount = 4;
                 this.fieldDefinition = {
                     fieldType: 'eztime',

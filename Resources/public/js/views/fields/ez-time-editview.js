@@ -92,6 +92,19 @@ YUI.add('ez-time-editview', function (Y) {
         },
 
         /**
+         * Returns a timestamps in UTC
+         *
+         * @protected
+         * @method _getUtcTimeStamp
+         * @param {Number} localizedTimestamp
+         * @return {Number} Timestamp converted to UTC in millisecond
+         */
+        _getUtcTimeStamp: function (localizedTimestamp) {
+            var tzOffset = new Date(localizedTimestamp).getTimezoneOffset() * 60000;
+            return localizedTimestamp + tzOffset;
+        },
+
+        /**
          * Defines the variables to import in the field edit template for time
          *
          * @protected
@@ -105,9 +118,9 @@ YUI.add('ez-time-editview', function (Y) {
 
             if ( field && field.fieldValue ) {
                 if (!this.get('supportsTimeInput') && !def.fieldSettings.useSeconds) {
-                    time =  Y.Date.format(new Date(field.fieldValue * 1000), {format:"%R"});
+                    time = Y.Date.format(new Date(this._getUtcTimeStamp(field.fieldValue * 1000)), {format:"%R"});
                 } else {
-                    time =  Y.Date.format(new Date(field.fieldValue * 1000), {format:"%T"});
+                    time = Y.Date.format(new Date(this._getUtcTimeStamp(field.fieldValue * 1000)), {format:"%T"});
                 }
             }
             return {
