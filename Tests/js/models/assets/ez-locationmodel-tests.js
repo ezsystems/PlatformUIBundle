@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationmodel-tests', function (Y) {
-    var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest,
+    var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest, toJSONTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
@@ -556,8 +556,44 @@ YUI.add('ez-locationmodel-tests', function (Y) {
             delete this.model;
         },
 
+        _assertLocations: function (locations) {
+            var i,
+                that = this;
+
+            Assert.isArray(
+                locations,
+                "The result in callback should be an array"
+            );
+            Assert.areEqual(
+                this.loadAncestorsResponse.document.View.Result.searchHits.searchHit.length-1,
+                locations.length,
+                "The result array should be reduced by current location"
+            );
+            Y.Array.each(locations, function (location) {
+                Assert.isObject(location, "The item included in result array should be an object");
+                Assert.areEqual(
+                    location.name,
+                    'locationModel',
+                    "The item included in result array should be the locationModel instance"
+                );
+                Assert.areNotEqual(
+                    location.get('id'),
+                    that.model.get('id'),
+                    "Current location should not be included in the result"
+                );
+            });
+
+            for (i = 0; i != locations.length; ++i) {
+                Y.Assert.areSame(
+                    i, locations[i].get('depth'),
+                    "The path should be sorted by depth"
+                );
+            }
+        },
+
+
         "Should load path for the location": function () {
-            var that = this, i;
+            var that = this;
 
             Y.Mock.expect(this.contentService, {
                 method: 'createView',
@@ -583,35 +619,9 @@ YUI.add('ez-locationmodel-tests', function (Y) {
                     error,
                     "No error should be detected"
                 );
-                Assert.isArray(
-                    locations,
-                    "The result in callback should be an array"
-                );
-                Assert.areEqual(
-                    that.loadAncestorsResponse.document.View.Result.searchHits.searchHit.length-1,
-                    locations.length,
-                    "The result array should be reduced by current location"
-                );
-                Y.Array.each(locations, function (location) {
-                    Assert.isObject(location, "The item included in result array should be an object");
-                    Assert.areEqual(
-                        location.name,
-                        'locationModel',
-                        "The item included in result array should be the locationModel instance"
-                    );
-                    Assert.areNotEqual(
-                        location.get('id'),
-                        that.model.get('id'),
-                        "Current location should not be included in the result"
-                    );
-                });
 
-                for (i = 0; i != locations.length; ++i) {
-                    Y.Assert.areSame(
-                        i, locations[i].get('depth'),
-                        "The path should be sorted by depth"
-                    );
-                }
+                that._assertLocations(locations);
+                that._assertLocations(that.model.get('path'));
             });
         },
 
@@ -635,6 +645,50 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         }
     });
 
+    toJSONTest = new Y.Test.Case({
+        name: "eZ Location Model toJSON test",
+
+        setUp: function () {
+            this.model = new Y.eZ.Location();
+            this.pathItemMock = new Mock();
+            this.pathMock = [this.pathItemMock];
+            this.mockJSON = {'whatever': ''};
+
+            Mock.expect(this.pathItemMock, {
+                method: 'toJSON',
+                returns: this.mockJSON,
+            });
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        "Should convert path in attribute": function () {
+            var json;
+
+            this.model._set('path', this.pathMock);
+
+            json = this.model.toJSON();
+
+            Mock.verify(this.pathItemMock);
+            Assert.areSame(
+                this.mockJSON, json.path[0],
+                "The path attribute should be jsonified"
+            );
+        },
+
+        "Should not convert path in attribute if path is not set": function () {
+            var json = this.model.toJSON();
+
+            Assert.isFalse (
+                json.path,
+                "Path should be set to its default value"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(trashTest);
@@ -642,4 +696,5 @@ YUI.add('ez-locationmodel-tests', function (Y) {
     Y.Test.Runner.add(hideTest);
     Y.Test.Runner.add(removeTest);
     Y.Test.Runner.add(loadPathTest);
+    Y.Test.Runner.add(toJSONTest);
 }, '', {requires: ['test', 'model-tests', 'ez-locationmodel', 'ez-restmodel']});

@@ -767,7 +767,7 @@ system:
                     requires: ['ez-restmodel']
                     path: %ez_platformui.public_dir%/js/models/ez-versionmodel.js
                 ez-locationmodel:
-                    requires: ['ez-restmodel', 'ez-contentinfomodel']
+                    requires: ['ez-restmodel', 'ez-contentinfomodel', array-extras]
                     path: %ez_platformui.public_dir%/js/models/ez-locationmodel.js
                 ez-usermodel:
                     requires: ['ez-restmodel']

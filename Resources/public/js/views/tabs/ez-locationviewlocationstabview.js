@@ -77,7 +77,8 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
              */
             this.fire('loadLocations', {
                 content: this.get('content'),
-                location: this.get('location')
+                location: this.get('location'),
+                loadPath:true,
             });
         },
 

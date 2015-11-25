@@ -184,6 +184,7 @@ YUI.add('ez-locationmodel', function (Y) {
          * Loads path of the current location. The result is the array containing
          * eZ.Location objects present on the path sorted by depth.
          * The array doesn't contain current location.
+         * The result is available in the `path` attribute or in the `callback`.
          *
          * @method loadPath
          * @param {Object} options
@@ -219,6 +220,8 @@ YUI.add('ez-locationmodel', function (Y) {
                     return (a.get('depth') - b.get('depth'));
                 });
 
+                that._set('path', locations);
+
                 callback(error, locations);
             });
         },
@@ -245,7 +248,26 @@ YUI.add('ez-locationmodel', function (Y) {
                 query,
                 callback
             );
-        }
+        },
+
+        /**
+         * Overrides the RestModel implementation to also deal with the `path` attribute
+         *
+         * @method toJSON
+         * @return {Object}
+         */
+        toJSON: function () {
+            var attrs = Y.eZ.RestModel.prototype.toJSON.call(this);
+
+            if (attrs.path) {
+                attrs.path = Y.Array.map(attrs.path, function (value) {
+                    return value.toJSON();
+                });
+            }
+
+            return attrs;
+        },
+
     }, {
         REST_STRUCT_ROOT: "Location",
         ATTRS_REST_MAP: [
@@ -380,6 +402,19 @@ YUI.add('ez-locationmodel', function (Y) {
                     }
                     return contentInfo;
                 }
+            },
+
+            /**
+             * The location's path. By default it is empty. You need to call the loadPath method to set this attribute.
+             *
+             * @attribute path
+             * @default false
+             * @type array
+             * @readOnly
+             */
+            path: {
+                value: false,
+                readOnly: true
             },
         }
     });
