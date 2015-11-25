@@ -18,11 +18,20 @@ YUI.add('ez-dateandtime-view-tests', function (Y) {
             },
 
             setUp: function () {
+                this.timestamp = 374388330;
                 this.fieldValue = {
-                    timestamp: 374388330,
+                    timestamp: this.timestamp,
                 };
-                this.datetime = '11/12/1981 05:45:30 AM';
-                this.datetimeNoSeconds = '11/12/1981 05:45 AM';
+                this.dateObject = new Date(this.timestamp * 1000);
+                this.expectedDate = this.dateObject.toLocaleDateString();
+                this.expectedTime = this.dateObject.toLocaleTimeString();
+                this.expectedTimeNoSeconds = this.dateObject.toLocaleTimeString(
+                    undefined,
+                    {hour: 'numeric', minute: 'numeric'}
+                );
+
+                this.datetime = this.expectedDate + ' ' + this.expectedTime;
+                this.datetimeNoSeconds = this.expectedDate + ' ' + this.expectedTimeNoSeconds;
                 this.templateVariablesCount = 4;
                 this.fieldDefinition = {
                     fieldType: 'ezdatetime',
