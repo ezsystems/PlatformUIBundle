@@ -8,8 +8,7 @@ meta:
 
 # ci
 integrate:
-  install: "demo-clean"
   command: "bin/behat"
   matrix:
   # Run 'common' tagged behat scenarios on ezplatform install
-   - {arguments: "-v --profile platformui --tags common"}
+   - {arguments: "-v --profile platformui --tags common", install: "clean"}
