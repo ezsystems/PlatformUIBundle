@@ -117,10 +117,11 @@ YUI.add('ez-contenttreeplugin-tests', function (Y) {
             Y.eZ.ContentType = this.origType;
         },
 
-        _initTree: function (id, locationId) {
+        _initTree: function (id, locationId, loadContent) {
             var tree = this.plugin.get('tree'), node,
                 location = new Y.eZ.Location({locationId: locationId, id: id});
 
+            tree.rootNode.data.loadContent = loadContent;
             node = tree.createNode({
                 data: {location: location},
                 id: id,
@@ -168,7 +169,7 @@ YUI.add('ez-contenttreeplugin-tests', function (Y) {
             });
         },
 
-        _getSearchResponse: function () {
+        _getLocationSearchResponse: function () {
             return {
                 document: {
                     "View": {
@@ -253,11 +254,161 @@ YUI.add('ez-contenttreeplugin-tests', function (Y) {
             };
         },
 
+        _getContentSearchResponse: function () {
+            return {
+                document: {
+                    "View": {
+                        "Result": {
+                            "searchHits": {
+                                "searchHit": [
+                                    {
+                                        "value": {
+                                                "Content": {
+                                                    "_media-type": "application\/vnd.ez.api.Content+json",
+                                                    "_href": "\/api\/ezp\/v2\/content\/objects\/73",
+                                                    "_remoteId": "52fdba11e87ba8905da8b7c5ef275edd",
+                                                    "_id": 73,
+                                                    "ContentType": {
+                                                        "_media-type": "application\/vnd.ez.api.ContentType+json",
+                                                        "_href": this.contentTypesIds[0]
+                                                    },
+                                                    "MainLocation": {
+                                                        "_media-type": "application\/vnd.ez.api.Location+json",
+                                                        "_href": this.locationIds[0]
+                                                    },
+                                                    "Name": "Products",
+                                                    "Versions": {
+                                                        "_media-type": "application\/vnd.ez.api.VersionList+json",
+                                                        "_href": "\/api\/ezp\/v2\/content\/objects\/73\/versions"
+                                                    },
+                                                    "CurrentVersion": {
+                                                        "_media-type": "application\/vnd.ez.api.Version+json",
+                                                        "_href": "\/api\/ezp\/v2\/content\/objects\/73\/currentversion",
+                                                        "Version": {
+                                                            "_media-type": "application\/vnd.ez.api.Version+json",
+                                                            "_href": "\/api\/ezp\/v2\/content\/objects\/73\/versions\/2",
+                                                            "VersionInfo": {
+                                                                "id": 605,
+                                                                "versionNo": 2,
+                                                                "status": "PUBLISHED",
+                                                                "modificationDate": "2015-11-13T11:59:53+01:00",
+                                                                "Creator": {
+                                                                    "_media-type": "application\/vnd.ez.api.User+json",
+                                                                    "_href": "\/api\/ezp\/v2\/user\/users\/14"
+                                                                },
+                                                                "creationDate": "2015-11-13T11:59:52+01:00",
+                                                                "initialLanguageCode": "fre-FR",
+                                                                "languageCodes": "eng-GB,fre-FR",
+                                                                "names": {
+                                                                    "value": [
+                                                                    {
+                                                                        "_languageCode": "eng-GB",
+                                                                        "#text": "Products"
+                                                                    },
+                                                                    ]
+                                                                },
+                                                                "Content": {
+                                                                    "_media-type": "application\/vnd.ez.api.ContentInfo+json",
+                                                                    "_href": "\/api\/ezp\/v2\/content\/objects\/73"
+                                                                }
+                                                            },
+                                                            "Fields": {
+                                                                "field": [
+                                                                ]
+                                                            },
+                                                            "Relations": {
+                                                                "_media-type": "application\/vnd.ez.api.RelationList+json",
+                                                                "_href": "\/api\/ezp\/v2\/content\/objects\/73\/versions\/2\/relations",
+                                                                "Relation": [
+
+                                                                    ]
+                                                            }
+                                                        }
+                                                    },
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "value": {
+                                            "Content": {
+                                                    "_media-type": "application\/vnd.ez.api.Content+json",
+                                                    "_href": "\/api\/ezp\/v2\/content\/objects\/78",
+                                                    "_remoteId": "52fdba11e87ba8905da8b7c5ef275edd",
+                                                    "_id": 139,
+                                                    "ContentType": {
+                                                        "_media-type": "application\/vnd.ez.api.ContentType+json",
+                                                        "_href": this.contentTypesIds[1]
+                                                    },
+                                                    "MainLocation": {
+                                                        "_media-type": "application\/vnd.ez.api.Location+json",
+                                                        "_href": this.locationIds[1]
+                                                    },
+                                                    "Name": "Services",
+                                                    "Versions": {
+                                                        "_media-type": "application\/vnd.ez.api.VersionList+json",
+                                                        "_href": "\/api\/ezp\/v2\/content\/objects\/78\/versions"
+                                                    },
+                                                    "CurrentVersion": {
+                                                        "_media-type": "application\/vnd.ez.api.Version+json",
+                                                        "_href": "\/api\/ezp\/v2\/content\/objects\/139\/currentversion",
+                                                        "Version": {
+                                                            "_media-type": "application\/vnd.ez.api.Version+json",
+                                                            "_href": "\/api\/ezp\/v2\/content\/objects\/139\/versions\/2",
+                                                            "VersionInfo": {
+                                                                "id": 605,
+                                                                "versionNo": 2,
+                                                                "status": "PUBLISHED",
+                                                                "modificationDate": "2015-11-13T11:59:53+01:00",
+                                                                "Creator": {
+                                                                    "_media-type": "application\/vnd.ez.api.User+json",
+                                                                    "_href": "\/api\/ezp\/v2\/user\/users\/14"
+                                                                },
+                                                                "creationDate": "2015-11-13T11:59:52+01:00",
+                                                                "initialLanguageCode": "fre-FR",
+                                                                "languageCodes": "eng-GB,fre-FR",
+                                                                "names": {
+                                                                    "value": [
+                                                                    {
+                                                                        "_languageCode": "eng-GB",
+                                                                        "#text": "Services"
+                                                                    },
+                                                                    ]
+                                                                },
+                                                                "Content": {
+                                                                    "_media-type": "application\/vnd.ez.api.ContentInfo+json",
+                                                                    "_href": "\/api\/ezp\/v2\/content\/objects\/139"
+                                                                }
+                                                            },
+                                                            "Fields": {
+                                                                "field": [
+                                                                ]
+                                                            },
+                                                            "Relations": {
+                                                                "_media-type": "application\/vnd.ez.api.RelationList+json",
+                                                                "_href": "\/api\/ezp\/v2\/content\/objects\/139\/versions\/2\/relations",
+                                                                "Relation": [
+
+                                                                    ]
+                                                            }
+                                                        }
+                                                    },
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            };
+        },
+
+
         "Should parse the search result": function () {
             var locationId = 42, tree,
                 id = '/whatever/' + locationId,
                 query = {body: {ViewInput: {LocationQuery: {}}}},
-                response = this._getSearchResponse();
+                response = this._getLocationSearchResponse();
 
             Mock.expect(this.contentService, {
                 method: 'newViewCreateStruct',
@@ -271,7 +422,7 @@ YUI.add('ez-contenttreeplugin-tests', function (Y) {
                     callback(false, response);
                 },
             });
-            this._initTree(id, locationId);
+            this._initTree(id, locationId, false);
 
             this.service.fire('whatever:toggleNode', {
                 nodeId: id
@@ -323,11 +474,109 @@ YUI.add('ez-contenttreeplugin-tests', function (Y) {
             }, this);
         },
 
+        "Should load the contents": function () {
+            var locationId = 42, tree,
+                id = '/whatever/' + locationId,
+                locationQuery = {body: {ViewInput: {LocationQuery: {}}}},
+                contentQuery = {body: {ViewInput: {ContentQuery: {}}}},
+                contentResponse = this._getContentSearchResponse(),
+                locationResponse = this._getLocationSearchResponse();
+
+            Mock.expect(this.contentService, {
+                method: 'newViewCreateStruct',
+                args: [Mock.Value.String, Mock.Value.String],
+                run: function (name, type) {
+                    if ( type === 'LocationQuery' ) {
+                        return locationQuery;
+                    } else if ( type === 'ContentQuery' ) {
+                        return contentQuery;
+                    }
+                    Y.fail("Unexpected query type");
+                },
+            });
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (q, callback) {
+                    if ( q === locationQuery ) {
+                        return callback(false, locationResponse);
+                    } else if ( q === contentQuery ) {
+                        return callback(false, contentResponse);
+                    }
+                    Y.fail("createView received an unexpected query");
+                },
+            });
+            this._initTree(id, locationId, true);
+
+            this.service.fire('whatever:toggleNode', {
+                nodeId: id
+            });
+
+            tree = this.plugin.get('tree');
+
+            Y.Array.each(this.locationIds, function (locId) {
+                var node = tree.getNodeById(locId),
+                    location = node.data.location,
+                    content = node.data.content;
+
+                Assert.areEqual(
+                    location.get('contentInfo').get('id'),
+                    content.get('id'),
+                    "The Location's Content should be available in the node data"
+                );
+            });
+        },
+
+        "Should handle content loading error": function () {
+            var locationId = 42, tree,
+                id = '/whatever/' + locationId,
+                locationQuery = {body: {ViewInput: {LocationQuery: {}}}},
+                contentQuery = {body: {ViewInput: {ContentQuery: {}}}},
+                contentResponse = this._getContentSearchResponse(),
+                locationResponse = this._getLocationSearchResponse(),
+                errorFired = false;
+
+            Mock.expect(this.contentService, {
+                method: 'newViewCreateStruct',
+                args: [Mock.Value.String, Mock.Value.String],
+                run: function (name, type) {
+                    if ( type === 'LocationQuery' ) {
+                        return locationQuery;
+                    } else if ( type === 'ContentQuery' ) {
+                        return contentQuery;
+                    }
+                    Y.fail("Unexpected query type");
+                },
+            });
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (q, callback) {
+                    if ( q === locationQuery ) {
+                        return callback(false, locationResponse);
+                    } else if ( q === contentQuery ) {
+                        return callback(true, contentResponse);
+                    }
+                    Y.fail("createView received an unexpected query");
+                },
+            });
+            tree = this._initTree(id, locationId, true);
+
+            tree.lazy.on('error', function (evt) {
+                errorFired = true;
+            });
+            this.service.fire('whatever:toggleNode', {
+                nodeId: id
+            });
+
+            Assert.isTrue(errorFired, "The type loading error should trigger an error on the tree");
+        },
+
         "Should handle content type loading error": function () {
             var locationId = 42,
                 id = '/whatever/' + locationId,
                 query = {body: {ViewInput: {LocationQuery: {}}}},
-                response = this._getSearchResponse(),
+                response = this._getLocationSearchResponse(),
                 errorFired = false,
                 tree;
 

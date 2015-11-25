@@ -97,6 +97,18 @@ YUI.add('ez-universaldiscoverymethodbaseview', function (Y) {
             },
 
             /**
+             * Flag indicating whether the Content should be provided in the
+             * selection.
+             *
+             * @attribute loadContent
+             * @type {Boolean}
+             * @default false
+             */
+            loadContent: {
+                value: false,
+            },
+
+            /**
              * The visible flag. it is updated by the universal discovery view
              * depending on the tab state.
              *

@@ -97,6 +97,24 @@ YUI.add('ez-contenttypemodel', function (Y) {
                 return (fieldDef.fieldType === fieldTypeIdentifier);
             });
         },
+
+        /**
+         * Returns the fieldIdentifiers of a given type.
+         *
+         * @method getFieldDefinitionIdentifiers
+         * @param {String} fieldTypeIdentifier like ezimage, ezstring, ...
+         * @return {Array}
+         */
+        getFieldDefinitionIdentifiers: function (fieldTypeIdentifier) {
+            var identifiers = [];
+
+            Y.Object.each(this.get('fieldDefinitions'), function (def, id) {
+                if ( def.fieldType === fieldTypeIdentifier ) {
+                    identifiers.push(id);
+                }
+            });
+            return identifiers;
+        },
     }, {
         REST_STRUCT_ROOT: 'ContentType',
         ATTRS_REST_MAP: [

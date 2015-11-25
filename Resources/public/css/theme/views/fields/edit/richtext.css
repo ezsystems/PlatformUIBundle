@@ -27,10 +27,6 @@
     background: #fff;
 }
 
-.ez-view-richtexteditview .ez-richtext-editable:focus {
-    outline: 0;
-}
-
 .ez-view-richtexteditview.is-focused .ez-editfield-row,
 .ez-view-richtexteditview.is-focused .ez-editfield-input-area {
     background: #f3f3f3;

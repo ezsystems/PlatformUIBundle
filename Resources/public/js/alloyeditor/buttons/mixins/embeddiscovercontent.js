@@ -44,6 +44,20 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
              * @property {String} udwContentDiscoveredMethod
              */
             udwContentDiscoveredMethod: React.PropTypes.string,
+
+            /**
+             * The method to use as the isSelectable function in the UDW
+             *
+             * @property {String} udwIsSelectableMethod
+             */
+            udwIsSelectableMethod: React.PropTypes.string,
+
+            /**
+             * The loadContent flag to pass to the UDW
+             *
+             * @property {Boolean} udwLoadContent
+             */
+            udwLoadContent: React.PropTypes.bool,
         },
 
         /**
@@ -53,35 +67,46 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
          * @protected
          */
         _chooseContent: function () {
+            var selectable = this.props.udwIsSelectableMethod;
+
             this.props.editor.get('nativeEditor').fire('contentDiscover', {
                 config: {
                     title: this.props.udwTitle,
                     multiple: false,
                     contentDiscoveredHandler: this[this.props.udwContentDiscoveredMethod],
+                    isSelectable: selectable ? this[selectable] : undefined,
+                    loadContent: this.props.udwLoadContent,
                 }
             });
         },
 
         /**
-         * Sets the href and the content of the ezembed widget based on the
-         * given content
+         * Returns the ezembed widget instance for the current selection.
+         *
+         * @method _getWidget
+         * @return CKEDITOR.plugins.widget
+         */
+        _getWidget: function () {
+            var editor = this.props.editor.get('nativeEditor'),
+                wrapper;
+
+            wrapper = editor.getSelection().getStartElement();
+            return editor.widgets.getByElement(wrapper);
+        },
+
+        /**
+         * Sets the href of the ezembed widget based on the given content info
          *
          * @method _setContentInfo
          * @protected
          * @param {eZ.ContentInfo} contentInfo
          */
         _setContentInfo: function (contentInfo) {
-            var editor = this.props.editor.get('nativeEditor'),
-                wrapper, embedWidget;
+            var embedWidget = this._getWidget();
 
-            wrapper = editor.getSelection().getStartElement();
-            embedWidget = editor.widgets.getByElement(wrapper);
-            embedWidget.element.data(
-                'href',
-                'ezcontent://' + contentInfo.get('contentId')
-            );
-            embedWidget.element.setText(contentInfo.get('name'));
+            embedWidget.setHref('ezcontent://' + contentInfo.get('contentId'));
             embedWidget.focus();
         },
+
     };
 });

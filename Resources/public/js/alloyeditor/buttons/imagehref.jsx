@@ -2,46 +2,50 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-YUI.add('ez-alloyeditor-button-embedhref', function (Y) {
+YUI.add('ez-alloyeditor-button-imagehref', function (Y) {
     "use strict";
     /**
-     * Provides the embedhref href button
+     * Provides the ezimagehref button
      *
-     * @module ez-alloyeditor-button-remove
+     * @module ez-alloyeditor-button-imagehref
      */
     Y.namespace('eZ.AlloyEditorButton');
 
     var AlloyEditor = Y.eZ.AlloyEditor,
         React = Y.eZ.React,
-        ButtonEmbedHref;
+        ButtonImageHref;
 
     /**
-     * The ButtonEmbedHref component represents a button to set the target
-     * content on an embed element.
+     * The ButtonImageHref component represents a button to set the target
+     * content on an image element.
      *
      * @uses Y.eZ.AlloyEditorButton.ButtonEmbedDiscoverContent
+     * @uses Y.eZ.AlloyEditorButton.ButtonEmbedImage
      *
-     * @class ButtonEmbedHref
+     * @class ButtonImageHref
      * @namespace eZ.AlloyEditorButton
      */
-    ButtonEmbedHref = React.createClass({
+    ButtonImageHref = React.createClass({
         mixins: [
             Y.eZ.AlloyEditorButton.ButtonEmbedDiscoverContent,
+            Y.eZ.AlloyEditorButton.ButtonEmbedImage,
         ],
 
         statics: {
-            key: 'ezembedhref'
+            key: 'ezimagehref'
         },
 
         getDefaultProps: function () {
             return {
-                udwTitle: "Select a content to embed",
+                udwTitle: "Select an image to embed",
                 udwContentDiscoveredMethod: "_updateEmbed",
+                udwIsSelectableMethod: '_isImage',
+                udwLoadContent: true,
             };
         },
 
         /**
-         * Updates the emebed element with the selected content in UDW.
+         * Updates the image element with the selected content in UDW.
          *
          * @method _updateEmbed
          * @param {EventFacade} e the contentDiscovered event facade
@@ -51,19 +55,20 @@ YUI.add('ez-alloyeditor-button-embedhref', function (Y) {
             var contentInfo = e.selection.contentInfo;
 
             this._setContentInfo(contentInfo);
-            this._getWidget().setWidgetContent(contentInfo.get('name'));
+            this._getWidget().setWidgetContent('Loading the image...');
+            this._loadEmbedImage(e.selection);
         },
 
         render: function () {
             return (
                 <button className="ae-button" onClick={this._chooseContent} tabIndex={this.props.tabIndex}>
-                    <span className="ez-font-icon ae-icon-udw ez-ae-icon-udw"></span>
+                    <span className="ez-font-icon ae-icon-image ez-ae-icon-image"></span>
                 </button>
             );
         },
     });
 
-    AlloyEditor.Buttons[ButtonEmbedHref.key] = ButtonEmbedHref;
+    AlloyEditor.Buttons[ButtonImageHref.key] = ButtonImageHref;
 
-    Y.eZ.AlloyEditorButton.ButtonEmbedHref = ButtonEmbedHref;
+    Y.eZ.AlloyEditorButton.ButtonImageHref = ButtonImageHref;
 });
