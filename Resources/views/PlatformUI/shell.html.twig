@@ -49,6 +49,8 @@
     <script>
         {{ ez_platformui_yui_config( "YUI.GlobalConfig" ) }}
 
+        var CKEDITOR_BASEPATH = ALLOYEDITOR_BASEPATH = "{{ asset("bundles/ezplatformuiassets/vendors/alloy-editor/dist/alloy-editor/") }}";
+
         YUI().use('ez-platformuiapp', function (Y) {
             var app = new Y.eZ.PlatformUIApp({
                     container: '.ez-platformui-app',

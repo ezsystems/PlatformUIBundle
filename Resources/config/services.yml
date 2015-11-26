@@ -26,6 +26,7 @@ parameters:
     ezsystems.platformui.exception_listener.class: EzSystems\PlatformUIBundle\EventListener\ExceptionListener
     ezsystems.platformui.exception_controller: "ezsystems.platformui.controller.exception:showAction"
     ezsystems.platformui.controller.exception.class: EzSystems\PlatformUIBundle\Controller\ExceptionController
+    ezsystems.platformui.loader.combo_loader.class: EzSystems\PlatformUIBundle\Loader\ComboLoader
 
     # override of the REST content controller
     ezpublish_rest.controller.content.class: EzSystems\PlatformUIBundle\Controller\Rest\ContentController
@@ -49,6 +50,7 @@ services:
         class: %ezsystems.platformui.controller.class%
         arguments:
             - @ezsystems.platformui.application_config.aggregator
+            - @ezsystems.platformui.loader.combo_loader
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.application_config.aggregator:
@@ -215,3 +217,7 @@ services:
         arguments: [@ezsystems.platformui.notification_pool, @router]
         tags:
             - { name: kernel.event_subscriber }
+
+    ezsystems.platformui.loader.combo_loader:
+        class: %ezsystems.platformui.loader.combo_loader.class%
+        arguments: ["$yui.build_dir;ez_platformui$", %webroot_dir%]
