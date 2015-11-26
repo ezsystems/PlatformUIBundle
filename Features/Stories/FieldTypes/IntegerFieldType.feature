@@ -4,7 +4,7 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
     I need to be able to create and update content with integer fieldtypes
 
     Background:
-       Given I am logged in as an 'Editor' in PlatformUI
+       Given I am logged in as an 'Administrator' in PlatformUI
 
     ##
     # Validate the existence of expected fields from a field type when creating a content
@@ -16,16 +16,16 @@ Feature: Test the validations done on fields from PlatformUI - Integer fieldtype
         Then I should see an "integer" field
 
     @javascript
-    Scenario: When editing a Content the label of an integer field must have the same name than field type from the respective Content Type
+    Scenario: When editing a Content the label of a integer field must have the same name than field type from the respective Content Type
         Given a Content Type with an "integer" with field definition name "Quantity" exists
         When I create a content of this type
         Then I should see a "Quantity" label related with the "integer" field
 
     @javascript
     Scenario: The label of a required integer field of a Content must be marked as required
-        Given a Content Type with a required "integer" with field definition name "Quantity" exists
+        Given a Content Type with a required "integer" with field definition name "Required" exists
         When I create a content of this type
-        Then the "Quantity" field should be marked as required
+        Then the "Required" field should be marked as required
 
     ##
     # Creating Content using a Content Type that has an Integer Field Type

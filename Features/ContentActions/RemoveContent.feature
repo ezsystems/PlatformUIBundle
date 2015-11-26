@@ -4,7 +4,7 @@ Feature: Remove content
     I need to be able to remove an object that I am viewing
 
     Background:
-        Given I am logged in as an 'Editor' in PlatformUI
+        Given I am logged in as an 'Administrator' in PlatformUI
 
     ##
     # Validate dialogs
@@ -33,7 +33,7 @@ Feature: Remove content
     Scenario: Remove one object and do not confirm the removal
         Given a "News Flash" article exists
         When I remove "News Flash"
-        And I do not confirm the removal
+        And I cancel the removal
         Then I am not notified that '"News Flash" sent to Trash'
         And I see "News Flash" in the content tree
 
