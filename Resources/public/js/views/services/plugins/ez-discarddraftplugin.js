@@ -27,8 +27,7 @@ YUI.add('ez-discarddraftplugin', function (Y) {
 
         /**
          * Event handler for the discardAction event. It deletes the version
-         * from the repositry and redirect the user to the URL hold by the
-         * `discardRedirectionUrl` of the host object.
+         * from the repositry and fire the discardedDraft event.
          *
          * @method _discardDraft
          * @protected
@@ -44,7 +43,12 @@ YUI.add('ez-discarddraftplugin', function (Y) {
                 remove: true,
                 api: service.get('capi')
             }, function () {
-                app.navigate(service.get('discardRedirectionUrl'));
+                /**
+                 * Fired when the draft is destroyed.
+                 *
+                 * @event discardedDraft
+                 */
+                service.fire('discardedDraft');
             });
         },
     }, {

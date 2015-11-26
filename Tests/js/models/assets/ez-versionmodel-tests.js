@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-versionmodel-tests', function (Y) {
-    var modelTest, createTest, updateTest, removeTest,
+    var modelTest, createTest, updateTest, removeTest, hasTranslationTest,
+        isDraftTest, createdByTest,
         restResponse = {
             "Version": {
                 "_media-type": "application/vnd.ez.api.Version+json",
@@ -55,7 +56,8 @@ YUI.add('ez-versionmodel-tests', function (Y) {
                     "Relation": []
                 }
             }
-        };
+        },
+        Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
         name: "eZ Version Model tests",
@@ -77,6 +79,36 @@ YUI.add('ez-versionmodel-tests', function (Y) {
         tearDown: function () {
             this.model.destroy();
             delete this.model;
+        },
+
+        // overriding this test to take the languageCode into account
+        "Sync 'read' should load the content with CAPI": function () {
+            var m = this.model,
+                languageCode = 'fre-FR',
+                modelId = "/api/v2/ezp/model/mid",
+                callback = function () { };
+
+            Y.Mock.expect(this.capiMock, {
+                method: this.capiGetService,
+                returns: this.serviceMock
+            });
+            Y.Mock.expect(this.serviceMock, {
+                method: this.serviceLoad,
+                args: [
+                    modelId,
+                    languageCode,
+                    callback
+                ]
+            });
+
+            m.set('id', modelId);
+            m.sync('read', {
+                api: this.capiMock,
+                languageCode: languageCode,
+            }, callback);
+
+            Y.Mock.verify(this.capiMock);
+            Y.Mock.verify(this.serviceMock);
         },
 
         "Should read the fields": function () {
@@ -594,10 +626,119 @@ YUI.add('ez-versionmodel-tests', function (Y) {
         }
     });
 
+    hasTranslationTest = new Y.Test.Case({
+        name: "eZ Version Model hasTranslation tests",
+
+        setUp: function () {
+            this.contentId = "/ezp/api/content/objects/4242";
+            this.version = new Y.eZ.Version({
+                id: this.contentId + "/version/2",
+                versionId: "42",
+                versionNo: 2,
+                languageCodes: 'fre-FR,eng-GB',
+            });
+        },
+
+        tearDown: function () {
+            this.version.destroy();
+            delete this.version;
+        },
+
+        "Should find the fre-FR translation": function () {
+            Assert.isTrue(
+                this.version.hasTranslation('fre-FR'),
+                "The fre-FR translation should be detected"
+            );
+        },
+
+        "Should not find the xxx-XX translation": function () {
+            Assert.isFalse(
+                this.version.hasTranslation('xxx-XX'),
+                "The xxx-XX translation should be detected"
+            );
+        },
+    });
+
+    isDraftTest = new Y.Test.Case({
+        name: "eZ Version Model isDraftTest tests",
+
+        setUp: function () {
+            this.version = new Y.eZ.Version();
+        },
+
+        tearDown: function () {
+            this.version.destroy();
+            delete this.version;
+        },
+
+        "Should detect the version as a draft": function () {
+            this.version.set('status', 'DRAFT');
+            Assert.isTrue(
+                this.version.isDraft(),
+                "The version should be detected as a draft"
+            );
+        },
+
+        "Should not detect the version as a draft": function () {
+            this.version.set('status', 'ARCHIVED');
+            Assert.isFalse(
+                this.version.isDraft(),
+                "The version should not be detected as a draft"
+            );
+        },
+    });
+
+    createdByTest = new Y.Test.Case({
+        name: "eZ Version Model isDraftTest tests",
+
+        setUp: function () {
+            this.version = new Y.eZ.Version();
+            this.userId = '/user/dave';
+            this.version.set('resources', {
+                'Creator': this.userId
+            });
+        },
+
+        tearDown: function () {
+            this.version.destroy();
+            delete this.version;
+        },
+
+        "Should detect the creator": function () {
+            var user = new Mock();
+
+            Mock.expect(user, {
+                method: 'get',
+                args: ['id'],
+                returns: this.userId
+            });
+            Assert.isTrue(
+                this.version.createdBy(user),
+                "The user should be detected as the creator of the version"
+            );
+        },
+
+        "Should not detect the creator": function () {
+            var user = new Mock();
+
+            Mock.expect(user, {
+                method: 'get',
+                args: ['id'],
+                returns: '/i/am/not/' + this.userId
+            });
+            Assert.isFalse(
+                this.version.createdBy(user),
+                "The user should not be detected as the creator of the version"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Version Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(createTest);
     Y.Test.Runner.add(updateTest);
     Y.Test.Runner.add(removeTest);
-
+    Y.Test.Runner.add(hasTranslationTest);
+    Y.Test.Runner.add(isDraftTest);
+    Y.Test.Runner.add(createdByTest);
 }, '', {requires: ['test', 'json', 'model-tests', 'ez-versionmodel', 'ez-restmodel']});

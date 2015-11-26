@@ -744,6 +744,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                     view: 'studioPlusPresentationView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
+                    name: "editContentVersion",
+                    path: '/edit/:id/version/:versionId/:languageCode',
+                    service: Y.eZ.ContentEditViewService,
+                    sideViews: {'navigationHub': false, 'discoveryBar': false},
+                    view: 'contentEditView',
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }, {
                     name: "translateContent",
                     path: '/edit/:id/:languageCode/:baseLanguageCode',
                     service: Y.eZ.ContentEditViewService,

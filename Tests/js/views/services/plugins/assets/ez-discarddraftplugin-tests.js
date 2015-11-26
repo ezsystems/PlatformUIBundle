@@ -76,6 +76,20 @@ YUI.add('ez-discarddraftplugin-tests', function (Y) {
 
             Y.Mock.verify(this.version);
         },
+
+        "Should fire the `discardedDraft` event": function () {
+            var eventFired = false;
+
+            this.service.on('discardedDraft', function () {
+                eventFired = true;
+            });
+            this["Should discard the draft"]();
+
+            Assert.isTrue(
+                eventFired,
+                "The discardedDraft event should have been fired"
+            );
+        },
     });
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
