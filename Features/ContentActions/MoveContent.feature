@@ -4,7 +4,7 @@ Feature: Move content
     I need to be able to move an object that I am viewing
 
     Background:
-        Given I am logged in as an 'Editor' in PlatformUI
+        Given I am logged in as an 'Administrator' in PlatformUI
 
     ##
     #Move objects to valid locations

@@ -69,7 +69,7 @@ YUI.add('ez-contenttreeplugin', function (Y) {
             };
             */
 
-            contentService.createView(query, function (err, response) {
+            contentService.createView(query, Y.bind(function (err, response) {
                 var tasks = new Y.Parallel(),
                     loadError = false,
                     children = {};
@@ -111,6 +111,12 @@ YUI.add('ez-contenttreeplugin', function (Y) {
                     contentType.load(options, end);
                 });
 
+                if ( node.tree.rootNode.data.loadContent ) {
+                    this._loadContents(levelLocation, children, tasks.add(function (err) {
+                        loadError = err;
+                    }));
+                }
+
                 tasks.done(function () {
                     if ( loadError ) {
                         callback({node: node});
@@ -118,6 +124,45 @@ YUI.add('ez-contenttreeplugin', function (Y) {
                     }
                     callback();
                 });
+            }, this));
+        },
+
+        /**
+         * Loads the Content for each tree node representing the children of
+         * `levelLocation`.
+         *
+         * @method _loadContents
+         * @param {eZ.Location} levelLocation
+         * @param {Object} data
+         * @param {Function} callback
+         * @protected
+         */
+        _loadContents: function (levelLocation, data, callback) {
+            var contentService = this.get('host').get('capi').getContentService(),
+                contents = {},
+                query;
+
+            query = contentService.newViewCreateStruct('children_content' + levelLocation.get('locationId'), 'ContentQuery');
+            query.body.ViewInput.ContentQuery.Criteria = {
+                "ParentLocationIdCriterion": levelLocation.get('locationId'),
+            };
+
+            contentService.createView(query, function (err, response) {
+                if ( err ) {
+                    callback(err);
+                    return;
+                }
+                Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit) {
+                    var content = new Y.eZ.Content({id: hit.value.Content._href});
+
+                    content.loadFromHash(hit.value.Content);
+                    contents[content.get('id')] = content;
+                });
+
+                Y.Object.each(data, function (struct, key) {
+                    data[key].content = contents[struct.contentInfo.get('id')];
+                });
+                callback();
             });
         },
     }, {

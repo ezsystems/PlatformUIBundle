@@ -2,7 +2,7 @@ system:
     default:
         yui:
             filter: min
-            combine: false
+            combine: true
             modules:
                 capi:
                     path: %ez_platformui.external_assets_public_dir%/vendors/ez-js-rest-client/dist/CAPI.js
@@ -35,6 +35,9 @@ system:
                 ez-alloyeditor-toolbar-config-embed:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
                     path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/embed.js
+                ez-alloyeditor-toolbar-config-image:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/image.js
                 ez-alloyeditor-plugin-addcontent:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/plugins/addcontent.js
@@ -53,6 +56,9 @@ system:
                 ez-alloyeditor-button-paragraph:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/paragraph.js
+                ez-alloyeditor-button-image:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/image.js
                 ez-alloyeditor-button-embed:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embed.js
@@ -74,12 +80,18 @@ system:
                 ez-alloyeditor-button-embedhref:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embedhref.js
+                ez-alloyeditor-button-imagehref:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/imagehref.js
                 ez-alloyeditor-button-mixin-blocktextalign:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/blocktextalign.js
                 ez-alloyeditor-button-mixin-embeddiscovercontent:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embeddiscovercontent.js
+                ez-alloyeditor-button-mixin-embedimage:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embedimage.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -527,14 +539,10 @@ system:
                 xmltexteditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/xmltext.hbt
-                ez-richtextfocusmodebarview:
-                    requires: ['ez-barview', 'ez-buttonactionview']
-                    path: %ez_platformui.public_dir%/js/views/ez-richtextfocusmodebarview.js
                 ez-richtext-editview:
                     requires:
                         - 'ez-fieldeditview'
                         - 'ez-alloyeditor'
-                        - 'ez-richtextfocusmodebarview'
                         - 'ez-alloyeditor-plugin-embed'
                         - 'ez-alloyeditor-plugin-addcontent'
                         - 'ez-alloyeditor-plugin-removeblock'
@@ -545,15 +553,18 @@ system:
                         - 'ez-alloyeditor-toolbar-config-heading'
                         - 'ez-alloyeditor-toolbar-config-paragraph'
                         - 'ez-alloyeditor-toolbar-config-embed'
+                        - 'ez-alloyeditor-toolbar-config-image'
                         - 'ez-alloyeditor-button-heading'
                         - 'ez-alloyeditor-button-paragraph'
                         - 'ez-alloyeditor-button-embed'
+                        - 'ez-alloyeditor-button-image'
                         - 'ez-alloyeditor-button-blocktextalignleft'
                         - 'ez-alloyeditor-button-blocktextaligncenter'
                         - 'ez-alloyeditor-button-blocktextalignright'
                         - 'ez-alloyeditor-button-blocktextalignjustify'
                         - 'ez-alloyeditor-button-blockremove'
                         - 'ez-alloyeditor-button-embedhref'
+                        - 'ez-alloyeditor-button-imagehref'
                         - 'richtexteditview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
                 richtexteditview-ez-template:
@@ -752,7 +763,7 @@ system:
                     requires: ['ez-restmodel']
                     path: %ez_platformui.public_dir%/js/models/ez-versionmodel.js
                 ez-locationmodel:
-                    requires: ['ez-restmodel', 'ez-contentinfomodel']
+                    requires: ['ez-restmodel', 'ez-contentinfomodel', array-extras]
                     path: %ez_platformui.public_dir%/js/models/ez-locationmodel.js
                 ez-usermodel:
                     requires: ['ez-restmodel']
@@ -933,7 +944,7 @@ system:
                     requires: ['ez-contenttreeplugin', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-discoverybarcontenttreeplugin.js
                 ez-contenttreeplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'parallel']
+                    requires: ['ez-viewservicebaseplugin', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'ez-contentmodel', 'parallel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
                 ez-locationsearchplugin:
                     requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel']

@@ -9,6 +9,11 @@
     font-size: 1.1em;
 }
 
+.ez-richtext-editable .ez-embed-type-image[data-ezelement="ezembed"] {
+    background: transparent;
+    border: 0;
+}
+
 .ez-richtext-editable [data-ezelement="ezembed"]:before {
     font-family: 'ez-platformui-icomoon';
     speak: none;
@@ -21,9 +26,12 @@
     content: "\E62e";
 }
 
+.ez-richtext-editable .ez-embed-type-image[data-ezelement="ezembed"]:before {
+    content: "";
+}
+
 .ez-richtext-editable .is-block-focused,
-.ez-richtext-editable .cke_widget_wrapper.cke_widget_focused>.cke_widget_element
-{
+.ez-richtext-editable .cke_widget_wrapper.cke_widget_focused>.cke_widget_element {
     outline: 2px dashed #aaa;
     outline-offset: 3px;
 }

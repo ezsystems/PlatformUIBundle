@@ -32,7 +32,9 @@ YUI.add('ez-universaldiscoverycontenttreeplugin', function (Y) {
         },
 
         /**
-         * Builds the tree for the universal discovery browse view
+         * Builds the tree for the universal discovery browse view. The tree is
+         * also initialize with the `loadContent` flag so the Content items are
+         * also loaded if needed.
          *
          * @method _buildTree
          * @protected
@@ -50,6 +52,7 @@ YUI.add('ez-universaldiscoverycontenttreeplugin', function (Y) {
             tree.clear({
                 data: {
                     location: virtualRoot,
+                    loadContent: browseView.get('loadContent'),
                 },
                 id: virtualRoot.get('id'),
                 state: {

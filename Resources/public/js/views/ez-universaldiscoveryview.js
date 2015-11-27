@@ -259,8 +259,9 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         /**
          * Updates the method views depending on the value so that their
          * `visible` flag is consistent with the `visibleMethod` attribute value
-         * and so that they get the correct `multiple` flag value as well. What's more
-         * the `isSelectable` function registered in UDW is passed to the method view.
+         * and so that they get the correct `multiple` and `loadContent` flag
+         * values as well. What's more the `isSelectable` function registered in
+         * UDW is passed to the method view.
          *
          * @method _updateMethods
          * @protected
@@ -281,6 +282,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
 
                 method.setAttrs({
                     'multiple': this.get('multiple'),
+                    'loadContent': this.get('loadContent'),
                     'visible': visible,
                     'isSelectable': Y.bind(this.get('isSelectable'), this)
                 });
@@ -497,6 +499,18 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             },
 
             /**
+             * Flag indicating whether the Content should be provided in the
+             * selection.
+             *
+             * @attribute loadContent
+             * @type {Boolean}
+             * @default false
+             */
+            loadContent: {
+                value: false,
+            },
+
+            /**
              * An event handler function for the `contentDiscovered` event.
              *
              * @attribute contentDiscoveredHandler
@@ -533,6 +547,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             bubbleTargets: this,
                             priority: 100,
                             multiple: this.get('multiple'),
+                            loadContent: this.get('loadContent'),
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this)
                         }),
                     ];

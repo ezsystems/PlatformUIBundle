@@ -54,7 +54,7 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('ez_platformui.default.yui', []);
         $this->assertContainerBuilderHasParameter('ez_platformui.default.yui.modules', []);
         $this->assertContainerBuilderHasParameter('ez_platformui.default.yui.filter', 'min');
-        $this->assertContainerBuilderHasParameter('ez_platformui.default.yui.combine', false);
+        $this->assertContainerBuilderHasParameter('ez_platformui.default.yui.combine', true);
     }
 
     public function testLoadNoCssConfig()

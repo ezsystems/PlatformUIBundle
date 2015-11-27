@@ -32,6 +32,9 @@ YUI.add('ez-richtext-editview', function (Y) {
         events: {
             '.ez-richtext-switch-focus': {
                 'tap': '_setFocusMode',
+            },
+            '.ez-richtext-save-and-return': {
+                'tap': '_unsetFocusMode',
             }
         },
 
@@ -49,20 +52,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                     this.get('editor').destroy();
                 }
             });
-            this.after('*:saveReturnAction', this._unsetFocusMode);
             this.after('focusModeChange', this._uiFocusMode);
-        },
-
-        destructor: function () {
-            this.get('actionBar').destroy();
-        },
-
-        render: function () {
-            Y.eZ.RichTextEditView.superclass.render.call(this);
-            this.get('container').one('.ez-focusmodeactionbar-container').append(
-                this.get('actionBar').render().get('container')
-            );
-            return this;
         },
 
         /**
@@ -95,12 +85,14 @@ YUI.add('ez-richtext-editview', function (Y) {
         },
 
         /**
-         * `saveReturnAction` event handler.
+         * tap event handler on the save and return button.
          *
          * @method _unsetFocusMode
          * @protected
+         * @param {EventFacade} e
          */
-        _unsetFocusMode: function () {
+        _unsetFocusMode: function (e) {
+            e.preventDefault();
             this._set('focusMode', false);
         },
 
@@ -139,7 +131,9 @@ YUI.add('ez-richtext-editview', function (Y) {
             setEditorFocused = Y.bind(this._uiHandleEditorFocus, this, true);
             unsetEditorFocused = Y.bind(this._uiHandleEditorFocus, this, false);
 
-            nativeEd.on('contentDiscover', Y.bind(this._forwardEditorEvent, this));
+            Y.Array.each(this.get('forwardEvents'), function (evtName) {
+                nativeEd.on(evtName, Y.bind(this._forwardEditorEvent, this));
+            }, this);
 
             nativeEd.on('blur', valid);
             nativeEd.on('focus', valid);
@@ -302,10 +296,18 @@ YUI.add('ez-richtext-editview', function (Y) {
         _getEditorContent: function () {
             var data = this.get('editor').get('nativeEditor').getData(),
                 root, i, list,
-                doc = document.createDocumentFragment();
+                body,
+                doc = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', null);
 
-            root = document.createElement('section');
-            doc.appendChild(root);
+            // TODO: reorganize this code for instance in a set of
+            // EditorContentProcessors to do what it's done here, ie:
+            // * make sure we have an XHTML fragment
+            // * enclose the code in a section with the correct namespace
+            // * cleanup the auto-generated ids
+            body = doc.createElement('body');
+            doc.documentElement.appendChild(body);
+            root = doc.createElement('section');
+            body.appendChild(root);
             root.innerHTML = data;
             list = root.querySelectorAll('[id]');
 
@@ -317,20 +319,6 @@ YUI.add('ez-richtext-editview', function (Y) {
         }
     }, {
         ATTRS: {
-            /**
-             * The action bar displayed when in focus mode.
-             *
-             * @attribute actionBar
-             * @type {eZ.RichTextFocusModeBarView}
-             */
-            actionBar: {
-                valueFn: function () {
-                    return new Y.eZ.RichTextFocusModeBarView({
-                        content: this.get('content'),
-                        bubbleTargets: this,
-                    });
-                },
-            },
 
             /**
              * Stores the focus mode state. When true, the rich text UI is
@@ -371,12 +359,13 @@ YUI.add('ez-richtext-editview', function (Y) {
                             ToolbarConfig.Table,
                             ToolbarConfig.Heading,
                             ToolbarConfig.Paragraph,
+                            ToolbarConfig.Image,
                             ToolbarConfig.Embed,
                         ],
                         tabIndex: 1
                     },
                     add: {
-                        buttons: ['ezheading', 'ezparagraph', 'ezembed'],
+                        buttons: ['ezheading', 'ezparagraph', 'ezimage', 'ezembed'],
                         tabIndex: 2,
                     },
                 }
@@ -392,6 +381,19 @@ YUI.add('ez-richtext-editview', function (Y) {
              */
             ckeditorPluginPath: {
                 value: '/bundles/ezplatformuiassets/vendors',
+                readOnly: true,
+            },
+
+            /**
+             * Editor events to forward to the YUI stack
+             *
+             * @attribute forwardEvents
+             * @readOnly
+             * @type {Array}
+             * @default ['contentDiscover', 'loadImageVariation']
+             */
+            forwardEvents: {
+                value: ['contentDiscover', 'loadImageVariation'],
                 readOnly: true,
             },
         }

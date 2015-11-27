@@ -15,6 +15,10 @@
     content: "\E62e";
 }
 
+.ae-ui .ez-ae-icon-image:before {
+    content: "\E625";
+}
+
 .ae-ui .ez-ae-icon-paragraph:before {
     content: "¶";
 }

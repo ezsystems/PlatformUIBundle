@@ -17,8 +17,9 @@ YUI.add('ez-locationsloadplugin-tests', function (Y) {
             this.view.set('loadingError', false);
             this.view.addTarget(this.service);
             this.service.set('capi', this.capi);
-            this.locations = [{id: 'Location 1'},{id: 'Location 2'}];
-
+            this.location1Mock = new Mock();
+            this.location2Mock = new Mock();
+            this.locations = [this.location1Mock, this.location2Mock];
             this.content = new Mock();
             this.location = new Mock();
 
@@ -44,9 +45,7 @@ YUI.add('ez-locationsloadplugin-tests', function (Y) {
             delete this.service;
         },
 
-        "Should load locations on `loadLocations` event": function () {
-            var that = this;
-
+        _setupContentMock: function (error, locations) {
             Mock.expect(this.content, {
                 method: 'loadLocations',
                 args: [Mock.Value.Object, Mock.Value.Function],
@@ -56,9 +55,15 @@ YUI.add('ez-locationsloadplugin-tests', function (Y) {
                         "Location should not be defined"
                     );
 
-                    callback(false, that.locations);
+                    callback(error, locations);
                 }
             });
+        },
+
+        "Should load locations on `loadLocations` event": function () {
+            var that = this;
+
+            this._setupContentMock(false, that.locations);
 
             this.view.fire('loadLocations', {
                 content: that.content
@@ -75,21 +80,46 @@ YUI.add('ez-locationsloadplugin-tests', function (Y) {
             );
         },
 
+        _setupLocationLoadPathMock: function (error, locationMock) {
+            Mock.expect(locationMock, {
+                method: 'loadPath',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (options, callback) {
+                    callback(error, location);
+                }
+            });
+        },
+
+        "Should load locations with path on `loadLocations` event": function () {
+            var that = this;
+
+            this._setupLocationLoadPathMock(false, that.location1Mock);
+            this._setupLocationLoadPathMock(false, that.location2Mock);
+            this._setupContentMock(false, that.locations);
+
+            this.view.fire('loadLocations', {
+                content: that.content,
+                loadPath: true
+            });
+
+            Assert.areSame(
+                this.locations,
+                this.view.get('locations'),
+                "The locations should be retrieved"
+            );
+            Mock.verify(that.location1Mock);
+            Mock.verify(that.location2Mock);
+
+            Assert.isFalse(
+                this.view.get('loadingError'),
+                "The error event should not be fired"
+            );
+        },
+
         "Should handle loading errors": function () {
             var that = this;
 
-            Mock.expect(this.content, {
-                method: 'loadLocations',
-                args: [Mock.Value.Object, Mock.Value.Function],
-                run: function (options, callback) {
-                    Assert.isUndefined(
-                        options.location,
-                        "Location should not be defined"
-                    );
-
-                    callback(true);
-                }
-            });
+            this._setupContentMock(true);
 
             this.view.fire('loadLocations', {
                 content: that.content
@@ -103,6 +133,26 @@ YUI.add('ez-locationsloadplugin-tests', function (Y) {
                 this.view.get('loadingError'),
                 "The error event should be fired"
             );
+        },
+
+        "Should handle error when loading location with path on `loadLocations` event": function () {
+            var that = this;
+
+            this._setupLocationLoadPathMock(true, that.location1Mock);
+            this._setupLocationLoadPathMock(false, that.location2Mock);
+            this._setupContentMock(false, that.locations);
+
+            this.view.fire('loadLocations', {
+                content: that.content,
+                loadPath: true
+            });
+
+            Assert.isTrue(
+                this.view.get('loadingError'),
+                "The error event should be fired"
+            );
+            Mock.verify(that.location1Mock);
+            Mock.verify(that.location2Mock);
         },
 
         "Should allow passing the location into options": function () {

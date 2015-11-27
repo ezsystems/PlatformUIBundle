@@ -1,25 +1,66 @@
 <?php
 
 /**
- * File containing the Remove Functions for context class PlatformUI.
+ * File containing the Copy Functions for context class PlatformUI.
  *
  * @copyright Copyright (C) eZ Systems AS. All rights reserved.
  * @license For full copyright and license information view LICENSE file distributed with this source code.
  * @version //autogentag//
  */
-namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
+namespace EzSystems\PlatformUIBundle\Features\Context;
 
-trait Remove
+class ContentActions extends PlatformUI
 {
+    /**
+     * @Then I am notified that :name has been copied under :destiny
+     */
+    public function iSeeCopiedNotification($name, $destiny)
+    {
+        $message = "'$name' has been successfully copied under '$destiny'";
+        $this->iSeeNotification($message);
+    }
+
+    /**
+     * @When I move :name into the :destiny folder
+     */
+    public function moveInto($name, $destiny)
+    {
+        $this->onFullView($name);
+        $this->clickActionBar('Move');
+        $this->selectFromUniversalDiscovery("Home/$destiny");
+        $this->confirmSelection();
+        $destinyName = explode('/', $destiny);
+        $destinyName = end($destinyName);
+        $this->iSeeMovedNotification($name, $destinyName);
+        $this->mapContentPath($name, "$destiny/$name");
+    }
+
+    /**
+     * @Then :name is moved
+     */
+    public function contentIsMoved($name)
+    {
+        $path = $this->getContentPath($name);
+        $this->goToContentWithPath($path);
+    }
+
+    /**
+     * @Then I am notified that :name has been moved under :destiny
+     */
+    public function iSeeMovedNotification($name, $destiny)
+    {
+        $message = "'$name' has been successfully moved under '$destiny'";
+        $this->iSeeNotification($message);
+    }
+
     /**
      * @When I remove :name
      */
     public function removeContent($name)
     {
         $this->onFullView($name);
-        $this->waitForLoadings();
+        $this->waitWhileLoading();
         $this->clickActionBar('Send to Trash');
-        $this->waitForLoadings();
     }
 
     /**
@@ -33,7 +74,6 @@ trait Remove
 
     /**
      * Cancel content removal.
-     * @When I do not confirm the removal
      * @When I cancel the removal
      */
     public function cancelRemoval()

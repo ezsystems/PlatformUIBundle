@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenttypemodel-tests', function (Y) {
-    var modelTest, hasFieldTypeTest,
+    var modelTest, hasFieldTypeTest, getFieldDefinitionIdentifiersTest,
         Assert = Y.Assert;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
@@ -337,7 +337,52 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
         },
     });
 
+    getFieldDefinitionIdentifiersTest = new Y.Test.Case({
+        name: "eZ ContentType Model hasFieldType tests",
+
+        setUp: function () {
+            this.contentType = new Y.eZ.ContentType({
+                fieldDefinitions: {
+                    'name': {
+                        fieldType: 'ezstring',
+                    },
+                    'user_account': {
+                        fieldType: 'ezuser',
+                    },
+                    'first_name': {
+                        fieldType: 'ezstring',
+                    },
+                    'avatar': {
+                        fieldType: 'ezimage',
+                    },
+                },
+            });
+        },
+
+        tearDown: function () {
+            this.contentType.destroy();
+        },
+
+        "Should return the identifiers of the ezstring fields": function () {
+            var identifiers = this.contentType.getFieldDefinitionIdentifiers('ezstring');
+
+            Assert.areEqual(
+                2, identifiers.length,
+                "getFieldDefinitionIdentifiers should find 2 fields"
+            );
+            Assert.areEqual(
+                "name", identifiers[0],
+                "The name field should be detected as a ezstring field"
+            );
+            Assert.areEqual(
+                "first_name", identifiers[1],
+                "The first_name field should be detected as a ezstring field"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ ContentType Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(hasFieldTypeTest);
+    Y.Test.Runner.add(getFieldDefinitionIdentifiersTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contenttypemodel', 'ez-restmodel']});

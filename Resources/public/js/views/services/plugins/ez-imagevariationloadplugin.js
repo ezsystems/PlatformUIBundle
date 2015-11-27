@@ -37,24 +37,40 @@ YUI.add('ez-imagevariationloadplugin', function (Y) {
         _loadImageVariation: function (e) {
             var cs = this.get('host').get('capi').getContentService(),
                 field = e.field,
-                variationId = e.variation;
+                variationId = e.variation,
+                callback = e.callback ? e.callback : Y.bind(this._setResultAttributes, this, e.target);
 
             cs.loadImageVariation(field.fieldValue.variations[variationId].href, function (error, response) {
-                if (error) {
-                    e.target.set("loadingError", true);
-                } else {
-                    e.target.setAttrs({
-                        imageVariation: response.document.ContentImageVariation,
-                        loadingError: false,
-                    });
-                }
+                callback(error, error ? undefined : response.document.ContentImageVariation);
             });
         },
+
+        /**
+         * Sets the result of the loadImageVariation call to the emitter view.
+         * It's the default callback when the variation is loaded.
+         *
+         * @method _setResultAttributes
+         * @param {View} view
+         * @param {false|CAPIError} error
+         * @param {Object} imgVariation
+         * @protected
+         */
+        _setResultAttributes: function (view, error, imgVariation) {
+            if (error) {
+                view.set("loadingError", true);
+            } else {
+                view.setAttrs({
+                    imageVariation: imgVariation,
+                    loadingError: false,
+                });
+            }
+        }
     }, {
         NS: 'imageVariationLoad',
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.ImageVariationLoad, ['locationViewViewService', 'contentEditViewService']
+        Y.eZ.Plugin.ImageVariationLoad,
+        ['locationViewViewService', 'contentEditViewService', 'contentCreateViewService']
     );
 });

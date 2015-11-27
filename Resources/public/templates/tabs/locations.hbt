@@ -29,7 +29,16 @@
                                         data-main-location="{{#if isMainLocation}}1{{else}}0{{/if}}">
                                 </td>
                                 <td>
-                                    <a href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}">{{ pathString }}</a>
+                                    <ul class="ez-breadcrumbs-list">
+                                        {{#each this.path}}
+                                        <li class="ez-breadcrumbs-item">
+                                            <a href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}">{{ contentInfo.name }}</a>
+                                        </li>
+                                        {{/each}}
+                                        <li class="ez-breadcrumbs-item">
+                                            <a href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}">{{ contentInfo.name }}</a>
+                                        </li>
+                                    </ul>
                                 </td>
                                 <td class="ez-table-data-childcount">{{ childCount }}</td>
                                 <td class="ez-table-data-visibility">

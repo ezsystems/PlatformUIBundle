@@ -45,7 +45,17 @@
 }
 
 .ez-view-richtexteditview.is-focused .ez-page-header-name {
-    display: block;
+    display: inline-block;
+}
+
+.ez-view-richtexteditview .ez-richtext-save-and-return {
+    display: none;
+    margin: 0.5em 0 1em 0;
+    float: right;
+}
+
+.ez-view-richtexteditview.is-focused .ez-richtext-save-and-return {
+    display: inline-block;
 }
 
 .ez-view-richtexteditview .ez-editfield-infos {
@@ -64,7 +74,6 @@
 
 .ez-view-richtexteditview.is-focused .ez-editfield-row {
     padding-left: 0;
-    padding-right: 230px;
     height: 100%;
 }
 
@@ -73,20 +82,11 @@
     overflow-y: auto;
 }
 
-.ez-view-richtexteditview .ez-focusmodeactionbar-container {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 230px;
-    height: 100%;
-
-    display: none;
-}
-
-.ez-view-richtexteditview.is-focused .ez-focusmodeactionbar-container {
-    display: block;
-}
-
 .ez-view-richtexteditview .ez-field-description {
     margin: 0;
+}
+
+.ez-view-richtexteditview.is-focused .ez-richtext-input-ui {
+    box-sizing: border-box;
+    padding-left: 2em;
 }

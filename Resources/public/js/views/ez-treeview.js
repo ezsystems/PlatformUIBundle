@@ -146,7 +146,9 @@ YUI.add('ez-treeview', function (Y) {
          */
         _uiLoad: function (e) {
             this._renderNodeChildren(e.node);
-            if ( !e.node.isRoot() ) {
+            if ( e.node.isRoot() ) {
+                this.get('container').addClass(IS_TREE_LOADED);
+            } else {
                 this._getElementYNode(e.node).removeClass(IS_TREE_NODE_LOADING);
             }
         },
@@ -218,7 +220,6 @@ YUI.add('ez-treeview', function (Y) {
                 nodeJson = this._nodeToJson(node);
 
             if ( node.isRoot() ) {
-                this.get('container').addClass(IS_TREE_LOADED);
                 this._getTreeContentNode().append(template(nodeJson));
             } else {
                 this._getElementYNode(node).append(template(nodeJson));

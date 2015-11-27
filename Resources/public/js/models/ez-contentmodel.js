@@ -171,7 +171,7 @@ YUI.add('ez-contentmodel', function (Y) {
          * @return {Boolean}
          */
         hasTranslation: function (languageCode) {
-            return (this.get('currentVersion').getTranslationsList().indexOf(languageCode) !== -1);
+            return this.get('currentVersion').hasTranslation(languageCode);
         },
 
         /**

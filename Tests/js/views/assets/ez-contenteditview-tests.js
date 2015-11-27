@@ -15,7 +15,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                     returns: {}
                 };
 
-            Y.Array.each(['content', 'contentType', 'owner', 'mainLocation', 'version'], function (mock) {
+            Y.Array.each(['content', 'contentType', 'owner', 'mainLocation', 'version', 'user'], function (mock) {
                 this[mock] = new Y.Mock();
                 Y.Mock.expect(this[mock], mockConf);
             }, this);
@@ -63,7 +63,8 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 owner: this.owner,
                 formView: this.formView,
                 actionBar: this.actionBar,
-                languageCode: this.languageCode
+                languageCode: this.languageCode,
+                user: this.user,
             });
         },
 
@@ -299,7 +300,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                     returns: {}
                 };
 
-            Y.Array.each(['content', 'contentType', 'owner', 'mainLocation', 'version'], function (mock) {
+            Y.Array.each(['content', 'contentType', 'owner', 'mainLocation', 'version', 'user'], function (mock) {
                 this[mock] = new Y.Mock();
                 Y.Mock.expect(this[mock], mockConf);
             }, this);
@@ -345,7 +346,8 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 version: this.version,
                 owner: this.owner,
                 formView: this.formView,
-                actionBar: this.actionBar
+                actionBar: this.actionBar,
+                user: this.user,
             });
         },
 
@@ -380,6 +382,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                     contentType: {},
                     config: {},
                     version: {},
+                    user: {}
                 },
             });
 
@@ -402,6 +405,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 config: {},
                 owner: {},
                 languageCode: {},
+                user: {},
             });
         },
 

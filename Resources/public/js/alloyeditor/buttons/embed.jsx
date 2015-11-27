@@ -47,8 +47,11 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
          * @protected
          */
         _addEmbed: function (e) {
+            var contentInfo = e.selection.contentInfo;
+
             this.execCommand();
-            this._setContentInfo(e.selection.contentInfo);
+            this._setContentInfo(contentInfo);
+            this._getWidget().setWidgetContent(contentInfo.get('name'));
         },
 
         render: function () {

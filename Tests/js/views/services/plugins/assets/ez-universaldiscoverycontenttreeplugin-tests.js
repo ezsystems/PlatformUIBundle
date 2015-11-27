@@ -16,6 +16,7 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
             this.treeView = new Y.Base();
             this.view = new Y.Base();
             this.view.set('treeView', this.treeView);
+            this.view.set('loadContent', false);
             this.view.addTarget(this.service);
             this.plugin = new Y.eZ.Plugin.UniversalDiscoveryContentTree({
                 host: this.service
@@ -55,9 +56,14 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
                 cleared = false,
                 load = false;
 
-            tree.on('clear', function () {
+            tree.after('clear', Y.bind(function () {
                 cleared = true;
-            });
+
+                Assert.areSame(
+                    this.view.get('loadContent'), tree.rootNode.data.loadContent,
+                    "The loadContent flag should be set from the view"
+                );
+            }, this));
 
             tree.lazy.on('load', function (e) {
                 Assert.areSame(
@@ -94,6 +100,11 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
             Assert.isTrue(load, "The tree root node should be loaded");
             Mock.verify(this.capi);
             Mock.verify(contentService);
+        },
+
+        "Should set the loadContent flag from the view": function () {
+            this.view.set('loadContent', true);
+            this["Should rebuild the tree if the view is visible"]();
         },
 
         "Should initialize the tree starting from the Location #1": function () {

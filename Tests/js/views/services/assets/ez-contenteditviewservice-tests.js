@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenteditviewservice-tests', function (Y) {
-    var cevlTest, eventTest, redirectionUrlTest, getViewParametersTest, changeLanguageTest,
+    var cevlTest, redirectEventsTest, redirectionUrlTest, getViewParametersTest, changeLanguageTest,
+        requestChangeTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     cevlTest = new Y.Test.Case({
@@ -17,7 +18,13 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             this.contentType = new Mock();
             this.owner = new Mock();
             this.version = new Mock();
-            this.app = {};
+            this.app = new Mock();
+            this.currentUser = {};
+            Mock.expect(this.app, {
+                method: 'get',
+                args: ['user'],
+                returns: this.currentUser,
+            });
 
             this.viewLocationRoute = '/view/something';
             this.locationId = 'something';
@@ -25,19 +32,34 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             this.languageCode = 'eng-GB';
             this.baseLanguageCode = 'pol-PL';
             this.newLanguageCode = 'ger-DE';
-            this.request = {params: {id: "/api/ezp/v2/content/objects/59", languageCode: this.languageCode}};
+            this.contentId = "/api/ezp/v2/content/objects/59";
+            this.versionId = this.contentId + '/version/42';
+            this.request = {
+                params: {
+                    id: this.contentId,
+                    languageCode: this.languageCode
+                }
+            };
             this.requestBaseLanguage = {
                 params: {
-                    id: "/api/ezp/v2/content/objects/59",
+                    id: this.contentId,
                     languageCode: this.newLanguageCode,
                     baseLanguageCode: this.baseLanguageCode
+                }
+            };
+            this.requestEditVersion = {
+                params: {
+                    id: this.contentId,
+                    languageCode: this.languageCode,
+                    versionId: this.versionId,
                 }
             };
 
             this.resources = {
                 'Owner': '/api/ezp/v2/user/users/14',
                 'MainLocation': '/api/ezp/v2/content/locations/1/2/61',
-                'ContentType': '/api/ezp/v2/content/types/23'
+                'ContentType': '/api/ezp/v2/content/types/23',
+                'Content': this.request.params.id,
             };
             this.fields = {
                 name: {
@@ -70,8 +92,15 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             });
             Mock.expect(this.contentInfo, {
                 method: 'get',
-                args: ['resources'],
-                returns: this.resources,
+                args: [Mock.Value.String],
+                run: Y.bind(function (attr) {
+                    if ( attr === 'id' ) {
+                        return this.request.params.id;
+                    } else if ( attr === 'resources' ) {
+                        return this.resources;
+                    }
+                    Y.fail('Unexpected contentInfo.get("' + attr + '")');
+                }, this),
             });
 
             Mock.expect(this.content, {
@@ -128,6 +157,7 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 contentType: this.contentType,
                 owner: this.owner,
                 version: this.version,
+                user: this.user,
             });
         },
 
@@ -295,8 +325,84 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             });
             service.load(function () {
                 callbackCalled = true;
+
             });
             Assert.isTrue(callbackCalled, "The callback should be called");
+        },
+
+        _configureVersionMock: function (loadSuccess, isDraft, versionContentId, hasTranslation, ownedByCurrentUser) {
+            Mock.expect(this.version, {
+                method: 'set',
+                args: ['id', this.versionId],
+            });
+            Mock.expect(this.version, {
+                method: 'load',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (options, callback) {
+                    Assert.areSame(
+                        this.capiMock, options.api,
+                        "The capi should be passed to load"
+                    );
+                    callback(!loadSuccess);
+                }, this),
+            });
+            Mock.expect(this.version, {
+                method: 'isDraft',
+                returns: isDraft,
+            });
+            Mock.expect(this.version, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: Y.bind(function (attr) {
+                    if ( attr === 'resources' ) {
+                        return {Content: versionContentId};
+                    } else if ( attr === 'id' ) {
+                        return this.versionId;
+                    }
+                    Y.fail('Unexpected version.get("' + attr + '")');
+                }, this)
+            });
+            Mock.expect(this.version, {
+                method: 'hasTranslation',
+                args: [this.languageCode],
+                returns: hasTranslation,
+            });
+            Mock.expect(this.version, {
+                method: 'createdBy',
+                args: [this.currentUser],
+                returns: ownedByCurrentUser,
+            });
+        },
+
+        "Should load the content, the location, the content type, the owner and the version": function () {
+            var service,
+                callbackCalled = false,
+                success = true, isDraft = true, hasTranslation = true, ownedByCurrentUser = true;
+
+            this._configureMocksLoading('none');
+            this._configureVersionMock(success, isDraft, this.contentId, hasTranslation, ownedByCurrentUser);
+            this.service = service = this._getService(this.requestEditVersion);
+            service.load(function () {
+                callbackCalled = true;
+            });
+
+            Assert.isTrue(callbackCalled, "The next function should have been called");
+        },
+
+        "Should load the content, the content type, the owner and the version": function () {
+            var service,
+                callbackCalled = false,
+                success = true, isDraft = true, hasTranslation = true, ownedByCurrentUser = true;
+
+            delete this.resources.MainLocation;
+            this._configureMocksLoading('location');
+            this._configureVersionMock(success, isDraft, this.contentId, hasTranslation, ownedByCurrentUser);
+            this.service = service = this._getService(this.requestEditVersion);
+            service.load(function () {
+                callbackCalled = true;
+            });
+
+            Assert.isTrue(callbackCalled, "The next function should have been called");
         },
 
         "Should handle the first creation of a translation": function () {
@@ -418,12 +524,12 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         /**
          * @param {String} fail one of the value in this.mocks
          */
-        _testSubloadError: function (fail) {
+        _testSubloadError: function (fail, request) {
             var service,
                 errorTriggered = false;
 
             this._configureMocksLoading(fail);
-            this.service = service = this._getService(this.requestBaseLanguage);
+            this.service = service = this._getService(request);
             service.once('error', function (e) {
                 errorTriggered = true;
             });
@@ -436,41 +542,61 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
         },
 
         "Should fire the error event when the content loading fails":  function () {
-            this._testSubloadError('content');
+            this._testSubloadError('content', this.requestBaseLanguage);
         },
 
         "Should fire the error event when the location loading fails":  function () {
-            this._testSubloadError('mainLocation');
+            this._testSubloadError('mainLocation', this.requestBaseLanguage);
         },
 
         "Should fire the error event when the content type loading fails":  function () {
-            this._testSubloadError('contentType');
+            this._testSubloadError('contentType', this.requestBaseLanguage);
         },
 
         "Should fire the error event when the owner loading fails":  function () {
-            this._testSubloadError('owner');
+            this._testSubloadError('owner', this.requestBaseLanguage);
+        },
+
+        "Should fire the error event when the version loading fails": function () {
+            this._configureVersionMock(false, true, true, true);
+            this._testSubloadError('none', this.requestEditVersion);
+        },
+
+        "Should fire the error event when the version is not a draft": function () {
+            this._configureVersionMock(true, false, this.requestEditVersion.params.id, true, true);
+            this._testSubloadError('none', this.requestEditVersion);
+        },
+
+        "Should fire the error event when the version is not a version of the content id": function () {
+            this._configureVersionMock(true, false, '/not/' + this.requestEditVersion.params.id, true, true);
+            this._testSubloadError('none', this.requestEditVersion);
+        },
+
+        "Should fire the error event when the version is not available in the languageCode": function () {
+            this._configureVersionMock(true, true, this.requestEditVersion.params.id, false, true);
+            this._testSubloadError('none', this.requestEditVersion);
+        },
+
+        "Should fire the error event when the version was not created by the logged in user": function () {
+            this._configureVersionMock(true, true, this.requestEditVersion.params.id, true, false);
+            this._testSubloadError('none', this.requestEditVersion);
         },
     });
 
-    eventTest = new Y.Test.Case({
-        name: "eZ Content Edit View Service 'closeView' event test",
+    redirectEventsTest = new Y.Test.Case({
+        name: "eZ Content Edit View Service redirect events test",
 
         setUp: function () {
-            this.viewLocationRoute = '/view/something';
-            this.languageCode = 'pol-PL';
-            this.request = {params: {languageCode: this.languageCode}};
-
-            this.app = new Y.Mock();
-
-            Y.Mock.expect(this.app, {
-                method: 'navigate',
-                args: [this.viewLocationRoute],
-            });
+            this.app = new Mock();
+            this.location = new Mock();
+            this.content = new Y.Base();
+            this.content.set('resources', {});
 
             this.service = new Y.eZ.ContentEditViewService({
                 app: this.app,
-                closeRedirectionUrl: this.viewLocationRoute,
-                request: this.request
+                content: this.content,
+                location: this.location,
+                request: {params: {}},
             });
         },
 
@@ -479,9 +605,177 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             delete this.service;
         },
 
-        'Should redirect to the closeRedirectionUrl value': function () {
-            this.service.fire('test:closeView');
-            Y.Mock.verify(this.app);
+        _testAttributeHasValue: function (attr, eventName) {
+            var url = '/foo/fighters/saint/cecilia';
+
+            this.service.set(attr, url);
+            Mock.expect(this.app, {
+                method: 'navigate',
+                args: [url],
+            });
+            this.service.fire(eventName);
+            Mock.verify(this.app);
+        },
+
+        "Should redirect to `closeRedirectionUrl` attribute value": function () {
+            this._testAttributeHasValue('closeRedirectionUrl', 'whatever:closeView');
+        },
+
+        "Should redirect to `discardRedirectionUrl` attribute value": function () {
+            this._testAttributeHasValue('discardRedirectionUrl', 'discardedDraft');
+        },
+
+        "Should redirect to `publishRedirectionUrl` attribute value": function () {
+            this._testAttributeHasValue('publishRedirectionUrl', 'publishedDraft');
+        },
+
+        _getContentInfoMock: function (languageCode) {
+            var contentInfo = new Mock();
+
+            Mock.expect(contentInfo, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: languageCode,
+            });
+            return contentInfo;
+        },
+
+        _testContentWithMainLocationLoaded: function (eventName) {
+            var locationId = '/home/st/paul/de/varax',
+                languageCode = 'fre-FR';
+
+            this.content.set('resources', {MainLocation: locationId});
+            Mock.expect(this.location, {
+                method: 'isNew',
+                returns: false,
+            });
+            Mock.expect(this.location, {
+                method: 'get',
+                args: ['contentInfo'],
+                returns: this._getContentInfoMock(languageCode),
+            });
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: ['viewLocation', Mock.Value.Object],
+                run: Y.bind(function (routeName, params) {
+                    Assert.areEqual(
+                        locationId, params.id,
+                        "The user should be redirected to the view of the Location"
+                    );
+                    Assert.areEqual(
+                        languageCode, params.languageCode,
+                        "The user should be redirected to the view of the Location in the main language code"
+                    );
+                }, this),
+            });
+
+            this.service.fire(eventName);
+        },
+
+        "Should redirect the main location when loaded after `closeView`": function () {
+            this._testContentWithMainLocationLoaded('closeView');
+        },
+
+        "Should redirect the main location when loaded after `publishedDraft`": function () {
+            this._testContentWithMainLocationLoaded('publishedDraft');
+        },
+
+        "Should redirect the main location when loaded after `discardedDraft`": function () {
+            this._testContentWithMainLocationLoaded('discardedDraft');
+        },
+
+        _testContentWithMainLocationNotLoaded: function (eventName) {
+            var locationId = '/home/st/paul/de/varax',
+                languageCode = 'fre-FR';
+
+            this.content.set('resources', {MainLocation: locationId});
+            Mock.expect(this.location, {
+                method: 'isNew',
+                returns: true,
+            });
+            Mock.expect(this.location, {
+                method: 'set',
+                args: ['id', locationId],
+            });
+            Mock.expect(this.location, {
+                method: 'load',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (options, callback) {
+                    callback();
+                },
+            });
+            Mock.expect(this.location, {
+                method: 'get',
+                args: ['contentInfo'],
+                returns: this._getContentInfoMock(languageCode),
+            });
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: ['viewLocation', Mock.Value.Object],
+                run: Y.bind(function (routeName, params) {
+                    Assert.areEqual(
+                        locationId, params.id,
+                        "The user should be redirected to the view of the Location"
+                    );
+                    Assert.areEqual(
+                        languageCode, params.languageCode,
+                        "The user should be redirected to the view of the Location in the main language code"
+                    );
+                }, this),
+            });
+
+            this.service.fire(eventName);
+        },
+
+        "Should load and redirect the main location after `closeView`": function () {
+            this._testContentWithMainLocationNotLoaded('closeView');
+        },
+
+        "Should load and redirect the main location after `publishedDraft`": function () {
+            this._testContentWithMainLocationNotLoaded('publishedDraft');
+        },
+
+        "Should load and redirect the main location after `discardedDraft`": function () {
+            this._testContentWithMainLocationNotLoaded('discardedDraft');
+        },
+
+        _testNoLocation: function (eventName) {
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: ['dashboard'],
+            });
+            this.service.fire(eventName);
+            Mock.verify(this.app);
+        },
+
+        "Should redirect to the dashboard after `closeView` with a content without main location": function () {
+            this._testNoLocation('whatever:closeView');
+        },
+
+        "Should redirect to the dashboard after `discardedDraft` with a content without main location": function () {
+            this._testNoLocation('discardedDraft');
+        },
+
+        "Should redirect to the dashboard after `publishedDraft` with a content without main location": function () {
+            this._testNoLocation('publishedDraft');
+        },
+    });
+
+    requestChangeTest = new Y.Test.Case({
+        name: "eZ Content Edit View Service 'closeView' event test",
+
+        setUp: function () {
+            this.languageCode = 'pol-PL';
+            this.request = {params: {languageCode: this.languageCode}};
+
+            this.service = new Y.eZ.ContentEditViewService({
+                request: this.request
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
         },
 
         'Should set languageCode and baseLanguageCode': function () {
@@ -519,37 +813,6 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             });
         },
 
-        _defaultViewLocation: function (attr) {
-            var locationId = 'communication-breakdown',
-                uri = '/led-zeppelin/' + locationId;
-
-            Mock.expect(this.location, {
-                method: 'get',
-                args: ['id'],
-                returns: locationId,
-            });
-            Mock.expect(this.app, {
-                method: 'routeUri',
-                args: ['viewLocation', Mock.Value.Object],
-                run: function (routeName, options) {
-                    Assert.isObject(options, "The routeUri params should be an object");
-                    Assert.areEqual(
-                        locationId,
-                        options.id,
-                        "The current location id should be passed to routeUri"
-                    );
-                    return uri;
-                }
-            });
-
-            Assert.areEqual(
-                uri, this.service.get(attr),
-                "The " + attr + " default value should be the view location of the location"
-            );
-            Mock.verify(this.location);
-            Mock.verify(this.service);
-        },
-
         _definedValue: function (attr) {
             var uri = '/led-zeppelin/over-the-hills-and-far-away';
 
@@ -576,18 +839,6 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 uri, this.service.get(attr),
                 "The " + attr + " value should be the result of the function"
             );
-        },
-
-        "closeRedirectionUrl default value": function () {
-            this._defaultViewLocation('closeRedirectionUrl');
-        },
-
-        "discardRedirectionUrl default value": function () {
-            this._defaultViewLocation('closeRedirectionUrl');
-        },
-
-        "publishRedirectionUrl default value": function () {
-            this._defaultViewLocation('closeRedirectionUrl');
         },
 
         "closeRedirectionUrl defined value": function () {
@@ -620,11 +871,20 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
 
         setUp: function () {
             this.content = new Mock();
+            this.app = new Mock();
+            this.user = {};
+            Mock.expect(this.app, {
+                method: 'get',
+                args: ['user'],
+                returns: this.user,
+            });
+
             this.contentType = {};
             this.location = {};
             this.owner = {};
             this.version = {};
             this.config = {};
+
             this.languageCode = 'pol-PL';
             this.mainLanguageCode = 'ger-DE';
             this.request = {params: {languageCode: this.languageCode}};
@@ -645,12 +905,14 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             delete this.config;
             delete this.owner;
             delete this.version;
+            delete this.user;
         },
 
         "Should get the view parameters": function () {
             var params;
 
             this.service = new Y.eZ.ContentEditViewService({
+                app: this.app,
                 content: this.content,
                 contentType: this.contentType,
                 location: this.location,
@@ -658,7 +920,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
                 owner: this.owner,
                 version: this.version,
                 request: this.request,
-                languageCode: this.languageCode
+                languageCode: this.languageCode,
+                user: this.user,
             });
 
             params = this.service.getViewParameters();
@@ -670,12 +933,14 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             Y.Assert.areSame(this.owner, params.owner, 'The owner should be available in the return value of getViewParameters');
             Y.Assert.areSame(this.location, params.mainLocation, 'The location should be available in the return value of getViewParameters');
             Y.Assert.areSame(this.languageCode, params.languageCode, 'The languageCode should be available in the return value of getViewParameters');
+            Y.Assert.areSame(this.user, params.user, 'The user should be available in the return value of getViewParameters');
         },
 
         "Should return content's main language code in the view parameters": function () {
             var params;
 
             this.service = new Y.eZ.ContentEditViewService({
+                app: this.app,
                 content: this.content,
                 request: {params: {}},
             });
@@ -800,7 +1065,8 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Content Edit View Service tests");
     Y.Test.Runner.add(cevlTest);
-    Y.Test.Runner.add(eventTest);
+    Y.Test.Runner.add(redirectEventsTest);
+    Y.Test.Runner.add(requestChangeTest);
     Y.Test.Runner.add(redirectionUrlTest);
     Y.Test.Runner.add(getViewParametersTest);
     Y.Test.Runner.add(changeLanguageTest);

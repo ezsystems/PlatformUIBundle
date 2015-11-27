@@ -196,6 +196,10 @@ YUI.add('ez-locationviewlocationstabview-tests', function (Y) {
                     e.location,
                     "The event facade should contain the location"
                 );
+                Assert.isTrue(
+                    e.loadPath,
+                    "The event facade should have loadPath set to true"
+                );
             });
 
             this.view.set('active', true);
