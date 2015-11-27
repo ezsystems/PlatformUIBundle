@@ -32,6 +32,8 @@ YUI.add('ez-versionmodel', function (Y) {
          * supported
          * @param {Object} options the options for the sync.
          * @param {Object} options.api the JS REST client instance
+         * @param {Object} options.languageCode the language in which the fields
+         * should be loaded
          * @param {Function} callback a callback executed when the operation is finished
          */
         sync: function (action, options, callback) {
@@ -39,7 +41,7 @@ YUI.add('ez-versionmodel', function (Y) {
                 contentService = api.getContentService();
 
             if ( action === 'read' ) {
-                contentService.loadContent(this.get('id'), callback);
+                contentService.loadContent(this.get('id'), options.languageCode, callback);
             } else if ( action === 'create' ) {
                 this._createVersion(options, callback);
             } else if ( action === 'update' ) {
@@ -210,8 +212,39 @@ YUI.add('ez-versionmodel', function (Y) {
          */
         getTranslationsList: function () {
             return this.get('languageCodes').split(',');
-        }
+        },
 
+        /**
+         * Checks whether the version is translated into `languageCode`
+         *
+         * @method hasTranslation
+         * @param {String} languageCode
+         * @return {Boolean}
+         */
+        hasTranslation: function (languageCode) {
+            return (this.getTranslationsList().indexOf(languageCode) !== -1);
+        },
+
+        /**
+         * Checks whether the version is a draft
+         *
+         * @method isDraft
+         * @return {Boolean}
+         */
+        isDraft: function () {
+            return (this.get('status') === 'DRAFT');
+        },
+
+        /**
+         * Checks whether the version was created by the `user`
+         *
+         * @method createdBy
+         * @param {eZ.User} user
+         * @return {Boolean}
+         */
+        createdBy: function (user) {
+            return (this.get('resources').Creator === user.get('id'));
+        },
     }, {
         REST_STRUCT_ROOT: "Version.VersionInfo",
         ATTRS_REST_MAP: [

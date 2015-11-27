@@ -60,7 +60,8 @@ YUI.add('ez-publishdraftplugin', function (Y) {
         },
 
         /**
-         * Redirects the user after the publishing process
+         * Notify the user about the publish process and fire the `publishedDraft`
+         * event.
          *
          * @method _publishDraftCallback
          * @protected
@@ -93,7 +94,6 @@ YUI.add('ez-publishdraftplugin', function (Y) {
                  * @param {eZ.Content} content
                  */
                 service.fire('publishedDraft', {content: content});
-                app.navigate(service.get('publishRedirectionUrl'));
             });
         },
 

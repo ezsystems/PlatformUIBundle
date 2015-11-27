@@ -168,10 +168,6 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                 method: 'set',
                 args: ['loading', true]
             });
-            Y.Mock.expect(this.app, {
-                method: 'navigate',
-                args: [this.publishRedirectionUrl],
-            });
 
             this.view.fire('whatever:publishAction', {
                 formIsValid: true,
@@ -240,10 +236,6 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
             Y.Mock.expect(this.app, {
                 method: 'set',
                 args: ['loading', true]
-            });
-            Y.Mock.expect(this.app, {
-                method: 'navigate',
-                args: [this.publishRedirectionUrl],
             });
 
             this.service.once('publishedDraft', function (e) {
@@ -364,10 +356,6 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
             Y.Mock.expect(this.app, {
                 method: 'set',
                 args: ['loading', true]
-            });
-            Y.Mock.expect(this.app, {
-                method: 'navigate',
-                args: [this.publishRedirectionUrl],
             });
             this.view.fire('whatever:publishAction', {
                 formIsValid: true,

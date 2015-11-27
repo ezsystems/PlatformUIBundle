@@ -23,12 +23,15 @@ YUI.add('ez-contenteditviewservice', function (Y) {
      */
     Y.eZ.ContentEditViewService = Y.Base.create('contentEditViewService', Y.eZ.ViewService, [], {
         initializer: function () {
-            this.on('*:closeView', this._handleCloseView);
             this.after('*:requestChange', function () {
                 this._setLanguageCode();
                 this._setBaseLanguageCode();
             });
             this.on('*:changeLanguage', this._selectLanguage);
+
+            this.after('*:closeView', this._redirectAfterClose);
+            this.after('discardedDraft', this._redirectAfterDiscard);
+            this.after('publishedDraft', this._redirectAfterPublish);
 
             this._setLanguageCode();
             this._setBaseLanguageCode();
@@ -46,7 +49,8 @@ YUI.add('ez-contenteditviewservice', function (Y) {
             var request = this.get('request'),
                 service = this,
                 languageCode = this.get('languageCode'),
-                baseLanguageCode = this.get('baseLanguageCode');
+                baseLanguageCode = this.get('baseLanguageCode'),
+                endVersionLoading;
 
             this.get('version').reset();
             this._loadContentInfo(request.params.id, function () {
@@ -55,7 +59,9 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                     content = service.get('content');
 
                 service._loadOwner(resources.Owner, tasks.add());
-                service._loadLocation(resources.MainLocation, tasks.add());
+                if ( resources.MainLocation ) {
+                    service._loadLocation(resources.MainLocation, tasks.add());
+                }
                 service._loadContentType(resources.ContentType, tasks.add());
 
                 if ( baseLanguageCode ) {
@@ -72,6 +78,14 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                         }
                     }));
                 }
+                if ( request.params.versionId ) {
+                    endVersionLoading = tasks.add();
+                    service._loadVersion(request.params.versionId, languageCode, function () {
+                        if ( service._canEditVersion() ) {
+                            endVersionLoading();
+                        }
+                    });
+                }
 
                 tasks.done(function () {
                     if ( baseLanguageCode && !content.hasTranslation(baseLanguageCode) ) {
@@ -84,10 +98,47 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                         );
                         return;
                     }
-                    service._setVersionFields();
+                    if ( !request.params.versionId ) {
+                        service._setVersionFields();
+                    }
                     next(service);
                 });
             });
+        },
+
+        /**
+         * Checks whether the version can be edited. A version can be edited if:
+         *   - it's a draft
+         *   - it's a version of the content which id is passed in the request
+         *   - it's translated into the language code passed in the request
+         *   - it was created by the currently logged in user
+         *
+         * @method _canEditVersion
+         * @protected
+         * @return {Boolean}
+         */
+        _canEditVersion: function () {
+            var version = this.get('version'),
+                versionId = version.get('id'),
+                contentId = this.get('contentInfo').get('id');
+
+            if ( !version.isDraft() ) {
+                this._error("The version '" + versionId + "' is not a draft.");
+                return false;
+            }
+            if ( version.get('resources').Content !== contentId ) {
+                this._error("The version '" + versionId + "' is not a version of the content '" + contentId  + "'");
+                return false;
+            }
+            if ( !version.hasTranslation(this.get('languageCode')) ) {
+                this._error("The version '" + versionId + "' does not exist in '" + this.get('languageCode') + "'");
+                return false;
+            }
+            if ( !version.createdBy(this.get('app').get('user')) ) {
+                this._error("The version '" + versionId + "' does not belong to you");
+                return false;
+            }
+            return true;
         },
 
         /**
@@ -165,6 +216,25 @@ YUI.add('ez-contenteditviewservice', function (Y) {
                 callback
             );
          },
+
+        /**
+         * Loads a version by its id and language code
+         *
+         * @method _loadVersion
+         * @protected
+         * @param {String} id
+         * @param {String} languageCode
+         * @param {Function} callback
+         */
+        _loadVersion: function (id, languageCode, callback) {
+            this._loadModel(
+                'version',
+                id,
+                {languageCode: languageCode},
+                "Could not load the version with id '" + id + "' and languageCode '" + languageCode + "'",
+                callback
+            );
+        },
 
         /**
          * Loads a content info by its id
@@ -262,13 +332,83 @@ YUI.add('ez-contenteditviewservice', function (Y) {
         },
 
         /**
-         * Close view event handler.
+         * `publishedDraft` event handler. It redirects the user according to
+         * the `publishRedirectionUrl` attribute value.
          *
-         * @method _handleCloseView
+         * @method _redirectAfterPublish
          * @protected
          */
-        _handleCloseView: function () {
-            this.get('app').navigate(this.get('closeRedirectionUrl'));
+        _redirectAfterPublish: function () {
+            this._redirectToAttribute('publishRedirectionUrl');
+        },
+
+        /**
+         * `discardedDraft` event handler. It redirects the user according to
+         * the `discardRedirectionUrl` attribute.
+         *
+         * @method _redirectAfterDiscard
+         * @protected
+         */
+        _redirectAfterDiscard: function () {
+            this._redirectToAttribute('discardRedirectionUrl');
+        },
+
+        /**
+         * `*:closeView` event handler. It redirects the user according to the
+         * `closeRedirectionUrl` attribute.
+         *
+         * @method _redirectAfterClose
+         * @protected
+         */
+        _redirectAfterClose: function () {
+            this._redirectToAttribute('closeRedirectionUrl');
+        },
+
+        /**
+         * Navigates to view the Location. If the location is not loaded, it is
+         * first loaded.
+         *
+         * @method _navigateToViewLocation
+         * @private
+         */
+        _navigateToViewLocation: function () {
+            var locationId = this.get('content').get('resources').MainLocation,
+                doRedirectToViewLocation = Y.bind(function () {
+                    this.get('app').navigateTo('viewLocation', {
+                        id: locationId,
+                        languageCode: this.get('location').get('contentInfo').get('mainLanguageCode'),
+                    });
+                }, this);
+
+            if ( this.get('location').isNew() ) {
+                this._loadLocation(locationId, doRedirectToViewLocation);
+            } else {
+                doRedirectToViewLocation();
+            }
+        },
+
+        /**
+         * Redirects the user according the redirection `attr`. If the attribute
+         * is filled, its value is used to redirect the user, otherwise, the
+         * main location of the content is used and in last resort, the user is
+         * redirected to the 'dashboard'.
+         *
+         * @method _redirectToAttribute
+         * @param {String} attr one of the redirection URL attribute name
+         * @private
+         */
+        _redirectToAttribute: function (attr) {
+            var attrRedirectionUrl = this.get(attr);
+
+            if ( attrRedirectionUrl ) {
+                return this.get('app').navigate(attrRedirectionUrl);
+            }
+            if ( this.get('content').get('resources').MainLocation ) {
+                this._navigateToViewLocation();
+            } else {
+                // last option, we don't know where to redirect the user
+                this.get('app').navigateTo('dashboard');
+            }
         },
 
         /**
@@ -309,12 +449,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @return {String}
          */
         _redirectionUrl: function (value) {
-            if ( !value ) {
-                return this.get('app').routeUri( 'viewLocation', {
-                    id: this.get('location').get('id'),
-                    languageCode: this.get('languageCode')
-                });
-            } else if ( typeof value === 'function' ) {
+            if ( typeof value === 'function' ) {
                 return value.call(this);
             }
             return value;
