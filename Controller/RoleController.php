@@ -346,6 +346,6 @@ class RoleController extends Controller
             $this->notifyError('role.assignment.error.delete', [], 'role');
         }
 
-        return $this->redirectToRouteAfterFormPost('admin_roleView', ['roleId' => $roleAssignment->role->id]);
+        return $this->redirectToRouteAfterFormPost('admin_roleView', ['roleId' => $roleAssignment->role->id, 'tabId' => 'ez-tabs-content']);
     }
 }
