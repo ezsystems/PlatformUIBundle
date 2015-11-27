@@ -94,7 +94,7 @@
             </trans-unit>
             <trans-unit id="058b034a4aa957ab59f853e8375ff2b3" resname="section.assign.contents">
                 <source>section.assign.contents</source>
-                <target>Assign to contents</target>
+                <target>Assign to content</target>
             </trans-unit>
             <trans-unit id="419a9a2e9f888d56b6aea6e4cbb09561">
                 <source>section.notification.created</source>
