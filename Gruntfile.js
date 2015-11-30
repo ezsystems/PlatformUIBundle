@@ -29,6 +29,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/alloyeditor/buttons/*.js",
             "./Resources/public/js/alloyeditor/buttons/mixins/*.js",
             "./Resources/public/js/alloyeditor/plugins/*.js",
+            "./Resources/public/js/alloyeditor/processors/*.js",
         ],
         testFiles = [
             "./Tests/js/**/*.js",

@@ -92,6 +92,14 @@ system:
                 ez-alloyeditor-button-mixin-embedimage:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embedimage.js
+                ez-editorcontentprocessorbase:
+                    path: %ez_platformui.public_dir%/js/alloyeditor/processors/base.js
+                ez-editorcontentprocessorxhtml5edit:
+                    requires: ['ez-editorcontentprocessorbase']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/processors/xhtml5edit.js
+                ez-editorcontentprocessorremoveids:
+                    requires: ['ez-editorcontentprocessorbase']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/processors/removeids.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -565,6 +573,8 @@ system:
                         - 'ez-alloyeditor-button-blockremove'
                         - 'ez-alloyeditor-button-embedhref'
                         - 'ez-alloyeditor-button-imagehref'
+                        - 'ez-editorcontentprocessorxhtml5edit'
+                        - 'ez-editorcontentprocessorremoveids'
                         - 'richtexteditview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
                 richtexteditview-ez-template:

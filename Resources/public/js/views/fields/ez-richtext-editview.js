@@ -193,7 +193,7 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @return {Boolean}
          */
         _isEmpty: function () {
-            var section = Y.Node.create(this._getEditorContent()),
+            var section = Y.Node.create(this._getXHTML5EditValue()),
                 hasChildNodes = function (element) {
                     return !!element.get('children').size();
                 },
@@ -235,15 +235,6 @@ YUI.add('ez-richtext-editview', function (Y) {
                 return null;
             }
 
-            /**
-             * Holds the namespace of the xhtml5edit format
-             *
-             * @property _namespace
-             * @type {String}
-             * @default undefined
-             */
-            this._namespace = doc.documentElement.getAttribute('xmlns');
-
             fragment.appendChild(root);
             for (i = 0; i != doc.documentElement.childNodes.length; i++) {
                 root.appendChild(doc.documentElement.childNodes.item(i).cloneNode(true));
@@ -283,43 +274,28 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @return String
          */
         _getFieldValue: function () {
-            return {xml: this._getEditorContent()};
+            return {xml: this._getXHTML5EditValue()};
         },
 
         /**
-         * Returns the content of the editor.
+         * Returns the content of the editor in the XHTML5Edit format. The
+         * actual editor's content is passed through a set of
+         * EditorContentProcessors.
          *
-         * @method _getEditorContent
+         * @method _getXHTML5EditValue
          * @protected
          * @return {String}
          */
-        _getEditorContent: function () {
-            var data = this.get('editor').get('nativeEditor').getData(),
-                root, i, list,
-                body,
-                doc = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', null);
+        _getXHTML5EditValue: function () {
+            var data = this.get('editor').get('nativeEditor').getData();
 
-            // TODO: reorganize this code for instance in a set of
-            // EditorContentProcessors to do what it's done here, ie:
-            // * make sure we have an XHTML fragment
-            // * enclose the code in a section with the correct namespace
-            // * cleanup the auto-generated ids
-            body = doc.createElement('body');
-            doc.documentElement.appendChild(body);
-            root = doc.createElement('section');
-            body.appendChild(root);
-            root.innerHTML = data;
-            list = root.querySelectorAll('[id]');
-
-            for (i = 0; i != list.length; ++i) {
-                list[i].removeAttribute("id");
-            }
-            root.setAttribute('xmlns', this._namespace);
-            return root.outerHTML.trim();
-        }
+            Y.Array.each(this.get('editorContentProcessors'), function (processor) {
+                data = processor.process(data);
+            });
+            return data;
+        },
     }, {
         ATTRS: {
-
             /**
              * Stores the focus mode state. When true, the rich text UI is
              * supposed to be fullscreen with an action bar on the right.
@@ -395,6 +371,23 @@ YUI.add('ez-richtext-editview', function (Y) {
             forwardEvents: {
                 value: ['contentDiscover', 'loadImageVariation'],
                 readOnly: true,
+            },
+
+            /**
+             * Hold the list of editor content processors. Those components
+             * should have a `process` method and are there to clean up the
+             * editor content before using it through REST.
+             *
+             * @attribute editorContentProcessors
+             * @type Array of {eZ.EditorContentProcessor}
+             */
+            editorContentProcessors: {
+                valueFn: function () {
+                    return [
+                        new Y.eZ.EditorContentProcessorRemoveIds(),
+                        new Y.eZ.EditorContentProcessorXHTML5Edit(),
+                    ];
+                },
             },
         }
     });
