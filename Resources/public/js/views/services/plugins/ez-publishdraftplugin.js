@@ -37,14 +37,21 @@ YUI.add('ez-publishdraftplugin', function (Y) {
         _publishDraft: function (e) {
             var service = this.get('host'),
                 content = service.get('content'),
+                notificationIdentifier,
                 app = service.get('app');
 
             if ( !e.formIsValid ) {
                 return;
             }
+            if (content.isNew()) {
+                notificationIdentifier = this._buildNotificationIdentifier(false);
+            } else {
+                notificationIdentifier = this._buildNotificationIdentifier(content.get('id'));
+            }
+
             service.fire('notify', {
                 notification: {
-                    identifier: this._buildNotificationIdentifier(content.get('id')),
+                    identifier: notificationIdentifier,
                     text: 'Publishing the content',
                     state: 'started',
                     timeout: 5,
@@ -53,6 +60,7 @@ YUI.add('ez-publishdraftplugin', function (Y) {
 
             app.set('loading', true);
             if ( content.isNew() ) {
+                this._set('isNewContent', true);
                 this._createPublishContent(e.fields);
             } else {
                 this._savePublishVersion(e.fields);
@@ -69,7 +77,8 @@ YUI.add('ez-publishdraftplugin', function (Y) {
         _publishDraftCallback: function (error) {
             var service = this.get('host'),
                 app = this.get('host').get('app'),
-                content = service.get('content');
+                content = service.get('content'),
+                notificationIdentifier = this._buildNotificationIdentifier(content.get('id'));
 
             if ( error ) {
                 this._notifyError(content.get('id'));
@@ -77,9 +86,13 @@ YUI.add('ez-publishdraftplugin', function (Y) {
                 return;
             }
 
+            if (this.get('isNewContent')) {
+                notificationIdentifier = this._buildNotificationIdentifier(false);
+            }
+
             service.fire('notify', {
                 notification: {
-                    identifier: this._buildNotificationIdentifier(content.get('id')),
+                    identifier: notificationIdentifier,
                     text: 'Content has been published',
                     state: 'done',
                     timeout: 5,
@@ -182,10 +195,28 @@ YUI.add('ez-publishdraftplugin', function (Y) {
          * @protected
          */
         _buildNotificationIdentifier: function (contentId) {
-            return 'publish-' + contentId + '-' + this.get('host').get('languageCode');
+
+            if (contentId) {
+                return 'publish-' + contentId + '-' + this.get('host').get('languageCode');
+            } else {
+                return 'publish-' + this.get('host').get('languageCode');
+            }
         },
     }, {
         NS: 'publishDraft',
+
+        ATTRS: {
+            /**
+             * Hold the flag to see if the published content already exists
+             *
+             * @attribute isNewContent
+             * @type Boolean
+             * @default false
+             */
+            isNewContent: {
+                value: false
+            }
+        },
     });
 
     Y.eZ.PluginRegistry.registerPlugin(

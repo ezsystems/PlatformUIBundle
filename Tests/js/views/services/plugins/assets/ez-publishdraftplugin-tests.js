@@ -19,6 +19,11 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
             this.content = new Y.Mock();
             this.contentType = {};
             this.parentLocation = {};
+            this.publishStartedNotification = false;
+            this.startedNotificationIdentifier= 'something';
+            this.publishDoneNotification = false;
+            this.doneNotificationIdentifier = 'somethingElse';
+            this.isNew = true;
             this.createContentResponse = {
                 "Content": {
                     "CurrentVersion": {
@@ -110,19 +115,52 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
             delete this.contentType;
         },
 
+        _onNotification: function () {
+            var that = this;
+
+            this.service.on('notify', function (e) {
+                if (e.notification.state === 'started') {
+                    that.publishStartedNotification = true;
+                    that.startedNotificationIdentifier = e.notification.identifier;
+                } else if (e.notification.state === 'done') {
+                    that.publishDoneNotification = true;
+                    that.doneNotificationIdentifier = e.notification.identifier;
+                }
+
+                Assert.areEqual(
+                    5, e.notification.timeout,
+                    "The notification timeout should be 5"
+                );
+
+                if (that.isNew) {
+                    Assert.isFalse(
+                        (e.notification.identifier.indexOf(that.contentId) >= 0 ),
+                        "The notification identifier should NOT contain content's id because the content is new"
+                    );
+                } else {
+                    Assert.isTrue(
+                        (e.notification.identifier.indexOf(that.contentId) >= 0 ),
+                        "The notification identifier should contain content's id because the content is NOT new"
+                    );
+                }
+
+            });
+        },
+
         "Should publish the draft": function () {
             var fields = [{}, {}],
-                contentId = 'the-pretender',
                 that = this;
+
+            this.isNew = false;
 
             Y.Mock.expect(this.content, {
                 method: 'isNew',
-                returns: false,
+                returns: this.isNew,
             });
             Y.Mock.expect(this.content, {
                 method: 'get',
                 args: ['id'],
-                returns: contentId,
+                returns: this.contentId,
             });
             Y.Mock.expect(this.content, {
                 method: 'load',
@@ -154,7 +192,7 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                         options.publish,
                         "The publish option should be set true"
                     );
-                    Assert.areEqual(contentId, options.contentId, "The content id should be passed");
+                    Assert.areEqual(that.contentId, options.contentId, "The content id should be passed");
                     Assert.areSame(
                         that.languageCode,
                         options.languageCode,
@@ -271,15 +309,18 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                 response = {document: this.createContentResponse},
                 versionAttrs = {};
 
+            this.isNew = true;
+
             Y.Mock.expect(this.content, {
                 method: 'isNew',
-                returns: true,
+                returns: that.isNew,
+                callCount: 2,
             });
             Y.Mock.expect(this.content, {
                 method: 'get',
                 args: ['id'],
-                returns: this.contentId,
-                callCount: 2
+                returns: undefined,
+                callCount: 1
             });
             Y.Mock.expect(this.content, {
                 method: 'save',
@@ -381,30 +422,40 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
             Assert.isTrue(eventFired, "The plugin should have fired the publishedDraft event");
         },
 
-        "Should notify the user about the states of publishing process": function () {
-            var publishStartedNotification = false,
-                publishDoneNotification = false,
-                that = this;
+        "Should notify the user about the states of publishing process when creating and publishing a content": function () {
+            this.publishStartedNotification = false;
+            this.publishDoneNotification = false;
+            this.startedNotificationIdentifier = 'something';
+            this.doneNotificationIdentifier = 'somethingElse';
 
-            this.service.on('notify', function (e) {
-                if (e.notification.state === 'started') {
-                    publishStartedNotification = true;
-                } else if (e.notification.state === 'done') {
-                    publishDoneNotification = true;
-                }
+            this._onNotification();
 
-                Assert.areEqual(
-                    5, e.notification.timeout,
-                    "The notification timeout should be 5"
-                );
-                Assert.isTrue(
-                    (e.notification.identifier.indexOf(that.contentId) >= 0 ),
-                    "The notification identifier should contain content's id"
-                );
-            });
             this["Should create the content and publish it"]();
-            Assert.isTrue(publishStartedNotification, "The user should have been notified when publish process starts");
-            Assert.isTrue(publishDoneNotification, "The user should have been notified when publish process finishes");
+            Assert.isTrue(this.publishStartedNotification, "The user should have been notified when publish process starts");
+            Assert.isTrue(this.publishDoneNotification, "The user should have been notified when publish process finishes");
+            Assert.areSame(
+                this.doneNotificationIdentifier,
+                this.startedNotificationIdentifier,
+                "The two notifications should have the same identifier")
+            ;
+        },
+
+        "Should notify the user about the states of publishing process when publishing an already existing content": function () {
+            this.publishStartedNotification = false;
+            this.publishDoneNotification = false;
+            this.startedNotificationIdentifier = 'something';
+            this.doneNotificationIdentifier = 'somethingElse';
+
+            this._onNotification();
+
+            this["Should publish the draft"]();
+            Assert.isTrue(this.publishStartedNotification, "The user should have been notified when publish process starts");
+            Assert.isTrue(this.publishDoneNotification, "The user should have been notified when publish process finishes");
+            Assert.areSame(
+                this.doneNotificationIdentifier,
+                this.startedNotificationIdentifier,
+                "The two notifications should have the same identifier"
+            );
         },
 
         "Should handle content creation error": function () {
