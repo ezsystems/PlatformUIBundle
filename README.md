@@ -27,7 +27,7 @@ On an existing installation, here's what you need to do:
   $ composer require ezsystems/platform-ui-bundle:dev-master
   ```
 
-* In `ezpublish/EzPublishKernel.php` add an instance of the following classes to
+* In `app/AppKernel.php` add an instance of the following classes to
   the list of registered bundles:
 
   ```php
@@ -44,7 +44,7 @@ On an existing installation, here's what you need to do:
   }
   ```
 
-* In `ezpublish/config/routing.yml` include the eZPlatformUIBundle routing
+* In `app/config/routing.yml` include the eZPlatformUIBundle routing
   configuration:
 
   ```yml
@@ -55,13 +55,13 @@ On an existing installation, here's what you need to do:
 * Run the following command:
 
   ```
-  $ php ezpublish/console assets:install --symlink
+  $ php app/console assets:install --symlink
   ```
 If you are running eZ Publish in the `prod` environment, you also need to dump
 the assets for Assetic with:
 
 ```
-php ezpublish/console assetic:dump --env=prod
+php app/console assetic:dump --env=prod
 ```
 
 Once this is done, you can go to http://[uri\_of\_ez]/ez to run the eZ Platform
