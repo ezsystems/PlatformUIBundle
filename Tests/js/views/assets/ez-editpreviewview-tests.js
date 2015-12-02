@@ -13,30 +13,45 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
 
         setUp: function () {
             this.contentId = 59;
+            this.currentVersionNo = 41;
             this.versionNo = 42;
-            this.previewName = 'Test elvish name';
+            this.versionIsNew = false;
+            this.versionName = 'Test elvish name';
+            this.currentVersionName = 'Current Test elvish name';
             this.languageCode = 'quenya';
             this.versionNames = {
                 'eng-GB': 'Test name',
-                'quenya': this.previewName,
+                'quenya': this.versionName,
             };
+            this.currentVersionNames = {
+                'eng-GB': 'Current version Test name',
+                'quenya': this.currentVersionName,
+            };
+            this.currentVersion = new Mock();
             this.contentMock = new Mock();
             Mock.expect(this.contentMock, {
                 method: 'get',
-                args: ['contentId'],
-                returns: this.contentId,
-            });
-            this.versionMock = new Mock();
-            Mock.expect(this.versionMock, {
-                method: 'get',
                 args: [Mock.Value.String],
                 run: Y.bind(function (attr) {
-                    if ( attr === 'versionNo' ) {
-                        return this.versionNo;
-                    } else if ( attr === 'names' ) {
-                        return this.versionNames;
+                    if ( attr === 'contentId' ) {
+                        return this.contentId;
+                    } else if ( attr === 'currentVersion' ) {
+                        return this.currentVersion;
                     }
-                    Y.fail('Unexpected version.get("' + attr + '")');
+                    Y.fail('Unexpected content.get("' + attr + '")');
+                }, this),
+            });
+            this.versionMock = new Mock();
+            this._configureVersionMock(
+                this.versionMock, this.versionNo, this.versionNames
+            );
+            this._configureVersionMock(
+                this.currentVersion, this.currentVersionNo, this.currentVersionNames
+            );
+            Mock.expect(this.versionMock, {
+                method: 'isNew',
+                run: Y.bind(function () {
+                    return this.versionIsNew;
                 }, this),
             });
 
@@ -48,11 +63,26 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
             });
         },
 
+        _configureVersionMock: function (version, versionNo, names) {
+            Mock.expect(version, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if ( attr === 'versionNo' ) {
+                        return versionNo;
+                    } else if ( attr === 'names' ) {
+                        return names;
+                    }
+                    Y.fail('Unexpected version.get("' + attr + '")');
+                },
+            });
+        },
+
         tearDown: function () {
             this.view.destroy();
         },
 
-        "Test render": function () {
+        "Should render the view with a template": function () {
             var templateCalled = false,
                 origTpl;
 
@@ -63,7 +93,6 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
             };
             this.view.render();
             Y.Assert.isTrue(templateCalled, "The template should have used to render the this.view");
-            Y.Assert.areNotEqual("", this.view.get('container').getHTML(), "View container should contain the result of the this.view");
 
             Assert.isTrue(
                 this.view.get('container').hasClass(IS_LOADING_CLASS),
@@ -71,26 +100,48 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
             );
         },
 
-        "Test available variable in template": function () {
-            var origTpl = this.view.template,
-                that = this;
-            this.view.template = function (variables) {
-                Y.Assert.isObject(variables, "The template should receive some variables");
-                Y.Assert.areEqual(3, Y.Object.keys(variables).length, "The template should receive 3 variables");
-                Y.Assert.isObject(variables.mode, "mode should be available in the template and should be an object");
-                Y.Assert.isString(variables.legend, "legend should be available in the template and should be a string");
-                Y.Assert.isString(variables.source, "source should be available in the template and should be a string");
-                Y.Assert.areSame(
-                    variables.legend,
-                    that.previewName,
-                    "preview title should be translated"
+        _checkTemplateVariables: function (variables, legend, source) {
+            Assert.isObject(variables, "The template should receive some variables");
+            Assert.areEqual(3, Y.Object.keys(variables).length, "The template should receive 3 variables");
+            Assert.isObject(variables.mode, "mode should be available in the template and should be an object");
+            Assert.areSame(
+                legend,
+                variables.legend,
+                "preview title should be translated"
+            );
+            Assert.areSame(
+                source,
+                variables.source,
+                "source should be made with versionNo, contentID, and languageCode"
+            );
+        },
+
+        "Should render the preview of the `version`": function () {
+            var origTpl = this.view.template;
+
+            this.view.template = Y.bind(function (variables) {
+                this._checkTemplateVariables(
+                    variables,
+                    this.versionName,
+                    '/content/versionview/' + this.contentId + '/' + this.versionNo + '/' + this.languageCode
                 );
-                Y.Assert.areSame(
-                    '/content/versionview/' + that.contentId + '/' + that.versionNo + '/' + that.view.get('languageCode'),
-                    variables.source,
-                    "source should be made with versionNo, contentID, and languageCode");
-                return origTpl.apply(this, arguments);
-            };
+                return origTpl.apply(this.view, arguments);
+            }, this);
+            this.view.render();
+        },
+
+        "Should render the preview of the content `currentVersion`": function () {
+            var origTpl = this.view.template;
+
+            this.versionIsNew = true;
+            this.view.template = Y.bind(function (variables) {
+                this._checkTemplateVariables(
+                    variables,
+                    this.currentVersionName,
+                    '/content/versionview/' + this.contentId + '/' + this.currentVersionNo + '/' + this.languageCode
+                );
+                return origTpl.apply(this.view, arguments);
+            }, this);
             this.view.render();
         },
 
