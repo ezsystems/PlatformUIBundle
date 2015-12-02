@@ -51,7 +51,7 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
             this.on('selectContent', this._uiSelectContent);
 
             this.after(['multipleChange', 'isSelectableChange'], this._setSelectedViewAttrs);
-            this.after(['offsetChange', 'searchTextChange'], this._fireLocationSearch);
+            this.after('searchTextChange', this._fireLocationSearch);
             this.after('visibleChange', this._unselectContent);
         },
 
@@ -137,8 +137,8 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
 
             e.preventDefault();
 
-            this.set('searchText', searchText);
             this.set('offset', 0);
+            this.set('searchText', searchText);
         },
 
         /**
@@ -152,20 +152,24 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
 
             this._uiPageLoading();
 
-            this.fire('locationSearch', {
-                viewName: 'udwsearch-' + searchText,
-                resultAttribute: 'searchResultList',
-                resultTotalCountAttribute: 'searchResultCount',
-                loadContent: this.get('loadContent'),
-                loadContentType: true,
-                search: {
-                    criteria: {
-                        "FullTextCriterion": searchText,
+            if (searchText.length > 0) {
+                this.fire('locationSearch', {
+                    viewName: 'udwsearch-' + searchText,
+                    resultAttribute: 'searchResultList',
+                    resultTotalCountAttribute: 'searchResultCount',
+                    loadContent: this.get('loadContent'),
+                    loadContentType: true,
+                    search: {
+                        criteria: {
+                            "FullTextCriterion": searchText,
+                        },
+                        offset: this.get('offset'),
+                        limit: this.get('limit'),
                     },
-                    offset: this.get('offset'),
-                    limit: this.get('limit'),
-                },
-            });
+                });
+            } else {
+                this.reset();
+            }
         },
 
         /**
@@ -333,6 +337,7 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
             e.preventDefault();
             if ( !linkIsDisabled(e.target) ) {
                 this._getGotoMethod(type).call(this);
+                this._fireLocationSearch();
             }
         },
 
