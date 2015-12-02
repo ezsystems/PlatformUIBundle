@@ -1,0 +1,130 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-universaldiscoverysearchview {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+}
+
+.ez-view-universaldiscoverysearchview .ez-ud-pane-search-result {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+}
+
+.ez-view-universaldiscoverysearchview .ez-ud-pane-search-form,
+.ez-view-universaldiscoverysearchview .ez-ud-pane-search-result-list {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
+}
+.ez-view-universaldiscoverysearchview .ez-ud-pane-search-result-list {
+    width: 50%;
+}
+
+.ez-view-universaldiscoverysearchview .ez-ud-search-selected {
+    margin-left: 1em;
+    flex: 1;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-table {
+    width: 100%;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-type-header {
+    width: 10em;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-preview-header {
+    width: 5em;
+}
+
+.ez-view-universaldiscoverysearchview .ez-ud-pane-search-form {
+    height: 6em;
+}
+
+.ez-view-universaldiscoverysearchview .ez-ud-pane-search-result {
+    flex: 1;
+}
+
+.ez-view-universaldiscoverysearchview .ez-search-loader-mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.ez-view-universaldiscoverysearchview.is-page-loading .ez-search-loader-mask {
+    z-index: 10;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: row nowrap;
+        -ms-flex-flow: row nowrap;
+            flex-flow: row nowrap;
+    padding: 0;
+    margin: 0.5em 0;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation-item {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1;
+    width: 25%;
+    padding: 0;
+    margin: 0;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link {
+    display: block;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link[rel="first"],
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link[rel="next"] {
+    text-align: left;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link[rel="prev"],
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link[rel="last"] {
+    text-align: right;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link[rel="next"] {
+    padding-left: 1em;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link[rel="prev"] {
+    padding-right: 1em;
+}

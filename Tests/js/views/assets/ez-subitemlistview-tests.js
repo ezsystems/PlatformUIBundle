@@ -12,12 +12,12 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
         this.subitems = [];
         this.subitemsJSON = [];
         for (i = 0; i != this.childCount; i++) {
-            this.subitems.push(new Mock());
-            this.subitemsJSON.push({});
+            this.subitems.push({location: new Mock()});
+            this.subitemsJSON.push({location: {}});
 
-            Mock.expect(this.subitems[i], {
+            Mock.expect(this.subitems[i].location, {
                 method: 'toJSON',
-                returns: this.subitemsJSON[i],
+                returns: this.subitemsJSON[i].location,
             });
         }
     }
@@ -99,11 +99,11 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
                     "The template should receive the subitems"
                 );
                 Assert.areSame(
-                    this.subitemsJSON[0], vars.subitems[0],
+                    this.subitemsJSON[0].location, vars.subitems[0],
                     "The template should receive the jsonified subitems"
                 );
                 Assert.areSame(
-                    this.subitemsJSON[1], vars.subitems[1],
+                    this.subitemsJSON[1].location, vars.subitems[1],
                     "The template should receive the jsonified subitems"
                 );
                 Assert.isTrue(vars.isFirst, "isFirst should be true");

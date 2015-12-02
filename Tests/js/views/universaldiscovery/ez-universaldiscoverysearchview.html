@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>eZ Universal Discovery Search view tests</title>
+</head>
+<body>
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="universaldiscoverysearchview-ez-template">
+<div class="ez-ud-pane-search-form">
+    <h2 class="ez-ud-pane-title">Search</h2>
+    <div>
+        <form class="ez-ud-search-form">
+            <input type="text" class="ez-ud-search-text" value="{{searchText}}"/>
+            <button type="submit" class="ez-ud-search-button ez-button pure-button">Search</button>
+        </form>
+    </div>
+</div>
+<div class="ez-ud-pane-search-result">
+    <div class="ez-ud-pane-search-result-list">
+        <div class="ez-searchresult-content">
+
+            {{#if searchResultList }}
+                {{#if hasPages}}
+                    <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="first">First</a>
+                    <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="prev">Previous</a>
+                    <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="next">Next</a>
+                    <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="last">Last</a>
+                {{/if}}
+                <table class="ez-searchresult-table pure-table pure-table-bordered">
+                    <thead>
+                    <tr>
+                        <th class="ez-searchresult-preview-header"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each searchResultList}}
+                    <tr class="ez-searchresult-row" data-location-id="{{location.id}}">
+                        <td>
+                            <button class="ez-ud-searchresult-preview-button"
+                                data-location-id="{{location.id}}">Preview</button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                    </tbody>
+                </table>
+            {{/if}}
+        </div>
+    </div>
+    <div class="ez-ud-search-selected"></div>
+</div>
+<div class="ez-search-loader-mask"></div>
+</script>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-universaldiscoverysearchview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-universaldiscoverysearchview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-universaldiscoverysearchview": {
+                requires: ['ez-universaldiscoverymethodbaseview', 'ez-asynchronousview'],
+                fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoverysearchview.js"
+            },
+            "ez-asynchronousview": {
+                requires: ['view', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-asynchronousview.js"
+            },
+            "ez-universaldiscoverymethodbaseview": {
+                requires: ['ez-templatebasedview', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoverymethodbaseview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-universaldiscoverysearchview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
