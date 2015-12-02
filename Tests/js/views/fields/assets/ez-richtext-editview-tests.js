@@ -6,9 +6,8 @@
 YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
         editorTest, focusModeTest, editorFocusHandlingTest, appendToolbarConfigTest,
-        eventForwardTest,
-        VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, FIELDVALUE_RESULT, VALID_XHTML_ID, RESULT_EMPTY_XHTML,
-        IMG_CONTENT, IMG_XHTML,
+        eventForwardTest, defaultEditorProcessorsTest,
+        VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, RESULT_EMPTY_XHTML,
         Assert = Y.Assert, Mock = Y.Mock;
 
     INVALID_XHTML = "I'm invalid";
@@ -22,18 +21,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
     RESULT_EMPTY_XHTML = '<p></p>';
 
-    VALID_XHTML_ID = '<?xml version="1.0" encoding="UTF-8"?>';
-    VALID_XHTML_ID += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit" id="yui_3_18_1_1_1445609502229_4087">';
-    VALID_XHTML_ID += '<p id="stuff">I\'m not empty</p></section>';
-
     RESULT_XHTML = '<p>I\'m not empty</p>';
-
-    IMG_CONTENT = '<img src="http://www.reactiongifs.com/r/dstfp.gif">';
-    IMG_XHTML = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
-    IMG_XHTML += '<p><img src="http://www.reactiongifs.com/r/dstfp.gif"/></p></section>';
-
-    FIELDVALUE_RESULT = '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
-    FIELDVALUE_RESULT += '<p>I\'m not empty</p></section>';
 
     CKEDITOR.plugins.add('ezaddcontent', {});
     CKEDITOR.plugins.add('ezremoveblock', {});
@@ -76,6 +64,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 content: this.content,
                 version: this.version,
                 contentType: this.contentType,
+                editorContentProcessors: [],
             });
         },
 
@@ -156,6 +145,13 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         setUp: function () {
             this.field = {id: 42, fieldValue: {xhtml5edit: ""}};
             this.model = new Mock();
+            this.editor = new Mock();
+            this.nativeEditor = new Mock();
+            Mock.expect(this.editor, {
+                method: 'get',
+                args: ['nativeEditor'],
+                returns: this.nativeEditor,
+            });
             Mock.expect(this.model, {
                 method: 'toJSON',
                 returns: {},
@@ -172,34 +168,59 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                         ckeditorPluginPath: '../../..',
                     }
                 },
+                editorContentProcessors: [],
             });
+            this.view._set('editor', this.editor);
         },
 
         tearDown: function () {
-            this.view.set('active', false);
             this.view.destroy();
         },
 
-        "Should not detect any validation issue on a non required field": function () {
-            var fieldDefinition = this._getFieldDefinition(false);
+        _getProcessorMock: function (callCount, expectedData, returnValue) {
+            var processor = new Mock();
 
+            Mock.expect(processor, {
+                method: 'process',
+                callCount: callCount,
+                args: [expectedData],
+                returns: returnValue,
+            });
+
+            return processor;
+        },
+
+        _configureNativeEditor: function (callCount, returnValue) {
+            Mock.expect(this.nativeEditor, {
+                method: 'getData',
+                callCount: callCount,
+                returns: returnValue
+            });
+        },
+
+        "Should not detect any validation issue on a non required field": function () {
+            var fieldDefinition = this._getFieldDefinition(false),
+                processor = this._getProcessorMock(0);
+
+            this._configureNativeEditor(0);
             this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
-            this.view.set('active', true);
+            this.view.set('editorContentProcessors', [processor]);
             this.view.validate();
 
             Assert.isTrue(
                 this.view.isValid(),
                 "A non required and empty field should be valid"
             );
+            Mock.verify(processor);
         },
 
         "Should not validate a buggy and required field": function () {
-            var fieldDefinition = this._getFieldDefinition(true);
+            var fieldDefinition = this._getFieldDefinition(true),
+                processor = this._getProcessorMock(1, INVALID_XHTML, INVALID_XHTML);
 
+            this._configureNativeEditor(1, INVALID_XHTML);
             this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
-            this.view.set('active', true);
+            this.view.set('editorContentProcessors', [processor]);
             this.view.validate();
 
             Assert.isFalse(
@@ -209,12 +230,12 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
 
         "Should not validate an empty and required field": function () {
-            var fieldDefinition = this._getFieldDefinition(true);
+            var fieldDefinition = this._getFieldDefinition(true),
+                processor = this._getProcessorMock(1, EMPTY_XHTML, EMPTY_XHTML);
 
-            this.field.fieldValue.xhtml5edit = EMPTY_XHTML;
+            this._configureNativeEditor(1, EMPTY_XHTML);
             this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
-            this.view.set('active', true);
+            this.view.set('editorContentProcessors', [processor]);
             this.view.validate();
 
             Assert.isFalse(
@@ -224,12 +245,12 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
 
         "Should validate a filled and required field": function () {
-            var fieldDefinition = this._getFieldDefinition(true);
+            var fieldDefinition = this._getFieldDefinition(true),
+                processor = this._getProcessorMock(1, VALID_XHTML, VALID_XHTML);
 
-            this.field.fieldValue.xhtml5edit = VALID_XHTML;
+            this._configureNativeEditor(1, VALID_XHTML);
             this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
-            this.view.set('active', true);
+            this.view.set('editorContentProcessors', [processor]);
             this.view.validate();
 
             Assert.isTrue(
@@ -272,6 +293,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                         ckeditorPluginPath: '../../..',
                     }
                 },
+                editorContentProcessors: [],
             });
         },
 
@@ -282,10 +304,9 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
         "Should return an object": function () {
             var fieldDefinition = this._getFieldDefinition(true),
-                field,
-                xml;
+                field;
 
-            this.field.fieldValue.xhtml5edit = VALID_XHTML;
+            this.field.fieldValue.xhtml5edit = "";
             this.view.set('fieldDefinition', fieldDefinition);
             this.view.render();
             this.view.set('active', true);
@@ -297,54 +318,35 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 "The getField method should be return a different object"
             );
             Assert.isObject(field.fieldValue, "The fieldValue should be an object");
-            xml = field.fieldValue.xml.replace(/\n/g, '');
-            Assert.areEqual(
-                FIELDVALUE_RESULT, xml.replace(/>  *</g, '><'),
-                "The xml property of the fieldValue should come from the editor"
-            );
+            Assert.isString(field.fieldValue.xml, "The field should have a `xml` entry");
         },
 
-        "Should remove id attributes": function () {
+        _getProcessorMock: function () {
+            var processor = new Mock();
+
+            Mock.expect(processor, {
+                method: 'process',
+                args: [Mock.Value.Any],
+            });
+
+            return processor;
+        },
+
+        "Should use the editorContentProcessors": function () {
             var fieldDefinition = this._getFieldDefinition(true),
-                field,
-                fragment = Y.config.doc.createDocumentFragment(),
-                root = Y.config.doc.createElement('div');
+                p1 = this._getProcessorMock(),
+                p2 = this._getProcessorMock();
 
-            fragment.appendChild(root);
+            this.view.set('editorContentProcessors', [p1, p2]);
 
-            this.field.fieldValue.xhtml5edit = VALID_XHTML_ID;
+            this.field.fieldValue.xhtml5edit = "";
             this.view.set('fieldDefinition', fieldDefinition);
             this.view.render();
             this.view.set('active', true);
-            field = this.view.getField();
+            this.view.getField();
 
-            Assert.isObject(field, "The field should be an object");
-            Assert.areNotSame(
-                this.field, field,
-                "The getField method should be return a different object"
-            );
-            Assert.isObject(field.fieldValue, "The fieldValue should be an object");
-            root.innerHTML = field.fieldValue.xml;
-            Assert.isNull(
-                fragment.querySelector('[id]'),
-                "Ids should have been removed"
-            );
-        },
-
-        "Should return an XHTML document": function () {
-            var fieldDefinition = this._getFieldDefinition(true);
-
-            this.field.fieldValue.xhtml5edit = EMPTY_XHTML;
-            this.view.set('fieldDefinition', fieldDefinition);
-            this.view.render();
-            this.view.set('active', true);
-            this.view.get('editor').get('nativeEditor').setData(IMG_CONTENT, Y.bind(function () {
-                Assert.areEqual(
-                    IMG_XHTML,
-                    this.view.getField().fieldValue.xml,
-                    "The auto-closing tag should be closed"
-                );
-            }, this));
+            Mock.verify(p1);
+            Mock.verify(p2);
         },
     });
 
@@ -372,6 +374,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 version: this.model,
                 contentType: this.model,
                 config: this.config,
+                editorContentProcessors: [],
             });
             this.view.render();
         },
@@ -526,6 +529,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 content: this.content,
                 version: this.version,
                 contentType: this.contentType,
+                editorContentProcessors: [],
             });
             this.view.render();
         },
@@ -633,6 +637,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                         ckeditorPluginPath: '../../..',
                     }
                 },
+                editorContentProcessors: [],
             });
             this.view.render();
         },
@@ -691,6 +696,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                         ckeditorPluginPath: '../../..',
                     }
                 },
+                editorContentProcessors: [],
             });
             this.view.render();
         },
@@ -732,7 +738,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         name: "eZ RichText View ezaddcontent toolbar config test",
 
         setUp: function () {
-            this.view = new Y.eZ.RichTextEditView();
+            this.view = new Y.eZ.RichTextEditView({editorContentProcessors: []});
         },
 
         tearDown: function () {
@@ -765,6 +771,41 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
     });
 
+    defaultEditorProcessorsTest = new Y.Test.Case({
+        name: "eZ RichText View default editorContentProcessors test",
+
+        setUp: function () {
+            Y.eZ.EditorContentProcessorRemoveIds = function () {};
+            Y.eZ.EditorContentProcessorXHTML5Edit = function () {};
+            this.view = new Y.eZ.RichTextEditView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete Y.eZ.EditorContentProcessorRemoveIds;
+            delete Y.eZ.EditorContentProcessorXHTML5Edit;
+        },
+
+        "Should have some default editorContentProcessors": function () {
+            var processors = this.view.get('editorContentProcessors');
+
+            Assert.isArray(processors, "The processors should be in an array");
+            Assert.areEqual(
+                2, processors.length,
+                "The view should have 2 processors by default"
+            );
+            Y.Array.each(processors, function (processor) {
+                if (
+                    !(processor instanceof Y.eZ.EditorContentProcessorRemoveIds)
+                    &&
+                    !(processor instanceof Y.eZ.EditorContentProcessorXHTML5Edit)
+               ) {
+                    Y.fail("The processor should be an instance of EditorContentProcessorRemoveIds or EditorContentProcessorXHTML5Edit");
+               }
+            });
+        },
+    });
+
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "RichText Edit View registration test";
     registerTest.viewType = Y.eZ.RichTextEditView;
@@ -780,6 +821,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(registerTest);
     Y.Test.Runner.add(editorFocusHandlingTest);
     Y.Test.Runner.add(eventForwardTest);
+    Y.Test.Runner.add(defaultEditorProcessorsTest);
 }, '', {
     requires: [
         'test',
