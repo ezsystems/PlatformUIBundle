@@ -46,22 +46,6 @@
                 requires: ['array-extras'],
                 fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
-            "ez-contentmodel": {
-                requires: ['ez-restmodel', 'ez-contentinfo-attributes'],
-                fullpath: "../../../Resources/public/js/models/ez-contentmodel.js"
-            },
-            "ez-contentinfo-attributes": {
-                requires: ['ez-restmodel'],
-                fullpath: "../../../Resources/public/js/models/extensions/ez-contentinfo-attributes.js"
-            },
-            "ez-versionmodel": {
-                requires: ['ez-restmodel'],
-                fullpath: "../../../Resources/public/js/models/ez-versionmodel.js"
-            },
-            "ez-restmodel": {
-                requires: ['model'],
-                fullpath: "../../../Resources/public/js/models/ez-restmodel.js"
-            }
         }
     }).use('ez-editpreviewview-tests', function (Y) {
         Y.Test.Runner.run();
