@@ -57,7 +57,7 @@ to do:
   _ezpublishPlatformUIRoutes:
       resource: "@eZPlatformUIBundle/Resources/config/routing.yml"
   ```
-* Make sur [the REST API is configured to use the session based authentication](https://doc.ez.no/display/EZP/REST+API+Authentication).
+* Make sure [the REST API is configured to use the session based authentication](https://doc.ez.no/display/EZP/REST+API+Authentication).
 * Run the following command:
 
   ```
