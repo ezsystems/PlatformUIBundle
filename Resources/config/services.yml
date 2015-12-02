@@ -220,4 +220,4 @@ services:
 
     ezsystems.platformui.loader.combo_loader:
         class: %ezsystems.platformui.loader.combo_loader.class%
-        arguments: ["$yui.build_dir;ez_platformui$", %webroot_dir%]
+        arguments: [@ezpublish.config.resolver, @templating, "$yui.build_dir;ez_platformui$", %webroot_dir%]
