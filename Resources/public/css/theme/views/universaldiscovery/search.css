@@ -1,0 +1,66 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-row.is-selected {
+    background: #CCE4FF;
+    transition: all ease 0.3s;
+}
+
+.ez-view-universaldiscoverysearchview .ez-search-loader-mask {
+    transition: all ease 0.3s;
+}
+
+.ez-view-universaldiscoverysearchview .ez-search-loader-mask:before {
+    -webkit-animation: spin 0.5s infinite linear;
+            animation: spin 0.5s infinite linear;
+    box-sizing: border-box;
+    border-radius: 100%;
+    border-width: 0.5em;
+    border-style: solid;
+    border-color: rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.1);
+    opacity: 1;
+    z-index: 10000;
+    width: 3em;
+    height: 3em;
+    content: " ";
+    display: block;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+}
+
+.ez-view-universaldiscoverysearchview.is-page-loading {
+    opacity: 0.3;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation {
+    list-style-type: none;
+    font-size: 90%;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link.is-disabled {
+    color: #999;
+    cursor: default;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link[rel="first"]:before {
+    content: "«";
+    padding-right: 0.3em;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link[rel="next"]:after {
+    content: "›";
+    padding-left: 0.3em;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link[rel="prev"]:before {
+    content: "‹";
+    padding-right: 0.3em;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link[rel="last"]:after {
+    content: "»";
+    padding-left: 0.3em;
+}

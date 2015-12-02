@@ -222,7 +222,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/loginform.hbt
                 ez-dashboardview:
-                    requires: ['ez-templatebasedview', 'dashboardview-ez-template']
+                    requires: ['ez-templatebasedview', 'dashboardview-ez-template', 'ez-height-fit']
                     path: %ez_platformui.public_dir%/js/views/ez-dashboardview.js
                 dashboardview-ez-template:
                     type: 'template'
@@ -296,6 +296,7 @@ system:
                         - 'ez-templatebasedview'
                         - 'universaldiscoveryview-ez-template'
                         - 'ez-universaldiscoverybrowseview'
+                        - 'ez-universaldiscoverysearchview'
                         - 'ez-universaldiscoveryconfirmedlistview'
                         - 'array-extras'
                         - 'event-tap'
@@ -323,6 +324,16 @@ system:
                 universaldiscoverybrowseview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/universaldiscovery/browse.hbt
+                ez-universaldiscoverysearchview:
+                    requires:
+                        - 'ez-universaldiscoverymethodbaseview'
+                        - 'ez-asynchronousview'
+                        - 'ez-universaldiscoveryselectedview'
+                        - 'universaldiscoverysearchview-ez-template'
+                    path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverysearchview.js
+                universaldiscoverysearchview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/universaldiscovery/search.hbt
                 ez-universaldiscoveryselectedview:
                     requires: ['event-tap', 'ez-templatebasedview', 'universaldiscoveryselectedview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryselectedview.js

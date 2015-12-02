@@ -28,6 +28,24 @@ YUI.add('ez-editpreviewview', function (Y) {
         },
 
         /**
+         * Returns the version to use to generate the preview. If the version
+         * was not saved yet, we are actually generating the preview to the
+         * current version.
+         * TODO: that can be confusing for the user if he did some changes but
+         * did not save the version yet
+         * see https://jira.ez.no/browse/EZP-24931
+         *
+         * @method _getPreviewedVersion
+         * @return {eZ.Version}
+         */
+        _getPreviewedVersion: function () {
+            var version = this.get('version'),
+                currentVersion = this.get('content').get('currentVersion');
+
+            return version.isNew() ? currentVersion : version;
+        },
+
+        /**
          * Renders the edit preview
          *
          * @method render
@@ -36,7 +54,7 @@ YUI.add('ez-editpreviewview', function (Y) {
         render: function () {
             var container = this.get('container'),
                 content = this.get('content'),
-                version = this.get('version'),
+                version = this._getPreviewedVersion(),
                 languageCode = this.get('languageCode');
 
             container.setHTML(this.template({

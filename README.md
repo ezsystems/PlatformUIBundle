@@ -7,27 +7,33 @@ to manage your content and administrate your eZ Platform install.
 
 If you find a bug, please create an issue [in JIRA](https://jira.ez.no/) and
 don't forget to add as much details as you can (steps to reproduce, OS and
-browser(s) versions, ...) and to put *PlatformUI* in the *Component/s* field.
-If you discover a security issue, please see how to responsibly report such
-issues on https://doc.ez.no/Security
+browser(s) versions, ...) and to put *PlatformUI (Admin UI & Content IU)* in the
+*Component/s* field. Before submitting an issue you can also consult [the list
+of opened bugs](https://jira.ez.no/issues/?filter=15902) or [the complete list
+of reported bugs, improvements or
+stories](https://jira.ez.no/issues/?filter=15903).
+
+If you discover a security issue, please see how to
+responsibly report such issues on https://doc.ez.no/Security
 
 ## Installation
 
 **eZ Platform 1.0 (2015.11) or higher are required to run the PlatformUI.**
 
-If you are using a recent clone of the ezplatform repository,
-PlatformUIBundle is automatically setup. So you can directly open
-http://[uri\_of\_ez]/ez in your favorite browser.
+PlatformUI and its dependencies are installed and setup  by default in eZ
+Platform. To run PlatformUI, you just have to open http://[uri\_of\_ez]/ez in
+your favorite browser.
 
-On an existing installation, here's what you need to do:
+If for whatever reason, PlatformUIBundle is not installed, here is what you need
+to do:
 
-* From your eZ Publish installation, run composer:
+* From your eZ Platform installation, run composer:
 
   ```
   $ composer require ezsystems/platform-ui-bundle:dev-master
   ```
 
-* In `ezpublish/EzPublishKernel.php` add an instance of the following classes to
+* In `app/AppKernel.php` add an instance of the following classes to
   the list of registered bundles:
 
   ```php
@@ -39,29 +45,29 @@ On an existing installation, here's what you need to do:
 
           new EzSystems\PlatformUIBundle\EzSystemsPlatformUIBundle(),
           new EzSystems\PlatformUIAssetsBundle\EzSystemsPlatformUIAssetsBundle(),
-          new  EzSystems\RepositoryFormsBundle\EzSystemsRepositoryFormsBundle(),
+          new EzSystems\RepositoryFormsBundle\EzSystemsRepositoryFormsBundle(),
       );
   }
   ```
 
-* In `ezpublish/config/routing.yml` include the eZPlatformUIBundle routing
+* In `app/config/routing.yml` include the eZPlatformUIBundle routing
   configuration:
 
   ```yml
   _ezpublishPlatformUIRoutes:
       resource: "@eZPlatformUIBundle/Resources/config/routing.yml"
   ```
-* [Configure the REST API to use the session based authentication](https://doc.ez.no/display/EZP/REST+API+Authentication).
+* Make sur [the REST API is configured to use the session based authentication](https://doc.ez.no/display/EZP/REST+API+Authentication).
 * Run the following command:
 
   ```
-  $ php ezpublish/console assets:install --symlink
+  $ php app/console assets:install --symlink
   ```
-If you are running eZ Publish in the `prod` environment, you also need to dump
+If you are running eZ Platform in the `prod` environment, you also need to dump
 the assets for Assetic with:
 
 ```
-php ezpublish/console assetic:dump --env=prod
+php app/console assetic:dump --env=prod
 ```
 
 Once this is done, you can go to http://[uri\_of\_ez]/ez to run the eZ Platform

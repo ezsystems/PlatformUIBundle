@@ -1,0 +1,90 @@
+<div class="ez-ud-pane-search-form">
+    <h2 class="ez-ud-pane-title">Search</h2>
+    <div>
+        <form class="ez-ud-search-form">
+            <input type="text" class="ez-ud-search-text" value="{{searchText}}"/>
+            <button type="submit" class="ez-ud-search-button ez-button pure-button">Search</button>
+        </form>
+    </div>
+</div>
+<div class="ez-ud-pane-search-result">
+    <div class="ez-ud-pane-search-result-list">
+        <h2 class="ez-ud-pane-title">Result list ({{searchResultCount}})</h2>
+        <div class="ez-searchresult-content">
+        {{#if searchResultCount}}
+            {{#if loadingError}}
+                <p class="ez-asynchronousview-error ez-font-icon">
+                    An error occurred while loading the search result list..
+                    <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+                </p>
+            {{else}}
+                {{#if searchResultList }}
+                    {{#if hasPages}}
+                    <ul class="ez-searchresult-navigation">
+                        <li class="ez-searchresult-navigation-item">
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="first">First</a>
+                        </li>
+                        <li class="ez-searchresult-navigation-item">
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="prev">Previous</a>
+                        </li>
+                        <li class="ez-searchresult-navigation-item">
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="next">Next</a>
+                        </li>
+                        <li class="ez-searchresult-navigation-item">
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="last">Last</a>
+                        </li>
+                    </ul>
+                    {{/if}}
+                    <table class="ez-searchresult-table pure-table pure-table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th class="ez-searchresult-type-header">Type</th>
+                            <th class="ez-searchresult-preview-header"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each searchResultList}}
+                        <tr class="ez-searchresult-row" data-location-id="{{location.id}}">
+                            <td>{{location.contentInfo.name}}</td>
+                            <td>{{contentType.names.[eng-GB]}}</td>
+                            <td>
+                                <button class="ez-ud-searchresult-preview-button"
+                                    data-location-id="{{location.id}}">Preview</button>
+                            </td>
+                        </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                    {{#if hasPages}}
+                    <ul class="ez-searchresult-navigation">
+                        <li class="ez-searchresult-navigation-item">
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="first">First</a>
+                        </li>
+                        <li class="ez-searchresult-navigation-item">
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="prev">Previous</a>
+                        </li>
+                        <li class="ez-searchresult-navigation-item">
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="next">Next</a>
+                        </li>
+                        <li class="ez-searchresult-navigation-item">
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="last">Last</a>
+                        </li>
+                    </ul>
+                    {{/if}}
+                {{else}}
+                    <p class="ez-font-icon ez-asynchronousview-loading">Loading the search result list...</p>
+                {{/if}}
+            {{/if}}
+        {{else}}
+            {{#if searchText}}
+                <p class="ez-searchresult-no-sub-items">No results were found while searching for "{{searchText}}".</p>
+            {{else}}
+                <p class="ez-searchresult-no-sub-items">Please provide search text</p>
+            {{/if}}
+        {{/if}}
+        </div>
+    </div>
+    <div class="ez-ud-search-selected"></div>
+</div>
+<div class="ez-search-loader-mask"></div>

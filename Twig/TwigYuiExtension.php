@@ -126,6 +126,10 @@ class TwigYuiExtension extends Twig_Extension
                 }
             }
 
+            if ($combine === true) {
+                $yui['modules'][$module]['combine'] = true;
+            }
+
             if ($this->configResolver->getParameter("yui.modules.$module.type", 'ez_platformui') === 'template') {
                 $yui['modules'][$module]['requires'][] = 'template';
                 $yui['modules'][$module]['requires'][] = 'handlebars';
@@ -137,10 +141,6 @@ class TwigYuiExtension extends Twig_Extension
                 $yui['modules'][$module]['fullpath'] = $this->asset(
                     $this->configResolver->getParameter("yui.modules.$module.path", 'ez_platformui')
                 );
-
-                if ($combine === true) {
-                    $yui['modules'][$module]['combine'] = true;
-                }
             }
         }
 

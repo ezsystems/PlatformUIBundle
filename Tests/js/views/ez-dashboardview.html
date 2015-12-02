@@ -1,22 +1,20 @@
 <!doctype html>
 <html>
 <head>
-<title>eZ Edit Preview View tests</title>
+<title>eZ Dashboard view tests</title>
 </head>
 <body>
-
-<div class="editpreviewview-container is-editpreview-hidden" style="margin-top: 2000px;"><div class="container"></div></div>
-
-<script type="text/x-handlebars-template" id="editpreviewview-ez-template">
-    <iframe class="ez-preview-iframe" width="{{ mode.width }}" height="{{ mode.height }}" src="{{ source }}"></iframe>
-    <button class="ez-preview-hide" data-icon-after="&#xe000;">Close preview</button>
+<script type="text/x-handlebars-template" id="dashboardview-ez-template" >
+    <iframe class="ez-dashboard-content" src="about:blank"></iframe>
 </script>
+<div class="container" style="margin-top: 93px;"></div>
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
-<script type="text/javascript" src="./assets/ez-editpreviewview-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-dashboardview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
+
     if (filter == 'coverage'){
         loaderFilter = {
             searchExp : "/Resources/public/js/",
@@ -27,16 +25,20 @@
     }
 
     YUI({
-        coverage: ['ez-editpreviewview'],
+        coverage: ['ez-dashboardview'],
         filter: loaderFilter,
         modules: {
-            "ez-editpreviewview": {
-                requires: ['ez-templatebasedview', 'transition', 'event-tap', 'node-screen'],
-                fullpath: "../../../Resources/public/js/views/ez-editpreviewview.js"
+            "ez-dashboardview": {
+                requires: ['ez-templatebasedview', 'ez-height-fit'],
+                fullpath: "../../../Resources/public/js/views/ez-dashboardview.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-height-fit": {
+                requires: ['view', 'node-screen', 'node-style'],
+                fullpath:"../../../../Resources/public/js/extensions/ez-height-fit.js"
             },
             "ez-view": {
                 requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
@@ -47,7 +49,7 @@
                 fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
         }
-    }).use('ez-editpreviewview-tests', function (Y) {
+    }).use('ez-dashboardview-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>
