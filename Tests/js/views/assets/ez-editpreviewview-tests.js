@@ -6,7 +6,7 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
     var IS_HIDDEN_CLASS = 'is-editpreview-hidden',
         IS_LOADING_CLASS = 'is-loading',
         viewTest,
-        Assert = Y.Assert;
+        Assert = Y.Assert, Mock = Y.Mock;
 
     viewTest = new Y.Test.Case({
         name: "eZ Edit Preview View test",
@@ -15,20 +15,35 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
             this.contentId = 59;
             this.versionNo = 42;
             this.previewName = 'Test elvish name';
-            this.mockContent = new Y.eZ.Content({
-                contentId: this.contentId,
-                name: "Test name"
-            });
-            this.mockVersion = new Y.eZ.Version({
-                versionNo: this.versionNo,
-                names: {value: [{'_languageCode': 'eng-GB', '#text': 'Test name'}, {'_languageCode': 'quenya', '#text': this.previewName}]}
-            });
             this.languageCode = 'quenya';
+            this.versionNames = {
+                'eng-GB': 'Test name',
+                'quenya': this.previewName,
+            };
+            this.contentMock = new Mock();
+            Mock.expect(this.contentMock, {
+                method: 'get',
+                args: ['contentId'],
+                returns: this.contentId,
+            });
+            this.versionMock = new Mock();
+            Mock.expect(this.versionMock, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: Y.bind(function (attr) {
+                    if ( attr === 'versionNo' ) {
+                        return this.versionNo;
+                    } else if ( attr === 'names' ) {
+                        return this.versionNames;
+                    }
+                    Y.fail('Unexpected version.get("' + attr + '")');
+                }, this),
+            });
 
             this.view = new Y.eZ.EditPreviewView({
                 container: '.container',
-                content: this.mockContent,
-                version: this.mockVersion,
+                content: this.contentMock,
+                version: this.versionMock,
                 languageCode: this.languageCode
             });
         },
@@ -183,4 +198,4 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Edit Preview View tests");
     Y.Test.Runner.add(viewTest);
 
-}, '', {requires: ['test', 'node-event-simulate', 'ez-editpreviewview', 'ez-contentmodel', 'ez-versionmodel']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-editpreviewview']});
