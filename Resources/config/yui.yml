@@ -222,7 +222,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/loginform.hbt
                 ez-dashboardview:
-                    requires: ['ez-templatebasedview', 'dashboardview-ez-template']
+                    requires: ['ez-templatebasedview', 'dashboardview-ez-template', 'ez-height-fit']
                     path: %ez_platformui.public_dir%/js/views/ez-dashboardview.js
                 dashboardview-ez-template:
                     type: 'template'

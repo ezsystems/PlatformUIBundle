@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Dashboard view tests</title>
+</head>
+<body>
+<script type="text/x-handlebars-template" id="dashboardview-ez-template" >
+    <iframe class="ez-dashboard-content" src="about:blank"></iframe>
+</script>
+<div class="container" style="margin-top: 93px;"></div>
+
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-dashboardview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-dashboardview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-dashboardview": {
+                requires: ['ez-templatebasedview', 'ez-height-fit'],
+                fullpath: "../../../Resources/public/js/views/ez-dashboardview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-height-fit": {
+                requires: ['view', 'node-screen', 'node-style'],
+                fullpath:"../../../../Resources/public/js/extensions/ez-height-fit.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-dashboardview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

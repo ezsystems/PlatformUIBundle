@@ -54,6 +54,7 @@ system:
                 - 'bundles/ezplatformui/css/views/fieldedit.css'
                 - 'bundles/ezplatformui/css/views/error.css'
                 - 'bundles/ezplatformui/css/views/asynchronous.css'
+                - 'bundles/ezplatformui/css/views/dashboard.css'
                 - 'bundles/ezplatformui/css/views/studiopresentation.css'
                 - 'bundles/ezplatformui/css/views/studiopluspresentation.css'
                 - 'bundles/ezplatformui/css/views/fields/edit/checkbox.css'
