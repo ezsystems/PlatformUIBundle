@@ -287,4 +287,13 @@ trait CommonActions
         $fileContentExpected = file_get_contents($file);
         Assertion::assertEquals($fileContentActual, $fileContentExpected);
     }
+
+    /**
+     * @Then /^I should be on the dashboard$/
+     */
+    public function iShouldBeOnTheDashboard()
+    {
+        $this->waitWhileLoading();
+        $this->assertSession()->elementExists('css', 'div.ez-view-dashboardview');
+    }
 }

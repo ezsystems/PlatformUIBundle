@@ -3,7 +3,7 @@ Feature: Basic PlatfomrUi interaction tests
     @common @javascript
     Scenario: As a admin User, I want to login to PlatformUI
         Given I go to PlatformUI app with username "admin" and password "publish"
-        Then I should see "Welcome to eZ Platform" title
+        Then I should be on the dashboard
 
     @common @javascript
     Scenario: As a admin User, I want to minimize the discovery bar
