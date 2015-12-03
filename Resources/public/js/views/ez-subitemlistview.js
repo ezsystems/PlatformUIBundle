@@ -143,7 +143,7 @@ YUI.add('ez-subitemlistview', function (Y) {
         _gotoLast: function () {
             var limit = this.get('limit');
 
-            this.set('offset', Math.floor(this.get('location').get('childCount') / limit) * limit);
+            this.set('offset', (Math.ceil(this.get('location').get('childCount') / limit) - 1) * limit);
         },
 
         render: function () {
