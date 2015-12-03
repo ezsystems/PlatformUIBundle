@@ -55,29 +55,6 @@ YUI.add('ez-positionplugin-tests', function (Y) {
             );
         },
 
-        "Should handle the navigationHubView:heightChange event": function () {
-            var marginTop = parseInt(Y.one('.ez-mainviews').getStyle('marginTop'), 10),
-                topPosition = parseInt(Y.one('.ez-notification-container').getStyle('top'), 10),
-                offset = -42;
-
-            this.app.fire('navigationHubView:heightChange', {
-                height: {
-                    offset: offset,
-                }
-            });
-
-            Assert.areEqual(
-                marginTop + offset,
-                parseInt(Y.one('.ez-mainviews').getStyle('marginTop'), 10),
-                "The top margin of ez-mainviews should have been adjusted"
-            );
-            Assert.areEqual(
-                topPosition + offset,
-                parseInt(Y.one('.ez-notification-container').getStyle('top'), 10),
-                "The top position of ez-notification-container should have been adjusted"
-            );
-        },
-
         "Should inform the activeView": function () {
             var view = new Mock(),
                 offset = 42;

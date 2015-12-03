@@ -11,5 +11,4 @@
 .is-navigationhubview-fixed .ez-view-notificationhubview,
 .is-navigation-hidden .ez-view-notificationhubview {
     width: 100%;
-    position: fixed;
 }

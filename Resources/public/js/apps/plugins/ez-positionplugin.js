@@ -27,12 +27,6 @@ YUI.add('ez-positionplugin', function (Y) {
             var app = this.get('host'),
                 plugin = this;
 
-            app.after('navigationHubView:heightChange', function (e) {
-                var notificationContainer = app.get('container').one('.ez-notification-container');
-
-                plugin._setPositionProperty(notificationContainer, 'top', e.height.offset);
-            });
-
             app.after('*:heightChange', function (e) {
                 var mainViews = app.get('container').one('.ez-mainviews'),
                     activeView = app.get('activeView');
