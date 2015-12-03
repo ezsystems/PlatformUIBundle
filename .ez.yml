@@ -8,7 +8,7 @@ meta:
 
 # ci
 integrate:
-  install: "demo-clean"
+  install: "clean"
   command: "bin/behat"
   matrix:
   # Run 'common' tagged behat scenarios on ezplatform install
