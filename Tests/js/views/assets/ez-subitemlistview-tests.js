@@ -444,6 +444,23 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
             this.wait();
         },
 
+        "Should navigate to the last page when the number of children location is a multiple of the limit": function () {
+            //This test is related to "EZP-25175 :Setting incorrect pagination offset in subitems view"
+            var c = this.view.get('container');
+
+            this.childCount = 50;
+            this.view.render();
+
+            c.one('[rel=last]').simulateGesture('tap', this.next(function () {
+                Assert.areEqual(
+                    this.lastOffset, this.view.get('offset'),
+                    "The offset should be 40"
+                );
+            }, this));
+
+            this.wait();
+        },
+
         "Should navigate to the previous page": function () {
             var c = this.view.get('container'),
                 initialOffset = 30;
