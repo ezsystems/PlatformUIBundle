@@ -293,7 +293,14 @@ trait CommonActions
      */
     public function iShouldBeOnTheDashboard()
     {
-        $this->waitWhileLoading();
-        $this->assertSession()->elementExists('css', 'div.ez-view-dashboardview');
+        $this->assertSession()->elementExists('css', '.ez-view-dashboardview');
+    }
+
+    /**
+     * @Given /^I am redirected to a location view$/
+     */
+    public function iHaveBeenRedirectedToALocationView()
+    {
+        $this->assertSession()->elementExists('css', '.ez-mainviews .ez-view-locationviewview');
     }
 }
