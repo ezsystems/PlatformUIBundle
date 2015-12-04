@@ -138,7 +138,7 @@ Feature: Create, delete, update and View the Role UI
     When I click on "Save" button
     Then I see a message asking for the field "Name" to be filled
 
-  @javascript @edge
+  @javascript @edge @broken
   Scenario: Updating a Role with an existing identifier fails validation
     Given an "Organizers" role exists
     And a "Security" role exists
