@@ -3,8 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-savedraftplugin-tests', function (Y) {
-    var tests, registerTest,
-        Assert = Y.Assert;
+    var tests, customNotificationTextTest, registerTest,
+        Assert = Y.Assert, Mock = Y.Mock;
 
     tests = new Y.Test.Case({
         name: "eZ Save Draft Plugin event tests",
@@ -104,7 +104,7 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
             delete this.contentType;
         },
 
-        "Should save the draft": function () {
+        _saveDraft: function (callback) {
             var fields = [{}, {}],
                 contentId = "all-my-life",
                 that = this;
@@ -144,13 +144,29 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
 
             this.view.fire('whatever:saveAction', {
                 formIsValid: true,
-                fields: fields
+                fields: fields,
+                callback: callback,
             });
 
             Y.Mock.verify(this.version);
         },
 
-        "Should create the content as a draft": function () {
+        "Should save the draft": function () {
+            this._saveDraft();
+        },
+
+        "Should save the draft and call the callback": function () {
+            var called = false,
+                callback = function (err) {
+                    called = true;
+                    Assert.isUndefined(err);
+                };
+            this._saveDraft(callback);
+
+            Assert.isTrue(called, "The event callback should have been called");
+        },
+
+        _createContent: function (callback) {
             var fields = [{}, {}],
                 attrs = {},
                 that = this;
@@ -210,11 +226,27 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
 
             this.view.fire('whatever:saveAction', {
                 formIsValid: true,
-                fields: fields
+                fields: fields,
+                callback: callback,
             });
 
             Y.Mock.verify(this.content);
             Y.Mock.verify(this.version);
+        },
+
+        "Should create the content as a draft": function () {
+            this._createContent();
+        },
+
+        "Should create the content as a draft and call the callback": function () {
+            var called = false,
+                callback = function (err) {
+                    called = true;
+                    Assert.isUndefined(err);
+                };
+            this._createContent(callback);
+
+            Assert.isTrue(called, "The event callback should have been called");
         },
 
         "Should not save the draft": function () {
@@ -230,13 +262,17 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                 }
             });
             this.view.fire('whatever:saveAction', {
-                formIsValid: false
+                formIsValid: false,
+                callback: function () {
+                    Assert.fail("The event should not be called");
+                },
             });
         },
 
         "Should notify about the start of saving draft process": function () {
             var contentId = "all-my-life",
-                notified = false;
+                notified = false,
+                plugin = this.plugin;
 
             Y.Mock.expect(this.content, {
                 method: 'isNew',
@@ -259,9 +295,10 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                     "started", e.notification.state,
                     "The notification state should be 'started'"
                 );
-                Assert.isString(
+                Assert.areEqual(
                     e.notification.text,
-                    "The notification text should be a String"
+                    plugin.get('startedNotificationText'),
+                    "The notification text should be the value of the `startedNotificationText` attribute"
                 );
                 Assert.isTrue(
                     e.notification.identifier.indexOf(contentId) !== -1,
@@ -286,7 +323,8 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
         "Should notify about the success of saving draft process": function () {
             var contentId = "all-my-life",
                 notificationId,
-                notified = false;
+                notified = false,
+                plugin = this.plugin;
 
             Y.Mock.expect(this.content, {
                 method: 'isNew',
@@ -317,9 +355,10 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                         "done", e.notification.state,
                         "The notification state should be 'done'"
                     );
-                    Assert.isString(
+                    Assert.areEqual(
                         e.notification.text,
-                        "The notification text should be a String"
+                        plugin.get('doneNotificationText'),
+                        "The notification text should be the value of the `doneNotificationText` attribute"
                     );
                     Assert.areSame(
                         5, e.notification.timeout,
@@ -370,10 +409,11 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
             Assert.isTrue(eventFired, "The plugin should have fired the savedDraft event");
         },
 
-        "Should notify about the failure of saving draft process": function () {
+        _saveDraftFailure: function (callback) {
             var contentId = "all-my-life",
                 notificationId,
-                notified = false;
+                notified = false,
+                plugin = this.plugin;
 
             Y.Mock.expect(this.content, {
                 method: 'isNew',
@@ -404,9 +444,10 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                         "error", e.notification.state,
                         "The notification state should be 'done'"
                     );
-                    Assert.isString(
+                    Assert.areEqual(
                         e.notification.text,
-                        "The notification text should be a String"
+                        plugin.get('errorNotificationText'),
+                        "The notification text should be the value of the `errorNotificationText` attribute"
                     );
                     Assert.areSame(
                         0, e.notification.timeout,
@@ -417,13 +458,30 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
 
             this.view.fire('whatever:saveAction', {
                 formIsValid: true,
+                callback: callback,
             });
             Assert.isTrue(notified, "The plugin should have fired the notify event");
         },
 
 
+        "Should notify about the failure of saving draft process": function () {
+            this._saveDraftFailure();
+        },
+
+        "Should pass the error to the event callback": function () {
+            var called = false,
+                callback = function (err) {
+                    called = true;
+                    Assert.isTrue(err);
+                };
+            this._saveDraftFailure(callback);
+
+            Assert.isTrue(called, "The event callback should have been called");
+        },
+
         "Should notify about the start of the draft creation process": function () {
-            var notified = false;
+            var notified = false,
+                plugin = this.plugin;
 
             Y.Mock.expect(this.content, {
                 method: 'isNew',
@@ -441,9 +499,10 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                     "started", e.notification.state,
                     "The notification state should be 'started'"
                 );
-                Assert.isString(
+                Assert.areEqual(
                     e.notification.text,
-                    "The notification text should be a String"
+                    plugin.get('startedNotificationText'),
+                    "The notification text should be the value of the `startedNotificationText` attribute"
                 );
                 Assert.isTrue(
                     e.notification.identifier.indexOf("0") !== -1,
@@ -467,7 +526,8 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
 
         "Should notify about the success of the draft creation process": function () {
             var notificationId,
-                notified = false;
+                notified = false,
+                plugin = this.plugin;
 
             Y.Mock.expect(this.content, {
                 method: 'isNew',
@@ -501,9 +561,10 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                         "done", e.notification.state,
                         "The notification state should be 'done'"
                     );
-                    Assert.isString(
+                    Assert.areEqual(
                         e.notification.text,
-                        "The notification text should be a String"
+                        plugin.get('doneNotificationText'),
+                        "The notification text should be the value of the `doneNotificationText` attribute"
                     );
                     Assert.areSame(
                         5, e.notification.timeout,
@@ -520,7 +581,8 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
 
         "Should notify about the failure of the draft creation process": function () {
             var notificationId,
-                notified = false;
+                notified = false,
+                plugin = this.plugin;
 
             Y.Mock.expect(this.content, {
                 method: 'isNew',
@@ -554,9 +616,10 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                         "error", e.notification.state,
                         "The notification state should be 'error'"
                     );
-                    Assert.isString(
+                    Assert.areEqual(
                         e.notification.text,
-                        "The notification text should be a String"
+                        plugin.get('errorNotificationText'),
+                        "The notification text should be the value of the `errorNotificationText` attribute"
                     );
                     Assert.areSame(
                         0, e.notification.timeout,
@@ -572,11 +635,130 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
         },
     });
 
+    customNotificationTextTest = new Y.Test.Case({
+        name: "eZ Save Draft Plugin custom notification text tests",
+
+        setUp: function () {
+            this.capi = {};
+            this.version = new Y.Mock();
+            this.content = new Y.Mock();
+            this.contentType = {};
+            this.parentLocation = {};
+            this.languageCode = 'fre-FR';
+
+            this.service = new Y.Base();
+            this.service.set('capi', this.capi);
+            this.service.set('version', this.version);
+            this.service.set('content', this.content);
+            this.service.set('languageCode', this.languageCode);
+            this.service.set('contentType', this.contentType);
+            this.service.set('parentLocation', this.parentLocation);
+            this.service.set('location', this.location);
+
+            this.view = new Y.View();
+            this.view.addTarget(this.service);
+
+            this.plugin = new Y.eZ.Plugin.SaveDraft({
+                host: this.service,
+            });
+
+            Mock.expect(this.content, {
+                method: 'isNew',
+                returns: false
+            });
+            Mock.expect(this.content, {
+                method: 'get',
+                args: ['id'],
+            });
+            Mock.expect(this.version, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+            });
+        },
+
+        tearDown: function () {
+            this.plugin.destroy();
+            this.view.destroy();
+            this.service.destroy();
+            delete this.capi;
+            delete this.plugin;
+            delete this.view;
+            delete this.service;
+            delete this.content;
+            delete this.version;
+            delete this.contentType;
+        },
+
+        "Should set the notification texts": function () {
+            var notificationText = {
+                    started: "Ramble on",
+                    error: "When the Levee Breaks",
+                    done: "Stairway to Heaven",
+                };
+
+            this.view.fire('whatever:saveAction', {
+                formIsValid: true,
+                notificationText: notificationText,
+            });
+            Assert.areEqual(
+                notificationText.started,
+                this.plugin.get('startedNotificationText'),
+                "The text of the started notification should be changed"
+            );
+            Assert.areEqual(
+                notificationText.done,
+                this.plugin.get('doneNotificationText'),
+                "The text of the done notification should be changed"
+            );
+            Assert.areEqual(
+                notificationText.error,
+                this.plugin.get('errorNotificationText'),
+                "The text of the error notification should be changed"
+            );
+        },
+
+        "Should reset the message to the default value after save": function () {
+            var notificationText = {
+                    started: "Ramble on",
+                    error: "When the Levee Breaks",
+                    done: "Stairway to Heaven",
+                };
+
+            Mock.expect(this.version, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    callback();
+                },
+            });
+            this.view.fire('whatever:saveAction', {
+                formIsValid: true,
+                notificationText: notificationText,
+            });
+            Assert.areNotEqual(
+                notificationText.started,
+                this.plugin.get('startedNotificationText'),
+                "The text of the started notification should be changed"
+            );
+            Assert.areNotEqual(
+                notificationText.done,
+                this.plugin.get('doneNotificationText'),
+                "The text of the done notification should be changed"
+            );
+            Assert.areNotEqual(
+                notificationText.error,
+                this.plugin.get('errorNotificationText'),
+                "The text of the error notification should be changed"
+            );
+        },
+    });
+
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.SaveDraft;
     registerTest.components = ['contentEditViewService', 'contentCreateViewService'];
 
     Y.Test.Runner.setName("eZ Save Draft Plugin tests");
     Y.Test.Runner.add(tests);
+    Y.Test.Runner.add(customNotificationTextTest);
     Y.Test.Runner.add(registerTest);
 }, '', {requires: ['test', 'view', 'base', 'ez-savedraftplugin', 'ez-pluginregister-tests']});
