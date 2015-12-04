@@ -10,12 +10,10 @@ Feature: Use the eZ Users field
         Then I see the Users page
         And I see the following users:
             | Name                |
-            | Members             |
+            | Guest accounts      |
             | Administrator users |
             | Editors             |
             | Anonymous Users     |
-            | Partners            |
-            | Subscribers         |
         And I see the following tabs:
             | Tabs            |
             | View            |

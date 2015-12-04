@@ -1,4 +1,4 @@
-Feature: Basic PlatfomrUi interaction tests
+Feature: Basic PlatformUI interaction tests
 
     @common @javascript
     Scenario: As a admin User, I want to login to PlatformUI
@@ -20,11 +20,12 @@ Feature: Basic PlatfomrUi interaction tests
         Then I click on the action bar button "Minimize"
 
     @common @javascript
-    Scenario: As a admin User, I want to minimize the action bar
-        Given I go to PlatformUI app with username "admin" and password "publish"
-        And I click on the navigation zone "Content"
-        And I click on the navigation item "Content structure"
+    Scenario: As a admin User, I want to edit content
+       Given I go to PlatformUI app with username "admin" and password "publish"
+         And I click on the navigation zone "Content"
+         And I click on the navigation item "Content structure"
         When I click on the action bar button "Edit"
-        And I fill in "Name" with "HomePage"
-        And I click on the edit action bar button "Publish"
-        Then I should see "HomePage" title
+         And I fill in "Name" with "HomePage"
+         And I click on the edit action bar button "Publish"
+        Then I am redirected to a location view
+        #And I am notified that the content has been published

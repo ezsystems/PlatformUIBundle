@@ -15,7 +15,6 @@ Feature: Create, delete, update and View the Role UI
   Scenario: Verify the existence of Roles page and its content
     Given an "Organizers" role exists
     When I click on the navigation zone "Admin Panel"
-    When I click on the navigation item "Administration dashboard"
     And I click on the navigation item "Roles"
     Then I see the Roles page
     And I see the following roles with an 'Edit role name' button:
@@ -23,8 +22,6 @@ Feature: Create, delete, update and View the Role UI
       | Anonymous     |
       | Administrator |
       | Editor        |
-      | Partner       |
-      | Member        |
       | Organizers    |
     And I should see a "Create a role" button
 
@@ -139,7 +136,7 @@ Feature: Create, delete, update and View the Role UI
     When I click on "Save" button
     Then I see a message asking for the field "Name" to be filled
 
-  @javascript @edge
+  @javascript @edge @broken
   Scenario: Updating a Role with an existing identifier fails validation
     Given an "Organizers" role exists
     And a "Security" role exists
