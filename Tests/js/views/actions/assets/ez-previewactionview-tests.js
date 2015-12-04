@@ -3,7 +3,9 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-previewactionview-tests', function (Y) {
-    var viewTest, buttonTest;
+    var devicePreviewTest, buttonTest, attributeSettersTest, destructorTest,
+        defaultEditPreviewTest,
+        Assert = Y.Assert;
 
     buttonTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.ButtonActionViewTestCases, {
@@ -14,19 +16,8 @@ YUI.add('ez-previewactionview-tests', function (Y) {
             },
 
             setUp: function () {
-                this.editPreview = new Y.Mock();
+                this.editPreview = new Y.View();
                 this.contentMock = new Y.Mock();
-
-                Y.Mock.expect(this.editPreview, {
-                    method: 'get',
-                    args: ['container'],
-                    returns: '<div></div>'
-                });
-                Y.Mock.expect(this.editPreview, {
-                    method: 'addTarget',
-                    args: [Y.Mock.Value.Object],
-                    returns: true
-                });
 
                 this.version = {};
 
@@ -70,6 +61,16 @@ YUI.add('ez-previewactionview-tests', function (Y) {
                 Y.Mock.verify(this.editPreview);
             },
 
+            "Should set the button action view class name on the view container": function () {
+                var container = this.view.get('container');
+
+                this.view.render();
+                Assert.isTrue(
+                    container.hasClass('ez-view-buttonactionview'),
+                    "The container should have the view class name from the button action view"
+                );
+            },
+
             tearDown: function () {
                 this.view.destroy();
                 delete this.view;
@@ -79,30 +80,74 @@ YUI.add('ez-previewactionview-tests', function (Y) {
         })
     );
 
-    viewTest = new Y.Test.Case({
-        name: "eZ Preview Action View test",
+    attributeSettersTest = new Y.Test.Case({
+        name: "eZ Preview Action View attribute setters test",
 
         setUp: function () {
-            this.editPreview = new Y.Mock();
-            this.contentMock = new Y.Mock();
-            this.languageCode = 'fr-FR';
+            this.editPreview = new Y.View();
+            this.view = new Y.eZ.PreviewActionView({
+                actionId: "preview",
+                hint: "Test hint",
+                label: "Test label",
+                editPreview: this.editPreview,
+            });
+        },
 
-            Y.Mock.expect(this.editPreview, {
-                method: 'get',
-                args: ['container'],
-                returns: '<div></div>'
-            });
-            Y.Mock.expect(this.editPreview, {
-                method: 'addTarget',
-                args: [Y.Mock.Value.Object],
-                returns: true
-            });
+        tearDown: function () {
+            this.view.destroy();
+            this.editPreview.destroy();
+        },
+
+        "Should set the content attribute on the preview view": function () {
+            var content = {};
+
+            this.view.set('content', content);
+            Assert.areSame(
+                content, this.editPreview.get('content'),
+                "The editPreview should have received the content"
+            );
+        },
+
+        "Should set languageCode attribute for the PreviewView": function () {
+            var languageCode = 'fre-FR';
+
+            this.view.set('languageCode', languageCode);
+            Assert.areSame(
+                languageCode, this.editPreview.get('languageCode'),
+                "The editPreview should have received the languageCode"
+            );
+        },
+
+        "Should set the version to the preview view": function () {
+            var version = {};
+
+            this.view.set('version', version);
+            Assert.areSame(
+                version, this.editPreview.get('version'),
+                "The editPreview should have received the version"
+            );
+        },
+    });
+
+    devicePreviewTest = new Y.Test.Case({
+        name: "eZ Preview Action View device preview test",
+
+        setUp: function () {
+            var Preview = Y.Base.create('previewView', Y.View, [], {
+                    show: Y.bind(function (x) {
+                        this.isHidden = false;
+                    }, this),
+
+                    isHidden: Y.bind(function () {
+                        return this.isHidden;
+                    }, this),
+                });
+            this.editPreview = new Preview();
+            this.isHidden = true;
 
             this.version = {};
             this.view = new Y.eZ.PreviewActionView({
                 container: '.container',
-                content: this.contentMock,
-                version: this.version,
                 actionId: "preview",
                 hint: "Test hint",
                 label: "Test label",
@@ -115,156 +160,53 @@ YUI.add('ez-previewactionview-tests', function (Y) {
         },
 
         tearDown: function () {
-            Y.Mock.expect(this.editPreview, {
-                method: 'destroy'
-            });
-            Y.Mock.expect(this.editPreview, {
-                method: 'removeTarget',
-                args: [this.view]
-            });
             this.view.destroy();
-            delete this.view;
-            delete this.editPreview;
-            delete this.contentMock;
+            this.editPreview.destroy();
         },
 
-        "Should set the button action view class name on the view container": function () {
+        _assertIsVisibleInMode: function (mode) {
             var container = this.view.get('container');
 
-            Y.Mock.expect(this.editPreview, {
-                method: 'set',
-                args: [Y.Mock.Value.Any, Y.Mock.Value.Any]
-            });
-            Y.Mock.expect(this.editPreview, {
-                method: 'show',
-                args: [Y.Mock.Value.Any]
-            });
-
-            this.view.render();
-            Y.Assert.isTrue(
-                container.hasClass('ez-view-buttonactionview'),
-                "The container should have the view class name from the button action view"
+            Assert.isFalse(
+                this.isHidden,
+                "The preview should not be hidden"
+            );
+            Assert.areEqual(
+                mode, this.editPreview.get('currentModeId'),
+                "The preview should be in the correct mode"
+            );
+            Assert.areEqual(
+                mode, container.one('.is-selected[data-action="preview"]').getAttribute('data-action-option'),
+                "The corresponding button should be selected"
+            );
+            Assert.areEqual(
+                1, container.all('.is-selected[data-action="preview"]').size(),
+                "Only one button should be selected"
             );
         },
 
-        "Should set Content attribute for the PreviewView, once setting it for itself": function () {
-            var previewContent;
-
-            Y.Mock.expect(this.editPreview, {
-                method: 'set',
-                callCount: 2,
-                args: [Y.Mock.Value.String, Y.Mock.Value.Object],
-                run: function (param, value) {
-                    previewContent = value;
-                }
-            });
-            Y.Mock.expect(this.editPreview, {
-                method: 'get',
-                callCount: 0
-            });
-
-            this.view.set('content', this.contentMock);
-            Y.Assert.areSame(previewContent, this.contentMock, "editPreview should set correct content attribute");
-            Y.Mock.verify(this.editPreview);
-        },
-
-        "Should set languageCode attribute for the PreviewView": function () {
-            var previewLanguage;
-
-            Y.Mock.expect(this.editPreview, {
-                method: 'set',
-                callCount: 2,
-                args: [Y.Mock.Value.String, Y.Mock.Value.Any],
-                run: function (param, value) {
-                    previewLanguage = value;
-                }
-            });
-            Y.Mock.expect(this.editPreview, {
-                method: 'get',
-                callCount: 0
-            });
-
-            this.view.set('languageCode', this.languageCode);
-            Y.Assert.areSame(previewLanguage, this.languageCode, "editPreview should set correct languageCode attribute");
-            Y.Mock.verify(this.editPreview);
-        },
-
-        "Should set the version to the preview view": function () {
-            var version = {};
-
-            // make sure the initial config of the version attribute is taken
-            // into account (effect of the lazyAdd: true on the attribute)
-            Y.Mock.expect(this.editPreview, {
-                method: 'set',
-                args: ['version', this.version]
-            });
-            this.view.get('version');
-
-            Y.Mock.expect(this.editPreview, {
-                method: 'set',
-                args: ['version', version]
-            });
-
-            Y.Mock.expect(this.editPreview, {
-                method: 'get',
-                callCount: 0
-            });
-
-            this.view.set('version', version);
-            Y.Mock.verify(this.editPreview);
-        },
-
-        _showPreviewMode: function (mode) {
+        _showPreviewMode: function (mode, mode2) {
             var previewTrigger,
-                previewShown = false,
-                currentMode,
-                that = this,
                 container = this.view.get('container');
-
-            Y.Mock.expect(this.editPreview, {
-                method: 'set',
-                args: ['currentModeId', Y.Mock.Value.String],
-                run: function (option, value) {
-                    currentMode = value;
-                }
-            });
-            Y.Mock.expect(this.editPreview, {
-                method: 'show',
-                args: [container.getX()],
-                run: function () {
-                    previewShown = true;
-                }
-            });
 
             this.view.render();
 
-            // Checking UI status
-            Y.assert(
+            Assert.isTrue(
                 container.all('.is-selected[data-action="preview"]').isEmpty(),
                 "The preview buttons should NOT be highlighted"
             );
 
             previewTrigger = container.one('[data-action-option="' + mode + '"]');
 
-            previewTrigger.simulateGesture('tap', function () {
-                that.resume(function () {
-                    Y.assert(previewShown, "Preview should have been shown");
-                    Y.assert(currentMode === mode, "Preview mode should have been changed to '" + mode + "'");
+            this.view.once('previewAction', this.next(function (e) {
+                e.callback();
+                this._assertIsVisibleInMode(mode);
+                if ( mode2 ) {
+                    this._showPreviewMode(mode2);
+                }
+            }, this));
 
-                    // Checking UI changes as well
-                    Y.assert(
-                        previewTrigger.hasClass("is-selected"),
-                        "Active preview mode button should be highlighted"
-                    );
-                    Y.assert(
-                        container.all(
-                            '.is-selected[data-action="preview"]:not([data-action-option="' + mode + '"])'
-                        ).isEmpty(),
-                        "Each of the other preview mode buttons should NOT be highlighted"
-                    );
-                    Y.Mock.verify(this.editPreview);
-                });
-            });
+            previewTrigger.simulateGesture('tap');
             this.wait();
         },
 
@@ -280,40 +222,104 @@ YUI.add('ez-previewactionview-tests', function (Y) {
             this._showPreviewMode('mobile');
         },
 
-        "Should switch from one preview mode to another": function () {
-            this._showPreviewMode('desktop');
-            this._showPreviewMode('mobile');
-            this._showPreviewMode('tablet');
-            this._showPreviewMode('desktop');
-            this._showPreviewMode('tv');
-        },
-
-        "Should destroy editPreview when destroying itself": function () {
-            Y.Mock.expect(this.editPreview, {
-                method: 'removeTarget',
-                args: [this.view]
-            });
-            Y.Mock.expect(this.editPreview, {
-                method: 'destroy'
-            });
+        "Should not show the preview in case of error": function () {
+            var previewTrigger;
 
             this.view.render();
-            this.view.destroy();
-            Y.Mock.verify(this.editPreview);
+
+            previewTrigger = this.view.get('container').one('[data-action-option="mobile"]');
+
+            this.view.once('previewAction', this.next(function (e) {
+                e.callback(new Error());
+
+                Assert.isTrue(this.isHidden, "The preview should stay hidden");
+            }, this));
+
+            previewTrigger.simulateGesture('tap');
+            this.wait();
         },
 
-        "Should change the UI when catching event editPreviewHide is hidden": function () {
+        "Should update the preview if it's already visible": function () {
+            var previewTrigger;
+
+            this.isHidden = false;
+            previewTrigger = this.view.get('container').one('[data-action-option="tablet"]');
+
+            this.view.once('previewAction', function (e) {
+                Assert.fail("The previewAction event should not be triggered");
+            });
+
+            previewTrigger.simulateGesture('tap', this.next(function () {
+                this._assertIsVisibleInMode('tablet');
+            }, this));
+            this.wait();
+        },
+
+        "Should unselect the device button when the preview is hidden": function () {
             this.view.render();
 
             this.view.fire('editPreviewView:editPreviewHide');
-            this.view.get('container').all('[data-action="preview"]').each(function (trigger) {
-                Y.assert(!trigger.hasClass("is-selected"), "Each of the preview mode buttons should NOT be highlighted");
-            });
+            Assert.areEqual(
+                0,
+                this.view.get('container').all('.is-selected[data-action="preview"]').size(),
+                "No device button should be selected"
+            );
         }
+    });
 
+    destructorTest = new Y.Test.Case({
+        name: "eZ Preview Action View destroy test",
+
+        setUp: function () {
+            this.editPreview = new Y.View();
+            this.view = new Y.eZ.PreviewActionView({
+                actionId: "preview",
+                hint: "Test hint",
+                label: "Test label",
+                editPreview: this.editPreview,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.editPreview.destroy();
+        },
+
+        "Should destroy editPreview when destroying itself": function () {
+            this.view.destroy();
+
+            Assert.isTrue(
+                this.editPreview.get('destroyed'),
+                "The editPreview should be destructed"
+            );
+        },
+    });
+
+    defaultEditPreviewTest = new Y.Test.Case({
+        name: "eZ Preview Action View default editPreview test",
+
+        setUp: function () {
+            Y.eZ.EditPreviewView = Y.Base.create('editPreview', Y.View, [], {});
+            this.view = new Y.eZ.PreviewActionView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete Y.eZ.EditPreviewView;
+        },
+
+        "Should instantiate an eZ.EditPreviewView": function () {
+            Assert.isInstanceOf(
+                Y.eZ.EditPreviewView,
+                this.view.get('editPreview')
+            );
+        },
     });
 
     Y.Test.Runner.setName("eZ Preview Action View tests");
-    Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(buttonTest);
-}, '', {requires: ['test', 'ez-previewactionview', 'ez-genericbuttonactionview-tests', 'node-event-simulate']});
+    Y.Test.Runner.add(attributeSettersTest);
+    Y.Test.Runner.add(devicePreviewTest);
+    Y.Test.Runner.add(destructorTest);
+    Y.Test.Runner.add(defaultEditPreviewTest);
+}, '', {requires: ['test', 'view', 'ez-previewactionview', 'ez-genericbuttonactionview-tests', 'node-event-simulate']});

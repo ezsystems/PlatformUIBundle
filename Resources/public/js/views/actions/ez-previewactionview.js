@@ -58,7 +58,8 @@ YUI.add('ez-previewactionview', function (Y) {
                 buttons: this.get('buttons')
             }));
 
-            //Do NOT render preview yet (to reduce loading time for main UI parts)
+            // The preview view is not rendered yet to not generate the iframe
+            // to the preview.
             container.one(EDIT_PREVIEW_CONTAINER).append(this.get('editPreview').get('container'));
 
             return this;
@@ -70,22 +71,59 @@ YUI.add('ez-previewactionview', function (Y) {
         },
 
         /**
-         * Handles tap on any of the preview mode action buttons
+         * Handles tap on any of the preview mode action buttons. Depending on
+         * the visibility state of the preview, it fires the `previewAction`
+         * event with a callback to show the preview or just change the preview
+         * mode in the preview.
          *
-         * @method previewAction
-         * @param e {Object} event facade
+         * @method _previewAction
+         * @param {EventFacade} e
          * @protected
          */
         _previewAction: function (e) {
-            var actionTrigger = e.currentTarget,
-                option = actionTrigger.getAttribute('data-action-option');
+            var mode = e.target.getAttribute('data-action-option');
 
-            this.get('editPreview').set('currentModeId', option);
-            this.get('editPreview').show(this.get('container').getX());
+            e.preventDefault();
 
-            // UI changes
-            this.get('container').all('[data-action="preview"]').removeClass(IS_SELECTED_CLASS);
-            actionTrigger.addClass(IS_SELECTED_CLASS);
+            if ( this.get('editPreview').isHidden() ) {
+                this.fire(this._buildActionEventName(), {
+                    content: this.get('content'),
+                    callback: Y.bind(this._showPreviewInMode, this, mode),
+                });
+            } else {
+                this._showPreviewInMode(mode);
+            }
+        },
+
+        /**
+         * Shows the edit preview in the given mode if no `err` is provided.
+         *
+         * @method _showPreviewInMode
+         * @param {String} mode
+         * @param {false|Error} err
+         */
+        _showPreviewInMode: function (mode, err) {
+            var preview = this.get('editPreview');
+
+            if ( !err ) {
+                this._selectPreviewMode(mode);
+                preview.set('currentModeId', mode);
+                preview.show(this.get('container').getX());
+            }
+        },
+
+        /**
+         * Selects the given preview `mode`.
+         *
+         * @method _selectPreviewMode
+         * @param {String} mode
+         */
+        _selectPreviewMode: function (mode) {
+            var container = this.get('container'),
+                button = container.one('[data-action-option="' + mode + '"]');
+
+            container.all('[data-action-option]').removeClass(IS_SELECTED_CLASS);
+            button.addClass(IS_SELECTED_CLASS);
         },
 
         /**
@@ -96,8 +134,7 @@ YUI.add('ez-previewactionview', function (Y) {
          */
         _handleEditPreviewHide: function () {
             this.get('container').all('[data-action="preview"]').removeClass(IS_SELECTED_CLASS);
-        }
-
+        },
     }, {
         ATTRS: {
             /**

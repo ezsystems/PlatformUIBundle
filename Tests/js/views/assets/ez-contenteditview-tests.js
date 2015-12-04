@@ -516,6 +516,17 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             this._configureSubViewMock(this.formView);
             this._configureSubViewMock(this.actionBar);
 
+            this.fields = [];
+            this.valid = true;
+            Y.Mock.expect(this.formView, {
+                method: 'getFields',
+                returns: this.fields
+            });
+            Y.Mock.expect(this.formView, {
+                method: 'isValid',
+                returns: this.valid
+            });
+
             this.view = new Y.eZ.ContentEditView({
                 actionBar: this.actionBar,
                 formView: this.formView
@@ -534,29 +545,18 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         },
 
         _testAddDataActionEvent: function (evt) {
-            var fields = [], valid = true;
-
-            Y.Mock.expect(this.formView, {
-                method: 'getFields',
-                returns: fields
-            });
-            Y.Mock.expect(this.formView, {
-                method: 'isValid',
-                returns: valid
-            });
-
-            this.view.on('*:' + evt, function (e) {
+            this.view.on('*:' + evt, Y.bind(function (e) {
                 Y.Assert.areSame(
-                    fields,
+                    this.fields,
                     e.fields,
                     "The fields should be availabled in the event facade"
                 );
                 Y.Assert.areSame(
-                    valid,
+                    this.valid,
                     e.formIsValid,
                     "The form validity should be available in the event facade"
                 );
-            });
+            }, this));
             this.view.fire('whatever:' + evt);
         },
 
@@ -566,7 +566,37 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
         "Should add data to the publishAction event facade": function () {
             this._testAddDataActionEvent('publishAction');
-        }
+        },
+
+        "Should transform previewAction in saveAction": function () {
+            var content = {},
+                callback = function () {},
+                saveFired = false;
+
+            this.view.once('saveAction', function (e) {
+                saveFired = true;
+
+                Assert.areSame(
+                    content, e.content,
+                    "The previewAction content should be set in the saveAction parameters"
+                );
+                Assert.areSame(
+                    callback, e.callback,
+                    "The previewAction callback should be set in the saveAction parameters"
+                );
+                Assert.isObject(
+                    e.notificationText,
+                    "The saveAction parameters should contain a configuration for the notification text"
+                );
+
+            });
+            this.view.fire('previewAction', {
+                content: content,
+                callback: callback,
+            });
+
+            Assert.isTrue(saveFired, "The saveAction event should have been fired");
+        },
     });
 
     domEventTest = new Y.Test.Case({

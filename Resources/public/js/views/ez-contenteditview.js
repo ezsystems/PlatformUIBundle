@@ -60,6 +60,30 @@ YUI.add('ez-contenteditview', function (Y) {
             });
 
             this.on(['*:saveAction', '*:publishAction'], this._handleSavePublish);
+            this.on('*:previewAction', this._saveAndPreview);
+        },
+
+        /**
+         * `previewAction` event handler. It fires the `saveAction` draft so
+         * that the draft is saved before trying to preview the version.
+         *
+         * @method _saveAndPreview
+         * @protected
+         * @param {EventFacade} e
+         */
+        _saveAndPreview: function (e) {
+            // TODO before trying to save the draft, we should first check if
+            // that's necessary, maybe the draft is already saved and up to date
+            // with the data in the edit form.
+            // see https://jira.ez.no/browse/EZP-25200
+            this.fire('saveAction', {
+                content: e.content,
+                callback: e.callback,
+                notificationText: {
+                    started: 'Saving the draft to generate the preview',
+                    error: 'An error occured while saving the draft, the preview cannot be generated.',
+                },
+            });
         },
 
         /**

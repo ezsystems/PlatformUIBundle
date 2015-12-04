@@ -68,6 +68,17 @@ YUI.add('ez-buttonactionview', function (Y) {
         },
 
         /**
+         * Returns the action event name of the button action view.
+         *
+         * @method _buildActionEventName
+         * @protected
+         * @return {String}
+         */
+        _buildActionEventName: function () {
+            return this.get('actionId') + ACTION_SUFFIX;
+        },
+
+        /**
          * Handles tap on the view's action button
          *
          * @method _handleActionClick
@@ -85,7 +96,7 @@ YUI.add('ez-buttonactionview', function (Y) {
              * @event <actionId>Action
              * @param {eZ.Content} the content model object
              */
-            this.fire(this.get('actionId') + ACTION_SUFFIX, {
+            this.fire(this._buildActionEventName(), {
                 content: this.get('content')
             });
         },
