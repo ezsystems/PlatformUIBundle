@@ -22,8 +22,6 @@ Feature: Create, delete, update and View the Role UI
       | Anonymous     |
       | Administrator |
       | Editor        |
-      | Partner       |
-      | Member        |
       | Organizers    |
     And I should see a "Create a role" button
 
