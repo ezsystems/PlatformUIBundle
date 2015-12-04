@@ -41,22 +41,11 @@ YUI.add('ez-notificationhubview', function (Y) {
          */
         _setListEventHandlers: function (list) {
             list.on('add', Y.bind(function (e) {
-                var oldHeight = this._getContainerHeight();
-
                 this._addNotificationView(e.model);
-                this._fireHeightChange(
-                    oldHeight, this._getContainerHeight()
-                );
             }, this));
 
             list.on('remove', Y.bind(function (e) {
-                var oldHeight = this._getContainerHeight(),
-                    newHeight = oldHeight;
-
-                newHeight -= this._removeNotificationView(e.model);
-                this._fireHeightChange(
-                    oldHeight, newHeight
-                );
+                this._removeNotificationView(e.model);
             }, this));
         },
 
@@ -75,7 +64,7 @@ YUI.add('ez-notificationhubview', function (Y) {
                 });
 
             this._notificationViews.push(view);
-            this.get('container').append(view.render().get('container'));
+            this.get('container').prepend(view.render().get('container'));
             view.set('active', true);
         },
 
@@ -86,21 +75,16 @@ YUI.add('ez-notificationhubview', function (Y) {
          * @method _removeNotificationView
          * @protected
          * @param {eZ.Notification} notification
-         * @return {Number} the height in pixel of the removed view
          */
         _removeNotificationView: function (notification) {
-            var height;
-
             this._notificationViews = Y.Array.filter(this._notificationViews, function (view) {
                 var keep = view.get('notification') !== notification;
 
                 if ( !keep ) {
-                    height = view.get('container').get('offsetHeight');
                     view.vanish();
                 }
                 return keep;
             }, this);
-            return height;
         },
 
         render: function () {

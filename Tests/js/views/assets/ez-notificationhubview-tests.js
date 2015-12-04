@@ -111,55 +111,6 @@ YUI.add('ez-notificationhubview-tests', function (Y) {
 
             Assert.isTrue(vanish, "The notificationView should vanish");
         },
-
-        "Should fire the heightChange event when adding a notification": function () {
-            var heightChange = false;
-
-            this.view.render();
-            this.view.on('heightChange', function (e) {
-                heightChange = true;
-
-                Assert.isObject(e.height, "The event facade should contain an object");
-                Assert.areEqual(
-                    e.height.new - e.height.old, e.height.offset,
-                    "The event facade should contain the height change info"
-                );
-            });
-
-            this.notificationList.add({
-                identifier: this.identifier,
-                text: 'Foo Fighters',
-                state: 'playing',
-            });
-            Assert.isTrue(heightChange, "The heightChange event should have been fired");
-        },
-
-        "Should fire the heightChange event when removing a notification": function () {
-            var heightChange = false, notification;
-
-            this.view.render();
-            this.view.on('heightChange', function (e) {
-                heightChange = true;
-
-                Assert.isObject(e.height, "The event facade should contain an object");
-                Assert.areEqual(
-                    e.height.new - e.height.old, e.height.offset,
-                    "The event facade should contain the height change info"
-                );
-            });
-
-            this["Should render the added notification"]();
-            this.notificationList.add({
-                identifier: this.identifier + '2',
-                text: 'Foo Fighters 2',
-                state: 'playing',
-            });
-
-            notification = this.notificationList.getById(this.identifier);
-            notification.destroy();
-
-            Assert.isTrue(heightChange, "The heightChange event should have been fired");
-        },
     });
 
     Y.Test.Runner.setName("eZ Notification Hub View tests");
