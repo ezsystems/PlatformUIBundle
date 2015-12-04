@@ -13,6 +13,7 @@ YUI.add('ez-editorcontentprocessorxhtml5edit', function (Y) {
     Y.namespace('eZ');
 
     var NAMESPACE = 'http://ez.no/namespaces/ezpublish5/xhtml5/edit',
+        XHTML_NS = 'http://www.w3.org/1999/xhtml',
         ROOT_TAG = 'section';
 
     /**
@@ -28,6 +29,28 @@ YUI.add('ez-editorcontentprocessorxhtml5edit', function (Y) {
     Y.extend(XHTML5Edit, Y.eZ.EditorContentProcessorBase);
 
     /**
+     * Converts `data` to an XHTML fragment with a `section` root element.
+     *
+     * @method _xhtmlify
+     * @protected
+     * @param {String} data
+     * @return {String}
+     */
+    XHTML5Edit.prototype._xhtmlify = function (data) {
+        var doc = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html', null),
+            htmlDoc =  document.implementation.createHTMLDocument(""),
+            body = htmlDoc.createElement('body'),
+            section = htmlDoc.createElement(ROOT_TAG);
+
+        section.innerHTML = data;
+        body.appendChild(section);
+        body = doc.importNode(body, true);
+        doc.documentElement.appendChild(body);
+
+        return body.innerHTML;
+    };
+
+    /**
      * Transforms `data` into a XHTML5Edit document.
      *
      * @method process
@@ -35,12 +58,9 @@ YUI.add('ez-editorcontentprocessorxhtml5edit', function (Y) {
      * @return {String}
      */
     XHTML5Edit.prototype.process = function (data) {
-        // building the XML document by concatening strings is required to get
-        // the xhtml5edit format expected by the RichText parser where the
-        // section root element has a custom default namespace but it's content
-        // is supposed to be a valid XHTML document but in that namespace as
-        // well...
-        return '<' + ROOT_TAG + ' xmlns="' + NAMESPACE + '">' + data + '</' + ROOT_TAG + '>';
+        // that's ugly^W^W^Wweird but this allows to get a XHTML5Edit document
+        // in relatively clean way.
+        return this._xhtmlify(data).replace(XHTML_NS, NAMESPACE);
     };
 
     Y.eZ.EditorContentProcessorXHTML5Edit = XHTML5Edit;
