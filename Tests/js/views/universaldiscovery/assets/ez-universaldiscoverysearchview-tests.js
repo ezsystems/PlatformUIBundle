@@ -339,6 +339,7 @@ YUI.add('ez-universaldiscoverysearchview-tests', function (Y) {
             Y.eZ.UniversalDiscoverySelectedView = Y.Base.create('selectedView', Y.View, [], {});
 
             this.view = new Y.eZ.UniversalDiscoverySearchView({
+                searchText: 'Blue October',
                 container: '.container',
                 searchResultCount: this.searchResultCount,
                 searchResultList: this.searchResultList,
@@ -658,7 +659,6 @@ YUI.add('ez-universaldiscoverysearchview-tests', function (Y) {
 
             this.view = new Y.eZ.UniversalDiscoverySearchView({
                 container: '.container',
-                offset: 10,
             });
             this.view.render();
         },
@@ -705,6 +705,23 @@ YUI.add('ez-universaldiscoverysearchview-tests', function (Y) {
 
             this.wait();
         },
+
+        "Should reset the view if provided search text is empty": function () {
+            this.view.set('searchText', 'Grunwald 1410');
+            this.view.set('searchText', '');
+
+            Assert.areEqual(this.view.get('offset'), 0, "The offset attribute should be reset");
+            Assert.areEqual(
+                this.view.get('searchResultCount'),
+                0,
+                "The searchResultCount attribute should be reset"
+            );
+            Assert.areEqual(
+                this.view.get('searchResultList').length,
+                0,
+                "The searchResultList attribute should be reset"
+            );
+        }
     });
 
     Y.Test.Runner.setName("eZ Universal Discovery Search View tests");
