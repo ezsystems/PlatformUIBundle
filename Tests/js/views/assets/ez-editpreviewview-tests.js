@@ -5,7 +5,7 @@
 YUI.add('ez-editpreviewview-tests', function (Y) {
     var IS_HIDDEN_CLASS = 'is-editpreview-hidden',
         IS_LOADING_CLASS = 'is-loading',
-        viewTest,
+        viewTest, isHiddenTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     viewTest = new Y.Test.Case({
@@ -246,7 +246,67 @@ YUI.add('ez-editpreviewview-tests', function (Y) {
         }
     });
 
+    isHiddenTest = new Y.Test.Case({
+        name: "eZ Edit Preview View isHiddenTest test",
+
+        setUp: function () {
+            this.versionNames = {
+                'eng-GB': 'Test name',
+            };
+            this.contentMock = new Mock();
+            Mock.expect(this.contentMock, {
+                method: 'get',
+                args: [Mock.Value.Any],
+                returns: 42,
+            });
+            this.versionMock = new Mock();
+            Mock.expect(this.versionMock, {
+                method: 'isNew',
+                returns: false,
+            });
+            Mock.expect(this.versionMock, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if ( attr === 'versionNo' ) {
+                        return 32;
+                    } else if ( attr === 'names' ) {
+                        return {'eng-GB': 'Test name'};
+                    }
+                    Y.fail('Unexpected version.get("' + attr + '")');
+                },
+            });
+
+            this.view = new Y.eZ.EditPreviewView({
+                container: '.container',
+                content: this.contentMock,
+                version: this.versionMock,
+                languageCode: 'eng-GB',
+            });
+            this.view.render();
+        },
+
+        "Should return true": function () {
+            Assert.isTrue(
+                this.view.isHidden(),
+                "The view is hidden by default"
+            );
+        },
+
+        "Should return false": function () {
+            this.view.show(0);
+            Assert.isFalse(
+                this.view.isHidden(),
+                "The view should not be hidden"
+            );
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Edit Preview View tests");
     Y.Test.Runner.add(viewTest);
-
+    Y.Test.Runner.add(isHiddenTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-editpreviewview']});

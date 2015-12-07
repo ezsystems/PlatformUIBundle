@@ -41,11 +41,20 @@ YUI.add('ez-savedraftplugin', function (Y) {
             if ( !e.formIsValid ) {
                 return;
             }
+            this._setNotificationTexts(e.notificationText);
+            /**
+             * Stores a custom callback send in the `saveAction` event
+             * parameters.
+             *
+             * @property _callback
+             * @type {Function}
+             */
+            this._callback = e.callback;
 
             service.fire('notify', {
                 notification: {
                     identifier: this._buildNotificationIdentifier(isNew, content),
-                    text: 'Saving the draft',
+                    text: this.get('startedNotificationText'),
                     state: 'started',
                     timeout: 0,
                 },
@@ -55,6 +64,23 @@ YUI.add('ez-savedraftplugin', function (Y) {
             } else {
                 this._saveVersion(e.fields);
             }
+        },
+
+        /**
+         * Sets the notification texts attributes based on the config provided
+         * in the `saveAction` event parameters.
+         *
+         * @method _setNotificationTexts
+         * @protected
+         * @param {Object} config
+         */
+        _setNotificationTexts: function (config) {
+            if ( !config ) {
+                return;
+            }
+            Y.Object.each(config, function (text, key) {
+                this.set(key + 'NotificationText', text);
+            }, this);
         },
 
         /**
@@ -74,12 +100,16 @@ YUI.add('ez-savedraftplugin', function (Y) {
                     identifier: this._buildNotificationIdentifier(newContent, content),
                 };
 
+            if ( this._callback ) {
+                this._callback(error);
+            }
+
             if ( error ) {
-                notification.text = 'An error occured while saving the draft';
+                notification.text = this.get('errorNotificationText');
                 notification.state = 'error';
                 notification.timeout = 0;
             } else {
-                notification.text = 'The draft was stored successfully';
+                notification.text = this.get('doneNotificationText');
                 notification.state = 'done';
                 notification.timeout = 5;
                 /**
@@ -94,6 +124,7 @@ YUI.add('ez-savedraftplugin', function (Y) {
             service.fire('notify', {
                 notification: notification,
             });
+            this.reset();
         },
 
         /**
@@ -159,6 +190,41 @@ YUI.add('ez-savedraftplugin', function (Y) {
         },
     }, {
         NS: 'saveDraft',
+
+        ATTRS: {
+            /**
+             * The text do display to the editor when the saving draft operation
+             * starts.
+             *
+             * @attribute startedNotificationText
+             * @type {String}
+             */
+            startedNotificationText: {
+                value: 'Saving the draft',
+            },
+
+            /**
+             * The text do display to the editor when the saving draft operation
+             * ends successfully.
+             *
+             * @attribute doneNotificationText
+             * @type {String}
+             */
+            doneNotificationText: {
+                value: 'The draft was stored successfully',
+            },
+
+            /**
+             * The text do display to the editor when the saving draft operation
+             * fails.
+             *
+             * @attribute errorNotificationText
+             * @type {String}
+             */
+            errorNotificationText: {
+                value: 'An error occured while saving the draft',
+            },
+        },
     });
 
     Y.eZ.PluginRegistry.registerPlugin(

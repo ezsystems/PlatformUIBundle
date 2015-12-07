@@ -31,9 +31,6 @@ YUI.add('ez-editpreviewview', function (Y) {
          * Returns the version to use to generate the preview. If the version
          * was not saved yet, we are actually generating the preview to the
          * current version.
-         * TODO: that can be confusing for the user if he did some changes but
-         * did not save the version yet
-         * see https://jira.ez.no/browse/EZP-24931
          *
          * @method _getPreviewedVersion
          * @return {eZ.Version}
@@ -78,7 +75,7 @@ YUI.add('ez-editpreviewview', function (Y) {
         show: function (newWidth) {
             var previewContainer = this.get('container').get('parentNode');
 
-            if (previewContainer.hasClass(IS_HIDDEN_CLASS)) {
+            if ( this.isHidden() ) {
                 previewContainer.setStyles({
                     'width': newWidth + 'px',
                     'height': previewContainer.get('winHeight') + 'px',
@@ -107,8 +104,17 @@ YUI.add('ez-editpreviewview', function (Y) {
              * @event editPreviewHide
              */
             this.fire('editPreviewHide');
-        }
+        },
 
+        /**
+         * Checks whether the preview is hidden
+         *
+         * @method isHidden
+         * @return {Boolean}
+         */
+        isHidden: function () {
+            return this.get('container').get('parentNode').hasClass(IS_HIDDEN_CLASS);
+        },
     }, {
         ATTRS: {
             /**
