@@ -3,12 +3,10 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ae-toolbar-add {
-    z-index: 1200;
-}
-
+.ae-toolbar-add,
+.ae-toolbar,
 .ae-toolbar-styles {
-    z-index: 1201;
+    z-index: 1200;
 }
 
 .ae-ui .ae-arrow-box.ae-arrow-box-bottom.ez-ae-arrow-box-left:after {
