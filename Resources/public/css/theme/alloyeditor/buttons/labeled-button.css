@@ -3,6 +3,10 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
+.ae-ui .ae-toolbar .ez-ae-labeled-button {
+    outline-style: none;
+}
+
 .ae-ui .ae-toolbar .ez-ae-label {
     font-size: 80%;
 }
