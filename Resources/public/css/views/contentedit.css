@@ -75,6 +75,7 @@
 .is-navigation-hidden .ez-view-contenteditview .ez-editactionbar-container {
     position: fixed;
     z-index: 1025;
+    right: 230px;
 }
 
 .ez-view-contenteditview .ez-content-language-container {
