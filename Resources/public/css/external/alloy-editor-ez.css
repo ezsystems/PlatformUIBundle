@@ -217,6 +217,7 @@
 
 .ae-ui IE10-PLUS::-ms-reveal,
 .ae-ui [class^=ae-toolbar] {
+  height: 40px;
   box-sizing: content-box;
 }
 
@@ -325,7 +326,7 @@
   border-top: 8px solid currentColor;
   left: 0;
   right: 0;
-  top: 98%;
+  top: 100%;
 }
 
 .ae-ui .ae-arrow-box.ae-arrow-box-top:after {
