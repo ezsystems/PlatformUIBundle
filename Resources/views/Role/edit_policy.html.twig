@@ -52,7 +52,7 @@
         {% endif %}
 
             <div class="pure-controls">
-                {{ form_widget(form.removeDraft, {"attr": {"class": "pure-button ez-button ez-button-delete ez-font-icon", "formnovalidate": "formnovalidate"}}) }}
+                {{ form_widget(form.removeDraft, {"attr": {"class": "pure-button ez-button", "formnovalidate": "formnovalidate"}}) }}
                 {% if form.saveAndAddLimitation is defined %}
                     {{ form_widget(form.saveAndAddLimitation, {"attr": {"class": "pure-button ez-button"}}) }}
                 {% endif %}
