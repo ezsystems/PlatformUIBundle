@@ -6,3 +6,7 @@
 [class*="ae-icon-"], [class*=" ae-icon-"] {
     font-size: 18px;
 }
+
+.ae-ui [class^=ae-toolbar] {
+    border: 1px solid #333;
+}
