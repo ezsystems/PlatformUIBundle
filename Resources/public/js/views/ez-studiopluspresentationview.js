@@ -32,7 +32,7 @@ YUI.add('ez-studiopluspresentationview', function (Y) {
          */
         render: function () {
             this.get('container').setHTML(this.template());
-            this._attachedViewEvents.push(Y.on("windowresize", Y.bind(this._uiSetHeight, this)));
+            this._attachedViewEvents.push(Y.on("windowresize", Y.bind(this._uiSetHeight, this, 0)));
 
             return this;
         },
