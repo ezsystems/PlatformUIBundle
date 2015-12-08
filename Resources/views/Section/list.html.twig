@@ -47,65 +47,67 @@
 
 {% block content %}
     <section class="ez-serverside-content">
-        <div class="ez-table-data is-flexible ez-table-data-container">
-            <table class="pure-table pure-table-striped ez-selection-table" data-selection-buttons=".ez-remove-section-button">
-                <thead>
-                    <tr>
-                        <th>{{ 'section.name'|trans }}</th>
-                        <th>{{ 'section.identifier'|trans }}</th>
-                        <th>{{ 'section.id'|trans }}</th>
-                        <th>{{ 'section.assigned.content'|trans }}</th>
-                        <th colspan="3"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for section in sectionList %}
-                    <tr class="ez-selection-table-row">
-                        <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.name }}</a></td>
-                        <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.identifier }}</a></td>
-                        <td class="ez-table-data-id"><a href="{{ path( "admin_sectionview", {"sectionId": section.id} ) }}">{{ section.id }}</a></td>
-                        <td class="ez-table-data-count">{{ contentCountBySectionId[section.id] }}</td>
-                        <td>
-                            <button
-                                data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
-                                data-section-rest-id="{{ path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
-                                data-section-name="{{ section.name }}"
-                                class="ez-section-assign-button ez-button-tree pure-button ez-font-icon ez-button"
-                                {% if not canAssign %}disabled="disabled"{% endif %}>{{ 'section.assign.contents'|trans }}</button>
-                        </td>
-                        <td>
-                        {% if canEdit %}
-                            <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'section.edit'|trans }}</a>
-                        {% else %}
-                            <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'section.edit'|trans }}</span>
-                        {% endif %}
-                        </td>
-                        <td>
-                            {% set deleteForm = deleteFormsBySectionId[section.id] %}
-                            {{ form_start(deleteForm, {"action": path("admin_sectiondelete", {"sectionId": section.id, "redirectErrorsTo": "list"})}) }}
-                                {{ form_widget(deleteForm.sectionId) }}
-                                {{
-                                    form_widget(
-                                        deleteForm.delete,
-                                        {
-                                            "disabled": deletableSections[section.id] is not defined,
-                                            "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"}
-                                        }
-                                    )
-                                }}
-                            {{ form_end(deleteForm) }}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <p class="ez-table-data-buttons">
-            {% if canEdit %}
-                <a href="{{ path('admin_sectionedit') }}" class="pure-button ez-button" data-icon="&#xe616;">{{ 'section.new'|trans }}</a>
-            {% else %}
-                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe616;">{{ 'section.new'|trans }}</span>
-            {% endif %}
-            </p>
+        <div class="ez-table-data is-flexible">
+            <div class="ez-table-data-container">
+                <table class="pure-table pure-table-striped ez-selection-table" data-selection-buttons=".ez-remove-section-button">
+                    <thead>
+                        <tr>
+                            <th>{{ 'section.name'|trans }}</th>
+                            <th>{{ 'section.identifier'|trans }}</th>
+                            <th>{{ 'section.id'|trans }}</th>
+                            <th>{{ 'section.assigned.content'|trans }}</th>
+                            <th colspan="3"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for section in sectionList %}
+                        <tr class="ez-selection-table-row">
+                            <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.name }}</a></td>
+                            <td><a href="{{ path( 'admin_sectionview', {'sectionId': section.id} ) }}">{{ section.identifier }}</a></td>
+                            <td class="ez-table-data-id"><a href="{{ path( "admin_sectionview", {"sectionId": section.id} ) }}">{{ section.id }}</a></td>
+                            <td class="ez-table-data-count">{{ contentCountBySectionId[section.id] }}</td>
+                            <td>
+                                <button
+                                    data-universaldiscovery-title="{{ 'section.assign.universaldiscovery.title'|trans({'%sectionName%': section.name })|e('html_attr') }}"
+                                    data-section-rest-id="{{ path( 'ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
+                                    data-section-name="{{ section.name }}"
+                                    class="ez-section-assign-button ez-button-tree pure-button ez-font-icon ez-button"
+                                    {% if not canAssign %}disabled="disabled"{% endif %}>{{ 'section.assign.contents'|trans }}</button>
+                            </td>
+                            <td>
+                            {% if canEdit %}
+                                <a href="{{ path('admin_sectionedit', {'sectionId': section.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'section.edit'|trans }}</a>
+                            {% else %}
+                                <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'section.edit'|trans }}</span>
+                            {% endif %}
+                            </td>
+                            <td>
+                                {% set deleteForm = deleteFormsBySectionId[section.id] %}
+                                {{ form_start(deleteForm, {"action": path("admin_sectiondelete", {"sectionId": section.id, "redirectErrorsTo": "list"})}) }}
+                                    {{ form_widget(deleteForm.sectionId) }}
+                                    {{
+                                        form_widget(
+                                            deleteForm.delete,
+                                            {
+                                                "disabled": deletableSections[section.id] is not defined,
+                                                "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"}
+                                            }
+                                        )
+                                    }}
+                                {{ form_end(deleteForm) }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <p class="ez-table-data-buttons">
+                {% if canEdit %}
+                    <a href="{{ path('admin_sectionedit') }}" class="pure-button ez-button" data-icon="&#xe616;">{{ 'section.new'|trans }}</a>
+                {% else %}
+                    <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe616;">{{ 'section.new'|trans }}</span>
+                {% endif %}
+                </p>
+            </div>
         </div>
     </section>
 {% endblock %}
