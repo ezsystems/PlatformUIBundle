@@ -280,7 +280,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
          * the navigation hub view to check which navigation item view is
          * selected. A matched route object is a clone of the application active
          * route without the service, serviceInstance and callbacks entries and
-         * with an additionnal `parameters` property holding the route
+         * with an additional `parameters` property holding the route
          * parameters and their values.
          *
          * @method _matchedRoute
