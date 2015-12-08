@@ -134,7 +134,11 @@ class LanguageController extends Controller
         $form = $this->createForm(new LanguageType(), $languageData);
         $form->handleRequest($request);
         if ($form->isValid()) {
-            $this->actionDispatcher->dispatchFormAction($form, $languageData, $form->getClickedButton()->getName());
+            $this->actionDispatcher->dispatchFormAction(
+                $form,
+                $languageData,
+                $form->getClickedButton() ? $form->getClickedButton()->getName() : null
+            );
             if ($response = $this->actionDispatcher->getResponse()) {
                 return $response;
             }
