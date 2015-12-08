@@ -503,7 +503,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
              * object for the navigation item view. This configuration must
              * contain a `title` and an `identifier` properties.
              *
-             * @attribute platformNavigationItems
+             * @attribute adminNavigationItems
              * @type Array
              * @default array containing the items for the admin
              * @readOnly
