@@ -81,7 +81,7 @@ YUI.add('ez-contenteditview', function (Y) {
                 callback: e.callback,
                 notificationText: {
                     started: 'Saving the draft to generate the preview',
-                    error: 'An error occured while saving the draft, the preview cannot be generated.',
+                    error: 'An error occurred while saving the draft, the preview cannot be generated.',
                 },
             });
         },

@@ -179,7 +179,7 @@ YUI.add('ez-publishdraftplugin', function (Y) {
             this.get('host').fire('notify', {
                 notification: {
                     identifier: this._buildNotificationIdentifier(contentId),
-                    text: 'An error occured while publishing the draft',
+                    text: 'An error occurred while publishing the draft',
                     state: 'error',
                     timeout: 0,
                 },
