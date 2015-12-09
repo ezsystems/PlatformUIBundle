@@ -23,7 +23,7 @@
 .ez-view-buttonactionview [disabled] .action-icon,
 .ez-view-buttonactionview [disabled] .action-label,
 .ez-view-buttonactionview [disabled] .action-hint {
-    color: #808080;
+    opacity: 0.6;
 }
 
 .ez-view-buttonactionview .action-label,

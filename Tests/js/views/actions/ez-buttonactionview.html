@@ -9,13 +9,8 @@
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="buttonactionview-ez-template">
-<button class="ez-action {{#if actionId}}action-trigger{{/if}}{{#if hint}} with-hint{{/if}}" data-action="{{ actionId }}" {{#if disabled}}disabled{{/if}}>
-    <div class="font-icon action-icon">
-        <p class="action-label">{{ label }}</p>
-        {{#if hint}}
-        <p class="action-hint">{{ hint }}</p>
-        {{/if}}
-    </div>
+<button class="{{#if actionId}}action-trigger{{/if}}" data-action="{{ actionId }}">
+    {{ label }}
 </button>
 </script>
 
@@ -24,7 +19,8 @@
 <script type="text/javascript" src="./assets/ez-buttonactionview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
-            loaderFilter;
+        loaderFilter;
+
     if (filter == 'coverage'){
         loaderFilter = {
             searchExp : "/Resources/public/js/",

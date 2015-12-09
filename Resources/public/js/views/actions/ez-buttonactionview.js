@@ -87,18 +87,20 @@ YUI.add('ez-buttonactionview', function (Y) {
          */
         _handleActionClick: function (e) {
             e.preventDefault();
-            /**
-             * Fired when the action button is clicked. Name of the event
-             * consists of the action view's 'actionId' attribute and 'Action'
-             * suffix.  For example for a view with actionId = "publish", the
-             * event fired will be named "publishAction".
-             *
-             * @event <actionId>Action
-             * @param {eZ.Content} the content model object
-             */
-            this.fire(this._buildActionEventName(), {
-                content: this.get('content')
-            });
+            if ( !this.get('disabled') ) {
+                /**
+                 * Fired when the action button is clicked. Name of the event
+                 * consists of the action view's 'actionId' attribute and 'Action'
+                 * suffix.  For example for a view with actionId = "publish", the
+                 * event fired will be named "publishAction".
+                 *
+                 * @event <actionId>Action
+                 * @param {eZ.Content} the content model object
+                 */
+                this.fire(this._buildActionEventName(), {
+                    content: this.get('content')
+                });
+            }
         },
 
         /**
