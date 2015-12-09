@@ -41,7 +41,14 @@ YUI.add('ez-translateactionview', function (Y) {
          * @return Y.eZ.TranslateActionView the view itself
          */
         render: function () {
-            var container = this.get('container');
+            var container = this.get('container'),
+                translationsList = this.get('content').get('currentVersion').getTranslationsList(),
+                firstLanguageCodes = this._getFirstLanguageCodes(),
+                moreTranslationCount = 0;
+
+            if (translationsList.length - firstLanguageCodes.length > 0) {
+                moreTranslationCount = translationsList.length - firstLanguageCodes.length;
+            }
 
             this._addButtonActionViewClassName();
 
@@ -49,11 +56,12 @@ YUI.add('ez-translateactionview', function (Y) {
                 actionId: this.get('actionId'),
                 disabled: this.get('disabled'),
                 label: this.get('label'),
-                hint: this.get('hint'),
 
                 location: this.get('location').toJSON(),
                 content: this.get('content').toJSON(),
-                translations: this.get('content').get('currentVersion').getTranslationsList()
+                translations: translationsList,
+                firstLanguagesCode: firstLanguageCodes,
+                moreTranslationCount: moreTranslationCount
             }));
 
             return this;
@@ -101,24 +109,20 @@ YUI.add('ez-translateactionview', function (Y) {
         },
 
         /**
-         * Returns the hint for translate button
+         * Returns array containing language codes of translations of content that will be
+         * displayed in the hint.
          *
-         * @method _getTranslateButtonHint
+         * @method _getFirstLanguageCodes
          * @protected
-         * @return {String}
          */
-        _getTranslateButtonHint: function () {
+        _getFirstLanguageCodes: function () {
             var translations = this.get('content').get('currentVersion').getTranslationsList(),
                 countAll = translations.length,
-                moreTranslations = Y.Object.values(Y.merge(translations));
+                firstLanguageCodes = Y.Object.values(Y.merge(translations));
 
-            moreTranslations.splice(2, countAll-2);
+            firstLanguageCodes.splice(2, countAll-2);
 
-            if (countAll > moreTranslations.length) {
-                moreTranslations.push('+' + (countAll-moreTranslations.length));
-            }
-
-            return moreTranslations.join(', ');
+            return firstLanguageCodes;
         },
 
         /**
@@ -175,20 +179,6 @@ YUI.add('ez-translateactionview', function (Y) {
         }
     }, {
         ATTRS: {
-            /**
-             * hint attribute here overwrites hint attribute from Y.eZ.ButtonActionView
-             * because hint for Y.eZ.TranslateActionView is dynamically build with
-             * getter funtion using existing translations of content
-             *
-             * @attribute hint
-             * @type string
-             * @readOnly
-             */
-            hint: {
-                readOnly: true,
-                getter: '_getTranslateButtonHint'
-            },
-
             /**
              * The viewed location
              *

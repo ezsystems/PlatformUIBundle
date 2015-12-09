@@ -139,6 +139,7 @@ system:
                         - 'ez-usermodel'
                         - 'ez-pluginregistry'
                         - 'ez-registerurlhelpersplugin'
+                        - 'ez-registerlanguagehelpersplugin'
                         - 'ez-domstateplugin'
                         - 'ez-universaldiscoveryplugin'
                         - 'ez-confirmboxplugin'
@@ -924,6 +925,9 @@ system:
                 ez-registerurlhelpersplugin:
                     requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-registerurlhelpersplugin.js
+                ez-registerlanguagehelpersplugin:
+                    requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-registerlanguagehelpersplugin.js
                 ez-viewservicebaseplugin:
                     requires: ['plugin', 'base']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-viewservicebaseplugin.js

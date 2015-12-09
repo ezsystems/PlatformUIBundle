@@ -76,3 +76,20 @@
     width: 17em;
     margin: 0.5em;
 }
+
+.ez-view-translateactionview .action-hint {
+    list-style: none;
+    padding: 0 0 0 2.9em;
+}
+
+.ez-view-translateactionview .ez-translation-indicator {
+    display: inline;
+}
+
+.ez-view-translateactionview .ez-translation-indicator:after {
+    content: ', ';
+}
+
+.ez-view-translateactionview .ez-translation-indicator:last-child:after {
+    content: '';
+}
