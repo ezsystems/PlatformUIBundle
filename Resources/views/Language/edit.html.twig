@@ -55,7 +55,7 @@
 
             <div class="pure-controls">
                 <a href="{{ language.new ? path("admin_languagelist") : path("admin_languageview", {"languageId": language.id}) }}"
-                   class="pure-button ez-button ez-button-delete ez-font-icon">{{ "language.cancel"|trans }}</a>
+                   class="pure-button ez-button">{{ "language.cancel"|trans }}</a>
                 {{ form_widget(form.save, {"attr": {"class": "pure-button ez-button"}}) }}
             </div>
 
