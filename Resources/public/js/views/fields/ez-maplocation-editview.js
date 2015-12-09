@@ -246,7 +246,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
                     // Request failure
                     function () {
                         button.removeClass(IS_LOADING_CLASS);
-                        errorsOutput.setHTML('An error occured during geolocation request of your current position');
+                        errorsOutput.setHTML('An error occurred during geolocation request of your current position');
                     });
             } else {
                 errorsOutput.setHTML('Your browser does not support HTML5 Geolocation API');

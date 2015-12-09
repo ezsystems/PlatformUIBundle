@@ -184,7 +184,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
 
             this.get('location').move({api: this.get('capi')},  parentLocationId, function (error, response) {
                 if (error) {
-                    that._notify('An error occured while moving your content', notificationIdentifier, 'error', 0);
+                    that._notify('An error occurred while moving your content', notificationIdentifier, 'error', 0);
                     return;
                 }
 

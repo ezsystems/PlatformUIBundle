@@ -73,7 +73,7 @@ YUI.add('ez-copycontentplugin', function (Y) {
             app.set('loading', true);
             service.get('content').copy({api: service.get('capi')}, parentLocationId, function (error, response) {
                 if (error) {
-                    that._notify('An error occured while copying your content', notificationIdentifier, 'error', 0);
+                    that._notify('An error occurred while copying your content', notificationIdentifier, 'error', 0);
                     app.set('loading', false);
                     return;
                 }
@@ -103,7 +103,7 @@ YUI.add('ez-copycontentplugin', function (Y) {
             this.get('copiedContent').load({api: service.get('capi')}, function (error) {
                 if (error) {
                     app.set('loading', false);
-                    that._notify('An error occured while loading your content', 'loading-content-error', 'error', 0);
+                    that._notify('An error occurred while loading your content', 'loading-content-error', 'error', 0);
                     return;
                 }
                 /**

@@ -222,7 +222,7 @@ YUI.add('ez-savedraftplugin', function (Y) {
              * @type {String}
              */
             errorNotificationText: {
-                value: 'An error occured while saving the draft',
+                value: 'An error occurred while saving the draft',
             },
         },
     });
