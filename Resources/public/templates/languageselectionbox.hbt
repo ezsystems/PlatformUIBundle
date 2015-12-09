@@ -3,7 +3,7 @@
 
 <ul class="ez-languageselectionbox-languages ez-languageselectionbox-languages-list">
     {{#each languages}}
-        <li class="ez-language ez-language-element" data-languagecode="{{ this }}">{{ this }}</li>
+        <li class="ez-language ez-language-element" data-languagecode="{{ this }}">{{ language_name this }}</li>
     {{/each}}
 </ul>
 
@@ -20,7 +20,7 @@
         <h3 class="ez-languageselectionbox-title">Select a base language:</h3>
         <ul class="ez-languageselectionbox-languages ez-languageselectionbox-existingtranslations">
             {{#each referenceLanguageList}}
-                <li class="ez-language ez-base-language" data-languagecode="{{ this }}">{{ this }}</li>
+                <li class="ez-language ez-base-language" data-languagecode="{{ this }}">{{ language_name this }}</li>
             {{/each}}
         </ul>
     </div>
