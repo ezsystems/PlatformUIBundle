@@ -59,11 +59,13 @@ YUI.add('ez-genericbuttonactionview-tests', function (Y) {
                     variables.label,
                     "label should be available"
                 );
-                Y.Assert.areSame(
-                    that.hint,
-                    variables.hint,
-                    "hint should be available"
-                );
+                if (!that.ommitHintTesting) {
+                    Y.Assert.areSame(
+                        that.hint,
+                        variables.hint,
+                        "hint should be available"
+                    );
+                }
 
                 return origTpl.apply(this, arguments);
             };

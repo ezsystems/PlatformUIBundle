@@ -3,18 +3,18 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-translateactionview-tests', function (Y) {
-    var viewTest, eventTest, renderTest, domEventTest, hideTest, hintTest,
+    var viewTest, eventTest, renderTest, domEventTest, hideTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     viewTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.ButtonActionViewTestCases, {
             setUp: function () {
+                this.ommitHintTesting = true;
                 this.actionId = 'translate';
                 this.label = 'Translate test label';
-                this.hint = 'eng-GB, pol-PL';
                 this.translationsList = ['eng-GB', 'pol-PL'];
                 this.disabled = false;
-                this.templateVariablesCount = 7;
+                this.templateVariablesCount = 8;
                 this.contentMock = new Mock();
                 this.locationMock = new Mock();
                 this.versionMock = new Mock();
@@ -41,7 +41,6 @@ YUI.add('ez-translateactionview-tests', function (Y) {
                     container: '.container',
                     actionId: this.actionId,
                     label: this.label,
-                    hint: this.hint,
                     disabled: this.disabled,
                     content: this.contentMock,
                     location: this.locationMock
@@ -51,6 +50,60 @@ YUI.add('ez-translateactionview-tests', function (Y) {
             tearDown: function () {
                 this.view.destroy();
                 delete this.view;
+            },
+
+            _testVariablesInTemplate: function (translationsList, numberOfLanguagesInHint) {
+                var origTpl = this.view.template,
+                    numberOfAdditionalTranslations = translationsList.length - numberOfLanguagesInHint;
+
+                this.view.template = function (variables) {
+                    Y.Assert.isObject(variables, "The template should receive some variables");
+
+                    Y.Assert.areEqual(
+                        numberOfAdditionalTranslations,
+                        variables.moreTranslationCount,
+                        "label should be available"
+                    );
+                    Y.Assert.areEqual(
+                        numberOfLanguagesInHint,
+                        variables.firstLanguagesCode.length,
+                        "label should be available"
+                    );
+
+                    for (var i=0; i<numberOfLanguagesInHint; i++) {
+                        Y.Assert.isTrue(
+                            variables.firstLanguagesCode[i] === translationsList[i],
+                            "languageCode in firstLanguagesCode should be the same as contents translation"
+                        );
+                    }
+
+                    return origTpl.apply(this, arguments);
+                };
+                this.view.render();
+            },
+
+            "Should pass firstLanguagesCode and moreTranslationCount variables to the template": function () {
+                var translationsList = ['ger-DE', 'fre-FR', 'pol-PL', 'eng-GB'],
+                    numberOfLanguagesInHint = 2;
+
+                Mock.expect(this.versionMock, {
+                    method: 'getTranslationsList',
+                    returns: translationsList
+                });
+
+                this._testVariablesInTemplate(translationsList, numberOfLanguagesInHint);
+            },
+
+            "Should pass firstLanguagesCode and moreTranslationCount variables to the template 2": function () {
+                var translationsList = ['ger-DE'],
+                    numberOfLanguagesInHint = 1;
+
+                Mock.expect(this.versionMock, {
+                    method: 'getTranslationsList',
+                    returns: translationsList
+                });
+
+                this._testVariablesInTemplate(translationsList, numberOfLanguagesInHint);
             },
         })
     );
@@ -293,85 +346,10 @@ YUI.add('ez-translateactionview-tests', function (Y) {
         }
     });
 
-    hintTest = new Y.Test.Case({
-        name: 'eZ Translate Action View hint test',
-
-        setUp: function () {
-            this.contentMock = new Mock();
-            this.locationMock = new Mock();
-            this.versionMock = new Mock();
-
-            Mock.expect(this.contentMock, {
-                method: 'get',
-                args: ['currentVersion'],
-                returns: this.versionMock
-            });
-            Mock.expect(this.locationMock, {
-                method: 'toJSON',
-                returns: {}
-            });
-            Mock.expect(this.contentMock, {
-                method: 'toJSON',
-                returns: {}
-            });
-
-            this.view = new Y.eZ.TranslateActionView({
-                container: '.container',
-                actionId: 'translate',
-                label: 'Translations',
-                disabled: false,
-                content: this.contentMock,
-                location: this.locationMock
-            });
-        },
-
-        tearDown: function () {
-            this.view.destroy();
-            delete this.view;
-        },
-
-        "Should display all translations in button hint": function () {
-            var translationsList = ['Diego Armando Maradona Franco', 'Dennis Nicolaas Maria Bergkamp'],
-                hintExpected = 'Diego Armando Maradona Franco, Dennis Nicolaas Maria Bergkamp';
-
-            Mock.expect(this.versionMock, {
-                method: 'getTranslationsList',
-                returns: translationsList
-            });
-
-            this.view.render();
-
-            Assert.areEqual(
-                hintExpected,
-                this.view.get('hint'),
-                'Should display hint in proper way'
-            );
-        },
-
-        "Should display 2 translations and number of additional translations in button hint": function () {
-            var translationsList = ['eng-GB','pol-PL','fre-FR','nno-NO','esl-ES'],
-                hintExpected = 'eng-GB, pol-PL, +3';
-
-            Mock.expect(this.versionMock, {
-                method: 'getTranslationsList',
-                returns: translationsList
-            });
-
-            this.view.render();
-
-            Assert.areEqual(
-                hintExpected,
-                this.view.get('hint'),
-                'Should display hint in proper way'
-            );
-        }
-    });
-
     Y.Test.Runner.setName("eZ Translate Action View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(domEventTest);
     Y.Test.Runner.add(hideTest);
-    Y.Test.Runner.add(hintTest);
 }, '', {requires: ['test', 'ez-translateactionview', 'ez-genericbuttonactionview-tests', 'node-event-simulate']});

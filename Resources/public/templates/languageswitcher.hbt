@@ -1,10 +1,10 @@
 <div class="ez-selected-language">
     {{#if otherTranslations}}
         <a href="#" class="ez-dropdown-list-indicator">
-            {{ currentTranslation }}
+            {{ language_name currentTranslation }}
         </a>
     {{else}}
-        {{ currentTranslation }}
+        {{ language_name currentTranslation }}
     {{/if}}
 </div>
 {{#if otherTranslations}}
@@ -12,7 +12,7 @@
     {{#each otherTranslations}}
         <li class="ez-content-translation">
             <a class="ez-language-switch-link" href="{{ path "viewLocation" id=../location.id languageCode=this }}">
-                {{ this }}
+                {{ language_name this }}
             </a>
         </li>
     {{/each}}

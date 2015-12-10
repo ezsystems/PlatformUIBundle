@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Register Language Helpers Plugin tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../../assets/pluginregister-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-registerlanguagehelpersplugin-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-registerlanguagehelpersplugin'],
+        filter: loaderFilter,
+        modules: {
+            "ez-registerlanguagehelpersplugin": {
+                requires: ['plugin', 'base', 'handlebars', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/apps/plugins/ez-registerlanguagehelpersplugin.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-registerlanguagehelpersplugin-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
