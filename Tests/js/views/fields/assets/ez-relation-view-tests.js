@@ -123,7 +123,7 @@ YUI.add('ez-relation-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 6;
-                this.fieldDefinition = {fieldType: "ezobjectrelation"};
+                this.fieldDefinition = {fieldType: "ezobjectrelation", identifier: 'some_identifier'};
                 this.field = {fieldValue: {destinationContentId: null}};
                 this.isEmpty = true;
                 this.view = new Y.eZ.RelationView({

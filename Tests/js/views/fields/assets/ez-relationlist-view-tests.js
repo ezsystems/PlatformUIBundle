@@ -154,7 +154,7 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 6;
-                this.fieldDefinition = {fieldType: "ezobjectrelationlist"};
+                this.fieldDefinition = {fieldType: "ezobjectrelationlist", identifier: 'some_identifier'};
                 this.field = {fieldValue: {destinationContentsId: null}};
                 this.isEmpty = true;
                 this.view = new Y.eZ.RelationListView({
@@ -181,7 +181,7 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 6;
-                this.fieldDefinition = {fieldType: "ezobjectrelationlist"};
+                this.fieldDefinition = {fieldType: "ezobjectrelationlist", identifier: 'some_identifier'};
                 this.field = {fieldValue: {destinationContentsId: []}};
                 this.isEmpty = true;
                 this.view = new Y.eZ.RelationListView({
@@ -208,7 +208,7 @@ YUI.add('ez-relationlist-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 6;
-                this.fieldDefinition = {fieldType: "ezobjectrelationlist"};
+                this.fieldDefinition = {fieldType: "ezobjectrelationlist", identifier: 'some_identifier'};
                 this.field = {fieldValue: null};
                 this.isEmpty = true;
                 this.view = new Y.eZ.RelationListView({

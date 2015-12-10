@@ -15,7 +15,8 @@ YUI.add('ez-country-view-tests', function (Y) {
                     fieldType: 'ezcountry',
                     fieldSettings: {
                         isMultiple: false
-                    }
+                    },
+                    identifier: 'some_identifier'
                 };
                 this.field = {fieldValue: ["AD"]};
                 this.isEmpty = false;
@@ -43,7 +44,8 @@ YUI.add('ez-country-view-tests', function (Y) {
                     fieldType: 'ezcountry',
                     fieldSettings: {
                         isMultiple: false
-                    }
+                    },
+                    identifier: 'some_identifier'
                 };
                 this.field = {};
                 this.isEmpty = true;
@@ -85,7 +87,8 @@ YUI.add('ez-country-view-tests', function (Y) {
                     fieldType: 'ezcountry',
                     fieldSettings: {
                         isMultiple: false
-                    }
+                    },
+                    identifier: 'some_identifier'
                 };
                 this.field = {fieldValue: ["AD"]};
                 this.isEmpty = false;
@@ -127,7 +130,8 @@ YUI.add('ez-country-view-tests', function (Y) {
                     fieldType: 'ezcountry',
                     fieldSettings: {
                         isMultiple: "true"
-                    }
+                    },
+                    identifier: 'some_identifier'
                 };
                 this.field = {fieldValue: ["AD", "SC"]};
                 this.isEmpty = false;
@@ -169,7 +173,8 @@ YUI.add('ez-country-view-tests', function (Y) {
                     fieldType: 'ezcountry',
                     fieldSettings: {
                         isMultiple: "true"
-                    }
+                    },
+                    identifier: 'some_identifier'
                 };
                 this.field = {fieldValue: []};
                 this.isEmpty = true;

@@ -11,7 +11,11 @@ YUI.add('ez-selection-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 5;
-                this.fieldDefinition = {fieldType: 'ezselection', fieldSettings: {options: ["Sun", "Beach", "Mojito", "Bikini"]}};
+                this.fieldDefinition = {
+                    identifier: 'some_identifier',
+                    fieldType: 'ezselection',
+                    fieldSettings: {options: ["Sun", "Beach", "Mojito", "Bikini"]},
+                };
                 this.field = {fieldValue: [1]};
                 this.isEmpty = false;
                 this.view = new Y.eZ.SelectionView({
@@ -84,7 +88,11 @@ YUI.add('ez-selection-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 5;
-                this.fieldDefinition = {fieldType: 'ezselection', fieldSettings: {options: ["Sun", "Beach", "Mojito", "Bikini"], isMultiple: true}};
+                this.fieldDefinition = {
+                    identifier: 'some_identifier',
+                    fieldType: 'ezselection',
+                    fieldSettings: {options: ["Sun", "Beach", "Mojito", "Bikini"], isMultiple: true},
+                };
                 this.field = {fieldValue: [1]};
                 this.isEmpty = false;
                 this.view = new Y.eZ.SelectionView({

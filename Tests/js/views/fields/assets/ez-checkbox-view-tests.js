@@ -11,7 +11,7 @@ YUI.add('ez-checkbox-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 4;
-                this.fieldDefinition = {fieldType: 'ezboolean'};
+                this.fieldDefinition = {fieldType: 'ezboolean', identifier: 'some_identifier'};
                 this.field = {fieldValue: true};
                 this.isEmpty = false;
                 this.view = new Y.eZ.CheckboxView({

@@ -17,6 +17,7 @@ YUI.add('ez-date-view-tests', function (Y) {
                 this.templateVariablesCount = 4;
                 this.fieldDefinition = {
                     fieldType: 'ezdate',
+                    identifier: 'some_identifier'
                 };
                 this.field = {
                     fieldValue: this.fieldValue,

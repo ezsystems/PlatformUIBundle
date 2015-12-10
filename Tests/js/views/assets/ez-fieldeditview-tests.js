@@ -28,7 +28,7 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
                 returns: this.jsonVersion
             });
 
-            this.fieldDefinition = {descriptions: {"eng-GB": "Test description"}};
+            this.fieldDefinition = {identifier: 'some_identifier', descriptions: {"eng-GB": "Test description"}};
             this.field = {descriptions: {}};
 
             this.view = new Y.eZ.FieldEditView({
@@ -166,6 +166,16 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
             Y.Assert.isFalse(this.view.isValid(), "isValid should return false");
         },
 
+        "Test attribute with field definition identifier on the view container": function () {
+            var container = this.view.get('container');
+
+            this.view.render();
+            Y.Assert.areEqual(
+                container.getAttribute('data-field-definition-identifier'),
+                this.view.get('fieldDefinition').identifier,
+                "The view container should have an attribute with field definition identifier"
+            );
+        },
     });
 
     descriptionTest = new Y.Test.Case({

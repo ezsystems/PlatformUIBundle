@@ -41,6 +41,8 @@ YUI.add('ez-fieldview', function (Y) {
                     isEmpty: isEmpty,
                 };
 
+            container.setAttribute('data-field-definition-identifier', def.identifier);
+
             container.addClass(CONTAINER_CLASS_PREFIX + def.fieldType.toLowerCase());
             if ( isEmpty ) {
                 container.addClass(FIELD_EMPTY_CLASS);

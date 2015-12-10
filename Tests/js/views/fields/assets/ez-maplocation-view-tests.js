@@ -235,7 +235,7 @@ YUI.add('ez-maplocation-view-tests', function (Y) {
                     }
                 });
                 this.templateVariablesCount = 4;
-                this.fieldDefinition = {fieldType: 'ezgmaplocation'};
+                this.fieldDefinition = {fieldType: 'ezgmaplocation', identifier: 'some_identifier'};
                 this.field = {};
                 this.isEmpty = true;
                 this.view = new Y.eZ.MapLocationView({

@@ -23,7 +23,7 @@ YUI.add('ez-richtext-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 5;
-                this.fieldDefinition = {fieldType: 'ezrichtext'};
+                this.fieldDefinition = {fieldType: 'ezrichtext', identifier: 'some_identifier'};
                 this.field = {id: 42, fieldValue: {xhtml5edit: EMPTY_XML}};
                 this.isEmpty = true;
                 this.view = new Y.eZ.RichTextView({
@@ -57,7 +57,7 @@ YUI.add('ez-richtext-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 5;
-                this.fieldDefinition = {fieldType: 'ezrichtext'};
+                this.fieldDefinition = {fieldType: 'ezrichtext', identifier: 'some_identifier'};
                 this.field = {id: 42, fieldValue: {xhtml5edit: NOTEMPTY_XML}};
                 this.isEmpty = false;
                 this.view = new Y.eZ.RichTextView({
@@ -91,7 +91,7 @@ YUI.add('ez-richtext-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 5;
-                this.fieldDefinition = {fieldType: 'ezrichtext'};
+                this.fieldDefinition = {fieldType: 'ezrichtext', identifier: 'some_identifier'};
                 this.field = {id: 42, fieldValue: {xhtml5edit: INVALD_XML}};
                 this.isEmpty = null;
                 this.view = new Y.eZ.RichTextView({

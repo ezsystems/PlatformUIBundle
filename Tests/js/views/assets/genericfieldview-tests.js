@@ -13,6 +13,7 @@ YUI.add('ez-genericfieldview-tests', function (Y) {
     // * this.templateVariablesCount contains the number of variables available
     // in the template
     // * this.fieldDefinition contains the field definition
+    // * this.fieldDefinition.identifier defines field definition identifier
     Y.eZ.Test.FieldViewTestCases = {
         _testValue: function (fieldValue, templateValue, msg, assertFunc) {
             var origTpl = this.view.template;
@@ -102,6 +103,17 @@ YUI.add('ez-genericfieldview-tests', function (Y) {
                 return origTpl.apply(this, arguments);
             };
             this.view.render();
+        },
+
+        "Test attribute with field definition identifier on the view container": function () {
+            var container = this.view.get('container');
+
+            this.view.render();
+            Y.Assert.areEqual(
+                container.getAttribute('data-field-definition-identifier'),
+                this.view.get('fieldDefinition').identifier,
+                "The view container should have an attribute with field definition identifier"
+            );
         },
     };
 
