@@ -67,14 +67,17 @@ YUI.add('ez-fieldeditview', function (Y) {
          * @return {eZ.FieldEditView}
          */
         render: function () {
-            var defaultVariables = {
-                    fieldDefinition: this.get('fieldDefinition'),
+            var def = this.get('fieldDefinition'),
+                defaultVariables = {
+                    fieldDefinition: def,
                     field: this.get('field'),
                     content: this.get('content').toJSON(),
                     version: this.get('version').toJSON(),
                     contentType: this.get('contentType').toJSON(),
                 },
                 container = this.get('container');
+
+            container.setAttribute('data-field-definition-identifier', def.identifier);
 
             if (this._useStandardFieldDefinitionDescription) {
                 container.addClass(STANDARD_DESCR);

@@ -38,6 +38,7 @@ YUI.add('ez-dateandtime-view-tests', function (Y) {
                     fieldSettings: {
                         useSeconds: true,
                     },
+                    identifier: 'some_identifier'
                 };
                 this.field = {
                     fieldValue: this.fieldValue,

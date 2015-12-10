@@ -26,6 +26,7 @@ YUI.add('ez-time-view-tests', function (Y) {
                 this.timeNoSeconds = Y.Date.format(this.utcDate, {format:"%R"});
                 this.templateVariablesCount = 4;
                 this.fieldDefinition = {
+                    identifier: 'some_identifier',
                     fieldType: 'eztime',
                     fieldSettings: {
                         useSeconds: true,

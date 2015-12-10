@@ -11,7 +11,7 @@ YUI.add('ez-integer-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 4;
-                this.fieldDefinition = {fieldType: 'ezinteger'};
+                this.fieldDefinition = {fieldType: 'ezinteger', identifier: 'some_identifier'};
                 this.field = {fieldValue: 42};
                 this.isEmpty = false;
                 this.view = new Y.eZ.IntegerView({

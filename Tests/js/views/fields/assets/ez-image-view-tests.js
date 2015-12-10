@@ -143,7 +143,7 @@ YUI.add('ez-image-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 6;
-                this.fieldDefinition = {fieldType: "ezimage"};
+                this.fieldDefinition = {fieldType: "ezimage", identifier: 'some_identifier'};
                 this.field = {fieldValue: null};
                 this.isEmpty = true;
                 this.view = new Y.eZ.ImageView({

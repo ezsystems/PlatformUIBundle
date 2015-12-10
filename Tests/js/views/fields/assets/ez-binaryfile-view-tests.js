@@ -11,7 +11,7 @@ YUI.add('ez-binaryfile-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 4;
-                this.fieldDefinition = {fieldType: 'ezbinaryfile'};
+                this.fieldDefinition = {fieldType: 'ezbinaryfile', identifier: 'some_identifier'};
                 this.field = {
                     fieldValue: {
                         "id": "application\/5e334d334ddcf1f1064e44ef48456bdd.mup",

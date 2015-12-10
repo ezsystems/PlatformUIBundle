@@ -11,7 +11,7 @@ YUI.add('ez-user-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 4;
-                this.fieldDefinition = {fieldType: 'ezuser'};
+                this.fieldDefinition = {fieldType: 'ezuser', identifier: 'some_identifier'};
                 this.field = {fieldValue: {email: "MarieChantal@NS.com", login:"MarieChantal" }};
                 this.isEmpty = false;
                 this.view = new Y.eZ.UserView({

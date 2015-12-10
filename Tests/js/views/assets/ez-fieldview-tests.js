@@ -10,7 +10,7 @@ YUI.add('ez-fieldview-tests', function (Y) {
             name: "eZ Field View test",
 
             setUp: function () {
-                this.fieldDefinition = {fieldType: 'SomeThing'};
+                this.fieldDefinition = {fieldType: 'SomeThing', identifier: 'some_identifier'};
                 this.field = {fieldValue: 'ze value'};
                 this.isEmpty = false;
                 this.templateVariablesCount = 4;

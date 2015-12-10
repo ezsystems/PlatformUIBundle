@@ -11,7 +11,7 @@ YUI.add('ez-author-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 4;
-                this.fieldDefinition = {fieldType: 'ezauthor'};
+                this.fieldDefinition = {fieldType: 'ezauthor', identifier: 'some_identifier'};
                 this.field = {fieldValue: [{email: "MarieChantal@NS.com", id: 0, name:"MarieChantal" }]};
                 this.isEmpty = false;
                 this.view = new Y.eZ.AuthorView({

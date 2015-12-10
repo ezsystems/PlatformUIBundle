@@ -11,7 +11,7 @@ YUI.add('ez-url-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 4;
-                this.fieldDefinition = {fieldType: 'ezurl'};
+                this.fieldDefinition = {fieldType: 'ezurl', identifier: 'some_identifier'};
                 this.field = {fieldValue: {link: ''}};
                 this.isEmpty = true;
                 this.view = new Y.eZ.UrlView({

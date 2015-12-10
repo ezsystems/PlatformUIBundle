@@ -11,7 +11,7 @@ YUI.add('ez-float-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 4;
-                this.fieldDefinition = {fieldType: 'ezfloat'};
+                this.fieldDefinition = {fieldType: 'ezfloat', identifier: 'some_identifier'};
                 this.field = {fieldValue: 42.42};
                 this.isEmpty = false;
                 this.view = new Y.eZ.FloatView({

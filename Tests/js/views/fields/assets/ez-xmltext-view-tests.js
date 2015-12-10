@@ -11,7 +11,7 @@ YUI.add('ez-xmltext-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 4;
-                this.fieldDefinition = {fieldType: 'ezxmltext'};
+                this.fieldDefinition = {fieldType: 'ezxmltext', identifier: 'some_identifier'};
                 this.field = {fieldValue: {xml: "some ezxml"}};
                 this.isEmpty = false;
                 this.view = new Y.eZ.XmlTextView({

@@ -11,7 +11,7 @@ YUI.add('ez-keyword-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 4;
-                this.fieldDefinition = {fieldType: 'ezkeyword'};
+                this.fieldDefinition = {fieldType: 'ezkeyword', identifier: 'some_identifier'};
                 this.field = {fieldValue: ['Stephane', 'Charlie', 'Valentine']};
                 this.isEmpty = false;
                 this.view = new Y.eZ.KeywordView({
@@ -34,7 +34,7 @@ YUI.add('ez-keyword-view-tests', function (Y) {
 
             setUp: function () {
                 this.templateVariablesCount = 4;
-                this.fieldDefinition = {fieldType: 'ezkeyword'};
+                this.fieldDefinition = {fieldType: 'ezkeyword', identifier: 'some_identifier'};
                 this.field = {fieldValue: []};
                 this.isEmpty = true;
                 this.view = new Y.eZ.KeywordView({
