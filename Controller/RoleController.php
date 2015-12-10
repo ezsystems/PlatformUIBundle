@@ -91,6 +91,7 @@ class RoleController extends Controller
         $role = $this->roleService->loadRole($roleId);
         $roleAssignments = $this->roleService->getRoleAssignments($role);
         $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
+        $editablePolicies = [];
 
         $deleteFormsByPolicyId = [];
         foreach ($role->getPolicies() as $policy) {
@@ -99,6 +100,12 @@ class RoleController extends Controller
                 new PolicyDeleteType(),
                 ['policyId' => $policyId, 'roleId' => $roleId]
             )->createView();
+
+            // We cannot edit policies that don't have a function defined, or that cannot have limitations.
+            $limitationTypes = $policy->module ? $this->roleService->getLimitationTypesByModuleFunction($policy->module, $policy->function) : [];
+            if (count($limitationTypes) > 0) {
+                $editablePolicies[$policyId] = true;
+            }
         }
 
         $deleteFormsByAssignment = [];
@@ -118,6 +125,7 @@ class RoleController extends Controller
             'can_assign' => $this->isGranted(new Attribute('role', 'assign')),
             'can_delete' => $this->isGranted(new Attribute('role', 'delete')),
             'deleteFormsByAssignment' => $deleteFormsByAssignment,
+            'editablePolicies' => $editablePolicies,
         ]);
     }
 
