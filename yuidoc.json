@@ -12,8 +12,10 @@
             "./Resources/public/js/views",
             "./Resources/public/js/models",
             "./Resources/public/js/extensions",
+            "./Resources/public/js/external",
             "./Resources/public/js/services",
-            "./Resources/public/js/helpers"
+            "./Resources/public/js/helpers",
+            "./Resources/public/js/alloyeditor"
         ]
     }
 }
