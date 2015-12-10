@@ -71,7 +71,7 @@
                                     {%- endfor -%}
                                 </td>
                                 <td>
-                                {% if can_edit %}
+                                {% if can_edit and editablePolicies[policy.id] is defined %}
                                     <a href="{{ path('admin_policyEdit', {'roleId': role.id, 'policyId': policy.id}) }}" class="pure-button ez-button" data-icon="&#xe606;">{{ 'role.policy.edit_limitations'|trans }}</a>
                                 {% else %}
                                     <span class="pure-button ez-button pure-button-disabled" data-icon="&#xe606;">{{ 'role.policy.edit_limitations'|trans }}</span>
