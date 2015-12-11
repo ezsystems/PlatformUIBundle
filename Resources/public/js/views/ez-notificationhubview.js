@@ -7,7 +7,7 @@ YUI.add('ez-notificationhubview', function (Y) {
     /**
      * Provides the notification hub view class
      *
-     * @method ez-notificationhubview
+     * @module ez-notificationhubview
      */
 
     /**
