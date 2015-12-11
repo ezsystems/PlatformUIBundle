@@ -13,9 +13,9 @@ YUI.add('ez-registerlanguagehelpersplugin', function (Y) {
 
     /**
      * Register Language Helpers plugin for the Platform UI application. It registers
-     * handlebars helper allowing to get language name basing on language code:
+     * handlebars helper allowing to get language name based on language code:
      *
-     *   * `language_name` is for returning language name basing on given language code. It takes the
+     *   * `language_name` is for returning language name based on given language code. It takes the
      *   language code as an argument
      *
      * @namespace eZ.Plugin
