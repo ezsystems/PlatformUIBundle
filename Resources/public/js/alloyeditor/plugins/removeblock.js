@@ -92,7 +92,8 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
      * allows to remove the block element holding the caret or the focused
      * widget
      *
-     * @class CKEDITOR.plugins.ezremoveblock
+     * @class ezremoveblock
+     * @namespace CKEDITOR.plugins
      * @constructor
      */
     CKEDITOR.plugins.add('ezremoveblock', {

@@ -67,7 +67,8 @@ YUI.add('ez-alloyeditor-plugin-addcontent', function (Y) {
      * pointed by the selector available under `eZ.editableRegion` in the
      * configuration.
      *
-     * @class CKEDITOR.plugins.ezaddcontent
+     * @class ezaddcontent
+     * @namespace CKEDITOR.plugins
      * @constructor
      */
     CKEDITOR.plugins.add('ezaddcontent', {
