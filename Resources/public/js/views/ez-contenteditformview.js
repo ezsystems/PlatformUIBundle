@@ -93,6 +93,7 @@ YUI.add('ez-contenteditformview', function (Y) {
              * @property _fieldEditViews
              * @default []
              * @type Array of {eZ.FieldEditView}
+             * @protected
              */
             this._fieldEditViews = views;
         },

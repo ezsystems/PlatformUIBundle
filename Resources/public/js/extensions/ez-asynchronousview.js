@@ -32,6 +32,7 @@ YUI.add('ez-asynchronousview', function (Y) {
          * @property _fireMethod
          * @required
          * @type {Function}
+         * @protected
          */
 
         /**
@@ -41,6 +42,7 @@ YUI.add('ez-asynchronousview', function (Y) {
          *
          * @property _watchAttribute
          * @type {String}
+         * @protected
          */
 
         events: {

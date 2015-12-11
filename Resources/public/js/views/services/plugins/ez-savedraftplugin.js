@@ -47,6 +47,7 @@ YUI.add('ez-savedraftplugin', function (Y) {
              * parameters.
              *
              * @property _callback
+             * @protected
              * @type {Function}
              */
             this._callback = e.callback;

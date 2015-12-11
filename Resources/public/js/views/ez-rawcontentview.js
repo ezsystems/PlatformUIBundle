@@ -117,6 +117,7 @@ YUI.add('ez-rawcontentview', function (Y) {
              * The field views instances for the current content
              *
              * @property _fieldViews
+             * @protected
              * @default []
              * @type Array of {eZ.FieldView}
              */
