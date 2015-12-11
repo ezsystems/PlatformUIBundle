@@ -2,14 +2,19 @@ language: node_js
 node_js:
     - "0.10"
 env:
-    - CODE="php"
-      BEFORE_GLOBAL="sudo ./bin/travis/setupphp.sh"
-      BEFORE_LOCAL="./bin/travis/composer.sh"
-      TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml"
-    - CODE="js"
-      BEFORE_GLOBAL="npm install -g grunt-cli grover bower"
-      BEFORE_LOCAL="./bin/travis/localjsdeps.sh"
-      TEST_CMD="grunt test"
+    matrix:
+        - CODE="php"
+          BEFORE_GLOBAL="sudo ./bin/travis/setupphp.sh"
+          BEFORE_LOCAL="./bin/travis/composer.sh"
+          TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml"
+          AFTER_SUCCESS="echo \"After success\""
+        - CODE="js"
+          BEFORE_GLOBAL="npm install -g grunt-cli grover bower"
+          BEFORE_LOCAL="./bin/travis/localjsdeps.sh"
+          TEST_CMD="grunt test"
+          AFTER_SUCCESS="sh bin/travis/generate_apidoc.sh"
+    global:
+        secure: "daakRnNJ3EniG3ayvVObrJ46qhVJ+Nbticki7arT7CnPTxSUGvQ8aKuv9H9JFhmTk51QF6GcrZooZDZHe0Kbyg5oE8+eo1aMc4ugvds+SwGmTT3uhQ0OyVFyXjtHrG7ESvwQPyQ3LnRQUzdE98BcpQn8XGx2UGz8gJd0tAXRnuM="
 
 # test only master (+ Pull requests)
 branches:
@@ -21,3 +26,7 @@ before_script:
     - $BEFORE_LOCAL
 
 script: $TEST_CMD
+
+after_success:
+    # TODO generate the doc if NOT in a PR
+    - if [ $TRAVIS_PULL_REQUEST != "false" ] ; then $AFTER_SUCCESS ; fi
