@@ -14,7 +14,7 @@ env:
           TEST_CMD="grunt test"
           AFTER_SUCCESS="sh bin/travis/generate_apidoc.sh"
     global:
-        secure: "daakRnNJ3EniG3ayvVObrJ46qhVJ+Nbticki7arT7CnPTxSUGvQ8aKuv9H9JFhmTk51QF6GcrZooZDZHe0Kbyg5oE8+eo1aMc4ugvds+SwGmTT3uhQ0OyVFyXjtHrG7ESvwQPyQ3LnRQUzdE98BcpQn8XGx2UGz8gJd0tAXRnuM="
+        secure: "aNPcXEtgV3Q/GVCH+FvITm/gLXcNyFl7YiOT9JcqZUwYXsT2zi8g4BcwBgDtpbSmi8NSCsEWONNxxDM10BqCPzfkiFD2I0cPHXVxmJ3cmOqySci5JvysEd+RU6gnatCxqzAJYDH2BanfPyu+yPwrSIgWdkPuvNhydNJFUrwsinw="
 
 # test only master (+ Pull requests)
 branches:

@@ -6,13 +6,10 @@
 
 JS_REST_CLIENT_DIR="platformui-javascript-api"
 TRIGGER_COMMIT_MSG=`git log --oneline -1 $TRAVIS_COMMIT`
-# TODO DOC_REPOSITORY="ezsystems/ezsystems.github.com"
-DOC_REPOSITORY="dpobel/test-doc"
-# TODO DOC_BRANCH=master
-DOC_BRANCH=gh-pages
+DOC_REPOSITORY="ezsystems/ezsystems.github.com"
+DOC_BRANCH=master
 GITHUB_USER="eZ Robot, I do what I'm told to..."
-# TODO GITHUB_USER_EMAIL="ezrobot@ez.no"
-GITHUB_USER_EMAIL="dp@ez.no"
+GITHUB_USER_EMAIL="ezrobot@ez.no"
 
 grunt doc
 git clone -q https://${GH_TOKEN}@github.com/${DOC_REPOSITORY}.git ../ezsystems.github.com > /dev/null
