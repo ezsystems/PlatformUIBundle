@@ -45,11 +45,11 @@ YUI.add('ez-actionbarview', function (Y) {
                             priority: 200,
                             content: this.get('content')
                         }),
-                        new Y.eZ.ButtonActionView({
+                        new Y.eZ.MoveContentActionView({
                             actionId: "move",
-                            disabled: false,
                             label: "Move",
-                            priority: 190
+                            priority: 190,
+                            location: this.get('location')
                         }),
                         new Y.eZ.ButtonActionView({
                             actionId: "copy",
