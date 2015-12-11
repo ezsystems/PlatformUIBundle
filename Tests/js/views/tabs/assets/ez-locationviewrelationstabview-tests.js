@@ -55,9 +55,11 @@ YUI.add('ez-locationviewrelationstabview-tests', function (Y) {
 
             this.relatedContent1Mock = new Mock();
             this.relatedContent2Mock = new Mock();
+            this.relatedLocation1Mock = new Mock();
+            this.relatedLocation2Mock = new Mock();
             this.relatedContents = [
-                this.relatedContent1Mock,
-                this.relatedContent2Mock,
+                {content: this.relatedContent1Mock, location: this.relatedLocation1Mock},
+                {content: this.relatedContent2Mock, location: this.relatedLocation2Mock},
             ];
 
             this.contentRelations = [
@@ -113,11 +115,13 @@ YUI.add('ez-locationviewrelationstabview-tests', function (Y) {
             this._configureRelatedContentMock(
                 this.relatedContent2Mock, '/relatedcontent/2', 'eng-GB', '/rc/loc/2'
             );
+            this._configureRelatedLocationMock(this.relatedLocation1Mock);
+            this._configureRelatedLocationMock(this.relatedLocation2Mock);
 
-            this.expectedRelatedContent = [
+            this.expectedRelatedContentStructs = [
                 {
                     content: this.relatedContent1Mock.toJSON(),
-                    mainLocationId: '/rc/loc/1',
+                    location: this.relatedLocation1Mock.toJSON(),
                     relationInfo: [
                         {
                             relationTypeName: "Content level relation",
@@ -131,7 +135,7 @@ YUI.add('ez-locationviewrelationstabview-tests', function (Y) {
                 },
                 {
                     content: this.relatedContent2Mock.toJSON(),
-                    mainLocationId: '/rc/loc/2',
+                    location: this.relatedLocation2Mock.toJSON(),
                     relationInfo: [
                         {
                             relationTypeName: "Unknown relation type",
@@ -182,6 +186,13 @@ YUI.add('ez-locationviewrelationstabview-tests', function (Y) {
             });
         },
 
+        _configureRelatedLocationMock: function(relatedLocationMock) {
+            Mock.expect(relatedLocationMock, {
+                method: 'toJSON',
+                returns: {}
+            });
+        },
+
         "Render should call the template": function () {
             var templateCalled = false,
                 origTpl;
@@ -195,15 +206,15 @@ YUI.add('ez-locationviewrelationstabview-tests', function (Y) {
             Y.Assert.isTrue(templateCalled, "The template should have been used to render this.view");
         },
 
-        _testRelatedContentItem: function (expectedRelatedContentItem, relatedContentItem, index) {
+        _testRelatedContentStructItem: function (expectedRelatedContentItem, relatedContentItem, index) {
             Assert.areSame(
                 expectedRelatedContentItem.content, relatedContentItem.content,
                 "Expected relatedContent (" + index + ") content should be available in the template"
             );
 
             Assert.areSame(
-                expectedRelatedContentItem.mainLocationId, relatedContentItem.mainLocationId,
-                "Expected mainLocationId (" + index + ") content should be available in the template"
+                expectedRelatedContentItem.location, relatedContentItem.location,
+                "Expected relatedContent (" + index + ") location should be available in the template"
             );
 
             Assert.areSame(
@@ -222,8 +233,8 @@ YUI.add('ez-locationviewrelationstabview-tests', function (Y) {
             var that = this;
 
             this.view.template = function (args) {
-                Y.Array.each(that.expectedRelatedContent, function (expectedRelatedContent, i){
-                    that._testRelatedContentItem(expectedRelatedContent, args.relatedContents[i], i);
+                Y.Array.each(that.expectedRelatedContentStructs, function (expectedRelatedContentStruct, i){
+                    that._testRelatedContentStructItem(expectedRelatedContentStruct, args.relatedContents[i], i);
                 });
 
                 Assert.areSame(

@@ -22,7 +22,17 @@
             {{#each relatedContents}}
             <tr>
                 <td>
-                    <a href="{{path "viewLocation" id=mainLocationId languageCode=content.mainLanguageCode}}">{{content.name}}</a>
+                    <ul class="ez-breadcrumbs-list">
+                        {{#each location.path}}
+                        <li class="ez-breadcrumbs-item">
+                            <a href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}">{{ contentInfo.name }}</a>
+                        </li>
+                        {{/each}}
+                        <li class="ez-breadcrumbs-item">
+                            <a href="{{ path "viewLocation" id=location.id languageCode=content.mainLanguageCode }}">{{content.name}}</a>
+                        </li>
+                    </ul>
+
                 </td>
                 <td>
                     <ul class="ez-relations-type-list">

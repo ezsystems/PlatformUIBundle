@@ -29,3 +29,7 @@
 .ez-view-locationviewview .ez-subitemlist-container {
     padding: 0 2em 2em 2em;
 }
+
+.ez-view-locationviewview .ez-location-breadcrumbs .ez-breadcrumbs-item:after {
+    padding: 0 0.3em 0 0.5em;
+}

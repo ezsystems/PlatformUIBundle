@@ -941,7 +941,12 @@ system:
                     requires: ['plugin', 'base']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-viewservicebaseplugin.js
                 ez-objectrelationsloadplugin:
-                    requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    requires:
+                        - 'parallel'
+                        - 'ez-viewservicebaseplugin'
+                        - 'ez-pluginregistry'
+                        - 'ez-contentmodel'
+                        - 'ez-locationmodel'
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationsloadplugin.js
                 ez-userloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']

@@ -1,7 +1,7 @@
 <div class="pure-g">
     <div class="ez-locationview-content pure-u">
         <header class="ez-page-header">
-            <nav class="ez-breadcrumbs">
+            <nav class="ez-location-breadcrumbs">
                 <ul class="ez-breadcrumbs-list">
                 {{#each path}}
                     <li class="ez-breadcrumbs-item"><a href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}">{{ contentInfo.name }}</a></li>

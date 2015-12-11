@@ -164,7 +164,6 @@ system:
                 - 'bundles/ezplatformui/css/theme/modules/selection-filter.css'
                 - 'bundles/ezplatformui/css/theme/modules/button.css'
                 - 'bundles/ezplatformui/css/theme/modules/selection-table.css'
-                - 'bundles/ezplatformui/css/theme/modules/breadcrumbs.css'
                 - 'bundles/ezplatformui/css/theme/modules/yui-calendar.css'
                 - 'bundles/ezplatformui/css/theme/alloyeditor/general.css'
                 - 'bundles/ezplatformui/css/theme/alloyeditor/content.css'
