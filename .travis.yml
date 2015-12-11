@@ -28,5 +28,4 @@ before_script:
 script: $TEST_CMD
 
 after_success:
-    # TODO generate the doc if NOT in a PR
-    - if [ $TRAVIS_PULL_REQUEST != "false" ] ; then $AFTER_SUCCESS ; fi
+    - if [ $TRAVIS_PULL_REQUEST = "false" ] ; then $AFTER_SUCCESS ; fi
