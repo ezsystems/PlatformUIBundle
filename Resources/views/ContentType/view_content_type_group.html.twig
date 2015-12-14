@@ -55,7 +55,8 @@
                                             deleteForm.delete,
                                             {
                                                 "disabled": not can_delete_by_id[content_type.id],
-                                                "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"}
+                                                "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete",
+                                                         "title": not can_delete_by_id[content_type.id] ? 'content_type.is_in_use'|trans}
                                             }
                                         )
                                     }}

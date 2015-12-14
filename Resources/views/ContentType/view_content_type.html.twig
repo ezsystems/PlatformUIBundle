@@ -92,7 +92,8 @@
                             delete_form.delete,
                             {
                                 "disabled": not can_delete,
-                                "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete"}
+                                "attr": {"class": "pure-button ez-button ez-remove-section-button ez-font-icon ez-button-delete",
+                                         "title": not can_delete ? 'content_type.is_in_use'|trans}
                             }
                         )
                     }}
