@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>eZ Move Content Action view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="movecontentactionview-ez-template">
+<button class="ez-action {{#if disabled}}is-disabled {{else}}{{#if actionId}}action-trigger {{/if}}{{/if}}{{#if hint}}with-hint{{/if}}" data-action="{{ actionId }}">
+    <div class="font-icon action-icon">
+        <p class="action-label">{{ label }}</p>
+        {{#if hint}}
+        <p class="action-hint">{{ hint }}</p>
+        {{/if}}
+    </div>
+</button>
+</script>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/genericbuttonactionview-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-movecontentactionview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-movecontentactionview'],
+        filter: loaderFilter,
+        modules: {
+            'ez-movecontentactionview': {
+                requires: ['ez-buttonactionview'],
+                fullpath: "../../../../Resources/public/js/views/actions/ez-movecontentactionview.js"
+            },
+            "ez-buttonactionview": {
+                requires: ['ez-templatebasedview', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/views/actions/ez-buttonactionview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-movecontentactionview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

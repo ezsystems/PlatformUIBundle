@@ -23,6 +23,9 @@ YUI.add('ez-actionbarview-tests', function (Y) {
                 location: {},
                 content: {}
             });
+            Y.eZ.MoveContentActionView = Y.Base.create('moveContentActionView', Y.eZ.ButtonActionView, [], {}, {
+                location: {}
+            });
 
             this.view = new Y.eZ.ActionBarView({
                 location: this.location,
@@ -75,6 +78,12 @@ YUI.add('ez-actionbarview-tests', function (Y) {
         "Should instantiate translateActionView": function () {
             this._isActionCreated('translate', {
                 content: this.view.get('content'),
+                location: this.view.get('location')
+            });
+        },
+
+        "Should instantiate moveContentActionView": function () {
+            this._isActionCreated('move', {
                 location: this.view.get('location')
             });
         },

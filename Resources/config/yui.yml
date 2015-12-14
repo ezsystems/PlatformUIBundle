@@ -396,6 +396,7 @@ system:
                         - 'ez-barview'
                         - 'ez-buttonactionview'
                         - 'ez-createcontentactionview'
+                        - 'ez-movecontentactionview'
                         - 'ez-translateactionview'
                     path: %ez_platformui.public_dir%/js/views/ez-actionbarview.js
                 ez-rawcontentview:
@@ -839,6 +840,14 @@ system:
                 translateactionview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/translateaction.hbt
+                ez-movecontentactionview:
+                    requires:
+                        - 'ez-buttonactionview'
+                        - 'movecontentactionview-ez-template'
+                    path: %ez_platformui.public_dir%/js/views/actions/ez-movecontentactionview.js
+                movecontentactionview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/buttonaction.hbt
                 ez-createcontentactionview:
                     requires:
                         - 'ez-buttonactionview'
