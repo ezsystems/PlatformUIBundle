@@ -78,12 +78,16 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         yuidoc: {
             all: {
-                name: '<%= pkg.name %>',
-                description: '<%= pkg.description %>',
+                name: '<%= pkg.description %> JavaScript API',
+                description: 'API doc of the PlatformUI JavaScript components',
                 version: '<%= pkg.version %>',
                 url: '<%= pkg.repository %>',
                 logo: "http://ez.no/extension/ez_ezno/design/ezno_2014/images/ez-logo.png",
                 options: {
+                    external: {
+                        data: "http://yuilibrary.com/yui/docs/api/data.json"
+                    },
+                    linkNative: "true",
                     paths: [
                         "./Resources/public/js/apps",
                         "./Resources/public/js/views",
