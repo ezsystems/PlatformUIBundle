@@ -33,6 +33,7 @@ YUI.add('ez-googlemapapiloader', function (Y) {
          * @property _JSONPRequest
          * @type Function
          * @default Y.JSONPRequest
+         * @protected
          */
         this._JSONPRequest = JSONPRequest || Y.JSONPRequest;
 

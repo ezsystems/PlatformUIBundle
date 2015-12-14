@@ -367,6 +367,7 @@ YUI.add('ez-author-editview', function (Y) {
              * @property _rendered
              * @type Boolean
              * @default false
+             * @protected
              */
             this._rendered = false;
 
@@ -377,6 +378,7 @@ YUI.add('ez-author-editview', function (Y) {
              * @property _authorInputs
              * @type Array of AuthorInputView
              * @default []
+             * @protected
              */
             this._authorInputs = [];
 
@@ -386,6 +388,7 @@ YUI.add('ez-author-editview', function (Y) {
              * @property _authorList
              * @type AuthorList
              * @default an instance of AuthorList
+             * @protected
              */
             this._authorList = new AuthorList();
             this._authorList.after('add', Y.bind(this._uiAddAuthor, this));

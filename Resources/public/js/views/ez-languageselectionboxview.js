@@ -302,7 +302,7 @@ YUI.add('ez-languageselectionboxview', function (Y) {
              *
              * @event languageSelected
              * @param {Object} data
-             * @param {Boolean} data.baseTranslation defines if translation will be basing on already existing language
+             * @param {Boolean} data.baseTranslation defines if translation will be based on already existing language
              * @param {String} data.selectedLanguageCode language code of selected language
              * @param {Null|String} data.selectedBaseLanguageCode language on which translation will be based
              */
@@ -392,7 +392,7 @@ YUI.add('ez-languageselectionboxview', function (Y) {
             },
 
             /**
-             * Enables or disables possibility of basing new translation on already existing one
+             * Enables or disables possibility of based new translation on already existing one
              *
              * @attribute canBaseTranslation
              * @type {Boolean}

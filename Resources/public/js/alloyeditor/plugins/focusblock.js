@@ -65,7 +65,8 @@ YUI.add('ez-alloyeditor-plugin-focusblock', function (Y) {
      * CKEditor plugin to add/remove the focused class on the block holding the
      * caret.
      *
-     * @class CKEDITOR.plugins.ezfocusblock
+     * @class ezfocusblock
+     * @namespace CKEDITOR.plugins
      * @constructor
      */
     CKEDITOR.plugins.add('ezfocusblock', {

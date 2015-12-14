@@ -412,7 +412,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
         },
 
         /**
-         * Set languageCode attribute basing on parameter from request
+         * Set languageCode attribute based on parameter from request
          *
          * @method _setLanguageCode
          * @protected
@@ -428,7 +428,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
         },
 
         /**
-         * Set baseLanguageCode attribute basing on parameter from request
+         * Set baseLanguageCode attribute based on parameter from request
          *
          * @method _setBaseLanguageCode
          * @protected
@@ -609,7 +609,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
             languageCode: {},
 
             /**
-             * The language code on which new translation is basing.
+             * The language code on which new translation is based.
              *
              * @attribute baseLanguageCode
              * @default null

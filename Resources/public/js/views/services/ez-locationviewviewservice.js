@@ -328,7 +328,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
         },
 
         /**
-         * Set languageCode attribute basing on parameter from request
+         * Set languageCode attribute based on parameter from request
          *
          * @method _setLanguageCode
          * @protected

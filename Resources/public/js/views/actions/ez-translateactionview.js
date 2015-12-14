@@ -173,7 +173,7 @@ YUI.add('ez-translateactionview', function (Y) {
              * @param {Object} data
              * @param {eZ.Content} data.content content object which will be translated
              * @param {String} data.toLanguageCode language to which content will be translated
-             * @param {String} data.baseLanguageCode optional language on which translation will be basing
+             * @param {String} data.baseLanguageCode optional language on which translation will be based
              */
             this.fire('translateContent', data);
         }

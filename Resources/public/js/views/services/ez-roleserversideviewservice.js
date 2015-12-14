@@ -256,7 +256,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
         },
 
         /**
-         * Generates identifier for notifications which is unique basing on
+         * Generates identifier for notifications which is unique based on
          * role ID and IDs of users/groups which role is being assigned to.
          *
          * @method _getAssignRoleNotificationIdentifier

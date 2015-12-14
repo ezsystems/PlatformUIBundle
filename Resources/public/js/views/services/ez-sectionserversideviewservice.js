@@ -127,7 +127,7 @@ YUI.add('ez-sectionserversideviewservice', function (Y) {
         },
 
         /**
-         * Generates identifier for notifications which is unique basing on
+         * Generates identifier for notifications which is unique based on
          * section ID and IDs of contents which section is being assigned to.
          * 
          * @method _getAssignSectionNotificationIdentifier

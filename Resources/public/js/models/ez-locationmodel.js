@@ -227,7 +227,7 @@ YUI.add('ez-locationmodel', function (Y) {
         },
 
         /**
-         * Loads ancestors of the location basing on the `pathString`. The result is the REST API view
+         * Loads ancestors of the location based on the `pathString`. The result is the REST API view
          * containing locations from the path.
          *
          * @method _loadAncestors

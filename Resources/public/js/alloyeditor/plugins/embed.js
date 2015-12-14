@@ -16,7 +16,8 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
      * CKEditor plugin to configure the widget plugin so that it recognizes the
      * `div[data-ezelement="embed"]` elements as widget.
      *
-     * @class CKEDITOR.plugins.ezembed
+     * @class ezembed
+     * @namespace CKEDITOR.plugins
      * @constructor
      */
     CKEDITOR.plugins.add('ezembed', {

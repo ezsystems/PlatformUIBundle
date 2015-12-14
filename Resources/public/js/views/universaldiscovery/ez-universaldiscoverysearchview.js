@@ -270,7 +270,7 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
 
         /**
          * Preview button `tap` event handler. It prepares contentStruct by taking location from
-         * result list basing on location's id and adding contentInfo and contentType. After that
+         * result list based on location's id and adding contentInfo and contentType. After that
          * the row containing selected location is highlighted.
          *
          * @method _selectContent
@@ -301,7 +301,7 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
         },
 
         /**
-         * Gets single location from the results list basing on the locations id.
+         * Gets single location from the results list based on the locations id.
          * If there is no location in search result with given location id then `undefined` is returned.
          *
          * @method _getLocationStructFromResultList

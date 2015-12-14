@@ -48,6 +48,7 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @property _navigationMenu
          * @default null
          * @type {Node}
+         * @protected
          */
         _navigationMenu: null,
 
@@ -57,6 +58,7 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @property _navigationY
          * @default 0
          * @type Number
+         * @protected
          */
         _navigationY: 0,
 
@@ -66,6 +68,7 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @property
          * @default null
          * @type EventHandle
+         * @protected
          */
         _scrollSubscription: null,
 
@@ -76,6 +79,7 @@ YUI.add('ez-navigationhubview', function (Y) {
          * @property _resizeSubscription
          * @default null
          * @type EventHandle
+         * @protected
          */
         _resizeSubscription: null,
 
@@ -136,7 +140,8 @@ YUI.add('ez-navigationhubview', function (Y) {
          *
          * @method _navigateToZone
          * @param {String|Null} zone
-         * @method protected
+         * @method _navigateToZone
+         * @protected
          */
         _navigateToZone: function (zone) {
             var items;
