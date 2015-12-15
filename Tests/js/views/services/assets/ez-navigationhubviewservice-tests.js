@@ -6,6 +6,7 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
     var getViewParametersTest, logOutEvtTest, defaultNavigationItemsTest,
         addNavigationItemTest, removeNavigationItemTest, navigateToTest,
         loadTest, rootNodeAttributeTest, getNavigationItemTest,
+        navigateToFirstItemTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     getViewParametersTest = new Y.Test.Case({
@@ -995,6 +996,76 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
         },
     });
 
+    navigateToFirstItemTest = new Y.Test.Case({
+        name: "eZ Navigation Hub View Service navigate to first item tests",
+
+        setUp: function () {
+            this.zoneName = "midfield";
+
+            this.routeName = "Lass";
+            this.routeParams = [];
+            this.item = new Y.Base();
+
+            this.item.set('route', {
+                name: this.routeName,
+                params: this.routeParams
+            });
+
+            this.parameterItem = {
+                config: {
+                    route: {
+                        name: this.routeName,
+                        params: this.routeParams,
+                    }
+                }
+            };
+
+            this.appMock = new Mock();
+
+            Mock.expect(this.appMock, {
+                method: 'navigateTo',
+                args: [this.routeName, this.routeParams],
+            });
+
+            this.service = new Y.eZ.NavigationHubViewService({app: this.appMock});
+
+            this.view = new Y.View({
+                'bubbleTargets': this.service,
+                'activeNavigation': ''
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should not do anything when no item": function () {
+            Mock.expect(this.appMock, {
+                method: 'navigateTo',
+                callCount: 0
+            });
+
+            this.view.set('activeNavigation', this.zoneName);
+
+            Mock.verify(this.appMock);
+        },
+
+        "Should process navigation item": function () {
+            this.service.set(this.zoneName + 'NavigationItems', [this.item]);
+            this.view.set('activeNavigation', this.zoneName);
+            Mock.verify(this.appMock);
+        },
+
+        "Should process navigation parameter item": function () {
+            this.service.set(this.zoneName + 'NavigationItems', [this.parameterItem]);
+            this.view.set('activeNavigation', this.zoneName);
+            Mock.verify(this.appMock);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Navigation Hub View Service tests");
     Y.Test.Runner.add(getViewParametersTest);
     Y.Test.Runner.add(logOutEvtTest);
@@ -1005,4 +1076,5 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
     Y.Test.Runner.add(loadTest);
     Y.Test.Runner.add(rootNodeAttributeTest);
     Y.Test.Runner.add(getNavigationItemTest);
+    Y.Test.Runner.add(navigateToFirstItemTest);
 }, '', {requires: ['test', 'ez-navigationhubviewservice']});
