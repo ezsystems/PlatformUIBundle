@@ -79,6 +79,23 @@ YUI.add('ez-treeview-tests', function (Y) {
                 this.view.get('container').one('.ez-tree-content > .ez-tree-level'),
                 "The children of the root node should have been rendered"
             );
+            Assert.isFalse(
+                !!this.view.get('container').one('.ez-tree-empty-info'),
+                "The view container should not get the empty class"
+            );
+        },
+
+        "Should display info when content tree is empty": function () {
+            this.tree.plug(Y.Plugin.Tree.Lazy);
+            this.view.render();
+            this.view.set('tree', this.tree.clear());
+
+            this.tree.lazy.fire('load', {node: this.tree.rootNode});
+
+            Assert.isTrue(
+                !!this.view.get('container').one('.ez-tree-empty-info'),
+                "The view container should get the empty class"
+            );
         },
 
         "Should render the loaded node level": function () {
