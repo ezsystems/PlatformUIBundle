@@ -56,3 +56,18 @@
 .ez-view-treeview .is-tree-node-leaf > .ez-tree-node-toggle {
     visibility: hidden;
 }
+
+.ez-view-treeview .ez-tree-empty-info {
+    margin-top: 40px;
+    font-style: italic;
+    text-align: center;
+    font-size: 120%;
+}
+
+.ez-view-treeview .ez-tree-empty-info:before {
+    display: inline-block;
+    content: "\E617";
+    padding: 0 0.15em;
+    text-align: center;
+    font-style: normal;
+}

@@ -220,7 +220,11 @@ YUI.add('ez-treeview', function (Y) {
                 nodeJson = this._nodeToJson(node);
 
             if ( node.isRoot() ) {
-                this._getTreeContentNode().append(template(nodeJson));
+                if (node.children.length === 0) {
+                    this._getTreeContentNode().append('<p class="ez-tree-empty-info ez-font-icon">The Content Tree is empty</p>');
+                } else {
+                    this._getTreeContentNode().append(template(nodeJson));
+                }
             } else {
                 this._getElementYNode(node).append(template(nodeJson));
             }
