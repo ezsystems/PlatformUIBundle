@@ -53,10 +53,14 @@ YUI.add('ez-contenteditview', function (Y) {
                     this._setFocus();
                 }
             });
-            this.on('languageCodeChange', function (e) {
+            this.after('languageCodeChange', function (e) {
+                this.get('formView').set('languageCode', this.get('languageCode'));
                 if ( this.get('active') ) {
-                    this._setLanguageIndicator(e.newVal);
+                    this.render();
                 }
+            });
+            this.after('versionChange', function (e) {
+                this.get('formView').set('version', this.get('version'));
             });
 
             this.on(['*:saveAction', '*:publishAction'], this._handleSavePublish);
@@ -253,23 +257,11 @@ YUI.add('ez-contenteditview', function (Y) {
              * Fired when the change language link was tapped
              *
              * @event changeLanguage
+             * @param {Array} fields fields that will be used after changing the language - they are passed here
+             * to persist field values after the language is changed
              */
-            this.fire('changeLanguage');
+            this.fire('changeLanguage', {fields: this.get('formView').getFields()});
         },
-
-        /**
-         * Sets language indicator
-         *
-         * @method setLanguageIndicator
-         * @private
-         * @param {String} languageCode
-         */
-        _setLanguageIndicator: function (languageCode) {
-            var c = this.get('container'),
-                languageContainer = c.one('.ez-content-current-language');
-
-            languageContainer.setHTML(languageCode);
-        }
     }, {
         ATTRS: {
             /**
@@ -277,22 +269,20 @@ YUI.add('ez-contenteditview', function (Y) {
              *
              * @attribute content
              * @default {}
+             * @type {eZ.Content}
              * @required
              */
-            content: {
-                writeOnce: "initOnly",
-            },
+            content: {},
 
             /**
              * The version being edited
              *
              * @attribute content
              * @default {}
+             * @type {eZ.Version}
              * @required
              */
-            version: {
-                writeOnce: "initOnly",
-            },
+            version: {},
 
             /**
              * The content type of the content being edited
@@ -382,6 +372,7 @@ YUI.add('ez-contenteditview', function (Y) {
              * The language code in which the content is edited.
              *
              * @attribute languageCode
+             * @default ''
              * @type {String}
              * @required
              */

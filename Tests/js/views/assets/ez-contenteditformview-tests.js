@@ -4,6 +4,7 @@
  */
 YUI.add('ez-contenteditformview-tests', function (Y) {
     var viewTest, isValidTest, getFieldsTest, activeFlagTest, haltSubmitTest, incosistencyFieldsTest,
+        setVersionTest,
         Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
@@ -596,6 +597,93 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
         }
     });
 
+    setVersionTest = new Y.Test.Case({
+        name: "eZ Content Edit Form View set version test",
+
+        setUp: function () {
+            this.contentType = new Y.Mock();
+            this.version = new Y.Mock();
+            this.config = {
+                fieldEditViews: {
+                    something: 'hello'
+                }
+            };
+
+            Y.Mock.expect(this.contentType, {
+                method: 'get',
+                args: ['fieldDefinitions'],
+                returns: {
+                    'id1': {
+                        'identifier': 'id1',
+                        'fieldType': 'test1',
+                        'fieldGroup': 'testfieldgroup',
+                    },
+                }
+            });
+            Y.eZ.FieldEditView.registerFieldEditView('test1', Y.Base.create('fieldEdit1', Y.eZ.FieldEditView, [], {
+                getField: function () {
+                    return this.get('field');
+                }
+            }, {
+                ATTRS: {
+                    field: {
+                        fieldDefinitionIdentifier: 'test1'
+                    }
+                }
+            }));
+
+            Y.Mock.expect(this.version, {
+                method: 'getField',
+                args: [Y.Mock.Value.String],
+                run: function (id) {
+                    return {
+                        'identifier': id,
+                        'value': 'some value'
+                    };
+                }
+            });
+
+            this.view = new Y.eZ.ContentEditFormView({
+                contentType: this.contentType,
+                version: this.version,
+                config: this.config
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+            Y.eZ.FieldEditView.registerFieldEditView('test1', undefined);
+        },
+
+        "Should set version and fields on fieldEditViews": function () {
+            var newVersion = new Y.Mock(),
+                newValue = 'another value',
+                fields;
+
+            Y.Mock.expect(newVersion, {
+                method: 'getField',
+                args: [Y.Mock.Value.Any],
+                run: function (id) {
+                    return {
+                        'identifier': id,
+                        'value': newValue
+                    };
+                }
+            });
+
+            this.view.set('version',newVersion);
+
+            fields = this.view.getFields();
+
+            Assert.areEqual(
+                fields[0].value,
+                newValue,
+                "The field should be updated with version's field value"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Edit Form View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(isValidTest);
@@ -603,4 +691,5 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
     Y.Test.Runner.add(activeFlagTest);
     Y.Test.Runner.add(haltSubmitTest);
     Y.Test.Runner.add(incosistencyFieldsTest);
+    Y.Test.Runner.add(setVersionTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-contenteditformview']});

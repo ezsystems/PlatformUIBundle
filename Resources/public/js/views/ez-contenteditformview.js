@@ -99,6 +99,25 @@ YUI.add('ez-contenteditformview', function (Y) {
         },
 
         /**
+         * Sets the `version` and `field` attributes on field edit view instances. The `field`
+         * is taken from given version.
+         *
+         * @method _setVersion
+         * @protected
+         * @param {eZ.Version} version
+         * @since 1.1
+         */
+        _setVersion: function (version) {
+            Y.Array.each(this._fieldEditViews, function (fieldEditView) {
+                var fieldIdentifier = fieldEditView.get('field').fieldDefinitionIdentifier,
+                    field = version.getField(fieldIdentifier);
+
+                fieldEditView.set('version', version);
+                fieldEditView.set('field', field);
+            });
+        },
+
+        /**
          * Renders the form view
          *
          * @method render
@@ -240,7 +259,10 @@ YUI.add('ez-contenteditformview', function (Y) {
              * @required
              */
             version: {
-                writeOnce: "initOnly",
+                value: {},
+                setter: function (val, name) {
+                    this._setVersion(val);
+                }
             },
 
             /**
@@ -250,9 +272,7 @@ YUI.add('ez-contenteditformview', function (Y) {
              * @type {String}
              * @required
              */
-            languageCode: {
-                writeOnce: "initOnly",
-            },
+            languageCode: {},
 
             /**
              * The logged in user
