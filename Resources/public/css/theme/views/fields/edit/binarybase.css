@@ -8,13 +8,20 @@
             transform-origin: center top;
     -webkit-animation: ez-expand 0.2s ease forwards;
             animation: ez-expand 0.2s ease forwards;
+    -webkit-transition: opacity 0.2s ease;
+            transition: opacity 0.2s ease;
+    opacity: 1;
 }
 
 .is-field-empty .ez-binarybase-content {
     display: -webkit-flex;
     display: flex;
+    min-width: 0;
+    min-height: 0;
     -webkit-animation: ez-collapse 0.2s ease forwards;
             animation: ez-collapse 0.2s ease forwards;
+    opacity: 0;/*Used to make the opacity transition smoother*/
+    height: 0;/*Used to fix EZP-25215 which is related to a bug with max-height, flexbox and chrome*/
 }
 
 .ez-binarybase-warning {
