@@ -1144,6 +1144,45 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             Y.Assert.isFalse(removed, "The side view should not be removed");
             Y.Assert.isTrue(nextCalled, "The next callback should have been called");
         },
+
+        "Should destroy the sideViews": function () {
+            var sideViewInstanceMock = new Y.Mock(),
+                sideViewServiceMock = new Y.Mock();
+
+            Y.Mock.expect(sideViewInstanceMock, {
+                method: 'destroy',
+                args: [Y.Mock.Value.Object],
+                run: function (options) {
+                    Y.Assert.areSame(
+                        options.remove, true,
+                        "The object in parameter should have a property set to true"
+                    );
+                },
+            });
+
+            Y.Mock.expect(sideViewServiceMock, {
+                method: 'destroy',
+            });
+
+            this.app.sideViews = {
+                sideView1: {
+                    instance: sideViewInstanceMock,
+                    serviceInstance: sideViewServiceMock,
+                },
+             };
+            this.app.fire('logOut');
+
+            Y.Mock.verify(sideViewInstanceMock);
+            Y.Mock.verify(sideViewServiceMock);
+            Y.Assert.isUndefined(
+                this.app.sideViews.sideView1.instance,
+                "The instance of the sideView should have been deleted"
+            );
+            Y.Assert.isUndefined(
+                this.app.sideViews.sideView1.serviceInstance,
+                "The instance of the sideView service should have been deleted"
+            );
+        },
     });
 
     reverseRoutingTest = new Y.Test.Case({
@@ -1448,9 +1487,13 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         setUp: function () {
             this.capiMock = new Y.Mock();
             this.userMock = new Y.Mock();
+            this.viewInfoMock = new Y.Mock();
             this.app = new Y.eZ.PlatformUIApp();
             this.app._set('capi', this.capiMock);
             this.app._set('user', this.userMock);
+            this.app._set('sideViews', [this.viewInfoMock]);
+            this.logOutError = {};
+            this.logOutResponse = {};
         },
 
         tearDown: function () {
@@ -1459,17 +1502,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             delete this.capiMock;
         },
 
-        "Should reset the user and provide the response when logging out": function () {
-            var logOutResponse = {},
-                logOutError = {};
-
-            Y.Mock.expect(this.capiMock, {
-                method: 'logOut',
-                args: [Y.Mock.Value.Function],
-                run: function (cb) {
-                    cb(logOutError, logOutResponse);
-                },
-            });
+        _configureUserMock: function () {
             Y.Mock.expect(this.userMock, {
                 method: 'reset',
             });
@@ -1477,18 +1510,50 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 method: 'set',
                 args: ['id', undefined]
             });
+        },
 
+        _configureCapiMock: function () {
+            var that = this;
+
+            Y.Mock.expect(this.capiMock, {
+                method: 'logOut',
+                args: [Y.Mock.Value.Function],
+                run: function (cb) {
+                    cb(that.logOutError, that.logOutResponse);
+                },
+            });
+        },
+
+        "Should reset the user and provide the response when logging out": function () {
+            var that = this;
+
+            this._configureCapiMock();
+            this._configureUserMock();
             this.app.logOut(function (err, resp) {
                 Y.Assert.areSame(
-                    logOutError, err, "The error of the logout should be provided"
+                    that.logOutError, err, "The error of the logout should be provided"
                 );
                 Y.Assert.areSame(
-                    logOutResponse, resp, "The response of the logout should be provided"
+                    that.logOutResponse, resp, "The response of the logout should be provided"
                 );
             });
 
             Y.Mock.verify(this.userMock);
             Y.Mock.verify(this.capiMock);
+        },
+
+        "Should fire 'logOut' event when logging out": function () {
+            var logOutFired = false;
+
+            this._configureCapiMock();
+            this._configureUserMock();
+
+            this.app.on('logOut', function(e) {
+                logOutFired = true;
+            });
+            this.app.logOut(function (err, resp) {
+            });
+            Y.Assert.isTrue(logOutFired, "logOut event should have been fired when logging out");
         },
     });
 
