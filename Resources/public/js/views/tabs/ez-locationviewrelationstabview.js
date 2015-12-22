@@ -96,20 +96,23 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
          *
          * @method _lookupRelationListItems
          * @protected
-         * @param {ez.Content[]} relationList List of related content
+         * @param {Array} relationList List of related content structs
          * @return {Array} of RelationsListItems struct:
          *              struct.content: JSONified related content
-         *              struct.mainLocationId: main location Id of the content
+         *              struct.location: JSONified main location of the related content
          *              struct.relationInfo.relationTypeName: Ready to be displayed name of the relation type
          *              struct.relationInfo.fieldDefinitionName: Name of the field definition if any ("" if none)
          */
         _lookupRelationListItems: function (relationList) {
             var relationListToJSON = [];
 
-            Y.Array.each(relationList, function (content) {
+            Y.Array.each(relationList, function (contentStruct) {
+                var content = contentStruct.content,
+                    location = contentStruct.location;
+
                 relationListToJSON.push({
                     content: content.toJSON(),
-                    mainLocationId: content.get('resources').MainLocation,
+                    location: location.toJSON(),
                     relationInfo: this._lookupRelationInfo(content),
                 });
             }, this);
@@ -124,7 +127,13 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
          * @protected
          */
         _fireLoadObjectRelations: function () {
-            this.fire('loadObjectRelations', {});
+            /**
+             * Fired when object relations are going to be loaded
+             *
+             * @event loadObjectRelations
+             * @param {Bool} loadLocationPath flag indicating whether the locations' paths should be loaded
+             */
+            this.fire('loadObjectRelations', {loadLocationPath: true});
         },
     }, {
         ATTRS: {
@@ -155,7 +164,7 @@ YUI.add('ez-locationviewrelationstabview', function (Y) {
             },
 
             /**
-             * The related contents of the content
+             * The related content structs of the content
              *
              * @attribute relatedContents
              * @type Array

@@ -1,20 +1,19 @@
-.ez-breadcrumbs .ez-breadcrumbs-list {
-    font-size: 90%;
+.ez-breadcrumbs-list {
     list-style-type: none;
     padding: 0;
     margin-bottom: 0.5em;
 }
 
-.ez-breadcrumbs .ez-breadcrumbs-item {
+.ez-breadcrumbs-list .ez-breadcrumbs-item {
     display: inline;
 }
 
-.ez-breadcrumbs .ez-breadcrumbs-item:after {
+.ez-breadcrumbs-list .ez-breadcrumbs-item:after {
     content: "/";
-    padding: 0 0.3em 0 0.5em;
+    padding: 0 0.1em 0 0.1em;
 }
 
-.ez-breadcrumbs .ez-breadcrumbs-item:last-of-type:after {
+.ez-breadcrumbs-list .ez-breadcrumbs-item:last-of-type:after {
     content: "";
     padding: 0;
 }

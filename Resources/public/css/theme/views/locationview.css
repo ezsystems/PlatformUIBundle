@@ -16,3 +16,16 @@
 .ez-view-locationviewview header {
     background: #f5f4f2;
 }
+
+.ez-view-locationviewview .ez-location-breadcrumbs .ez-breadcrumbs-list {
+    font-size: 90%;
+}
+
+.ez-view-locationviewview .ez-location-breadcrumbs .ez-breadcrumbs-item a {
+    color: #528036;
+}
+
+.ez-view-locationviewview .ez-location-breadcrumbs .ez-breadcrumbs-item a:hover {
+    color: #444;
+    text-decoration: underline;
+}
