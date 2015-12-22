@@ -70,6 +70,7 @@ YUI.add('ez-locationviewview', function (Y) {
             container.setHTML(this.template({
                 location: this.get('location').toJSON(),
                 content: this.get('content').toJSON(),
+                contentType: this.get('contentType').toJSON(),
                 tabs: this._getTabsList(),
                 path: this._pathToJSON()
             }));
