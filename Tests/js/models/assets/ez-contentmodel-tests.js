@@ -646,39 +646,68 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             this.model = new Y.eZ.Content();
             this.contentId = 'Pele';
             this.locationId = 'Maradona';
+            this.locationDepth = 3;
             this.currentLocation = new Mock();
 
             this.capi = new Mock();
             this.contentService = new Mock();
 
-            Y.Mock.expect(this.capi, {
+            Mock.expect(this.capi, {
                 method: 'getContentService',
                 returns: this.contentService
             });
 
-            Y.Mock.expect(this.model, {
+            Mock.expect(this.model, {
                 method: 'get',
-                args: ['id'],
+                args: ['contentId'],
                 returns: this.contentId
             });
 
             Mock.expect(this.currentLocation, {
                 method: 'get',
-                args: ['id'],
-                returns: this.locationId
+                args: [Mock.Value.String],
+                run: Y.bind(function (attr) {
+                    if ( attr === 'depth' ) {
+                        return this.locationDepth;
+                    } else if ( attr === 'id' ) {
+                        return this.locationId;
+                    }
+                    Y.fail('Unexpected call to get("' + attr + '")');
+                }, this),
             });
 
-            this.loadLocationsResponse = {
+            this.loadLocationsViewResponse = {
                 document: {
-                    LocationList: {
-                        Location: [
-                            {_href: 'Milton Friedman'},
-                            {_href: 'JKM'},
-                            {_href: this.locationId}
-                        ]
+                    View: {
+                        Result: {
+                            searchHits: {
+                                searchHit: [
+                                    {value: { Location: {_href: 'zidane', depth: 2}}},
+                                    {value: { Location: {_href: 'messi', depth: 1}}},
+                                    {value: { Location: {_href: this.locationId, depth: this.locationDepth}}},
+                                    {value: { Location: {_href: 'medved', depth: 0}}},
+                                ]
+                            }
+                        }
                     }
                 }
             };
+
+            this.query = {
+                'body': {
+                    ViewInput: {
+                        'LocationQuery': {
+                            'Criteria' : ""
+                        }
+                    }
+                }
+            };
+
+            Mock.expect(this.contentService, {
+                method: 'newViewCreateStruct',
+                args: ['locations-of-content-' + this.contentId, 'LocationQuery'],
+                returns: this.query
+            });
         },
 
         tearDown: function () {
@@ -705,10 +734,10 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             });
 
             Y.Mock.expect(this.contentService, {
-                method: 'loadLocations',
-                args: [this.contentId, Y.Mock.Value.Function],
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
                 run: function (contentId, cb) {
-                    cb(false, that.loadLocationsResponse);
+                    cb(false, that.loadLocationsViewResponse);
                 }
             });
 
@@ -717,8 +746,8 @@ YUI.add('ez-contentmodel-tests', function (Y) {
 
                 Assert.isFalse(err, 'Should not return the error');
                 Assert.areEqual(
+                    that.loadLocationsViewResponse.document.View.Result.searchHits.searchHit.length,
                     response.length,
-                    that.loadLocationsResponse.document.LocationList.Location.length,
                     'Number of locations returned should be the same as in REST response'
                 );
             });
@@ -738,9 +767,9 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                 }
             });
 
-            Y.Mock.expect(this.contentService, {
-                method: 'loadLocations',
-                args: [this.contentId, Y.Mock.Value.Function],
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
                 run: function (contentId, cb) {
                     cb(true, {});
                 }
@@ -754,36 +783,6 @@ YUI.add('ez-contentmodel-tests', function (Y) {
 
             Assert.isTrue(callbackCalled, 'Should call callback function');
         },
-
-        'Should pass error to callback function when loading the location fails': function () {
-            var options = {api: this.capi},
-                callbackCalled = false,
-                that = this;
-
-            Y.eZ.Location = Y.Base.create('locationModel', Y.eZ.RestModel, [], {
-                load: function (opts, callback) {
-                    Assert.areSame(options, opts, 'Options with API should be the same');
-
-                    callback(true, {});
-                }
-            });
-
-            Y.Mock.expect(this.contentService, {
-                method: 'loadLocations',
-                args: [this.contentId, Y.Mock.Value.Function],
-                run: function (contentId, cb) {
-                    cb(false, that.loadLocationsResponse);
-                }
-            });
-
-            this.model.loadLocations(options, function (err, response) {
-                callbackCalled = true;
-
-                Assert.isTrue(err, 'Should return the error');
-            });
-
-            Assert.isTrue(callbackCalled, 'Should call callback function');
-        }
     });
 
     addLocationTest = new Y.Test.Case({

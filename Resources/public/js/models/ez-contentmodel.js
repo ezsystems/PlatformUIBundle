@@ -232,42 +232,49 @@ YUI.add('ez-contentmodel', function (Y) {
          * @param {Function} callback
          */
         loadLocations: function (options, callback) {
-            var api = options.api,
-                currentLocation = options.location;
+            var locations = [],
+                contentService = options.api.getContentService(),
+                query = contentService.newViewCreateStruct(
+                    'locations-of-content-' + this.get('contentId'),
+                    'LocationQuery'
+                );
 
-            api.getContentService().loadLocations(this.get('id'), function (error, response) {
-                var tasks = new Y.Parallel(),
-                    loadError = false,
-                    locations = [];
+            query.body.ViewInput.LocationQuery.Criteria = {
+                ContentIdCriterion: this.get('contentId')
+            };
 
-                if ( error ) {
-                    callback(error, response);
-                    return;
-                }
-                Y.Array.each(response.document.LocationList.Location, function (loc) {
-                    var location,
-                        end;
+            contentService.createView(
+                query,
+                function (error, response) {
+                    var hits;
 
-                    if (currentLocation && currentLocation.get('id') === loc._href) {
-                        locations.push(currentLocation);
-                    } else {
-                        location = new Y.eZ.Location({id: loc._href});
-                        end = tasks.add(function (err) {
-                            if ( err ) {
-                                loadError = true;
-                                return;
-                            }
-                            locations.push(location);
-                        });
-
-                        location.load(options, end);
+                    if ( error ) {
+                        callback(error, response);
+                        return;
                     }
-                });
 
-                tasks.done(function () {
-                    callback(loadError, locations);
-                });
-            });
+                    hits = response.document.View.Result.searchHits.searchHit;
+
+                    Y.Array.each(hits, function (hit) {
+                        var location,
+                            currentLocation = options.location;
+
+                        if (currentLocation && currentLocation.get('id') === hit.value.Location._href) {
+                            locations.push(currentLocation);
+                        } else {
+                            location = new Y.eZ.Location();
+                            location.setAttrs(location.parse({document: hit.value}));
+                            locations.push(location);
+                        }
+                    }, this);
+
+                    locations.sort(function (a, b) {
+                        return (a.get('depth') - b.get('depth'));
+                    });
+
+                    callback(error, locations);
+                }
+            );
         },
 
         /**
