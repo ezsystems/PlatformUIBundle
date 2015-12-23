@@ -4,7 +4,8 @@
  */
 YUI.add('ez-discoverybarview-tests', function (Y) {
     var viewContainer = Y.one('.container'),
-        viewTest;
+        viewTest,
+        Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
         name: "eZ Discovery Bar View test",
@@ -44,6 +45,54 @@ YUI.add('ez-discoverybarview-tests', function (Y) {
                 container.hasClass('ez-view-discoverybarview'),
                 "The view container should have the class 'ez-view-discoverybarview'"
             );
+        },
+
+        _testButtonAction: function (buttonActionView, disabled, label, priority) {
+            Assert.areSame(
+                disabled,
+                buttonActionView.get('disabled'),
+                "Disabled of the button is not valid"
+            );
+
+            Assert.areSame(
+                label,
+                buttonActionView.get('label'),
+                "Label of button is not valid"
+            );
+
+            Assert.areSame(
+                priority,
+                buttonActionView.get('priority'),
+                "Label of button is not valid"
+            );
+        },
+
+        "Should contain the action Views in the actionsList attribute": function () {
+            var actionsList = this.view.get('actionsList');
+
+            Assert.areSame(
+                3,
+                actionsList.length,
+                "Action list should contain 3 items"
+            );
+
+            Y.Array.each(actionsList, Y.bind(function (buttonActionView) {
+                Assert.isInstanceOf(
+                    Y.eZ.ButtonActionView,
+                    buttonActionView,
+                    "Buttons should be instances of Y.eZ.ButtonActionView"
+                );
+
+                if (buttonActionView.get('actionId') === "minimizeDiscoveryBar") {
+                    this._testButtonAction(buttonActionView, false, "Minimize", 1000);
+                } else if (buttonActionView.get('actionId') === "tree") {
+                    this._testButtonAction(buttonActionView, false, "Content tree", 800);
+                } else if (buttonActionView.get('actionId') === "viewTrash") {
+                    this._testButtonAction(buttonActionView, false, "Trash", 600);
+                } else {
+                    Assert.fail("Unknown action id: " + buttonActionView.get('actionId'));
+                }
+            }, this));
         },
     });
 

@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Trash Item Model tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/model-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-trashitemmodel-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-trashitemmodel'],
+        filter: loaderFilter,
+        modules: {
+            "ez-trashitemmodel": {
+                requires: [
+                    'ez-restmodel',
+                    'ez-contentinfomodel',
+                    'array-extras'
+                ],
+                fullpath: "../../../Resources/public/js/models/ez-trashitemmodel.js"
+            },
+            "ez-contentinfomodel": {
+                requires: [
+                    'ez-restmodel',
+                    'ez-contentinfo-attributes',
+                ],
+                fullpath: "../../../Resources/public/js/models/ez-contentinfomodel.js"
+            },
+            "ez-contentinfo-attributes": {
+                requires: ['ez-restmodel'],
+                fullpath: "../../../Resources/public/js/models/extensions/ez-contentinfo-attributes.js"
+            },
+            "ez-restmodel": {
+                requires: [
+                    'model'
+                ],
+                fullpath: "../../../Resources/public/js/models/ez-restmodel.js"
+            },
+        }
+    }).use('ez-trashitemmodel-tests', function (Y) {
+        Y.Test.Runner.run();
+
+    });
+</script>
+</body>
+</html>

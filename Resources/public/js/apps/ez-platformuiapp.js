@@ -101,6 +101,10 @@ YUI.add('ez-platformuiapp', function (Y) {
                 type: Y.eZ.LocationViewView,
                 parent: 'dashboardView'
             },
+            trashView: {
+                type: Y.eZ.TrashView,
+                parent: 'locationViewView'
+            },
             serverSideView: {
                 type: Y.eZ.ServerSideView,
             },
@@ -822,6 +826,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                     service: Y.eZ.LocationViewViewService,
                     sideViews: {'discoveryBar': true, 'navigationHub': true},
                     view: 'locationViewView',
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                }, {
+                    name: "viewTrash",
+                    path: '/trash',
+                    service: Y.eZ.TrashViewService,
+                    sideViews: {'navigationHub': true, 'discoveryBar': true},
+                    view: 'trashView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
                     name: "adminSection",

@@ -117,6 +117,8 @@ system:
                         - 'ez-contenteditview'
                         - 'ez-locationviewview'
                         - 'ez-locationviewviewservice'
+                        - 'ez-trashviewservice'
+                        - 'ez-trashview'
                         - 'ez-serversideview'
                         - 'ez-contenttypeeditserversideview'
                         - 'ez-serversideviewservice'
@@ -173,6 +175,17 @@ system:
                 ez-contentcreateviewservice:
                     requires: ['ez-contenteditviewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-contentcreateviewservice.js
+                ez-trashviewservice:
+                    requires:
+                        - 'parallel'
+                        - 'ez-viewservice'
+                        - 'ez-trashitemmodel'
+                        - 'ez-contentinfomodel'
+                        - 'ez-locationmodel'
+                        - 'ez-contenttypemodel'
+                        - 'ez-loginavailableplugin'
+                        - 'array-extras'
+                    path: %ez_platformui.public_dir%/js/views/services/ez-trashviewservice.js
                 ez-locationviewviewservice:
                     requires:
                         - 'parallel'
@@ -445,6 +458,15 @@ system:
                 contenteditview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/contentedit.hbt
+                ez-trashview:
+                    requires:
+                        - 'ez-templatebasedview'
+                        - 'trashview-ez-template'
+                        - 'array-extras'
+                    path: %ez_platformui.public_dir%/js/views/ez-trashview.js
+                trashview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/trash.hbt
                 ez-contenteditformview:
                     requires:
                         - 'ez-templatebasedview'
@@ -788,6 +810,9 @@ system:
                 ez-locationmodel:
                     requires: ['ez-restmodel', 'ez-contentinfomodel', array-extras]
                     path: %ez_platformui.public_dir%/js/models/ez-locationmodel.js
+                ez-trashitemmodel:
+                    requires: ['ez-restmodel', 'ez-contentinfomodel']
+                    path: %ez_platformui.public_dir%/js/models/ez-trashitemmodel.js
                 ez-usermodel:
                     requires: ['ez-restmodel']
                     path: %ez_platformui.public_dir%/js/models/ez-usermodel.js
