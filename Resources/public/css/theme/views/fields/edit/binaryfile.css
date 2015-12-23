@@ -69,7 +69,10 @@
 }
 
 .ez-view-binaryfileeditview .ez-field-description {
-    font-weight: lighter;
+    color: #333333;
     font-size: 80%;
     opacity: 1;
+    letter-spacing: 0.03em;
+    font-weight: normal;
+    margin-bottom: 1em;
 }
