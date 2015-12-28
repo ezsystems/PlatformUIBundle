@@ -134,6 +134,68 @@ YUI.add('ez-locationsearchplugin', function (Y) {
             return location;
         },
 
+
+
+
+        /**
+         * Loads the Content for each tree node representing the children of
+         * `levelLocation`.
+         *
+         * @method _loadContents
+         * @param {eZ.Location} levelLocation
+         * @param {Object} data
+         * @param {Function} callback
+         * @protected
+         */
+        _loadContents: function (levelLocation, data, callback) {
+            var contentService = this.get('host').get('capi').getContentService(),
+                contents = {},
+                query;
+
+            query = contentService.newViewCreateStruct('children_content' + levelLocation.get('locationId'), 'ContentQuery');
+            query.body.ViewInput.ContentQuery.Criteria = {
+                "ParentLocationIdCriterion": levelLocation.get('locationId'),
+            };
+
+            contentService.createView(query, function (err, response) {
+                if ( err ) {
+                    callback(err);
+                    return;
+                }
+                Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit) {
+                    var content = new Y.eZ.Content({id: hit.value.Content._href});
+
+                    content.loadFromHash(hit.value.Content);
+                    contents[content.get('id')] = content;
+                });
+
+                Y.Object.each(data, function (struct, key) {
+                    data[key].content = contents[struct.contentInfo.get('id')];
+                });
+                callback();
+            });
+        },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /**
          * Loads resources for the given array of location structs. Depending on given
          * `loadContentType` and `loadContent` bool parameters it loads Content and ContentType
