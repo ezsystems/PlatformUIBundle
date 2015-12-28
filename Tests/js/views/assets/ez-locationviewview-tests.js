@@ -49,8 +49,10 @@ YUI.add('ez-locationviewview-tests', function (Y) {
 
             this.locationMock = new Mock();
             this.contentMock = new Mock();
+            this.contentTypeMock = new Mock();
             this.locationJSON = {};
             this.contentJSON = {};
+            this.contentTypeJSON = {};
             this.path = [];
             this.languageCode = 'eng-GB';
             Y.Mock.expect(this.locationMock, {
@@ -63,6 +65,11 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 args: [],
                 returns: this.contentJSON,
             });
+            Y.Mock.expect(this.contentTypeMock, {
+                method: "toJSON",
+                args: [],
+                returns: this.contentTypeJSON,
+            });
 
             this.view = new Y.eZ.LocationViewView({
                 actionBar: this.barMock,
@@ -70,6 +77,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 subitemList: this.subitemList,
                 location : this.locationMock,
                 content : this.contentMock,
+                contentType : this.contentTypeMock,
                 path: this.path,
                 languageCode: this.languageCode
             });
@@ -145,6 +153,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 origTpl = this.view.template,
                 location = this.locationMock,
                 content = this.contentMock,
+                contentType = this.contentTypeMock,
                 that = this;
 
             Y.Array.each(plainLocations, function (val, k) {
@@ -159,6 +168,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                         "The jsonified location should be passed to the template"
                     );
                 });
+                Y.Mock.verify(contentType);
                 Y.Mock.verify(location);
                 Y.Mock.verify(content);
                 Y.Assert.areSame(
@@ -168,6 +178,10 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 Y.Assert.areSame(
                     that.contentJSON, variables.content,
                     "content.toJSON() should be passed to the template"
+                );
+                Y.Assert.areSame(
+                    that.contentTypeJSON, variables.contentType,
+                    "contentType.toJSON() should be passed to the template"
                 );
                 Assert.isArray(variables.tabs, "The tabs should be passed to the template");
                 Assert.areEqual(
@@ -486,6 +500,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 selectedTab: 'tab1',
                 location: _getModelMock({}),
                 content: _getModelMock({}),
+                contentType: _getModelMock({}),
                 container: Y.one('.container')
             });
             this.view.render();

@@ -29,3 +29,21 @@
     color: #444;
     text-decoration: underline;
 }
+
+.ez-view-locationviewview .ez-page-header-contenttype {
+    font-size: 55%;
+    color: #737373;
+    padding-left: 3px; /* to align with the content name */
+}
+
+.ez-view-locationviewview .ez-page-header-name{
+    font-size: 2em;
+}
+
+.ez-view-locationviewview .ez-page-header-name h1{
+    font-size: 1em;
+}
+
+.ez-view-locationviewview .ez-page-header-content-name {
+    font-weight: bold;
+}
