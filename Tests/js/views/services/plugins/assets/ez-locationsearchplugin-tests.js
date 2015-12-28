@@ -189,18 +189,21 @@ YUI.add('ez-locationsearchplugin-tests', function (Y) {
             var that = this;
 
             this.LocationModelConstructor = function () {};
+            this.ContentModelConstructor = function () {};
             this.capi = new Mock();
             this.contentService = new Mock();
             this.contentInfoMock = new Mock();
             this.viewName = 'REST-View-Name';
-            this.query = {body: {ViewInput: {LocationQuery: {}}}};
+            this.locationQuery = {body: {ViewInput: {LocationQuery: {}}}};
+            this.contentQuery = {body: {ViewInput: {ContentQuery: {}}}};
             this.contentInfo = {
                 id: '/content/id/4112',
+                contentId: '4112',
                 resources: {
                     ContentType: '/content/type/id'
                 }
             };
-            this.response = {
+            this.locationResponse = {
                 document: {
                     View: {
                         Result: {
@@ -209,6 +212,24 @@ YUI.add('ez-locationsearchplugin-tests', function (Y) {
                                     value: {
                                         Location: {
                                             contentInfo: this.contentInfo
+                                        }
+                                    },
+                                }]
+                            }
+                        }
+                    }
+                }
+            };
+
+            this.contentResponse = {
+                document: {
+                    View: {
+                        Result: {
+                            searchHits: {
+                                searchHit: [{
+                                    value: {
+                                        Content: {
+                                            _href: "4112"
                                         }
                                     },
                                 }]
@@ -231,14 +252,35 @@ YUI.add('ez-locationsearchplugin-tests', function (Y) {
                 };
             };
 
+            this.ContentModelConstructor.prototype.loadFromHash = function (hash) {
+                this.hash = hash;
+
+                this.get = function (attr) {
+                    switch (attr) {
+                        case 'id':
+                            return that.contentInfo.id;
+                        default:
+                            Assert.fail('Requested attribute does not exist in the content model');
+                            break;
+                    }
+                };
+            };
             Mock.expect(this.capi, {
                 method: 'getContentService',
                 returns: this.contentService,
             });
             Mock.expect(this.contentService, {
                 method: 'newViewCreateStruct',
-                args: [this.viewName, 'LocationQuery'],
-                returns: this.query,
+                args: [Mock.Value.String, Mock.Value.String],
+                run: function (viewName, queryType) {
+                    if (queryType == "LocationQuery") {
+                        return that.locationQuery;
+                    } else if (queryType == "ContentQuery") {
+                        return that.contentQuery;
+                    } else {
+                        Assert.fail('Arguments of contentService.newCreateStruct are not correct');
+                    }
+                }
             });
             Mock.expect(this.contentInfoMock, {
                 method: 'get',
@@ -253,9 +295,13 @@ YUI.add('ez-locationsearchplugin-tests', function (Y) {
             });
             Mock.expect(this.contentService, {
                 method: 'createView',
-                args: [this.query, Mock.Value.Function],
+                args: [Mock.Value.Object, Mock.Value.Function],
                 run: function (query, cb) {
-                    cb(false, that.response);
+                    if (query === that.locationQuery) {
+                        cb(false, that.locationResponse);
+                    } else if (query === that.contentQuery) {
+                        cb(false, that.contentResponse);
+                    }
                 }
             });
             this.service = new Y.Base();
@@ -264,6 +310,7 @@ YUI.add('ez-locationsearchplugin-tests', function (Y) {
             this.plugin = new Y.eZ.Plugin.LocationSearch({
                 host: this.service,
                 locationModelConstructor: this.LocationModelConstructor,
+                contentModelConstructor: this.ContentModelConstructor,
             });
         },
 
@@ -274,15 +321,15 @@ YUI.add('ez-locationsearchplugin-tests', function (Y) {
             delete this.plugin;
             delete this.capi;
             delete this.contentService;
-            delete this.query;
+            delete this.contentQuery;
+            delete this.locationQuery;
         },
 
         "Should load Content and ContentType into location struct": function () {
             var contentInfo = this.contentInfo,
-                response = this.response,
+                response = this.locationResponse,
                 resultAttr = 'whateverAttr';
 
-            Y.eZ.Content = Y.Model;
             Y.eZ.ContentType = Y.Model;
 
             this.view.fire('locationSearch', {
@@ -317,6 +364,11 @@ YUI.add('ez-locationsearchplugin-tests', function (Y) {
                     "The location from the value should be created from the hash"
                 );
                 Assert.isObject(value.content, "The location struct from result should contain content object");
+                Assert.isInstanceOf(
+                    this.ContentModelConstructor,
+                    value.content,
+                    "The content from the value should be an instance of the model"
+                );
                 Assert.areSame(
                     contentInfo.id,
                     value.content.get('id'),
@@ -335,12 +387,21 @@ YUI.add('ez-locationsearchplugin-tests', function (Y) {
         },
 
         "Should handle loading content error": function () {
-            var resultAttr = 'whateverAttr';
+            var resultAttr = 'whateverAttr',
+            that = this;
 
-            Y.eZ.Content = function () {};
-            Y.eZ.Content.prototype.load = function (options, callback) {
-                callback(true);
-            };
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (query, cb) {
+                    if (query == that.locationQuery) {
+                        cb(false, that.locationResponse);
+                    } else if (query == that.contentQuery) {
+                        cb(true, that.contentResponse);
+                    }
+                }
+            });
+            
             Y.eZ.ContentType = Y.Model;
 
             this.view.fire('locationSearch', {
