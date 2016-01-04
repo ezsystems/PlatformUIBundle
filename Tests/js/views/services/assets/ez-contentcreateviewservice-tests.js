@@ -338,8 +338,18 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             Assert.isTrue(languageSelectFired, "The 'languageSelect' should have been fired");
         },
 
-        "Should remove currentVersion of content and set selected languageCode": function () {
-            var that = this;
+        "Should remove currentVersion of content and set selected languageCode and fields": function () {
+            var that = this,
+                fields = [{
+                    fieldDefinitionIdentifier: 'name',
+                    fieldValue: 'Husaria',
+                }],
+                expectedFields = {
+                    'name': {
+                        fieldDefinitionIdentifier: 'name',
+                        fieldValue: 'Husaria',
+                    }
+                };
 
             Mock.expect(this.version, {
                 method: 'destroy',
@@ -363,12 +373,32 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 e.config.languageSelectedHandler(config);
             });
 
-            this.service.fire('test:changeLanguage');
+            this.service.fire('test:changeLanguage', {fields: fields});
 
             Assert.areEqual(
                 this.service.get('languageCode'),
                 this.switchedLanguageCode,
                 'The attribute languageCode should be changed to the selected one'
+            );
+            Assert.areEqual(
+                this.service.get('content').get('fields').name.fieldDefinitionIdentifier,
+                expectedFields.name.fieldDefinitionIdentifier,
+                'The `fields` attribute of content should be updated with value passed to `changeLanguage` event'
+            );
+            Assert.areEqual(
+                this.service.get('content').get('fields').name.fieldValue,
+                expectedFields.name.fieldValue,
+                'The `fields` attribute of content should be updated with value passed to `changeLanguage` event'
+            );
+            Assert.areEqual(
+                this.service.get('version').get('fields').name.fieldDefinitionIdentifier,
+                expectedFields.name.fieldDefinitionIdentifier,
+                'The `fields` attribute of version should be updated with value passed to `changeLanguage` event'
+            );
+            Assert.areEqual(
+                this.service.get('version').get('fields').name.fieldValue,
+                expectedFields.name.fieldValue,
+                'The `fields` attribute of version should be updated with value passed to `changeLanguage` event'
             );
         },
 

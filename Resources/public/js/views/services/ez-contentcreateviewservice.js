@@ -65,12 +65,29 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
                     fieldValue: fieldDef.defaultValue,
                 };
             });
-            content.set('fields', defaultFields);
-            version.set('fields', defaultFields);
+
+            this._setFields(defaultFields, content, version);
+
             this.set('owner', this.get('app').get('user'));
+            callback(this);
+        },
+
+        /**
+         * Sets fields on given content and version. After that `content` and `version` are updated
+         * on the view service.
+         *
+         * @method _setFields
+         * @protected
+         * @param {Object} fields object containing fields that will be set on given content and version
+         * @param {eZ.Content} content
+         * @param {eZ.Version} version
+         * @since 1.1
+         */
+        _setFields: function (fields, content, version) {
+            content.set('fields', fields);
+            version.set('fields', fields);
             this.set('content', content);
             this.set('version', version);
-            callback(this);
         },
 
         /**
@@ -111,7 +128,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
             this.fire('languageSelect', {
                 config: {
                     title: "Change language to:",
-                    languageSelectedHandler: Y.bind(this._setLanguage, this, e.target),
+                    languageSelectedHandler: Y.bind(this._setLanguage, this, e.target, e.fields),
                     cancelLanguageSelectionHandler: null,
                     canBaseTranslation: false,
                     translationMode: true,
@@ -126,11 +143,16 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
          * @method _setLanguage
          * @private
          * @param {Y.eZ.View} view the view which triggered language selection box
+         * @param {Object} fields
          * @param {EventFacade} e
          * @param {String} e.selectedLanguageCode language code to which created content will be switched
          */
-        _setLanguage: function (view, e) {
-            var version = this.get('version');
+        _setLanguage: function (view, fields, e) {
+            var version = this.get('version'),
+                selectedLanguageCode = e.selectedLanguageCode,
+                newVersion = new Y.eZ.Version(),
+                content = this.get('content'),
+                formFields = {};
 
             version.destroy({api: this.get('capi'), remove: true}, function (error) {
                 if ( error ) {
@@ -138,14 +160,24 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
                 }
             });
 
-            this.set('version', new Y.eZ.Version());
-            this.set('languageCode',e.selectedLanguageCode);
-            view.set('languageCode', e.selectedLanguageCode);
+            Y.Object.each(fields, function (field) {
+                formFields[field.fieldDefinitionIdentifier] = {
+                    fieldDefinitionIdentifier: field.fieldDefinitionIdentifier,
+                    fieldValue: field.fieldValue,
+                };
+            });
+
+            this._setFields(formFields, content, newVersion);
+
+            this.set('languageCode', selectedLanguageCode);
+            view.set('version', newVersion);
+            view.set('content', content);
+            view.set('languageCode', selectedLanguageCode);
 
             this.fire('notify', {
                 notification: {
-                    text: 'Language has been changed to ' + e.selectedLanguageCode,
-                    identifier: 'create-content-change-language-to-' + e.selectedLanguageCode,
+                    text: 'Language has been changed to ' + selectedLanguageCode,
+                    identifier: 'create-content-change-language-to-' + selectedLanguageCode,
                     state: 'done',
                     timeout: 5,
                 }
