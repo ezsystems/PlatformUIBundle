@@ -65,12 +65,26 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
                     fieldValue: fieldDef.defaultValue,
                 };
             });
-            content.set('fields', defaultFields);
-            version.set('fields', defaultFields);
-            this.set('owner', this.get('app').get('user'));
+
             this.set('content', content);
             this.set('version', version);
+            this._setFields(defaultFields);
+
+            this.set('owner', this.get('app').get('user'));
             callback(this);
+        },
+
+        /**
+         * Sets fields on given content and version.
+         *
+         * @method _setFields
+         * @protected
+         * @param {Object} fields object containing fields that will be set on given content and version
+         * @since 1.1
+         */
+        _setFields: function (fields) {
+            this.get('content').set('fields', fields);
+            this.get('version').set('fields', fields);
         },
 
         /**
@@ -111,7 +125,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
             this.fire('languageSelect', {
                 config: {
                     title: "Change language to:",
-                    languageSelectedHandler: Y.bind(this._setLanguage, this, e.target),
+                    languageSelectedHandler: Y.bind(this._setLanguage, this, e.target, e.fields),
                     cancelLanguageSelectionHandler: null,
                     canBaseTranslation: false,
                     translationMode: true,
@@ -126,26 +140,42 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
          * @method _setLanguage
          * @private
          * @param {Y.eZ.View} view the view which triggered language selection box
+         * @param {Object} fields
          * @param {EventFacade} e
          * @param {String} e.selectedLanguageCode language code to which created content will be switched
          */
-        _setLanguage: function (view, e) {
-            var version = this.get('version');
+        _setLanguage: function (view, fields, e) {
+            var version = this.get('version'),
+                selectedLanguageCode = e.selectedLanguageCode,
+                newVersion = new Y.eZ.Version(),
+                formFields = {};
 
             version.destroy({api: this.get('capi'), remove: true}, function (error) {
                 if ( error ) {
                     console.warn('Failed to remove the version ' + version.get('versionId'));
                 }
             });
+            this.set('version', newVersion);
 
-            this.set('version', new Y.eZ.Version());
-            this.set('languageCode',e.selectedLanguageCode);
-            view.set('languageCode', e.selectedLanguageCode);
+            Y.Object.each(fields, function (field) {
+                formFields[field.fieldDefinitionIdentifier] = {
+                    fieldDefinitionIdentifier: field.fieldDefinitionIdentifier,
+                    fieldValue: field.fieldValue,
+                };
+            });
+
+            this._setFields(formFields);
+            this.set('languageCode', selectedLanguageCode);
+
+            view.setAttrs({
+                version: newVersion,
+                languageCode: selectedLanguageCode,
+            });
 
             this.fire('notify', {
                 notification: {
-                    text: 'Language has been changed to ' + e.selectedLanguageCode,
-                    identifier: 'create-content-change-language-to-' + e.selectedLanguageCode,
+                    text: 'Language has been changed to ' + this.get('app').getLanguageName(selectedLanguageCode),
+                    identifier: 'create-content-change-language-to-' + selectedLanguageCode,
                     state: 'done',
                     timeout: 5,
                 }

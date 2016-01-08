@@ -528,6 +528,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             });
 
             this.view = new Y.eZ.ContentEditView({
+                container: '.container',
                 actionBar: this.actionBar,
                 formView: this.formView
             });
@@ -597,6 +598,61 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
             Assert.isTrue(saveFired, "The saveAction event should have been fired");
         },
+
+        "Should pass languageCode to formView when it changes and render the view": function () {
+            var newLanguageCode = 'ita-IT',
+                languageCodeChanged = false,
+                viewRendered = false;
+
+            this.view.render = function () {
+                viewRendered = true;
+            };
+
+            Y.Mock.expect(this.formView, {
+                method: 'set',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Any],
+                run: function (attr, value) {
+                    if (attr === 'languageCode') {
+                        languageCodeChanged = true;
+                        Assert.areEqual(
+                            value,
+                            newLanguageCode,
+                            "The languageCode attr of formView should be the same as the one in contentEditView"
+                        );
+                    }
+                }
+            });
+
+            this.view.set('active', true);
+            this.view.set('languageCode', newLanguageCode);
+
+            Assert.isTrue(languageCodeChanged, "The languageCode attr should be updated in formView");
+            Assert.isTrue(viewRendered, "The view should be rendered");
+        },
+
+        "Should pass version to formView when it changes": function () {
+            var newVersion = {},
+                versionChanged = false;
+
+            Y.Mock.expect(this.formView, {
+                method: 'set',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Any],
+                run: function (attr, value) {
+                    if (attr === 'version') {
+                        versionChanged = true;
+                        Assert.areSame(
+                            value,
+                            newVersion,
+                            "The version attr of formView should be the same as the one in contentEditView"
+                        );
+                    }
+                }
+            });
+
+            this.view.set('version', newVersion);
+
+            Assert.isTrue(versionChanged, "The languageCode attr should be updated in formView");
+        },
     });
 
     domEventTest = new Y.Test.Case({
@@ -618,6 +674,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             this.actionBar = new Y.Mock();
             this.actionBarContents = '<menu></menu>';
             this.languageCode = 'eng-GB';
+            this.formViewFields = {};
 
             Y.Mock.expect(this.formView, {
                 method: 'get',
@@ -628,6 +685,10 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             Y.Mock.expect(this.formView, {
                 method: 'render',
                 returns: this.formView
+            });
+            Y.Mock.expect(this.formView, {
+                method: 'getFields',
+                returns: this.formViewFields
             });
             Y.Mock.expect(this.formView, {
                 method: 'destroy'
@@ -674,6 +735,11 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
             this.view.on('changeLanguage', function (e) {
                 changeLanguageFired = true;
+                Y.Assert.areSame(
+                    that.formViewFields,
+                    e.fields,
+                    "The eventFacade should contain `fields` attribute"
+                );
             });
 
             changeLanguageLink.simulateGesture('tap', function () {
@@ -686,20 +752,6 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             });
             this.wait();
         },
-
-        "Should update language indicator": function () {
-            var changedLanguageCode = 'pol-PL',
-                languageIndicator = this.view.get('container').one('.ez-content-current-language');
-
-            this.view.set('active', true);
-            this.view.set('languageCode', changedLanguageCode);
-            
-            Y.Assert.areEqual(
-                languageIndicator.getHTML(),
-                changedLanguageCode,
-                "The language indicator should be updated"
-            );
-        }
     });
 
     Y.Test.Runner.setName("eZ Content Edit View tests");
