@@ -3,25 +3,19 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
-    var pluginTest, languageNameHelperTest, registerTest,
+    var pluginTest, registerTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     pluginTest = new Y.Test.Case({
         name: "eZ Register Language Helpers Plugin test",
 
         setUp: function () {
-            this.systemLanguageList = {
-                'pol-PL': {
-                    languageCode: 'pol-PL',
-                    name: 'Polish'
-                }
-            };
+            this.languageCode = 'pol-PL';
             this.app = new Mock();
 
             Mock.expect(this.app, {
-                method: 'get',
-                args: ['systemLanguageList'],
-                returns: this.systemLanguageList
+                method: 'getLanguageName',
+                args: [this.languageCode],
             });
 
             this.plugin = new Y.eZ.Plugin.RegisterLanguageHelpers({
@@ -44,62 +38,14 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
         "Should register the 'language_name' helper": function () {
             this._helperRegistered('language_name');
         },
-    });
 
-    languageNameHelperTest = new Y.Test.Case({
-        name: "eZ Register Language Helpers Plugin language_name helper test",
+        "Should call the app getLanguageName method": function () {
+            /*jshint camelcase: false */
+            Y.Handlebars.helpers.language_name(this.languageCode);
+            /*jshint camelcase: true */
 
-        setUp: function () {
-            this.systemLanguageList = {
-                'pol-PL': {
-                    languageCode: 'pol-PL',
-                    name: 'Polish'
-                }
-            };
-            this.app = new Mock();
-
-            Mock.expect(this.app, {
-                method: 'get',
-                args: ['systemLanguageList'],
-                returns: this.systemLanguageList
-            });
-
-            this.plugin = new Y.eZ.Plugin.RegisterLanguageHelpers({
-                host: this.app
-            });
-        },
-
-        tearDown: function () {
-            this.plugin.destroy();
-            delete this.plugin;
-        },
-
-        "Should return language name": function () {
-            var languageCode = 'pol-PL',
-                languageName = this.systemLanguageList[languageCode].name;
-
-            Assert.areEqual(
-                languageName,
-                /*jshint camelcase: false */
-                Y.Handlebars.helpers.language_name(languageCode),
-                /*jshint camelcase: true */
-                "'language_name' should return the language name"
-            );
             Mock.verify(this.app);
-        },
-
-        "Should return language code": function () {
-            var languageCode = 'ger-DE';
-
-            Assert.areEqual(
-                languageCode,
-                /*jshint camelcase: false */
-                Y.Handlebars.helpers.language_name(languageCode),
-                /*jshint camelcase: true */
-                "'language_name' should return the language code"
-            );
-            Mock.verify(this.app);
-        },
+        }
     });
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
@@ -108,6 +54,5 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Register Language Helpers Plugin tests");
     Y.Test.Runner.add(pluginTest);
-    Y.Test.Runner.add(languageNameHelperTest);
     Y.Test.Runner.add(registerTest);
 }, '', {requires: ['test', 'handlebars', 'ez-registerlanguagehelpersplugin', 'ez-pluginregister-tests']});

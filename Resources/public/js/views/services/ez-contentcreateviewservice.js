@@ -174,7 +174,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
 
             this.fire('notify', {
                 notification: {
-                    text: 'Language has been changed to ' + selectedLanguageCode,
+                    text: 'Language has been changed to ' + this.get('app').getLanguageName(selectedLanguageCode),
                     identifier: 'create-content-change-language-to-' + selectedLanguageCode,
                     state: 'done',
                     timeout: 5,

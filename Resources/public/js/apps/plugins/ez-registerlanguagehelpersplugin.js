@@ -38,14 +38,9 @@ YUI.add('ez-registerlanguagehelpersplugin', function (Y) {
          * @protected
          */
         _registerLanguageName: function () {
-            var systemLanguageList = this.get('host').get('systemLanguageList');
+            var app = this.get('host');
 
-            Y.Handlebars.registerHelper('language_name', function (languageCode) {
-                if (systemLanguageList[languageCode]) {
-                    return systemLanguageList[languageCode].name;
-                }
-                return languageCode;
-            });
+            Y.Handlebars.registerHelper('language_name', Y.bind(app.getLanguageName, app));
         },
     }, {
         NS: 'registerLanguageHelpers',

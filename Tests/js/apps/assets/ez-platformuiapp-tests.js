@@ -7,7 +7,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         loginTest, logoutTest, isLoggedInTest, checkUserTest,
         showSideViewTest, hideSideViewTest,
         handleMainViewTest, titleTest, configRouteTest,
-        dispatchConfigTest,
+        dispatchConfigTest, getLanguageNameTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     appTest = new Y.Test.Case({
@@ -2077,6 +2077,46 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
+    getLanguageNameTest = new Y.Test.Case({
+        name: "eZ Platform UI App getLanguageName test",
+
+        setUp: function () {
+            this.languageCode = 'eng-GB';
+            this.languageName = 'English';
+            this.configLanguages = [
+                {'languageCode': this.languageCode, 'name': this.languageName},
+                {'languageCode': 'pol-PL', 'name': 'Polish'}
+            ];
+
+            this.app = new Y.eZ.PlatformUIApp({
+                config: {
+                    languages: this.configLanguages
+                },
+            });
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
+        "Should return the language name": function () {
+            Assert.areEqual(
+                this.languageName, this.app.getLanguageName(this.languageCode),
+                "The language name should have been returned"
+            );
+        },
+
+        "Should return the language code": function () {
+            var languageCode = 'fre-FR';
+
+            Assert.areEqual(
+                languageCode, this.app.getLanguageName(languageCode),
+                "The languageCode should have been returned"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Platform UI App tests");
     Y.Test.Runner.add(appTest);
     Y.Test.Runner.add(titleTest);
@@ -2092,4 +2132,5 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(checkUserTest);
     Y.Test.Runner.add(configRouteTest);
     Y.Test.Runner.add(dispatchConfigTest);
+    Y.Test.Runner.add(getLanguageNameTest);
 }, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice', 'ez-viewservicebaseplugin']});

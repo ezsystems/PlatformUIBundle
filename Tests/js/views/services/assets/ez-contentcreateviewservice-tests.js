@@ -289,6 +289,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             this.version = new Mock();
             this.languageCode = 'pol-PL';
             this.switchedLanguageCode = 'ger-DE';
+            this.switchedLanguageName = 'German';
             this.versionId = 'Michael Jackson';
             this.request = {params: {languageCode: this.languageCode}};
             this.capi = {};
@@ -297,6 +298,11 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 method: 'get',
                 args: ['versionId'],
                 returns: this.versionId
+            });
+            Mock.expect(this.app, {
+                method: 'getLanguageName',
+                args: [this.switchedLanguageCode],
+                returns: this.switchedLanguageName,
             });
 
             this.view = new Y.View();
@@ -439,8 +445,8 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 notificationFired = true;
 
                 Assert.isTrue(
-                    (e.notification.text.indexOf(this.switchedLanguageCode)>=0),
-                    'The notification text should contain info about the language'
+                    (e.notification.text.indexOf(this.switchedLanguageName)>=0),
+                    'The notification text should contain the language name'
                 );
                 Assert.areEqual(
                     e.notification.state,
