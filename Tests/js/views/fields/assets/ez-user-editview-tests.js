@@ -352,6 +352,17 @@ YUI.add('ez-user-editview-tests', function (Y) {
                 .simulate('blur');
         },
 
+        "Should not check login availability if the fieldValue is already filled by a login": function () {
+            this.view.on('isLoginAvailable', function (e) {
+                Assert.fail("The login of an already existing user editing his profile should not be checked");
+            });
+            this.view.set("field", {fieldValue: "Santa-Claus"});
+
+            this.view.render();
+            this.view.get('container').one('.ez-user-login-value')
+                .simulate('blur');
+        },
+
         "Should make the login required if email is filled": function () {
             var container = this.view.get('container');
 

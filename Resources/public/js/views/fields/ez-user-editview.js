@@ -29,7 +29,11 @@ YUI.add('ez-user-editview', function (Y) {
     Y.eZ.UserEditView = Y.Base.create('userEditView', Y.eZ.FieldEditView, [], {
         events: {
             '.ez-user-login-value': {
-                'blur': '_validateLogin',
+                'blur': function (e) {
+                    if (!e.target.get('readOnly')) {
+                        this._validateLogin(e);
+                    }
+                },
                 'valuechange': '_validateLogin',
             },
             '.ez-user-email-value': {
