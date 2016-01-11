@@ -138,6 +138,10 @@
         <source>content_type.notification.deleted</source>
         <target>The Content type "%contentTypeName%" was successfully deleted.</target>
       </trans-unit>
+      <trans-unit id="1d549f54e575ebb7f13e696af6c5bb96">
+        <source>content_type.is_in_use</source>
+        <target>The content type cannot be deleted because it has content items, or because you don't have permission.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

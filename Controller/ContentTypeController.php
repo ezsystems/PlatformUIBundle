@@ -126,9 +126,7 @@ class ContentTypeController extends Controller
                 ['contentTypeId' => $contentTypeId]
             )->createView();
 
-            $countQuery = new Query(['filter' => new Query\Criterion\ContentTypeId($contentTypeId), 'limit' => 0]);
-            $contentCount = $this->searchService->findContent($countQuery, [], false)->totalCount;
-            $canDeleteById[$contentTypeId] = $canDelete && $contentCount == 0;
+            $canDeleteById[$contentTypeId] = $canDelete && !$this->contentTypeService->isContentTypeUsed($contentType);
         }
 
         return $this->render('eZPlatformUIBundle:ContentType:view_content_type_group.html.twig', [
@@ -225,7 +223,7 @@ class ContentTypeController extends Controller
             'modifier' => $this->userService->loadUser($contentType->modifierId),
             'delete_form' => $deleteForm->createView(),
             'can_edit' => $this->isGranted(new Attribute('class', 'update')),
-            'can_delete' => ($this->isGranted(new Attribute('class', 'delete')) && $contentCount == 0),
+            'can_delete' => ($this->isGranted(new Attribute('class', 'delete')) && !$this->contentTypeService->isContentTypeUsed($contentType)),
         ]);
     }
 
