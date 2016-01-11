@@ -54,14 +54,24 @@ class RoleFormProcessor implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * Save the role if no button was clicked (i.e. enter was pressed in the form).
+     *
+     * The role should not be saved if cancel was pressed, and if save was pressed this is done in the save action.
+     *
+     * @param \EzSystems\RepositoryForms\Event\FormActionEvent $event
+     */
     public function processDefaultAction(FormActionEvent $event)
     {
-        $this->notify('role.notification.draft_saved', [], 'role');
+        if ($event->getClickedButton() === null) {
+            $this->processSaveRole($event);
+        }
     }
 
     public function processSaveRole(FormActionEvent $event)
     {
         $event->setResponse(new FormProcessingDoneResponse($this->router->generate('admin_roleList')));
+        $this->notify('role.notification.draft_saved', [], 'role');
         $this->notify('role.notification.published', [], 'role');
     }
 
