@@ -81,6 +81,13 @@ services:
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'countriesInfo'}
 
+    ezsystems.platformui.application_config.provider.image_variations:
+        class: %ezsystems.platformui.application_config.provider.value.class%
+        arguments:
+            - $image_variations$
+        tags:
+            - {name: ezsystems.platformui.application_config_provider, key: 'imageVariations'}
+
     ezsystems.platformui.application_config.provider.root_info:
         class: %ezsystems.platformui.application_config.provider.root_info.class%
         arguments:
