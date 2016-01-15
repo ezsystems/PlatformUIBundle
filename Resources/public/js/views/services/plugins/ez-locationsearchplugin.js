@@ -78,6 +78,7 @@ YUI.add('ez-locationsearchplugin', function (Y) {
 
                 if (e.loadContentType || e.loadContent) {
                     this._loadResources(
+                        e.viewName,
                         e.loadContentType,
                         e.loadContent,
                         attrs[e.resultAttribute],
@@ -146,7 +147,7 @@ YUI.add('ez-locationsearchplugin', function (Y) {
          * @param {Array} locationStructArr
          * @param {Function} callback
          */
-        _loadResources: function (loadContentType, loadContent, locationStructArr, callback) {
+        _loadResources: function (viewName, loadContentType, loadContent, locationStructArr, callback) {
             var tasks = new Y.Parallel(),
                 loadResourcesError = false;
 
@@ -169,7 +170,7 @@ YUI.add('ez-locationsearchplugin', function (Y) {
                         }
                     });
 
-                this._loadContentForLocations(locationStructArr, endContentLoad);
+                this._loadContentForLocations(viewName, locationStructArr, endContentLoad);
             }
 
             tasks.done(function () {
@@ -222,30 +223,39 @@ YUI.add('ez-locationsearchplugin', function (Y) {
          * @param {Array|Null} locationStructArr
          * @param {Function} callback
          */
-        _loadContentForLocations: function (locationStructArr, callback) {
-            var tasks = new Y.Parallel(),
-                loadContentError = false;
+        _loadContentForLocations: function (viewName, locationStructArr, callback) {
+            var contentService = this.get('host').get('capi').getContentService(),
+                contentIds = '',
+                loadContentError = false,
+                that = this,
+                query;
 
-            Y.Array.each(locationStructArr, function (locationStruct, i) {
-                var content = new Y.eZ.Content(
-                        {id: locationStruct.location.get('contentInfo').get('id')}
-                    ),
-                    capi = this.get('host').get('capi'),
-                    options = {api: capi},
-                    endContentLoad = tasks.add(function (error, response) {
-                        if (error) {
-                            loadContentError = true;
-                            return;
-                        }
+            Y.Array.reduce(locationStructArr, contentIds, function (previousId, nextId) {
+                return contentIds =
+                    previousId +
+                    "," +
+                    nextId.location.get('contentInfo').get('contentId');
+            });
 
-                        locationStructArr[i].content = content;
-                    });
+            query = contentService.newViewCreateStruct('contents-loading-'+ viewName, 'ContentQuery');
+            query.body.ViewInput.ContentQuery.Criteria = {
+                "ContentIdCriterion": contentIds
+            };
 
-                content.load(options, endContentLoad);
-            }, this);
+            contentService.createView(query, function (err, response) {
+                if (err) {
+                    callback(err, locationStructArr);
+                    return;
+                }
+                Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit, i) {
+                    var Content = that.get('contentModelConstructor'),
+                        content;
 
-            tasks.done(function () {
-                callback(loadContentError, locationStructArr);
+                    content = new Content();
+                    content.loadFromHash(hit.value.Content);
+                    locationStructArr[i].content = content;
+                });
+                callback(err, locationStructArr);
             });
         }
     }, {
@@ -261,6 +271,17 @@ YUI.add('ez-locationsearchplugin', function (Y) {
              */
             locationModelConstructor: {
                 value: Y.eZ.Location
+            },
+
+            /**
+             * Holds the eZ.Content constructor function
+             *
+             * @attribute contentModelConstructor
+             * @type {Function}
+             * @default Y.eZ.Content
+             */
+            contentModelConstructor: {
+                value: Y.eZ.Content
             }
         },
     });
