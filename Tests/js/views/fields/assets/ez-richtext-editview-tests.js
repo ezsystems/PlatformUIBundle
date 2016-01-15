@@ -357,7 +357,11 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this.config = {
                 rootInfo: {
                     ckeditorPluginPath: '../../..',
-                }
+                },
+                imageVariations: {
+                    small: {},
+                    large: {},
+                },
             };
             this.field = {id: 42, fieldValue: {xhtml5edit: ""}};
             this.model = new Mock();
@@ -486,7 +490,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this._testExtraPlugins('ezfocusblock');
         },
 
-        "Should pass the `eZ` configuration": function () {
+        "Should pass the editable region in `eZ` configuration": function () {
             var eZConfig;
 
             this.view.set('active', true);
@@ -502,6 +506,64 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 "The eZ configuration should contain the selector for the editable region"
             );
         },
+
+        "Should pass the image variation configuration in `eZ` configuration": function () {
+            var eZConfig;
+
+            this.view.set('active', true);
+
+            eZConfig = this.view.get('editor').get('nativeEditor').config.eZ;
+            Assert.isObject(
+                 eZConfig,
+                "The editor should have received the eZ configuration"
+            );
+            Assert.isArray(
+                eZConfig.imageVariations,
+                "The eZ configuration should contain the image variations"
+            );
+            Assert.areEqual(
+                Object.keys(this.config.imageVariations).length, eZConfig.imageVariations.length,
+                "The eZ Configuration should contain " + Object.keys(this.config).length + " variations"
+            );
+            Assert.areEqual(
+                "large", eZConfig.imageVariations[0].identifier,
+                "The image variation should be sorted by name"
+            );
+            Assert.areEqual(
+                "large", eZConfig.imageVariations[0].name,
+                "The image variation should be sorted by name"
+            );
+            Assert.areEqual(
+                "small", eZConfig.imageVariations[1].identifier,
+                "The image variation should be sorted by name"
+            );
+            Assert.areEqual(
+                "small", eZConfig.imageVariations[1].name,
+                "The image variation should be sorted by name"
+            );
+        },
+
+        "Should pass an empty image variation configuration in `eZ` configuration": function () {
+            var eZConfig;
+
+            this.config.imageVariations = undefined;
+            this.view.set('active', true);
+
+            eZConfig = this.view.get('editor').get('nativeEditor').config.eZ;
+            Assert.isObject(
+                 eZConfig,
+                "The editor should have received the eZ configuration"
+            );
+            Assert.isArray(
+                eZConfig.imageVariations,
+                "The eZ configuration should contain the image variations"
+            );
+            Assert.areEqual(
+                0, eZConfig.imageVariations.length,
+                "The eZ Configuration should contain 0 variation"
+            );
+        },
+
     });
 
     focusModeTest = new Y.Test.Case({

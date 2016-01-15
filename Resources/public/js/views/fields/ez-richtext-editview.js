@@ -97,6 +97,31 @@ YUI.add('ez-richtext-editview', function (Y) {
         },
 
         /**
+         * Returns an objects (`name` and `identifier`) representing the image
+         * variations configured in Platform sorted by name.
+         *
+         * @method _getImageVariations
+         * @return Array
+         */
+        _getImageVariations: function () {
+            var config = this.get('config'),
+                variations = [];
+
+            if ( !config || !config.imageVariations ) {
+                return variations;
+            }
+            variations = Object.keys(config.imageVariations).map(function (identifier) {
+                return {
+                    identifier: identifier,
+                    name: identifier, // TODO put the real name as soon as variations get real name
+                };
+            });
+            return variations.sort(function (a, b) {
+                return a.name.localeCompare(b.name);
+            });
+        },
+
+        /**
          * Registers the plugin which name is given in the given plugin dir.
          *
          * @method _registerExternalCKEditorPlugin
@@ -123,6 +148,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                     extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezaddcontent,widget,ezembed,ezremoveblock,ezfocusblock',
                     eZ: {
                         editableRegion: '.' + EDITABLE_CLASS,
+                        imageVariations: this._getImageVariations(),
                     },
                 }
             );
