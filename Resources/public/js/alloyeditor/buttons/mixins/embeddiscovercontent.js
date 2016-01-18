@@ -81,20 +81,6 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
         },
 
         /**
-         * Returns the ezembed widget instance for the current selection.
-         *
-         * @method _getWidget
-         * @return CKEDITOR.plugins.widget
-         */
-        _getWidget: function () {
-            var editor = this.props.editor.get('nativeEditor'),
-                wrapper;
-
-            wrapper = editor.getSelection().getStartElement();
-            return editor.widgets.getByElement(wrapper);
-        },
-
-        /**
          * Sets the href of the ezembed widget based on the given content info
          *
          * @method _setContentInfo
@@ -107,6 +93,5 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
             embedWidget.setHref('ezcontent://' + contentInfo.get('contentId'));
             embedWidget.focus();
         },
-
     };
 });

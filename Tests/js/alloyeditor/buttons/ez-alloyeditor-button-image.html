@@ -30,11 +30,15 @@
         modules: {
             "ez-alloyeditor-button-image": {
                 fullpath: "../../../../Resources/public/js/alloyeditor/buttons/image.js",
-                requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage'],
+                requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage', 'ez-alloyeditor-button-mixin-widgetbutton'],
             },
             "ez-alloyeditor-button-mixin-embeddiscovercontent": {
                 requires: ['ez-alloyeditor'],
                 fullpath: "../../../../Resources/public/js/alloyeditor/buttons/mixins/embeddiscovercontent.js",
+            },
+            "ez-alloyeditor-button-mixin-widgetbutton": {
+                requires: ['ez-alloyeditor'],
+                fullpath: "../../../../Resources/public/js/alloyeditor/buttons/mixins/widgetbutton.js",
             },
             "ez-alloyeditor-button-mixin-embedimage": {
                 requires: ['ez-alloyeditor'],

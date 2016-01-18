@@ -22,6 +22,7 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
         mixins: [
             AlloyEditor.ButtonCommand,
             AlloyEditor.ButtonStateClasses,
+            Y.eZ.AlloyEditorButton.WidgetButton,
             Y.eZ.AlloyEditorButton.ButtonEmbedDiscoverContent,
         ],
 

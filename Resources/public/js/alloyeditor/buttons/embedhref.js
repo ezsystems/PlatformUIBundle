@@ -31,6 +31,7 @@ YUI.add('ez-alloyeditor-button-embedhref', function (Y) {
      */
     ButtonEmbedHref = React.createClass({displayName: "ButtonEmbedHref",
         mixins: [
+            Y.eZ.AlloyEditorButton.WidgetButton,
             Y.eZ.AlloyEditorButton.ButtonEmbedDiscoverContent,
         ],
 
