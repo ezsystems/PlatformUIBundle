@@ -66,6 +66,9 @@ system:
                 ez-alloyeditor-button-embed:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-widgetbutton']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embed.js
+                ez-alloyeditor-button-imagevariation:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embedimage']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/imagevariation.js
                 ez-alloyeditor-button-blocktextalignleft:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignleft.js
@@ -586,6 +589,7 @@ system:
                         - 'ez-alloyeditor-button-paragraph'
                         - 'ez-alloyeditor-button-embed'
                         - 'ez-alloyeditor-button-image'
+                        - 'ez-alloyeditor-button-imagevariation'
                         - 'ez-alloyeditor-button-blocktextalignleft'
                         - 'ez-alloyeditor-button-blocktextaligncenter'
                         - 'ez-alloyeditor-button-blocktextalignright'
