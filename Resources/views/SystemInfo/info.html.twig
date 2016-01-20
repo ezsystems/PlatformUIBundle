@@ -18,12 +18,22 @@
 {% block content %}
     <section class="ez-tabs ez-serverside-content">
         <ul class="ez-tabs-list">
-            <li class="ez-tabs-label is-tab-selected"><a href="#ez-tabs-platform">eZ Platform</a></li>
+            <li class="ez-tabs-label is-tab-selected"><a href="#ez-tabs-bundles">{{ 'bundles'|trans }}</a></li>
             <li class="ez-tabs-label"><a href="#ez-tabs-server">{{ 'server'|trans }}</a></li>
+            <li class="ez-tabs-label"><a href="#ez-tabs-packages">{{ 'packages'|trans }}</a></li>
         </ul>
         <div class="ez-tabs-panels">
-            <div class="ez-tabs-panel is-tab-selected" id="ez-tabs-platform">
-                <p class="ez-platform-version">{{ 'ez.platform.version'|trans }} <strong>{{ ezplatformInfo.version }}</strong> {{ 'symfony.based'|trans }} <strong>{{ ezplatformInfo.symfony }}</strong></p>
+            <div class="ez-tabs-panel is-tab-selected" id="ez-tabs-bundles">
+                <p class="ez-platform-version">
+                    {% if composerInfo['ezsystems/platform-ui-bundle'] is defined %}
+                        {{ 'ez.platform.version'|trans }} <strong>{{ composerInfo['ezsystems/platform-ui-bundle'].version }}</strong>
+                        {{ 'kernel.running'|trans }} <strong>{{ composerInfo['ezsystems/ezpublish-kernel'].version }}</strong>
+                    {% else %}
+                        {{ 'ez.platform.version'|trans }} <strong>{{ ezplatformInfo.version }}</strong>
+                    {% endif %},
+                    {{ 'symfony.based'|trans }} <strong>{{ ezplatformInfo.symfony }}</strong>
+                </p>
+
                 <h2>{{ 'bundles'|trans }}</h2>
                 <ul>
                     {% for bundle, ns in ezplatformInfo.bundles %}
@@ -69,6 +79,26 @@
                     <dd>{{ systemInfo.memorySize|ez_file_size( 1 ) }}</dd>
                 </dl>
             </div>
+
+            <div class="ez-tabs-panel" id="ez-tabs-packages">
+                <h2>{{ 'packages'|trans }}</h2>
+
+                {% if composerInfo is empty %}
+                    <p>{{ 'packages.empty'|trans }}</p>
+                {% else %}
+                    <dl>
+                        {% for packageName, packageInfo in composerInfo %}
+                            {% if packageInfo.homepage is empty %}
+                                <dt>{{ packageName }}</dt>
+                            {% else %}
+                                <dt><a href="{{ packageInfo.homepage }}" target="_blank">{{ packageName }}</a></dt>
+                            {% endif %}
+                            <dd>{{ packageInfo.version }} <tt>({{ packageInfo.time }}, {{ packageInfo.reference | slice(0, 5) }})</tt></dd>
+                        {% endfor %}
+                    </dl>
+                {% endif %}
+            </div>
+
         </div>
     </section>
 {% endblock %}

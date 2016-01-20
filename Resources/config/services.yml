@@ -123,6 +123,7 @@ services:
         class: %ezsystems.platformui.controller.systeminfo.class%
         arguments:
             - @ezsystems.platformui.helper.systeminfo
+            - "%kernel.root_dir%/../"
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.content_type:
