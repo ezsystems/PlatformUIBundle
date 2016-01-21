@@ -32,14 +32,38 @@ YUI.add('ez-alloyeditor-button-imagevariation', function (Y) {
     ButtonImageVariation = React.createClass({displayName: "ButtonImageVariation",
         mixins: [
             Y.eZ.AlloyEditorButton.WidgetButton,
+            Y.eZ.AlloyEditorButton.ButtonEmbedImage,
         ],
 
         statics: {
             key: 'ezimagevariation'
         },
 
-        _updateVariation: function (e) {
-            console.log('Update variation');
+        /**
+         * Change event handler. It updates the image in the editor so that the
+         * newly choosen variation is used.
+         *
+         * @method _updateImage
+         * @param {Object} e
+         */
+        _updateImage: function (e) {
+            var widget = this._getWidget(),
+                newVariation = e.target.value,
+                contentId = widget.getHref().replace('ezcontent://', '');
+
+            this.props.editor.get('nativeEditor').fire('contentSearch', {
+                viewName: 'embed-' + contentId,
+                search: {
+                    criteria: {'ContentIdCriterion': contentId},
+                    offset: 0,
+                    limit: 1,
+                },
+                loadContentType: true,
+                callback: function (err, result) {
+                    this._loadEmbedImage(result[0], newVariation);
+                }.bind(this),
+            });
+            widget.focus();
         },
 
         /**
@@ -63,7 +87,7 @@ YUI.add('ez-alloyeditor-button-imagevariation', function (Y) {
             return (
                 React.createElement("select", {
                     defaultValue: this._getWidget().getConfig('size'), 
-                    onChange: this._updateVariation, 
+                    onChange: this._updateImage, 
                     tabIndex: this.props.tabIndex}, 
                     this._getImageVariationOptions()
                 )

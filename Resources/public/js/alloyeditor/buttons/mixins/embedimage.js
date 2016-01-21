@@ -78,23 +78,27 @@ YUI.add('ez-alloyeditor-button-mixin-embedimage', function (Y) {
         },
 
         /**
-         * Loads the 'medium' variation of the embed image by firing the
+         * Loads the variation of the embed image by firing the
          * `loadImageVariation`event.
          *
          * @method _loadEmbedImage
-         * @param {Object} selection
+         * @param {Object} struct
+         * @param {String} [variation='medium'] the optional image variation to use
          * @protected
          */
-        _loadEmbedImage: function (selection) {
-            var editor = this.props.editor.get('nativeEditor'),
+        _loadEmbedImage: function (struct, variation) {
+            var editor = this.props.editor.get('nativeEditor');
+
+            if ( !variation ) {
                 // TODO make the default variation configurable
                 // see https://jira.ez.no/browse/EZP-25139
                 variation = 'medium';
+            }
 
             this._getWidget().setConfig('size', variation);
             editor.fire('loadImageVariation', {
                 variation: variation,
-                field: this._getImageField(selection.contentType, selection.content),
+                field: this._getImageField(struct.contentType, struct.content),
                 callback: this._insertImage,
             });
         },

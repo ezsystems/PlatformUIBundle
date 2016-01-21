@@ -392,10 +392,10 @@ YUI.add('ez-richtext-editview', function (Y) {
              * @attribute forwardEvents
              * @readOnly
              * @type {Array}
-             * @default ['contentDiscover', 'loadImageVariation']
+             * @default ['contentDiscover', 'loadImageVariation', 'contentSearch']
              */
             forwardEvents: {
-                value: ['contentDiscover', 'loadImageVariation'],
+                value: ['contentDiscover', 'loadImageVariation', 'contentSearch'],
                 readOnly: true,
             },
 

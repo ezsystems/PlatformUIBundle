@@ -794,6 +794,10 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         "Should forward the loadImageVariation event": function () {
             this._testForwardEvent('loadImageVariation');
         },
+
+        "Should forward the contentSearch event": function () {
+            this._testForwardEvent('contentSearch');
+        },
     });
 
     appendToolbarConfigTest = new Y.Test.Case({
