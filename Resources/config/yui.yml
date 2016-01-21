@@ -256,7 +256,7 @@ system:
                         - 'ez-locationviewlocationstabview'
                         - 'ez-tabs'
                         - 'ez-subitemlistview'
-                        - 'ez-locationsearchplugin'
+                        - 'ez-searchplugin'
                         - 'event-tap'
                         - 'array-extras'
                         - 'locationviewview-ez-template'
@@ -996,9 +996,12 @@ system:
                 ez-contenttreeplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'ez-contentmodel', 'parallel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
-                ez-locationsearchplugin:
-                    requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel', 'ez-contentmodel']
+                ez-locationsearchplugin: # deprecated module, provide a BC component based on ez-searchplugin
+                    requires: ['ez-searchplugin']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationsearchplugin.js
+                ez-searchplugin:
+                    requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel', 'ez-contentmodel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-searchplugin.js
                 ez-contentcreateplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contentcreateplugin.js
