@@ -13,6 +13,10 @@ env:
           BEFORE_LOCAL="./bin/travis/localjsdeps.sh"
           TEST_CMD="grunt test"
           AFTER_SUCCESS="sh bin/travis/generate_apidoc.sh"
+        - code="behat"
+          BEFORE_GLOBAL="sudo ./bin/travis/setupphp.sh"
+          BEFORE_LOCAL="sudo ./bin/travis/prepare_behat.sh"
+          TEST_CMD="cd $HOME/build/ezplatform && php bin/behat -vv --profile=platformui"
     global:
         secure: "aNPcXEtgV3Q/GVCH+FvITm/gLXcNyFl7YiOT9JcqZUwYXsT2zi8g4BcwBgDtpbSmi8NSCsEWONNxxDM10BqCPzfkiFD2I0cPHXVxmJ3cmOqySci5JvysEd+RU6gnatCxqzAJYDH2BanfPyu+yPwrSIgWdkPuvNhydNJFUrwsinw="
 
