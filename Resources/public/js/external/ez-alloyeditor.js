@@ -10,4 +10,5 @@ YUI.add('ez-alloyeditor', function (Y) {
 
     Y.eZ.AlloyEditor = AlloyEditor;
     Y.eZ.React = Y.eZ.AlloyEditor.React;
+    Y.eZ.ReactDOM = Y.eZ.AlloyEditor.ReactDOM;
 });

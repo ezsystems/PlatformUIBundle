@@ -68,8 +68,8 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base-tests', function (Y) {
                 run: AlloyEditor.WidgetPosition.getWidgetXYPoint,
             });
 
-            this.origFindDOMNode = AlloyEditor.React.findDOMNode;
-            AlloyEditor.React.findDOMNode = Y.bind(function (arg) {
+            this.origFindDOMNode = AlloyEditor.ReactDOM.findDOMNode;
+            AlloyEditor.ReactDOM.findDOMNode = Y.bind(function (arg) {
                 Assert.areSame(
                     arg, this.toolbar,
                     "findDOMNode should receive the toolbar"
@@ -79,7 +79,7 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base-tests', function (Y) {
         },
 
         tearDown: function () {
-            AlloyEditor.React.findDOMNode = this.origFindDOMNode;
+            AlloyEditor.ReactDOM.findDOMNode = this.origFindDOMNode;
             delete this.toolbar;
             delete this.editor;
             Y.one(this.toolbarNode).removeAttribute('style').removeClass('ae-toolbar-transition');

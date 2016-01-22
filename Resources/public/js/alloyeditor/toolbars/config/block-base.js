@@ -13,7 +13,7 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base', function (Y) {
      */
     Y.namespace('eZ.AlloyEditorToolbarConfig');
 
-    var AlloyEditor = Y.eZ.AlloyEditor;
+    var ReactDOM = Y.eZ.AlloyEditor.ReactDOM;
 
     function outlineTotalWidth(block) {
         return (
@@ -26,7 +26,7 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base', function (Y) {
         /* jshint validthis: true */
         var blockRect = block.getClientRect(),
             outlineWidth = outlineTotalWidth(block),
-            domNode = AlloyEditor.React.findDOMNode(this),
+            domNode = ReactDOM.findDOMNode(this),
             xy, domElement;
 
         xy = this.getWidgetXYPoint(
