@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="91d135a1eca345232c1f2b8fec170fc6" resname="loading.application">
+        <source>loading.application</source>
+        <target>Chargement de l'application...</target>
+      </trans-unit>
+      <trans-unit id="e4f76807f027ce4426b182b91909f870" resname="javascript.disabled.required">
+        <source>javascript.disabled.required</source>
+        <target>JavaScript est desactivé dans votre navigateur mais il est nécessaire pour faire fonctionner l'interface utilisateur de eZ Platform.</target>
+      </trans-unit>
+      <trans-unit id="72d9916ec9abef59ce8e7a31bc28ced6" resname="javascript.enable">
+        <source>javascript.enable</source>
+        <target>Merci d'activer JavaScript pour utiliser l'interface utilisateur de eZ Platform.</target>
+      </trans-unit>
+      <trans-unit id="dba24ddba6fe8e0982045daf2f9d4e5d" resname="form.validation_error">
+        <source>form.validation_error</source>
+        <target>Le formulaire n'a pas été validé. Merci de regarder les erreurs ci-dessous.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

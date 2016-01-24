@@ -1,0 +1,27 @@
+ezauthor: { name: "Auteurs" }
+ezbinaryfile: { name: "Fichier" }
+ezboolean: { name: "Checkbox" }
+ezcountry: { name: "Pays" }
+ezdate: { name: "Date" }
+ezdatetime: { name: "Date et heure" }
+ezemail: { name: "Adresse E-mail" }
+ezfloat: { name: "Float" }
+ezgmaplocation: { name: "Map location" }
+ezisbn: { name: "ISBN" }
+ezimage: { name: "Image" }
+ezinteger: { name: "Entier" }
+ezkeyword: { name: "Mots clés" }
+ezmedia: { name: "Media" }
+ezobjectrelation: { name: "Content relation (single)" }
+ezobjectrelationlist: { name: "Content relations (multiple)" }
+ezpage: { name: "Layout" }
+ezprice: { name: "Prix" }
+ezrichtext: { name: "Rich text" }
+ezsrrating: { name: "Rating" }
+ezselection: { name: "Selection" }
+ezstring: { name: "Ligne de text" }
+eztext: { name: "Bloc de texte" }
+eztime: { name: "Heure" }
+ezurl: { name: "URL" }
+ezuser: { name: "Compte Utilisateur" }
+ezxmltext: { name: "Bloc XML" }
