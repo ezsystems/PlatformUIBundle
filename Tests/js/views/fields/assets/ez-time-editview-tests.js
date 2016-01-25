@@ -10,7 +10,8 @@ YUI.add('ez-time-editview-tests', function (Y) {
         getFieldWithSecondsTestOldBrowsers,
         getEmptyFieldTest,
         getEmptyFieldTestOldBrowsers,
-        getFieldWithoutSecondsTestOldBrowsers;
+        getFieldWithoutSecondsTestOldBrowsers,
+        getFieldMidnightTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ time editView test",
@@ -58,7 +59,14 @@ YUI.add('ez-time-editview-tests', function (Y) {
             this.view.destroy();
         },
 
-        _testAvailableVariables: function (required, expectRequired, useSeconds, expectUsingSeconds, isSupportingTimeInput, fieldValue) {
+        _generateExpectedDate: function(timestamp) {
+            var timestampMs = timestamp * 1000,
+                tzOffset = new Date(timestampMs).getTimezoneOffset() * 60 * 1000;
+
+            return new Date(timestampMs + tzOffset);
+        },
+
+        _testAvailableVariables: function (required, useSeconds, isSupportingTimeInput, fieldValue, timestamp) {
             var fieldDefinition = this._getFieldDefinition(required, useSeconds),
                 that = this;
 
@@ -69,6 +77,9 @@ YUI.add('ez-time-editview-tests', function (Y) {
             }
 
             this.view.template = function (variables) {
+                var expectedDate = that._generateExpectedDate(timestamp),
+                    dateFormat;
+
                 Y.Assert.isObject(variables, "The template should receive some variables");
                 Y.Assert.areEqual(9, Y.Object.keys(variables).length, "The template should receive 9 variables");
                 Y.Assert.areSame(
@@ -92,49 +103,69 @@ YUI.add('ez-time-editview-tests', function (Y) {
                         that.field, variables.field,
                         "The field should be available in the field edit view template"
                     );
+
+                    if (useSeconds) {
+                        dateFormat = {format: "%T"};
+                    } else {
+                        dateFormat = {format: "%R"};
+                    }
+                    Y.Assert.areSame(
+                        Y.Date.format(expectedDate, dateFormat),
+                        variables.time,
+                        "The time should be available in the field edit view template"
+                    );
                 }
 
-                Y.Assert.areSame(expectRequired, variables.isRequired);
-                Y.Assert.areSame(expectUsingSeconds, variables.useSeconds);
+                Y.Assert.areSame(required, variables.isRequired);
+                Y.Assert.areSame(useSeconds, variables.useSeconds);
+
                 return '';
             };
             this.view.render();
         },
 
+        // On modern browser, seconds are always returned
         "Test not required field without seconds": function () {
-            this._testAvailableVariables(false, false, false, false, true, true);
+            this._testAvailableVariables(false, true, true, true, 36600);
         },
 
         "Test required field without seconds": function () {
-            this._testAvailableVariables(true, true, false, false, true, true);
+            this._testAvailableVariables(true, true, true, true, 36600);
+        },
+
+        "Test required field with timestamp 0": function () {
+            this.field = {fieldValue: 0};
+            this.view.set('field', this.field);
+
+            this._testAvailableVariables(true, true, true, true, 0);
         },
 
         "Test required field using seconds": function () {
-            this._testAvailableVariables(true, true, true, true, true, true);
+            this._testAvailableVariables(true, true, true, true, 36600);
         },
 
         "Test not required field using seconds": function () {
-            this._testAvailableVariables(false, false, true, true, true, true);
+            this._testAvailableVariables(false, true, true, true, 36600);
         },
 
         "Test not required field without seconds old browsers": function () {
-            this._testAvailableVariables(false, false, false, false, false, true);
+            this._testAvailableVariables(false, false, false, true, 36600);
         },
 
         "Test not required field without seconds old browsers no field value": function () {
-            this._testAvailableVariables(false, false, false, false, false, false);
+            this._testAvailableVariables(false, false, false, false, 36600);
         },
 
         "Test required field without seconds old browsers": function () {
-            this._testAvailableVariables(true, true, false, false, false, true);
+            this._testAvailableVariables(true, false, false, true, 36600);
         },
 
         "Test required field using seconds old browsers": function () {
-            this._testAvailableVariables(true, true, true, true, false, true);
+            this._testAvailableVariables(true, true, false, true, 36600);
         },
 
         "Test not required field using seconds old browsers": function () {
-            this._testAvailableVariables(false, false, true, true, false, true);
+            this._testAvailableVariables(false, true, false, true, 36600);
         },
 
         "Test validate no constraints old browsers": function () {
@@ -435,6 +466,31 @@ YUI.add('ez-time-editview-tests', function (Y) {
         })
     );
     Y.Test.Runner.add(getEmptyFieldTestOldBrowsers);
+
+    getFieldMidnightTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {
+                isRequired: false,
+                fieldSettings: {
+                    useSeconds: false
+                }
+            },
+            ViewConstructor: Y.eZ.TimeEditView,
+            filledValue: '00:00',
+            convertedValue: 0,
+
+            _setNewValue: function () {
+                this.view._set('supportsTimeInput', true);
+                this.view.get('container').one('input').set('value', this.filledValue);
+            },
+
+            _assertCorrectFieldValue: function (fieldValue, msg) {
+                Y.Assert.isNumber(fieldValue, 'the fieldValue should be an object');
+                Y.Assert.areSame(this.convertedValue, fieldValue, 'the converted date should match the fieldValue timestamp');
+            },
+        })
+    );
+    Y.Test.Runner.add(getFieldMidnightTest);
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Time Edit View registration test";
