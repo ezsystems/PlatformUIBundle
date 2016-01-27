@@ -44,6 +44,7 @@ YUI.add('ez-alloyeditor-button-imagevariation', function (Y) {
          * newly choosen variation is used.
          *
          * @method _updateImage
+         * @protected
          * @param {Object} e
          */
         _updateImage: function (e) {
@@ -51,6 +52,19 @@ YUI.add('ez-alloyeditor-button-imagevariation', function (Y) {
                 newVariation = e.target.value,
                 contentId = widget.getHref().replace('ezcontent://', '');
 
+            /**
+             * Fired to load the embedded Content and the corresponding Content
+             * Type. See {{#crossLink "eZ.Plugin.Search/_doContentSearch:method"}}eZ.Plugin.Search#_doContentSearch{{/crossLink}}
+             *
+             * @event contentSearch
+             * @param viewName {String}
+             * @param search {Object}
+             * @param search.criteria {Object}
+             * @param search.offset {Number}
+             * @param search.limit {Number}
+             * @param loadContentType {Boolean}
+             * @param callback {Function}
+             */
             this.props.editor.get('nativeEditor').fire('contentSearch', {
                 viewName: 'embed-' + contentId,
                 search: {

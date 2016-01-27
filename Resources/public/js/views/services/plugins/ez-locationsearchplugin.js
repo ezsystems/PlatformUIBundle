@@ -5,7 +5,7 @@
 YUI.add('ez-locationsearchplugin', function (Y) {
     "use strict";
     /**
-     * Provides the location search plugin. As of 1.1, this module is
+     * Provides the location search plugin. As of 1.2, this module is
      * deprecated.
      *
      * @module ez-locationsearchplugin

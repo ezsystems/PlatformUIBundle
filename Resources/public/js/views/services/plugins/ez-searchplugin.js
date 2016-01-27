@@ -5,7 +5,7 @@
 YUI.add('ez-searchplugin', function (Y) {
     "use strict";
     /**
-     * Provides the location search plugin
+     * Provides the search plugin
      *
      * @module ez-searchplugin
      */
@@ -19,6 +19,7 @@ YUI.add('ez-searchplugin', function (Y) {
      * @class Search
      * @constructor
      * @extends eZ.Plugin.ViewServiceBase
+     * @since 1.2
      */
     Y.eZ.Plugin.Search = Y.Base.create('searchPlugin', Y.eZ.Plugin.ViewServiceBase, [], {
         initializer: function () {
@@ -82,6 +83,12 @@ YUI.add('ez-searchplugin', function (Y) {
          * @param {Bool} e.loadContentType the flag indicating whether the eZ.ContentType should be loaded for all
          * of the locations searched. If it is set to *TRUE* then `contentType` field will be present inside
          * every search result (struct)
+         * @param {Function} e.callback the callback to execute when the search
+         * is done
+         * @param {false|Error} e.callback.error
+         * @param {Array} e.callback.results array of struct objects containing a `content` property
+         * and optionally a `contentType` (depending on `loadContentType`)
+         * @param {Number} e.callback.count the total number of search result
          */
         _doContentSearch: function (e) {
             var query = this._createNewCreateViewStruct(e.viewName, 'ContentQuery', e.search),
