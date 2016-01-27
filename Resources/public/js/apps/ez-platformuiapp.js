@@ -126,6 +126,7 @@ YUI.add('ez-platformuiapp', function (Y) {
          */
         initializer: function () {
             this.on("logOut", this._destroySideViews);
+            this.on("*:refreshView", this._refreshView);
             this._dispatchConfig();
             /**
              * Stores the initial title of the page so it can be used when
@@ -171,6 +172,16 @@ YUI.add('ez-platformuiapp', function (Y) {
                     delete viewInfo.serviceInstance;
                 }
             });
+        },
+
+        /**
+         * Refreshes the current view
+         *
+         * @method _refreshView
+         * @protected
+         */
+        _refreshView: function () {
+            this.navigate(window.location.href);
         },
 
         /**

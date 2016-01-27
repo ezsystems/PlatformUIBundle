@@ -7,7 +7,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         loginTest, logoutTest, isLoggedInTest, checkUserTest,
         showSideViewTest, hideSideViewTest,
         handleMainViewTest, titleTest, configRouteTest,
-        dispatchConfigTest, getLanguageNameTest,
+        dispatchConfigTest, getLanguageNameTest, refreshViewTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     appTest = new Y.Test.Case({
@@ -2117,6 +2117,51 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
+    refreshViewTest = new Y.Test.Case({
+        name: "eZ Platform UI App refreshView test",
+
+        setUp: function () {
+            var routes = [
+                {path: '/trash/something', name: "currentTest"},
+            ];
+            this.root = '/Tests/';
+            this.app = new Y.eZ.PlatformUIApp({
+                config: {
+                    rootInfo: {
+                        root: this.root,
+                    },
+                },
+                container: '.app',
+                viewContainer: '.view-container'
+            });
+            Y.Array.each(routes, function (route) {
+                refreshViewTest.app.route(route, function () {});
+            });
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
+        "Should refresh the current view": function () {
+            var navigate = false;
+
+            this.app.navigateTo('currentTest');
+
+            this.app.on('navigate', function (e) {
+                e.preventDefault();
+                navigate = true;
+            });
+
+            this.app.fire('whatever:refreshView');
+
+            Y.Assert.isTrue(
+                navigate, "The navigate event should have been fired"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Platform UI App tests");
     Y.Test.Runner.add(appTest);
     Y.Test.Runner.add(titleTest);
@@ -2133,4 +2178,5 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(configRouteTest);
     Y.Test.Runner.add(dispatchConfigTest);
     Y.Test.Runner.add(getLanguageNameTest);
+    Y.Test.Runner.add(refreshViewTest);
 }, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice', 'ez-viewservicebaseplugin']});

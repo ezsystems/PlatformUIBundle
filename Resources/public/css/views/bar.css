@@ -36,14 +36,17 @@
     cursor: default;
 }
 
+.is-trashbar-minimized .ez-view-barview .view-more-actions.is-hidden,
 .is-actionbar-minimized .ez-view-barview .view-more-actions.is-hidden {
     right: 4em;
 }
 
+.is-trashbar-minimized .ez-view-barview .view-more-button,
 .is-actionbar-minimized .ez-view-barview .view-more-button {
     padding: 0.5em 0;
 }
 
+.is-trashbar-minimized .ez-view-barview .view-more-actions,
 .is-actionbar-minimized .ez-view-barview .view-more-actions {
     right: 4em;
 }

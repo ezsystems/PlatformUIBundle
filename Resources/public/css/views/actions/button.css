@@ -24,6 +24,8 @@
 
 .is-discoverybar-minimized .ez-view-discoverybarview .ez-view-buttonactionview .active-actions .action-label,
 .is-discoverybar-minimized .ez-view-discoverybarview .ez-view-buttonactionview .active-actions .action-hint,
+.is-trashbar-minimized .ez-view-buttonactionview .active-actions .action-label,
+.is-trashbar-minimized .ez-view-buttonactionview .active-actions .action-hint,
 .is-actionbar-minimized .ez-view-buttonactionview .active-actions .action-label,
 .is-actionbar-minimized .ez-view-buttonactionview .active-actions .action-hint {
     display: none;

@@ -2,6 +2,26 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
+
+.ez-view-trashview > .pure-g {
+    padding-right: 230px;
+    transition: all 0.30s ease-in-out;
+}
+
+.ez-view-trashview.is-trashbar-minimized > .pure-g {
+    padding-right: 4em;
+}
+
+.ez-view-trashview .ez-trashbar-container {
+    width: 230px;
+    margin-right: -230px;
+}
+
+.ez-view-trashview.is-trashbar-minimized .ez-trashbar-container {
+    width: 4em;
+    margin-right: -4em;
+}
+
 .ez-view-trashview .ez-trashview-content {
     width: 100%;
 }

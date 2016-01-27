@@ -11,6 +11,8 @@ YUI.add('ez-trashview', function (Y) {
      */
     Y.namespace('eZ');
 
+    var MINIMIZE_TRASH_BAR_CLASS = 'is-trashbar-minimized';
+
     /**
      * The Trash view
      *
@@ -20,6 +22,19 @@ YUI.add('ez-trashview', function (Y) {
      * @extends eZ.TemplateBasedView
      */
     Y.eZ.TrashView = Y.Base.create('trashView', Y.eZ.TemplateBasedView, [], {
+        initializer: function () {
+            this.on('*:minimizeTrashBarAction', this._handleMinimizeTrashBar);
+        },
+
+        /**
+         * Event handler for the minimizeTrashBarAction event
+         *
+         * @protected
+         * @method _handleMinimizeTrashBar
+         */
+        _handleMinimizeTrashBar: function () {
+            this.get('container').toggleClass(MINIMIZE_TRASH_BAR_CLASS);
+        },
 
         /**
         * Renders the trash view
@@ -34,7 +49,26 @@ YUI.add('ez-trashview', function (Y) {
                 trashItems: this._convertTrashItemsToJSON(),
             }));
 
+            container.one('.ez-trashbar-container').append(
+                this.get('trashBar').render().get('container')
+            );
+
+            this._uiSetMinHeight();
             return this;
+        },
+
+        /**
+         * Sets the minimum height of the view
+         *
+         * @private
+         * @method _uiSetMinHeight
+         */
+        _uiSetMinHeight: function () {
+            var container = this.get('container');
+
+            container.one('.ez-trashview-content').setStyle(
+                'minHeight', container.get('winHeight') + 'px'
+            );
         },
 
         /**
@@ -53,6 +87,13 @@ YUI.add('ez-trashview', function (Y) {
                 };
             });
         },
+
+        destructor: function () {
+            var bar = this.get('trashBar');
+
+            bar.removeTarget(this);
+            bar.destroy();
+        }
     }, {
         ATTRS: {
 
@@ -69,6 +110,21 @@ YUI.add('ez-trashview', function (Y) {
              */
             trashItems: {
                 value: [],
+            },
+
+            /**
+             * The trash bar instance, by default an instance {{#crossLink
+             * "eZ.TrashBarView"}}eZ.TrashBarView{{/crossLink}}
+             *
+             * @attribute trashBar
+             * @type eZ.BarView
+             */
+            trashBar: {
+                valueFn: function () {
+                    return new Y.eZ.TrashBarView({
+                        bubbleTargets: this,
+                    });
+                }
             },
         }
     });

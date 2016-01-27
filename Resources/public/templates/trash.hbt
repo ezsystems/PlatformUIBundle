@@ -1,44 +1,51 @@
-<div class="ez-trashview-content">
-    <header class="ez-page-header">
-        <h1 class="ez-page-header-name" data-icon="&#xe615;">Trash</h1>
-    </header>
-    <div class="ez-trashview-list">
-        <table class="ez-trashview-table pure-table pure-table-bordered">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Original Location</th>
-            </tr>
-            </thead>
-            <tbody>
-            {{#each trashItems}}
+<div class="pure-g">
+    <div class="ez-trashview-content pure-u">
+        <header class="ez-page-header">
+            <h1 class="ez-page-header-name" data-icon="&#xe615;">Trash</h1>
+        </header>
+        <div class="ez-trashview-list">
+            {{#if trashItems}}
+            <table class="ez-trashview-table pure-table pure-table-bordered">
+                <thead>
                 <tr>
-                    <td>{{item.contentInfo.name}}</td>
-                    <td>{{contentType.names.eng-GB}}</td>
-                    <td>
-                        {{#if parentLocation.locationId}}
-                        <ul class="ez-breadcrumbs-list">
-                        {{#each parentLocation.path}}
-                            <li class="ez-breadcrumbs-item">
-                                <a href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}">
-                                    {{ contentInfo.name }}
-                                </a>
-                            </li>
-                        {{/each}}
-                            <li class="ez-breadcrumbs-item">
-                                <a href="{{ path "viewLocation" id=parentLocation.id languageCode=parentLocation.contentInfo.mainLanguageCode }}">
-                                    {{ parentLocation.contentInfo.name }}
-                                </a>
-                            </li>
-                        </ul>
-                        {{else}}
-                        <span class="ez-trashview-info-message">Item's ancestors are in Trash</span>
-                        {{/if}}
-                    </td>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Original Location</th>
                 </tr>
-            {{/each}}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {{#each trashItems}}
+                    <tr>
+                        <td>{{item.contentInfo.name}}</td>
+                        <td>{{contentType.names.eng-GB}}</td>
+                        <td>
+                            {{#if parentLocation.locationId}}
+                            <ul class="ez-breadcrumbs-list">
+                            {{#each parentLocation.path}}
+                                <li class="ez-breadcrumbs-item">
+                                    <a href="{{ path "viewLocation" id=id languageCode=contentInfo.mainLanguageCode }}">
+                                        {{ contentInfo.name }}
+                                    </a>
+                                </li>
+                            {{/each}}
+                                <li class="ez-breadcrumbs-item">
+                                    <a href="{{ path "viewLocation" id=parentLocation.id languageCode=parentLocation.contentInfo.mainLanguageCode }}">
+                                        {{ parentLocation.contentInfo.name }}
+                                    </a>
+                                </li>
+                            </ul>
+                            {{else}}
+                            <span class="ez-trashview-info-message">Item's ancestors are in Trash</span>
+                            {{/if}}
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+            {{else}}
+                <p class="ez-trashview-no-content">The trash is empty</p>
+            {{/if}}
+        </div>
     </div>
+    <div class="ez-trashbar-container pure-u"></div>
 </div>
