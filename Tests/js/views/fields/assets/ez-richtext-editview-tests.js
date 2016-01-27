@@ -8,7 +8,17 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         editorTest, focusModeTest, editorFocusHandlingTest, appendToolbarConfigTest,
         eventForwardTest, defaultEditorProcessorsTest,
         VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, RESULT_EMPTY_XHTML,
-        Assert = Y.Assert, Mock = Y.Mock;
+        Assert = Y.Assert, Mock = Y.Mock,
+        destroyTearDown = function () {
+            // setTimeout is needed otherwise, the editor is destroyed while
+            // some initialization is still going on (despite listening to
+            // 'instanceReady' event in the tests...) and without it, we got
+            // "Uncaught TypeError: Cannot read property 'checkFeature' of
+            // undefined" in the console.
+            setTimeout(Y.bind(function () {
+                this.view.destroy();
+            }, this), 0);
+        };
 
     INVALID_XHTML = "I'm invalid";
 
@@ -297,10 +307,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             });
         },
 
-        tearDown: function () {
-            this.view.set('active', false);
-            this.view.destroy();
-        },
+        tearDown: destroyTearDown,
 
         "Should return an object": function () {
             var fieldDefinition = this._getFieldDefinition(true),
@@ -309,16 +316,21 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this.field.fieldValue.xhtml5edit = "";
             this.view.set('fieldDefinition', fieldDefinition);
             this.view.render();
-            this.view.set('active', true);
-            field = this.view.getField();
+            this.view.onceAfter('activeChange', Y.bind(function () {
+                this.view.get('editor').get('nativeEditor').on('instanceReady', this.next(function () {
+                    field = this.view.getField();
 
-            Assert.isObject(field, "The field should be an object");
-            Assert.areNotSame(
-                this.field, field,
-                "The getField method should be return a different object"
-            );
-            Assert.isObject(field.fieldValue, "The fieldValue should be an object");
-            Assert.isString(field.fieldValue.xml, "The field should have a `xml` entry");
+                    Assert.isObject(field, "The field should be an object");
+                    Assert.areNotSame(
+                        this.field, field,
+                        "The getField method should be return a different object"
+                    );
+                    Assert.isObject(field.fieldValue, "The fieldValue should be an object");
+                    Assert.isString(field.fieldValue.xml, "The field should have a `xml` entry");
+                }, this));
+            }, this));
+            this.view.set('active', true);
+            this.wait();
         },
 
         _getProcessorMock: function () {
@@ -383,10 +395,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this.view.render();
         },
 
-        tearDown: function () {
-            this.view.set('active', false);
-            this.view.destroy();
-        },
+        tearDown: destroyTearDown,
 
         _testRegisterPlugin: function (plugin) {
             Assert.isObject(
@@ -408,66 +417,76 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
 
         "Should create an instance of AlloyEditor": function () {
-            this.view.set('active', true);
+            this.view.onceAfter('activeChange', Y.bind(function () {
+                this.view.get('editor').get('nativeEditor').on('instanceReady', this.next(function () {
+                    Assert.isInstanceOf(
+                        Y.eZ.AlloyEditor.Core, this.view.get('editor'),
+                        "An instance of AlloyEditor should have been created"
+                    );
+                }, this));
+            }, this));
 
-            Assert.isInstanceOf(
-                Y.eZ.AlloyEditor.Core, this.view.get('editor'),
-                "An instance of AlloyEditor should have been created"
-            );
+            this.view.set('active', true);
+            this.wait();
         },
 
         "Should set the toolbar configuration": function () {
+            this.view.onceAfter('activeChange', Y.bind(function () {
+                this.view.get('editor').get('nativeEditor').on('instanceReady', this.next(function () {
+                    Assert.areSame(
+                        this.view.get('toolbarsConfig'),
+                        this.view.get('editor').get('toolbars'),
+                        "The toolbarsConfig attribute should be used as the toolbars config"
+                    );
+                }, this));
+            }, this));
+
             this.view.set('active', true);
-            Assert.areSame(
-                this.view.get('toolbarsConfig'),
-                this.view.get('editor').get('toolbars'),
-                "The toolbarsConfig attribute should be used as the toolbars config"
-            );
+            this.wait();
+        },
+
+        _validationTestOnEvent: function (evtName) {
+            var validated = false;
+
+            this.view.after('errorStatusChange', function () {
+                validated = true;
+            });
+            this.view.onceAfter('activeChange', Y.bind(function () {
+                this.view.get('editor').get('nativeEditor').on('instanceReady', this.next(function () {
+                    this.view.get('editor').get('nativeEditor').fire(evtName);
+
+                    Assert.isTrue(validated, "The input should have been validated");
+                }, this));
+            }, this));
+
+            this.view.set('active', true);
+            this.wait();
         },
 
         "Should validate the input on blur": function () {
-            var validated = false;
-
-            this.view.after('errorStatusChange', function () {
-                validated = true;
-            });
-            this.view.set('active', true);
-            this.view.get('editor').get('nativeEditor').fire('blur');
-
-            Assert.isTrue(validated, "The input should have been validated");
+            this._validationTestOnEvent('blur');
         },
 
         "Should validate the input on focus": function () {
-            var validated = false;
-
-            this.view.after('errorStatusChange', function () {
-                validated = true;
-            });
-            this.view.set('active', true);
-            this.view.get('editor').get('nativeEditor').fire('focus');
-
-            Assert.isTrue(validated, "The input should have been validated");
+            this._validationTestOnEvent('focus');
         },
 
         "Should validate the input on change": function () {
-            var validated = false;
-
-            this.view.after('errorStatusChange', function () {
-                validated = true;
-            });
-            this.view.set('active', true);
-            this.view.get('editor').get('nativeEditor').fire('change');
-
-            Assert.isTrue(validated, "The input should have been validated");
+            this._validationTestOnEvent('change');
         },
 
         _testExtraPlugins: function (plugin) {
-            this.view.set('active', true);
+            this.view.onceAfter('activeChange', Y.bind(function () {
+                this.view.get('editor').get('nativeEditor').on('instanceReady', this.next(function () {
+                    Assert.isTrue(
+                        this.view.get('editor').get('extraPlugins').indexOf(plugin) !== -1,
+                        "The '" + plugin + "' plugin should be loaded"
+                    );
+                }, this));
+            }, this));
 
-            Assert.isTrue(
-                this.view.get('editor').get('extraPlugins').indexOf(plugin) !== -1,
-                "The '" + plugin + "' plugin should be loaded"
-            );
+            this.view.set('active', true);
+            this.wait();
         },
 
         "Should add the ezaddcontent plugin": function () {
@@ -490,57 +509,64 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this._testExtraPlugins('ezfocusblock');
         },
 
-        "Should pass the editable region in `eZ` configuration": function () {
-            var eZConfig;
+        "Should pass the `eZ` configuration": function () {
+            this.view.onceAfter('activeChange', Y.bind(function () {
+                this.view.get('editor').get('nativeEditor').on('instanceReady', this.next(function () {
+                    var eZConfig = this.view.get('editor').get('nativeEditor').config.eZ;
+                    Assert.isObject(
+                         eZConfig,
+                        "The editor should have received the eZ configuration"
+                    );
+                    Assert.areEqual(
+                        eZConfig.editableRegion,
+                        '.ez-richtext-editable',
+                        "The eZ configuration should contain the selector for the editable region"
+                    );
+                }, this));
+            }, this));
 
             this.view.set('active', true);
-
-            eZConfig = this.view.get('editor').get('nativeEditor').config.eZ;
-            Assert.isObject(
-                 eZConfig,
-                "The editor should have received the eZ configuration"
-            );
-            Assert.areEqual(
-                eZConfig.editableRegion,
-                '.ez-richtext-editable',
-                "The eZ configuration should contain the selector for the editable region"
-            );
+            this.wait();
         },
 
         "Should pass the image variation configuration in `eZ` configuration": function () {
-            var eZConfig;
+            this.view.onceAfter('activeChange', Y.bind(function () {
+                this.view.get('editor').get('nativeEditor').on('instanceReady', this.next(function () {
+                    var eZConfig = this.view.get('editor').get('nativeEditor').config.eZ;
+
+                    Assert.isObject(
+                         eZConfig,
+                        "The editor should have received the eZ configuration"
+                    );
+                    Assert.isArray(
+                        eZConfig.imageVariations,
+                        "The eZ configuration should contain the image variations"
+                    );
+                    Assert.areEqual(
+                        Object.keys(this.config.imageVariations).length, eZConfig.imageVariations.length,
+                        "The eZ Configuration should contain " + Object.keys(this.config).length + " variations"
+                    );
+                    Assert.areEqual(
+                        "large", eZConfig.imageVariations[0].identifier,
+                        "The image variation should be sorted by name"
+                    );
+                    Assert.areEqual(
+                        "large", eZConfig.imageVariations[0].name,
+                        "The image variation should be sorted by name"
+                    );
+                    Assert.areEqual(
+                        "small", eZConfig.imageVariations[1].identifier,
+                        "The image variation should be sorted by name"
+                    );
+                    Assert.areEqual(
+                        "small", eZConfig.imageVariations[1].name,
+                        "The image variation should be sorted by name"
+                    );
+                }, this));
+            }, this));
 
             this.view.set('active', true);
-
-            eZConfig = this.view.get('editor').get('nativeEditor').config.eZ;
-            Assert.isObject(
-                 eZConfig,
-                "The editor should have received the eZ configuration"
-            );
-            Assert.isArray(
-                eZConfig.imageVariations,
-                "The eZ configuration should contain the image variations"
-            );
-            Assert.areEqual(
-                Object.keys(this.config.imageVariations).length, eZConfig.imageVariations.length,
-                "The eZ Configuration should contain " + Object.keys(this.config).length + " variations"
-            );
-            Assert.areEqual(
-                "large", eZConfig.imageVariations[0].identifier,
-                "The image variation should be sorted by name"
-            );
-            Assert.areEqual(
-                "large", eZConfig.imageVariations[0].name,
-                "The image variation should be sorted by name"
-            );
-            Assert.areEqual(
-                "small", eZConfig.imageVariations[1].identifier,
-                "The image variation should be sorted by name"
-            );
-            Assert.areEqual(
-                "small", eZConfig.imageVariations[1].name,
-                "The image variation should be sorted by name"
-            );
+            this.wait();
         },
 
         "Should pass an empty image variation configuration in `eZ` configuration": function () {
@@ -704,27 +730,38 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this.view.render();
         },
 
-        tearDown: function () {
-            this.view.destroy();
+        tearDown: destroyTearDown,
+
+        _testClassOnEvent: function (evtName, assertFunc) {
+            this.view.onceAfter('activeChange', Y.bind(function () {
+                this.view.get('editor').get('nativeEditor').on('instanceReady', this.next(function () {
+                    this.view.get('editor').get('nativeEditor').fire(evtName);
+
+                    assertFunc.apply(this);
+                }, this));
+            }, this));
+
+            this.view.set('active', true);
+            this.wait();
         },
 
         "Should add the editor focused class": function () {
-            this.view.render();
-            this.view.set('active', true);
-            this.view.get('editor').get('nativeEditor').fire('focus');
-            Assert.isTrue(
-                this.view.get('container').hasClass('is-editor-focused'),
-                "The editor focused class should be added to the container"
-            );
+            this._testClassOnEvent('focus', function () {
+                Assert.isTrue(
+                    this.view.get('container').hasClass('is-editor-focused'),
+                    "The editor focused class should be added to the container"
+                );
+            });
         },
 
         "Should remove the editor focused class": function () {
             this["Should add the editor focused class"]();
-            this.view.get('editor').get('nativeEditor').fire('blur');
-            Assert.isFalse(
-                this.view.get('container').hasClass('is-editor-focused'),
-                "The editor focused class should be removed from the container"
-            );
+            this._testClassOnEvent('blur', function () {
+                Assert.isFalse(
+                    this.view.get('container').hasClass('is-editor-focused'),
+                    "The editor focused class should be removed from the container"
+                );
+            });
         },
     });
 
@@ -763,9 +800,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this.view.render();
         },
 
-        tearDown: function () {
-            this.view.destroy();
-        },
+        tearDown: destroyTearDown,
 
         _testForwardEvent: function (evtName) {
             var eventInfo = {title: "I Am the Highway"},
@@ -779,12 +814,18 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                     "The event should provide the eventInfo"
                 );
             });
+            this.view.onceAfter('activeChange', Y.bind(function () {
+                this.view.get('editor').get('nativeEditor').on('instanceReady', this.next(function () {
+                    this.view.get('editor').get('nativeEditor').fire(evtName, eventInfo);
+                    Assert.isTrue(
+                        eventFired,
+                        "The " + evtName + " event should have been fired"
+                    );
+                }, this));
+            }, this));
+
             this.view.set('active', true);
-            this.view.get('editor').get('nativeEditor').fire(evtName, eventInfo);
-            Assert.isTrue(
-                eventFired,
-                "The " + evtName + " event should have been fired"
-            );
+            this.wait();
         },
 
         "Should forward the contentDiscover event": function () {
