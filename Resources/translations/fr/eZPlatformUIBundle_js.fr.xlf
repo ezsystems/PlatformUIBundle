@@ -16,7 +16,7 @@
       </trans-unit>
       <trans-unit id="f53568b10e150aff4d479d07872f97d3" resname="zone.admin">
         <source>zone.admin</source>
-        <target>Panneau d'Administration</target>
+        <target>Panneau d'administration</target>
       </trans-unit>
       <trans-unit id="b808b4945c0040222e3e7a3b94bbbc80" resname="nav.dashboard.title">
         <source>nav.dashboard.title</source>
@@ -32,7 +32,7 @@
       </trans-unit>
       <trans-unit id="2ea7aabf82e8ad05dfbd2100c89da987" resname="nav.content_type.dashboard_title">
         <source>nav.content_type.dashboard_title</source>
-        <target>Types de Contenu</target>
+        <target>Types de contenu</target>
       </trans-unit>
       <trans-unit id="420609e711b310a29de902eb93e517ad" resname="nav.language.list">
         <source>nav.language.list</source>
