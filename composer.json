@@ -12,7 +12,8 @@
         "ezsystems/repository-forms": "^1.2",
         "ezsystems/ezpublish-kernel": "^6.4",
         "ezsystems/ez-support-tools": "~0.1.0",
-        "zetacomponents/system-information": "^1.1"
+        "zetacomponents/system-information": "^1.1",
+        "willdurand/js-translation-bundle": "^2.5"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.7",

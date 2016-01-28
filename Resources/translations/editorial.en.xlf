@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="fr" target-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="6e8777c17b0651b9d0942fb128d08da5" resname="zone.platform">
+        <source>zone.platform</source>
+        <target>Content</target>
+      </trans-unit>
+      <trans-unit id="6f1cfb1f540a79af710ae56dad786c96" resname="zone.studio">
+        <source>zone.studio</source>
+        <target>Page</target>
+      </trans-unit>
+      <trans-unit id="6331a122e6c5d7744676494a82fe9921" resname="zone.studioplus">
+        <source>zone.studioplus</source>
+        <target>Performance</target>
+      </trans-unit>
+      <trans-unit id="f53568b10e150aff4d479d07872f97d3" resname="zone.admin">
+        <source>zone.admin</source>
+        <target>Admin panel</target>
+      </trans-unit>
+      <trans-unit id="b808b4945c0040222e3e7a3b94bbbc80" resname="nav.dashboard.title">
+        <source>nav.dashboard.title</source>
+        <target>Admin dashboard</target>
+      </trans-unit>
+      <trans-unit id="7fe9f2b412f7e05169eefb39cbed0986" resname="nav.system.information">
+        <source>nav.system.information</source>
+        <target>System information</target>
+      </trans-unit>
+      <trans-unit id="ee9b9ddbf44a24f01342b5a8160f4d3e" resname="nav.section.list">
+        <source>nav.section.list</source>
+        <target>Sections</target>
+      </trans-unit>
+      <trans-unit id="2ea7aabf82e8ad05dfbd2100c89da987" resname="nav.content_type.dashboard_title">
+        <source>nav.content_type.dashboard_title</source>
+        <target>Content types</target>
+      </trans-unit>
+      <trans-unit id="420609e711b310a29de902eb93e517ad" resname="nav.language.list">
+        <source>nav.language.list</source>
+        <target>Languages</target>
+      </trans-unit>
+      <trans-unit id="9c8fc49f2d4da36056e8e46c10f721d6" resname="nav.user.list">
+        <source>nav.user.list</source>
+        <target>Users</target>
+      </trans-unit>
+      <trans-unit id="4ca8cf5fe350e983a05ca45f260a2aad" resname="nav.role.list">
+        <source>nav.role.list</source>
+        <target>Roles</target>
+      </trans-unit>
+      <trans-unit id="990a9db52a0ad91ec5ec57c3577d276b" resname="nav.content.structure">
+        <source>nav.content.structure</source>
+        <target>Content structure</target>
+      </trans-unit>
+      <trans-unit id="53d951daa51a837597ba4a9faacec96d" resname="nav.media.library">
+        <source>nav.media.library</source>
+        <target>Media library</target>
+      </trans-unit>
+      <trans-unit id="75c04c814dca155959cf4c35bede6250" resname="action.minimizeActionBar">
+        <source>action.minimizeActionBar</source>
+        <target>Minimize</target>
+      </trans-unit>
+      <trans-unit id="78a93d081740517015711367da2007ee" resname="action.edit">
+        <source>action.edit</source>
+        <target>Edit</target>
+      </trans-unit>
+      <trans-unit id="33ab6a94ac1fd58c744e6f10dfdd7348" resname="action.move">
+        <source>action.move</source>
+        <target>Move</target>
+      </trans-unit>
+      <trans-unit id="903ba275b2f69456abed6cf10be0fb40" resname="action.copy">
+        <source>action.copy</source>
+        <target>Copy</target>
+      </trans-unit>
+      <trans-unit id="19d6c2936c56f2122fa8b86ba35b7674" resname="action.createContent">
+        <source>action.createContent</source>
+        <target>Create</target>
+      </trans-unit>
+      <trans-unit id="9928ef039fd74d619dd4230c5728d454" resname="action.translate">
+        <source>action.translate</source>
+        <target>Translations</target>
+      </trans-unit>
+      <trans-unit id="d01b3a69dd4ac617639d56a20d2d9ca2" resname="action.sendToTrash">
+        <source>action.sendToTrash</source>
+        <target>Send to Trash</target>
+      </trans-unit>
+    <trans-unit id="128aaebebfefab6299aabfa31df2abff" resname="action.delete">
+      <source>action.delete</source>
+      <target>Delete</target>
+    </trans-unit>
+      <trans-unit id="88490010ebf2eef359f946e13db60ffa" resname="tree.minimize">
+        <source>tree.minimize</source>
+        <target>Minimize</target>
+      </trans-unit>
+      <trans-unit id="fc340d93afc3c54ebcd212b246ea4a81" resname="tree.contenttree">
+        <source>tree.contenttree</source>
+        <target>Content tree</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
