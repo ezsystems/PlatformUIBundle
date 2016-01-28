@@ -32,11 +32,11 @@
             </trans-unit>
             <trans-unit id="8a0af0dc53d7aae987d698237d39b11a" resname="language.new">
                 <source>language.new</source>
-                <target>Create a new language</target>
+                <target>Créer une nouvelle langue</target>
             </trans-unit>
             <trans-unit id="b2e01fb6617d17c162d59f0fb93da661" resname="language.remove.selected">
                 <source>language.remove.selected</source>
-                <target>Supprimer la selection</target>
+                <target>Supprimer la sélection</target>
             </trans-unit>
             <trans-unit id="a1388bfac224ede1622fd041e51384e0" resname="language.view.title">
                 <source>language.view.title</source>
@@ -44,27 +44,27 @@
             </trans-unit>
             <trans-unit id="967b7e408a5f43a03f44c7cf479855db" resname="language.create.title">
                 <source>language.create.title</source>
-                <target>Créer une nouvelle Langue</target>
+                <target>Création d'une nouvelle langue</target>
             </trans-unit>
             <trans-unit id="f3c4115b0fe3b3ada04e69e775c2db2c" resname="language.edit.title">
                 <source>language.edit.title</source>
-                <target>Éditer la langue "%languageName%"</target>
+                <target>Édition de la langue "%languageName%"</target>
             </trans-unit>
             <trans-unit id="007cd5845351d36a9ec70173d2b44bb2" resname="language.name.label">
                 <source>language.name.label</source>
-                <target>Language name:</target>
+                <target>Nom de la langue&#160;:</target>
             </trans-unit>
             <trans-unit id="3de80c254c9555ad1347b034f93f3095" resname="language.code.label">
                 <source>language.code.label</source>
-                <target>Code de langue:</target>
+                <target>Code de la langue&#160;:</target>
             </trans-unit>
             <trans-unit id="d208054b19a3954a9113b088c36d80f0" resname="language.enabled.label">
                 <source>language.enabled.label</source>
-                <target>Langue activée:</target>
+                <target>Langue activée&#160;:</target>
             </trans-unit>
             <trans-unit id="f066f9960df2f81907c3680c9148cef5" resname="language.id.label">
                 <source>language.id.label</source>
-                <target>ID de la langue:</target>
+                <target>ID de la langue&#160;:</target>
             </trans-unit>
             <trans-unit id="751bbc52342db46a046c52c4dc0b6b00" resname="language.label.edit">
                 <source>language.label.edit</source>

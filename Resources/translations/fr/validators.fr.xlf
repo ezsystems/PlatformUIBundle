@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="5387d26cceb54294dafe82be9b0d61d0" resname="section.validator.identifier.format">
         <source>section.validator.identifier.format</source>
-        <target>L'identifiant doit être constitué de lettres, chiffres ou avec le préfixe '_'.</target>
+        <target>L'identifiant doit être constitué de lettres, chiffres ou '_', ce dernier étant positionné après une lettre.</target>
       </trans-unit>
       <trans-unit id="155500e916d288618860c5236b90621d" resname="section.validator.identifier.not_blank">
         <source>section.validator.identifier.not_blank</source>

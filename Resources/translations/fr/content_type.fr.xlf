@@ -56,7 +56,7 @@
       </trans-unit>
       <trans-unit id="147661b50276b00ffac1bb715bdb4746">
         <source>content_type.group.cannot_delete.has_content_types</source>
-        <target>Impossible de supprimer le groupe de contenu "%identifier%" car il contient toujours des types de contenu.</target>
+        <target>Impossible de supprimer le groupe "%identifier%" car il contient toujours des types de contenu.</target>
       </trans-unit>
       <trans-unit id="f04e48d37e0034d0db7c2fe532d0a98f" resname="content_type.name">
         <source>content_type.name</source>
@@ -80,7 +80,7 @@
       </trans-unit>
       <trans-unit id="bd31df6edfdfe616bf43312ee6ed4814" resname="content_type.content_count">
         <source>content_type.content_count</source>
-        <target>{0} %count% éléments de contenu|{1} %count% élément de contenu|]1,Inf[ %count% éléments de contenu</target>
+        <target>{0} %count% élément de contenu|{1} %count% élément de contenu|]1,Inf[ %count% éléments de contenu</target>
       </trans-unit>
       <trans-unit id="978d4d6fcaabe95baf297bcddced946c" resname="content_type.modified_date">
         <source>content_type.modified_date</source>
@@ -96,11 +96,11 @@
       </trans-unit>
       <trans-unit id="e1d223825a9bf3ad0d1f810b7426bf3d" resname="content_type.name_schema">
         <source>content_type.name_schema</source>
-        <target>Content name schema</target>
+        <target>Modèle de nom des contenus</target>
       </trans-unit>
       <trans-unit id="ad868db1b7d6a228c3b83176a33fd8fc" resname="content_type.url_alias_schema">
         <source>content_type.url_alias_schema</source>
-        <target>URLAlias schema</target>
+        <target>Modèle de génération de l'URL</target>
       </trans-unit>
       <trans-unit id="b6a3aa854f989a0573db082c812c2d52" resname="content_type.container">
         <source>content_type.container</source>
@@ -108,7 +108,7 @@
       </trans-unit>
       <trans-unit id="975a8aa4deca92ef9cd5ffc42efd2467" resname="content_type.default_availability">
         <source>content_type.default_availability</source>
-        <target>Default availability in primary language, if translation is absent</target>
+        <target>Disponible dans la langue par défaut même si la traduction n'existe pas</target>
       </trans-unit>
       <trans-unit id="6361724b046699bacda179f0e7397de0" resname="content_type.always_available">
         <source>content_type.always_available</source>
@@ -132,7 +132,7 @@
       </trans-unit>
       <trans-unit id="ced84ba84fbde36bb688787c0562b1da" resname="content_type.notification.published">
           <source>content_type.notification.published</source>
-          <target>Le brouillon de type de contenu a été mis à jour et publié avec succès. Le contenu en relation a été également mis à jour.</target>
+          <target>Le brouillon de type de contenu a été mis à jour et publié avec succès. Les contenus correspondants ont été mis à jour.</target>
       </trans-unit>
       <trans-unit id="a44f54993f84d2d1a54f550bfd4f59e1">
         <source>content_type.notification.deleted</source>
@@ -140,7 +140,7 @@
       </trans-unit>
       <trans-unit id="1d549f54e575ebb7f13e696af6c5bb96">
         <source>content_type.is_in_use</source>
-        <target>Le type de contenu ne peut pas être supprimé parce qu'il contient des éléments ou parce que vous n'avez pas la permission.</target>
+        <target>Le type de contenu ne peut pas être supprimé parce des contenus de ce type existent ou parce que vous n'avez pas la permission.</target>
       </trans-unit>
     </body>
   </file>
