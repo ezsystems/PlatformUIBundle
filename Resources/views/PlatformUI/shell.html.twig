@@ -45,12 +45,15 @@
         <p>{{ 'javascript.disabled.required'|trans }}</p>
         <p><strong>{{ 'javascript.enable'|trans }}</strong></p>
     </noscript>
+    {% javascripts
+        'bundles/bazingajstranslation/js/translator.min.js'
+        'bundles/ezplatformuiassets/vendors/yui3/build/yui/yui-min.js'
+        '$javascript.files;ez_platformui$' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {# We only load the translations for the eZPlatformUIBundle JS files #}
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'editorial' }) }}"></script>
 
-{% javascripts '$javascript.files;ez_platformui$' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
-{% endjavascripts %}
-
-    <script src="{{ asset( "bundles/ezplatformuiassets/vendors/yui3/build/yui/yui-min.js" ) }}"></script>
     <script>
         {{ ez_platformui_yui_config( "YUI.GlobalConfig" ) }}
 

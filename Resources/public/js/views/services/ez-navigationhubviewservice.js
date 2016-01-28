@@ -450,13 +450,13 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
 
                     val = [
                         this._getSubtreeItem(
-                            "Content structure",
+                            Y.eZ.Translator.trans("nav.content.structure", {}, 'editorial'),
                             "content-structure",
                             this.get('rootLocation').get('id'),
                             this.get('rootLocation').get('contentInfo').get('mainLanguageCode')
                         ),
                         this._getSubtreeItem(
-                            "Media library",
+                            Y.eZ.Translator.trans("nav.media.library",{}, 'editorial'),
                             "media-library",
                             this.get('rootMediaLocation').get('id'),
                             this.get('rootMediaLocation').get('contentInfo').get('mainLanguageCode')
@@ -554,34 +554,34 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
 
                     val = [
                         this._getParameterItem(
-                            "Administration dashboard", "admin-dashboard",
+                            Y.eZ.Translator.trans('nav.dashboard.title', {}, 'editorial'), "admin-dashboard",
                             "adminGenericRoute", {uri: "pjax/dashboard"}, "uri"
                         ),
                         this._getParameterItem(
-                            "System information", "admin-systeminfo",
+                            Y.eZ.Translator.trans('nav.system.information', {}, 'editorial'), "admin-systeminfo",
                             "adminGenericRoute", {uri: "pjax/systeminfo"}, "uri"
                         ),
                         this._getNavigationItem(
-                            "Sections", "admin-sections",
+                            Y.eZ.Translator.trans('nav.section.list', {}, 'editorial'), "admin-sections",
                             "adminSection", {uri: "pjax/section/list"}
                         ),
                         this._getNavigationItem(
-                            "Content types", "admin-contenttypes",
+                            Y.eZ.Translator.trans('nav.content_type.dashboard_title', {}, 'editorial'), "admin-contenttypes",
                             "adminContentType", {uri: "pjax/contenttype"}
                         ),
                         this._getNavigationItem(
-                            "Languages", "admin-languages",
+                            Y.eZ.Translator.trans('nav.language.list', {}, 'editorial'), "admin-languages",
                             "adminLanguage", {uri: "pjax/language/list"}
                         ),
                         //TODO in EZP-24860. For now link to users node is defined in a static way.
                         this._getSubtreeItem(
-                            "Users",
+                            Y.eZ.Translator.trans('nav.user.list', {}, 'editorial'),
                             "admin-users",
                             "/api/ezp/v2/content/locations/1/5",
                             "eng-GB"
                         ),
                         this._getNavigationItem(
-                            "Roles", "admin-roles",
+                             Y.eZ.Translator.trans('nav.role.list', {}, 'editorial'), "admin-roles",
                             "adminRole", {uri: "pjax/role"}
                         ),
                     ];

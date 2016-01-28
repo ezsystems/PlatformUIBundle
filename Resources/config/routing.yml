@@ -19,3 +19,6 @@ yui_combo_loader:
     path: /_ezcombo
     defaults:
         _controller: ezsystems.platformui.controller:combineLoaderAction
+
+_bazinga_jstranslation:
+    resource: "@BazingaJsTranslationBundle/Resources/config/routing/routing.yml"
