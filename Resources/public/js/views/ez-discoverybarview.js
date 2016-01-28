@@ -45,13 +45,13 @@ YUI.add('ez-discoverybarview', function (Y) {
                         new Y.eZ.ButtonActionView({
                             actionId: "minimizeDiscoveryBar",
                             disabled: false,
-                            label: "Minimize",
+                            label: Translator.trans('tree.minimize',{},'eZPlatformUIBundle_js'),
                             priority: 1000
                         }),
                         new Y.eZ.TreeActionView({
                             actionId: "tree",
                             disabled: false,
-                            label: "Content tree",
+                            label: Translator.trans('tree.contenttree',{},'eZPlatformUIBundle_js'),
                             priority: 800
                         }),
                     ];
