@@ -19,5 +19,20 @@ YUI.add('ez-discoverybarviewservice', function (Y) {
      * @constructor
      * @extends eZ.ViewService
      */
-    Y.eZ.DiscoveryBarViewService = Y.Base.create('discoveryBarViewService', Y.eZ.ViewService, [Y.eZ.SideViewService], {});
+    Y.eZ.DiscoveryBarViewService = Y.Base.create('discoveryBarViewService', Y.eZ.ViewService, [Y.eZ.SideViewService], {
+
+        initializer: function () {
+            this.on('*:viewTrashAction', this._redirectToTrashView);
+        },
+
+        /**
+         * Redirects to the Trash
+         *
+         * @method _redirectToTrashView
+         * @protected
+         */
+        _redirectToTrashView: function () {
+            this.get('app').navigateTo("viewTrash");
+        },
+    });
 });

@@ -1,0 +1,39 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-trashview {
+    background: #fff;
+    padding-bottom: 1em;
+}
+
+.ez-view-trashview header {
+    background: #f5f4f2;
+    border-bottom: 1px solid #ccc;
+}
+
+.ez-view-trashview .ez-trashview-table {
+    box-shadow: 0 0 2px #ccc;
+}
+
+.ez-view-trashview .ez-trashview-table td {
+    background: #fff;
+}
+
+.ez-view-trashview .ez-trashview-table tr:nth-child(2n-1) td {
+    background: #fafafa;
+}
+
+.ez-view-trashview .ez-trashview-table .ez-breadcrumbs-item a {
+    color: #528036;
+}
+
+.ez-view-trashview .ez-trashview-table .ez-breadcrumbs-item a:hover {
+    color: #444;
+    text-decoration: underline;
+}
+
+.ez-view-trashview .ez-trashview-info-message {
+    font-style: italic;
+}

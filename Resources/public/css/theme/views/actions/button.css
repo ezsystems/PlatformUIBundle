@@ -71,6 +71,7 @@
     content: "\E62B";
 }
 
+.ez-view-buttonactionview .ez-action[data-action="viewTrash"] .action-icon:before,
 .ez-view-buttonactionview .ez-action[data-action="sendToTrash"] .action-icon:before {
     content: "\E615";
 }
