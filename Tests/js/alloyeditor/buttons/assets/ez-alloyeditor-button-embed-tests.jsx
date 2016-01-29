@@ -6,6 +6,7 @@
 YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
     var renderTest, clickTest,
         AlloyEditor = Y.eZ.AlloyEditor,
+        ReactDOM = Y.eZ.ReactDOM,
         React = Y.eZ.React,
         Assert = Y.Assert, Mock = Y.Mock;
 
@@ -31,11 +32,11 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
             );
 
             Assert.isNotNull(
-                React.findDOMNode(button),
+                ReactDOM.findDOMNode(button),
                 "The button should be rendered"
             );
             Assert.areEqual(
-                "BUTTON", React.findDOMNode(button).tagName,
+                "BUTTON", ReactDOM.findDOMNode(button).tagName,
                 "The component should generate a button"
             );
         },

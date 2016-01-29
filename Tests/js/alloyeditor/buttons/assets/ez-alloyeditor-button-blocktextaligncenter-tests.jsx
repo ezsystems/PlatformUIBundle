@@ -5,6 +5,7 @@
 YUI.add('ez-alloyeditor-button-blocktextaligncenter-tests', function (Y) {
     var registerTest, renderTest, clickTest,
         AlloyEditor = Y.eZ.AlloyEditor,
+        ReactDOM = Y.eZ.ReactDOM,
         React = Y.eZ.React,
         Assert = Y.Assert, Mock = Y.Mock;
 
@@ -64,15 +65,15 @@ YUI.add('ez-alloyeditor-button-blocktextaligncenter-tests', function (Y) {
             );
 
             Assert.isNotNull(
-                React.findDOMNode(button),
+                ReactDOM.findDOMNode(button),
                 "The button should be rendered"
             );
             Assert.areEqual(
-                "BUTTON", React.findDOMNode(button).tagName,
+                "BUTTON", ReactDOM.findDOMNode(button).tagName,
                 "The component should generate a button"
             );
             Assert.isTrue(
-                Y.one(React.findDOMNode(button)).one('span').hasClass('ae-icon-align-center'),
+                Y.one(ReactDOM.findDOMNode(button)).one('span').hasClass('ae-icon-align-center'),
                 "The button should have the icon align center class"
             );
         },
@@ -85,7 +86,7 @@ YUI.add('ez-alloyeditor-button-blocktextaligncenter-tests', function (Y) {
                 <Y.eZ.AlloyEditorButton.ButtonBlockTextAlignCenter editor={this.editor} />,
                 this.container
             );
-            node = Y.one(React.findDOMNode(button));
+            node = Y.one(ReactDOM.findDOMNode(button));
 
             Assert.isFalse(
                 node.hasClass('ae-button-pressed'),
@@ -102,7 +103,7 @@ YUI.add('ez-alloyeditor-button-blocktextaligncenter-tests', function (Y) {
                 <Y.eZ.AlloyEditorButton.ButtonBlockTextAlignCenter editor={this.editor} />,
                 this.container
             );
-            node = Y.one(React.findDOMNode(button));
+            node = Y.one(ReactDOM.findDOMNode(button));
 
             Assert.isTrue(
                 node.hasClass('ae-button-pressed'),
@@ -164,7 +165,7 @@ YUI.add('ez-alloyeditor-button-blocktextaligncenter-tests', function (Y) {
                 <Y.eZ.AlloyEditorButton.ButtonBlockTextAlignCenter editor={this.editor} />,
                 this.container
             );
-            Y.one(React.findDOMNode(button)).simulate('click');
+            Y.one(ReactDOM.findDOMNode(button)).simulate('click');
 
             Mock.verify(this.path.block);
         },
@@ -181,7 +182,7 @@ YUI.add('ez-alloyeditor-button-blocktextaligncenter-tests', function (Y) {
                 <Y.eZ.AlloyEditorButton.ButtonBlockTextAlignCenter editor={this.editor} />,
                 this.container
             );
-            Y.one(React.findDOMNode(button)).simulate('click');
+            Y.one(ReactDOM.findDOMNode(button)).simulate('click');
 
             Mock.verify(this.path.block);
         },
