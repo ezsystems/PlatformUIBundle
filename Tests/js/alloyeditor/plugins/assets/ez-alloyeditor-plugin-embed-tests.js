@@ -6,6 +6,7 @@
 YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
     var definePluginTest, embedWidgetTest, focusTest,
         setHrefTest, setWidgetContentTest, setConfigTest, imageTypeTest,
+        getHrefTest, getConfigTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     definePluginTest = new Y.Test.Case({
@@ -161,6 +162,47 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
             Assert.areSame(
                 widget, ret,
                 "The widget should be returned"
+            );
+        },
+    });
+
+    getHrefTest = new Y.Test.Case({
+        name: "eZ AlloyEditor embed widget getHref test",
+
+        "async:init": function () {
+            var startTest = this.callback();
+
+            CKEDITOR.plugins.addExternal('lineutils', '../../../lineutils/');
+            CKEDITOR.plugins.addExternal('widget', '../../../widget/');
+            this.container = Y.one('.container');
+            this.editor = AlloyEditor.editable(
+                this.container.getDOMNode(), {
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',widget,ezembed',
+                    eZ: {
+                        editableRegion: '.editable',
+                    },
+                }
+            );
+            this.editor.get('nativeEditor').on('instanceReady', function () {
+                startTest();
+            });
+        },
+
+        destroy: function () {
+            this.editor.destroy();
+        },
+
+        "Should return the href": function () {
+            var embed = this.container.one('#embed'),
+                href = 'ezcontent://43',
+                widget = this.editor.get('nativeEditor').widgets.getByElement(
+                    new CKEDITOR.dom.node(embed.getDOMNode())
+                );
+
+            widget.setHref(href);
+            Assert.areEqual(
+                href, widget.getHref(),
+                "The href should have been updated"
             );
         },
     });
@@ -322,6 +364,64 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
         },
     });
 
+    getConfigTest = new Y.Test.Case({
+        name: "eZ AlloyEditor embed widget getConfig test",
+
+        "async:init": function () {
+            var startTest = this.callback();
+
+            CKEDITOR.plugins.addExternal('lineutils', '../../../lineutils/');
+            CKEDITOR.plugins.addExternal('widget', '../../../widget/');
+            this.container = Y.one('.container');
+            this.containerContent = this.container.getHTML();
+            this.editor = AlloyEditor.editable(
+                this.container.getDOMNode(), {
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',widget,ezembed',
+                    eZ: {
+                        editableRegion: '.editable',
+                    },
+                }
+            );
+            this.editor.get('nativeEditor').on('instanceReady', function () {
+                startTest();
+            });
+        },
+
+        destroy: function () {
+            this.editor.destroy();
+            this.container.setHTML(this.containerContent);
+        },
+
+        "Should return the config": function () {
+            var embed = this.container.one('#rich-embed'),
+                widget = this.editor.get('nativeEditor').widgets.getByElement(
+                    new CKEDITOR.dom.node(embed.getDOMNode())
+                ),
+                key = 'whatever',
+                value = 'whatever value';
+
+            widget.setConfig(key, value);
+
+            Assert.areEqual(
+                value, widget.getConfig(key),
+                "The new config value should have been returned"
+            );
+        },
+
+        "Should return undefined for an unknown config": function () {
+            var embed = this.container.one('#rich-embed'),
+                widget = this.editor.get('nativeEditor').widgets.getByElement(
+                    new CKEDITOR.dom.node(embed.getDOMNode())
+                ),
+                key = 'unknown config';
+
+            Assert.isUndefined(
+                widget.getConfig(key),
+                "undefined should have been returned"
+            );
+        },
+    });
+
     imageTypeTest = new Y.Test.Case({
         name: "eZ AlloyEditor embed widget setImageType / isImage test",
 
@@ -382,7 +482,9 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
     Y.Test.Runner.add(embedWidgetTest);
     Y.Test.Runner.add(focusTest);
     Y.Test.Runner.add(setHrefTest);
+    Y.Test.Runner.add(getHrefTest);
     Y.Test.Runner.add(setWidgetContentTest);
     Y.Test.Runner.add(setConfigTest);
+    Y.Test.Runner.add(getConfigTest);
     Y.Test.Runner.add(imageTypeTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-alloyeditor-plugin-embed']});

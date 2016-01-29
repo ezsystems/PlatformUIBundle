@@ -57,11 +57,18 @@ system:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/paragraph.js
                 ez-alloyeditor-button-image:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage']
+                    requires:
+                        - 'ez-alloyeditor'
+                        - 'ez-alloyeditor-button-mixin-embeddiscovercontent'
+                        - 'ez-alloyeditor-button-mixin-embedimage'
+                        - 'ez-alloyeditor-button-mixin-widgetbutton'
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/image.js
                 ez-alloyeditor-button-embed:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-widgetbutton']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embed.js
+                ez-alloyeditor-button-imagevariation:
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embedimage']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/imagevariation.js
                 ez-alloyeditor-button-blocktextalignleft:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignleft.js
@@ -78,14 +85,17 @@ system:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blockremove.js
                 ez-alloyeditor-button-embedhref:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-widgetbutton']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embedhref.js
                 ez-alloyeditor-button-imagehref:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage', 'ez-alloyeditor-button-mixin-widgetbutton']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/imagehref.js
                 ez-alloyeditor-button-mixin-blocktextalign:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/blocktextalign.js
+                ez-alloyeditor-button-mixin-widgetbutton:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/widgetbutton.js
                 ez-alloyeditor-button-mixin-embeddiscovercontent:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embeddiscovercontent.js
@@ -259,7 +269,7 @@ system:
                         - 'ez-locationviewlocationstabview'
                         - 'ez-tabs'
                         - 'ez-subitemlistview'
-                        - 'ez-locationsearchplugin'
+                        - 'ez-searchplugin'
                         - 'event-tap'
                         - 'array-extras'
                         - 'locationviewview-ez-template'
@@ -601,6 +611,7 @@ system:
                         - 'ez-alloyeditor-button-paragraph'
                         - 'ez-alloyeditor-button-embed'
                         - 'ez-alloyeditor-button-image'
+                        - 'ez-alloyeditor-button-imagevariation'
                         - 'ez-alloyeditor-button-blocktextalignleft'
                         - 'ez-alloyeditor-button-blocktextaligncenter'
                         - 'ez-alloyeditor-button-blocktextalignright'
@@ -1010,9 +1021,12 @@ system:
                 ez-contenttreeplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'ez-contentmodel', 'parallel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
-                ez-locationsearchplugin:
-                    requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel', 'ez-contentmodel']
+                ez-locationsearchplugin: # deprecated module, provide a BC component based on ez-searchplugin
+                    requires: ['ez-searchplugin']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationsearchplugin.js
+                ez-searchplugin:
+                    requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel', 'ez-contentmodel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-searchplugin.js
                 ez-contentcreateplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contentcreateplugin.js

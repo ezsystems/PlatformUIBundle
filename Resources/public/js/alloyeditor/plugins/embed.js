@@ -80,6 +80,16 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                 },
 
                 /**
+                 * Returns the `href`of the embed.
+                 *
+                 * @method getHref
+                 * @return {String}
+                 */
+                getHref: function () {
+                    return this.element.data('href');
+                },
+
+                /**
                  * Sets the widget content. It makes sure the config element is
                  * not overwritten.
                  *
@@ -114,7 +124,8 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                  * @return {CKEDITOR.plugins.widget}
                  */
                 setConfig: function (key, value) {
-                    var valueElement = this.element.findOne('[data-ezelement="ezvalue"][data-ezvalue-key="' + key + '"]');
+                    var valueElement = this._getValueElement(key);
+
                     if ( !valueElement ) {
                         valueElement = new CKEDITOR.dom.element('span');
                         valueElement.data('ezelement', 'ezvalue');
@@ -123,6 +134,30 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                     }
                     valueElement.setText(value);
                     return this;
+                },
+
+                /**
+                 * Returns the config value for the `key` or undefined if the
+                 * config key is not found.
+                 *
+                 * @method getConfig
+                 * @return {String}
+                 */
+                getConfig: function (key) {
+                    var valueElement = this._getValueElement(key);
+
+                    return valueElement ? valueElement.getText() : undefined;
+                },
+
+                /**
+                 * Returns the Element holding the config under `key`
+                 *
+                 * @method _getValueElement
+                 * @param {String} key
+                 * @return {CKEDITOR.dom.element}
+                 */
+                _getValueElement: function (key) {
+                    return this.element.findOne('[data-ezelement="ezvalue"][data-ezvalue-key="' + key + '"]');
                 },
 
                 /**
