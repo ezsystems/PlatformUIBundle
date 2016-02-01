@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="4f1cfd17c4ea63fdcfb4a10fda0755ff" resname="content_type.dashboard_title">
+        <source>content_type.dashboard_title</source>
+        <target>Types de contenu</target>
+      </trans-unit>
+      <trans-unit id="80d8a14d1f4ec432a49b7acf8af8f3d2" resname="content_type.group.list">
+        <source>content_type.group.list</source>
+        <target>Groupes de type de contenu</target>
+      </trans-unit>
+      <trans-unit id="3dc2dbac68487a7d3f87f767fc4bbd2e" resname="content_type.group.name">
+        <source>content_type.group.name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="7415e532c85215d11540f3783967446d" resname="content_type.group.id">
+        <source>content_type.group.id</source>
+        <target>ID</target>
+      </trans-unit>
+      <trans-unit id="a5e8ac6ece0bfd015d0fff25748474cb" resname="content_type.group.edit">
+        <source>content_type.group.edit</source>
+        <target>Éditer</target>
+      </trans-unit>
+      <trans-unit id="2cf33e780bfbad13ad16fcf5634ec70c">
+        <source>content_type.group.new</source>
+        <target>Créer un groupe de type de contenu</target>
+      </trans-unit>
+      <trans-unit id="7b24488c5d8ce01a3dd1a49ca7381d0b" resname="content_type.group">
+        <source>content_type.group</source>
+        <target>Groupe de type de contenu</target>
+      </trans-unit>
+      <trans-unit id="d95b927203e077ad6f20662ae465821d">
+        <source>content_type.group.create.title</source>
+        <target>Créer un nouveau groupe de type de contenu</target>
+      </trans-unit>
+      <trans-unit id="80644ee5d10e849935daf17deddf5e6f">
+        <source>content_type.group.edit.title</source>
+        <target>Éditer le groupe de type de contenu "%identifier%"</target>
+      </trans-unit>
+      <trans-unit id="7a70af7dfe97699edb120836224eee1e">
+        <source>content_type.group.cancel</source>
+        <target>Annuler</target>
+      </trans-unit>
+      <trans-unit id="a8d0b6d82750581100743046985fcf80">
+        <source>content_type.group.notification.created</source>
+        <target>Le groupe de type de contenu "%identifier%" a été correctement créé.</target>
+      </trans-unit>
+      <trans-unit id="c20c719ac1ac6b400867977af4a0c6e1">
+        <source>content_type.group.notification.updated</source>
+        <target>Le groupe de type de contenu "%identifier%" a été correctement mis à jour.</target>
+      </trans-unit>
+      <trans-unit id="20d385d52df00a6a1aa4d01c7e75f4e5">
+        <source>content_type.group.deleted</source>
+        <target>Le groupe de type de contenu "%identifier%" a été correctement supprimé.</target>
+      </trans-unit>
+      <trans-unit id="147661b50276b00ffac1bb715bdb4746">
+        <source>content_type.group.cannot_delete.has_content_types</source>
+        <target>Impossible de supprimer le groupe "%identifier%" car il contient toujours des types de contenu.</target>
+      </trans-unit>
+      <trans-unit id="f04e48d37e0034d0db7c2fe532d0a98f" resname="content_type.name">
+        <source>content_type.name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="3654d0b83af5b21165d08ed00c583b24" resname="content_type.id">
+        <source>content_type.id</source>
+        <target>ID</target>
+      </trans-unit>
+      <trans-unit id="b7c7cef3a977522a9eec90f49adfc04e" resname="content_type.identifier">
+        <source>content_type.identifier</source>
+        <target>Identifiant</target>
+      </trans-unit>
+      <trans-unit id="c3f683a33cfccf890c919f6432af7877" resname="content_type.edit">
+        <source>content_type.edit</source>
+        <target>Éditer</target>
+      </trans-unit>
+      <trans-unit id="972127730f863287531a351da529a802" resname="content_type.edit_title">
+        <source>content_type.edit_title</source>
+        <target>En cours d'édition</target>
+      </trans-unit>
+      <trans-unit id="bd31df6edfdfe616bf43312ee6ed4814" resname="content_type.content_count">
+        <source>content_type.content_count</source>
+        <target>{0} %count% élément de contenu|{1} %count% élément de contenu|]1,Inf[ %count% éléments de contenu</target>
+      </trans-unit>
+      <trans-unit id="978d4d6fcaabe95baf297bcddced946c" resname="content_type.modified_date">
+        <source>content_type.modified_date</source>
+        <target>Date de modification</target>
+      </trans-unit>
+      <trans-unit id="39f42e02559368a6b6ea2bb9f6de6724" resname="content_type.last_modified">
+        <source>content_type.last_modified</source>
+        <target>Dernière modification: %date% par %modifier%</target>
+      </trans-unit>
+      <trans-unit id="7c0ab0f708330c0d934c7e53a0cff93e" resname="content_type.description">
+        <source>content_type.description</source>
+        <target>Description</target>
+      </trans-unit>
+      <trans-unit id="e1d223825a9bf3ad0d1f810b7426bf3d" resname="content_type.name_schema">
+        <source>content_type.name_schema</source>
+        <target>Modèle de nom des contenus</target>
+      </trans-unit>
+      <trans-unit id="ad868db1b7d6a228c3b83176a33fd8fc" resname="content_type.url_alias_schema">
+        <source>content_type.url_alias_schema</source>
+        <target>Modèle de génération de l'URL</target>
+      </trans-unit>
+      <trans-unit id="b6a3aa854f989a0573db082c812c2d52" resname="content_type.container">
+        <source>content_type.container</source>
+        <target>Peut contenir des sous éléments</target>
+      </trans-unit>
+      <trans-unit id="975a8aa4deca92ef9cd5ffc42efd2467" resname="content_type.default_availability">
+        <source>content_type.default_availability</source>
+        <target>Disponible dans la langue par défaut même, si la traduction n'existe pas</target>
+      </trans-unit>
+      <trans-unit id="6361724b046699bacda179f0e7397de0" resname="content_type.always_available">
+        <source>content_type.always_available</source>
+        <target>Disponible</target>
+      </trans-unit>
+      <trans-unit id="5e276b6da192df3e9c622c398fc03d6b" resname="content_type.no_always_available">
+        <source>content_type.no_always_available</source>
+        <target>Non disponible</target>
+      </trans-unit>
+      <trans-unit id="9297b47a2cead7403adaab0f0ee6fdb2" resname="content_type.default_children_sorting">
+        <source>content_type.default_children_sorting</source>
+        <target>Tri par défaut des sous-éléments</target>
+      </trans-unit>
+      <trans-unit id="dc20866b714ed1642b9bce242bf460fd" resname="content_type.notification.draft_updated">
+          <source>content_type.notification.draft_updated</source>
+          <target>Le brouillon de type de contenu a été mis à jour avec succès.</target>
+      </trans-unit>
+      <trans-unit id="9706f09166fa56162a4558261b87a9e2" resname="content_type.notification.draft_removed">
+          <source>content_type.notification.draft_removed</source>
+          <target>Le brouillon de type de contenu a été supprimé avec succès.</target>
+      </trans-unit>
+      <trans-unit id="ced84ba84fbde36bb688787c0562b1da" resname="content_type.notification.published">
+          <source>content_type.notification.published</source>
+          <target>Le brouillon de type de contenu a été mis à jour et publié avec succès. Les contenus correspondants ont été mis à jour.</target>
+      </trans-unit>
+      <trans-unit id="a44f54993f84d2d1a54f550bfd4f59e1">
+        <source>content_type.notification.deleted</source>
+        <target>Le type de contenu "%contentTypeName%" a été supprimé avec succès.</target>
+      </trans-unit>
+      <trans-unit id="1d549f54e575ebb7f13e696af6c5bb96">
+        <source>content_type.is_in_use</source>
+        <target>Le type de contenu ne peut pas être supprimé car des contenus de ce type existent ou parce que vous n'avez pas la permission.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
