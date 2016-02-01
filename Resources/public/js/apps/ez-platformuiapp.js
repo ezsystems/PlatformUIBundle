@@ -392,7 +392,7 @@ YUI.add('ez-platformuiapp', function (Y) {
         /**
          * Middleware to handle the *side views* configured for the given route.
          * Depending on the configuration, it will apply the CSS class to
-         * show/hide the side views. If a side view is not explicitely
+         * show/hide the side views. If a side view is not explicitly
          * configured to be displayed, it is hidden.
          *
          * @method handleSideViews
@@ -539,7 +539,7 @@ YUI.add('ez-platformuiapp', function (Y) {
          * @protected
          * @method _attachView
          * @param {View} view
-         * @param {Boolean} preprend
+         * @param {Boolean} prepend
          */
         _attachView: function (view, prepend) {
             var viewInfo = this.getViewInfo(view);
@@ -722,7 +722,7 @@ YUI.add('ez-platformuiapp', function (Y) {
          *
          * @method _setTitle
          * @protected
-         * @param {View} the active view
+         * @param {View} view the active view
          */
         _setTitle: function (view) {
             if ( typeof view.getTitle === 'function' ) {
