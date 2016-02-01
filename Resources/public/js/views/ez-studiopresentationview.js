@@ -59,7 +59,7 @@ YUI.add('ez-studiopresentationview', function (Y) {
              * @readOnly
              */
             iframeSource: {
-                value: 'http://ez.no/in-product-studio-teaser',
+                value: '//ez.no/in-product-studio-teaser',
                 readOnly: true,
             },
         },

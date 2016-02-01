@@ -59,7 +59,7 @@ YUI.add('ez-dashboardview', function (Y) {
              * @readOnly
              */
             iframeSource: {
-                value: 'http://ez.no/in-product/eZ-Platform',
+                value: '//ez.no/in-product/eZ-Platform',
                 readOnly: true,
             },
         },
