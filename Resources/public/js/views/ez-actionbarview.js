@@ -66,7 +66,7 @@ YUI.add('ez-actionbarview', function (Y) {
                         new Y.eZ.TranslateActionView({
                             actionId: "translate",
                             disabled: false,
-                            label: Translator.trans('action.translate',{}, {}, 'editorial'),
+                            label: Translator.trans('action.translate',{}, 'editorial'),
                             priority: 170,
                             location: this.get('location'),
                             content: this.get('content')
