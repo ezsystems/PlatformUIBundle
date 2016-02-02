@@ -605,10 +605,10 @@ YUI.add('ez-navigationhubview', function (Y) {
              */
             zones: {
                 value: {
-                    'platform':  Translator.trans('zone.platform',{},'eZPlatformUIBundle_js'),
-                    'studio': Translator.trans('zone.studio',{},'eZPlatformUIBundle_js'),
-                    'studioplus': Translator.trans('zone.studioplus',{},'eZPlatformUIBundle_js'),
-                    'admin': Translator.trans('zone.admin',{},'eZPlatformUIBundle_js'),
+                    'platform':  Translator.trans('zone.platform', {}, 'editorial'),
+                    'studio': Translator.trans('zone.studio', {}, 'editorial'),
+                    'studioplus': Translator.trans('zone.studioplus', {}, 'editorial'),
+                    'admin': Translator.trans('zone.admin', {}, 'editorial'),
                 },
                 readOnly: true,
             },
