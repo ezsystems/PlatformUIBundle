@@ -114,9 +114,11 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
                     content: 'Hey, Johnny Park!',
                     attributes: {'class': 'added-event'},
                 },
+                editorInteractionFired = false,
                 nativeEditor = this.editor.get('nativeEditor');
 
             this.editor.get('nativeEditor').once('editorInteraction', function (e) {
+                editorInteractionFired = true;
                 Assert.areEqual(
                     'eZAddContentDone', e.data.nativeEvent.name,
                     "The nativeEvent name should eZAddContentDone"
@@ -132,6 +134,34 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
             });
 
             nativeEditor.execCommand('eZAddContent', tagDefinition);
+            Assert.isTrue(editorInteractionFired, 'The editorInteraction event should have been fired');
+        },
+
+        "Should fire the corresponding `editorInteraction` event on the focus element": function () {
+            var tagDefinition = {
+                    tagName: 'ul',
+                    content: '<li></li>',
+                    attributes: {'class': 'added-event-custom-focus'},
+                    focusElement: 'li',
+                },
+                editorInteractionFired = false,
+                nativeEditor = this.editor.get('nativeEditor');
+
+            this.editor.get('nativeEditor').once('editorInteraction', function (e) {
+                editorInteractionFired = true;
+                Assert.areNotSame(
+                    Y.one('.added-event-custom-focus').getDOMNode(), e.data.nativeEvent.target,
+                    "The nativeEvent should not have the added node as target"
+                );
+                Assert.areSame(
+                    Y.one('.added-event-custom-focus ' + tagDefinition.focusElement).getDOMNode(),
+                    e.data.nativeEvent.target,
+                    "The nativeEvent should have the focusElement as target"
+                );
+            });
+
+            nativeEditor.execCommand('eZAddContent', tagDefinition);
+            Assert.isTrue(editorInteractionFired, 'The editorInteraction event should have been fired');
         },
 
         "Should add the content to the editable region with the expected HTML content": function () {
