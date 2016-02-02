@@ -402,7 +402,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                             this.get('rootLocation').get('contentInfo').get('mainLanguageCode')
                         ),
                         this._getSubtreeItem(
-                            Translator.trans("nav.media.library",{}, {}, 'editorial'),
+                            Translator.trans("nav.media.library",{}, 'editorial'),
                             "media-library",
                             this.get('rootMediaLocation').get('id'),
                             this.get('rootMediaLocation').get('contentInfo').get('mainLanguageCode')
