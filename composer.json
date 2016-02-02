@@ -11,7 +11,8 @@
         "ezsystems/platform-ui-assets-bundle": "^1.0@dev",
         "ezsystems/repository-forms": "^1.1@dev",
         "ezsystems/ezpublish-kernel": "^6.1@dev",
-        "zetacomponents/system-information": "^1.1"
+        "zetacomponents/system-information": "^1.1",
+        "willdurand/js-translation-bundle": "^2.5"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.7",
