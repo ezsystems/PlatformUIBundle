@@ -18,14 +18,14 @@ YUI.add('ez-alloyeditor-button-heading-tests', function (Y) {
         },
 
         tearDown: function () {
-            React.unmountComponentAtNode(this.container);
+            ReactDOM.unmountComponentAtNode(this.container);
             delete this.editor;
         },
 
         "Should render a button": function () {
             var button;
 
-            button = React.render(
+            button = ReactDOM.render(
                 <AlloyEditor.ButtonHeading editor={this.editor} />,
                 this.container
             );
@@ -75,14 +75,14 @@ YUI.add('ez-alloyeditor-button-heading-tests', function (Y) {
         },
 
         tearDown: function () {
-            React.unmountComponentAtNode(this.container.getDOMNode());
+            ReactDOM.unmountComponentAtNode(this.container.getDOMNode());
             delete this.editor;
         },
 
         "Should execute the eZAddContent command": function () {
             var button;
 
-            button = React.render(
+            button = ReactDOM.render(
                 <AlloyEditor.ButtonHeading editor={this.editor} />,
                 this.container.getDOMNode()
             );

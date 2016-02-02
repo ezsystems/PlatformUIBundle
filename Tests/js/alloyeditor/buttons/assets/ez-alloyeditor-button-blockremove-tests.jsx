@@ -30,14 +30,14 @@ YUI.add('ez-alloyeditor-button-blockremove-tests', function (Y) {
         },
 
         tearDown: function () {
-            React.unmountComponentAtNode(this.container);
+            ReactDOM.unmountComponentAtNode(this.container);
             delete this.editor;
         },
 
         "Should render a button": function () {
             var button;
 
-            button = React.render(
+            button = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonBlockRemove editor={this.editor} />,
                 this.container
             );
@@ -80,7 +80,7 @@ YUI.add('ez-alloyeditor-button-blockremove-tests', function (Y) {
         },
 
         tearDown: function () {
-            React.unmountComponentAtNode(this.container.getDOMNode());
+            ReactDOM.unmountComponentAtNode(this.container.getDOMNode());
             delete this.editor;
             delete this.nativeEditor;
         },
@@ -88,7 +88,7 @@ YUI.add('ez-alloyeditor-button-blockremove-tests', function (Y) {
         "Should execute the eZRemoveBlock command": function () {
             var button;
 
-            button = React.render(
+            button = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonBlockRemove editor={this.editor} />,
                 this.container.getDOMNode()
             );

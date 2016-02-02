@@ -19,14 +19,14 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
         },
 
         tearDown: function () {
-            React.unmountComponentAtNode(this.container);
+            ReactDOM.unmountComponentAtNode(this.container);
             delete this.editor;
         },
 
         "Should render a button": function () {
             var button;
 
-            button = React.render(
+            button = ReactDOM.render(
                 <AlloyEditor.ButtonEmbed editor={this.editor} />,
                 this.container
             );
@@ -66,7 +66,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
         },
 
         tearDown: function () {
-            React.unmountComponentAtNode(this.container.getDOMNode());
+            ReactDOM.unmountComponentAtNode(this.container.getDOMNode());
         },
 
         "Should fire the contentDiscover event": function () {
@@ -89,7 +89,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
                     "The UDW should be configured with a contentDiscoveredHandler"
                 );
             });
-            button = React.render(
+            button = ReactDOM.render(
                 <AlloyEditor.ButtonEmbed editor={this.editor} />,
                 this.container.getDOMNode()
             );
@@ -151,7 +151,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
                     "The ezembed widget should have the focus"
                 );
             });
-            button = React.render(
+            button = ReactDOM.render(
                 <AlloyEditor.ButtonEmbed editor={this.editor} />,
                 this.container.getDOMNode()
             );
