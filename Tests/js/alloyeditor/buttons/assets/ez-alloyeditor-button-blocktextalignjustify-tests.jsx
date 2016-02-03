@@ -50,7 +50,7 @@ YUI.add('ez-alloyeditor-button-blocktextalignjustify-tests', function (Y) {
         },
 
         tearDown: function () {
-            React.unmountComponentAtNode(this.container);
+            ReactDOM.unmountComponentAtNode(this.container);
             delete this.editor;
             delete this.nativeEditor;
             delete this.path;
@@ -59,7 +59,7 @@ YUI.add('ez-alloyeditor-button-blocktextalignjustify-tests', function (Y) {
         "Should render a button": function () {
             var button;
 
-            button = React.render(
+            button = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonBlockTextAlignJustify editor={this.editor} />,
                 this.container
             );
@@ -82,7 +82,7 @@ YUI.add('ez-alloyeditor-button-blocktextalignjustify-tests', function (Y) {
             var button,
                 node;
 
-            button = React.render(
+            button = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonBlockTextAlignJustify editor={this.editor} />,
                 this.container
             );
@@ -99,7 +99,7 @@ YUI.add('ez-alloyeditor-button-blocktextalignjustify-tests', function (Y) {
                 node;
 
             this.blockAlign = 'justify';
-            button = React.render(
+            button = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonBlockTextAlignJustify editor={this.editor} />,
                 this.container
             );
@@ -148,7 +148,7 @@ YUI.add('ez-alloyeditor-button-blocktextalignjustify-tests', function (Y) {
         },
 
         tearDown: function () {
-            React.unmountComponentAtNode(this.container);
+            ReactDOM.unmountComponentAtNode(this.container);
             delete this.editor;
             delete this.nativeEditor;
             delete this.path;
@@ -161,7 +161,7 @@ YUI.add('ez-alloyeditor-button-blocktextalignjustify-tests', function (Y) {
                 method: 'setStyle',
                 args: ['text-align', 'justify'],
             });
-            button = React.render(
+            button = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonBlockTextAlignJustify editor={this.editor} />,
                 this.container
             );
@@ -178,7 +178,7 @@ YUI.add('ez-alloyeditor-button-blocktextalignjustify-tests', function (Y) {
                 method: 'removeStyle',
                 args: ['text-align'],
             });
-            button = React.render(
+            button = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonBlockTextAlignJustify editor={this.editor} />,
                 this.container
             );

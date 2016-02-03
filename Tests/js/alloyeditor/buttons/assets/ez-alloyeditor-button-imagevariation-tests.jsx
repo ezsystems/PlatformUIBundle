@@ -49,14 +49,14 @@ YUI.add('ez-alloyeditor-button-imagevariation-tests', function (Y) {
         },
 
         tearDown: function () {
-            React.unmountComponentAtNode(this.container);
+            ReactDOM.unmountComponentAtNode(this.container);
             this.editorContainer.setContent(this.editorContainerContent);
         },
 
         "Should render a select": function () {
             var select;
 
-            select = React.render(
+            select = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonImageVariation editor={this.editor} />,
                 this.container
             );
@@ -74,7 +74,7 @@ YUI.add('ez-alloyeditor-button-imagevariation-tests', function (Y) {
         "Should render an option per variations": function () {
             var select, node;
 
-            select = React.render(
+            select = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonImageVariation editor={this.editor} />,
                 this.container
             );
@@ -103,7 +103,7 @@ YUI.add('ez-alloyeditor-button-imagevariation-tests', function (Y) {
         "Should set the default value of the select based on the used image variation": function () {
             var select, node;
 
-            select = React.render(
+            select = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonImageVariation editor={this.editor} />,
                 this.container
             );
@@ -156,7 +156,7 @@ YUI.add('ez-alloyeditor-button-imagevariation-tests', function (Y) {
         },
 
         tearDown: function () {
-            React.unmountComponentAtNode(this.container);
+            ReactDOM.unmountComponentAtNode(this.container);
         },
 
         "Should load embedded the content and its content type": function () {
@@ -185,7 +185,7 @@ YUI.add('ez-alloyeditor-button-imagevariation-tests', function (Y) {
                 );
             });
             select = Y.one(ReactDOM.findDOMNode(
-                React.render(
+                ReactDOM.render(
                     <Y.eZ.AlloyEditorButton.ButtonImageVariation editor={this.editor} />,
                     this.container
                 )
@@ -244,7 +244,7 @@ YUI.add('ez-alloyeditor-button-imagevariation-tests', function (Y) {
                 e.data.callback(false, {uri: 'http://www.reactiongifs.com/r/fyeah.gif'});
             }, this));
             select = Y.one(ReactDOM.findDOMNode(
-                React.render(
+                ReactDOM.render(
                     <Y.eZ.AlloyEditorButton.ButtonImageVariation editor={this.editor} />,
                     this.container
                 )

@@ -19,14 +19,14 @@ YUI.add('ez-alloyeditor-button-imagehref-tests', function (Y) {
         },
 
         tearDown: function () {
-            React.unmountComponentAtNode(this.container);
+            ReactDOM.unmountComponentAtNode(this.container);
             delete this.editor;
         },
 
         "Should render a button": function () {
             var button;
 
-            button = React.render(
+            button = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonImageHref editor={this.editor} />,
                 this.container
             );
@@ -83,7 +83,7 @@ YUI.add('ez-alloyeditor-button-imagehref-tests', function (Y) {
             Y.Array.each(this.listeners, function(listener) {
                 listener.removeListener();
             });
-            React.unmountComponentAtNode(this.container.getDOMNode());
+            ReactDOM.unmountComponentAtNode(this.container.getDOMNode());
         },
 
         "Should fire the contentDiscover event": function () {
@@ -114,7 +114,7 @@ YUI.add('ez-alloyeditor-button-imagehref-tests', function (Y) {
                     "A isSelectable function should be provided"
                 );
             }));
-            button = React.render(
+            button = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonImageHref editor={this.editor} />,
                 this.container.getDOMNode()
             );
@@ -156,7 +156,7 @@ YUI.add('ez-alloyeditor-button-imagehref-tests', function (Y) {
             this.editor.get('nativeEditor').on('contentDiscover', function (evt) {
                 isSelectable = evt.data.config.isSelectable;
             });
-            button = React.render(
+            button = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonImageHref editor={this.editor} />,
                 this.container.getDOMNode()
             );
@@ -225,7 +225,7 @@ YUI.add('ez-alloyeditor-button-imagehref-tests', function (Y) {
             this.listeners.push(this.editor.get('nativeEditor').on('contentDiscover', function (evt) {
                 handler = evt.data.config.contentDiscoveredHandler;
             }));
-            button = React.render(
+            button = ReactDOM.render(
                 <Y.eZ.AlloyEditorButton.ButtonImageHref editor={this.editor} />,
                 this.container.getDOMNode()
             );
