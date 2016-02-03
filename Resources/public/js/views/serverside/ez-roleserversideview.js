@@ -18,6 +18,9 @@ YUI.add('ez-roleserversideview', function (Y) {
             '.ez-pick-location-limitation-button': {
                 'tap': '_pickLocationLimitation'
             },
+            '.ez-role-assign-limit-section-button': {
+                'tap': '_pickSubtreeWithSectionLimitation'
+            },
         };
 
     /**
@@ -37,6 +40,36 @@ YUI.add('ez-roleserversideview', function (Y) {
         /**
          * tap event handler on the role assign buttons. It launches the
          * universal discovery widget so that the user can pick some contents.
+         * It also fill the config with datas concerning the section limitation
+         *
+         * @method _pickSubtreeWithSectionLimitation
+         * @protected
+         * @param {EventFacade} e
+         */
+        _pickSubtreeWithSectionLimitation: function (e) {
+            var button = e.target,
+                container = this.get('container'),
+                sectionSelector = container.one(".ez-role-assignment-section-id"),
+                sectionSelectedIndex = sectionSelector.get('selectedIndex'),
+                unsetLoading = Y.bind(this._uiUnsetAssignRoleLoading, this, button),
+                udwConfigData = {
+                    roleId: button.getAttribute('data-role-rest-id'),
+                    roleName: button.getAttribute('data-role-name'),
+                    afterUpdateCallback: unsetLoading,
+                    limitationType: 'Section',
+                    sectionId: sectionSelector.get('options').item(sectionSelectedIndex).get('value'),
+                    sectionRestId: sectionSelector.get('options').item(sectionSelectedIndex).getAttribute('data-section-rest-id'),
+                    sectionName: sectionSelector.get('options').item(sectionSelectedIndex).get('text'),
+                };
+
+            e.preventDefault();
+            this._uiSetAssignRoleLoading(button);
+            this._fireContentDiscover(button, unsetLoading, udwConfigData);
+        },
+
+        /**
+         * tap event handler on the role assign buttons. It launches the
+         * universal discovery widget so that the user can pick some contents.
          *
          * @method _pickSubtree
          * @protected
@@ -44,20 +77,34 @@ YUI.add('ez-roleserversideview', function (Y) {
          */
         _pickSubtree: function (e) {
             var button = e.target,
-                unsetLoading = Y.bind(this._uiUnsetUDWButtonLoading, this, button);
+                unsetLoading = Y.bind(this._uiUnsetUDWButtonLoading, this, button),
+                udwConfigData = {
+                    roleId: button.getAttribute('data-role-rest-id'),
+                    roleName: button.getAttribute('data-role-name'),
+                    afterUpdateCallback: unsetLoading,
+                };
 
             e.preventDefault();
             this._uiSetUDWButtonLoading(button);
+            this._fireContentDiscover(button, unsetLoading, udwConfigData);
+        },
+
+        /**
+         * Fire contentDiscover event to launch the UDW with a config using the given data
+         *
+         * @method _fireContentDiscover
+         * @protected
+         * @param {Y.Node} button
+         * @param {Y.Function} unsetLoading
+         * @param {Object} data
+         */
+        _fireContentDiscover: function (button, unsetLoading, data) {
             this.fire('contentDiscover', {
                 config: {
                     title: button.getAttribute('data-universaldiscovery-title'),
                     cancelDiscoverHandler: unsetLoading,
                     multiple: true,
-                    data: {
-                        roleId: button.getAttribute('data-role-rest-id'),
-                        roleName: button.getAttribute('data-role-name'),
-                        afterUpdateCallback: unsetLoading,
-                    },
+                    data: data,
                 },
             });
         },
@@ -190,5 +237,6 @@ YUI.add('ez-roleserversideview', function (Y) {
         _uiUnsetUDWButtonLoading: function (button) {
             button.removeClass('is-loading').set('disabled', false);
         },
+
     });
 });
