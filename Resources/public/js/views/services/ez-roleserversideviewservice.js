@@ -24,6 +24,8 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
             this.on('*:contentDiscover', function (e) {
                 e.config.contentDiscoveredHandler = Y.bind(this._assignRole, this);
             });
+
+            this.on('*:refreshAssignmentsTab', this._refreshAssignmentsTab);
         },
 
         /**
@@ -41,16 +43,16 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                 service = this;
 
             this._assignRoleNotificationStarted(
-                data.roleId, data.roleName, e.selection
+                data.roleRestId, data.roleName, e.selection
             );
 
-            userService.loadRole(data.roleId, function (error, response) {
+            userService.loadRole(data.roleRestId, function (error, response) {
                 var tasks = new Y.Parallel(),
                     role;
 
                 if (error) {
                     service._loadRoleErrorNotification(
-                        data.roleId, data.roleName, e.selection
+                        data.roleRestId, data.roleName, e.selection
                     );
                     return;
                 }
@@ -76,7 +78,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
 
                 tasks.done(function () {
                     service._assignRoleCallback(
-                        data.roleId, data.roleName, e.selection, countAssigned,
+                        data.roleRestId, data.roleName, e.selection, countAssigned,
                         Y.bind(data.afterUpdateCallback, service)
                     );
                 });
@@ -181,15 +183,15 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          *
          * @method _assignRoleCallback
          * @protected
-         * @param {String} roleId the role id
+         * @param {String} roleRestId the role id
          * @param {String} roleName the role name
          * @param {Array} contents the array of users/groups to which role is being assigned to
          * @param {Integer} countAssigned number of successfully assignments
          * @param {Function} callback the callback to call when other tasks are done
          */
-        _assignRoleCallback: function (roleId, roleName, contents, countAssigned, callback) {
+        _assignRoleCallback: function (roleRestId, roleName, contents, countAssigned, callback) {
             var notificationIdentifier = this._getAssignRoleNotificationIdentifier(
-                    'assign-role', roleId, contents
+                    'assign-role', roleRestId, contents
                 );
 
             if (countAssigned>0) {
@@ -216,13 +218,13 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          *
          * @method _assignRoleNotificationStarted
          * @protected
-         * @param {String} roleId the role id
+         * @param {String} roleRestId the role id
          * @param {String} roleName the role name
          * @param {Array} contents the array of users/groups to which role is being assigned to
          */
-        _assignRoleNotificationStarted: function (roleId, roleName, contents) {
+        _assignRoleNotificationStarted: function (roleRestId, roleName, contents) {
             var notificationIdentifier = this._getAssignRoleNotificationIdentifier(
-                    'assign-role', roleId, contents
+                    'assign-role', roleRestId, contents
                 );
 
             this._notify(
@@ -238,13 +240,13 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          *
          * @method _loadRoleErrorNotification
          * @protected
-         * @param {String} roleId the role id
+         * @param {String} roleRestId the role id
          * @param {String} roleName the role name
          * @param {Array} contents the array of users/groups to which role is being assigned to
          */
-        _loadRoleErrorNotification: function (roleId, roleName, contents) {
+        _loadRoleErrorNotification: function (roleRestId, roleName, contents) {
             var notificationIdentifier = this._getAssignRoleNotificationIdentifier(
-                    'assign-role', roleId, contents
+                    'assign-role', roleRestId, contents
                 );
 
             this._notify(
@@ -262,17 +264,17 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          * @method _getAssignRoleNotificationIdentifier
          * @protected
          * @param {String} action custom string describing action which is being taken
-         * @param {String} roleId the role id
+         * @param {String} roleRestId the role id
          * @param {Array} contents the array of users/groups to which role is being assigned to
          * @return {String} unique notification identifier based on passed parameters
          */
-        _getAssignRoleNotificationIdentifier: function (action, roleId, contents) {
+        _getAssignRoleNotificationIdentifier: function (action, roleRestId, contents) {
             var contentIds = [];
 
             Y.Array.each(contents, function (struct) {
                 contentIds.push(struct.contentInfo.get('id'));
             });
-            return action + '-' + roleId + '-' + contentIds.join('_');
+            return action + '-' + roleRestId + '-' + contentIds.join('_');
         },
 
         /**
@@ -294,6 +296,18 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                     timeout: timeout,
                 }
             });
+        },
+
+        /**
+         * Refreshes the role view, showing the assignments tab.
+         *
+         * @method _refreshAssignmentsTab
+         * @protected
+         * @param {Object} data
+         */
+        _refreshAssignmentsTab: function (data) {
+            this.get('app').set('loading', true);
+            this.get('app').navigateTo('adminRole', {uri: 'pjax/role/view/' + data.roleId + '/ez-tabs-content'});
         },
     });
 });

@@ -147,7 +147,7 @@ admin_roleList:
         _controller: ezsystems.platformui.controller.role:listRolesAction
 
 admin_roleView:
-    path: /role/view/{roleId}
+    path: /role/view/{roleId}/{tabId}
     defaults:
         _controller: ezsystems.platformui.controller.role:viewRoleAction
 

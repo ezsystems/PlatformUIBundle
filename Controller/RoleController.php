@@ -80,13 +80,14 @@ class RoleController extends Controller
     }
 
     /**
-     * Renders a role.
+     * Renders a role, optionally showing a specific tab.
      *
      * @param int $roleId Role ID
+     * @param string $tabId CSS ID of the view tab which should be shown
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewRoleAction($roleId)
+    public function viewRoleAction($roleId, $tabId = null)
     {
         $role = $this->roleService->loadRole($roleId);
         $roleAssignments = $this->roleService->getRoleAssignments($role);
@@ -126,6 +127,7 @@ class RoleController extends Controller
             'can_delete' => $this->isGranted(new Attribute('role', 'delete')),
             'deleteFormsByAssignment' => $deleteFormsByAssignment,
             'editablePolicies' => $editablePolicies,
+            'tab_id' => $tabId,
         ]);
     }
 
@@ -329,7 +331,7 @@ class RoleController extends Controller
             $this->notifyError('role.policy.error.delete', ['%roleIdentifier%' => $role->identifier, '%policyId%' => $policyId], 'role');
         }
 
-        return $this->redirectToRouteAfterFormPost('admin_roleView', ['roleId' => $roleId]);
+        return $this->redirectToRouteAfterFormPost('admin_roleView', ['roleId' => $roleId, 'tabId' => null]);
     }
 
     /**

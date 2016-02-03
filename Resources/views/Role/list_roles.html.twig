@@ -31,7 +31,7 @@
                     {% for role in roles %}
                         {# @var role \eZ\Publish\API\Repository\Values\User\Role #}
                         <tr class="ez-role">
-                            <td class="ez-role-name"><a href="{{ path("admin_roleView", {"roleId": role.id}) }}">{{ role.identifier }}</a></td>
+                            <td class="ez-role-name"><a href="{{ path("admin_roleView", {"roleId": role.id, "tabId": 0}) }}">{{ role.identifier }}</a></td>
                             <td class="ez-role-id">{{ role.id }}</td>
                             <td class="ez-role-edit">
                                 <button
