@@ -53,11 +53,15 @@ YUI.add('ez-alloyeditor-plugin-addcontent', function (Y) {
         exec: function (editor, data) {
             var element = createElement(
                     editor.document, data.tagName, data.content, data.attributes
-                );
+                ),
+                focusElement = element;
 
             editor.insertElement(element);
-            moveCaretToElement(editor, element);
-            fireEditorInteractionEvent(editor, element);
+            if ( data.focusElement ) {
+                focusElement = element.findOne(data.focusElement);
+            }
+            moveCaretToElement(editor, focusElement);
+            fireEditorInteractionEvent(editor, focusElement);
         },
     };
 
