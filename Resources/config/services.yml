@@ -161,6 +161,7 @@ services:
         parent: ezsystems.platformui.controller.base
         arguments:
             - @ezpublish.api.service.role
+            - @ezpublish.api.service.section
             - @ezrepoforms.action_dispatcher.role
             - @ezrepoforms.action_dispatcher.policy
             - @translator
