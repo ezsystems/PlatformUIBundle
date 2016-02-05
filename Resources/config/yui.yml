@@ -72,6 +72,26 @@ system:
                 ez-alloyeditor-button-imagevariation:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embedimage']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/imagevariation.js
+                ez-alloyeditor-button-embedcenter:
+                    requires:
+                        - 'ez-alloyeditor'
+                        - 'ez-alloyeditor-button-mixin-embedalign'
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embedcenter.js
+                ez-alloyeditor-button-embedright:
+                    requires:
+                        - 'ez-alloyeditor'
+                        - 'ez-alloyeditor-button-mixin-embedalign'
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embedright.js
+                ez-alloyeditor-button-embedleft:
+                    requires:
+                        - 'ez-alloyeditor'
+                        - 'ez-alloyeditor-button-mixin-embedalign'
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embedleft.js
+                ez-alloyeditor-button-mixin-embedalign:
+                    requires:
+                        - 'ez-alloyeditor'
+                        - 'ez-alloyeditor-button-mixin-widgetbutton'
+                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embedalign.js
                 ez-alloyeditor-button-blocktextalignleft:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
                     path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignleft.js
@@ -623,6 +643,9 @@ system:
                         - 'ez-alloyeditor-button-embed'
                         - 'ez-alloyeditor-button-image'
                         - 'ez-alloyeditor-button-imagevariation'
+                        - 'ez-alloyeditor-button-embedcenter'
+                        - 'ez-alloyeditor-button-embedright'
+                        - 'ez-alloyeditor-button-embedleft'
                         - 'ez-alloyeditor-button-blocktextalignleft'
                         - 'ez-alloyeditor-button-blocktextaligncenter'
                         - 'ez-alloyeditor-button-blocktextalignright'

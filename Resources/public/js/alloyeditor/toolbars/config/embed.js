@@ -26,6 +26,9 @@ YUI.add('ez-alloyeditor-toolbar-config-embed', function (Y) {
         name: 'embed',
         buttons: [
             'ezembedhref',
+            'ezembedright',
+            'ezembedcenter',
+            'ezembedleft',
             'ezblockremove',
         ],
 
