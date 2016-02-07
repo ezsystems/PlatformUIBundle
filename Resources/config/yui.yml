@@ -192,7 +192,7 @@ system:
                         - 'ez-copycontentplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
-                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras', 'ez-height-change']
+                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras', 'ez-height-change', 'ez-translator']
                     path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
                 ez-discoverybarviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-discoverybarcontenttreeplugin']
@@ -398,6 +398,7 @@ system:
                         - 'ez-createcontentactionview'
                         - 'ez-movecontentactionview'
                         - 'ez-translateactionview'
+                        - 'ez-translation'
                     path: %ez_platformui.public_dir%/js/views/ez-actionbarview.js
                 ez-rawcontentview:
                     requires:
@@ -1039,3 +1040,5 @@ system:
                 ez-app-extension-admin:
                     requires: ['ez-serversideview', 'ez-serversideviewservice', 'ez-app-extension']
                     path: %ez_platformui.public_dir%/js/apps/extensions/ez-app-extension-admin.js
+                ez-translator:
+                    path: %ez_platformui.public_dir%/js/external/ez-translator.js
