@@ -23,6 +23,31 @@ YUI.add('ez-trashviewservice', function (Y) {
      */
     Y.eZ.TrashViewService = Y.Base.create('trashViewService', Y.eZ.ViewService, [], {
 
+        initializer: function () {
+            this.on('*:emptyTrashAction', this._emptyTrashConfirmBox);
+        },
+
+        /**
+         * `emptyTrashAction` event handler,
+         * it asks confirmation to the user before emptying the trash.
+         *
+         * @method _emptyTrashConfirmBox
+         * @protected
+         * @param {Object} e event facade of the emptyTrashAction event
+         */
+        _emptyTrashConfirmBox: function (e) {
+            e.preventDefault();
+            this.fire('confirmBoxOpen', {
+                config: {
+                    title: "Are you sure you want to permanently delete " + this.get('trashItems').length
+                        + " items? This action cannot be reversed.",
+                    confirmHandler: Y.bind(function () {
+                        this._emptyTrash();
+                    }, this)
+                },
+            });
+        },
+
         /**
          * Loads the list of Trash Items in the `trashItems` attribute and calls `callback` once it's done.
          *
@@ -132,6 +157,50 @@ YUI.add('ez-trashviewservice', function (Y) {
         },
 
         /**
+         * Empties the trash, refreshes the list and add a notifications
+         *
+         * @method _emptyTrash
+         * @protected
+         */
+        _emptyTrash: function () {
+            var contentService = this.get('capi').getContentService(),
+                notificationName = 'empty-trash',
+                itemCount = this.get('trashItems').length;
+
+            this._notify(
+                'Emptying the Trash',
+                notificationName,
+                'started',
+                0
+            );
+
+            contentService.emptyTrash(Y.bind(function (error) {
+                if (error) {
+                    this._notify(
+                        'An error occurred while emptying the Trash',
+                        notificationName,
+                        'error',
+                        0
+                    );
+                    return;
+                }
+
+                /**
+                 * Fired once trash has just been emptied
+                 * @event refreshView
+                 */
+                this.fire('refreshView');
+
+                this._notify(
+                    itemCount + ' Items were permanently deleted.',
+                    notificationName,
+                    'done',
+                    5
+                );
+            }, this));
+        },
+
+        /**
          * Returns true if parentLocationId is in inTrashList.
          *
          * @method _isParentInTrash
@@ -151,6 +220,27 @@ YUI.add('ez-trashviewservice', function (Y) {
             pathString = parentLocationId.substring(restIdPrefix.length) + "/";
 
             return inTrashList[pathString] !== undefined;
+        },
+
+        /**
+         * Fire 'notify' event
+         *
+         * @method _notify
+         * @protected
+         * @param {String} text the text shown during the notification
+         * @param {String} identifier the identifier of the notification
+         * @param {String} state the state of the notification
+         * @param {Integer} timeout the number of second, the notification will be shown
+         */
+        _notify: function (text, identifier, state, timeout) {
+            this.fire('notify', {
+                notification: {
+                    text: text,
+                    identifier: identifier,
+                    state: state,
+                    timeout: timeout,
+                }
+            });
         },
 
         /**

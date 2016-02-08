@@ -126,6 +126,7 @@ YUI.add('ez-platformuiapp', function (Y) {
          */
         initializer: function () {
             this.on("logOut", this._destroySideViews);
+            this.on("*:refreshView", this._refreshView);
             this._dispatchConfig();
             /**
              * Stores the initial title of the page so it can be used when
@@ -171,6 +172,16 @@ YUI.add('ez-platformuiapp', function (Y) {
                     delete viewInfo.serviceInstance;
                 }
             });
+        },
+
+        /**
+         * Refreshes the current view
+         *
+         * @method _refreshView
+         * @protected
+         */
+        _refreshView: function () {
+            this.navigate(window.location.href);
         },
 
         /**
@@ -392,7 +403,7 @@ YUI.add('ez-platformuiapp', function (Y) {
         /**
          * Middleware to handle the *side views* configured for the given route.
          * Depending on the configuration, it will apply the CSS class to
-         * show/hide the side views. If a side view is not explicitely
+         * show/hide the side views. If a side view is not explicitly
          * configured to be displayed, it is hidden.
          *
          * @method handleSideViews
@@ -539,7 +550,7 @@ YUI.add('ez-platformuiapp', function (Y) {
          * @protected
          * @method _attachView
          * @param {View} view
-         * @param {Boolean} preprend
+         * @param {Boolean} prepend
          */
         _attachView: function (view, prepend) {
             var viewInfo = this.getViewInfo(view);
@@ -722,7 +733,7 @@ YUI.add('ez-platformuiapp', function (Y) {
          *
          * @method _setTitle
          * @protected
-         * @param {View} the active view
+         * @param {View} view the active view
          */
         _setTitle: function (view) {
             if ( typeof view.getTitle === 'function' ) {

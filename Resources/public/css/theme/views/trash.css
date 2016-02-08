@@ -8,6 +8,12 @@
     padding-bottom: 1em;
 }
 
+.ez-view-trashview .ez-trashbar-container {
+    background: #333;
+    margin-top: -1px; /* to align the trash bar with bottom border of navigation hub */
+    transition: all 0.30s ease-in-out;
+}
+
 .ez-view-trashview header {
     background: #f5f4f2;
     border-bottom: 1px solid #ccc;
@@ -32,6 +38,10 @@
 .ez-view-trashview .ez-trashview-table .ez-breadcrumbs-item a:hover {
     color: #444;
     text-decoration: underline;
+}
+
+.ez-view-trashview .ez-trashview-no-content {
+    font-style: italic;
 }
 
 .ez-view-trashview .ez-trashview-info-message {

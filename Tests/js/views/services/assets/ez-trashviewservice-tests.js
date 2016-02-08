@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-trashviewservice-tests', function (Y) {
-    var serviceTest,
+    var serviceTest, emptyTrashButtonTest,
     Assert = Y.Assert, Mock = Y.Mock;
 
     serviceTest = new Y.Test.Case({
@@ -762,8 +762,189 @@ YUI.add('ez-trashviewservice-tests', function (Y) {
         },
     });
 
+    emptyTrashButtonTest = new Y.Test.Case({
+        name: "eZ Trash View Service empty trash button tests",
+
+        setUp: function () {
+            this.app = new Mock();
+            this.capi = new Mock();
+
+            this.contentServiceMock = new Mock();
+            Mock.expect(this.contentServiceMock, {
+                method: "emptyTrash",
+                args: [Mock.Value.Function],
+                run: function (callback) {
+                    callback();
+                },
+            });
+
+            this.capiMock = new Mock();
+            Mock.expect(this.capiMock, {
+                method: "getContentService",
+                args: [],
+                returns: this.contentServiceMock,
+            });
+
+            this.service = new Y.eZ.TrashViewService({
+                app: this.app,
+                capi: this.capiMock,
+                trashItems: [1, 2, 3],
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+        },
+
+        "Should fire the confirBoxOpen event": function () {
+            var confirmBoxOpenEvent = false;
+
+            this.service.on('confirmBoxOpen', function (e) {
+                confirmBoxOpenEvent = true;
+                Assert.isObject(e.config, "The event facade should contain a config object");
+                Assert.isString(e.config.title, "The title should be defined");
+                Assert.isFunction(e.config.confirmHandler, "A confirmHandler should be provided");
+            });
+
+            this.service.fire('whatever:emptyTrashAction', {content: {}});
+            Assert.isTrue(confirmBoxOpenEvent, "The confirmBoxOpen event should have been fired");
+        },
+
+        "Should notify the user when starting empty trash": function () {
+            var notified = false;
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.once('notify', function (e) {
+                notified = true;
+
+                Assert.isObject(e.notification, "The event facade should provide a notification config");
+                Assert.areEqual(
+                    "started", e.notification.state,
+                    "The notification state should be 'started'"
+                );
+                Assert.isString(
+                    e.notification.text,
+                    "The notification text should be a string"
+                );
+                Assert.areSame(
+                    'empty-trash',
+                    e.notification.identifier,
+                    "The notification identifier should be empty-trash"
+                );
+                Assert.areSame(
+                    0, e.notification.timeout,
+                    "The notification timeout should be set to 0"
+                );
+            });
+
+            this.service.fire('whatever:emptyTrashAction');
+            Assert.isTrue(notified, "The notified event should have been fired");
+        },
+
+        "Should not fire event and notify user about error when emptying the trash failed": function () {
+            var notified = false,
+                eventFired = false;
+
+            Mock.expect(this.contentServiceMock, {
+                method: "emptyTrash",
+                args: [Mock.Value.Function],
+                run: function (callback) {
+                    callback(true);
+                },
+            });
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.once('notify', function (e) {
+                this.once('notify', function (e) {
+                    notified = true;
+
+                    Assert.isObject(e.notification, "The event facade should provide a notification config");
+                    Assert.areEqual(
+                        "error", e.notification.state,
+                        "The notification state should be 'error'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a string"
+                    );
+                    Assert.areSame(
+                        'empty-trash',
+                        e.notification.identifier,
+                        "The notification identifier should be empty-trash"
+                    );
+                    Assert.areSame(
+                        0, e.notification.timeout,
+                        "The notification timeout should be set to 0"
+                    );
+                });
+            });
+
+            this.service.once('refreshView', function (e) {
+                eventFired = true;
+            });
+
+            this.service.fire('whatever:emptyTrashAction');
+            Assert.isTrue(notified, "The notified event should have been fired");
+            Assert.isFalse(eventFired, "The refreshView event should NOT have been fired");
+        },
+
+        "Should send the refreshView event and notify user about success of sending content to trash": function () {
+            var notified = false,
+                eventFired = false;
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.once('notify', function (e) {
+                this.once('notify', function (e) {
+                    notified = true;
+
+                    Assert.isObject(e.notification, "The event facade should provide a notification config");
+                    Assert.areEqual(
+                        "done", e.notification.state,
+                        "The notification state should be 'done'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a string"
+                    );
+                    Assert.isTrue(
+                        e.notification.text.indexOf("3") !== -1,
+                        "The notification text should contain the number of items"
+                    );
+                    Assert.areSame(
+                        'empty-trash',
+                        e.notification.identifier,
+                        "The notification identifier should be empty-trash"
+                    );
+                    Assert.areSame(
+                        5, e.notification.timeout,
+                        "The notification timeout should be set to 0"
+                    );
+                });
+            });
+
+            this.service.once('refreshView', function (e) {
+                eventFired = true;
+            });
+
+            this.service.fire('whatever:emptyTrashAction');
+            Assert.isTrue(notified, "The notified event should have been fired");
+            Assert.isTrue(eventFired, "The refreshView event should have been fired");
+        },
+    });
+
 
     Y.Test.Runner.setName("eZ Location Trash View Service tests");
     Y.Test.Runner.add(serviceTest);
+    Y.Test.Runner.add(emptyTrashButtonTest);
 
 }, '', {requires: ['test', 'ez-trashviewservice']});

@@ -35,6 +35,8 @@
 
 .is-discoverybar-minimized .ez-view-discoverybarview .active-actions .ez-view-buttonactionview .action-label,
 .is-discoverybar-minimized  .ez-view-discoverybarview .active-actions .ez-view-buttonactionview .action-hint,
+.is-trashbar-minimized .active-actions .ez-view-buttonactionview .action-label,
+.is-trashbar-minimized .active-actions .ez-view-buttonactionview .action-hint,
 .is-actionbar-minimized .active-actions .ez-view-buttonactionview .action-label,
 .is-actionbar-minimized .active-actions .ez-view-buttonactionview .action-hint {
     display: block;
@@ -77,13 +79,20 @@
 }
 
 .ez-view-buttonactionview .ez-action[data-action="sendToTrash"] .action-icon:before,
-.ez-view-buttonactionview .ez-action[data-action="sendToTrash"] .action-label{
+.ez-view-buttonactionview .ez-action[data-action="sendToTrash"] .action-label,
+.ez-view-buttonactionview .ez-action[data-action="emptyTrash"] .action-icon:before,
+.ez-view-buttonactionview .ez-action[data-action="emptyTrash"] .action-label{
     color: #E46474;
 }
 
 .ez-view-buttonactionview .ez-action[data-action="minimizeActionBar"] .action-icon:before,
+.ez-view-buttonactionview .ez-action[data-action="minimizeTrashBar"] .action-icon:before,
 .ez-view-buttonactionview .ez-action[data-action="minimizeDiscoveryBar"] .action-icon:before {
     content: "\E60c";
+}
+
+.ez-view-buttonactionview .ez-action[data-action="emptyTrash"] .action-icon:before {
+    content: "\E900";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="publish"] .action-icon:before {
