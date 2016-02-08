@@ -83,7 +83,11 @@ YUI.add('ez-alloyeditor-button-embedleft-tests', function (Y) {
                 "The component should generate a button"
             );
             Assert.isTrue(
-                Y.one(ReactDOM.findDOMNode(button)).one('span').hasClass('ae-icon-align-left'),
+                Y.one(ReactDOM.findDOMNode(button)).one('span').hasClass('ez-font-icon'),
+                "The button should have the ez-font-icon class"
+            );
+            Assert.isTrue(
+                Y.one(ReactDOM.findDOMNode(button)).one('span').hasClass('ez-ae-icon-align-embedleft'),
                 "The button should have the icon align left class"
             );
         },

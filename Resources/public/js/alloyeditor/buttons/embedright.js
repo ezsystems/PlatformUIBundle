@@ -41,7 +41,7 @@ YUI.add('ez-alloyeditor-button-embedright', function (Y) {
         getDefaultProps: function() {
             return {
                 alignment: 'right',
-                classIcon: 'right',
+                classIcon: 'embedright',
                 label: 'Right',
             };
         },

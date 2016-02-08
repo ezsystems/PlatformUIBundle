@@ -41,7 +41,7 @@ YUI.add('ez-alloyeditor-button-embedcenter', function (Y) {
         getDefaultProps: function() {
             return {
                 alignment: 'center',
-                classIcon: 'center',
+                classIcon: 'embedcenter',
                 label: 'Center',
             };
         },

@@ -92,7 +92,7 @@ YUI.add('ez-alloyeditor-button-mixin-embedalign', function (Y) {
 
         render: function() {
             var cssClass = 'ae-button ' + this.getStateClasses(),
-                iconCss = 'ae-icon-align-' + this.props.classIcon;
+                iconCss = 'ez-font-icon ez-ae-icon-align-' + this.props.classIcon;
 
             return (
                 <button className={cssClass} onClick={this.applyStyle}
