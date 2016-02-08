@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+    <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="36aaf69db32866a9c2dd745ef9f7a643" resname="section.list">
+                <source>section.list</source>
+                <target>Sections</target>
+            </trans-unit>
+            <trans-unit id="d588dd1c265006f31dbb8368dda58226" resname="section.name">
+                <source>section.name</source>
+                <target>Nom de la section</target>
+            </trans-unit>
+            <trans-unit id="6bb9217795bc1c5903f07476a0db6478" resname="section.identifier">
+                <source>section.identifier</source>
+                <target>Identifiant de la section</target>
+            </trans-unit>
+            <trans-unit id="1fdda1fb639ca79024d03e086790198c" resname="section.id">
+                <source>section.id</source>
+                <target>ID de section</target>
+            </trans-unit>
+            <trans-unit id="be3def83a46457e29924c29510691bb9" resname="section.assigned.content">
+                <source>section.assigned.content</source>
+                <target>Contenus assignés</target>
+            </trans-unit>
+            <trans-unit id="bd9bc055699bd779f27ce1c3b2e0121d" resname="section.edit">
+                <source>section.edit</source>
+                <target>Éditer</target>
+            </trans-unit>
+            <trans-unit id="8a0af0dc53d7aae987d698237d39b11a" resname="section.new">
+                <source>section.new</source>
+                <target>Créer une nouvelle section</target>
+            </trans-unit>
+            <trans-unit id="b2e01fb6617d17c162d59f0fb93da661" resname="section.remove.selected">
+                <source>section.remove.selected</source>
+                <target>Supprimer la sélection</target>
+            </trans-unit>
+            <trans-unit id="a1388bfac224ede1622fd041e51384e0" resname="section.view.title">
+                <source>section.view.title</source>
+                <target>Section: %sectionName%</target>
+            </trans-unit>
+            <trans-unit id="c56da0cc0963c5167293932e4409d502" resname="section.assigned.contentcount">
+                <source>section.assigned.contentcount</source>
+                <target>{0} Cette section n'est assignée à aucun élément de contenu.|{1} Cette section est assignée à %contentCount% élément de contenu.|]1,Inf[ Cette section est assignée à %contentCount% éléments de contenus
+                </target>
+            </trans-unit>
+            <trans-unit id="8a8d0e8570dc63672a52d3aad782ae41" resname="section.content.translate">
+                <source>section.content.translate</source>
+                <target>Contenus dans cette section (%contentCount%)</target>
+            </trans-unit>
+            <trans-unit id="967b7e408a5f43a03f44c7cf479855db" resname="section.create.title">
+                <source>section.create.title</source>
+                <target>Créer une nouvelle section</target>
+            </trans-unit>
+            <trans-unit id="f3c4115b0fe3b3ada04e69e775c2db2c" resname="section.edit.title">
+                <source>section.edit.title</source>
+                <target>Éditer la section "%sectionName%"</target>
+            </trans-unit>
+            <trans-unit id="007cd5845351d36a9ec70173d2b44bb2" resname="section.name.label">
+                <source>section.name.label</source>
+                <target>Nom de la section&#160;:</target>
+            </trans-unit>
+            <trans-unit id="3de80c254c9555ad1347b034f93f3095" resname="section.identifier.label">
+                <source>section.identifier.label</source>
+                <target>Identifiant de section&#160;:</target>
+            </trans-unit>
+            <trans-unit id="f066f9960df2f81907c3680c9148cef5" resname="section.id.label">
+                <source>section.id.label</source>
+                <target>ID de section&#160;:</target>
+            </trans-unit>
+            <trans-unit id="751bbc52342db46a046c52c4dc0b6b00" resname="section.label.edit">
+                <source>section.label.edit</source>
+                <target>Éditer la section</target>
+            </trans-unit>
+            <trans-unit id="60ff6d8b447be276d65797a5244d79c3" resname="section.error.id_already_exist">
+                <source>section.error.id_already_exist</source>
+                <target>Une section avec cet identifiant existe déjà, merci d'en saisir un autre</target>
+            </trans-unit>
+            <trans-unit id="85af0dc2a9b83eb5cfc7871a73cbeab9" resname="section.create.submit">
+                <source>section.create.submit</source>
+                <target>Sauvegarder</target>
+            </trans-unit>
+            <trans-unit id="94bfbed9c62011b82e87a97ea9ea9499">
+                <source>section.cancel</source>
+                <target>Annuler</target>
+            </trans-unit>
+            <trans-unit id="22e8e66a091b0c1227c4461e51e06443">
+                <source>section.deleted</source>
+                <target>La Section "%sectionName%" a été correctement supprimée.</target>
+            </trans-unit>
+            <trans-unit id="1bf9bdce5e87c98df324d43e717d9d85" resname="section.assign.universaldiscovery.title">
+                <source>section.assign.universaldiscovery.title</source>
+                <target>Choisir le contenu assigné à la section "%sectionName%"</target>
+            </trans-unit>
+            <trans-unit id="058b034a4aa957ab59f853e8375ff2b3" resname="section.assign.contents">
+                <source>section.assign.contents</source>
+                <target>Assigner au contenu</target>
+            </trans-unit>
+            <trans-unit id="419a9a2e9f888d56b6aea6e4cbb09561">
+                <source>section.notification.created</source>
+                <target>La section "%sectionName%" a été correctement créée.</target>
+            </trans-unit>
+            <trans-unit id="b49dc3557e76c56e175d0e133afa05d4">
+                <source>section.notification.updated</source>
+                <target>La section "%sectionName%" a été correctement sauvegardée.</target>
+            </trans-unit>
+            <trans-unit id="b93c76061ec3d7810f4175b3681a049e">
+                <source>section.notification.draft_removed</source>
+                <target>La section draft a été supprimée.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

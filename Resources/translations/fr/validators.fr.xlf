@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="5387d26cceb54294dafe82be9b0d61d0" resname="section.validator.identifier.format">
+        <source>section.validator.identifier.format</source>
+        <target>L'identifiant doit être constitué de lettres, chiffres ou '_', ce dernier étant positionné après une lettre.</target>
+      </trans-unit>
+      <trans-unit id="155500e916d288618860c5236b90621d" resname="section.validator.identifier.not_blank">
+        <source>section.validator.identifier.not_blank</source>
+        <target>L'identifiant de section ne peut pas être vide.</target>
+      </trans-unit>
+      <trans-unit id="a77edcfaca5a3e5b68e4e6ff309ed8d3" resname="section.validator.name.not_blank">
+        <source>section.validator.name.not_blank</source>
+        <target>Le nom de section ne peut pas être vide.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

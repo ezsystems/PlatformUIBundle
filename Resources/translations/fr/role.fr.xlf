@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <body>
+      <trans-unit id="b51b764f4a4a4454ce7ae9aa09052a93" resname="role.dashboard_title">
+        <source>role.dashboard_title</source>
+        <target>Rôles</target>
+      </trans-unit>
+      <trans-unit id="116fe107715e06c5f0b283003ff9f23f" resname="role">
+        <source>role</source>
+        <target>Rôle</target>
+      </trans-unit>
+      <trans-unit id="ace7da6f93a7ab5dc54784599bb75306" resname="role.list">
+        <source>role.list</source>
+        <target>Rôles</target>
+      </trans-unit>
+      <trans-unit id="b58732e80ac7bacb157aabb444717b9a" resname="role.name">
+        <source>role.name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="90b59527b434389b4a260bf31722fb30" resname="role.name_new">
+        <source>role.name_new</source>
+        <target>Nouveau rôle</target>
+      </trans-unit>
+      <trans-unit id="612113d4677048958ebcf88e3fb0e1c0" resname="role.id">
+        <source>role.id</source>
+        <target>ID</target>
+      </trans-unit>
+      <trans-unit id="72e584ea4fbac71aa627215d16fff4e1" resname="role.edit">
+        <source>role.edit</source>
+        <target>Éditer le rôle</target>
+      </trans-unit>
+      <trans-unit id="292d3fbfd0abb7bf81b957ce9e33adde" resname="role.delete">
+        <source>role.delete</source>
+        <target>Supprimer</target>
+      </trans-unit>
+      <trans-unit id="c5cc00d482146dbbdb647bed1143b420" resname="role.deleted">
+        <source>role.deleted</source>
+        <target>Rôle "%roleIdentifier%" a été correctement supprimé.</target>
+      </trans-unit>
+      <trans-unit id="8aea6bc8b6fcc1acf7d50903cc25da18" resname="role.error.delete">
+        <source>role.error.delete</source>
+        <target>Une erreur s'est produite lors de la suppression du rôle "%roleIdentifier%".</target>
+      </trans-unit>
+      <trans-unit id="bf659b96c1661a99b71fcd42c9f68244" resname="role.policy_none">
+        <source>role.policy_none</source>
+        <target>Aucune politique n'est configurée dans ce rôle.</target>
+      </trans-unit>
+      <trans-unit id="5b69eca365f73fcf779ddb30d7ed5358" resname="policy.module">
+        <source>policy.module</source>
+        <target>Module</target>
+      </trans-unit>
+      <trans-unit id="ab5d6ec0c733219997c1df13f1b096b6" resname="policy.module_all">
+        <source>policy.module_all</source>
+        <target>Tous les modules</target>
+      </trans-unit>
+      <trans-unit id="50715d043d88dc13ada8c11dc0b13d59" resname="policy.function">
+        <source>policy.function</source>
+        <target>Fonction</target>
+      </trans-unit>
+      <trans-unit id="885108c36f44e5da60ecbfb166a91861" resname="policy.function_all">
+        <source>policy.function_all</source>
+        <target>Toutes les fonctions</target>
+      </trans-unit>
+      <trans-unit id="e9dcc92fcff6dd7fb07fa065eb135eb9" resname="policy.limitation">
+        <source>policy.limitation</source>
+        <target>Limitation</target>
+      </trans-unit>
+      <trans-unit id="c9e0a4132fdf9aa754d4933e94a61f30" resname="policy.limitation_none">
+        <source>policy.limitation_none</source>
+        <target>Pas de limitation</target>
+      </trans-unit>
+      <trans-unit id="cd7cb53b91315c2c2f05ff6ae1d2d51b" resname="assignment.user_or_group_using">
+        <source>assignment.user_or_group_using</source>
+        <target>Utilisateurs et groupes affectés au &lt;%rôle%&gt; rôle (%count%)</target>
+      </trans-unit>
+      <trans-unit id="e41d365165963c4d8ad711e7d61b3300" resname="assignment.user_or_group">
+        <source>assignment.user_or_group</source>
+        <target>Utilisateur/groupe</target>
+      </trans-unit>
+      <trans-unit id="56e0c31921f56f2ee08aa3eda9ac027b" resname="assignment.role_limitation">
+        <source>assignment.role_limitation</source>
+        <target>Limitation</target>
+      </trans-unit>
+      <trans-unit id="03412ff245644412579d21734cec155e" resname="assignment.role_limitation_none">
+        <source>assignment.role_limitation_none</source>
+        <target>Aucune limitation</target>
+      </trans-unit>
+      <trans-unit id="3b90a6a797f05f1c028d2d67de33474a" resname="assignment.none">
+        <source>assignment.none</source>
+        <target>Ce rôle n'est assigné à aucun utilisateur ou groupe d'utilisateurs.</target>
+      </trans-unit>
+      <trans-unit id="7b6e13593aac4acd0d48890ce2eb84a9" resname="role.edit_title">
+        <source>role.edit_title</source>
+        <target>Éditer &lt;%roleName%&gt;</target>
+      </trans-unit>
+      <trans-unit id="54d0a4e8dc5f7f5feaf28c6787f206de" resname="role.notification.draft_saved">
+        <source>role.notification.draft_saved</source>
+        <target>Le brouillon du rôle a été sauvegardé.</target>
+      </trans-unit>
+      <trans-unit id="aa442aca2aea36e5a3f45abc04a47dd2" resname="role.notification.draft_removed">
+        <source>role.notification.draft_removed</source>
+        <target>Le rôle brouillon a été supprimé.</target>
+      </trans-unit>
+      <trans-unit id="394063152aa6d077fddc708429cf2bb0" resname="role.notification.published">
+        <source>role.notification.published</source>
+        <target>Le rôle a été publié.</target>
+      </trans-unit>
+      <trans-unit id="c5bf1c22e52dcbb1a257d734d82d22ce" resname="role.notification.invalid_argument">
+        <source>role.notification.invalid_argument</source>
+        <target>Argument invalide&#160;: le nom de rôle doit être unique.</target>
+      </trans-unit>
+      <trans-unit id="512da366dbe32968cf07dc7230e3d5d4" resname="role.notification.unauthorized">
+        <source>role.notification.unauthorized</source>
+        <target>Non autorisé&#160;: vous n'avez pas les droits d'accès pour effectuer cette action.</target>
+      </trans-unit>
+      <trans-unit id="dd48a66df5743b59288691bda67d8cdf" resname="role.error.name_or_limitation">
+        <source>role.error.name_or_limitation</source>
+        <target>Ce nom de rôle existe déjà, ou il existe des erreurs dans les limitations.</target>
+      </trans-unit>
+      <trans-unit id="36fc1bd67467678047021af1f6708b6b" resname="role.error.limitation_validation">
+        <source>role.error.limitation_validation</source>
+        <target>La politique de limitation(s) n'est pas valide.</target>
+      </trans-unit>
+      <trans-unit id="fd2b465d29cee04ec379edae001cff7e" resname="role.error.name_exists">
+        <source>role.error.name_exists</source>
+        <target>Ce nom de rôle existe déjà.</target>
+      </trans-unit>
+      <trans-unit id="df4bf1b27476f996e2feb6b836920bf7">
+        <source>role.error.policy_not_found</source>
+        <target>Le rôle #%roleId% ne contient aucune politique avec l'ID #%policyId%</target>
+      </trans-unit>
+      <trans-unit id="8483958b5b33d86e797ab02903e90126">
+        <source>role.policy.create.title</source>
+        <target>Nouvelle politique</target>
+      </trans-unit>
+      <trans-unit id="3033eea6a0c9f35cec56b90a187ab5e4">
+        <source>role.policy.edit.title</source>
+        <target>Éditer %policy%</target>
+      </trans-unit>
+      <trans-unit id="e5cad95e7e4a9e50c68dae5020daf2fd">
+        <source>role.policy.add</source>
+        <target>Ajouter une nouvelle politique</target>
+      </trans-unit>
+      <trans-unit id="364b9bb8f177edb24bf5569751dee3c0">
+        <source>role.policy.edit_limitations</source>
+        <target>Éditer les limitations</target>
+      </trans-unit>
+      <trans-unit id="c40e607f6b6c9f13fb2d68fe23f713d9">
+        <source>role.policy.notification.draft_saved</source>
+        <target>Le brouillon de la politique a été sauvegardé.</target>
+      </trans-unit>
+      <trans-unit id="4e4b4523818f00b0ac036dcc8cca1de2">
+        <source>role.policy.notification.draft_removed</source>
+        <target>Le brouillon de la politique a été supprimé.</target>
+      </trans-unit>
+      <trans-unit id="a240eb45d946f91511737ad29c7cbbfb">
+        <source>role.policy.deleted</source>
+        <target>La politique #%policyId% pour le rôle "%roleIdentifier%" a été correctement supprimée.</target>
+      </trans-unit>
+      <trans-unit id="e3f78c1d66fd4a7a1fcc4fe2a60e48be">
+        <source>role.policy.error.delete</source>
+        <target>Une erreur s'est produite lors de la tentative de suppression de la politique #%policyId% pour le rôle "%roleIdentifier%".</target>
+      </trans-unit>
+      <trans-unit id="23751a9239966ac8d8c91065938e3ea9" resname="role.assign.universaldiscovery.title">
+        <source>role.assign.universaldiscovery.title</source>
+        <target>Choisir les utilisateurs/groupes à assigner au rôle "%roleIdentifier%"</target>
+      </trans-unit>
+      <trans-unit id="bedda6287c6ce333b45b0f080ff935c5" resname="role.assign.user_or_group">
+        <source>role.assign.user_or_group</source>
+        <target>Assigner aux utilisateurs/groupes</target>
+      </trans-unit>
+      <trans-unit id="6ed6a4fae680d7df596efde3f0aad03b" resname="role.assignment.deleted">
+        <source>role.assignment.deleted</source>
+        <target>L'assignation du rôle a été correctement supprimée.</target>
+      </trans-unit>
+      <trans-unit id="ef8986cfecad00ae81a92f3cdf8d0621" resname="role.assignment.error.delete">
+        <source>role.assignment.error.delete</source>
+        <target>Une erreur s'est produite lors de la suppression de l'assignation du rôle.</target>
+      </trans-unit>
+      <trans-unit id="5251a34b2652d32806ced95c1c2ed7b9" resname="role.view.delete_assignment">
+        <source>role.view.delete_assignment</source>
+        <target>Supprimer l'assignation</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
