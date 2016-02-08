@@ -27,7 +27,7 @@
             {% for section in sections %}
             {# @var section \eZ\Publish\API\Repository\Values\Content\Section #}
                 <option data-section-rest-id="{{ path('ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
-                <option value="{{ section.id }}">{{ section.name }}</option>
+                        value="{{ section.id }}">{{ section.name }}</option>
             {% endfor %}
         </select>
         <p>
