@@ -21,6 +21,9 @@ YUI.add('ez-roleserversideview', function (Y) {
             '.ez-role-assign-limit-section-button': {
                 'tap': '_pickSubtreeWithSectionLimitation'
             },
+            '.ez-role-assign-limit-subtree-button': {
+                'tap': '_pickLocationLimitation'
+            }
         };
 
     /**
@@ -87,6 +90,30 @@ YUI.add('ez-roleserversideview', function (Y) {
             e.preventDefault();
             this._uiSetUDWButtonLoading(button);
             this._fireContentDiscover(button, unsetLoading, udwConfigData);
+        },
+
+        /**
+         * tap event handler for policy limitation on location ("Node"). It launches the
+         * universal discovery widget so that the user can pick a location.
+         *
+         * @method _pickLocationLimitation
+         * @protected
+         * @param {EventFacade} e
+         */
+        _pickLocationLimitation: function (e) {
+            var button = e.target,
+                unsetLoading = Y.bind(this._uiSetAssignRoleLoading, this, button);
+
+            e.preventDefault();
+            this._uiSetAssignRoleLoading(button);
+            this.fire('contentDiscover', {
+                config: {
+                    title: button.getAttribute('data-universaldiscovery-title'),
+                    cancelDiscoverHandler: unsetLoading,
+                    multiple: true,
+                    contentDiscoveredHandler: Y.bind(this._setLocationLimitation, this, button),
+                },
+            });
         },
 
         /**
