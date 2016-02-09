@@ -49,12 +49,19 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base-tests', function (Y) {
                     return {block: this.blockElement};
                 }, this),
             });
+            nativeEditor.widgets = new Mock();
+            Mock.expect(nativeEditor.widgets, {
+                method: 'getByElement',
+                args: [this.blockElement],
+                returns: true,
+            });
             this.editor = new Mock();
             Mock.expect(this.editor, {
                 method: 'get',
                 args: ['nativeEditor'],
                 returns: nativeEditor,
             });
+            this.nativeEditor = nativeEditor;
 
             this.toolbar = new Mock();
             this.toolbar.props = {gutter: {left: 0, top: 0}};
@@ -86,6 +93,62 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base-tests', function (Y) {
             Y.one(this.blockNode).removeAttribute('style');
         },
 
+        "Should move the toolbar to the expected coordinates based on the text content": function () {
+            Mock.expect(this.nativeEditor.widgets, {
+                method: 'getByElement',
+                args: [this.blockElement],
+                returns: false,
+            });
+            BlockBase.setPosition.call(this.toolbar, {editor: this.editor});
+
+            Assert.areEqual(
+                Y.one(this.blockNode).getComputedStyle('top'), Y.one(this.toolbarNode).getComputedStyle('bottom'),
+                "The toolbar bottom position should be its block top position"
+            );
+            Assert.areEqual(
+                Y.one(this.blockNode).get('region').left - this.outlineWidth - this.outlineOffset  + 'px', this.toolbarNode.style.left,
+                "The toolbar should be aligned with its block on the left taking the outline into account"
+            );
+        },
+
+        "Should move the toolbar to the expected coordinates based for an empty element": function () {
+            this.blockNode.innerHTML = '';
+            Mock.expect(this.nativeEditor.widgets, {
+                method: 'getByElement',
+                args: [this.blockElement],
+                returns: false,
+            });
+            BlockBase.setPosition.call(this.toolbar, {editor: this.editor});
+
+            Assert.areEqual(
+                Y.one(this.blockNode).getComputedStyle('top'), Y.one(this.toolbarNode).getComputedStyle('bottom'),
+                "The toolbar bottom position should be its block top position"
+            );
+            Assert.areEqual(
+                Y.one(this.blockNode).get('region').left - this.outlineWidth - this.outlineOffset  + 'px', this.toolbarNode.style.left,
+                "The toolbar should be aligned with its block on the left taking the outline into account"
+            );
+        },
+
+        "Should move the toolbar to the expected coordinates based for an element containing a br only": function () {
+            this.blockNode.innerHTML = '<br>';
+            Mock.expect(this.nativeEditor.widgets, {
+                method: 'getByElement',
+                args: [this.blockElement],
+                returns: false,
+            });
+            BlockBase.setPosition.call(this.toolbar, {editor: this.editor});
+
+            Assert.areEqual(
+                Y.one(this.blockNode).getComputedStyle('top'), Y.one(this.toolbarNode).getComputedStyle('bottom'),
+                "The toolbar bottom position should be its block top position"
+            );
+            Assert.areEqual(
+                Y.one(this.blockNode).get('region').left - this.outlineWidth - this.outlineOffset  + 'px', this.toolbarNode.style.left,
+                "The toolbar should be aligned with its block on the left taking the outline into account"
+            );
+        },
+
         "Should move the toolbar to the expected coordinates": function () {
             BlockBase.setPosition.call(this.toolbar, {editor: this.editor});
 
@@ -101,6 +164,21 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base-tests', function (Y) {
 
         "Should move the toolbar to the expected coordinates based on the event target": function () {
             this.blockElement = null;
+
+            Mock.expect(this.nativeEditor.widgets, {
+                method: 'getByElement',
+                args: [Mock.Value.Object],
+                run: Y.bind(function (block) {
+                    Assert.isInstanceOf(
+                        CKEDITOR.dom.element, block,
+                        "The block should be a CKEDITOR.dom.element"
+                    );
+                    Assert.areSame(
+                        this.eventTarget, block.$,
+                        "The event target DOM element should be the source of the CKEDITOR element"
+                    );
+                }, this)
+            });
             BlockBase.setPosition.call(this.toolbar, {
                 editor: this.editor,
                 editorEvent: {

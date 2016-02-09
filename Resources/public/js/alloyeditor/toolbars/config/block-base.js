@@ -22,23 +22,45 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base', function (Y) {
         );
     }
 
-    function setPositionFor(block) {
+    function isEmpty(block) {
+        var count = block.$.childNodes.length;
+
+        return (count === 0 || (count === 1 && block.$.childNodes.item(0).localName === 'br'));
+    }
+
+    function setPositionFor(block, editor) {
         /* jshint validthis: true */
         var blockRect = block.getClientRect(),
+            positionReference = block,
             outlineWidth = outlineTotalWidth(block),
-            domNode = ReactDOM.findDOMNode(this),
-            xy, domElement;
+            xy, domElement,
+            range, left = 0,
+            empty = isEmpty(block);
 
+        if ( editor.widgets.getByElement(block) ) {
+            left = blockRect.left;
+        } else {
+            if ( empty ) {
+                block.appendHtml('<span>&nbsp;</span>');
+                positionReference = block.findOne('span');
+            }
+            range = document.createRange();
+            range.selectNodeContents(positionReference.$);
+            left = range.getBoundingClientRect().left;
+            if ( empty ) {
+                positionReference.remove();
+            }
+        }
         xy = this.getWidgetXYPoint(
             blockRect.left - outlineWidth,
             blockRect.top + block.getWindow().getScrollPosition().y - outlineWidth,
             CKEDITOR.SELECTION_BOTTOM_TO_TOP
         );
 
-        domElement = new CKEDITOR.dom.element(domNode);
+        domElement = new CKEDITOR.dom.element(ReactDOM.findDOMNode(this));
         domElement.addClass('ae-toolbar-transition');
         domElement.setStyles({
-            left: (blockRect.left - outlineWidth) + 'px',
+            left: (left - outlineWidth) + 'px',
             top: xy[1] + 'px'
         });
         return true;
@@ -72,12 +94,13 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base', function (Y) {
          * toolbar
          */
         setPosition: function (payload) {
-            var block = payload.editor.get('nativeEditor').elementPath().block;
+            var editor = payload.editor.get('nativeEditor'),
+                block = editor.elementPath().block;
 
             if ( !block ) {
                 block = new CKEDITOR.dom.element(payload.editorEvent.data.nativeEvent.target);
             }
-            return setPositionFor.call(this, block);
+            return setPositionFor.call(this, block, editor);
         },
     };
 });
