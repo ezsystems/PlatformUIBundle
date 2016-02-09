@@ -35,8 +35,8 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
             delete this.service;
         },
 
-        "Should add the contentDiscovered handler": function () {
-            var config = {};
+        "Should add the contentDiscovered handler on role assignment": function () {
+            var config = { data: { roleId: 42 } };
 
             this.service.fire('whatever:contentDiscover', {
                 config: config,
@@ -45,6 +45,19 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
             Assert.isFunction(
                 config.contentDiscoveredHandler,
                 "The contentDiscovered should have been added"
+            );
+        },
+
+        "Should not add the contentDiscovered handler on policy editing": function () {
+            var config = {};
+
+            this.service.fire('whatever:contentDiscover', {
+                config: config,
+            });
+
+            Assert.isUndefined(
+                config.contentDiscoveredHandler,
+                "The contentDiscovered should not have been added"
             );
         },
     });
@@ -129,7 +142,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 callback = function () {
                     callbackCalled = true;
                 },
-                config = {},
+                config = { data: { roleId: 42 } },
                 that = this;
 
             Mock.expect(universalDiscovery, {
@@ -180,7 +193,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 callback = function () {
                     callbackCalled = true;
                 },
-                config = {},
+                config = { data: { roleId: 42 } },
                 that = this;
 
             Mock.expect(universalDiscovery, {
@@ -303,7 +316,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 contentType = getMockForJson(contentTypeJson),
                 selection = [{contentInfo: contentInfo, contentType: contentType, location: location}],
                 universalDiscovery = new Mock(),
-                config = {},
+                config = { data: { roleId: 42 } },
                 startNotificationFired = false,
                 successNotificationFired = false,
                 errorNotificationFired = false,
@@ -394,7 +407,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 contentType = getMockForJson(contentTypeJson),
                 selection = [{contentInfo: contentInfo, contentType: contentType, location: location}],
                 universalDiscovery = new Mock(),
-                config = {},
+                config = { data: { roleId: 42 } },
                 startNotificationFired = false,
                 successNotificationFired = false,
                 errorNotificationFired = false,
@@ -466,7 +479,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 contentInfo = getMockForJson(contentJson),
                 selection = [{contentInfo: contentInfo}],
                 universalDiscovery = new Mock(),
-                config = {},
+                config = { data: { roleId: 42 } },
                 startNotificationFired = false,
                 successNotificationFired = false,
                 errorNotificationFired = false,
@@ -549,7 +562,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 contentType = getMockForJson(contentTypeJson),
                 selection = [{contentInfo: contentInfo, contentType: contentType}],
                 universalDiscovery = new Mock(),
-                config = {},
+                config = { data: { roleId: 42 } },
                 startNotificationFired = false,
                 successNotificationFired = false,
                 errorNotificationFired = false,
