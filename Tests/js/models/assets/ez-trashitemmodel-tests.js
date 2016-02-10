@@ -4,7 +4,8 @@
  */
 YUI.add('ez-trashitemmodel-tests', function (Y) {
     var loadFromHashTest,
-        Assert = Y.Assert;
+        restoreTest,
+        Assert = Y.Assert, Mock = Y.Mock;
 
     loadFromHashTest = new Y.Test.Case({
         name: "eZ TrashItem Model loadFromHash test",
@@ -204,8 +205,63 @@ YUI.add('ez-trashitemmodel-tests', function (Y) {
         },
     });
 
+    restoreTest = new Y.Test.Case({
+        name: "eZ TrashItem Model restore test",
+
+        setUp: function () {
+            this.model = new Y.eZ.TrashItem();
+            this.id = 42;
+
+            this.contentServiceMock = new Mock();
+
+            this.apiMock = new Mock();
+            Mock.expect(this.apiMock, {
+                method: "getContentService",
+                args: [],
+                returns: this.contentServiceMock
+            });
+
+            this.options = {api: this.apiMock};
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        "Should call the api on restore": function () {
+            var restoreCallback = function () {};
+
+            Mock.expect(this.contentServiceMock, {
+                method: "recover",
+                args: [this.id, Mock.Value.Function],
+                run: Y.bind(function (id, callback) {
+                    Assert.areSame(
+                        this.id,
+                        id,
+                        "Id passed to the contentService should match the model's"
+                    );
+
+                    Assert.areSame(
+                        restoreCallback,
+                        callback,
+                        "Callback passed to the contentService should match"
+                    );
+
+                    callback();
+                }, this),
+            });
+
+            this.model.set('id', this.id);
+            this.model.restore(this.options, restoreCallback);
+
+            Mock.verify(this.contentServiceMock);
+        },
+    });
+
 
     Y.Test.Runner.setName("eZ Trash Item Model tests");
     Y.Test.Runner.add(loadFromHashTest);
+    Y.Test.Runner.add(restoreTest);
 
 }, '', {requires: ['test', 'model-tests', 'ez-trashitemmodel', 'ez-contentinfomodel', 'ez-contentinfo-attributes', 'ez-restmodel']});

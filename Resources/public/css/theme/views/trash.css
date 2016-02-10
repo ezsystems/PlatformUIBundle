@@ -27,7 +27,7 @@
     background: #fff;
 }
 
-.ez-view-trashview .ez-trashview-table tr:nth-child(2n-1) td {
+.ez-view-trashview .ez-trashview-table-row:nth-child(2n-1) td {
     background: #fafafa;
 }
 

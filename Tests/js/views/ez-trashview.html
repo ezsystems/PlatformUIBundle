@@ -8,7 +8,11 @@
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="trashview-ez-template">
-    <div class="ez-trashview-content"></div>
+    <div class="ez-trashview-content">
+        {{#each trashItems}}
+        <input type="checkbox" class="ez-trashitem-box" value="{{item.id}}"/>
+        {{/each}}
+    </div>
     <div class="ez-trashbar-container"></div>
 </script>
 
@@ -32,7 +36,11 @@
         modules: {
             "ez-trashview": {
                 requires: [
-                    'ez-templatebasedview', 'array-extras', 'ez-trashbarview', 'node-style',
+                    'ez-templatebasedview',
+                    'array-extras',
+                    'ez-trashbarview',
+                    'node-style',
+                    'ez-selection-table',
                 ],
                 fullpath: "../../../Resources/public/js/views/ez-trashview.js"
             },
@@ -59,6 +67,10 @@
             "ez-pluginregistry": {
                 requires: ['array-extras'],
                 fullpath: "../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+            "ez-selection-table": {
+                requires: ['node'],
+                fullpath: "../../../Resources/public/js/extensions/ez-selection-table.js"
             },
         }
     }).use('ez-trashview-tests', function (Y) {

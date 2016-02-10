@@ -41,7 +41,7 @@ YUI.add('ez-trashbarview-tests', function (Y) {
             var actionsList = this.view.get('actionsList');
 
             Assert.areSame(
-                2,
+                3,
                 actionsList.length,
                 "The action list should contains two buttons"
             );
@@ -55,6 +55,8 @@ YUI.add('ez-trashbarview-tests', function (Y) {
 
                 if (buttonActionView.get('actionId') === "minimizeTrashBar") {
                     this._testButtonAction(buttonActionView, false, "Minimize", 1000);
+                } else if (buttonActionView.get('actionId') === "restoreTrashItems") {
+                    this._testButtonAction(buttonActionView, true, "Restore Selected", 800);
                 } else if (buttonActionView.get('actionId') === "emptyTrash") {
                     this._testButtonAction(buttonActionView, false, "Empty the Trash", 10);
                 } else {

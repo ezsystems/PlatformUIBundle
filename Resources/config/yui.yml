@@ -547,6 +547,7 @@ system:
                         - 'ez-templatebasedview'
                         - 'trashview-ez-template'
                         - 'ez-trashbarview'
+                        - 'ez-selection-table'
                         - 'node-style'
                         - 'array-extras'
                     path: %ez_platformui.public_dir%/js/views/ez-trashview.js
