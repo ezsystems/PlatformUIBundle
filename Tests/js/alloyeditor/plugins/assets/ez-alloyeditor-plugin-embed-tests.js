@@ -511,21 +511,21 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
             );
         },
 
-        "Should set the data-ez-alignment attribute on the wrapper": function () {
+        "Should set the data-ezalign attribute on the wrapper": function () {
             var widget = this._getWidget('#aligned-embed');
 
             Assert.areEqual(
-                'center', widget.wrapper.data('ez-alignment'),
-                "The data-ez-alignment should have been added"
+                'center', widget.wrapper.data('ezalign'),
+                "The data-ezalign should have been added"
             );
         },
 
-        "Should not set the data-ez-alignment attribute on the wrapper": function () {
+        "Should not set the data-ezalign attribute on the wrapper": function () {
             var widget = this._getWidget('#embed');
 
             Assert.isNull(
-                widget.wrapper.data('ez-alignment'),
-                "The data-ez-alignment should not have been added"
+                widget.wrapper.data('ezalign'),
+                "The data-ezalign should not have been added"
             );
         }
     });
@@ -585,9 +585,9 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
                 widget.isAligned('right'),
                 "The widget should be aligned on the right"
             );
-            Assert.isTrue(
-                widget.element.hasClass('ez-object-align-right'),
-                "The 'ez-object-align-right' should have been added"
+            Assert.areEqual(
+                'right', widget.element.data('ezalign'),
+                "The 'data-ezalign' attribute should have been added"
             );
         },
 
@@ -603,9 +603,9 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
                 widget.isAligned('right'),
                 "The widget should be aligned on the right"
             );
-            Assert.isTrue(
-                widget.element.hasClass('ez-object-align-right'),
-                "The 'ez-object-align-right' should have been added"
+            Assert.areEqual(
+                'right', widget.element.data('ezalign'),
+                "The 'data-ezalign' attribute should have been added"
             );
         },
 
@@ -617,9 +617,13 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
                 widget.isAligned('right'),
                 "The widget should not be aligned anymore"
             );
-            Assert.isFalse(
-                widget.element.hasClass('ez-object-align-center'),
-                "The 'ez-object-align-center' should have been removed"
+            Assert.isNull(
+                widget.wrapper.data('ezalign'),
+                "The 'data-ezalign' attribute should have been removed from the wrapper"
+            );
+            Assert.isNull(
+                widget.element.data('ezalign'),
+                "The 'data-ezalign' attribute should have been removed from the element"
             );
         },
     });

@@ -7,8 +7,7 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
     "use strict";
 
     var IMAGE_TYPE_CLASS = 'ez-embed-type-image',
-        ALIGNMENT_CLASS_PREFIX = 'ez-object-align-',
-        DATA_ALIGNMENT_ATTR = 'ez-alignment';
+        DATA_ALIGNMENT_ATTR = 'ezalign';
 
     if (CKEDITOR.plugins.get('ezembed')) {
         return;
@@ -45,55 +44,47 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
 
                 init: function () {
                     this.on('focus', this._fireEditorInteraction);
-
                     this._syncAlignment();
                 },
 
                 /**
                  * Initializes the alignment on the widget wrapper if the widget
-                 * element has an alignment class (`ez-object-align-.*`).
+                 * is aligned.
                  *
                  * @method _syncAlignment
                  * @protected
                  */
                 _syncAlignment: function () {
-                    var types = Array.prototype.filter.call(this.element.$.classList, function (cl) {
-                            return cl.indexOf(ALIGNMENT_CLASS_PREFIX) === 0;
-                        });
+                    var align = this.element.data(DATA_ALIGNMENT_ATTR);
 
-                    if ( types[0] ) {
-                        this.setAlignment(types[0].replace(ALIGNMENT_CLASS_PREFIX, ''));
+                    if ( align ) {
+                        this.setAlignment(align);
+                    } else {
+                        this.unsetAlignment();
                     }
                 },
 
                 /**
                  * Sets the alignment of the embed widget to `type`. The
-                 * alignment is set by adding the `data-ez-alignment` attribute
-                 * on the widget wrapper and the `ez-object-<type>̀` class on the
-                 * widget element.
+                 * alignment is set by adding the `data-ezalign` attribute
+                 * on the widget wrapper and the widget element.
                  *
                  * @method setAlignment
                  * @param {String} type
                  */
                 setAlignment: function (type) {
-                    var current = this._getAlignment();
-
-                    if  ( current ) {
-                        this.unsetAlignment(current);
-                    }
                     this.wrapper.data(DATA_ALIGNMENT_ATTR, type);
-                    this.element.addClass(this._getAlignmentClass(type));
+                    this.element.data(DATA_ALIGNMENT_ATTR, type);
                 },
 
                 /**
-                 * Removes the `type` alignment of the widget.
+                 * Removes the alignment of the widget.
                  *
                  * @method unsetAlignment
-                 * @param {String} type
                  */
-                unsetAlignment: function (type) {
-                    this.wrapper.data(DATA_ALIGNMENT_ATTR, '');
-                    this.element.removeClass(this._getAlignmentClass(type));
+                unsetAlignment: function () {
+                    this.wrapper.data(DATA_ALIGNMENT_ATTR, false);
+                    this.element.data(DATA_ALIGNMENT_ATTR, false);
                 },
 
                 /**
@@ -105,30 +96,6 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                  */
                 isAligned: function (type) {
                     return (this.wrapper.data(DATA_ALIGNMENT_ATTR) === type);
-                },
-
-                /**
-                 * Returns the alignment ie the value of the
-                 * `data-ez-alignment` attribute on the widget wrapper
-                 *
-                 * @method _getAlignment
-                 * @protected
-                 * @return {String|Null}
-                 */
-                _getAlignment: function () {
-                    return this.wrapper.data(DATA_ALIGNMENT_ATTR);
-                },
-
-                /**
-                 * Builds the alignment class for the given `type`
-                 *
-                 * @method _getAlignmentClass
-                 * @param {String} type
-                 * @protected
-                 * @return {String}
-                 */
-                _getAlignmentClass: function (type) {
-                    return ALIGNMENT_CLASS_PREFIX + type;
                 },
 
                 /**

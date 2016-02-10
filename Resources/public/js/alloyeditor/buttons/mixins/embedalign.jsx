@@ -83,7 +83,7 @@ YUI.add('ez-alloyeditor-button-mixin-embedalign', function (Y) {
             var widget = this._getWidget();
 
             if ( this.isActive() ) {
-                widget.unsetAlignment(this.props.alignment);
+                widget.unsetAlignment();
             } else {
                 widget.setAlignment(this.props.alignment);
             }

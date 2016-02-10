@@ -27,14 +27,14 @@
     display: none;
 }
 
-.ez-richtext-editable [data-ez-alignment="center"] {
+.ez-richtext-editable [data-ezalign="center"] {
     text-align: center;
 }
 
-.ez-richtext-editable [data-ez-alignment="right"] {
+.ez-richtext-editable [data-ezalign="right"] {
     float: right;
 }
 
-.ez-richtext-editable [data-ez-alignment="left"] {
+.ez-richtext-editable [data-ezalign="left"] {
     float: left;
 }

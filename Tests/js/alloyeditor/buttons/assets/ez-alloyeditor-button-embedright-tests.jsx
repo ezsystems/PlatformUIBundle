@@ -179,7 +179,6 @@ YUI.add('ez-alloyeditor-button-embedright-tests', function (Y) {
             });
             Mock.expect(this.widget, {
                 method: 'unsetAlignment',
-                args: ['right'],
             });
 
             button = ReactDOM.render(
