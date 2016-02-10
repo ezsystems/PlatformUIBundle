@@ -1,8 +1,4 @@
 <ul class="ez-zones-navigation">
-    <li class="ez-user-info">
-        <p class="ez-user-info-name">{{ user.name }}</p>
-        <p class="ez-user-info-logout"><a href="#" class="ez-logout">Logout</a></p>
-    </li>
     <li class="ez-logo"><a href="{{ path "dashboard" }}"><img src="{{ asset "bundles/ezplatformui/img/logo.png" }}" alt="Logo eZ" /></a></li>
 {{#each zones }}
     <li class="ez-zone ez-{{ @key }}-zone{{#unless hasNavigation}} ez-zone-no-navigation{{/unless}}" data-navigation="{{ @key }}">

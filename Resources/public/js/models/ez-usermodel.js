@@ -36,12 +36,42 @@ YUI.add('ez-usermodel', function (Y) {
             var api = options.api;
 
             if ( action === 'read' ) {
-                api.getUserService().loadUser(
-                    this.get('id'), callback
-                );
+                api.getUserService().loadUser(this.get('id'), function (err, response) {
+                    var contentType;
+
+                    if ( err ) {
+                        return callback(err, response);
+                    }
+
+                    contentType = new Y.eZ.ContentType({id: response.document.User.ContentType._href});
+                    contentType.load({api: api}, function (error) {
+                        response.document._contentType = contentType;
+                        callback(error, response);
+                    });
+                });
             } else {
                 callback("Only read operation is supported at the moment");
             }
+        },
+
+        /**
+         * Override the default implementation to find the avatar (if any) in the user Content item.
+         *
+         * @protected
+         * @method _parseStruct
+         * @param {Object} the user item
+         * @param {Object} the response document
+         */
+        _parseStruct: function (struct, responseDoc) {
+                var attrs, imageField,
+                    imageIdentifiers = responseDoc._contentType.getFieldDefinitionIdentifiers('ezimage');
+
+            attrs = this.constructor.superclass._parseStruct.call(this, struct);
+            imageField = struct.Version.Fields.field.filter(function (field) {
+                return field.fieldDefinitionIdentifier == imageIdentifiers[0];
+            });
+            attrs.avatar = imageField.length ? imageField[0].fieldValue : null;
+            return attrs;
         }
     }, {
         REST_STRUCT_ROOT: "User",
@@ -104,6 +134,17 @@ YUI.add('ez-usermodel', function (Y) {
              */
             remoteId: {
                 value: ''
+            },
+
+            /**
+             * The user's avatar
+             *
+             * @attribute avatar
+             * @default null
+             * @type object
+             */
+            avatar: {
+                value: null
             }
         }
     });

@@ -37,9 +37,6 @@ YUI.add('ez-navigationhubview', function (Y) {
                 'mouseout': '_uiHideSubMenu',
                 'tap': '_uiToggleSubMenu',
             },
-            '.ez-logout': {
-                'tap': '_logOut',
-            }
         },
 
         /*
@@ -97,6 +94,8 @@ YUI.add('ez-navigationhubview', function (Y) {
             this.after('navigationFixedChange', this._uiHandleFixedNavigation);
             this.after('activeChange', this._onActiveUpdate);
             this.after('matchedRouteChange', this._handleSelectedItem);
+            this.after('userChange', this._setUserData);
+            this.after('userAvatarChange', this._setUserAvatar);
         },
 
         /**
@@ -244,12 +243,42 @@ YUI.add('ez-navigationhubview', function (Y) {
             var container = this.get('container');
 
             container.setHTML(this.template({
-                user: this.get('user').toJSON(),
                 zones: this._buildZones(),
             }));
             this._renderNavigationItems();
             this._uiSetActiveNavigation();
+            this._renderUserProfile();
             return this;
+        },
+
+        /**
+         * Sets user data to the view
+         *
+         * @method _setUserData
+         * @protected
+         */
+        _setUserData: function () {
+            this.get('userProfileView').set('user', this.get('user'));
+        },
+
+        /**
+         * Sets user avatar to the view
+         *
+         * @method _setUserAvatar
+         * @protected
+         */
+        _setUserAvatar: function () {
+            this.get('userProfileView').set('userAvatar', this.get('userAvatar'));
+        },
+
+        /**
+         * Renders user profile to the view
+         *
+         * @method _renderUserProfile
+         * @protected
+         */
+        _renderUserProfile: function () {
+            this.get('container').append(this.get('userProfileView').render().get('container'));
         },
 
         /**
@@ -523,20 +552,6 @@ YUI.add('ez-navigationhubview', function (Y) {
         },
 
         /**
-         * Tap event handler on the logout link
-         *
-         * @method _logOut
-         * @protected
-         * @param e {Object} tap event facade
-         */
-        _logOut: function (e) {
-            e.preventDefault();
-            this.fire('logOut', {
-                originalEvent: e
-            });
-        },
-
-        /**
          * Sets the _navigationMenu property depending on the val parameter.
          *
          * @method _setNavigationMenu
@@ -721,6 +736,31 @@ YUI.add('ez-navigationhubview', function (Y) {
              * @type {Object}
              */
             matchedRoute: {},
+            
+            /**
+             * The user profile view
+             *
+             * @attribute userProfileView
+             * @type {eZ.UserProfileView}
+             */
+            userProfileView: {
+                valueFn: function () {
+                    return new Y.eZ.UserProfileView({
+                        bubbleTargets: this
+                    });
+                }
+            },
+
+            /**
+             * Stores the user's avatar image
+             *
+             * @attribute userAvatar
+             * @type {String}
+             * @default null
+             */
+            userAvatar: {
+                value: null
+            }
         }
     });
 });

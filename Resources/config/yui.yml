@@ -429,7 +429,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/notification.hbt
                 ez-navigationhubview:
-                    requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside', 'navigationhubview-ez-template']
+                    requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside', 'navigationhubview-ez-template', 'ez-userprofileview']
                     path: %ez_platformui.public_dir%/js/views/ez-navigationhubview.js
                 navigationhubview-ez-template:
                     type: 'template'
@@ -446,6 +446,40 @@ system:
                 navigationitemview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/navigation/item.hbt
+                ez-userprofileview:
+                    requires:
+                        - 'ez-templatebasedview'
+                        - 'event-tap'
+                        - 'event-outside'
+                        - 'ez-usermenuview'
+                        - 'userprofileview-ez-template'
+                    path: %ez_platformui.public_dir%/js/views/ez-userprofileview.js
+                userprofileview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/userprofile.hbt
+                ez-usermenuview:
+                    requires:
+                        - 'event-tap'
+                        - 'ez-view'
+                        - 'ez-usermenuitemfireeventview'
+                    path: %ez_platformui.public_dir%/js/views/ez-usermenuview.js
+                ez-usermenuitemview:
+                    requires:
+                        - 'ez-templatebasedview'
+                        - 'usermenuitemview-ez-template'
+                    path: %ez_platformui.public_dir%/js/views/ez-usermenuitemview.js
+                usermenuitemview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/usermenuitem.hbt
+                ez-usermenuitemfireeventview:
+                    requires:
+                        - 'event-tap'
+                        - 'ez-usermenuitemview'
+                        - 'usermenuitemfireeventview-ez-template'
+                    path: %ez_platformui.public_dir%/js/views/ez-usermenuitemfireeventview.js
+                usermenuitemfireeventview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/usermenuitemfireevent.hbt
                 ez-discoverybarview:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview']
                     path: %ez_platformui.public_dir%/js/views/ez-discoverybarview.js

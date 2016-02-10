@@ -649,16 +649,27 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
         setUp: function () {
             this.capiMock = new Mock();
+            this.app = new Mock();
+            this.user = new Mock();
             this.discoveryServiceMock = new Mock();
             this.locationRootMock = new Mock();
             this.contentInfoRootMock = new Mock();
             this.locationMediaMock = new Mock();
             this.contentInfoMediaMock = new Mock();
+            this.getContentServiceMock = new Mock();
+            this.avatar = {
+                variations: {
+                    platformui_profileview: { //jshint ignore:line
+                        href: 'user-avatar-path'
+                    }
+                }
+            };
 
             this.service = new Y.eZ.NavigationHubViewService({
                 capi: this.capiMock,
                 rootLocation: this.locationRootMock,
                 rootMediaLocation: this.locationMediaMock,
+                app: this.app
             });
         },
 
@@ -682,6 +693,41 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
                         "getInfoObject should be called with rootLocation or rootMediaFolder"
                     );
                     callback(fail ? true : false, {"_href": 'david-seaman'});
+                }
+            });
+        },
+
+        _initContentService: function (fail, userAvatar) {
+            var expectedAvatarUrl = userAvatar ? null : this.avatar.variations.platformui_profileview.href, //jshint ignore:line
+                response = {
+                    document: {
+                        ContentImageVariation: 'user avatar'
+                    }
+                };
+
+            Mock.expect(this.capiMock, {
+                method: 'getContentService',
+                returns: this.getContentServiceMock,
+            });
+
+            Mock.expect(this.app, {
+                method: 'get',
+                args: ['user'],
+                returns: this.user,
+            });
+            Mock.expect(this.user, {
+                method: 'get',
+                args: ['avatar'],
+                returns: userAvatar ? null : this.avatar,
+            });
+
+            Y.Mock.expect(this.getContentServiceMock, {
+                method: 'loadImageVariation',
+                args: [Mock.Value.String, Y.Mock.Value.Function],
+                callCount: userAvatar ? 0 : 1,
+                run: function (avatarPath, callback) {
+                    Y.Assert.areSame(expectedAvatarUrl, avatarPath, 'Should pass the correct url');
+                    callback(fail ? true : false, response);
                 }
             });
         },
@@ -736,6 +782,7 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
 
         "Load method retrieves root nodes": function () {
             this._initDiscoveryService(false);
+            this._initContentService();
             this._initLocationMock(this.locationRootMock, this.contentInfoRootMock, "fre-FR", false);
             this._initLocationMock(this.locationMediaMock, this.contentInfoMediaMock, "fre-FR-media", false);
 
@@ -756,11 +803,30 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             Mock.verify(this.contentInfoRootMock);
             Mock.verify(this.locationMediaMock);
             Mock.verify(this.contentInfoMediaMock);
+            Mock.verify(this.getContentServiceMock);
+        },
+
+        "Load method not set user avatar when user don't have avatar": function () {
+            this._initDiscoveryService(false);
+            this._initContentService(false, true);
+            this._initLocationMock(this.locationRootMock, this.contentInfoRootMock, "fre-FR", false);
+            this._initLocationMock(this.locationMediaMock, this.contentInfoMediaMock, "fre-FR-media", false);
+
+            this.service._load(function () {});
+
+            Y.Assert.isNull(this.service.get('userAvatar'), 'Should not set user avatar');
+
+            Mock.verify(this.locationRootMock);
+            Mock.verify(this.contentInfoRootMock);
+            Mock.verify(this.locationMediaMock);
+            Mock.verify(this.contentInfoMediaMock);
+            Mock.verify(this.getContentServiceMock);
         },
 
         "Load method can not reach the REST API": function () {
             var errorCalled = false;
 
+            this._initContentService();
             this._initDiscoveryService(true);
 
             this.service.on('error', function (e) {
@@ -774,10 +840,30 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             Y.Assert.isTrue(errorCalled, "The error event should have been fired");
         },
 
+        "Load method can not reach the REST API when loading user avatar": function () {
+            var errorCalled = false;
+
+            this._initContentService(true);
+            this._initDiscoveryService(false);
+
+            this._initLocationMock(this.locationRootMock, this.contentInfoRootMock, "fre-FR", false);
+            this._initLocationMock(this.locationMediaMock, this.contentInfoMediaMock, "fre-FR-media", false);
+
+            this.service.on('error', function (e) {
+                Y.Assert.isObject(e, "An event facade should be provided");
+                Y.Assert.isString(e.message, "The message property should be filled");
+                errorCalled = true;
+            });
+
+            this.service._load(function () {});
+
+            Y.Assert.isTrue(errorCalled, "The error event should have been fired");
+        },
 
         "Load method can not reach the REST API when loading location": function () {
             var errorCalled = false;
 
+            this._initContentService();
             this._initDiscoveryService(false);
 
             this._initLocationMock(this.locationRootMock, this.contentInfoRootMock, "fre-FR", true);

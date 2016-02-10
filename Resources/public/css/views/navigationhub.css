@@ -47,8 +47,7 @@
     text-align: center;
 }
 
-.ez-view-navigationhubview .ez-zone,
-.ez-view-navigationhubview .ez-user-info {
+.ez-view-navigationhubview .ez-zone {
     font-size: 1rem;
     padding: 0.9rem 1rem 0.7rem 1rem;
 }
@@ -65,21 +64,6 @@
 .ez-view-navigationhubview .ez-admin-zone {
     padding-right: 1.3rem;
     margin-left: 3em;
-}
-
-.ez-view-navigationhubview .ez-user-info {
-    white-space: normal;
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding-left: 0;
-    width: 10em;
-}
-
-.ez-view-navigationhubview .ez-user-info .ez-user-info-name,
-.ez-view-navigationhubview .ez-user-info .ez-user-info-logout {
-    margin: 0;
-    text-align: right;
 }
 
 .ez-view-navigationhubview .ez-navigation .ez-logo {
@@ -168,8 +152,7 @@
 
 @media (max-width:58em) {
     .ez-view-navigationhubview .ez-zone,
-    .ez-view-navigationhubview .ez-zones-navigation .ez-logo,
-    .ez-view-navigationhubview .ez-user-info {
+    .ez-view-navigationhubview .ez-zones-navigation .ez-logo {
         padding: 0.6rem 0.4rem;
     }
 
