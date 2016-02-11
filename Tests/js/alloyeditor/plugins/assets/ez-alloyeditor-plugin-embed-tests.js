@@ -6,7 +6,7 @@
 YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
     var definePluginTest, embedWidgetTest, focusTest,
         setHrefTest, setWidgetContentTest, setConfigTest, imageTypeTest,
-        getHrefTest, getConfigTest,
+        getHrefTest, getConfigTest, initAlignTest, alignMethodsTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     definePluginTest = new Y.Test.Case({
@@ -477,6 +477,157 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
         },
     });
 
+    initAlignTest = new Y.Test.Case({
+        name: "eZ AlloyEditor embed widget init align test",
+
+        "async:init": function () {
+            var startTest = this.callback();
+
+            CKEDITOR.plugins.addExternal('lineutils', '../../../lineutils/');
+            CKEDITOR.plugins.addExternal('widget', '../../../widget/');
+            this.container = Y.one('.container');
+            this.containerContent = this.container.getHTML();
+            this.editor = AlloyEditor.editable(
+                this.container.getDOMNode(), {
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',widget,ezembed',
+                    eZ: {
+                        editableRegion: '.editable',
+                    },
+                }
+            );
+            this.editor.get('nativeEditor').on('instanceReady', function () {
+                startTest();
+            });
+        },
+
+        destroy: function () {
+            this.editor.destroy();
+            this.container.setHTML(this.containerContent);
+        },
+
+        _getWidget: function (embedSelector) {
+            return this.editor.get('nativeEditor').widgets.getByElement(
+                new CKEDITOR.dom.node(this.container.one(embedSelector).getDOMNode())
+            );
+        },
+
+        "Should set the data-ezalign attribute on the wrapper": function () {
+            var widget = this._getWidget('#aligned-embed');
+
+            Assert.areEqual(
+                'center', widget.wrapper.data('ezalign'),
+                "The data-ezalign should have been added"
+            );
+        },
+
+        "Should not set the data-ezalign attribute on the wrapper": function () {
+            var widget = this._getWidget('#embed');
+
+            Assert.isNull(
+                widget.wrapper.data('ezalign'),
+                "The data-ezalign should not have been added"
+            );
+        }
+    });
+
+    alignMethodsTest = new Y.Test.Case({
+        name: "eZ AlloyEditor embed widget align methods test",
+
+        "async:init": function () {
+            var startTest = this.callback();
+
+            CKEDITOR.plugins.addExternal('lineutils', '../../../lineutils/');
+            CKEDITOR.plugins.addExternal('widget', '../../../widget/');
+            this.container = Y.one('.container');
+            this.containerContent = this.container.getHTML();
+            this.editor = AlloyEditor.editable(
+                this.container.getDOMNode(), {
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',widget,ezembed',
+                    eZ: {
+                        editableRegion: '.editable',
+                    },
+                }
+            );
+            this.editor.get('nativeEditor').on('instanceReady', function () {
+                startTest();
+            });
+        },
+
+        destroy: function () {
+            this.editor.destroy();
+            this.container.setHTML(this.containerContent);
+        },
+
+        _getWidget: function (embedSelector) {
+            return this.editor.get('nativeEditor').widgets.getByElement(
+                new CKEDITOR.dom.node(this.container.one(embedSelector).getDOMNode())
+            );
+        },
+
+        "isAligned should detect the correct alignment": function () {
+            var widget = this._getWidget('#aligned-embed');
+
+            Assert.isTrue(
+                widget.isAligned('center'),
+                "The embed should be seen as embed"
+            );
+            Assert.isFalse(
+                widget.isAligned('right'),
+               "The embed should be detected as aligned on the right"
+            );
+        },
+
+        "setAlignment should align the embed": function () {
+            var widget = this._getWidget('#embed');
+
+            widget.setAlignment('right');
+            Assert.isTrue(
+                widget.isAligned('right'),
+                "The widget should be aligned on the right"
+            );
+            Assert.areEqual(
+                'right', widget.element.data('ezalign'),
+                "The 'data-ezalign' attribute should have been added"
+            );
+        },
+
+        "setAlignment should handle a previously added alignment": function () {
+            var widget = this._getWidget('#aligned-embed');
+
+            widget.setAlignment('right');
+            Assert.isFalse(
+                widget.isAligned('center'),
+                "The widget should not be aligned on the center"
+            );
+            Assert.isTrue(
+                widget.isAligned('right'),
+                "The widget should be aligned on the right"
+            );
+            Assert.areEqual(
+                'right', widget.element.data('ezalign'),
+                "The 'data-ezalign' attribute should have been added"
+            );
+        },
+
+        "unsetAlignment should unset the alignment": function () {
+            var widget = this._getWidget('#aligned-embed');
+
+            widget.unsetAlignment('right');
+            Assert.isFalse(
+                widget.isAligned('right'),
+                "The widget should not be aligned anymore"
+            );
+            Assert.isNull(
+                widget.wrapper.data('ezalign'),
+                "The 'data-ezalign' attribute should have been removed from the wrapper"
+            );
+            Assert.isNull(
+                widget.element.data('ezalign'),
+                "The 'data-ezalign' attribute should have been removed from the element"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ AlloyEditor embed plugin tests");
     Y.Test.Runner.add(definePluginTest);
     Y.Test.Runner.add(embedWidgetTest);
@@ -487,4 +638,6 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
     Y.Test.Runner.add(setConfigTest);
     Y.Test.Runner.add(getConfigTest);
     Y.Test.Runner.add(imageTypeTest);
+    Y.Test.Runner.add(initAlignTest);
+    Y.Test.Runner.add(alignMethodsTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-alloyeditor-plugin-embed']});

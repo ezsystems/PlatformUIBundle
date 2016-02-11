@@ -1,0 +1,16 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-ae-icon-align-embedcenter:before {
+    content: "\E901";
+}
+
+.ez-ae-icon-align-embedleft:before {
+    content: "\E902";
+}
+
+.ez-ae-icon-align-embedright:before {
+    content: "\E903";
+}

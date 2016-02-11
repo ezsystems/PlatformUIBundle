@@ -38,4 +38,5 @@
 
 .ez-richtext-editable li {
     margin: 4px 0;
+    list-style-position: inside;
 }

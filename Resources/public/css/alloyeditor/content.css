@@ -4,16 +4,10 @@
  */
 
 .ez-richtext-editable [data-ezelement="ezembed"] {
-    display: block;
+    display: inline-block;
     margin: 0.5em 0.1em;
-    line-height: 2em;
-    min-height: 2em;
     padding: 0.3em;
     box-sizing: border-box;
-}
-
-.ez-richtext-editable .ez-embed-type-image[data-ezelement="ezembed"] {
-    display: inline-block;
     line-height: 1;
     min-height: auto;
 }
@@ -31,4 +25,16 @@
 
 .ez-richtext-editable [data-ezelement="ezconfig"] {
     display: none;
+}
+
+.ez-richtext-editable [data-ezalign="center"] {
+    text-align: center;
+}
+
+.ez-richtext-editable [data-ezalign="right"] {
+    float: right;
+}
+
+.ez-richtext-editable [data-ezalign="left"] {
+    float: left;
 }

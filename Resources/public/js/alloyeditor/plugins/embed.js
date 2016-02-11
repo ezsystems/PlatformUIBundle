@@ -6,7 +6,8 @@
 YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
     "use strict";
 
-    var IMAGE_TYPE_CLASS = 'ez-embed-type-image';
+    var IMAGE_TYPE_CLASS = 'ez-embed-type-image',
+        DATA_ALIGNMENT_ATTR = 'ezalign';
 
     if (CKEDITOR.plugins.get('ezembed')) {
         return;
@@ -43,6 +44,58 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
 
                 init: function () {
                     this.on('focus', this._fireEditorInteraction);
+                    this._syncAlignment();
+                },
+
+                /**
+                 * Initializes the alignment on the widget wrapper if the widget
+                 * is aligned.
+                 *
+                 * @method _syncAlignment
+                 * @protected
+                 */
+                _syncAlignment: function () {
+                    var align = this.element.data(DATA_ALIGNMENT_ATTR);
+
+                    if ( align ) {
+                        this.setAlignment(align);
+                    } else {
+                        this.unsetAlignment();
+                    }
+                },
+
+                /**
+                 * Sets the alignment of the embed widget to `type`. The
+                 * alignment is set by adding the `data-ezalign` attribute
+                 * on the widget wrapper and the widget element.
+                 *
+                 * @method setAlignment
+                 * @param {String} type
+                 */
+                setAlignment: function (type) {
+                    this.wrapper.data(DATA_ALIGNMENT_ATTR, type);
+                    this.element.data(DATA_ALIGNMENT_ATTR, type);
+                },
+
+                /**
+                 * Removes the alignment of the widget.
+                 *
+                 * @method unsetAlignment
+                 */
+                unsetAlignment: function () {
+                    this.wrapper.data(DATA_ALIGNMENT_ATTR, false);
+                    this.element.data(DATA_ALIGNMENT_ATTR, false);
+                },
+
+                /**
+                 * Checks whether the embed is aligned with `type` alignment.
+                 *
+                 * @method isAligned
+                 * @param {String} type
+                 * @return {Boolean}
+                 */
+                isAligned: function (type) {
+                    return (this.wrapper.data(DATA_ALIGNMENT_ATTR) === type);
                 },
 
                 /**

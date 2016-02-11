@@ -27,6 +27,9 @@ YUI.add('ez-alloyeditor-toolbar-config-image', function (Y) {
         buttons: [
             'ezimagehref',
             'ezimagevariation',
+            'ezembedleft',
+            'ezembedcenter',
+            'ezembedright',
             'ezblockremove',
         ],
 
