@@ -33,8 +33,12 @@
                 fullpath: "../../../../Resources/public/js/views/services/ez-serversideviewservice.js"
             },
             "ez-viewservice": {
-                requires: ['base', 'parallel'],
+                requires: ['base', 'parallel', 'ez-pluginregistry'],
                 fullpath: "../../../../Resources/public/js/views/services/ez-viewservice.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
         }
     }).use('ez-roleserversideviewservice-tests', function (Y) {

@@ -25,7 +25,6 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                 if (this._isDiscoveringForAssigningRole(e)) {
                     e.config.contentDiscoveredHandler = Y.bind(this._assignRole, this);
                 }
-
             });
         },
 
@@ -37,7 +36,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          * @param {EventFacade} e
          */
         _isDiscoveringForAssigningRole: function (e) {
-            var data = e.target.get('data');
+            var data = e.config.data;
 
             return data !== undefined && data.roleId !== undefined;
         },
@@ -59,6 +58,8 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
 
             if (this._hasSectionLimitation(data)) {
                limitation = this._createSectionLimitation(data);
+            } else if (this._hasSubtreeLimitation(data)) {
+                limitation = this._createSubtreeLimitation(data);
             }
 
             this._assignRoleNotificationStarted(
@@ -118,12 +119,24 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
         },
 
         /**
+         * Check if the UDW config has a subtree limitationType
+         *
+         * @method _hasSubtreeLimitation
+         * @protected
+         * @param {Object} assignActionData it can contain the limitation type
+         * @return {Boolean}
+         */
+        _hasSubtreeLimitation: function (assignActionData) {
+            return assignActionData.limitationType == 'Subtree';
+        },
+
+        /**
          * Create the limitation object with the section currently chosen.
          *
          * @method _createSectionLimitation
          * @protected
          * @param {Object} data
-         * @return {Object} the limitation with its identifer en values as expected by the API
+         * @return {Object} the limitation with its identifer and values as expected by the API
          */
         _createSectionLimitation: function (data) {
             // limitation will be filled like example in UserService.prototype.newRoleAssignInputStruct()
@@ -131,11 +144,36 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                     "_identifier": data.limitationType,
                     "values": {
                         "ref":[{
-                            "_href": data.sectionRestId,
+                            //todo when ezsystems/ezpublish-kernel#1569 is merged replace with: data.section.sectionRestId;
+                            "_href": data.section.sectionId,
                             "_media-type": "application\/vnd.ez.api.Section+json"
                         }]
                     }
                 };
+            return limitation;
+        },
+
+        /**
+         * Create the limitation object with the subtree locations currently chosen.
+         *
+         * @method _createSubtreeLimitation
+         * @protected
+         * @param {Object} data
+         * @return {Object} the limitation with its identifer and values as expected by the API
+         */
+        _createSubtreeLimitation: function (data) {
+            // limitation will be filled like example in UserService.prototype.newRoleAssignInputStruct()
+            var limitation,
+                limitationValues = Y.Array.map(data.subtreeIds, function(subtreeId) {
+                    return {"_href": subtreeId, "_media-type": "application\/vnd.ez.api.Location+json"};
+                });
+
+            limitation = {
+                "_identifier": "Subtree",
+                "values": {
+                    "ref":limitationValues
+                }
+            };
             return limitation;
         },
 
@@ -246,7 +284,9 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
 
             if (countAssigned>0) {
                 if (this._hasSectionLimitation(assignActionData)) {
-                    notificationSucessText += ' limited to ' + assignActionData.sectionName + ' section';
+                    notificationSucessText += ' limited to ' + assignActionData.section.sectionName + ' section';
+                } else if (this._hasSubtreeLimitation(assignActionData)) {
+                    notificationSucessText += ' with a subtree limitation';
                 }
                 this._notify(
                     notificationSucessText ,
@@ -281,7 +321,9 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                 notificationText = 'Assigning the role "' + assignActionData.roleName + '" to ' + contents.length + ' users/groups';
 
             if (this._hasSectionLimitation(assignActionData)) {
-                notificationText += ' limited to ' + assignActionData.sectionName + ' section';
+                notificationText += ' limited to ' + assignActionData.section.sectionName + ' section';
+            } else if (this._hasSubtreeLimitation(assignActionData)) {
+                notificationText += ' with a subtree limitation';
             }
             this._notify(
                 notificationText,
@@ -325,14 +367,20 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          */
         _getAssignRoleNotificationIdentifier: function (action, assignActionData, contents) {
             var contentIds = [],
-                identifier;
+                identifier,
+                subtreeIds = '';
 
             Y.Array.each(contents, function (struct) {
                 contentIds.push(struct.contentInfo.get('id'));
             });
             identifier = action + '-' + assignActionData.roleId + '-' + contentIds.join('_');
             if (this._hasSectionLimitation(assignActionData)) {
-                identifier += 'section-limit-'+ assignActionData.sectionId;
+                identifier += 'section-limit-'+ assignActionData.section.sectionId;
+            } else if (this._hasSubtreeLimitation(assignActionData)) {
+                Y.Array.each(assignActionData.subtreeIds, function (subtreeId) {
+                    subtreeIds += subtreeId;
+                });
+                identifier += 'subtree-limit-'+ subtreeIds;
             }
             return identifier;
         },
