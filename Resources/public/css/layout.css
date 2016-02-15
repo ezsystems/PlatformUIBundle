@@ -118,3 +118,7 @@
 .ez-platformui-app .is-loading > .ez-inline-loader {
     display: inline-block;
 }
+
+.is-app-loading {
+    pointer-events: none;
+}
