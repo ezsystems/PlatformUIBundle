@@ -43,6 +43,10 @@ trait CommonActions
     {
         $this->clickElementByText($zone, '.ez-zone-name');
         $this->waitWhileLoading();
+        // Clicking navigation zone triggers load of first item,
+        // we must wait before interacting with the page (see EZP-25128)
+        // this method sleeps for a default amount (see EzSystems\PlatformUIBundle\Features\Context\PlaformUI)
+        $this->sleep();
     }
 
     /**
