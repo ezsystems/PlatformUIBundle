@@ -32,6 +32,26 @@ class SessionInfoTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetConfigWithoutTokenManager()
+    {
+        $provider = new SessionInfo(
+            $this->createSession(),
+            null,
+            'intention',
+            $this->getRouterMock('/api/ezp/v2/user/sessions/the_session_id')
+        );
+
+        self::assertEquals(
+            [
+                'isStarted' => true,
+                'name' => 'the_session_name',
+                'identifier' => 'the_session_id',
+                'href' => '/api/ezp/v2/user/sessions/the_session_id',
+            ],
+            $provider->getConfig()
+        );
+    }
+
     /**
      * @return \Symfony\Component\HttpFoundation\Session\SessionInterface|\PHPUnit_Framework_MockObject_MockObject
      */

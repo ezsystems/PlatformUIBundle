@@ -29,7 +29,7 @@ class SessionInfo implements Provider
 
     public function __construct(
         SessionInterface $session,
-        CsrfTokenManagerInterface $csrfTokenManager,
+        CsrfTokenManagerInterface $csrfTokenManager = null,
         $csrfTokenIntention,
         RouterInterface $router
     ) {
@@ -46,11 +46,14 @@ class SessionInfo implements Provider
             $sessionInfo['isStarted'] = true;
             $sessionInfo['name'] = $this->session->getName();
             $sessionInfo['identifier'] = $this->session->getId();
-            $sessionInfo['csrfToken'] = $this->csrfTokenManager->getToken($this->csrfTokenIntention)->getValue();
             $sessionInfo['href'] = $this->generateUrl(
                 'ezpublish_rest_deleteSession',
                 ['sessionId' => $this->session->getId()]
             );
+
+            if ($this->csrfTokenManager instanceof CsrfTokenManagerInterface) {
+                $sessionInfo['csrfToken'] = $this->csrfTokenManager->getToken($this->csrfTokenIntention)->getValue();
+            }
         }
 
         return $sessionInfo;
