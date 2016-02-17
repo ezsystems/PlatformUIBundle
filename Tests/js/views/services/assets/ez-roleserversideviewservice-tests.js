@@ -35,14 +35,27 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
             delete this.service;
         },
 
-        "Should add the contentDiscovered handler": function () {
-            var config = {};
+        "Should add the contentDiscovered handler if it is dicovering for assigning role": function () {
+            var config = {data: {roleId: '42'}};
 
             this.service.fire('whatever:contentDiscover', {
                 config: config,
             });
 
             Assert.isFunction(
+                config.contentDiscoveredHandler,
+                "The contentDiscovered should have been added"
+            );
+        },
+
+        "Should NOT add the contentDiscovered handler if it is NOT to assign role": function () {
+            var config = {};
+
+            this.service.fire('whatever:contentDiscover', {
+                config: config,
+            });
+
+            Assert.isUndefined(
                 config.contentDiscoveredHandler,
                 "The contentDiscovered should have been added"
             );
@@ -112,7 +125,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
             delete this.userService;
         },
 
-        "Should assign role to the user and call the callback": function () {
+        _assignRoleAndCallCallback: function (universalDiscoveryMock) {
             var contentJson = {
                     id: 'c-id',
                     contentId: 'content-contentId',
@@ -124,28 +137,18 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 },
                 contentType = getMockForJson(contentTypeJson),
                 selection = [{contentInfo: contentInfo, contentType: contentType}],
-                universalDiscovery = new Mock(),
-                callbackCalled = false,
-                callback = function () {
-                    callbackCalled = true;
-                },
-                config = {},
-                that = this;
+                config = {data: {roleId: '42'}};
 
-            Mock.expect(universalDiscovery, {
-                method: 'get',
-                args: ['data'],
-                returns: {
-                    roleId: that.roleId,
-                    roleName: that.roleName,
-                    afterUpdateCallback: callback,
-                },
-            });
 
             Mock.expect(this.userService, {
                 method: 'assignRoleToUser',
                 args: [Mock.Value.String, this.roleAssignInputStruct, Mock.Value.Function],
                 run: function (userId, roleAssignInputStruct, cb) {
+                    Assert.areEqual(
+                        userId,
+                        '/api/ezp/v2/user/users/' + contentJson.contentId,
+                        "The userGroupId should be defined"
+                    );
                     cb(false);
                 }
             });
@@ -155,32 +158,56 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
             });
 
             config.contentDiscoveredHandler.call(this, {
-                target: universalDiscovery,
+                target: universalDiscoveryMock,
                 selection: selection
             });
-
-            Assert.isTrue(callbackCalled, 'The callback should be called');
         },
 
-        "Should assign role to the user group and call the callback": function () {
+        _assignRoleToGroupAndCallCallback: function (universalDiscoveryMock) {
             var contentJson = {
                     id: 'c-id',
                     contentId: 'content-contentId',
                     name: 'The Crawling Chaos',
                 },
-                location = getMockForJson({id: "/1/5/14"}),
+                userGroupId = "/1/5/14",
+                location = getMockForJson({id: userGroupId}),
                 contentInfo = getMockForJson(contentJson),
                 contentTypeJson = {
                     identifier: 'user_group'
                 },
                 contentType = getMockForJson(contentTypeJson),
                 selection = [{contentInfo: contentInfo, contentType: contentType, location: location}],
-                universalDiscovery = new Mock(),
+                config = {data: {roleId: '42'}};
+
+            Mock.expect(this.userService, {
+                method: 'assignRoleToUserGroup',
+                args: [Mock.Value.String, this.roleAssignInputStruct, Mock.Value.Function],
+                run: function (userGroupURI, roleAssignInputStruct, cb) {
+                    Assert.areEqual(
+                        userGroupURI,
+                        '/api/ezp/v2/user/groups' + userGroupId,
+                        "The userGroupId should be defined"
+                    );
+                    cb(false);
+                }
+            });
+
+            this.service.fire('whatever:contentDiscover', {
+                config: config,
+            });
+
+            config.contentDiscoveredHandler.call(this, {
+                target: universalDiscoveryMock,
+                selection: selection
+            });
+        },
+
+        "Should assign role to the user and call the callback": function () {
+            var universalDiscovery = new Mock(),
                 callbackCalled = false,
                 callback = function () {
                     callbackCalled = true;
                 },
-                config = {},
                 that = this;
 
             Mock.expect(universalDiscovery, {
@@ -193,23 +220,141 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 },
             });
 
-            Mock.expect(this.userService, {
-                method: 'assignRoleToUserGroup',
-                args: [Mock.Value.String, this.roleAssignInputStruct, Mock.Value.Function],
-                run: function (userGroupId, roleAssignInputStruct, cb) {
-                    cb(false);
-                }
+            this._assignRoleAndCallCallback(universalDiscovery);
+            Assert.isTrue(callbackCalled, 'The callback should be called');
+        },
+
+        "Should assign role with a section limitation to the user and call the callback": function () {
+            var universalDiscovery = new Mock(),
+                callbackCalled = false,
+                callback = function () {
+                    callbackCalled = true;
+                },
+                limitationType = 'Section',
+                sectionId = 69,
+                sectionName = "SuperSection",
+                that = this;
+
+            Mock.expect(universalDiscovery, {
+                method: 'get',
+                args: ['data'],
+                returns: {
+                    roleId: that.roleId,
+                    roleName: that.roleName,
+                    afterUpdateCallback: callback,
+                    limitationType: limitationType,
+                    section: {
+                        sectionId: sectionId,
+                        sectionName: sectionName,
+                    },
+                },
             });
 
-            this.service.fire('whatever:contentDiscover', {
-                config: config,
+            this._assignRoleAndCallCallback(universalDiscovery);
+            Assert.isTrue(callbackCalled, 'The callback should be called');
+        },
+
+        "Should assign role with a subtree limitation to the user and call the callback": function () {
+            var universalDiscovery = new Mock(),
+                callbackCalled = false,
+                callback = function () {
+                    callbackCalled = true;
+                },
+                limitationType = 'Subtree',
+                subtreeIds = ['/1/2/'],
+                that = this;
+
+            Mock.expect(universalDiscovery, {
+                method: 'get',
+                args: ['data'],
+                returns: {
+                    roleId: that.roleId,
+                    roleName: that.roleName,
+                    afterUpdateCallback: callback,
+                    limitationType: limitationType,
+                    subtreeIds: subtreeIds,
+                },
             });
 
-            config.contentDiscoveredHandler.call(this, {
-                target: universalDiscovery,
-                selection: selection
+            this._assignRoleAndCallCallback(universalDiscovery);
+            Assert.isTrue(callbackCalled, 'The callback should be called');
+        },
+
+        "Should assign role to the user group and call the callback": function () {
+            var universalDiscovery = new Mock(),
+                callbackCalled = false,
+                callback = function () {
+                    callbackCalled = true;
+                },
+                that = this;
+
+            Mock.expect(universalDiscovery, {
+                method: 'get',
+                args: ['data'],
+                returns: {
+                    roleId: that.roleId,
+                    roleName: that.roleName,
+                    afterUpdateCallback: callback,
+                },
             });
 
+            this._assignRoleToGroupAndCallCallback(universalDiscovery );
+            Assert.isTrue(callbackCalled, 'The callback should be called');
+        },
+
+        "Should assign role with a section limitation to the user group and call the callback": function () {
+            var universalDiscovery = new Mock(),
+                callbackCalled = false,
+                callback = function () {
+                    callbackCalled = true;
+                },
+                limitationType = 'Section',
+                sectionId = 69,
+                sectionName = "SuperSection",
+                that = this;
+
+            Mock.expect(universalDiscovery, {
+                method: 'get',
+                args: ['data'],
+                returns: {
+                    roleId: that.roleId,
+                    roleName: that.roleName,
+                    afterUpdateCallback: callback,
+                    limitationType: limitationType,
+                    section: {
+                        sectionId: sectionId,
+                        sectionName: sectionName,
+                    },
+                },
+            });
+
+            this._assignRoleToGroupAndCallCallback(universalDiscovery );
+            Assert.isTrue(callbackCalled, 'The callback should be called');
+        },
+
+        "Should assign role with a subtree limitation to the user group and call the callback": function () {
+            var universalDiscovery = new Mock(),
+                callbackCalled = false,
+                callback = function () {
+                    callbackCalled = true;
+                },
+                limitationType = 'Subtree',
+                subtreeIds = ['/1/2/', '/1/3'],
+                that = this;
+
+            Mock.expect(universalDiscovery, {
+                method: 'get',
+                args: ['data'],
+                returns: {
+                    roleId: that.roleId,
+                    roleName: that.roleName,
+                    afterUpdateCallback: callback,
+                    limitationType: limitationType,
+                    subtreeIds: subtreeIds,
+                },
+            });
+
+            this._assignRoleToGroupAndCallCallback(universalDiscovery );
             Assert.isTrue(callbackCalled, 'The callback should be called');
         },
     });
@@ -289,7 +434,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
             });
         },
 
-        "Should notify about the success of assignment": function () {
+        "Should notify about the success of assignment with section limitation": function () {
             var contentJson = {
                     id: 'c-id',
                     contentId: 'content-contentId',
@@ -303,10 +448,13 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 contentType = getMockForJson(contentTypeJson),
                 selection = [{contentInfo: contentInfo, contentType: contentType, location: location}],
                 universalDiscovery = new Mock(),
-                config = {},
+                config = {data: {roleId: '42'}},
                 startNotificationFired = false,
                 successNotificationFired = false,
                 errorNotificationFired = false,
+                limitationType = 'Section',
+                sectionId = 69,
+                sectionName = "SuperSection",
                 that = this;
 
             this._setLoadRoleStatus(false, this.loadRoleResponse);
@@ -318,6 +466,11 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 returns: {
                     roleId: that.roleId,
                     roleName: that.roleName,
+                    limitationType: limitationType,
+                    section: {
+                        sectionId: sectionId,
+                        sectionName: sectionName,
+                    },
                     afterUpdateCallback: function () {},
                 },
             });
@@ -355,6 +508,117 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                     Assert.isTrue(
                         (e.notification.identifier.indexOf(that.roleId) >= 0),
                         "The notification identifier should contain id of assigned role"
+                    );
+                    Assert.isTrue(
+                        (e.notification.text.indexOf(sectionName) >= 0),
+                        "The notification text should contain the name of the section limitation"
+                    );
+                    Assert.isTrue(
+                        (e.notification.identifier.indexOf(sectionId) >= 0),
+                        "The notification identifier should contain the id of the section limitation"
+                    );
+                    Assert.areEqual(
+                        e.notification.timeout, 5,
+                        "The timeout of notification should be set to 5"
+                    );
+                }
+                if (e.notification.state === 'error') {
+                    errorNotificationFired = true;
+                }
+            });
+
+            this.service.fire('whatever:contentDiscover', {
+                config: config,
+            });
+
+            config.contentDiscoveredHandler.call(this, {
+                target: universalDiscovery,
+                selection: selection,
+            });
+
+            Assert.isTrue(startNotificationFired, 'Should fire notification with `started` state');
+            Assert.isTrue(successNotificationFired, 'Should fire notification with `done` state');
+            Assert.isFalse(errorNotificationFired, 'Should not fire notification with `error` state');
+        },
+
+        "Should notify about the success of assignment with subtree limitation": function () {
+            var contentJson = {
+                    id: 'c-id',
+                    contentId: 'content-contentId',
+                    name: 'The Crawling Chaos',
+                },
+                location = getMockForJson({id: "/1/5/14"}),
+                contentInfo = getMockForJson(contentJson),
+                contentTypeJson = {
+                    identifier: 'user_group'
+                },
+                contentType = getMockForJson(contentTypeJson),
+                selection = [{contentInfo: contentInfo, contentType: contentType, location: location}],
+                universalDiscovery = new Mock(),
+                config = {data: {roleId: '42'}},
+                startNotificationFired = false,
+                successNotificationFired = false,
+                errorNotificationFired = false,
+                limitationType = 'Subtree',
+                subtreeIds = ["/1/2/"],
+                that = this;
+
+            this._setLoadRoleStatus(false, this.loadRoleResponse);
+            this._setgetInfoObjectStatus(false);
+
+            Mock.expect(universalDiscovery, {
+                method: 'get',
+                args: ['data'],
+                returns: {
+                    roleId: that.roleId,
+                    roleName: that.roleName,
+                    limitationType: limitationType,
+                    subtreeIds: subtreeIds,
+                    afterUpdateCallback: function () {},
+                },
+            });
+
+            Mock.expect(this.userService, {
+                method: 'assignRoleToUserGroup',
+                args: [Mock.Value.String, this.roleAssignInputStruct, Mock.Value.Function],
+                run: function (userGroupId, roleAssignInputStruct, cb) {
+                    cb(false);
+                }
+            });
+
+            this.service.on('notify', function (e) {
+                if (e.notification.state === 'started') {
+                    startNotificationFired = true;
+                    Assert.isTrue(
+                        (e.notification.text.indexOf(that.roleName) >= 0),
+                        "The notification should contain name of the role"
+                    );
+                    Assert.isTrue(
+                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        "The notification identifier should contain id of assigned role"
+                    );
+                    Assert.areEqual(
+                        e.notification.timeout, 5,
+                        "The timeout of notification should be set to 5"
+                    );
+                }
+                if (e.notification.state === 'done') {
+                    successNotificationFired = true;
+                    Assert.isTrue(
+                        (e.notification.text.indexOf(that.roleName) >= 0),
+                        "The notification should contain name of the role"
+                    );
+                    Assert.isTrue(
+                        (e.notification.identifier.indexOf(that.roleId) >= 0),
+                        "The notification identifier should contain id of assigned role"
+                    );
+                    Assert.isTrue(
+                        (e.notification.text.indexOf('subtree') >= 0),
+                        "The notification text should mention that there is a subtree limitation"
+                    );
+                    Assert.isTrue(
+                        (e.notification.identifier.indexOf(subtreeIds[0]) >= 0),
+                        "The notification identifier should contain the id of the subtree limitation"
                     );
                     Assert.areEqual(
                         e.notification.timeout, 5,
@@ -394,7 +658,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 contentType = getMockForJson(contentTypeJson),
                 selection = [{contentInfo: contentInfo, contentType: contentType, location: location}],
                 universalDiscovery = new Mock(),
-                config = {},
+                config = {data: {roleId: '42'}},
                 startNotificationFired = false,
                 successNotificationFired = false,
                 errorNotificationFired = false,
@@ -466,7 +730,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 contentInfo = getMockForJson(contentJson),
                 selection = [{contentInfo: contentInfo}],
                 universalDiscovery = new Mock(),
-                config = {},
+                config = {data: {roleId: '42'}},
                 startNotificationFired = false,
                 successNotificationFired = false,
                 errorNotificationFired = false,
@@ -549,7 +813,7 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 contentType = getMockForJson(contentTypeJson),
                 selection = [{contentInfo: contentInfo, contentType: contentType}],
                 universalDiscovery = new Mock(),
-                config = {},
+                config = {data: {roleId: '42'}},
                 startNotificationFired = false,
                 successNotificationFired = false,
                 errorNotificationFired = false,
