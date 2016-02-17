@@ -653,6 +653,7 @@ system:
                         - 'ez-alloyeditor-button-blockremove'
                         - 'ez-alloyeditor-button-embedhref'
                         - 'ez-alloyeditor-button-imagehref'
+                        - 'ez-processable'
                         - 'ez-editorcontentprocessorxhtml5edit'
                         - 'ez-editorcontentprocessorremoveids'
                         - 'richtexteditview-ez-template'
@@ -829,7 +830,10 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/relationlist.hbt
                 ez-richtext-view:
-                    requires: ['ez-fieldview', 'richtextview-ez-template']
+                    requires:
+                        - 'ez-fieldview'
+                        - 'ez-processable'
+                        - 'richtextview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-view.js
                 richtextview-ez-template:
                     type: 'template'
@@ -1091,6 +1095,9 @@ system:
                 ez-expandable:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js
+                ez-processable:
+                    requires: ['view']
+                    path: %ez_platformui.public_dir%/js/extensions/ez-processable.js
                 ez-contentinfo-attributes:
                     requires: ['ez-restmodel']
                     path: %ez_platformui.public_dir%/js/models/extensions/ez-contentinfo-attributes.js

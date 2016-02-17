@@ -18,8 +18,9 @@ YUI.add('ez-richtext-view', function (Y) {
      * @class RichTextView
      * @constructor
      * @extends eZ.FieldView
+     * @uses eZ.Processable
      */
-    Y.eZ.RichTextView = Y.Base.create('richtextView', Y.eZ.FieldView, [], {
+    Y.eZ.RichTextView = Y.Base.create('richtextView', Y.eZ.FieldView, [Y.eZ.Processable], {
         initializer: function () {
             /**
              * Stores the parsed document from the xhtml5edit version of the

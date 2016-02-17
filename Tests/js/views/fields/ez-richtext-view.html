@@ -28,8 +28,12 @@
         filter: loaderFilter,
         modules: {
             "ez-richtext-view": {
-                requires: ['ez-fieldview'],
+                requires: ['ez-fieldview', 'ez-processable'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-richtext-view.js"
+            },
+            "ez-processable": {
+                requires: ['view'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-processable.js"
             },
             "ez-fieldview": {
                 requires: ['ez-templatebasedview'],

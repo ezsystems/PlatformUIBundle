@@ -27,8 +27,9 @@ YUI.add('ez-richtext-editview', function (Y) {
      * @class RichTextEditView
      * @constructor
      * @extends eZ.FieldEditView
+     * @uses eZ.Processable
      */
-    Y.eZ.RichTextEditView = Y.Base.create('richTextEditView', Y.eZ.FieldEditView, [], {
+    Y.eZ.RichTextEditView = Y.Base.create('richTextEditView', Y.eZ.FieldEditView, [Y.eZ.Processable], {
         events: {
             '.ez-richtext-switch-focus': {
                 'tap': '_setFocusMode',
