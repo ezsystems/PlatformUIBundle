@@ -52,7 +52,8 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
 
             this.execCommand();
             this._setContentInfo(contentInfo);
-            this._getWidget().setWidgetContent(contentInfo.get('name'));
+            this._getWidget().setWidgetContent('');
+            this.props.editor.get('nativeEditor').fire('updatedEmbed');
         },
 
         render: function () {

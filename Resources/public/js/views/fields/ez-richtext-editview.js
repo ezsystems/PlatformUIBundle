@@ -54,7 +54,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                 }
             });
             this.after('focusModeChange', this._uiFocusMode);
-            this._processEvent = 'instanceReady';
+            this._processEvent = ['instanceReady', 'updatedEmbed'];
         },
 
         /**
@@ -404,10 +404,10 @@ YUI.add('ez-richtext-editview', function (Y) {
              * @attribute forwardEvents
              * @readOnly
              * @type {Array}
-             * @default ['contentDiscover', 'loadImageVariation', 'contentSearch', 'instanceReady']
+             * @default ['contentDiscover', 'loadImageVariation', 'contentSearch', 'instanceReady', 'updatedEmbed']
              */
             forwardEvents: {
-                value: ['contentDiscover', 'loadImageVariation', 'contentSearch', 'instanceReady'],
+                value: ['contentDiscover', 'loadImageVariation', 'contentSearch', 'instanceReady', 'updatedEmbed'],
                 readOnly: true,
             },
 

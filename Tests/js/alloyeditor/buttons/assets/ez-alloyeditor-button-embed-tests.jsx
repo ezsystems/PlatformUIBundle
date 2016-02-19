@@ -104,8 +104,8 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
 
         "Should add the embed after choosing the content": function () {
             var button, contentInfo = new Mock(),
-                contentName = 'I Am the Highway',
-                contentId = 42;
+                contentId = 42,
+                updatedEmbed = false;
 
             Mock.expect(contentInfo, {
                 method: 'get',
@@ -113,11 +113,13 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
                 run: function (attr) {
                     if ( attr === 'contentId' ) {
                         return contentId;
-                    } else if ( attr === 'name' ) {
-                        return contentName;
                     }
                     Assert.fail("Unexpected call to get for attribute " + attr);
                 }
+            });
+
+            this.editor.get('nativeEditor').on('updatedEmbed', function () {
+                updatedEmbed = true;
             });
 
             this.editor.get('nativeEditor').on('contentDiscover', function (evt) {
@@ -142,9 +144,9 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
                     "The data-href should be build with the contentId"
                 );
                 Assert.areEqual(
-                    contentName,
+                    "",
                     widget.element.getText(),
-                    "The ezembed should be filled with the content name"
+                    "The ezembed should be emptied"
                 );
                 Assert.areSame(
                     widget, this.widgets.focused,
@@ -157,6 +159,7 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
             );
 
             this.container.one('button').simulate('click');
+            Assert.isTrue(updatedEmbed, "The updatedEmbed event should have been fired");
         },
     });
 

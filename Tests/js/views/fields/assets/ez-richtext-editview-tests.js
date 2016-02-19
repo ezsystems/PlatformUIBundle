@@ -860,6 +860,10 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 eventFired, "The instanceReady event should have been fired by the view"
             );
         },
+
+        "Should forward the updatedEmbed event": function () {
+            this._testForwardEvent('updatedEmbed');
+        },
     });
 
     appendToolbarConfigTest = new Y.Test.Case({
