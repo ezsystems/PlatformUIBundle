@@ -133,9 +133,15 @@ system:
                 ez-editorcontentprocessorremoveids:
                     requires: ['ez-editorcontentprocessorbase']
                     path: %ez_platformui.public_dir%/js/alloyeditor/processors/removeids.js
+                ez-editorcontentprocessoremptyembed:
+                    requires: ['ez-editorcontentprocessorbase']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/processors/emptyembed.js
                 ez-richtext-embedcontainer:
                     requires: ['node']
                     path: %ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-embedcontainer.js
+                ez-richtext-resolveembed:
+                    requires: ['node']
+                    path: %ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-resolveembed.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -657,8 +663,10 @@ system:
                         - 'ez-alloyeditor-button-embedhref'
                         - 'ez-alloyeditor-button-imagehref'
                         - 'ez-processable'
+                        - 'ez-richtext-resolveembed'
                         - 'ez-editorcontentprocessorxhtml5edit'
                         - 'ez-editorcontentprocessorremoveids'
+                        - 'ez-editorcontentprocessoremptyembed'
                         - 'richtexteditview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
                 richtexteditview-ez-template:
@@ -837,6 +845,7 @@ system:
                         - 'ez-fieldview'
                         - 'ez-processable'
                         - 'ez-richtext-embedcontainer'
+                        - 'ez-richtext-resolveembed'
                         - 'richtextview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-view.js
                 richtextview-ez-template:

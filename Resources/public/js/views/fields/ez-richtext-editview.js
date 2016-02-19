@@ -54,6 +54,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                 }
             });
             this.after('focusModeChange', this._uiFocusMode);
+            this._processEvent = 'instanceReady';
         },
 
         /**
@@ -323,6 +324,16 @@ YUI.add('ez-richtext-editview', function (Y) {
         },
     }, {
         ATTRS: {
+            processors: {
+                writeOnce: 'initOnly',
+                valueFn: function () {
+                    return [{
+                        processor: new Y.eZ.RichTextResolveEmbed(),
+                        priority: 50,
+                    }];
+                },
+            },
+
             /**
              * Stores the focus mode state. When true, the rich text UI is
              * supposed to be fullscreen with an action bar on the right.
@@ -393,10 +404,10 @@ YUI.add('ez-richtext-editview', function (Y) {
              * @attribute forwardEvents
              * @readOnly
              * @type {Array}
-             * @default ['contentDiscover', 'loadImageVariation', 'contentSearch']
+             * @default ['contentDiscover', 'loadImageVariation', 'contentSearch', 'instanceReady']
              */
             forwardEvents: {
-                value: ['contentDiscover', 'loadImageVariation', 'contentSearch'],
+                value: ['contentDiscover', 'loadImageVariation', 'contentSearch', 'instanceReady'],
                 readOnly: true,
             },
 
@@ -412,6 +423,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                 valueFn: function () {
                     return [
                         new Y.eZ.EditorContentProcessorRemoveIds(),
+                        new Y.eZ.EditorContentProcessorEmptyEmbed(),
                         new Y.eZ.EditorContentProcessorXHTML5Edit(),
                     ];
                 },

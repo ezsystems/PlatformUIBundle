@@ -103,6 +103,9 @@ YUI.add('ez-richtext-view', function (Y) {
                     return [{
                         processor: new Y.eZ.RichTextEmbedContainer(),
                         priority: 255,
+                    }, {
+                        processor: new Y.eZ.RichTextResolveEmbed(),
+                        priority: 50,
                     }];
                 },
             },

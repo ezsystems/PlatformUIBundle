@@ -204,6 +204,7 @@ YUI.add('ez-richtext-view-tests', function (Y) {
 
         setUp: function () {
             Y.eZ.RichTextEmbedContainer = function () {};
+            Y.eZ.RichTextResolveEmbed = function () {};
             this.fieldDefinition = {fieldType: 'ezrichtext', identifier: 'some_identifier'};
             this.field = {id: 42, fieldValue: {xhtml5edit: EMBED_XML}};
             this.view = new Y.eZ.RichTextView({
@@ -214,13 +215,24 @@ YUI.add('ez-richtext-view-tests', function (Y) {
 
         tearDown: function () {
             delete Y.eZ.RichTextEmbedContainer;
+            delete Y.eZ.RichTextResolveEmbed;
             this.view.destroy();
         },
 
-        "Should have a processor": function () {
+        "Should have 2 processors": function () {
+            var processors = this.view.get('processors');
+
             Assert.areEqual(
-                1, this.view.get('processors').length,
-                "1 processors should be configured by default"
+                2, processors.length,
+                "2 processors should be configured by default"
+            );
+            Assert.isInstanceOf(
+                Y.eZ.RichTextEmbedContainer, processors[0].processor,
+                "The processor should be an instance of Y.eZ.RichTextResolveEmbed"
+            );
+            Assert.isInstanceOf(
+                Y.eZ.RichTextResolveEmbed, processors[1].processor,
+                "The processor should be an instance of Y.eZ.RichTextResolveEmbed"
             );
         },
     });
