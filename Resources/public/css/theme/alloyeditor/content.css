@@ -3,33 +3,6 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-richtext-editable [data-ezelement="ezembed"] {
-    background: #eee;
-    border: 1px solid #aaa;
-    font-size: 1.1em;
-}
-
-.ez-richtext-editable .ez-embed-type-image[data-ezelement="ezembed"] {
-    background: transparent;
-    border: 0;
-}
-
-.ez-richtext-editable [data-ezelement="ezembed"]:before {
-    font-family: 'ez-platformui-icomoon';
-    speak: none;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-
-    content: "\E62e";
-}
-
-.ez-richtext-editable .ez-embed-type-image[data-ezelement="ezembed"]:before {
-    content: "";
-}
-
 .ez-richtext-editable .is-block-focused,
 .ez-richtext-editable .cke_widget_wrapper.cke_widget_focused>.cke_widget_element {
     outline: 2px dashed #aaa;

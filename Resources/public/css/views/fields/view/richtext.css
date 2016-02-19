@@ -6,7 +6,3 @@
 .ez-fieldview-ezrichtext .ez-richtext-content > section *:first-child {
     margin-top: 0;
 }
-
-.ez-fieldview-ezrichtext .ez-richtext-content [data-ezelement="ezconfig"] {
-    display: none;
-}
