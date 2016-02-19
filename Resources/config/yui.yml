@@ -133,6 +133,9 @@ system:
                 ez-editorcontentprocessorremoveids:
                     requires: ['ez-editorcontentprocessorbase']
                     path: %ez_platformui.public_dir%/js/alloyeditor/processors/removeids.js
+                ez-richtext-embedcontainer:
+                    requires: ['node']
+                    path: %ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-embedcontainer.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -833,6 +836,7 @@ system:
                     requires:
                         - 'ez-fieldview'
                         - 'ez-processable'
+                        - 'ez-richtext-embedcontainer'
                         - 'richtextview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-view.js
                 richtextview-ez-template:
