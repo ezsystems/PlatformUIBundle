@@ -950,23 +950,29 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
         setUp: function () {
             Y.eZ.RichTextResolveEmbed = function () {};
+            Y.eZ.RichTextResolveImage = function () {};
             this.view = new Y.eZ.RichTextEditView({editorContentProcessors: []});
         },
 
         tearDown: function () {
             this.view.destroy();
             delete Y.eZ.RichTextResolveEmbed;
+            delete Y.eZ.RichTextResolveImage;
         },
 
-        "Should have 1 processor": function () {
+        "Should have 2 processors": function () {
             var processors = this.view.get('processors');
 
             Assert.areEqual(
-                1, processors.length,
-                "1 processor should be configured by default"
+                2, processors.length,
+                "2 processor should be configured by default"
             );
             Assert.isInstanceOf(
-                Y.eZ.RichTextResolveEmbed, processors[0].processor,
+                Y.eZ.RichTextResolveImage, processors[0].processor,
+                "The processor should be an instance of Y.eZ.RichTextResolveImage"
+            );
+            Assert.isInstanceOf(
+                Y.eZ.RichTextResolveEmbed, processors[1].processor,
                 "The processor should be an instance of Y.eZ.RichTextResolveEmbed"
             );
         },

@@ -49,35 +49,11 @@ YUI.add('ez-alloyeditor-button-imagevariation', function (Y) {
          */
         _updateImage: function (e) {
             var widget = this._getWidget(),
-                newVariation = e.target.value,
-                contentId = widget.getHref().replace('ezcontent://', '');
+                newVariation = e.target.value;
 
-            /**
-             * Fired to load the embedded Content and the corresponding Content
-             * Type. See {{#crossLink "eZ.Plugin.Search/_doContentSearch:method"}}eZ.Plugin.Search#_doContentSearch{{/crossLink}}
-             *
-             * @event contentSearch
-             * @param viewName {String}
-             * @param search {Object}
-             * @param search.criteria {Object}
-             * @param search.offset {Number}
-             * @param search.limit {Number}
-             * @param loadContentType {Boolean}
-             * @param callback {Function}
-             */
-            this.props.editor.get('nativeEditor').fire('contentSearch', {
-                viewName: 'embed-' + contentId,
-                search: {
-                    criteria: {'ContentIdCriterion': contentId},
-                    offset: 0,
-                    limit: 1,
-                },
-                loadContentType: true,
-                callback: function (err, result) {
-                    this._loadEmbedImage(result[0], newVariation);
-                }.bind(this),
-            });
+            widget.setConfig('size', newVariation).setWidgetContent('');
             widget.focus();
+            this.props.editor.get('nativeEditor').fire('updatedEmbed');
         },
 
         /**

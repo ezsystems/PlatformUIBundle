@@ -15,7 +15,7 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
      * The Richtext resolve embed processor
      *
      * @namespace eZ
-     * @class RichTextEmbedContainer
+     * @class RichTextResolveEmbed
      * @constructor
      */
     var ResolveEmbed = function () {};
@@ -47,10 +47,10 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
             list = new Y.NodeList();
 
         embeds.each(function (embed) {
-            if ( !embed.one('.ez-embed-content') ) {
+            if ( !this._getEmbedContent(embed) ) {
                 list.push(embed);
             }
-        });
+        }, this);
 
         return list;
     };
@@ -63,9 +63,10 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
      * @param {NodeList} embeds
      */
     ResolveEmbed.prototype._renderLoadingEmbeds = function (embeds) {
-        embeds
-            .addClass('is-embed-loading')
-            .setContent('<p class="ez-embed-content">Loading...</a>');
+        embeds.each(function (embedNode) {
+            this._setLoading(embedNode);
+            this._appendLoadingNode(embedNode);
+        }, this);
     };
 
     /**
@@ -101,12 +102,10 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
             var content = struct.content;
 
             mapNode[content.get('contentId')].forEach(function (embedNode) {
-                embedNode
-                    .removeClass('is-embed-loading')
-                    .one('.ez-embed-content')
-                        .setContent(content.get('name'));
-            });
-        });
+                this._unsetLoading(embedNode);
+                this._getEmbedContent(embedNode).setContent(content.get('name'));
+            }, this);
+        }, this);
     };
 
     /**
@@ -139,6 +138,53 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
      */
     ResolveEmbed.prototype._getEmbedContentId = function (embedNode) {
         return embedNode.getData('href').replace('ezcontent://', '');
+    };
+
+    /**
+     * Adds the loading class on the embed node
+     *
+     * @method _setLoading
+     * @protected
+     * @param {Node} embedNode
+     * @return {Node} the embedNode
+     */
+    ResolveEmbed.prototype._setLoading = function (embedNode) {
+        return embedNode.addClass('is-embed-loading');
+    };
+
+    /**
+     * Appends the embed content element when in loading mode.
+     *
+     * @method _appendLoadingNode
+     * @protected
+     * @param {Node} embedNode
+     */
+    ResolveEmbed.prototype._appendLoadingNode = function (embedNode) {
+        embedNode.append('<p class="ez-embed-content">Loading...</a>');
+    };
+
+    /**
+     * Unsets the loading mode by remove the loading class.
+     *
+     * @method _unsetLoading
+     * @protected
+     * @param {Node} embedNode
+     * @return {Node} embedNode
+     */
+    ResolveEmbed.prototype._unsetLoading = function (embedNode) {
+        return embedNode.removeClass('is-embed-loading');
+    };
+
+    /**
+     * Returns the node representing the embed content.
+     *
+     * @method _getEmbedContent
+     * @protected
+     * @param {Node} embedNode
+     * @return {Node}
+     */
+    ResolveEmbed.prototype._getEmbedContent = function (embedNode) {
+        return embedNode.one('.ez-embed-content');
     };
 
     Y.eZ.RichTextResolveEmbed = ResolveEmbed;

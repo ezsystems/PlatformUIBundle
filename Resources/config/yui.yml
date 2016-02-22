@@ -142,6 +142,9 @@ system:
                 ez-richtext-resolveembed:
                     requires: ['node']
                     path: %ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-resolveembed.js
+                ez-richtext-resolveimage:
+                    requires: ['ez-richtext-resolveembed', 'node']
+                    path: %ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-resolveimage.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -664,6 +667,7 @@ system:
                         - 'ez-alloyeditor-button-imagehref'
                         - 'ez-processable'
                         - 'ez-richtext-resolveembed'
+                        - 'ez-richtext-resolveimage'
                         - 'ez-editorcontentprocessorxhtml5edit'
                         - 'ez-editorcontentprocessorremoveids'
                         - 'ez-editorcontentprocessoremptyembed'
@@ -846,6 +850,7 @@ system:
                         - 'ez-processable'
                         - 'ez-richtext-embedcontainer'
                         - 'ez-richtext-resolveembed'
+                        - 'ez-richtext-resolveimage'
                         - 'richtextview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-view.js
                 richtextview-ez-template:

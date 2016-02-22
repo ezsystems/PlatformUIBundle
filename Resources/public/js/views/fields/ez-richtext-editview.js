@@ -328,6 +328,9 @@ YUI.add('ez-richtext-editview', function (Y) {
                 writeOnce: 'initOnly',
                 valueFn: function () {
                     return [{
+                        processor: new Y.eZ.RichTextResolveImage(),
+                        priority: 100,
+                    }, {
                         processor: new Y.eZ.RichTextResolveEmbed(),
                         priority: 50,
                     }];

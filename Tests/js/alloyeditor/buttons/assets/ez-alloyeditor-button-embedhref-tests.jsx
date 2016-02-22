@@ -104,7 +104,7 @@ YUI.add('ez-alloyeditor-button-embedhref-tests', function (Y) {
 
         "Should update the embed": function () {
             var button, contentInfo = new Mock(),
-                updatedEmbed = false;
+                updatedEmbed = false,
                 contentId = 42;
 
             Mock.expect(contentInfo, {

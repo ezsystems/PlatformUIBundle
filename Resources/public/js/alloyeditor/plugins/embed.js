@@ -45,6 +45,8 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                 init: function () {
                     this.on('focus', this._fireEditorInteraction);
                     this._syncAlignment();
+                    this._getEzConfigElement();
+                    this.setWidgetContent('');
                 },
 
                 /**

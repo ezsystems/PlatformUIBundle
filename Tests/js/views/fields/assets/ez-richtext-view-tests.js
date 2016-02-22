@@ -205,6 +205,7 @@ YUI.add('ez-richtext-view-tests', function (Y) {
         setUp: function () {
             Y.eZ.RichTextEmbedContainer = function () {};
             Y.eZ.RichTextResolveEmbed = function () {};
+            Y.eZ.RichTextResolveImage = function () {};
             this.fieldDefinition = {fieldType: 'ezrichtext', identifier: 'some_identifier'};
             this.field = {id: 42, fieldValue: {xhtml5edit: EMBED_XML}};
             this.view = new Y.eZ.RichTextView({
@@ -216,22 +217,27 @@ YUI.add('ez-richtext-view-tests', function (Y) {
         tearDown: function () {
             delete Y.eZ.RichTextEmbedContainer;
             delete Y.eZ.RichTextResolveEmbed;
+            delete Y.eZ.RichTextResolveImage;
             this.view.destroy();
         },
 
-        "Should have 2 processors": function () {
+        "Should have 3 processors": function () {
             var processors = this.view.get('processors');
 
             Assert.areEqual(
-                2, processors.length,
-                "2 processors should be configured by default"
+                3, processors.length,
+                "3 processors should be configured by default"
             );
             Assert.isInstanceOf(
                 Y.eZ.RichTextEmbedContainer, processors[0].processor,
-                "The processor should be an instance of Y.eZ.RichTextResolveEmbed"
+                "The processor should be an instance of Y.eZ.RichTextEmbedContainer"
             );
             Assert.isInstanceOf(
-                Y.eZ.RichTextResolveEmbed, processors[1].processor,
+                Y.eZ.RichTextResolveImage, processors[1].processor,
+                "The processor should be an instance of Y.eZ.RichTextResolveImage"
+            );
+            Assert.isInstanceOf(
+                Y.eZ.RichTextResolveEmbed, processors[2].processor,
                 "The processor should be an instance of Y.eZ.RichTextResolveEmbed"
             );
         },

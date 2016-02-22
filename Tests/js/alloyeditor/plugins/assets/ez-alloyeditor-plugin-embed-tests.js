@@ -6,7 +6,7 @@
 YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
     var definePluginTest, embedWidgetTest, focusTest,
         setHrefTest, setWidgetContentTest, setConfigTest, imageTypeTest,
-        getHrefTest, getConfigTest, initAlignTest, alignMethodsTest,
+        getHrefTest, getConfigTest, initTest, alignMethodsTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     definePluginTest = new Y.Test.Case({
@@ -245,7 +245,7 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
 
             ret = widget.setWidgetContent(content);
             Assert.areEqual(
-                content, embed.getContent(),
+                content, embed.get('text'),
                 "The text content should have been updated"
             );
             Assert.areSame(
@@ -477,8 +477,8 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
         },
     });
 
-    initAlignTest = new Y.Test.Case({
-        name: "eZ AlloyEditor embed widget init align test",
+    initTest = new Y.Test.Case({
+        name: "eZ AlloyEditor embed widget init test",
 
         "async:init": function () {
             var startTest = this.callback();
@@ -527,7 +527,21 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
                 widget.wrapper.data('ezalign'),
                 "The data-ezalign should not have been added"
             );
-        }
+        },
+
+        "Should empty the widget": function () {
+            Assert.areEqual(
+                "", this.container.one('#embed').get('text'),
+                "The content of the widget should be removed"
+            );
+        },
+
+        "Should create the config element": function () {
+            Assert.isNotNull(
+                this.container.one('#embed').get('[data-ezelement="ezconfig"]'),
+                "The config element should be initialized"
+            );
+        },
     });
 
     alignMethodsTest = new Y.Test.Case({
@@ -638,6 +652,6 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
     Y.Test.Runner.add(setConfigTest);
     Y.Test.Runner.add(getConfigTest);
     Y.Test.Runner.add(imageTypeTest);
-    Y.Test.Runner.add(initAlignTest);
+    Y.Test.Runner.add(initTest);
     Y.Test.Runner.add(alignMethodsTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-alloyeditor-plugin-embed']});
