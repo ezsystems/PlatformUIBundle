@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ RichText resolve embed processor tests</title>
+</head>
+<body>
+
+<div class="container">
+    <div id="embed-loaded" data-ezelement="ezembed" data-href="ezcontent://40"><p class="ez-embed-content">Saez - J'Veux M'En Aller</p></div>
+    <div id="embed1" data-ezelement="ezembed" data-href="ezcontent://41"></div>
+    <div id="embed2" data-ezelement="ezembed" data-href="ezcontent://42"></div>
+</div>
+<script type="text/javascript" src="../../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-richtext-resolveembed-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage') {
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-richtext-resolveembed'],
+        filter: loaderFilter,
+        modules: {
+            "ez-richtext-resolveembed": {
+                requires: ['node'],
+                fullpath: "../../../../../Resources/public/js/views/fields/richtext/ez-richtext-resolveembed.js",
+            },
+        }
+    }).use('ez-richtext-resolveembed-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

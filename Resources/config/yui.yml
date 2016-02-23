@@ -133,6 +133,18 @@ system:
                 ez-editorcontentprocessorremoveids:
                     requires: ['ez-editorcontentprocessorbase']
                     path: %ez_platformui.public_dir%/js/alloyeditor/processors/removeids.js
+                ez-editorcontentprocessoremptyembed:
+                    requires: ['ez-editorcontentprocessorbase']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/processors/emptyembed.js
+                ez-richtext-embedcontainer:
+                    requires: ['node']
+                    path: %ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-embedcontainer.js
+                ez-richtext-resolveembed:
+                    requires: ['node']
+                    path: %ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-resolveembed.js
+                ez-richtext-resolveimage:
+                    requires: ['ez-richtext-resolveembed', 'node']
+                    path: %ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-resolveimage.js
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -653,8 +665,12 @@ system:
                         - 'ez-alloyeditor-button-blockremove'
                         - 'ez-alloyeditor-button-embedhref'
                         - 'ez-alloyeditor-button-imagehref'
+                        - 'ez-processable'
+                        - 'ez-richtext-resolveembed'
+                        - 'ez-richtext-resolveimage'
                         - 'ez-editorcontentprocessorxhtml5edit'
                         - 'ez-editorcontentprocessorremoveids'
+                        - 'ez-editorcontentprocessoremptyembed'
                         - 'richtexteditview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
                 richtexteditview-ez-template:
@@ -829,7 +845,13 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/fields/edit/relationlist.hbt
                 ez-richtext-view:
-                    requires: ['ez-fieldview', 'richtextview-ez-template']
+                    requires:
+                        - 'ez-fieldview'
+                        - 'ez-processable'
+                        - 'ez-richtext-embedcontainer'
+                        - 'ez-richtext-resolveembed'
+                        - 'ez-richtext-resolveimage'
+                        - 'richtextview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-view.js
                 richtextview-ez-template:
                     type: 'template'
@@ -1091,6 +1113,9 @@ system:
                 ez-expandable:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js
+                ez-processable:
+                    requires: ['view']
+                    path: %ez_platformui.public_dir%/js/extensions/ez-processable.js
                 ez-contentinfo-attributes:
                     requires: ['ez-restmodel']
                     path: %ez_platformui.public_dir%/js/models/extensions/ez-contentinfo-attributes.js

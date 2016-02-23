@@ -2,7 +2,6 @@
  * Copyright (C) eZ Systems AS. All rights reserved.
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
-/* global CKEDITOR */
 YUI.add('ez-alloyeditor-button-mixin-embedimage', function (Y) {
     "use strict";
 
@@ -56,51 +55,6 @@ YUI.add('ez-alloyeditor-button-mixin-embedimage', function (Y) {
             var imageIdentifier = contentType.getFieldDefinitionIdentifiers('ezimage');
 
             return content.get('fields')[imageIdentifier[0]];
-        },
-
-        /**
-         * Creates the <img> element with the provided image variation.
-         *
-         * @method _insertImage
-         * @protected
-         * @param {false|CAPIError} imgVariation
-         * @param {Object} imgVariation
-         */
-        _insertImage: function (error, imgVariation) {
-            var img = new CKEDITOR.dom.element('img');
-
-            // TODO error handling, this is also related to the improvement
-            // of the transitions between the loading state and the state where
-            // we display the image
-            // see https://jira.ez.no/browse/EZP-25138
-            img.setAttribute('src', imgVariation.uri);
-            this._getWidget().setWidgetContent(img);
-        },
-
-        /**
-         * Loads the variation of the embed image by firing the
-         * `loadImageVariation`event.
-         *
-         * @method _loadEmbedImage
-         * @param {Object} struct
-         * @param {String} [variation='medium'] the optional image variation to use
-         * @protected
-         */
-        _loadEmbedImage: function (struct, variation) {
-            var editor = this.props.editor.get('nativeEditor');
-
-            if ( !variation ) {
-                // TODO make the default variation configurable
-                // see https://jira.ez.no/browse/EZP-25139
-                variation = 'medium';
-            }
-
-            this._getWidget().setConfig('size', variation);
-            editor.fire('loadImageVariation', {
-                variation: variation,
-                field: this._getImageField(struct.contentType, struct.content),
-                callback: this._insertImage,
-            });
         },
     };
 });

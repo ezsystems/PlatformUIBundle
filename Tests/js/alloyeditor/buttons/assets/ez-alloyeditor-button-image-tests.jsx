@@ -268,7 +268,7 @@ YUI.add('ez-alloyeditor-button-image-tests', function (Y) {
             Assert.isTrue(widget.isImage(), "The widget should be an image embed");
         },
 
-        "Should fire the loadImageVariation event": function () {
+        "Should fire the updatedEmbed event": function () {
             var handler = this._getContentDiscoveredHandler(),
                 fieldIdentifier = 'image',
                 fields = {},
@@ -288,69 +288,12 @@ YUI.add('ez-alloyeditor-button-image-tests', function (Y) {
                 returns: contentId,
             });
 
-            this.listeners.push(this.editor.get('nativeEditor').on('loadImageVariation', function (evt) {
+            this.listeners.push(this.editor.get('nativeEditor').on('updatedEmbed', function () {
                 eventFired = true;
-
-                Assert.areEqual(
-                    'medium', evt.data.variation,
-                    "The variation should be set to 'medium' in the event parameters"
-                );
-                Assert.areSame(
-                    fields[fieldIdentifier], evt.data.field,
-                    "The field should be provided in the event parameters"
-                );
-                Assert.isFunction(
-                    evt.data.callback,
-                    "A callback should be provided in the event paramters"
-                );
             }));
 
             handler({selection: {contentType: contentType, content: content, contentInfo: contentInfo}});
-            Assert.isTrue(eventFired, "The loadImageVariation event should have been fired");
-        },
-
-        _getLoadImageVariationCallback: function () {
-            var handler = this._getContentDiscoveredHandler(),
-                fieldIdentifier = 'image',
-                fields = {},
-                contentId = '/content/id',
-                contentType = new Mock(),
-                contentInfo = new Mock(),
-                content = new Mock(),
-                callback;
-
-            fields[fieldIdentifier] = {fieldValue: {id: 42}};
-
-            this._configureContentType(contentType, true, fieldIdentifier);
-            this._configureContent(content, fields);
-            Mock.expect(contentInfo, {
-                method: 'get',
-                args: ['contentId'],
-                returns: contentId,
-            });
-
-            this.listeners.push(this.editor.get('nativeEditor').on('loadImageVariation', function (evt) {
-                callback = evt.data.callback;
-            }));
-
-            handler({selection: {contentType: contentType, content: content, contentInfo: contentInfo}});
-            return callback;
-        },
-
-        "Should add an <img> with the result of the loadImageVariation": function () {
-            var callback = this._getLoadImageVariationCallback(),
-                uri = 'http://www.reactiongifs.com/wp-content/uploads/2013/06/nodding.gif',
-                img;
-
-            callback(false, {uri: uri});
-            img = this._getWidget().element.findOne('img');
-
-            Assert.isNotNull(img, "An <img> tag should be added");
-
-            Assert.areEqual(
-                uri, img.getAttribute('src'),
-                "The <img> tag should have the variation URI as src attribute"
-            );
+            Assert.isTrue(eventFired, "The updatedEmbed event should have been fired");
         },
     });
 

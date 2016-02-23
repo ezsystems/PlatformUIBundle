@@ -8,7 +8,7 @@ YUI.add('ez-alloyeditor-button-imagevariation-tests', function (Y) {
         AlloyEditor = Y.eZ.AlloyEditor,
         React = Y.eZ.React,
         ReactDOM = Y.eZ.ReactDOM,
-        Assert = Y.Assert, Mock = Y.Mock;
+        Assert = Y.Assert;
 
     renderTest = new Y.Test.Case({
         name: "eZ AlloyEditor imagevariation render test",
@@ -159,90 +159,14 @@ YUI.add('ez-alloyeditor-button-imagevariation-tests', function (Y) {
             ReactDOM.unmountComponentAtNode(this.container);
         },
 
-        "Should load embedded the content and its content type": function () {
-            var select,
-                contentSearch = false;
-
-            this.editor.get('nativeEditor').on('contentSearch', function (e) {
-                var data = e.data;
-
-                contentSearch = true;
-                Assert.isTrue(
-                    data.loadContentType,
-                    "The loadContentType flag should be set"
-                );
-                Assert.areEqual(
-                    "42", data.search.criteria.ContentIdCriterion,
-                    "The search should try load the embedded content"
-                );
-                Assert.areEqual(
-                    0, data.search.offset,
-                    "The search should try load the embedded content"
-                );
-                Assert.areEqual(
-                    1, data.search.limit,
-                    "The search should try load the embedded content"
-                );
-            });
-            select = Y.one(ReactDOM.findDOMNode(
-                ReactDOM.render(
-                    <Y.eZ.AlloyEditorButton.ButtonImageVariation editor={this.editor} />,
-                    this.container
-                )
-            ));
-            select.set('value', 'small');
-            select.simulate('change');
-
-            Assert.isTrue(contentSearch, "The contentSearch should have been fired");
-        },
-
-        _getContentTypeMock: function () {
-            var type = new Mock();
-
-            Mock.expect(type, {
-                method: 'getFieldDefinitionIdentifiers',
-                args: ['ezimage'],
-                returns: [this.imageFieldDefinitionIdentifier],
-            });
-
-            return type;
-        },
-
-        _getContentMock: function () {
-            var content = new Mock(),
-                fields = {};
-
-            fields[this.imageFieldDefinitionIdentifier] = this.imageField;
-
-            Mock.expect(content, {
-                method: 'get',
-                args: ['fields'],
-                returns: fields,
-            });
-            return content;
-        },
-
         "Should update the image in the editor": function () {
             var select, variation = 'small',
-                loadImageVariation = false,
-                struct = {content: this._getContentMock(), contentType: this._getContentTypeMock()};
+                updatedEmbed = false;
 
-            this.editor.get('nativeEditor').on('contentSearch', function (e) {
-                e.data.callback(false, [struct]);
-            });
-            this.editor.get('nativeEditor').on('loadImageVariation', Y.bind(function (e) {
-                loadImageVariation = true;
-
-                Assert.areEqual(
-                    variation, e.data.variation,
-                    "The choosen variation should be loaded"
-                );
-                Assert.areSame(
-                    this.imageField, e.data.field,
-                    "The field should be provided"
-                );
-                e.data.callback(false, {uri: 'http://www.reactiongifs.com/r/fyeah.gif'});
+            this.editor.get('nativeEditor').on('updatedEmbed', Y.bind(function (e) {
+                updatedEmbed = true;
             }, this));
+
             select = Y.one(ReactDOM.findDOMNode(
                 ReactDOM.render(
                     <Y.eZ.AlloyEditorButton.ButtonImageVariation editor={this.editor} />,
@@ -252,7 +176,7 @@ YUI.add('ez-alloyeditor-button-imagevariation-tests', function (Y) {
             select.set('value', variation);
             select.simulate('change');
 
-            Assert.isTrue(loadImageVariation, "The image variation should have been loaded");
+            Assert.isTrue(updatedEmbed, "The updatedEmbed event should have been fired");
             Assert.areEqual(
                 variation, this.widget.getConfig('size'),
                 "The widget config should have been updated"

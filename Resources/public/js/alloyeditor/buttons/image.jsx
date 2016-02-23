@@ -52,14 +52,17 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
          * @protected
          */
         _addImage: function (e) {
+            var nativeEditor = this.props.editor.get('nativeEditor');
+
             this.execCommand();
             this._setContentInfo(e.selection.contentInfo);
 
             this._getWidget()
-                .setWidgetContent('Loading the image...')
-                .setImageType();
-            this._loadEmbedImage(e.selection);
-            this.props.editor.get('nativeEditor').fire('actionPerformed', this);
+                .setConfig('size', 'medium')
+                .setImageType()
+                .setWidgetContent('');
+            nativeEditor.fire('actionPerformed', this);
+            nativeEditor.fire('updatedEmbed');
         },
 
         render: function () {

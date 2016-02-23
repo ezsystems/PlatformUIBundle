@@ -1,0 +1,33 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+[data-ezelement="ezembed"] {
+    background: #eee;
+    border: 1px solid #aaa;
+    font-size: 1.1em;
+}
+
+.ez-embed-type-image[data-ezelement="ezembed"] {
+    background: transparent;
+    border: 0;
+}
+
+[data-ezelement="ezembed"] .ez-embed-content:before {
+    font-family: 'ez-platformui-icomoon';
+    speak: none;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+
+    content: "\E62e";
+}
+
+[data-ezelement="ezembed"].is-embed-loading .ez-embed-content:before {
+    content: "\E61c";
+    -webkit-animation: spin 0.7s infinite linear;
+            animation: spin 0.7s infinite linear;
+}

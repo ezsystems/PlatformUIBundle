@@ -18,8 +18,9 @@ YUI.add('ez-richtext-view', function (Y) {
      * @class RichTextView
      * @constructor
      * @extends eZ.FieldView
+     * @uses eZ.Processable
      */
-    Y.eZ.RichTextView = Y.Base.create('richtextView', Y.eZ.FieldView, [], {
+    Y.eZ.RichTextView = Y.Base.create('richtextView', Y.eZ.FieldView, [Y.eZ.Processable], {
         initializer: function () {
             /**
              * Stores the parsed document from the xhtml5edit version of the
@@ -30,12 +31,23 @@ YUI.add('ez-richtext-view', function (Y) {
              * @protected
              */
             this._document =  this._getDOMDocument();
+            this._processEvent = 'activeChange';
         },
 
         _getFieldValue: function () {
+            var forEach = Array.prototype.forEach;
+
             if ( !this._document ) {
                 return null;
             }
+
+            // make sure the div representing an embed element has some content
+            // this is to avoid the browser to misinterpret <div/> in the
+            // markup
+            forEach.call(this._document.querySelectorAll('[data-ezelement="ezembed"]:empty'), function (div) {
+                div.textContent = " ";
+            });
+
             return (new XMLSerializer()).serializeToString(this._document.documentElement);
         },
 
@@ -84,6 +96,23 @@ YUI.add('ez-richtext-view', function (Y) {
             }
             return doc;
         },
+    }, {
+        ATTRS: {
+            processors: {
+                valueFn: function () {
+                    return [{
+                        processor: new Y.eZ.RichTextEmbedContainer(),
+                        priority: 255,
+                    }, {
+                        processor: new Y.eZ.RichTextResolveImage(),
+                        priority: 100,
+                    }, {
+                        processor: new Y.eZ.RichTextResolveEmbed(),
+                        priority: 50,
+                    }];
+                },
+            },
+        }
     });
 
     Y.eZ.FieldView.registerFieldView('ezrichtext', Y.eZ.RichTextView);

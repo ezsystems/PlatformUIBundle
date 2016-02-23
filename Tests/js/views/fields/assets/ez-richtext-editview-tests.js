@@ -6,7 +6,7 @@
 YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
         editorTest, focusModeTest, editorFocusHandlingTest, appendToolbarConfigTest,
-        eventForwardTest, defaultEditorProcessorsTest,
+        eventForwardTest, defaultEditorProcessorsTest, defaultProcessorsTest,
         VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, RESULT_EMPTY_XHTML,
         Assert = Y.Assert, Mock = Y.Mock,
         destroyTearDown = function () {
@@ -75,6 +75,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 version: this.version,
                 contentType: this.contentType,
                 editorContentProcessors: [],
+                processors: [],
             });
         },
 
@@ -179,6 +180,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                     }
                 },
                 editorContentProcessors: [],
+                processors: [],
             });
             this.view._set('editor', this.editor);
         },
@@ -304,6 +306,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                     }
                 },
                 editorContentProcessors: [],
+                processors: [],
             });
         },
 
@@ -391,6 +394,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 contentType: this.model,
                 config: this.config,
                 editorContentProcessors: [],
+                processors: [],
             });
             this.view.render();
         },
@@ -618,6 +622,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 version: this.version,
                 contentType: this.contentType,
                 editorContentProcessors: [],
+                processors: [],
             });
             this.view.render();
         },
@@ -726,6 +731,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                     }
                 },
                 editorContentProcessors: [],
+                processors: [],
             });
             this.view.render();
         },
@@ -796,6 +802,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                     }
                 },
                 editorContentProcessors: [],
+                processors: [],
             });
             this.view.render();
         },
@@ -839,13 +846,31 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         "Should forward the contentSearch event": function () {
             this._testForwardEvent('contentSearch');
         },
+
+        "Should forward the instanceReady event": function () {
+            var eventFired = false;
+
+            this.view.once('instanceReady', function () {
+                eventFired = true;
+            });
+            this.view.set('active', true);
+            this.view.get('editor').get('nativeEditor').fire('instanceReady');
+
+            Assert.isTrue(
+                eventFired, "The instanceReady event should have been fired by the view"
+            );
+        },
+
+        "Should forward the updatedEmbed event": function () {
+            this._testForwardEvent('updatedEmbed');
+        },
     });
 
     appendToolbarConfigTest = new Y.Test.Case({
         name: "eZ RichText View ezaddcontent toolbar config test",
 
         setUp: function () {
-            this.view = new Y.eZ.RichTextEditView({editorContentProcessors: []});
+            this.view = new Y.eZ.RichTextEditView({editorContentProcessors: [], processors: []});
         },
 
         tearDown: function () {
@@ -884,13 +909,15 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         setUp: function () {
             Y.eZ.EditorContentProcessorRemoveIds = function () {};
             Y.eZ.EditorContentProcessorXHTML5Edit = function () {};
-            this.view = new Y.eZ.RichTextEditView();
+            Y.eZ.EditorContentProcessorEmptyEmbed = function () {};
+            this.view = new Y.eZ.RichTextEditView({processors: []});
         },
 
         tearDown: function () {
             this.view.destroy();
             delete Y.eZ.EditorContentProcessorRemoveIds;
             delete Y.eZ.EditorContentProcessorXHTML5Edit;
+            delete Y.eZ.EditorContentProcessorEmptyEmbed;
         },
 
         "Should have some default editorContentProcessors": function () {
@@ -898,18 +925,56 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
             Assert.isArray(processors, "The processors should be in an array");
             Assert.areEqual(
-                2, processors.length,
-                "The view should have 2 processors by default"
+                3, processors.length,
+                "The view should have 3 processors by default"
             );
             Y.Array.each(processors, function (processor) {
                 if (
                     !(processor instanceof Y.eZ.EditorContentProcessorRemoveIds)
                     &&
                     !(processor instanceof Y.eZ.EditorContentProcessorXHTML5Edit)
-               ) {
-                    Y.fail("The processor should be an instance of EditorContentProcessorRemoveIds or EditorContentProcessorXHTML5Edit");
+                    &&
+                    !(processor instanceof Y.eZ.EditorContentProcessorEmptyEmbed)
+                ) {
+                    Y.fail(
+                        "The processor should be an instance of EditorContentProcessorRemoveIds"
+                        + "or EditorContentProcessorXHTML5Edit or EditorContentProcessorEmptyEmbed"
+                    );
                }
             });
+        },
+    });
+
+    defaultProcessorsTest = new Y.Test.Case({
+        name: "eZ RichText View default processors test",
+
+        setUp: function () {
+            Y.eZ.RichTextResolveEmbed = function () {};
+            Y.eZ.RichTextResolveImage = function () {};
+            this.view = new Y.eZ.RichTextEditView({editorContentProcessors: []});
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete Y.eZ.RichTextResolveEmbed;
+            delete Y.eZ.RichTextResolveImage;
+        },
+
+        "Should have 2 processors": function () {
+            var processors = this.view.get('processors');
+
+            Assert.areEqual(
+                2, processors.length,
+                "2 processor should be configured by default"
+            );
+            Assert.isInstanceOf(
+                Y.eZ.RichTextResolveImage, processors[0].processor,
+                "The processor should be an instance of Y.eZ.RichTextResolveImage"
+            );
+            Assert.isInstanceOf(
+                Y.eZ.RichTextResolveEmbed, processors[1].processor,
+                "The processor should be an instance of Y.eZ.RichTextResolveEmbed"
+            );
         },
     });
 
@@ -929,6 +994,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(editorFocusHandlingTest);
     Y.Test.Runner.add(eventForwardTest);
     Y.Test.Runner.add(defaultEditorProcessorsTest);
+    Y.Test.Runner.add(defaultProcessorsTest);
 }, '', {
     requires: [
         'test',

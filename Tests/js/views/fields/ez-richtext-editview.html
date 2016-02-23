@@ -40,8 +40,12 @@
         filter: loaderFilter,
         modules: {
             "ez-richtext-editview": {
-                requires: ['ez-fieldeditview', 'ez-alloyeditor', 'node'],
+                requires: ['ez-fieldeditview', 'ez-alloyeditor', 'ez-processable', 'node'],
                 fullpath: "../../../../Resources/public/js/views/fields/ez-richtext-editview.js"
+            },
+            "ez-processable": {
+                requires: ['view'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-processable.js"
             },
             "ez-editorcontentprocessorbase": {
                 fullpath: "../../../../Resources/public/js/alloyeditor/processors/base.js"

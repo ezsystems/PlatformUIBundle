@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-richtext-editable [data-ezelement="ezembed"] {
+[data-ezelement="ezembed"] {
     display: inline-block;
     margin: 0.5em 0.1em;
     padding: 0.3em;
@@ -12,29 +12,29 @@
     min-height: auto;
 }
 
-.ez-richtext-editable [data-ezelement="ezembed"]:before {
-    padding: 0 0.2em 0 0.5em;
+[data-ezelement="ezembed"] .ez-embed-content {
+    margin: 0;
+}
+
+[data-ezelement="ezembed"] .ez-embed-content:before {
+    margin: 0 0.2em;
     line-height: 100%;
     height: 100%;
     display: inline-block;
 }
 
-.ez-richtext-editable .ez-embed-type-image[data-ezelement="ezembed"]:before {
-    padding: 0;
-}
-
-.ez-richtext-editable [data-ezelement="ezconfig"] {
+[data-ezelement="ezconfig"] {
     display: none;
 }
 
-.ez-richtext-editable [data-ezalign="center"] {
+[data-ezalign="center"] {
     text-align: center;
 }
 
-.ez-richtext-editable [data-ezalign="right"] {
+[data-ezalign="right"] {
     float: right;
 }
 
-.ez-richtext-editable [data-ezalign="left"] {
+[data-ezalign="left"] {
     float: left;
 }

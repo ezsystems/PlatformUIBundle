@@ -61,8 +61,8 @@ YUI.add('ez-alloyeditor-button-imagehref', function (Y) {
             var contentInfo = e.selection.contentInfo;
 
             this._setContentInfo(contentInfo);
-            this._getWidget().setWidgetContent('Loading the image...');
-            this._loadEmbedImage(e.selection);
+            this._getWidget().setWidgetContent('');
+            this.props.editor.get('nativeEditor').fire('updatedEmbed');
         },
 
         render: function () {
