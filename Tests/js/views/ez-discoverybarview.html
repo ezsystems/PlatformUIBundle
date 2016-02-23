@@ -35,6 +35,7 @@ tree
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-discoverybarview-tests.js"></script>
+<script type="text/javascript" src="../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -52,7 +53,7 @@ tree
         filter: loaderFilter,
         modules: {
             "ez-discoverybarview": {
-                requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview'],
+                requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview', 'ez-translator'],
                 fullpath: "../../../Resources/public/js/views/ez-discoverybarview.js"
             },
             "ez-barview": {

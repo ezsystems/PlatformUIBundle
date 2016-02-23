@@ -9,6 +9,8 @@ system:
                 ez-capi:
                     requires: ['capi']
                     path: %ez_platformui.public_dir%/js/external/ez-capi.js
+                ez-translator:
+                    path: %ez_platformui.public_dir%/js/external/ez-translator.js
                 alloyeditor:
                     path: %ez_platformui.external_assets_public_dir%/vendors/alloy-editor/dist/alloy-editor/alloy-editor-all.js
                 ez-alloyeditor:
@@ -238,7 +240,7 @@ system:
                         - 'ez-copycontentplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
-                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras', 'ez-height-change']
+                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras', 'ez-height-change', 'ez-translator']
                     path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
                 ez-discoverybarviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-discoverybarcontenttreeplugin']
@@ -444,6 +446,7 @@ system:
                         - 'ez-createcontentactionview'
                         - 'ez-movecontentactionview'
                         - 'ez-translateactionview'
+                        - 'ez-translator'
                     path: %ez_platformui.public_dir%/js/views/ez-actionbarview.js
                 ez-trashbarview:
                     requires:

@@ -10,6 +10,7 @@
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-navigationhubviewservice-tests.js"></script>
 <script type="text/javascript" src="./assets/fake-models.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -27,7 +28,7 @@
         filter: loaderFilter,
         modules: {
             "ez-navigationhubviewservice": {
-                requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemview', 'array-extras', 'ez-navigationitemsubtreeview', 'parallel', 'fake-models'],
+                requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemview', 'array-extras', 'ez-navigationitemsubtreeview', 'parallel', 'fake-models', 'ez-translator'],
                 fullpath: "../../../../Resources/public/js/views/services/ez-navigationhubviewservice.js"
             },
             "ez-sideviewservice": {
