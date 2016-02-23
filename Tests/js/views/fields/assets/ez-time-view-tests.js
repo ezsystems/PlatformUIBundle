@@ -64,6 +64,20 @@ YUI.add('ez-time-view-tests', function (Y) {
                 );
             },
 
+            "Test isEmpty with a null fieldValue": function () {
+                this._testIsEmpty(
+                    {fieldValue: null}, true,
+                    "The field should be seen as empty"
+                );
+            },
+
+            "Test isEmpty with 0": function () {
+                this._testIsEmpty(
+                    {fieldValue: 0}, false,
+                    "The field should not be seen as empty"
+                );
+            },
+
             "Test isEmpty with a filled fieldValue": function () {
                 this._testIsEmpty(
                     {fieldValue: 1}, false,

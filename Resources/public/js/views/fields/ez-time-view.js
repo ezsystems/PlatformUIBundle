@@ -89,12 +89,18 @@ YUI.add('ez-time-view', function (Y) {
          * @return {Date}
          */
         _getDateObject: function () {
+            if (this._isFieldEmpty()) {
+                return undefined;
+            } else {
+                return new Date(this.get('field').fieldValue * 1000);
+            }
+        },
+
+        _isFieldEmpty: function () {
             var field = this.get('field');
 
-            if ( field && field.fieldValue ) {
-                return new Date(field.fieldValue * 1000);
-            }
-            return undefined;
+            return (!field || field.fieldValue === null || isNaN(field.fieldValue) );
+
         },
     });
 

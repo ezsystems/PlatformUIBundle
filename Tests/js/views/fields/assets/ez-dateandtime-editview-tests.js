@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-dateandtime-editview-tests', function (Y) {
-    var viewTest, registerTest, getFieldTest, getEmptyFieldTest;
+    var viewTest, registerTest, getFieldTest, getZeroFieldTest,
+        getEmptyFieldTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ date and time editView test",
@@ -51,13 +52,15 @@ YUI.add('ez-dateandtime-editview-tests', function (Y) {
             this.view.destroy();
         },
 
-        _testAvailableVariables: function (required, expectRequired, useSeconds, expectUsingSeconds) {
+        _testAvailableVariables: function (required, expectRequired, useSeconds, expectUsingSeconds, timestamp) {
             var fieldDefinition = this._getFieldDefinition(required, useSeconds),
                 that = this;
 
             this.view.set('fieldDefinition', fieldDefinition);
 
             this.view.template = function (variables) {
+                var expectedDate = new Date(timestamp * 1000);
+
                 Y.Assert.isObject(variables, "The template should receive some variables");
                 Y.Assert.areEqual(9, Y.Object.keys(variables).length, "The template should receive 9 variables");
 
@@ -83,25 +86,48 @@ YUI.add('ez-dateandtime-editview-tests', function (Y) {
                 );
 
                 Y.Assert.areSame(expectRequired, variables.isRequired);
+
+                Y.Assert.areSame(
+                    Y.Date.format(expectedDate),
+                    variables.html5InputDate,
+                    "The date should be available in the field edit view template"
+                );
+
+                Y.Assert.areSame(
+                    Y.Date.format(expectedDate, {format: "%T"}),
+                    variables.html5InputTime,
+                    "The date should be available in the field edit view template"
+                );
+
+                Y.Assert.areSame(expectUsingSeconds, variables.useSeconds);
+
                 return '';
             };
             this.view.render();
         },
 
         "Test not required field without seconds": function () {
-            this._testAvailableVariables(false, false, false, false);
+            this._testAvailableVariables(false, false, false, false, 595956555);
         },
 
         "Test required field without seconds": function () {
-            this._testAvailableVariables(true, true, false, false);
+            this._testAvailableVariables(true, true, false, false, 595956555);
         },
 
+        "Test required field without seconds and 0 as timestamp": function () {
+            this.field = {fieldValue: {timestamp: 0}};
+            this.view.set('field', this.field);
+
+            this._testAvailableVariables(true, true, false, false, 0);
+        },
+
+
         "Test required field using seconds": function () {
-            this._testAvailableVariables(true, true, true, true);
+            this._testAvailableVariables(true, true, true, true, 595956555);
         },
 
         "Test not required field using seconds": function () {
-            this._testAvailableVariables(false, false, true, true);
+            this._testAvailableVariables(false, false, true, true, 595956555);
         },
 
         "Test validate no constraints": function () {
@@ -887,6 +913,46 @@ YUI.add('ez-dateandtime-editview-tests', function (Y) {
         })
     );
     Y.Test.Runner.add(getFieldTest);
+
+    getZeroFieldTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            fieldDefinition: {
+                isRequired: false,
+                fieldSettings: {
+                    useSeconds: false
+                }
+            },
+            ViewConstructor: Y.eZ.DateAndTimeEditView,
+            tzOffset :  new Date(0).getTimezoneOffset() * 60 * 1000,
+
+            _setNewValue: function () {
+                var c = this.view.get('container'),
+                    localeDateForUTC = new Date(this.tzOffset),
+                    date = Y.Date.format(localeDateForUTC),
+                    time = Y.Date.format(localeDateForUTC, {format: "%T"});
+                c.one('.ez-dateandtime-date-input-ui input').set(
+                    'value',
+                    date
+                );
+                c.one('.ez-dateandtime-time-input-ui input').set(
+                    'value',
+                    time
+                );
+            },
+
+            _assertCorrectFieldValue: function (fieldValue, msg) {
+                Y.Assert.isObject(fieldValue, 'the fieldValue should be an object');
+
+                Y.Assert.areSame(
+                    this.tzOffset,
+                    fieldValue.timestamp * 1000,
+                    'the converted date should match the fieldValue timestamp'
+                );
+
+            },
+        })
+    );
+    Y.Test.Runner.add(getZeroFieldTest);
 
     getEmptyFieldTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.GetFieldTests, {

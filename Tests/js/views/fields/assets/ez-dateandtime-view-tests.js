@@ -79,6 +79,20 @@ YUI.add('ez-dateandtime-view-tests', function (Y) {
                 );
             },
 
+            "Test isEmpty with a null fieldValue": function () {
+                this._testIsEmpty(
+                    {fieldValue: {timestamp: null}}, true,
+                    "The field should be seen as empty"
+                );
+            },
+
+            "Test isEmpty with 0": function () {
+                this._testIsEmpty(
+                    {fieldValue: {timestamp: 0}}, false,
+                    "The should not be seen as empty"
+                );
+            },
+
             "Test isEmpty with a filled fieldValue": function () {
                 this._testIsEmpty(
                     {fieldValue: {timestamp: 1}}, false,

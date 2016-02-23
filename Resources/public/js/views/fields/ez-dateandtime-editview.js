@@ -185,7 +185,7 @@ YUI.add('ez-dateandtime-editview', function (Y) {
                 date = '',
                 time = '';
 
-            if (field && field.fieldValue && field.fieldValue.timestamp) {
+            if (!this._isFieldEmpty()) {
                 date = Y.Date.format(new Date(field.fieldValue.timestamp * 1000));
                 time = Y.Date.format(new Date(field.fieldValue.timestamp * 1000), {format: "%T"});
             }
@@ -289,13 +289,27 @@ YUI.add('ez-dateandtime-editview', function (Y) {
                 utcTimeStamp,
                 localizedTimeStamps;
 
-            if (valueOfDateInput && valueOfTimeInput){
-                localizedTimeStamps = valueOfDateInput + valueOfTimeInput;
-                utcTimeStamp = this._getUtcTimeStamp(localizedTimeStamps);
-                return {timestamp: utcTimeStamp/1000};
-            } else {
+            if (isNaN(valueOfDateInput) || isNaN(valueOfTimeInput)) {
                 return null;
             }
+
+            localizedTimeStamps = valueOfDateInput + valueOfTimeInput;
+            utcTimeStamp = this._getUtcTimeStamp(localizedTimeStamps);
+
+            return {timestamp: utcTimeStamp/1000};
+        },
+
+        /**
+         * Whether the field is empty or not
+         *
+         * @protected
+         * @method _isFieldEmpty
+         * @return {Boolean}
+         */
+        _isFieldEmpty: function () {
+            var field = this.get('field');
+
+            return (!field || !field.fieldValue || isNaN(field.fieldValue.timestamp));
         },
     },{
         ATTRS: {

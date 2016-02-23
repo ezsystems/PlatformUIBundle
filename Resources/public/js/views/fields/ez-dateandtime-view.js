@@ -74,16 +74,23 @@ YUI.add('ez-dateandtime-view', function (Y) {
          * Returns a Date object from the field value
          *
          * @method _getDateObject
-         * @return {Date}
+         * @return {Date|undefined}
          */
         _getDateObject: function () {
             var field = this.get('field');
 
-            if ( field && field.fieldValue ) {
-                return new Date(field.fieldValue.timestamp * 1000);
+            if (this._isFieldEmpty()) {
+                return undefined;
             }
-            return undefined;
-        }
+
+            return new Date(field.fieldValue.timestamp * 1000);
+        },
+
+        _isFieldEmpty: function () {
+            var field = this.get('field');
+
+            return !field || !field.fieldValue || field.fieldValue.timestamp === null || isNaN(field.fieldValue.timestamp);
+        },
     });
 
     Y.eZ.FieldView.registerFieldView('ezdatetime', Y.eZ.DateAndTimeView);
