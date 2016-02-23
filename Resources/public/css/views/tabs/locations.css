@@ -25,3 +25,7 @@
     text-align: right;
     margin: 1em 0 0 0;
 }
+
+.ez-view-locationviewlocationstabview .ez-breadcrumbs-list {
+    margin: 0;
+}
