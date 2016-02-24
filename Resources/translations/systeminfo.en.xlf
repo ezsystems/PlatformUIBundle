@@ -10,9 +10,21 @@
         <source>server</source>
         <target>Server</target>
       </trans-unit>
+      <trans-unit id="2bb22b8c875ccf10e0f0c19eb7503cc6" resname="packages">
+        <source>packages</source>
+        <target>Packages</target>
+      </trans-unit>
+      <trans-unit id="35ab991adc09aa1295fc07c0e9ab49a1" resname="packages.empty">
+        <source>packages.empty</source>
+        <target>Could not find any packages, composer.lock file missing?</target>
+      </trans-unit>
       <trans-unit id="27fe419d5eb953490a9fd3132c79aa2e" resname="ez.platform.version">
         <source>ez.platform.version</source>
         <target>You are using eZ Platform version</target>
+      </trans-unit>
+      <trans-unit id="8a1ce0ddfe57e402219493e0f982eb66" resname="kernel.running">
+        <source>kernel.running</source>
+        <target>running on kernel</target>
       </trans-unit>
       <trans-unit id="611211b34660182d3f34da6e5c43eb96" resname="symfony.based">
         <source>symfony.based</source>
