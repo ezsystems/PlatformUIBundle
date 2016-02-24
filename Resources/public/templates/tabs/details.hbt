@@ -65,4 +65,20 @@
     </dl>
 </div>
 
+<div class="ez-details-box">
+    <h2 class="ez-details-box-title">Sub-items default ordering</h2>
+    <p class="ez-subitem-ordering-details">Default listing of sub-items by
+        <select class="ez-subitems-ordering-sort-type" >
+            {{#each sortFields}}
+                <option {{#if selected}}selected{{/if}} value="{{identifier}}">{{name}}</option>
+            {{/each}}
+        </select>
+        in
+        <select class="ez-subitems-sorting-order" se>
+            <option {{#if isAscendingOrder}}selected{{/if}} value="ASC">Ascending</option>
+            <option {{#unless isAscendingOrder}}selected{{/unless}} value="DESC">Descending</option>
+        </select>
+    </p>
+</div>
+
 

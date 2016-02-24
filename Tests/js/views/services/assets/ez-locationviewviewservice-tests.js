@@ -258,13 +258,32 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
 
         setUp: function () {
             this.app = new Y.Mock();
-            this.capi = {};
+            this.capi = new Y.Mock();
+            this.contentServiceMock = new Y.Mock();
+            this.locationMock = new Y.Mock();
+            this.loadOptions = {api: this.capi};
+            this.locationId = '42';
+            this.sortField = "PRIORITY";
+            this.sortOrder = 'ASC';
+            this.updateStruct = {
+                body: {
+                    LocationUpdate: {
+                        sortField: this.sortField,
+                        sortOrder: this.sortOrder
+                    }
+                }
+            };
             this.languageCode = 'pol-PL';
             this.request = {params: {languageCode: this.languageCode}};
             this.service = new Y.eZ.LocationViewViewService({
                 app: this.app,
                 capi: this.capi,
                 request: this.request,
+                location: this.locationMock,
+            });
+            Mock.expect(this.capi, {
+                method: 'getContentService',
+                returns: this.contentServiceMock
             });
         },
 
@@ -312,6 +331,148 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             this.service.fire('whatever:editAction', {content: contentMock});
             Y.Mock.verify(app);
             Y.Mock.verify(contentMock);
+        },
+
+        "Should update the sort methods on sortUpdate event": function () {
+            var that = this;
+
+            Mock.expect(this.locationMock, {
+                method: 'updateSorting',
+                args: [Mock.Value.Object, this.sortField, this.sortOrder, Mock.Value.Function],
+                run: function (options, sortField, sortOrder, cb) {
+                    Assert.areSame(options.api, that.capi, "load options should contain JS REST API");
+                    cb(false);
+                },
+            });
+            this.service.fire('whatever:sortUpdate', {sortType: this.sortField, sortOrder: this.sortOrder});
+
+            Mock.verify(this.locationMock);
+        },
+
+        "Should send a started notification on sortUpdate event": function () {
+            var notified = false,
+                that = this;
+
+            Mock.expect(this.locationMock, {
+                method: 'updateSorting',
+                args: [Mock.Value.Object, this.sortField, this.sortOrder, Mock.Value.Function],
+            });
+
+            this.service.once('notify', function (e) {
+                notified = true;
+
+                Assert.isObject(e.notification, "The event facade should provide a notification config");
+                Assert.areEqual(
+                    "started", e.notification.state,
+                    "The notification state should be 'started'"
+                );
+                Assert.isString(
+                    e.notification.text,
+                    "The notification text should be a string"
+                );
+                Assert.isTrue(
+                    e.notification.identifier.indexOf(that.sortField) !== -1,
+                    "The notification identifier should contain the sortField"
+                );
+                Assert.isTrue(
+                    e.notification.identifier.indexOf(that.sortOrder) !== -1,
+                    "The notification identifier should contain the sortOrder"
+                );
+                Assert.areSame(
+                    5, e.notification.timeout,
+                    "The notification timeout should be set to 5"
+                );
+            });
+
+            this.service.fire('whatever:sortUpdate', {sortType: this.sortField, sortOrder: this.sortOrder});
+            Assert.isTrue(notified, "The notified event should have been fired");
+        },
+
+        "Should send a 'done' notification after updating sorting with success": function () {
+            var notified = false,
+                that = this;
+
+            Mock.expect(this.locationMock, {
+                method: 'updateSorting',
+                args: [Mock.Value.Object, this.sortField, this.sortOrder, Mock.Value.Function],
+                run: function (options, sortField, sortOrder, cb) {
+                    cb(false);
+                },
+            });
+
+            this.service.once('notify', function (e) {
+                this.once('notify', function (e) {
+                    notified = true;
+
+                    Assert.isObject(e.notification, "The event facade should provide a notification config");
+                    Assert.areEqual(
+                        "done", e.notification.state,
+                        "The notification state should be 'done'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a string"
+                    );
+                    Assert.isTrue(
+                        e.notification.identifier.indexOf(that.sortField) !== -1,
+                        "The notification identifier should contain the sortField"
+                    );
+                    Assert.isTrue(
+                        e.notification.identifier.indexOf(that.sortOrder) !== -1,
+                        "The notification identifier should contain the sortOrder"
+                    );
+                    Assert.areSame(
+                        5, e.notification.timeout,
+                        "The notification timeout should be set to 5"
+                    );
+                });
+            });
+            this.service.fire('whatever:sortUpdate', {sortType: this.sortField, sortOrder: this.sortOrder});
+            Assert.isTrue(notified, "The notified event should have been fired");
+        },
+
+        "Should send a 'error' notification after error when updating sorting": function () {
+            var notified = false,
+                that = this;
+
+            Mock.expect(this.locationMock, {
+                method: 'updateSorting',
+                args: [Mock.Value.Object, this.sortField, this.sortOrder, Mock.Value.Function],
+                run: function (options, sortField, sortOrder, cb) {
+                    cb(true);
+                },
+            });
+
+            this.service.once('notify', function (e) {
+                this.once('notify', function (e) {
+                    notified = true;
+
+                    Assert.isObject(e.notification, "The event facade should provide a notification config");
+                    Assert.areEqual(
+                        "error", e.notification.state,
+                        "The notification state should be 'error'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a string"
+                    );
+                    Assert.isTrue(
+                        e.notification.identifier.indexOf(that.sortField) !== -1,
+                        "The notification identifier should contain the sortField"
+                    );
+                    Assert.isTrue(
+                        e.notification.identifier.indexOf(that.sortOrder) !== -1,
+                        "The notification identifier should contain the sortOrder"
+                    );
+                    Assert.areSame(
+                        0, e.notification.timeout,
+                        "The notification timeout should be set to 0"
+                    );
+                });
+            });
+            this.service.fire('whatever:sortUpdate', {sortType: this.sortField, sortOrder: this.sortOrder});
+            Assert.isTrue(notified, "The notified event should have been fired");
+            Mock.verify(this.locationMock);
         },
     });
 

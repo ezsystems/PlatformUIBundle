@@ -27,6 +27,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             this.on('*:sendToTrashAction', this._sendContentToTrashConfirmBox);
             this.on('*:moveAction', this._selectLocation);
             this.on('*:translateContent', this._translateContent);
+            this.on('*:sortUpdate', this._updateSorting);
             this.after('*:requestChange', this._setLanguageCode);
 
             this._setLanguageCode();
@@ -235,6 +236,45 @@ YUI.add('ez-locationviewviewservice', function (Y) {
             app.navigate(
                 app.routeUri(routeName, routeParams)
             );
+        },
+
+        /**
+         * Update the sort methods of the location
+         *
+         * @method _updateSorting
+         * @protected
+         * @param {EventFacade} e
+         */
+        _updateSorting: function (e) {
+            var loadOptions = {api: this.get('capi')},
+                location = this.get('location'),
+                notificationIdentifier = 'sort-change-' + e.sortType + '-' + e.sortOrder;
+
+            this._notify(
+                'Updating the sub items sort method',
+                notificationIdentifier,
+                'started',
+                5
+            );
+
+            location.updateSorting(loadOptions, e.sortType, e.sortOrder, Y.bind(function (error, response) {
+                if (!error) {
+                    this._notify(
+                        'The sub items sort method has been correctly updated',
+                        notificationIdentifier,
+                        'done',
+                        5
+                    );
+
+                } else {
+                    this._notify(
+                        'An error occured while updating the sub items sort method:' + error,
+                        notificationIdentifier,
+                        'error',
+                        0
+                    );
+                }
+            }, this));
         },
 
         /**

@@ -11,6 +11,26 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
      */
     Y.namespace('eZ');
 
+    var SORTFIELD_NAME_DICTIONARY = {
+            'PUBLISHED': 'Publication date',
+            'PATH': 'Location path',
+            'CLASS_IDENTIFIER': 'Content type identifier',
+            'MODIFIED': 'Modification date',
+            'SECTION': 'Section',
+            'DEPTH': 'Location depth',
+            'CLASS_NAME': 'Content type name',
+            'PRIORITY': 'Priority',
+            'NAME': 'Content name',
+        },
+        events = {
+            '.ez-subitems-ordering-sort-type': {
+                'change': '_setSortType',
+            },
+            '.ez-subitems-sorting-order': {
+                'change': '_setSortingOrder',
+            },
+        };
+
     /**
      * The Location View View Details tab class.
      *
@@ -25,6 +45,12 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
 
             this.after(['creatorChange', 'ownerChange'], function (e) {
                 this.render();
+            });
+            this.events = Y.merge(this.events, events);
+            this._set('sortField', this.get('location').get('sortField'));
+            this._set('sortOrder', this.get('location').get('sortOrder'));
+            this.after(['sortFieldChange', 'sortOrderChange'], function (e) {
+                this.fire('sortUpdate', {sortType: this.get('sortField'), sortOrder: this.get('sortOrder')});
             });
         },
 
@@ -53,9 +79,74 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
                 "translationsList": translationsList,
                 "languageCount": translationsList.length,
                 "loadingError": this.get('loadingError'),
+                "sortFields": this._getSortFields(),
+                "isAscendingOrder": (this.get('sortOrder') === 'ASC')
             }));
 
             return this;
+        },
+
+        /**
+         * Map the sortFields identifiers in objects.
+         * These objects contain the identifier, the name of the sort field and a boolean to see if it's the current selected sortField.
+         *
+         * @method _getSortFields
+         * @protected
+         * @return {Array} contains objects with identifier, name and a boolean to see if selected
+         */
+        _getSortFields: function () {
+            var sortFieldIdentifiers = this._getOrderingMethods(),
+                sortFields = Y.Array.map(sortFieldIdentifiers, function(id) {
+                    return {identifier: id, name: SORTFIELD_NAME_DICTIONARY[id], selected: (id === this.get('sortField'))};
+                }, this);
+
+            return sortFields;
+        },
+
+        /**
+         * Check if the default sortField is 'standard', then get the available ordering methods.
+         * 'Standard' sort fields are: Content name, Priority, Modification date, Publication date
+         *
+         * @method _getOrderingMethods
+         * @protected
+         * @return {Array} contains the sortField identifiers
+         */
+        _getOrderingMethods: function () {
+            var location = this.get('location'),
+                standardSortFields = ['NAME', 'PRIORITY', 'MODIFIED', 'PUBLISHED'];
+
+            if (standardSortFields.indexOf(location.get('sortField')) === -1) {
+                standardSortFields.push(location.get('sortField'));
+            }
+            return standardSortFields;
+        },
+
+        /**
+         * Set the selected sort type attribute
+         *
+         * @method _setSortType
+         * @protected
+         */
+        _setSortType: function () {
+            var container = this.get('container'),
+                sortFieldSelector = container.one(".ez-subitems-ordering-sort-type"),
+                sortFieldSelectedIndex = sortFieldSelector.get('selectedIndex');
+
+            this._set('sortField', sortFieldSelector.get('options').item(sortFieldSelectedIndex).get('value'));
+        },
+
+        /**
+         * Set the selected sort order attribute
+         *
+         * @method _setSortingOrder
+         * @protected
+         */
+        _setSortingOrder: function () {
+            var container = this.get('container'),
+                sortFieldSelector = container.one(".ez-subitems-sorting-order"),
+                sortFieldSelectedIndex = sortFieldSelector.get('selectedIndex');
+
+            this._set('sortOrder', sortFieldSelector.get('options').item(sortFieldSelectedIndex).get('value'));
         },
 
         /**
@@ -164,6 +255,26 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
              */
             config: {
                 writeOnce: "initOnly",
+            },
+
+            /**
+             * The selected sort field
+             *
+             * @attribute sortField
+             * @type {String}
+             */
+            sortField: {
+                value: ''
+            },
+
+            /**
+             * The selected sort order
+             *
+             * @attribute sortOrder
+             * @type {String}
+             */
+            sortOrder: {
+                value: ''
             },
         }
     });
