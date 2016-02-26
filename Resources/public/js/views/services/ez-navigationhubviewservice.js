@@ -58,7 +58,20 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                 loadError = false,
                 service = this,
                 discoveryService = api.getDiscoveryService(),
+                contentService = api.getContentService(),
+                user = this.get('app').get('user'),
                 tasks = new Y.Parallel();
+
+            if (user.get('avatar')) {
+                contentService.loadImageVariation(user.get('avatar').variations.platformui_profileview.href, tasks.add(function (error, response) { //jshint ignore:line
+                    if ( error ) {
+                        loadError = true;
+                        return;
+                    }
+
+                    service.set('userAvatar', response.document.ContentImageVariation);
+                }));
+            }
 
             discoveryService.getInfoObject('rootLocation', function (error, response){
                 var rootLocationId;
@@ -251,6 +264,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         _getViewParameters: function () {
             return {
                 user: this.get('app').get('user'),
+                userAvatar: this.get('userAvatar'),
                 platformNavigationItems: this.get('platformNavigationItems'),
                 studioNavigationItems: this.get('studioNavigationItems'),
                 studioplusNavigationItems: this.get('studioplusNavigationItems'),
@@ -537,6 +551,17 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                 },
                 readOnly: true,
             },
+
+            /**
+             * Stores the user's avatar image
+             *
+             * @attribute userAvatar
+             * @type {String}
+             * @default null
+             */
+            userAvatar: {
+                value: null
+            }
         },
     });
 });

@@ -170,11 +170,3 @@
 .ez-view-navigationhubview .ez-navigation .ez-navigation-item:hover {
     color: #528036;
 }
-
-.ez-view-navigationhubview .ez-user-info {
-    font-size: 0.85rem;
-}
-
-.ez-view-navigationhubview .ez-user-info-name {
-    font-weight: bold;
-}

@@ -1,0 +1,63 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-userprofileview {
+    font-weight: bold;
+    color: #333;
+}
+
+.ez-view-userprofileview .ez-user-profile {
+    cursor: pointer;
+    line-height: 2em;
+    text-align: right;
+}
+
+.ez-view-userprofileview .ez-user-profile:after {
+    content: "\E602";
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 1em;
+    font-family: 'ez-platformui-icomoon';
+    color: #999;
+}
+
+.ez-view-userprofileview .ez-user-profile .ez-user-profile-info {
+    text-align: right;
+    vertical-align: middle;
+}
+
+.ez-view-userprofileview .ez-user-profile-image {
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.ez-view-userprofileview .ez-view-usermenuitemview {
+    border: none;
+}
+
+.ez-view-userprofileview .ez-view-usermenuview {
+    background-color: #fff;
+    list-style: none;
+    border-bottom-right-radius: 0.5em; 
+    border-bottom-left-radius: 0.5em;
+}
+
+.ez-view-userprofileview .ez-user-menu-item {
+    line-height: 2em;
+    cursor: pointer;
+    color:#333;
+}
+
+.ez-view-userprofileview .ez-user-menu-item-logout {
+    border-bottom-right-radius: 0.5em; 
+    border-bottom-left-radius: 0.5em;
+}
+
+.ez-view-userprofileview .ez-view-usermenuview .ez-user-menu-item:hover {
+    color: #ffffff;
+    background-color: #3FB499;
+}

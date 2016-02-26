@@ -1,0 +1,54 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-userprofileview {
+    position: absolute;
+    top: 5px;
+    right: 0;
+}
+
+.is-user-profile-hidden {
+    display: none;
+}
+
+
+.ez-view-userprofileview .ez-user-profile {
+    padding: 0.5em 2em 0 1em;
+    margin: 0;
+    position: relative;
+}
+
+.ez-view-userprofileview .ez-user-profile .ez-user-profile-info {
+    display: inline-block;
+}
+
+.ez-view-userprofileview .ez-user-profile .ez-user-profile-name {
+    margin: 0;
+}
+
+.ez-view-userprofileview .ez-user-profile-image {
+    width: 30px;
+    height: 30px;
+    margin-left: 0.5em;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.ez-view-userprofileview .is-user-menu-hidden {
+    display: none;
+}
+
+.ez-view-userprofileview .ez-view-usermenuview {
+    margin: 0;
+    padding: 0;
+}
+
+.ez-view-userprofileview .ez-view-usermenuview .ez-user-menu-item {
+    height: 2em;
+    padding: 0.5em 1.5em;
+    display: block;
+}

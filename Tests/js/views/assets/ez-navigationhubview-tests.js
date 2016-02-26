@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-navigationhubview-tests', function (Y) {
-    var viewTest, eventTest, logOutTest,
+    var viewTest, eventTest, attrTest,
         navigationItemTest, zoneTest,
         navigationItemsSetter, routeMatchTest,
         Assert = Y.Assert;
@@ -12,6 +12,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         name: "eZ Navigation Hub View test",
 
         setUp: function () {
+            this.userProfileView = new Y.View();
             this.userMock = new Y.Mock();
             this.userJson = {};
             Y.Mock.expect(this.userMock, {
@@ -19,9 +20,10 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 returns: this.userJson,
             });
             this.view = new Y.eZ.NavigationHubView({
+                userProfileView: this.userProfileView,
                 container: '.container',
-                user: this.userMock,
             });
+            this.view.set('user', this.userMock);
         },
 
         tearDown: function () {
@@ -43,8 +45,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         },
 
         "Test available variable in template": function () {
-            var origTpl = this.view.template,
-                that = this;
+            var origTpl = this.view.template;
 
 
             this.view.set(
@@ -54,12 +55,8 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             this.view.set('studioNavigationItems', [new Y.eZ.NavigationItemView()]);
             this.view.template = function (variables) {
                 Y.Assert.areEqual(
-                    2, Y.Object.keys(variables).length,
-                    "The template should receive 2 variables"
-                );
-                Y.Assert.areSame(
-                    that.userJson, variables.user,
-                    "The template should receive the result of toJSON on the user"
+                    1, Y.Object.keys(variables).length,
+                    "The template should receive 1 variables"
                 );
                 Assert.isObject(
                     variables.zones,
@@ -118,10 +115,33 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         },
     });
 
+    attrTest = new Y.Test.Case({
+        name: "eZ Navigation Hub View Attribute test",
+
+        setUp: function () {
+            Y.eZ.UserProfileView = Y.View;
+            this.view = new Y.eZ.NavigationHubView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+            delete Y.eZ.UserProfileView;
+        },
+
+        "Should pass the attribute to the view": function () {
+            var userProfileView = this.view.get('userProfileView');
+
+            Y.Assert.areSame(this.view, userProfileView.getTargets()[0], 'Should set correct event target');
+            Y.Assert.isInstanceOf(Y.eZ.UserProfileView, userProfileView, "The user menu view should contain an instance of the constructor");
+        },
+    });
+
     zoneTest = new Y.Test.Case({
         name: "eZ Navigation Hub View zone tests",
 
         setUp: function () {
+            this.userProfileView = new Y.View();
             this.userMock = new Y.Mock();
             Y.Mock.expect(this.userMock, {
                 method: 'toJSON',
@@ -129,6 +149,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
             });
             this.routeAdmin = {name: "samplanet", params: {}};
             this.view = new Y.eZ.NavigationHubView({
+                userProfileView: this.userProfileView,
                 container: '.container',
                 user: this.userMock,
                 studioplusNavigationItems: [
@@ -294,12 +315,14 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         name: "eZ Navigation Hub View event tests",
 
         setUp: function () {
+            this.userProfileView = new Y.View();
             this.userMock = new Y.Mock();
             Y.Mock.expect(this.userMock, {
                 method: 'toJSON',
                 returns: {},
             });
             this.view = new Y.eZ.NavigationHubView({
+                userProfileView: this.userProfileView,
                 container: '.container',
                 user: this.userMock,
             });
@@ -629,47 +652,25 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 "The 'More' menu should be empty"
             );
         },
-    });
 
-    logOutTest = new Y.Test.Case({
-        name: "eZ Navigation Hub View test",
+        "Should set user data to the view": function () {
+            var user = {
+                name: 'Administrator User'
+            };
 
-        setUp: function () {
-            this.userMock = new Y.Mock();
-            Y.Mock.expect(this.userMock, {
-                method: 'toJSON',
-                returns: {},
-            });
-            this.view = new Y.eZ.NavigationHubView({
-                container: '.container',
-                user: this.userMock,
-            });
-            this.view.render();
+            this.view.set('user', user);
+
+            Y.Assert.areSame(user.name, this.userProfileView.get('user').name, 'Should set correct user item');
         },
 
-        tearDown: function () {
-            this.view.destroy();
-            delete this.view;
-        },
+        "Should set user avatar to the view": function () {
+            var userAvatar = {
+                uri: 'some-user-avatar-url'
+            };
 
-        "Should fire the logOut event": function () {
-            var link = this.view.get('container').one('.ez-logout'),
-                that = this;
+            this.view.set('userAvatar', userAvatar);
 
-            this.view.on('logOut', function (e) {
-                that.resume(function () {
-                    Y.Assert.areEqual(
-                        'tap', e.originalEvent.type,
-                        "The original DOM event should be provided in the logOut event facade"
-                    );
-                    Y.Assert.isTrue(
-                        !!e.originalEvent.prevented,
-                        "The tap event should have been prevented"
-                    );
-                });
-            });
-            link.simulateGesture('tap');
-            this.wait();
+            Y.Assert.areSame(userAvatar.uri, this.userProfileView.get('userAvatar').uri, 'Should set correct path url to user avatar');
         },
     });
 
@@ -677,7 +678,10 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         name: "eZ Navigation Hub View navigation items attributes setter test",
 
         setUp: function () {
-            this.view = new Y.eZ.NavigationHubView();
+            this.userProfileView = new Y.View();
+            this.view = new Y.eZ.NavigationHubView({
+                userProfileView: this.userProfileView
+            });
         },
 
         tearDown: function () {
@@ -813,6 +817,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
         setUp: function () {
             var that = this;
 
+            this.userProfileView = new Y.View();
             this.matchRouteCalls = {};
             this.Item = Y.Base.create('itemTest', Y.eZ.NavigationItemView, [], {
                 matchRoute: function (route) {
@@ -850,6 +855,7 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 route: this.route3,
             });
             this.view = new Y.eZ.NavigationHubView({
+                userProfileView: this.userProfileView,
                 platformNavigationItems: [this.item1, this.item2],
                 studioplusNavigationItems: [this.item3],
             });
@@ -918,10 +924,12 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
                 method: 'toJSON',
                 returns: {},
             });
+            this.userProfileView = new Y.View();
             this.item1 = new Y.eZ.NavigationItemView();
             this.item2 = new Y.eZ.NavigationItemView();
             this.item3 = new Y.eZ.NavigationItemView();
             this.view = new Y.eZ.NavigationHubView({
+                userProfileView: this.userProfileView,
                 platformNavigationItems: [this.item1, this.item2],
                 studioplusNavigationItems: [this.item3],
                 container: '.container',
@@ -961,9 +969,9 @@ YUI.add('ez-navigationhubview-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Navigation Hub View tests");
     Y.Test.Runner.add(viewTest);
+    Y.Test.Runner.add(attrTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(zoneTest);
-    Y.Test.Runner.add(logOutTest);
     Y.Test.Runner.add(navigationItemsSetter);
     Y.Test.Runner.add(routeMatchTest);
     Y.Test.Runner.add(navigationItemTest);

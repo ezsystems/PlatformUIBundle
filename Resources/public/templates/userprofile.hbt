@@ -1,0 +1,6 @@
+<div class="ez-user-profile">
+    <div class="ez-user-profile-info">
+        <p class="ez-user-profile-name">{{user.name}}</p>
+    </div>
+    <img class="ez-user-profile-image" src="{{userAvatar}}" alt="{{avatarAltText}}">
+</div>

@@ -1,0 +1,68 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+YUI.add('ez-usermenuitemfireeventview', function (Y) {
+    "use strict";
+    /**
+     * Provides the user menu item fire event view
+     *
+     * @module ez-usermenuitemfire event view
+     */
+    Y.namespace('eZ');
+
+    /**
+     * The user menu item fire event view. 
+     *
+     * @namespace eZ
+     * @class UserMenuItemFireEventView
+     * @constructor
+     * @extends eZ.UserMenuItemView
+     */
+    Y.eZ.UserMenuItemFireEventView = Y.Base.create('UserMenuItemFireEventView', Y.eZ.UserMenuItemView, [], {
+        events: {
+            '.ez-view-usermenuitemfireeventview': {
+                'tap': '_fireEvent'
+            }
+        },
+
+        initializer: function () {
+            this.containerTemplate = '<li class="' + this._generateViewClassName(this._getName()) + '"/>';
+        },
+
+        /**
+        * Renders the item view
+        *
+        * @method render
+        * @return {eZ.UserMenuItemFireEventView} the view itself
+        */
+        render: function () {
+            this.get('container').setHTML(this.template({title: this.get('title')}));
+            return this;
+        },
+
+        /**
+         * Tap event handler on the user menu item
+         *
+         * @method _fireEvent
+         * @protected
+         * @param event {Object} tap event facade
+         */
+        _fireEvent: function (event) {
+            event.preventDefault();
+            this.fire(this.get('eventName'), {
+                originalEvent: event
+            });
+        }
+    }, {
+        ATTRS: {
+            /**
+             * The event name to fire
+             *
+             * @attribute eventName
+             * @type {String}
+             */
+            eventName: {}
+        }
+    });
+});
