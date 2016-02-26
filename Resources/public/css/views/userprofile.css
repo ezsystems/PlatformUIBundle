@@ -9,11 +9,6 @@
     right: 0;
 }
 
-.is-user-profile-hidden {
-    display: none;
-}
-
-
 .ez-view-userprofileview .ez-user-profile {
     padding: 0.5em 2em 0 1em;
     margin: 0;
@@ -36,15 +31,6 @@
        -moz-user-select: none;
         -ms-user-select: none;
             user-select: none;
-}
-
-.ez-view-userprofileview .is-user-menu-hidden {
-    display: none;
-}
-
-.ez-view-userprofileview .ez-view-usermenuview {
-    margin: 0;
-    padding: 0;
 }
 
 .ez-view-userprofileview .ez-view-usermenuview .ez-user-menu-item {

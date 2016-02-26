@@ -35,29 +35,3 @@
     vertical-align: middle;
 }
 
-.ez-view-userprofileview .ez-view-usermenuitemview {
-    border: none;
-}
-
-.ez-view-userprofileview .ez-view-usermenuview {
-    background-color: #fff;
-    list-style: none;
-    border-bottom-right-radius: 0.5em; 
-    border-bottom-left-radius: 0.5em;
-}
-
-.ez-view-userprofileview .ez-user-menu-item {
-    line-height: 2em;
-    cursor: pointer;
-    color:#333;
-}
-
-.ez-view-userprofileview .ez-user-menu-item-logout {
-    border-bottom-right-radius: 0.5em; 
-    border-bottom-left-radius: 0.5em;
-}
-
-.ez-view-userprofileview .ez-view-usermenuview .ez-user-menu-item:hover {
-    color: #ffffff;
-    background-color: #3FB499;
-}
