@@ -3,9 +3,10 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-userprofileview-tests', function (Y) {
-    var renderTest, eventTest, attrTest,
+    var renderTest, eventTest, attrTest, userMenuDisplayTest,
         SELECTOR_USER_PROFILE = '.ez-user-profile',
-        SELECTOR_OUTSIDE = '.outside';
+        SELECTOR_OUTSIDE = '.outside',
+        Assert = Y.Assert;
 
     renderTest = new Y.Test.Case({
         name: "eZ User Profile render test",
@@ -109,6 +110,51 @@ YUI.add('ez-userprofileview-tests', function (Y) {
             Y.Assert.areSame(this.view, item.getTargets()[0], 'Should set correct event target');
             Y.Assert.isInstanceOf(Y.eZ.UserMenuView, item, "The user menu view should contain an instance of the constructor");
         },
+
+    });
+
+    userMenuDisplayTest = new Y.Test.Case({
+        name: "eZ User Profile attribute test",
+
+        setUp: function () {
+            var View = Y.Base.create('userMenuView', Y.View, [], {}, {
+                    ATTRS: {
+                        displayed: {
+                            value: false,
+                        }
+                    }
+                });
+
+            this.menuDisplayedClass = 'is-menu-displayed';
+            this.view = new Y.eZ.UserProfileView({
+                userMenuView: new View(),
+            });
+            this.view.get('userMenuView').addTarget(this.view);
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should add the menu displayed class": function () {
+            this.view.get('userMenuView').set('displayed', true);
+
+            Assert.isTrue(
+                this.view.get('container').hasClass(this.menuDisplayedClass),
+                "The view container should get a the user menu displayed class"
+            );
+        },
+
+        "Should remove the menu displayed class": function () {
+            this["Should add the menu displayed class"]();
+            this.view.get('userMenuView').set('displayed', false);
+
+            Assert.isFalse(
+                this.view.get('container').hasClass(this.menuDisplayedClass),
+                "The view container should get a the user menu displayed class"
+            );
+        },
     });
 
     eventTest = new Y.Test.Case({
@@ -187,5 +233,6 @@ YUI.add('ez-userprofileview-tests', function (Y) {
     Y.Test.Runner.setName("eZ User Profile View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(attrTest);
+    Y.Test.Runner.add(userMenuDisplayTest);
     Y.Test.Runner.add(eventTest);
 }, '', {requires: ['test', 'node', 'node-event-simulate', 'ez-userprofileview']});

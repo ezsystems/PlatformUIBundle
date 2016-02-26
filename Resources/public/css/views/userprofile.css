@@ -10,7 +10,7 @@
 }
 
 .ez-view-userprofileview .ez-user-profile {
-    padding: 0.5em 2em 0 1em;
+    padding: 0.5em 2em 0.5em 1em;
     margin: 0;
     position: relative;
 }
@@ -34,7 +34,6 @@
 }
 
 .ez-view-userprofileview .ez-view-usermenuview .ez-user-menu-item {
-    height: 2em;
-    padding: 0.5em 1.5em;
+    padding: 0.4em 1.5em;
     display: block;
 }

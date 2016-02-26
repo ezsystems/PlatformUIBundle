@@ -11,6 +11,8 @@ YUI.add('ez-userprofileview', function (Y) {
      */
     Y.namespace('eZ');
 
+    var MENU_DISPLAYED = 'is-menu-displayed';
+
     /**
      * The User Profile View
      *
@@ -34,6 +36,16 @@ YUI.add('ez-userprofileview', function (Y) {
              * @protected
              */
             this._clickOutsideUserMenuHandler = this.get('container').on('clickoutside', this._hideMenu, this);
+
+            this.after('userMenuView:displayedChange', function (e) {
+                var container = this.get('container');
+
+                if ( e.newVal ) {
+                    container.addClass(MENU_DISPLAYED);
+                } else {
+                    container.removeClass(MENU_DISPLAYED);
+                }
+            });
         },
 
         /**
