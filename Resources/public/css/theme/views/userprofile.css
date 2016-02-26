@@ -4,8 +4,12 @@
  */
 
 .ez-view-userprofileview {
-    font-weight: bold;
     color: #333;
+    transition: all ease 0.2s;
+}
+
+.ez-view-userprofileview.is-menu-displayed {
+    box-shadow: 1px -3px 3px rgba(120, 120, 120, 0.5);
 }
 
 .ez-view-userprofileview .ez-user-profile {
@@ -18,7 +22,7 @@
     content: "\E602";
     position: absolute;
     right: 8px;
-    top: 50%;
+    top: 40%;
     transform: translateY(-50%);
     height: 1em;
     font-family: 'ez-platformui-icomoon';
@@ -35,29 +39,3 @@
     vertical-align: middle;
 }
 
-.ez-view-userprofileview .ez-view-usermenuitemview {
-    border: none;
-}
-
-.ez-view-userprofileview .ez-view-usermenuview {
-    background-color: #fff;
-    list-style: none;
-    border-bottom-right-radius: 0.5em; 
-    border-bottom-left-radius: 0.5em;
-}
-
-.ez-view-userprofileview .ez-user-menu-item {
-    line-height: 2em;
-    cursor: pointer;
-    color:#333;
-}
-
-.ez-view-userprofileview .ez-user-menu-item-logout {
-    border-bottom-right-radius: 0.5em; 
-    border-bottom-left-radius: 0.5em;
-}
-
-.ez-view-userprofileview .ez-view-usermenuview .ez-user-menu-item:hover {
-    color: #ffffff;
-    background-color: #3FB499;
-}

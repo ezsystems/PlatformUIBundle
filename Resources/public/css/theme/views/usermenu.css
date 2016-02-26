@@ -1,0 +1,44 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-usermenuview {
+    background-color: #fff;
+    list-style: none;
+    box-shadow: 1px 3px 3px rgba(120, 120, 120, 0.5);
+    overflow: hidden;
+
+    -webkit-transform-origin: center top;
+            transform-origin: center top;
+    -webkit-animation: ez-expand 0.2s ease forwards;
+            animation: ez-expand 0.2s ease forwards;
+    -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+    opacity: 1;
+
+}
+
+.ez-view-usermenuview.is-user-menu-hidden {
+    display: block;
+
+    -webkit-animation: ez-collapse 0.2s ease forwards;
+            animation: ez-collapse 0.2s ease forwards;
+    opacity: 0;
+}
+
+.ez-view-usermenuview li {
+    border: 0;
+}
+
+.ez-view-usermenuview .ez-user-menu-item {
+    line-height: 2em;
+    cursor: pointer;
+    color:#333;
+    background: #fff;
+}
+
+.ez-view-usermenuview .ez-user-menu-item:hover {
+    color: #fff;
+    background-color: #528036;
+}
