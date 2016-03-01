@@ -63,6 +63,8 @@ trait Authentication
     {
         $this->shouldBeLoggedIn = false;
         $this->goToPlatformUi('#/dashboard');
+        $this->findWithWait('.ez-user-profile')->click();
+        $this->waitWhileLoading();
         $this->iClickAtLink('Logout');
     }
 
@@ -73,7 +75,7 @@ trait Authentication
     {
         $this->spin(
             function () {
-                $logoutElement = $this->getSession()->getPage()->find('css', '.ez-logout');
+                $logoutElement = $this->findWithWait('.ez-user-profile');
 
                 return $logoutElement != null;
             }
