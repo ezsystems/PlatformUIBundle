@@ -64,7 +64,9 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
 
             if (user.get('avatar')) {
                 contentService.loadImageVariation(user.get('avatar').variations.platformui_profileview.href, tasks.add(function (error, response) { //jshint ignore:line
-                    if ( error ) {
+                    if ( error && response.status !== 401 ) {
+                        // 401 error is ignored because the user might not have the right to read
+                        // his/her own avatar see https://jira.ez.no/browse/EZP-25522
                         loadError = true;
                         return;
                     }
