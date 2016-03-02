@@ -697,13 +697,9 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             });
         },
 
-        _initContentService: function (fail, userAvatar) {
+        _initContentService: function (fail, userAvatar, res) {
             var expectedAvatarUrl = userAvatar ? null : this.avatar.variations.platformui_profileview.href, //jshint ignore:line
-                response = {
-                    document: {
-                        ContentImageVariation: 'user avatar'
-                    }
-                };
+                response = res ? res : {document: {ContentImageVariation: 'user avatar'}};
 
             Mock.expect(this.capiMock, {
                 method: 'getContentService',
@@ -858,6 +854,24 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             this.service._load(function () {});
 
             Y.Assert.isTrue(errorCalled, "The error event should have been fired");
+        },
+
+        "Load method can not reach the REST API when loading user avatar and have no permission": function () {
+            var errorCalled = false;
+
+            this._initContentService(true, false, {status: 401, document: {}});
+            this._initDiscoveryService(false);
+
+            this._initLocationMock(this.locationRootMock, this.contentInfoRootMock, "fre-FR", false);
+            this._initLocationMock(this.locationMediaMock, this.contentInfoMediaMock, "fre-FR-media", false);
+
+            this.service.on('error', function () {
+                errorCalled = true;
+            });
+
+            this.service._load(function () {});
+
+            Y.Assert.isFalse(errorCalled, "The error event should not have been fired");
         },
 
         "Load method can not reach the REST API when loading location": function () {
