@@ -32,7 +32,7 @@
                         <th>Visibility</th>
                         <th>Published</th>
                         <th>Modified</th>
-                        <th>Priority</th>
+                        <th class="ez-subitem-priority-column">Priority</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -42,7 +42,25 @@
                         <td>{{#if hidden}}Hidden{{else}}{{#if invisible}}Hidden by superior{{else}}Visible{{/if}}{{/if}}</td>
                         <td>{{contentInfo.publishedDate}}</td>
                         <td>{{contentInfo.lastModificationDate}}</td>
-                        <td>{{priority}}</td>
+                        <td class="ez-subitem-priority-cell" id="priority-cell-{{locationId}}">
+                        <form class="ez-subitem-priority-form" data-location-id="{{locationId}}" autocomplete="off">
+                            <input
+                                class="ez-subitem-priority-input"
+                                id="priority-{{locationId}}"
+                                type="text"
+                                readonly
+                                required
+                                pattern="^(\^+|-)?\d+$"
+                                inputmode="numeric"
+                                data-location-id="{{locationId}}"
+                                value="{{priority}}"><div
+                                class="ez-subitem-priority-icons ez-font-icon"></div><div
+                                class="ez-subitem-priority-buttons"><button
+                                data-priority-input="priority-{{locationId}}" id="priority-validate-{{locationId}}" class="ez-subitem-priority-button ez-subitem-priority-validate ez-button ez-font-icon pure-button"></button><button
+                                data-priority-input="priority-{{locationId}}" class="ez-subitem-priority-button ez-subitem-priority-cancel ez-button ez-font-icon pure-button"></button>
+                            </div>
+                        </form>
+                        </td>
                     </tr>
                     {{/each}}
                     </tbody>

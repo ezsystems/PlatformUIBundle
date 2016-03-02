@@ -29,20 +29,13 @@
 }
 
 .ez-platformui-app .pure-g [class *= "pure-u"],
-.ez-platformui-app .yui3-g [class *= "yui3-u"],
-.ez-platformui-app button,
-.ez-platformui-app input,
-.ez-platformui-app textarea {
+.ez-platformui-app .yui3-g [class *= "yui3-u"] {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .ez-platformui-app a {
     text-decoration: none;
     color: #009;
-}
-
-.ez-platformui-app a.ez-button {
-    color: rgba(0, 0, 0, 0.8);
 }
 
 .ez-platformui-app h1,
@@ -52,62 +45,6 @@
 .ez-platformui-app h5,
 .ez-platformui-app h6 {
     font-weight: 500;
-}
-
-.ez-platformui-app input[type=text],
-.ez-platformui-app input[type=email],
-.ez-platformui-app input[type=number],
-.ez-platformui-app input[type=search],
-.ez-platformui-app input[type=password],
-.ez-platformui-app input[type=time],
-.ez-platformui-app input[type=date],
-.ez-platformui-app textarea {
-    line-height: 1.8em;
-    height: 1.8em;
-    padding: 0 0.4em;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    background: #fdfdfd;
-    transition: all 0.30s ease-in-out;
-}
-
-.ez-platformui-app textarea {
-    height: auto;
-}
-
-.ez-platformui-app input[type=text]:focus,
-.ez-platformui-app input[type=email]:focus,
-.ez-platformui-app input[type=number]:focus,
-.ez-platformui-app input[type=search]:focus,
-.ez-platformui-app input[type=password]:focus,
-.ez-platformui-app textarea:focus {
-    box-shadow: inset 0 0 6px #ccc;
-    border: 1px solid #ccc;
-    outline: none;
-    background: #fff;
-}
-
-.ez-platformui-app input[readonly],
-.ez-platformui-app textarea[readonly],
-.ez-platformui-app input[readonly]:focus,
-.ez-platformui-app textarea[readonly]:focus {
-    background: #eee;
-    color: #888;
-    box-shadow: none;
-}
-
-.ez-platformui-app .is-error .ez-validated-input {
-    border: 1px solid #BF3E33;
-    box-shadow: none;
-    background: #FEECEA;
-}
-
-.ez-platformui-app .is-error .ez-validated-input:focus {
-    border: 1px solid #BF3E33;
-    box-shadow: none;
-    background: #FEECEA;
-    outline: none;
-    box-shadow: inset 0 0 6px #e76;
 }
 
 .ez-view-container {

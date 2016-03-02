@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-subitemlistview-tests', function (Y) {
-    var renderTest, locationSearchEvent, offsetAttrTest, paginationTest, visibilityChangeTest,
+    var renderTest, locationSearchEvent, offsetAttrTest, paginationTest, visibilityChangeTest, priorityUpdateTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     function _configureSubitemsMock() {
@@ -19,7 +19,23 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
                 method: 'toJSON',
                 returns: this.subitemsJSON[i].location,
             });
+            Mock.expect(this.subitems[i].location, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: _getGetterForLocationMock(41+i)
+            });
         }
+    }
+
+    function _getGetterForLocationMock(locationId) {
+        return function (attr) {
+            if ( attr === 'priority' ) {
+                return 24;
+            } else if ( attr == 'locationId' ) {
+                return locationId;
+            }
+            Y.fail("Unexpected attr '" + attr + "'");
+        };
     }
 
     renderTest = new Y.Test.Case({
@@ -530,10 +546,331 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
         },
     });
 
+    priorityUpdateTest = new Y.Test.Case({
+        name: "eZ Subitem List View priority update test",
+
+        setUp: function () {
+            this.location = new Mock();
+            this.locationId = 42;
+            this.priority = 24;
+            this.locationJSON = {};
+            Mock.expect(this.location, {
+                method: 'toJSON',
+                returns: this.locationJSON,
+            });
+            Mock.expect(this.location, {
+                method: 'get',
+                args: ['locationId'],
+                returns: this.locationId,
+            });
+            Mock.expect(this.location, {
+                method: 'after',
+                args: [Mock.Value.Any, Mock.Value.Function],
+            });
+            this.childCount = 49;
+            this.lastOffset = 40;
+            Mock.expect(this.location, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: Y.bind(function (attr) {
+                    if ( attr === 'childCount' ) {
+                        return this.childCount;
+                    } else if ( attr == 'locationId' ) {
+                        return 42;
+                    }
+                    Y.fail("Unexpected attr '" + attr + "'");
+                }, this)
+            });
+            _configureSubitemsMock.call(this);
+
+            this.view = new Y.eZ.SubitemListView({
+                container: '.container',
+                location: this.location,
+                subitems: this.subitems,
+            });
+
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should display edit icon while hovering input": function () {
+            var c = this.view.get('container'),
+                selectedCell,
+                fieldInput;
+
+            this.view.render();
+
+            selectedCell = c.one('#priority-cell-' + this.locationId);
+            fieldInput =  c.one('.ez-subitem-priority-input');
+
+            Y.Assert.isFalse(
+                selectedCell.hasClass('ez-subitem-hovered-priority-cell'),
+                "The edit icon should NOT be shown before hovering the input"
+            );
+
+            fieldInput.simulate('mouseover');
+
+            Y.Assert.isTrue(
+                selectedCell.hasClass('ez-subitem-hovered-priority-cell'),
+                "The edit icon should have been shown"
+            );
+        },
+
+        "Should NOT display edit icon while hovering in another input than the one of the selected cell": function () {
+            var c = this.view.get('container'),
+                otherLocationId = 43,
+                selectedCell,
+                fieldInput,
+                otherFieldInput,
+                otherSelectedCell,
+                that = this;
+
+            this.view.render();
+            selectedCell = c.one('#priority-cell-' + this.locationId);
+            otherSelectedCell = c.one('#priority-cell-' + otherLocationId);
+            otherFieldInput =  c.one('#priority-' + otherLocationId);
+            fieldInput =  c.one('#priority-' + this.locationId);
+
+            fieldInput.simulateGesture('tap', function () {
+                that.resume(function () {
+                    Y.Assert.isTrue(selectedCell.hasClass("ez-subitem-selected-priority-cell"), "Validate and Cancel buttons should be visible");
+                    otherFieldInput.simulate('mouseover');
+                    Y.Assert.isFalse(
+                        otherSelectedCell.hasClass('ez-subitem-hovered-priority-cell'),
+                        "The edit icon should NOT have been shown"
+                    );
+                });
+            });
+            this.wait();
+        },
+
+        "Should hide edit icon while moving the mouse out of the input": function () {
+            var c = this.view.get('container'),
+                selectedCell,
+                fieldInput;
+
+            this["Should display edit icon while hovering input"]();
+            selectedCell = c.one('#priority-cell-' + this.locationId);
+            fieldInput =  c.one('.ez-subitem-priority-input');
+
+            fieldInput.simulate('mouseout');
+
+            Y.Assert.isFalse(
+                selectedCell.hasClass('ez-subitem-hovered-priority-cell'),
+                "The edit icon should be hidden"
+            );
+        },
+
+        "Should display priority buttons and activate input on tap on the input": function () {
+            var c = this.view.get('container'),
+                that = this,
+                selectedCell,
+                fieldInput;
+
+            this.view.render();
+
+            fieldInput =  c.one('.ez-subitem-priority-input');
+            selectedCell = c.one('#priority-cell-' + this.locationId);
+
+            fieldInput.simulateGesture('tap', function () {
+                that.resume(function () {
+
+                    Y.Assert.isTrue(selectedCell.hasClass("ez-subitem-selected-priority-cell"), "Validate and Cancel buttons should be visible");
+                    Y.Assert.isFalse(fieldInput.hasAttribute("readonly"), "The input should NOT be readonly anymore");
+                });
+            });
+            this.wait();
+        },
+
+        "Should NOT display priority buttons and activate input on tap on another input while one is already selected": function () {
+            var c = this.view.get('container'),
+                otherLocationId = 43,
+                that = this,
+                selectedCell,
+                fieldInput,
+                otherFieldInput,
+                otherSelectedCell;
+
+            this.view.render();
+
+            fieldInput =  c.one('.ez-subitem-priority-input');
+            otherFieldInput = c.one('#priority-' + otherLocationId);
+            selectedCell = c.one('#priority-cell-' + this.locationId);
+            otherSelectedCell = c.one('#priority-cell-' + otherLocationId);
+
+            fieldInput.simulateGesture('tap', function () {
+                that.resume(function () {
+
+                    Y.Assert.isTrue(selectedCell.hasClass("ez-subitem-selected-priority-cell"), "Validate and Cancel buttons should be visible");
+                    Y.Assert.isFalse(fieldInput.hasAttribute("readonly"), "The input should NOT be readonly anymore");
+                    otherFieldInput.simulateGesture('tap', function () {
+                        that.resume(function () {
+                            Y.Assert.isFalse(
+                                otherSelectedCell.hasClass("ez-subitem-selected-priority-cell"),
+                                "Validate and Cancel buttons should NOT be visible for the other input"
+                            );
+                            Y.Assert.isTrue(otherFieldInput.hasAttribute("readonly"), "The other input should stay readonly ");
+                        });
+                    });
+                    that.wait();
+
+                });
+            });
+            this.wait();
+        },
+
+        "Should hide priority buttons and set the input back to readonly with its original value on tap on the cancel button": function () {
+            var c = this.view.get('container'),
+                that = this,
+                selectedCell,
+                cancelButton,
+                fieldInput;
+
+            this.view.render();
+
+            fieldInput =  c.one('.ez-subitem-priority-input');
+            selectedCell = c.one('#priority-cell-' + this.locationId);
+            cancelButton = c.one('.ez-subitem-priority-cancel');
+
+            fieldInput.simulateGesture('tap', function () {
+                that.resume(function () {
+
+                    Y.Assert.isTrue(selectedCell.hasClass("ez-subitem-selected-priority-cell"), "Validate and Cancel buttons should be visible");
+                    fieldInput.set('value', 69);
+                    cancelButton.simulateGesture('tap', function () {
+                        that.resume(function () {
+                            Y.Assert.isFalse(
+                                selectedCell.hasClass("ez-subitem-selected-priority-cell"),
+                                "Validate and Cancel buttons should be hidden"
+                            );
+                            Y.Assert.isTrue(
+                                fieldInput.hasAttribute("readonly"),
+                                "The input should be readonly"
+                            );
+                            Y.Assert.areEqual(
+                                fieldInput.get('value'),
+                                that.priority,
+                                "The input value should be set back to it's original value"
+                            );
+                        });
+                    });
+                    that.wait();
+                });
+            });
+            this.wait();
+        },
+
+        "Should display an error icon if priority input is not correctly set": function () {
+            var c = this.view.get('container'),
+                that = this,
+                selectedCell,
+                fieldInput;
+
+            this.view.render();
+
+            fieldInput =  c.one('.ez-subitem-priority-input');
+            selectedCell = c.one('#priority-cell-' + this.locationId);
+            fieldInput.simulateGesture('tap');
+
+            this.waitFor(function () {
+                return selectedCell.hasClass("ez-subitem-selected-priority-cell");
+            }, function () {
+                    fieldInput.set('value', 'BAD PRIORITY');
+                    fieldInput.simulate('blur');
+                    that.waitFor(function () {
+                        return selectedCell.hasClass("ez-subitem-error-priority-cell");
+                    }, function () {
+                        Y.Assert.isFalse(selectedCell.hasClass("ez-subitem-selected-priority-cell"), "Validate and Cancel buttons should be hidden");
+                        Y.Assert.isTrue(selectedCell.hasClass("ez-subitem-error-priority-cell"), "Error icon should be displayed");
+                    },2000);
+                },2000
+            );
+        },
+
+        "Should hide the error icon if priority input is correctly set again": function () {
+            var c = this.view.get('container'),
+                that = this,
+                selectedCell,
+                fieldInput;
+
+            this.view.render();
+
+            fieldInput =  c.one('.ez-subitem-priority-input');
+            selectedCell = c.one('#priority-cell-' + this.locationId);
+            fieldInput.simulateGesture('tap');
+
+            this.waitFor(function () {
+                    return selectedCell.hasClass("ez-subitem-selected-priority-cell");
+                }, function () {
+                    fieldInput.set('value', 'BAD PRIORITY');
+                    fieldInput.simulate('blur');
+                    that.waitFor(function () {
+                        return selectedCell.hasClass("ez-subitem-error-priority-cell");
+                    }, function () {
+                        fieldInput.set('value', '42');
+                        fieldInput.simulate('blur');
+                        that.waitFor(function () {
+                            return selectedCell.hasClass("ez-subitem-selected-priority-cell");
+                            }, function () {
+                                Y.Assert.isFalse(selectedCell.hasClass("ez-subitem-error-priority-cell"), "Error icon should be hidden");
+                        }, 2000);
+                    },2000);
+                },2000
+            );
+        },
+
+        "Should fire updatePriority and hide priority buttons when form is submitted": function () {
+            var c = this.view.get('container'),
+                that = this,
+                updatePriorityFired = false,
+                selectedCell,
+                validateButton,
+                fieldInput,
+                form;
+
+            this.view.render();
+
+            fieldInput = c.one('.ez-subitem-priority-input');
+            selectedCell = c.one('#priority-cell-' + this.locationId);
+            validateButton = c.one('.ez-subitem-priority-validate');
+            form = c.one('.ez-subitem-priority-form');
+
+            this.view.on('updatePriority', function () {
+                updatePriorityFired = true;
+            });
+            this.view.get('container').once('tap', function (e) {
+                    Assert.isTrue(
+                        !!e.prevented,
+                        "The tap event should have been prevented"
+                    );
+            });
+
+            fieldInput.simulateGesture('tap', function () {
+                that.resume(function () {
+                    form.simulate('submit');
+                    Y.Assert.isTrue(
+                        updatePriorityFired,
+                        "updatePriority should have been fired"
+                    );
+                    Y.Assert.isFalse(
+                        selectedCell.hasClass(
+                            "ez-subitem-selected-priority-cell"),
+                        "Validate and Cancel buttons should be hidden"
+                    );
+                });
+            });
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Subitem List View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(locationSearchEvent);
     Y.Test.Runner.add(offsetAttrTest);
     Y.Test.Runner.add(visibilityChangeTest);
     Y.Test.Runner.add(paginationTest);
+    Y.Test.Runner.add(priorityUpdateTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-subitemlistview']});

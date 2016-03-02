@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationmodel-tests', function (Y) {
-    var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest, toJSONTest, updateSortingTest,
+    var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest, toJSONTest, updateSortingTest, updatePriorityTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
@@ -364,6 +364,107 @@ YUI.add('ez-locationmodel-tests', function (Y) {
                     this.model.get('sortOrder'),
                     this.newSortOrder,
                     "sortField should NOT have been updated in the location"
+                );
+            }, this));
+
+            Mock.verify(this.contentServiceMock);
+        },
+    });
+
+    updatePriorityTest = new Y.Test.Case({
+        name: "eZ location model update priority tests",
+
+        setUp: function () {
+            this.capiMock = new Y.Mock();
+            this.locationId = '1/2/3';
+            this.newPriority = 50;
+            this.contentServiceMock = new Y.Mock();
+            this.updateStruct = {
+                body: {
+                    LocationUpdate: {
+                        priority: 10,
+                        sortField: '',
+                        sortOrder: ''
+                    }
+                }
+            };
+            this.model = new Y.eZ.Location({
+                id: this.locationId,
+                priority: this.priority,
+            });
+
+            Mock.expect(this.capiMock, {
+                method: 'getContentService',
+                returns: this.contentServiceMock
+            });
+
+            Mock.expect(this.contentServiceMock, {
+                method: 'newLocationUpdateStruct',
+                returns: this.updateStruct
+            });
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        _configureUpdateLocationMock: function (cbError) {
+            var that = this;
+            Mock.expect(this.contentServiceMock, {
+                method: 'updateLocation',
+                args: [this.locationId, this.updateStruct, Mock.Value.Function],
+                run: function (id, struct, cb) {
+                    Assert.areSame(struct.body.LocationUpdate.priority, that.newPriority, "Priority should have been updated");
+                    cb(cbError);
+                },
+            });
+        },
+
+        "Should update location on updateSorting": function () {
+            var options = {api: this.capiMock},
+                callbackCalled = false;
+
+            this._configureUpdateLocationMock(false);
+
+            this.model.updatePriority(options, this.newPriority, Y.bind(function () {
+                callbackCalled = true;
+            }, this));
+
+            Assert.isTrue(
+                callbackCalled,
+                "Callback should have been called"
+            );
+
+            Mock.verify(this.contentServiceMock);
+        },
+
+        "Should update priority in case of update location success": function () {
+            var options = {api: this.capiMock};
+
+            this._configureUpdateLocationMock(false);
+
+            this.model.updatePriority(options, this.newPriority, Y.bind(function () {
+                Assert.areSame(
+                    this.model.get('priority'),
+                    this.newPriority,
+                    "Priority should have been updated in the location"
+                );
+            }, this));
+
+            Mock.verify(this.contentServiceMock);
+        },
+
+        "Should NOT update priority in case of update location failure": function () {
+            var options = {api: this.capiMock};
+
+            this._configureUpdateLocationMock(true);
+
+            this.model.updatePriority(options, this.newPriority, Y.bind(function () {
+                Assert.areNotSame(
+                    this.model.get('sortPriority'),
+                    this.newPriority,
+                    "Priority should NOT have been updated in the location"
                 );
             }, this));
 
@@ -812,5 +913,6 @@ YUI.add('ez-locationmodel-tests', function (Y) {
     Y.Test.Runner.add(removeTest);
     Y.Test.Runner.add(loadPathTest);
     Y.Test.Runner.add(updateSortingTest);
+    Y.Test.Runner.add(updatePriorityTest);
     Y.Test.Runner.add(toJSONTest);
 }, '', {requires: ['test', 'model-tests', 'ez-locationmodel', 'ez-restmodel']});

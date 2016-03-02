@@ -207,6 +207,32 @@ YUI.add('ez-locationmodel', function (Y) {
         },
 
         /**
+         * Update the priority of the location.
+         *
+         * @protected
+         * @method _updatePriority
+         * @param {Object} options
+         * @param {Object} options.api the JS REST client instance
+         * @param {Number} priority the new priority
+         * @param {Function} callback
+         */
+        updatePriority: function (options, priority, callback) {
+            var locationUpdateStruct = options.api.getContentService().newLocationUpdateStruct();
+
+            locationUpdateStruct.body.LocationUpdate.priority = priority;
+            locationUpdateStruct.body.LocationUpdate.sortField = this.get('sortField');
+            locationUpdateStruct.body.LocationUpdate.sortOrder = this.get('sortOrder');
+            options.api.getContentService().updateLocation(this.get('id'), locationUpdateStruct,
+                Y.bind(function (error, response) {
+                    if (!error) {
+                        this.set('priority',priority);
+                    }
+                    callback(error, response);
+                }, this)
+            );
+        },
+
+        /**
          * Loads path of the current location. The result is the array containing
          * eZ.Location objects present on the path sorted by depth.
          * The array doesn't contain current location.
