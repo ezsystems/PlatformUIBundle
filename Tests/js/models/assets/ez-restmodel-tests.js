@@ -119,12 +119,23 @@ YUI.add('ez-restmodel-tests', function (Y) {
         },
 
         "Should ignore unrecognized date": function () {
-            var now = +(new Date()),
+            var now,
                 m = this.model;
 
+            now = new Date();
             m.set('date', '');
+
             Y.Assert.isInstanceOf(Date, m.get('date'));
-            Y.Assert.areEqual(+m.get('date'), now);
+
+            // avoids random failure if both date were not initialized in the
+            // same millisecond
+            now.setUTCMilliseconds(0);
+            m.get('date').setUTCMilliseconds(0);
+
+            Y.Assert.areEqual(
+                +now, +m.get('date'),
+                "The date attribute should be initialized with the current date"
+            );
         },
 
         "Should transform a localized value": function () {
