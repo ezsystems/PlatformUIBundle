@@ -81,10 +81,17 @@ YUI.add('ez-usermenuview-tests', function (Y) {
             var view = this.view,
                 userMenuView = this.userMenuItemSecondView,
                 eventName = 'logout',
-                isEventFired = false;
+                isEventFired = false,
+                isAddedEventFired = false;
 
             view.on('*:' + eventName, function () {
                 isEventFired = true;
+            });
+
+            userMenuView.on('addedToUserMenu', function (event) {
+                isAddedEventFired = true;
+
+                Y.Assert.areSame(view, event.userMenu, 'The user menu view should be available in the event parameters.');
             });
 
             view.addMenuItem(userMenuView);
@@ -93,6 +100,7 @@ YUI.add('ez-usermenuview-tests', function (Y) {
 
             Y.Assert.areSame(2, this.view.get('items').length, 'Should add menu item to the items attribute');
             Y.Assert.isTrue(isEventFired, "The event should bubble from the item to the hub view");
+            Y.Assert.isTrue(isAddedEventFired, "The `addedToUserMenu` event should be fired");
 
         },
     });
