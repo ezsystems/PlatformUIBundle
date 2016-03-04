@@ -10,6 +10,8 @@ matrix:
           env: BEFORE="./bin/travis/setupnode.sh" TEST_CMD="grunt test" AFTER_SUCCESS="./bin/travis/generate_apidoc.sh"
         - php: 7.0
           env: BEFORE="composer install --prefer-dist" TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
+        - php: 7.0
+          env: BEFORE="./bin/travis/prepare_behat.sh" TEST_CMD="./bin/travis/runbehat.sh" AFTER_SUCCESS='echo "After success"'
         - php: 5.6
           env: BEFORE="composer install --prefer-dist" TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
         - php: 5.5
