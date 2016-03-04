@@ -1,20 +1,19 @@
-language: node_js
-node_js:
-    - "0.10"
+sudo: false
+language: php
 env:
-    matrix:
-        - CODE="php"
-          BEFORE_GLOBAL="sudo ./bin/travis/setupphp.sh"
-          BEFORE_LOCAL="./bin/travis/composer.sh"
-          TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml"
-          AFTER_SUCCESS="echo \"After success\""
-        - CODE="js"
-          BEFORE_GLOBAL="npm install -g grunt-cli grover bower"
-          BEFORE_LOCAL="./bin/travis/localjsdeps.sh"
-          TEST_CMD="grunt test"
-          AFTER_SUCCESS="sh bin/travis/generate_apidoc.sh"
     global:
         secure: "aNPcXEtgV3Q/GVCH+FvITm/gLXcNyFl7YiOT9JcqZUwYXsT2zi8g4BcwBgDtpbSmi8NSCsEWONNxxDM10BqCPzfkiFD2I0cPHXVxmJ3cmOqySci5JvysEd+RU6gnatCxqzAJYDH2BanfPyu+yPwrSIgWdkPuvNhydNJFUrwsinw="
+
+matrix:
+    include:
+        - php: 7.0
+          env: BEFORE="./bin/travis/setupnode.sh" TEST_CMD="grunt test" AFTER_SUCCESS="./bin/travis/generate_apidoc.sh"
+        - php: 7.0
+          env: BEFORE="composer install --prefer-dist" TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
+        - php: 5.6
+          env: BEFORE="composer install --prefer-dist" TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
+        - php: 5.5
+          env: BEFORE="composer install --prefer-dist" TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
 
 # test only master (+ Pull requests)
 branches:
@@ -22,8 +21,7 @@ branches:
         - master
 
 before_script:
-    - $BEFORE_GLOBAL
-    - $BEFORE_LOCAL
+    - $BEFORE
 
 script: $TEST_CMD
 
