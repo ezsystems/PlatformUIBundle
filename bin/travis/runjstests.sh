@@ -8,4 +8,4 @@ if [ "$TRAVIS_PHP_VERSION" != "7.0" ] ; then
     exit 0
 fi
 
-exec $1
+exec $*
