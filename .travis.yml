@@ -1,19 +1,19 @@
+sudo: false
 language: php
 php:
+    - "5.5"
     - "5.6"
-sudo: false
+    - "7.0"
 env:
     matrix:
         - CODE="php"
-          BEFORE_GLOBAL="echo \"Before global\""
-          BEFORE_LOCAL="composer install --prefer-dist"
+          BEFORE="composer install --prefer-dist"
           TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml"
           AFTER_SUCCESS="echo \"After success\""
         - CODE="js"
-          BEFORE_GLOBAL="./bin/travis/setupnode.sh"
-          BEFORE_LOCAL="./bin/travis/localjsdeps.sh"
-          TEST_CMD="grunt test"
-          AFTER_SUCCESS="sh bin/travis/generate_apidoc.sh"
+          BEFORE="./bin/travis/runjstests.sh ./bin/travis/setupnode.sh"
+          TEST_CMD="./bin/travis/runjstests.sh \"grunt test\""
+          AFTER_SUCCESS="./bin/travis/runjstests.sh ./bin/travis/generate_apidoc.sh"
     global:
         secure: "aNPcXEtgV3Q/GVCH+FvITm/gLXcNyFl7YiOT9JcqZUwYXsT2zi8g4BcwBgDtpbSmi8NSCsEWONNxxDM10BqCPzfkiFD2I0cPHXVxmJ3cmOqySci5JvysEd+RU6gnatCxqzAJYDH2BanfPyu+yPwrSIgWdkPuvNhydNJFUrwsinw="
 
@@ -23,8 +23,7 @@ branches:
         - master
 
 before_script:
-    - $BEFORE_GLOBAL
-    - $BEFORE_LOCAL
+    - $BEFORE
 
 script: $TEST_CMD
 

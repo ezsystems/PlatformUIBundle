@@ -10,3 +10,7 @@ nvm use
 
 echo "> installing global packages"
 npm install -g grunt-cli grover bower
+
+echo "> installing local packages (npm and bower)"
+npm install
+bower install
