@@ -7,17 +7,25 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
         renderTest,
         changeEventTest,
         fireLoadUserEventTest,
+        orderingTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
     attributesTest = new Y.Test.Case({
         name: "eZ LocationViewDetailsTabView attributes test",
         setUp: function () {
+            this.locationMock = new Mock();
+            Mock.expect(this.locationMock, {
+                method: 'get',
+                args: [Y.Mock.Value.String],
+            });
             this.view = new Y.eZ.LocationViewDetailsTabView({
                 content: {},
-                location: {},
+                location: this.locationMock,
                 contentType: {},
                 config: {},
+                selectedSortField: '',
+                selectedSortOrder: '',
             });
         },
 
@@ -52,12 +60,16 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
     renderTest = new Y.Test.Case({
         name: "eZ LocationViewDetailsTabView render test",
         setUp: function () {
+            var that = this;
+
             this.translationsList = ['eng-GB', 'fre-FR'];
             this.contentMock = new Mock();
             this.locationMock = new Mock();
             this.versionMock = new Mock();
             this.ownerMock = new Mock();
             this.creatorMock = new Mock();
+            this.sortFieldIdentifier = 'SECTION';
+            this.sortFieldName = 'Section';
             this.loadingError = false;
 
             Mock.expect(this.contentMock, {
@@ -86,6 +98,20 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
                 returns: {}
             });
 
+            Mock.expect(this.locationMock, {
+                method: 'get',
+                args: [Y.Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'sortField') {
+                        return that.sortFieldIdentifier;
+                    } else if (attr === 'sortOrder') {
+                        return 'ASC';
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for content mock");
+                    }
+                }
+            });
+
             Mock.expect(this.ownerMock, {
                 method: 'toJSON',
                 returns: {}
@@ -103,6 +129,8 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
                 creator: this.creatorMock,
                 owner: this.ownerMock,
                 loadingError: this.loadingError,
+                selectedSortField: {},
+                selectedSortOrder: {},
             });
         },
 
@@ -160,6 +188,26 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
                     that.loadingError, args.loadingError,
                     "loadingError should be available in the template"
                 );
+                Assert.isTrue(
+                    args.isAscendingOrder,
+                    "isAscendingOrder should be available in the template"
+                );
+                Assert.isArray(
+                    args.sortFields,
+                    "sortFields should be available in the template"
+                );
+                Y.Array.each(args.sortFields, function(struct) {
+                   if (struct.selected === true) {
+                       Assert.areSame(
+                           struct.identifier, that.sortFieldIdentifier,
+                           "sortFieldIdentifier should have been selected and added to the template"
+                       );
+                       Assert.areSame(
+                           struct.name, that.sortFieldName,
+                           "sortFieldName should have been added"
+                       );
+                   }
+                });
             };
 
             this.view.render();
@@ -169,7 +217,12 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
     changeEventTest = new Y.Test.Case({
         name: "eZ LocationViewDetailsTabView change event test",
         setUp: function () {
-            this.view = new Y.eZ.LocationViewDetailsTabView();
+            this.locationMock = new Mock();
+            Mock.expect(this.locationMock, {
+                method: 'get',
+                args: [Y.Mock.Value.String],
+            });
+            this.view = new Y.eZ.LocationViewDetailsTabView({location: this.locationMock});
         },
 
         tearDown: function () {
@@ -198,6 +251,158 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
 
         "Test that owner change event calls render": function () {
             this._authorsEventTest('ownerChange');
+        },
+    });
+
+    orderingTest = new Y.Test.Case({
+        name: "eZ LocationViewDetailsTabView change event test",
+        setUp: function () {
+            var that = this;
+
+            this.sortField = 'PRIORITY';
+            this.sortOrder = 'ASC';
+            this.contentMock = new Mock();
+            this.versionMock = new Mock();
+            this.locationMock = new Mock();
+            this.translationsList = ['eng-GB', 'fre-FR'];
+            this.creator = "13";
+            this.owner = "42";
+
+            Mock.expect(this.locationMock, {
+                method: 'get',
+                args: [Y.Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'sortField') {
+                        return that.sortField;
+                    } else if (attr === 'sortOrder') {
+                        return that.sortOrder;
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for content mock");
+                    }
+                }
+            });
+
+            Mock.expect(that.contentMock, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === 'currentVersion') {
+                        return that.versionMock;
+                    } else if (attr === 'resources') {
+                        return {Owner: that.owner};
+                    } else {
+                        Y.fail("Unexpected parameter " + attr + " for content mock");
+                    }
+                }
+            });
+
+            Mock.expect(this.contentMock, {
+                method: 'toJSON',
+                returns: {}
+            });
+
+            Mock.expect(that.versionMock, {
+                method: 'get',
+                args: ['resources'],
+                returns: {Creator: this.creator}
+            });
+
+            Mock.expect(this.versionMock, {
+                method: 'getTranslationsList',
+                returns: this.translationsList
+            });
+
+            Mock.expect(this.versionMock, {
+                method: 'toJSON',
+                returns: {}
+            });
+
+            Mock.expect(this.locationMock, {
+                method: 'toJSON',
+                returns: {}
+            });
+
+            this.view = new Y.eZ.LocationViewDetailsTabView({
+                content: this.contentMock,
+                location: this.locationMock,
+                selectedSortField: '',
+                selectedSortOrder: '',
+                container: '.container'
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should set the sortField and sortOrder attributes": function () {
+            var container = this.view.get('container'),
+                sortFieldSelector,
+                selectedSortFieldIndex,
+                sortOrderSelector,
+                selectedSortOrderIndex;
+
+            this.view.render();
+
+            sortFieldSelector = container.one('.ez-subitems-ordering-sort-type');
+            selectedSortFieldIndex = sortFieldSelector.get('selectedIndex');
+            sortOrderSelector = container.one('.ez-subitems-sorting-order');
+            selectedSortOrderIndex = sortOrderSelector.get('selectedIndex');
+
+            Assert.areSame(
+                sortFieldSelector.get('options').item(selectedSortFieldIndex).get('value'),
+                this.view.get('sortField'),
+                "sortField should be set"
+            );
+
+            Assert.areSame(
+                sortOrderSelector.get('options').item(selectedSortOrderIndex).get('value'),
+                this.view.get('sortOrder'),
+                "sortOrder should be set"
+            );
+        },
+
+        "Should change selectedSortField and selectedSortOrder when changing the select tag": function () {
+            var container = this.view.get('container'),
+                sortFieldSelector,
+                sortOrderSelector,
+                newSortField = 'SECTION',
+                newSortOrder = 'DESC';
+
+            this.view.render();
+
+            sortFieldSelector = container.one('.ez-subitems-ordering-sort-type');
+            sortOrderSelector = container.one('.ez-subitems-sorting-order');
+
+            Assert.areNotSame(
+                newSortField,
+                this.view.get('sortField'),
+                "selectedSortField should not be changed yet"
+            );
+
+            Assert.areNotSame(
+                newSortOrder,
+                this.view.get('sortOrder'),
+                "selectedSortOrder should not be changed yet"
+            );
+
+            sortFieldSelector.set('value', newSortField);
+            sortOrderSelector.set('value', newSortOrder);
+            sortFieldSelector.simulate("change");
+            sortOrderSelector.simulate("change");
+
+            Assert.areSame(
+                newSortField,
+                this.view.get('sortField'),
+                "selectedSortField should be changed when changing the select tag"
+            );
+
+            Assert.areSame(
+                newSortOrder,
+                this.view.get('sortOrder'),
+                "selectedSortOrder should be changed when changing the select tag"
+            );
         },
     });
 
@@ -251,6 +456,11 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
             Mock.expect(this.locationMock, {
                 method: 'toJSON',
                 returns: {}
+            });
+
+            Mock.expect(this.locationMock, {
+                method: 'get',
+                args: [Y.Mock.Value.String],
             });
 
             this.view = new Y.eZ.LocationViewDetailsTabView({
@@ -378,5 +588,6 @@ YUI.add('ez-locationviewdetailstabview-tests', function (Y) {
     Y.Test.Runner.add(attributesTest);
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(changeEventTest);
+    Y.Test.Runner.add(orderingTest);
     Y.Test.Runner.add(fireLoadUserEventTest);
 }, '', {requires: ['test', 'ez-locationviewdetailstabview', 'node-event-simulate']});

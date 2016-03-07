@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationmodel-tests', function (Y) {
-    var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest, toJSONTest,
+    var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest, toJSONTest, updateSortingTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
@@ -254,6 +254,121 @@ YUI.add('ez-locationmodel-tests', function (Y) {
                 );
             });
         }
+    });
+
+    updateSortingTest = new Y.Test.Case({
+        name: "eZ location model update sorting tests",
+
+        setUp: function () {
+            this.capiMock = new Y.Mock();
+            this.locationId = '1/2/3';
+            this.newSortField = 'SECTION';
+            this.newSortOrder = 'DESC';
+            this.contentServiceMock = new Y.Mock();
+            this.updateStruct = {
+                body: {
+                    LocationUpdate: {
+                        sortField: '',
+                        sortOrder: ''
+                    }
+                }
+            };
+            this.model = new Y.eZ.Location({
+                id: this.locationId,
+                sortField: this.sortField,
+                sortOrder: this.sortOrder,
+            });
+
+            Mock.expect(this.capiMock, {
+                method: 'getContentService',
+                returns: this.contentServiceMock
+            });
+
+            Mock.expect(this.contentServiceMock, {
+                method: 'newLocationUpdateStruct',
+                returns: this.updateStruct
+            });
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        _configureUpdateLocationMock: function (cbError) {
+            var that = this;
+            Mock.expect(this.contentServiceMock, {
+                method: 'updateLocation',
+                args: [this.locationId, this.updateStruct, Mock.Value.Function],
+                run: function (id, struct, cb) {
+                    Assert.areSame(struct.body.LocationUpdate.sortField, that.newSortField, "SortField should have been updated");
+                    Assert.areSame(struct.body.LocationUpdate.sortOrder, that.newSortOrder, "SortOrder should have been updated");
+                    cb(cbError);
+                },
+            });
+        },
+
+        "Should update location on updateSorting": function () {
+            var options = {api: this.capiMock},
+                callbackCalled = false;
+
+            this._configureUpdateLocationMock(false);
+
+            this.model.updateSorting(options, this.newSortField, this.newSortOrder, Y.bind(function () {
+                callbackCalled = true;
+            }, this));
+
+            Assert.isTrue(
+                callbackCalled,
+                "Callback should have been called"
+            );
+
+            Mock.verify(this.contentServiceMock);
+        },
+
+        "Should update sortField and sortOrder in case of update location success": function () {
+            var options = {api: this.capiMock};
+
+            this._configureUpdateLocationMock(false);
+
+            this.model.updateSorting(options, this.newSortField, this.newSortOrder, Y.bind(function () {
+                Assert.areSame(
+                    this.model.get('sortField'),
+                    this.newSortField,
+                    "sortField should have been updated in the location"
+                );
+
+                Assert.areSame(
+                    this.model.get('sortOrder'),
+                    this.newSortOrder,
+                    "sortOrder should have been updated in the location"
+                );
+            }, this));
+
+            Mock.verify(this.contentServiceMock);
+        },
+
+        "Should NOT update sortField and sortOrder in case of update location success": function () {
+            var options = {api: this.capiMock};
+
+            this._configureUpdateLocationMock(true);
+
+            this.model.updateSorting(options, this.newSortField, this.newSortOrder, Y.bind(function () {
+                Assert.areNotSame(
+                    this.model.get('sortField'),
+                    this.newSortField,
+                    "sortField should NOT have been updated in the location"
+                );
+
+                Assert.areNotSame(
+                    this.model.get('sortOrder'),
+                    this.newSortOrder,
+                    "sortField should NOT have been updated in the location"
+                );
+            }, this));
+
+            Mock.verify(this.contentServiceMock);
+        },
     });
 
     moveTest = new Y.Test.Case({
@@ -696,5 +811,6 @@ YUI.add('ez-locationmodel-tests', function (Y) {
     Y.Test.Runner.add(hideTest);
     Y.Test.Runner.add(removeTest);
     Y.Test.Runner.add(loadPathTest);
+    Y.Test.Runner.add(updateSortingTest);
     Y.Test.Runner.add(toJSONTest);
 }, '', {requires: ['test', 'model-tests', 'ez-locationmodel', 'ez-restmodel']});

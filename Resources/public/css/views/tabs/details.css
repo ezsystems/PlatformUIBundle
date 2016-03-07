@@ -38,3 +38,7 @@
 .ez-view-locationviewdetailstabview .ez-details-language {
     display: inline;
 }
+
+.ez-view-locationviewdetailstabview .ez-subitem-ordering-details {
+    margin-left: 2em;
+}

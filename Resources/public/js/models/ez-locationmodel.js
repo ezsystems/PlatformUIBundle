@@ -103,6 +103,32 @@ YUI.add('ez-locationmodel', function (Y) {
         },
 
         /**
+         * Updates the sortfield and sortOrder of the location
+         *
+         * @method _updateSorting
+         * @param {Object} options the required for the update
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {String} sortField
+         * @param {String} sortOrder
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        updateSorting: function (options, sortField, sortOrder, callback) {
+            var locationUpdateStruct = options.api.getContentService().newLocationUpdateStruct();
+
+            locationUpdateStruct.body.LocationUpdate.sortField = sortField;
+            locationUpdateStruct.body.LocationUpdate.sortOrder = sortOrder;
+            options.api.getContentService().updateLocation(this.get('id'), locationUpdateStruct,
+                Y.bind(function (error, response) {
+                    if (!error) {
+                        this.set('sortField', sortField);
+                        this.set('sortOrder', sortOrder);
+                    }
+                    callback(error, response);
+                }, this)
+            );
+        },
+
+        /**
          * Updates the hidden status of the location
          *
          * @protected
