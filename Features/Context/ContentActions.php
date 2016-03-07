@@ -27,7 +27,7 @@ class ContentActions extends PlatformUI
     {
         $this->onFullView($name);
         $this->clickActionBar('Move');
-        $this->selectFromUniversalDiscovery("Home/$destiny");
+        $this->selectFromUniversalDiscovery("eZ Platform/$destiny");
         $this->confirmSelection();
         $destinyName = explode('/', $destiny);
         $destinyName = end($destinyName);
