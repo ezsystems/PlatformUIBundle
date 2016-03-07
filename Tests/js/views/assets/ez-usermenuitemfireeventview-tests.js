@@ -84,6 +84,28 @@ YUI.add('ez-usermenuitemfireeventview-tests', function (Y) {
             container.simulateGesture('tap');
             this.wait();
         },
+
+        "Should hide the user menu": function () {
+            var container = this.view.render().get('container'),
+                that = this,
+                userMenuView = new Y.Mock();
+
+            Y.Mock.expect(userMenuView, {
+                method: 'hide',
+                args: [Y.Mock.Value.Object]
+            });
+
+            this.view.fire('addedToUserMenu', {userMenu: userMenuView});
+
+            this.view.on('logOut', function () {
+                that.resume(function () {
+                    Y.Mock.verify(userMenuView);
+                });
+            });
+
+            container.simulateGesture('tap');
+            this.wait();
+        },
     });
 
     Y.Test.Runner.setName("eZ User Menu Item Fire Event View tests");

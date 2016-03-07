@@ -113,7 +113,7 @@ YUI.add('ez-usermenuview', function (Y) {
         },
 
         /**
-         * Adds item to the menu
+         * Adds item to the menu and fire event when it's done
          *
          * @method addMenuItem
          * @public
@@ -125,6 +125,16 @@ YUI.add('ez-usermenuview', function (Y) {
             items.push(view);
 
             view.addTarget(this);
+
+            /**
+             * Fired when the view is added to the user menu
+             *
+             * @event addedToUserMenu
+             * @param userMenu {Object} the user menu view
+             */
+            view.fire('addedToUserMenu', {
+                userMenu: this,
+            });
         },
     }, {
         ATTRS: {

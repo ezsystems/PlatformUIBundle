@@ -28,6 +28,8 @@ YUI.add('ez-usermenuitemfireeventview', function (Y) {
 
         initializer: function () {
             this.containerTemplate = '<li class="' + this._generateViewClassName(this._getName()) + '"/>';
+
+            this.on('addedToUserMenu', this._addUserMenuHideOnEvent, this);
         },
 
         /**
@@ -39,6 +41,17 @@ YUI.add('ez-usermenuitemfireeventview', function (Y) {
         render: function () {
             this.get('container').setHTML(this.template({title: this.get('title')}));
             return this;
+        },
+
+        /**
+         * Adds the event listener to hide the user menu
+         *
+         * @method _addUserMenuHideOnEvent
+         * @protected
+         * @param event {Object} event facade
+         */
+        _addUserMenuHideOnEvent: function (event) {
+            this.on(this.get('eventName'), Y.bind(event.userMenu.hide, event.userMenu));
         },
 
         /**
