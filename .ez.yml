@@ -4,7 +4,7 @@ v: 0
 meta:
   repo: "https://github.com/ezsystems/ezplatform.git"
   branch: "master"
-  self_alias: "1.0.x-dev"
+  self_alias: "1.2.x-dev"
 
 # ci
 integrate:
