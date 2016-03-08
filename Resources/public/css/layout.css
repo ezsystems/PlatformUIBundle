@@ -23,6 +23,7 @@
 
 .ez-platformui-app p {
     line-height: 1.4em;
+    pointer-events: auto;
 }
 
 .is-app-open {
