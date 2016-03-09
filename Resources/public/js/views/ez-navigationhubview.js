@@ -620,10 +620,10 @@ YUI.add('ez-navigationhubview', function (Y) {
              */
             zones: {
                 value: {
-                    'platform':  Y.eZ.Translator.trans('zone.platform', {}, 'editorial'),
-                    'studio': Y.eZ.Translator.trans('zone.studio', {}, 'editorial'),
-                    'studioplus': Y.eZ.Translator.trans('zone.studioplus', {}, 'editorial'),
-                    'admin': Y.eZ.Translator.trans('zone.admin', {}, 'editorial'),
+                    'platform':  Y.eZ.Translator.trans('navigationhub.zone.platform', {}, 'editorial'),
+                    'studio': Y.eZ.Translator.trans('navigationhub.zone.studio', {}, 'editorial'),
+                    'studioplus': Y.eZ.Translator.trans('navigationhub.zone.studioplus', {}, 'editorial'),
+                    'admin': Y.eZ.Translator.trans('navigationhub.zone.admin', {}, 'editorial'),
                 },
                 readOnly: true,
             },
