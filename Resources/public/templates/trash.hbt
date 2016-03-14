@@ -5,9 +5,10 @@
         </header>
         <div class="ez-trashview-list">
             {{#if trashItems}}
-            <table class="ez-trashview-table pure-table pure-table-bordered">
+            <table class="ez-trashview-table ez-selection-table pure-table pure-table-bordered">
                 <thead>
                 <tr>
+                    <th></th>
                     <th>Name</th>
                     <th>Type</th>
                     <th>Original Location</th>
@@ -15,7 +16,11 @@
                 </thead>
                 <tbody>
                 {{#each trashItems}}
-                    <tr>
+                    <tr class="ez-selection-table-row ez-trashview-table-row">
+                        <td>
+                            <input class='ez-selection-table-checkbox ez-trashitem-box'
+                                   type="checkbox" value="{{ item.id }}"/>
+                        </td>
                         <td>{{item.contentInfo.name}}</td>
                         <td>{{contentType.names.eng-GB}}</td>
                         <td>

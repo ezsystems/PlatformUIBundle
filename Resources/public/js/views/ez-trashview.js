@@ -21,9 +21,16 @@ YUI.add('ez-trashview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.TrashView = Y.Base.create('trashView', Y.eZ.TemplateBasedView, [], {
+    Y.eZ.TrashView = Y.Base.create('trashView', Y.eZ.TemplateBasedView, [Y.eZ.SelectionTable], {
+        events: {
+            '.ez-trashitem-box': {
+                'change': '_updateTrashBarButtons'
+            },
+        },
+
         initializer: function () {
             this.on('*:minimizeTrashBarAction', this._handleMinimizeTrashBar);
+            this.on('*:restoreTrashItemsAction', this._restoreTrashItems);
         },
 
         /**
@@ -86,6 +93,57 @@ YUI.add('ez-trashview', function (Y) {
                     'contentType': trashItem.contentType.toJSON(),
                 };
             });
+        },
+
+        /**
+         * Restores the selected trash items
+         *
+         * @private
+         * @method _restoreTrashItems
+         */
+        _restoreTrashItems: function () {
+            var selectedTrashItems = this.get('container').all('.ez-trashitem-box:checked'),
+                trashItems = [];
+
+            selectedTrashItems.each(function (selectedTrashItem) {
+                Y.Array.some(this.get('trashItems'), function (trashItem) {
+                    if (selectedTrashItem.getAttribute('value') === trashItem.item.get('id')) {
+                        trashItems.push(trashItem.item);
+                        return true;
+                    }
+                });
+            }, this);
+
+            /**
+             * Fired to restore the selected items
+             * @event restoreItems
+             */
+            this.fire('restoreItems', {trashItems: trashItems});
+        },
+
+        /**
+         * Updates the TrashBar buttons
+         *
+         * @private
+         * @method _updateTrashBarButtons
+         */
+        _updateTrashBarButtons: function () {
+            this._updateDisableTrashBarButton(
+                'restoreTrashItems',
+                this.get('container').one('.ez-trashitem-box:checked') === null
+            );
+        },
+
+        /**
+         * Update the disable status on a given button of the trashBar
+         *
+         * @private
+         * @method _updateDisableTrashBarButton
+         * @param {String} actionId of the button
+         * @param {Boolean} isDisabled
+         */
+        _updateDisableTrashBarButton: function (actionId, isDisabled) {
+            this.get('trashBar').getAction(actionId).set('disabled', isDisabled);
         },
 
         destructor: function () {

@@ -3,8 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-trashviewservice-tests', function (Y) {
-    var serviceTest, emptyTrashButtonTest,
-    Assert = Y.Assert, Mock = Y.Mock;
+    var serviceTest, emptyTrashButtonTest, restoreItemsTest,
+        Assert = Y.Assert, Mock = Y.Mock;
 
     serviceTest = new Y.Test.Case({
         name: "eZ Trash View Service tests",
@@ -746,14 +746,29 @@ YUI.add('ez-trashviewservice-tests', function (Y) {
             );
         },
 
+        _testItemsNoLoadError: function () {
+            var errorFired = false;
+
+            this.service.on('error', function () {
+                errorFired = true;
+            });
+
+            this.service.load(function(){});
+
+            Assert.isFalse(
+                errorFired,
+                "An error should not have been fired"
+            );
+        },
+
         "Should error on loading contentType": function () {
             this.contentTypeModelConstructor.prototype.load = this.apiCallbackError;
             this._testItemsLoadError();
         },
 
-        "Should error on loading parent location": function () {
+        "Should not error on loading parent location": function () {
             this.locationModelConstructor.prototype.load = this.apiCallbackError;
-            this._testItemsLoadError();
+            this._testItemsNoLoadError();
         },
 
         "Should error on loading parent location path": function () {
@@ -942,9 +957,203 @@ YUI.add('ez-trashviewservice-tests', function (Y) {
         },
     });
 
+    restoreItemsTest = new Y.Test.Case({
+        name: "eZ Trash View Service restore trash items tests",
 
-    Y.Test.Runner.setName("eZ Location Trash View Service tests");
+        setUp: function () {
+            this.app = new Mock();
+            this.capi = new Mock();
+            this.restoreCalled = false;
+
+            this.contentServiceMock = new Mock();
+            Mock.expect(this.contentServiceMock, {
+                method: "emptyTrash",
+                args: [Mock.Value.Function],
+                run: function (callback) {
+                    callback();
+                },
+            });
+
+            this.capiMock = new Mock();
+            Mock.expect(this.capiMock, {
+                method: "getContentService",
+                args: [],
+                returns: this.contentServiceMock,
+            });
+
+            this.service = new Y.eZ.TrashViewService({
+                app: this.app,
+                capi: this.capiMock,
+                trashItems: [1, 2, 3],
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+        },
+
+        _createTrashItem: function (id, error) {
+            var item = new Mock();
+
+            Mock.expect(item, {
+                method: "restore",
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (loadOptions, callback) {
+                    callback(error);
+                    this.restoreCalled = true;
+                }, this),
+            });
+
+            Mock.expect(item, {
+                method: "get",
+                args: ["id"],
+                returns: id,
+            });
+
+            return item;
+        },
+
+        "Should notify user when restoring starts": function () {
+            var notified = false;
+
+            this.service.once('notify', function (e) {
+                notified = true;
+
+                Assert.isObject(e.notification, "The event facade should provide a notification config");
+                Assert.areEqual(
+                    "started",
+                    e.notification.state,
+                    "The notification state should be 'started'"
+                );
+                Assert.isString(
+                    e.notification.text,
+                    "The notification text should be a string"
+                );
+                Assert.areSame(
+                    'restoreTrashItems',
+                    e.notification.identifier,
+                    "The notification identifier should be restoreTrashItems"
+                );
+                Assert.areSame(
+                    5, e.notification.timeout,
+                    "The notification timeout should be set to 0"
+                );
+            });
+
+            this.service.fire(
+                'whatever:restoreItems',
+                {trashItems: [
+                    this._createTrashItem(42, false),
+                ]}
+            );
+
+            Assert.isTrue(notified, "The notified event should have been fired");
+            Assert.isTrue(this.restoreCalled, "The restore method should have been called");
+        },
+
+        "Should notify user about error when restoring an item failed": function () {
+            var notified = false,
+                eventFired = false,
+                id = 42;
+
+            this.service.once('notify', function (e) {
+                this.once('notify', function (e) {
+                    notified = true;
+
+                    Assert.isObject(e.notification, "The event facade should provide a notification config");
+                    Assert.areEqual(
+                        "error", e.notification.state,
+                        "The notification state should be 'error'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a string"
+                    );
+                    Assert.areSame(
+                        'restoreTrashItems-error-' + id,
+                        e.notification.identifier,
+                        "The notification identifier should be restoreTrashItems-error"
+                    );
+                    Assert.areSame(
+                        0, e.notification.timeout,
+                        "The notification timeout should be set to 0"
+                    );
+                });
+            });
+
+            this.service.once('refreshView', function (e) {
+                eventFired = true;
+            });
+
+            this.service.fire(
+                'whatever:restoreItems',
+                {trashItems: [
+                    this._createTrashItem(42, true),
+                ]}
+            );
+
+            Assert.isTrue(notified, "The notified event should have been fired");
+            Assert.isTrue(this.restoreCalled, "The restore method should have been called");
+            Assert.isFalse(eventFired, "The refreshView event should not be called");
+        },
+
+
+        "Should send the refreshView event and notify user about success of restoring trash item": function () {
+            var notified = false,
+                eventFired = false,
+                id = "1";
+
+            this.service.once('notify', function (e) {
+                this.once('notify', function (e) {
+                    notified = true;
+
+                    Assert.isObject(e.notification, "The event facade should provide a notification config");
+                    Assert.areEqual(
+                        "done", e.notification.state,
+                        "The notification state should be 'done'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a string"
+                    );
+                    Assert.isTrue(
+                        e.notification.text.indexOf("1") !== -1,
+                        "The notification text should contain the number of restored items"
+                    );
+                    Assert.areSame(
+                        'restoreTrashItems',
+                        e.notification.identifier,
+                        "The notification identifier should be restoreTrashItems"
+                    );
+                    Assert.areSame(
+                        5, e.notification.timeout,
+                        "The notification timeout should be set to 0"
+                    );
+                });
+            });
+
+            this.service.once('refreshView', function (e) {
+                eventFired = true;
+            });
+
+            this.service.fire(
+                'whatever:restoreItems',
+                {trashItems: [
+                    this._createTrashItem(id, false),
+                ]}
+            );
+
+            Assert.isTrue(notified, "The notified event should have been fired");
+            Assert.isTrue(eventFired, "The refreshView event should have been fired");
+            Assert.isTrue(this.restoreCalled, "The restore method should have been called");
+        },
+    });
+
+
+    Y.Test.Runner.setName("eZ Trash View Service tests");
     Y.Test.Runner.add(serviceTest);
     Y.Test.Runner.add(emptyTrashButtonTest);
+    Y.Test.Runner.add(restoreItemsTest);
 
 }, '', {requires: ['test', 'ez-trashviewservice']});

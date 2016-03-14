@@ -95,6 +95,10 @@
     content: "\E900";
 }
 
+.ez-view-buttonactionview .ez-action[data-action="restoreTrashItems"] .action-icon:before {
+    content: "\E60f";
+}
+
 .ez-view-buttonactionview .ez-action[data-action="publish"] .action-icon:before {
     content: "\E60d";
 }

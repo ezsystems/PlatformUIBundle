@@ -38,6 +38,20 @@ YUI.add('ez-trashitemmodel', function (Y) {
             return attrs;
         },
 
+        /**
+         * Restores the item to it's original location
+         *
+         * @method restore
+         * @param {Object} options the required for the update
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        restore: function (options, callback) {
+            var contentService = options.api.getContentService();
+
+            contentService.recover(this.get('id'), callback);
+        },
+
     }, {
         REST_STRUCT_ROOT: "TrashItem",
         ATTRS_REST_MAP: [
