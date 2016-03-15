@@ -32,6 +32,23 @@ class Configuration extends SiteAccessConfiguration
     }
 
     /**
+     * Defines the expected configuration for the JavaScript.
+     *
+     * @param $saNode \Symfony\Component\Config\Definition\Builder\NodeBuilder
+     */
+    protected function defineJavaScript(NodeBuilder $saNode)
+    {
+        $saNode
+            ->arrayNode('javascript')
+                ->children()
+                    ->arrayNode('files')
+                        ->prototype('scalar')->end()
+                    ->end()
+                ->end()
+            ->end();
+    }
+
+    /**
      * Defines the expected configuration for the YUI modules.
      *
      * @param $saNode \Symfony\Component\Config\Definition\Builder\NodeBuilder
@@ -89,6 +106,7 @@ class Configuration extends SiteAccessConfiguration
 
         $this->defineYui($saNode);
         $this->defineCss($saNode);
+        $this->defineJavaScript($saNode);
 
         return $treeBuilder;
     }

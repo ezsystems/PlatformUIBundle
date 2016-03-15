@@ -63,6 +63,12 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
         $this->assertContainerBuilderHasParameter('ez_platformui.default.css.files', []);
     }
 
+    public function testLoadNoJavaScriptConfig()
+    {
+        $this->load();
+        $this->assertContainerBuilderHasParameter('ez_platformui.default.javascript.files', []);
+    }
+
     public function testLoadWithYuiConfig()
     {
         ConfigurationProcessor::setAvailableSiteAccesses(['sa1', 'sa2', 'sa3']);
@@ -319,5 +325,49 @@ class EzPlatformUIExtensionTest extends AbstractExtensionTestCase
             array_merge($defaultFiles, $groupFiles, $sa3Files)
         );
         $this->assertFalse($this->container->has('ez_platformui.sa_group.css.files'));
+    }
+
+    public function testLoadWithJavaScriptConfig()
+    {
+        ConfigurationProcessor::setAvailableSiteAccesses(['sa1', 'sa2', 'sa3']);
+        ConfigurationProcessor::setGroupsBySiteAccess([
+            'sa2' => ['sa_group'],
+            'sa3' => ['sa_group'],
+        ]);
+        $defaultFiles = ['def1.js', 'def2.js'];
+        $default = ['javascript' => ['files' => $defaultFiles]];
+
+        $sa1Files = ['sa1.js'];
+        $sa1 = ['javascript' => ['files' => $sa1Files]];
+        $sa2 = [];
+        $sa3Files = ['sa3.js'];
+        $sa3 = ['javascript' => ['files' => $sa3Files]];
+        $groupFiles = ['group.js'];
+        $group = ['javascript' => ['files' => $groupFiles]];
+
+        $this->load([
+            'system' => [
+                'default' => $default,
+                'sa1' => $sa1,
+                'sa2' => $sa2,
+                'sa3' => $sa3,
+                'sa_group' => $group,
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('ez_platformui.default.javascript.files', $defaultFiles);
+        $this->assertContainerBuilderHasParameter(
+            'ez_platformui.sa1.javascript.files',
+            array_merge($defaultFiles, $sa1Files)
+        );
+        $this->assertContainerBuilderHasParameter(
+            'ez_platformui.sa2.javascript.files',
+            array_merge($defaultFiles, $groupFiles)
+        );
+        $this->assertContainerBuilderHasParameter(
+            'ez_platformui.sa3.javascript.files',
+            array_merge($defaultFiles, $groupFiles, $sa3Files)
+        );
+        $this->assertFalse($this->container->has('ez_platformui.sa_group.javascript.files'));
     }
 }

@@ -13,6 +13,7 @@ parameters:
     # Type ('js' or 'template')
     # ez_platformui.<scope>.yui.modules.<module_name>.type
     ez_platformui.default.css.files: []
+    ez_platformui.default.javascript.files: []
 
     ezsettings.global.system_info_view:
         pjax_tab:

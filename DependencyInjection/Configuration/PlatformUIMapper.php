@@ -29,12 +29,20 @@ class PlatformUIMapper implements HookableConfigurationMapperInterface
     {
         $this->mapConfigYui($scopeSettings, $currentScope, $contextualizer);
         $this->mapConfigCss($scopeSettings, $currentScope, $contextualizer);
+        $this->mapConfigJavaScript($scopeSettings, $currentScope, $contextualizer);
     }
 
     protected function mapConfigCss(array &$scopeSettings, $currentScope, ContextualizerInterface $contextualizer)
     {
         if (isset($scopeSettings['css']['files'])) {
             $scopeSettings['css.files'] = $scopeSettings['css']['files'];
+        }
+    }
+
+    protected function mapConfigJavaScript(array &$scopeSettings, $currentScope, ContextualizerInterface $contextualizer)
+    {
+        if (isset($scopeSettings['javascript']['files'])) {
+            $scopeSettings['javascript.files'] = $scopeSettings['javascript']['files'];
         }
     }
 
@@ -93,5 +101,6 @@ class PlatformUIMapper implements HookableConfigurationMapperInterface
         }
 
         $contextualizer->mapConfigArray('css.files', $config, ContextualizerInterface::UNIQUE);
+        $contextualizer->mapConfigArray('javascript.files', $config, ContextualizerInterface::UNIQUE);
     }
 }
