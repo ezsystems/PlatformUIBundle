@@ -18,8 +18,8 @@ echo "> Modify composer.json to point to local checkout"
 sed -i '$d' composer.json
 echo ',    "repositories": [{"type":"git","url":"'$TRAVIS_BUILD_DIR'"}]}' >> composer.json
 
-echo "> Updating packages (ezsystems/platform-ui-bundle:dev-tmp_travis_branch as 1.0)"
-composer require --no-update "ezsystems/platform-ui-bundle:dev-tmp_travis_branch as 1.0"
+echo "> Updating packages (ezsystems/platform-ui-bundle:dev-tmp_travis_branch as 1.2)"
+composer require --no-update "ezsystems/platform-ui-bundle:dev-tmp_travis_branch as 1.2"
 
 ./bin/.travis/prepare_ezpublish.sh
 
