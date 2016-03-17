@@ -1,0 +1,46 @@
+{% extends "eZPlatformUIBundle::pjax_admin.html.twig" %}
+
+{% trans_default_domain "systeminfo" %}
+
+{% block header_breadcrumbs %}
+    {% set breadcrumb_items = [
+    {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
+    {link: '', label: 'system.information'|trans({}, 'systeminfo') },
+    ] %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block header_title %}
+    <h1 class="ez-page-header-name" data-icon="&#xe617">{{ 'system.information'|trans }}</h1>
+{% endblock %}
+
+{% block content %}
+    <section class="ez-tabs ez-serverside-content">
+        <ul class="ez-tabs-list">
+            <li class="ez-tabs-label is-tab-selected"><a href="#ez-tabs-platform">eZ Platform</a></li>
+            <li class="ez-tabs-label"><a href="#ez-tabs-server">{{ 'server'|trans }}</a></li>
+        </ul>
+        <div class="ez-tabs-panels">
+            <div class="ez-tabs-panel" id="ez-tabs-server">
+                <h2>{{ 'software'|trans }}</h2>
+                <dl>
+                    <dt>PHP</dt>
+                    <dd>
+                        {{ info.version }}
+                        (<a href="{{ path( 'admin_phpinfo' ) }}" target="_blank">{{ 'php.info'|trans }}</a>)
+                    </dd>
+                    <dt>{{ 'php.accelerator'|trans }}</dt>
+                    <dd>
+                        {% if not info.acceleratorEnabled %}
+                            <strong>{{ 'disabled'|trans }}</strong>
+                        {% endif %}
+                        <a href="{{ info.acceleratorURL }}" target="_blank">{{ info.acceleratorName }} ({{ info.acceleratorVersion }})</a>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block title %}{{'system.information'|trans }}{% endblock %}
