@@ -521,7 +521,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                         ),
                         this._getParameterItem(
                             "System information", "admin-systeminfo",
-                            "adminGenericRoute", {uri: "pjax/systeminfo"}, "uri"
+                            "adminGenericRoute", {uri: "ez-support-tools/view/php"}, "uri"
                         ),
                         this._getNavigationItem(
                             "Sections", "admin-sections",
