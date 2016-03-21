@@ -1053,6 +1053,23 @@ YUI.add('ez-navigationhubviewservice-tests', function (Y) {
             Mock.verify(this.appMock);
         },
 
+        "Should not do anything when accessing directly to the URL": function () {
+            Mock.expect(this.appMock, {
+                method: 'navigateTo',
+                callCount: 0
+            });
+
+            this.view = new Y.View({
+                'bubbleTargets': this.service,
+                'activeNavigation': null
+            });
+
+            this.service.set(this.zoneName + 'NavigationItems', [this.item]);
+            this.view.set('activeNavigation', this.zoneName);
+
+            Mock.verify(this.appMock);
+        },
+
         "Should process navigation item": function () {
             this.service.set(this.zoneName + 'NavigationItems', [this.item]);
             this.view.set('activeNavigation', this.zoneName);

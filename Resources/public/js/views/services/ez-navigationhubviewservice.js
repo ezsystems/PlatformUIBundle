@@ -79,7 +79,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                 firstItem,
                 route;
 
-            if (zone && zone.length > 0) {
+            if (zone && zone.length > 0 && e.prevVal !== null) {
                 firstItem = zone[0];
 
                 if (this._isNavigationViewItem(firstItem)) {
