@@ -23,6 +23,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         initializer: function () {
             this.on('*:logOut', this._logOut);
             this.after('*:navigateTo', this._navigateTo);
+            this.after('*:activeNavigationChange', this._navigateToFirstItemRoute);
         },
 
         /**
@@ -51,6 +52,43 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
             app.logOut(function () {
                 app.navigateTo('loginForm');
             });
+        },
+
+        /**
+         * Returns true if a provided item is a NavigationItemView, false if item is a NavigationItemParameterView
+         *
+         * @method _isNavigationViewItem
+         * @private
+         * @param {Object} item
+         * @return {Boolean}
+         */
+        _isNavigationViewItem: function (item) {
+            return !!item.get;
+        },
+
+        /**
+         * Redirects to the first item of the active zone
+         *
+         * @method _navigateToFirstItemRoute
+         * @protected
+         * @param {EventFacade} e
+         * @param {String} e.newVal new value of `activeNavigation`
+         */
+        _navigateToFirstItemRoute: function (e) {
+            var zone = this.get(e.newVal + 'NavigationItems'),
+                firstItem,
+                route;
+
+            if (zone && zone.length > 0 && e.prevVal !== null) {
+                firstItem = zone[0];
+
+                if (this._isNavigationViewItem(firstItem)) {
+                    route = firstItem.get('route');
+                } else {
+                    route = firstItem.config.route;
+                }
+                this.get('app').navigateTo(route.name, route.params);
+            }
         },
 
         _load: function (next) {
@@ -280,7 +318,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
          * the navigation hub view to check which navigation item view is
          * selected. A matched route object is a clone of the application active
          * route without the service, serviceInstance and callbacks entries and
-         * with an additionnal `parameters` property holding the route
+         * with an additional `parameters` property holding the route
          * parameters and their values.
          *
          * @method _matchedRoute
@@ -331,13 +369,13 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
         removeNavigationItem: function (identifier, zone) {
             var attr = zone + 'NavigationItems';
 
-            this._set(attr, Y.Array.reject(this.get(attr), function (elt) {
-                if (elt.get) {
+            this._set(attr, Y.Array.reject(this.get(attr), Y.bind(function (elt) {
+                if (this._isNavigationViewItem(elt)) {
                     return elt.get('identifier') === identifier;
                 } else {
                     return elt.config.identifier === identifier;
                 }
-            }));
+            },this)));
         },
 
         /**
@@ -355,13 +393,13 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
                 items = items.concat(this.get(zone + 'NavigationItems'));
             }, this);
 
-            return Y.Array.find(items, function (elt) {
-                if (elt.get) {
+            return Y.Array.find(items, Y.bind(function (elt) {
+                if (this._isNavigationViewItem(elt)) {
                     return elt.get('identifier') === identifier;
                 } else {
                     return false;
                 }
-            });
+            }, this));
         }
     }, {
         ATTRS: {
@@ -503,7 +541,7 @@ YUI.add('ez-navigationhubviewservice', function (Y) {
              * object for the navigation item view. This configuration must
              * contain a `title` and an `identifier` properties.
              *
-             * @attribute platformNavigationItems
+             * @attribute adminNavigationItems
              * @type Array
              * @default array containing the items for the admin
              * @readOnly
