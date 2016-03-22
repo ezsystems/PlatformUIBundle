@@ -251,6 +251,7 @@ system:
                         - 'ez-imagevariationloadplugin'
                         - 'ez-contentcreateplugin'
                         - 'ez-copycontentplugin'
+                        - 'ez-versionsloadplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras', 'ez-height-change']
@@ -305,6 +306,7 @@ system:
                         - 'ez-locationviewdetailstabview'
                         - 'ez-locationviewrelationstabview'
                         - 'ez-locationviewlocationstabview'
+                        - 'ez-locationviewversionstabview'
                         - 'ez-tabs'
                         - 'ez-subitemboxview'
                         - 'ez-searchplugin'
@@ -412,6 +414,12 @@ system:
                 locationviewlocationstabview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/tabs/locations.hbt
+                ez-locationviewversionstabview:
+                    requires: ['ez-locationviewtabview', 'locationviewversionstabview-ez-template', 'array-extras']
+                    path: %ez_platformui.public_dir%/js/views/tabs/ez-locationviewversionstabview.js
+                locationviewversionstabview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/tabs/versions.hbt
                 ez-studiopresentationview:
                     requires: ['ez-templatebasedview', 'studiopresentationview-ez-template', 'ez-height-fit', 'event-resize']
                     path: %ez_platformui.public_dir%/js/views/ez-studiopresentationview.js
@@ -972,11 +980,14 @@ system:
                     requires: ['model', 'json']
                     path: %ez_platformui.public_dir%/js/models/ez-restmodel.js
                 ez-contentmodel:
-                    requires: ['ez-restmodel', 'ez-versionmodel', 'array-extras', 'ez-contentinfo-attributes']
+                    requires: ['ez-restmodel', 'ez-versionmodel','ez-versioninfomodel', 'array-extras', 'ez-contentinfo-attributes']
                     path: %ez_platformui.public_dir%/js/models/ez-contentmodel.js
                 ez-versionmodel:
-                    requires: ['ez-restmodel']
+                    requires: ['ez-versioninfomodel']
                     path: %ez_platformui.public_dir%/js/models/ez-versionmodel.js
+                ez-versioninfomodel:
+                    requires: ['ez-restmodel']
+                    path: '%ez_platformui.public_dir%/js/models/ez-versioninfomodel.js'
                 ez-locationmodel:
                     requires: ['ez-restmodel', 'ez-contentinfomodel', array-extras]
                     path: %ez_platformui.public_dir%/js/models/ez-locationmodel.js
@@ -1152,6 +1163,9 @@ system:
                 ez-locationsloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationsloadplugin.js
+                ez-versionsloadplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-versionsloadplugin.js
                 ez-locationcreateplugin:
                     requires:
                         - 'ez-viewservicebaseplugin'

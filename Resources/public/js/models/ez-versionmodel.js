@@ -18,9 +18,9 @@ YUI.add('ez-versionmodel', function (Y) {
      * @namespace eZ
      * @class Version
      * @constructor
-     * @extends eZ.RestModel
+     * @extends eZ.VersionInfo
      */
-    Y.eZ.Version = Y.Base.create('versionModel', Y.eZ.RestModel, [], {
+    Y.eZ.Version = Y.Base.create('versionModel', Y.eZ.VersionInfo, [], {
         /**
          * sync implementation for the Version. For now, it supports reading a
          * version from its id, creating a new one based on the content current
@@ -183,7 +183,7 @@ YUI.add('ez-versionmodel', function (Y) {
         _parseStruct: function (struct, responseDoc) {
             var attrs, fields = {};
 
-            attrs = this.constructor.superclass._parseStruct.call(this, struct);
+            attrs = Y.eZ.RestModel.prototype._parseStruct.call(this, struct);
 
             Y.Array.each(responseDoc.Version.Fields.field, function (field) {
                 fields[field.fieldDefinitionIdentifier] = field;
@@ -204,47 +204,6 @@ YUI.add('ez-versionmodel', function (Y) {
             return this.get('fields')[identifier];
         },
 
-        /**
-         * Return list of translations of version as array of language codes
-         *
-         * @method getTranslationsList
-         * @return {Array} language codes of translations
-         */
-        getTranslationsList: function () {
-            return this.get('languageCodes').split(',');
-        },
-
-        /**
-         * Checks whether the version is translated into `languageCode`
-         *
-         * @method hasTranslation
-         * @param {String} languageCode
-         * @return {Boolean}
-         */
-        hasTranslation: function (languageCode) {
-            return (this.getTranslationsList().indexOf(languageCode) !== -1);
-        },
-
-        /**
-         * Checks whether the version is a draft
-         *
-         * @method isDraft
-         * @return {Boolean}
-         */
-        isDraft: function () {
-            return (this.get('status') === 'DRAFT');
-        },
-
-        /**
-         * Checks whether the version was created by the `user`
-         *
-         * @method createdBy
-         * @param {eZ.User} user
-         * @return {Boolean}
-         */
-        createdBy: function (user) {
-            return (this.get('resources').Creator === user.get('id'));
-        },
     }, {
         REST_STRUCT_ROOT: "Version.VersionInfo",
         ATTRS_REST_MAP: [
@@ -253,99 +212,7 @@ YUI.add('ez-versionmodel', function (Y) {
             "languageCodes", "initialLanguageCode", "names",
         ],
         LINKS_MAP: ['Content', 'Creator'],
-
         ATTRS: {
-            /**
-             * The version id (f.e. "450")
-             *
-             * @attribute versionId
-             * @type String
-             * @default ""
-             */
-            versionId: {
-                value: ""
-            },
-
-            /**
-             * The version status
-             *
-             * @attribute status
-             * @type String
-             * @default ""
-             */
-            status: {
-                value: ""
-            },
-
-            /**
-             * The version number
-             *
-             * @attribute versionNo
-             * @type Number
-             * @default 1
-             */
-            versionNo: {
-                value: 1
-            },
-
-            /**
-             * The creation date of the version
-             *
-             * @attribute creationDate
-             * @type Date
-             * @default epoch
-             */
-            creationDate: {
-                setter: '_setterDate',
-                value: new Date(0)
-            },
-
-            /**
-             * The modification date of the version
-             *
-             * @attribute modificationDate
-             * @type Date
-             * @default epoch
-             */
-            modificationDate: {
-                setter: '_setterDate',
-                value: new Date(0)
-            },
-
-            /**
-             * The language codes
-             *
-             * @attribute languageCodes
-             * @type String
-             * @default ""
-             */
-            languageCodes: {
-                value: ""
-            },
-
-            /**
-             * The initial language code
-             *
-             * @attribute initialLanguageCode
-             * @type String
-             * @default ""
-             */
-            initialLanguageCode: {
-                value: ""
-            },
-
-            /**
-             * The names of the version per language
-             *
-             * @attribute names
-             * @type Object
-             * @default {}
-             */
-            names: {
-                setter: '_setterLocalizedValue',
-                value: {}
-            },
-
             /**
              * The fields of the version by field identifier
              *

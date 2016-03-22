@@ -336,6 +336,13 @@ YUI.add('ez-locationviewview', function (Y) {
                             selected: false,
                             bubbleTargets: this,
                         }),
+                        new Y.eZ.LocationViewVersionsTabView({
+                            content: this.get('content'),
+                            config: this.get('config'),
+                            priority: 2500,
+                            selected: false,
+                            bubbleTargets: this,
+                        }),
                         new Y.eZ.LocationViewLocationsTabView({
                             content: this.get('content'),
                             location: this.get('location'),

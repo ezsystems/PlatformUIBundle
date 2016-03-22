@@ -5,7 +5,7 @@
 YUI.add('ez-contentmodel-tests', function (Y) {
     var modelTest, relationsTest, createContent, deleteContent, loadResponse, copyTest,
         loadLocationsTest, addLocationTest, setMainLocationTest, hasTranslationTest,
-        getFieldsOfTypeTest,
+        getFieldsOfTypeTest, loadVersionsTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -848,6 +848,112 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    loadVersionsTest = new Y.Test.Case({
+        name: "eZ Content Model load versions tests",
+
+        setUp: function () {
+            this.model = new Y.eZ.Content();
+            this.id = 'raclette';
+            this.capi = new Mock();
+            this.contentService = new Mock();
+
+            Mock.expect(this.capi, {
+                method: 'getContentService',
+                returns: this.contentService
+            });
+
+            this.model.set('id', this.id);
+            this.version1 = "truc";
+            this.version2 = "bidule";
+
+            this.loadVersionsResponse = { document: {
+                VersionList: {
+                    VersionItem: [
+                        this.version1,
+                        this.version2,
+                    ]
+                }
+            }};
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+            delete this.capi;
+            delete this.contentService;
+        },
+
+        'Should pass error to callback function when CAPI loadVersions fails': function () {
+            var options = {
+                    api: this.capi,
+                },
+                callbackCalled = false;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'loadVersions',
+                args: [this.id, Mock.Value.Function],
+                run: Y.bind(function (contentId, cb) {
+                    cb(true, this.loadVersionsResponse);
+                }, this)
+            });
+
+            this.model.loadVersions(options, Y.bind(function (err, response) {
+                callbackCalled = true;
+                Assert.isTrue(err, 'An error should be returned');
+            }, this));
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
+
+        'Should load versions': function () {
+            var options = {
+                    api: this.capi,
+                },
+                callbackCalled = false;
+
+            Y.eZ.VersionInfo = Y.Base.create('versionInfoModel', Y.eZ.RestModel, [], {
+                loadFromHash: function (hash) {
+                    this.set('hash', hash);
+                },
+
+            }, {
+                ATTRS: {
+                    hash: {
+                        value: 'merguez'
+                    }
+                }
+            });
+
+            Y.Mock.expect(this.contentService, {
+                method: 'loadVersions',
+                args: [this.id, Mock.Value.Function],
+                run: Y.bind(function (contentId, cb) {
+                    cb(false, this.loadVersionsResponse);
+                }, this)
+            });
+
+            this.model.loadVersions(options, Y.bind(function (err, response) {
+                callbackCalled = true;
+
+                Assert.isFalse(err, 'Should not return the error');
+
+                Assert.areEqual(
+                    this.version1,
+                    response[0].get('hash'),
+                    'First version should have been loaded'
+                );
+
+                Assert.areEqual(
+                    this.version2,
+                    response[1].get('hash'),
+                    'Second version should have been loaded'
+                );
+            }, this));
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
+    });
+
     addLocationTest = new Y.Test.Case({
         name: "eZ Content Model add location test",
 
@@ -1128,6 +1234,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(deleteContent);
     Y.Test.Runner.add(copyTest);
     Y.Test.Runner.add(loadLocationsTest);
+    Y.Test.Runner.add(loadVersionsTest);
     Y.Test.Runner.add(addLocationTest);
     Y.Test.Runner.add(setMainLocationTest);
     Y.Test.Runner.add(hasTranslationTest);

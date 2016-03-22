@@ -294,6 +294,34 @@ YUI.add('ez-contentmodel', function (Y) {
         },
 
         /**
+         * Loads content's version list
+         *
+         * @method loadVersions
+         * @param {Object} options
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Function} callback
+         */
+        loadVersions: function (options, callback) {
+            var versions = [],
+                contentService = options.api.getContentService();
+
+            contentService.loadVersions(this.get('id'), function (error, response) {
+                if (error) {
+                    callback(error, response);
+                    return;
+                }
+
+                Y.Array.each(response.document.VersionList.VersionItem, function (versionItemHash) {
+                    var versionInfo = new Y.eZ.VersionInfo();
+                    versionInfo.loadFromHash(versionItemHash);
+                    versions.push(versionInfo);
+                });
+
+                callback(error, versions);
+            });
+        },
+
+        /**
          * Adds new location for content
          *
          * @method addLocation
