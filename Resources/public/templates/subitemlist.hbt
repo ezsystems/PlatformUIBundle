@@ -1,6 +1,3 @@
-<div class="ez-subitemlist-box ez-asynchronousview">
-    <h2 class="ez-subitemlist-title">Sub-items ({{location.childCount}})</h2>
-    <div class="ez-subitemlist-content">
     {{#if location.childCount}}
         {{#if loadingError}}
             <p class="ez-asynchronousview-error ez-font-icon">
@@ -88,6 +85,4 @@
     {{else}}
         <p class="ez-subitemlist-no-sub-items">This location has no sub-item.</p>
     {{/if}}
-    </div>
     <div class="ez-subitemlist-loader-mask"></div>
-</div>

@@ -303,7 +303,7 @@ system:
                         - 'ez-locationviewrelationstabview'
                         - 'ez-locationviewlocationstabview'
                         - 'ez-tabs'
-                        - 'ez-subitemlistview'
+                        - 'ez-subitemboxview'
                         - 'ez-searchplugin'
                         - 'event-tap'
                         - 'array-extras'
@@ -312,8 +312,23 @@ system:
                 locationviewview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/locationview.hbt
+                ez-subitemboxview:
+                    requires:
+                        - 'ez-templatebasedview'
+                        - 'subitemboxview-ez-template'
+                        - 'ez-subitemlistview'
+                        - 'event-tap'
+                        - 'array-extras'
+                    path: %ez_platformui.public_dir%/js/views/ez-subitemboxview.js
+                subitemboxview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/subitembox.hbt
+                ez-subitembaseview:
+                    requires: ['ez-templatebasedview']
+                    path: %ez_platformui.public_dir%/js/views/subitem/ez-subitembaseview.js
                 ez-subitemlistview:
-                    requires: ['ez-templatebasedview', 'ez-asynchronousview', 'event-tap', 'subitemlistview-ez-template', 'event-valuechange', 'array-extras']
+                    requires: ['ez-subitembaseview', 'ez-asynchronousview', 'event-tap', 'subitemlistview-ez-template', 'event-valuechange', 'array-extras']
+                    # TODO move to subitem/ dir
                     path: %ez_platformui.public_dir%/js/views/ez-subitemlistview.js
                 subitemlistview-ez-template:
                     type: 'template'

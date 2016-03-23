@@ -1,0 +1,57 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-subitemboxview {
+    border: 1px solid #ccc;
+    background: #F5F4F2;
+}
+
+.ez-view-subitemboxview .ez-subitembox-title {
+    background: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+}
+
+.ez-view-subitemboxview .ez-subitembox-viewlist {
+    list-style-type: none;
+
+    transition: all ease 0.3s;
+}
+
+.ez-view-subitemboxview .ez-subitembox-viewlist-item {
+    text-align: center;
+}
+
+.ez-view-subitemboxview .ez-subitembox-viewlist .is-view-selected {
+    background: #333;
+}
+
+.ez-view-subitemboxview .ez-switch-subitemview {
+    color: #000;
+    font-size: 140%;
+}
+
+.ez-view-subitemboxview .ez-switch-subitemview:hover {
+    color: #528036;
+}
+
+.ez-view-subitemboxview .is-view-selected .ez-switch-subitemview {
+    color: #fff;
+    cursor: default;
+}
+
+.ez-view-subitemboxview .is-view-selected .ez-switch-subitemview:hover {
+    color: #fff;
+}
+
+.ez-view-subitemboxview .ez-switch-subitemview[data-view-identifier="list"]:before {
+    content: "\E904";
+}
+
+/* TODO remove */
+.ez-view-subitemboxview .ez-switch-subitemview[data-view-identifier="grid"]:before {
+    content: "\E622";
+}

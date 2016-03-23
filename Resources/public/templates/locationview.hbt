@@ -26,7 +26,7 @@
             {{/each}}
             </div>
         </section>
-        <section class="ez-subitemlist-container"></section>
+        <section class="ez-subitem-container"></section>
     </div>
     <div class="ez-actionbar-container pure-u"></div>
 </div>

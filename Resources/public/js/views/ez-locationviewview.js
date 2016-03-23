@@ -65,7 +65,7 @@ YUI.add('ez-locationviewview', function (Y) {
          */
         render: function () {
             var container = this.get('container'),
-                subitemList = this.get('subitemList');
+                subitemBox = this.get('subitemBox');
 
             container.setHTML(this.template({
                 location: this.get('location').toJSON(),
@@ -79,9 +79,9 @@ YUI.add('ez-locationviewview', function (Y) {
                 this.get('actionBar').render().get('container')
             );
             this._renderTabViews();
-            if ( subitemList ) {
-                container.one('.ez-subitemlist-container').append(
-                    subitemList.render().get('container')
+            if ( subitemBox ) {
+                container.one('.ez-subitem-container').append(
+                    subitemBox.render().get('container')
                 );
             }
 
@@ -220,7 +220,7 @@ YUI.add('ez-locationviewview', function (Y) {
 
         destructor: function () {
             var bar = this.get('actionBar'),
-                subitemList = this.get('subitemList');
+                subitemBox = this.get('subitemBox');
 
             bar.removeTarget(this);
             bar.destroy();
@@ -228,9 +228,9 @@ YUI.add('ez-locationviewview', function (Y) {
                 tab.removeTarget(this);
                 tab.destroy();
             });
-            if ( subitemList ) {
-                subitemList.removeTarget(this);
-                subitemList.destroy();
+            if ( subitemBox ) {
+                subitemBox.removeTarget(this);
+                subitemBox.destroy();
             }
         }
     }, {
@@ -358,20 +358,22 @@ YUI.add('ez-locationviewview', function (Y) {
             },
 
             /**
-             * The subitem list view or null if the content (type) is not
+             * The subitem box view or null if the content (type) is not
              * configured to be a container.
              *
-             * @attribute subitemList
-             * @type {eZ.SubitemListView|Null}
+             * @attribute subitemBox
+             * @type {eZ.SubitemBoxView|Null}
              * @writeOnce
              */
-            subitemList: {
+            subitemBox: {
                 valueFn: function () {
                     var contentType = this.get('contentType');
 
                     if ( contentType && contentType.get('isContainer') ) {
-                        return new Y.eZ.SubitemListView({
+                        return new Y.eZ.SubitemBoxView({
                             location: this.get('location'),
+                            content: this.get('content'),
+                            contentType: this.get('contentType'),
                             config: this.get('config'),
                             bubbleTargets: this,
                         });
@@ -379,6 +381,29 @@ YUI.add('ez-locationviewview', function (Y) {
                     return null;
                 },
                 writeOnce: 'initOnly',
+            },
+
+            /**
+             * Returns the subitem list view. This attribute is deprecated and
+             * will be removed in PlatformUI 2.0
+             *
+             * @attribute subitemList
+             * @writeOnce
+             * @type {eZ.SubitemListView|Null}
+             * @deprecated
+             */
+            subitemList: {
+                writeOnce: 'initOnly',
+                valueFn: function () {
+                    var box = this.get('subitemBox');
+
+                    if ( !box ) {
+                        return null;
+                    }
+                    return Y.Array.find(box.get('subitemViews'), function (view) {
+                        return view.get('identifier') === 'list';
+                    });
+                },
             },
 
             /**

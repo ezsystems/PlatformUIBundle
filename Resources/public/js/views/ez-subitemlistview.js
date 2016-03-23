@@ -24,9 +24,9 @@ YUI.add('ez-subitemlistview', function (Y) {
      * @namespace eZ
      * @class SubitemListView
      * @constructor
-     * @extends eZ.TemplateBasedView
+     * @extends eZ.SubitemBaseView
      */
-    Y.eZ.SubitemListView = Y.Base.create('subitemListView', Y.eZ.TemplateBasedView, [Y.eZ.AsynchronousView], {
+    Y.eZ.SubitemListView = Y.Base.create('subitemListView', Y.eZ.SubitemBaseView, [Y.eZ.AsynchronousView], {
         events: {
             '.ez-subitemlist-navigation-link': {
                 'tap': '_handlePagination',
@@ -64,6 +64,7 @@ YUI.add('ez-subitemlistview', function (Y) {
          * @method _refresh
          */
         _refresh: function () {
+            // TODO do that only if the view is active
             this._uiPageLoading();
             this._fireLocationSearch();
         },
@@ -459,6 +460,16 @@ YUI.add('ez-subitemlistview', function (Y) {
         },
     }, {
         ATTRS: {
+            identifier: {
+                readOnly: true,
+                value: 'list',
+            },
+
+            name: {
+                readOnly: true,
+                value: "List view",
+            },
+
             /**
              * The max number of the Locations to display in the subitem list
              * per "page".

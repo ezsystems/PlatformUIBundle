@@ -28,6 +28,8 @@ system:
                 - 'bundles/ezplatformui/css/views/contentedit.css'
                 - 'bundles/ezplatformui/css/views/locationview.css'
                 - 'bundles/ezplatformui/css/views/trash.css'
+                - 'bundles/ezplatformui/css/views/subitembox.css'
+                # TODO move to subitem directory
                 - 'bundles/ezplatformui/css/views/subitemlist.css'
                 - 'bundles/ezplatformui/css/views/rawcontent.css'
                 - 'bundles/ezplatformui/css/views/languageswitcher.css'
@@ -127,6 +129,8 @@ system:
                 - 'bundles/ezplatformui/css/theme/views/navigationhub.css'
                 - 'bundles/ezplatformui/css/theme/views/locationview.css'
                 - 'bundles/ezplatformui/css/theme/views/trash.css'
+                - 'bundles/ezplatformui/css/theme/views/subitembox.css'
+                # TODO move to subitem/ directory
                 - 'bundles/ezplatformui/css/theme/views/subitemlist.css'
                 - 'bundles/ezplatformui/css/theme/views/rawcontent.css'
                 - 'bundles/ezplatformui/css/theme/views/languageswitcher.css'

@@ -1,0 +1,9 @@
+<h2 class="ez-subitembox-title">
+    Sub-items ({{location.childCount}})
+    <ul class="ez-subitembox-viewlist">
+    {{#each viewsInfo}}
+        <li class="ez-subitembox-viewlist-item{{#if selected}} is-view-selected{{/if}}"><a href="#" class="ez-switch-subitemview ez-font-icon" data-view-identifier="{{identifier}}" title="{{name}}"></a>
+    {{/each}}
+    </ul>
+</h2>
+<div class="ez-subitembox-content"></div>

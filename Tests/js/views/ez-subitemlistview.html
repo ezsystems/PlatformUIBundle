@@ -67,8 +67,12 @@
         filter: loaderFilter,
         modules: {
             "ez-subitemlistview": {
-                requires: ['ez-templatebasedview', 'ez-asynchronousview', 'event-tap', 'event-valuechange', 'array-extras'],
+                requires: ['ez-subitembaseview', 'ez-asynchronousview', 'event-tap', 'event-valuechange', 'array-extras'],
                 fullpath: "../../../Resources/public/js/views/ez-subitemlistview.js"
+            },
+            "ez-subitembaseview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../Resources/public/js/views/subitem/ez-subitembaseview.js"
             },
             "ez-asynchronousview": {
                 requires: ['view', 'event-tap'],
