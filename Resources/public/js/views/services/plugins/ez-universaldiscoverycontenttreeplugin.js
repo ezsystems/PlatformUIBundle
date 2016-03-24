@@ -42,26 +42,31 @@ YUI.add('ez-universaldiscoverycontenttreeplugin', function (Y) {
          */
         _buildTree: function (browseView) {
             var tree = this.get('tree'),
-                virtualRoot = new Y.eZ.Location();
+                virtualRoot = new Y.eZ.Location(),
+                startingLocation = new Y.eZ.Location(),
+                path = [];
 
             // TODO: this location id should not be hardcoded, but auto
             // detected somehow.
             virtualRoot.set('id', '/api/ezp/v2/content/locations/1');
             virtualRoot.set('locationId', 1);
 
-            tree.clear({
-                data: {
-                    location: virtualRoot,
-                    loadContent: browseView.get('loadContent'),
-                },
-                id: virtualRoot.get('id'),
-                state: {
-                    leaf: false,
-                },
-                canHaveChildren: true,
-            });
+            tree.clear(this._getRootNode([virtualRoot], browseView.get('loadContent')));
             browseView.get('treeView').set('tree', tree);
 
+            if (browseView.get('startingLocationId')) {
+                startingLocation.set('id', browseView.get('startingLocationId'));
+
+                this._loadStartingLocationPath(startingLocation, Y.bind(function(locationPath) {
+
+                    path = locationPath.concat([startingLocation]);
+                    path.unshift(virtualRoot);
+
+                    this._prepareRecursiveLoad(tree, path, function() {
+                        browseView.selectContent(tree.getNodeById(startingLocation.get('id')).data);
+                    });
+                }, this));
+            }
             // the tree rootNode can not be lazy loaded, so we explicitely need
             // to call _loadNode instead of tree.rootNode.open() and to fire the
             // load event.
@@ -69,6 +74,29 @@ YUI.add('ez-universaldiscoverycontenttreeplugin', function (Y) {
                 tree.lazy.fire('load', {node: tree.rootNode});
             });
         },
+
+        /**
+         * `Get the path of the UDW starting Location.
+         *
+         * @method _loadStartingLocationPath
+         * @protected
+         * @param {eZ.Location} startingLocation
+         * @param {Function} callback
+         */
+        _loadStartingLocationPath: function (startingLocation, callback) {
+            var options = {api: this.get('host').get('capi')};
+
+            startingLocation.load(options, function (error) {
+                if (!error) {
+                    startingLocation.loadPath(options, function (error, response) {
+                        if (!error) {
+                            callback(response);
+                        }
+                    });
+                }
+            });
+        },
+
     }, {
         NS: 'universalDiscoveryContentTree',
     });

@@ -128,6 +128,65 @@ YUI.add('ez-contenttreeplugin', function (Y) {
         },
 
         /**
+         * Builds the root node for the tree.
+         *
+         * @method _getRootNode
+         * @protected
+         * @param {Array} path
+         * @param {Boolean} loadContent Optional flag indicating whether the Content should be provided in the
+         * selection
+         * @return {Object}
+         */
+        _getRootNode: function (path, loadContent) {
+            var data = {},
+                id = this.get('rootLocationId');
+      
+            if ( path[0] ) {
+                data = {
+                    location: path[0],
+                    contentInfo: path[0].get('contentInfo'),
+                    loadContent: loadContent,
+                };
+                id = path[0].get('id');
+            }
+            return {
+                data: data,
+                id: id,
+                state: {
+                    leaf: false,
+                },
+                canHaveChildren: true,
+            };
+        },
+
+        /**
+         * Prepares the recursive tree loading when a specific Location is
+         * displayed.
+         *
+         * @method _prepareRecursiveLoad
+         * @param {Tree} tree
+         * @param {Array} path
+         * @param {Function} callback
+         */
+        _prepareRecursiveLoad: function (tree, path, callback) {
+            var subscription;
+
+            subscription = tree.lazy.on('load', function (evt) {
+                path.shift();
+                if ( path[0] ) {
+                    tree.getNodeById(path[0].get('id')).open();
+                    if ( path.length === 1 ) {
+                        tree.getNodeById(path[0].get('id')).select();
+                        subscription.detach();
+                        if (callback) {
+                            callback();
+                        }
+                    }
+                }
+            });
+        },
+
+        /**
          * Loads the Content for each tree node representing the children of
          * `levelLocation`.
          *

@@ -324,6 +324,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.view._set('selection', {});
             this.method.set('visible', true);
             this.method.set('multiple', true);
+            this.method.set('startingLocationId', 'l/o/c/a/t/i/o/n');
             this.view.fire(evt);
             Assert.areNotEqual(
                 customTitle,
@@ -341,6 +342,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             Assert.isFalse(
                 this.method.get('multiple'),
                 "The method multiple flag should be resetted to false"
+            );
+            Assert.isFalse(
+                this.method.get('startingLocationId'),
+                "The method startringLocationId flag should be resetted to false"
             );
         },
 
@@ -612,6 +617,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.confirmedList = new Y.View();
             this.config = {};
             this.multiple = true;
+            this.startingLocationId = 'l/o/c/a/t/i/o/n/i/d';
 
             Y.eZ.UniversalDiscoveryBrowseView = Y.Base.create(
                 'testBrowseView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
@@ -622,6 +628,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.view = new Y.eZ.UniversalDiscoveryView({
                 multiple: this.multiple,
                 confirmedListView: this.confirmedList,
+                startingLocationId: this.startingLocationId
             });
         },
 
@@ -655,6 +662,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             Assert.isFunction(
                 methods[0].get('isAlreadySelected'),
                 "The isAlreadySelected function should be passed to the method views"
+            );
+            Assert.areSame(
+                this.startingLocationId, methods[0].get('startingLocationId'),
+                "The startingLocationId should be passed to the method views"
             );
         },
 

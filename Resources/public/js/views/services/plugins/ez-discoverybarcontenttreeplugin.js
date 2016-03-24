@@ -113,35 +113,6 @@ YUI.add('ez-discoverybarcontenttreeplugin', function (Y) {
         },
 
         /**
-         * Builds the root node for the tree.
-         *
-         * @method _getRootNode
-         * @protected
-         * @param {Array} path
-         * @return {Object}
-         */
-        _getRootNode: function (path) {
-            var data = {},
-                id = this.get('rootLocationId');
-
-            if ( path[0] ) {
-                data = {
-                    location: path[0],
-                    contentInfo: path[0].get('contentInfo'),
-                };
-                id = path[0].get('id');
-            }
-            return {
-                data: data,
-                id: id,
-                state: {
-                    leaf: false,
-                },
-                canHaveChildren: true,
-            };
-        },
-
-        /**
          * Builds the complete to tree and set it to the `view`
          *
          * @method _buildTree
@@ -164,29 +135,7 @@ YUI.add('ez-discoverybarcontenttreeplugin', function (Y) {
             this._loadRootNode(tree);
         },
 
-        /**
-         * Prepares the recursive tree loading when a specific Location is
-         * displayed.
-         *
-         * @method _prepareRecursiveLoad
-         * @param {Tree} tree
-         * @param {Array} path
-         */
-        _prepareRecursiveLoad: function (tree, path) {
-            var subscription;
 
-            subscription = tree.lazy.on('load', function (evt) {
-                path.shift();
-                if ( path[0] ) {
-                    tree.getNodeById(path[0].get('id')).open();
-                    if ( path.length === 1 ) {
-                        tree.getNodeById(path[0].get('id')).select();
-                    }
-                } else {
-                    subscription.detach();
-                }
-            });
-        },
 
         /**
          * Loads the tree root node. The root Location is also loaded if needed.
