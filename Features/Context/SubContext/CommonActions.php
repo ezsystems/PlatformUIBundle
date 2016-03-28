@@ -12,6 +12,91 @@ namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 trait CommonActions
 {
     /**
+     * @Given I clicked on/at (the) :link link
+     * @When  I click on/at (the) :link link
+     *
+     * Click a link with text ':link'
+     */
+    public function iClickAtLink($link)
+    {
+        $this->clickElementByText($link, 'a');
+    }
+
+    /**
+     * @Given I clicked on/at (the) :button button
+     * @When I click on/at (the) :button button
+     *
+     * Clicks the button identified by ':button'
+     */
+    public function iClickAtButton($button)
+    {
+        $this->clickElementByText($button, 'button');
+    }
+
+    /**
+     * @When I fill in :field with :value
+     * @When I set :field as empty
+     *
+     * Spin function make it possible to retry in case of failure
+     */
+    public function fillFieldWithValue($field, $value = '')
+    {
+        $fieldNode = $this->spin(
+            function () use ($field) {
+                $fieldNode = $this->getSession()->getPage()->findField($field);
+                if ($fieldNode == null) {
+                    throw new \Exception('Field not found');
+                }
+
+                return $fieldNode;
+            }
+        );
+
+        $this->spin(
+            function () use ($fieldNode, $field, $value) {
+                // make sure any autofocus elements don't mis-behave when setting value
+                $fieldNode->blur();
+                usleep(10 * 1000);
+                $fieldNode->focus();
+                usleep(10 * 1000);
+
+                // setting value on pre-filled inputs can cause issues, clearing before
+                $fieldNode->setValue('');
+                $fieldNode->setValue($value);
+
+                // verication that the field was really filled in correctly
+                $this->sleep();
+                $check = $this->getSession()->getPage()->findField($field)->getValue();
+                if ($check != $value) {
+                    throw new \Exception('Failed to set the field value: ' . $check);
+                }
+
+                return true;
+            }
+        );
+    }
+
+    /**
+     * @Then I (should) see :title title/topic
+     */
+    public function iSeeTitle($title)
+    {
+        $page = $this->getSession()->getPage();
+        $this->spin(
+            function () use ($title, $page) {
+                $titleElements = $page->findAll('css', 'h1, h2, h3');
+                foreach ($titleElements as $titleElement) {
+                    $elementText = $titleElement->getText();
+                    if ($elementText == $title) {
+                        return $titleElement;
+                    }
+                }
+                throw new \Exception("Title '$title' not found");
+            }
+        );
+    }
+
+    /**
      * @Given I click (on) the logo
      * Clicks on the PlatformUI logo
      */
