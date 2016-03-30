@@ -10,11 +10,6 @@ textarea {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-a.ez-button {
-    color: rgba(0, 0, 0, 0.8);
-}
-
-
 input[type=text],
 input[type=email],
 input[type=number],
