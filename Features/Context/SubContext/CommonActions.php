@@ -97,6 +97,17 @@ trait CommonActions
     }
 
     /**
+     * @Then I should see a :label input field
+     */
+    public function seeInputField($label)
+    {
+        $field = $this->getSession()->getPage()->findField($label);
+        if (!$field) {
+            throw new \Exception("Field '$label' not found");
+        }
+    }
+
+    /**
      * @Given I click (on) the logo
      * Clicks on the PlatformUI logo
      */
