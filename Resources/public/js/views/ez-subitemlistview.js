@@ -31,6 +31,19 @@ YUI.add('ez-subitemlistview', function (Y) {
             '.ez-subitemlist-navigation-link': {
                 'tap': '_handlePagination',
             },
+            '.ez-subitem-priority-input': {
+                'tap': '_displayPriorityButtons',
+                'blur': '_validatePriority',
+                'valuechange': '_validatePriority',
+                'mouseover': '_displayEditIcon',
+                'mouseout': '_hideEditIcon',
+            },
+            '.ez-subitem-priority-cancel': {
+                'tap': '_restorePriorityCell',
+            },
+            '.ez-subitem-priority-form': {
+                'submit': '_setPriority'
+            },
         },
 
         initializer: function () {
@@ -160,6 +173,209 @@ YUI.add('ez-subitemlistview', function (Y) {
         },
 
         /**
+         * Show the edit icon to inform the user input can be edited.
+         *
+         * @method _displayEditIcon
+         * @protected
+         * @param {Object} e event facade
+         */
+        _displayEditIcon: function (e) {
+            var selectedCell = this._getPriorityCell(e.target.getAttribute('data-location-id'));
+
+            if (!this.get('editingPriority')) {
+                selectedCell.addClass('ez-subitem-hovered-priority-cell');
+            }
+        },
+
+        /**
+         * Show the error icon to inform the user input is not correctly filled.
+         *
+         * @method _displayErrorIcon
+         * @protected
+         * @param {Node} input the DOM node of the input
+         * @param {Node} selectedCell the DOM node of the current selected cell
+         */
+        _displayErrorIcon: function (input, selectedCell) {
+            selectedCell.addClass('ez-subitem-error-priority-cell');
+            selectedCell.removeClass('ez-subitem-selected-priority-cell');
+        },
+
+        /**
+         * Hide the edit icon to inform the user input can be edited.
+         *
+         * @method _hideEditIcon
+         * @protected
+         * @param {Object} e event facade
+         */
+        _hideEditIcon: function (e) {
+            var selectedCell = this._getPriorityCell(e.target.getAttribute('data-location-id'));
+
+            selectedCell.removeClass('ez-subitem-hovered-priority-cell');
+        },
+
+        /**
+         * Hide the error icon.
+         *
+         * @method _hideErrorIcon
+         * @protected
+         * @param {Object} input the DOM node of the input
+         * @param {Object} selectedCell the DOM node of the current selected cell
+         */
+        _hideErrorIcon: function (input, selectedCell) {
+            selectedCell.removeClass('ez-subitem-error-priority-cell');
+            selectedCell.addClass('ez-subitem-selected-priority-cell');
+        },
+
+        /**
+         * Show the 'validate' & 'cancel' buttons which allow to update or not the priority.
+         *
+         * @method _displayPriorityButtons
+         * @protected
+         * @param {Object} e event facade
+         */
+        _displayPriorityButtons: function (e) {
+            var selectedCell = this._getPriorityCell(e.target.getAttribute('data-location-id'));
+
+            e.preventDefault();
+            if (!this.get('editingPriority')) {
+                this._set('editingPriority', true);
+                selectedCell.removeClass('ez-subitem-hovered-priority-cell');
+                selectedCell.addClass('ez-subitem-selected-priority-cell');
+                e.target.removeAttribute('readonly');
+            }
+        },
+
+        /**
+         * Hide the 'validate' & 'cancel' buttons which allow to update or not the priority.
+         * Also fill back priority input with the current sub item priority.
+         *
+         * @method _restorePriorityCell
+         * @protected
+         * @param {Object} e event facade
+         */
+        _restorePriorityCell: function (e) {
+            e.preventDefault();
+            this._hidePriorityButtons();
+            this._restorePriorityValue(e);
+        },
+
+        /**
+         * Restore the input value with the priority of the sub item
+         *
+         * @method _restorePriorityValue
+         * @protected
+         * @param {Object} e event facade
+         */
+        _restorePriorityValue: function (e) {
+            var input = this._getPriorityInput('#' + e.target.getAttribute('data-priority-input')),
+                subItem = this._getSubItemStruct(input.getAttribute('data-location-id'));
+
+            input.set('value', subItem.location.get('priority'));
+            input.setAttribute('readonly', 'readonly');
+        },
+
+        /**
+         * Return the sub item struct with the giiven locationId
+         *
+         * @method _getSubItemStruct
+         * @protected
+         * @param {Number} locationId
+         * @return {Object}
+         */
+        _getSubItemStruct: function (locationId) {
+            return Y.Array.find(this.get('subitems'), function (locStruct) {
+                return locStruct.location.get('locationId') == locationId;
+            });
+        },
+
+        /**
+         * Hide the validate and cancel buttons displayed while editing priority
+         *
+         * @method _hidePriorityButtons
+         * @protected
+         */
+        _hidePriorityButtons: function () {
+            var selectedCell = this.get('container').one('.ez-subitem-selected-priority-cell');
+
+            selectedCell.removeClass('ez-subitem-selected-priority-cell');
+            this._set('editingPriority', false);
+        },
+
+        /**
+         *  Event handler allowing to change the priority of the subitem
+         *
+         * @method _setPriority
+         * @protected
+         * @param {Object} e event facade
+         */
+        _setPriority: function (e) {
+            var button = this.get('container').one('#priority-validate-' + e.target.getAttribute('data-location-id')),
+                selectedCell = this.get('container').one('.ez-subitem-selected-priority-cell'),
+                input = this._getPriorityInput('#' + button.getAttribute('data-priority-input')),
+                subItem = this._getSubItemStruct(input.getAttribute('data-location-id'));
+
+            this.fire('updatePriority', {location: subItem.location, priority: input.get('value')});
+            input.setAttribute('readonly', 'readonly');
+            selectedCell.removeClass('ez-subitem-selected-priority-cell');
+            this._set('editingPriority', false);
+            e.preventDefault();
+        },
+
+        /**
+         * Validates the current input of priority
+         *
+         * @method _validatePriority
+         * @protected
+         * @param {Object} e event facade
+         */
+        _validatePriority: function (e) {
+            var validity = this._getInputValidity(e.target),
+                selectedCell = this._getPriorityCell(e.target.getAttribute('data-location-id'));
+
+            if ( validity.patternMismatch || validity.valueMissing ) {
+                this._displayErrorIcon(e.target, selectedCell);
+            } else if (selectedCell.hasClass('ez-subitem-error-priority-cell')) {
+                this._hideErrorIcon(e.target, selectedCell);
+            }
+        },
+
+        /**
+         * Return the priority cell for a given location
+         *
+         * @method _getPriorityCell
+         * @param {String} locationId
+         * @return {Node}
+         */
+        _getPriorityCell: function (locationId) {
+            return this.get('container').one('#priority-cell-' + locationId);
+        },
+
+        /**
+         * Return the priority input from its id
+         *
+         * @method _getPriorityInput
+         * @param {String} inputId
+         * @return {Node}
+         */
+        _getPriorityInput: function (inputId) {
+            return this.get('container').one(inputId);
+        },
+
+        /**
+         * Returns the input validity state object for the input generated by
+         * the Integer template
+         *
+         * See https://developer.mozilla.org/en-US/docs/Web/API/ValidityState
+         *
+         * @protected
+         * @method _getInputValidity
+         * @return {ValidityState}
+         */
+        _getInputValidity: function (input) {
+            return input.get('validity');
+        },
+
+        /**
          * Checks whether the pagination will be useful
          *
          * @method _hasPages
@@ -284,6 +500,17 @@ YUI.add('ez-subitemlistview', function (Y) {
              * @type Array of {Object} array containing location structs
              */
             subitems: {},
+
+            /**
+             * Boolean to check if a subitem priority is currently selected.
+             *
+             * @attribute editingPriority
+             * @default false
+             * @type Boolean
+             */
+            editingPriority: {
+                value: false,
+            },
         }
     });
 });

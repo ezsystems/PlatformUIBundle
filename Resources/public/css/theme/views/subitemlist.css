@@ -28,11 +28,11 @@
     box-shadow: 0 0 2px #ccc;
 }
 
-.ez-view-subitemlistview .ez-subitemlist-table td {
+.ez-view-subitemlistview td {
     background: #fff;
 }
 
-.ez-view-subitemlistview .ez-subitemlist-table tr:nth-child(2n-1) td {
+.ez-view-subitemlistview tr:nth-child(2n-1) td {
     background: #fafafa;
 }
 
@@ -92,3 +92,77 @@
     left: 50%;
     position: absolute;
 }
+
+.ez-view-subitemlistview .ez-subitem-hovered-priority-cell  .ez-subitem-priority-icons:after {
+    content: "\e606";
+    background: #E6E6E6;
+    color: #737373;
+    border: 1px solid #888;
+}
+
+.ez-view-subitemlistview .ez-subitem-error-priority-cell  .ez-subitem-priority-icons:after {
+    content: "!";
+    background: #BF3E33;
+    color: #fff;
+    border: 1px solid #BF3E33;
+}
+
+.ez-view-subitemlistview .ez-subitem-priority-icons:after {
+    font-weight: bold;
+}
+
+.ez-view-subitemlistview .ez-subitem-error-priority-cell,
+.ez-view-subitemlistview tr:nth-child(2n-1) .ez-subitem-error-priority-cell {
+    background: #FEECEA;
+    box-shadow: none;
+    border: 1px double #BF3E33;
+}
+
+.ez-view-subitemlistview .ez-subitem-selected-priority-cell {
+    box-shadow: none;
+    border: 1px double #888;
+}
+
+.ez-view-subitemlistview .ez-subitem-priority-input,
+.ez-view-subitemlistview .ez-subitem-priority-input:focus,
+.ez-view-subitemlistview .ez-subitem-priority-input.ez-subitem-error-input:focus {
+    border: 0;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.ez-view-subitemlistview .ez-subitem-priority-input[readonly],
+.ez-view-subitemlistview .ez-subitem-priority-input[readonly]:focus {
+    background-color: transparent;
+    color: #000000;
+    outline: none;
+}
+
+.ez-view-subitemlistview .ez-subitem-priority-button:before {
+    font-family: "ez-platformui-icomoon";
+}
+
+.ez-view-subitemlistview .ez-subitem-priority-cancel:before {
+    content: "\E600";
+    color: #E46474;
+}
+
+.ez-view-subitemlistview .ez-subitem-priority-button {
+    border: 1px solid #888;
+    background: #E6E6E6;
+}
+
+.ez-view-subitemlistview .ez-subitem-priority-button:hover {
+    background: #F5F4F2;
+}
+
+.ez-view-subitemlistview .ez-subitem-priority-cancel {
+    border-left: 0;
+}
+
+.ez-view-subitemlistview .ez-subitem-priority-validate:before {
+    content: "\Ea10";
+    color: #008A6F;
+}
+
+

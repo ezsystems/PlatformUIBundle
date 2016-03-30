@@ -169,6 +169,7 @@ system:
                 - 'bundles/ezplatformui/css/theme/modules/serverside-content.css'
                 - 'bundles/ezplatformui/css/theme/modules/selection-filter.css'
                 - 'bundles/ezplatformui/css/theme/modules/button.css'
+                - 'bundles/ezplatformui/css/theme/modules/form.css'
                 - 'bundles/ezplatformui/css/theme/modules/selection-table.css'
                 - 'bundles/ezplatformui/css/theme/modules/yui-calendar.css'
                 - 'bundles/ezplatformui/css/theme/modules/embed.css'
