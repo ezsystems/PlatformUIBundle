@@ -15,6 +15,10 @@
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
 }
 
+.ez-view-subitemboxview.is-subitembox-collapsed .ez-collapse-toggle:after {
+    content: "\E604";
+}
+
 .ez-view-subitemboxview .ez-subitembox-viewlist {
     list-style-type: none;
 
