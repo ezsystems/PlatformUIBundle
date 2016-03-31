@@ -20,16 +20,48 @@ YUI.add('ez-subitemboxview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.SubitemBoxView = Y.Base.create('subitemBoxView', Y.eZ.TemplateBasedView, [], {
+    Y.eZ.SubitemBoxView = Y.Base.create('subitemBoxView', Y.eZ.TemplateBasedView, [Y.eZ.AccordionElement, Y.eZ.Expandable], {
         events: {
             '.ez-switch-subitemview': {
                 'tap': '_switchSubitemView',
             },
+            '.ez-collapse-toggle': {
+                'tap': '_toggleExpand',
+            },
         },
 
         initializer: function () {
+            this.set('expanded', true);
             this.after('activeChange', this._activeSubitemView);
             this.after('subitemViewIdentifierChange', this._uiChangeSubitemView);
+            this.after('expandedChange', this._uiExpand);
+        },
+
+        /**
+         * tap event handler on the toggle link.
+         *
+         * @method _toggleExpand
+         * @protected
+         * @param {EventFacade} e
+         */
+        _toggleExpand: function (e) {
+            e.preventDefault();
+            this.set('expanded', !this.get('expanded'));
+        },
+
+        /**
+         * expandedChange event handler, it collapses or uncollapse the
+         * expandableNode.
+         *
+         * @method _uiExpand
+         * @protected
+         */
+        _uiExpand: function () {
+            this._collapse({
+                'collapseElement': this.get('expandableNode'),
+                'detectElement': this.get('container'),
+                'collapsedClass': 'is-subitembox-collapsed',
+            });
         },
 
         /**
@@ -44,6 +76,9 @@ YUI.add('ez-subitemboxview', function (Y) {
         _switchSubitemView: function (e) {
             e.preventDefault();
             this.set('subitemViewIdentifier', e.target.getData('view-identifier'));
+            if ( !this.get('expanded') ) {
+                this.set('expanded', true);
+            }
         },
 
         /**

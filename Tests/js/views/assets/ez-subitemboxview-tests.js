@@ -4,7 +4,7 @@
  */
 YUI.add('ez-subitemboxview-tests', function (Y) {
     var renderTest, addSubitemViewTest, forwardActiveTest, subitemViewChangeTest,
-        switchViewTest, subitemViewsDefaultTest,
+        switchViewTest, subitemViewsDefaultTest, expandTest, collapseClassTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -16,10 +16,6 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
             Mock.expect(this.location, {
                 method: 'toJSON',
                 returns: this.locationJSON,
-            });
-            Mock.expect(this.location, {
-                method: 'after',
-                args: [Mock.Value.Any, Mock.Value.Any],
             });
             this.content = new Mock();
             this.contentType = new Mock();
@@ -36,6 +32,7 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
         },
 
         tearDown: function () {
+            this.view.get('container').setAttribute('class', 'container');
             this.view.destroy();
             this.subitemView1.destroy();
             this.subitemView2.destroy();
@@ -121,10 +118,6 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Mock();
-            Mock.expect(this.location, {
-                method: 'after',
-                args: [Mock.Value.Any, Mock.Value.Any],
-            });
             this.view = new Y.eZ.SubitemBoxView({
                 container: '.container',
                 location: this.location,
@@ -133,6 +126,7 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
         },
 
         tearDown: function () {
+            this.view.get('container').setAttribute('class', 'container');
             this.view.destroy();
         },
 
@@ -170,10 +164,6 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Mock();
-            Mock.expect(this.location, {
-                method: 'after',
-                args: [Mock.Value.Any, Mock.Value.Any],
-            });
             this.subitemView1 = new Y.View({identifier: 'view1', active: false});
             this.subitemView2 = new Y.View({identifier: 'view2', active: false});
             this.view = new Y.eZ.SubitemBoxView({
@@ -185,6 +175,7 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
         },
 
         tearDown: function () {
+            this.view.get('container').setAttribute('class', 'container');
             this.view.destroy();
             this.subitemView1.destroy();
             this.subitemView2.destroy();
@@ -213,10 +204,6 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
             Mock.expect(this.location, {
                 method: 'toJSON',
                 returns: this.locationJSON,
-            });
-            Mock.expect(this.location, {
-                method: 'after',
-                args: [Mock.Value.Any, Mock.Value.Any],
             });
             this.content = new Mock();
             this.contentType = new Mock();
@@ -285,10 +272,6 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
                 method: 'toJSON',
                 returns: this.locationJSON,
             });
-            Mock.expect(this.location, {
-                method: 'after',
-                args: [Mock.Value.Any, Mock.Value.Any],
-            });
             this.content = new Mock();
             this.contentType = new Mock();
             this.subitemView1 = new Y.View({identifier: 'view1', active: false});
@@ -306,6 +289,7 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
         },
 
         tearDown: function () {
+            this.view.get('container').setAttribute('class', 'container');
             this.view.destroy();
             this.subitemView1.destroy();
             this.subitemView2.destroy();
@@ -314,10 +298,23 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
         "Should switch the subitem view": function () {
             var view = this.view;
 
-            view.get('container').one('a').simulateGesture('tap', this.next(function () {
+            view.get('container').one('.ez-switch-subitemview').simulateGesture('tap', this.next(function () {
                 Assert.areEqual(
                     this.subitemView1.get('identifier'), view.get('subitemViewIdentifier'),
                     "The view1 subitem view should be the active one"
+                );
+            }, this));
+            this.wait();
+        },
+
+        "Should expand the view while switching the subitem view": function () {
+            var view = this.view;
+
+            view.set('expanded', false);
+            view.get('container').one('.ez-switch-subitemview').simulateGesture('tap', this.next(function () {
+                Assert.isTrue(
+                    view.get('expanded'),
+                    "The view should have been expanded"
                 );
             }, this));
             this.wait();
@@ -328,15 +325,10 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
         name: "eZ Subitem Box View subitemViews attribute default value test",
 
         setUp: function () {
-            this.location = new Mock();
-            Mock.expect(this.location, {
-                method: 'after',
-                args: [Mock.Value.Any, Mock.Value.Any],
-            });
             Y.eZ.SubitemListView = Y.View;
             this.view = new Y.eZ.SubitemBoxView({
                 container: '.container',
-                location: this.location,
+                location: {},
                 content: {},
                 contentType: {},
                 config: {},
@@ -344,6 +336,7 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
         },
 
         tearDown: function () {
+            this.view.get('container').setAttribute('class', 'container');
             this.view.destroy();
             delete Y.eZ.SubitemListView;
         },
@@ -384,6 +377,131 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
         },
     });
 
+    expandTest = new Y.Test.Case({
+        name: "eZ Subitem Box View expand test",
+
+        setUp: function () {
+            this.location = new Mock();
+            this.locationJSON = {};
+            Mock.expect(this.location, {
+                method: 'toJSON',
+                returns: this.locationJSON,
+            });
+            this.content = new Mock();
+            this.contentType = new Mock();
+            this.subitemView1 = new Y.View({identifier: 'view1', active: false});
+            this.view = new Y.eZ.SubitemBoxView({
+                container: '.container-expand-test',
+                location: this.location,
+                content: this.content,
+                contentType: this.contentType,
+                subitemViews: [this.subitemView1],
+                subitemViewIdentifier: this.subitemView1.get('identifier'),
+            });
+            this.view.render();
+            this.view.set('active', true);
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.subitemView1.destroy();
+        },
+
+        "Should expand the view": function () {
+            var view = this.view;
+
+            view.set('expanded', false);
+            view.get('container').one('.ez-collapse-toggle').simulateGesture('tap', this.next(function () {
+                Assert.isTrue(
+                    view.get('expanded'),
+                    "The expanded attribute should be true"
+                );
+            }));
+            this.wait();
+        },
+
+        "Should collapse the view": function () {
+            var view = this.view;
+
+            view.set('expanded', true);
+            view.get('container').one('.ez-collapse-toggle').simulateGesture('tap', this.next(function () {
+                Assert.isFalse(
+                    view.get('expanded'),
+                    "The expanded attribute should be false"
+                );
+            }));
+            this.wait();
+        },
+    });
+
+    collapseClassTest = new Y.Test.Case({
+        name: "eZ Subitem Box View collapsed class test",
+
+        setUp: function () {
+            this.location = new Mock();
+            this.locationJSON = {};
+            Mock.expect(this.location, {
+                method: 'toJSON',
+                returns: this.locationJSON,
+            });
+            this.content = new Mock();
+            this.contentType = new Mock();
+            this.subitemView1 = new Y.View({identifier: 'view1', active: false});
+            this.view = new Y.eZ.SubitemBoxView({
+                container: '.container-collapse-test',
+                location: this.location,
+                content: this.content,
+                contentType: this.contentType,
+                subitemViews: [this.subitemView1],
+                subitemViewIdentifier: this.subitemView1.get('identifier'),
+            });
+            this.view.render();
+            this.view.set('active', true);
+        },
+
+        tearDown: function () {
+            this.view.get('container').setAttribute('class', 'container');
+            this.view.destroy();
+            this.subitemView1.destroy();
+        },
+
+        _collapseTest: function (callback) {
+            var view = this.view;
+
+            view.set('expanded', false);
+
+            this.wait(function () {
+                return callback && callback.call(this);
+            }, 400);
+        },
+
+        "Should add the collapsed class": function () {
+            var view = this.view;
+
+            this._collapseTest(function () {
+                Assert.isTrue(
+                    view.get('container').hasClass('is-subitembox-collapsed'),
+                    "The collapsed class should have been added"
+                );
+            });
+        },
+
+        "Should remove the collapsed class": function () {
+            var view = this.view;
+
+            this._collapseTest(function () {
+                view.set('expanded', true);
+
+                this.wait(function () {
+                    Assert.isFalse(
+                        view.get('container').hasClass('is-subitembox-collapsed'),
+                        "The collapsed class should have been removed"
+                    );
+                }, 400);
+            });
+        },
+    });
+
     Y.Test.Runner.setName("eZ Subitem Box View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(addSubitemViewTest);
@@ -391,4 +509,6 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
     Y.Test.Runner.add(subitemViewChangeTest);
     Y.Test.Runner.add(switchViewTest);
     Y.Test.Runner.add(subitemViewsDefaultTest);
+    Y.Test.Runner.add(expandTest);
+    Y.Test.Runner.add(collapseClassTest);
 }, '', {requires: ['view', 'test', 'node-event-simulate', 'ez-subitemboxview']});

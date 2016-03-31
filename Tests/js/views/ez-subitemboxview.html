@@ -5,10 +5,13 @@
 </head>
 <body>
 <div class="container"></div>
+<div class="container-expand-test"></div>
+<div class="container-collapse-test"></div>
 
 <script type="text/x-handlebars-template" id="subitemboxview-ez-template">
+    <a href="#" class="ez-collapse-toggle">Collapse</a>
     <a href="#" class="ez-switch-subitemview" data-view-identifier="view1">Tap me</a>
-    <div class="ez-subitembox-content"></div>
+    <div class="ez-subitembox-content ez-expandable-area"></div>
 </script>
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -31,7 +34,7 @@
         filter: loaderFilter,
         modules: {
             "ez-subitemboxview": {
-                requires: ['ez-templatebasedview', 'array-extras', 'event-tap'],
+                requires: ['ez-templatebasedview', 'ez-expandable', 'ez-accordion-element', 'array-extras', 'event-tap'],
                 fullpath: "../../../Resources/public/js/views/ez-subitemboxview.js"
             },
             "ez-templatebasedview": {
@@ -41,6 +44,14 @@
             "ez-view": {
                 requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
                 fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-expandable": {
+                requires: ['view'],
+                fullpath: "../../../Resources/public/js/extensions/ez-expandable.js"
+            },
+            "ez-accordion-element": {
+                requires: ['transition'],
+                fullpath: "../../../Resources/public/js/extensions/ez-accordion-element.js"
             },
             "ez-pluginregistry": {
                 requires: ['array-extras'],

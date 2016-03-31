@@ -5,6 +5,7 @@
 
 .ez-view-subitemlistview {
     position: relative;
+    margin: 1em;
 }
 
 .ez-view-subitemlistview .ez-subitemlist-loader-mask {

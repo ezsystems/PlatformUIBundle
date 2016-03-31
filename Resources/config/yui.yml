@@ -317,6 +317,8 @@ system:
                         - 'ez-templatebasedview'
                         - 'subitemboxview-ez-template'
                         - 'ez-subitemlistview'
+                        - 'ez-accordion-element'
+                        - 'ez-expandable'
                         - 'event-tap'
                         - 'array-extras'
                     path: %ez_platformui.public_dir%/js/views/ez-subitemboxview.js
