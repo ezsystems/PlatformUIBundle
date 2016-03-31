@@ -47,6 +47,8 @@ YUI.add('ez-subitemlistview', function (Y) {
         },
 
         initializer: function () {
+            this._set('identifier', 'list');
+            this._set('name', 'List view');
             this._fireMethod = this._fireLocationSearch;
             this._watchAttribute = 'subitems';
 
@@ -461,16 +463,6 @@ YUI.add('ez-subitemlistview', function (Y) {
         },
     }, {
         ATTRS: {
-            identifier: {
-                readOnly: true,
-                value: 'list',
-            },
-
-            name: {
-                readOnly: true,
-                value: "List view",
-            },
-
             /**
              * The max number of the Locations to display in the subitem list
              * per "page".
