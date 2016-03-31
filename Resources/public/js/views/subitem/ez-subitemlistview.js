@@ -64,9 +64,10 @@ YUI.add('ez-subitemlistview', function (Y) {
          * @method _refresh
          */
         _refresh: function () {
-            // TODO do that only if the view is active
-            this._uiPageLoading();
-            this._fireLocationSearch();
+            if ( this.get('active') ) {
+                this._uiPageLoading();
+                this._fireLocationSearch();
+            }
         },
 
         /**
