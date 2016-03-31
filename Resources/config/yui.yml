@@ -328,8 +328,7 @@ system:
                     path: %ez_platformui.public_dir%/js/views/subitem/ez-subitembaseview.js
                 ez-subitemlistview:
                     requires: ['ez-subitembaseview', 'ez-asynchronousview', 'event-tap', 'subitemlistview-ez-template', 'event-valuechange', 'array-extras']
-                    # TODO move to subitem/ dir
-                    path: %ez_platformui.public_dir%/js/views/ez-subitemlistview.js
+                    path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemlistview.js
                 subitemlistview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/subitemlist.hbt
