@@ -8,8 +8,14 @@
     padding: 0 1rem 0 1em;
     line-height: 2.5em;
 
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-between;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
 }
 
 .ez-view-subitemboxview .ez-subitembox-viewlist {
