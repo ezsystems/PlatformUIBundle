@@ -1,7 +1,7 @@
     {{#if location.childCount}}
         {{#if loadingError}}
             <p class="ez-asynchronousview-error ez-font-icon">
-                An error occurred while loading the sub-items list..
+                An error occurred while loading the sub-items list.
                 <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
             </p>
         {{else}}
