@@ -93,9 +93,39 @@ YUI.add('ez-subitemboxview', function (Y) {
             var previous = this._getSubitemView(e.prevVal),
                 view = this._getSubitemView(e.newVal);
 
+            this._uiUpdateSwitchLinks(e.prevVal, e.newVal);
             previous.set('active', false);
             this._renderSubitemView(view);
             view.set('active', true);
+        },
+
+        /**
+         * Updates the links to subitem views so that the newly selected is
+         * highlighted.
+         *
+         * @method _uiUpdateSwitchLinks
+         * @protected
+         * @param {String} previousIdentifer
+         * @param {String} newIdentifier
+         */
+        _uiUpdateSwitchLinks: function (previousIdentifer, newIdentifier) {
+            this._getSwitchItem(previousIdentifer).removeClass('is-view-selected');
+            this._getSwitchItem(newIdentifier).addClass('is-view-selected');
+        },
+
+        /**
+         * Returns the switch list item containing the link to enable the view
+         * which identifier is given.
+         *
+         * @protected
+         * @method _getSwitchItem
+         * @param {String} identifier
+         * @return {Node}
+         */
+        _getSwitchItem: function (identifier) {
+            return this.get('container')
+                .one('.ez-switch-subitemview[data-view-identifier="' + identifier + '"]')
+                .get('parentNode');
         },
 
         /**

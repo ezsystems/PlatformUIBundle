@@ -10,7 +10,11 @@
 
 <script type="text/x-handlebars-template" id="subitemboxview-ez-template">
     <a href="#" class="ez-collapse-toggle">Collapse</a>
-    <a href="#" class="ez-switch-subitemview" data-view-identifier="view1">Tap me</a>
+    <ul>
+    {{#each viewsInfo}}
+        <li class="{{#if selected}}is-view-selected{{/if}}"><a href="#" class="ez-switch-subitemview" data-view-identifier="{{identifier}}"></a>
+    {{/each}}
+    </ul>
     <div class="ez-subitembox-content ez-expandable-area"></div>
 </script>
 

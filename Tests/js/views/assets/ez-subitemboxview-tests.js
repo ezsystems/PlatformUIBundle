@@ -260,6 +260,18 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
                 "The new subitem view should have active=true"
             );
         },
+
+        "Should update the highlighed switch view item": function () {
+            var identifier = this.subitemView1.get('identifier'),
+                container = this.view.get('container');
+
+            this.view.set('subitemViewIdentifier', identifier);
+            Assert.areEqual(
+                identifier,
+                container.one('.is-view-selected .ez-switch-subitemview').getData('view-identifier'),
+                "The link to the selected view should be highlighed"
+            );
+        }
     });
 
     switchViewTest = new Y.Test.Case({
