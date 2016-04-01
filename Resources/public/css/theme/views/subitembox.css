@@ -52,11 +52,11 @@
     color: #fff;
 }
 
+.ez-view-subitemboxview .ez-switch-subitemview:before {
+    content: attr(title);
+}
+
 .ez-view-subitemboxview .ez-switch-subitemview[data-view-identifier="list"]:before {
     content: "\E904";
 }
 
-/* TODO remove */
-.ez-view-subitemboxview .ez-switch-subitemview[data-view-identifier="grid"]:before {
-    content: "\E622";
-}
