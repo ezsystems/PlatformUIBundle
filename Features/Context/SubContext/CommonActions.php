@@ -9,6 +9,8 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
+use EzSystems\BehatBundle\Helper\EzAssertion;
+
 trait CommonActions
 {
     /**
@@ -105,6 +107,29 @@ trait CommonActions
         if (!$field) {
             throw new \Exception("Field '$label' not found");
         }
+    }
+
+    /**
+     * @Given I checked :label checkbox
+     * @When  I check :label checkbox
+     *
+     * Toggles the value for the checkbox with name ':label'
+     */
+    public function checkOption($option)
+    {
+        $fieldElements = $this->getXpath()->findFields($option);
+        EzAssertion::assertElementFound($option, $fieldElements, null, 'checkbox');
+
+        // this is needed for the cases where are checkboxes and radio's
+        // side by side, for main option the radio and the extra being the
+        // checkboxes values
+        if (strtolower($fieldElements[0]->getAttribute('type')) !== 'checkbox') {
+            $value = $fieldElements[0]->getAttribute('value');
+            $fieldElements = $this->getXpath()->findXpath("//input[@type='checkbox' and @value='$value']");
+            EzAssertion::assertElementFound($value, $fieldElements, null, 'checkbox');
+        }
+
+        $fieldElements[0]->check();
     }
 
     /**
