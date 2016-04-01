@@ -21,12 +21,13 @@
 
 .ez-view-subitemboxview .ez-subitembox-viewlist {
     list-style-type: none;
-
-    transition: all ease 0.3s;
 }
 
 .ez-view-subitemboxview .ez-subitembox-viewlist-item {
     text-align: center;
+
+    -webkit-transition: all ease 0.3s;
+            transition: all ease 0.3s;
 }
 
 .ez-view-subitemboxview .ez-subitembox-viewlist .is-view-selected {
