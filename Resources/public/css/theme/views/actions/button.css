@@ -74,14 +74,17 @@
 }
 
 .ez-view-buttonactionview .ez-action[data-action="viewTrash"] .action-icon:before,
-.ez-view-buttonactionview .ez-action[data-action="sendToTrash"] .action-icon:before {
+.ez-view-buttonactionview .ez-action[data-action="sendToTrash"] .action-icon:before,
+.ez-view-buttonactionview .ez-action[data-action="deleteContent"] .action-icon:before {
     content: "\E615";
 }
 
 .ez-view-buttonactionview .ez-action[data-action="sendToTrash"] .action-icon:before,
 .ez-view-buttonactionview .ez-action[data-action="sendToTrash"] .action-label,
 .ez-view-buttonactionview .ez-action[data-action="emptyTrash"] .action-icon:before,
-.ez-view-buttonactionview .ez-action[data-action="emptyTrash"] .action-label{
+.ez-view-buttonactionview .ez-action[data-action="emptyTrash"] .action-label,
+.ez-view-buttonactionview .ez-action[data-action="deleteContent"] .action-icon:before,
+.ez-view-buttonactionview .ez-action[data-action="deleteContent"] .action-label {
     color: #E46474;
 }
 

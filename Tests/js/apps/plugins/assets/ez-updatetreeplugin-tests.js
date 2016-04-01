@@ -81,6 +81,10 @@ YUI.add('ez-updatetreeplugin-tests', function (Y) {
             this._clearTreeOnEvent('whatever:publishedDraft');
         },
 
+        "Should clear tree when catching the deleteContent event if tree has been loaded": function () {
+            this._clearTreeOnEvent('whatever:deletedContent');
+        },
+
         "Should clear tree when catching the saveDraft event if tree has been loaded": function () {
             this._clearTreeOnEvent('whatever:savedDraft');
         },
@@ -103,6 +107,9 @@ YUI.add('ez-updatetreeplugin-tests', function (Y) {
 
         "Should NOT clear tree when catching the saveDraft event if tree has NOT been loaded": function () {
             this._doNotClearTreeOnEvent('whatever:savedDraft');
+        },
+        "Should NOT clear tree when catching the deleteContent event if tree has NOT been loaded": function () {
+            this._doNotClearTreeOnEvent('whatever:deletedContent');
         },
     });
 
