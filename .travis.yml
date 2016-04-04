@@ -24,6 +24,7 @@ branches:
         - "1.2"
 
 before_script:
+    - phpenv config-rm xdebug.ini
     - $BEFORE
 
 script: $TEST_CMD
