@@ -13,9 +13,9 @@ matrix:
         - php: 7.0
           env: BEFORE="./bin/travis/prepare_behat.sh" TEST_CMD="./bin/travis/runbehat.sh" AFTER_SUCCESS='echo "After success"'
         - php: 5.6
-          env: BEFORE='composer install --prefer-dist' TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
+          env: BEFORE='php -d memory_limit=-1 composer.phar install --prefer-dist' TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
         - php: 5.5
-          env: BEFORE='composer install --prefer-dist' TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
+          env: BEFORE='php -d memory_limit=-1 composer.phar install --prefer-dist' TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
 
 # test only master (+ Pull requests)
 branches:
@@ -25,7 +25,7 @@ branches:
 
 before_install:
     - phpenv config-rm xdebug.ini
-    - shopt -s expand_aliases; PHP_VERSION=`phpenv version-name`; alias composer="php -d memory_limit=-1 ~/.phpenv/versions/$PHP_VERSION/bin/composer"
+    - wget http://getcomposer.org/composer.phar
 
 before_script:
     - $BEFORE
