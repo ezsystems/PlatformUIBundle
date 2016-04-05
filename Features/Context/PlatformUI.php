@@ -47,8 +47,6 @@ class PlatformUI extends Context
     use SubContext\Authentication;
     use SubContext\CommonActions;
 
-    use Override\CommonActions;
-
     /**
      * PlatformUI relative URL path.
      *
