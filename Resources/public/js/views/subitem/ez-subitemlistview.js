@@ -487,17 +487,6 @@ YUI.add('ez-subitemlistview', function (Y) {
             },
 
             /**
-             * The location being displayed
-             *
-             * @attribute location
-             * @type {eZ.Location}
-             * @writeOnce
-             */
-            location: {
-                writeOnce: 'initOnly',
-            },
-
-            /**
              * The subitems list.
              *
              * @attribute subitems
