@@ -65,7 +65,7 @@ YUI.add('ez-subitemboxview', function (Y) {
         },
 
         /**
-         * tap event handler on switch subitem view link. It sswitches the
+         * tap event handler on switch subitem view link. It switches the
          * subitem view to the one indicated in the `data-view-identifier`
          * attribute.
          *
