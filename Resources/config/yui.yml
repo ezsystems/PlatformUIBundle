@@ -334,8 +334,7 @@ system:
                     path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemlistview.js
                 subitemlistview-ez-template:
                     type: 'template'
-                    # TODO move this template to a sub directory
-                    path: %ez_platformui.public_dir%/templates/subitemlist.hbt
+                    path: %ez_platformui.public_dir%/templates/subitem/list.hbt
                 ez-subitemgridview:
                     requires:
                         - 'ez-subitembaseview'
@@ -346,12 +345,10 @@ system:
                     path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemgridview.js
                 subitemgridview-ez-template:
                     type: 'template'
-                    # TODO move this template to a sub directory
-                    path: %ez_platformui.public_dir%/templates/subitemgrid.hbt
+                    path: %ez_platformui.public_dir%/templates/subitem/grid.hbt
                 subitemgriditemview-ez-template:
                     type: 'template'
-                    # TODO move this template to a sub directory
-                    path: %ez_platformui.public_dir%/templates/subitemgriditem.hbt
+                    path: %ez_platformui.public_dir%/templates/subitem/griditem.hbt
                 ez-locationviewtabview:
                     requires: ['ez-templatebasedview']
                     path: %ez_platformui.public_dir%/js/views/ez-locationviewtabview.js
