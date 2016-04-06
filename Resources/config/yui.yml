@@ -317,6 +317,7 @@ system:
                         - 'ez-templatebasedview'
                         - 'subitemboxview-ez-template'
                         - 'ez-subitemlistview'
+                        - 'ez-subitemgridview'
                         - 'ez-accordion-element'
                         - 'ez-expandable'
                         - 'event-tap'
@@ -333,7 +334,24 @@ system:
                     path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemlistview.js
                 subitemlistview-ez-template:
                     type: 'template'
+                    # TODO move this template to a sub directory
                     path: %ez_platformui.public_dir%/templates/subitemlist.hbt
+                ez-subitemgridview:
+                    requires:
+                        - 'ez-subitembaseview'
+                        - 'ez-asynchronousview'
+                        - 'event-tap'
+                        - 'subitemgridview-ez-template'
+                        - 'subitemgriditemview-ez-template'
+                    path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemgridview.js
+                subitemgridview-ez-template:
+                    type: 'template'
+                    # TODO move this template to a sub directory
+                    path: %ez_platformui.public_dir%/templates/subitemgrid.hbt
+                subitemgriditemview-ez-template:
+                    type: 'template'
+                    # TODO move this template to a sub directory
+                    path: %ez_platformui.public_dir%/templates/subitemgriditem.hbt
                 ez-locationviewtabview:
                     requires: ['ez-templatebasedview']
                     path: %ez_platformui.public_dir%/js/views/ez-locationviewtabview.js

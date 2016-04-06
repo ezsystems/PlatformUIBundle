@@ -1,0 +1,100 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-subitemgridview {
+    margin: 1em;
+}
+
+.ez-view-subitemgridview .ez-subitemgrid-content {
+    display: flex; /* TODO vendor prefix */
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: stretch;
+}
+
+.ez-view-subitemgridview .ez-subitemgrid-item {
+    margin: 0.2em 0;
+    flex: 0 1 10%;
+
+    display: flex; /* TODO vendor prefix */
+    align-items: stretch;
+    align-content: stretch;
+}
+
+@media (max-width: 160em) {
+    .ez-view-subitemgridview .ez-subitemgrid-item {
+        flex-basis: 11.1%;
+    }
+}
+
+@media (max-width: 120em) {
+    .ez-view-subitemgridview .ez-subitemgrid-item {
+        flex-basis: 14.27%;
+    }
+}
+
+@media (max-width: 100em) {
+    .ez-view-subitemgridview .ez-subitemgrid-item {
+        flex-basis: 16.6%;
+    }
+}
+
+@media (max-width: 80em) {
+    .ez-view-subitemgridview .ez-subitemgrid-item {
+        flex-basis: 20%;
+    }
+}
+
+@media (max-width: 80em) {
+    .ez-view-subitemgridview .ez-subitemgrid-item {
+        flex-basis: 25%;
+    }
+}
+
+@media (max-width: 64em) {
+    .ez-view-subitemgridview .ez-subitemgrid-item {
+        flex-basis: 33%;
+    }
+}
+
+@media (max-width: 48em) {
+    .ez-view-subitemgridview .ez-subitemgrid-item {
+        flex-basis: 50%;
+    }
+}
+
+@media (max-width: 38em) {
+    .ez-view-subitemgridview .ez-subitemgrid-item {
+        flex-basis: 100%;
+    }
+
+    .is-discoverybar-minimized .is-actionbar-minimized .ez-view-subitemgridview .ez-subitemgrid-item {
+        flex-basis: 50%;
+    }
+}
+
+.ez-view-subitemgridview .ez-subitemgrid-item-content {
+    margin: 0.5em;
+    width: 100%;
+}
+
+.ez-view-subitemgridview .ez-subitemgrid-item-content-type {
+    margin: 0 0 0.3em 0;
+}
+
+.ez-view-subitemgridview .ez-subitemgrid-item-name {
+    margin: 0.3em 0 0 0;
+}
+
+.ez-view-subitemgridview .ez-subitemgrid-item-visual {
+	display: block;
+	width: 100%;
+    height: 2em;
+}
+
+.ez-view-subitemgridview .ez-subitemgrid-pagination {
+    text-align: center;
+}

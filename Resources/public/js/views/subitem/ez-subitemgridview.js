@@ -1,0 +1,349 @@
+/*
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+YUI.add('ez-subitemgridview', function (Y) {
+    "use strict";
+    /**
+     * Provides the subitem grid view.
+     *
+     * @module ez-subitemgridview
+     */
+    Y.namespace('eZ');
+
+    var IS_PAGE_LOADING = 'is-page-loading',
+        SubitemGridItemView;
+
+    /**
+     * The subitem grid item view. Note: This component is **private** as this
+     * part will shortly change and will be replaced by the concept of content
+     * cards.
+     *
+     * @private
+     * @class SubitemGridItemView
+     * @constructor
+     * @extends eZ.TemplateBasedView
+     */
+    SubitemGridItemView = Y.Base.create('subitemGridItemView', Y.eZ.TemplateBasedView, [], {
+        initializer: function () {
+            this.containerTemplate = '<div class="ez-subitemgrid-item"/>';
+        },
+
+        render: function () {
+            this.get('container').setHTML(this.template({
+                content: this.get('content').toJSON(),
+                location: this.get('location').toJSON(),
+                contentType: this.get('contentType').toJSON(),
+            }));
+            return this;
+        },
+    }, {
+        ATTRS: {
+            /**
+             * The content type of the content being displayed
+             *
+             * @attribute contentType
+             * @type {eZ.ContentType}
+             */
+            contentType: {},
+
+            /**
+             * The location of the content item being displayed
+             *
+             * @attribute location
+             * @type {eZ.Location}
+             */
+            location: {},
+
+            /**
+             * The content being displayed
+             *
+             * @attribute content
+             * @type {eZ.Content}
+             */
+            content: {},
+        },
+    });
+
+
+    /**
+     * The subitem grid view.
+     *
+     * @namespace eZ
+     * @class SubitemGridView
+     * @constructor
+     * @extends eZ.SubitemBaseView
+     */
+    Y.eZ.SubitemGridView = Y.Base.create('subitemGridView', Y.eZ.SubitemBaseView, [Y.eZ.AsynchronousView], {
+        events: {
+            '.ez-subitemgrid-more': {
+                'tap': '_loadMore',
+            },
+        },
+
+        initializer: function () {
+            this._set('identifier', 'grid');
+            this._set('name', 'Grid view');
+            this._fireMethod = this._prepareInitialLoad;
+
+            /**
+             * Holds the grid item view instances for the current grid.
+             *
+             * @property _gridItemViews
+             * @protected
+             * @type Array<SubitemGridItemView>
+             */
+            this._gridItemViews = [];
+
+            this.after('offsetChange', function () {
+                this._uiLoading();
+                this._fireLocationSearch();
+                this._disableLoadMore();
+            });
+            this.after('subitemsChange', function () {
+                this._uiUpdatePagination();
+                this._appendGridItem();
+            });
+            // TODO error handling, requires changes in asynchronousview to not
+            // trigger a render
+            this.after(['subitemsChange', 'loadingErrorChange'], this._uiEndLoading);
+        },
+
+        destructor: function () {
+            this._gridItemViews.forEach(function (item) {
+                item.destroy();
+            });
+        },
+
+        /**
+         * `activeChange` handler. Set the view in loading mode and fire the
+         * first location search event if the subitems are not already filled.
+         *
+         * @method _prepareInitialLoad
+         * @protected
+         */
+        _prepareInitialLoad: function () {
+            if ( !this.get('subitems') ) {
+                this._uiLoading();
+                this._fireLocationSearch();
+            }
+        },
+
+        /**
+         * Updates the pagination displayed to the editor.
+         *
+         * @method _uiUpdatePagination
+         * @protected
+         */
+        _uiUpdatePagination: function () {
+            this._updateDisplayedCount();
+            this._updateMoreCount();
+            if ( this.get('subitems').length < this.get('location').get('childCount') ) {
+                this._enableLoadMore();
+            }
+        },
+
+        /**
+         * Returns the load more button
+         *
+         * @method _getLoadMore
+         * @protected
+         * @return {Y.Node}
+         */
+        _getLoadMore: function () {
+            return this.get('container').one('.ez-subitemgrid-more');
+        },
+
+        /**
+         * Disables the load more button
+         *
+         * @method _disableLoadMore
+         * @protected
+         */
+        _disableLoadMore: function () {
+            this._getLoadMore().set('disabled', true);
+        },
+
+        /**
+         * Enables the load more button
+         *
+         * @method _enableLoadMore
+         * @protected
+         */
+        _enableLoadMore: function () {
+            this._getLoadMore().set('disabled', false);
+        },
+
+        /**
+         * Updates the display count with the number of currently loaded
+         * subitems.
+         *
+         * @method _updateDisplayedCount
+         * @protected
+         */
+        _updateDisplayedCount: function () {
+            this.get('container').one('.ez-subitemgrid-display-count').setContent(
+                this.get('subitems').length
+            );
+        },
+
+        /**
+         * Updates the more count in the load more button.
+         *
+         * @method _updateMoreCount
+         * @protected
+         */
+        _updateMoreCount: function () {
+            var moreCount = Math.min(
+                    this.get('limit'),
+                    this.get('location').get('childCount') - this.get('subitems').length
+                );
+
+            if ( !moreCount ) {
+                moreCount = this.get('limit');
+            }
+            this.get('container').one('.ez-subitemgrid-more-count').setContent(moreCount);
+        },
+
+        /**
+         * Sets the UI in the loading the state
+         *
+         * @protected
+         * @method _uiLoading
+         */
+        _uiLoading: function () {
+            this.get('container').addClass(IS_PAGE_LOADING);
+        },
+
+        /**
+         * Removes the loading state of the UI
+         *
+         * @method _uiEndLoading
+         * @protected
+         */
+        _uiEndLoading: function () {
+            this.get('container').removeClass(IS_PAGE_LOADING);
+        },
+
+        render: function () {
+            var subitemCount = this.get('location').get('childCount');
+
+            if ( !this.get('subitems') ) {
+                this.get('container').setHTML(this.template({
+                    limit: this.get('limit'),
+                    subitemCount: subitemCount,
+                    displayCount: Math.min(this.get('limit'), subitemCount),
+                }));
+            }
+
+            return this;
+        },
+
+        /**
+         * Appends a rendred grid item view for the last loaded subitem.
+         *
+         * @method _appendGridItem
+         * @protected
+         */
+        _appendGridItem: function () {
+            var gridContent = this.get('container').one('.ez-subitemgrid-content');
+
+            this.get('subitems').slice(-1 * this.get('limit')).forEach(function (struct) {
+                var itemView = new SubitemGridItemView(struct);
+
+                this._gridItemViews.push(itemView);
+                gridContent.append(
+                    itemView.render().get('container')
+                );
+            }, this);
+        },
+
+        /**
+         * `tap` event handler on the load more button.
+         *
+         * @method _loadMore
+         * @protected
+         */
+        _loadMore: function (e) {
+            e.preventDefault();
+            this.set('offset', this.get('offset') + this.get('limit'));
+        },
+
+        /**
+         * Fires the `locationSearch` event to fetch the subitems of the
+         * currently displayed Location.
+         *
+         * @method _fireLocationSearch
+         * @protected
+         */
+        _fireLocationSearch: function () {
+            var locationId = this.get('location').get('locationId');
+
+            this.fire('locationSearch', {
+                viewName: 'subitemgrid-' + locationId,
+                resultAttribute: 'subitems',
+                loadContentType: true,
+                loadContent: true,
+                search: {
+                    criteria: {
+                        "ParentLocationIdCriterion": this.get('location').get('locationId'),
+                    },
+                    offset: this.get('offset'),
+                    limit: this.get('limit'),
+                    /*
+                     * @TODO see https://jira.ez.no/browse/EZP-24315
+                     * this is not yet supported by the views in the REST API
+                    sortClauses: {
+                        SortClause: {
+                            SortField: this.get('location').get('sortField'),
+                            SortOrder: this.get('location').get('sortOrder'),
+                        },
+                    },
+                    */
+                },
+            });
+        },
+    }, {
+        ATTRS: {
+            /**
+             * The max number of the Locations to display per 'show more'
+             * session
+             *
+             * @attribute limit
+             * @default 10
+             * @type Number
+             */
+            limit: {
+                value: 10,
+            },
+
+            /**
+             * The offset in the Location list.
+             *
+             * @attribute offset
+             * @default 0
+             * @type Number
+             */
+            offset: {
+                value: 0,
+            },
+
+            /**
+             * The subitems list.
+             *
+             * @attribute subitems
+             * @type Array of {Object} array containing location structs
+             */
+            subitems: {
+                setter: function (value) {
+                    var current = this.get('subitems');
+
+                    if ( current ) {
+                        return current.concat(value);
+                    }
+                    return value;
+                },
+            },
+        }
+    });
+});

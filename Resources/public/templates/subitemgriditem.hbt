@@ -1,0 +1,13 @@
+<div class="ez-subitemgrid-item-content">
+    <h4 class="ez-subitemgrid-item-content-type">
+        <a href="{{path 'viewLocation' id=location.id languageCode=content.mainLanguageCode}}" class="ez-subitemgrid-item-link" data-icon="&#xe601;">
+            {{ contentType.names.[eng-GB] }}
+        </a>
+    </h4>
+    <a href="{{path 'viewLocation' id=location.id languageCode=content.mainLanguageCode}}" class="ez-subitemgrid-item-link ez-subitemgrid-item-visual" data-icon="&#xe601;"></a>
+    <h3 class="ez-subitemgrid-item-name">
+		<a href="{{path 'viewLocation' id=location.id languageCode=content.mainLanguageCode}}" class="ez-subitemgrid-item-link">
+			{{content.name}}
+		</a>
+	</h3>
+</div>

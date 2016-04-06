@@ -338,6 +338,7 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
 
         setUp: function () {
             Y.eZ.SubitemListView = Y.View;
+            Y.eZ.SubitemGridView = Y.View;
             this.view = new Y.eZ.SubitemBoxView({
                 container: '.container',
                 location: {},
@@ -351,6 +352,7 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
             this.view.get('container').setAttribute('class', 'container');
             this.view.destroy();
             delete Y.eZ.SubitemListView;
+            delete Y.eZ.SubitemGridView;
         },
 
         "Should return an array": function () {
@@ -364,6 +366,13 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
             Assert.isInstanceOf(
                 Y.eZ.SubitemListView, this.view.get('subitemViews')[0],
                 "The subitemViews value should contain an instance Y.eZ.SubitemListView"
+            );
+        },
+
+        "Should contain a subitem grid view instance": function () {
+            Assert.isInstanceOf(
+                Y.eZ.SubitemGridView, this.view.get('subitemViews')[1],
+                "The subitemViews value should contain an instance Y.eZ.SubitemGridView"
             );
         },
 
