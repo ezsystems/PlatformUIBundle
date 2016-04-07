@@ -85,6 +85,7 @@ YUI.add('ez-subitemgridview', function (Y) {
             this._set('identifier', 'grid');
             this._set('name', 'Grid view');
             this._fireMethod = this._prepareInitialLoad;
+            this._errorHandlingMethod = this._handleError;
 
             /**
              * Holds the grid item view instances for the current grid.
@@ -95,17 +96,17 @@ YUI.add('ez-subitemgridview', function (Y) {
              */
             this._gridItemViews = [];
 
-            this.after('offsetChange', function () {
-                this._uiLoading();
-                this._fireLocationSearch();
-                this._disableLoadMore();
+            this.after('offsetChange', function (e) {
+                if ( this.get('offset') >= 0 ) {
+                    this._uiLoading();
+                    this._fireLocationSearch();
+                    this._disableLoadMore();
+                }
             });
             this.after('subitemsChange', function () {
                 this._uiUpdatePagination();
                 this._appendGridItem();
             });
-            // TODO error handling, requires changes in asynchronousview to not
-            // trigger a render
             this.after(['subitemsChange', 'loadingErrorChange'], this._uiEndLoading);
         },
 
@@ -116,6 +117,28 @@ YUI.add('ez-subitemgridview', function (Y) {
         },
 
         /**
+         * Handles the loading error. It fires a notification and makes sure the
+         * state of the view is consistent with what is actually loaded.
+         *
+         * @method _handleError
+         * @protected
+         */
+        _handleError: function () {
+            if ( this.get('loadingError') ) {
+                this.fire('notify', {
+                    notification: {
+                        text: "An error occurred while the loading the subitems",
+                        identifier: 'subitem-grid-load-error-' + this.get('location').get('id'),
+                        state: 'error',
+                        timeout: 0
+                    }
+                });
+                this.set('offset', this.get('offset') - this.get('limit'));
+                this._uiUpdatePagination();
+            }
+        },
+
+        /**
          * `activeChange` handler. Set the view in loading mode and fire the
          * first location search event if the subitems are not already filled.
          *
@@ -123,9 +146,8 @@ YUI.add('ez-subitemgridview', function (Y) {
          * @protected
          */
         _prepareInitialLoad: function () {
-            if ( !this.get('subitems') ) {
-                this._uiLoading();
-                this._fireLocationSearch();
+            if ( this.get('offset') < 0 ) {
+                this.set('offset', 0);
             }
         },
 
@@ -138,9 +160,20 @@ YUI.add('ez-subitemgridview', function (Y) {
         _uiUpdatePagination: function () {
             this._updateDisplayedCount();
             this._updateMoreCount();
-            if ( this.get('subitems').length < this.get('location').get('childCount') ) {
+            if ( this._countLoadedSubitems() < this.get('location').get('childCount') ) {
                 this._enableLoadMore();
             }
+        },
+
+        /**
+         * Counts the number of loaded subitems.
+         *
+         * @method _countLoadedSubitems
+         * @protected
+         * @return {Number}
+         */
+        _countLoadedSubitems: function () {
+            return this.get('subitems') ? this.get('subitems').length : 0;
         },
 
         /**
@@ -183,7 +216,7 @@ YUI.add('ez-subitemgridview', function (Y) {
          */
         _updateDisplayedCount: function () {
             this.get('container').one('.ez-subitemgrid-display-count').setContent(
-                this.get('subitems').length
+                this._countLoadedSubitems()
             );
         },
 
@@ -196,7 +229,7 @@ YUI.add('ez-subitemgridview', function (Y) {
         _updateMoreCount: function () {
             var moreCount = Math.min(
                     this.get('limit'),
-                    this.get('location').get('childCount') - this.get('subitems').length
+                    this.get('location').get('childCount') - this._countLoadedSubitems()
                 );
 
             if ( !moreCount ) {
@@ -279,6 +312,7 @@ YUI.add('ez-subitemgridview', function (Y) {
         _fireLocationSearch: function () {
             var locationId = this.get('location').get('locationId');
 
+            this.set('loadingError', false);
             this.fire('locationSearch', {
                 viewName: 'subitemgrid-' + locationId,
                 resultAttribute: 'subitems',
@@ -318,14 +352,17 @@ YUI.add('ez-subitemgridview', function (Y) {
             },
 
             /**
-             * The offset in the Location list.
+             * The offset in the Location list. A value below zero means no
+             * loading has not been made yet.
              *
              * @attribute offset
-             * @default 0
+             * @default minus the limit
              * @type Number
              */
             offset: {
-                value: 0,
+                valueFn: function () {
+                    return -1 * this.get('limit');
+                },
             },
 
             /**

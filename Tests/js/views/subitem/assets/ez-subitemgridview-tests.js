@@ -4,8 +4,17 @@
  */
 YUI.add('ez-subitemgridview-tests', function (Y) {
     var renderTest, subitemSetterTest, loadSubitemsTest, gridItemTest,
-        loadingStateTest, paginationUpdateTest, loadMoreTest,
-        Assert = Y.Assert;
+        loadingStateTest, paginationUpdateTest, loadMoreTest, errorHandlingTest,
+        Assert = Y.Assert,
+        getSubItemStructs = function (count) {
+            return (new Array(count)).map(function () {
+                return {
+                    content: new Y.Model(),
+                    location: new Y.Model(),
+                    contentType: new Y.Model(),
+                };
+            });
+        };
 
     renderTest = new Y.Test.Case({
         name: "eZ Subitem Grid View render test",
@@ -156,6 +165,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
             this.location = new Y.Model({locationId: 42});
             this.view = new Y.eZ.SubitemGridView({
                 location: this.location,
+                loadingError: true,
             });
             this.location.set('childCount', this.view.get('limit') + 1);
             this.view.render();
@@ -224,17 +234,36 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
                 locationSearch,
                 "The locationSearch event should have been fired"
             );
+            Assert.isFalse(
+                this.view.get('loadingError'),
+                "The loading error flag should be set to false"
+            );
         },
 
         "Should not fire the search event when becoming active if subitems are loaded": function () {
             var locationSearch = false;
 
-            this.view.set('subitems', []);
+            this.view.set('offset', 0);
             this.view.on('locationSearch', Y.bind(function (e) {
                 locationSearch = true;
             }, this));
 
             this.view.set('active', true);
+            Assert.isFalse(
+                locationSearch,
+                "The locationSearch event should not have been fired"
+            );
+        },
+
+        "Should not fire the search event when offset becomes a below zero value": function () {
+            var locationSearch = false;
+
+            this.view.set('active', true);
+            this.view.set('offset', -1 * this.view.get('limit'));
+            this.view.on('locationSearch', Y.bind(function (e) {
+                locationSearch = true;
+            }, this));
+
             Assert.isFalse(
                 locationSearch,
                 "The locationSearch event should not have been fired"
@@ -399,15 +428,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
             );
         },
 
-        _getSubItemStructs: function (count) {
-            return (new Array(count)).map(function () {
-                return {
-                    content: new Y.Model(),
-                    location: new Y.Model(),
-                    contentType: new Y.Model(),
-                };
-            });
-        },
+        _getSubItemStructs: getSubItemStructs,
 
         "Should update the displayed content count": function () {
             var container = this.view.get('container');
@@ -501,6 +522,81 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
         },
     });
 
+    errorHandlingTest = new Y.Test.Case({
+        name: "eZ Subitem Grid View error handling test",
+
+        setUp: function () {
+            this.location = new Y.Model({locationId: 42});
+            this.view = new Y.eZ.SubitemGridView({
+                location: this.location,
+            });
+            this.location.set('childCount', this.view.get('limit') * 2 + 1);
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        _assertErrorNotification: function (config) {
+            Assert.isString(
+                config.text,
+                "The notification should be configured to display an error message"
+            );
+            Assert.isString(
+                config.identifier,
+                "The notification should be configured to display an error message"
+            );
+            Assert.areEqual(
+                "error", config.state,
+                "The notification state should be 'error'"
+            );
+            Assert.areEqual(
+                0, config.timeout,
+                "The notification timeout should be 0"
+            );
+        },
+
+        _getSubItemStructs: getSubItemStructs,
+
+        "Should handle error on the initial loading": function () {
+            var notified = false;
+
+            this.view.set('active', true);
+
+            this.view.on('notify', Y.bind(function (e) {
+                notified = true;
+                this._assertErrorNotification(e.notification);
+            }, this));
+            this.view.set('loadingError', true);
+
+            Assert.isTrue(notified, "A notification error should have been fired");
+            Assert.areEqual(
+                -1 * this.view.get('limit'), this.view.get('offset'),
+                "The offset value should be reset to the previous value"
+            );
+        },
+
+        "Should handle loading error": function () {
+            var notified = false;
+
+            this.view.set('subitems', this._getSubItemStructs(this.view.get('limit')));
+            this.view.set('offset', this.view.get('limit'));
+
+            this.view.on('notify', Y.bind(function (e) {
+                notified = true;
+                this._assertErrorNotification(e.notification);
+            }, this));
+            this.view.set('loadingError', true);
+
+            Assert.isTrue(notified, "A notification error should have been fired");
+            Assert.areEqual(
+                0, this.view.get('offset'),
+                "The offset value should be reset to the previous value"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Subitem Grid View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(subitemSetterTest);
@@ -509,4 +605,5 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
     Y.Test.Runner.add(loadingStateTest);
     Y.Test.Runner.add(paginationUpdateTest);
     Y.Test.Runner.add(loadMoreTest);
+    Y.Test.Runner.add(errorHandlingTest);
 }, '', {requires: ['test', 'model', 'node-event-simulate', 'ez-subitemgridview']});
