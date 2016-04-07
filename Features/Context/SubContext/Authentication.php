@@ -63,7 +63,10 @@ trait Authentication
     {
         $this->shouldBeLoggedIn = false;
         $this->goToPlatformUi('#/dashboard');
-        $this->findWithWait('.ez-user-profile')->click();
+        $el = $this->findWithWait('.ez-user-profile');
+        $el->focus();
+        $this->waitWhileLoading();
+        $el->click();
         $this->waitWhileLoading();
         $this->iClickAtLink('Logout');
     }
