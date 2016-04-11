@@ -139,13 +139,12 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          * @return {Object} the limitation with its identifer and values as expected by the API
          */
         _createSectionLimitation: function (data) {
-            // limitation will be filled like example in UserService.prototype.newRoleAssignInputStruct()
+            // Creating a limitation in the format described in the JS REST client's `UserService.prototype.newRoleAssignInputStruct()`
             var limitation = {
                     "_identifier": data.limitationType,
                     "values": {
-                        "ref":[{
-                            //todo when ezsystems/ezpublish-kernel#1569 is merged replace with: data.section.sectionRestId;
-                            "_href": data.section.sectionId,
+                        "ref": [{
+                            "_href": data.section.sectionRestId,
                             "_media-type": "application\/vnd.ez.api.Section+json"
                         }]
                     }
@@ -162,7 +161,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
          * @return {Object} the limitation with its identifer and values as expected by the API
          */
         _createSubtreeLimitation: function (data) {
-            // limitation will be filled like example in UserService.prototype.newRoleAssignInputStruct()
+            // Creating a limitation in the format described in the JS REST client's `UserService.prototype.newRoleAssignInputStruct()`
             var limitation,
                 limitationValues = Y.Array.map(data.subtreeIds, function(subtreeId) {
                     return {"_href": subtreeId, "_media-type": "application\/vnd.ez.api.Location+json"};
@@ -171,7 +170,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
             limitation = {
                 "_identifier": "Subtree",
                 "values": {
-                    "ref":limitationValues
+                    "ref": limitationValues
                 }
             };
             return limitation;
@@ -280,7 +279,12 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
             var notificationIdentifier = this._getAssignRoleNotificationIdentifier(
                     'assign-role', assignActionData, contents
                 ),
-                notificationSucessText =  '"' + assignActionData.roleName + '" role has been assigned to ' + countAssigned + ' users/groups';
+                notificationSucessText =
+                    '"'
+                    + assignActionData.roleName
+                    + '" role has been assigned to '
+                    + countAssigned
+                    + ' users/groups';
 
             if (countAssigned>0) {
                 if (this._hasSectionLimitation(assignActionData)) {

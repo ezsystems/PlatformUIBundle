@@ -411,7 +411,7 @@ YUI.add('ez-roleserversideview-tests', function (Y) {
             var container = this.view.get('container'),
                 button = container.one('.ez-role-assign-limit-subtree-button'),
                 udView = new Y.View(),
-                subtreePathString ="/1/2/",
+                subtreeLocationId ="/api/ezp/v2/content/locations/1/2/",
                 that = this,
                 locationMock = new Y.Mock(),
                 selection = [{location: locationMock}],
@@ -419,15 +419,14 @@ YUI.add('ez-roleserversideview-tests', function (Y) {
 
             Y.Mock.expect(locationMock, {
                 method: 'get',
-                args: ['pathString'],
-                returns: subtreePathString
+                args: ['id'],
+                returns: subtreeLocationId
             });
 
             this.view.once('contentDiscover', function (e) {
 
                 that.resume(function() {
                     e.config.contentDiscoveredHandler.call(udView, fakeEventFacade);
-                    //e.config.contentDiscoveredHandler.apply(udView, [selection]);
                     udView.set('active', false);
 
                     that.view.on('contentDiscover', function (e) {
