@@ -144,8 +144,7 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
                     "_identifier": data.limitationType,
                     "values": {
                         "ref":[{
-                            //todo when ezsystems/ezpublish-kernel#1569 is merged replace with: data.section.sectionRestId;
-                            "_href": data.section.sectionId,
+                            "_href": data.section.sectionRestId,
                             "_media-type": "application\/vnd.ez.api.Section+json"
                         }]
                     }

@@ -40,7 +40,7 @@
                 {% if not can_assign %}disabled{% endif %}
                 {{ 'role.assign_limit_section.user_or_group'|trans }}
             </button>
-            <a href="{{ path("admin_roleView", {"roleId": role.id}) }}" class="ez-role-assign-limit-section-button pure-button ez-button">
+            <a href="{{ path("admin_roleView", {"roleId": role.id}) }}" class="ez-role-assign-limit-section-cancel-button pure-button ez-button">
                 {{- 'role.assign_limit_section.cancel'|trans -}}
             </a>
         </p>

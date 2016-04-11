@@ -54,7 +54,7 @@ YUI.add('ez-roleserversideview', function (Y) {
                 container = this.get('container'),
                 sectionSelector = container.one(".ez-role-assignment-section-id"),
                 sectionSelectedIndex = sectionSelector.get('selectedIndex'),
-                unsetLoading = Y.bind(this._uiUnsetAssignRoleLoading, this, button),
+                unsetLoading = Y.bind(this._uiUnsetUDWButtonLoading, this, button),
                 section = {
                     sectionId: sectionSelector.get('options').item(sectionSelectedIndex).get('value'),
                     sectionRestId: sectionSelector.get('options').item(sectionSelectedIndex).getAttribute('data-section-rest-id'),
@@ -72,7 +72,7 @@ YUI.add('ez-roleserversideview', function (Y) {
                 };
 
             e.preventDefault();
-            this._uiSetAssignRoleLoading(button);
+            this._uiSetUDWButtonLoading(button);
             this._fireContentDiscover(button, unsetLoading, udwConfigData);
         },
 
@@ -108,11 +108,11 @@ YUI.add('ez-roleserversideview', function (Y) {
          */
         _pickSubtreeLimitation: function (e) {
             var button = e.target,
-                unsetLoading = Y.bind(this._uiUnsetAssignRoleLoading, this, button),
+                unsetLoading = Y.bind(this._uiUnsetUDWButtonLoading, this, button),
                 that = this;
 
             e.preventDefault();
-            this._uiSetAssignRoleLoading(button);
+            this._uiSetUDWButtonLoading(button);
             this.fire('contentDiscover', {
                 config: {
                     title: button.getAttribute('data-universaldiscovery-limit-subtree-title'),
@@ -134,11 +134,11 @@ YUI.add('ez-roleserversideview', function (Y) {
          * @param {EventFacade} e
          */
         _setSubtreeLimitation: function (button, udView, e) {
-            var unsetLoading = Y.bind(this._uiUnsetAssignRoleLoading, this, button),
+            var unsetLoading = Y.bind(this._uiUnsetUDWButtonLoading, this, button),
                 that = this,
                 selectedLocationsIds = Y.Array.map(e.selection, function(struct) {
-                //todo when ezsystems/ezpublish-kernel#1569 is merged replace with: selectedLocationsIds.push(struct.location.get('id'));
-                return struct.location.get('pathString');
+
+                return struct.location.get('id');
             }),
                 udwConfigData = {
                     roleId: button.getAttribute('data-role-rest-id'),

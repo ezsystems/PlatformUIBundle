@@ -208,7 +208,6 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                 callback = function () {
                     callbackCalled = true;
                 },
-                config = { data: { roleId: 42 } },
                 that = this;
 
             Mock.expect(universalDiscovery, {
