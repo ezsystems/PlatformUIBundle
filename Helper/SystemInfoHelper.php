@@ -12,6 +12,11 @@ use Symfony\Component\HttpKernel\Kernel;
 use Doctrine\DBAL\Connection;
 use ezcSystemInfo;
 
+/**
+ * Class SystemInfoHelper.
+ *
+ * @deprecated Deprecated since version 1.3
+ */
 class SystemInfoHelper implements SystemInfoHelperInterface
 {
     /**
