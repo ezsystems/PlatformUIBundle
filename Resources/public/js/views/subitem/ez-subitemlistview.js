@@ -24,9 +24,9 @@ YUI.add('ez-subitemlistview', function (Y) {
      * @namespace eZ
      * @class SubitemListView
      * @constructor
-     * @extends eZ.TemplateBasedView
+     * @extends eZ.SubitemBaseView
      */
-    Y.eZ.SubitemListView = Y.Base.create('subitemListView', Y.eZ.TemplateBasedView, [Y.eZ.AsynchronousView], {
+    Y.eZ.SubitemListView = Y.Base.create('subitemListView', Y.eZ.SubitemBaseView, [Y.eZ.AsynchronousView], {
         events: {
             '.ez-subitemlist-navigation-link': {
                 'tap': '_handlePagination',
@@ -47,6 +47,8 @@ YUI.add('ez-subitemlistview', function (Y) {
         },
 
         initializer: function () {
+            this._set('identifier', 'list');
+            this._set('name', 'List view');
             this._fireMethod = this._fireLocationSearch;
             this._watchAttribute = 'subitems';
 
@@ -64,8 +66,10 @@ YUI.add('ez-subitemlistview', function (Y) {
          * @method _refresh
          */
         _refresh: function () {
-            this._uiPageLoading();
-            this._fireLocationSearch();
+            if ( this.get('active') ) {
+                this._uiPageLoading();
+                this._fireLocationSearch();
+            }
         },
 
         /**

@@ -303,6 +303,7 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
                 container: '.container',
                 location: this.location,
             });
+            this.view.set('active', true);
         },
 
         tearDown: function () {
@@ -364,6 +365,7 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
                 fired = true;
             });
 
+            this.view.set('active', true);
             this.location.set(attributeName, true);
 
             Assert.isTrue(

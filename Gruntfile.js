@@ -16,6 +16,7 @@ module.exports = function(grunt) {
             "./Resources/public/js/views/tabs/*.js",
             "./Resources/public/js/views/navigation/*.js",
             "./Resources/public/js/views/serverside/*.js",
+            "./Resources/public/js/views/subitem/*.js",
             "./Resources/public/js/views/services/*.js",
             "./Resources/public/js/views/services/plugins/*.js",
             "./Resources/public/js/models/*.js",

@@ -4,7 +4,7 @@
  */
 YUI.add('ez-locationviewview-tests', function (Y) {
     var test, tabsTest, eventsTest, destroyTest, attrsToSubViewsTest,
-        selectedTest, forwardActiveTest, subitemListAttr,
+        selectedTest, forwardActiveTest, subitemBoxAttr, subitemListAttrTest,
         addTabViewTest, removeTabViewTest,
         Mock = Y.Mock, Assert = Y.Assert,
         _getModelMock = function (serialized) {
@@ -40,7 +40,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             this.barMock = new RenderedView();
             this.tab1 = new Y.View();
             this.tab2 = new Y.View();
-            this.subitemList = new RenderedView();
+            this.subitemBox = new RenderedView();
 
             this.tab1.set('identifier', 'tab1');
             this.tab1.set('title', 'Tab1');
@@ -74,7 +74,8 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             this.view = new Y.eZ.LocationViewView({
                 actionBar: this.barMock,
                 tabs: [this.tab1, this.tab2],
-                subitemList: this.subitemList,
+                subitemBox: this.subitemBox,
+                subitemList: null,
                 location : this.locationMock,
                 content : this.contentMock,
                 contentType : this.contentTypeMock,
@@ -130,21 +131,21 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             );
         },
 
-        "Should render the subitem list": function () {
-            this._testRenderSubView('subitemList', 'subitemlist');
+        "Should render the subitem box": function () {
+            this._testRenderSubView('subitemBox', 'subitem');
         },
 
         "Should render the action bar": function () {
             this._testRenderSubView('actionBar', 'actionbar');
         },
 
-        "Should handle a null subitem list": function () {
-            this.view._set('subitemList', null);
+        "Should handle a null subitem box": function () {
+            this.view._set('subitemBox', null);
             this.view.render();
 
             Assert.areEqual(
-                "", this.view.get('container').one('.ez-subitemlist-container').getContent(),
-                "The subitem list container should be empty"
+                "", this.view.get('container').one('.ez-subitem-container').getContent(),
+                "The subitem box container should be empty"
             );
         },
 
@@ -295,9 +296,11 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 }
             });
 
-            Y.eZ.SubitemListView = Y.Base.create('subitemListView', Y.View, [], {}, {
+            Y.eZ.SubitemBoxView = Y.Base.create('subitemBoxView', Y.View, [], {}, {
                 ATTRS: {
                     location: {},
+                    content: {},
+                    contentType: {},
                     config: {},
                 }
             });
@@ -318,6 +321,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 config: {},
                 path: {},
                 languageCode: 'fre-FR',
+                subitemList: null,
             });
         },
 
@@ -325,7 +329,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             delete Y.eZ.ActionBarView;
             delete Y.eZ.LocationViewViewTabView;
             delete Y.eZ.LocationViewDetailsTabView;
-            delete Y.eZ.SubitemListView;
+            delete Y.eZ.SubitemBoxView;
             this.view.destroy();
             delete this.view;
         },
@@ -448,31 +452,31 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             );
         },
 
-        "Should set the location on the subitem list": function () {
+        "Should set the location on the subitem box": function () {
             Assert.areSame(
                 this.view.get('location'),
-                this.view.get('subitemList').get('location'),
-                'The location should have been set on the subitem list'
+                this.view.get('subitemBox').get('location'),
+                'The location should have been set on the subitem box'
             );
         },
 
-        "Should set the config on the subitem list": function () {
+        "Should set the config on the subitem box": function () {
             Assert.areSame(
                 this.view.get('config'),
-                this.view.get('subitemList').get('config'),
-                'The config should have been set on the subitem list'
+                this.view.get('subitemBox').get('config'),
+                'The config should have been set on the subitem box'
             );
         },
 
-        "Should set the location view as a bubble target of the subitem list": function () {
+        "Should set the location view as a bubble target of the subitem box": function () {
             var bubbled = false, evt = 'whatever';
 
             this.view.on('*:' + evt, function () {
                 bubbled = true;
             });
-            this.view.get('subitemList').fire(evt);
+            this.view.get('subitemBox').fire(evt);
 
-            Assert.isTrue(bubbled, "The location view should be a bubble target of the subitem list");
+            Assert.isTrue(bubbled, "The location view should be a bubble target of the subitem box");
         },
     });
 
@@ -481,7 +485,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
 
         setUp: function () {
             this.barMock = new Y.View();
-            this.subitemList = new Y.View();
+            this.subitemBox = new Y.View();
             this.tab1 = new Y.View();
             this.tab2 = new Y.View();
             this.tab1.setAttrs({
@@ -495,7 +499,8 @@ YUI.add('ez-locationviewview-tests', function (Y) {
 
             this.view = new Y.eZ.LocationViewView({
                 actionBar: this.barMock,
-                subitemList: this.subitemList,
+                subitemBox: this.subitemBox,
+                subitemList: null,
                 tabs: [this.tab1, this.tab2],
                 selectedTab: 'tab1',
                 location: _getModelMock({}),
@@ -564,7 +569,8 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         setUp: function () {
             this.view = new Y.eZ.LocationViewView({
                 actionBar: new Y.View(),
-                subitemList: new Y.View(),
+                subitemBox: new Y.View(),
+                subitemList: null,
                 tabs: [],
                 container: '.container',
             });
@@ -597,7 +603,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             this.barMock = new Y.View();
             this.tab1 = new Y.View();
             this.tab2 = new Y.View();
-            this.subitemList = new Y.View();
+            this.subitemBox = new Y.View();
             this.tab1.setAttrs({
                 title: "Tab 1",
                 identifier: "tab1",
@@ -610,7 +616,8 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             this.view = new Y.eZ.LocationViewView({
                 actionBar: this.barMock,
                 tabs: [this.tab1, this.tab2],
-                subitemList: this.subitemList,
+                subitemBox: this.subitemBox,
+                subitemList: null,
                 selectedTab: 'tab1',
                 location: {},
                 content: {},
@@ -622,7 +629,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             this.tab2.destroy();
             this.barMock.destroy();
             this.view.destroy();
-            this.subitemList.destroy();
+            this.subitemBox.destroy();
         },
 
         "Should destroy the action bar": function () {
@@ -647,11 +654,11 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             );
         },
 
-        "Should destroy the subitem list": function () {
+        "Should destroy the subitem box": function () {
             this.view.destroy();
 
             Assert.isTrue(
-                this.subitemList.get('destroyed'),
+                this.subitemBox.get('destroyed'),
                 "The action bar should have been destroyed"
             );
         },
@@ -927,8 +934,8 @@ YUI.add('ez-locationviewview-tests', function (Y) {
         },
     });
 
-    subitemListAttr = new Y.Test.Case({
-        name: "eZ Location view view subitemList attribute test",
+    subitemBoxAttr = new Y.Test.Case({
+        name: "eZ Location view view subitemBox attribute test",
 
         setUp: function () {
             this.contentType = new Mock();
@@ -940,17 +947,78 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                     return this.isContainer;
                 }, this)
             });
-            Y.eZ.SubitemListView = function () {};
+            Y.eZ.SubitemBoxView = Y.View;
         },
 
         tearDown: function () {
-            delete Y.eZ.SubitemListView;
+            delete Y.eZ.SubitemBoxView;
             this.view.destroy();
         },
 
-        "Should not use a subitemList view": function () {
+        "Should not use a subitemBox view": function () {
             this.isContainer = false;
 
+            this.view = new Y.eZ.LocationViewView({
+                actionBar: new Y.View(),
+                tabs: [],
+                contentType: this.contentType,
+            });
+
+            Assert.isNull(
+                this.view.get('subitemBox'),
+                "The subitemBox attribute should be null"
+            );
+        },
+
+        "Should use a subitemBox view": function () {
+            this.isContainer = true;
+
+            this.view = new Y.eZ.LocationViewView({
+                actionBar: new Y.View(),
+                tabs: [],
+                contentType: this.contentType,
+                subitemList: null,
+            });
+
+            Assert.isInstanceOf(
+                Y.eZ.SubitemBoxView, this.view.get('subitemBox'),
+                "The subitemBox attribute should be an instance of Y.eZ.SubitemBoxView"
+            );
+        },
+    });
+
+    subitemListAttrTest = new Y.Test.Case({
+        name: "eZ Location view view subitemList attribute test (deprecated attribute)",
+
+        setUp: function () {
+            this.contentType = new Mock();
+
+            Mock.expect(this.contentType, {
+                method: 'get',
+                args: ['isContainer'],
+                run: Y.bind(function () {
+                    return this.isContainer;
+                }, this)
+            });
+            Y.eZ.SubitemBoxView = Y.Base.create('boxView', Y.View, [], {}, {
+                ATTRS: {
+                    subitemViews: {
+                        value: [
+                            new Y.View({identifier: 'foo'}),
+                            new Y.View({identifier: 'list'}),
+                        ],
+                    }
+                }
+            });
+        },
+
+        tearDown: function () {
+            delete Y.eZ.SubitemBoxView;
+            this.view.destroy();
+        },
+
+        "Should return null": function () {
+            this.isContainer = false;
             this.view = new Y.eZ.LocationViewView({
                 actionBar: new Y.View(),
                 tabs: [],
@@ -963,9 +1031,8 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             );
         },
 
-        "Should use a subitemList view": function () {
+        "Should return the subitem view with `list` as identifier": function () {
             this.isContainer = true;
-
             this.view = new Y.eZ.LocationViewView({
                 actionBar: new Y.View(),
                 tabs: [],
@@ -973,11 +1040,16 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             });
 
             Assert.isInstanceOf(
-                Y.eZ.SubitemListView, this.view.get('subitemList'),
-                "The subitemList attribute should be an instance of Y.eZ.SubitemListView"
+                Y.View, this.view.get('subitemList'),
+                "The subitem list should be found"
+            );
+            Assert.areEqual(
+                "list", this.view.get('subitemList').get('identifier'),
+                "The view with `list` as identifier should be returned"
             );
         },
     });
+
 
     Y.Test.Runner.setName("eZ Location View view tests");
     Y.Test.Runner.add(test);
@@ -989,5 +1061,6 @@ YUI.add('ez-locationviewview-tests', function (Y) {
     Y.Test.Runner.add(removeTabViewTest);
     Y.Test.Runner.add(selectedTest);
     Y.Test.Runner.add(forwardActiveTest);
-    Y.Test.Runner.add(subitemListAttr);
+    Y.Test.Runner.add(subitemBoxAttr);
+    Y.Test.Runner.add(subitemListAttrTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-locationviewview']});

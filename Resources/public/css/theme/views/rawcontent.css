@@ -19,29 +19,9 @@
     overflow: hidden;
 }
 
-.ez-view-rawcontentview .ez-raw-content-title a:after,
-.ez-view-rawcontentview .ez-fieldgroup-name a:after {
-    display: inline-block;
-    content: "\E602";
-    font-family: 'ez-platformui-icomoon';
-    color: #999;
-    padding-left: 0.3em;
-    vertical-align: bottom;
-}
-
 .ez-view-rawcontentview.is-raw-content-view-collapsed .ez-raw-content-title a:after,
 .ez-view-rawcontentview .ez-fieldgroup-name.is-field-group-collapsed a:after {
     content: "\E604";
-}
-
-.ez-view-rawcontentview .ez-raw-content-title a,
-.ez-view-rawcontentview .ez-fieldgroup-name a {
-    color: #333;
-}
-
-.ez-view-rawcontentview .ez-raw-content-title a:hover,
-.ez-view-rawcontentview .ez-fieldgroup-name a:hover {
-    color: #528036;
 }
 
 .ez-view-rawcontentview .ez-fieldgroup {

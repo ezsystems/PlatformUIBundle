@@ -47,7 +47,7 @@
     <a href="#" class="ez-subitemlist-navigation-link" rel="last">Last</a>
 </script>
 
-<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-subitemlistview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
@@ -67,24 +67,28 @@
         filter: loaderFilter,
         modules: {
             "ez-subitemlistview": {
-                requires: ['ez-templatebasedview', 'ez-asynchronousview', 'event-tap', 'event-valuechange', 'array-extras'],
-                fullpath: "../../../Resources/public/js/views/ez-subitemlistview.js"
+                requires: ['ez-subitembaseview', 'ez-asynchronousview', 'event-tap', 'event-valuechange', 'array-extras'],
+                fullpath: "../../../../Resources/public/js/views/subitem/ez-subitemlistview.js"
+            },
+            "ez-subitembaseview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/subitem/ez-subitembaseview.js"
             },
             "ez-asynchronousview": {
                 requires: ['view', 'event-tap'],
-                fullpath: "../../../Resources/public/js/extensions/ez-asynchronousview.js"
+                fullpath: "../../../../Resources/public/js/extensions/ez-asynchronousview.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
-                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
             },
             "ez-view": {
                 requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
-                fullpath: "../../../Resources/public/js/views/ez-view.js"
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
             },
             "ez-pluginregistry": {
                 requires: ['array-extras'],
-                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+                fullpath: "../../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
         }
     }).use('ez-subitemlistview-tests', function (Y) {

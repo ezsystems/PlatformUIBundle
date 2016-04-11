@@ -1,10 +1,7 @@
-<div class="ez-subitemlist-box ez-asynchronousview">
-    <h2 class="ez-subitemlist-title">Sub-items ({{location.childCount}})</h2>
-    <div class="ez-subitemlist-content">
     {{#if location.childCount}}
         {{#if loadingError}}
             <p class="ez-asynchronousview-error ez-font-icon">
-                An error occurred while loading the sub-items list..
+                An error occurred while loading the sub-items list.
                 <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
             </p>
         {{else}}
@@ -88,6 +85,4 @@
     {{else}}
         <p class="ez-subitemlist-no-sub-items">This location has no sub-item.</p>
     {{/if}}
-    </div>
     <div class="ez-subitemlist-loader-mask"></div>
-</div>
