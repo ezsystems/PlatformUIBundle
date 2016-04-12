@@ -13,3 +13,18 @@ parameters:
     # Type ('js' or 'template')
     # ez_platformui.<scope>.yui.modules.<module_name>.type
     ez_platformui.default.css.files: []
+
+    ezsettings.default.system_info_view:
+        full:
+            php:
+                template: "eZPlatformUIBundle:ez-support-tools/info:php.html.twig"
+                match:
+                    SystemInfo\Identifier: "php"
+            hardware:
+                template: "eZPlatformUIBundle:ez-support-tools/info:hardware.html.twig"
+                match:
+                    SystemInfo\Identifier: "hardware"
+            database:
+                template: "eZPlatformUIBundle:ez-support-tools/info:database.html.twig"
+                match:
+                    SystemInfo\Identifier: "database"
