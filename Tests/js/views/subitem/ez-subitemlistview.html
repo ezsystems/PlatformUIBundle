@@ -7,40 +7,9 @@
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="subitemlistview-ez-template">
-    <td class="ez-subitem-priority-cell" id="priority-cell-42">
-        <form class="ez-subitem-priority-form" data-location-id="42">
-            <input
-                    class="ez-subitem-priority-input"
-                    id="priority-42"
-                    type="text"
-                    readonly
-                    required
-                    pattern="^(\^+|-)?\d+$"
-                    data-location-id="42"
-                    value="{{priority}}"><div
-                class="ez-subitem-priority-icons"></div><button
-                data-priority-input="priority-42" id="priority-validate-42" class="ez-subitem-priority-validate"></button><button
-                data-priority-input="priority-42" class="ez-subitem-priority-cancel"></button>
-        </div>
-        </form>
-    </td>
-    <td class="ez-subitem-priority-cell" id="priority-cell-43">
-        <form class="ez-subitem-priority-form" data-location-id="43">
-            <input
-                    class="ez-subitem-priority-input"
-                    id="priority-43"
-                    type="text"
-                    readonly
-                    required
-                    pattern="^(\^+|-)?\d+$"
-                    data-location-id="43"
-                    value="{{priority}}"><div
-                class="ez-subitem-priority-icons"></div><button
-                data-priority-input="priority-43" id="priority-validate-43" class="ez-subitem-priority-validate"></button><button
-                data-priority-input="priority-43" class="ez-subitem-priority-cancel"></button>
-        </div>
-        </form>
-    </td>
+    <table>
+        <tbody class="ez-subitemlist-content"></tbody>
+    </table>
     <a href="#" class="ez-subitemlist-navigation-link" rel="first">First</a>
     <a href="#" class="ez-subitemlist-navigation-link" rel="prev">Previous</a>
     <a href="#" class="ez-subitemlist-navigation-link" rel="next">Next</a>

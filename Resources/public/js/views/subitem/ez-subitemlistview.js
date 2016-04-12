@@ -31,19 +31,6 @@ YUI.add('ez-subitemlistview', function (Y) {
             '.ez-subitemlist-navigation-link': {
                 'tap': '_handlePagination',
             },
-            '.ez-subitem-priority-input': {
-                'tap': '_displayPriorityButtons',
-                'blur': '_validatePriority',
-                'valuechange': '_validatePriority',
-                'mouseover': '_displayEditIcon',
-                'mouseout': '_hideEditIcon',
-            },
-            '.ez-subitem-priority-cancel': {
-                'tap': '_restorePriorityCell',
-            },
-            '.ez-subitem-priority-form': {
-                'submit': '_setPriority'
-            },
         },
 
         initializer: function () {
@@ -70,6 +57,53 @@ YUI.add('ez-subitemlistview', function (Y) {
             this.after('offsetChange', this._refresh);
 
             this.get('location').after(['hiddenChange', 'invisibleChange'], Y.bind(this._refresh, this));
+
+            /**
+             * Holds the displayed subitem list item view instances
+             *
+             * @property _itemViews
+             * @type {Array}
+             * @protected
+             */
+            this._itemViews = [];
+
+            this.after('*:editingPriorityChange', function (e) {
+                if ( e.newVal ) {
+                    this._lockPriorityEdit(e.target);
+                } else {
+                    this._unlockPriorityEdit();
+                }
+            });
+        },
+
+        /**
+         * Restores the `canEditPriority` attribute so that the priority can be
+         * editing in all views
+         *
+         * @method _unlockPriorityEdit
+         * @protected
+         */
+        _unlockPriorityEdit: function () {
+            this._itemViews.forEach(function (itemView) {
+                itemView.set('canEditPriority', true);
+            });
+        },
+
+        /**
+         * Makes sure only one priority can be edited at a time.
+         *
+         * @protected
+         * @method _lockPriorityEdit
+         * @param {View} view the view where the priority occurs
+         */
+        _lockPriorityEdit: function (view) {
+            this._itemViews.forEach(function (itemView) {
+                itemView.set('canEditPriority', (itemView === view));
+            });
+        },
+
+        destructor: function () {
+            this._destroyItemViews();
         },
 
         /**
@@ -183,212 +217,68 @@ YUI.add('ez-subitemlistview', function (Y) {
                 isFirst: this._isFirstPage(),
                 isLast: this._isLastPage(),
                 hasPages: this._hasPages(),
+                columns: this._getColumns(),
             }));
-
+            this._renderItems();
             return this;
         },
 
         /**
-         * Show the edit icon to inform the user input can be edited.
+         * Returns an array of objects describing the columns to add to the
+         * list. Each object contains an `identifier` and a `name`.
          *
-         * @method _displayEditIcon
+         * @method _getColumns
          * @protected
-         * @param {Object} e event facade
+         * @return Array
          */
-        _displayEditIcon: function (e) {
-            var selectedCell = this._getPriorityCell(e.target.getAttribute('data-location-id'));
-
-            if (!this.get('editingPriority')) {
-                selectedCell.addClass('ez-subitem-hovered-priority-cell');
-            }
+        _getColumns: function () {
+            return this.get('displayedProperties').map(function (identifier) {
+                return {
+                    name: this.get('propertyNames')[identifier],
+                    identifier: identifier,
+                };
+            }, this);
         },
 
         /**
-         * Show the error icon to inform the user input is not correctly filled.
+         * Destroys the instantiated item views.
          *
-         * @method _displayErrorIcon
+         * @method _destroyItemViews
          * @protected
-         * @param {Node} input the DOM node of the input
-         * @param {Node} selectedCell the DOM node of the current selected cell
          */
-        _displayErrorIcon: function (input, selectedCell) {
-            selectedCell.addClass('ez-subitem-error-priority-cell');
-            selectedCell.removeClass('ez-subitem-selected-priority-cell');
-        },
-
-        /**
-         * Hide the edit icon to inform the user input can be edited.
-         *
-         * @method _hideEditIcon
-         * @protected
-         * @param {Object} e event facade
-         */
-        _hideEditIcon: function (e) {
-            var selectedCell = this._getPriorityCell(e.target.getAttribute('data-location-id'));
-
-            selectedCell.removeClass('ez-subitem-hovered-priority-cell');
-        },
-
-        /**
-         * Hide the error icon.
-         *
-         * @method _hideErrorIcon
-         * @protected
-         * @param {Object} input the DOM node of the input
-         * @param {Object} selectedCell the DOM node of the current selected cell
-         */
-        _hideErrorIcon: function (input, selectedCell) {
-            selectedCell.removeClass('ez-subitem-error-priority-cell');
-            selectedCell.addClass('ez-subitem-selected-priority-cell');
-        },
-
-        /**
-         * Show the 'validate' & 'cancel' buttons which allow to update or not the priority.
-         *
-         * @method _displayPriorityButtons
-         * @protected
-         * @param {Object} e event facade
-         */
-        _displayPriorityButtons: function (e) {
-            var selectedCell = this._getPriorityCell(e.target.getAttribute('data-location-id'));
-
-            e.preventDefault();
-            if (!this.get('editingPriority')) {
-                this._set('editingPriority', true);
-                selectedCell.removeClass('ez-subitem-hovered-priority-cell');
-                selectedCell.addClass('ez-subitem-selected-priority-cell');
-                e.target.removeAttribute('readonly');
-            }
-        },
-
-        /**
-         * Hide the 'validate' & 'cancel' buttons which allow to update or not the priority.
-         * Also fill back priority input with the current sub item priority.
-         *
-         * @method _restorePriorityCell
-         * @protected
-         * @param {Object} e event facade
-         */
-        _restorePriorityCell: function (e) {
-            e.preventDefault();
-            this._hidePriorityButtons();
-            this._restorePriorityValue(e);
-        },
-
-        /**
-         * Restore the input value with the priority of the sub item
-         *
-         * @method _restorePriorityValue
-         * @protected
-         * @param {Object} e event facade
-         */
-        _restorePriorityValue: function (e) {
-            var input = this._getPriorityInput('#' + e.target.getAttribute('data-priority-input')),
-                subItem = this._getSubItemStruct(input.getAttribute('data-location-id'));
-
-            input.set('value', subItem.location.get('priority'));
-            input.setAttribute('readonly', 'readonly');
-        },
-
-        /**
-         * Return the sub item struct with the giiven locationId
-         *
-         * @method _getSubItemStruct
-         * @protected
-         * @param {Number} locationId
-         * @return {Object}
-         */
-        _getSubItemStruct: function (locationId) {
-            return Y.Array.find(this.get('subitems'), function (locStruct) {
-                return locStruct.location.get('locationId') == locationId;
+        _destroyItemViews: function () {
+            this._itemViews.forEach(function(view) {
+                view.destroy();
             });
+            this._itemViews = [];
         },
 
         /**
-         * Hide the validate and cancel buttons displayed while editing priority
+         * Renders an item view per subitem.
          *
-         * @method _hidePriorityButtons
          * @protected
+         * @method _renderItems
          */
-        _hidePriorityButtons: function () {
-            var selectedCell = this.get('container').one('.ez-subitem-selected-priority-cell');
+        _renderItems: function () {
+            var contentNode = this.get('container').one('.ez-subitemlist-content'),
+                ItemView = this.get('itemViewConstructor');
 
-            selectedCell.removeClass('ez-subitem-selected-priority-cell');
-            this._set('editingPriority', false);
-        },
-
-        /**
-         *  Event handler allowing to change the priority of the subitem
-         *
-         * @method _setPriority
-         * @protected
-         * @param {Object} e event facade
-         */
-        _setPriority: function (e) {
-            var button = this.get('container').one('#priority-validate-' + e.target.getAttribute('data-location-id')),
-                selectedCell = this.get('container').one('.ez-subitem-selected-priority-cell'),
-                input = this._getPriorityInput('#' + button.getAttribute('data-priority-input')),
-                subItem = this._getSubItemStruct(input.getAttribute('data-location-id'));
-
-            this.fire('updatePriority', {location: subItem.location, priority: input.get('value')});
-            input.setAttribute('readonly', 'readonly');
-            selectedCell.removeClass('ez-subitem-selected-priority-cell');
-            this._set('editingPriority', false);
-            e.preventDefault();
-        },
-
-        /**
-         * Validates the current input of priority
-         *
-         * @method _validatePriority
-         * @protected
-         * @param {Object} e event facade
-         */
-        _validatePriority: function (e) {
-            var validity = this._getInputValidity(e.target),
-                selectedCell = this._getPriorityCell(e.target.getAttribute('data-location-id'));
-
-            if ( validity.patternMismatch || validity.valueMissing ) {
-                this._displayErrorIcon(e.target, selectedCell);
-            } else if (selectedCell.hasClass('ez-subitem-error-priority-cell')) {
-                this._hideErrorIcon(e.target, selectedCell);
+            if ( !this.get('subitems') ) {
+                return;
             }
-        },
+            this._destroyItemViews();
+            this.get('subitems').forEach(function (struct) {
+                var view = new ItemView({
+                        displayedProperties: this.get('displayedProperties'),
+                        location: struct.location,
+                        content: struct.content,
+                        contentType: struct.contentType,
+                        bubbleTargets: this,
+                    });
 
-        /**
-         * Return the priority cell for a given location
-         *
-         * @method _getPriorityCell
-         * @param {String} locationId
-         * @return {Node}
-         */
-        _getPriorityCell: function (locationId) {
-            return this.get('container').one('#priority-cell-' + locationId);
-        },
-
-        /**
-         * Return the priority input from its id
-         *
-         * @method _getPriorityInput
-         * @param {String} inputId
-         * @return {Node}
-         */
-        _getPriorityInput: function (inputId) {
-            return this.get('container').one(inputId);
-        },
-
-        /**
-         * Returns the input validity state object for the input generated by
-         * the Integer template
-         *
-         * See https://developer.mozilla.org/en-US/docs/Web/API/ValidityState
-         *
-         * @protected
-         * @method _getInputValidity
-         * @return {ValidityState}
-         */
-        _getInputValidity: function (input) {
-            return input.get('validity');
+                this._itemViews.push(view);
+                contentNode.append(view.render().get('container'));
+            }, this);
         },
 
         /**
@@ -427,9 +317,12 @@ YUI.add('ez-subitemlistview', function (Y) {
         /**
          * Converts the subitems array to JSON so that it can be used in the
          * template.
+         * **Deprecated:** this method and the corresponding `subitems` template
+         * variable will be removed in PlatformUI 2.0
          *
          * @method _convertToJSONList
          * @protected
+         * @deprecated in 1.3
          * @return undefined|Array
          */
         _convertToJSONList: function () {
@@ -460,6 +353,8 @@ YUI.add('ez-subitemlistview', function (Y) {
             this.fire('locationSearch', {
                 viewName: 'subitemlist-' + locationId,
                 resultAttribute: 'subitems',
+                loadContentType: true,
+                loadContent: true,
                 search: {
                     criteria: {
                         "ParentLocationIdCriterion": locationId,
@@ -528,14 +423,44 @@ YUI.add('ez-subitemlistview', function (Y) {
             subitems: {},
 
             /**
-             * Boolean to check if a subitem priority is currently selected.
+             * The properties to display
              *
-             * @attribute editingPriority
-             * @default false
-             * @type Boolean
+             * @attribute displayedProperties
+             * @type Array
              */
-            editingPriority: {
-                value: false,
+            displayedProperties: {
+                value: ['name', 'lastModificationDate', 'contentType', 'priority', 'translations'],
+            },
+
+            /**
+             * A key value object to store the human readable names of the
+             * columns.
+             *
+             * @attribute propertyNames
+             * @type {Object}
+             */
+            propertyNames: {
+                value: {
+                    'name': 'Name',
+                    'lastModificationDate': 'Modified',
+                    'contentType': 'Content type',
+                    'priority': 'Priority',
+                    'translations': 'Translations',
+                }
+            },
+
+            /**
+             * The constructor function to use to instance the item view
+             * instances.
+             *
+             * @attribute itemViewConstructor
+             * @type {Function}
+             * @default {Y.eZ.SubitemListItemView}
+             */
+            itemViewConstructor: {
+                valueFn: function () {
+                    return Y.eZ.SubitemListItemView;
+                },
             },
         }
     });

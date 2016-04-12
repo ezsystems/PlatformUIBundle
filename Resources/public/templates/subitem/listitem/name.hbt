@@ -1,0 +1,1 @@
+<td class="{{ property.class}}"><a href={{path "viewLocation" id=location.id languageCode=content.mainLanguageCode}}>{{ property.value }}</a></td>

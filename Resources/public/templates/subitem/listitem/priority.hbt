@@ -1,0 +1,17 @@
+<td class="{{ property.class }}">
+    <form class="ez-subitem-priority-form" autocomplete="off">
+        <input
+            class="ez-subitem-priority-input"
+            type="text"
+            readonly
+            required
+            pattern="^(\^+|-)?\d+$"
+            inputmode="numeric"
+            value="{{ property.value }}"><div
+            class="ez-subitem-priority-icons ez-font-icon"></div><div
+            class="ez-subitem-priority-buttons"><button
+            class="ez-subitem-priority-button ez-subitem-priority-validate ez-button ez-font-icon pure-button"></button><button
+            class="ez-subitem-priority-button ez-subitem-priority-cancel ez-button ez-font-icon pure-button"></button>
+        </div>
+    </form>
+</td>

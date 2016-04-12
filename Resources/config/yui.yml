@@ -333,11 +333,37 @@ system:
                     requires: ['ez-templatebasedview']
                     path: %ez_platformui.public_dir%/js/views/subitem/ez-subitembaseview.js
                 ez-subitemlistview:
-                    requires: ['ez-subitembaseview', 'ez-asynchronousview', 'event-tap', 'subitemlistview-ez-template', 'event-valuechange', 'array-extras']
+                    requires:
+                        - 'ez-subitembaseview'
+                        - 'ez-subitemlistitemview'
+                        - 'ez-asynchronousview'
+                        - 'event-tap'
+                        - 'subitemlistview-ez-template'
+                        - 'event-valuechange'
+                        - 'array-extras'
                     path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemlistview.js
                 subitemlistview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/subitem/list.hbt
+                ez-subitemlistitemview:
+                    requires:
+                        - 'ez-templatebasedview'
+                        - 'event-tap'
+                        - 'event-valuechange'
+                        - 'template'
+                        - 'subitemlistitemview-ez-template'
+                        - 'subitemlistitem-name-ez-template'
+                        - 'subitemlistitem-priority-ez-template'
+                    path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemlistitemview.js
+                subitemlistitemview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/subitem/listitem.hbt
+                subitemlistitem-name-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/subitem/listitem/name.hbt
+                subitemlistitem-priority-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/subitem/listitem/priority.hbt
                 ez-subitemgridview:
                     requires:
                         - 'ez-subitembaseview'

@@ -1,0 +1,7 @@
+{{#each properties}}
+    {{#if rendered}}
+        {{{ rendered }}}
+    {{else}}
+        <td class="{{ class }}">{{ value }}</td>
+    {{/if}}
+{{/each}}
