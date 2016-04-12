@@ -60,3 +60,6 @@
     content: "\E904";
 }
 
+.ez-view-subitemboxview .ez-switch-subitemview[data-view-identifier="grid"]:before {
+    content: "\E905";
+}

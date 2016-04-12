@@ -262,6 +262,13 @@ YUI.add('ez-subitemboxview', function (Y) {
                             config: this.get('config'),
                             bubbleTargets: this,
                         }),
+                        new Y.eZ.SubitemGridView({
+                            location: this.get('location'),
+                            content: this.get('content'),
+                            contentType: this.get('contentType'),
+                            config: this.get('config'),
+                            bubbleTargets: this,
+                        }),
                     ];
                 },
             },

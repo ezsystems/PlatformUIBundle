@@ -1,0 +1,49 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-subitemgridview .ez-subitemgrid-more {
+    font-size: 110%;
+}
+
+.ez-view-subitemgridview .ez-subitemgrid-more:before,
+.ez-view-subitemgridview .ez-subitemgrid-more:after {
+    display: inline-block;
+    content: " ";
+    width: 1em;
+    height: 1em;
+    padding: 0;
+}
+
+.ez-view-subitemgridview.is-page-loading .ez-subitemgrid-more:before {
+    content: "\e61c";
+    -webkit-animation: spin 0.7s infinite linear;
+            animation: spin 0.7s infinite linear;
+}
+
+.ez-view-subitemgridview .ez-subitemgrid-item-visual {
+    background: #fff;
+    border: 1px solid #333;
+    font-size: 4em;
+}
+
+.ez-view-subitemgridview .ez-subitemgrid-item-visual:before {
+    display: block;
+    text-align: center;
+    line-height: 2em;
+}
+
+.ez-view-subitemgridview .ez-subitemgrid-item-link {
+    color: #333;
+}
+
+.ez-view-subitemgridview .ez-subitemgrid-item-content-type {
+    font-size: 90%;
+}
+
+.ez-view-subitemgridview .ez-subitemgrid-item-name {
+    font-weight: bold;
+    text-align: center;
+    font-size: 95%;
+}
