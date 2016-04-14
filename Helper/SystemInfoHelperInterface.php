@@ -8,6 +8,11 @@
  */
 namespace EzSystems\PlatformUIBundle\Helper;
 
+/**
+ * Interface SystemInfoHelperInterface.
+ *
+ * @deprecated Deprecated since version 1.3
+ */
 interface SystemInfoHelperInterface
 {
     /**
