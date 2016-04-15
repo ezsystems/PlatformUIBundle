@@ -90,6 +90,7 @@ class Fields extends PlatformUI
         $this->clickNavigationZone('Content');
         $this->clickNavigationItem('Content structure');
         $this->clickOnTreePath($name);
+        $this->waitWhileLoading();
         $this->clickActionBar('Edit');
         $this->platformStatus = self::WAITING_FOR_PUBLISHING;
         // assert
@@ -112,6 +113,44 @@ class Fields extends PlatformUI
     public function setFieldValueToNothing()
     {
         $this->setFieldValue('');
+    }
+
+    /**
+     *  @Given I set no option as the Field Value
+     *  @And I set no option as the Field Value
+     */
+    public function setSelectionFieldValueToNothing()
+    {
+        $selection = $this->findWithWait('.ez-selection-values');
+        $languages = $selection->findAll('css', 'li');
+        if (!$languages) {
+            // No languages selected
+            return;
+        }
+        // Click on all selected languages to remove them from the selection field
+        foreach ($languages as $language) {
+            $language->click();
+        }
+    }
+
+    /**
+     * @When I set the option :value as the Field Value
+     * @And I set the option :value as the Field Value
+     * @When I add the option :value as the Field Value
+     * @And I add the option :value as the Field Value
+     */
+    public function setSelectionFieldValue($value)
+    {
+        $element = $this->getElementByText($value, '.ez-selection-filter-item');
+        if (!$element) {
+            $selection = $this->findWithWait('.ez-selection-values');
+            $selection->click();
+            $element = $this->getElementByText($value, '.ez-selection-filter-item');
+            if (!$element) {
+                throw new \Exception("Option $value not found");
+            }
+        }
+        $element->click();
     }
 
     /**
