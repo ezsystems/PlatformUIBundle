@@ -15,6 +15,7 @@ use eZ\Publish\API\Repository\Exceptions\InvalidArgumentException;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\UserService;
+use eZ\Publish\API\Repository\Values\ContentType\ContentType;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\Core\Repository\Values\ContentType\ContentTypeCreateStruct;
@@ -61,6 +62,9 @@ class ContentTypeController extends Controller
      */
     private $fieldTypeMapperRegistry;
 
+    /**
+     * @var string[]
+     */
     private $prioritizedLanguages = [];
 
     public function __construct(
@@ -207,7 +211,6 @@ class ContentTypeController extends Controller
 
     public function viewContentTypeAction($contentTypeId, $languageCode = null)
     {
-        $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
         $contentType = $this->contentTypeService->loadContentType($contentTypeId);
         $countQuery = new Query([
             'filter' => new Query\Criterion\ContentTypeId($contentTypeId),
@@ -215,6 +218,10 @@ class ContentTypeController extends Controller
         ]);
         $contentCount = $this->searchService->findContent($countQuery, [], false)->totalCount;
         $deleteForm = $this->createForm(new ContentTypeDeleteType(), ['contentTypeId' => $contentTypeId]);
+
+        if (!isset($languageCode) || !isset($contentType->names[$languageCode])) {
+            $languageCode = $this->getPrioritizedLanguage($contentType);
+        }
 
         return $this->render('eZPlatformUIBundle:ContentType:view_content_type.html.twig', [
             'language_code' => $languageCode,
@@ -266,15 +273,16 @@ class ContentTypeController extends Controller
 
     public function updateContentTypeAction(Request $request, $contentTypeId, $languageCode = null)
     {
-        $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
         // First try to load the draft.
         // If it doesn't exist, create it.
         try {
             $contentTypeDraft = $this->contentTypeService->loadContentTypeDraft($contentTypeId);
         } catch (NotFoundException $e) {
-            $contentTypeDraft = $this->contentTypeService->createContentTypeDraft(
-                $this->contentTypeService->loadContentType($contentTypeId)
-            );
+            $contentTypeDraft = $this->contentTypeService->createContentTypeDraft($contentType);
+        }
+
+        if (!isset($languageCode) || !isset($contentTypeDraft->names[$languageCode])) {
+            $languageCode = $this->getPrioritizedLanguage($contentTypeDraft);
         }
 
         $contentTypeData = (new ContentTypeDraftMapper())->mapToFormData($contentTypeDraft);
@@ -349,5 +357,24 @@ class ContentTypeController extends Controller
         }
 
         return $this->redirectToRouteAfterFormPost('admin_contenttypeView', ['contentTypeId' => $contentTypeId]);
+    }
+
+    /**
+     * Return the highest prioritized language that $contentType is translated to.
+     * If there is no translation for a prioritized language, return $contentType's main language.
+     *
+     * @param ContentType $contentType Content type (or content type draft)
+     *
+     * @return string Language code
+     */
+    private function getPrioritizedLanguage(ContentType $contentType)
+    {
+        foreach ($this->prioritizedLanguages as $prioritizedLanguage) {
+            if (isset($contentType->names[$prioritizedLanguage])) {
+                return $prioritizedLanguage;
+            }
+        }
+
+        return $contentType->mainLanguageCode;
     }
 }
