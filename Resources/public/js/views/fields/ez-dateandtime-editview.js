@@ -268,7 +268,7 @@ YUI.add('ez-dateandtime-editview', function (Y) {
          *
          * @protected
          * @method _getUtcTimeStamp
-         * @param {Number} localizedTimestamp
+         * @param {Number} localizedTimestamp in millisecond
          * @return {Number} Timestamp converted to UTC in millisecond
          */
         _getUtcTimeStamp: function (localizedTimestamp) {
@@ -284,19 +284,50 @@ YUI.add('ez-dateandtime-editview', function (Y) {
          * @return {Object}
          */
         _getFieldValue: function () {
-            var valueOfDateInput = this._getDateInputNode().get('valueAsNumber'),
-                valueOfTimeInput = this._getTimeInputNode().get('valueAsNumber'),
+            var valueOfDateInput = this._getDateInputNode().get('value'),
+                valueOfTimeInput = this._getTimeInputNode().get('value'),
+                dateInputInSec = parseInt(Y.Date.format(Y.Date.parse(valueOfDateInput), {format:"%s"})),
+                timeInputInSec = this._parseTime(valueOfTimeInput),
                 utcTimeStamp,
                 localizedTimeStamps;
 
-            if (isNaN(valueOfDateInput) || isNaN(valueOfTimeInput)) {
+            if (isNaN(dateInputInSec) || isNaN(timeInputInSec)) {
                 return null;
             }
 
-            localizedTimeStamps = valueOfDateInput + valueOfTimeInput;
-            utcTimeStamp = this._getUtcTimeStamp(localizedTimeStamps);
+            localizedTimeStamps = dateInputInSec + timeInputInSec;
+            utcTimeStamp = this._getUtcTimeStamp(localizedTimeStamps * 1000);
 
             return {timestamp: utcTimeStamp/1000};
+        },
+
+        /**
+         * Returns the timestamp value of a given time string
+         *
+         * Note: this method should be refactored as part of EZP-23925
+         *
+         * @protected
+         * @method _parseTime
+         * @param timeStr time in 24h string format hh:mm:ss
+         * @return {Number} Timestamp in seconds
+         */
+        _parseTime: function (timeStr) {
+            var time = timeStr.split(":"),
+                hours,
+                minutes,
+                seconds;
+
+            if ( time.length >= 2 ) {
+                hours = parseInt(time[0], 10)*3600;
+                minutes = parseInt(time[1], 10)*60;
+                seconds = 0;
+                if ( time.length > 2 ) {
+                    seconds = parseInt(time[2], 10);
+                }
+                time = hours + minutes + seconds;
+                return time;
+            }
+            return null;
         },
 
         /**
