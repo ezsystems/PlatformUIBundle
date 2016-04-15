@@ -908,7 +908,11 @@ YUI.add('ez-dateandtime-editview-tests', function (Y) {
                     tzOffset =  new Date(expected * 1000).getTimezoneOffset() * 60;
 
                 Y.Assert.isObject(fieldValue, 'the fieldValue should be an object');
-                Y.Assert.areSame(expected + tzOffset, fieldValue.timestamp, 'the converted date should match the fieldValue timestamp');
+                Y.Assert.areSame(
+                    expected + tzOffset,
+                    fieldValue.timestamp,
+                    'The converted date should match the fieldValue timestamp'
+                );
             },
         })
     );
