@@ -114,9 +114,14 @@ YUI.add('ez-binarybase-editview', function (Y) {
          */
         _getFieldValue: function () {
             var file = this.get('file'),
+                actualLanguageCode = this.get('languageCode'),
+                currentVersion = this.get('content').get('currentVersion'),
+                translationExist =  Y.Array.some(currentVersion.getTranslationsList(), function (languageCode) {
+                    return languageCode === actualLanguageCode;
+                }),
                 fieldValue;
 
-            if ( !this.get('updated') ) {
+            if ( !this.get('updated') && translationExist) {
                 return undefined;
             }
 
