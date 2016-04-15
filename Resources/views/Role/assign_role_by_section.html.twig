@@ -1,0 +1,50 @@
+{# @var role \eZ\Publish\API\Repository\Values\User\Role #}
+{# @var sections \eZ\Publish\API\Repository\Values\Content\Section[] #}
+{% extends "eZPlatformUIBundle::pjax_admin.html.twig" %}
+
+{% trans_default_domain "role" %}
+
+{% block header_breadcrumbs %}
+    {% set breadcrumb_items = [
+        {link: path('admin_dashboard'), label: 'dashboard.title'|trans({}, 'dashboard')},
+        {link: path('admin_role'), label: 'role.dashboard_title'|trans},
+        {link: path("admin_roleView", {"roleId": role.id}), label: role.identifier},
+        {link: null, label: 'role.assign_role_limit_section'|trans}
+    ] %}
+    {{ parent() }}
+{% endblock %}
+
+{% block header_title %}
+    <h1 class="ez-page-header-name" data-icon="&#xe62d;">
+        {{- 'role.assign_limit_section.user_or_group.pagetitle'|trans({'%roleIdentifier%': role.identifier}) -}}
+    </h1>
+{% endblock %}
+
+{% block content %}
+    <section class="ez-serverside-content">
+        <label for="data-role-assignment-section">{{ 'role.choose_section'|trans }}</label>
+        <select id="data-role-assignment-section" class="ez-role-assignment-section-id">
+            {% for section in sections %}
+            {# @var section \eZ\Publish\API\Repository\Values\Content\Section #}
+                <option data-section-rest-id="{{ path('ezpublish_rest_loadSection', {'sectionId': section.id}) }}"
+                        value="{{ section.id }}">{{ section.name }}</option>
+            {% endfor %}
+        </select>
+        <p>
+            <button
+                data-universaldiscovery-limit-section-title="{{ 'role.assign.universaldiscovery.title'|trans({'%roleIdentifier%': role.identifier })|e('html_attr') }}"
+                data-role-rest-id="{{ path( 'ezpublish_rest_loadRole', {'roleId': role.id}) }}"
+                data-role-name="{{ role.identifier }}"
+                data-role-assignment-limitation-type="{{ 'Section' }}"
+                class="ez-role-assign-limit-section-button ez-button-tree pure-button ez-font-icon ez-button">
+                {% if not can_assign %}disabled{% endif %}
+                {{ 'role.assign_limit_section.user_or_group'|trans }}
+            </button>
+            <a href="{{ path("admin_roleView", {"roleId": role.id}) }}" class="ez-role-assign-limit-section-cancel-button pure-button ez-button">
+                {{- 'role.assign_limit_section.cancel'|trans -}}
+            </a>
+        </p>
+    </section>
+{% endblock %}
+
+{% block title %}{{ 'role'|trans }}{% endblock %}

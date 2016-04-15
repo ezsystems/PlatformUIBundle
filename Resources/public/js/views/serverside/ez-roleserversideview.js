@@ -18,7 +18,15 @@ YUI.add('ez-roleserversideview', function (Y) {
             '.ez-pick-location-limitation-button': {
                 'tap': '_pickLocationLimitation'
             },
-        };
+            '.ez-role-assign-limit-section-button': {
+                'tap': '_pickSubtreeWithSectionLimitation'
+            },
+            '.ez-role-assign-limit-subtree-button': {
+                'tap': '_pickSubtreeLimitation'
+            }
+        },
+        ROLE_REST_ID = 'data-role-rest-id',
+        ROLE_NAME = 'data-role-name';
 
     /**
      * The role server side view. It adds the handling of the role assign
@@ -37,6 +45,43 @@ YUI.add('ez-roleserversideview', function (Y) {
         /**
          * tap event handler on the role assign buttons. It launches the
          * universal discovery widget so that the user can pick some contents.
+         * It also fills the config with data concerning the section limitation
+         *
+         * @method _pickSubtreeWithSectionLimitation
+         * @protected
+         * @param {EventFacade} e
+         */
+        _pickSubtreeWithSectionLimitation: function (e) {
+            var button = e.target,
+                container = this.get('container'),
+                sectionSelector = container.one(".ez-role-assignment-section-id"),
+                sectionSelectedIndex = sectionSelector.get('selectedIndex'),
+                sectionSelectedItem = sectionSelector.get('options').item(sectionSelectedIndex),
+                unsetLoading = Y.bind(this._uiUnsetUDWButtonLoading, this, button),
+                section = {
+                    sectionId: sectionSelectedItem.get('value'),
+                    sectionRestId: sectionSelectedItem.getAttribute('data-section-rest-id'),
+                    sectionName: sectionSelectedItem.get('text')
+                },
+                udwConfigData = {
+                    roleId: button.getAttribute(ROLE_REST_ID),
+                    roleName: button.getAttribute(ROLE_NAME),
+                    afterUpdateCallback: unsetLoading,
+                    limitationType: 'Section',
+                    section: section,
+                    sectionId:sectionSelectedItem.get('value'),
+                    sectionRestId: sectionSelectedItem.getAttribute('data-section-rest-id'),
+                    sectionName: sectionSelectedItem.get('text'),
+                };
+
+            e.preventDefault();
+            this._uiSetUDWButtonLoading(button);
+            this._fireContentDiscover(button, unsetLoading, udwConfigData);
+        },
+
+        /**
+         * tap event handler on the role assign buttons. It launches the
+         * universal discovery widget so that the user can pick some contents.
          *
          * @method _pickSubtree
          * @protected
@@ -44,26 +89,95 @@ YUI.add('ez-roleserversideview', function (Y) {
          */
         _pickSubtree: function (e) {
             var button = e.target,
-                unsetLoading = Y.bind(this._uiUnsetUDWButtonLoading, this, button);
+                unsetLoading = Y.bind(this._uiUnsetUDWButtonLoading, this, button),
+                udwConfigData = {
+                    roleId: button.getAttribute(ROLE_REST_ID),
+                    roleName: button.getAttribute(ROLE_NAME),
+                    afterUpdateCallback: unsetLoading,
+                };
+
+            e.preventDefault();
+            this._uiSetUDWButtonLoading(button);
+            this._fireContentDiscover(button, unsetLoading, udwConfigData);
+        },
+
+        /**
+         * 'tap' event handler for assigning role with subtree limitation. It launches the
+         * universal discovery widget a first time so that the user can pick a location.
+         *
+         * @method _pickLocationLimitation
+         * @protected
+         * @param {EventFacade} e
+         */
+        _pickSubtreeLimitation: function (e) {
+            var button = e.target,
+                unsetLoading = Y.bind(this._uiUnsetUDWButtonLoading, this, button),
+                that = this;
 
             e.preventDefault();
             this._uiSetUDWButtonLoading(button);
             this.fire('contentDiscover', {
                 config: {
-                    title: button.getAttribute('data-universaldiscovery-title'),
+                    title: button.getAttribute('data-universaldiscovery-limit-subtree-title'),
                     cancelDiscoverHandler: unsetLoading,
                     multiple: true,
-                    data: {
-                        roleId: button.getAttribute('data-role-rest-id'),
-                        roleName: button.getAttribute('data-role-name'),
-                        afterUpdateCallback: unsetLoading,
-                    },
+                    contentDiscoveredHandler: function(e) {
+                        that._setSubtreeLimitation(button, this, e);
+                    }
                 },
             });
         },
 
         /**
-         * tap event handler for policy limitation on location ("Node"). It launches the
+         * Launch a second time the UDW so that the user can pick some contents.
+         * The UDW config datas will be filled by the role infos and the locations of the subtree limitation chosen before.
+         *
+         * @method _pickSubtreeLimitation
+         * @protected
+         * @param {EventFacade} e
+         */
+        _setSubtreeLimitation: function (button, udView, e) {
+            var unsetLoading = Y.bind(this._uiUnsetUDWButtonLoading, this, button),
+                selectedLocationsIds = Y.Array.map(e.selection, function(struct) {
+                    return struct.location.get('id');
+                }),
+                udwConfigData = {
+                    roleId: button.getAttribute(ROLE_REST_ID),
+                    roleName: button.getAttribute(ROLE_NAME),
+                    afterUpdateCallback: unsetLoading,
+                    limitationType: 'Subtree',
+                    subtreeIds: selectedLocationsIds,
+                },
+                udwAfterActiveChangeEvent = udView.onceAfter('activeChange', function() {
+                    udwAfterActiveChangeEvent.detach();
+                    setTimeout(Y.bind(function() {
+                        this._fireContentDiscover(button, unsetLoading, udwConfigData);
+                    }, this), 0);
+                }, this);
+        },
+
+        /**
+         * Fire contentDiscover event to launch the UDW with a config using the given data
+         *
+         * @method _fireContentDiscover
+         * @protected
+         * @param {Y.Node} button
+         * @param {Y.Function} unsetLoading
+         * @param {Object} data
+         */
+        _fireContentDiscover: function (button, unsetLoading, data) {
+            this.fire('contentDiscover', {
+                config: {
+                    title: button.getAttribute('data-universaldiscovery-title'),
+                    cancelDiscoverHandler: unsetLoading,
+                    multiple: true,
+                    data: data,
+                },
+            });
+        },
+
+        /**
+         * 'tap' event handler for policy limitation on location ("Node"). It launches the
          * universal discovery widget so that the user can pick a location.
          *
          * @method _pickLocationLimitation

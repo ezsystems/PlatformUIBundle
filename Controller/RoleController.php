@@ -10,6 +10,7 @@ namespace EzSystems\PlatformUIBundle\Controller;
 
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\RoleService;
+use eZ\Publish\API\Repository\SectionService;
 use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute;
 use eZ\Publish\Core\Repository\Values\User\Policy;
 use eZ\Publish\Core\Repository\Values\User\PolicyDraft;
@@ -34,6 +35,11 @@ class RoleController extends Controller
     protected $roleService;
 
     /**
+     * @var \eZ\Publish\API\Repository\SectionService
+     */
+    protected $sectionService;
+
+    /**
      * @var ActionDispatcherInterface
      */
     private $roleActionDispatcher;
@@ -50,11 +56,13 @@ class RoleController extends Controller
 
     public function __construct(
         RoleService $roleService,
+        SectionService $sectionService,
         ActionDispatcherInterface $roleActionDispatcher,
         ActionDispatcherInterface $policyActionDispatcher,
         TranslatorInterface $translator
     ) {
         $this->roleService = $roleService;
+        $this->sectionService = $sectionService;
         $this->roleActionDispatcher = $roleActionDispatcher;
         $this->policyActionDispatcher = $policyActionDispatcher;
         $this->translator = $translator;
@@ -353,5 +361,22 @@ class RoleController extends Controller
         }
 
         return $this->redirectToRouteAfterFormPost('admin_roleView', ['roleId' => $roleAssignment->role->id]);
+    }
+
+    /**
+     * Lets you select a section which will be used as limitation when assigning the role.
+     *
+     * @param Request $request
+     * @param int $roleId Role ID
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function assignRoleBySectionLimitationAction(Request $request, $roleId)
+    {
+        return $this->render('eZPlatformUIBundle:Role:assign_role_by_section.html.twig', [
+            'role' => $this->roleService->loadRole($roleId),
+            'sections' => $this->sectionService->loadSections(),
+            'can_assign' => $this->isGranted(new Attribute('role', 'assign')),
+        ]);
     }
 }
