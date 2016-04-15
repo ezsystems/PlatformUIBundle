@@ -135,6 +135,7 @@ services:
             - @ezrepoforms.action_dispatcher.content_type.group
             - @ezrepoforms.action_dispatcher.content_type
             - @ezrepoforms.field_type_form_mapper.registry
+            - @ezpublish.api.service.language
         calls:
             - [setPrioritizedLanguages, ["$languages$"]]
 

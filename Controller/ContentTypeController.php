@@ -13,6 +13,7 @@ namespace EzSystems\PlatformUIBundle\Controller;
 use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Exceptions\InvalidArgumentException;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
+use eZ\Publish\API\Repository\LanguageService;
 use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\UserService;
 use eZ\Publish\API\Repository\Values\Content\Query;
@@ -61,7 +62,15 @@ class ContentTypeController extends Controller
      */
     private $fieldTypeMapperRegistry;
 
+    /**
+     * @var string[]
+     */
     private $prioritizedLanguages = [];
+
+    /**
+     * @var \eZ\Publish\API\Repository\LanguageService
+     */
+    private $languageService;
 
     public function __construct(
         ContentTypeService $contentTypeService,
@@ -69,7 +78,8 @@ class ContentTypeController extends Controller
         UserService $userService,
         ActionDispatcherInterface $contentTypeGroupActionDispatcher,
         ActionDispatcherInterface $contentTypeActionDispatcher,
-        FieldTypeFormMapperRegistryInterface $fieldTypeMapperRegistry
+        FieldTypeFormMapperRegistryInterface $fieldTypeMapperRegistry,
+        LanguageService $languageService
     ) {
         $this->contentTypeService = $contentTypeService;
         $this->searchService = $searchService;
@@ -77,6 +87,7 @@ class ContentTypeController extends Controller
         $this->contentTypeGroupActionDispatcher = $contentTypeGroupActionDispatcher;
         $this->contentTypeActionDispatcher = $contentTypeActionDispatcher;
         $this->fieldTypeMapperRegistry = $fieldTypeMapperRegistry;
+        $this->languageService = $languageService;
     }
 
     /**
@@ -118,6 +129,7 @@ class ContentTypeController extends Controller
         $canDelete = $this->isGranted(new Attribute('class', 'delete'));
         $deleteFormsById = [];
         $canDeleteById = [];
+        $languageById = [];
 
         foreach ($contentTypes as $contentType) {
             $contentTypeId = $contentType->id;
@@ -127,6 +139,11 @@ class ContentTypeController extends Controller
             )->createView();
 
             $canDeleteById[$contentTypeId] = $canDelete && !$this->contentTypeService->isContentTypeUsed($contentType);
+
+            $languageById[$contentTypeId] = $this->getPrioritizedLanguage(
+                array_keys($contentType->names),
+                $contentType->mainLanguageCode
+            );
         }
 
         return $this->render('eZPlatformUIBundle:ContentType:view_content_type_group.html.twig', [
@@ -137,6 +154,7 @@ class ContentTypeController extends Controller
             'can_delete_by_id' => $canDeleteById,
             'create_form' => $createForm->createView(),
             'delete_forms_by_id' => $deleteFormsById,
+            'language_by_id' => $languageById,
         ]);
     }
 
@@ -207,7 +225,6 @@ class ContentTypeController extends Controller
 
     public function viewContentTypeAction($contentTypeId, $languageCode = null)
     {
-        $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
         $contentType = $this->contentTypeService->loadContentType($contentTypeId);
         $countQuery = new Query([
             'filter' => new Query\Criterion\ContentTypeId($contentTypeId),
@@ -215,6 +232,34 @@ class ContentTypeController extends Controller
         ]);
         $contentCount = $this->searchService->findContent($countQuery, [], false)->totalCount;
         $deleteForm = $this->createForm(new ContentTypeDeleteType(), ['contentTypeId' => $contentTypeId]);
+
+        if (isset($languageCode) && !isset($contentType->names[$languageCode])) {
+            $changeToLanguageCode = $this->getPrioritizedLanguage(
+                array_keys($contentType->names),
+                $contentType->mainLanguageCode
+            );
+
+            $this->notify(
+                'content_type.notification.translation_does_not_exist',
+                [
+                    '%requestedLanguage%' => $languageCode,
+                    '%contentTypeLanguage%' => $changeToLanguageCode,
+                ],
+                'content_type'
+            );
+
+            return $this->redirectToRouteAfterFormPost(
+                'admin_contenttypeView',
+                ['contentTypeId' => $contentTypeId, 'languageCode' => $changeToLanguageCode]
+            );
+        }
+
+        if (!isset($languageCode)) {
+            $languageCode = $this->getPrioritizedLanguage(
+                array_keys($contentType->names),
+                $contentType->mainLanguageCode
+            );
+        }
 
         return $this->render('eZPlatformUIBundle:ContentType:view_content_type.html.twig', [
             'language_code' => $languageCode,
@@ -232,7 +277,23 @@ class ContentTypeController extends Controller
         $createForm = $this->createForm(new ContentTypeCreateType($this->contentTypeService), ['contentTypeGroupId' => $contentTypeGroupId]);
         $createForm->handleRequest($request);
         if ($createForm->isValid()) {
-            $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
+            $repositoryLanguages = $this->getEnabledRepositoryLanguageCodes();
+            if (isset($languageCode) && !in_array($languageCode, $repositoryLanguages)) {
+                $this->notify(
+                    'content_type.notification.language_does_not_exist',
+                    [
+                        '%requestedLanguage%' => $languageCode,
+                        '%fallbackLanguage%' => $repositoryLanguages[0],
+                    ],
+                    'content_type'
+                );
+                $languageCode = null;
+            }
+
+            if (!isset($languageCode)) {
+                $languageCode = $this->getPrioritizedLanguage($repositoryLanguages, $repositoryLanguages[0]);
+            }
+
             $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($createForm->getData()['contentTypeGroupId']);
 
             $contentTypeCreateStruct = new ContentTypeCreateStruct([
@@ -266,15 +327,31 @@ class ContentTypeController extends Controller
 
     public function updateContentTypeAction(Request $request, $contentTypeId, $languageCode = null)
     {
-        $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
+        $contentType = $this->contentTypeService->loadContentType($contentTypeId);
+
+        $repositoryLanguages = $this->getEnabledRepositoryLanguageCodes();
+        if (isset($languageCode) && !in_array($languageCode, $repositoryLanguages)) {
+            $this->notify(
+                'content_type.notification.language_does_not_exist',
+                [
+                    '%requestedLanguage%' => $languageCode,
+                    '%fallbackLanguage%' => $repositoryLanguages[0],
+                ],
+                'content_type'
+            );
+            $languageCode = null;
+        }
+
+        if (!isset($languageCode)) {
+            $languageCode = $this->getPrioritizedLanguage($repositoryLanguages, $repositoryLanguages[0]);
+        }
+
         // First try to load the draft.
         // If it doesn't exist, create it.
         try {
             $contentTypeDraft = $this->contentTypeService->loadContentTypeDraft($contentTypeId);
         } catch (NotFoundException $e) {
-            $contentTypeDraft = $this->contentTypeService->createContentTypeDraft(
-                $this->contentTypeService->loadContentType($contentTypeId)
-            );
+            $contentTypeDraft = $this->contentTypeService->createContentTypeDraft($contentType);
         }
 
         $contentTypeData = (new ContentTypeDraftMapper())->mapToFormData($contentTypeDraft);
@@ -349,5 +426,41 @@ class ContentTypeController extends Controller
         }
 
         return $this->redirectToRouteAfterFormPost('admin_contenttypeView', ['contentTypeId' => $contentTypeId]);
+    }
+
+    /**
+     * Return the highest prioritized language that exists in $languageCodes, or if none, return $fallbackLanguageCode.
+     *
+     * @param string[] $languageCodes Language codes
+     * @param string $fallbackLanguageCode Fallback language code
+     *
+     * @return string Language code
+     */
+    private function getPrioritizedLanguage($languageCodes, $fallbackLanguageCode)
+    {
+        foreach ($this->prioritizedLanguages as $prioritizedLanguage) {
+            if (in_array($prioritizedLanguage, $languageCodes)) {
+                return $prioritizedLanguage;
+            }
+        }
+
+        return $fallbackLanguageCode;
+    }
+
+    /**
+     * Get the language codes of all enabled repository languages.
+     *
+     * @return string[]
+     */
+    private function getEnabledRepositoryLanguageCodes()
+    {
+        $repositoryLanguageCodes = [];
+        foreach ($this->languageService->loadLanguages() as $language) {
+            if ($language->enabled) {
+                $repositoryLanguageCodes[] = $language->languageCode;
+            }
+        }
+
+        return $repositoryLanguageCodes;
     }
 }
