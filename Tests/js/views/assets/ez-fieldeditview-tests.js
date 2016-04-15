@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-fieldeditview-tests', function (Y) {
-    var viewTest, descriptionTest, customViewTest, registryTest;
+    var viewTest, descriptionTest, customViewTest, registryTest, rerenderTest,
+        Mock = Y.Mock, Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
         name: "eZ Field Edit View test",
@@ -587,10 +588,77 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
         }
     });
 
+    rerenderTest = new Y.Test.Case({
+        name: "eZ Field Edit View render as active test",
+
+        setUp: function () {
+            var CustomView;
+
+            this._afterActiveReRenderCalled = false;
+            CustomView = Y.Base.create('customView', Y.eZ.FieldEditView, [], {
+                _afterActiveReRender: Y.bind(function () {
+                    this._afterActiveReRenderCalled = true;
+                }, this),
+            });
+
+            this.content = new Mock();
+            this.contentType = new Mock();
+            this.version = new Mock();
+            Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: {},
+            });
+            Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: {},
+            });
+            Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: {},
+            });
+
+            this.field = {fieldValue: "field value"};
+            this.fieldDefinition = {identifier: 'identifier'};
+
+            this.view = new CustomView({
+                fieldDefinition: this.fieldDefinition,
+                field: this.field,
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType,
+                languageCode: 'eng-GB',
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should call _afterActiveReRender": function () {
+            this.view.set('active', true);
+            this.view.render();
+
+            Assert.isTrue(
+                this._afterActiveReRenderCalled,
+                "_afterActiveReRender should have been called"
+            );
+        },
+
+        "Should not call _afterActiveReRender": function () {
+            this.view.render();
+
+            Assert.isFalse(
+                this._afterActiveReRenderCalled,
+                "_afterActiveReRender should have been called"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Field Edit View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(descriptionTest);
     Y.Test.Runner.add(customViewTest);
     Y.Test.Runner.add(registryTest);
-
+    Y.Test.Runner.add(rerenderTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-fieldeditview']});
