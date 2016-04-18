@@ -25,6 +25,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
         initializer: function () {
             this.on('*:editAction', this._editContent);
             this.on('*:sendToTrashAction', this._sendContentToTrashConfirmBox);
+            this.on('*:deleteContentAction', this._confirmDeleteContent);
             this.on('*:moveAction', this._selectLocation);
             this.on('*:translateContent', this._translateContent);
             this.on('*:sortUpdate', this._updateSorting);
@@ -96,6 +97,24 @@ YUI.add('ez-locationviewviewservice', function (Y) {
         },
 
         /**
+         * `deleteContentAction` event handler,
+         * it asks confirmation to the user before delete the content item.
+         *
+         * @method _confirmDeleteContent
+         * @protected
+         * @param {Object} e event facade of the deleteAction event
+         */
+        _confirmDeleteContent: function (e) {
+            e.preventDefault();
+            this.fire('confirmBoxOpen', {
+                config: {
+                    title: "Are you sure you want to delete this content?",
+                    confirmHandler: Y.bind(this._deleteContent, this),
+                },
+            });
+        },
+
+        /**
          * moveAction event handler, launch the universal discovery widget
          * to choose a location to move the content
          *
@@ -140,6 +159,27 @@ YUI.add('ez-locationviewviewservice', function (Y) {
         },
 
         /**
+         * Deletes the the content item, triggering loading parent location and notifications
+         *
+         * @method _deleteContent
+         * @protected
+         */
+        _deleteContent: function () {
+            var path = this.get('path'),
+                content = this.get('content'),
+                parentLocation = path[path.length - 1];
+
+            this._notify(
+                'Deleting "' + content.get('name') + '"',
+                'delete-' + content.get('id'),
+                'started',
+                0
+            );
+
+            content.delete({api: this.get('capi')}, Y.bind(this._afterDeleteCallback, this, parentLocation, content));
+        },
+
+        /**
          * Send to trash callback triggering notifications and making app to navigate to parent location
          *
          * @method _afterSendToTrashCallback
@@ -178,6 +218,50 @@ YUI.add('ez-locationviewviewservice', function (Y) {
              * @param {eZ.Location} location
              */
             this.fire('sentToTrash', {location: location});
+
+            app.navigateTo('viewLocation', {
+                id: parentLocation.get('id'),
+                languageCode: content.get('mainLanguageCode')
+            });
+        },
+
+        /**
+         * Delete content item callback triggering notifications and making app to navigate to parent location
+         *
+         * @method _afterDeleteCallback
+         * @protected
+         * @param {eZ.Location} parentLocation the parent location to which app will navigate to
+         * @param {eZ.Content} content the content item that has been deleted
+         * @param {Boolean} error
+         */
+        _afterDeleteCallback: function (parentLocation, content, error) {
+            var app = this.get('app'),
+                contentName = content.get('name');
+
+            if (error) {
+                this._notify(
+                    'An error occurred when deleting "' + contentName + '"',
+                    'delete-' + content.get('id'),
+                    'error',
+                    0
+                );
+                return;
+            }
+
+            this._notify(
+                '"' + contentName + '" was deleted',
+                'delete-' + content.get('id'),
+                'done',
+                5
+            );
+
+            /**
+             * Fired when the content has been deleted
+             *
+             * @event deletedContent
+             * @param {eZ.Content} content
+             */
+            this.fire('deletedContent', {content: content});
 
             app.navigateTo('viewLocation', {
                 id: parentLocation.get('id'),

@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contentmodel-tests', function (Y) {
-    var modelTest, relationsTest, createContent, loadResponse, copyTest,
+    var modelTest, relationsTest, createContent, deleteContent, loadResponse, copyTest,
         loadLocationsTest, addLocationTest, setMainLocationTest, hasTranslationTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
@@ -639,6 +639,68 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    deleteContent = new Y.Test.Case({
+        name: "eZ Content Model delete content tests",
+
+        setUp: function() {
+            this.model = new Y.eZ.Content();
+            this.contentId = 'Pele';
+
+            this.capi = new Mock();
+            this.contentService = new Mock();
+
+            Y.Mock.expect(this.capi, {
+                method: 'getContentService',
+                returns: this.contentService
+            });
+
+            Y.Mock.expect(this.model, {
+                method: 'get',
+                args: ['id'],
+                returns: this.contentId
+            });
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+            delete this.capi;
+            delete this.contentService;
+        },
+
+        "Should delete the content": function () {
+            var options = {api: this.capi},
+                callback = function () {},
+                content = this.model;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'deleteContent',
+                args: [this.contentId, callback],
+            });
+
+            content.delete(options, callback);
+        },
+
+        "Should handle the error while deleting a content": function () {
+            var content = this.model,
+                that = this,
+                err = new Error();
+
+            Y.Mock.expect(this.contentService, {
+                method: 'deleteContent',
+                args: [this.contentId, Y.Mock.Value.Function],
+                run: function (struct, callback) {
+                    callback(err, that.createResponse);
+                }
+            });
+            content.delete({
+                api: this.capi
+            }, function (error, response) {
+                Assert.areSame(err, error, "The CAPI error should be provided");
+            });
+        },
+    });
+
     loadLocationsTest = new Y.Test.Case({
         name: "eZ Content Model load locations tests",
 
@@ -998,6 +1060,7 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
     Y.Test.Runner.add(createContent);
+    Y.Test.Runner.add(deleteContent);
     Y.Test.Runner.add(copyTest);
     Y.Test.Runner.add(loadLocationsTest);
     Y.Test.Runner.add(addLocationTest);

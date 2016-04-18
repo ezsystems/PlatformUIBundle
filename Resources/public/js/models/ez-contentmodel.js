@@ -311,6 +311,21 @@ YUI.add('ez-contentmodel', function (Y) {
             updateStruct.setMainLocation(locationId);
 
             contentService.updateContentMetadata(this.get('id'), updateStruct, callback);
+        },
+
+        /**
+         * Deletes the content
+         *
+         * @method delete
+         * @param {Object} options
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Function} callback
+         */
+        delete: function (options, callback) {
+            var capi = options.api,
+                contentService = capi.getContentService();
+            
+            contentService.deleteContent(this.get('id'), callback);
         }
     }, {
         REST_STRUCT_ROOT: "Content",

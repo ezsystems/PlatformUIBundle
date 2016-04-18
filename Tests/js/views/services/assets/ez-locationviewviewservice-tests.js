@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationviewviewservice-tests', function (Y) {
-    var functionalTest, eventTest, getViewParametersTest, sendToTrashButtonTest, moveContentTest,
+    var functionalTest, eventTest, getViewParametersTest, sendToTrashButtonTest, moveContentTest, deleteContentTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     functionalTest = new Y.Test.Case({
@@ -1368,10 +1368,328 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         },
     });
 
+    deleteContentTest = new Y.Test.Case({
+        "name": "eZ Location View View Service delete content tests",
+
+        setUp: function () {
+            this.app = new Mock();
+            this.capi = new Mock();
+            this.content = new Mock();
+            this.location = new Mock();
+            this.languageCode = 'pol-PL';
+            this.request = {params: {languageCode: this.languageCode}};
+            this.service = new Y.eZ.LocationViewViewService({
+                app: this.app,
+                capi: this.capi,
+                content: this.content,
+                location: this.location,
+                request: this.request
+            });
+            this.contentName = 'pierlugi-collina';
+            this.contentId = 'aContentId';
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+        },
+
+        _initializeMocks: function(content, parentLocation, callbackArgument) {
+            Mock.expect(content, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (attr === "name") {
+                        return this.contentName;
+                    } else if (attr === "id") {
+                        return this.contentId;
+                    } else if (attr === "mainLanguageCode") {
+                        return this.languageCode;
+                    } else {
+                        Y.fail("Unexpected parameter for content mock");
+                    }
+                }
+            });
+
+            Mock.expect(parentLocation, {
+                method: 'get',
+                args: ['id'],
+                returns: 'alan-shearer'
+            });
+
+            Mock.expect(content, {
+                method: 'delete',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (options, callback){
+                    callback(callbackArgument);
+                }
+            });
+        },
+
+        "Should fire the confirmBoxOpen event": function () {
+            var confirmBoxOpenEvent = false;
+
+            this.service.on('confirmBoxOpen', function (e) {
+                confirmBoxOpenEvent = true;
+                Assert.isObject(e.config, "The event facade should contain a config object");
+                Assert.isString(e.config.title, "The title should be defined");
+                Assert.isFunction(e.config.confirmHandler, "A confirmHandler should be provided");
+            });
+
+            this.service.fire('whatever:deleteContentAction', {content: {}});
+            Assert.isTrue(confirmBoxOpenEvent, "The confirmBoxOpen event should have been fired");
+        },
+
+        "Should notify the user when starting to delete the content item": function () {
+            var content = new Mock(),
+                parentLocation = new Mock(),
+                notified = false;
+
+            this.service.set('path', [{location: parentLocation}]);
+            this.service.set('content', content);
+
+            this._initializeMocks(content, parentLocation, true);
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.once('notify', function (e) {
+                notified = true;
+
+                Assert.isObject(e.notification, "The event facade should provide a notification config");
+                Assert.areEqual(
+                    "started", e.notification.state,
+                    "The notification state should be 'started'"
+                );
+                Assert.isString(
+                    e.notification.text,
+                    "The notification text should be a string"
+                );
+                Assert.isTrue(
+                    e.notification.text.indexOf(this.contentName) !== -1,
+                    "The notification text should contain content name"
+                );
+                Assert.isTrue(
+                    e.notification.identifier.indexOf(this.contentId) !== -1,
+                    "The notification identifier should contain content id"
+                );
+                Assert.areSame(
+                    0, e.notification.timeout,
+                    "The notification timeout should be set to 0"
+                );
+            });
+
+            this.service.fire('whatever:deleteContentAction', {content: content});
+            Assert.isTrue(notified, "The notified event should have been fired");
+        },
+
+        "Should notify user about error when deleting content item failed": function () {
+            var content = new Mock(),
+                parentLocation = new Mock(),
+                notified = false;
+
+            this.service.set('path', [{location: parentLocation}]);
+            this.service.set('content', content);
+
+            this._initializeMocks(content, parentLocation, true);
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.once('notify', function (e) {
+                this.once('notify', function (e) {
+                    notified = true;
+
+                    Assert.isObject(e.notification, "The event facade should provide a notification config");
+                    Assert.areEqual(
+                        "error", e.notification.state,
+                        "The notification state should be 'error'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a string"
+                    );
+                    Assert.isTrue(
+                        e.notification.text.indexOf(this.contentName) !== -1,
+                        "The notification text should contain content name"
+                    );
+                    Assert.isTrue(
+                        e.notification.identifier.indexOf(this.contentId) !== -1,
+                        "The notification identifier should contain content id"
+                    );
+                    Assert.areSame(
+                        0, e.notification.timeout,
+                        "The notification timeout should be set to 0"
+                    );
+                });
+            });
+
+            this.service.fire('whatever:deleteContentAction', {content: content});
+            Assert.isTrue(notified, "The notified event should have been fired");
+        },
+
+        "Should NOT fire deletedContent event when deleting content item failed": function () {
+            var content = new Mock(),
+                parentLocation = new Mock(),
+                that = this,
+                eventFired = false;
+
+            this.service.set('path', [{location: parentLocation}]);
+            this.service.set('content', content);
+
+            this._initializeMocks(content, parentLocation, true);
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.once('deletedContent', function (e) {
+                eventFired = true;
+                Assert.areSame(
+                    that.service.get('content'), e.content,
+                    "deletedContent event should store the service content"
+                );
+            });
+
+            this.service.fire('whatever:deleteContentAction', {content: content});
+            Assert.isFalse(eventFired, "The deletedContent event should NOT have been fired");
+        },
+
+        "Should notify user about success of deleting the content item": function () {
+            var content = new Mock(),
+                parentLocation = new Mock(),
+                locationId = 'raul-gonzalez-blanco',
+                notified = false;
+
+            this.service.set('path', [parentLocation]);
+            this.service.set('content', content);
+
+            Mock.expect(this.location, {
+                method: 'get',
+                args: ['id'],
+                returns: locationId,
+            });
+
+            this._initializeMocks(content, parentLocation, false);
+
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: [Mock.Value.String, Mock.Value.Object]
+            });
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.once('notify', function (e) {
+                this.once('notify', function (e) {
+                    notified = true;
+
+                    Assert.isObject(e.notification, "The event facade should provide a notification config");
+                    Assert.areEqual(
+                        "done", e.notification.state,
+                        "The notification state should be 'done'"
+                    );
+                    Assert.isString(
+                        e.notification.text,
+                        "The notification text should be a string"
+                    );
+                    Assert.isTrue(
+                        e.notification.text.indexOf(this.contentName) !== -1,
+                        "The notification text should contain content name"
+                    );
+                    Assert.isTrue(
+                        e.notification.identifier.indexOf(this.contentId) !== -1,
+                        "The notification identifier should contain content id"
+                    );
+                    Assert.areSame(
+                        5, e.notification.timeout,
+                        "The notification timeout should be set to 0"
+                    );
+                });
+            });
+
+            this.service.fire('whatever:deleteContentAction', {content: content});
+            Assert.isTrue(notified, "The notified event should have been fired");
+        },
+
+        "Should fire deletedContent event after deleting a content item": function () {
+            var content = new Mock(),
+                parentLocation = new Mock(),
+                that = this,
+                eventFired = false;
+
+            this.service.set('path', [parentLocation]);
+            this.service.set('content', content);
+
+            this._initializeMocks(content, parentLocation, false);
+
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: [Mock.Value.String, Mock.Value.Object]
+            });
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.once('deletedContent', function (e) {
+                eventFired = true;
+                Assert.areSame(
+                    that.service.get('content'), e.content,
+                    "deletedContent event should store the service content"
+                );
+            });
+
+            this.service.fire('whatever:deleteContentAction', {content: content});
+            Assert.isTrue(eventFired, "The sentToTrash event should have been fired");
+        },
+
+        "Should navigate the app to view of parent location": function () {
+            var content = new Mock(),
+                parentLocation = new Mock(),
+                parentLocationId = 'alan-shearer';
+
+            this.service.set('path', [parentLocation]);
+            this.service.set('content', content);
+
+            this._initializeMocks(content, parentLocation, false);
+
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: ['viewLocation', Mock.Value.Object],
+                run: function (routeName, params) {
+                    Assert.areEqual(routeName, 'viewLocation', 'The route should be `viewLocation`');
+                    Assert.isObject(params, "Params passed to navigateTo should be an object");
+                    Assert.areEqual(
+                        params.id,
+                        parentLocationId,
+                        'The id of location should be the parent location id'
+                    );
+                    Assert.areEqual(
+                        params.languageCode,
+                        this.languageCode,
+                        'The languageCode should be the main language code of content'
+                    );
+                }
+            });
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler.apply(this);
+            });
+
+            this.service.fire('whatever:deleteContentAction', {content: content});
+            Mock.verify(this.app);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location View View Service tests");
     Y.Test.Runner.add(functionalTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(getViewParametersTest);
     Y.Test.Runner.add(sendToTrashButtonTest);
     Y.Test.Runner.add(moveContentTest);
+    Y.Test.Runner.add(deleteContentTest);
 }, '', {requires: ['test', 'ez-locationviewviewservice']});
