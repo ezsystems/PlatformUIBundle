@@ -4,7 +4,7 @@
  */
 YUI.add('ez-maplocation-editview-tests', function (Y) {
     var container = Y.one('.container'),
-        viewTest, APILoadingTest, noInitialValuesTest,
+        viewTest, APILoadingTest, noInitialValuesTest, rerenderTest,
         findAddressTest, locateMeTest, registerTest, getFieldTest,
         content, contentType, version,
         mapLoaderLoadingSuccess,
@@ -24,7 +24,8 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 latitude: testDefaultLatitude,
                 longitude: testDefaultLongitude
             }
-        };
+        },
+        Mock = Y.Mock, Assert = Y.Assert;
 
     content = new Y.Mock();
     version = new Y.Mock();
@@ -67,6 +68,9 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
                 this.setCenter = function (location) {
                     currentMapCenterLat = location.lat();
                     currentMapCenterLng = location.lng();
+                };
+                this.getDiv = function () {
+                    return domNode;
                 };
             },
             Marker: function(options) {
@@ -863,6 +867,73 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
 
     });
 
+    rerenderTest = new Y.Test.Case({
+        name: "eZ Map Location View rerender test",
+
+        setUp: function () {
+            window.google = googleStub;
+
+            this.apiLoader = new Mock();
+            this.apiLoaded = true;
+            Mock.expect(this.apiLoader, {
+                method: 'isAPILoaded',
+                run: Y.bind(function () {
+                    return this.apiLoaded;
+                }, this),
+            });
+            this.view = new Y.eZ.MapLocationEditView({
+                container: container,
+                field: field,
+                version: version,
+                content: content,
+                contentType: contentType,
+                fieldDefinition: {
+                    isRequired: true,
+                },
+            });
+            this.view._set('mapAPILoader', this.apiLoader);
+            this.view.render();
+            this.view.set('active', true);
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        _getMapContainer: function () {
+            return this.view.get('container').one('.ez-maplocation-map-container');
+        },
+
+        "Should put the map in the new markup": function () {
+            var mapContainer;
+
+            mapContainer = this._getMapContainer();
+            this.view.render();
+
+            Assert.areSame(
+                mapContainer, this._getMapContainer(),
+                "The previous map container should have been put in the new markup"
+            );
+            Assert.areEqual(
+                0, this.view.get('container').all('is-loading').size(),
+                "The loading classes should have been removed"
+            );
+        },
+
+        "Should not do anything is the Map API is not loaded": function () {
+            var mapContainer;
+
+            this.apiLoaded = false;
+            mapContainer = this._getMapContainer();
+            this.view.render();
+
+            Assert.areNotSame(
+                mapContainer, this._getMapContainer(),
+                "The map should be loaded once the API is ready"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Map Location Edit View tests");
 
     Y.Test.Runner.add(viewTest);
@@ -870,6 +941,7 @@ YUI.add('ez-maplocation-editview-tests', function (Y) {
     Y.Test.Runner.add(findAddressTest);
     Y.Test.Runner.add(locateMeTest);
     Y.Test.Runner.add(APILoadingTest);
+    Y.Test.Runner.add(rerenderTest);
 
     getFieldTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.GetFieldTests, {
