@@ -9,8 +9,8 @@
     },
     "require": {
         "ezsystems/platform-ui-assets-bundle": "^2.0.0",
-        "ezsystems/repository-forms": "^1.0",
-        "ezsystems/ezpublish-kernel": "^6.2",
+        "ezsystems/repository-forms": "^1.2@beta",
+        "ezsystems/ezpublish-kernel": "^6.3@beta",
         "ezsystems/ez-support-tools": "~0.1.0@beta",
         "zetacomponents/system-information": "^1.1"
     },
