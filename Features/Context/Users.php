@@ -36,6 +36,15 @@ class Users extends PlatformUI
     }
 
     /**
+     * @When I go to (the) User :username page
+     */
+    public function goToUserPage($username)
+    {
+        $this->clickOnTreePath("$username $username");
+        $this->sleep(); //safegaurd for application delays
+    }
+
+    /**
      * @When I edit user :username
      */
     public function editUserUser($username)

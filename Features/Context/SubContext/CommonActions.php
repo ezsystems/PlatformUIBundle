@@ -313,6 +313,20 @@ trait CommonActions
         $this->clickOnTreePath($path);
     }
 
+
+    /**
+     * @Then I should see a :button button in the action bar
+     *
+     * @param  string   $button     Text of the element in the action bar
+     */
+    public function iShouldSeeActionBarButton($button)
+    {
+        $element = $this->getElementByText($button, '.ez-actionbar-container .ez-action', '.action-label');
+        if (!$element) {
+            throw new \Exception("Action bar button '$button' not found");
+        }
+    }
+
     /**
      * @Then I am on the :name location view
      */

@@ -67,3 +67,10 @@ Feature: Use the eZ Users field
         And I fill in "Password" with "12345"
         And I fill in "Confirm password" with "123456"
         Then I should see error messages
+
+    @javascript @edge
+    Scenario: Validate that users have the "Delete" button available
+        Given I am on the Users page
+        And there is a User with name "One"
+        When I go to User "One" page
+        Then I should see a "Delete" button in the action bar
