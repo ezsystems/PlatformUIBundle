@@ -41,7 +41,7 @@ class Users extends PlatformUI
     public function goToUserPage($username)
     {
         $this->clickOnTreePath("$username $username");
-        $this->sleep(); //safegaurd for application delays
+        $this->sleep(); //safeguard for application delays
     }
 
     /**
