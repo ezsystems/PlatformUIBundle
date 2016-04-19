@@ -51,7 +51,6 @@ class Fields extends PlatformUI
     {
         $fieldManager = $this->getFieldTypeManager();
         $identifier = $fieldManager->getThisFieldTypeIdentifier();
-
         // check if we are editing a field for draft or published content
         if ($fieldManager->getFieldContentState() == FieldType::CONTENT_PUBLISHED) {
             $contentId = $fieldManager->getThisContentId();
@@ -141,6 +140,26 @@ class Fields extends PlatformUI
     }
 
     /**
+     * @Given a Content of this type exists with checkbox Field Value checked
+     */
+    public function createAContentOfThisTypeWithCheckboxChecked()
+    {
+        $this->createAContentOfThisType();
+        $this->checkFieldValue();
+        $this->publishContent();
+    }
+
+    /**
+     * @Given a Content of this type exists with checkbox Field Value unchecked
+     */
+    public function createAContentOfThisTypeWithCheckboxUnchecked()
+    {
+        $this->createAContentOfThisType();
+        $this->uncheckFieldValue();
+        $this->publishContent();
+    }
+
+    /**
      * @When I publish the content
      * @And I publish the content
      */
@@ -148,6 +167,7 @@ class Fields extends PlatformUI
     {
         if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
             $this->clickEditActionBar('Publish');
+            $this->platformStatus = self::NOT_WAITING;
         } else {
             throw new \Exception('Cannot publish content, application in wrong state');
         }
@@ -204,9 +224,8 @@ class Fields extends PlatformUI
      */
     public function seeFieldtOfType($type, $label = null)
     {
-        if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
-            $this->clickEditActionBar('Publish');
-        }
+        $this->publishContent();
+
         $verification = new WebAssert($this->getSession());
         // for view we need the internal field identifier...
         $internalName = $this->getFieldTypeManager()->getFieldTypeInternalIdentifier($type);
@@ -239,6 +258,7 @@ class Fields extends PlatformUI
         if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
             $this->clickEditActionBar('Publish');
         }
+
         $verification = new WebAssert($this->getSession());
         $verification->elementTextContains('css', '.ez-fieldview-value-content', $value);
     }
