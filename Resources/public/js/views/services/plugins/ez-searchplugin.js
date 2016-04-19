@@ -144,10 +144,11 @@ YUI.add('ez-searchplugin', function (Y) {
 
             query = this._createNewCreateViewStruct(e.viewName, 'LocationQuery', e.search);
             contentService.createView(query, Y.bind(function (error, result) {
-                var attrs = {'loadingError': true};
+                var attrs = {'loadingError': true},
+                    parsedResult = [];
 
                 if ( !error ) {
-                    var parsedResult = this._parseSearchResult(result, 'location', '_createLocation');
+                    parsedResult = this._parseSearchResult(result, 'location', '_createLocation');
 
                     attrs.loadingError = false;
                     if (e.resultTotalCountAttribute) {
@@ -156,7 +157,7 @@ YUI.add('ez-searchplugin', function (Y) {
                     attrs[e.resultAttribute] = parsedResult;
                 }
 
-                if (e.loadContentType || e.loadContent) {
+                if (parsedResult.length && (e.loadContentType || e.loadContent)) {
                     this._loadResources(
                         e.viewName,
                         e.loadContentType,

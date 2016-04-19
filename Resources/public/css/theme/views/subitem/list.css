@@ -10,6 +10,7 @@
 
 .ez-view-subitemlistview.is-page-loading {
     opacity: 0.3;
+    min-height: 5em;
 }
 
 .ez-view-subitemlistview .ez-subitemlist-table {
@@ -60,6 +61,11 @@
 
 .ez-view-subitemlistview .ez-subitemlist-loader-mask {
     transition: all ease 0.3s;
+    opacity: 0;
+}
+
+.ez-view-subitemlistview.is-page-loading .ez-subitemlist-loader-mask {
+    opacity: 1;
 }
 
 .ez-view-subitemlistview .ez-subitemlist-loader-mask:before {
@@ -70,12 +76,12 @@
     border-width: 0.5em;
     border-style: solid;
     border-color: rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.8) rgba(50, 50, 50, 0.1);
-    opacity: 1;
     z-index: 10000;
     width: 3em;
     height: 3em;
     content: " ";
     display: block;
+    margin-top: -1.5em;
     top: 50%;
     left: 50%;
     position: absolute;

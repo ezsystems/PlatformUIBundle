@@ -4,9 +4,10 @@
  */
 YUI.add('ez-subitemlistview-tests', function (Y) {
     var renderTest, locationSearchEvent, offsetAttrTest, paginationTest, visibilityChangeTest, priorityUpdateTest,
+        loadingTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
-    function _configureSubitemsMock() {
+    function _configureSubitemsMock(priority) {
         var i = 0;
 
         this.subitems = [];
@@ -22,17 +23,15 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
             Mock.expect(this.subitems[i].location, {
                 method: 'get',
                 args: [Mock.Value.String],
-                run: _getGetterForLocationMock(41+i)
+                run: _getGetterForLocationMock({locationId: 41 + i, priority: priority})
             });
         }
     }
 
-    function _getGetterForLocationMock(locationId) {
+    function _getGetterForLocationMock(attrs) {
         return function (attr) {
-            if ( attr === 'priority' ) {
-                return 24;
-            } else if ( attr == 'locationId' ) {
-                return locationId;
+            if ( typeof attrs[attr] !== "undefined" ) {
+                return attrs[attr];
             }
             Y.fail("Unexpected attr '" + attr + "'");
         };
@@ -52,14 +51,10 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
             Mock.expect(this.location, {
                 method: 'get',
                 args: [Mock.Value.String],
-                run: Y.bind(function (attr) {
-                    if ( attr === 'childCount' ) {
-                        return this.childCount;
-                    } else if ( attr == 'locationId' ) {
-                        return 42;
-                    }
-                    Y.fail("Unexpected attr '" + attr + "'");
-                }, this)
+                run: _getGetterForLocationMock({
+                    childCount: this.childCount,
+                    locationId: 42,
+                }),
             });
 
             Mock.expect(this.location, {
@@ -148,7 +143,14 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
         "Should compute and pass the hasPages flag": function () {
             var origTpl;
 
-            this.childCount = this.view.get('limit') + 1;
+            Mock.expect(this.location, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: _getGetterForLocationMock({
+                    childCount: this.view.get('limit') + 1,
+                    locationId: 42,
+                }),
+            });
             origTpl = this.view.template;
             this.view.template = Y.bind(function (vars) {
                 Assert.isTrue(
@@ -226,8 +228,11 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
             this.location = new Mock();
             Mock.expect(this.location, {
                 method: 'get',
-                args: ['locationId'],
-                returns: this.locationId
+                args: [Mock.Value.String],
+                run: _getGetterForLocationMock({
+                    locationId: this.locationId,
+                    childCount: 1,
+                }),
             });
             Mock.expect(this.location, {
                 method: 'after',
@@ -246,6 +251,37 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
         "Should fire the locationSearch event": function () {
             var fired = false;
 
+            this.view._set('loading', false);
+            this.view.on('locationSearch', function (e) {
+                fired = true;
+
+                Assert.areEqual(
+                    'subitems', e.resultAttribute,
+                    "The resultAttribute property should be 'subitems'"
+                );
+                Assert.isTrue(
+                    this.get('loading'),
+                    "`loading` should be set to true"
+                );
+            });
+            this.view.set('active', true);
+            Assert.isTrue(
+                fired, "The locationSearch event should have been fired"
+            );
+        },
+
+        "Should not fire the locationSearch event": function () {
+            var fired = false;
+
+            Mock.expect(this.location, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: _getGetterForLocationMock({
+                    locationId: this.locationId,
+                    childCount: 0,
+                }),
+            });
+            this.view._set('loading', true);
             this.view.on('locationSearch', function (e) {
                 fired = true;
 
@@ -255,8 +291,12 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
                 );
             });
             this.view.set('active', true);
-            Assert.isTrue(
-                fired, "The locationSearch event should have been fired"
+            Assert.isFalse(
+                fired, "The locationSearch event should not have been fired"
+            );
+            Assert.isFalse(
+                this.view.get('loading'),
+                "`loading` should be set to false"
             );
         },
 
@@ -291,8 +331,11 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
             this.location = new Mock();
             Mock.expect(this.location, {
                 method: 'get',
-                args: ['locationId'],
-                returns: this.locationId
+                args: [Mock.Value.String],
+                run: _getGetterForLocationMock({
+                    locationId: this.locationId,
+                    childCount: 1,
+                }),
             });
             Mock.expect(this.location, {
                 method: 'after',
@@ -342,8 +385,10 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
 
         setUp: function () {
             this.locationId = 42;
-            this.location = new Y.Base({
+            this.location = new Y.Base();
+            this.location.setAttrs({
                 'id': this.locationId,
+                'childCount': 20,
                 'hidden': false,
                 'invisible': false,
             });
@@ -361,11 +406,11 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
         _testFire: function (attributeName) {
             var fired = false;
 
+            this.view.set('active', true);
             this.view.on('locationSearch', function (e) {
                 fired = true;
             });
 
-            this.view.set('active', true);
             this.location.set(attributeName, true);
 
             Assert.isTrue(
@@ -417,14 +462,10 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
             Mock.expect(this.location, {
                 method: 'get',
                 args: [Mock.Value.String],
-                run: Y.bind(function (attr) {
-                    if ( attr === 'childCount' ) {
-                        return this.childCount;
-                    } else if ( attr == 'locationId' ) {
-                        return 42;
-                    }
-                    Y.fail("Unexpected attr '" + attr + "'");
-                }, this)
+                run: _getGetterForLocationMock({
+                    childCount: this.childCount,
+                    locationId: 42,
+                }),
             });
             _configureSubitemsMock.call(this);
 
@@ -554,6 +595,7 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
         setUp: function () {
             this.location = new Mock();
             this.locationId = 42;
+            this.childCount = 49;
             this.priority = 24;
             this.locationJSON = {};
             Mock.expect(this.location, {
@@ -562,28 +604,18 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
             });
             Mock.expect(this.location, {
                 method: 'get',
-                args: ['locationId'],
-                returns: this.locationId,
+                args: [Mock.Value.String],
+                run: _getGetterForLocationMock({
+                    locationId: this.locationId,
+                    childCount: this.childCount,
+                }),
             });
             Mock.expect(this.location, {
                 method: 'after',
                 args: [Mock.Value.Any, Mock.Value.Function],
             });
-            this.childCount = 49;
             this.lastOffset = 40;
-            Mock.expect(this.location, {
-                method: 'get',
-                args: [Mock.Value.String],
-                run: Y.bind(function (attr) {
-                    if ( attr === 'childCount' ) {
-                        return this.childCount;
-                    } else if ( attr == 'locationId' ) {
-                        return 42;
-                    }
-                    Y.fail("Unexpected attr '" + attr + "'");
-                }, this)
-            });
-            _configureSubitemsMock.call(this);
+            _configureSubitemsMock.call(this, this.priority);
 
             this.view = new Y.eZ.SubitemListView({
                 container: '.container',
@@ -868,6 +900,98 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
         },
     });
 
+    loadingTest = new Y.Test.Case({
+        name: "eZ Subitem List View loading test",
+
+        setUp: function () {
+            var Location = Y.Base.create('location', Y.Base, [], {
+                    toJSON: function () {
+                        return {};
+                    }
+                });
+
+            this.locationId = 42;
+            this.location = new Location();
+            this.location.setAttrs({
+                'id': this.locationId,
+                'childCount': 20,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should set loading to true": function () {
+            this.view = new Y.eZ.SubitemListView({
+                location: this.location,
+            });
+            Assert.isTrue(
+                this.view.get('loading'),
+                "`loading` should be true"
+            );
+            Assert.isTrue(
+                this.view.get('container').hasClass('is-page-loading'),
+                "The loading class should have been added on the container"
+            );
+        },
+
+        "Should set loading to false": function () {
+            this.location.set('childCount', 0);
+            this.view = new Y.eZ.SubitemListView({
+                location: this.location,
+            });
+            Assert.isFalse(
+                this.view.get('loading'),
+                "`loading` should be false"
+            );
+            Assert.isFalse(
+                this.view.get('container').hasClass('is-page-loading'),
+                "The loading class should not have been added to the container"
+            );
+        },
+
+        "Should add the loading class": function () {
+            this["Should set loading to false"]();
+            this.view._set('loading', true);
+
+            Assert.isTrue(
+                this.view.get('container').hasClass('is-page-loading'),
+                "The loading class should have been added on the container"
+            );
+        },
+
+        "Should remove the loading class": function () {
+            this["Should set loading to true"]();
+            this.view._set('loading', false);
+
+            Assert.isFalse(
+                this.view.get('container').hasClass('is-page-loading'),
+                "The loading class should have been removed from the container"
+            );
+        },
+
+        "Should set loading to false on subitemsChange": function () {
+            this["Should set loading to true"]();
+            this.view.set('subitems', []);
+
+            Assert.isFalse(
+                this.view.get('loading'),
+                "loading should be set to false"
+            );
+        },
+
+        "Should set loading to false on loadingErrorChange": function () {
+            this["Should set loading to true"]();
+            this.view.set('loadingError', true);
+
+            Assert.isFalse(
+                this.view.get('loading'),
+                "loading should be set to false"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Subitem List View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(locationSearchEvent);
@@ -875,4 +999,5 @@ YUI.add('ez-subitemlistview-tests', function (Y) {
     Y.Test.Runner.add(visibilityChangeTest);
     Y.Test.Runner.add(paginationTest);
     Y.Test.Runner.add(priorityUpdateTest);
+    Y.Test.Runner.add(loadingTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-subitemlistview']});

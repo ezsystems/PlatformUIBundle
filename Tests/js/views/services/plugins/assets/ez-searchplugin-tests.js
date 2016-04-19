@@ -411,7 +411,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                     cb(false, response);
                 }
             });
-            
+
             this.view.fire('locationSearch', {
                 viewName: this.viewName,
                 resultAttribute: resultAttr,
@@ -452,6 +452,63 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 response.document.View.Result.count,
                 this.view.get(resultCountAttr),
                 "The result count set in the event resultCountAttr should be equal to number of search hits"
+            );
+        },
+
+        "Should set an empty array on the target when there's no result": function () {
+            var response = {
+                    document: {
+                        View: {
+                            Result: {
+                                count: 0,
+                                searchHits: {
+                                    searchHit: []
+                                }
+                            }
+                        }
+                    }
+                },
+                resultAttr = 'whateverAttr',
+                resultCountAttr = 'resultCount';
+
+            this.LocationModelConstructor.prototype.loadFromHash = function (hash) {
+                this.hash = hash;
+            };
+
+            this.service.set('locationModelConstructor', this.LocationModelConstructor);
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
+                run: function (query, cb) {
+                    cb(false, response);
+                }
+            });
+
+            this.view.fire('locationSearch', {
+                viewName: this.viewName,
+                resultAttribute: resultAttr,
+                resultTotalCountAttribute: resultCountAttr,
+                search: {
+                    criteria: {},
+                }
+            });
+
+            Assert.isFalse(
+                this.view.get('loadingError'),
+                "The loadingError flag should be false"
+            );
+            Assert.isArray(
+                this.view.get(resultAttr),
+                "The result should be set in the resultAttribute"
+            );
+            Assert.areEqual(
+                0, this.view.get(resultAttr).length,
+                "An empty array should be in the resultAttribute"
+            );
+            Assert.areEqual(
+                0,
+                this.view.get(resultCountAttr),
+                "0 should be set as the number of result"
             );
         },
     });
@@ -675,7 +732,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                     }
                 }
             });
-            
+
             Y.eZ.ContentType = Y.Model;
 
             this.view.fire('locationSearch', {

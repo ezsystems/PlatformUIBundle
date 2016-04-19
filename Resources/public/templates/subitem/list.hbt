@@ -78,8 +78,6 @@
                     </li>
                 </ul>
                 {{/if}}
-            {{else}}
-                <p class="ez-font-icon ez-asynchronousview-loading">Loading the sub-items list...</p>
             {{/if}}
         {{/if}}
     {{else}}
