@@ -278,7 +278,9 @@ class ContentTypeController extends Controller
         try {
             $contentTypeDraft = $this->contentTypeService->loadContentTypeDraft($contentTypeId);
         } catch (NotFoundException $e) {
-            $contentTypeDraft = $this->contentTypeService->createContentTypeDraft($contentType);
+            $contentTypeDraft = $this->contentTypeService->createContentTypeDraft(
+                $this->contentTypeService->loadContentType($contentTypeId)
+            );
         }
 
         if (!isset($languageCode) || !isset($contentTypeDraft->names[$languageCode])) {
