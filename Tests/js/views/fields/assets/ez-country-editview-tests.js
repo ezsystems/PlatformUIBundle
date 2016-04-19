@@ -3,8 +3,173 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-country-editview-tests', function (Y) {
-    var viewTest, registerTest, getFieldTest, uiFunctionalTest;
+    var viewWithoutConfigTest, viewTest, registerTest, getFieldTest, uiFunctionalTest;
 
+
+    viewWithoutConfigTest = new Y.Test.Case({
+        name: "eZ Country View test",
+
+        _getFieldDefinition: function (required, multiple, options) {
+            return {
+                isRequired: required,
+                fieldSettings: {
+                    isMultiple: multiple,
+                }
+            };
+        },
+
+        _getField: function (fieldValues) {
+            return {
+                fieldValue: fieldValues,
+            };
+        },
+
+        setUp: function () {
+            this.field = {};
+            this.jsonContent = {};
+            this.jsonContentType = {};
+            this.jsonVersion = {};
+            this.value = [];
+            this.content = new Y.Mock();
+            this.version = new Y.Mock();
+            this.contentType = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: this.jsonContent
+            });
+            Y.Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: this.jsonVersion
+            });
+            Y.Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: this.jsonContentType
+            });
+
+            this.view = new Y.eZ.CountryEditView({
+                field: this.field,
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType,
+                config: {},
+                value: this.value,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        _testAvailableVariables: function (required, multiple, fieldValues, expectRequired, expectMultiple) {
+            var fieldDefinition = this._getFieldDefinition(required, multiple),
+                field = this._getField(fieldValues),
+                that = this,
+                valuesArray = [];
+
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.set('field', field);
+
+            this.view.template = function (variables) {
+                Y.Assert.isObject(variables, "The template should receive some variables");
+                Y.Assert.areEqual(8, Y.Object.keys(variables).length, "The template should receive 8 variables");
+
+                Y.Assert.areSame(
+                    that.jsonContent, variables.content,
+                    "The content should be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                    that.jsonVersion, variables.version,
+                    "The version should be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                    that.jsonContentType, variables.contentType,
+                    "The contentType should be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                    fieldDefinition, variables.fieldDefinition,
+                    "The fieldDefinition should be available in the field edit view template"
+                );
+                Y.Assert.areSame(
+                    field, variables.field,
+                    "The field should be available in the field edit view template"
+                );
+
+                Y.Assert.areSame(expectRequired, variables.isRequired);
+                Y.Assert.areSame(expectMultiple, variables.isMultiple);
+                Y.Array.each(that.view.get('values'), function (value, key) {
+                    valuesArray.push({text: value.text, alpha2: value.alpha2});
+
+                    Y.Assert.areSame(value.text, variables.selected[key].text);
+                    Y.Assert.areSame(value.alpha2, variables.selected[key].alpha2);
+                    Y.Assert.areSame(variables.selected[key].text,
+                        variables.selected[key].alpha2,
+                        "text and alpha code should be the same if there is no config provided"
+                    );
+                });
+                Y.Assert.areSame(valuesArray.length, variables.selected.length);
+
+                return '';
+            };
+            this.view.render();
+        },
+
+        "Test not required, unique and empty field": function () {
+            this._testAvailableVariables(
+                false, false, [],
+                false, false
+            );
+        },
+
+        "Test not required, multiple and empty field": function () {
+            this._testAvailableVariables(
+                false, true, [],
+                false, true
+            );
+        },
+
+        "Test required, unique and empty field": function () {
+            this._testAvailableVariables(
+                true, false, [],
+                true, false
+            );
+        },
+
+        "Test required, multiple and empty field": function () {
+            this._testAvailableVariables(
+                true, true, [],
+                true, true
+            );
+        },
+
+        "Test not required, unique and non empty field": function () {
+            this._testAvailableVariables(
+                false, false, ["AD"],
+                false, false
+            );
+        },
+
+        "Test not required, multiple and non empty field": function () {
+            this._testAvailableVariables(
+                false, true, ["AD", "SC"],
+                false, true
+            );
+        },
+
+        "Test required, unique and non empty field": function () {
+            this._testAvailableVariables(
+                true, false, ["AD"],
+                true, false
+            );
+        },
+
+        "Test required, multiple and non empty field": function () {
+            this._testAvailableVariables(
+                true, true, ["AD", "SC"],
+                true, true
+            );
+        },
+    });
 
     viewTest = new Y.Test.Case({
         name: "eZ Country View test",
@@ -622,6 +787,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Country Edit View tests");
     Y.Test.Runner.add(viewTest);
+    Y.Test.Runner.add(viewWithoutConfigTest);
     Y.Test.Runner.add(uiFunctionalTest);
 
     getFieldTest = new Y.Test.Case(
