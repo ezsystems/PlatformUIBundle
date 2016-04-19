@@ -103,16 +103,24 @@ YUI.add('ez-languageselectionboxview-tests', function (Y) {
         "Should fire the cancelLanguageSelection event": function () {
             var cancel = this.view.get('container').one('.ez-languageselectionbox-close'),
                 that = this,
-                cancelFired = false;
+                cancelFired = false,
+                isPrevented =  false;
 
             this.view.on('cancelLanguageSelection', function (e) {
                 cancelFired = true;
+            });
+            this.view.get('container').on('tap', function (e) {
+                isPrevented = !!e.prevented;
             });
             cancel.simulateGesture('tap', function () {
                 that.resume(function () {
                     Assert.isTrue(
                         cancelFired,
                         "The cancelLanguageSelection event should have been fired"
+                    );
+                    Assert.isTrue(
+                        isPrevented,
+                        "The tap event should have been prevented"
                     );
                 });
             });
