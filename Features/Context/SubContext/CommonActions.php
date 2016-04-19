@@ -313,17 +313,16 @@ trait CommonActions
         $this->clickOnTreePath($path);
     }
 
-
     /**
      * @Then I should see a :button action bar button
      *
-     * @param  string   $button     Text of the element in the action bar
+     * @param  string   $buttonText     Text of the element in the action bar
      */
-    public function iShouldSeeActionBarButton($button)
+    public function iShouldSeeActionBarButton($buttonText)
     {
-        $element = $this->getElementByText($button, '.ez-actionbar-container .ez-action', '.action-label');
+        $element = $this->getElementByText($buttonText, '.ez-actionbar-container .ez-action', '.action-label');
         if (!$element) {
-            throw new \Exception("Action bar button '$button' not found");
+            throw new \Exception("Action bar button '$buttonText' not found");
         }
     }
 
