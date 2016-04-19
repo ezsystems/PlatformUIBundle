@@ -327,8 +327,6 @@ class ContentTypeController extends Controller
 
     public function updateContentTypeAction(Request $request, $contentTypeId, $languageCode = null)
     {
-        $contentType = $this->contentTypeService->loadContentType($contentTypeId);
-
         $repositoryLanguages = $this->getEnabledRepositoryLanguageCodes();
         if (isset($languageCode) && !in_array($languageCode, $repositoryLanguages)) {
             $this->notify(
@@ -351,7 +349,9 @@ class ContentTypeController extends Controller
         try {
             $contentTypeDraft = $this->contentTypeService->loadContentTypeDraft($contentTypeId);
         } catch (NotFoundException $e) {
-            $contentTypeDraft = $this->contentTypeService->createContentTypeDraft($contentType);
+            $contentTypeDraft = $this->contentTypeService->createContentTypeDraft(
+                $this->contentTypeService->loadContentType($contentTypeId)
+            );
         }
 
         $contentTypeData = (new ContentTypeDraftMapper())->mapToFormData($contentTypeDraft);
