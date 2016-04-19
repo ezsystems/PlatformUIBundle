@@ -315,7 +315,7 @@ trait CommonActions
 
 
     /**
-     * @Then I should see a :button button in the action bar
+     * @Then I should see a :button action bar button
      *
      * @param  string   $button     Text of the element in the action bar
      */

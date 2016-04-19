@@ -73,4 +73,4 @@ Feature: Use the eZ Users field
         Given I am on the Users page
         And there is a User with name "One"
         When I go to User "One" page
-        Then I should see a "Delete" button in the action bar
+        Then I should see a "Delete" action bar button
