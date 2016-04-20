@@ -321,9 +321,7 @@ trait CommonActions
     public function iShouldSeeActionBarButton($buttonText)
     {
         $element = $this->getElementByText($buttonText, '.ez-actionbar-container .ez-action', '.action-label');
-        if (!$element) {
-            throw new \Exception("Action bar button '$buttonText' not found");
-        }
+        EzAssertion::assertSingleElement($buttonText, $element, null, 'Action bar button');
     }
 
     /**
@@ -334,9 +332,7 @@ trait CommonActions
     public function iShouldNotSeeActionBarButton($buttonText)
     {
         $element = $this->getElementByText($buttonText, '.ez-actionbar-container .ez-action', '.action-label');
-        if ($element) {
-            throw new \Exception("Action bar button '$buttonText' was found");
-        }
+        EzAssertion::assertElementNotFound($buttonText, $element, null, 'Action bar button');
     }
 
     /**
