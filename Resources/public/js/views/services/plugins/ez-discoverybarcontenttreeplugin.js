@@ -26,6 +26,22 @@ YUI.add('ez-discoverybarcontenttreeplugin', function (Y) {
         },
 
         /**
+         * Retrieves the root location id so that we can fallback on it as a
+         * starting point to build the tree.
+         *
+         * @method parallelLoad
+         * @param {Function} callback
+         */
+        parallelLoad: function (callback) {
+            var discoveryService = this._getCAPI().getDiscoveryService();
+
+            discoveryService.getInfoObject("rootLocation", Y.bind(function (error, rootLocation) {
+                this._set('rootLocationId', rootLocation._href);
+                callback();
+            }, this));
+        },
+
+        /**
          * `treeAction` event handler. If the currently displayed location is
          * available in the tree, it opens and selects it otherwise, it builds
          * the entire tree.
@@ -35,9 +51,9 @@ YUI.add('ez-discoverybarcontenttreeplugin', function (Y) {
          * @param {Object} e event facade
          */
         _handleTree: function (e) {
-            var node, response = this.get('host').get('response');
+            var node;
 
-            node = this.get('tree').getNodeById(response.view.location.get('id'));
+            node = this.get('tree').getNodeById(this._getBaseLocationId());
             if ( node ) {
                 node.open().select();
                 return;
@@ -46,10 +62,83 @@ YUI.add('ez-discoverybarcontenttreeplugin', function (Y) {
             // location in the tree, maybe one of its ascendant is in it, so we
             // might just load the missing part of the tree instead of reloading
             // everything in _buildTree.
-
             if ( e.target.get('expanded') ) {
                 this._buildTree(e.target);
             }
+        },
+
+        /**
+         * Checks whether the currently active view is a LocationViewView.
+         *
+         * @method _isLocationViewDisplayed
+         * @protected
+         * @return {Boolean}
+         */
+        _isLocationViewDisplayed: function () {
+            return this.get('host').get('app').get('activeView') instanceof Y.eZ.LocationViewView;
+        },
+
+        /**
+         * Returns the base location id used to build the tree. If a Location is
+         * displayed, its Location id is used, otherwise we fallback on the
+         * rootLocationId
+         *
+         * @method _getBaseLocationId
+         * @protected
+         * @return {String}
+         */
+        _getBaseLocationId: function () {
+            if ( this._isLocationViewDisplayed() ) {
+                return this._getResponse().view.location.get('id');
+            }
+            return this.get('rootLocationId');
+        },
+
+        /**
+         * Returns the tree path. If a Location is displayed, the path build in
+         * the LocationViewView is used, otherwise the path is empty which means
+         * the root Location will have to be loaded later.
+         *
+         * @method _getTreePath
+         * @protected
+         * @return {Array}
+         */
+        _getTreePath: function () {
+            var response = this._getResponse();
+
+            if ( this._isLocationViewDisplayed() ) {
+                return response.view.path.concat([response.view.location]);
+            }
+            return [];
+        },
+
+        /**
+         * Builds the root node for the tree.
+         *
+         * @method _getRootNode
+         * @protected
+         * @param {Array} path
+         * @return {Object}
+         */
+        _getRootNode: function (path) {
+            var data = {},
+                id = this.get('rootLocationId');
+
+            if ( path[0] ) {
+                data = {
+                    location: path[0],
+                    contentInfo: path[0].get('contentInfo'),
+                };
+                id = path[0].get('id');
+            }
+            return {
+                data: data,
+                id: id,
+                state: {
+                    leaf: false,
+                },
+                canHaveChildren: true,
+            };
         },
 
         /**
@@ -60,24 +149,31 @@ YUI.add('ez-discoverybarcontenttreeplugin', function (Y) {
          * @param {View} view
          */
         _buildTree: function (view) {
-            var path = [], subscription,
-                tree = this.get('tree'),
-                response = this.get('host').get('response');
+            var path,
+                tree = this.get('tree');
 
-            path = response.view.path.concat([response.view.location]);
+            path = this._getTreePath();
 
-            tree.clear({
-                data: {
-                    location: path[0],
-                    contentInfo: path[0].get('contentInfo'),
-                },
-                id: path[0].get('id'),
-                state: {
-                    leaf: false,
-                },
-                canHaveChildren: true,
-            });
+            tree.clear(this._getRootNode(path));
             view.set('tree', tree);
+
+            this._prepareRecursiveLoad(tree, path);
+
+            // the tree rootNode can not be lazy loaded. Also, the root Location
+            // is not available if the active view is not a LocationViewView
+            this._loadRootNode(tree);
+        },
+
+        /**
+         * Prepares the recursive tree loading when a specific Location is
+         * displayed.
+         *
+         * @method _prepareRecursiveLoad
+         * @param {Tree} tree
+         * @param {Array} path
+         */
+        _prepareRecursiveLoad: function (tree, path) {
+            var subscription;
 
             subscription = tree.lazy.on('load', function (evt) {
                 path.shift();
@@ -90,17 +186,72 @@ YUI.add('ez-discoverybarcontenttreeplugin', function (Y) {
                     subscription.detach();
                 }
             });
+        },
 
-            // the tree rootNode can not be lazy loaded, so we explicitely need
-            // to call _loadNode instead of tree.rootNode.open() and to fire the
-            // load event.
-            this._loadNode(tree.rootNode, function (err) {
-                tree.lazy.fire('load', {node: tree.rootNode});
-            });
+        /**
+         * Loads the tree root node. The root Location is also loaded if needed.
+         *
+         * @method _loadRootNode
+         * @protected
+         * @param {Tree} tree
+         */
+        _loadRootNode: function (tree) {
+            var rootNode = tree.rootNode,
+                location,
+                doLoadRootNode = Y.bind(function () {
+                    this._loadNode(rootNode, function (err) {
+                        tree.lazy.fire('load', {node: rootNode});
+                    });
+                }, this);
 
+            if ( !rootNode.data.location ) {
+                location = new Y.eZ.Location({id: rootNode.id});
+                location.load({api: this._getCAPI()}, function () {
+                    rootNode.data.location = location;
+                    rootNode.data.contentInfo = location.get('contentInfo');
+                    doLoadRootNode();
+                });
+            } else {
+                doLoadRootNode();
+            }
+        },
+
+        /**
+         * Returns the response object.
+         *
+         * @method _getResponse
+         * @private
+         * @return {Object}
+         */
+        _getResponse: function () {
+            return this.get('host').get('response');
+        },
+
+        /**
+         * Returns the CAPI
+         *
+         * @method _getCAPI
+         * @private
+         * @return {eZ.CAPI}
+         */
+        _getCAPI: function () {
+            return this.get('host').get('capi');
         },
     }, {
         NS: 'discoveryBarContentTree',
+
+        ATTRS: {
+            /**
+             * The system root location id
+             *
+             * @attribute rootLocationId
+             * @readOnly
+             * @type {String}
+             */
+            rootLocationId: {
+                readOnly: true,
+            },
+        },
     });
 
     Y.eZ.PluginRegistry.registerPlugin(

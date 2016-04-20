@@ -1138,7 +1138,7 @@ system:
                     requires: ['ez-contenttreeplugin', 'ez-pluginregistry', 'ez-locationmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-universaldiscoverycontenttreeplugin.js
                 ez-discoverybarcontenttreeplugin:
-                    requires: ['ez-contenttreeplugin', 'ez-pluginregistry']
+                    requires: ['ez-contenttreeplugin', 'ez-locationmodel', 'ez-locationviewview', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-discoverybarcontenttreeplugin.js
                 ez-contenttreeplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'ez-contentmodel', 'parallel']

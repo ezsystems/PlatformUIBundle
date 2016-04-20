@@ -3,22 +3,28 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
-    var tests, loadingTest, registerTest,
+    var tests, loadingTest, notLocationViewTest, parallelLoadTest, registerTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     tests = new Y.Test.Case({
         name: "eZ Content Tree Plugin tests",
 
         setUp: function () {
+            Y.eZ.LocationViewView = Y.View;
+            this.app = new Y.Base();
             this.service = new Y.Base();
-            this.view = new Y.Base();
+            this.service.set('app', this.app);
+            this.view = new Y.eZ.LocationViewView();
             this.view.addTarget(this.service);
+            this.app.set('activeView', this.view);
             this.plugin = new Y.eZ.Plugin.DiscoveryBarContentTree({
                 host: this.service
             });
         },
 
         tearDown: function () {
+            delete Y.eZ.LocationViewView;
+            this.app.destroy();
             this.service.destroy();
             this.plugin.destroy();
             this.view.destroy();
@@ -91,6 +97,7 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
             var capi = new Mock(),
                 query = {body: {ViewInput: {LocationQuery: {}}}};
 
+            Y.eZ.LocationViewView = Y.View;
             this.contentService = new Mock();
             Mock.expect(capi, {
                 method: 'getContentService',
@@ -101,9 +108,12 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
                 args: [Mock.Value.String, 'LocationQuery'],
                 returns: query,
             });
+            this.app = new Y.Base();
             this.service = new Y.Base();
             this.service.set('capi', capi);
-            this.view = new Y.Base();
+            this.service.set('app', this.app);
+            this.view = new Y.eZ.LocationViewView();
+            this.app.set('activeView', this.view);
             this.view.addTarget(this.service);
             this.plugin = new Y.eZ.Plugin.DiscoveryBarContentTree({
                 host: this.service
@@ -111,6 +121,8 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
         },
 
         tearDown: function () {
+            delete Y.eZ.LocationViewView;
+            this.app.destroy();
             this.service.destroy();
             this.plugin.destroy();
             this.view.destroy();
@@ -182,6 +194,184 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
         },
     });
 
+    notLocationViewTest = new Y.Test.Case({
+        name: "eZ Content Tree Plugin not Location view tests",
+
+        setUp: function () {
+            var query = {body: {ViewInput: {LocationQuery: {}}}};
+
+            this.contentInfo = {};
+            Y.eZ.LocationViewView = Y.Base.create('locationView', Y.View, [], {});
+            Y.eZ.Location = Y.Base.create('location', Y.Model, [], {}, {
+                ATTRS: {
+                    contentInfo: {
+                        valueFn: Y.bind(function () {return this.contentInfo;}, this),
+                    }
+                }
+            });
+            this.capi = new Mock();
+            this.contentService = new Mock();
+            Mock.expect(this.capi, {
+                method: 'getContentService',
+                returns: this.contentService,
+            });
+            Mock.expect(this.contentService, {
+                method: 'newViewCreateStruct',
+                args: [Mock.Value.String, 'LocationQuery'],
+                returns: query,
+            });
+
+            this.app = new Y.Base();
+            this.service = new Y.Base();
+            this.service.set('app', this.app);
+            this.service.set('capi', this.capi);
+            this.view = new Y.View();
+            this.view.addTarget(this.service);
+            this.app.set('activeView', this.view);
+            this.plugin = new Y.eZ.Plugin.DiscoveryBarContentTree({
+                host: this.service
+            });
+            this.locationId = '/tostaky';
+            this.plugin._set('rootLocationId', this.locationId);
+        },
+
+        tearDown: function () {
+            delete Y.eZ.LocationViewView;
+            delete Y.eZ.Location;
+            this.app.destroy();
+            this.service.destroy();
+            this.plugin.destroy();
+            this.view.destroy();
+            delete this.service;
+            delete this.plugin;
+            delete this.view;
+        },
+
+        "Should reuse the tree if the root Location is present": function () {
+            var tree = this.plugin.get('tree'),
+                node;
+
+            this.service.set('response', {view: {}});
+            node = tree.rootNode.append({
+                canHaveChildren: true,
+                id: this.locationId,
+                children: [{}, {}],
+                state: {loaded: true},
+            }).close();
+
+            tree.on('clear', function () {
+                Assert.fail("The tree should not be cleared");
+            });
+            this.service.fire('whatever:treeAction');
+
+            Assert.isTrue(node.isSelected(), "The node should be selected");
+            Assert.isTrue(node.isOpen(), "The node should be open");
+        },
+
+
+        "Should initialized the tree starting from rootLocationId": function () {
+            var tree = this.plugin.get('tree'),
+                treeCleared = false, loadFired = false;
+
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (query, callback) {
+                    callback(true); // simulating an error to ease the test
+                },
+            });
+            this.service.set('response', {view: {}});
+            this.view.set('expanded', true);
+
+            tree.after('clear', Y.bind(function () {
+                var rootNode = tree.rootNode;
+
+                treeCleared = true;
+                Assert.areEqual(
+                    this.locationId, rootNode.id,
+                    "The rootNode id should be the location id"
+                );
+            }, this));
+            tree.lazy.after('load', Y.bind(function () {
+                var rootNode = tree.rootNode;
+
+                loadFired = true;
+                Assert.isInstanceOf(
+                    Y.eZ.Location, rootNode.data.location,
+                    "The location should have been added to the root node"
+                );
+                Assert.areEqual(
+                    this.locationId, rootNode.data.location.get('id'),
+                    "The location id should be set"
+                );
+                Assert.areSame(
+                    this.contentInfo, rootNode.data.contentInfo,
+                    "The contentInfo should have been added to the root node"
+                );
+            }, this));
+            this.view.fire('treeAction');
+
+            Assert.isTrue(treeCleared, "The tree should have been cleared");
+            Assert.isTrue(loadFired, "The tree should have been loaded");
+            Assert.areSame(
+                tree, this.view.get('tree'),
+                "The view should receive the tree"
+            );
+        },
+    });
+
+    parallelLoadTest = new Y.Test.Case({
+        name: "eZ Content Tree Plugin parallelLoad tests",
+
+        setUp: function () {
+            this.capi = new Mock();
+            this.discoveryService = new Mock();
+            this.locationId = '/a/ton/étoile';
+
+            Mock.expect(this.capi, {
+                method: 'getDiscoveryService',
+                returns: this.discoveryService,
+            });
+            Mock.expect(this.discoveryService, {
+                method: 'getInfoObject',
+                args: ['rootLocation', Mock.Value.Function],
+                run: Y.bind(function (name, callback) {
+                    callback('', {_href: this.locationId});
+                }, this),
+            });
+            this.service = new Y.Base();
+            this.service.set('capi', this.capi);
+            this.plugin = new Y.eZ.Plugin.DiscoveryBarContentTree({
+                host: this.service
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            this.plugin.destroy();
+            delete this.service;
+            delete this.plugin;
+        },
+
+        "Should set the rootLocationId attribute using discoveryService": function () {
+            var callbackCalled = false;
+            this.plugin.parallelLoad(function () {
+                callbackCalled = true;
+            });
+
+            Assert.isTrue(
+                callbackCalled,
+                "The parallelLoad callback should have been called"
+            );
+            Assert.areEqual(
+                 this.locationId, this.plugin.get('rootLocationId'),
+                 "The rootLocationId attribute should be set"
+            );
+            Mock.verify(this.capi);
+            Mock.verify(this.discoveryService);
+        },
+    });
+
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.DiscoveryBarContentTree;
     registerTest.components = ['discoveryBarViewService'];
@@ -189,5 +379,7 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
     Y.Test.Runner.setName("eZ Discovery Bar Content Tree Plugin tests");
     Y.Test.Runner.add(tests);
     Y.Test.Runner.add(loadingTest);
+    Y.Test.Runner.add(notLocationViewTest);
+    Y.Test.Runner.add(parallelLoadTest);
     Y.Test.Runner.add(registerTest);
-}, '', {requires: ['test', 'base', 'ez-discoverybarcontenttreeplugin', 'ez-pluginregister-tests']});
+}, '', {requires: ['test', 'base', 'view', 'model', 'ez-discoverybarcontenttreeplugin', 'ez-pluginregister-tests']});
