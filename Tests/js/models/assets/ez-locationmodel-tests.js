@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationmodel-tests', function (Y) {
-    var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest, toJSONTest, updateSortingTest, updatePriorityTest,
+    var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest, toJSONTest, updateSortingTest, updatePriorityTest, isRootTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
@@ -905,6 +905,35 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         },
     });
 
+    isRootTest = new Y.Test.Case({
+        name: "eZ Location Model is Root test",
+
+        setUp: function () {
+            this.model = new Y.eZ.Location();
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        "Should return true if root location": function () {
+            this.model._set('depth', 1);
+            Assert.isTrue(
+                this.model.isRootLocation(),
+                "The isRootLocation method should return true"
+            );
+        },
+
+        "Should return false if not root location": function () {
+            this.model._set('depth', 2);
+            Assert.isFalse(
+                this.model.isRootLocation(),
+                "The isRootLocation method should return false"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(trashTest);
@@ -915,4 +944,5 @@ YUI.add('ez-locationmodel-tests', function (Y) {
     Y.Test.Runner.add(updateSortingTest);
     Y.Test.Runner.add(updatePriorityTest);
     Y.Test.Runner.add(toJSONTest);
+    Y.Test.Runner.add(isRootTest);
 }, '', {requires: ['test', 'model-tests', 'ez-locationmodel', 'ez-restmodel']});

@@ -77,7 +77,7 @@ YUI.add('ez-actionbarview', function (Y) {
                         actionList.push(
                             new Y.eZ.ButtonActionView({
                                 actionId: 'sendToTrash',
-                                disabled: false,
+                                disabled: this.get('location').isRootLocation(),
                                 label: 'Send to Trash',
                                 priority: 10
                             })
