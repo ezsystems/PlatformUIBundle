@@ -327,6 +327,19 @@ trait CommonActions
     }
 
     /**
+     * @Then I should not see a :button action bar button
+     *
+     * @param  string   $buttonText     Text of the element in the action bar
+     */
+    public function iShouldNotSeeActionBarButton($buttonText)
+    {
+        $element = $this->getElementByText($buttonText, '.ez-actionbar-container .ez-action', '.action-label');
+        if ($element) {
+            throw new \Exception("Action bar button '$buttonText' was found");
+        }
+    }
+
+    /**
      * @Then I am on the :name location view
      */
     public function onLocationView($name)

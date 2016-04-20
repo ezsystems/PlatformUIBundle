@@ -73,4 +73,5 @@ Feature: Use the eZ Users field
         Given I am on the Users page
         And there is a User with name "One"
         When I go to User "One" page
-        Then I should see a "Delete" action bar button
+        Then I should not see a "Send to thrash" action bar button
+        And I should see a "Delete" action bar button
