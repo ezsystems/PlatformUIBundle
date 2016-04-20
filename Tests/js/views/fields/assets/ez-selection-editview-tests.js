@@ -4,6 +4,7 @@
  */
 YUI.add('ez-selection-editview-tests', function (Y) {
     var viewTest, registerTest, getFieldTest, uiFunctionalTest, validateAddedValuesTest,
+        uiFunctionalBaseTest, rerenderUiFunctionalTest,
         options = [
             'Mont Myon', 'Signal de Nivigne', 'Mont Verjon', 'Mont July',
             'Mont Grillerin', 'Croix Rousse', 'Vergongeat'
@@ -242,8 +243,7 @@ YUI.add('ez-selection-editview-tests', function (Y) {
         },
     });
 
-
-    uiFunctionalTest = new Y.Test.Case({
+    uiFunctionalBaseTest = {
         name: "eZ Selection View test for UI behavior",
 
         _getFieldDefinition: function (required, multiple, options) {
@@ -282,9 +282,10 @@ YUI.add('ez-selection-editview-tests', function (Y) {
                 method: 'toJSON',
                 returns: this.jsonContentType
             });
+            this.container = Y.one('.container');
 
             this.view = new Y.eZ.SelectionEditView({
-                container: '.container',
+                container: this.container,
                 field: this.field,
                 content: this.content,
                 version: this.version,
@@ -295,14 +296,14 @@ YUI.add('ez-selection-editview-tests', function (Y) {
         tearDown: function () {
             this.view.destroy();
             delete this.view;
+            this.container.removeAttribute('style');
         },
 
         "selection filter view is rendered but hidden": function () {
             var container = this.view.get('container');
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false, options));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
 
             Y.Assert.areEqual(
                 options.length, container.all('.ez-selection-options li').size(),
@@ -318,8 +319,7 @@ YUI.add('ez-selection-editview-tests', function (Y) {
             var container = this.view.get('container');
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false, options.slice(0, 4)));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
 
             Y.Assert.isTrue(
                 container.one('.ez-selection-filter-input').get('disabled'),
@@ -332,8 +332,7 @@ YUI.add('ez-selection-editview-tests', function (Y) {
                 that = this;
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false, options));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
 
             container.one('.ez-selection-values').simulateGesture('tap', function () {
                 that.resume(function () {
@@ -356,8 +355,7 @@ YUI.add('ez-selection-editview-tests', function (Y) {
                 that = this;
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false, options));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
 
             container.setStyle('margin-top', '720px');
             container.one('.ez-selection-values').simulateGesture('tap', function () {
@@ -382,8 +380,7 @@ YUI.add('ez-selection-editview-tests', function (Y) {
                 that = this;
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false, options));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
             this.view.set('showSelectionUI', true);
 
             container.one('.ez-selection-values').simulateGesture('tap', function () {
@@ -401,8 +398,7 @@ YUI.add('ez-selection-editview-tests', function (Y) {
             var container = this.view.get('container');
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false, options));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
             this.view.set('showSelectionUI', true);
 
             container.simulate('click');
@@ -418,8 +414,7 @@ YUI.add('ez-selection-editview-tests', function (Y) {
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false, options));
             this.view.set('field', this._getField([2]));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
 
             container.one('.ez-selection-values .ez-selection-value').simulateGesture('tap', function () {
                 that.resume(function () {
@@ -443,8 +438,7 @@ YUI.add('ez-selection-editview-tests', function (Y) {
                 that = this;
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false, options));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
             this.view.set('showSelectionUI', true);
 
 
@@ -478,10 +472,8 @@ YUI.add('ez-selection-editview-tests', function (Y) {
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false, options));
             this.view.set('field', this._getField([5]));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
             this.view.set('showSelectionUI', true);
-
 
             option = container.one('.ez-selection-options li');
             option.simulateGesture('tap', function () {
@@ -517,8 +509,7 @@ YUI.add('ez-selection-editview-tests', function (Y) {
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, true, options));
             this.view.set('field', this._getField([5]));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
             this.view.set('showSelectionUI', true);
 
             option = container.one('.ez-selection-options li');
@@ -554,8 +545,7 @@ YUI.add('ez-selection-editview-tests', function (Y) {
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, true, options));
             this.view.set('field', this._getField([5, 6]));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
             this.view.set('showSelectionUI', true);
 
             option = container.one('.ez-selection-options .ez-selection-filter-item-selected');
@@ -573,7 +563,22 @@ YUI.add('ez-selection-editview-tests', function (Y) {
             });
             this.wait();
         },
-    });
+    };
+
+    uiFunctionalTest = new Y.Test.Case(Y.merge(uiFunctionalBaseTest, {
+        _render: function () {
+            this.view.render();
+            this.view.set('active', true);
+        },
+    }));
+
+    rerenderUiFunctionalTest = new Y.Test.Case(Y.merge(uiFunctionalBaseTest, {
+        _render: function () {
+            this.view.render();
+            this.view.set('active', true);
+            this.view.render();
+        },
+    }));
 
     validateAddedValuesTest = new Y.Test.Case({
         name: "eZ Selection View regression test concerning EZP-24716",
@@ -669,6 +674,7 @@ YUI.add('ez-selection-editview-tests', function (Y) {
     Y.Test.Runner.setName("eZ Selection Edit View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(uiFunctionalTest);
+    Y.Test.Runner.add(rerenderUiFunctionalTest);
     Y.Test.Runner.add(validateAddedValuesTest);
 
     getFieldTest = new Y.Test.Case(

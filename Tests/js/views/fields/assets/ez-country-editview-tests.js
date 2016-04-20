@@ -3,8 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-country-editview-tests', function (Y) {
-    var viewWithoutConfigTest, viewTest, registerTest, getFieldTest, uiFunctionalTest;
-
+    var viewWithoutConfigTest, viewTest, registerTest, getFieldTest, uiFunctionalBaseTest,
+        uiFunctionalTest, rerenderUiFunctionalTest;
 
     viewWithoutConfigTest = new Y.Test.Case({
         name: "eZ Country View test",
@@ -446,8 +446,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
         },
     });
 
-
-    uiFunctionalTest = new Y.Test.Case({
+    uiFunctionalBaseTest = {
         name: "eZ Country View test for UI behavior",
 
         _getFieldDefinition: function (required, multiple, options) {
@@ -486,8 +485,9 @@ YUI.add('ez-country-editview-tests', function (Y) {
                 returns: this.jsonContentType
             });
 
+            this.container = Y.one('.container');
             this.view = new Y.eZ.CountryEditView({
-                container: '.container',
+                container: this.container,
                 field: this.field,
                 content: this.content,
                 version: this.version,
@@ -514,6 +514,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
         tearDown: function () {
             this.view.destroy();
             delete this.view;
+            this.container.removeAttribute('style');
         },
 
         "selection filter view is rendered but hidden": function () {
@@ -521,8 +522,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
                 countriesArray = [];
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
 
             Y.Object.each(this.view.get('config').countriesInfo, function (country) {
                 countriesArray.push(country);
@@ -542,8 +542,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
                 that = this;
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
 
             container.one('.ez-selection-values').simulateGesture('tap', function () {
                 that.resume(function () {
@@ -566,8 +565,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
                 that = this;
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
 
             container.setStyle('margin-top', '720px');
             container.one('.ez-selection-values').simulateGesture('tap', function () {
@@ -592,8 +590,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
                 that = this;
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
             this.view.set('showSelectionUI', true);
 
             container.one('.ez-selection-values').simulateGesture('tap', function () {
@@ -611,8 +608,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
             var container = this.view.get('container');
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
             this.view.set('showSelectionUI', true);
 
             container.simulate('click');
@@ -628,8 +624,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false));
             this.view.set('field', this._getField(["AD"]));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
 
             container.one('.ez-selection-values .ez-selection-value').simulateGesture('tap', function () {
                 that.resume(function () {
@@ -653,8 +648,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
                 that = this;
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
             this.view.set('showSelectionUI', true);
 
 
@@ -688,8 +682,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, false));
             this.view.set('field', this._getField(["AD"]));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
             this.view.set('showSelectionUI', true);
 
 
@@ -727,8 +720,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, true));
             this.view.set('field', this._getField(["SC"]));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
             this.view.set('showSelectionUI', true);
 
             option = container.one('.ez-selection-options li');
@@ -764,8 +756,7 @@ YUI.add('ez-country-editview-tests', function (Y) {
 
             this.view.set('fieldDefinition', this._getFieldDefinition(false, true));
             this.view.set('field', this._getField(["AD", "SC"]));
-            this.view.render();
-            this.view.set('active', true);
+            this._render();
             this.view.set('showSelectionUI', true);
 
             option = container.one('.ez-selection-options .ez-selection-filter-item-selected');
@@ -783,12 +774,28 @@ YUI.add('ez-country-editview-tests', function (Y) {
             });
             this.wait();
         },
-    });
+    };
+
+    uiFunctionalTest = new Y.Test.Case(Y.merge(uiFunctionalBaseTest, {
+        _render: function () {
+            this.view.render();
+            this.view.set('active', true);
+        },
+    }));
+
+    rerenderUiFunctionalTest = new Y.Test.Case(Y.merge(uiFunctionalBaseTest, {
+        _render: function () {
+            this.view.render();
+            this.view.set('active', true);
+            this.view.render();
+        },
+    }));
 
     Y.Test.Runner.setName("eZ Country Edit View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(viewWithoutConfigTest);
     Y.Test.Runner.add(uiFunctionalTest);
+    Y.Test.Runner.add(rerenderUiFunctionalTest);
 
     getFieldTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.GetFieldTests, {

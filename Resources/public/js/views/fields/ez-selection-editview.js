@@ -51,6 +51,15 @@ YUI.add('ez-selection-editview', function (Y) {
              * @type eZ.SelectionFilterView
              */
             this._selectionFilter = null;
+
+            /**
+             * Holds the clickoutside event handle.
+             *
+             * @property _clickoutsideHandler
+             * @protected
+             * @type {EventHandle}
+             */
+            this._clickoutsideHandler = null;
             this._useStandardFieldDefinitionDescription = false;
 
             this.after('activeChange', function (e) {
@@ -80,6 +89,18 @@ YUI.add('ez-selection-editview', function (Y) {
         },
 
         /**
+         * Recreates the selection filter when the view is rerendered.
+         *
+         * @method _afterActiveReRender
+         * @protected
+         */
+        _afterActiveReRender: function () {
+            this._selectionFilter.destroy();
+            this._clickoutsideHandler.detach();
+            this._initSelectionFilter();
+        },
+
+        /**
          * Initializes and the selection filter view for the current
          * field/fieldDefinition. Once created, it is render right away.
          *
@@ -87,8 +108,6 @@ YUI.add('ez-selection-editview', function (Y) {
          * @protected
          */
         _initSelectionFilter: function () {
-            var container = this.get('container');
-
             this._selectionFilter = this._getSelectionFilter();
 
             this._selectionFilter.on('select', Y.bind(function (e) {
@@ -110,14 +129,12 @@ YUI.add('ez-selection-editview', function (Y) {
             }, this));
 
             this._selectionFilter.render();
-
-            this._attachedViewEvents.push(
-                container.one('.ez-selection-input-ui').on(
-                    'clickoutside', Y.bind(function (e) {
-                        this.set('showSelectionUI', false);
-                    }, this)
-                )
+            this._clickoutsideHandler = this.get('container').one('.ez-selection-input-ui').on(
+                'clickoutside', Y.bind(function (e) {
+                    this.set('showSelectionUI', false);
+                }, this)
             );
+            this._attachedViewEvents.push(this._clickoutsideHandler);
         },
 
         /**

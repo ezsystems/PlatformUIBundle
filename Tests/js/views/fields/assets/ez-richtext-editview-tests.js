@@ -5,7 +5,7 @@
 /* global CKEDITOR */
 YUI.add('ez-richtext-editview-tests', function (Y) {
     var renderTest, registerTest, validateTest, getFieldTest,
-        editorTest, focusModeTest, editorFocusHandlingTest, appendToolbarConfigTest,
+        editorTest, rerenderEditorTest, focusModeTest, editorFocusHandlingTest, appendToolbarConfigTest,
         eventForwardTest, defaultEditorProcessorsTest, defaultProcessorsTest,
         VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, RESULT_EMPTY_XHTML,
         Assert = Y.Assert, Mock = Y.Mock,
@@ -330,6 +330,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                     );
                     Assert.isObject(field.fieldValue, "The fieldValue should be an object");
                     Assert.isString(field.fieldValue.xml, "The field should have a `xml` entry");
+                    Assert.isString(field.fieldValue.xhtml5edit, "The field should have a `xhtml5edit` entry");
                 }, this));
             }, this));
             this.view.set('active', true);
@@ -593,7 +594,189 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                 "The eZ Configuration should contain 0 variation"
             );
         },
+    });
 
+    rerenderEditorTest = new Y.Test.Case({
+        name: "eZ RichText View rerender test",
+
+        setUp: editorTest.setUp,
+
+        tearDown: destroyTearDown,
+
+        _getEditorMock: function () {
+            var editorMock = new Mock();
+
+            Mock.expect(editorMock, {
+                method: 'destroy',
+            });
+            return editorMock;
+        },
+
+        _reRender: function (editorMock) {
+            this.view.set('active', true);
+            this.view._set('editor', editorMock);
+            this.view.render();
+        },
+
+        "Should destroy the editor": function () {
+            var editorMock = this._getEditorMock();
+
+            this._reRender(editorMock);
+            Mock.verify(editorMock);
+        },
+
+        "Shoulde create a new instance of AlloyEditor": function () {
+            var editorMock = this._getEditorMock();
+
+            this._reRender(editorMock);
+            Assert.isInstanceOf(
+                Y.eZ.AlloyEditor.Core, this.view.get('editor'),
+                "An instance of AlloyEditor should have been created"
+            );
+        },
+
+        "Should set the toolbar configuration": function () {
+            var editorMock = this._getEditorMock();
+
+            this._reRender(editorMock);
+            Assert.areSame(
+                this.view.get('toolbarsConfig'),
+                this.view.get('editor').get('toolbars'),
+                "The toolbarsConfig attribute should be used as the toolbars config"
+            );
+        },
+
+        _validationTestOnEvent: function (evtName) {
+            var editorMock = this._getEditorMock(),
+                validated = false;
+
+            this._reRender(editorMock);
+
+            this.view.after('errorStatusChange', function () {
+                validated = true;
+            });
+            this.view.get('editor').get('nativeEditor').fire(evtName);
+
+            Assert.isTrue(validated, "The input should have been validated");
+        },
+
+        "Should validate the input on blur": function () {
+            this._validationTestOnEvent('blur');
+        },
+
+        "Should validate the input on focus": function () {
+            this._validationTestOnEvent('focus');
+        },
+
+        "Should validate the input on change": function () {
+            this._validationTestOnEvent('change');
+        },
+
+        _testExtraPlugins: function (plugin) {
+            var editorMock = this._getEditorMock();
+
+            this._reRender(editorMock);
+            Assert.isTrue(
+                this.view.get('editor').get('extraPlugins').indexOf(plugin) !== -1,
+                "The '" + plugin + "' plugin should be loaded"
+            );
+        },
+
+        "Should add the ezaddcontent plugin": function () {
+            this._testExtraPlugins('ezaddcontent');
+        },
+
+        "Should add the ezremoveblock plugin": function () {
+            this._testExtraPlugins('ezremoveblock');
+        },
+
+        "Should add the widget plugin": function () {
+            this._testExtraPlugins('widget');
+        },
+
+        "Should add the ezembed plugin": function () {
+            this._testExtraPlugins('ezembed');
+        },
+
+        "Should add the ezfocusblock plugin": function () {
+            this._testExtraPlugins('ezfocusblock');
+        },
+
+        "Should pass the `eZ` configuration": function () {
+            var editorMock = this._getEditorMock(),
+                eZConfig;
+
+            this._reRender(editorMock);
+            eZConfig = this.view.get('editor').get('nativeEditor').config.eZ;
+            Assert.isObject(
+                eZConfig,
+                "The editor should have received the eZ configuration"
+            );
+            Assert.areEqual(
+                eZConfig.editableRegion,
+                '.ez-richtext-editable',
+                "The eZ configuration should contain the selector for the editable region"
+            );
+        },
+
+        "Should pass the image variation configuration in `eZ` configuration": function () {
+            var editorMock = this._getEditorMock(),
+                eZConfig;
+
+            this._reRender(editorMock);
+            eZConfig = this.view.get('editor').get('nativeEditor').config.eZ;
+
+            Assert.isObject(
+                eZConfig,
+                "The editor should have received the eZ configuration"
+            );
+            Assert.isArray(
+                eZConfig.imageVariations,
+                "The eZ configuration should contain the image variations"
+            );
+            Assert.areEqual(
+                Object.keys(this.config.imageVariations).length, eZConfig.imageVariations.length,
+                "The eZ Configuration should contain " + Object.keys(this.config).length + " variations"
+            );
+            Assert.areEqual(
+                "large", eZConfig.imageVariations[0].identifier,
+                "The image variation should be sorted by name"
+            );
+            Assert.areEqual(
+                "large", eZConfig.imageVariations[0].name,
+                "The image variation should be sorted by name"
+            );
+            Assert.areEqual(
+                "small", eZConfig.imageVariations[1].identifier,
+                "The image variation should be sorted by name"
+            );
+            Assert.areEqual(
+                "small", eZConfig.imageVariations[1].name,
+                "The image variation should be sorted by name"
+            );
+        },
+
+        "Should pass an empty image variation configuration in `eZ` configuration": function () {
+            var editorMock = this._getEditorMock(),
+                eZConfig;
+
+            this.config.imageVariations = undefined;
+            this._reRender(editorMock);
+            eZConfig = this.view.get('editor').get('nativeEditor').config.eZ;
+
+            Assert.isObject(
+                 eZConfig,
+                "The editor should have received the eZ configuration"
+            );
+            Assert.isArray(
+                eZConfig.imageVariations,
+                "The eZ configuration should contain the image variations"
+            );
+            Assert.areEqual(
+                0, eZConfig.imageVariations.length,
+                "The eZ Configuration should contain 0 variation"
+            );
+        },
     });
 
     focusModeTest = new Y.Test.Case({
@@ -988,6 +1171,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     Y.Test.Runner.add(validateTest);
     Y.Test.Runner.add(getFieldTest);
     Y.Test.Runner.add(editorTest);
+    Y.Test.Runner.add(rerenderEditorTest);
     Y.Test.Runner.add(focusModeTest);
     Y.Test.Runner.add(appendToolbarConfigTest);
     Y.Test.Runner.add(registerTest);
