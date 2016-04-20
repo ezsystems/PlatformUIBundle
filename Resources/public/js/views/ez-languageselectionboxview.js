@@ -274,13 +274,15 @@ YUI.add('ez-languageselectionboxview', function (Y) {
          *
          * @protected
          * @method _cancelLanguageSelection
+         * @param {EventFacade} e
          */
-        _cancelLanguageSelection: function () {
+        _cancelLanguageSelection: function (e) {
             /**
              * Fired when language selection is being cancelled
              *
              * @event cancelLanguageSelection
              */
+            e.preventDefault();
             this.fire(CANCEL_LANGUAGE_SELECTION);
         },
 
