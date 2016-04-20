@@ -40,6 +40,8 @@ class Users extends PlatformUI
      */
     public function goToUserPage($username)
     {
+        $this->iAmOnPage('Users');
+        $this->waitWhileLoading();
         $this->clickOnTreePath("$username $username");
         $this->sleep(); //safeguard for application delays
     }

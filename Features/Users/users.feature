@@ -70,8 +70,7 @@ Feature: Use the eZ Users field
 
     @javascript @edge
     Scenario: Validate that users have the "Delete" button available
-        Given I am on the Users page
-        And there is a User with name "One"
+        Given there is a User with name "One"
         When I go to User "One" page
         Then I should not see a "Send to thrash" action bar button
         And I should see a "Delete" action bar button
