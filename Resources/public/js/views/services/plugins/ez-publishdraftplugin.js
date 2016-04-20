@@ -38,7 +38,8 @@ YUI.add('ez-publishdraftplugin', function (Y) {
             var service = this.get('host'),
                 content = service.get('content'),
                 notificationIdentifier,
-                app = service.get('app');
+                app = service.get('app'),
+                buttonActionView = e.target;
 
             if ( !e.formIsValid ) {
                 return;
@@ -59,6 +60,12 @@ YUI.add('ez-publishdraftplugin', function (Y) {
             });
 
             app.set('loading', true);
+            buttonActionView.set("disabled", true);
+
+            app.onceAfter('loadingChange', function () {
+                buttonActionView.set("disabled", false);
+            });
+
             if ( content.isNew() ) {
                 this._set('isNewContent', true);
                 this._createPublishContent(e.fields);
