@@ -6,9 +6,81 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
     var viewTest, registerTest, binaryfileSetterTest,
         buttonsTest, warningTest, renderingTest,
         validateTest, pickBinaryFileTest, dndTest,
-        getFieldNotUpdatedTest, getFieldUpdatedEmptyTest,
+        getFieldNotUpdatedTest, getFieldNotUpdatedWithNewLanguageTest,
+        getFieldUpdatedEmptyTest,
         getFieldUpdatedTest, getFieldUpdatedNoDataTest,
         Assert = Y.Assert;
+
+    function _getFieldSetup() {
+        var that = this;
+
+        if ( !this.content ) {
+            this.content = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'toJSON',
+                returns: {}
+            });
+
+            this.currentVersion = new Y.Mock();
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: [Y.Mock.Value.String],
+                run: function (arg) {
+                    if( arg == 'mainLanguageCode' ) {
+                        return 'eng-GB';
+                    } else if ( arg == 'currentVersion') {
+                        return that.currentVersion;
+                    } else {
+                        Y.fail("Unexpected parameter " + arg + " for content mock");
+                    }
+                }
+            });
+
+            Y.Mock.expect(this.currentVersion, {
+                method: 'getTranslationsList',
+                returns: ['eng-GB', 'fr-FR']
+            });
+
+        }
+        if ( !this.contentType ) {
+            this.contentType = new Y.Mock();
+            Y.Mock.expect(this.contentType, {
+                method: 'toJSON',
+                returns: {}
+            });
+        }
+        if ( !this.version ) {
+            this.version = new Y.Mock();
+            Y.Mock.expect(this.version, {
+                method: 'toJSON',
+                returns: {}
+            });
+        }
+
+        if (Y.Lang.isUndefined(this.fieldValue) ) {
+            this.fieldValue = "";
+        }
+
+        this.view = new this.ViewConstructor(
+            Y.merge({
+                    container: '.container',
+                    field: {
+                        fieldDefinitionIdentifier: "name",
+                        id: 186,
+                        fieldValue: this.fieldValue,
+                        languageCode: "eng-GB"
+                    },
+                    fieldDefinition: this.fieldDefinition,
+                    content: this.content,
+                    version: this.version,
+                    contentType: this.contentType,
+                    languageCode: "eng-GB",
+                },
+                this._additionalConstructorParameters
+            )
+        );
+        this._afterSetup();
+    }
 
     viewTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.BinaryBaseViewTest, {
@@ -152,6 +224,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
             fieldDefinition: {isRequired: false},
             fieldValue: null,
             ViewConstructor: Y.eZ.BinaryFileEditView,
+            setUp: _getFieldSetup,
 
             _setNewValue: function () {
 
@@ -169,12 +242,41 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
         })
     );
 
+    getFieldNotUpdatedWithNewLanguageTest = new Y.Test.Case(
+        Y.merge(Y.eZ.Test.GetFieldTests, {
+            _should: {
+                ignore: {
+                    "Test getField": true,
+                }
+            },
+            fieldDefinition: {isRequired: false},
+            fieldValue: null,
+            ViewConstructor: Y.eZ.BinaryFileEditView,
+            setUp: _getFieldSetup,
+
+            _setNewValue: function () {
+                this.view._set('languageCode', 'newLanguageCode');
+            },
+
+            "Should NOT return undefined": function () {
+                this.view.render();
+                this._setNewValue();
+
+                Assert.isNotUndefined(
+                    this.view.getField(),
+                    "getField should NOT return undefined"
+                );
+            }
+        })
+    );
+
     getFieldUpdatedEmptyTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.GetFieldTests, {
             fieldDefinition: {isRequired: false},
             fieldValue: null,
             newValue: null,
             ViewConstructor: Y.eZ.BinaryFileEditView,
+            setUp: _getFieldSetup,
 
             _setNewValue: function () {
                 this.view._set('updated', true);
@@ -196,6 +298,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
                 data: "base64 content",
             },
             ViewConstructor: Y.eZ.BinaryFileEditView,
+            setUp: _getFieldSetup,
 
             _afterSetup: function () {
                 var that = this,
@@ -255,6 +358,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
                 name: "me.jpg",
             },
             ViewConstructor: Y.eZ.BinaryFileEditView,
+            setUp: _getFieldSetup,
 
             _afterSetup: function () {
                 var that = this,
@@ -389,6 +493,7 @@ YUI.add('ez-binaryfile-editview-tests', function (Y) {
     Y.Test.Runner.add(renderingTest);
     Y.Test.Runner.add(dndTest);
     Y.Test.Runner.add(getFieldNotUpdatedTest);
+    Y.Test.Runner.add(getFieldNotUpdatedWithNewLanguageTest);
     Y.Test.Runner.add(getFieldUpdatedEmptyTest);
     Y.Test.Runner.add(getFieldUpdatedTest);
     Y.Test.Runner.add(getFieldUpdatedNoDataTest);
