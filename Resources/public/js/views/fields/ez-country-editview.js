@@ -46,7 +46,7 @@ YUI.add('ez-country-editview', function (Y) {
          * @return {String}
          */
         _getCountryName: function (alpha2Code) {
-            var countryList = this.get('countryList');
+            var countryList = this._getCountryList();
 
             if (countryList[alpha2Code]) {
                 return countryList[alpha2Code].Name;
@@ -54,6 +54,22 @@ YUI.add('ez-country-editview', function (Y) {
                 console.warn("Unknown country code: " + alpha2Code);
                 return alpha2Code;
             }
+        },
+
+        /**
+         * Returns the country list indexed by Alpha2 code.
+         *
+         * @method _getCountryList
+         * @protected
+         * @return {Object}
+         */
+        _getCountryList: function () {
+            var config = this.get('config');
+
+            if ( config && config.countriesInfo ) {
+                return config.countriesInfo;
+            }
+            return {};
         },
 
         _getSelectionFilter: function () {
@@ -91,7 +107,7 @@ YUI.add('ez-country-editview', function (Y) {
         _getSource: function () {
             var countriesArray = [];
 
-            Y.Object.each(this.get('countryList'), function (country) {
+            Y.Object.each(this._getCountryList(), function (country) {
                 countriesArray.push(country);
             });
             return countriesArray;
@@ -132,14 +148,18 @@ YUI.add('ez-country-editview', function (Y) {
              */
 
             /**
-             * The country list indexed by alpha2 code
+             * The country list indexed by alpha2 code.
+             * This attribute is deprecated and will be removed in PlatformUI 2.0
              *
              * @attribute countryList
              * @readOnly
              * @type {Object}
+             * @deprecated
              */
             countryList: {
-                value: {},
+                getter: function () {
+                    return this._getCountryList();
+                },
                 readOnly: true,
             },
         }
