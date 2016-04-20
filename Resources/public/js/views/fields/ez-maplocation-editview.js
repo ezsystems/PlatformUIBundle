@@ -83,6 +83,31 @@ YUI.add('ez-maplocation-editview', function (Y) {
         },
 
         /**
+         * Updates the rendered view so that the existing map is put in the new
+         * markup.
+         *
+         * @method _afterActiveReRender
+         * @protected
+         */
+        _afterActiveReRender: function () {
+            if ( this.get('mapAPILoader').isAPILoaded() ) {
+                this._getMapContainer().replace(this.get('map').getDiv());
+                this._mapFirstLoad();
+            }
+        },
+
+        /**
+         * Returns the map container node.
+         *
+         * @method _getMapContainer
+         * @protected
+         * @return {Node}
+         */
+        _getMapContainer: function () {
+            return this.get('container').one(MAP_CONTAINER_SEL);
+        },
+
+        /**
          * Initializes the map instance, adds a marker to the map, taking
          * into account default values (if any)
          *
@@ -113,7 +138,7 @@ YUI.add('ez-maplocation-editview', function (Y) {
 
             // Creating a map
             map = new google.maps.Map(
-                this.get('container').one(MAP_CONTAINER_SEL).getDOMNode(),
+                this._getMapContainer().getDOMNode(),
                 mapOptions
             );
             this.set('map', map);

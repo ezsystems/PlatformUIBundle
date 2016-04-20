@@ -61,7 +61,10 @@ YUI.add('ez-fieldeditview', function (Y) {
         /**
          * Default implementation of the field edit view render. By default, it
          * injects the field definition, the field, the content and the content
-         * type
+         * type. If the view is already active, it calls `_afterActiveReRender`
+         * after the rendering process so that the field edit view
+         * implementation has a way to handle *rerender* for instance when
+         * switching language in the UI.
          *
          * @method render
          * @return {eZ.FieldEditView}
@@ -90,7 +93,23 @@ YUI.add('ez-fieldeditview', function (Y) {
                 container.addClass('is-using-touch-device');
             }
 
+            if ( this.get('active') ) {
+                this._afterActiveReRender();
+            }
+
             return this;
+        },
+
+        /**
+         * Method called after the field edit view has been rendered while it's
+         * already active. This means the view is re-rendered and this allows to
+         * update the generated UI for instance when a UI widget is used and
+         * needs to be initialized as if the view becomes active.
+         *
+         * @method _afterActiveReRender
+         * @protected
+         */
+        _afterActiveReRender: function () {
         },
 
         /**

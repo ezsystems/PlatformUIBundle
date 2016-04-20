@@ -236,9 +236,8 @@ YUI.add('ez-date-editview', function (Y) {
          * @method _initializeCalendarWidget
          * @private
          */
-        _initializeCalendarWidget: function (e) {
+        _initializeCalendarWidget: function () {
             var that = this,
-                calendarNode = this.get('container').one('.ez-yui-calendar-container'),
                 date = new Date(),
                 field = this.get('field'),
                 calendar;
@@ -250,18 +249,42 @@ YUI.add('ez-date-editview', function (Y) {
                 date = new Date(field.fieldValue.timestamp * 1000);
             }
             calendar = new Y.Calendar({
-                contentBox: calendarNode,
                 showPrevMonth: true,
                 showNextMonth: true,
                 date: date
             });
             calendar.selectDates([date]);
-            calendar.render();
+            calendar.render(this._getCalendarContainer());
 
             calendar.on("selectionChange", function (ev) {
                 that._calendarInput(ev);
             });
             this._set('calendar', calendar);
+        },
+
+        /**
+         * Returns the calendar container node.
+         *
+         * @method _getCalendarContainer
+         * @protected
+         * @return {Node}
+         */
+        _getCalendarContainer: function () {
+            return this.get('container').one('.ez-yui-calendar-container');
+        },
+
+        /**
+         * Moves the calendar to the newly generated calendar container.
+         *
+         * @method _afterActiveReRender
+         * @protected
+         */
+        _afterActiveReRender: function () {
+            var calendar = this.get('calendar');
+
+            if ( calendar) {
+                this._getCalendarContainer().append(calendar.get('boundingBox'));
+            }
         },
 
         /**
