@@ -52,7 +52,20 @@ YUI.add('ez-subitemlistview', function (Y) {
             this._fireMethod = this._fireLocationSearch;
             this._watchAttribute = 'subitems';
 
-            this.after(['subitemsChange', 'loadingErrorChange'], this._uiPageEndLoading);
+            this.after(['subitemsChange', 'loadingErrorChange'], function (e) {
+                this._set('loading', false);
+            });
+
+            if ( this.get('loading') ) {
+                this._uiPageLoading();
+            }
+            this.after('loadingChange', function () {
+                if ( this.get('loading') ) {
+                    this._uiPageLoading();
+                } else {
+                    this._uiPageEndLoading();
+                }
+            });
 
             this.after('offsetChange', this._refresh);
 
@@ -67,7 +80,6 @@ YUI.add('ez-subitemlistview', function (Y) {
          */
         _refresh: function () {
             if ( this.get('active') ) {
-                this._uiPageLoading();
                 this._fireLocationSearch();
             }
         },
@@ -437,14 +449,20 @@ YUI.add('ez-subitemlistview', function (Y) {
          * @protected
          */
         _fireLocationSearch: function () {
-            var locationId = this.get('location').get('locationId');
+            var location = this.get('location'),
+                locationId = location.get('locationId');
 
+            if ( !location.get('childCount') ) {
+                this._set('loading', false);
+                return;
+            }
+            this._set('loading', true);
             this.fire('locationSearch', {
                 viewName: 'subitemlist-' + locationId,
                 resultAttribute: 'subitems',
                 search: {
                     criteria: {
-                        "ParentLocationIdCriterion": this.get('location').get('locationId'),
+                        "ParentLocationIdCriterion": locationId,
                     },
                     offset: this.get('offset'),
                     limit: this.get('limit'),
@@ -463,6 +481,21 @@ YUI.add('ez-subitemlistview', function (Y) {
         },
     }, {
         ATTRS: {
+            /**
+             * Indicates the whether the subitem list is currently in loading.
+             * The default value depends on the number of subitems.
+             *
+             * @attribute loading
+             * @type {Boolean}
+             * @readOnly
+             */
+            loading: {
+                valueFn: function () {
+                    return this.get('location').get('childCount') > 0;
+                },
+                readOnly: true,
+            },
+
             /**
              * The max number of the Locations to display in the subitem list
              * per "page".
