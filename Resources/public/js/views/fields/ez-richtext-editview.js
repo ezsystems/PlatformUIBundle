@@ -58,6 +58,18 @@ YUI.add('ez-richtext-editview', function (Y) {
         },
 
         /**
+         * Makes sure the editor is destroyed and re-initialized as if the view
+         * just becomes active.
+         *
+         * @method _afterActiveReRender
+         * @protected
+         */
+        _afterActiveReRender: function () {
+            this.get('editor').destroy();
+            this._initEditor();
+        },
+
+        /**
          * `focusModeChange` event handler, it adds or removes the focused
          * class on the view container.
          *
@@ -295,14 +307,20 @@ YUI.add('ez-richtext-editview', function (Y) {
 
         /**
          * Returns the field value suitable for the REST API based on the
-         * current input.
+         * current input. Also fills the `xhtml5edit` property so this value can
+         * also be used when switching language.
          *
          * @method _getFieldValue
          * @protected
-         * @return String
+         * @return {Object}
          */
         _getFieldValue: function () {
-            return {xml: this._getXHTML5EditValue()};
+            var value = this._getXHTML5EditValue();
+
+            return {
+                xml: value,
+                xhtml5edit: value,
+            };
         },
 
         /**

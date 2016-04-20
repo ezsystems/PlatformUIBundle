@@ -3,7 +3,9 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-date-editview-tests', function (Y) {
-    var viewTest, registerTest, getFieldTest, getEmptyFieldTest;
+    var viewTest, registerTest, getFieldTest, getEmptyFieldTest,
+        rerenderTest,
+        Mock = Y.Mock, Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
         name: "eZ date editView test",
@@ -378,8 +380,72 @@ YUI.add('ez-date-editview-tests', function (Y) {
         },
     });
 
+    rerenderTest = new Y.Test.Case({
+        name: "eZ Date Edit View rerender test",
+
+        _getModelMock: function () {
+            var mock = new Mock();
+
+            Mock.expect(mock, {
+                method: 'toJSON',
+                returns: {},
+            });
+            return mock;
+        },
+
+        setUp: function () {
+            this.field = {fieldValue: {timestamp: 465644555}};
+            this.content = this._getModelMock();
+            this.version = this._getModelMock();
+            this.contentType = this._getModelMock();
+
+            this.view = new Y.eZ.DateEditView({
+                container: '.container',
+                field: this.field,
+                content: this.content,
+                version: this.version,
+                contentType: this.contentType,
+                fieldDefinition: {required: false},
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should move the calendar to the newly generated container": function () {
+            var container = this.view.get('container'),
+                calendar;
+
+            this.view._set('supportsDateInput', false);
+            this.view.render();
+            this.view.set('active', true);
+            calendar = this.view.get('calendar');
+            this.view.render();
+
+            Assert.isTrue(
+                container.one('.ez-yui-calendar-container').contains(
+                    calendar.get('boundingBox')
+                ),
+                "The calendar should have been moved to the newly created container"
+            );
+        },
+
+        "Should not do anything": function () {
+            this.view.render();
+            this.view.set('active', true);
+            this.view.render();
+
+            Assert.isUndefined(
+                this.view.get('calendar'),
+                "The calendar should not be created"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Date Edit View tests");
     Y.Test.Runner.add(viewTest);
+    Y.Test.Runner.add(rerenderTest);
 
     getFieldTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.GetFieldTests, {
@@ -418,8 +484,6 @@ YUI.add('ez-date-editview-tests', function (Y) {
         })
     );
     Y.Test.Runner.add(getEmptyFieldTest);
-
-
 
     registerTest = new Y.Test.Case(Y.eZ.EditViewRegisterTest);
     registerTest.name = "Date Edit View registration test";
