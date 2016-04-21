@@ -52,15 +52,14 @@ class TwigYuiExtension extends Twig_Extension
         return [
             new Twig_SimpleFunction(
                 'ez_platformui_yui_config',
-                [$this, 'yuiConfigLoaderFunction'],
-                ['is_safe' => ['html']]
+                function (Twig_Environment $twig, $configObject = '') {
+                    $this->twig = $twig;
+
+                    return $this->yuiConfigLoaderFunction($configObject);
+                },
+                ['is_safe' => ['html'], 'needs_environment' => true]
             ),
         ];
-    }
-
-    public function initRuntime(Twig_Environment $twig)
-    {
-        $this->twig = $twig;
     }
 
     /**
