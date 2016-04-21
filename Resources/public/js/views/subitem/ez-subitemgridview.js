@@ -103,9 +103,9 @@ YUI.add('ez-subitemgridview', function (Y) {
                     this._disableLoadMore();
                 }
             });
-            this.after('subitemsChange', function () {
+            this.after('subitemsChange', function (e) {
                 this._uiUpdatePagination();
-                this._appendGridItem();
+                this._appendGridItem(this._getNewlyAddedSubitems(e.newVal, e.prevVal));
             });
             this.after(['subitemsChange', 'loadingErrorChange'], this._uiEndLoading);
         },
@@ -277,11 +277,12 @@ YUI.add('ez-subitemgridview', function (Y) {
          *
          * @method _appendGridItem
          * @protected
+         * @param {Array} newSubitems
          */
-        _appendGridItem: function () {
+        _appendGridItem: function (newSubitems) {
             var gridContent = this.get('container').one('.ez-subitemgrid-content');
 
-            this.get('subitems').slice(-1 * this.get('limit')).forEach(function (struct) {
+            newSubitems.forEach(function (struct) {
                 var itemView = new SubitemGridItemView(struct);
 
                 this._gridItemViews.push(itemView);
@@ -289,6 +290,20 @@ YUI.add('ez-subitemgridview', function (Y) {
                     itemView.render().get('container')
                 );
             }, this);
+        },
+
+        /**
+         * Return an array containing the subitems that we want to append
+         * in the grid view.
+         *
+         * @method _getNewlyAddedSubitems
+         * @private
+         * @param {EventFacade} e
+         */
+        _getNewlyAddedSubitems: function (subitemNewCount, subitemPrevCount) {
+            var subitemPreviousCount = subitemPrevCount ? subitemPrevCount.length : 0;
+console.log(subitemPreviousCount, subitemNewCount.length);
+            return this.get('subitems').slice( (subitemPreviousCount - subitemNewCount.length));
         },
 
         /**

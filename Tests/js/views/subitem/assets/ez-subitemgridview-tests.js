@@ -5,6 +5,7 @@
 YUI.add('ez-subitemgridview-tests', function (Y) {
     var renderTest, subitemSetterTest, loadSubitemsTest, gridItemTest,
         loadingStateTest, paginationUpdateTest, loadMoreTest, errorHandlingTest,
+        gridItemsDoNotDuplicateTest,
         Assert = Y.Assert,
         getSubItemStructs = function (count) {
             return (new Array(count)).map(function () {
@@ -21,7 +22,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Y.Model({
-                childCount: 5,                          
+                childCount: 5,
             });
             this.view = new Y.eZ.SubitemGridView({
                 location: this.location,
@@ -108,7 +109,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Y.Model({
-                childCount: 5,                          
+                childCount: 5,
             });
             this.view = new Y.eZ.SubitemGridView({
                 location: this.location,
@@ -276,7 +277,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Y.Model({
-                childCount: 5,                          
+                childCount: 5,
             });
             this.view = new Y.eZ.SubitemGridView({
                 location: this.location,
@@ -330,7 +331,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
                     gridContainer.one('.contentType').getContent(),
                     "The grid item view template should receive the contentType"
                 );
-                
+
                 i++;
             }, this);
         },
@@ -597,6 +598,69 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
         },
     });
 
+    //Regression test for EZP-25671
+    gridItemsDoNotDuplicateTest = new Y.Test.Case({
+        name: "eZ Subitem Grid View grid items do not duplicates test",
+
+        setUp: function () {
+            this.location = new Y.Model({
+                childCount: 5,
+            });
+            this.view = new Y.eZ.SubitemGridView({
+                location: this.location,
+            });
+            this.view.render();
+            this.view.set('active', true);
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        _getSubItemStruct: function (baseId) {
+            return {
+                content: new Y.Model({id: 'content-' + baseId}),
+                location: new Y.Model({id: 'location-' + baseId}),
+                contentType: new Y.Model({id: 'contentType-' + baseId}),
+            };
+        },
+
+        "Should NOT duplicates item": function () {
+            var subitems = [
+                    this._getSubItemStruct(1),
+                    this._getSubItemStruct(2),
+                    this._getSubItemStruct(3),
+                    this._getSubItemStruct(4),
+                    this._getSubItemStruct(5),
+                    this._getSubItemStruct(6),
+                    this._getSubItemStruct(7),
+                    this._getSubItemStruct(8),
+                    this._getSubItemStruct(9),
+                    this._getSubItemStruct(10)
+                ],
+                container = this.view.get('container'),
+                gridItems;
+
+            this.view.set('subitems', subitems);
+            gridItems = container.all('.ez-subitemgrid-item');
+            Assert.areEqual(
+                subitems.length,
+                gridItems.size(),
+                "There should be one grid item per subitem"
+            );
+
+            this.view.set('subitems', [this._getSubItemStruct(11)]);
+
+            gridItems = container.all('.ez-subitemgrid-item');
+
+            Assert.areEqual(
+                this.view.get('subitems').length,
+                gridItems.size(),
+                "There should be one grid item per subitem"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Subitem Grid View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(subitemSetterTest);
@@ -606,4 +670,5 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
     Y.Test.Runner.add(paginationUpdateTest);
     Y.Test.Runner.add(loadMoreTest);
     Y.Test.Runner.add(errorHandlingTest);
+    Y.Test.Runner.add(gridItemsDoNotDuplicateTest);
 }, '', {requires: ['test', 'model', 'node-event-simulate', 'ez-subitemgridview']});
