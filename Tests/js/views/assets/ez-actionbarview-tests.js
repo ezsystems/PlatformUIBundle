@@ -5,13 +5,13 @@
 YUI.add('ez-actionbarview-tests', function (Y) {
     var Assert = Y.Assert,
         Mock = Y.Mock,
-        viewTest, userViewTest;
+        viewTest, userViewTest, rootLocationTest;
 
     viewTest = new Y.Test.Case({
         name: "eZ Action Bar View test",
 
         setUp: function () {
-            this.location = {};
+            this.locationMock = new Mock();
             this.content = {};
             this.contentTypeMock = new Mock();
 
@@ -34,8 +34,12 @@ YUI.add('ez-actionbarview-tests', function (Y) {
                 returns: false
             });
 
+            Mock.expect(this.locationMock, {
+                method: 'isRootLocation'
+            });
+
             this.view = new Y.eZ.ActionBarView({
-                location: this.location,
+                location: this.locationMock,
                 content: this.content,
                 contentType: this.contentTypeMock
             });
@@ -115,7 +119,7 @@ YUI.add('ez-actionbarview-tests', function (Y) {
 
         "Should not instantiate deleteActionView": function () {
             this._isNotActionCreated('deleteContent', {});
-        },
+        }
     });
 
     userViewTest = new Y.Test.Case({
@@ -229,7 +233,60 @@ YUI.add('ez-actionbarview-tests', function (Y) {
         },
     });
 
+    rootLocationTest = new Y.Test.Case({
+        name: "eZ Action Bar View root location test",
+
+        setUp: viewTest.setUp,
+
+        tearDown: viewTest.tearDown,
+
+        _isActionDisabled: function (actionId, expected) {
+            var actionFound;
+
+            actionFound = Y.Array.find(this.view.get('actionsList'), function (actionView) {
+                return actionView.get('actionId') === actionId;
+            });
+
+            Assert.areSame(
+                expected,
+                !!actionFound.get('disabled'),
+                'The disabled atribute for ' + actionId + ' should be set to ' + expected
+            );
+        },
+
+        "Should disable sendToTrashActionView if root location": function() {
+            Mock.expect(this.locationMock, {
+                method: 'isRootLocation',
+                returns: true
+            });
+
+            this.view = new Y.eZ.ActionBarView({
+                location: this.locationMock,
+                content: this.content,
+                contentType: this.contentTypeMock
+            });
+
+            this._isActionDisabled('sendToTrash', true);
+        },
+
+        "Should not disable sendToTrashActionView if it is not root location": function() {
+            Mock.expect(this.locationMock, {
+                method: 'isRootLocation',
+                returns: false
+            });
+
+            this.view = new Y.eZ.ActionBarView({
+                location: this.locationMock,
+                content: this.content,
+                contentType: this.contentTypeMock
+            });
+
+            this._isActionDisabled('sendToTrash', false);
+        }
+    });
+
     Y.Test.Runner.setName("eZ Action Bar View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(userViewTest);
+    Y.Test.Runner.add(rootLocationTest);
 }, '', {requires: ['test', 'ez-actionbarview']});
