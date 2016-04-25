@@ -116,11 +116,10 @@
     margin: 0;
 }
 
-.ez-view-subitemlistview .ez-subitem-priority-input {
+.ez-view-subitemlistview .ez-subitem-priority-form .ez-subitem-priority-input {
     padding: 0 1em;
     margin: 0;
     width: 100%;
-    height: 100%;
 }
 
 .ez-view-subitemlistview .ez-subitem-error-priority-cell  .ez-subitem-priority-icons:after,

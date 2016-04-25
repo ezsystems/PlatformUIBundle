@@ -117,16 +117,16 @@
     border: 1px double #888;
 }
 
-.ez-view-subitemlistview .ez-subitem-priority-input,
-.ez-view-subitemlistview .ez-subitem-priority-input:focus,
-.ez-view-subitemlistview .ez-subitem-priority-input.ez-subitem-error-input:focus {
+.ez-view-subitemlistview .ez-subitem-priority-form .ez-subitem-priority-input,
+.ez-view-subitemlistview .ez-subitem-priority-form .ez-subitem-priority-input:focus,
+.ez-view-subitemlistview .ez-subitem-priority-form .ez-subitem-priority-input.ez-subitem-error-input:focus {
     border: 0;
     background-color: transparent;
     box-shadow: none;
 }
 
-.ez-view-subitemlistview .ez-subitem-priority-input[readonly],
-.ez-view-subitemlistview .ez-subitem-priority-input[readonly]:focus {
+.ez-view-subitemlistview .ez-subitem-priority-form .ez-subitem-priority-input[readonly],
+.ez-view-subitemlistview .ez-subitem-priority-form .ez-subitem-priority-input[readonly]:focus {
     background-color: transparent;
     color: #000000;
     outline: none;
