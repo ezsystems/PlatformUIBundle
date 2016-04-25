@@ -24,10 +24,11 @@ YUI.add('ez-alloyeditor-button-imagehref-tests', function (Y) {
         },
 
         "Should render a button": function () {
-            var button;
+            var button,
+                label = 'Choose another one';
 
             button = ReactDOM.render(
-                <Y.eZ.AlloyEditorButton.ButtonImageHref editor={this.editor} />,
+                <Y.eZ.AlloyEditorButton.ButtonImageHref editor={this.editor} label={label} />,
                 this.container
             );
 
@@ -38,6 +39,10 @@ YUI.add('ez-alloyeditor-button-imagehref-tests', function (Y) {
             Assert.areEqual(
                 "BUTTON", ReactDOM.findDOMNode(button).tagName,
                 "The component should generate a button"
+            );
+            Assert.areEqual(
+                label, ReactDOM.findDOMNode(button).title,
+                "The label should be set as the title on the button"
             );
         },
     });
