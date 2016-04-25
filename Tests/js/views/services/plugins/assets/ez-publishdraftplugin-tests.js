@@ -92,7 +92,17 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
             this.service.set('parentLocation', this.parentLocation);
             this.service.set('location', this.location);
 
+            Mock.expect(this.app, {
+                method: 'onceAfter',
+                args: ['loadingChange', Mock.Value.Function],
+                run: function (eventName, callback) {
+                    callback();
+                }
+            });
+
             this.view = new Y.View();
+            this.view.set('disabled', 'pizza');
+
             this.view.addTarget(this.service);
 
             this.plugin = new Y.eZ.Plugin.PublishDraft({
@@ -212,6 +222,11 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                 fields: fields
             });
 
+            Assert.isFalse(
+                this.view.get('disabled'),
+                "Disabled should have been set to false"
+            );
+
             Y.Mock.verify(this.version);
             Y.Mock.verify(this.app);
         },
@@ -293,14 +308,18 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
         },
 
         "Should not do anything": function () {
-            Y.Mock.expect(this.app, {
+            Mock.expect(this.app, {
                 method: 'set',
+                callCount: 0
+            });
+            Mock.expect(this.app, {
+                method: 'onceAfter',
                 callCount: 0
             });
             this.view.fire('whatever:publishAction', {
                 formIsValid: false
             });
-            Y.Mock.verify(this.app);
+            Mock.verify(this.app);
         },
 
         "Should create the content and publish it": function () {
