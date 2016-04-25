@@ -55,6 +55,19 @@ YUI.add('ez-date-editview', function (Y) {
         },
 
         /**
+         * Checks whether the field contains a valid timestamp.
+         *
+         * @method _containsValidTimestamp
+         * @protected
+         * @return {Boolean}
+         */
+        _containsValidTimestamp: function () {
+            var field = this.get('field');
+
+            return (field && field.fieldValue && field.fieldValue.timestamp !== null);
+        },
+
+        /**
          * Synchronize Date attribute
          *
          * @method _syncDateAttribute
@@ -63,7 +76,7 @@ YUI.add('ez-date-editview', function (Y) {
         _syncDateAttribute: function () {
             var field = this.get('field');
 
-            if (field && field.fieldValue && field.fieldValue.timestamp) {
+            if ( this._containsValidTimestamp() ) {
                 this._set('date', Y.Date.format(new Date(field.fieldValue.timestamp * 1000)));
             }
         },
@@ -245,7 +258,7 @@ YUI.add('ez-date-editview', function (Y) {
             if (this.get('supportsDateInput')) {
                 return;
             }
-            if (field && field.fieldValue && field.fieldValue.timestamp) {
+            if ( this._containsValidTimestamp() ) {
                 date = new Date(field.fieldValue.timestamp * 1000);
             }
             calendar = new Y.Calendar({
