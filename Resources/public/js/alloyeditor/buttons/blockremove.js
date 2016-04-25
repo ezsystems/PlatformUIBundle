@@ -38,16 +38,27 @@ YUI.add('ez-alloyeditor-button-blockremove', function (Y) {
             key: 'ezblockremove'
         },
 
+        propTypes: {
+            /**
+             * The label of the button
+             *
+             * @property {String} label
+             */
+            label: React.PropTypes.string,
+        },
+
         getDefaultProps: function () {
             return {
                 command: 'eZRemoveBlock',
                 modifiesSelection: true,
+                label: 'Remove this block',
             };
         },
 
         render: function () {
             return (
-                React.createElement("button", {className: "ae-button", onClick: this.execCommand, tabIndex: this.props.tabIndex}, 
+                React.createElement("button", {className: "ae-button", onClick: this.execCommand, 
+                    tabIndex: this.props.tabIndex, title: this.props.label}, 
                     React.createElement("span", {className: "ez-font-icon ae-icon-remove ez-ae-icon-remove"})
                 )
             );
