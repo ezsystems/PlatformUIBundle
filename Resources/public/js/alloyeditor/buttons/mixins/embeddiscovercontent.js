@@ -58,6 +58,13 @@ YUI.add('ez-alloyeditor-button-mixin-embeddiscovercontent', function (Y) {
              * @property {Boolean} udwLoadContent
              */
             udwLoadContent: React.PropTypes.bool,
+
+            /**
+             * The label of the button
+             *
+             * @property {String} label
+             */
+            label: React.PropTypes.string,
         },
 
         /**

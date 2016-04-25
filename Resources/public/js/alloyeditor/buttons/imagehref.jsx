@@ -42,6 +42,7 @@ YUI.add('ez-alloyeditor-button-imagehref', function (Y) {
                 udwContentDiscoveredMethod: "_updateEmbed",
                 udwIsSelectableMethod: '_isImage',
                 udwLoadContent: true,
+                label: "Select another image",
             };
         },
 
@@ -62,7 +63,8 @@ YUI.add('ez-alloyeditor-button-imagehref', function (Y) {
 
         render: function () {
             return (
-                <button className="ae-button" onClick={this._chooseContent} tabIndex={this.props.tabIndex}>
+                <button className="ae-button" onClick={this._chooseContent}
+                    tabIndex={this.props.tabIndex} title={this.props.label}>
                     <span className="ez-font-icon ae-icon-image ez-ae-icon-image"></span>
                 </button>
             );

@@ -43,6 +43,7 @@ YUI.add('ez-alloyeditor-button-embedhref', function (Y) {
             return {
                 udwTitle: "Select a content to embed",
                 udwContentDiscoveredMethod: "_updateEmbed",
+                label: "Select another content item",
             };
         },
 
@@ -63,7 +64,8 @@ YUI.add('ez-alloyeditor-button-embedhref', function (Y) {
 
         render: function () {
             return (
-                React.createElement("button", {className: "ae-button", onClick: this._chooseContent, tabIndex: this.props.tabIndex}, 
+                React.createElement("button", {className: "ae-button", onClick: this._chooseContent, 
+                    tabIndex: this.props.tabIndex, title: this.props.label}, 
                     React.createElement("span", {className: "ez-font-icon ae-icon-udw ez-ae-icon-udw"})
                 )
             );
