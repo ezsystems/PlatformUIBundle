@@ -16,6 +16,7 @@ YUI.add('ez-image-editview', function (Y) {
         IS_BEING_UPDATED = 'is-image-being-updated',
         HAS_LOADING_ERROR = 'has-loading-error',
         NOT_IMAGE_TPL = "The file '{name}' was refused because it seems to not be an image. Please choose an image file.",
+        SVG_IMAGE_TPL = "SVG images are not supported. Please choose another image file.",
         L = Y.Lang,
         win = Y.config.win,
         events = {
@@ -148,9 +149,8 @@ YUI.add('ez-image-editview', function (Y) {
         },
 
         /**
-         * Checks that the mime type of the user selected file starts with
-         * "image/". In case of error, a warning message is set in the `warning`
-         * attribute.
+         * Checks that the `file` represents a valid image file the Image field
+         * type. In case of error, a warning message is set in the `warning`
          *
          * @method _validType
          * @param {File} file the File object to be stored in the field
@@ -158,12 +158,16 @@ YUI.add('ez-image-editview', function (Y) {
          * @return Boolean
          */
         _validType: function (file) {
-            var isImage = (file.type.indexOf('image/') === 0);
+            var isImage = (file.type.indexOf('image/') === 0),
+                isSVG = (file.type.indexOf('image/svg') === 0);
 
             if ( !isImage ) {
                 this._set('warning', L.sub(NOT_IMAGE_TPL, {name: file.name}));
             }
-            return isImage;
+            if ( isSVG ) {
+                this._set('warning', SVG_IMAGE_TPL);
+            }
+            return (isImage && !isSVG);
         },
 
         /**

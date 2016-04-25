@@ -430,25 +430,57 @@ YUI.add('ez-image-editview-tests', function (Y) {
             ViewConstructor: Y.eZ.ImageEditView,
             multiplicator: 1, // in image, the max size is in bytes
 
-            "Should refuse a non image file": function () {
-                var fileReader = this.view.get('fileReader'),
-                    eventFacade = new Y.DOMEventFacade({
-                        type: 'change'
-                    });
+            _configureFileReader: function () {
+                var fileReader = this.view.get('fileReader');
 
-                eventFacade.target = new Mock();
                 Mock.expect(fileReader, {
                     method: 'readAsDataURL',
                     callCount: 0,
                 });
+                return fileReader;
+            },
+
+            _configureEventFacade: function (name, mimeType) {
+                var eventFacade = new Y.DOMEventFacade({
+                        type: 'change'
+                    });
+
+                eventFacade.target = new Mock();
                 Mock.expect(eventFacade.target, {
                     method: 'getDOMNode',
-                    returns: {files: [{size: (this.maxSize - 1) * this.multiplicator, name: "file.ogv", type: "video/ogg"}]},
+                    returns: {
+                        files: [{
+                            size: (this.maxSize - 1) * this.multiplicator,
+                            name: name,
+                            type: mimeType,
+                        }]
+                    },
                 });
                 Mock.expect(eventFacade.target, {
                     method: 'set',
                     args: ['value', ''],
                 });
+
+                return eventFacade;
+            },
+
+            "Should refuse a non image file": function () {
+                var fileReader = this._configureFileReader(),
+                    eventFacade = this._configureEventFacade("file.ogv", "video/ogg");
+
+                this.view.render();
+                this.view._updateFile(eventFacade);
+                Assert.isString(
+                    this.view.get('warning'),
+                    "A warning should have been generated"
+                );
+                Mock.verify(eventFacade);
+                Mock.verify(fileReader);
+            },
+
+            "Should refuse an SVG file": function () {
+                var fileReader = this._configureFileReader(),
+                    eventFacade = this._configureEventFacade("file.ogv", "image/svg+xml");
 
                 this.view.render();
                 this.view._updateFile(eventFacade);
