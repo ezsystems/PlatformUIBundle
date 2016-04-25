@@ -108,8 +108,10 @@ class TwigYuiExtensionTest extends Twig_Test_IntegrationTestCase
             );
 
         $extension = new TwigYuiExtension($configResolverMock, $router);
-        $extension->initRuntime($this->getEnvironmentMock());
-        $result = $extension->yuiConfigLoaderFunction();
+
+        // we need to call the twig function that way as a callback is in use there to handle the environment injection
+        $callable = $extension->getFunctions()[0]->getCallable();
+        $result = $callable($this->getEnvironmentMock());
         $this->assertSame($expectedResult, $result);
     }
 
