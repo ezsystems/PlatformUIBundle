@@ -1148,6 +1148,32 @@ YUI.add('ez-trashviewservice-tests', function (Y) {
             Assert.isTrue(eventFired, "The refreshView event should have been fired");
             Assert.isTrue(this.restoreCalled, "The restore method should have been called");
         },
+
+        "Should fire a `restoreTrashItems` event per restored item": function () {
+            var item1 = this._createTrashItem(1, false),
+                item2 = this._createTrashItem(2, false),
+                item3 = this._createTrashItem(3, true),
+                successItems = [item1, item2],
+                restoredLocationCount = 0;
+
+            this.service.on('restoredLocation', function (e) {
+                Assert.areSame(
+                    successItems[restoredLocationCount], e.trashItem,
+                    "The restored trash item should be provided"
+                );
+                restoredLocationCount++;
+            });
+
+            this.service.fire('whatever:restoreItems', {
+                trashItems: successItems.concat(item3),
+            });
+
+            Assert.areEqual(
+                successItems.length, restoredLocationCount,
+                "The restoredLocation event should have been fired for each restored trash item"
+            );
+        },
+
     });
 
 

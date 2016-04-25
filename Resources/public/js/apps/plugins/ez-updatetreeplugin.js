@@ -23,8 +23,11 @@ YUI.add('ez-updatetreeplugin', function (Y) {
     Y.eZ.Plugin.UpdateTree = Y.Base.create('updateTreePlugin', Y.Plugin.Base, [], {
         initializer: function () {
             var app = this.get('host'),
-                events = ['*:sentToTrash', '*:copiedContent', '*:movedContent',
-                    '*:publishedDraft', '*:savedDraft', '*:deletedContent'];
+                events = [
+                    '*:sentToTrash', '*:restoredLocation', '*:copiedContent',
+                    '*:movedContent', '*:publishedDraft', '*:savedDraft',
+                    '*:deletedContent'
+                ];
 
             app.on(events, Y.bind(this._clearTree, this));
         },
