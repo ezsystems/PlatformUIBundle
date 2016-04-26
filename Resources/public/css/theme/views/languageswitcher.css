@@ -26,6 +26,7 @@
             transform-origin: 50% 0%;
     -webkit-transform-origin: 50% 0%;
     transition: all 0.2s ease;
+    z-index: 2000;
 }
 
 .ez-view-languageswitcherview.is-expanded .ez-expandable-area {
