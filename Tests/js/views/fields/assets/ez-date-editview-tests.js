@@ -4,7 +4,7 @@
  */
 YUI.add('ez-date-editview-tests', function (Y) {
     var viewTest, registerTest, getFieldTest, getEmptyFieldTest,
-        rerenderTest,
+        rerenderTest, dateSyncTest, calendarTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
@@ -443,9 +443,152 @@ YUI.add('ez-date-editview-tests', function (Y) {
         },
     });
 
+    dateSyncTest = new Y.Test.Case({
+        name: "eZ Date Edit View date attribute sync test",
+
+        _getModelMock: function () {
+            var mock = new Mock();
+
+            Mock.expect(mock, {
+                method: 'toJSON',
+                returns: {},
+            });
+            return mock;
+        },
+
+        setUp: function () {
+            this.field = {fieldValue: null};
+            this.view = new Y.eZ.DateEditView({
+                field: this.field,
+                content: this._getModelMock(),
+                version: this._getModelMock(),
+                contentType: this._getModelMock(),
+                fieldDefinition: {required: false},
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should ignore a null field": function () {
+            this.view.set('field', null);
+
+            Assert.isUndefined(
+                this.view.get('date'),
+                "The `date` attribute should be undefined"
+            );
+        },
+
+        "Should ignore a null fieldValue": function () {
+            this.view.set('field', {fieldValue: null});
+
+            Assert.isUndefined(
+                this.view.get('date'),
+                "The `date` attribute should be undefined"
+            );
+        },
+
+        "Should ignore a null timetamp": function () {
+            this.view.set('field', {fieldValue: {timestamp: null}});
+
+            Assert.isUndefined(
+                this.view.get('date'),
+                "The `date` attribute should be undefined"
+            );
+        },
+
+        "Should convert a 0 timestamp": function () {
+            this.view.set('field', {fieldValue: {timestamp: 0}});
+
+            Assert.areEqual(
+                "1970-01-01", this.view.get('date'),
+				"The 0 timestamp should have been converted"
+            );
+        },
+
+        "Should convert a non zero timestamp": function () {
+            this.view.set('field', {fieldValue: {timestamp: 86401}});
+
+            Assert.areEqual(
+                "1970-01-02", this.view.get('date'),
+				"The timestamp should have been converted"
+            );
+        },
+    });
+
+    calendarTest = new Y.Test.Case({
+        name: "eZ Date Edit View calendar test",
+
+        _getModelMock: function () {
+            var mock = new Mock();
+
+            Mock.expect(mock, {
+                method: 'toJSON',
+                returns: {},
+            });
+            return mock;
+        },
+
+        setUp: function () {
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        _initRenderView: function (field) {
+            this.view = new Y.eZ.DateEditView({
+                field: field,
+                content: this._getModelMock(),
+                version: this._getModelMock(),
+                contentType: this._getModelMock(),
+                fieldDefinition: {required: false},
+            });
+            this.view._set('supportsDateInput', false);
+            this.view.render();
+            this.view.set('active', true);
+        },
+
+        "Should ignore a null timetamp": function () {
+            var date = new Date();
+
+            this._initRenderView({fieldValue: {timestamp: null}});
+
+            Assert.areEqual(
+                Y.Date.format(date),
+                Y.Date.format(this.view.get('calendar').get('selectedDates')[0]),
+                "The calendar should be initialized with the current date"
+            );
+        },
+
+        "Should convert a 0 timestamp": function () {
+            this._initRenderView({fieldValue: {timestamp: 0}});
+
+            Assert.areEqual(
+                "1970-01-01",
+                Y.Date.format(this.view.get('calendar').get('selectedDates')[0]),
+                "The calendar should be initialized with the epoch date"
+            );
+        },
+
+        "Should convert a non zero timestamp": function () {
+            this._initRenderView({fieldValue: {timestamp: 86401}});
+
+            Assert.areEqual(
+                "1970-01-02",
+                Y.Date.format(this.view.get('calendar').get('selectedDates')[0]),
+                "The calendar should be initialized with the date corresponding to the timestamp"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Date Edit View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(rerenderTest);
+    Y.Test.Runner.add(dateSyncTest);
+    Y.Test.Runner.add(calendarTest);
 
     getFieldTest = new Y.Test.Case(
         Y.merge(Y.eZ.Test.GetFieldTests, {
@@ -491,4 +634,4 @@ YUI.add('ez-date-editview-tests', function (Y) {
     registerTest.viewKey = "ezdate";
     Y.Test.Runner.add(registerTest);
 
-}, '', {requires: ['test', 'getfield-tests', 'editviewregister-tests', 'ez-date-editview']});
+}, '', {requires: ['test', 'datatype-date-format', 'getfield-tests', 'editviewregister-tests', 'ez-date-editview']});
