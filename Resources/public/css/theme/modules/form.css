@@ -4,20 +4,20 @@
  */
 
 
-button,
-input,
-textarea {
+.ez-platformui-app button,
+.ez-platformui-app input,
+.ez-platformui-app textarea {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-input[type=text],
-input[type=email],
-input[type=number],
-input[type=search],
-input[type=password],
-input[type=time],
-input[type=date],
-textarea {
+.ez-platformui-app input[type=text],
+.ez-platformui-app input[type=email],
+.ez-platformui-app input[type=number],
+.ez-platformui-app input[type=search],
+.ez-platformui-app input[type=password],
+.ez-platformui-app input[type=time],
+.ez-platformui-app input[type=date],
+.ez-platformui-app textarea {
     line-height: 1.8em;
     height: 1.8em;
     padding: 0 0.4em;
@@ -27,38 +27,38 @@ textarea {
     transition: all 0.30s ease-in-out;
 }
 
-textarea {
+.ez-platformui-app textarea {
     height: auto;
 }
 
-input[type=text]:focus,
-input[type=email]:focus,
-input[type=number]:focus,
-input[type=search]:focus,
-input[type=password]:focus,
-textarea:focus {
+.ez-platformui-app input[type=text]:focus,
+.ez-platformui-app input[type=email]:focus,
+.ez-platformui-app input[type=number]:focus,
+.ez-platformui-app input[type=search]:focus,
+.ez-platformui-app input[type=password]:focus,
+.ez-platformui-app textarea:focus {
     box-shadow: inset 0 0 6px #ccc;
     border: 1px solid #ccc;
     outline: none;
     background: #fff;
 }
 
-input[readonly],
-textarea[readonly],
-input[readonly]:focus,
-textarea[readonly]:focus {
+.ez-platformui-app input[readonly],
+.ez-platformui-app textarea[readonly],
+.ez-platformui-app input[readonly]:focus,
+.ez-platformui-app textarea[readonly]:focus {
     background: #eee;
     color: #888;
     box-shadow: none;
 }
 
-.is-error .ez-validated-input {
+.ez-platformui-app .is-error .ez-validated-input {
     border: 1px solid #BF3E33;
     box-shadow: none;
     background: #FEECEA;
 }
 
-.is-error .ez-validated-input:focus {
+.ez-platformui-app .is-error .ez-validated-input:focus {
     border: 1px solid #BF3E33;
     box-shadow: none;
     background: #FEECEA;
