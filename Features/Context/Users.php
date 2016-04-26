@@ -10,9 +10,38 @@
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use EzSystems\PlatformBehatBundle\Context\RepositoryContext;
+use eZ\Publish\API\Repository\Repository;
+use eZ\Publish\API\Repository\UserService;
+use eZ\Publish\API\Repository\ContentService;
 
 class Users extends PlatformUI
 {
+    use RepositoryContext;
+
+    /**
+     * @var eZ\Publish\API\Repository\ContentService
+     */
+    protected $userService;
+
+    /**
+     * @var eZ\Publish\API\Repository\ContentService
+     */
+    protected $contentService;
+
+    /**
+     * @injectService $repository @ezpublish.api.repository
+     * @injectService $userService @ezpublish.api.service.user
+     * @injectService $contentService @ezpublish.api.service.content
+     */
+    public function __construct(Repository $repository, UserService $userService, ContentService $contentService)
+    {
+        parent::__construct();
+        $this->setRepository($repository);
+        $this->userService = $userService;
+        $this->contentService = $contentService;
+    }
+
     /**
      * @When I create a new User
      * @When I fill a new User fields with:
@@ -51,8 +80,12 @@ class Users extends PlatformUI
      */
     public function editUserUser($username)
     {
-        $this->clickOnTreePath("$username $username");
-        $this->sleep(); //safegaurd for application delays
+        $user = $this->userService->loadUserByLogin($username);
+        $userObject = $this->contentService->loadContent($user->getUserId());
+        $firstName = $userObject->getFieldValue('first_name');
+        $lastName = $userObject->getFieldValue('last_name');
+        $this->clickOnTreePath("$firstName $lastName");
+        $this->sleep(); //safeguard for application delays
         $this->waitWhileLoading();
         $this->clickActionBar('Edit');
     }
@@ -62,7 +95,7 @@ class Users extends PlatformUI
      */
     public function iSeeUsersPage()
     {
-        $this->sleep(); // safegaurd for application delays
+        $this->sleep(); // safeguard for application delays
         $this->iSeeTitle('Users');
     }
 
