@@ -60,9 +60,9 @@ services:
         class: %ezsystems.platformui.application_config.provider.session_info.class%
         arguments:
             - @session
-            - @?security.csrf.token_manager
             - %ezpublish_rest.csrf_token_intention%
             - @router
+            - @?security.csrf.token_manager
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'sessionInfo'}
 

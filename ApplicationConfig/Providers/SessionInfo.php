@@ -29,9 +29,9 @@ class SessionInfo implements Provider
 
     public function __construct(
         SessionInterface $session,
-        CsrfTokenManagerInterface $csrfTokenManager = null,
         $csrfTokenIntention,
-        RouterInterface $router
+        RouterInterface $router,
+        CsrfTokenManagerInterface $csrfTokenManager = null
     ) {
         $this->session = $session;
         $this->csrfTokenManager = $csrfTokenManager;
