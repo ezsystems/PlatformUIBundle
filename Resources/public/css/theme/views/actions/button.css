@@ -69,6 +69,10 @@
     content: "\E61D";
 }
 
+.ez-view-buttonactionview .ez-action[data-action="preview"]{
+    cursor: default;
+}
+
 .ez-view-buttonactionview .ez-action[data-action="translate"] .action-icon:before {
     content: "\E62B";
 }
