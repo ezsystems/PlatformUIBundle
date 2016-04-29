@@ -69,8 +69,8 @@ Feature: Use the eZ Users field
         Then I should see error messages
 
     @javascript @edge
-    Scenario: Validate that users have the "Delete" button available
+    Scenario: Validate "Send to trash" button is replaced with "Delete" when browsing users
         Given there is a User with name "One"
         When I go to User "One" page
-        Then I should not see a "Send to thrash" action bar button
+        Then I should not see a "Send to trash" action bar button
         And I should see a "Delete" action bar button
