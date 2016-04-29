@@ -44,6 +44,9 @@ system:
                 ez-alloyeditor-plugin-removeblock:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/plugins/removeblock.js
+                ez-alloyeditor-plugin-yui3:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/yui3.js
                 ez-alloyeditor-plugin-embed:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/plugins/embed.js
@@ -708,6 +711,7 @@ system:
                         - 'ez-alloyeditor-plugin-addcontent'
                         - 'ez-alloyeditor-plugin-removeblock'
                         - 'ez-alloyeditor-plugin-focusblock'
+                        - 'ez-alloyeditor-plugin-yui3'
                         - 'ez-alloyeditor-toolbar-config-link'
                         - 'ez-alloyeditor-toolbar-config-text'
                         - 'ez-alloyeditor-toolbar-config-table'
