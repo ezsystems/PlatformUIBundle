@@ -69,9 +69,14 @@ class Users extends PlatformUI
      */
     public function goToUserPage($username)
     {
+        $user = $this->userService->loadUserByLogin($username);
+        $userObject = $this->contentService->loadContent($user->getUserId());
+        $firstName = $userObject->getFieldValue('first_name');
+        $lastName = $userObject->getFieldValue('last_name');
+
         $this->iAmOnPage('Users');
         $this->waitWhileLoading();
-        $this->clickOnTreePath("$username $username");
+        $this->clickOnTreePath("$firstName $lastName");
         $this->sleep(); //safeguard for application delays
     }
 
@@ -84,6 +89,7 @@ class Users extends PlatformUI
         $userObject = $this->contentService->loadContent($user->getUserId());
         $firstName = $userObject->getFieldValue('first_name');
         $lastName = $userObject->getFieldValue('last_name');
+
         $this->clickOnTreePath("$firstName $lastName");
         $this->sleep(); //safeguard for application delays
         $this->waitWhileLoading();
