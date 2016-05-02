@@ -295,7 +295,7 @@ YUI.add('ez-subitemlistview', function (Y) {
         /**
          * Checks whether the user is on the first "page".
          *
-         * @method _isLastPage
+         * @method _isFirstPage
          * @private
          * @return {Boolean}
          */
