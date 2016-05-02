@@ -70,7 +70,6 @@ Feature: Use the eZ Users field
 
     @javascript @edge
     Scenario: Validate "Send to trash" button is replaced with "Delete" when browsing users
-        Given there is a User with name "One"
-        When I go to User "One" page
+        When I go to a valid User page
         Then I should not see a "Send to trash" action bar button
         And I should see a "Delete" action bar button
