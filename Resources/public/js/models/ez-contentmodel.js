@@ -164,6 +164,22 @@ YUI.add('ez-contentmodel', function (Y) {
         },
 
         /**
+         * Returns the fields which field type has the given identifier.
+         *
+         * @method getFieldsOfType
+         * @param {eZ.ContentType} contentType
+         * @param {String} fieldTypeIdentifier
+         * @return {Array}
+         */
+        getFieldsOfType: function (contentType, fieldTypeIdentifier) {
+            var identifiers = contentType.getFieldDefinitionIdentifiers(fieldTypeIdentifier);
+
+            return Y.Array.map(identifiers, function (identifier) {
+                return this.getField(identifier);
+            }, this);
+        },
+
+        /**
          * Checks whether the content is translated into `languageCode`
          *
          * @method hasTranslation
