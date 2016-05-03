@@ -341,14 +341,19 @@ system:
                 ez-subitemgridview:
                     requires:
                         - 'ez-subitembaseview'
+                        - 'ez-subitemgriditemview'
                         - 'ez-asynchronousview'
                         - 'event-tap'
                         - 'subitemgridview-ez-template'
-                        - 'subitemgriditemview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemgridview.js
                 subitemgridview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/subitem/grid.hbt
+                ez-subitemgriditemview:
+                    requires:
+                        - 'ez-templatebasedview'
+                        - 'subitemgriditemview-ez-template'
+                    path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemgriditemview.js
                 subitemgriditemview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/subitem/griditem.hbt

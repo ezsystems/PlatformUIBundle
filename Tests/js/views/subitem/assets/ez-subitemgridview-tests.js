@@ -114,11 +114,13 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
             this.view = new Y.eZ.SubitemGridView({
                 location: this.location,
             });
+            Y.eZ.SubitemGridItemView = Y.View;
             this.view.render();
         },
 
         tearDown: function () {
             this.view.destroy();
+            delete Y.eZ.SubitemGridItemView;
         },
 
         "Should set the value": function () {
@@ -279,6 +281,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
             this.location = new Y.Model({
                 childCount: 5,                          
             });
+            Y.eZ.SubitemGridItemView = Y.Base.create('gridItemView', Y.View, [Y.View.NodeMap], {});
             this.view = new Y.eZ.SubitemGridView({
                 location: this.location,
             });
@@ -288,6 +291,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete Y.eZ.SubitemGridItemView;
         },
 
         _getSubItemStruct: function (baseId) {
@@ -305,10 +309,10 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
                 ],
                 container = this.view.get('container'),
                 gridItems,
-                i = 1;
+                i = 0;
 
             this.view.set('subitems', subitems);
-            gridItems = container.all('.ez-subitemgrid-item');
+            gridItems = container.all('.ez-subitemgrid-content div');
 
             Assert.areEqual(
                 subitems.length,
@@ -316,24 +320,26 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
                 "There should be one grid item per subitem"
             );
             gridItems.each(function (gridContainer) {
-                Assert.areEqual(
-                    'content-' + i,
-                    gridContainer.one('.content').getContent(),
-                    "The grid item view template should receive the content"
+                var gridView = Y.eZ.SubitemGridItemView.getByNode(gridContainer);
+
+                Assert.areSame(
+                    subitems[i].content,
+                    gridView.get('content'),
+                    "The grid item view should have received the content"
                 );
-                Assert.areEqual(
-                    'location-' + i,
-                    gridContainer.one('.location').getContent(),
-                    "The grid item view template should receive the location"
+                Assert.areSame(
+                    subitems[i].location,
+                    gridView.get('location'),
+                    "The grid item view should have received the location"
                 );
-                Assert.areEqual(
-                    'contentType-' + i,
-                    gridContainer.one('.contentType').getContent(),
-                    "The grid item view template should receive the contentType"
+                Assert.areSame(
+                    subitems[i].contentType,
+                    gridView.get('contentType'),
+                    "The grid item view should have received the contentType"
                 );
                 
                 i++;
-            }, this);
+            });
         },
     });
 
@@ -606,6 +612,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
             this.location = new Y.Model({
                 childCount: 5,
             });
+            Y.eZ.SubitemGridItemView = Y.View;
             this.view = new Y.eZ.SubitemGridView({
                 location: this.location,
             });
@@ -614,6 +621,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
         },
 
         tearDown: function () {
+            delete Y.eZ.SubitemGridItemView;
             this.view.destroy();
         },
 
@@ -642,7 +650,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
                 gridItems;
 
             this.view.set('subitems', subitems);
-            gridItems = container.all('.ez-subitemgrid-item');
+            gridItems = container.all('.ez-subitemgrid-content div');
             Assert.areEqual(
                 subitems.length,
                 gridItems.size(),
@@ -651,7 +659,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
             this.view.set('subitems', [this._getSubItemStruct(11)]);
 
-            gridItems = container.all('.ez-subitemgrid-item');
+            gridItems = container.all('.ez-subitemgrid-content div');
 
             Assert.areEqual(
                 this.view.get('subitems').length,
@@ -671,4 +679,4 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
     Y.Test.Runner.add(loadMoreTest);
     Y.Test.Runner.add(errorHandlingTest);
     Y.Test.Runner.add(gridItemsDoNotDuplicateTest);
-}, '', {requires: ['test', 'model', 'node-event-simulate', 'ez-subitemgridview']});
+}, '', {requires: ['test', 'base', 'view-node-map', 'model', 'node-event-simulate', 'ez-subitemgridview']});

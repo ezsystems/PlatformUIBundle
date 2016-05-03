@@ -1,0 +1,30 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-subitemgriditemview .ez-subitemgrid-item-visual {
+    background: #fff;
+    border: 1px solid #333;
+    font-size: 4em;
+}
+
+.ez-view-subitemgriditemview .ez-subitemgrid-item-visual:before {
+    display: block;
+    text-align: center;
+    line-height: 2em;
+}
+
+.ez-view-subitemgriditemview .ez-subitemgrid-item-link {
+    color: #333;
+}
+
+.ez-view-subitemgriditemview .ez-subitemgrid-item-content-type {
+    font-size: 90%;
+}
+
+.ez-view-subitemgriditemview .ez-subitemgrid-item-name {
+    font-weight: bold;
+    text-align: center;
+    font-size: 95%;
+}

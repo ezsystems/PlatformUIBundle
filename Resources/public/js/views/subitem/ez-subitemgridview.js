@@ -11,60 +11,7 @@ YUI.add('ez-subitemgridview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var IS_PAGE_LOADING = 'is-page-loading',
-        SubitemGridItemView;
-
-    /**
-     * The subitem grid item view. Note: This component is **private** as this
-     * part will shortly change and will be replaced by the concept of content
-     * cards.
-     *
-     * @private
-     * @class SubitemGridItemView
-     * @constructor
-     * @extends eZ.TemplateBasedView
-     */
-    SubitemGridItemView = Y.Base.create('subitemGridItemView', Y.eZ.TemplateBasedView, [], {
-        initializer: function () {
-            this.containerTemplate = '<div class="ez-subitemgrid-item"/>';
-        },
-
-        render: function () {
-            this.get('container').setHTML(this.template({
-                content: this.get('content').toJSON(),
-                location: this.get('location').toJSON(),
-                contentType: this.get('contentType').toJSON(),
-            }));
-            return this;
-        },
-    }, {
-        ATTRS: {
-            /**
-             * The content type of the content being displayed
-             *
-             * @attribute contentType
-             * @type {eZ.ContentType}
-             */
-            contentType: {},
-
-            /**
-             * The location of the content item being displayed
-             *
-             * @attribute location
-             * @type {eZ.Location}
-             */
-            location: {},
-
-            /**
-             * The content being displayed
-             *
-             * @attribute content
-             * @type {eZ.Content}
-             */
-            content: {},
-        },
-    });
-
+    var IS_PAGE_LOADING = 'is-page-loading';
 
     /**
      * The subitem grid view.
@@ -283,7 +230,7 @@ YUI.add('ez-subitemgridview', function (Y) {
             var gridContent = this.get('container').one('.ez-subitemgrid-content');
 
             newSubitems.forEach(function (struct) {
-                var itemView = new SubitemGridItemView(struct);
+                var itemView = new Y.eZ.SubitemGridItemView(struct);
 
                 this._gridItemViews.push(itemView);
                 gridContent.append(

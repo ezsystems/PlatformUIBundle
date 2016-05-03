@@ -21,29 +21,3 @@
     -webkit-animation: spin 0.7s infinite linear;
             animation: spin 0.7s infinite linear;
 }
-
-.ez-view-subitemgridview .ez-subitemgrid-item-visual {
-    background: #fff;
-    border: 1px solid #333;
-    font-size: 4em;
-}
-
-.ez-view-subitemgridview .ez-subitemgrid-item-visual:before {
-    display: block;
-    text-align: center;
-    line-height: 2em;
-}
-
-.ez-view-subitemgridview .ez-subitemgrid-item-link {
-    color: #333;
-}
-
-.ez-view-subitemgridview .ez-subitemgrid-item-content-type {
-    font-size: 90%;
-}
-
-.ez-view-subitemgridview .ez-subitemgrid-item-name {
-    font-weight: bold;
-    text-align: center;
-    font-size: 95%;
-}
