@@ -341,6 +341,44 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
                 i++;
             });
         },
+
+        "Should set the grid item view as active": function () {
+            var subitems = [
+                    this._getSubItemStruct(1),
+                    this._getSubItemStruct(2),
+                ],
+                container = this.view.get('container'),
+                gridItems;
+
+            this.view.set('subitems', subitems);
+            gridItems = container.all('.ez-subitemgrid-content div');
+
+            gridItems.each(function (gridContainer) {
+                Assert.isTrue(
+                    Y.eZ.SubitemGridItemView.getByNode(gridContainer).get('active'),
+                    "The grid item view should be active"
+                );
+            });
+        },
+
+        "Should add the grid view as a bubble target of the grid item": function () {
+            var subitems = [
+                    this._getSubItemStruct(1),
+                    this._getSubItemStruct(2),
+                ],
+                container = this.view.get('container'),
+                gridItems;
+
+            this.view.set('subitems', subitems);
+            gridItems = container.all('.ez-subitemgrid-content div');
+
+            gridItems.each(function (gridContainer) {
+                Assert.isTrue(
+                    Y.eZ.SubitemGridItemView.getByNode(gridContainer).getTargets().indexOf(this.view) != -1,
+                    "The grid view should be a bubble target of the item view"
+                );
+            }, this);
+        },
     });
 
     loadingStateTest = new Y.Test.Case({

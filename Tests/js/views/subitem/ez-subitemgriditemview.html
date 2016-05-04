@@ -6,7 +6,9 @@
 <body>
 <div class="container"></div>
 
-<script type="text/x-handlebars-template" id="subitemgriditemview-ez-template"></script>
+<script type="text/x-handlebars-template" id="subitemgriditemview-ez-template">
+    <img class="ez-subitemgrid-item-image" alt="">
+</script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-subitemgriditemview-tests.js"></script>
@@ -28,12 +30,16 @@
         filter: loaderFilter,
         modules: {
             "ez-subitemgriditemview": {
-                requires: ['ez-templatebasedview'],
+                requires: ['ez-templatebasedview', 'ez-asynchronousview', 'array-extras'],
                 fullpath: "../../../../Resources/public/js/views/subitem/ez-subitemgriditemview.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
                 fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-asynchronousview": {
+                requires: ['view', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-asynchronousview.js"
             },
             "ez-view": {
                 requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],

@@ -3,16 +3,36 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-view-subitemgriditemview .ez-subitemgrid-item-visual {
+.ez-view-subitemgriditemview .ez-subitemgrid-item-visual,
+.ez-view-subitemgriditemview .ez-asynchronousview-error {
     background: #fff;
     border: 1px solid #333;
+}
+
+.ez-view-subitemgriditemview .ez-asynchronousview-error {
+    text-align: center;
+}
+
+.ez-view-subitemgriditemview .ez-subitemgrid-item-visual {
     font-size: 4em;
 }
 
-.ez-view-subitemgriditemview .ez-subitemgrid-item-visual:before {
+.ez-view-subitemgriditemview.is-state-no-image .ez-subitemgrid-item-visual:before,
+.ez-view-subitemgriditemview.is-state-image-loading .ez-subitemgrid-item-visual:before {
     display: block;
     text-align: center;
-    line-height: 2em;
+    line-height: 9rem;
+}
+
+.ez-view-subitemgriditemview.is-state-no-image .ez-subitemgrid-item-visual:before {
+    content: "\e601";
+}
+
+.ez-view-subitemgriditemview.is-state-image-loading .ez-subitemgrid-item-visual:before {
+    content: "\e61c";
+    color: #ddd;
+    -webkit-animation: spin 0.7s infinite linear;
+            animation: spin 0.7s infinite linear;
 }
 
 .ez-view-subitemgriditemview .ez-subitemgrid-item-link {

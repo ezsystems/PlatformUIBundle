@@ -232,10 +232,12 @@ YUI.add('ez-subitemgridview', function (Y) {
             newSubitems.forEach(function (struct) {
                 var itemView = new Y.eZ.SubitemGridItemView(struct);
 
+                itemView.addTarget(this);
                 this._gridItemViews.push(itemView);
                 gridContent.append(
                     itemView.render().get('container')
                 );
+                itemView.set('active', true);
             }, this);
         },
 

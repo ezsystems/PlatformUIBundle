@@ -352,6 +352,8 @@ system:
                 ez-subitemgriditemview:
                     requires:
                         - 'ez-templatebasedview'
+                        - 'ez-asynchronousview'
+                        - 'array-extras'
                         - 'subitemgriditemview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemgriditemview.js
                 subitemgriditemview-ez-template:
