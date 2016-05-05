@@ -7,7 +7,9 @@ platformui:
         # content operations: CRUD, navigation, moving
         contentactions:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/ContentActions ]
-            contexts: [ EzSystems\PlatformUIBundle\Features\Context\ContentActions ]
+            contexts:
+                - EzSystems\PlatformUIBundle\Features\Context\ContentActions
+                - EzSystems\BehatBundle\Context\Object\BasicContent
         # role features
         role:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/RoleUI ]

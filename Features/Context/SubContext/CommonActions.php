@@ -10,9 +10,28 @@
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
 use EzSystems\BehatBundle\Helper\EzAssertion;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 trait CommonActions
 {
+    /**
+     * @var EzSystems\BehatBundle\Context\Object\BasicContent
+     */
+    private $basicContentContext;
+
+    /** @BeforeScenario */
+    public function gatherContexts(BeforeScenarioScope $scope)
+    {
+        // not all context need the BasicContent Context
+        $this->basicContentContext = null;
+
+        $environment = $scope->getEnvironment();
+        $basicContextNamespace = 'EzSystems\BehatBundle\Context\Object\BasicContent';
+        if ($environment->hasContextClass($basicContextNamespace)) {
+            $this->basicContentContext = $environment->getContext($basicContextNamespace);
+        }
+    }
+
     /**
      * @Given I clicked on/at (the) :link link
      * @When  I click on/at (the) :link link
@@ -299,8 +318,12 @@ trait CommonActions
      */
     public function onFullView($name)
     {
-        $path = $this->getBasicContentManager()->getContentPath($name);
-        $this->goToContentWithPath($path);
+        if ($this->basicContentContext) {
+            $path = $this->basicContentContext->getContentPath($name);
+            $this->goToContentWithPath($path);
+        } else {
+            throw new \Exception('BasicContent Context must be registered in the suite environment');
+        }
     }
 
     /**
