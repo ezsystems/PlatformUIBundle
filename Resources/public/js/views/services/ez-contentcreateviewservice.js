@@ -56,9 +56,14 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
             var content = new Y.eZ.Content(),
                 version = new Y.eZ.Version(),
                 type = this.get('contentType'),
-                defaultFields = {};
+                defaultFields = {},
+                contentTypeNames,
+                contentTypeName;
 
-            content.set('name', 'New "' + this.get('contentType').get('names')['eng-GB'] + '"');
+            contentTypeNames = type.get('names');
+            contentTypeName = contentTypeNames[this.get('app').get('defaultLanguageCode')] || contentTypeNames[0];
+
+            content.set('name', 'New "' + contentTypeName + '"');
             Y.Object.each(type.get('fieldDefinitions'), function (fieldDef, identifier) {
                 defaultFields[identifier] = {
                     fieldDefinitionIdentifier: identifier,
