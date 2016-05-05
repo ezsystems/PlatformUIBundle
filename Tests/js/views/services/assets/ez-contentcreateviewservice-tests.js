@@ -13,7 +13,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             var that = this;
 
             this.type = new Mock();
-            this.names = {'eng-GB': "Song"};
+            this.names = {'eng-GB': "Song", 'fre-FR': "Chanson"};
             this.fieldDefinitions = {
                 "title": {
                     "fieldDefinitionIdentifier": "title",
@@ -26,10 +26,19 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             };
             this.app = new Mock();
             this.user = {};
+            this.defaultLanguageCode = 'eng-GB';
             Mock.expect(this.app, {
                 method: 'get',
-                args: ['user'],
-                returns: this.user,
+                args: [ Mock.Value.String ],
+                run: function (attr) {
+                    if ( attr === 'user' ) {
+                        return that.user;
+                    } else if ( attr === 'defaultLanguageCode' ) {
+                        return that.defaultLanguageCode;
+                    } else {
+                        Y.fail("Unexpected app.get(" + attr + ") call");
+                    }
+                }
             });
             this.parentLocation = new Mock();
             this.parentLocationId = '42';
@@ -97,7 +106,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             );
             Assert.isTrue(
                 content.get('name').indexOf(that.names['eng-GB']) !== -1,
-                "The name of the content should contain the name of the type"
+                "The name of the content should contain the name of the type" + content.get('name')
             );
             Assert.areEqual(
                 Y.Object.keys(that.fieldDefinitions).length,
@@ -136,6 +145,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                     }
                 }
             });
+
             this.service.load(function (service) {
                 loadCallback = true;
 

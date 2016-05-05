@@ -296,7 +296,10 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         name: 'eZ Create Content plugin setNextViewServiceParameters test',
 
         setUp: function () {
-            this.service = new Y.eZ.ViewService();
+            this.app = new Mock();
+            this.service = new Y.eZ.ViewService({
+                app: this.app,
+            });
             this.plugin = new Y.eZ.Plugin.ContentCreate({host: this.service});
         },
 
@@ -305,10 +308,18 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
             this.service.destroy();
             delete this.plugin;
             delete this.service;
+            delete this.app;
         },
 
         "Should not do anything by default": function () {
-            var nextService = new Y.Base();
+            var nextService = new Y.Base(),
+                languageCode = 'fre-FR';
+
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['defaultLanguageCode'],
+                returns: languageCode
+            });
 
             this.plugin.setNextViewServiceParameters(nextService);
             Assert.isUndefined(
@@ -328,6 +339,12 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         "Should configure the next service if the create parameter were retrieved": function () {
             var nextService = new Y.Base(),
                 type = {}, location = {}, languageCode = 'fre-FR';
+
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['defaultLanguageCode'],
+                returns: languageCode
+            });
 
             this.plugin.setAttrs({
                 contentType: type,
@@ -356,6 +373,8 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         setUp: function () {
             this.service = new Y.eZ.ViewService();
             this.plugin = new Y.eZ.Plugin.ContentCreate({host: this.service});
+            this.app = new Y.Mock();
+            this.service.set('app', this.app);
         },
 
         tearDown: function () {
