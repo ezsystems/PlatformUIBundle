@@ -46,10 +46,13 @@ YUI.add('ez-contentcreateplugin', function (Y) {
          * @param {eZ.ViewService} service
          */
         setNextViewServiceParameters: function (service) {
-            if ( this.get('contentType') && this.get('languageCode') && this.get('parentLocation') ) {
+            var app = this.get('host').get('app'),
+                defaultLanguageCode = app.get('defaultLanguageCode');
+
+            if ( this.get('contentType') && this.get('parentLocation') ) {
                 service.setAttrs({
                     contentType: this.get('contentType'),
-                    languageCode: this.get('languageCode'),
+                    languageCode: defaultLanguageCode,
                     parentLocation: this.get('parentLocation'),
                     parentContent: this.get('parentContent'),
                 });
