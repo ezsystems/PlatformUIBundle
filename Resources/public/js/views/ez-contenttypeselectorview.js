@@ -194,7 +194,6 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
 
             this.fire('createContent', {
                 contentType: type,
-                languageCode: 'eng-GB',
             });
         },
 
