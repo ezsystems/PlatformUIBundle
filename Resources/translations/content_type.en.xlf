@@ -138,14 +138,6 @@
         <source>content_type.notification.deleted</source>
         <target>The Content type "%contentTypeName%" was successfully deleted.</target>
       </trans-unit>
-      <trans-unit id="495f40be66a97f93543b44e2d0e03076" resname="content_type.notification.translation_does_not_exist">
-        <source>content_type.notification.translation_does_not_exist</source>
-        <target>The requested Content type translation "%requestedLanguage%" does not exist, showing the "%contentTypeLanguage%" translation instead.</target>
-      </trans-unit>
-      <trans-unit id="ea7c676f1ae6f77be3453d79363395fa" resname="content_type.notification.language_does_not_exist">
-        <source>content_type.notification.language_does_not_exist</source>
-        <target>The "%requestedLanguage%" language is not a valid content language, falling back to using "%fallbackLanguage%" instead.</target>
-      </trans-unit>
       <trans-unit id="1d549f54e575ebb7f13e696af6c5bb96">
         <source>content_type.is_in_use</source>
         <target>The content type cannot be deleted because it has content items, or because you don't have permission.</target>
