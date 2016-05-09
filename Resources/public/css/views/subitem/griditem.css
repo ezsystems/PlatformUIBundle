@@ -1,0 +1,150 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-subitemgriditemview {
+    margin: 0.2em 0;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 1 10%;
+        -ms-flex: 0 1 10%;
+            flex: 0 1 10%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: stretch;
+    -webkit-align-items: stretch;
+        -ms-flex-align: stretch;
+            align-items: stretch;
+    -webkit-align-content: stretch;
+        -ms-flex-line-pack: stretch;
+            align-content: stretch;
+}
+
+@media (max-width: 160em) {
+    .ez-view-subitemgriditemview {
+        -webkit-flex-basis: 11.1%;
+            -ms-flex-preferred-size: 11.1%;
+                flex-basis: 11.1%;
+    }
+}
+
+@media (max-width: 120em) {
+    .ez-view-subitemgriditemview {
+        -webkit-flex-basis: 14.27%;
+            -ms-flex-preferred-size: 14.27%;
+                flex-basis: 14.27%;
+    }
+}
+
+@media (max-width: 100em) {
+    .ez-view-subitemgriditemview {
+        -webkit-flex-basis: 16.6%;
+            -ms-flex-preferred-size: 16.6%;
+                flex-basis: 16.6%;
+    }
+}
+
+@media (max-width: 80em) {
+    .ez-view-subitemgriditemview {
+        -webkit-flex-basis: 20%;
+            -ms-flex-preferred-size: 20%;
+                flex-basis: 20%;
+    }
+}
+
+@media (max-width: 80em) {
+    .ez-view-subitemgriditemview {
+        -webkit-flex-basis: 25%;
+            -ms-flex-preferred-size: 25%;
+                flex-basis: 25%;
+    }
+}
+
+@media (max-width: 64em) {
+    .ez-view-subitemgriditemview {
+        -webkit-flex-basis: 33%;
+            -ms-flex-preferred-size: 33%;
+                flex-basis: 33%;
+    }
+}
+
+@media (max-width: 48em) {
+    .ez-view-subitemgriditemview {
+        -webkit-flex-basis: 50%;
+            -ms-flex-preferred-size: 50%;
+                flex-basis: 50%;
+    }
+}
+
+@media (max-width: 38em) {
+    .ez-view-subitemgriditemview {
+        -webkit-flex-basis: 100%;
+            -ms-flex-preferred-size: 100%;
+                flex-basis: 100%;
+    }
+
+    .is-discoverybar-minimized .is-actionbar-minimized .ez-view-subitemgriditemview {
+        -webkit-flex-basis: 50%;
+            -ms-flex-preferred-size: 50%;
+                flex-basis: 50%;
+    }
+}
+
+.ez-view-subitemgriditemview .ez-subitemgrid-item-content {
+    margin: 0.5em;
+    width: 100%;
+}
+
+.ez-view-subitemgriditemview .ez-subitemgrid-item-content-type {
+    margin: 0 0 0.3em 0;
+}
+
+.ez-view-subitemgriditemview .ez-subitemgrid-item-name {
+    margin: 0.3em 0 0 0;
+}
+
+.ez-view-subitemgriditemview .ez-subitemgrid-item-visual,
+.ez-view-subitemgriditemview .ez-asynchronousview-error {
+    display: block;
+    width: 100%;
+    height: 9rem;
+    box-sizing: border-box;
+}
+
+.ez-view-subitemgriditemview .ez-asynchronousview .ez-asynchronousview-error {
+    padding-top: 1rem;
+    margin: 0;
+}
+
+.ez-view-subitemgriditemview .ez-subitemgrid-item-image {
+    display: none;
+}
+
+.ez-view-subitemgriditemview.is-state-image-loaded .ez-subitemgrid-item-visual {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.ez-view-subitemgriditemview.is-state-image-loaded .ez-subitemgrid-item-image {
+    display: block;
+    margin: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.ez-view-subitemgriditemview .ez-asynchronousview-error {
+    display: none;
+}
+
+.ez-view-subitemgriditemview.is-state-image-error .ez-asynchronousview-error {
+    display: block;
+}
+
+.ez-view-subitemgriditemview.is-state-image-error .ez-subitemgrid-item-visual {
+    display: none;
+}

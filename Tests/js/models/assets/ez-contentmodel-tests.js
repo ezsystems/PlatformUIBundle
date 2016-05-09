@@ -5,6 +5,7 @@
 YUI.add('ez-contentmodel-tests', function (Y) {
     var modelTest, relationsTest, createContent, deleteContent, loadResponse, copyTest,
         loadLocationsTest, addLocationTest, setMainLocationTest, hasTranslationTest,
+        getFieldsOfTypeTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -1056,6 +1057,55 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    getFieldsOfTypeTest = new Y.Test.Case({
+        name: "eZ Content Model getFieldsOfType test",
+
+        setUp: function () {
+            this.content = new Y.eZ.Content({
+                "fields": {
+                    "name": {fieldValue: "Too Many Sandwiches"},
+                    "image1": {fieldValue: {}},
+                    "image2": {fieldValue: null},
+                },
+            });
+        },
+
+        tearDown: function () {
+            this.content.destroy();
+            delete this.content;
+        },
+
+        "Should find the fields of the given type": function () {
+            var type = new Mock(),
+                identifiers = ['image1', 'image2'],
+                fieldType = 'ezimage',
+                res;
+
+            Mock.expect(type, {
+                method: 'getFieldDefinitionIdentifiers',
+                args: [fieldType],
+                returns: identifiers,
+            });
+
+            res = this.content.getFieldsOfType(type, fieldType);
+
+            Assert.isArray(res, "The return value should be an array");
+            Assert.areEqual(
+                identifiers.length,
+                res.length,
+                "The return value should have as many fields as requested"
+            );
+            Assert.areSame(
+                res[0], this.content.getField('image1'),
+                "The image1 field should have been returned"
+            );
+            Assert.areSame(
+                res[1], this.content.getField('image2'),
+                "The image2 field should have been returned"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(relationsTest);
@@ -1066,4 +1116,5 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(addLocationTest);
     Y.Test.Runner.add(setMainLocationTest);
     Y.Test.Runner.add(hasTranslationTest);
+    Y.Test.Runner.add(getFieldsOfTypeTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});
