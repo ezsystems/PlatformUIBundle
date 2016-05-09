@@ -10,6 +10,7 @@
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
 use EzSystems\BehatBundle\Context\Browser\Context;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 class PlatformUI extends Context
 {
@@ -85,6 +86,11 @@ class PlatformUI extends Context
     protected $newPathsMap = array();
 
     /**
+     * @var Behat\Testwork\Environment\Environment
+     */
+    protected $behatEnvironment;
+
+    /**
      * Initialize class.
      *
      * @param string $uri
@@ -109,6 +115,24 @@ class PlatformUI extends Context
     public function beforeScenario()
     {
         $this->getSession()->getDriver()->maximizeWindow();
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function gatherContexts(BeforeScenarioScope $scope)
+    {
+        $this->behatEnvironment = $scope->getEnvironment();
+    }
+
+    /**
+     * Fetches a context from the behat environment.
+     *
+     * @param string namespace of the context to fetch
+     */
+    public function getContext($namespace)
+    {
+        return $this->behatEnvironment->getContext($namespace);
     }
 
     /**
