@@ -5,6 +5,7 @@
  */
 namespace EzSystems\PlatformUIBundle\Tests\Controller;
 
+use eZ\Publish\Core\Repository\Values\ContentType\ContentType;
 use EzSystems\PlatformUIBundle\Controller\ContentTypeController;
 use PHPUnit_Framework_TestCase;
 
@@ -97,7 +98,7 @@ class ContentTypeControllerTest extends PHPUnit_Framework_TestCase
      * @dataProvider getPrioritizedLanguageData
      * @covers \EzSystems\PlatformUIBundle\Controller\ContentTypeController::getPrioritizedLanguage()
      */
-    public function testGetPrioritizedLanguage($prioritizedLanguages, $languageCodes, $fallbackLanguageCode, $expected)
+    public function testGetPrioritizedLanguage($prioritizedLanguages, $languageCodes, $mainLanguageCode, $expected)
     {
         $controller = $this->getContentTypeController();
         $controller->setPrioritizedLanguages($prioritizedLanguages);
@@ -107,7 +108,14 @@ class ContentTypeControllerTest extends PHPUnit_Framework_TestCase
         );
         $testMethod->setAccessible(true);
 
-        $actual = $testMethod->invoke($controller, $languageCodes, $fallbackLanguageCode);
+        $actual = $testMethod->invoke(
+            $controller,
+            new ContentType([
+                'names' => array_flip($languageCodes),
+                'mainLanguageCode' => $mainLanguageCode,
+                'fieldDefinitions' => [],
+            ])
+        );
 
         $this->assertEquals($expected, $actual);
     }
