@@ -36,7 +36,7 @@
                     {% for content_type in content_types %}
                         <tr>
                             <td>{{ content_type.id }}</td>
-                            <td><a href="{{ path('admin_contenttypeView', {'contentTypeId': content_type.id}) }}">{{ ez_trans_prop(content_type, "name", language_by_id[content_type.id]) }}</a></td>
+                            <td><a href="{{ path('admin_contenttypeView', {'contentTypeId': content_type.id}) }}">{{ ez_trans_prop(content_type, "name") }}</a></td>
                             <td>{{ content_type.identifier }}</td>
                             <td>{{ content_type.modificationDate|localizeddate("medium", "medium", app.request.locale) }}</td>
                             <td>

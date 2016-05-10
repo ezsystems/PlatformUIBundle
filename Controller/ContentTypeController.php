@@ -122,7 +122,6 @@ class ContentTypeController extends Controller
         $canDelete = $this->isGranted(new Attribute('class', 'delete'));
         $deleteFormsById = [];
         $canDeleteById = [];
-        $languageById = [];
 
         foreach ($contentTypes as $contentType) {
             $contentTypeId = $contentType->id;
@@ -132,7 +131,6 @@ class ContentTypeController extends Controller
             )->createView();
 
             $canDeleteById[$contentTypeId] = $canDelete && !$this->contentTypeService->isContentTypeUsed($contentType);
-            $languageById[$contentTypeId] = $this->getPrioritizedLanguage($contentType);
         }
 
         return $this->render('eZPlatformUIBundle:ContentType:view_content_type_group.html.twig', [
@@ -143,7 +141,6 @@ class ContentTypeController extends Controller
             'can_delete_by_id' => $canDeleteById,
             'create_form' => $createForm->createView(),
             'delete_forms_by_id' => $deleteFormsById,
-            'language_by_id' => $languageById,
         ]);
     }
 
