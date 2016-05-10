@@ -1,0 +1,84 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-subitemlistitemview td {
+    background: #fff;
+}
+
+.ez-view-subitemlistitemview tr:nth-child(2n-1) td {
+    background: #fafafa;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell .ez-subitem-priority-icons:after {
+    content: "\e606";
+    background: #E6E6E6;
+    color: #737373;
+    border: 1px solid #888;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-error-priority-cell .ez-subitem-priority-icons:after {
+    content: "!";
+    background: #BF3E33;
+    color: #fff;
+    border: 1px solid #BF3E33;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-icons:after {
+    font-weight: bold;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-error-priority-cell,
+.ez-view-subitemlistitemview tr:nth-child(2n-1) .ez-subitem-error-priority-cell {
+    background: #FEECEA;
+    box-shadow: none;
+    border: 1px double #BF3E33;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-selected-priority-cell {
+    box-shadow: none;
+    border: 1px double #888;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-form .ez-subitem-priority-input,
+.ez-view-subitemlistitemview .ez-subitem-priority-form .ez-subitem-priority-input:focus,
+.ez-view-subitemlistitemview .ez-subitem-priority-form .ez-subitem-priority-input.ez-subitem-error-input:focus {
+    border: 0;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-form .ez-subitem-priority-input[readonly],
+.ez-view-subitemlistitemview .ez-subitem-priority-form .ez-subitem-priority-input[readonly]:focus {
+    background-color: transparent;
+    color: #000000;
+    outline: none;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-button:before {
+    font-family: "ez-platformui-icomoon";
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-cancel:before {
+    content: "\E600";
+    color: #E46474;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-button {
+    border: 1px solid #888;
+    background: #E6E6E6;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-button:hover {
+    background: #F5F4F2;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-cancel {
+    border-left: 0;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-validate:before {
+    content: "\Ea10";
+    color: #008A6F;
+}

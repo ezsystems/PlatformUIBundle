@@ -1,0 +1,59 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-subitemlistitemview .ez-subitem-priority-buttons {
+    display: none;
+}
+
+.ez-view-subitemlistitemview  .ez-subitem-selected-priority-cell .ez-subitem-priority-buttons,
+.ez-view-subitemlistitemview  .ez-subitem-priority-icons {
+    display: inline;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-button:before {
+    width: 100%;
+    text-align: center;
+    height:100%;
+    z-index: 2000;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-button,
+.ez-view-subitemlistitemview .ez-subitem-priority-icons:after {
+    width: 2.2em;
+    text-align: center;
+    height: 2.2em;
+    margin-top: -0.2em;
+    box-sizing: border-box;
+    z-index: 2000;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-button {
+    position: absolute;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-icons:after {
+    line-height: 1.8em;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-cancel {
+    margin-left: 2.2em;
+}
+
+.ez-view-subitemlistitemview .ez-subitemlistitem-priority {
+    padding: 0;
+    margin: 0;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-form .ez-subitem-priority-input {
+    padding: 0 1em;
+    margin: 0;
+    width: 100%;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-error-priority-cell  .ez-subitem-priority-icons:after,
+.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell  .ez-subitem-priority-icons:after {
+    z-index: 2000;
+    position: absolute;
+}
