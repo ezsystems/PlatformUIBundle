@@ -89,6 +89,7 @@ system:
                 - 'bundles/ezplatformui/css/views/fields/edit/isbn.css'
                 - 'bundles/ezplatformui/css/views/fields/edit/user.css'
                 - 'bundles/ezplatformui/css/views/dashboard/dashboard.css'
+                - 'bundles/ezplatformui/css/views/dashboard/base-dashboard-block.css'
                 - 'bundles/ezplatformui/css/modules/tabs.css'
                 - 'bundles/ezplatformui/css/modules/page-header.css'
                 - 'bundles/ezplatformui/css/modules/serverside-content.css'

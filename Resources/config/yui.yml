@@ -309,6 +309,15 @@ system:
                 dashboardblockbasedview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/dashboard/dashboard.hbt
+                ez-base-dashboardblockview:
+                    requires: ['ez-templatebasedview', 'basedashboardblockview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-base-dashboardblockview.js
+                basedashboardblockview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/dashboard/base-dashboard-block.hbt
+                ez-base-dashboardblockviewplugin:
+                    requires: ['ez-base-dashboardblockview', 'base']
+                    path: %ez_platformui.public_dir%/js/views/dashboard/plugins/ez-base-dashboardblockviewplugin.js
                 ez-locationviewview:
                     requires:
                         - 'ez-templatebasedview'
