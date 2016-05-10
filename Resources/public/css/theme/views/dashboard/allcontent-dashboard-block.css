@@ -1,0 +1,21 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-allcontentdashboardblockview .ez-dashboard-block-wrapper {
+    border-color: #d2d2d2;
+}
+
+.ez-view-allcontentdashboardblockview .ez-dashboard-block-content {
+    background: #fdfdfd;
+}
+
+.ez-view-allcontentdashboardblockview .ez-dashboard-block-row:nth-child(even) {
+    background: #f2f2f2;
+}
+
+.ez-view-allcontentdashboardblockview .ez-dashboard-block-header {
+    background: #4a4a4a;
+    color: #fff;
+}
