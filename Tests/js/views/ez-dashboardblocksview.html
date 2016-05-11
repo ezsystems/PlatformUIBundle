@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>eZ Dashboard Blocks view tests</title>
+</head>
+<body>
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="dashboardblocksview-ez-template" >
+    <div class="ez-dashboard-content"></div>
+</script>
+
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-dashboardblocksview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter = (filter !== 'coverage') ? filter : {
+            searchExp: '/Resources/public/js/',
+            replaceStr: '/Tests/instrument/Resources/public/js/'
+        };
+
+    YUI({
+        coverage: ['ez-dashboardblocksview'],
+        filter: loaderFilter,
+        modules: {
+            'ez-dashboardblocksview': {
+                requires: ['ez-templatebasedview'],
+                fullpath: '../../../Resources/public/js/views/ez-dashboardblocksview.js'
+            },
+            'ez-templatebasedview': {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: '../../../Resources/public/js/views/ez-templatebasedview.js'
+            },
+            'ez-view': {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: '../../../Resources/public/js/views/ez-view.js'
+            },
+            'ez-pluginregistry': {
+                requires: ['array-extras'],
+                fullpath: '../../../../Resources/public/js/services/ez-pluginregistry.js'
+            },
+        }
+    }).use('ez-dashboardblocksview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
