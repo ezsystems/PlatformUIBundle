@@ -372,7 +372,7 @@ class ContentTypeController extends Controller
     private function getPrioritizedLanguage(ContentType $contentType)
     {
         foreach ($this->prioritizedLanguages as $prioritizedLanguage) {
-            if (in_array($prioritizedLanguage, array_keys($contentType->names))) {
+            if (isset($contentType->names[$prioritizedLanguage])) {
                 return $prioritizedLanguage;
             }
         }
