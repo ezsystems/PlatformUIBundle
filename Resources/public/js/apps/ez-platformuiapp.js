@@ -84,7 +84,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                 type: Y.eZ.LoginFormView,
             },
             dashboardView: {
-                type: Y.eZ.DashboardView,
+                type: Y.eZ.DashboardBlocksView,
                 parent: 'loginFormView',
             },
             studioPresentationView: {
@@ -793,6 +793,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                 }, {
                     name: "dashboard",
                     path: "/dashboard",
+                    service: Y.eZ.DashboardBlocksViewService,
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     view: 'dashboardView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']

@@ -160,7 +160,8 @@ system:
                         - 'ez-capi'
                         - 'ez-loginformviewservice'
                         - 'ez-loginformview'
-                        - 'ez-dashboardview'
+                        - 'ez-dashboardblocksview'
+                        - 'ez-dashboardblocksviewservice'
                         - 'ez-studiopresentationview'
                         - 'ez-studiopluspresentationview'
                         - 'ez-contenteditviewservice'
@@ -207,6 +208,9 @@ system:
                 ez-loginformviewservice:
                     requires: ['ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-loginformviewservice.js
+                ez-dashboardblocksviewservice:
+                    requires: ['ez-viewservice']
+                    path: %ez_platformui.public_dir%/js/views/services/ez-dashboardblocksviewservice.js
                 ez-contenteditviewservice:
                     requires:
                         - 'parallel'
@@ -302,6 +306,17 @@ system:
                 dashboardview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/dashboard.hbt
+                ez-dashboardblocksview:
+                    requires:
+                        - 'ez-templatebasedview'
+                        - 'dashboardblocksview-ez-template'
+                    path: %ez_platformui.public_dir%/js/views/ez-dashboardblocksview.js
+                dashboardblocksview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/dashboard-blocks.hbt
+                ez-dashboardblockbaseview:
+                    requires: ['ez-templatebasedview']
+                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockbaseview.js
                 ez-locationviewview:
                     requires:
                         - 'ez-templatebasedview'
