@@ -23,3 +23,12 @@
     flex-direction: row;
     flex-wrap: wrap;
 }
+
+.ez-view-dashboardblocksview .ez-view-dashboardblockbaseview {
+    flex: 1 1 40%;
+    margin: 1em 1em 1em 0;
+}
+
+.ez-view-dashboardblocksview .ez-view-dashboardblockbaseview:nth-child(even) {
+    margin-left: 6em;
+}

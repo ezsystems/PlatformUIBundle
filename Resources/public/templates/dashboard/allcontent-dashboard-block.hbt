@@ -1,0 +1,36 @@
+<h3 class="ez-allcontent-block-title">All Content</h3>
+<div class="ez-allcontent-block-wrapper ez-asynchronousview">
+    {{#if loadingError}}
+    <p class="ez-asynchronousview-error ez-font-icon">
+        An error occurred while content list.
+        <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+    </p>
+    {{else}}
+    <table class="pure-table">
+        <thead class="ez-allcontent-block-header">
+            <tr>
+                <th class="ez-allcontent-block-head--title">Title</th>
+                <th class="ez-allcontent-block-head--content-type">Content Type</th>
+                <th class="ez-allcontent-block-head--version">Version</th>
+                <th class="ez-allcontent-block-head--modified">Last saved</th>
+            </tr>
+        </thead>
+        <tbody class="ez-allcontent-block-content">
+        {{#each rows}}
+            <tr class="ez-allcontent-block-row">
+                <td class="ez-allcontent-block-cell--title">{{ title }}</td>
+                <td class="ez-allcontent-block-cell--content-type">{{ contentType }}</td>
+                <td class="ez-allcontent-block-cell--version">{{ version }}</td>
+                <td class="ez-allcontent-block-cell--modfied">
+                    {{ modified }}
+                    <div class="ez-allcontent-block-row-options">
+                        <a class="ez-allcontent-block-option-edit ez-font-icon" href="{{ path "editContent" id=contentId languageCode=languageCode }}"></a>
+                        <a class="ez-allcontent-block-option-view ez-font-icon" href="{{ path "viewLocation" id=locationId languageCode=languageCode }}"></a>
+                    </div>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+    {{/if}}
+</div>

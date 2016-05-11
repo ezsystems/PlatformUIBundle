@@ -1,0 +1,65 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-dashboardblockallcontentview .pure-table {
+    width: 100%;
+    border: 0;
+    table-layout: fixed;
+}
+
+.ez-view-dashboardblockallcontentview [class*="ez-allcontent-block-head--"] {
+    box-sizing: border-box;
+    padding: .5em;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-wrapper {
+    box-sizing: border-box;
+    border: 1px solid;
+    position: relative;
+}
+
+.ez-view-dashboardblockallcontentview.is-loading .ez-allcontent-block-content {
+    height: 3em;
+    display: block;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-head--title,
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-cell--title { width: 30%; }
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-head--content-type,
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-cell--content-type { width: 30%; }
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-head--version,
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-cell--version { width: 10%; }
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-head--modified,
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-cell--modified { width: 30%; }
+
+
+.ez-view-dashboardblockallcontentview [class*="ez-allcontent-block-cell--"] {
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-row-options {
+    transform: translate3d(100%, -50%, 0) scaleX(0);
+    transform-origin: top left;
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    right: 0;
+    display: flex;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-row.is-row-selected .ez-allcontent-block-row-options {
+    transform: translate3d(100%, -50%, 0) scaleX(1);
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-row-options .ez-font-icon {
+    width: 2em;
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+}
