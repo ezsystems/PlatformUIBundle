@@ -135,7 +135,7 @@ interesting are:
 * To test updating custom AlloyEditor skin against custom platform-ui-assets-bundle builds:
 
   ```bash
-  $ composer install --prefer-sopurce
+  $ composer install --prefer-source
   $ cd vendor/ezsystems/platform-ui-assets-bundle/
   $ git checkout <your_branch>
   $ ./bin/prepare_release.sh -v X.Y.X
