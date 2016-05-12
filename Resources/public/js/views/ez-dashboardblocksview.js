@@ -23,10 +23,6 @@ YUI.add('ez-dashboardblocksview', function (Y) {
      */
     Y.eZ.DashboardBlocksView = Y.Base.create('dashboardBlocksView', Y.eZ.TemplateBasedView, [], {
         initializer: function () {
-            this.onceAfter('activeChange', function (event) {
-                this.after('blocksChange', this._renderBlocks, this);
-            }, this);
-
             this.after('activeChange', this._toggleBlocksActiveState, this);
         },
 
@@ -136,8 +132,6 @@ YUI.add('ez-dashboardblocksview', function (Y) {
             blocks.splice(blocks.indexOf(existingBlock), 1);
 
             this._set('blocks', blocks);
-
-            return blocks;
         }
     }, {
         ATTRS: {

@@ -3,8 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-view-dashboardblocksview,
-.ez-view-dashboardblocksview * {
+.ez-view-dashboardblocksview {
     box-sizing: border-box;
 }
 
@@ -23,13 +22,4 @@
     justify-content: space-between;
     flex-direction: row;
     flex-wrap: wrap;
-}
-
-.ez-view-dashboardblocksview .ez-view-dashboardblockbaseview {
-    flex: 1 1 40%;
-    margin: 1em 1em 1em 0;
-}
-
-.ez-view-dashboardblocksview .ez-view-dashboardblockbaseview:nth-child(even) {
-    margin-left: 6em;
 }
