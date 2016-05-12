@@ -126,13 +126,7 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
             Y.Assert.areSame(viewActiveState, block1.get('active'), 'A first block should have the same active state as dashbaord view');
             Y.Assert.areSame(viewActiveState, block2.get('active'), 'A second block should have the same active state as dashbaord view');
             Y.Assert.areSame(2, blocks.length, 'There should be 2 block view instances available');
-
-            // PhantomJS 1.9.8 swap params in `sort` function of Array.
-            // This is fixed in PhantomJS 2.0
-            // See: https://github.com/ariya/phantomjs/issues/11090
-            // if (!Y.UA.phantomjs) {
-                Y.Assert.areSame(block1Config.identifier, blocks[1].get('identifier'), 'Should order blocks correctly');
-            // }
+            Y.Assert.areSame(block1Config.identifier, blocks[1].get('identifier'), 'Should order blocks correctly');
         }
     });
 
