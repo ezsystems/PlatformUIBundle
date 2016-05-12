@@ -1,0 +1,32 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-allcontentdashboardblockview .ez-dashboard-block-head {
+    padding: .5em;
+}
+
+.ez-view-allcontentdashboardblockview .ez-dashboard-block-wrapper {
+    border: 1px solid;
+}
+
+.ez-view-allcontentdashboardblockview .ez-dashboard-block-row {
+    display: flex;
+}
+
+.ez-view-allcontentdashboardblockview .ez-dashboard-block-cell:nth-child(1) {
+    flex: 1 1 30%;
+}
+
+.ez-view-allcontentdashboardblockview .ez-dashboard-block-cell:nth-child(2) {
+    flex: 1 1 30%;
+}
+
+.ez-view-allcontentdashboardblockview .ez-dashboard-block-cell:nth-child(3) {
+    flex: 1 1 10%;
+}
+
+.ez-view-allcontentdashboardblockview .ez-dashboard-block-cell:nth-child(4) {
+    flex: 1 1 30%;
+}

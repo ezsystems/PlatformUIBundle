@@ -1,0 +1,4 @@
+<div class="pure-u">
+    <h1>{{ dashboardTitle }}</h1>
+    <div class="dashboard-content"></div>
+</div>

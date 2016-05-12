@@ -1,0 +1,10 @@
+<h3 class="ez-dashboard-block-title">{{ title }}</h3>
+<div class="ez-dashboard-block-wrapper">
+    <div class="ez-dashboard-block-header ez-dashboard-block-row">
+        <div class="ez-dashboard-block-head ez-dashboard-block-cell">{{ headTextTitle }}</div>
+        <div class="ez-dashboard-block-head ez-dashboard-block-cell">{{ headTextContentType }}</div>
+        <div class="ez-dashboard-block-head ez-dashboard-block-cell">{{ headTextVersion }}</div>
+        <div class="ez-dashboard-block-head ez-dashboard-block-cell">{{ headTextModified }}</div>
+    </div>
+    <div class="ez-dashboard-block-content"></div>
+</div>

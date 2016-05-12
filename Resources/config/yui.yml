@@ -157,7 +157,8 @@ system:
                         - 'ez-capi'
                         - 'ez-loginformviewservice'
                         - 'ez-loginformview'
-                        - 'ez-dashboardview'
+                        - 'ez-dashboardblockbasedview'
+                        - 'ez-dashboardblockbasedviewservice'
                         - 'ez-studiopresentationview'
                         - 'ez-studiopluspresentationview'
                         - 'ez-contenteditviewservice'
@@ -204,6 +205,9 @@ system:
                 ez-loginformviewservice:
                     requires: ['ez-viewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-loginformviewservice.js
+                ez-dashboardblockbasedviewservice:
+                    requires: ['ez-viewservice', 'ez-locationmodel', 'ez-allcontent-dashboardblockserviceplugin']
+                    path: %ez_platformui.public_dir%/js/views/services/ez-dashboardblockbasedviewservice.js
                 ez-contenteditviewservice:
                     requires:
                         - 'parallel'
@@ -297,6 +301,47 @@ system:
                 dashboardview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/dashboard.hbt
+                ez-dashboardblockbasedview:
+                    requires:
+                        - 'ez-templatebasedview'
+                        - 'ez-allcontent-dashboardblockviewplugin'
+                        - 'dashboardblockbasedview-ez-template'
+                    path: %ez_platformui.public_dir%/js/views/ez-dashboardblockbasedview.js
+                dashboardblockbasedview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/dashboard/dashboard.hbt
+                ez-base-dashboardblockview:
+                    requires: ['ez-templatebasedview', 'basedashboardblockview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-base-dashboardblockview.js
+                basedashboardblockview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/dashboard/base-dashboard-block.hbt
+                ez-allcontent-dashboardblockview:
+                    requires: ['ez-base-dashboardblockview', 'ez-allcontent-dashboardblockrowview', 'allcontentdashboardblockview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-allcontent-dashboardblockview.js
+                allcontentdashboardblockview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/dashboard/allcontent-dashboard-block.hbt
+                ez-allcontent-dashboardblockrowview:
+                    requires: ['ez-templatebasedview', 'event-outside', 'event-tap', 'allcontentdashboardblockrowview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-allcontent-dashboardblockrowview.js
+                allcontentdashboardblockrowview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/dashboard/allcontent-dashboard-block-row.hbt
+                ez-allcontent-dashboardblockserviceplugin:
+                    requires:
+                        - 'ez-viewservicebaseplugin'
+                        - 'ez-pluginregistry'
+                        - 'ez-contentmodel'
+                        - 'model-list'
+                        - 'promise'
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-allcontent-dashboardblockserviceplugin.js
+                ez-base-dashboardblockviewplugin:
+                    requires: ['ez-base-dashboardblockview', 'base']
+                    path: %ez_platformui.public_dir%/js/views/dashboard/plugins/ez-base-dashboardblockviewplugin.js
+                ez-allcontent-dashboardblockviewplugin:
+                    requires: ['ez-base-dashboardblockviewplugin', 'ez-allcontent-dashboardblockview', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/views/dashboard/plugins/ez-allcontent-dashboardblockviewplugin.js
                 ez-locationviewview:
                     requires:
                         - 'ez-templatebasedview'
