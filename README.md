@@ -131,6 +131,19 @@ interesting are:
   $ cd -
   $ grunt alloy-css
   ```
+  
+* To test updating custom AlloyEditor skin against custom platform-ui-assets-bundle builds:
+
+  ```bash
+  $ composer install --prefer-source
+  $ cd vendor/ezsystems/platform-ui-assets-bundle/
+  $ git checkout <your_branch>
+  $ ./bin/prepare_release.sh -v X.Y.X
+  $ git checkout vX.Y.X
+  $ echo -e `cd Resources/public/vendors/alloy-editor/ && npm install`
+  $ cd -
+  $ grunt alloy-css
+  ```
 
 To run the PHP unit tests, you first need to install the dev dependencies of the
 bundle. To do that, from the bundle root, run:
