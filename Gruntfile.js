@@ -10,7 +10,6 @@ module.exports = function(grunt) {
             "./Resources/public/js/apps/plugins/*.js",
             "./Resources/public/js/views/*.js",
             "./Resources/public/js/views/dashboard/*.js",
-            "./Resources/public/js/views/dashboard/plugins/*.js",
             "./Resources/public/js/views/fields/*.js",
             "./Resources/public/js/views/fields/richtext/*.js",
             "./Resources/public/js/views/universaldiscovery/*.js",
