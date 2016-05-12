@@ -32,18 +32,24 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
         },
 
         'Should render view correctly': function () {
-            var templateCalled = false,
-                origTpl = this.view.template;
+            var view = this.view,
+                templateCalled = false,
+                origTpl = view.template;
 
-            this.view.template = function () {
+            view.template = function () {
                 templateCalled = true;
 
                 return origTpl.apply(this, arguments);
             };
 
+            view.addBlock(new Y.eZ.DashboardBlockBaseView({
+                priority: 1,
+                identifier: 'A'
+            }));
             this.view.render();
 
             Y.Assert.isTrue(templateCalled, 'The template should have been used to render view');
+            Y.Assert.areSame(1, view.get('container').one(SELECTOR_CONTENT).get('children').size(), 'Should render one block inside');
         }
     });
 
@@ -58,7 +64,7 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
             this.view.destroy();
         },
 
-        'Should render a new block after adding it to the dashboard': function () {
+        'Should add a new block to the dashboard': function () {
             var view = this.view,
                 block1Config = {
                     priority: 1,
@@ -68,16 +74,14 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
                 blocks;
 
             view.addBlock(block1);
-            view.render();
 
             blocks = view.get('blocks');
 
             Y.Assert.areSame(view, block1.getTargets()[0], 'The dashboard view should be a target of a block');
-            Y.Assert.areSame(1, view.get('container').one(SELECTOR_CONTENT).get('children').size(), 'Should render one block inside');
             Y.Assert.areSame(1, blocks.length, 'There should be 1 block view instance available');
         },
 
-        'Should render only one block when adding blocks with the same identifier': function () {
+        'Should store only one block when adding 2 blocks with the same identifier': function () {
             var view = this.view,
                 block1Config = {
                     priority: 1,
@@ -89,16 +93,15 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
 
             view.addBlock(block1);
             view.addBlock(block2);
-            view.render();
 
             blocks = view.get('blocks');
 
-            Y.Assert.areSame(view, block2.getTargets()[0], 'The dashboard view should be a target of a block');
-            Y.Assert.areSame(1, view.get('container').one(SELECTOR_CONTENT).get('children').size(), 'Should render one block inside');
+            Y.Assert.areSame(0, block1.getTargets().length, 'The dashboard view should not be a target of a first block');
+            Y.Assert.areSame(view, block2.getTargets()[0], 'The dashboard view should be a target of a second block');
             Y.Assert.areSame(1, blocks.length, 'There should be 1 block view instance available');
         },
 
-        'Should render 2 blocks in the dashboard with correct order': function () {
+        'Should store blocks in correct order': function () {
             var view = this.view,
                 block1Config = {
                     priority: 1,
@@ -115,7 +118,6 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
 
             view.addBlock(block1);
             view.addBlock(block2);
-            view.render();
 
             blocks = view.get('blocks');
 
@@ -123,7 +125,6 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
             Y.Assert.areSame(view, block2.getTargets()[0], 'The dashboard view should be a target of a second block');
             Y.Assert.areSame(viewActiveState, block1.get('active'), 'A first block should have the same active state as dashbaord view');
             Y.Assert.areSame(viewActiveState, block2.get('active'), 'A second block should have the same active state as dashbaord view');
-            Y.Assert.areSame(2, view.get('container').one(SELECTOR_CONTENT).get('children').size(), 'Should render one block inside');
             Y.Assert.areSame(2, blocks.length, 'There should be 2 block view instances available');
 
             // PhantomJS 1.9.8 swap params in `sort` function of Array.
@@ -157,9 +158,6 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
             view.addBlock(block1);
             view.removeBlock(block1Config.identifier);
 
-            view.render();
-
-            Y.Assert.areSame(0, view.get('container').one(SELECTOR_CONTENT).get('children').size(), 'There should be no blocks rendered');
             Y.Assert.areSame(0, view.get('blocks').length, 'There should be no blocks defined');
             Y.Assert.areSame(0, block1.getTargets().length, 'A block view should have no targets defined');
         }
@@ -186,7 +184,6 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
 
             view.addBlock(block1);
 
-            view.render();
             view.set('active', true);
             view.set('active', false);
 
