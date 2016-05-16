@@ -33,7 +33,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 run: function (attr) {
                     if ( attr === 'user' ) {
                         return that.user;
-                    } else if ( attr === 'defaultLanguageCode' ) {
+                    } else if ( attr === 'contentCreationDefaultLanguageCode' ) {
                         return that.defaultLanguageCode;
                     } else {
                         Y.fail("Unexpected app.get(" + attr + ") call");

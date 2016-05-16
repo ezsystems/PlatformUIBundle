@@ -33,7 +33,6 @@ YUI.add('ez-contentcreateplugin', function (Y) {
          */
         parallelLoad: function (next) {
             this.set('contentType', undefined);
-            this.set('languageCode', undefined);
             this.set('parentLocation', undefined);
             next();
         },
@@ -150,6 +149,7 @@ YUI.add('ez-contentcreateplugin', function (Y) {
                     return app.get('contentCreationDefaultLanguageCode');
                 }
             },
+
             /**
              * The parent location of the content that will be created
              *

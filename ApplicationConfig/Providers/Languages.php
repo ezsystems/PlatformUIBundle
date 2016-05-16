@@ -37,11 +37,10 @@ class Languages implements Provider
                 'name' => $language->name,
                 'languageCode' => $language->languageCode,
                 'enabled' => $language->enabled,
-                'default' => $language->languageCode === $this->defaultLanguageCode
+                'default' => $language->languageCode === $this->defaultLanguageCode,
             );
         }
 
         return $languages;
     }
-
 }

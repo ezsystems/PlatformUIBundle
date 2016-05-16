@@ -272,7 +272,6 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
             this.service.set('location', location);
             this.service.fire('whatever:createContent', {
                 contentType: type,
-                languageCode: languageCode,
             });
 
             Mock.verify(this.app);
@@ -317,7 +316,7 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
 
             Y.Mock.expect(this.app, {
                 method: 'get',
-                args: ['defaultLanguageCode'],
+                args: ['contentCreationDefaultLanguageCode'],
                 returns: languageCode
             });
 
@@ -342,7 +341,7 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
 
             Y.Mock.expect(this.app, {
                 method: 'get',
-                args: ['defaultLanguageCode'],
+                args: ['contentCreationDefaultLanguageCode'],
                 returns: languageCode
             });
 
@@ -390,7 +389,6 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
 
             plugin.set('contentType', {});
             plugin.set('parentLocation', {});
-            plugin.set('languageCode', 'fre-FR');
             plugin.parallelLoad(function () {
                 callback = true;
                 Assert.isUndefined(
@@ -400,10 +398,6 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
                 Assert.isUndefined(
                     plugin.get('parentLocation'),
                     "The parent location should be reinitialized"
-                );
-                Assert.isUndefined(
-                    plugin.get('languageCode'),
-                    "The language code should be reinitialized"
                 );
             });
 
