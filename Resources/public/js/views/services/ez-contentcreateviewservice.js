@@ -61,7 +61,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
                 contentTypeName;
 
             contentTypeNames = this.get('contentType').get('names');
-            contentTypeName = contentTypeNames[this.get('app').get('defaultLanguageCode')]
+            contentTypeName = contentTypeNames[this.get('app').get('contentCreationDefaultLanguageCode')]
                 || contentTypeNames[Object.keys(contentTypeNames)[0]];
 
             content.set('name', 'New "' + contentTypeName + '"');
