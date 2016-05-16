@@ -222,19 +222,15 @@ YUI.add('ez-platformuiapp', function (Y) {
             if ( config.languages ) {
                 Y.Array.each(config.languages, function (language) {
                     systemLanguageList[language.languageCode] = language;
+                    if ( language.default ) {
+                        defaultLanguageCode = language.languageCode;
+                    }
                 });
                 this._set('systemLanguageList', systemLanguageList);
+                this._set('contentCreationDefaultLanguageCode', defaultLanguageCode );
                 delete config.languages;
             }
 
-            if ( config.siteaccesses ) {
-                Y.Object.each(config.siteaccesses, function (siteaccess, name) {
-                    if ( siteaccess.current == 1 ) {
-                        defaultLanguageCode = siteaccess.languages[0];
-                    }
-                });
-                this._set('defaultLanguageCode', defaultLanguageCode );
-            }
         },
 
         /**
@@ -1045,12 +1041,12 @@ YUI.add('ez-platformuiapp', function (Y) {
             /**
              * Default language code, as defined by the current siteaccess language config.
              *
-             * @attribute defaultLanguageCode
+             * @attribute contentCreationDefaultLanguageCode
              * @default "eng-GB"
-             * @type {Object}
+             * @type {String}
              * @readOnly
              */
-            defaultLanguageCode: {
+            contentCreationDefaultLanguageCode: {
                 readOnly: true,
                 value: "eng-GB"
             },

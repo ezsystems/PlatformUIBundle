@@ -17,9 +17,15 @@ class Languages implements Provider
      */
     private $languageService;
 
-    public function __construct(LanguageService $languageService)
+    /**
+     * @var string
+     */
+    private $defaultLanguageCode;
+
+    public function __construct(LanguageService $languageService, $languages)
     {
         $this->languageService = $languageService;
+        $this->defaultLanguageCode = $languages[0];
     }
 
     public function getConfig()
@@ -31,9 +37,11 @@ class Languages implements Provider
                 'name' => $language->name,
                 'languageCode' => $language->languageCode,
                 'enabled' => $language->enabled,
+                'default' => $language->languageCode === $this->defaultLanguageCode
             );
         }
 
         return $languages;
     }
+
 }
