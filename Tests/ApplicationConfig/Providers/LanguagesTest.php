@@ -19,9 +19,10 @@ class LanguagesTest extends PHPUnit_Framework_TestCase
 
     public function testGetConfig()
     {
-        $provider = new Languages($this->getLanguageServiceMock());
+        $provider = new Languages($this->getLanguageServiceMock(), [$this->languageData]);
+        $expected = [$this->languageData + ['default' => true]];
         self::assertEquals(
-            [$this->languageData],
+            $expected,
             $provider->getConfig()
         );
     }

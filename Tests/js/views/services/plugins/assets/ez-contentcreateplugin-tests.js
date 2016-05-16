@@ -11,8 +11,17 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         name: 'eZ Create Content plugin create content action event tests',
 
         setUp: function () {
+            this.defaultlanguageCode = 'eng-GB';
+
+            this.appMock =  new Y.Test.Mock();
             this.capiMock = new Y.Test.Mock();
             this.contentTypeServiceMock = new Y.Test.Mock();
+
+            Y.Mock.expect(this.appMock, {
+                method: 'get',
+                args: ['contentCreationDefaultLanguageCode'],
+                returns: this.defaultLanguageCode,
+            });
 
             Y.Mock.expect(this.capiMock, {
                 method: 'getContentTypeService',
@@ -20,8 +29,10 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
             });
 
             this.service = new Y.eZ.ViewService({
-                capi: this.capiMock
+                capi: this.capiMock,
+                app: this.appMock,
             });
+
             this.view = new Y.View();
             this.view.set('loadingError', false);
             this.plugin = new Y.eZ.Plugin.ContentCreate({host: this.service});
@@ -241,7 +252,14 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         name: 'eZ Create Content plugin create content event tests',
 
         setUp: function () {
+            var defaultLanguageCode = 'eng-GB';
             this.app = new Mock();
+
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['contentCreationDefaultLanguageCode'],
+                returns: defaultLanguageCode,
+            });
             this.service = new Y.eZ.ViewService({
                 app: this.app,
             });
@@ -257,7 +275,7 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         },
 
         "Should navigate to the create content route with event paramters": function () {
-            var type = {}, languageCode = 'fre-FR', location = {},
+            var type = {}, location = {},
                 createRouteUri = "/create";
 
             Mock.expect(this.app, {
@@ -281,10 +299,6 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
                 "The content type should be stored in the plugin"
             );
             Assert.areSame(
-                languageCode, this.plugin.get('languageCode'),
-                "The languageCode should be stored in the plugin"
-            );
-            Assert.areSame(
                 location, this.plugin.get('parentLocation'),
                 "The location should be stored in the plugin"
             );
@@ -295,7 +309,14 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         name: 'eZ Create Content plugin setNextViewServiceParameters test',
 
         setUp: function () {
+            var defaultLanguageCode = 'fre-FR';
             this.app = new Mock();
+
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['contentCreationDefaultLanguageCode'],
+                returns: defaultLanguageCode,
+            });
             this.service = new Y.eZ.ViewService({
                 app: this.app,
             });
@@ -370,10 +391,19 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         name: 'eZ Create Content plugin create load tests',
 
         setUp: function () {
-            this.service = new Y.eZ.ViewService();
-            this.plugin = new Y.eZ.Plugin.ContentCreate({host: this.service});
+            var defaultLanguageCode = 'fre-FR';
+
             this.app = new Y.Mock();
-            this.service.set('app', this.app);
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['contentCreationDefaultLanguageCode'],
+                returns: defaultLanguageCode,
+            });
+
+            this.service = new Y.eZ.ViewService({
+                app: this.app,
+            });
+            this.plugin = new Y.eZ.Plugin.ContentCreate({host: this.service});
         },
 
         tearDown: function () {
