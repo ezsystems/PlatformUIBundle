@@ -11,8 +11,17 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         name: 'eZ Create Content plugin create content action event tests',
 
         setUp: function () {
+            this.defaultlanguageCode = 'eng-GB';
+
+            this.appMock =  new Y.Test.Mock();
             this.capiMock = new Y.Test.Mock();
             this.contentTypeServiceMock = new Y.Test.Mock();
+
+            Y.Mock.expect(this.appMock, {
+                method: 'get',
+                args: ['contentCreationDefaultLanguageCode'],
+                returns: this.defaultLanguageCode,
+            });
 
             Y.Mock.expect(this.capiMock, {
                 method: 'getContentTypeService',
@@ -20,8 +29,10 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
             });
 
             this.service = new Y.eZ.ViewService({
-                capi: this.capiMock
+                capi: this.capiMock,
+                app: this.appMock,
             });
+
             this.view = new Y.View();
             this.view.set('loadingError', false);
             this.plugin = new Y.eZ.Plugin.ContentCreate({host: this.service});
@@ -241,7 +252,14 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         name: 'eZ Create Content plugin create content event tests',
 
         setUp: function () {
+            var defaultLanguageCode = 'eng-GB';
             this.app = new Mock();
+
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['contentCreationDefaultLanguageCode'],
+                returns: defaultLanguageCode,
+            });
             this.service = new Y.eZ.ViewService({
                 app: this.app,
             });
@@ -257,7 +275,7 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         },
 
         "Should navigate to the create content route with event paramters": function () {
-            var type = {}, languageCode = 'fre-FR', location = {},
+            var type = {}, location = {},
                 createRouteUri = "/create";
 
             Mock.expect(this.app, {
@@ -272,7 +290,6 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
             this.service.set('location', location);
             this.service.fire('whatever:createContent', {
                 contentType: type,
-                languageCode: languageCode,
             });
 
             Mock.verify(this.app);
@@ -280,10 +297,6 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
             Assert.areSame(
                 type, this.plugin.get('contentType'),
                 "The content type should be stored in the plugin"
-            );
-            Assert.areSame(
-                languageCode, this.plugin.get('languageCode'),
-                "The languageCode should be stored in the plugin"
             );
             Assert.areSame(
                 location, this.plugin.get('parentLocation'),
@@ -296,7 +309,17 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         name: 'eZ Create Content plugin setNextViewServiceParameters test',
 
         setUp: function () {
-            this.service = new Y.eZ.ViewService();
+            var defaultLanguageCode = 'fre-FR';
+            this.app = new Mock();
+
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['contentCreationDefaultLanguageCode'],
+                returns: defaultLanguageCode,
+            });
+            this.service = new Y.eZ.ViewService({
+                app: this.app,
+            });
             this.plugin = new Y.eZ.Plugin.ContentCreate({host: this.service});
         },
 
@@ -305,10 +328,18 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
             this.service.destroy();
             delete this.plugin;
             delete this.service;
+            delete this.app;
         },
 
         "Should not do anything by default": function () {
-            var nextService = new Y.Base();
+            var nextService = new Y.Base(),
+                languageCode = 'fre-FR';
+
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['contentCreationDefaultLanguageCode'],
+                returns: languageCode
+            });
 
             this.plugin.setNextViewServiceParameters(nextService);
             Assert.isUndefined(
@@ -328,6 +359,12 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         "Should configure the next service if the create parameter were retrieved": function () {
             var nextService = new Y.Base(),
                 type = {}, location = {}, languageCode = 'fre-FR';
+
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['contentCreationDefaultLanguageCode'],
+                returns: languageCode
+            });
 
             this.plugin.setAttrs({
                 contentType: type,
@@ -354,7 +391,18 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         name: 'eZ Create Content plugin create load tests',
 
         setUp: function () {
-            this.service = new Y.eZ.ViewService();
+            var defaultLanguageCode = 'fre-FR';
+
+            this.app = new Y.Mock();
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['contentCreationDefaultLanguageCode'],
+                returns: defaultLanguageCode,
+            });
+
+            this.service = new Y.eZ.ViewService({
+                app: this.app,
+            });
             this.plugin = new Y.eZ.Plugin.ContentCreate({host: this.service});
         },
 
@@ -371,7 +419,6 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
 
             plugin.set('contentType', {});
             plugin.set('parentLocation', {});
-            plugin.set('languageCode', 'fre-FR');
             plugin.parallelLoad(function () {
                 callback = true;
                 Assert.isUndefined(
@@ -381,10 +428,6 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
                 Assert.isUndefined(
                     plugin.get('parentLocation'),
                     "The parent location should be reinitialized"
-                );
-                Assert.isUndefined(
-                    plugin.get('languageCode'),
-                    "The language code should be reinitialized"
                 );
             });
 
