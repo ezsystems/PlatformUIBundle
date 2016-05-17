@@ -58,7 +58,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
                 type = this.get('contentType'),
                 defaultFields = {};
 
-            content.set('name', this._getContentTypeName());
+            content.set('name', this._getNewContentName());
             Y.Object.each(type.get('fieldDefinitions'), function (fieldDef, identifier) {
                 defaultFields[identifier] = {
                     fieldDefinitionIdentifier: identifier,
@@ -113,9 +113,12 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
         },
 
         /**
+         * Gets the name for a new content based on current contentType and languageCode
          *
+         * @method _getNewContentName
+         * @protected
          */
-        _getContentTypeName: function() {
+        _getNewContentName: function() {
             var app = this.get('app'),
                 type = this.get('contentType'),
                 contentTypeNames,
