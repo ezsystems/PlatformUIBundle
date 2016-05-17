@@ -275,7 +275,7 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
         },
 
         "Should navigate to the create content route with event paramters": function () {
-            var type = {}, location = {},
+            var type = {}, location = {}, languageCode = 'ger-DE',
                 createRouteUri = "/create";
 
             Mock.expect(this.app, {
@@ -290,6 +290,7 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
             this.service.set('location', location);
             this.service.fire('whatever:createContent', {
                 contentType: type,
+                languageCode: languageCode,
             });
 
             Mock.verify(this.app);
@@ -301,6 +302,10 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
             Assert.areSame(
                 location, this.plugin.get('parentLocation'),
                 "The location should be stored in the plugin"
+            );
+            Assert.areNotSame(
+                languageCode, this.plugin.get('languageCode'),
+                "The languageCode event parameter should be ignored"
             );
         },
     });

@@ -192,8 +192,16 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
                 return t.get('id') === typeId;
             });
 
+            /**
+             * Fired when creating a new content of a given type
+             *
+             * @event createContent
+             * @param {Object} contentType
+             * @param {String} languageCode - deprecated
+             */
             this.fire('createContent', {
                 contentType: type,
+                languageCode: 'eng-GB',
             });
         },
 

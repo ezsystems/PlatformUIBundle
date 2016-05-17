@@ -143,7 +143,6 @@ YUI.add('ez-contentcreateplugin', function (Y) {
              * @type String
              */
             languageCode: {
-                readOnly: true,
                 valueFn: function () {
                     var app = this.get('host').get('app');
                     return app.get('contentCreationDefaultLanguageCode');

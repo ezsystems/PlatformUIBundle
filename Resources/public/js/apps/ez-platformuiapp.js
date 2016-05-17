@@ -227,10 +227,9 @@ YUI.add('ez-platformuiapp', function (Y) {
                     }
                 });
                 this._set('systemLanguageList', systemLanguageList);
-                this._set('contentCreationDefaultLanguageCode', defaultLanguageCode );
+                this._set('contentCreationDefaultLanguageCode', defaultLanguageCode);
                 delete config.languages;
             }
-
         },
 
         /**

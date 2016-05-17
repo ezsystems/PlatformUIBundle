@@ -1923,13 +1923,14 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.ckeditorPluginPath = 'ckeditorPluginPath';
             this.root = 'root';
             this.configLanguages = [
-                {'languageCode': 'eng-GB', 'name': 'English'},
+                {'languageCode': 'eng-GB', 'name': 'English', 'default': true},
                 {'languageCode': 'pol-PL', 'name': 'Polish'}
             ];
             this.systemLanguageList = {
-                'eng-GB': {'languageCode': 'eng-GB', 'name': 'English'},
+                'eng-GB': {'languageCode': 'eng-GB', 'name': 'English', 'default': true},
                 'pol-PL': {'languageCode': 'pol-PL', 'name': 'Polish'}
             };
+            this.defaultLanguageCode = 'eng-GB';
             Y.eZ.CAPI = Y.bind(function (apiRoot, sessionAuthAgent) {
                 Assert.areEqual(
                     this.apiRoot, apiRoot,
@@ -2069,6 +2070,16 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 JSON.stringify(this.systemLanguageList),
                 JSON.stringify(this.app.get('systemLanguageList')),
                 "The `systemLanguageList` should have been set"
+            );
+        },
+
+        "Should configure the `contentCreationDefaultLanguageCode`": function () {
+            this._buildApp();
+
+            Assert.areSame(
+                this.defaultLanguageCode,
+                this.app.get('contentCreationDefaultLanguageCode'),
+                "The `contentCreationDefaultLanguageCode` should have been set"
             );
             Assert.isUndefined(
                 this.app.get('config').languages,
