@@ -139,7 +139,7 @@ YUI.add('ez-contentcreateplugin', function (Y) {
              * The language code to use to create the new content
              *
              * @attribute languageCode
-             * @default undefined
+             * @default value taken from app.contentCreationDefaultLanguageCode
              * @type String
              */
             languageCode: {
