@@ -97,6 +97,17 @@ YUI.add('ez-universaldiscoverymethodbaseview', function (Y) {
             },
 
             /**
+             * The Location Id where the content discovery can start.
+             *
+             * @attribute multiple
+             * @type {String}
+             * @default false if there's no starting location
+             */
+            startingLocationId: {
+                value: false,
+            },
+
+            /**
              * Flag indicating whether the Content should be provided in the
              * selection.
              *

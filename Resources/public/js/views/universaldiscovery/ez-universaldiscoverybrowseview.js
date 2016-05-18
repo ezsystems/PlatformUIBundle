@@ -22,7 +22,7 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
      */
     Y.eZ.UniversalDiscoveryBrowseView = Y.Base.create('universalDiscoveryBrowseView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {
         initializer: function () {
-            this.on('*:treeNavigate', this._selectContent);
+            this.on('*:treeNavigate', this._uiSelectContent);
             this.after(['multipleChange', 'isSelectableChange'], this._setSelectedViewAttrs);
             this.after('visibleChange', this._unselectContent);
         },
@@ -82,21 +82,41 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
         },
 
         /**
-         * `treeNavigate` event handler. It fires the `selectedContent` event
-         * and set the content structure on the selected view so that it is
-         * displayed.
-         *
+         * `treeNavigate` event handler. It will select the node in the tree
+         * and call _selectContent that will set the content structure in the selected view
          * @method _selectContent
          * @protected
          * @param {EventFacade} e
          */
-        _selectContent: function (e) {
+        _uiSelectContent: function (e) {
             var node = e.tree.getNodeById(e.nodeId);
 
             e.preventDefault();
-            this._fireSelectContent(node.data);
             node.select();
-            this.get('selectedView').set('contentStruct', node.data);
+            this._selectContent(node.data);
+        },
+
+        /**
+         * Public method to select a content
+         *
+         * @method selectContent
+         * @param {Object} struct the node data
+         */
+        selectContent: function (struct) {
+            this._selectContent(struct);
+        },
+
+        /**
+         * Fire the selectcontent event and set the content structure on the selected view so that it is
+         * displayed.
+         *
+         * @method _selectContent
+         * @protected
+         * @param {Object} struct the node data
+         */
+        _selectContent: function (struct) {
+            this._fireSelectContent(struct);
+            this.get('selectedView').set('contentStruct', struct);
         },
 
         /**

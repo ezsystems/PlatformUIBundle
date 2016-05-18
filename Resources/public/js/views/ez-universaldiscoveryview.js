@@ -267,7 +267,8 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
          * @protected
          */
         _updateMethods: function () {
-            var visibleMethod = this.get('visibleMethod');
+            var visibleMethod = this.get('visibleMethod'),
+                startingLocationId = this.get('startingLocationId');
 
             /**
              * Stores a reference to the visible method view
@@ -283,6 +284,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                 method.setAttrs({
                     'multiple': this.get('multiple'),
                     'loadContent': this.get('loadContent'),
+                    'startingLocationId': startingLocationId,
                     'visible': visible,
                     'isSelectable': Y.bind(this.get('isSelectable'), this)
                 });
@@ -499,6 +501,17 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
             },
 
             /**
+             * The location id that the UDW tree will select on start
+             * @attribute startingLocationId
+             * @type {String}
+             * @default false if there is no starting location
+             *
+             */
+            startingLocationId: {
+                value: false,
+            },
+
+            /**
              * Flag indicating whether the Content should be provided in the
              * selection.
              *
@@ -548,14 +561,16 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             priority: 100,
                             multiple: this.get('multiple'),
                             loadContent: this.get('loadContent'),
-                            isAlreadySelected: Y.bind(this._isAlreadySelected, this)
+                            isAlreadySelected: Y.bind(this._isAlreadySelected, this),
+                            startingLocationId: this.get('startingLocationId')
                         }),
                         new Y.eZ.UniversalDiscoverySearchView({
                             bubbleTargets: this,
                             priority: 200,
                             multiple: this.get('multiple'),
                             loadContent: this.get('loadContent'),
-                            isAlreadySelected: Y.bind(this._isAlreadySelected, this)
+                            isAlreadySelected: Y.bind(this._isAlreadySelected, this),
+                            startingLocationId: this.get('startingLocationId')
                         }),
                     ];
                 },

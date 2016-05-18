@@ -4,7 +4,7 @@
  */
 YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
     var resetTest, defaultSubViewTest, treeNavigateTest, renderTest, unselectTest,
-        multipleUpdateTest, onUnselectContentTest,
+        multipleUpdateTest, onUnselectContentTest, selectContentTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     resetTest = new Y.Test.Case({
@@ -367,6 +367,53 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
         },
     });
 
+    selectContentTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Browse select content test',
+
+        setUp: function () {
+            this.selectedView = new Mock();
+            this.treeView = new Mock();
+            this.view = new Y.eZ.UniversalDiscoveryBrowseView({
+                selectedView: this.selectedView,
+                treeView: this.treeView,
+                visible: true,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+            delete this.selectedView;
+            delete this.treeView;
+        },
+
+        "Should fire the selectContent event": function () {
+            var selectContent = false,
+                struct = {id: 'struct'};
+
+            Mock.expect(this.selectedView, {
+                method: 'set',
+                args: ['contentStruct', struct],
+            });
+            this.view.on('selectContent', function (e) {
+                selectContent = true;
+                Assert.areSame(
+                    struct,
+                    e.selection,
+                    "The selectContent event facade should contain the struct"
+                );
+            });
+            
+            this.view.selectContent(struct);
+            Assert.isTrue(
+                selectContent,
+                "The selectContent event should have been fired"
+            );
+            Mock.verify(this.selectedView);
+        },
+
+    });
+
     onUnselectContentTest = new Y.Test.Case({
         name: 'eZ Universal Discovery Browse onUnselectContentTest test',
 
@@ -445,5 +492,6 @@ YUI.add('ez-universaldiscoverybrowseview-tests', function (Y) {
     Y.Test.Runner.add(unselectTest);
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(multipleUpdateTest);
+    Y.Test.Runner.add(selectContentTest);
     Y.Test.Runner.add(onUnselectContentTest);
 }, '', {requires: ['test', 'view', 'ez-universaldiscoverybrowseview']});
