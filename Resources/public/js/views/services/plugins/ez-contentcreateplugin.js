@@ -33,7 +33,6 @@ YUI.add('ez-contentcreateplugin', function (Y) {
          */
         parallelLoad: function (next) {
             this.set('contentType', undefined);
-            this.set('languageCode', undefined);
             this.set('parentLocation', undefined);
             next();
         },
@@ -46,7 +45,7 @@ YUI.add('ez-contentcreateplugin', function (Y) {
          * @param {eZ.ViewService} service
          */
         setNextViewServiceParameters: function (service) {
-            if ( this.get('contentType') && this.get('languageCode') && this.get('parentLocation') ) {
+            if ( this.get('contentType') && this.get('parentLocation') ) {
                 service.setAttrs({
                     contentType: this.get('contentType'),
                     languageCode: this.get('languageCode'),
@@ -118,7 +117,6 @@ YUI.add('ez-contentcreateplugin', function (Y) {
 
             this.setAttrs({
                 contentType: event.contentType,
-                languageCode: event.languageCode,
                 parentLocation: service.get('location'),
                 parentContent: service.get('content')
             });
@@ -141,11 +139,15 @@ YUI.add('ez-contentcreateplugin', function (Y) {
              * The language code to use to create the new content
              *
              * @attribute languageCode
-             * @default undefined
+             * @default value taken from app.contentCreationDefaultLanguageCode
              * @type String
              */
-            languageCode: {},
-
+            languageCode: {
+                valueFn: function () {
+                    var app = this.get('host').get('app');
+                    return app.get('contentCreationDefaultLanguageCode');
+                }
+            },
             /**
              * The parent location of the content that will be created
              *

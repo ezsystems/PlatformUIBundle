@@ -17,11 +17,16 @@ class LanguagesTest extends PHPUnit_Framework_TestCase
         'enabled' => false,
     ];
 
+    private $prioritizedLanguages = [
+        'eng-GB',
+    ];
+
     public function testGetConfig()
     {
-        $provider = new Languages($this->getLanguageServiceMock());
+        $provider = new Languages($this->getLanguageServiceMock(), $this->prioritizedLanguages);
+        $expected = [$this->languageData + ['default' => true]];
         self::assertEquals(
-            [$this->languageData],
+            $expected,
             $provider->getConfig()
         );
     }

@@ -192,6 +192,14 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
                 return t.get('id') === typeId;
             });
 
+            /**
+             * Fired when creating a new content of a given type
+             *
+             * @event createContent
+             * @param {eZ.ContentType} contentType
+             * @param {String} languageCode (always set to "eng-GB"). This
+             *        parameter is deprecated and will be removed in PlatformUI 2.0
+             */
             this.fire('createContent', {
                 contentType: type,
                 languageCode: 'eng-GB',
