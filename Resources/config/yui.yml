@@ -14,6 +14,9 @@ system:
                 ez-alloyeditor:
                     requires: ['alloyeditor']
                     path: %ez_platformui.public_dir%/js/external/ez-alloyeditor.js
+                ez-alloyeditor-toolbar-ezadd:
+                    requires: ['ez-alloyeditor']
+                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/ezadd.js
                 ez-alloyeditor-toolbar-config-link:
                     requires: ['ez-alloyeditor']
                     path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/link.js
@@ -745,6 +748,7 @@ system:
                         - 'ez-alloyeditor-plugin-removeblock'
                         - 'ez-alloyeditor-plugin-focusblock'
                         - 'ez-alloyeditor-plugin-yui3'
+                        - 'ez-alloyeditor-toolbar-ezadd'
                         - 'ez-alloyeditor-toolbar-config-link'
                         - 'ez-alloyeditor-toolbar-config-text'
                         - 'ez-alloyeditor-toolbar-config-table'
