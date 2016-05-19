@@ -25,7 +25,7 @@ class Languages implements Provider
     public function __construct(LanguageService $languageService, $languages)
     {
         $this->languageService = $languageService;
-        $this->defaultLanguageCode = $languages[0]['languageCode'];
+        $this->defaultLanguageCode = $languages[0];
     }
 
     public function getConfig()
