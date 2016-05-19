@@ -6,7 +6,7 @@
 YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
     var definePluginTest, embedWidgetTest, focusTest,
         setHrefTest, setWidgetContentTest, setConfigTest, imageTypeTest,
-        getHrefTest, getConfigTest, initTest, alignMethodsTest,
+        getHrefTest, getConfigTest, initTest, alignMethodsTest, insertEditTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     definePluginTest = new Y.Test.Case({
@@ -87,28 +87,53 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
             var container = this.container,
                 editorInteractionFired = false,
                 nativeEditor = this.editor.get('nativeEditor'),
-                widget, embedDOM;
+                widget, embedDOM, wrapper;
 
             embedDOM = container.one('#embed').getDOMNode();
+            wrapper = container.one('#embed').get('parentNode');
 
             widget = nativeEditor.widgets.getByElement(
                 new CKEDITOR.dom.node(embedDOM)
             );
 
             nativeEditor.on('editorInteraction', function (evt) {
+                var nativeEvent = evt.data.nativeEvent,
+                    selectionData = evt.data.selectionData,
+                    region = selectionData.region;
+
                 editorInteractionFired = true;
 
                 Assert.areSame(
-                    embedDOM, evt.data.nativeEvent.target,
+                    embedDOM, nativeEvent.target,
                     "The embed dom node should be the event target"
                 );
-                Assert.isObject(
-                    evt.data.selectionData,
-                    "selectionData should be an object"
+                Assert.areEqual(
+                    wrapper.get('region').left, nativeEvent.pageX,
+                    "The pageX property should be the left position of the widget wrapper"
                 );
                 Assert.areEqual(
-                    0, Y.Object.size(evt.data.selectionData),
-                    "selectionData should be empty"
+                    wrapper.get('region').bottom, nativeEvent.pageY,
+                    "The pageY property should be the bottom position of the widget wrapper"
+                );
+                Assert.isObject(
+                    selectionData,
+                    "selectionData should be an object"
+                );
+                Assert.areSame(
+                    widget.element, selectionData.element,
+                    "The widget element should be referenced in the selectionData"
+                );
+                Assert.areEqual(
+                    CKEDITOR.SELECTION_TOP_TO_BOTTOM, region.direction,
+                    "The direction should be set to 'top to bottom'"
+                );
+                Assert.areEqual(
+                    wrapper.get('region').top, region.top,
+                    "region top property should hold the wrapper top position"
+                );
+                Assert.areEqual(
+                    wrapper.get('region').left, region.left,
+                    "region left property should hold the wrapper top position"
                 );
             });
 
@@ -642,6 +667,85 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
         },
     });
 
+    insertEditTest = new Y.Test.Case({
+        name: "eZ AlloyEditor embed insert test",
+
+        "async:init": function () {
+            var startTest = this.callback();
+
+            CKEDITOR.plugins.addExternal('lineutils', '../../../lineutils/');
+            CKEDITOR.plugins.addExternal('widget', '../../../widget/');
+            this.container = Y.one('.container');
+            this.containerContent = this.container.getHTML();
+            this.editor = AlloyEditor.editable(
+                this.container.getDOMNode(), {
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',widget,ezembed',
+                    eZ: {
+                        editableRegion: '.editable',
+                    },
+                }
+            );
+            this.editor.get('nativeEditor').on('instanceReady', function () {
+                startTest();
+            });
+        },
+
+        _getWidget: function (embedSelector) {
+            return this.editor.get('nativeEditor').widgets.getByElement(
+                new CKEDITOR.dom.node(this.container.one(embedSelector).getDOMNode())
+            );
+        },
+
+        destroy: function () {
+            this.editor.destroy();
+            this.container.setHTML(this.containerContent);
+        },
+
+        _assertIsNewEmbed: function (wrapper) {
+            var ed = this.editor.get('nativeEditor'),
+                widget = ed.widgets.getByElement(wrapper);
+
+            Assert.isNull(
+                wrapper.getId(),
+                "A new wrapper should have been added"
+            );
+            Assert.areEqual(
+                'div', wrapper.getName(),
+                "The wrapper should be a div element"
+            );
+            Assert.areEqual(
+                'ezembed', wrapper.findOne('div').getAttribute('data-ezelement'),
+                "The wrapper should contain an element representing an embed"
+            );
+            Assert.areEqual(
+                "ezembed", widget.name,
+                "The widget should represent an embed"
+            );
+            Assert.isTrue(
+                widget.isReady(),
+                "The widget should be ready"
+            );
+            Assert.areSame(
+                ed.getSelection().getSelectedElement().$, widget.wrapper.$,
+                "The new widget should have the focus"
+            );
+        },
+
+        "Should insert the widget at the beginning of the document": function () {
+            this.editor.get('nativeEditor').execCommand('ezembed');
+
+            this._assertIsNewEmbed(this.editor.get('nativeEditor').element.getChild(0));
+        },
+
+        "Should insert the widget after the focused one": function () {
+            var existing = this._getWidget('#last-element');
+
+            existing.focus();
+            this.editor.get('nativeEditor').execCommand('ezembed');
+            this._assertIsNewEmbed(existing.wrapper.getNext());
+        },
+    });
+
     Y.Test.Runner.setName("eZ AlloyEditor embed plugin tests");
     Y.Test.Runner.add(definePluginTest);
     Y.Test.Runner.add(embedWidgetTest);
@@ -654,4 +758,5 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
     Y.Test.Runner.add(imageTypeTest);
     Y.Test.Runner.add(initTest);
     Y.Test.Runner.add(alignMethodsTest);
+    Y.Test.Runner.add(insertEditTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-alloyeditor-plugin-embed']});

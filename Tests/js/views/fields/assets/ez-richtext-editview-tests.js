@@ -1066,7 +1066,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         },
 
         _testButton: function (identifier) {
-            var config = this.view.get('toolbarsConfig').add;
+            var config = this.view.get('toolbarsConfig').ezadd;
 
             Assert.isTrue(
                 config.buttons.indexOf(identifier) !== -1,

@@ -108,6 +108,27 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
             );
         },
 
+        "Should add the content after the selected element": function () {
+            var tagDefinition = {
+                    tagName: 'h1',
+                    content: 'A thousand trees',
+                    attributes: {'class': 'added3'},
+                },
+                nativeEditor = this.editor.get('nativeEditor'),
+                selectedElement = nativeEditor.element.findOne('.listening'),
+                res, newElement;
+
+            nativeEditor.getSelection().fake(selectedElement);
+
+            res = nativeEditor.execCommand('eZAddContent', tagDefinition);
+            Assert.isTrue(res, "The command should have been executed");
+
+            newElement = nativeEditor.element.findOne('.added3');
+            Assert.areSame(
+                selectedElement.$, newElement.getPrevious().$
+            );
+        },
+
         "Should fire the corresponding `editorInteraction` event": function () {
             var tagDefinition = {
                     tagName: 'h1',

@@ -42,6 +42,50 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                     );
                 },
 
+                /**
+                 * Insert an `ezembed` widget in the editor. It overrides the
+                 * default implementation to make sure that in the case where an
+                 * embed widget is focused, a new one is added after it.
+                 *
+                 * @method insert
+                 */
+                insert: function () {
+                    var element = CKEDITOR.dom.element.createFromHtml(this.template.output(this.defaults)),
+                        wrapper = editor.widgets.wrapElement(element, this.name),
+                        temp = new CKEDITOR.dom.documentFragment(wrapper.getDocument()),
+                        selection = editor.getSelection(),
+                        instance;
+
+                    temp.append(wrapper);
+                    editor.widgets.initOn(element, this.name);
+
+                    if ( selection && selection.getSelectedElement() ) {
+                        wrapper.insertAfter(selection.getSelectedElement());
+                    } else {
+                        editor.insertElement(wrapper);
+                    }
+
+                    instance = editor.widgets.getByElement(wrapper);
+                    instance.ready = true;
+                    instance.fire('ready');
+                    instance.focus();
+                },
+
+                /**
+                 * It's not possible to *edit* an embed widget in AlloyEditor,
+                 * so `edit` directly calls `insert` instead. This is needed
+                 * because by default, the CKEditor engine calls this method
+                 * when an embed widget has the focus and the `ezembed` command
+                 * is executed. In AlloyEditor, we want to insert a new widget,
+                 * not to `edit` the focused widget as the editing process is
+                 * provided by the style toolbar.
+                 *
+                 * @method edit
+                 */
+                edit: function () {
+                    this.insert();
+                },
+
                 init: function () {
                     this.on('focus', this._fireEditorInteraction);
                     this._syncAlignment();
@@ -236,23 +280,49 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
 
                 /**
                  * Fires the editorInteraction event so that AlloyEditor editor
-                 * UI remains visible and is updated.
+                 * UI remains visible and is updated. This method also computes
+                 * `selectionData.region` and the `pageX` and `pageY` properties
+                 * so that the add toolbar is correctly positioned on the
+                 * widget.
                  *
                  * @method _fireEditorInteraction
                  * @protected
                  * @param {Object} evt this initial event info object
                  */
                 _fireEditorInteraction: function (evt) {
-                    var e = {
+                    var wrapperRegion = this._getWrapperRegion(),
+                        e = {
                             editor: editor,
                             target: this.element.$,
                             name: "widget" + evt.name,
+                            pageX: wrapperRegion.left,
+                            pageY: wrapperRegion.top + wrapperRegion.height,
                         };
 
                     editor.fire('editorInteraction', {
                         nativeEvent: e,
-                        selectionData: {},
+                        selectionData: {
+                            element: this.element,
+                            region: wrapperRegion,
+                        },
                     });
+                },
+
+                /**
+                 * Returns the wrapper element region.
+                 *
+                 * @method _getWrapperRegion
+                 * @private
+                 * @return {Object}
+                 */
+                _getWrapperRegion: function () {
+                    var scroll = this.wrapper.getWindow().getScrollPosition(),
+                        region = this.wrapper.getClientRect();
+
+                    region.top += scroll.y;
+                    region.left += scroll.x;
+                    region.direction = CKEDITOR.SELECTION_TOP_TO_BOTTOM;
+                    return region;
                 },
             });
         },
