@@ -54,9 +54,14 @@ YUI.add('ez-alloyeditor-plugin-addcontent', function (Y) {
             var element = createElement(
                     editor.document, data.tagName, data.content, data.attributes
                 ),
-                focusElement = element;
+                focusElement = element,
+                selection = editor.getSelection();
 
-            editor.insertElement(element);
+            if ( selection && selection.getSelectedElement() ) {
+                element.insertAfter(selection.getSelectedElement());
+            } else {
+                editor.insertElement(element);
+            }
             if ( data.focusElement ) {
                 focusElement = element.findOne(data.focusElement);
             }
