@@ -12,7 +12,7 @@ Item is a very important information to provide to the user. One graphical way
 to carry this information is to use an icon near the Content Item name. This
 is especially useful when the available space is limited like while displaying
 the content tree. By essence, the Content Types are project specific so it's
-important to make that feature ease to configure and to extend for integrators.
+important to make that feature easy to configure and to extend for integrators.
 
 ### How it worked in eZ Publish
 
@@ -128,11 +128,11 @@ several pre-configured icons for very common Content Types like:
 
 ### Pick an icon for a custom Content Type in existing icons
 
-In that case, you need to pick the icon code. For that, the icomoon application
-can be used until the UI guideline is up to date and references the available
-icons. To ease that process and the readability of the code, we'll use
-ligatures in the font icon so that the CSS code for a custom Content Type could
-look like:
+In that case, you need to pick the icon code. For that, [the icomoon
+application](https://icomoon.io/app/) can be used until the UI guideline is up
+to date and references the available icons. To ease that process and the
+readability of the code, we'll use ligatures in the font icon so that the CSS
+code for a custom Content Type could look like:
 
 ```css
 /* in a custom CSS file included with `css.yml` */

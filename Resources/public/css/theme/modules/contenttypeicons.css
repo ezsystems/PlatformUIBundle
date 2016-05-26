@@ -1,0 +1,123 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-contenttype-icon:before {
+    font-family: 'ez-platformui-icomoon';
+    speak: none;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+
+    content: "generic";
+}
+
+/* default content types */
+.ez-contenttype-icon-folder:before {
+    content: "folder";
+}
+
+.ez-contenttype-icon-article:before {
+    content: "article";
+}
+
+.ez-contenttype-icon-image:before {
+    content: "image";
+}
+
+.ez-contenttype-icon-file:before {
+    content: "file";
+}
+
+.ez-contenttype-icon-user:before {
+    content: "user";
+}
+
+.ez-contenttype-icon-user_group:before {
+    content: "users";
+}
+
+/* common + demo content types */
+
+.ez-contenttype-icon-about:before {
+    content: "about";
+}
+
+.ez-contenttype-icon-author:before {
+    content: "author";
+}
+
+.ez-contenttype-icon-post:before,
+.ez-contenttype-icon-blogpost:before,
+.ez-contenttype-icon-blog_post:before {
+    content: "blogpost";
+}
+
+.ez-contenttype-icon-category:before {
+    content: "category";
+}
+
+.ez-contenttype-icon-comment:before {
+    content: "comment";
+}
+
+.ez-contenttype-icon-landingpage:before,
+.ez-contenttype-icon-landing_page:before {
+    content: "landing_page";
+}
+
+.ez-contenttype-icon-media:before,
+.ez-contenttype-icon-video:before {
+    content: "media";
+}
+
+.ez-contenttype-icon-news:before,
+.ez-contenttype-icon-page:before {
+    content: "news";
+}
+
+.ez-contenttype-icon-pdf:before,
+.ez-contenttype-icon-pdffile:before,
+.ez-contenttype-icon-pdf_file:before {
+    content: "pdf";
+}
+
+.ez-contenttype-icon-picture:before,
+.ez-contenttype-icon-photo:before {
+    content: "image";
+}
+
+.ez-contenttype-icon-place:before {
+    content: "place";
+}
+
+.ez-contenttype-icon-place_list:before,
+.ez-contenttype-icon-placelist:before {
+    content: "placelist";
+}
+
+.ez-contenttype-icon-portfolio:before {
+    content: "portfolio";
+}
+
+.ez-contenttype-icon-product:before {
+    content: "product";
+}
+
+.ez-contenttype-icon-contact:before,
+.ez-contenttype-icon-contact_form:before,
+.ez-contenttype-icon-contactform:before {
+    content: "subscriber";
+}
+
+.ez-contenttype-icon-wiki:before {
+    content: "wiki";
+}
+
+.ez-contenttype-icon-wikipage:before,
+.ez-contenttype-icon-wiki_page:before {
+    content: "wikipage";
+}

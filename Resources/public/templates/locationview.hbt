@@ -9,7 +9,7 @@
                     <li class="ez-breadcrumbs-item">{{ content.name }}</li>
                 </ul>
             </nav>
-            <div class="ez-page-header-name" data-icon="&#xe601;">
+            <div class="ez-page-header-name ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}">
                 <h1 class="ez-page-header-content-name">{{ content.name }}</h1>
                 <span class="ez-page-header-contenttype">{{ contentType.names.[eng-GB] }}</span>
             </div>
