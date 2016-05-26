@@ -101,6 +101,7 @@ services:
         class: %ezsystems.platformui.application_config.provider.languages.class%
         arguments:
             - @ezpublish.api.service.language
+            - $languages$
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'languages'}
 

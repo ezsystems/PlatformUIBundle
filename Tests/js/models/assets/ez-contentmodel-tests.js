@@ -948,6 +948,9 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         setUp: function () {
             this.model = new Y.eZ.Content();
             this.contentId = 'Pele';
+            this.resources = {
+                MainLocation: "/original/location/id"
+            };
 
             this.capi = new Mock();
             this.contentService = new Mock();
@@ -960,8 +963,15 @@ YUI.add('ez-contentmodel-tests', function (Y) {
 
             Y.Mock.expect(this.model, {
                 method: 'get',
-                args: ['id'],
-                returns: this.contentId
+                args: [Mock.Value.String],
+                run: Y.bind(function (attr) {
+                    if ( attr === 'id' ) {
+                        return this.contentId;
+                    } else if ( attr === 'resources' ) {
+                        return this.resources;
+                    }
+                    Y.fail('Unexpected call to get("' + attr + '")');
+                }, this),
             });
 
             Y.Mock.expect(this.contentService, {
@@ -1004,6 +1014,11 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             });
 
             Assert.isTrue(callbackCalled, 'Should call callback function');
+            Assert.areSame(
+                locationId,
+                this.resources.MainLocation,
+                "Main location ID should have been updated in the content"
+            );
         },
 
         'Should pass error to callback function when CAPI setMainLocation fails': function () {

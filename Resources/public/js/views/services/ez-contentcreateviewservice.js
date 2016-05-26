@@ -58,7 +58,7 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
                 type = this.get('contentType'),
                 defaultFields = {};
 
-            content.set('name', 'New "' + this.get('contentType').get('names')['eng-GB'] + '"');
+            content.set('name', this._getNewContentName());
             Y.Object.each(type.get('fieldDefinitions'), function (fieldDef, identifier) {
                 defaultFields[identifier] = {
                     fieldDefinitionIdentifier: identifier,
@@ -110,6 +110,25 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
                     languageCode: content.get('mainLanguageCode'),
                 });
             });
+        },
+
+        /**
+         * Gets the name for a new content based on current contentType and languageCode
+         *
+         * @method _getNewContentName
+         * @protected
+         */
+        _getNewContentName: function() {
+            var app = this.get('app'),
+                type = this.get('contentType'),
+                contentTypeNames,
+                contentTypeName;
+
+            contentTypeNames = type.get('names');
+            contentTypeName = contentTypeNames[app.get('contentCreationDefaultLanguageCode')]
+                || contentTypeNames[Object.keys(contentTypeNames)[0]];
+
+            return 'New "' + contentTypeName + '"';
         },
 
         /**

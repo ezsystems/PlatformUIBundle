@@ -326,7 +326,13 @@ YUI.add('ez-contentmodel', function (Y) {
 
             updateStruct.setMainLocation(locationId);
 
-            contentService.updateContentMetadata(this.get('id'), updateStruct, callback);
+            contentService.updateContentMetadata(this.get('id'), updateStruct, Y.bind(function (error, response) {
+                if (!error) {
+                    this.get('resources').MainLocation = locationId;
+                }
+
+                callback(error, response);
+            },this));
         },
 
         /**
