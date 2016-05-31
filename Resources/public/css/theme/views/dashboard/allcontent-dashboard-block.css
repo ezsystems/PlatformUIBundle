@@ -44,11 +44,13 @@
     background: #f2f2f2;
 }
 
-.ez-view-dashboardblockallcontentview .ez-allcontent-block-row.is-row-selected [class*="ez-allcontent-block-cell--"] {
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-row.is-row-selected [class*="ez-allcontent-block-cell-"] {
     background: #f0a68d;
 }
 
 .ez-view-dashboardblockallcontentview .ez-allcontent-block-row-options {
+    transform: translate3d(100%, -50%, 0) scaleX(0);
+    transform-origin: top left;
     transition: transform .3s cubic-bezier(.25,.8,.25,1);
     background: #f0a68d;
 }

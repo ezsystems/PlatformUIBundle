@@ -31,7 +31,7 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
      */
     Y.eZ.DashboardBlockAllContentView = Y.Base.create('dashboardBlockAllContentView', Y.eZ.DashboardBlockBaseView, [Y.eZ.AsynchronousView], {
         initializer: function () {
-            this._fireMethod = this._getContentData;
+            this._fireMethod = this._fireSearchEvent;
             /**
              * Stores the click outside event handler
              *
@@ -101,11 +101,11 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
         /**
          * Makes request for data
          *
-         * @method _getContentData
+         * @method _fireSearchEvent
          * @protected
          * @param event {Object} event facade
          */
-        _getContentData: function () {
+        _fireSearchEvent: function () {
             this.fire('contentSearch', {
                 viewName: 'all-content',
                 loadContentType: true,
@@ -133,17 +133,9 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
          */
         _renderContentRows: function (error, list) {
             var rows = list.map(function (data) {
-                var content = data.content.toJSON(),
-                    contentTypeName = data.contentType.get('names')[content.mainLanguageCode];
-
                 return {
-                    title: content.name,
-                    version: content.currentVersion.versionNo,
-                    modified: content.currentVersion.modificationDate,
-                    contentId: content.id,
-                    locationId: content.resources.MainLocation,
-                    contentType: contentTypeName,
-                    languageCode: content.mainLanguageCode
+                    content: data.content.toJSON(),
+                    contentType: data.contentType.get('names')[data.content.get('mainLanguageCode')]
                 };
             });
 

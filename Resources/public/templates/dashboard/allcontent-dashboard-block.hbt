@@ -1,4 +1,4 @@
-<h3 class="ez-allcontent-block-title">All Content</h3>
+<h2 class="ez-allcontent-block-title">All Content</h2>
 <div class="ez-allcontent-block-wrapper ez-asynchronousview">
     {{#if loadingError}}
     <p class="ez-asynchronousview-error ez-font-icon">
@@ -9,23 +9,23 @@
     <table class="pure-table">
         <thead class="ez-allcontent-block-header">
             <tr>
-                <th class="ez-allcontent-block-head--title">Title</th>
-                <th class="ez-allcontent-block-head--content-type">Content Type</th>
-                <th class="ez-allcontent-block-head--version">Version</th>
-                <th class="ez-allcontent-block-head--modified">Last saved</th>
+                <th class="ez-allcontent-block-head-title">Title</th>
+                <th class="ez-allcontent-block-head-content-type">Content Type</th>
+                <th class="ez-allcontent-block-head-version">Version</th>
+                <th class="ez-allcontent-block-head-modified">Last saved</th>
             </tr>
         </thead>
         <tbody class="ez-allcontent-block-content">
         {{#each rows}}
             <tr class="ez-allcontent-block-row">
-                <td class="ez-allcontent-block-cell--title">{{ title }}</td>
-                <td class="ez-allcontent-block-cell--content-type">{{ contentType }}</td>
-                <td class="ez-allcontent-block-cell--version">{{ version }}</td>
-                <td class="ez-allcontent-block-cell--modfied">
-                    {{ modified }}
+                <td class="ez-allcontent-block-cell-title">{{ content.name }}</td>
+                <td class="ez-allcontent-block-cell-content-type">{{ contentType }}</td>
+                <td class="ez-allcontent-block-cell-version">{{ content.currentVersion.versionNo }}</td>
+                <td class="ez-allcontent-block-cell-modfied">
+                    {{ content.currentVersion.modificationDate }}
                     <div class="ez-allcontent-block-row-options">
-                        <a class="ez-allcontent-block-option-edit ez-font-icon" href="{{ path "editContent" id=contentId languageCode=languageCode }}"></a>
-                        <a class="ez-allcontent-block-option-view ez-font-icon" href="{{ path "viewLocation" id=locationId languageCode=languageCode }}"></a>
+                        <a class="ez-allcontent-block-option-edit ez-font-icon" href="{{ path "editContent" id=content.id languageCode=content.mainLanguageCode }}"></a>
+                        <a class="ez-allcontent-block-option-view ez-font-icon" href="{{ path "viewLocation" id=content.resources.MainLocation languageCode=content.mainLanguageCode }}"></a>
                     </div>
                 </td>
             </tr>

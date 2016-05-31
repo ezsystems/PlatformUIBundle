@@ -73,7 +73,7 @@ YUI.add('ez-dashboardblocksviewservice', function (Y) {
                         return;
                     }
 
-                    resolve(response.document.Location);
+                    resolve(rootLocation);
                 });
             }, this));
         },
