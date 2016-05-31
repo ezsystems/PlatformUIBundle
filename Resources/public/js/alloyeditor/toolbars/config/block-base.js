@@ -13,7 +13,7 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base', function (Y) {
      */
     Y.namespace('eZ.AlloyEditorToolbarConfig');
 
-    var ReactDOM = Y.eZ.AlloyEditor.ReactDOM;
+    var ReactDOM = Y.eZ.ReactDOM;
 
     function outlineTotalWidth(block) {
         return (

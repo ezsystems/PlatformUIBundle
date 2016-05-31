@@ -4,9 +4,12 @@
  */
 /* global CKEDITOR */
 YUI.add('ez-alloyeditor-toolbar-config-block-base-tests', function (Y) {
+    'use strict';
+
     var arrowBoxClassesTest, setPositionTest,
         BlockBase = Y.eZ.AlloyEditorToolbarConfig.BlockBase,
         AlloyEditor = Y.eZ.AlloyEditor,
+        ReactDOM = Y.eZ.ReactDOM,
         Assert = Y.Assert, Mock = Y.Mock;
 
     arrowBoxClassesTest = new Y.Test.Case({
@@ -75,8 +78,8 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base-tests', function (Y) {
                 run: AlloyEditor.WidgetPosition.getWidgetXYPoint,
             });
 
-            this.origFindDOMNode = AlloyEditor.ReactDOM.findDOMNode;
-            AlloyEditor.ReactDOM.findDOMNode = Y.bind(function (arg) {
+            this.origFindDOMNode = ReactDOM.findDOMNode;
+            ReactDOM.findDOMNode = Y.bind(function (arg) {
                 Assert.areSame(
                     arg, this.toolbar,
                     "findDOMNode should receive the toolbar"
@@ -86,7 +89,7 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base-tests', function (Y) {
         },
 
         tearDown: function () {
-            AlloyEditor.ReactDOM.findDOMNode = this.origFindDOMNode;
+            ReactDOM.findDOMNode = this.origFindDOMNode;
             delete this.toolbar;
             delete this.editor;
             Y.one(this.toolbarNode).removeAttribute('style').removeClass('ae-toolbar-transition');
