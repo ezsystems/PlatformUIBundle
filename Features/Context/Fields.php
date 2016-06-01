@@ -9,13 +9,32 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
-use EzSystems\BehatBundle\ObjectManager\FieldType;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\WebAssert;
+use EzSystems\PlatformBehatBundle\Context\Object\FieldTypeContext as FieldType;
 
 class Fields extends PlatformUI
 {
     const NOTIFICATION_CONTENT_PUBLISHED = 'Content has been published';
     const NOTIFICATION_PUBLISH_ERROR = 'An error occured while publishing the draft';
+
+    /**
+     */
+    private $fieldtypeContext;
+    private $dashboardContext;
+
+    /**
+     * @BeforeScenario
+     */
+    public function gatherContexts(BeforeScenarioScope $scope)
+    {
+        $this->fieldtypeContext = $scope->getEnvironment()->getContext(
+            'EzSystems\PlatformBehatBundle\Context\Object\FieldTypeContext'
+        );
+        $this->dashboardContext = $scope->getEnvironment()->getContext(
+            'EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext'
+        );
+    }
 
     protected function getFieldIdentCss($identifier, $contentId = '')
     {
@@ -49,12 +68,11 @@ class Fields extends PlatformUI
 
     protected function getThisFieldIdent()
     {
-        $fieldManager = $this->getFieldTypeManager();
-        $identifier = $fieldManager->getThisFieldTypeIdentifier();
+        $identifier = $this->fieldtypeContext->getThisFieldTypeIdentifier();
 
         // check if we are editing a field for draft or published content
-        if ($fieldManager->getFieldContentState() == FieldType::CONTENT_PUBLISHED) {
-            $contentId = $fieldManager->getThisContentId();
+        if ($this->fieldtypeContext->getFieldContentState() == FieldType::CONTENT_PUBLISHED) {
+            $contentId = $this->fieldtypeContext->getThisContentId();
         } else {
             $contentId = '';
         }
@@ -67,14 +85,13 @@ class Fields extends PlatformUI
      */
     public function createAContentOfThisType()
     {
-        $fieldManager = $this->getFieldTypeManager();
-        $fieldManager->setFieldContentState(FieldType::CONTENT_TYPE_PUBLISHED);
-        $name = $fieldManager->getThisContentTypeName();
+        $this->fieldtypeContext->setFieldContentState(FieldType::CONTENT_TYPE_PUBLISHED);
+        $name = $this->fieldtypeContext->getThisContentTypeName();
 
-        $this->clickNavigationZone('Content');
-        $this->clickNavigationItem('Content structure');
-        $this->clickActionBar('Create');
-        $this->clickContentType($name);
+        $this->dashboardContext->clickNavigationZone('Content');
+        $this->dashboardContext->clickNavigationItem('Content structure');
+        $this->dashboardContext->clickActionBar('Create');
+        $this->dashboardContext->clickContentType($name);
         $this->platformStatus = self::WAITING_FOR_PUBLISHING;
     }
 
@@ -83,14 +100,13 @@ class Fields extends PlatformUI
      */
     public function editThisContent()
     {
-        $fieldManager = $this->getFieldTypeManager();
-        $fieldManager->setFieldContentState(FieldType::CONTENT_PUBLISHED);
-        $name = $fieldManager->getThisContentName();
+        $this->fieldtypeContext->setFieldContentState(FieldType::CONTENT_PUBLISHED);
+        $name = $this->fieldtypeContext->getThisContentName();
 
-        $this->clickNavigationZone('Content');
-        $this->clickNavigationItem('Content structure');
-        $this->clickOnTreePath($name);
-        $this->clickActionBar('Edit');
+        $this->dashboardContext->clickNavigationZone('Content');
+        $this->dashboardContext->clickNavigationItem('Content structure');
+        $this->dashboardContext->clickOnTreePath($name);
+        $this->dashboardContext->clickActionBar('Edit');
         $this->platformStatus = self::WAITING_FOR_PUBLISHING;
         // assert
         $this->iSeeContentEditView();
@@ -147,7 +163,7 @@ class Fields extends PlatformUI
     public function publishContent()
     {
         if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
-            $this->clickEditActionBar('Publish');
+            $this->dashboardContext->clickEditActionBar('Publish');
         } else {
             throw new \Exception('Cannot publish content, application in wrong state');
         }
@@ -161,9 +177,8 @@ class Fields extends PlatformUI
     public function seeRequiredFieldtOfType($label)
     {
         if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
-            $fieldManager = $this->getFieldTypeManager();
             // $type = ...
-            //$name = $fieldManager->getThisFieldTypeName();
+            //$name = $fieldtypeContext->getThisFieldTypeName();
 
             $verification = new WebAssert($this->getSession());
             //$verification->elementTextContains('css', $this->getEditLabelCss($type, $name), $label . '*');.
@@ -186,7 +201,7 @@ class Fields extends PlatformUI
      */
     public function contentIsPublished()
     {
-        $this->iSeeNotification(self::NOTIFICATION_CONTENT_PUBLISHED);
+        $this->dashboardContext->iSeeNotification(self::NOTIFICATION_CONTENT_PUBLISHED);
     }
 
     /**
@@ -205,11 +220,11 @@ class Fields extends PlatformUI
     public function seeFieldtOfType($type, $label = null)
     {
         if ($this->platformStatus == self::WAITING_FOR_PUBLISHING) {
-            $this->clickEditActionBar('Publish');
+            $this->dashboardContext->clickEditActionBar('Publish');
         }
         $verification = new WebAssert($this->getSession());
         // for view we need the internal field identifier...
-        $internalName = $this->getFieldTypeManager()->getFieldTypeInternalIdentifier($type);
+        $internalName = $this->fieldtypeContext->getFieldTypeInternalIdentifier($type);
         $verification->elementExists('css', ".ez-fieldview-$internalName .ez-fieldview-value-content");
 
         if ($label != null) {
@@ -222,13 +237,12 @@ class Fields extends PlatformUI
      */
     public function viewThisContent()
     {
-        $fieldManager = $this->getFieldTypeManager();
-        $fieldManager->setFieldContentState(FieldType::CONTENT_PUBLISHED);
-        $name = $fieldManager->getThisContentName();
+        $this->fieldtypeContext->setFieldContentState(FieldType::CONTENT_PUBLISHED);
+        $name = $this->fieldtypeContext->getThisContentName();
 
-        $this->clickNavigationZone('Content');
-        $this->clickNavigationItem('Content structure');
-        $this->clickOnTreePath($name);
+        $this->dashboardContext->clickNavigationZone('Content');
+        $this->dashboardContext->clickNavigationItem('Content structure');
+        $this->dashboardContext->clickOnTreePath($name);
     }
 
     /**

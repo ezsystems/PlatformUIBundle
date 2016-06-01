@@ -9,8 +9,19 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
-trait Authentication
+use EzSystems\PlatformUIBundle\Features\Context\PlatformUI;
+use EzSystems\PlatformBehatBundle\Context\RepositoryContext;
+use eZ\Publish\API\Repository\Repository;
+use eZ\Publish\API\Repository\UserService;
+use eZ\Publish\API\Repository\RoleService;
+
+class Authentication extends PlatformUI
 {
+    use RepositoryContext;
+
+    const DEFAULT_LANGUAGE = 'eng-GB';
+    const USERGROUP_ROOT_CONTENT_ID = 4;
+
     /**
      * Control variable to check if logged in.
      *
@@ -19,11 +30,84 @@ trait Authentication
     protected $shouldBeLoggedIn;
 
     /**
+     * @var \eZ\Publish\API\Repository\UserService
+     */
+    protected $userService;
+
+    /**
+     * @var \eZ\Publish\API\Repository\RoleService
+     */
+    protected $roleService;
+
+    /**
+     * @injectService $repository @ezpublish.api.repository
+     * @injectService $userService @ezpublish.api.service.user
+     * @injectService $roleService @ezpublish.api.service.role
+     */
+    public function __construct(Repository $repository, UserService $userService, RoleService $roleService)
+    {
+        $this->setRepository($repository);
+        $this->userService = $userService;
+        $this->roleService = $roleService;
+    }
+
+    /**
+     * Get credentials for a specific role
+     *
+     * @uses \EzSystems\BehatBundle\Context\Object\User
+     * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
+     *
+     * @param string $role Role intended for testing
+     *
+     * @return array Associative with 'login' and 'password'
+     */
+    protected function getCredentialsFor($roleIdentifier)
+    {
+        $role = $this->roleService->loadRoleByIdentifier($roleIdentifier);
+
+        // create a new user, uses 'User' trait
+        $username = 'User' . uniqid();
+        $password = $username;
+        $email = "${username}@ez.no";
+        $userCreateStruct = $this->userService->newUserCreateStruct(
+            $username,
+            $email,
+            $password,
+            self::DEFAULT_LANGUAGE
+        );
+        $userCreateStruct->setField('first_name', $username);
+        $userCreateStruct->setField('last_name', $username);
+
+        $parentGroup = $this->userService->loadUserGroup(self::USERGROUP_ROOT_CONTENT_ID);
+        $user = $this->userService->createUser($userCreateStruct, array($parentGroup));
+
+        // Assign role to created user (without limitation)
+        $this->roleService->assignRoleToUser($role, $user);
+
+        return array(
+            'login'     => $username,
+            'password'  => $password,
+        );
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function afterScenarioLogout()
+    {
+        $this->iLogout();
+    }
+
+    /**
      * @Given I go to homepage
      */
     public function goToPlatformUi($url = '')
     {
-        $this->visit($this->platformUiUri . $url);
+        $this->getSession()->visit(
+            $this->locatePath(
+                self::PLATFORM_URI . $url
+            )
+        );
     }
 
     /**
@@ -35,7 +119,7 @@ trait Authentication
         $this->waitWhileLoading();
         $this->fillFieldWithValue('username', $username);
         $this->fillFieldWithValue('password', $password);
-        $this->iClickAtButton('Login');
+        $this->clickElementByText('Login', 'button');
         $this->iShouldBeLoggedIn();
     }
 
@@ -68,7 +152,7 @@ trait Authentication
         $this->waitWhileLoading();
         $el->click();
         $this->waitWhileLoading();
-        $this->iClickAtLink('Logout');
+        $this->clickElementByText('Logout', 'a');
     }
 
     /**

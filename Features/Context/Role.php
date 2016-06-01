@@ -10,16 +10,43 @@
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 class Role extends PlatformUI
 {
     /**
-     * @Given I am on the RolesUI
+     */
+    private $dashboardContext;
+
+    /**
+     * @BeforeScenario
+     */
+    public function gatherContexts(BeforeScenarioScope $scope)
+    {
+        $this->dashboardContext = $scope->getEnvironment()->getContext(
+            'EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext'
+        );
+    }
+
+    /**
+     * @Given I am on the Roles page
      */
     public function onRolesPage()
     {
-        $this->clickNavigationZone('Admin Panel');
-        $this->clickNavigationItem('Roles');
+        $this->getSession()->visit(
+            $this->locatePath(
+                self::PLATFORM_URI . '#/admin/pjax%2Frole'
+            )
+        );
+    }
+
+    /**
+     * @Given I am on the RolesUI
+     */
+    public function onRolesUI()
+    {
+        $this->dashboardContext->clickNavigationZone('Admin Panel');
+        $this->dashboardContext->clickNavigationItem('Roles');
     }
 
     /**
@@ -70,7 +97,7 @@ class Role extends PlatformUI
      */
     public function roleDetailsView($role)
     {
-        $this->onRolesPage();
+        $this->onRolesUI();
         $this->clickElementByText($role, '.ez-role-name a');
     }
 
@@ -112,7 +139,7 @@ class Role extends PlatformUI
      */
     public function roleWasPublished()
     {
-        $this->iSeeNotification('The role was published.');
+        $this->dashboardContext->iSeeNotification('The role was published.');
     }
 
     /**
@@ -132,9 +159,9 @@ class Role extends PlatformUI
      */
     public function nameAlreadyExists($name)
     {
-        $this->iSeeNotification('Form did not validate. Please review errors below.');
+        $this->dashboardContext->iSeeNotification('Form did not validate. Please review errors below.');
         $element = $this->getElementByText(
-            'Identifier "' .  $name . '" already exists. Role identifier must be unique.',
+            'Identifier "' . $name . '" already exists. Role identifier must be unique.',
             'li'
         );
         if (!$element) {

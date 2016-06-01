@@ -9,9 +9,9 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
-use EzSystems\BehatBundle\Context\Browser\Context;
+use Behat\MinkExtension\Context\RawMinkContext;
 
-class PlatformUI extends Context
+class PlatformUI extends RawMinkContext
 {
     /**
      * Default Platform URI.
@@ -44,9 +44,6 @@ class PlatformUI extends Context
     const NOT_WAITING = 0;
     const WAITING_FOR_PUBLISHING = 1;
 
-    use SubContext\Authentication;
-    use SubContext\CommonActions;
-
     /**
      * PlatformUI relative URL path.
      *
@@ -74,15 +71,15 @@ class PlatformUI extends Context
     protected $password = 'publish';
 
     /**
+     * Mapping of pages URL's.
+     */
+    protected $pageIdentifierMap = array();
+
+    /**
      * Stores the status of the platform.
      * @var int
      */
     protected $platformStatus = self::NOT_WAITING;
-
-    /**
-     * Mapping of the new paths of contents after being moved.
-     */
-    protected $newPathsMap = array();
 
     /**
      * Initialize class.
@@ -91,9 +88,6 @@ class PlatformUI extends Context
      */
     public function __construct($uri = self::PLATFORM_URI, $user = null, $password = null)
     {
-        parent::__construct();
-        $this->pageIdentifierMap['roles'] = '/ez#/admin/pjax%2Frole';
-        $this->pageIdentifierMap['users'] = '/ez#/view/%2Fapi%2Fezp%2Fv2%2Fcontent%2Flocations%2F1%2F5/eng-GB';
         $this->platformUiUri = $uri;
         if ($user != null) {
             $this->user = $user;
@@ -118,7 +112,6 @@ class PlatformUI extends Context
     {
         $this->closeConfirmBox();
         $this->closeEditView();
-        $this->iLogout();
     }
 
     /**
@@ -130,11 +123,41 @@ class PlatformUI extends Context
         $this->waitWhileLoading();
     }
 
-    /**
-     * @AfterStep
-     */
-    public function afterStep()
+    public function fillFieldWithValue($field, $value = '')
     {
+        $fieldNode = $this->spin(
+            function () use ($field) {
+                $fieldNode = $this->getSession()->getPage()->findField($field);
+                if ($fieldNode == null) {
+                    throw new \Exception('Field not found');
+                }
+
+                return $fieldNode;
+            }
+        );
+
+        $this->spin(
+            function () use ($fieldNode, $field, $value) {
+                // make sure any autofocus elements don't mis-behave when setting value
+                $fieldNode->blur();
+                usleep(10 * 1000);
+                $fieldNode->focus();
+                usleep(10 * 1000);
+
+                // setting value on pre-filled inputs can cause issues, clearing before
+                $fieldNode->setValue('');
+                $fieldNode->setValue($value);
+
+                // verication that the field was really filled in correctly
+                $this->sleep();
+                $check = $this->getSession()->getPage()->findField($field)->getValue();
+                if ($check != $value) {
+                    throw new \Exception('Failed to set the field value: ' . $check);
+                }
+
+                return true;
+            }
+        );
     }
 
     /**
@@ -284,7 +307,7 @@ class PlatformUI extends Context
      * @param string    $selector       CSS selector of the element
      * @param string    $textSelector   Extra CSS selector for text of the element
      * @param string    $baseElement    Element in which the search is based
-     * @param int       $iteration      Iteration number, used to control number of executions
+     *
      * @return array
      */
     protected function getElementByText($text, $selector, $textSelector = null, $baseElement = null)
@@ -392,6 +415,23 @@ class PlatformUI extends Context
             }
         } catch (\Exception $e) {
         }
+    }
+
+    public function iSeeTitle($title)
+    {
+        $page = $this->getSession()->getPage();
+        $this->spin(
+            function () use ($title, $page) {
+                $titleElements = $page->findAll('css', 'h1, h2, h3');
+                foreach ($titleElements as $titleElement) {
+                    $elementText = $titleElement->getText();
+                    if ($elementText == $title) {
+                        return $titleElement;
+                    }
+                }
+                throw new \Exception("Title '$title' not found");
+            }
+        );
     }
 
     /**

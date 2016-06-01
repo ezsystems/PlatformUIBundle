@@ -3,20 +3,44 @@ platformui:
         # basic platform suite: login, logout, etc
         standard:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/Standard ]
-            contexts: [ EzSystems\PlatformUIBundle\Features\Context\PlatformUI ]
+            contexts:
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\Authentication
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
         # content operations: CRUD, navigation, moving
         contentactions:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/ContentActions ]
-            contexts: [ EzSystems\PlatformUIBundle\Features\Context\ContentActions ]
+            contexts:
+              - EzSystems\PlatformBehatBundle\Context\Object\BasicContentContext
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\Authentication
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\ContentEditContext
+              - EzSystems\PlatformUIBundle\Features\Context\ContentActions
         # role features
         role:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/RoleUI ]
-            contexts: [ EzSystems\PlatformUIBundle\Features\Context\Role ]
+            contexts:
+              - EzSystems\PlatformBehatBundle\Context\Object\RoleContext
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\Authentication
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
+              - EzSystems\PlatformUIBundle\Features\Context\Role
         # fieldtype specific tests - definition, validation, publishing, etc
         fieldtype_integer:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/Stories/FieldTypes/IntegerFieldType.feature ]
-            contexts: [ EzSystems\PlatformUIBundle\Features\Context\Fields ]
+            contexts:
+              - EzSystems\PlatformBehatBundle\Context\Object\FieldTypeContext
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\Authentication
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
+              - EzSystems\PlatformUIBundle\Features\Context\Fields
         # user features
         user:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/Users/users.feature ]
-            contexts: [ EzSystems\PlatformUIBundle\Features\Context\Users ]
+            contexts:
+              - EzSystems\PlatformBehatBundle\Context\Object\UserContext
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\Authentication
+              - EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
+              - EzSystems\PlatformUIBundle\Features\Context\Users
