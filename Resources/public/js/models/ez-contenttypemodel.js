@@ -32,18 +32,75 @@ YUI.add('ez-contenttypemodel', function (Y) {
          * @param {String} action the action, currently only 'read' is supported
          * @param {Object} options the options for the sync.
          * @param {Object} options.api (required) the JS REST client instance
+         * @param {Boolean} [options.loadGroups=false] also load the Content
+         *        Type Groups id the Content Type belongs to (only applicable for
+         *        the 'read' operation).
          * @param {Function} callback a callback executed when the operation is finished
          */
         sync: function (action, options, callback) {
-            var api = options.api;
-
             if ( action === 'read' ) {
-                api.getContentTypeService().loadContentType(
-                    this.get('id'), callback
-                );
+                this._readType(options, callback);
             } else {
                 callback("Only read operation is supported at the moment");
             }
+        },
+
+        /**
+         * `sync` implementation for the `read` action. It takes into account
+         * the optional `loadGroups` flag to load the Content Type Group ids.
+         *
+         * @method _readType
+         * @protected
+         * @param {Object} options the options for the sync.
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Boolean} [options.loadGroups=false] also load the Content
+         *        Type Groups the Content Type belongs to.
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        _readType: function (options, callback) {
+            var typeService = options.api.getContentTypeService(),
+                contentTypeId = this.get('id'),
+                cb = callback;
+
+            if ( options.loadGroups ) {
+                cb = function (error, response) {
+                    if ( error ) {
+                        return callback(error, response);
+                    }
+                    typeService.loadGroupsOfContentType(contentTypeId, function (groupError, groupResponse) {
+                        if ( groupError ) {
+                            return callback(groupError, groupResponse);
+                        }
+                        response.document.ContentTypeGroups = groupResponse.document.ContentTypeGroupRefList.ContentTypeGroupRef;
+                        callback(error, response);
+                    });
+                };
+            }
+            typeService.loadContentType(contentTypeId, cb);
+        },
+
+        /**
+         * Override of the eZ.RestModel _parseStruct method to also read the
+         * content type group ids when the content type is loaded with the
+         * `loadGroups` flag.
+         *
+         * @protected
+         * @method _parseStruct
+         * @param {Object} struct the struct to transform
+         * @param {Object} responseDoc the full response document
+         * @return {Object}
+         */
+        _parseStruct: function (struct, responseDoc) {
+            var attrs;
+
+            attrs = this.constructor.superclass._parseStruct.call(this, struct);
+            if ( responseDoc.ContentTypeGroups ) {
+                attrs.contentTypeGroupIds = responseDoc.ContentTypeGroups.map(function (groupRef) {
+                    return groupRef._href;
+                });
+            }
+
+            return attrs;
         },
 
         /**
@@ -114,6 +171,18 @@ YUI.add('ez-contenttypemodel', function (Y) {
                 }
             });
             return identifiers;
+        },
+
+        /**
+         * Checks whether the Content Type belongs to the Content Type Group
+         * which id is given in parameter.
+         *
+         * @method belongTo
+         * @param {String} contentTypeGroupId
+         * @return {Boolean}
+         */
+        belongTo: function (contentTypeGroupId) {
+            return this.get('contentTypeGroupIds').indexOf(contentTypeGroupId) !== -1;
         },
     }, {
         REST_STRUCT_ROOT: 'ContentType',
@@ -319,7 +388,19 @@ YUI.add('ez-contenttypemodel', function (Y) {
                     }
                     return val;
                 }
-            }
+            },
+
+            /**
+             * The Content Type Group Ids the Content Type belongs to. This
+             * attribute is only filled if the Content Type was loaded in the
+             * `loadGroups` flag.
+             *
+             * @attribute contentTypeGroupIds
+             * @type {Array}
+             */
+            contentTypeGroupIds: {
+                value: [],
+            },
         }
     });
 });
