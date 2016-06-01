@@ -15,13 +15,8 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             this.contentTypeId = '/api/ezp/v2/content/types/38';
             this.request = {params: {languageCode: 'fre-FR'}};
             this.capiMock = new Y.Test.Mock();
-            this.contentTypeServiceMock = new Y.Test.Mock();
             this.contentServiceMock = new Y.Test.Mock();
 
-            Y.Mock.expect(this.capiMock, {
-                method: 'getContentTypeService',
-                returns: this.contentTypeServiceMock
-            });
             Y.Mock.expect(this.capiMock, {
                 method: 'getContentService',
                 returns: this.contentServiceMock
@@ -39,17 +34,35 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 '/api/ezp/v2/content/locations/1/2/67/68': '/api/ezp/v2/content/objects/65',
                 '/api/ezp/v2/content/locations/1/2/67/68/111': '/api/ezp/v2/content/objects/57',
             };
+            this.contentType = new Mock();
             this.locations = {};
             this.contents = {};
         },
 
-        _initContentTypeService: function (fail) {
-            Y.Mock.expect(this.contentTypeServiceMock, {
-                method: 'loadContentType',
-                args: [this.contenTypeId, Y.Mock.Value.Function],
-                run: function (typeId, callback) {
-                    callback(fail ? true : false, {document: {ContentType: {}}});
-                }
+        _initContentType: function (fail) {
+            Mock.expect(this.contentType, {
+                method: 'load',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (options, callback) {
+                    Assert.areSame(
+                        this.capiMock, options.api,
+                        "The CAPI should be provided to the Content Type load method"
+                    );
+                    Assert.isTrue(
+                        options.loadGroups,
+                        "The `loadGroups` flag should be set"
+                    );
+                    callback(fail ? true : false);
+                }, this),
+            });
+            Mock.expect(this.contentType, {
+                method: 'set',
+                args: ['id', this.contentTypeId]
+            });
+            Mock.expect(this.contentType, {
+                method: 'get',
+                args: ['id'],
+                returns: this.contentTypeId,
             });
         },
 
@@ -107,7 +120,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                     new Y.eZ.Content({
                         id: contentId,
                         resources: {
-                            ContenType: functionalTest.contentTypeId
+                            ContentType: functionalTest.contentTypeId
                         }
                     })
                 );
@@ -137,7 +150,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 response = {},
                 location, content;
 
-            this._initContentTypeService();
+            this._initContentType();
             this._initTree();
             this.request = {params: {id: locationId}};
 
@@ -147,6 +160,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 capi: this.capiMock,
                 location: location,
                 content: content,
+                contentType: this.contentType,
                 response: response,
                 request: this.request
             });
@@ -191,7 +205,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 response = {},
                 location, content;
 
-            this._initContentTypeService(contentTypeError);
+            this._initContentType(contentTypeError);
             this._initTree(locationIdError, contentIdError, loadPathError);
             this.request = {params: {id: locationId}};
 
@@ -201,6 +215,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 capi: this.capiMock,
                 location: location,
                 content: content,
+                contentType: this.contentType,
                 response: response,
                 request: this.request
             });

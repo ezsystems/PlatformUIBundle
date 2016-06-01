@@ -443,7 +443,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                         return;
                     }
                     type.set('id', content.get('resources').ContentType);
-                    type.load(loadOptions, function (error) {
+                    type.load(Y.merge(loadOptions, {loadGroups: true}), function (error) {
                         if ( error ) {
                             service._error("Failed to load the content type " + type.get('id'));
                             return;
@@ -522,7 +522,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
              * The content type of the content
              *
              * @attribute contentType
-             * @type Y.eZ.Content
+             * @type Y.eZ.ContentType
              */
             contentType: {
                 cloneDefaultValue: false,
