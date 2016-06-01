@@ -135,7 +135,7 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
             var rows = list.map(function (data) {
                 return {
                     content: data.content.toJSON(),
-                    contentType: data.contentType.get('names')[data.content.get('mainLanguageCode')]
+                    contentType: data.contentType.toJSON()
                 };
             });
 

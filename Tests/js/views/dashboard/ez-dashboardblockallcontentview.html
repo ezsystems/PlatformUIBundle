@@ -14,7 +14,7 @@
         {{#each rows}}
             <tr class="ez-allcontent-block-row">
                 <td class="ez-allcontent-block-cell--title">{{ content.name }}</td>
-                <td class="ez-allcontent-block-cell--content-type">{{ contentType }}</td>
+                <td class="ez-allcontent-block-cell-content-type">{{ lookup contentType.names content.mainLanguageCode }}</td>
                 <td class="ez-allcontent-block-cell--version">{{ content.currentVersion.versionNo }}</td>
                 <td class="ez-allcontent-block-cell--modfied">
                     {{ content.currentVersion.modificationDate }}
