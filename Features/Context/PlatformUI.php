@@ -449,32 +449,10 @@ class PlatformUI extends RawMinkContext
         }
     }
     /**
-     * Attaches a file to a input field on the HTML.
      *
-     * @param   string $file        file name relative to mink definitions
-     * @param   string $selector    CSS file upload element selector
      */
-    protected function attachFile($fileName, $selector)
     {
-        if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(
-                realpath(
-                    $this->getMinkParameter('files_path')
-                ),
-                DIRECTORY_SEPARATOR
-            ) . DIRECTORY_SEPARATOR . $fileName;
-
-            if (is_file($fullPath)) {
-                $fileInput = 'input[type="file"]' . $selector;
-                $field = $this->getSession()->getPage()->find('css', $fileInput);
-
-                if (null === $field) {
-                    throw new Exception("File input $selector is not found");
-                }
-                $field->attachFile($fullPath);
             }
-        } else {
-            throw new Exception("File $fileName is not found at the given location: $fullPath");
         }
     }
 }
