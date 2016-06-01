@@ -400,6 +400,10 @@ YUI.add('ez-contenteditviewservice', function (Y) {
         _redirectToAttribute: function (attr) {
             var attrRedirectionUrl = this.get(attr);
 
+            this.set('publishRedirectionUrl');
+            this.set('closeRedirectionUrl');
+            this.set('discardRedirectionUrl');
+
             if ( attrRedirectionUrl ) {
                 return this.get('app').navigate(attrRedirectionUrl);
             }
