@@ -30,7 +30,7 @@ class BrowserContext extends PlatformUI
     }
 
     /**
-     * Getter for Xpath
+     * Getter for Xpath.
      *
      * @return \EzSystems\BehatBundle\Helper\Xpath
      */

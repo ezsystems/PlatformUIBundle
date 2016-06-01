@@ -10,32 +10,26 @@
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
 use PHPUnit_Framework_Assert as Assertion;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use EzSystems\PlatformUIBundle\Features\Context\PlatformUI;
 
 class ContentEditContext extends PlatformUI
 {
     /**
+     * @Context $basicContentContext EzSystems\PlatformBehatBundle\Context\Object\BasicContentContext
      */
-    private $basicContentContext;
-    private $dashboardContext;
-    private $browserContext;
+    protected $basicContentContext;
 
     /**
-     * @BeforeScenario
+     * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
+     * @Context $dashboardContext EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
      */
-    public function gatherContexts(BeforeScenarioScope $scope)
-    {
-        $this->basicContentContext = $scope->getEnvironment()->getContext(
-            'EzSystems\PlatformBehatBundle\Context\Object\BasicContentContext'
-        );
-        $this->dashboardContext = $scope->getEnvironment()->getContext(
-            'EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext'
-        );
-        $this->browserContext = $scope->getEnvironment()->getContext(
-            'EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext'
-        );
-    }
+    protected $dashboardContext;
+
+    /**
+     * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
+     * @Context $browserContext EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
+     */
+    protected $browserContext;
 
     /**
      * @Given I create a content of content type :type with:
@@ -54,7 +48,7 @@ class ContentEditContext extends PlatformUI
         }
     }
 
-     /**
+    /**
      * @Given I am on :name full view
      */
     public function onFullView($name)

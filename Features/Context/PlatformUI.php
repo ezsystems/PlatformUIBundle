@@ -9,6 +9,8 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
+use ReflectionClass;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\MinkExtension\Context\RawMinkContext;
 
 class PlatformUI extends RawMinkContext
@@ -94,6 +96,22 @@ class PlatformUI extends RawMinkContext
         }
         if ($password != null) {
             $this->password = $password;
+        }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function gatherContexts(BeforeScenarioScope $scope)
+    {
+        $refClass = new ReflectionClass($this);
+        $refProperties = $refClass->getProperties();
+        foreach ($refProperties as $refProperty) {
+            preg_match_all('#@(.*?)\n#s', $refProperty->getDocComment(), $matches);
+            $contexts = $this->parseAnnotations($matches[1]);
+            foreach ($contexts as $property => $context) {
+                $this->$property = $scope->getEnvironment()->getContext($context);
+            }
         }
     }
 
@@ -448,11 +466,30 @@ class PlatformUI extends RawMinkContext
         } catch (\Exception $e) {
         }
     }
+
     /**
+     * Returns an array with the properties contexts,
+     * if the properties use the Context Annotation.
      *
+     * @return array array of methods and their service dependencies
      */
+    private function parseAnnotations($annotations)
     {
+        // parse array from (numeric key => 'annotation <value>') to (annotation => value)
+        $propertiesContexts = [];
+        foreach ($annotations as $annotation) {
+            if (!preg_match('/^(\w+)\s+\$(\w+)\s+([\w\.\\\\]+)/', $annotation, $matches)) {
+                continue;
+            }
+
+            array_shift($matches);
+            $tag = array_shift($matches);
+            if ($tag == 'Context') {
+                list($property, $context) = $matches;
+                $propertiesContexts[$property] = $context;
             }
         }
+
+        return $propertiesContexts;
     }
 }

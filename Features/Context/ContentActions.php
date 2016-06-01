@@ -9,28 +9,21 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use PHPUnit_Framework_Assert as Assertion;
 
 class ContentActions extends PlatformUI
 {
     /**
+     * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\ContentEditContext
+     * @Context $contentEditContext EzSystems\PlatformUIBundle\Features\Context\SubContext\ContentEditContext
      */
-    private $contentEditContext;
-    private $dashboardContext;
+    protected $contentEditContext;
 
     /**
-     * @BeforeScenario
+     * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
+     * @Context $dashboardContext EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
      */
-    public function gatherContexts(BeforeScenarioScope $scope)
-    {
-        $this->contentEditContext = $scope->getEnvironment()->getContext(
-            'EzSystems\PlatformUIBundle\Features\Context\SubContext\ContentEditContext'
-        );
-        $this->dashboardContext = $scope->getEnvironment()->getContext(
-            'EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext'
-        );
-    }
+    protected $dashboardContext;
 
     /**
      */

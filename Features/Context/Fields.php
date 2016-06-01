@@ -9,7 +9,6 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Mink\WebAssert;
 use EzSystems\PlatformBehatBundle\Context\Object\FieldTypeContext as FieldType;
 
@@ -19,22 +18,16 @@ class Fields extends PlatformUI
     const NOTIFICATION_PUBLISH_ERROR = 'An error occured while publishing the draft';
 
     /**
+     * @var EzSystems\PlatformBehatBundle\Context\Object\FieldTypeContext
+     * @Context $fieldtypeContext EzSystems\PlatformBehatBundle\Context\Object\FieldTypeContext
      */
-    private $fieldtypeContext;
-    private $dashboardContext;
+    protected $fieldtypeContext;
 
     /**
-     * @BeforeScenario
+     * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
+     * @Context $dashboardContext EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
      */
-    public function gatherContexts(BeforeScenarioScope $scope)
-    {
-        $this->fieldtypeContext = $scope->getEnvironment()->getContext(
-            'EzSystems\PlatformBehatBundle\Context\Object\FieldTypeContext'
-        );
-        $this->dashboardContext = $scope->getEnvironment()->getContext(
-            'EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext'
-        );
-    }
+    protected $dashboardContext;
 
     protected function getFieldIdentCss($identifier, $contentId = '')
     {

@@ -9,33 +9,21 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Gherkin\Node\TableNode;
 
 class Users extends PlatformUI
 {
     /**
-     * @var \EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
+     * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
+     * @Context $dashboardContext EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
      */
-    private $dashboardContext;
+    protected $dashboardContext;
 
     /**
-     * @var \EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
+     * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
+     * @Context $browserContext EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
      */
-    private $browserContext;
-
-    /**
-     * @BeforeScenario
-     */
-    public function gatherContexts(BeforeScenarioScope $scope)
-    {
-        $this->dashboardContext = $scope->getEnvironment()->getContext(
-            'EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext'
-        );
-        $this->browserContext = $scope->getEnvironment()->getContext(
-            'EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext'
-        );
-    }
+    protected $browserContext;
 
     /**
      * @Given I am on the Users page

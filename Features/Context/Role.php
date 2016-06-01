@@ -10,23 +10,14 @@
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 
 class Role extends PlatformUI
 {
     /**
+     * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
+     * @Context $dashboardContext EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
      */
-    private $dashboardContext;
-
-    /**
-     * @BeforeScenario
-     */
-    public function gatherContexts(BeforeScenarioScope $scope)
-    {
-        $this->dashboardContext = $scope->getEnvironment()->getContext(
-            'EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext'
-        );
-    }
+    protected $dashboardContext;
 
     /**
      * @Given I am on the Roles page

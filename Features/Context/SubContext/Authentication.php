@@ -52,7 +52,7 @@ class Authentication extends PlatformUI
     }
 
     /**
-     * Get credentials for a specific role
+     * Get credentials for a specific role.
      *
      * @uses \EzSystems\BehatBundle\Context\Object\User
      * @throws \eZ\Publish\API\Repository\Exceptions\NotFoundException
@@ -85,8 +85,8 @@ class Authentication extends PlatformUI
         $this->roleService->assignRoleToUser($role, $user);
 
         return array(
-            'login'     => $username,
-            'password'  => $password,
+            'login' => $username,
+            'password' => $password,
         );
     }
 
