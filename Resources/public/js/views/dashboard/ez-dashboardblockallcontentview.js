@@ -43,7 +43,12 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
             this.events = Y.merge(this.events, EVENTS);
 
             this._set('identifier', BLOCK_IDENTIFIER);
-            this.get('container').addClass(this._generateViewClassName(Y.eZ.DashboardBlockBaseView.NAME));
+            this.get('container')
+                .addClass(this._generateViewClassName(Y.eZ.DashboardBlockBaseView.NAME))
+                .addClass(CLASS_LOADING);
+
+            this.after('itemsChange', this.render);
+            this.after('itemsChange', this._uiEndLoading);
         },
 
         /**
@@ -53,7 +58,15 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
          * @return {eZ.DashboardBlockAllContentView} the view itself
          */
         render: function () {
-            this.get('container').setHTML(this.template()).addClass(CLASS_LOADING);
+            var items = this.get('items').map(function (item) {
+                    return {
+                        content: item.content.toJSON(),
+                        contentType: item.contentType.toJSON(),
+                        location: item.location.toJSON()
+                    };
+                });
+
+            this.get('container').setHTML(this.template({items: items}));
 
             return this;
         },
@@ -95,7 +108,16 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
             this.get('container').all(SELECTOR_ROW).removeClass(CLASS_ROW_SELECTED);
 
             this._clearClickOutsideHandler();
+        },
 
+        /**
+         * Removes the loading state of the UI
+         *
+         * @method _uiEndLoading
+         * @protected
+         */
+        _uiEndLoading: function () {
+            this.get('container').removeClass(CLASS_LOADING);
         },
 
         /**
@@ -106,11 +128,15 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
          * @param event {Object} event facade
          */
         _fireSearchEvent: function () {
-            this.fire('contentSearch', {
-                viewName: 'all-content',
+            var rootLocation = this.get('rootLocation');
+
+            this.fire('locationSearch', {
+                viewName: 'all-content-' + rootLocation.get('locationId'),
+                resultAttribute: 'items',
                 loadContentType: true,
+                loadContent: true,
                 search: {
-                    criteria: {SubtreeCriterion: this.get('rootLocation').get('pathString')},
+                    criteria: {SubtreeCriterion: rootLocation.get('pathString')},
                     /*
                      * @TODO sort items by modification date
                      * see https://jira.ez.no/browse/EZP-24998
@@ -118,32 +144,24 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
                      * sortClauses: {DateModifiedClause: 'DESC'},
                      */
                     limit: 10
-                },
-                callback: Y.bind(this._renderContentRows, this)
+                }
             });
-        },
-
-        /**
-         * Renders content rows in a block
-         *
-         * @method _renderContentRows
-         * @protected
-         * @param error {Boolean} is error?
-         * @param list {Array} rows content data
-         */
-        _renderContentRows: function (error, list) {
-            var rows = list.map(function (data) {
-                return {
-                    content: data.content.toJSON(),
-                    contentType: data.contentType.toJSON()
-                };
-            });
-
-            this.get('container').setHTML(this.template({rows: rows})).removeClass(CLASS_LOADING);
         },
 
         destructor: function () {
             this._clearClickOutsideHandler();
+        }
+    }, {
+        ATTRS: {
+            /**
+             * The items list.
+             *
+             * @attribute items
+             * @type Array of objects containing location structs
+             */
+            items: {
+                value: []
+            }
         }
     });
 });

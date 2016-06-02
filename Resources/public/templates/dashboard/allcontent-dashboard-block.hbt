@@ -16,7 +16,7 @@
             </tr>
         </thead>
         <tbody class="ez-allcontent-block-content">
-        {{#each rows}}
+        {{#each items}}
             <tr class="ez-allcontent-block-row">
                 <td class="ez-allcontent-block-cell-title">{{ content.name }}</td>
                 <td class="ez-allcontent-block-cell-content-type">{{ lookup contentType.names content.mainLanguageCode }}</td>
@@ -25,7 +25,7 @@
                     {{ content.currentVersion.modificationDate }}
                     <div class="ez-allcontent-block-row-options">
                         <a class="ez-allcontent-block-option-edit ez-font-icon" href="{{ path "editContent" id=content.id languageCode=content.mainLanguageCode }}"></a>
-                        <a class="ez-allcontent-block-option-view ez-font-icon" href="{{ path "viewLocation" id=content.resources.MainLocation languageCode=content.mainLanguageCode }}"></a>
+                        <a class="ez-allcontent-block-option-view ez-font-icon" href="{{ path "viewLocation" id=location.id languageCode=content.mainLanguageCode }}"></a>
                     </div>
                 </td>
             </tr>
