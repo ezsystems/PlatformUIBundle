@@ -14,13 +14,17 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
         SELECTOR_ROW = '.ez-allcontent-block-row',
         SELECTOR_OUTSIDE = '.outside',
         PATH_STRING = 'imagine-dragons',
+        ROOT_LOCATION_ID = '23',
         VIEW_CONFIG = {container: '.container'};
 
     renderTest = new Y.Test.Case({
         name: 'eZ Dashboard All Content Block View render test',
 
         setUp: function () {
-            this.rootLocation = new Y.Model({pathString: PATH_STRING});
+            this.rootLocation = new Y.Model({
+                locationId: ROOT_LOCATION_ID,
+                pathString: PATH_STRING
+            });
             this.view = new Y.eZ.DashboardBlockAllContentView(Y.merge(VIEW_CONFIG, {rootLocation: this.rootLocation}));
         },
 
@@ -52,7 +56,10 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
         name: 'eZ Dashboard All Content Block View get data test',
 
         setUp: function () {
-            this.rootLocation = new Y.Model({pathString: PATH_STRING});
+            this.rootLocation = new Y.Model({
+                locationId: ROOT_LOCATION_ID,
+                pathString: PATH_STRING
+            });
             this.view = new Y.eZ.DashboardBlockAllContentView(Y.merge(VIEW_CONFIG, {rootLocation: this.rootLocation}));
         },
 
@@ -62,25 +69,27 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
 
         'Should get data when view get active': function () {
             var view = this.view,
+                eventName = 'locationSearch',
                 isEventFired = false;
 
-            view.on('contentSearch', function (event) {
+            view.on(eventName, function (event) {
                 isEventFired = true;
 
-                Y.Assert.areSame('all-content', event.viewName, 'Should provide a correct REST view name');
-                Y.Assert.isTrue(event.loadContentType, 'Should try to load content types');
+                Y.Assert.areSame('all-content-' + ROOT_LOCATION_ID, event.viewName, 'Should provide a correct REST view name');
+                Y.Assert.isTrue(event.loadContentType, 'Should try to load content types of each location found');
+                Y.Assert.isTrue(event.loadContent, 'Should try to load content of each location found');
+                Y.Assert.areSame('items', event.resultAttribute, 'Should provide a correct view attribute name to store fetched data');
                 Y.Assert.areSame(
                     PATH_STRING,
                     event.search.criteria.SubtreeCriterion,
                     'Should pass a correct search `SubtreeCriterion` criterion value'
                 );
                 Y.Assert.areSame(10, event.search.limit, 'Should pass a correct search results limit value');
-                Y.Assert.isFunction(event.callback, 'The `callback` param should be a function');
             });
 
             view.set('active', true);
 
-            Y.Assert.isTrue(isEventFired, 'Should fire the `contentSearch` event');
+            Y.Assert.isTrue(isEventFired, 'Should fire the `' + eventName + '` event');
         }
     });
 
@@ -88,16 +97,20 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
         name: 'eZ Dashboard All Content Block View UI events test',
 
         setUp: function () {
-            this.rootLocation = new Y.Model({pathString: PATH_STRING});
+            this.rootLocation = new Y.Model({
+                locationId: ROOT_LOCATION_ID,
+                pathString: PATH_STRING
+            });
             this.view = new Y.eZ.DashboardBlockAllContentView(Y.merge(VIEW_CONFIG, {rootLocation: this.rootLocation}));
         },
 
         tearDown: function () {
-            this.view.destroy({remove: true});
+            this.view.destroy();
         },
 
         _getRowsMock: function () {
             var languageCode = 'eng-GB',
+                locationId = '25',
                 contentTypeNames = {},
                 list;
 
@@ -113,11 +126,12 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
                     },
                     resources: {MainLocation: 'main-location'}
                 }),
-                contentType: new Y.Model({names: contentTypeNames})
+                contentType: new Y.Model({names: contentTypeNames}),
+                location: new Y.Model({id: locationId})
             }];
 
-            this.view.on('contentSearch', function (event) {
-                event.callback(false, list);
+            this.view.on('locationSearch', function (event) {
+                event.target.set(event.resultAttribute, list);
             });
         },
 
@@ -127,7 +141,6 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
 
             this._getRowsMock();
 
-            view.render();
             view.set('active', true);
 
             row = view.get('container').one(SELECTOR_ROW);
@@ -147,7 +160,6 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
 
             this._getRowsMock();
 
-            view.render();
             view.set('active', true);
 
             row = view.get('container').one(SELECTOR_ROW);

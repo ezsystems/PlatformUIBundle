@@ -123,10 +123,9 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
                 }
             });
 
-            this.service.on('notify', Y.bind(function (event) {
+            this.service.on('error', Y.bind(function (event) {
                 this.resume(function () {
-                    Y.Assert.areSame(loadRootLocationErrorMessage, event.notification.text, 'Should show correct error message');
-                    Y.Assert.areSame(loadRootLocationErrorIdentifier, event.notification.identifier, 'Should show correct error identifier');
+                    Y.Assert.areSame(loadRootLocationErrorMessage, event.message, 'Should show correct error message');
                 });
             }, this));
             this.service.load(function () {
@@ -164,10 +163,9 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
                 }, this)
             });
 
-            this.service.on('notify', Y.bind(function (event) {
+            this.service.on('error', Y.bind(function (event) {
                 this.resume(function () {
-                    Y.Assert.areSame(loadLocationModelErrorMessage, event.notification.text, 'Should show correct error message');
-                    Y.Assert.areSame(loadLocationModelErrorIdentifier, event.notification.identifier, 'Should show correct error identifier');
+                    Y.Assert.areSame(loadLocationModelErrorMessage, event.message, 'Should show correct error message');
                 });
             }, this));
             this.service.load(function () {

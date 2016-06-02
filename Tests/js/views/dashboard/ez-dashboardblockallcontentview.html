@@ -11,7 +11,7 @@
 <script type="text/x-handlebars-template" id="dashboardblockallcontentview-ez-template" >
     <table class="pure-table">
         <tbody class="ez-allcontent-block-content">
-        {{#each rows}}
+        {{#each items}}
             <tr class="ez-allcontent-block-row">
                 <td class="ez-allcontent-block-cell--title">{{ content.name }}</td>
                 <td class="ez-allcontent-block-cell-content-type">{{ lookup contentType.names content.mainLanguageCode }}</td>
