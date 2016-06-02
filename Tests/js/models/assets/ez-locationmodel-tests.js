@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationmodel-tests', function (Y) {
-    var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest, toJSONTest, updateSortingTest, updatePriorityTest, isRootTest,
+    var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest, toJSONTest, updateSortingTest, updatePriorityTest, isRootTest, swapTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
@@ -934,6 +934,45 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         },
     });
 
+    swapTest = new Y.Test.Case({
+        "name": "eZ Location Swap tests",
+
+        setUp: function () {
+            this.capiMock = new Y.Mock();
+            this.capiGetService = 'getContentService';
+            this.locationId = 'location/man-city/sergio-aguero';
+            this.destinationLocationId = 'location/fcb/arda-turam';
+            this.model = new Y.eZ.Location({id: this.locationId});
+            this.destinationLocation = new Y.eZ.Location({id: this.destinationLocationId});
+            this.contentServiceMock = new Y.Mock();
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        "Should swap the locations": function () {
+            var callback = function () {},
+                options = {api: this.capiMock};
+
+            Y.Mock.expect(this.capiMock, {
+                method: 'getContentService',
+                returns: this.contentServiceMock
+            });
+            Y.Mock.expect(this.contentServiceMock, {
+                method: 'swapLocation',
+                args: [this.locationId, this.destinationLocationId, callback],
+            });
+
+            this.model.swap(options,this.destinationLocation, callback);
+
+            Y.Mock.verify(this.contentServiceMock);
+            Y.Mock.verify(this.capiMock);
+
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(trashTest);
@@ -945,4 +984,5 @@ YUI.add('ez-locationmodel-tests', function (Y) {
     Y.Test.Runner.add(updatePriorityTest);
     Y.Test.Runner.add(toJSONTest);
     Y.Test.Runner.add(isRootTest);
+    Y.Test.Runner.add(swapTest);
 }, '', {requires: ['test', 'model-tests', 'ez-locationmodel', 'ez-restmodel']});

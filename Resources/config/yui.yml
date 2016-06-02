@@ -252,6 +252,7 @@ system:
                         - 'ez-contentcreateplugin'
                         - 'ez-copycontentplugin'
                         - 'ez-versionsloadplugin'
+                        - 'ez-locationswapplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras', 'ez-height-change']
@@ -1254,3 +1255,8 @@ system:
                 ez-app-extension-admin:
                     requires: ['ez-serversideview', 'ez-serversideviewservice', 'ez-app-extension']
                     path: %ez_platformui.public_dir%/js/apps/extensions/ez-app-extension-admin.js
+                ez-locationswapplugin:
+                    requires:
+                        - 'ez-viewservicebaseplugin'
+                        - 'ez-pluginregistry'
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationswapplugin.js

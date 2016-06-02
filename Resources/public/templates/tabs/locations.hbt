@@ -73,3 +73,14 @@
         </div>
     </div>
 </div>
+
+<div class="ez-locations-box">
+    <h2 class="ez-locations-box-title">Location Content Swap</h2>
+    <p class="ez-subitem-swap-locations">
+        Swap the content item at this location with another
+        <button
+            class="ez-locations-swap-button pure-button ez-button">
+            Select Content Item
+        </button>
+    </p>
+</div>

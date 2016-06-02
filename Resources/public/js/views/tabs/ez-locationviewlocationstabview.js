@@ -23,6 +23,9 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
             },
             '.ez-remove-locations-button': {
                 'tap': '_removeSelectedLocations'
+            },
+            '.ez-locations-swap-button': {
+                'tap': '_swapLocation'
             }
         };
 
@@ -102,6 +105,26 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
             this.fire('createLocation', {
                 content: this.get('content'),
                 afterCreateCallback: Y.bind(this._refresh, this)
+            });
+        },
+
+        /**
+         * Tap event handler on the `Swap location` button. It fires the
+         * `swapLocation` event
+         *
+         * @method _swapLocation
+         * @protected
+         * @param {EventFacade} e
+         */
+        _swapLocation: function (e) {
+            /**
+             * Fired when the user clicks on `Swap location` button
+             *
+             * @event swapLocation
+             * @param {eZ.Location} location the content to be swapped
+             */
+            this.fire('swapLocation', {
+                location: this.get('location'),
             });
         },
 
