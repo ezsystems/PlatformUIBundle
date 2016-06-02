@@ -51,7 +51,11 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
 
             Y.Assert.isTrue(templateCalled, 'The template should have been used to render view');
             Y.Assert.isTrue(container.hasClass(CLASS_LOADING), 'Should add the loading state CSS class to the view container');
-        }
+        },
+
+        'Should render view with rows': function () {
+
+        },
     });
 
     searchEventTest = new Y.Test.Case({
@@ -69,7 +73,7 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
             this.view.destroy();
         },
 
-        'Should get data when view get active': function () {
+        'Should search for location when view gets active': function () {
             var view = this.view,
                 eventName = 'locationSearch',
                 isEventFired = false;
@@ -176,7 +180,6 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
                             Y.Assert.isFalse(row.hasClass(CLASS_ROW_SELECTED), 'The row should not be selected');
                         });
                     }, this));
-
                     this.wait();
                 }, this));
             }, this));

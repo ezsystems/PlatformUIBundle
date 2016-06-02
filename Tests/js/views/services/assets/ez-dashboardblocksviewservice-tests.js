@@ -7,11 +7,13 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
 
     var successTest,
         errorTests,
+        getViewParametersTest,
+        searchPluginRegisterTest,
+        rootLocationDefaultValueTest,
         loadRootLocationErrorMessage = 'Cannot load root location',
         loadLocationModelErrorMessage = 'Cannot load root location data into model';
 
     Y.eZ.Location = Y.Model;
-    Y.eZ.Plugin.Search = Y.eZ.Plugin.ViewServiceBase;
 
     successTest = new Y.Test.Case({
         name: 'eZ Dashboard Blocks View Service load success test',
@@ -164,14 +166,61 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
         },
     });
 
+    getViewParametersTest = new Y.Test.Case({
+        name: 'eZ Dashboard Blocks View Service get view parameters test',
+
+        setUp: function () {
+            this.rootLocationModel = new Y.Mock();
+
+            this.service = new Y.eZ.DashboardBlocksViewService({
+                rootLocation: this.rootLocationModel
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+        },
+
+        'Should return a correct set of data when running `getViewParameters` method': function () {
+            Y.Assert.areSame(this.rootLocationModel, this.service.getViewParameters().rootLocation, 'Should return `rootLocation` model');
+        }
+    });
+
+    rootLocationDefaultValueTest = new Y.Test.Case({
+        name: 'eZ Dashboard Blocks View Service root location default value test',
+
+        setUp: function () {
+            this.rootLocationModel = new Y.Mock();
+
+            this.service = new Y.eZ.DashboardBlocksViewService();
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+        },
+
+        'Should return a model': function () {
+            Y.Assert.isInstanceOf(Y.Model, this.service.get('rootLocation'), 'Should return a model');
+        }
+    });
+
+    searchPluginRegisterTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
+    searchPluginRegisterTest.Plugin = Y.eZ.Plugin.Search;
+    searchPluginRegisterTest.components = ['dashboardBlocksViewService'];
+
     Y.Test.Runner.setName('eZ Dashboard Blocks View Service tests');
     Y.Test.Runner.add(successTest);
     Y.Test.Runner.add(errorTests);
+    Y.Test.Runner.add(getViewParametersTest);
+    Y.Test.Runner.add(rootLocationDefaultValueTest);
+    Y.Test.Runner.add(searchPluginRegisterTest);
 }, '', {
     requires: [
         'test',
         'model',
         'ez-viewservicebaseplugin',
+        'ez-pluginregister-tests',
+        'ez-searchplugin',
         'ez-dashboardblocksviewservice'
     ]
 });
