@@ -244,7 +244,6 @@ YUI.add('ez-confirmboxview-tests', function (Y) {
             this.view.set('title', title);
             this.view.set('active', true);
 
-            console.log( this.view.get('container').one('.ez-confirmbox-title').get('innerHTML'));
             Assert.areEqual(
                 title, this.view.get('container').one('.ez-confirmbox-title').get('text'),
                 "The title should have been updated"
