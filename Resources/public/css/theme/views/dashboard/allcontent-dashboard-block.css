@@ -55,6 +55,10 @@
     background: #f0a68d;
 }
 
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-row.is-row-selected .ez-allcontent-block-row-options {
+    transform: translate3d(100%, -50%, 0) scaleX(1);
+}
+
 .ez-view-dashboardblockallcontentview .ez-allcontent-block-row-options .ez-font-icon {
     font-size: 140%;
     text-align: center;

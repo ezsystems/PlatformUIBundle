@@ -9,15 +9,15 @@
 <div class="outside"></div>
 
 <script type="text/x-handlebars-template" id="dashboardblockallcontentview-ez-template" >
-    <table class="pure-table">
+    <table>
         <tbody class="ez-allcontent-block-content">
         {{#each items}}
             <tr class="ez-allcontent-block-row">
-                <td class="ez-allcontent-block-cell--title">{{ content.name }}</td>
-                <td class="ez-allcontent-block-cell-content-type">{{ lookup contentType.names content.mainLanguageCode }}</td>
-                <td class="ez-allcontent-block-cell--version">{{ content.currentVersion.versionNo }}</td>
-                <td class="ez-allcontent-block-cell--modfied">
-                    {{ content.currentVersion.modificationDate }}
+                <td>{{ contentInfo.name }}</td>
+                <td>{{ lookup contentType.names contentInfo.mainLanguageCode }}</td>
+                <td>{{ content.currentVersion.versionNo }}</td>
+                <td>
+                    {{ contentInfo.lastModificationDate }}
                     <div class="ez-allcontent-block-row-options">
                         <a class="ez-allcontent-block-option-edit ez-font-icon" href="#"></a>
                         <a class="ez-allcontent-block-option-view ez-font-icon" href="#"></a>

@@ -24,9 +24,7 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
 
             Y.Mock.expect(this.capi, {
                 method: 'getDiscoveryService',
-                run: Y.bind(function () {
-                    return this.discoveryService;
-                }, this)
+                returns: this.discoveryService,
             });
 
             this.service = new Y.eZ.DashboardBlocksViewService({
@@ -41,12 +39,7 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
         },
 
         'Should load root location data when being loaded': function () {
-            var rootLocationId = 'root-location',
-                loadLocationResponse = {
-                    document: {
-                        Location: {}
-                    }
-                };
+            var rootLocationId = 'root-location';
 
             Y.Mock.expect(this.discoveryService, {
                 method: 'getInfoObject',
@@ -70,7 +63,7 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
                 run: Y.bind(function (options, callback) {
                     Y.Assert.areSame(this.capi, options.api, 'Should pass correct API to the `load` method of root location model');
 
-                    callback(false, loadLocationResponse);
+                    callback(false);
                 }, this)
             });
 
@@ -96,9 +89,7 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
 
             Y.Mock.expect(this.capi, {
                 method: 'getDiscoveryService',
-                run: Y.bind(function () {
-                    return this.discoveryService;
-                }, this)
+                returns: this.discoveryService,
             });
 
             this.service = new Y.eZ.DashboardBlocksViewService({

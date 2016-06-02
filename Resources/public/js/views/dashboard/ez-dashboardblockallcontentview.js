@@ -32,6 +32,7 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
     Y.eZ.DashboardBlockAllContentView = Y.Base.create('dashboardBlockAllContentView', Y.eZ.DashboardBlockBaseView, [Y.eZ.AsynchronousView], {
         initializer: function () {
             this._fireMethod = this._fireSearchEvent;
+            this._watchAttribute = 'items';
             /**
              * Stores the click outside event handler
              *
@@ -47,7 +48,6 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
                 .addClass(this._generateViewClassName(Y.eZ.DashboardBlockBaseView.NAME))
                 .addClass(CLASS_LOADING);
 
-            this.after('itemsChange', this.render);
             this.after('itemsChange', this._uiEndLoading);
         },
 
@@ -60,13 +60,21 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
         render: function () {
             var items = this.get('items').map(function (item) {
                     return {
+                        /*
+                         * @TODO remove content model
+                         * see  https://jira.ez.no/browse/EZP-25842
+                         */
                         content: item.content.toJSON(),
                         contentType: item.contentType.toJSON(),
-                        location: item.location.toJSON()
+                        location: item.location.toJSON(),
+                        contentInfo: item.location.get('contentInfo').toJSON(),
                     };
                 });
 
-            this.get('container').setHTML(this.template({items: items}));
+            this.get('container').setHTML(this.template({
+                items: items,
+                loadingError: this.get('loadingError'),
+            }));
 
             return this;
         },
@@ -134,6 +142,10 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
                 viewName: 'all-content-' + rootLocation.get('locationId'),
                 resultAttribute: 'items',
                 loadContentType: true,
+                /*
+                 * @TODO remove the loadContent flag
+                 * see  https://jira.ez.no/browse/EZP-25842
+                 */
                 loadContent: true,
                 search: {
                     criteria: {SubtreeCriterion: rootLocation.get('pathString')},

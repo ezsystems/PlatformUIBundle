@@ -6,11 +6,10 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
     'use strict';
 
     var renderTest,
-        getDataTest,
+        searchEventTest,
         uiEventsTest,
         CLASS_LOADING = 'is-loading',
         CLASS_ROW_SELECTED = 'is-row-selected',
-        SELECTOR_CONTENT = '.ez-allcontent-block-content',
         SELECTOR_ROW = '.ez-allcontent-block-row',
         SELECTOR_OUTSIDE = '.outside',
         PATH_STRING = 'imagine-dragons',
@@ -38,8 +37,12 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
                 origTpl = view.template,
                 container = view.get('container');
 
-            view.template = function () {
+            view.template = function (params) {
                 templateCalled = true;
+
+                Y.Assert.isArray(params.items, 'The `items` variable should be an array');
+                Y.Assert.areSame(0, params.items.length, 'Should not provide any items data');
+                Y.Assert.isFalse(params.loadingError, 'The `loadingError` should not be enabled');
 
                 return origTpl.apply(this, arguments);
             };
@@ -47,13 +50,12 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
             view.render();
 
             Y.Assert.isTrue(templateCalled, 'The template should have been used to render view');
-            Y.Assert.areSame(0, container.one(SELECTOR_CONTENT).all('tr').size(), 'Should not render any row');
             Y.Assert.isTrue(container.hasClass(CLASS_LOADING), 'Should add the loading state CSS class to the view container');
         }
     });
 
-    getDataTest = new Y.Test.Case({
-        name: 'eZ Dashboard All Content Block View get data test',
+    searchEventTest = new Y.Test.Case({
+        name: 'eZ Dashboard All Content Block View search event test',
 
         setUp: function () {
             this.rootLocation = new Y.Model({
@@ -108,7 +110,7 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
             this.view.destroy();
         },
 
-        _getRowsMock: function () {
+        _setupRowMocks: function () {
             var languageCode = 'eng-GB',
                 locationId = '25',
                 contentTypeNames = {},
@@ -127,7 +129,10 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
                     resources: {MainLocation: 'main-location'}
                 }),
                 contentType: new Y.Model({names: contentTypeNames}),
-                location: new Y.Model({id: locationId})
+                location: new Y.Model({
+                    id: locationId,
+                    contentInfo: new Y.Model()
+                })
             }];
 
             this.view.on('locationSearch', function (event) {
@@ -139,7 +144,7 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
             var view = this.view,
                 row;
 
-            this._getRowsMock();
+            this._setupRowMocks();
 
             view.set('active', true);
 
@@ -158,7 +163,7 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
             var view = this.view,
                 row;
 
-            this._getRowsMock();
+            this._setupRowMocks();
 
             view.set('active', true);
 
@@ -182,7 +187,7 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
 
     Y.Test.Runner.setName('eZ Dashboard All Content Block View tests');
     Y.Test.Runner.add(renderTest);
-    Y.Test.Runner.add(getDataTest);
+    Y.Test.Runner.add(searchEventTest);
     Y.Test.Runner.add(uiEventsTest);
 }, '', {requires: [
     'test',
