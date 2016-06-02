@@ -8,9 +8,7 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
     var successTest,
         errorTests,
         loadRootLocationErrorMessage = 'Cannot load root location',
-        loadRootLocationErrorIdentifier ='load-root-location-error',
-        loadLocationModelErrorMessage = 'Cannot load root location data into model',
-        loadLocationModelErrorIdentifier = 'load-root-location-model-data-error';
+        loadLocationModelErrorMessage = 'Cannot load root location data into model';
 
     Y.eZ.Location = Y.Model;
     Y.eZ.Plugin.Search = Y.eZ.Plugin.ViewServiceBase;
