@@ -20,6 +20,12 @@ class Role extends PlatformUI
     protected $dashboardContext;
 
     /**
+     * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
+     * @Context $browserContext EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
+     */
+    protected $browserContext;
+
+    /**
      * @Given I am on the Roles page
      */
     public function onRolesPage()
@@ -97,7 +103,7 @@ class Role extends PlatformUI
      */
     public function iSeeRolePage()
     {
-        $this->iSeeTitle('Roles');
+        $this->browserContext->iSeeTitle('Roles');
     }
 
     /**
@@ -165,7 +171,7 @@ class Role extends PlatformUI
      */
     public function roleAssigmentLabel()
     {
-        $this->iSeeTitle('Invalid argument: The role name must be unique.');
+        $this->browserContext->iSeeTitle('Invalid argument: The role name must be unique.');
     }
 
     /**

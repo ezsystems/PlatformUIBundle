@@ -76,7 +76,7 @@ class Users extends PlatformUI
     public function iSeeUsersPage()
     {
         $this->sleep(); // safegaurd for application delays
-        $this->iSeeTitle('Users');
+        $this->browserContext->iSeeTitle('Users');
     }
 
     /**

@@ -435,23 +435,6 @@ class PlatformUI extends RawMinkContext
         }
     }
 
-    public function iSeeTitle($title)
-    {
-        $page = $this->getSession()->getPage();
-        $this->spin(
-            function () use ($title, $page) {
-                $titleElements = $page->findAll('css', 'h1, h2, h3');
-                foreach ($titleElements as $titleElement) {
-                    $elementText = $titleElement->getText();
-                    if ($elementText == $title) {
-                        return $titleElement;
-                    }
-                }
-                throw new \Exception("Title '$title' not found");
-            }
-        );
-    }
-
     /**
      * Close the Edit view, if it is open.
      */
