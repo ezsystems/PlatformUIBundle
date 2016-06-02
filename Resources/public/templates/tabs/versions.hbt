@@ -1,0 +1,132 @@
+<div class="ez-versions-box">
+    <h2 class="ez-versions-box-title">Content versions</h2>
+    <div class="ez-versions-list-container">
+    {{#if loadingError}}
+        <p class="ez-asynchronousview-error ez-font-icon">
+            An error occurred while loading the versions list.
+            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">
+                Retry
+            </button>
+        </p>
+    {{else}}
+        {{#if hasDraft }}
+        {{#if draftVersions }}
+        <h3 class="ez-versions-table-title">Draft under edit:</h3>
+        <table class="pure-table pure-table-striped ez-versions-list-table">
+            <thead>
+            <tr>
+                <th>Version</th>
+                <th>Language</th>
+                <th>Author</th>
+                <th>Created</th>
+                <th>Last saved</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each draftVersions}}
+                <tr>
+                    <td>
+                        {{versionNo}}
+                    </td>
+                    <td>
+                        {{languageCodes}}
+                    </td>
+                    <td>
+                        {{resources.Creator}}
+                    </td>
+                    <td>
+                        {{creationDate}}
+                    </td>
+                    <td>
+                        {{modificationDate}}
+                    </td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+        {{else}}
+            <p class="ez-font-icon ez-asynchronousview-loading">Loading the draft list</p>
+        {{/if}}
+        {{/if}}
+        {{#if hasPublished }}
+        {{#if publishedVersions }}
+            <h3 class="ez-versions-table-title">Published version:</h3>
+            <table class="pure-table pure-table-striped ez-versions-list-table">
+                <thead>
+                <tr>
+                    <th>Version</th>
+                    <th>Language</th>
+                    <th>Author</th>
+                    <th>Created</th>
+                    <th>Last saved</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each publishedVersions}}
+                    <tr>
+                        <td>
+                            {{versionNo}}
+                        </td>
+                        <td>
+                            {{languageCodes}}
+                        </td>
+                        <td>
+                            {{resources.Creator}}
+                        </td>
+                        <td>
+                            {{creationDate}}
+                        </td>
+                        <td>
+                            {{modificationDate}}
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        {{else}}
+            <p class="ez-font-icon ez-asynchronousview-loading">Loading the published version list</p>
+        {{/if}}
+        {{/if}}
+        {{#if hasArchived }}
+        {{#if archivedVersions }}
+            <h3 class="ez-versions-table-title">Archived version:</h3>
+            <table class="pure-table pure-table-striped ez-versions-list-table">
+                <thead>
+                <tr>
+                    <th>Version</th>
+                    <th>Language</th>
+                    <th>Author</th>
+                    <th>Created</th>
+                    <th>Last saved</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each archivedVersions}}
+                    <tr>
+                        <td>
+                            {{versionNo}}
+                        </td>
+                        <td>
+                            {{languageCodes}}
+                        </td>
+                        <td>
+                            {{resources.Creator}}
+                        </td>
+                        <td>
+                            {{creationDate}}
+                        </td>
+                        <td>
+                            {{modificationDate}}
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        {{else}}
+            <p class="ez-font-icon ez-asynchronousview-loading">Loading the archived version list</p>
+        {{/if}}
+        {{/if}}
+    {{/if}}
+    </div>
+</div>
+

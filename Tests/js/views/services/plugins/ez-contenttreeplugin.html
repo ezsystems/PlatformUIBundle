@@ -45,8 +45,16 @@
                 fullpath: "../../../../../Resources/public/js/models/ez-contentmodel.js"
             },
             "ez-versionmodel": {
-                requires: ['ez-restmodel'],
+                requires: [
+                    'ez-versioninfomodel'
+                ],
                 fullpath: "../../../../../Resources/public/js/models/ez-versionmodel.js"
+            },
+            "ez-versioninfomodel": {
+                requires: [
+                    'ez-restmodel'
+                ],
+                fullpath: "../../../../../Resources/public/js/models/ez-versioninfomodel.js"
             },
             "ez-contentinfomodel": {
                 requires: ['ez-restmodel', 'ez-contentinfo-attributes'],

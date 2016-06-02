@@ -314,6 +314,15 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 }
             });
 
+            Y.eZ.LocationViewVersionsTabView = Y.Base.create('locationViewVersionsTabView', Y.View, [], {}, {
+                ATTRS: {
+                    content: {},
+                    contentType: {},
+                    config: {},
+                    priority: {},
+                }
+            });
+
             this.view = new Y.eZ.LocationViewView({
                 location: {},
                 content: {},
@@ -422,6 +431,30 @@ YUI.add('ez-locationviewview-tests', function (Y) {
                 2000,
                 this.view.get('tabs')[1].get('priority'),
                 'The priority should have been set to the details tab view'
+            );
+        },
+
+        "Should set the content of the versions tab view": function () {
+            Assert.areSame(
+                this.view.get('content'),
+                this.view.get('tabs')[2].get('content'),
+                'The content should have been set to the versions tab view'
+            );
+        },
+
+        "Should set the config of the versions tab view": function () {
+            Assert.areSame(
+                this.view.get('config'),
+                this.view.get('tabs')[2].get('config'),
+                'The config should have been set to the versions tab view'
+            );
+        },
+
+        "Should set the priority of the versions tab view": function () {
+            Assert.areSame(
+                2500,
+                this.view.get('tabs')[2].get('priority'),
+                'The priority should have been set to the versions tab view'
             );
         },
 
