@@ -61,6 +61,7 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
                 contentInfoMock = new Y.Mock(),
                 origTpl = view.template,
                 templateCalled = false,
+                result = JSON.stringify({}),
                 list;
 
             Y.Mock.expect(contentMock, {
@@ -100,16 +101,15 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
 
                 Y.Assert.isArray(params.items, 'The `items` variable should be an array');
                 Y.Assert.areSame(list.length, params.items.length, 'Should provide data of 1 item');
+                Y.Assert.areSame(result, JSON.stringify(params.items[0].content), 'Should provide content data of 1 item');
+                Y.Assert.areSame(result, JSON.stringify(params.items[0].contentType), 'Should provide content type data of 1 item');
+                Y.Assert.areSame(result, JSON.stringify(params.items[0].location), 'Should provide location data of 1 item');
                 Y.Assert.isFalse(params.loadingError, 'The `loadingError` should not be enabled');
 
                 return origTpl.apply(this, arguments);
             };
 
-            view.on('locationSearch', function (event) {
-                view.set(event.resultAttribute, list);
-            });
-
-            view.set('active', true);
+            view.set('items', list);
 
             Y.Assert.isTrue(templateCalled, 'The template should have been used to render view');
             Y.Assert.isFalse(view.get('container').hasClass(CLASS_LOADING), 'Should add the loading state CSS class to the view container');

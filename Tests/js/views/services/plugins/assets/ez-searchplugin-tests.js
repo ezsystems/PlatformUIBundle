@@ -776,7 +776,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.Search;
-    registerTest.components = ['locationViewViewService'];
+    registerTest.components = ['locationViewViewService', 'dashboardBlocksViewService'];
 
     Y.Test.Runner.setName("eZ Search Plugin locationSearchTests");
     Y.Test.Runner.add(contentSearchTests);

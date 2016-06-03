@@ -8,12 +8,9 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
     var successTest,
         errorTests,
         getViewParametersTest,
-        searchPluginRegisterTest,
         rootLocationDefaultValueTest,
         loadRootLocationErrorMessage = 'Cannot load root location',
         loadLocationModelErrorMessage = 'Cannot load root location data into model';
-
-    Y.eZ.Location = Y.Model;
 
     successTest = new Y.Test.Case({
         name: 'eZ Dashboard Blocks View Service load success test',
@@ -190,37 +187,32 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
         name: 'eZ Dashboard Blocks View Service root location default value test',
 
         setUp: function () {
-            this.rootLocationModel = new Y.Mock();
+            Y.eZ.Location = Y.Base.create('locationModel', Y.Model, [], {});
 
             this.service = new Y.eZ.DashboardBlocksViewService();
         },
 
         tearDown: function () {
             this.service.destroy();
+
+            delete Y.eZ.Location;
         },
 
         'Should return a model': function () {
-            Y.Assert.isInstanceOf(Y.Model, this.service.get('rootLocation'), 'Should return a model');
+            Y.Assert.isInstanceOf(Y.eZ.Location, this.service.get('rootLocation'), 'Should return a location model');
         }
     });
-
-    searchPluginRegisterTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
-    searchPluginRegisterTest.Plugin = Y.eZ.Plugin.Search;
-    searchPluginRegisterTest.components = ['dashboardBlocksViewService'];
 
     Y.Test.Runner.setName('eZ Dashboard Blocks View Service tests');
     Y.Test.Runner.add(successTest);
     Y.Test.Runner.add(errorTests);
     Y.Test.Runner.add(getViewParametersTest);
     Y.Test.Runner.add(rootLocationDefaultValueTest);
-    Y.Test.Runner.add(searchPluginRegisterTest);
 }, '', {
     requires: [
         'test',
         'model',
         'ez-viewservicebaseplugin',
-        'ez-pluginregister-tests',
-        'ez-searchplugin',
         'ez-dashboardblocksviewservice'
     ]
 });
