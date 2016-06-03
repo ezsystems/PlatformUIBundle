@@ -29,3 +29,7 @@
 .ez-view-locationviewlocationstabview .ez-breadcrumbs-list {
     margin: 0;
 }
+
+.ez-view-locationviewlocationstabview .ez-subitem-swap-locations {
+    margin-left: 2em;
+}
