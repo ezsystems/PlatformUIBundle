@@ -61,23 +61,25 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
                 contentInfoMock = new Y.Mock(),
                 origTpl = view.template,
                 templateCalled = false,
-                resultJSON = {},
-                locationJSON = {contentInfo: resultJSON},
+                contentJSON = {},
+                contentTypeJSON = {},
+                contentInfoJSON = {},
+                locationJSON = {contentInfo: contentInfoJSON},
                 list;
 
             Y.Mock.expect(contentMock, {
                 method: 'toJSON',
-                returns: resultJSON
+                returns: contentJSON
             });
 
             Y.Mock.expect(contentTypeMock, {
                 method: 'toJSON',
-                returns: resultJSON
+                returns: contentTypeJSON
             });
 
             Y.Mock.expect(contentInfoMock, {
                 method: 'toJSON',
-                returns: resultJSON
+                returns: contentInfoJSON
             });
 
             Y.Mock.expect(locationMock, {
@@ -102,10 +104,10 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
 
                 Y.Assert.isArray(params.items, 'The `items` variable should be an array');
                 Y.Assert.areSame(list.length, params.items.length, 'Should provide data of 1 item');
-                Y.Assert.areSame(resultJSON, params.items[0].content, 'Should provide content data of 1 item');
-                Y.Assert.areSame(resultJSON, params.items[0].contentType, 'Should provide content type data of 1 item');
+                Y.Assert.areSame(contentJSON, params.items[0].content, 'Should provide content data of 1 item');
+                Y.Assert.areSame(contentTypeJSON, params.items[0].contentType, 'Should provide content type data of 1 item');
                 Y.Assert.areSame(locationJSON, params.items[0].location, 'Should provide location data of 1 item');
-                Y.Assert.areSame(resultJSON, params.items[0].location.contentInfo, 'Should provide content info data of 1 item');
+                Y.Assert.areSame(contentInfoJSON, params.items[0].location.contentInfo, 'Should provide content info data of 1 item');
                 Y.Assert.isFalse(params.loadingError, 'The `loadingError` should not be enabled');
 
                 return origTpl.apply(this, arguments);
