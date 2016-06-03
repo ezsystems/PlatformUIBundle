@@ -19,13 +19,11 @@ class Fields extends PlatformUI
 
     /**
      * @var EzSystems\PlatformBehatBundle\Context\Object\FieldTypeContext
-     * @Context $fieldtypeContext EzSystems\PlatformBehatBundle\Context\Object\FieldTypeContext
      */
     protected $fieldtypeContext;
 
     /**
      * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
-     * @Context $dashboardContext EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
      */
     protected $dashboardContext;
 

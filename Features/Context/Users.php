@@ -15,13 +15,11 @@ class Users extends PlatformUI
 {
     /**
      * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
-     * @Context $dashboardContext EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
      */
     protected $dashboardContext;
 
     /**
      * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
-     * @Context $browserContext EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
      */
     protected $browserContext;
 

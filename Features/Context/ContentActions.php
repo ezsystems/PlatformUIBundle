@@ -15,13 +15,11 @@ class ContentActions extends PlatformUI
 {
     /**
      * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\ContentEditContext
-     * @Context $contentEditContext EzSystems\PlatformUIBundle\Features\Context\SubContext\ContentEditContext
      */
     protected $contentEditContext;
 
     /**
      * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
-     * @Context $dashboardContext EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
      */
     protected $dashboardContext;
 

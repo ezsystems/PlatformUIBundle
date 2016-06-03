@@ -15,19 +15,17 @@ use EzSystems\PlatformUIBundle\Features\Context\PlatformUI;
 class ContentEditContext extends PlatformUI
 {
     /**
-     * @Context $basicContentContext EzSystems\PlatformBehatBundle\Context\Object\BasicContentContext
+     * @var EzSystems\PlatformBehatBundle\Context\Object\BasicContentContext
      */
     protected $basicContentContext;
 
     /**
      * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
-     * @Context $dashboardContext EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
      */
     protected $dashboardContext;
 
     /**
      * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
-     * @Context $browserContext EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
      */
     protected $browserContext;
 
