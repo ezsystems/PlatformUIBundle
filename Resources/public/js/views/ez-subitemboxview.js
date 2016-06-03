@@ -274,15 +274,32 @@ YUI.add('ez-subitemboxview', function (Y) {
             },
 
             /**
+             * The id of the media Content Type Group.
+             *
+             * @attribute mediaContentTypeGroupId
+             * @default '/api/ezp/v2/content/typegroups/3'
+             */
+            mediaContentTypeGroupId: {
+                value: '/api/ezp/v2/content/typegroups/3'
+            },
+
+            /**
              * The identifier of the currently displayed subitem view
-             * implementation.
+             * implementation. By default, the 'list' view is displayed unless
+             * the Content Type of the currently displayed Content is in the
+             * 'Media' Content Type Group.
              *
              * @attribute subitemViewIdentifier
              * @type {String}
-             * @default 'list'
+             * @default 'list' or 'grid'
              */
             subitemViewIdentifier: {
-                value: 'list',
+                valueFn: function () {
+                    if ( this.get('contentType').belongTo(this.get('mediaContentTypeGroupId')) ) {
+                        return 'grid';
+                    }
+                    return 'list';
+                },
             },
         }
     });

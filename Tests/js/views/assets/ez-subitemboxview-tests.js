@@ -5,6 +5,7 @@
 YUI.add('ez-subitemboxview-tests', function (Y) {
     var renderTest, addSubitemViewTest, forwardActiveTest, subitemViewChangeTest,
         switchViewTest, subitemViewsDefaultTest, expandTest, collapseClassTest,
+        subitemViewIdentifierTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -118,9 +119,16 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Mock();
+            this.contentType = new Mock();
+            Mock.expect(this.contentType, {
+                method: 'belongTo',
+                args: [Mock.Value.String],
+                returns: false,
+            });
             this.view = new Y.eZ.SubitemBoxView({
                 container: '.container',
                 location: this.location,
+                contentType: this.contentType,
                 subitemViews: [],
             });
         },
@@ -339,11 +347,18 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
         setUp: function () {
             Y.eZ.SubitemListView = Y.View;
             Y.eZ.SubitemGridView = Y.View;
+            this.contentType = new Mock();
+            Mock.expect(this.contentType, {
+                method: 'belongTo',
+                args: [Mock.Value.String],
+                returns: false,
+            });
+
             this.view = new Y.eZ.SubitemBoxView({
                 container: '.container',
                 location: {},
                 content: {},
-                contentType: {},
+                contentType: this.contentType,
                 config: {},
             });
         },
@@ -523,6 +538,52 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
         },
     });
 
+    subitemViewIdentifierTest = new Y.Test.Case({
+        name: "eZ Subitem Box View subitemViewIdentifier  test",
+
+        setUp: function () {
+            this.contentType = new Mock();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should use the 'list' view": function () {
+            Mock.expect(this.contentType, {
+                method: 'belongTo',
+                args: ['/api/ezp/v2/content/typegroups/3'],
+                returns: false,
+            });
+            this.view = new Y.eZ.SubitemBoxView({
+                subitemViews: [],
+                contentType: this.contentType,
+            });
+
+            Assert.areEqual(
+                'list', this.view.get('subitemViewIdentifier'),
+                "The 'list' view should be used by default"
+            );
+        },
+
+        "Should use the 'grid' view": function () {
+            Mock.expect(this.contentType, {
+                method: 'belongTo',
+                args: ['/api/ezp/v2/content/typegroups/3'],
+                returns: true,
+            });
+            this.view = new Y.eZ.SubitemBoxView({
+                subitemViews: [],
+                contentType: this.contentType,
+            });
+
+            Assert.areEqual(
+                'grid', this.view.get('subitemViewIdentifier'),
+                "The 'grid' view should be used by default"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Subitem Box View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(addSubitemViewTest);
@@ -532,4 +593,5 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
     Y.Test.Runner.add(subitemViewsDefaultTest);
     Y.Test.Runner.add(expandTest);
     Y.Test.Runner.add(collapseClassTest);
+    Y.Test.Runner.add(subitemViewIdentifierTest);
 }, '', {requires: ['view', 'test', 'node-event-simulate', 'ez-subitemboxview']});

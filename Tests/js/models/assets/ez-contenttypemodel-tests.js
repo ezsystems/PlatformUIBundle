@@ -4,7 +4,8 @@
  */
 YUI.add('ez-contenttypemodel-tests', function (Y) {
     var modelTest, hasFieldTypeTest, getFieldDefinitionIdentifiersTest,
-        Assert = Y.Assert;
+        belongToTest, loadGroupsFlagTest,
+        Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
         name: "eZ ContentType Model tests",
@@ -297,6 +298,48 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
                 "The default value of fieldDefinitions should be kept"
             );
         },
+
+        "Should not fill the `contentTypeGroupIds` attribute": function () {
+            var m = this.model,
+                response = {};
+
+            response.document = this.loadResponse;
+            m.setAttrs(m.parse(response));
+
+            Assert.isArray(
+                m.get('contentTypeGroupIds'),
+                "The content type group ids attribute should an array"
+            );
+            Assert.areEqual(
+                0, m.get('contentTypeGroupIds').length,
+                "The content type group ids attribute should be empty"
+            );
+        },
+
+        "Should fill the `contentTypeGroupIds` attribute": function () {
+            var m = this.model,
+                id1 = '1', id2 = '2',
+                response = {};
+
+            response.document = this.loadResponse;
+            response.document.ContentTypeGroups = [
+                {_href: id1}, {_href: id2},
+            ];
+            m.setAttrs(m.parse(response));
+
+            Assert.areEqual(
+                2, m.get('contentTypeGroupIds').length,
+                "The content type group ids attribute should contain 2 attributes"
+            );
+            Assert.isTrue(
+                m.get('contentTypeGroupIds').indexOf(id1) !== -1,
+                "The first id should be in the attribute"
+            );
+            Assert.isTrue(
+                m.get('contentTypeGroupIds').indexOf(id2) !== -1,
+                "The second id should be in the attribute"
+            );
+        },
     }));
 
     hasFieldTypeTest = new Y.Test.Case({
@@ -381,8 +424,173 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
         },
     });
 
+    belongToTest = new Y.Test.Case({
+        name: "eZ ContentType Model belongTo tests",
+
+        setUp: function () {
+            this.groupId1 = '1';
+            this.groupId2 = '2';
+            this.contentType = new Y.eZ.ContentType({
+                contentTypeGroupIds: [this.groupId1, this.groupId2],
+            });
+        },
+
+        tearDown: function () {
+            this.contentType.destroy();
+        },
+
+        "Should detect when the type belongs to a group": function () {
+            Assert.isTrue(
+                this.contentType.belongTo(this.groupId1),
+                "The content type belongs to the group 'group1'"
+            );
+        },
+
+        "Should detect when the type does not belong to a group": function () {
+            Assert.isFalse(
+                this.contentType.belongTo("whatever"),
+                "The content type does not belong to the group 'whatever'"
+            );
+        },
+    });
+
+    loadGroupsFlagTest = new Y.Test.Case({
+        name: "eZ ContentType Model loadGroups flag test tests",
+
+        setUp: function () {
+            this.capi = new Mock();
+            this.options = {
+                api: this.capi,
+                loadGroups: true,
+            };
+            this.typeService = new Mock();
+            this.id = '1';
+            this.contentType = new Y.eZ.ContentType({id: this.id});
+            this.loadingTypeError = {};
+            this.typeResponse = {
+                document: {}
+            };
+            this.groupIds = [];
+            this.groupResponse = {
+                document: {
+                    ContentTypeGroupRefList: {
+                        ContentTypeGroupRef: this.groupIds,
+                    }
+                }
+            };
+            this.loadingGroupError = {};
+
+            Mock.expect(this.capi, {
+                method: 'getContentTypeService',
+                returns: this.typeService,
+            });
+        },
+
+        _configureLoadContentType: function (fail) {
+            Mock.expect(this.typeService, {
+                method: 'loadContentType',
+                args: [this.id, Mock.Value.Function],
+                run: Y.bind(function (id, callback) {
+                    callback(fail ? this.loadingTypeError : false, this.typeResponse);
+                }, this),
+            });
+        },
+
+        _configureLoadContentTypeGroups: function (fail) {
+            Mock.expect(this.typeService, {
+                method: 'loadGroupsOfContentType',
+                args: [this.id, Mock.Value.Function],
+                run: Y.bind(function (id, callback) {
+                    callback(fail ? this.loadingGroupError : false, this.groupResponse);
+                }, this),
+            });
+        },
+
+        tearDown: function () {
+            this.contentType.destroy();
+        },
+
+        "Should load the group ids": function () {
+            var callbackCalled = false;
+
+            this._configureLoadContentType(false);
+            this._configureLoadContentTypeGroups(false);
+
+            this.contentType.sync('read', this.options, Y.bind(function (error, response) {
+                callbackCalled = true;
+
+                Assert.isFalse(
+                    error,
+                    "The error should be false"
+                );
+                Assert.areSame(
+                    this.typeResponse, response,
+                    "The response should be the type loading response"
+                );
+                Assert.areSame(
+                    this.groupIds, response.document.ContentTypeGroups,
+                    "The group ids should have been added to type loading response"
+                );
+            }, this));
+            Assert.isTrue(
+                callbackCalled,
+                "The callback should have been called"
+            );
+        },
+
+        "Should handle content type loading error": function () {
+            var callbackCalled = false;
+
+            this._configureLoadContentType(true);
+            this._configureLoadContentTypeGroups(false);
+
+            this.contentType.sync('read', this.options, Y.bind(function (error, response) {
+                callbackCalled = true;
+
+                Assert.areSame(
+                    this.loadingTypeError, error,
+                    "The error should be the loading type error object"
+                );
+                Assert.areSame(
+                    this.typeResponse, response,
+                    "The response should be the type loading response"
+                );
+            }, this));
+            Assert.isTrue(
+                callbackCalled,
+                "The callback should have been called"
+            );
+        },
+
+        "Should handle content type group ids loading error": function () {
+            var callbackCalled = false;
+
+            this._configureLoadContentType(false);
+            this._configureLoadContentTypeGroups(true);
+
+            this.contentType.sync('read', this.options, Y.bind(function (error, response) {
+                callbackCalled = true;
+
+                Assert.areSame(
+                    this.loadingGroupError, error,
+                    "The error should be the loading group error object"
+                );
+                Assert.areSame(
+                    this.groupResponse, response,
+                    "The response should be the group loading response"
+                );
+            }, this));
+            Assert.isTrue(
+                callbackCalled,
+                "The callback should have been called"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ ContentType Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(hasFieldTypeTest);
     Y.Test.Runner.add(getFieldDefinitionIdentifiersTest);
+    Y.Test.Runner.add(belongToTest);
+    Y.Test.Runner.add(loadGroupsFlagTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contenttypemodel', 'ez-restmodel']});
