@@ -73,11 +73,6 @@ class PlatformUI extends RawMinkContext
     protected $password = 'publish';
 
     /**
-     * Mapping of pages URL's.
-     */
-    protected $pageIdentifierMap = array();
-
-    /**
      * Stores the status of the platform.
      * @var int
      */
