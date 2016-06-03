@@ -107,7 +107,7 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
                 Y.Assert.areSame(contentJSON, params.items[0].content, 'Should provide content data of 1 item');
                 Y.Assert.areSame(contentTypeJSON, params.items[0].contentType, 'Should provide content type data of 1 item');
                 Y.Assert.areSame(locationJSON, params.items[0].location, 'Should provide location data of 1 item');
-                Y.Assert.areSame(contentInfoJSON, params.items[0].location.contentInfo, 'Should provide content info data of 1 item');
+                Y.Assert.areSame(contentInfoJSON, params.items[0].contentInfo, 'Should provide content info data of 1 item');
                 Y.Assert.isFalse(params.loadingError, 'The `loadingError` should not be enabled');
 
                 return origTpl.apply(this, arguments);
