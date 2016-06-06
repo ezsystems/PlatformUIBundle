@@ -11,7 +11,11 @@ YUI.add('ez-subitemgridview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var IS_PAGE_LOADING = 'is-page-loading';
+    function logDeprecatedWarning(what, replace) {
+        console.log('[DEPRECATED] `' + what + '` is deprecated');
+        console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
+        console.log('[DEPRECATED] Please use `' + replace + '` instead');
+    }
 
     /**
      * The subitem grid view.
@@ -21,45 +25,24 @@ YUI.add('ez-subitemgridview', function (Y) {
      * @constructor
      * @extends eZ.SubitemBaseView
      */
-    Y.eZ.SubitemGridView = Y.Base.create('subitemGridView', Y.eZ.SubitemBaseView, [Y.eZ.AsynchronousView], {
-        events: {
-            '.ez-subitemgrid-more': {
-                'tap': '_loadMore',
-            },
-        },
-
+    Y.eZ.SubitemGridView = Y.Base.create('subitemGridView', Y.eZ.SubitemBaseView, [Y.eZ.AsynchronousView, Y.eZ.LoadMorePagination], {
         initializer: function () {
             this._set('identifier', 'grid');
             this._set('name', 'Grid view');
             this._fireMethod = this._prepareInitialLoad;
             this._errorHandlingMethod = this._handleError;
 
-            /**
-             * Holds the grid item view instances for the current grid.
-             *
-             * @property _gridItemViews
-             * @protected
-             * @type Array<SubitemGridItemView>
-             */
-            this._gridItemViews = [];
+            this._ItemView = Y.eZ.SubitemGridItemView;
+            this._itemViewBaseConfig = {};
+            this._getExpectedItemsCount = this._getChildCount;
 
             this.after('offsetChange', function (e) {
                 if ( this.get('offset') >= 0 ) {
-                    this._uiLoading();
                     this._fireLocationSearch();
-                    this._disableLoadMore();
                 }
             });
-            this.after('subitemsChange', function (e) {
-                this._uiUpdatePagination();
-                this._appendGridItem(this._getNewlyAddedSubitems(e.newVal, e.prevVal));
-            });
-            this.after(['subitemsChange', 'loadingErrorChange'], this._uiEndLoading);
-        },
-
-        destructor: function () {
-            this._gridItemViews.forEach(function (item) {
-                item.destroy();
+            this.after('loadingErrorChange', function () {
+                this._set('loading', false);
             });
         },
 
@@ -98,117 +81,35 @@ YUI.add('ez-subitemgridview', function (Y) {
             }
         },
 
-        /**
-         * Updates the pagination displayed to the editor.
-         *
-         * @method _uiUpdatePagination
-         * @protected
-         */
-        _uiUpdatePagination: function () {
-            this._updateDisplayedCount();
-            this._updateMoreCount();
-            if ( this._countLoadedSubitems() < this.get('location').get('childCount') ) {
-                this._enableLoadMore();
-            }
-        },
-
-        /**
-         * Counts the number of loaded subitems.
-         *
-         * @method _countLoadedSubitems
-         * @protected
-         * @return {Number}
-         */
-        _countLoadedSubitems: function () {
-            return this.get('subitems') ? this.get('subitems').length : 0;
-        },
-
-        /**
-         * Returns the load more button
-         *
-         * @method _getLoadMore
-         * @protected
-         * @return {Y.Node}
-         */
-        _getLoadMore: function () {
-            return this.get('container').one('.ez-subitemgrid-more');
-        },
-
-        /**
-         * Disables the load more button
-         *
-         * @method _disableLoadMore
-         * @protected
-         */
-        _disableLoadMore: function () {
-            this._getLoadMore().set('disabled', true);
-        },
-
-        /**
-         * Enables the load more button
-         *
-         * @method _enableLoadMore
-         * @protected
-         */
-        _enableLoadMore: function () {
-            this._getLoadMore().set('disabled', false);
-        },
-
-        /**
-         * Updates the display count with the number of currently loaded
-         * subitems.
-         *
-         * @method _updateDisplayedCount
-         * @protected
-         */
-        _updateDisplayedCount: function () {
-            this.get('container').one('.ez-subitemgrid-display-count').setContent(
-                this._countLoadedSubitems()
-            );
-        },
-
-        /**
-         * Updates the more count in the load more button.
-         *
-         * @method _updateMoreCount
-         * @protected
-         */
-        _updateMoreCount: function () {
-            var moreCount = Math.min(
-                    this.get('limit'),
-                    this.get('location').get('childCount') - this._countLoadedSubitems()
-                );
-
-            if ( !moreCount ) {
-                moreCount = this.get('limit');
-            }
-            this.get('container').one('.ez-subitemgrid-more-count').setContent(moreCount);
-        },
 
         /**
          * Sets the UI in the loading the state
          *
          * @protected
+         * @deprecated
          * @method _uiLoading
          */
         _uiLoading: function () {
-            this.get('container').addClass(IS_PAGE_LOADING);
+            logDeprecatedWarning('_uiLoading', '_uiPageLoading');
+            this._uiPageLoading();
         },
 
         /**
          * Removes the loading state of the UI
          *
          * @method _uiEndLoading
+         * @deprecated
          * @protected
          */
         _uiEndLoading: function () {
-            this.get('container').removeClass(IS_PAGE_LOADING);
+            logDeprecatedWarning('_uiEndLoading', '_uiPageEndLoading');
+            this._uiPageEndLoading();
         },
 
         render: function () {
-            var subitemCount = this.get('location').get('childCount');
+            var subitemCount = this._getChildCount();
 
-            if ( !this.get('subitems') ) {
+            if ( !this.get('items') ) {
                 this.get('container').setHTML(this.template({
                     limit: this.get('limit'),
                     subitemCount: subitemCount,
@@ -223,49 +124,27 @@ YUI.add('ez-subitemgridview', function (Y) {
          * Appends a rendred grid item view for the last loaded subitem.
          *
          * @method _appendGridItem
+         * @deprecated
          * @protected
          * @param {Array} newSubitems
          */
         _appendGridItem: function (newSubitems) {
-            var gridContent = this.get('container').one('.ez-subitemgrid-content');
-
-            newSubitems.forEach(function (struct) {
-                var itemView = new Y.eZ.SubitemGridItemView(struct);
-
-                itemView.addTarget(this);
-                this._gridItemViews.push(itemView);
-                gridContent.append(
-                    itemView.render().get('container')
-                );
-                itemView.set('active', true);
-            }, this);
+            logDeprecatedWarning('_appendGridItem', '_appendItems');
+            this._appendItems(newSubitems);
+            this._gridItemViews = this._itemViews;
         },
 
         /**
-         * Return an array containing the subitems that we want to append
-         * in the grid view.
+         * Counts the number of loaded items.
          *
-         * @method _getNewlyAddedSubitems
-         * @private
-         * @param {Array} subitemNewVal an array containing the new subitems.
-         * @param {Array} subitemPrevVal an array containing the old subitems.
-         */
-        _getNewlyAddedSubitems: function (subitemNewVal, subitemPrevVal) {
-            var subitemPreviousCount = subitemPrevVal ? subitemPrevVal.length : 0,
-                subitemNewCount = subitemNewVal.length;
-
-            return this.get('subitems').slice(subitemPreviousCount - subitemNewCount);
-        },
-
-        /**
-         * `tap` event handler on the load more button.
-         *
-         * @method _loadMore
+         * @method _countLoadedSubitems
+         * @deprecated
          * @protected
+         * @return {Number}
          */
-        _loadMore: function (e) {
-            e.preventDefault();
-            this.set('offset', this.get('offset') + this.get('limit'));
+        _countLoadedSubitems: function () {
+            logDeprecatedWarning('_countLoadedSubitems', '_countLoadedItems');
+            return this._countLoadedItems();
         },
 
         /**
@@ -281,7 +160,7 @@ YUI.add('ez-subitemgridview', function (Y) {
             this.set('loadingError', false);
             this.fire('locationSearch', {
                 viewName: 'subitemgrid-' + locationId,
-                resultAttribute: 'subitems',
+                resultAttribute: 'items',
                 loadContentType: true,
                 loadContent: true,
                 search: {
@@ -306,45 +185,20 @@ YUI.add('ez-subitemgridview', function (Y) {
     }, {
         ATTRS: {
             /**
-             * The max number of the Locations to display per 'show more'
-             * session
-             *
-             * @attribute limit
-             * @default 10
-             * @type Number
-             */
-            limit: {
-                value: 10,
-            },
-
-            /**
-             * The offset in the Location list. A value below zero means no
-             * loading has not been made yet.
-             *
-             * @attribute offset
-             * @default minus the limit
-             * @type Number
-             */
-            offset: {
-                valueFn: function () {
-                    return -1 * this.get('limit');
-                },
-            },
-
-            /**
-             * The subitems list.
+             * The subitems list. This attribute is deprecated, it will be
+             * removed in PlatformUI 2.0. Use `items` instead.
              *
              * @attribute subitems
+             * @deprecated
              * @type Array of {Object} array containing location structs
              */
             subitems: {
-                setter: function (value) {
-                    var current = this.get('subitems');
-
-                    if ( current ) {
-                        return current.concat(value);
-                    }
-                    return value;
+                setter: function (value, attr, info) {
+                    this.set('items', value);
+					return this.get('items');
+                },
+                getter: function () {
+                    return this.get('items');
                 },
             },
         }

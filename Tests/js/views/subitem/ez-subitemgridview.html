@@ -7,11 +7,11 @@
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="subitemgridview-ez-template">
-    display count: <strong class="ez-subitemgrid-display-count"></strong>
-    <button class="ez-subitemgrid-more" disabled>
-        Show <span class="ez-subitemgrid-more-count">{{ limit }}</span>
+    display count: <strong class="ez-loadmorepagination-display-count"></strong>
+    <button class="ez-loadmorepagination-more" disabled>
+        Show <span class="ez-loadmorepagination-more-count">{{ limit }}</span>
     </button>
-    <div class="ez-subitemgrid-content"></div>
+    <div class="ez-loadmorepagination-content"></div>
 </script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -34,7 +34,7 @@
         filter: loaderFilter,
         modules: {
             "ez-subitemgridview": {
-                requires: ['ez-subitembaseview', 'ez-asynchronousview', 'event-tap'],
+                requires: ['ez-subitembaseview', 'ez-asynchronousview', 'ez-loadmorepagination'],
                 fullpath: "../../../../Resources/public/js/views/subitem/ez-subitemgridview.js"
             },
             "ez-subitembaseview": {
@@ -44,6 +44,10 @@
             "ez-asynchronousview": {
                 requires: ['view', 'event-tap'],
                 fullpath: "../../../../Resources/public/js/extensions/ez-asynchronousview.js"
+            },
+            "ez-loadmorepagination": {
+                requires: ['view', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-loadmorepagination.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],

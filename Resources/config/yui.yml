@@ -375,7 +375,7 @@ system:
                         - 'ez-subitembaseview'
                         - 'ez-subitemgriditemview'
                         - 'ez-asynchronousview'
-                        - 'event-tap'
+                        - 'ez-loadmorepagination'
                         - 'subitemgridview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemgridview.js
                 subitemgridview-ez-template:
@@ -1232,6 +1232,9 @@ system:
                 ez-asynchronousview:
                     requires: ['view', 'event-tap']
                     path: %ez_platformui.public_dir%/js/extensions/ez-asynchronousview.js
+                ez-loadmorepagination:
+                    requires: ['view', 'event-tap']
+                    path: %ez_platformui.public_dir%/js/extensions/ez-loadmorepagination.js
                 ez-expandable:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js

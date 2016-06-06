@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-subitemgridview-tests', function (Y) {
-    var renderTest, subitemSetterTest, loadSubitemsTest, gridItemTest,
+    var renderTest, itemSetterTest, loadSubitemsTest, gridItemTest,
         loadingStateTest, paginationUpdateTest, loadMoreTest, errorHandlingTest,
         gridItemsDoNotDuplicateTest,
         Assert = Y.Assert,
@@ -31,6 +31,15 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+        },
+
+        "Should set the loadmorepagination class on the container": function () {
+            this.view.render();
+
+            Assert.isTrue(
+                this.view.get('container').hasClass('ez-loadmorepagination'),
+                "The view container should get the loadmorepagination"
+            );
         },
 
         "Should render the view with the template": function () {
@@ -93,7 +102,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         "Should not render the view when the subitems are loaded": function () {
             this.view.render();
-            this.view.set('subitems', []);
+            this.view.set('items', []);
             this.view.get('container').append('<p class="test-stamp">Stamp</p>');
             this.view.render();
 
@@ -104,17 +113,17 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
         },
     });
 
-    subitemSetterTest = new Y.Test.Case({
-        name: "eZ Subitem Grid View subitems setter test",
+    itemSetterTest = new Y.Test.Case({
+        name: "eZ Subitem Grid View items setter test",
 
         setUp: function () {
             this.location = new Y.Model({
                 childCount: 5,                          
             });
+            Y.eZ.SubitemGridItemView = Y.View;
             this.view = new Y.eZ.SubitemGridView({
                 location: this.location,
             });
-            Y.eZ.SubitemGridItemView = Y.View;
             this.view.render();
         },
 
@@ -126,10 +135,10 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
         "Should set the value": function () {
             var initialValue = [];
 
-            this.view.set('subitems', initialValue);
+            this.view.set('items', initialValue);
 
             Assert.areSame(
-                initialValue, this.view.get('subitems'),
+                initialValue, this.view.get('items'),
                 "The inital value should be set untouched"
             );
         },
@@ -139,24 +148,24 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
                 subitem = {location: new Y.Model(), content: new Y.Model(), contentType: new Y.Model()},
                 secondValue = [subitem];
 
-            this.view.set('subitems', initialValue);
-            this.view.set('subitems', secondValue);
+            this.view.set('items', initialValue);
+            this.view.set('items', secondValue);
 
             Assert.isArray(
-                this.view.get('subitems'),
+                this.view.get('items'),
                 "A new array should have been created"
             );
             Assert.areNotSame(
-                initialValue, this.view.get('subitems'),
+                initialValue, this.view.get('items'),
                 "A new array should have been created"
             );
             Assert.areNotSame(
-                secondValue, this.view.get('subitems'),
+                secondValue, this.view.get('items'),
                 "A new array should have been created"
             );
             Assert.isTrue(
-                this.view.get('subitems').indexOf(subitem) !== -1,
-                "The subitems attribute should contain the contain of the second value"
+                this.view.get('items').indexOf(subitem) !== -1,
+                "The items attribute should contain the contain of the second value"
             );
         },
     });
@@ -180,9 +189,9 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         _assertLocationSearchParams: function (evt) {
             Assert.areEqual(
-                "subitems",
+                "items",
                 evt.resultAttribute,
-                "The result of the loading should be placed in the subitems attribute"
+                "The result of the loading should be placed in the items attribute"
             );
             Assert.isTrue(
                 evt.loadContentType,
@@ -311,8 +320,8 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
                 gridItems,
                 i = 0;
 
-            this.view.set('subitems', subitems);
-            gridItems = container.all('.ez-subitemgrid-content div');
+            this.view.set('items', subitems);
+            gridItems = container.all('.ez-loadmorepagination-content div');
 
             Assert.areEqual(
                 subitems.length,
@@ -350,7 +359,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
                 container = this.view.get('container'),
                 gridItems;
 
-            this.view.set('subitems', subitems);
+            this.view.set('items', subitems);
             gridItems = container.all('.ez-subitemgrid-content div');
 
             gridItems.each(function (gridContainer) {
@@ -369,7 +378,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
                 container = this.view.get('container'),
                 gridItems;
 
-            this.view.set('subitems', subitems);
+            this.view.set('items', subitems);
             gridItems = container.all('.ez-subitemgrid-content div');
 
             gridItems.each(function (gridContainer) {
@@ -408,7 +417,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         "Should be in 'normal' state": function () {
             this.view.set('offset', this.view.get('limit'));
-            this.view.set('subitems', []);
+            this.view.set('items', []);
 
             Assert.isFalse(
                 this.view.get('container').hasClass('is-page-loading'),
@@ -436,11 +445,11 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
         "Should disable the load more button when offset is changing": function () {
             var container = this.view.get('container');
 
-            container.one('.ez-subitemgrid-more').set('disabled', false);
+            container.one('.ez-loadmorepagination-more').set('disabled', false);
             this.view.set('offset', this.view.get('limit'));
 
             Assert.isTrue(
-                container.one('.ez-subitemgrid-more').get('disabled'),
+                container.one('.ez-loadmorepagination-more').get('disabled'),
                 "The load more button should be disabled while loading content"
             );
         },
@@ -449,12 +458,12 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
             var container = this.view.get('container'),
                 offset = this.location.get('childCount') - 1;
 
-            container.one('.ez-subitemgrid-more').set('disabled', false);
+            container.one('.ez-loadmorepagination-more').set('disabled', false);
             this.view.set('offset', offset);
-            this.view.set('subitems', this._getSubItemStructs(offset));
+            this.view.set('items', this._getSubItemStructs(offset));
 
             Assert.isFalse(
-                container.one('.ez-subitemgrid-more').get('disabled'),
+                container.one('.ez-loadmorepagination-more').get('disabled'),
                 "The load more button should be enabled"
             );
         },
@@ -463,12 +472,12 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
             var container = this.view.get('container'),
                 offset = this.location.get('childCount') + 1;
 
-            container.one('.ez-subitemgrid-more').set('disabled', false);
+            container.one('.ez-loadmorepagination-more').set('disabled', false);
             this.view.set('offset', offset);
-            this.view.set('subitems', this._getSubItemStructs(offset));
+            this.view.set('items', this._getSubItemStructs(offset));
 
             Assert.isTrue(
-                container.one('.ez-subitemgrid-more').get('disabled'),
+                container.one('.ez-loadmorepagination-more').get('disabled'),
                 "The load more button should be disabled"
             );
         },
@@ -479,10 +488,10 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
             var container = this.view.get('container');
 
             this.view.set('offset', this.view.get('limit'));
-            this.view.set('subitems', this._getSubItemStructs(this.view.get('limit')));
+            this.view.set('items', this._getSubItemStructs(this.view.get('limit')));
             Assert.areEqual(
-                this.view.get('subitems').length,
-                container.one('.ez-subitemgrid-display-count').getContent(),
+                this.view.get('items').length,
+                container.one('.ez-loadmorepagination-display-count').getContent(),
                 "The displayed content count should have been updated"
             );
         },
@@ -491,11 +500,11 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
             var container = this.view.get('container');
 
             this.view.set('offset', offset);
-            this.view.set('subitems', this._getSubItemStructs(offset));
+            this.view.set('items', this._getSubItemStructs(offset));
 
             Assert.areEqual(
                 expectedMoreCount,
-                container.one('.ez-subitemgrid-more-count').getContent(),
+                container.one('.ez-loadmorepagination-more-count').getContent(),
                 "The more content count should have been updated"
             );
         },
@@ -540,7 +549,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         "Should ignore tap when disabled": function () {
             var offset = this.view.get('offset'),
-                button = this.view.get('container').one('.ez-subitemgrid-more');
+                button = this.view.get('container').one('.ez-loadmorepagination-more');
 
             button.set('disabled', true);
             button.simulateGesture('tap', this.next(function () {
@@ -554,7 +563,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         "Should update the offset": function () {
             var offset = this.view.get('offset'),
-                button = this.view.get('container').one('.ez-subitemgrid-more');
+                button = this.view.get('container').one('.ez-loadmorepagination-more');
 
             button.set('disabled', false);
             button.simulateGesture('tap', this.next(function () {
@@ -625,7 +634,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
         "Should handle loading error": function () {
             var notified = false;
 
-            this.view.set('subitems', this._getSubItemStructs(this.view.get('limit')));
+            this.view.set('items', this._getSubItemStructs(this.view.get('limit')));
             this.view.set('offset', this.view.get('limit'));
 
             this.view.on('notify', Y.bind(function (e) {
@@ -687,20 +696,20 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
                 container = this.view.get('container'),
                 gridItems;
 
-            this.view.set('subitems', subitems);
-            gridItems = container.all('.ez-subitemgrid-content div');
+            this.view.set('items', subitems);
+            gridItems = container.all('.ez-loadmorepagination-content div');
             Assert.areEqual(
                 subitems.length,
                 gridItems.size(),
                 "There should be one grid item per subitem"
             );
 
-            this.view.set('subitems', [this._getSubItemStruct(11)]);
+            this.view.set('items', [this._getSubItemStruct(11)]);
 
-            gridItems = container.all('.ez-subitemgrid-content div');
+            gridItems = container.all('.ez-loadmorepagination-content div');
 
             Assert.areEqual(
-                this.view.get('subitems').length,
+                this.view.get('items').length,
                 gridItems.size(),
                 "There should be one grid item per subitem"
             );
@@ -709,7 +718,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Subitem Grid View tests");
     Y.Test.Runner.add(renderTest);
-    Y.Test.Runner.add(subitemSetterTest);
+    Y.Test.Runner.add(itemSetterTest);
     Y.Test.Runner.add(loadSubitemsTest);
     Y.Test.Runner.add(gridItemTest);
     Y.Test.Runner.add(loadingStateTest);
