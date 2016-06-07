@@ -15,26 +15,29 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
 
     Y.eZ.DashboardBlockBaseView = Y.Base.create('dashboardBlockBaseView', Y.View, [], {}, {
         ATTRS: {
-           priority: {},
+            priority: {},
             identifier: {}
         }
     });
+
+    Y.eZ.DashboardBlockAllContentView = Y.eZ.DashboardBlockBaseView;
 
     renderTest = new Y.Test.Case({
         name: 'eZ Dashboard Blocks View render test',
 
         setUp: function () {
-            this.view = new View(VIEW_CONFIG);
+            this.view = new View(Y.merge(VIEW_CONFIG, {rootLocation: new Y.Base()}));
         },
 
         tearDown: function () {
             this.view.destroy();
         },
 
-        'Should render view correctly': function () {
+        'Should render view': function () {
             var view = this.view,
                 templateCalled = false,
-                origTpl = view.template;
+                origTpl = view.template,
+                block = this.view.get('blocks')[0];
 
             view.template = function () {
                 templateCalled = true;
@@ -42,14 +45,11 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
                 return origTpl.apply(this, arguments);
             };
 
-            view.addBlock(new Y.eZ.DashboardBlockBaseView({
-                priority: 1,
-                identifier: 'A'
-            }));
             this.view.render();
 
             Y.Assert.isTrue(templateCalled, 'The template should have been used to render view');
             Y.Assert.areSame(1, view.get('container').one(SELECTOR_CONTENT).get('children').size(), 'Should render one block inside');
+            Y.Assert.areSame(view.get('rootLocation'), block.get('rootLocation'), 'Should pass `rootLocation` model to block view instance');
         }
     });
 
@@ -58,6 +58,7 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
 
         setUp: function () {
             this.view = new View(VIEW_CONFIG);
+            this.view._set('blocks', []);
         },
 
         tearDown: function () {
@@ -123,8 +124,8 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
 
             Y.Assert.areSame(view, block1.getTargets()[0], 'The dashboard view should be a target of a first block');
             Y.Assert.areSame(view, block2.getTargets()[0], 'The dashboard view should be a target of a second block');
-            Y.Assert.areSame(viewActiveState, block1.get('active'), 'A first block should have the same active state as dashbaord view');
-            Y.Assert.areSame(viewActiveState, block2.get('active'), 'A second block should have the same active state as dashbaord view');
+            Y.Assert.areSame(viewActiveState, block1.get('active'), 'A first block should have the same active state as dashboard view');
+            Y.Assert.areSame(viewActiveState, block2.get('active'), 'A second block should have the same active state as dashboard view');
             Y.Assert.areSame(2, blocks.length, 'There should be 2 block view instances available');
             Y.Assert.areSame(block1Config.identifier, blocks[1].get('identifier'), 'Should order blocks correctly');
         }
@@ -135,6 +136,7 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
 
         setUp: function () {
             this.view = new View(VIEW_CONFIG);
+            this.view._set('blocks', []);
         },
 
         tearDown: function () {

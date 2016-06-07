@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>eZ Dashboard All Content Block View tests</title>
+</head>
+<body>
+<div class="container"></div>
+<div class="outside"></div>
+
+<script type="text/x-handlebars-template" id="dashboardblockallcontentview-ez-template" >
+    <table>
+        <tbody class="ez-allcontent-block-content">
+        {{#each items}}
+            <tr class="ez-allcontent-block-row">
+                <td>{{ contentInfo.name }}</td>
+                <td>{{ lookup contentType.names contentInfo.mainLanguageCode }}</td>
+                <td>{{ content.currentVersion.versionNo }}</td>
+                <td>
+                    {{ contentInfo.lastModificationDate }}
+                    <div class="ez-allcontent-block-row-options"></div>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</script>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-dashboardblockallcontentview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter = (filter !== 'coverage') ? filter : {
+            searchExp: '/Resources/public/js/',
+            replaceStr: '/Tests/instrument/Resources/public/js/'
+        };
+
+    YUI({
+        coverage: ['ez-dashboardblockallcontentview'],
+        filter: loaderFilter,
+        modules: {
+            'ez-dashboardblockallcontentview': {
+                requires: ['ez-dashboardblockbaseview', 'ez-asynchronousview', 'event-tap', 'event-outside'],
+                fullpath: '../../../../Resources/public/js/views/dashboard/ez-dashboardblockallcontentview.js'
+            },
+            'ez-dashboardblockbaseview': {
+                requires: ['ez-templatebasedview'],
+                fullpath: '../../../../Resources/public/js/views/dashboard/ez-dashboardblockbaseview.js'
+            },
+            'ez-templatebasedview': {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: '../../../../Resources/public/js/views/ez-templatebasedview.js'
+            },
+            'ez-view': {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: '../../../../Resources/public/js/views/ez-view.js'
+            },
+            'ez-asynchronousview': {
+                requires: ['view', 'event-tap'],
+                fullpath: '../../../../Resources/public/js/extensions/ez-asynchronousview.js'
+            },
+            'ez-pluginregistry': {
+                requires: ['array-extras'],
+                fullpath: '../../../../Resources/public/js/services/ez-pluginregistry.js'
+            },
+        }
+    }).use('ez-dashboardblockallcontentview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

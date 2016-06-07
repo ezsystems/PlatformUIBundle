@@ -1,0 +1,89 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-header {
+    background: #4a4a4a;
+    color: #fff;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-wrapper {
+    border-color: #d2d2d2;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-content {
+    background: #fdfdfd;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-content:before {
+    display: block;
+    content: '';
+    width: 1em;
+    height: 1em;
+    padding: 0;
+    position: absolute;
+    z-index: 2;
+    bottom: .5em;
+    left: calc(50% - .5em);
+    font-family: 'ez-platformui-icomoon';
+    font-size: 1.5em;
+}
+
+.ez-view-dashboardblockallcontentview.is-loading .ez-allcontent-block-content:before {
+    content: '\e61c';
+    -webkit-animation: spin .7s infinite linear;
+            animation: spin .7s infinite linear;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-row {
+    cursor: pointer;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-row:nth-child(even) {
+    background: #f2f2f2;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-row.is-row-selected [class*="ez-allcontent-block-cell-"] {
+    background: #f0a68d;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-row-options {
+    transform: translate3d(100%, -50%, 0) scaleX(0);
+    transform-origin: top left;
+    transition: transform .3s cubic-bezier(.25,.8,.25,1);
+    background: #f0a68d;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-row.is-row-selected .ez-allcontent-block-row-options {
+    transform: translate3d(100%, -50%, 0) scaleX(1);
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-row-options .ez-font-icon {
+    font-size: 140%;
+    text-align: center;
+    color: #fff;
+    transition: background .3s cubic-bezier(.25,.8,.25,1);
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-row-options .ez-font-icon:hover {
+    background: #d6947e;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-row-options .ez-font-icon:before {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-option-edit:before {
+    content: '\E606';
+}
+
+.ez-view-dashboardblockallcontentview .ez-allcontent-block-option-view:before {
+    content: '\E607';
+}
