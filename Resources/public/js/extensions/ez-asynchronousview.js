@@ -7,7 +7,7 @@ YUI.add('ez-asynchronousview', function (Y) {
     /**
      * Provides the Asynchronous extension for the view
      *
-     * @module ez-expandable
+     * @module ez-asynchronousview
      */
     Y.namespace('eZ');
 
