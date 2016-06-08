@@ -3,7 +3,10 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-usermodel-tests', function (Y) {
-    var modelTest;
+    'use strict';
+
+    var modelTest,
+        loadDraftsTest;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
         name: "eZ User Model tests",
@@ -188,7 +191,104 @@ YUI.add('ez-usermodel-tests', function (Y) {
         },
     }));
 
+    loadDraftsTest = new Y.Test.Case({
+        name: "eZ User Model loadDrafts() method tests",
+
+        setUp: function () {
+            this.modelId = 'permanent-vacation';
+            this.capiMock = new Y.Mock();
+            this.contentServiceMock = new Y.Mock();
+            this.model = new Y.eZ.User({id: this.modelId});
+
+            Y.Mock.expect(this.capiMock, {
+                method: 'getContentService',
+                returns: this.contentServiceMock
+            });
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+
+            delete this.modelId;
+            delete this.capiMock;
+            delete this.model;
+        },
+
+        "Should load user drafts": function () {
+            var isCallbackCalled = false,
+                draftHash = {
+                    "Version":{"_href":"/api/ezp/v2/content/objects/116/versions/3"},
+                    "VersionInfo":{
+                        "id":709,
+                        "versionNo":3,
+                        "status":"DRAFT",
+                        "modificationDate":"2016-06-03T14:20:49+02:00",
+                        "Creator":{"_href":"/api/ezp/v2/user/users/14"},
+                        "creationDate":"2016-06-03T14:20:49+02:00",
+                        "initialLanguageCode":"eng-GB",
+                        "languageCodes":"eng-GB",
+                        "names":{"value":[{"_languageCode":"eng-GB","#text":"2 zones"}]},
+                        "Content":{"_href":"/api/ezp/v2/content/objects/116"}
+                    }
+                },
+                loadUserDraftsResponse = {document: {VersionList: {VersionItem: [draftHash]}}},
+                loadDraftsCallback = function (error, response) {
+                    isCallbackCalled = true;
+
+                    Y.Assert.isFalse(error, 'Should not throw error');
+                    Y.Assert.areSame(
+                        loadUserDraftsResponse.document.VersionList.VersionItem.length,
+                        response.length,
+                        'Should return one draft model'
+                    );
+                    Y.Assert.isInstanceOf(Y.eZ.VersionInfo, response[0], 'Should return a correct model instance - Y.eZ.VersionInfo');
+                    Y.Assert.areSame(draftHash.Version._href, response[0].get('id'), 'Should set model id correctly');
+                };
+
+            Y.Mock.expect(this.contentServiceMock, {
+                method: 'loadUserDrafts',
+                args: [this.modelId, Y.Mock.Value.Function],
+                run: function (id, callback) {
+                    callback(false, loadUserDraftsResponse);
+                }
+            });
+
+            this.model.loadDrafts({api: this.capiMock}, loadDraftsCallback);
+
+            Y.Assert.isTrue(isCallbackCalled, 'Should run the provided callback');
+
+            Y.Mock.verify(this.capiMock);
+            Y.Mock.verify(this.contentServiceMock);
+        },
+
+        "Should throw an error while trying to load user drafts": function () {
+            var isCallbackCalled = false,
+                loadUserDraftsResponse = {message: 'Error occurred!'},
+                loadDraftsCallback = function (error, response) {
+                    isCallbackCalled = true;
+
+                    Y.Assert.isTrue(error, 'Should throw an error');
+                    Y.Assert.areSame(loadUserDraftsResponse, response, 'Should return error response');
+                };
+
+            Y.Mock.expect(this.contentServiceMock, {
+                method: 'loadUserDrafts',
+                args: [this.modelId, Y.Mock.Value.Function],
+                run: function (id, callback) {
+                    callback(true, loadUserDraftsResponse);
+                }
+            });
+
+            this.model.loadDrafts({api: this.capiMock}, loadDraftsCallback);
+
+            Y.Assert.isTrue(isCallbackCalled, 'Should run the provided callback');
+
+            Y.Mock.verify(this.capiMock);
+            Y.Mock.verify(this.contentServiceMock);
+        }
+    });
+
     Y.Test.Runner.setName("eZ User Model tests");
     Y.Test.Runner.add(modelTest);
-
+    Y.Test.Runner.add(loadDraftsTest);
 }, '', {requires: ['test', 'model-tests', 'ez-usermodel', 'ez-restmodel']});

@@ -1013,7 +1013,7 @@ system:
                     requires: ['ez-restmodel', 'ez-contentinfomodel']
                     path: %ez_platformui.public_dir%/js/models/ez-trashitemmodel.js
                 ez-usermodel:
-                    requires: ['ez-restmodel']
+                    requires: ['ez-restmodel', 'ez-versioninfomodel']
                     path: %ez_platformui.public_dir%/js/models/ez-usermodel.js
                 ez-contenttypemodel:
                     requires: ['ez-restmodel']

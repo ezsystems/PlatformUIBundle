@@ -26,9 +26,15 @@
         modules: {
             "ez-usermodel": {
                 requires: [
-                    'ez-restmodel'
+                    'ez-restmodel', 'ez-versioninfomodel'
                 ],
                 fullpath: "../../../Resources/public/js/models/ez-usermodel.js"
+            },
+            "ez-versioninfomodel": {
+                requires: [
+                    'ez-restmodel'
+                ],
+                fullpath: "../../../Resources/public/js/models/ez-versioninfomodel.js"
             },
             "ez-restmodel": {
                 requires: [
