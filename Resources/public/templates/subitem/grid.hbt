@@ -1,13 +1,13 @@
 {{#if subitemCount }}
-    <div class="ez-subitemgrid-content"></div>
+    <div class="ez-loadmorepagination-content"></div>
     <div class="ez-subitemgrid-pagination">
         <p>
-            viewing <strong class="ez-subitemgrid-display-count">{{ displayCount }}</strong>
+            viewing <strong class="ez-loadmorepagination-display-count">{{ displayCount }}</strong>
             out of <strong>{{ subitemCount }}</strong> sub-items
         </p>
         <p>
-            <button class="pure-button ez-button ez-subitemgrid-more ez-font-icon" disabled>
-                Show <span class="ez-subitemgrid-more-count">{{ limit }}</span> more results
+            <button class="pure-button ez-button ez-loadmorepagination-more ez-font-icon" disabled>
+                Show <span class="ez-loadmorepagination-more-count">{{ limit }}</span> more results
             </button>
         </p>
     </div>

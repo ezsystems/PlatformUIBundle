@@ -3,12 +3,12 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-view-subitemgridview .ez-subitemgrid-more {
+.ez-loadmorepagination .ez-loadmorepagination-more {
     font-size: 110%;
 }
 
-.ez-view-subitemgridview .ez-subitemgrid-more:before,
-.ez-view-subitemgridview .ez-subitemgrid-more:after {
+.ez-loadmorepagination .ez-loadmorepagination-more:before,
+.ez-loadmorepagination .ez-loadmorepagination-more:after {
     display: inline-block;
     content: " ";
     width: 1em;
@@ -16,7 +16,7 @@
     padding: 0;
 }
 
-.ez-view-subitemgridview.is-page-loading .ez-subitemgrid-more:before {
+.ez-loadmorepagination.is-page-loading .ez-loadmorepagination-more:before {
     content: "\e61c";
     -webkit-animation: spin 0.7s infinite linear;
             animation: spin 0.7s infinite linear;

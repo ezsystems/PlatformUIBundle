@@ -255,7 +255,7 @@ YUI.add('ez-subitemboxview', function (Y) {
                 writeOnce: 'initOnly',
                 valueFn: function () {
                     return [
-                        new Y.eZ.SubitemListView({
+                        new Y.eZ.SubitemListMoreView({
                             location: this.get('location'),
                             content: this.get('content'),
                             contentType: this.get('contentType'),
@@ -298,7 +298,7 @@ YUI.add('ez-subitemboxview', function (Y) {
                     if ( this.get('contentType').belongTo(this.get('mediaContentTypeGroupId')) ) {
                         return 'grid';
                     }
-                    return 'list';
+                    return 'listmore';
                 },
             },
         }

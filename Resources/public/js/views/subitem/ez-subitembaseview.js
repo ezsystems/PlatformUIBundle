@@ -19,7 +19,18 @@ YUI.add('ez-subitembaseview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.SubitemBaseView = Y.Base.create('subitemBaseView', Y.eZ.TemplateBasedView, [], {}, {
+    Y.eZ.SubitemBaseView = Y.Base.create('subitemBaseView', Y.eZ.TemplateBasedView, [], {
+        /**
+         * Returns the Location children count
+         *
+         * @method _getChildCount
+         * @protected
+         * @return {Number}
+         */
+        _getChildCount: function () {
+            return this.get('location').get('childCount');
+        },
+    }, {
         ATTRS: {
             /**
              * Identifier of the subitem view.

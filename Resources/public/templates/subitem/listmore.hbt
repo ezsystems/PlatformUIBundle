@@ -1,0 +1,26 @@
+{{#if location.childCount}}
+    <table class="ez-subitemlist-table pure-table pure-table-bordered">
+        <thead>
+        <tr>
+            {{#each columns}}
+            <th class="ez-subitem-{{ identifier }}-column">{{ name }}</th>
+            {{/each}}
+        </tr>
+        </thead>
+        <tbody class="ez-subitemlist-content ez-loadmorepagination-content"></tbody>
+    </table>
+
+    <div class="ez-subitemlist-pagination">
+        <p>
+            viewing <strong class="ez-loadmorepagination-display-count">{{ displayCount }}</strong>
+            out of <strong>{{ location.childCount }}</strong> sub-items
+        </p>
+        <p>
+            <button class="pure-button ez-button ez-loadmorepagination-more ez-font-icon" disabled>
+                Show <span class="ez-loadmorepagination-more-count">{{ limit }}</span> more results
+            </button>
+        </p>
+    </div>
+{{else}}
+    <p class="ez-subitemlist-no-sub-items">This location has no sub-item.</p>
+{{/if}}

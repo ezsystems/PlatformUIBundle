@@ -7,7 +7,7 @@
     margin: 1em;
 }
 
-.ez-view-subitemgridview .ez-subitemgrid-content {
+.ez-view-subitemgridview .ez-loadmorepagination-content {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;

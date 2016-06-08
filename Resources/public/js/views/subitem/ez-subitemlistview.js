@@ -5,9 +5,10 @@
 YUI.add('ez-subitemlistview', function (Y) {
     "use strict";
     /**
-     * Provides the subitem list view.
+     * Provides the subitem list view. This module is deprecated
      *
      * @module ez-subitemlistview
+     * @deprecated
      */
     Y.namespace('eZ');
 
@@ -18,11 +19,16 @@ YUI.add('ez-subitemlistview', function (Y) {
         return link.hasClass(IS_DISABLED);
     }
 
+    console.log('[DEPRECRATED] eZ.SubitemListView is deprecated');
+    console.log('[DEPRECRATED] it will be removed from PlatformUI 2.0');
+    console.log('[DEPRECRATED] use eZ.SubitemListMoreView instead');
+
     /**
      * The subitem list view.
      *
      * @namespace eZ
      * @class SubitemListView
+     * @deprecated
      * @constructor
      * @extends eZ.SubitemBaseView
      */
