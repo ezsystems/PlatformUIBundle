@@ -338,6 +338,12 @@ system:
                 ez-subitembaseview:
                     requires: ['ez-templatebasedview']
                     path: %ez_platformui.public_dir%/js/views/subitem/ez-subitembaseview.js
+                ez-asynchronoussubitemview:
+                    requires:
+                        - 'ez-subitembaseview'
+                        - 'ez-asynchronousview'
+                        - 'ez-loadmorepagination'
+                    path: %ez_platformui.public_dir%/js/views/subitem/ez-asynchronoussubitemview.js
                 ez-subitemlistview:
                     requires:
                         - 'ez-subitembaseview'
@@ -372,10 +378,8 @@ system:
                     path: %ez_platformui.public_dir%/templates/subitem/listitem/priority.hbt
                 ez-subitemgridview:
                     requires:
-                        - 'ez-subitembaseview'
+                        - 'ez-asynchronoussubitemview'
                         - 'ez-subitemgriditemview'
-                        - 'ez-asynchronousview'
-                        - 'ez-loadmorepagination'
                         - 'subitemgridview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemgridview.js
                 subitemgridview-ez-template:

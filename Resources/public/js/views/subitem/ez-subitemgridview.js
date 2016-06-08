@@ -23,64 +23,16 @@ YUI.add('ez-subitemgridview', function (Y) {
      * @namespace eZ
      * @class SubitemGridView
      * @constructor
-     * @extends eZ.SubitemBaseView
+     * @extends eZ.AsynchronousSubitemView
      */
-    Y.eZ.SubitemGridView = Y.Base.create('subitemGridView', Y.eZ.SubitemBaseView, [Y.eZ.AsynchronousView, Y.eZ.LoadMorePagination], {
+    Y.eZ.SubitemGridView = Y.Base.create('subitemGridView', Y.eZ.AsynchronousSubitemView, [], {
         initializer: function () {
             this._set('identifier', 'grid');
             this._set('name', 'Grid view');
-            this._fireMethod = this._prepareInitialLoad;
-            this._errorHandlingMethod = this._handleError;
 
             this._ItemView = Y.eZ.SubitemGridItemView;
             this._itemViewBaseConfig = {};
-            this._getExpectedItemsCount = this._getChildCount;
-
-            this.after('offsetChange', function (e) {
-                if ( this.get('offset') >= 0 ) {
-                    this._fireLocationSearch();
-                }
-            });
-            this.after('loadingErrorChange', function () {
-                this._set('loading', false);
-            });
         },
-
-        /**
-         * Handles the loading error. It fires a notification and makes sure the
-         * state of the view is consistent with what is actually loaded.
-         *
-         * @method _handleError
-         * @protected
-         */
-        _handleError: function () {
-            if ( this.get('loadingError') ) {
-                this.fire('notify', {
-                    notification: {
-                        text: "An error occurred while the loading the subitems",
-                        identifier: 'subitem-grid-load-error-' + this.get('location').get('id'),
-                        state: 'error',
-                        timeout: 0
-                    }
-                });
-                this.set('offset', this.get('offset') - this.get('limit'));
-                this._uiUpdatePagination();
-            }
-        },
-
-        /**
-         * `activeChange` handler. Set the view in loading mode and fire the
-         * first location search event if the subitems are not already filled.
-         *
-         * @method _prepareInitialLoad
-         * @protected
-         */
-        _prepareInitialLoad: function () {
-            if ( this.get('offset') < 0 ) {
-                this.set('offset', 0);
-            }
-        },
-
 
         /**
          * Sets the UI in the loading the state
@@ -147,41 +99,6 @@ YUI.add('ez-subitemgridview', function (Y) {
             return this._countLoadedItems();
         },
 
-        /**
-         * Fires the `locationSearch` event to fetch the subitems of the
-         * currently displayed Location.
-         *
-         * @method _fireLocationSearch
-         * @protected
-         */
-        _fireLocationSearch: function () {
-            var locationId = this.get('location').get('locationId');
-
-            this.set('loadingError', false);
-            this.fire('locationSearch', {
-                viewName: 'subitemgrid-' + locationId,
-                resultAttribute: 'items',
-                loadContentType: true,
-                loadContent: true,
-                search: {
-                    criteria: {
-                        "ParentLocationIdCriterion": this.get('location').get('locationId'),
-                    },
-                    offset: this.get('offset'),
-                    limit: this.get('limit'),
-                    /*
-                     * @TODO see https://jira.ez.no/browse/EZP-24315
-                     * this is not yet supported by the views in the REST API
-                    sortClauses: {
-                        SortClause: {
-                            SortField: this.get('location').get('sortField'),
-                            SortOrder: this.get('location').get('sortOrder'),
-                        },
-                    },
-                    */
-                },
-            });
-        },
     }, {
         ATTRS: {
             /**
@@ -195,7 +112,7 @@ YUI.add('ez-subitemgridview', function (Y) {
             subitems: {
                 setter: function (value, attr, info) {
                     this.set('items', value);
-					return this.get('items');
+                    return this.get('items');
                 },
                 getter: function () {
                     return this.get('items');
