@@ -103,6 +103,21 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
             );
         },
 
+        "Should not fire the search event if the Location has no child": function () {
+            var offset = this.view.get('offset');
+
+            this.location.set('childCount', 0);
+            this.view.set('active', true);
+            this.view.on('locationSearch', Y.bind(function (e) {
+                Assert.fail("The locationSearch should have been fired");
+            }, this));
+
+
+            Assert.areEqual(
+                offset, this.view.get('offset'),
+                "The offset should remain unchanged"
+            );
+        },
     };
 
     Y.eZ.Test.AsynchronousSubitemView.ErrorHandlingTestCase = {
