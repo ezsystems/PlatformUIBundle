@@ -48,7 +48,7 @@ YUI.add('ez-asynchronoussubitemview', function (Y) {
          * @protected
          */
         _prepareInitialLoad: function () {
-            if ( this.get('offset') < 0 ) {
+            if ( this.get('offset') < 0 && this._getChildCount() ) {
                 this.set('offset', 0);
             }
         },
