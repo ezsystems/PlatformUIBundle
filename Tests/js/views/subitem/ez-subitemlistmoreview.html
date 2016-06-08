@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Subitem ListMore view tests</title>
+</head>
+<body>
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="subitemlistmoreview-ez-template">
+    <table>
+        <tbody class="ez-loadmorepagination-content"></tbody>
+    </table>
+    display count: <strong class="ez-loadmorepagination-display-count"></strong>
+    <button class="ez-loadmorepagination-more" disabled>
+        Show <span class="ez-loadmorepagination-more-count">{{ limit }}</span>
+    </button>
+</script>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../../extensions/assets/ez-loadmorepagination-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-asynchronoussubitemview-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-subitemlistmoreview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-subitemlistview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-subitemlistmoreview": {
+                requires: ['ez-asynchronoussubitemview'],
+                fullpath: "../../../../Resources/public/js/views/subitem/ez-subitemlistmoreview.js"
+            },
+            "ez-asynchronoussubitemview": {
+                requires: ['ez-subitembaseview', 'ez-asynchronousview', 'ez-loadmorepagination'],
+                fullpath: "../../../../Resources/public/js/views/subitem/ez-asynchronoussubitemview.js"
+            },
+            "ez-subitembaseview": {
+                requires: ['ez-templatebasedview'],
+                fullpath: "../../../../Resources/public/js/views/subitem/ez-subitembaseview.js"
+            },
+            "ez-asynchronousview": {
+                requires: ['view', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-asynchronousview.js"
+            },
+            "ez-loadmorepagination": {
+                requires: ['view', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-loadmorepagination.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-subitemlistmoreview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

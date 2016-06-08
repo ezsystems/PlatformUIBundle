@@ -357,6 +357,15 @@ system:
                 subitemlistview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/subitem/list.hbt
+                ez-subitemlistmoreview:
+                    requires:
+                        - 'ez-asynchronoussubitemview'
+                        - 'ez-subitemlistitemview'
+                        - 'subitemlistmoreview-ez-template'
+                    path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemlistmoreview.js
+                subitemlistmoreview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/subitem/listmore.hbt
                 ez-subitemlistitemview:
                     requires:
                         - 'ez-templatebasedview'

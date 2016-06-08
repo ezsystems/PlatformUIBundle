@@ -1,0 +1,21 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-subitemlistmoreview {
+    transition: all ease 0.3s;
+    opacity: 1;
+}
+
+.ez-view-subitemlistmoreview .ez-subitemlist-table {
+    box-shadow: 0 0 2px #ccc;
+}
+
+.ez-view-subitemlistmoreview .ez-subitemlist-no-sub-items {
+    font-style: italic;
+}
+
+.ez-view-subitemlistmoreview .ez-subitemlist-pagination {
+    text-align: center;
+}
