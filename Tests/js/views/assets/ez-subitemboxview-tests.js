@@ -345,7 +345,7 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
         name: "eZ Subitem Box View subitemViews attribute default value test",
 
         setUp: function () {
-            Y.eZ.SubitemListView = Y.View;
+            Y.eZ.SubitemListMoreView = Y.View;
             Y.eZ.SubitemGridView = Y.View;
             this.contentType = new Mock();
             Mock.expect(this.contentType, {
@@ -366,7 +366,7 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
         tearDown: function () {
             this.view.get('container').setAttribute('class', 'container');
             this.view.destroy();
-            delete Y.eZ.SubitemListView;
+            delete Y.eZ.SubitemListMoreView;
             delete Y.eZ.SubitemGridView;
         },
 
@@ -379,8 +379,8 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
 
         "Should contain a subitem list view instance": function () {
             Assert.isInstanceOf(
-                Y.eZ.SubitemListView, this.view.get('subitemViews')[0],
-                "The subitemViews value should contain an instance Y.eZ.SubitemListView"
+                Y.eZ.SubitemListMoreView, this.view.get('subitemViews')[0],
+                "The subitemViews value should contain an instance Y.eZ.SubitemListMoreView"
             );
         },
 
@@ -549,7 +549,7 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
             this.view.destroy();
         },
 
-        "Should use the 'list' view": function () {
+        "Should use the 'listmore' view": function () {
             Mock.expect(this.contentType, {
                 method: 'belongTo',
                 args: ['/api/ezp/v2/content/typegroups/3'],
@@ -561,8 +561,8 @@ YUI.add('ez-subitemboxview-tests', function (Y) {
             });
 
             Assert.areEqual(
-                'list', this.view.get('subitemViewIdentifier'),
-                "The 'list' view should be used by default"
+                'listmore', this.view.get('subitemViewIdentifier'),
+                "The 'listmore' view should be used by default"
             );
         },
 

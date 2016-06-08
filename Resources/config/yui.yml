@@ -325,7 +325,7 @@ system:
                     requires:
                         - 'ez-templatebasedview'
                         - 'subitemboxview-ez-template'
-                        - 'ez-subitemlistview'
+                        - 'ez-subitemlistmoreview'
                         - 'ez-subitemgridview'
                         - 'ez-accordion-element'
                         - 'ez-expandable'
