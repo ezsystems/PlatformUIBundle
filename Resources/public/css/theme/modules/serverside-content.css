@@ -24,3 +24,7 @@
 .ez-serverside-content tt {
     font-size: 90%;
 }
+
+.ez-serverside-content .ez-contenttype-icon:before {
+    padding-right: 0.3em;
+}

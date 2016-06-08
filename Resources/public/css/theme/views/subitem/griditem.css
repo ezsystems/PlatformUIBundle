@@ -24,15 +24,16 @@
     line-height: 9rem;
 }
 
-.ez-view-subitemgriditemview.is-state-no-image .ez-subitemgrid-item-visual:before {
-    content: "\e601";
-}
-
 .ez-view-subitemgriditemview.is-state-image-loading .ez-subitemgrid-item-visual:before {
     content: "\e61c";
     color: #ddd;
     -webkit-animation: spin 0.7s infinite linear;
             animation: spin 0.7s infinite linear;
+}
+
+
+.ez-view-subitemgriditemview.is-state-image-loaded .ez-subitemgrid-item-visual:before {
+    content: "";
 }
 
 .ez-view-subitemgriditemview .ez-subitemgrid-item-link {
