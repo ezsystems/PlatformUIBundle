@@ -152,6 +152,10 @@ YUI.add('ez-dashboardblocksview', function (Y) {
                             bubbleTargets: this,
                             rootLocation: this.get('rootLocation'),
                         }),
+                        new Y.eZ.DashboardBlockMyDraftsView({
+                            priority: 1,
+                            bubbleTargets: this
+                        })
                     ];
                 },
                 readOnly: true
