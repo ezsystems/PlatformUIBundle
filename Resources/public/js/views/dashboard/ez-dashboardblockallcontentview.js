@@ -12,14 +12,7 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var BLOCK_IDENTIFIER = 'all-content',
-        CLASS_LOADING = 'is-loading',
-        CLASS_ROW_SELECTED = 'is-row-selected',
-        SELECTOR_ROW = '.ez-allcontent-block-row',
-        SELECTOR_CONTENT = '.ez-allcontent-block-content',
-        EVENTS = {};
-
-    EVENTS[SELECTOR_ROW] = {tap: '_uiShowRowOptions'};
+    var BLOCK_IDENTIFIER = 'all-content';
 
     /**
      * The all content dashboard block view
@@ -29,26 +22,10 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
      * @constructor
      * @extends eZ.DashboardBlockBaseView
      */
-    Y.eZ.DashboardBlockAllContentView = Y.Base.create('dashboardBlockAllContentView', Y.eZ.DashboardBlockBaseView, [Y.eZ.AsynchronousView], {
+    Y.eZ.DashboardBlockAllContentView = Y.Base.create('dashboardBlockAllContentView', Y.eZ.DashboardBlockAsynchronousView, [], {
         initializer: function () {
-            this._fireMethod = this._fireSearchEvent;
-            this._watchAttribute = 'items';
-            /**
-             * Stores the click outside event handler
-             *
-             * @property _clickOutsideHandler
-             * @type {Object}
-             * @protected
-             */
-            this._clickOutsideHandler = null;
-            this.events = Y.merge(this.events, EVENTS);
-
             this._set('identifier', BLOCK_IDENTIFIER);
-            this.get('container')
-                .addClass(this._generateViewClassName(Y.eZ.DashboardBlockBaseView.NAME))
-                .addClass(CLASS_LOADING);
-
-            this.after('itemsChange', this._uiEndLoading);
+            this.get('container').addClass(this._generateViewClassName(Y.eZ.DashboardBlockAsynchronousView.NAME));
         },
 
         /**
@@ -58,7 +35,7 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
          * @return {eZ.DashboardBlockAllContentView} the view itself
          */
         render: function () {
-            var items = this.get('items').map(function (item) {
+            var items = this.get('content').map(function (item) {
                     return {
                         /*
                          * @TODO remove content model
@@ -80,67 +57,18 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
         },
 
         /**
-         * Shows the row options
-         *
-         * @method _uiShowOptions
-         * @protected
-         * @param event {Object} event facade
-         */
-        _uiShowRowOptions: function (event) {
-            this._uiHideRowOptions();
-
-            event.currentTarget.addClass(CLASS_ROW_SELECTED);
-
-            this._clickOutsideHandler = this.get('container').one(SELECTOR_CONTENT).on('clickoutside', Y.bind(this._uiHideRowOptions, this));
-        },
-
-        /**
-         * Clears the click outside handler
-         *
-         * @method _clearClickOutsideHandler
-         * @protected
-         */
-        _clearClickOutsideHandler: function () {
-            if (this._clickOutsideHandler) {
-                this._clickOutsideHandler.detach();
-            }
-        },
-
-        /**
-         * Hides the row options
-         *
-         * @method _uiHideOptions
-         * @protected
-         */
-        _uiHideRowOptions: function () {
-            this.get('container').all(SELECTOR_ROW).removeClass(CLASS_ROW_SELECTED);
-
-            this._clearClickOutsideHandler();
-        },
-
-        /**
-         * Removes the loading state of the UI
-         *
-         * @method _uiEndLoading
-         * @protected
-         */
-        _uiEndLoading: function () {
-            this.get('container').removeClass(CLASS_LOADING);
-        },
-
-        /**
          * Makes request for data
          *
-         * @method _fireSearchEvent
+         * @method _getContent
          * @protected
          * @param event {Object} event facade
          */
-        _fireSearchEvent: function () {
+        _getContent: function () {
             var rootLocation = this.get('rootLocation');
 
             this.fire('locationSearch', {
                 viewName: 'all-content-' + rootLocation.get('locationId'),
-                resultAttribute: 'items',
+                resultAttribute: 'content',
                 loadContentType: true,
                 /*
                  * @TODO remove the loadContent flag
@@ -158,20 +86,16 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
                     limit: 10
                 }
             });
-        },
-
-        destructor: function () {
-            this._clearClickOutsideHandler();
         }
     }, {
         ATTRS: {
             /**
-             * The items list.
+             * The block content - items list.
              *
-             * @attribute items
+             * @attribute content
              * @type Array of objects containing location structs
              */
-            items: {
+            content: {
                 value: []
             }
         }

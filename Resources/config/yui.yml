@@ -214,7 +214,6 @@ system:
                         - 'ez-searchplugin'
                         - 'ez-locationmodel'
                         - 'promise'
-                        - 'ez-dashboardblockallcontentserviceplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-dashboardblocksviewservice.js
                 ez-contenteditviewservice:
                     requires:
@@ -327,7 +326,7 @@ system:
                     requires: ['ez-dashboardblockbaseview', 'ez-asynchronousview', 'event-tap', 'event-outside']
                     path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockasynchronousview.js
                 ez-dashboardblockallcontentview:
-                    requires: ['ez-dashboardblockbaseview', 'ez-asynchronousview', 'dashboardblockallcontentview-ez-template', 'event-tap', 'event-outside']
+                    requires: ['ez-dashboardblockasynchronousview', 'dashboardblockallcontentview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockallcontentview.js
                 dashboardblockallcontentview-ez-template:
                     type: 'template'
