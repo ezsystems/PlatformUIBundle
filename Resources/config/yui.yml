@@ -323,6 +323,9 @@ system:
                 ez-dashboardblockbaseview:
                     requires: ['ez-templatebasedview']
                     path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockbaseview.js
+                ez-dashboardblockasynchronousview:
+                    requires: ['ez-dashboardblockbaseview', 'ez-asynchronousview', 'event-tap', 'event-outside']
+                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockasynchronousview.js
                 ez-dashboardblockallcontentview:
                     requires: ['ez-dashboardblockbaseview', 'ez-asynchronousview', 'dashboardblockallcontentview-ez-template', 'event-tap', 'event-outside']
                     path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockallcontentview.js
