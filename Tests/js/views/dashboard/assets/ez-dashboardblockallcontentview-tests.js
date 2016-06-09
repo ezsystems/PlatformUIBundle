@@ -5,135 +5,107 @@
 YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
     'use strict';
 
-    var renderTest,
+    var AsynchronousViewTests = Y.eZ.Test.DashblockBlockAsynchronousViewTests,
+        renderTest,
         searchEventTest,
-        uiEventsTest,
+        rowOptionTest,
         CLASS_LOADING = 'is-loading',
-        CLASS_ROW_SELECTED = 'is-row-selected',
-        SELECTOR_ROW = '.ez-allcontent-block-row',
-        SELECTOR_OUTSIDE = '.outside',
-        PATH_STRING = 'imagine-dragons',
-        ROOT_LOCATION_ID = '23',
-        VIEW_CONFIG = {container: '.container'};
+        Assert = Y.Assert, Model = Y.Model, Mock = Y.Mock;
 
-    renderTest = new Y.Test.Case({
+    renderTest = new Y.Test.Case(Y.merge(AsynchronousViewTests.RenderTest, {
         name: 'eZ Dashboard All Content Block View render test',
 
         setUp: function () {
-            this.rootLocation = new Y.Model({
-                locationId: ROOT_LOCATION_ID,
-                pathString: PATH_STRING
-            });
-            this.view = new Y.eZ.DashboardBlockAllContentView(Y.merge(VIEW_CONFIG, {rootLocation: this.rootLocation}));
+            this.rootLocation = new Model();
+            this.view = new Y.eZ.DashboardBlockAllContentView({rootLocation: this.rootLocation});
         },
 
         tearDown: function () {
             this.view.destroy();
         },
 
-        'Should render view in the loading state': function () {
-            var view = this.view,
-                templateCalled = false,
-                origTpl = view.template,
-                container = view.get('container');
+        _getModelMock: function (toJSON, baseModel) {
+            var mock = new Mock(baseModel);
 
-            view.template = function (params) {
-                templateCalled = true;
+            Mock.expect(mock, {
+                method: 'toJSON',
+                returns: toJSON,
+            });
 
-                Y.Assert.isArray(params.items, 'The `items` variable should be an array');
-                Y.Assert.areSame(0, params.items.length, 'Should not provide any items data');
-                Y.Assert.isFalse(params.loadingError, 'The `loadingError` should not be enabled');
-
-                return origTpl.apply(this, arguments);
-            };
-
-            view.render();
-
-            Y.Assert.isTrue(templateCalled, 'The template should have been used to render view');
-            Y.Assert.isTrue(container.hasClass(CLASS_LOADING), 'Should add the loading state CSS class to the view container');
+            return mock;
         },
 
-        'Should render view with rows': function () {
+        'Should render with items': function () {
             var view = this.view,
-                contentMock = new Y.Mock(),
-                contentTypeMock = new Y.Mock(),
-                locationMock = new Y.Mock(),
-                contentInfoMock = new Y.Mock(),
                 origTpl = view.template,
-                templateCalled = false,
                 contentJSON = {},
                 contentTypeJSON = {},
                 contentInfoJSON = {},
                 locationJSON = {contentInfo: contentInfoJSON},
                 list;
 
-            Y.Mock.expect(contentMock, {
-                method: 'toJSON',
-                returns: contentJSON
-            });
-
-            Y.Mock.expect(contentTypeMock, {
-                method: 'toJSON',
-                returns: contentTypeJSON
-            });
-
-            Y.Mock.expect(contentInfoMock, {
-                method: 'toJSON',
-                returns: contentInfoJSON
-            });
-
-            Y.Mock.expect(locationMock, {
-                method: 'toJSON',
-                returns: locationJSON
-            });
-
-            Y.Mock.expect(locationMock, {
-                method: 'get',
-                args: ['contentInfo'],
-                returns: contentInfoMock
-            });
-
             list = [{
-                content: contentMock,
-                contentType: contentTypeMock,
-                location: locationMock
+                content: this._getModelMock(contentJSON),
+                contentType: this._getModelMock(contentTypeJSON),
+                location: this._getModelMock(
+                    locationJSON,
+                    new Model({contentInfo: this._getModelMock(contentInfoJSON)})
+                )
             }];
 
             view.template = function (params) {
-                templateCalled = true;
-
-                Y.Assert.isArray(params.items, 'The `items` variable should be an array');
-                Y.Assert.areSame(list.length, params.items.length, 'Should provide data of 1 item');
-                Y.Assert.areSame(contentJSON, params.items[0].content, 'Should provide content data of 1 item');
-                Y.Assert.areSame(contentTypeJSON, params.items[0].contentType, 'Should provide content type data of 1 item');
-                Y.Assert.areSame(locationJSON, params.items[0].location, 'Should provide location data of 1 item');
-                Y.Assert.areSame(contentInfoJSON, params.items[0].contentInfo, 'Should provide content info data of 1 item');
-                Y.Assert.isFalse(params.loadingError, 'The `loadingError` should not be enabled');
+                Assert.isArray(
+                    params.items, 'The `items` variable should be an array'
+                );
+                Assert.areSame(
+                    list.length, params.items.length,
+                    '`items` should contain as many item as the `items` attribute'
+                );
+                Assert.areSame(
+                    contentJSON, params.items[0].content,
+                    'The Content model should have been converted'
+                );
+                Assert.areSame(
+                    contentTypeJSON, params.items[0].contentType,
+                    'The ContentType model should have been converted'
+                );
+                Assert.areSame(
+                    locationJSON, params.items[0].location,
+                    'The Location model should have been converted'
+                );
+                Assert.areSame(
+                    contentInfoJSON, params.items[0].contentInfo,
+                    'The ContentInfo model should have been provided and converted'
+                );
+                Assert.isFalse(
+                    params.loadingError,
+                    'The `loadingError` should be false'
+                );
 
                 return origTpl.apply(this, arguments);
             };
 
             view.set('items', list);
 
-            Y.Assert.isTrue(templateCalled, 'The template should have been used to render view');
-            Y.Assert.isFalse(view.get('container').hasClass(CLASS_LOADING), 'Should add the loading state CSS class to the view container');
-
-            Y.Mock.verify(contentMock);
-            Y.Mock.verify(contentInfoMock);
-            Y.Mock.verify(contentTypeMock);
-            Y.Mock.verify(locationMock);
+            Assert.isFalse(
+                view.get('container').hasClass(CLASS_LOADING),
+                'The loading class should have been removed'
+            );
         },
-    });
+
+    }));
 
     searchEventTest = new Y.Test.Case({
         name: 'eZ Dashboard All Content Block View search event test',
 
         setUp: function () {
-            this.rootLocation = new Y.Model({
-                locationId: ROOT_LOCATION_ID,
-                pathString: PATH_STRING
+            this.rootLocation = new Model({
+                locationId: '/api/v2/1/2',
+                pathString: '/1/2',
             });
-            this.view = new Y.eZ.DashboardBlockAllContentView(Y.merge(VIEW_CONFIG, {rootLocation: this.rootLocation}));
+            this.view = new Y.eZ.DashboardBlockAllContentView({
+                rootLocation: this.rootLocation
+            });
         },
 
         tearDown: function () {
@@ -142,128 +114,81 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
 
         'Should search for location when view gets active': function () {
             var view = this.view,
-                eventName = 'locationSearch',
                 isEventFired = false;
 
-            view.on(eventName, function (event) {
+            view.on('locationSearch', function (event) {
                 isEventFired = true;
 
-                Y.Assert.areSame('all-content-' + ROOT_LOCATION_ID, event.viewName, 'Should provide a correct REST view name');
-                Y.Assert.isTrue(event.loadContentType, 'Should try to load content types of each location found');
-                Y.Assert.isTrue(event.loadContent, 'Should try to load content of each location found');
-                Y.Assert.areSame('items', event.resultAttribute, 'Should provide a correct view attribute name to store fetched data');
-                Y.Assert.areSame(
-                    PATH_STRING,
+                Assert.areSame(
+                    'all-content-' + view.get('rootLocation').get('locationId'),
+                    event.viewName,
+                    'The viewName should be build with the Location ID'
+                );
+                Assert.isTrue(
+                    event.loadContentType,
+                    'The loadContentType flag should be set'
+                );
+                Assert.isTrue(
+                    event.loadContent,
+                    'The loadContent flag should be set'
+                );
+                Assert.areSame(
+                    'items', event.resultAttribute,
+                    'The search result should be set in the items attribute'
+                );
+                Assert.areSame(
+                    view.get('rootLocation').get('pathString'),
                     event.search.criteria.SubtreeCriterion,
                     'Should pass a correct search `SubtreeCriterion` criterion value'
                 );
-                Y.Assert.areSame(10, event.search.limit, 'Should pass a correct search results limit value');
+                Assert.areSame(10, event.search.limit, 'Should pass a correct search results limit value');
             });
 
             view.set('active', true);
 
-            Y.Assert.isTrue(isEventFired, 'Should fire the `' + eventName + '` event');
+            Assert.isTrue(
+                isEventFired,
+                'The locationSearch event should be fired'
+            );
         }
     });
 
-    uiEventsTest = new Y.Test.Case({
-        name: 'eZ Dashboard All Content Block View UI events test',
+    rowOptionTest = new Y.Test.Case(Y.merge(AsynchronousViewTests.RowOptionTest, {
+        name: 'eZ Dashboard All Content Block View row option test',
 
         setUp: function () {
-            this.rootLocation = new Y.Model({
-                locationId: ROOT_LOCATION_ID,
-                pathString: PATH_STRING
+            this.rootLocation = new Model();
+            this.view = new Y.eZ.DashboardBlockAllContentView({
+                container: '.container',
+                rootLocation: this.rootLocation
             });
-            this.view = new Y.eZ.DashboardBlockAllContentView(Y.merge(VIEW_CONFIG, {rootLocation: this.rootLocation}));
+            this.item = {
+                content: new Model(),
+                contentType: new Model(),
+                location: new Model({
+                    contentInfo: new Model()
+                })
+            };
+            this.view.set('items', [this.item]);
         },
 
         tearDown: function () {
             this.view.destroy();
+            this.item.content.destroy();
+            this.item.contentType.destroy();
+            this.item.location.get('contentInfo').destroy();
+            this.item.location.destroy();
         },
-
-        _setupRowMocks: function () {
-            var languageCode = 'eng-GB',
-                locationId = '25',
-                contentTypeNames = {},
-                list;
-
-            contentTypeNames[languageCode] = 'Content Type name';
-            list = [{
-                content: new Y.Model({
-                    mainLanguageCode: languageCode,
-                    name: 'Content title',
-                    id: 'content-id',
-                    currentVersion: {
-                        versionNo: 25,
-                        modificationDate: '2016-05-05T13:18:14.000Z'
-                    },
-                    resources: {MainLocation: 'main-location'}
-                }),
-                contentType: new Y.Model({names: contentTypeNames}),
-                location: new Y.Model({
-                    id: locationId,
-                    contentInfo: new Y.Model()
-                })
-            }];
-
-            this.view.on('locationSearch', function (event) {
-                event.target.set(event.resultAttribute, list);
-            });
-        },
-
-        'Should display row options after clicking on a row': function () {
-            var view = this.view,
-                row;
-
-            this._setupRowMocks();
-
-            view.set('active', true);
-
-            row = view.get('container').one(SELECTOR_ROW);
-
-            row.one('td').simulateGesture('tap', Y.bind(function () {
-                this.resume(function () {
-                    Y.Assert.isTrue(row.hasClass(CLASS_ROW_SELECTED), 'The row should be selected');
-                });
-            }, this));
-
-            this.wait();
-        },
-
-        'Should hide row options after clicking outside of a row': function () {
-            var view = this.view,
-                row;
-
-            this._setupRowMocks();
-
-            view.set('active', true);
-
-            row = view.get('container').one(SELECTOR_ROW);
-
-            row.one('td').simulateGesture('tap', Y.bind(function () {
-                this.resume(Y.bind(function () {
-                    Y.one(SELECTOR_OUTSIDE).simulateGesture('tap', Y.bind(function () {
-                        this.resume(function () {
-                            Y.Assert.isFalse(row.hasClass(CLASS_ROW_SELECTED), 'The row should not be selected');
-                        });
-                    }, this));
-                    this.wait();
-                }, this));
-            }, this));
-
-            this.wait();
-        },
-    });
+    }));
 
     Y.Test.Runner.setName('eZ Dashboard All Content Block View tests');
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(searchEventTest);
-    Y.Test.Runner.add(uiEventsTest);
-}, '', {requires: [
-    'test',
-    'base',
-    'view',
-    'model',
-    'node-event-simulate',
-    'ez-dashboardblockallcontentview'
-]});
+    Y.Test.Runner.add(rowOptionTest);
+}, '', {
+    requires: [
+        'test', 'base', 'view', 'model', 'node-event-simulate',
+        'ez-dashboardblockasynchronousview-tests',
+        'ez-dashboardblockallcontentview'
+    ]
+});

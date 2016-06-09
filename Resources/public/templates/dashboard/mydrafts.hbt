@@ -1,0 +1,35 @@
+<h2 class="ez-block-title">My Drafts</h2>
+<div class="ez-block-wrapper ez-asynchronousview">
+    {{#if loadingError}}
+    <p class="ez-asynchronousview-error ez-font-icon">
+        An error occurred while loading the content list.
+        <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+    </p>
+    {{else}}
+    <table class="pure-table">
+        <thead class="ez-block-header">
+            <tr>
+                <th class="ez-block-head-title">Title</th>
+                <th class="ez-block-head-content-type">Content Type</th>
+                <th class="ez-block-head-version">Version</th>
+                <th class="ez-block-head-modified">Last saved</th>
+            </tr>
+        </thead>
+        <tbody class="ez-block-content">
+        {{#each items}}
+            <tr class="ez-block-row">
+                <td class="ez-block-cell">{{ lookup version.names version.initialLanguageCode }}</td>
+                <td class="ez-block-cell">{{ lookup contentType.names version.initialLanguageCode }}</td>
+                <td class="ez-block-cell">{{ version.versionNo }}</td>
+                <td class="ez-block-cell ez-block-cell-options">
+                    {{ version.modificationDate }}
+                    <div class="ez-block-row-options">
+                        <a class="ez-block-option-edit ez-font-icon" href="{{ path "editContentVersion" id=contentInfo.id versionId=version.id languageCode=version.initialLanguageCode }}"></a>
+                    </div>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+    {{/if}}
+</div>

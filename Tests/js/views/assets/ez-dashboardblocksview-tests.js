@@ -21,6 +21,7 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
     });
 
     Y.eZ.DashboardBlockAllContentView = Y.eZ.DashboardBlockBaseView;
+    Y.eZ.DashboardBlockMyDraftsView = Y.eZ.DashboardBlockBaseView;
 
     renderTest = new Y.Test.Case({
         name: 'eZ Dashboard Blocks View render test',
@@ -48,8 +49,8 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
             this.view.render();
 
             Y.Assert.isTrue(templateCalled, 'The template should have been used to render view');
-            Y.Assert.areSame(1, view.get('container').one(SELECTOR_CONTENT).get('children').size(), 'Should render one block inside');
             Y.Assert.areSame(view.get('rootLocation'), block.get('rootLocation'), 'Should pass `rootLocation` model to block view instance');
+            Y.Assert.areSame(2, view.get('container').one(SELECTOR_CONTENT).get('children').size(), 'Should render blocks inside');
         }
     });
 
@@ -79,7 +80,7 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
             blocks = view.get('blocks');
 
             Y.Assert.areSame(view, block1.getTargets()[0], 'The dashboard view should be a target of a block');
-            Y.Assert.areSame(1, blocks.length, 'There should be 1 block view instance available');
+            Y.Assert.areSame(1, blocks.length, 'One block should have been added');
         },
 
         'Should store only one block when adding 2 blocks with the same identifier': function () {
@@ -99,7 +100,14 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
 
             Y.Assert.areSame(0, block1.getTargets().length, 'The dashboard view should not be a target of a first block');
             Y.Assert.areSame(view, block2.getTargets()[0], 'The dashboard view should be a target of a second block');
-            Y.Assert.areSame(1, blocks.length, 'There should be 1 block view instance available');
+            Y.Assert.areSame(
+                1, blocks.length,
+                'The dashboard view should reference only one block'
+            );
+            Y.Assert.areSame(
+                block2, blocks[0],
+                "The first block should have been replaced by the second one"
+            );
         },
 
         'Should store blocks in correct order': function () {
@@ -154,7 +162,10 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
             view.addBlock(block1);
             view.removeBlock(block1Config.identifier);
 
-            Y.Assert.areSame(0, view.get('blocks').length, 'There should be no blocks defined');
+            Y.Assert.areSame(
+                0, view.get('blocks').length,
+                'The block should have been removed from the list'
+            );
             Y.Assert.areSame(0, block1.getTargets().length, 'A block view should have no targets defined');
         }
     });
