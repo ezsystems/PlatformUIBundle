@@ -72,7 +72,36 @@ YUI.add('ez-usermodel', function (Y) {
             });
             attrs.avatar = imageField.length ? imageField[0].fieldValue : null;
             return attrs;
-        }
+        },
+
+        /**
+         * Loads drafts created by a given user
+         *
+         * @method loadDrafts
+         * @param options {Object}
+         * @param options.api {Object} (required) the JS REST client instance
+         * @param callback {Function} function to call after processing response
+         */
+        loadDrafts: function (options, callback) {
+            options.api.getContentService().loadUserDrafts(this.get('id'), function (error, response) {
+                var versions = [];
+
+                if (error) {
+                    callback(error, response);
+
+                    return;
+                }
+
+                response.document.VersionList.VersionItem.forEach(function (versionItemHash) {
+                    var versionInfo = new Y.eZ.VersionInfo();
+
+                    versionInfo.loadFromHash(versionItemHash);
+                    versions.push(versionInfo);
+                });
+
+                callback(error, versions);
+            });
+        },
     }, {
         REST_STRUCT_ROOT: "User",
         ATTRS_REST_MAP: [
