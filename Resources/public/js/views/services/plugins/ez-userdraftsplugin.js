@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-userdraftsplugin', function (Y) {
-    "use strict";
+    'use strict';
+
     /**
      * Provides the user load plugin
      *
@@ -85,7 +86,6 @@ YUI.add('ez-userdraftsplugin', function (Y) {
                 .then(Y.bind(this._loadDraftContentType, this))
                 .then(Y.bind(this._fillDraftContentTypeModel, this, target, attributeName))
                 .catch(function () {
-                    console.log(arguments[0]);
                     target.set('loadingError', true);
                 });
         },
@@ -120,7 +120,7 @@ YUI.add('ez-userdraftsplugin', function (Y) {
                         }
 
                         resolve(contentInfo);
-                    })
+                    });
                 }, this)));
             }, this));
 
