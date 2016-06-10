@@ -51,7 +51,7 @@
         '$javascript.files;ez_platformui$' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    {# We only load the translations for the eZPlatformUIBundle JS files #}
+    {# We only load the translations for the eZPlatformUIBundle editorial domain, TODO: filter locale #}
     <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'editorial' }) }}"></script>
 
     <script>
