@@ -98,6 +98,10 @@
         <source>discoverybar.trash</source>
         <target>Trash</target>
       </trans-unit>
+      <trans-unit id="discoverybar.search" resname="discoverybar.search">
+        <source>discoverybar.search</source>
+        <target>Search</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

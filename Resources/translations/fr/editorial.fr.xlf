@@ -98,6 +98,10 @@
         <source>discoverybar.trash</source>
         <target>Corbeille</target>
       </trans-unit>
+      <trans-unit id="discoverybar.search" resname="discoverybar.search">
+        <source>discoverybar.search</source>
+        <target>Recherche</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

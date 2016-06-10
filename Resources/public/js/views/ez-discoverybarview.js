@@ -51,7 +51,7 @@ YUI.add('ez-discoverybarview', function (Y) {
                         new Y.eZ.ButtonActionView({
                             actionId: "viewSearch",
                             disabled: false,
-                            label: "Search",
+                            label: Y.eZ.Translator.trans('discoverybar.search', {}, 'editorial'),
                             priority: 900
                         }),
                         new Y.eZ.TreeActionView({
