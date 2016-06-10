@@ -25,7 +25,6 @@ YUI.add('ez-userdraftsplugin', function (Y) {
      */
     Y.eZ.Plugin.UserDrafts = Y.Base.create('userDraftsPlugin', Y.eZ.Plugin.ViewServiceBase, [], {
         initializer: function () {
-            this._resetTempVariables();
             this.onHostEvent('*:loadUserDrafts', this._loadUserDrafts);
         },
 
@@ -39,48 +38,10 @@ YUI.add('ez-userdraftsplugin', function (Y) {
         _loadUserDrafts: function (event) {
             var host = this.get('host');
 
-            this._target = event.target;
-            this._targetAttributeName = event.attributeName;
-            this._targetLimit = event.limit;
-
             host.get('app').get('user').loadDrafts(
                 {api: host.get('capi')},
-                Y.bind(this._collectDraftsData, this)
+                Y.bind(this._collectDraftsData, this, event.target, event.attributeName, event.limit)
             );
-        },
-
-        /**
-         * Resets temporary variables
-         *
-         * @protected
-         * @method _resetTempVariables
-         */
-        _resetTempVariables: function () {
-            /**
-             * Holds a temporary reference to `loadUserDrafts` event target
-             *
-             * @property _target
-             * @type {Y.View}
-             * @protected
-             */
-            this._target = null;
-            /**
-             * Holds a temporary reference to attribute to be updated,
-             * after loading data, in an event target
-             *
-             * @property _targetAttributeName
-             * @type {String}
-             * @protected
-             */
-            this._targetAttributeName = null;
-            /**
-             * Holds a temporary reference to limit of items to be returned in an event target
-             *
-             * @property _targetLimit
-             * @type {Number}
-             * @protected
-             */
-            this._targetLimit = null;
         },
 
         /**
@@ -101,30 +62,32 @@ YUI.add('ez-userdraftsplugin', function (Y) {
          *
          * @method _collectDraftsData
          * @protected
+         * @param target {Y.View} event target view
+         * @param attributeName {String} name of an attribute to be updated with data
+         * @param limit {Number} number of items to be returned in the end
          * @param error {Boolean} is error?
          * @param versions {Array} list of versions
          * @return {Y.Promise}
          */
-        _collectDraftsData: function (error, versions) {
-            var host = this.get('host');
-
+        _collectDraftsData: function (target, attributeName, limit, error, versions) {
             if (error) {
-                host._error(error.message);
-                this._target.set('loadingError', true);
-                this._resetTempVariables();
+                target.set('loadingError', true);
 
                 return;
             }
 
             versions.sort(this._sortByModificationDate);
-            versions.length = this._targetLimit;
+            versions.length = limit;
 
             Y.Promise
                 .resolve(versions)
                 .then(Y.bind(this._loadDraftContentInfo, this))
                 .then(Y.bind(this._loadDraftContentType, this))
-                .then(Y.bind(this._fillDraftContentTypeModel, this))
-                .catch(Y.bind(host._error, host));
+                .then(Y.bind(this._fillDraftContentTypeModel, this, target, attributeName))
+                .catch(function () {
+                    console.log(arguments[0]);
+                    target.set('loadingError', true);
+                });
         },
 
         /**
@@ -137,28 +100,29 @@ YUI.add('ez-userdraftsplugin', function (Y) {
          */
         _loadDraftContentInfo: function (versions) {
             var drafts = this.get('drafts'),
-                contentService = this.get('host').get('capi').getContentService(),
                 promises = [];
 
-            versions.forEach(function (version) {
-                var contentId = version.get('resources.Content');
-
-                drafts.add(version);
+            versions.forEach(Y.bind(function (version) {
+                drafts.add({
+                    version: version,
+                    contentType: null,
+                    contentInfo: null
+                });
 
                 promises.push(new Y.Promise(Y.bind(function (resolve, reject) {
-                    contentService.loadContentInfo(contentId, Y.bind(function (error, response) {
+                    var contentInfo = new Y.eZ.ContentInfo({id: version.get('resources.Content')});
+
+                    contentInfo.load({api: this.get('host').get('capi')}, function (error) {
                         if (error) {
-                            reject('Cannot load content info: ' + contentId);
-                            this._target.set('loadingError', true);
-                            this._resetTempVariables();
+                            reject(error);
 
                             return;
                         }
 
-                        resolve(response.document.Content);
-                    }, this));
+                        resolve(contentInfo);
+                    })
                 }, this)));
-            });
+            }, this));
 
             return Y.Promise.all(promises);
         },
@@ -172,25 +136,24 @@ YUI.add('ez-userdraftsplugin', function (Y) {
          * @return {Y.Promise}
          */
         _loadDraftContentType: function (data) {
-            var contentTypeService = this.get('host').get('capi').getContentTypeService(),
-                drafts = this.get('drafts'),
+            var drafts = this.get('drafts'),
                 promises = [];
 
             data.forEach(Y.bind(function (contentInfo, index) {
+                var contentType = new Y.eZ.ContentType({id: contentInfo.get('resources.ContentType')});
+
                 drafts.item(index).set('contentInfo', contentInfo);
 
                 promises.push(new Y.Promise(Y.bind(function (resolve, reject) {
-                    contentTypeService.loadContentType(contentInfo.ContentType._href, Y.bind(function (error, response) {
+                    contentType.load({api: this.get('host').get('capi')}, function (error) {
                         if (error) {
-                            reject('Cannot load content type data: ' + contentInfo.ContentType._href);
-                            this._target.set('loadingError', true);
-                            this._resetTempVariables();
+                            reject(error);
 
                             return;
                         }
 
-                        resolve(response.document.ContentType);
-                    }, this));
+                        resolve(contentType);
+                    });
                 }, this)));
             }, this));
 
@@ -202,21 +165,20 @@ YUI.add('ez-userdraftsplugin', function (Y) {
          *
          * @method _fillDraftContentTypeModel
          * @protected
+         * @param target {Y.View} event target view
+         * @param attributeName {String} name of an attribute to be updated with data
          * @param data {Array} list of content types
          */
-        _fillDraftContentTypeModel: function (data) {
+        _fillDraftContentTypeModel: function (target, attributeName, data) {
             var drafts = this.get('drafts');
 
-            drafts.each(function (version, index) {
-                var contentType = new Y.eZ.ContentType();
+            data.forEach(function (contentType, index) {
+                drafts.item(index).set('contentType', contentType);
+            });
 
-                contentType.loadFromHash(data[index]);
+            drafts.sort();
 
-                version.set('contentType', contentType);
-            }).sort();
-
-            this._target.set(this._targetAttributeName, drafts);
-            this._resetTempVariables();
+            target.set(attributeName, drafts);
         },
     }, {
         NS: 'userDrafts',

@@ -20,55 +20,46 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
      * @namespace eZ
      * @class DashboardBlockAllContentView
      * @constructor
-     * @extends eZ.DashboardBlockBaseView
+     * @extends eZ.DashboardBlockAsynchronousView
      */
     Y.eZ.DashboardBlockAllContentView = Y.Base.create('dashboardBlockAllContentView', Y.eZ.DashboardBlockAsynchronousView, [], {
         initializer: function () {
             this._set('identifier', BLOCK_IDENTIFIER);
-            this.get('container').addClass(this._generateViewClassName(Y.eZ.DashboardBlockAsynchronousView.NAME));
         },
 
         /**
-         * Renders the dashboard block view
+         * Gets item template data.
          *
-         * @method render
-         * @return {eZ.DashboardBlockAllContentView} the view itself
+         * @method _getTemplateItem
+         * @protected
+         * @param item {Object} item data
          */
-        render: function () {
-            var items = this.get('content').map(function (item) {
-                    return {
-                        /*
-                         * @TODO remove content model
-                         * see  https://jira.ez.no/browse/EZP-25842
-                         */
-                        content: item.content.toJSON(),
-                        contentType: item.contentType.toJSON(),
-                        location: item.location.toJSON(),
-                        contentInfo: item.location.get('contentInfo').toJSON(),
-                    };
-                });
-
-            this.get('container').setHTML(this.template({
-                items: items,
-                loadingError: this.get('loadingError'),
-            }));
-
-            return this;
+        _getTemplateItem: function (item) {
+            return {
+                /*
+                 * @TODO remove content model
+                 * see  https://jira.ez.no/browse/EZP-25842
+                 */
+                content: item.content.toJSON(),
+                contentType: item.contentType.toJSON(),
+                location: item.location.toJSON(),
+                contentInfo: item.location.get('contentInfo').toJSON(),
+            };
         },
 
         /**
          * Makes request for data
          *
-         * @method _getContent
+         * @method _fireLoadDataEvent
          * @protected
          * @param event {Object} event facade
          */
-        _getContent: function () {
+        _fireLoadDataEvent: function () {
             var rootLocation = this.get('rootLocation');
 
             this.fire('locationSearch', {
                 viewName: 'all-content-' + rootLocation.get('locationId'),
-                resultAttribute: 'content',
+                resultAttribute: 'items',
                 loadContentType: true,
                 /*
                  * @TODO remove the loadContent flag
@@ -86,18 +77,6 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
                     limit: 10
                 }
             });
-        }
-    }, {
-        ATTRS: {
-            /**
-             * The block content - items list.
-             *
-             * @attribute content
-             * @type Array of objects containing location structs
-             */
-            content: {
-                value: []
-            }
         }
     });
 });

@@ -1213,7 +1213,7 @@ system:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-userloadplugin.js
                 ez-userdraftsplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'model-list']
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'model-list', 'ez-contentinfomodel', 'ez-contenttypemodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-userdraftsplugin.js
                 ez-visibilityswitcherplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']

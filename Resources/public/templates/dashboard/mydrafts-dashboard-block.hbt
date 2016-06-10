@@ -16,15 +16,15 @@
             </tr>
         </thead>
         <tbody class="ez-block-content">
-        {{#each drafts}}
+        {{#each items}}
             <tr class="ez-block-row">
-                <td class="ez-block-cell">{{ lookup names initialLanguageCode }}</td>
-                <td class="ez-block-cell">{{ lookup contentType.names initialLanguageCode }}</td>
-                <td class="ez-block-cell">{{ versionNo }}</td>
+                <td class="ez-block-cell">{{ lookup version.names version.initialLanguageCode }}</td>
+                <td class="ez-block-cell">{{ lookup contentType.names version.initialLanguageCode }}</td>
+                <td class="ez-block-cell">{{ version.versionNo }}</td>
                 <td class="ez-block-cell ez-block-cell--options">
-                    {{ modificationDate }}
+                    {{ version.modificationDate }}
                     <div class="ez-block-row-options">
-                        <a class="ez-block-option-edit ez-font-icon" href="{{ path "editContentVersion" id=resources.Content versionId=id languageCode=initialLanguageCode }}"></a>
+                        <a class="ez-block-option-edit ez-font-icon" href="{{ path "editContentVersion" id=contentInfo.id versionId=version.id languageCode=version.initialLanguageCode }}"></a>
                     </div>
                 </td>
             </tr>

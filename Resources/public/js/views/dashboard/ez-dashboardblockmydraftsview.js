@@ -20,30 +20,26 @@ YUI.add('ez-dashboardblockmydraftsview', function (Y) {
      * @namespace eZ
      * @class DashboardBlockMyDraftsView
      * @constructor
-     * @extends eZ.DashboardBlockBaseView
+     * @extends eZ.DashboardBlockAsynchronousView
      */
     Y.eZ.DashboardBlockMyDraftsView = Y.Base.create('dashboardBlockMyDraftsView', Y.eZ.DashboardBlockAsynchronousView, [], {
         initializer: function () {
             this._set('identifier', BLOCK_IDENTIFIER);
-            this.get('container').addClass(this._generateViewClassName(Y.eZ.DashboardBlockAsynchronousView.NAME));
         },
 
         /**
-         * Renders the dashboard block view
+         * Gets item template data.
          *
-         * @method render
-         * @return {eZ.DashboardBlockView} the view itself
+         * @method _getTemplateItem
+         * @protected
+         * @param item {Y.Model} draft item model
          */
-        render: function () {
-            var drafts = this.get('content') || [];
-
-            if ('toJSON' in drafts) {
-                drafts = drafts.toJSON();
-            }
-
-            this.get('container').setHTML(this.template({drafts: drafts}));
-
-            return this;
+        _getTemplateItem: function (draft) {
+            return {
+                version: draft.get('version').toJSON(),
+                contentType: draft.get('contentType').toJSON(),
+                contentInfo: draft.get('contentInfo').toJSON()
+            };
         },
 
         /**
@@ -53,7 +49,7 @@ YUI.add('ez-dashboardblockmydraftsview', function (Y) {
          * @protected
          * @param event {Object} event facade
          */
-        _getContent: function () {
+        _fireLoadDataEvent: function () {
             /**
              * Makes request for my drafts dashboard block data.
              * Listened in {eZ.Plugin.UserDrafts}
@@ -63,19 +59,9 @@ YUI.add('ez-dashboardblockmydraftsview', function (Y) {
              * @param limit {Number} number of results
              */
             this.fire('loadUserDrafts', {
-                attributeName: 'content',
+                attributeName: 'items',
                 limit: 10
             });
         }
-    }, {
-        ATTRS: {
-            /**
-             * The dashboard block content. The versions list.
-             *
-             * @attribute content
-             * @type Y.ModelList
-             */
-            content: {},
-        },
     });
 });

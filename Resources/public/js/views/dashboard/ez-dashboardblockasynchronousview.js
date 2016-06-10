@@ -30,8 +30,8 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
      */
     Y.eZ.DashboardBlockAsynchronousView = Y.Base.create('dashboardBlockAsynchronousView', Y.eZ.DashboardBlockBaseView, [Y.eZ.AsynchronousView], {
         initializer: function () {
-            this._fireMethod = this._getContent;
-            this._watchAttribute = 'content';
+            this._fireMethod = this._fireLoadDataEvent;
+            this._watchAttribute = 'items';
             /**
              * Stores the click outside event handler
              *
@@ -44,18 +44,20 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
 
             this.get('container')
                 .addClass(this._generateViewClassName(Y.eZ.DashboardBlockBaseView.NAME))
+                .addClass(this._generateViewClassName(Y.eZ.DashboardBlockAsynchronousView.NAME))
                 .addClass(CLASS_LOADING);
 
-            this.after('contentChange', this._uiEndLoading);
+            this.after('itemsChange', this._uiEndLoading);
         },
 
-        /**
-         * Renders the dashboard block view
-         *
-         * @method render
-         * @return {eZ.DashboardBlockAllContentView} the view itself
-         */
         render: function () {
+            var items = this.get('items').map(this._getTemplateItem);
+
+            this.get('container').setHTML(this.template({
+                items: items,
+                loadingError: this.get('loadingError'),
+            }));
+
             return this;
         },
 
@@ -109,13 +111,26 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
         },
 
         /**
-         * Makes request for data
+         * Fires an event to request the data to display.
+         * This method must reimplemented when extending eZ.DashboardBlockAsynchronousView.
          *
-         * @method _getContent
+         * @method _fireLoadDataEvent
          * @protected
          * @param event {Object} event facade
          */
-        _getContent: function (event) {},
+        _fireLoadDataEvent: function (event) {},
+
+        /**
+         * Gets item template data.
+         * This method must reimplemented when extending eZ.DashboardBlockAsynchronousView.
+         *
+         * @method _getTemplateItem
+         * @protected
+         * @param item {Any} item data
+         */
+        _getTemplateItem: function (item) {
+            return item;
+        },
 
         destructor: function () {
             this._clearClickOutsideHandler();
@@ -123,12 +138,15 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
     }, {
         ATTRS: {
             /**
-             * The block content
+             * The block content items
              *
-             * @attribute content
-             * @type Any
+             * @attribute items
+             * @type Array
+             * @default []
              */
-            content: {}
+            items: {
+                value: []
+            }
         }
     });
 });
