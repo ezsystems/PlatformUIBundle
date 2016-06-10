@@ -36,9 +36,9 @@ YUI.add('ez-dashboardblockmydraftsview', function (Y) {
          */
         _getTemplateItem: function (draft) {
             return {
-                version: draft.get('version').toJSON(),
-                contentType: draft.get('contentType').toJSON(),
-                contentInfo: draft.get('contentInfo').toJSON()
+                version: draft.version.toJSON(),
+                contentType: draft.contentType.toJSON(),
+                contentInfo: draft.contentInfo.toJSON()
             };
         },
 

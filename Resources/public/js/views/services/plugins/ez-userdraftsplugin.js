@@ -103,7 +103,7 @@ YUI.add('ez-userdraftsplugin', function (Y) {
                 promises = [];
 
             versions.forEach(Y.bind(function (version) {
-                drafts.add({
+                drafts.push({
                     version: version,
                     contentType: null,
                     contentInfo: null
@@ -142,7 +142,7 @@ YUI.add('ez-userdraftsplugin', function (Y) {
             data.forEach(Y.bind(function (contentInfo, index) {
                 var contentType = new Y.eZ.ContentType({id: contentInfo.get('resources.ContentType')});
 
-                drafts.item(index).set('contentInfo', contentInfo);
+                drafts[index].contentInfo = contentInfo;
 
                 promises.push(new Y.Promise(Y.bind(function (resolve, reject) {
                     contentType.load({api: this.get('host').get('capi')}, function (error) {
@@ -173,10 +173,12 @@ YUI.add('ez-userdraftsplugin', function (Y) {
             var drafts = this.get('drafts');
 
             data.forEach(function (contentType, index) {
-                drafts.item(index).set('contentType', contentType);
+                drafts[index].contentType = contentType;
             });
 
-            drafts.sort();
+            drafts.sort(function (a, b) {
+                return new Date(b.version.get('modificationDate')).getTime() - new Date(a.version.get('modificationDate')).getTime();
+            });
 
             target.set(attributeName, drafts);
         },
@@ -187,16 +189,11 @@ YUI.add('ez-userdraftsplugin', function (Y) {
              * The drafts list
              *
              * @attribute drafts
-             * @type Y.ModelList
+             * @type Array
+             * @default []
              */
             drafts: {
-                valueFn: function () {
-                    return new Y.ModelList({
-                        comparator: function (model) {
-                            return new Date(model.get('modificationDate')).getTime();
-                        }
-                    });
-                }
+                value: []
             }
         }
     });
