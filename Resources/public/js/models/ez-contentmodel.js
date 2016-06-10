@@ -339,6 +339,35 @@ YUI.add('ez-contentmodel', function (Y) {
         },
 
         /**
+         * Creates a new draft for the content
+         *
+         * @method createDraft
+         * @param {Object} options
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {String} versionNo (optional) Version Number for the draft to be based on. If not
+         *                                      provided, the current version of the content will
+         *                                      be used. Ex: 42
+         * @param {Function} callback(error, version)
+         */
+        createDraft: function (options, versionNo, callback) {
+            var capi = options.api,
+                contentService = capi.getContentService();
+
+            contentService.createContentDraft(this.get('id'), versionNo, function (error, response) {
+                var version;
+                if (error) {
+                    callback(error, response);
+                    return;
+                }
+
+                version = new Y.eZ.Version();
+                version.setAttrs(version.parse(response));
+
+                callback(error, version);
+            });
+        },
+
+        /**
          * Sets main location for content
          *
          * @method setMainLocation
@@ -374,7 +403,7 @@ YUI.add('ez-contentmodel', function (Y) {
         delete: function (options, callback) {
             var capi = options.api,
                 contentService = capi.getContentService();
-            
+
             contentService.deleteContent(this.get('id'), callback);
         }
     }, {

@@ -5,7 +5,7 @@
 YUI.add('ez-contentmodel-tests', function (Y) {
     var modelTest, relationsTest, createContent, deleteContent, loadResponse, copyTest,
         loadLocationsTest, addLocationTest, setMainLocationTest, hasTranslationTest,
-        getFieldsOfTypeTest, loadVersionsTest,
+        getFieldsOfTypeTest, loadVersionsTest, createDraftTest,
         Assert = Y.Assert,
         Mock = Y.Mock;
 
@@ -1048,6 +1048,96 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         },
     });
 
+    createDraftTest = new Y.Test.Case({
+        name: "eZ Content Model create Draft test",
+
+        setUp: function () {
+            this.model = new Y.eZ.Content();
+            this.contentId = 'Pele';
+            this.capi = new Mock();
+            this.contentService = new Mock();
+            this.versionNo = '42';
+
+            Y.Mock.expect(this.capi, {
+                method: 'getContentService',
+                returns: this.contentService
+            });
+
+            Y.Mock.expect(this.model, {
+                method: 'get',
+                args: ['id'],
+                returns: this.contentId
+            });
+
+            this.restResponse = {document:{
+                "Version": {
+                    "_media-type": "application\/vnd.ez.api.Version+json",
+                    "_href": "\/api\/ezp\/v2\/content\/objects\/52\/versions\/29",
+                    "VersionInfo": {
+                        "initialLanguageCode": "eng-GB",
+                    },
+                    "Fields": {
+                        "field": [
+                            {
+                                "id": 181,
+                                "fieldDefinitionIdentifier": "name",
+                                "languageCode": "eng-GB",
+                                "fieldValue": "my cool content"
+                            },
+                        ]
+                    },
+                }
+            }};
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+            delete this.capi;
+            delete this.contentService;
+        },
+
+        _configureCreateContentDraftMock: function (error) {
+            Y.Mock.expect(this.contentService, {
+                method: 'createContentDraft',
+                args: [this.contentId, this.versionNo, Y.Mock.Value.Function],
+                run: Y.bind(function (contentId, versionsNo, cb) {
+                    cb(error, this.restResponse);
+                }, this)
+            });
+        },
+
+        'Should create a draft': function () {
+            var options = {api: this.capi},
+                callbackCalled = false;
+
+            this._configureCreateContentDraftMock(false);
+
+            this.model.createDraft(options, this.versionNo, function (err, response) {
+                callbackCalled = true;
+
+                Assert.isFalse(err, 'Should not return the error');
+            });
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
+
+        'Should pass error to callback function when CAPI createContentDraft fails': function () {
+            var options = {api: this.capi},
+                callbackCalled = false;
+
+            this._configureCreateContentDraftMock(true);
+
+            this.model.createDraft(options, this.versionNo, function (err, response) {
+                callbackCalled = true;
+
+                Assert.isTrue(err, 'Should return the error');
+            });
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
+    });
+
     setMainLocationTest = new Y.Test.Case({
         name: "eZ Content Model set main location test",
 
@@ -1239,4 +1329,5 @@ YUI.add('ez-contentmodel-tests', function (Y) {
     Y.Test.Runner.add(setMainLocationTest);
     Y.Test.Runner.add(hasTranslationTest);
     Y.Test.Runner.add(getFieldsOfTypeTest);
+    Y.Test.Runner.add(createDraftTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contentmodel', 'ez-restmodel']});

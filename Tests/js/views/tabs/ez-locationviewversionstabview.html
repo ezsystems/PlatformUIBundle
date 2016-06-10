@@ -10,6 +10,20 @@
 
 <script type="text/x-handlebars-template" id="locationviewversionstabview-ez-template">
     <button class="ez-asynchronousview-retry">Retry</button>
+
+    <button class="ez-create-draft-from-archived-button"
+            disabled="disabled">
+        New draft based on selected version
+    </button>
+    <div>
+        {{#each archivedVersions}}
+        <input type="checkbox"
+               class="ez-archived-version-checkbox"
+               {{#if checked}}checked="checked"{{/if}}
+               data-version-id="{{versionId}}">
+       {{/each}}
+    </div>
+
 </script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>

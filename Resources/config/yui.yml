@@ -254,7 +254,7 @@ system:
                         - 'ez-imagevariationloadplugin'
                         - 'ez-contentcreateplugin'
                         - 'ez-copycontentplugin'
-                        - 'ez-versionsloadplugin'
+                        - 'ez-versionsplugin'
                         - 'ez-locationswapplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
                 ez-navigationhubviewservice:
@@ -1181,9 +1181,9 @@ system:
                 ez-locationsloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationsloadplugin.js
-                ez-versionsloadplugin:
+                ez-versionsplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-versionsloadplugin.js
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-versionsplugin.js
                 ez-locationcreateplugin:
                     requires:
                         - 'ez-viewservicebaseplugin'

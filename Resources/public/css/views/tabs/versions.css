@@ -13,16 +13,19 @@
     line-height: 2.5em;
 }
 
-.ez-view-locationviewversionstabview .ez-versions-table-title {
-    margin: 1em 0 0 0;
-    padding: 0 1em;
-    line-height: 2em;
+.ez-view-locationviewversionstabview .ez-versions-list-container {
+    margin-bottom: 1em;
 }
 
-.ez-view-locationviewversionstabview .ez-versions-list-container {
+.ez-view-locationviewversionstabview .ez-versions-list-table-container {
     padding: 1em;
 }
 
 .ez-view-locationviewversionstabview .ez-versions-list-table {
     width: 100%;
+}
+
+.ez-view-locationviewversionstabview .ez-create-draft-from-archived-tools {
+    margin-top: 1em;
+    text-align: right;
 }
