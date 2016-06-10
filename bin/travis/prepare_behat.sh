@@ -10,7 +10,7 @@ export BRANCH_BUILD_DIR=$TRAVIS_BUILD_DIR TRAVIS_BUILD_DIR="$HOME/build/ezplatfo
 cd "$HOME/build"
 
 # Checkout meta repo, change the branch and/or remote to use a different ezpublish branch/distro
-git clone --depth 1 --single-branch --branch master https://github.com/ezsystems/ezplatform.git
+git clone --depth 1 --single-branch --branch bazinga https://github.com/ezsystems/ezplatform.git
 cd ezplatform
 
 # Install everything needed for behat testing, using our local branch of this repo
