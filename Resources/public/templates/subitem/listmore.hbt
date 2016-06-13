@@ -1,9 +1,9 @@
 {{#if location.childCount}}
-    <table class="ez-subitemlist-table pure-table pure-table-bordered">
+    <table class="ez-subitemlist-table">
         <thead>
-        <tr>
+        <tr class="ez-subitem-headline">
             {{#each columns}}
-            <th class="ez-subitem-{{ identifier }}-column">{{ name }}</th>
+            <th class="ez-subitem-column-head ez-subitem-{{ identifier }}-column">{{ name }}</th>
             {{/each}}
         </tr>
         </thead>

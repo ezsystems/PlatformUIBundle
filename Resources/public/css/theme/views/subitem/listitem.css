@@ -3,12 +3,64 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-view-subitemlistitemview td {
+.ez-view-subitemlistitemview {
+    transition: all ease 0.3s;
+}
+
+.ez-view-subitemlistitemview:nth-child(2n-1) {
+    background: #f5f4f2;
+}
+
+.ez-view-subitemlistitemview .ez-subitemlistitem-cell {
+    border-bottom: 1px solid #ddd;
+}
+
+.ez-view-subitemlistitemview .ez-subitemlistitem-priority {
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell {
+    border: 1px solid #ddd;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-error-priority-cell {
+    background: #FEECEA;
+    border-bottom: 1px solid #BF3E33;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-selected-priority-cell {
+    border-bottom: 1px solid #888;
     background: #fff;
 }
 
-.ez-view-subitemlistitemview tr:nth-child(2n-1) td {
-    background: #fafafa;
+.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell,
+.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell .ez-subitem-priority-input {
+    cursor: pointer;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-selected-priority-cell {
+    cursor: default;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-selected-priority-cell .ez-subitem-priority-input {
+    cursor: text;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-buttons,
+.ez-view-subitemlistitemview .ez-subitem-priority-icons {
+    display: flex;
+    transition: all ease 0.3s;
+    opacity: 0;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-selected-priority-cell .ez-subitem-priority-buttons,
+.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell .ez-subitem-priority-icons {
+    opacity: 1;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-icons:after {
+    font-weight: bold;
 }
 
 .ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell .ez-subitem-priority-icons:after {
@@ -25,22 +77,6 @@
     border: 1px solid #BF3E33;
 }
 
-.ez-view-subitemlistitemview .ez-subitem-priority-icons:after {
-    font-weight: bold;
-}
-
-.ez-view-subitemlistitemview .ez-subitem-error-priority-cell,
-.ez-view-subitemlistitemview tr:nth-child(2n-1) .ez-subitem-error-priority-cell {
-    background: #FEECEA;
-    box-shadow: none;
-    border: 1px double #BF3E33;
-}
-
-.ez-view-subitemlistitemview .ez-subitem-selected-priority-cell {
-    box-shadow: none;
-    border: 1px double #888;
-}
-
 .ez-view-subitemlistitemview .ez-subitem-priority-form .ez-subitem-priority-input,
 .ez-view-subitemlistitemview .ez-subitem-priority-form .ez-subitem-priority-input:focus,
 .ez-view-subitemlistitemview .ez-subitem-priority-form .ez-subitem-priority-input.ez-subitem-error-input:focus {
@@ -54,10 +90,6 @@
     background-color: transparent;
     color: #000000;
     outline: none;
-}
-
-.ez-view-subitemlistitemview .ez-subitem-priority-button:before {
-    font-family: "ez-platformui-icomoon";
 }
 
 .ez-view-subitemlistitemview .ez-subitem-priority-cancel:before {
