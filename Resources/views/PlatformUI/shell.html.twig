@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app.request.locale }}" class="ez-platformui-app-page">
+<html lang="{{ app.request.locale|split('_')[0] }}" class="ez-platformui-app-page">
 {% trans_default_domain "general" %}
 <head>
     <title>eZ Platform UI</title>
@@ -51,8 +51,8 @@
         '$javascript.files;ez_platformui$' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    {# We only load the translations for the eZPlatformUIBundle editorial domain, TODO: filter locale #}
-    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'editorial' }) }}"></script>
+    {# We only load the translations for the eZPlatformUIBundle editorial domain, make sure en locale is always loaded as fallback #}
+    <script src="{{ url('bazinga_jstranslation_js', { 'domain': 'editorial' }) }}?locales={{ app.request.locale|split('_')[0] }},en"></script>
 
     <script>
         {{ ez_platformui_yui_config( "YUI.GlobalConfig" ) }}
