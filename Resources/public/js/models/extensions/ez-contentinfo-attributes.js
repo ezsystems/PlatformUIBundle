@@ -99,6 +99,17 @@ YUI.add('ez-contentinfo-attributes', function (Y) {
                 setter: '_setterDate',
                 value: new Date(0)
             },
+
+            /**
+             * The current version number
+             *
+             * @attribute currentVersionNo
+             * @default 0
+             * @type Number
+             */
+            currentVersionNo: {
+                value: 0
+            }
         }
     });
 });

@@ -44,6 +44,7 @@ YUI.add('ez-contentinfomodel-tests', function (Y) {
             "publishedDate": "2015-07-08T15:07:38+02:00",
             "mainLanguageCode": "fre-FR",
             "alwaysAvailable": false,
+            "currentVersionNo": 20,
             "ObjectStates": {
                 "_media-type": "application/vnd.ez.api.ContentObjectStates+json",
                 "_href": "/api/ezp/v2/content/objects/123/objectstates"
