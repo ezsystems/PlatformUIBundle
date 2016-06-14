@@ -29,11 +29,6 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
 
         _getTemplateItem: function (item) {
             return {
-                /*
-                 * @TODO remove content model
-                 * see  https://jira.ez.no/browse/EZP-25842
-                 */
-                content: item.content.toJSON(),
                 contentType: item.contentType.toJSON(),
                 location: item.location.toJSON(),
                 contentInfo: item.location.get('contentInfo').toJSON(),
@@ -54,11 +49,6 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
                 viewName: 'all-content-' + rootLocation.get('locationId'),
                 resultAttribute: 'items',
                 loadContentType: true,
-                /*
-                 * @TODO remove the loadContent flag
-                 * see  https://jira.ez.no/browse/EZP-25842
-                 */
-                loadContent: true,
                 search: {
                     criteria: {SubtreeCriterion: rootLocation.get('pathString')},
                     /*

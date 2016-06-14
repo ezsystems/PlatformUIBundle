@@ -38,14 +38,12 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
         'Should render with items': function () {
             var view = this.view,
                 origTpl = view.template,
-                contentJSON = {},
                 contentTypeJSON = {},
                 contentInfoJSON = {},
                 locationJSON = {contentInfo: contentInfoJSON},
                 list;
 
             list = [{
-                content: this._getModelMock(contentJSON),
                 contentType: this._getModelMock(contentTypeJSON),
                 location: this._getModelMock(
                     locationJSON,
@@ -60,10 +58,6 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
                 Assert.areSame(
                     list.length, params.items.length,
                     '`items` should contain as many item as the `items` attribute'
-                );
-                Assert.areSame(
-                    contentJSON, params.items[0].content,
-                    'The Content model should have been converted'
                 );
                 Assert.areSame(
                     contentTypeJSON, params.items[0].contentType,
@@ -127,10 +121,6 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
                 Assert.isTrue(
                     event.loadContentType,
                     'The loadContentType flag should be set'
-                );
-                Assert.isTrue(
-                    event.loadContent,
-                    'The loadContent flag should be set'
                 );
                 Assert.areSame(
                     'items', event.resultAttribute,
