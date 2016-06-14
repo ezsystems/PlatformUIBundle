@@ -5,6 +5,11 @@
 
 .ez-loadmorepagination .ez-loadmorepagination-more {
     font-size: 110%;
+    font-weight: bold;
+    color: #359781;
+    border: 1px solid #359781;
+    border-radius: 5px;
+    background: transparent;
 }
 
 .ez-loadmorepagination .ez-loadmorepagination-more:before,

@@ -3,57 +3,56 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-view-subitemlistitemview .ez-subitem-priority-buttons {
-    display: none;
+
+.ez-view-subitemlistitemview .ez-subitemlistitem-cell {
+    padding: 1.2em 0.5em;
 }
 
-.ez-view-subitemlistitemview  .ez-subitem-selected-priority-cell .ez-subitem-priority-buttons,
-.ez-view-subitemlistitemview  .ez-subitem-priority-icons {
-    display: inline;
-}
-
-.ez-view-subitemlistitemview .ez-subitem-priority-button:before {
+.ez-view-subitemlistitemview .ez-subitem-priority-form {
+    position: relative;
     width: 100%;
-    text-align: center;
-    height:100%;
-    z-index: 2000;
-}
-
-.ez-view-subitemlistitemview .ez-subitem-priority-button,
-.ez-view-subitemlistitemview .ez-subitem-priority-icons:after {
-    width: 2.2em;
-    text-align: center;
-    height: 2.2em;
-    margin-top: -0.2em;
-    box-sizing: border-box;
-    z-index: 2000;
-}
-
-.ez-view-subitemlistitemview .ez-subitem-priority-button {
-    position: absolute;
-}
-
-.ez-view-subitemlistitemview .ez-subitem-priority-icons:after {
-    line-height: 1.8em;
-}
-
-.ez-view-subitemlistitemview .ez-subitem-priority-cancel {
-    margin-left: 2.2em;
-}
-
-.ez-view-subitemlistitemview .ez-subitemlistitem-priority {
-    padding: 0;
-    margin: 0;
+    height: 100%;
 }
 
 .ez-view-subitemlistitemview .ez-subitem-priority-form .ez-subitem-priority-input {
-    padding: 0 1em;
+    padding: 0;
     margin: 0;
     width: 100%;
+    height: 100%;
 }
 
-.ez-view-subitemlistitemview .ez-subitem-error-priority-cell  .ez-subitem-priority-icons:after,
-.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell  .ez-subitem-priority-icons:after {
-    z-index: 2000;
+.ez-view-subitemlistitemview .ez-subitem-priority-buttons,
+.ez-view-subitemlistitemview .ez-subitem-priority-icons {
+    display: none;
     position: absolute;
+    top: -0.6em;
+    left: calc(100% + 0.5em);
+    z-index: 1;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-selected-priority-cell .ez-subitem-priority-buttons,
+.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell .ez-subitem-priority-icons {
+    display: flex;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-selected-priority-cell .ez-subitem-priority-buttons {
+    z-index: 2;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-hovered-priority-cell .ez-subitem-priority-icons {
+    z-index: 2;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-button {
+    padding: 0;
+}
+
+.ez-view-subitemlistitemview .ez-subitem-priority-icons:after,
+.ez-view-subitemlistitemview .ez-subitem-priority-button:before {
+    display: block;
+    width: 2.2em;
+    height: 2.2em;
+    line-height: 2.2em;
+    margin: 0;
+    text-align: center;
 }

@@ -118,7 +118,8 @@ YUI.add('ez-subitemlistitemview-tests', function (Y) {
             origTpl = this.view.template;
             this.view.set('displayedProperties', [propIdentifier]);
             this.view.template = Y.bind(function (vars) {
-                var property = vars.properties[0];
+                var property = vars.properties[0],
+                    customClass = "ez-subitemlistitem-" + propIdentifier.toLowerCase();
 
                 Assert.isObject(
                     property,
@@ -128,9 +129,13 @@ YUI.add('ez-subitemlistitemview-tests', function (Y) {
                     propIdentifier, property.identifier,
                     "The identifier should be available in the property object"
                 );
-                Assert.areEqual(
-                    "ez-subitemlistitem-" + propIdentifier.toLowerCase(), property['class'],
-                    "The identifier should be available in the property object"
+                Assert.isTrue(
+                    property['class'].indexOf(customClass) != -1,
+                    "The `class` entry should contain a class based on the property identifier"
+                );
+                Assert.isTrue(
+                    property['class'].indexOf('ez-subitemlistitem-cell') != -1,
+                    "The `class` entry should contain the generic class"
                 );
                 assert.call(this, property);
                 return origTpl.apply(this.view, arguments);
@@ -432,10 +437,9 @@ YUI.add('ez-subitemlistitemview-tests', function (Y) {
         },
 
         "Should display the edit icon on mouseover": function () {
-            var cell = this._getPriorityCell(),
-                input = this._getInput();
+            var cell = this._getPriorityCell();
 
-            input.simulate('mouseover');
+            cell.simulate('mouseover');
 
             Assert.isTrue(
                 cell.hasClass('ez-subitem-hovered-priority-cell'),
@@ -444,11 +448,10 @@ YUI.add('ez-subitemlistitemview-tests', function (Y) {
         },
 
         "Should not display the edit icon if canEditPriority is false": function () {
-            var cell = this._getPriorityCell(),
-                input = this._getInput();
+            var cell = this._getPriorityCell();
 
             this.view.set('canEditPriority', false);
-            input.simulate('mouseover');
+            cell.simulate('mouseover');
 
             Assert.isFalse(
                 cell.hasClass('ez-subitem-hovered-priority-cell'),
@@ -457,11 +460,10 @@ YUI.add('ez-subitemlistitemview-tests', function (Y) {
         },
 
         "Should hide edit icon while moving the mouse out of the input": function () {
-            var cell = this._getPriorityCell(),
-                input = this._getInput();
+            var cell = this._getPriorityCell();
 
             this["Should display the edit icon on mouseover"]();
-            input.simulate('mouseout');
+            cell.simulate('mouseout');
 
             Assert.isFalse(
                 cell.hasClass('ez-subitem-hovered-priority-cell'),
@@ -469,8 +471,8 @@ YUI.add('ez-subitemlistitemview-tests', function (Y) {
             );
         },
 
-        "Should set editingPriority to true on tap on the input": function () {
-            this._getInput().simulateGesture('tap', this.next(function () {
+        "Should set editingPriority to true on tap on the cell": function () {
+            this._getPriorityCell().simulateGesture('tap', this.next(function () {
                Assert.isTrue(
                    this.view.get('editingPriority'),
                    "The editingPriority attribute should be true"
@@ -481,7 +483,7 @@ YUI.add('ez-subitemlistitemview-tests', function (Y) {
 
         "Should keep editingPriority to false": function () {
             this.view.set('canEditPriority', false);
-            this._getInput().simulateGesture('tap', this.next(function () {
+            this._getPriorityCell().simulateGesture('tap', this.next(function () {
                Assert.isFalse(
                    this.view.get('editingPriority'),
                    "The editingPriority attribute should be false"

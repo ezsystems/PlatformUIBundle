@@ -101,6 +101,7 @@ system:
                 - 'bundles/ezplatformui/css/modules/yui-calendar.css'
                 - 'bundles/ezplatformui/css/modules/pure-grid.css'
                 - 'bundles/ezplatformui/css/modules/embed.css'
+                - 'bundles/ezplatformui/css/modules/loadmorepagination.css'
                 - 'bundles/ezplatformui/css/alloyeditor/general.css'
                 - 'bundles/ezplatformui/css/alloyeditor/buttons/labeled-button.css'
             # theme stylesheets

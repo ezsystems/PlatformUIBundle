@@ -25,12 +25,14 @@ YUI.add('ez-subitemlistitemview', function (Y) {
      */
     Y.eZ.SubitemListItemView = Y.Base.create('subitemListItemView', Y.eZ.TemplateBasedView, [], {
         events: {
-            '.ez-subitem-priority-input': {
-                'tap': '_startPriorityEdit',
-                'blur': '_validatePriority',
-                'valuechange': '_validatePriority',
+            '.ez-subitemlistitem-priority': {
                 'mouseover': '_displayEditIcon',
                 'mouseout': '_hideEditIcon',
+                'tap': '_startPriorityEdit',
+            },
+            '.ez-subitem-priority-input': {
+                'blur': '_validatePriority',
+                'valuechange': '_validatePriority',
             },
             '.ez-subitem-priority-cancel': {
                 'tap': '_restorePriorityCell',
@@ -80,7 +82,7 @@ YUI.add('ez-subitemlistitemview', function (Y) {
             var propertyDesc = this.get('availableProperties')[propertyIdentifier],
                 property = {
                     "identifier": propertyIdentifier,
-                    "class": "ez-subitemlistitem-" + propertyIdentifier.toLowerCase(),
+                    "class": "ez-subitemlistitem-cell ez-subitemlistitem-" + propertyIdentifier.toLowerCase(),
                 };
 
             property.value = this._getFunction(propertyDesc.extractor).call(this, propertyIdentifier);
