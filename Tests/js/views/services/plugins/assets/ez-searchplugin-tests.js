@@ -54,7 +54,8 @@ YUI.add('ez-searchplugin-tests', function (Y) {
         },
 
         "Should create a content search query": function () {
-            var criteria = {}, offset = 42, limit = 43;
+            var criteria = {}, sortClauses = {},
+                offset = 42, limit = 43;
 
             Mock.expect(this.contentService, {
                 method: 'createView',
@@ -64,6 +65,11 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                         criteria,
                         query.body.ViewInput.ContentQuery.Criteria,
                         "The criteria should be set on the view create struct"
+                    );
+                    Assert.areSame(
+                        sortClauses,
+                        query.body.ViewInput.ContentQuery.SortClauses,
+                        "The sortClauses should be set on the view create struct"
                     );
                     Assert.areEqual(
                         offset,
@@ -82,6 +88,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 viewName: this.viewName,
                 search: {
                     criteria: criteria,
+                    sortClauses: sortClauses,
                     offset: offset,
                     limit: limit,
                 }
@@ -319,7 +326,8 @@ YUI.add('ez-searchplugin-tests', function (Y) {
         },
 
         "Should create a LocationQuery with the given name and search properties": function () {
-            var criteria = {}, offset = 42, limit = 43;
+            var criteria = {}, sortClauses = {},
+                offset = 42, limit = 43;
 
             Mock.expect(this.contentService, {
                 method: 'createView',
@@ -329,6 +337,11 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                         criteria,
                         query.body.ViewInput.LocationQuery.Criteria,
                         "The criteria should be set on the view create struct"
+                    );
+                    Assert.areSame(
+                        sortClauses,
+                        query.body.ViewInput.LocationQuery.SortClauses,
+                        "The sortClauses should be set on the view create struct"
                     );
                     Assert.areEqual(
                         offset,
@@ -347,6 +360,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 viewName: this.viewName,
                 search: {
                     criteria: criteria,
+                    sortClauses: sortClauses,
                     offset: offset,
                     limit: limit,
                 }

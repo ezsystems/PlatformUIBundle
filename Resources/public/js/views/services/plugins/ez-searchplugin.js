@@ -47,6 +47,7 @@ YUI.add('ez-searchplugin', function (Y) {
          * @param {String} type
          * @param {Object} search
          * @param {Object} search.criteria
+         * @param {Object} search.sortClauses
          * @param {Number} [search.limit]
          * @param {Number} [search.offset]
          * @return {Object}
@@ -61,10 +62,7 @@ YUI.add('ez-searchplugin', function (Y) {
             query.body.ViewInput[type].Criteria = search.criteria;
             query.body.ViewInput[type].offset = search.offset;
             query.body.ViewInput[type].limit = search.limit;
-
-            // not yet supported by the REST API
-            // see eZ.SubItemListView and https://jira.ez.no/browse/EZP-24315
-            // query.body.ViewInput[type].SortClauses = e.search.sortClauses;
+            query.body.ViewInput[type].SortClauses = search.sortClauses;
 
             return query;
         },
@@ -78,6 +76,7 @@ YUI.add('ez-searchplugin', function (Y) {
          * @param {EventFacade} e
          * @param {Object} e.search
          * @param {Object} e.search.criteria the search criteria used as Criteria in ContentQuery
+         * @param {Object} e.search.sortClauses the search sort clauses
          * @param {Integer} e.search.offset the offset for the search result
          * @param {Integer} e.search.limit number of records returned
          * @param {Bool} e.loadContentType the flag indicating whether the eZ.ContentType should be loaded for all
@@ -125,6 +124,7 @@ YUI.add('ez-searchplugin', function (Y) {
          * @param {EventFacade} e
          * @param {Object} e.search
          * @param {Object} e.search.criteria the search criteria used as Criteria in LocationQuery
+         * @param {Object} e.search.sortClauses the search sort clauses
          * @param {Integer} e.search.offset the offset for the search result
          * @param {Integer} e.search.limit number of records returned
          * @param {String} e.resultAttribute the name of attribute that will by updated with search results
