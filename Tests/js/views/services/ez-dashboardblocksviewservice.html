@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>eZ Dashboard Blocks View Service tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-dashboardblocksviewservice-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter = (filter !== 'coverage') ? filter : {
+            searchExp: '/Resources/public/js/',
+            replaceStr: '/Tests/instrument/Resources/public/js/'
+        };
+
+    YUI({
+        coverage: ['ez-dashboardblocksviewservice'],
+        filter: loaderFilter,
+        modules: {
+            'ez-dashboardblocksviewservice': {
+                requires: ['ez-viewservice', 'promise'],
+                fullpath: '../../../../Resources/public/js/views/services/ez-dashboardblocksviewservice.js'
+            },
+            'ez-viewservice': {
+                requires: ['base', 'parallel'],
+                fullpath: '../../../../Resources/public/js/views/services/ez-viewservice.js'
+            },
+        }
+    }).use('ez-dashboardblocksviewservice-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

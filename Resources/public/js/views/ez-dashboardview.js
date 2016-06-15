@@ -5,11 +5,17 @@
 YUI.add('ez-dashboardview', function (Y) {
     "use strict";
     /**
-     * Provides the Dashboard View class
+     * Provides the Dashboard View class.
+     * As of 1.4, this module is deprecated.
      *
      * @module ez-dashboardview
+     * @deprecated Use ez-dashboardblocksview instead.
      */
     Y.namespace('eZ');
+
+    console.warn('[DEPRECATED] ez-dashboardview module and Y.eZ.DashboardView are deprecated');
+    console.warn('[DEPRECATED] ez-dashboardview module and Y.eZ.DashboardView will be removed in PlatformUI 2.0');
+    console.warn('[DEPRECATED] use ez-dashboardblocksview and Y.eZ.DashboardBlocksView instead');
 
     /**
      * The dashboard view

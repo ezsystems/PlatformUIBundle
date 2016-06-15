@@ -385,7 +385,8 @@ YUI.add('ez-searchplugin', function (Y) {
     Y.eZ.PluginRegistry.registerPlugin(
         Y.eZ.Plugin.Search, [
             'locationViewViewService', 'universalDiscoveryViewService',
-            'contentEditViewService', 'contentCreateViewService'
+            'contentEditViewService', 'contentCreateViewService',
+            'dashboardBlocksViewService'
         ]
     );
 });
