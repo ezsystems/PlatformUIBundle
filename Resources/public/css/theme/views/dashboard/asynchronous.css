@@ -3,35 +3,9 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-view-dashboardblockasynchronousview .ez-block-header {
-    background: #4a4a4a;
-    color: #fff;
-}
-
-.ez-view-dashboardblockasynchronousview .ez-block-wrapper {
-    border-color: #d2d2d2;
-    font-size: .75em;
-}
-
-.ez-view-dashboardblockasynchronousview .ez-block-content {
-    background: #fdfdfd;
-}
-
-.ez-view-dashboardblockasynchronousview .ez-block-content:before {
-    display: block;
-    content: '';
-    width: 1em;
-    height: 1em;
-    padding: 0;
-    position: absolute;
-    z-index: 2;
-    bottom: .5em;
-    left: calc(50% - .5em);
-    font-family: 'ez-platformui-icomoon';
-    font-size: 1.5em;
-}
-
-.ez-view-dashboardblockasynchronousview.is-loading .ez-block-content:before {
+.ez-view-dashboardblockasynchronousview.is-loading .ez-block-wrapper:after {
+    color: #999;
+    font-size: 2em;
     content: '\e61c';
     animation: spin .7s infinite linear;
 }
@@ -40,23 +14,19 @@
     cursor: pointer;
 }
 
-.ez-view-dashboardblockasynchronousview .ez-block-row:nth-child(even) {
-    background: #f2f2f2;
-}
-
 .ez-view-dashboardblockasynchronousview .ez-block-row.is-row-selected .ez-block-cell {
-    background: #f0a68d;
+    background: #F3A583;
 }
 
 .ez-view-dashboardblockasynchronousview .ez-block-row-options {
-    transform: translate3d(100%, -50%, 0) scaleX(0);
+    transform: scaleX(0);
     transform-origin: top left;
     transition: transform .3s cubic-bezier(.25,.8,.25,1);
-    background: #f0a68d;
+    background: #F24D17;
 }
 
 .ez-view-dashboardblockasynchronousview .ez-block-row.is-row-selected .ez-block-row-options {
-    transform: translate3d(100%, -50%, 0) scaleX(1);
+    transform: scaleX(1);
 }
 
 .ez-view-dashboardblockasynchronousview .ez-block-row-options .ez-font-icon {
@@ -66,10 +36,6 @@
     transition: background .3s cubic-bezier(.25,.8,.25,1);
 }
 
-.ez-view-dashboardblockasynchronousview .ez-block-row-options .ez-font-icon:hover {
-    background: #d6947e;
-}
-
 .ez-view-dashboardblockasynchronousview .ez-block-row-options .ez-font-icon:before {
     position: absolute;
     z-index: 2;
@@ -77,7 +43,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     margin: 0;
-    box-sizing: border-box;
 }
 
 .ez-view-dashboardblockasynchronousview .ez-block-option-edit:before {
@@ -85,7 +50,4 @@
 }
 
 @media (min-width: 1280px) {
-    .ez-view-dashboardblockasynchronousview .ez-block-wrapper {
-        font-size: inherit;
-    }
 }

@@ -3,42 +3,15 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-view-dashboardblockasynchronousview .pure-table {
-    width: 100%;
-    border: 0;
-    table-layout: fixed;
-}
 
-.ez-view-dashboardblockasynchronousview [class*="ez-block-head-"] {
-    box-sizing: border-box;
-    padding: .5em;
-}
 
-.ez-view-dashboardblockasynchronousview .ez-block-wrapper {
-    box-sizing: border-box;
-    border: 1px solid;
-    position: relative;
-}
-
-.ez-view-dashboardblockasynchronousview.is-loading .ez-block-content {
-    height: 3em;
+.ez-view-dashboardblockasynchronousview .ez-block-wrapper:after {
     display: block;
+    text-align: center;
 }
 
-.ez-view-dashboardblockasynchronousview .ez-block-head-title {
-    width: 30%;
-}
-
-.ez-view-dashboardblockasynchronousview .ez-block-head-content-type {
-    width: 30%;
-}
-
-.ez-view-dashboardblockasynchronousview .ez-block-head-version {
-    width: 10%;
-}
-
-.ez-view-dashboardblockasynchronousview .ez-block-head-modified {
-    width: 30%;
+.ez-view-dashboardblockasynchronousview.is-loading .ez-block-wrapper:after {
+    padding: 0.2em;
 }
 
 .ez-view-dashboardblockasynchronousview .ez-block-cell-options {
@@ -48,16 +21,14 @@
 .ez-view-dashboardblockasynchronousview .ez-block-row-options {
     position: absolute;
     z-index: 2;
-    top: 50%;
-    right: 0;
+    top: 0;
+    left: 100%;
     display: flex;
     height: 100%;
-    box-sizing: border-box;
 }
 
 .ez-view-dashboardblockasynchronousview .ez-block-row-options .ez-font-icon {
     width: 2em;
     position: relative;
     z-index: 1;
-    box-sizing: border-box;
 }
