@@ -21,7 +21,8 @@ trait CommonActions
      */
     public function iClickAtLink($link)
     {
-        $this->clickElementByText($link, 'a');
+        //TODO click only links
+        $this->clickElementByText($link);
     }
 
     /**
@@ -32,7 +33,8 @@ trait CommonActions
      */
     public function iClickAtButton($button)
     {
-        $this->clickElementByText($button, 'button');
+        //TODO click only buttons
+        $this->clickElementByText($button);
     }
 
     /**
@@ -151,7 +153,7 @@ trait CommonActions
      */
     public function clickTab($tab)
     {
-        $this->clickElementByText($tab, '.ez-tabs-label a[href]');
+        $this->clickElementByText($tab, ['ez-tabs-label']);
     }
 
     /**
@@ -162,24 +164,12 @@ trait CommonActions
      */
     public function clickNavigationZone($zone)
     {
-        $this->clickElementByText($zone, '.ez-zone-name');
+        $this->clickElementByText($zone, ['ez-zone-name']);
         $this->waitWhileLoading();
         // Clicking navigation zone triggers load of first item,
         // we must wait before interacting with the page (see EZP-25128)
         // this method sleeps for a default amount (see EzSystems\PlatformUIBundle\Features\Context\PlaformUI)
         $this->sleep();
-    }
-
-    /**
-     * @Given I click on the :button button number :index
-     * Click on a PlatformUI button
-     *
-     * @param  string   $button     Text of the element to click
-     * @param  string   $index      WHAT IS THIS?!
-     */
-    public function clickButtonWithIndex($button, $index)
-    {
-        $this->clickElementByText($button, 'button', $index);
     }
 
     /**
@@ -190,7 +180,7 @@ trait CommonActions
      */
     public function clickNavigationItem($item)
     {
-        $this->clickElementByText($item, '.ez-navigation-item');
+        $this->clickElementByText($item, ['ez-navigation-item']);
         $this->waitWhileLoading();
     }
 
@@ -202,7 +192,7 @@ trait CommonActions
      */
     public function clickDiscoveryBar($button)
     {
-        $this->clickElementByText($button, '.ez-view-discoverybarview .ez-action', '.action-label');
+        $this->clickElementByText($button, ['ez-view-discoverybarview', 'ez-action']);
         $this->waitWhileLoading();
     }
 
@@ -214,7 +204,7 @@ trait CommonActions
      */
     public function clickActionBar($button)
     {
-        $this->clickElementByText($button, '.ez-actionbar-container .ez-action', '.action-label');
+        $this->clickElementByText($button, ['ez-actionbar-container', 'ez-action']);
         $this->waitWhileLoading();
     }
 
@@ -226,7 +216,7 @@ trait CommonActions
      */
     public function clickEditActionBar($button)
     {
-        $this->clickElementByText($button, '.ez-editactionbar-container .ez-action', '.action-label');
+        $this->clickElementByText($button, ['ez-editactionbar-container', 'ez-action']);
         $this->waitWhileLoading();
     }
 
@@ -252,7 +242,7 @@ trait CommonActions
      */
     public function clickContentType($contentType)
     {
-        $this->clickElementByText($contentType, '.ez-contenttypeselector-types .ez-selection-filter-item ');
+        $this->clickElementByText($contentType, ['ez-contenttypeselector-types', 'ez-selection-filter-item']);
         $this->waitWhileLoading();
     }
 
@@ -291,7 +281,7 @@ trait CommonActions
      */
     public function confirmSelection()
     {
-        $this->clickElementByText('Confirm selection', '.ez-universaldiscovery-confirm');
+        $this->clickElementByText('Confirm selection', ['ez-universaldiscovery-confirm']);
     }
 
     /**
@@ -309,7 +299,9 @@ trait CommonActions
     private function goToContentWithPath($path)
     {
         $this->clickNavigationZone('Content');
+        $this->waitWhileLoading();
         $this->clickNavigationItem('Content structure');
+        $this->waitWhileLoading();
         $this->clickOnTreePath($path);
     }
 
@@ -366,10 +358,7 @@ trait CommonActions
     public function iSeeNotification($message)
     {
         $this->sleep();
-        $result = $this->getElementByText($message, '.ez-notification-text');
-        if (!$result) {
-            throw new \Exception("The notification with message '$message' was not shown");
-        }
+        $result = $this->getElementByText($message, ['ez-notification-text']);
     }
 
     /**
@@ -393,7 +382,7 @@ trait CommonActions
         foreach ($elements as $element) {
             $found = false;
             $name = array_values($element)[0];
-            $found = $this->getElementByText($name, '.ez-selection-filter-item');
+            $found = $this->getElementByText($name, ['ez-selection-filter-item']);
             Assertion::assertNotNull($found, "Element: $name not found");
         }
     }
