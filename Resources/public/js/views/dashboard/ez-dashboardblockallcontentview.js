@@ -51,12 +51,7 @@ YUI.add('ez-dashboardblockallcontentview', function (Y) {
                 loadContentType: true,
                 search: {
                     criteria: {SubtreeCriterion: rootLocation.get('pathString')},
-                    /*
-                     * @TODO sort items by modification date
-                     * see https://jira.ez.no/browse/EZP-24998
-                     *
-                     * sortClauses: {DateModifiedClause: 'DESC'},
-                     */
+                    sortClauses: {DateModified: 'descending'},
                     limit: 10
                 }
             });

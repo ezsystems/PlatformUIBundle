@@ -131,6 +131,11 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
                     event.search.criteria.SubtreeCriterion,
                     'Should pass a correct search `SubtreeCriterion` criterion value'
                 );
+                Assert.areEqual(
+                    "descending",
+                    event.search.sortClauses.DateModified,
+                    "The content should be ordered by modified date descending"
+                );
                 Assert.areSame(10, event.search.limit, 'Should pass a correct search results limit value');
             });
 
