@@ -121,3 +121,19 @@
 .ez-contenttype-icon-wiki_page:before {
     content: "wikipage";
 }
+
+.ez-contenttype-icon-gallery:before {
+    content: "gallery";
+}
+
+.ez-contenttype-icon-blog:before,
+.ez-contenttype-icon-weblog:before,
+.ez-contenttype-icon-web_blog:before {
+    content: "blog";
+}
+
+.ez-contenttype-icon-home:before,
+.ez-contenttype-icon-homepage:before,
+.ez-contenttype-icon-home_page:before {
+    content: "homepage";
+}
