@@ -6,3 +6,9 @@
 .ez-view-dashboardblocksview {
     background: #fff;
 }
+
+.ez-view-dashboardblocksview .ez-dashboard-title {
+    font-size: 1.6rem;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #999;
+}
