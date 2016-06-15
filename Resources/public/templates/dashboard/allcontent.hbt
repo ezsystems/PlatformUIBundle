@@ -20,7 +20,7 @@
             <tr class="ez-block-row">
                 <td class="ez-block-cell">{{ contentInfo.name }}</td>
                 <td class="ez-block-cell">{{ lookup contentType.names contentInfo.mainLanguageCode }}</td>
-                <td class="ez-block-cell">{{ content.currentVersion.versionNo }}</td>
+                <td class="ez-block-cell">{{ contentInfo.currentVersionNo }}</td>
                 <td class="ez-block-cell ez-block-cell-options">
                     {{ contentInfo.lastModificationDate }}
                     <div class="ez-block-row-options">
