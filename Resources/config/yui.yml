@@ -316,6 +316,7 @@ system:
                         - 'ez-templatebasedview'
                         - 'ez-dashboardblockallcontentview'
                         - 'ez-dashboardblockmydraftsview'
+                        - 'ez-dashboardblockmycontentview'
                         - 'dashboardblocksview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/ez-dashboardblocksview.js
                 dashboardblocksview-ez-template:
@@ -333,6 +334,12 @@ system:
                 dashboardblockallcontentview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/dashboard/allcontent.hbt
+                ez-dashboardblockmycontentview:
+                    requires: ['ez-dashboardblockasynchronousview', 'dashboardblockmycontentview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockmycontentview.js
+                dashboardblockmycontentview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/dashboard/mycontent.hbt
                 ez-dashboardblockmydraftsview:
                     requires: ['ez-dashboardblockasynchronousview', 'dashboardblockmydraftsview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockmydraftsview.js

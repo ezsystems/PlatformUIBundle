@@ -155,6 +155,12 @@ YUI.add('ez-dashboardblocksview', function (Y) {
                         new Y.eZ.DashboardBlockMyDraftsView({
                             priority: 200,
                             bubbleTargets: this
+                        }),
+                        new Y.eZ.DashboardBlockMyContentView({
+                            priority: 300,
+                            bubbleTargets: this,
+                            currentUser: this.get('currentUser'),
+                            rootLocation: this.get('rootLocation'),
                         })
                     ];
                 },

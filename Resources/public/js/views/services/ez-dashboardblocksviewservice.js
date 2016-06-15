@@ -80,7 +80,8 @@ YUI.add('ez-dashboardblocksviewservice', function (Y) {
 
         _getViewParameters: function () {
             return {
-                rootLocation: this.get('rootLocation')
+                rootLocation: this.get('rootLocation'),
+                currentUser: this.get('app').get('user'),
             };
         },
     }, {

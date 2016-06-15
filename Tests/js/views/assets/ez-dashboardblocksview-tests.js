@@ -22,6 +22,7 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
 
     Y.eZ.DashboardBlockAllContentView = Y.eZ.DashboardBlockBaseView;
     Y.eZ.DashboardBlockMyDraftsView = Y.eZ.DashboardBlockBaseView;
+    Y.eZ.DashboardBlockMyContentView = Y.eZ.DashboardBlockBaseView;
 
     renderTest = new Y.Test.Case({
         name: 'eZ Dashboard Blocks View render test',
@@ -50,7 +51,7 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
 
             Y.Assert.isTrue(templateCalled, 'The template should have been used to render view');
             Y.Assert.areSame(view.get('rootLocation'), block.get('rootLocation'), 'Should pass `rootLocation` model to block view instance');
-            Y.Assert.areSame(2, view.get('container').one(SELECTOR_CONTENT).get('children').size(), 'Should render blocks inside');
+            Y.Assert.areSame(3, view.get('container').one(SELECTOR_CONTENT).get('children').size(), 'Should render blocks inside');
         }
     });
 

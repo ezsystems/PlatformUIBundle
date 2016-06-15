@@ -168,9 +168,17 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
 
         setUp: function () {
             this.rootLocationModel = new Y.Mock();
+            this.app = new Y.Mock();
+            this.user = new Y.Model();
 
+            Y.Mock.expect(this.app, {
+                method: 'get',
+                args: ['user'],
+                returns: this.rootLocationModel
+            });
             this.service = new Y.eZ.DashboardBlocksViewService({
-                rootLocation: this.rootLocationModel
+                rootLocation: this.rootLocationModel,
+                app: this.app,
             });
         },
 
