@@ -94,7 +94,7 @@
         <source>discoverybar.contenttree</source>
         <target>Arbre de contenu</target>
       </trans-unit>
-      <trans-unit id="discoverybar.trash" resname="discoverybar.trash">
+      <trans-unit id="aebf56ba0bd0aba1cda71ef7d8d77032" resname="discoverybar.trash">
         <source>discoverybar.trash</source>
         <target>Corbeille</target>
       </trans-unit>
