@@ -107,6 +107,49 @@ YUI.add('ez-userdraftsplugin-tests', function (Y) {
             );
         },
 
+        _assertVersions: function (versions, size, firstVersionIndex) {
+            Assert.isArray(
+                versions,
+                "The view should have received the result in the event attribute name"
+            );
+            Assert.areEqual(
+                size,
+                versions.length,
+                "The view should have received `limit` objects"
+            );
+            Assert.isFalse(
+                this.view.get('loadingError'),
+                "loadingError should be false"
+            );
+            versions.forEach(function (version, i) {
+                Assert.areSame(
+                    this.versions[firstVersionIndex - i],
+                    version.version,
+                    "The last versions should have been used"
+                );
+                Assert.isInstanceOf(
+                    Y.eZ.ContentInfo,
+                    version.contentInfo,
+                    "The corresponding contentInfo should have been instanciated"
+                );
+                Assert.areEqual(
+                    'content-' + (firstVersionIndex - i),
+                    version.contentInfo.get('id'),
+                    "The corresponding contentInfo should have been loaded"
+                );
+                Assert.isInstanceOf(
+                    Y.eZ.ContentType,
+                    version.contentType,
+                    "The corresponding contentType should have been instanciated"
+                );
+                Assert.areEqual(
+                    version.contentInfo.get('resources').ContentType,
+                    version.contentType.get('id'),
+                    "The contentType indicated by the contentInfo should have been loaded"
+                );
+            }, this);
+        },
+
         "Should load the ContentInfo and ContentType for the `limit` last versions": function () {
             Y.eZ.ContentInfo = this._getModelClass('contentInfo', false, 'ContentType');
             Y.eZ.ContentType = this._getModelClass('contentType', false);
@@ -118,49 +161,31 @@ YUI.add('ez-userdraftsplugin-tests', function (Y) {
             this.view.after(this.attributeName + 'Change', this.next(function () {
                 var items = this.view.get(this.attributeName);
 
-                Assert.isArray(
-                    items,
-                    "The view should have received the result in the event attribute name"
-                );
-                Assert.areEqual(
-                    this.limit,
-                    items.length,
-                    "The view should have received `limit` objects"
-                );
-                Assert.isFalse(
-                    this.view.get('loadingError'),
-                    "loadingError should be false"
-                );
-                items.forEach(function (item, i) {
-                    Assert.areSame(
-                        this.versions[this.limit - i],
-                        item.version,
-                        "The last versions should have been used"
-                    );
-                    Assert.isInstanceOf(
-                        Y.eZ.ContentInfo,
-                        item.contentInfo,
-                        "The corresponding contentInfo should have been instanciated"
-                    );
-                    Assert.areEqual(
-                        'content-' + (this.limit - i),
-                        item.contentInfo.get('id'),
-                        "The corresponding contentInfo should have been loaded"
-                    );
-                    Assert.isInstanceOf(
-                        Y.eZ.ContentType,
-                        item.contentType,
-                        "The corresponding contentType should have been instanciated"
-                    );
-                    Assert.areEqual(
-                        item.contentInfo.get('resources').ContentType,
-                        item.contentType.get('id'),
-                        "The contentType indicated by the contentInfo should have been loaded"
-                    );
-                }, this);
+                this._assertVersions(items, this.limit, this.limit);
             }, this));
 
             this.wait();
+        },
+
+        "Should handle the case where there's less than `limit` drafts": function () {
+            // Regression test for EZP-25884
+            this.limit = this.versions.length + 1;
+            Y.eZ.ContentInfo = this._getModelClass('contentInfo', false, 'ContentType');
+            Y.eZ.ContentType = this._getModelClass('contentType', false);
+
+            this._mockLoadDrafts(Y.bind(function (options, callback) {
+                callback(false, this.versions.concat());
+            }, this));
+            this._fireLoadUserDrafts();
+
+            this.view.after(this.attributeName + 'Change', this.next(function () {
+                var items = this.view.get(this.attributeName);
+
+                this._assertVersions(items, this.versions.length, this.versions.length - 1);
+            }, this));
+
+            this.wait();
+
         },
 
         "Should handle a contentInfo loading error": function () {

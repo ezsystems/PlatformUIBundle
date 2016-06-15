@@ -66,7 +66,7 @@ YUI.add('ez-userdraftsplugin', function (Y) {
          */
         _extractLastDrafts: function (versions, limit) {
             versions = versions.reverse();
-            versions.length = limit;
+            versions.length = Math.min(limit, versions.length);
 
             return versions.map(function (version) {
                 return {version: version};
