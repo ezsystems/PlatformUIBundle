@@ -1,0 +1,53 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-dashboardblockasynchronousview.is-loading .ez-block-wrapper:after {
+    color: #999;
+    font-size: 2em;
+    content: '\e61c';
+    animation: spin .7s infinite linear;
+}
+
+.ez-view-dashboardblockasynchronousview .ez-block-row {
+    cursor: pointer;
+}
+
+.ez-view-dashboardblockasynchronousview .ez-block-row.is-row-selected .ez-block-cell {
+    background: #F3A583;
+}
+
+.ez-view-dashboardblockasynchronousview .ez-block-row-options {
+    transform: scaleX(0);
+    transform-origin: top left;
+    transition: transform .3s cubic-bezier(.25,.8,.25,1);
+    background: #F24D17;
+}
+
+.ez-view-dashboardblockasynchronousview .ez-block-row.is-row-selected .ez-block-row-options {
+    transform: scaleX(1);
+}
+
+.ez-view-dashboardblockasynchronousview .ez-block-row-options .ez-font-icon {
+    font-size: 140%;
+    text-align: center;
+    color: #fff;
+    transition: background .3s cubic-bezier(.25,.8,.25,1);
+}
+
+.ez-view-dashboardblockasynchronousview .ez-block-row-options .ez-font-icon:before {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+}
+
+.ez-view-dashboardblockasynchronousview .ez-block-option-edit:before {
+    content: '\E606';
+}
+
+@media (min-width: 1280px) {
+}

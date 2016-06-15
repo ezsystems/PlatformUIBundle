@@ -213,8 +213,8 @@ system:
                         - 'ez-viewservice'
                         - 'ez-searchplugin'
                         - 'ez-locationmodel'
+                        - 'ez-userdraftsplugin'
                         - 'promise'
-                        - 'ez-dashboardblockallcontentserviceplugin'
                     path: %ez_platformui.public_dir%/js/views/services/ez-dashboardblocksviewservice.js
                 ez-contenteditviewservice:
                     requires:
@@ -315,6 +315,7 @@ system:
                     requires:
                         - 'ez-templatebasedview'
                         - 'ez-dashboardblockallcontentview'
+                        - 'ez-dashboardblockmydraftsview'
                         - 'dashboardblocksview-ez-template'
                     path: %ez_platformui.public_dir%/js/views/ez-dashboardblocksview.js
                 dashboardblocksview-ez-template:
@@ -323,12 +324,21 @@ system:
                 ez-dashboardblockbaseview:
                     requires: ['ez-templatebasedview']
                     path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockbaseview.js
+                ez-dashboardblockasynchronousview:
+                    requires: ['ez-dashboardblockbaseview', 'ez-asynchronousview', 'event-tap', 'event-outside']
+                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockasynchronousview.js
                 ez-dashboardblockallcontentview:
-                    requires: ['ez-dashboardblockbaseview', 'ez-asynchronousview', 'dashboardblockallcontentview-ez-template', 'event-tap', 'event-outside']
+                    requires: ['ez-dashboardblockasynchronousview', 'dashboardblockallcontentview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockallcontentview.js
                 dashboardblockallcontentview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/dashboard/allcontent-dashboard-block.hbt
+                    path: %ez_platformui.public_dir%/templates/dashboard/allcontent.hbt
+                ez-dashboardblockmydraftsview:
+                    requires: ['ez-dashboardblockasynchronousview', 'dashboardblockmydraftsview-ez-template']
+                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockmydraftsview.js
+                dashboardblockmydraftsview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/dashboard/mydrafts.hbt
                 ez-locationviewview:
                     requires:
                         - 'ez-templatebasedview'
@@ -1202,6 +1212,9 @@ system:
                 ez-userloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-userloadplugin.js
+                ez-userdraftsplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentinfomodel', 'ez-contenttypemodel', 'promise']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-userdraftsplugin.js
                 ez-visibilityswitcherplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-visibilityswitcherplugin.js

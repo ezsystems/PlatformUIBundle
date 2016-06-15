@@ -49,7 +49,7 @@ YUI.add('ez-contentinfomodel', function (Y) {
         REST_STRUCT_ROOT: "Content",
         ATTRS_REST_MAP: [
             'alwaysAvailable', 'lastModificationDate',
-            'mainLanguageCode', 'publishedDate',
+            'mainLanguageCode', 'publishedDate', 'currentVersionNo',
             {'_remoteId': 'remoteId'},
             {'Name': 'name'},
             {'_id': 'contentId'},

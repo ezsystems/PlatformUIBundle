@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>eZ User Drafts Plugin tests</title>
+</head>
+<body>
+<script type="text/javascript" src="../../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../../../assets/pluginregister-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-userdraftsplugin-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+    if (filter == 'coverage') {
+        loaderFilter = {
+            searchExp : '/Resources/public/js/',
+            replaceStr: '/Tests/instrument/Resources/public/js/'
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-userdraftsplugin'],
+        filter: loaderFilter,
+        modules: {
+            'ez-userdraftsplugin': {
+                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'promise'],
+                fullpath: '../../../../../Resources/public/js/views/services/plugins/ez-userdraftsplugin.js'
+            },
+            'ez-viewservicebaseplugin': {
+                requires: ['plugin', 'base'],
+                fullpath: '../../../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js'
+            },
+            'ez-pluginregistry': {
+                requires: ['array-extras'],
+                fullpath: '../../../../../Resources/public/js/services/ez-pluginregistry.js'
+            },
+            'ez-viewservice': {
+                requires: ['base', 'parallel'],
+                fullpath: '../../../../../Resources/public/js/views/services/ez-viewservice.js'
+            },
+        }
+    }).use('ez-userdraftsplugin-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
