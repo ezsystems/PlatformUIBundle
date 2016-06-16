@@ -177,6 +177,7 @@ class Fields extends PlatformUI
      */
     public function iSeeContentEditView()
     {
+        $this->waitWhileLoading();
         $verification = new WebAssert($this->getSession());
         $verification->elementExists('css', '.ez-view-contenteditformview');
     }

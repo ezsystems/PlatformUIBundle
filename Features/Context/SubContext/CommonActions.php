@@ -230,8 +230,10 @@ trait CommonActions
     public function clickOnTreePath($path)
     {
         $node = $this->findWithWait('.ez-view-discoverybarview');
+        $this->waitWhileLoading();
         $this->clickDiscoveryBar('Content tree');
         $this->openTreePath($path, $node);
+        $this->waitWhileLoading();
     }
 
     /**
