@@ -107,7 +107,8 @@ YUI.add('ez-dashboardblockmycontentview-tests', function (Y) {
 
         'Should search for location when view gets active': function () {
             var view = this.view,
-                isEventFired = false;
+                isEventFired = false,
+                userMetaDataCriterionTarget = "modifier";
 
             view.on('locationSearch', function (event) {
                 isEventFired = true;
@@ -128,6 +129,11 @@ YUI.add('ez-dashboardblockmycontentview-tests', function (Y) {
                 Assert.areSame(
                     view.get('currentUser').get('userId'),
                     event.search.criteria.UserMetadataCriterion.Value,
+                    'Should pass a correct search `UserMetaData` criterion value'
+                );
+                Assert.areSame(
+                    userMetaDataCriterionTarget,
+                    event.search.criteria.UserMetadataCriterion.Target,
                     'Should pass a correct search `UserMetaData` criterion value'
                 );
                 Assert.areEqual(

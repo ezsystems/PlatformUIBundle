@@ -180,8 +180,8 @@ YUI.add('ez-usermodel', function (Y) {
              * The user id
              *
              * @attribute userId
-             * @default null
-             * @type object
+             * @default ''
+             * @type Number
              */
             userId: {
                 value: ''

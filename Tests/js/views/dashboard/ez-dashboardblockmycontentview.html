@@ -28,10 +28,10 @@
 <script type="text/javascript" src="./assets/ez-dashboardblockmycontentview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
-            loaderFilter = (filter !== 'coverage') ? filter : {
-                searchExp: '/Resources/public/js/',
-                replaceStr: '/Tests/instrument/Resources/public/js/'
-            };
+        loaderFilter = (filter !== 'coverage') ? filter : {
+            searchExp: '/Resources/public/js/',
+            replaceStr: '/Tests/instrument/Resources/public/js/'
+        };
 
     YUI({
         coverage: ['ez-dashboardblockmycontentview'],

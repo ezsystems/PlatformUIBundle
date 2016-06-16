@@ -174,7 +174,7 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
             Y.Mock.expect(this.app, {
                 method: 'get',
                 args: ['user'],
-                returns: this.rootLocationModel
+                returns: this.user
             });
             this.service = new Y.eZ.DashboardBlocksViewService({
                 rootLocation: this.rootLocationModel,
@@ -188,6 +188,7 @@ YUI.add('ez-dashboardblocksviewservice-tests', function (Y) {
 
         'Should return a correct set of data when running `getViewParameters` method': function () {
             Y.Assert.areSame(this.rootLocationModel, this.service.getViewParameters().rootLocation, 'Should return `rootLocation` model');
+            Y.Assert.areSame(this.user, this.service.getViewParameters().currentUser, 'Should return `user` model');
         }
     });
 

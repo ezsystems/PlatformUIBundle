@@ -49,9 +49,6 @@
     content: '\E606';
 }
 
-@media (min-width: 1280px) {
-}
-
 .ez-view-dashboardblockasynchronousview  .ez-block-option-view:before {
     content: '\E607';
 }
