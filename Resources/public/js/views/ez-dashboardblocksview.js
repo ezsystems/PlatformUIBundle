@@ -147,21 +147,20 @@ YUI.add('ez-dashboardblocksview', function (Y) {
             blocks: {
                 valueFn: function () {
                     return [
-                        new Y.eZ.DashboardBlockAllContentView({
-                            priority: 100,
-                            bubbleTargets: this,
-                            rootLocation: this.get('rootLocation'),
-                        }),
                         new Y.eZ.DashboardBlockMyDraftsView({
-                            priority: 200,
+                            priority: 1000,
                             bubbleTargets: this
                         }),
                         new Y.eZ.DashboardBlockMyContentView({
-                            priority: 300,
+                            priority: 800,
                             bubbleTargets: this,
                             currentUser: this.get('currentUser'),
+                        }),
+                        new Y.eZ.DashboardBlockAllContentView({
+                            priority: 600,
+                            bubbleTargets: this,
                             rootLocation: this.get('rootLocation'),
-                        })
+                        }),
                     ];
                 },
                 readOnly: true
