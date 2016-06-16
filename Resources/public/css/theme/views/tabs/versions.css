@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 
-.ez-view-locationviewversionstabview .ez-versions-box {
+.ez-view-locationviewversionstabview .ez-versions-list-container {
     border: 1px solid #ccc;
     background: #F5F4F2;
 }
@@ -13,13 +13,6 @@
     font-size: 1.1em;
     font-weight: bold;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
-}
-
-.ez-view-locationviewversionstabview .ez-versions-table-title {
-    background: #fff;
-    border: 1px solid #ccc;
-    font-size: 1.1em;
-    font-weight: bold;
 }
 
 .ez-view-locationviewversionstabview .ez-versions-list-table {

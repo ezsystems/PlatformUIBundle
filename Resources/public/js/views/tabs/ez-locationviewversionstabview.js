@@ -11,6 +11,15 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
      */
     Y.namespace('eZ');
 
+    var events = {
+        '.ez-create-draft-from-archived-button': {
+            'tap': '_createDraftFromArchivedVersion'
+        },
+        '.ez-archived-version-checkbox': {
+            'change': '_enableCreateDraftFromArchivedVersionButton'
+        }
+    };
+
     /**
      * The Location View View Versions tab class.
      *
@@ -21,6 +30,7 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
      */
     Y.eZ.LocationViewVersionsTabView = Y.Base.create('locationViewVersionsTabView', Y.eZ.LocationViewTabView, [Y.eZ.AsynchronousView], {
         initializer: function () {
+            this.events = Y.merge(this.events, events);
             this._fireMethod = this._fireLoadVersions;
             this._watchAttribute = 'versions';
         },
@@ -91,6 +101,70 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
              */
             this.fire('loadVersions', {content: this.get('content')});
         },
+
+        /**
+         * Enables the `Create Draft form archived version` button if the selection is right
+         *
+         * @method _enableCreateDraftFromArchivedVersionButton
+         * @protected
+         */
+        _enableCreateDraftFromArchivedVersionButton: function () {
+            var c = this.get('container'),
+                checked = c.all('.ez-archived-version-checkbox:checked'),
+                button = c.one('.ez-create-draft-from-archived-button');
+
+            if (checked.size() === 1) {
+                button.set('disabled', false);
+            } else {
+                button.set('disabled', true);
+            }
+        },
+
+        /**
+         * Creates a draft from an archived version
+         *
+         * @method _createDraftFromArchivedVersion
+         * @protected
+         */
+        _createDraftFromArchivedVersion: function () {
+            var c = this.get('container'),
+                versions = Y.Array.reject(this.get('versions').ARCHIVED, function (version) {
+                    var checkbox = c.one('.ez-archived-version-checkbox[data-version-id="' + version.get('id') + '"]');
+
+                    if (checkbox && checkbox.get('checked')) {
+                        return false;
+                    }
+                    return true;
+                });
+
+            if (versions.length === 1) {
+                this._disableArchivedVersionsCheckboxes();
+
+                /**
+                 * Fired when the user clicks on the Create draft from archived version button
+                 *
+                 * @event createDraft
+                 * @param {eZ.Content} content
+                 *        {String} versionNo of the archived version. Ex: 42
+                 *
+                 */
+                this.fire('createDraft', {
+                    content: this.get('content'),
+                    versionNo: versions[0].get('versionNo'),
+                });
+            }
+        },
+
+        /**
+         * Disables all checkboxes on archived version list preventing from making use of them.
+         *
+         * @method _disableArchivedVersionsCheckboxes
+         * @private
+         */
+        _disableArchivedVersionsCheckboxes: function () {
+            this.get('container').all('.ez-archived-version-checkbox').set('disabled', true);
+        },
+
     }, {
         ATTRS: {
             /**
