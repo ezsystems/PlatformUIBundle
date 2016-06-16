@@ -2,7 +2,7 @@
 <div class="ez-block-wrapper ez-asynchronousview ez-font-icon">
     {{#if loadingError}}
     <p class="ez-asynchronousview-error ez-font-icon">
-        An error occurred while loading the content list.
+        An error occurred while loading the draft list.
         <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
     </p>
     {{else}}

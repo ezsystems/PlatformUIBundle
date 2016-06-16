@@ -106,7 +106,7 @@ YUI.add('ez-usermodel', function (Y) {
         REST_STRUCT_ROOT: "User",
         ATTRS_REST_MAP: [
             'email', 'login', 'enabled', 'name',
-            {'_remoteId': 'remoteId'}
+            {'_remoteId': 'remoteId'}, {'_id': 'userId'}
         ],
         ATTRS: {
             /**
@@ -174,7 +174,18 @@ YUI.add('ez-usermodel', function (Y) {
              */
             avatar: {
                 value: null
-            }
+            },
+
+            /**
+             * The user id
+             *
+             * @attribute userId
+             * @default ''
+             * @type Number
+             */
+            userId: {
+                value: ''
+            },
         }
     });
 });

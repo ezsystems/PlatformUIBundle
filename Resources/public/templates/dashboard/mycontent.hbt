@@ -1,4 +1,4 @@
-<h2 class="ez-block-title">All Content</h2>
+<h2 class="ez-block-title">My Content</h2>
 <div class="ez-block-wrapper ez-asynchronousview ez-font-icon">
     {{#if loadingError}}
     <p class="ez-asynchronousview-error ez-font-icon">
@@ -24,8 +24,8 @@
                 <td class="ez-block-cell ez-block-cell-options">
                     {{ contentInfo.lastModificationDate }}
                     <div class="ez-block-row-options">
-                        <a class="ez-block-option-edit ez-font-icon" href="{{ path "editContent" id=contentInfo.id languageCode=contentInfo.mainLanguageCode }}"></a>
-                        <a class="ez-block-option-view ez-font-icon" href="{{ path "viewLocation" id=location.id languageCode=contentInfo.mainLanguageCode }}"></a>
+                       <a class="ez-block-option-edit ez-font-icon" href="{{ path "editContent" id=contentInfo.id languageCode=contentInfo.mainLanguageCode }}"></a>
+                       <a class="ez-block-option-view ez-font-icon" href="{{ path "viewLocation" id=location.id languageCode=contentInfo.mainLanguageCode }}"></a>
                     </div>
                 </td>
             </tr>

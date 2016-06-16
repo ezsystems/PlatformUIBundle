@@ -22,12 +22,14 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
 
     Y.eZ.DashboardBlockAllContentView = Y.eZ.DashboardBlockBaseView;
     Y.eZ.DashboardBlockMyDraftsView = Y.eZ.DashboardBlockBaseView;
+    Y.eZ.DashboardBlockMyContentView = Y.eZ.DashboardBlockBaseView;
 
     renderTest = new Y.Test.Case({
         name: 'eZ Dashboard Blocks View render test',
 
         setUp: function () {
             this.view = new View(Y.merge(VIEW_CONFIG, {rootLocation: new Y.Base()}));
+            this.view._set('blocks', []);
         },
 
         tearDown: function () {
@@ -38,7 +40,20 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
             var view = this.view,
                 templateCalled = false,
                 origTpl = view.template,
-                block = this.view.get('blocks')[0];
+                block1Config1 = {
+                    priority: 1,
+                    identifier: 'A'
+                },
+                block1Config2 = {
+                    priority: 2,
+                    identifier: 'B'
+                },
+                block1 = new Y.eZ.DashboardBlockMyDraftsView(block1Config1),
+                block2 = new Y.eZ.DashboardBlockMyContentView(block1Config2);
+
+
+            view.addBlock(block1);
+            view.addBlock(block2);
 
             view.template = function () {
                 templateCalled = true;
@@ -49,7 +64,6 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
             this.view.render();
 
             Y.Assert.isTrue(templateCalled, 'The template should have been used to render view');
-            Y.Assert.areSame(view.get('rootLocation'), block.get('rootLocation'), 'Should pass `rootLocation` model to block view instance');
             Y.Assert.areSame(2, view.get('container').one(SELECTOR_CONTENT).get('children').size(), 'Should render blocks inside');
         }
     });
