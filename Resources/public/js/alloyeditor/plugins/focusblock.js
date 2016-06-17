@@ -16,8 +16,18 @@ YUI.add('ez-alloyeditor-plugin-focusblock', function (Y) {
         return editor.element.findOne('.' + FOCUSED_CLASS);
     }
 
+    function findNewFocusedBlock(elementPath) {
+        var block = elementPath.block,
+            elements = elementPath.elements;
+
+        if ( !block ) {
+            return null;
+        }
+        return elements[elements.length - 2];
+    }
+
     function updateFocusedBlock(e) {
-        var block = e.data.path.block,
+        var block = findNewFocusedBlock(e.data.path),
             oldBlock = findFocusedBlock(e.editor);
 
         if ( oldBlock && (!block || block.$ !== oldBlock.$) ) {
