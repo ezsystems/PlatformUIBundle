@@ -22,7 +22,7 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
      * @constructor
      */
     CKEDITOR.plugins.add('ezembed', {
-        requires: 'widget',
+        requires: 'widget,ezaddcontent',
 
         init: function (editor) {
             editor.widgets.add('ezembed', {
@@ -53,17 +53,11 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                     var element = CKEDITOR.dom.element.createFromHtml(this.template.output(this.defaults)),
                         wrapper = editor.widgets.wrapElement(element, this.name),
                         temp = new CKEDITOR.dom.documentFragment(wrapper.getDocument()),
-                        selection = editor.getSelection(),
                         instance;
 
                     temp.append(wrapper);
                     editor.widgets.initOn(element, this.name);
-
-                    if ( selection && selection.getSelectedElement() ) {
-                        wrapper.insertAfter(selection.getSelectedElement());
-                    } else {
-                        editor.insertElement(wrapper);
-                    }
+                    editor.eZ.appendElement(wrapper);
 
                     instance = editor.widgets.getByElement(wrapper);
                     instance.ready = true;
