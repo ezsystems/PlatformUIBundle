@@ -259,7 +259,10 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                     callbackCalled = true;
                 },
                 limitationType = 'Subtree',
-                subtreeIds = ['/1/2/'];
+                subtreeIds = [
+                    '/1/2',
+                    '/3/4/'
+                ];
 
             Mock.expect(universalDiscovery, {
                 method: 'get',
@@ -271,6 +274,23 @@ YUI.add('ez-roleserversideviewservice-tests', function (Y) {
                     limitationType: limitationType,
                     subtreeIds: subtreeIds,
                 },
+            });
+
+            Mock.expect(this.userService, {
+                method: 'newRoleAssignInputStruct',
+                args: [this.role, Mock.Value.Any],
+                run: Y.bind(function (role, limitation) {
+                    Assert.areSame(
+                        subtreeIds[0] + "/",
+                        limitation.values.ref[0]._href
+                    );
+                    Assert.areSame(
+                        subtreeIds[1],
+                        limitation.values.ref[1]._href
+                    );
+
+                    return this.roleAssignInputStruct;
+                }, this)
             });
 
             this._assignRoleAndCallCallback(universalDiscovery);
