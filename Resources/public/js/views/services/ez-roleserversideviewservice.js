@@ -164,6 +164,9 @@ YUI.add('ez-roleserversideviewservice', function (Y) {
             // Creating a limitation in the format described in the JS REST client's `UserService.prototype.newRoleAssignInputStruct()`
             var limitation,
                 limitationValues = Y.Array.map(data.subtreeIds, function(subtreeId) {
+                    if (subtreeId.slice(-1) !== "/") {
+                        subtreeId += "/";
+                    }
                     return {"_href": subtreeId, "_media-type": "application\/vnd.ez.api.Location+json"};
                 });
 
