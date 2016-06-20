@@ -215,9 +215,11 @@ YUI.add('ez-platformuiapp', function (Y) {
                 this.get('apiRoot').replace(/\/{1,}$/, ''),
                 new Y.eZ.SessionAuthAgent(
                     (config.sessionInfo && config.sessionInfo.isStarted) ? config.sessionInfo : undefined
-                )
+                ),
+                {siteAccess: config.siteAccess.name}
             ));
             delete config.sessionInfo;
+            delete config.siteAccess;
 
             if ( config.languages ) {
                 Y.Array.each(config.languages, function (language) {
