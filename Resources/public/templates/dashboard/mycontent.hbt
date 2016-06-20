@@ -16,20 +16,28 @@
             </tr>
         </thead>
         <tbody class="ez-block-content">
-        {{#each items}}
-            <tr class="ez-block-row">
-                <td class="ez-block-cell">{{ contentInfo.name }}</td>
-                <td class="ez-block-cell">{{ lookup contentType.names contentInfo.mainLanguageCode }}</td>
-                <td class="ez-block-cell">{{ contentInfo.currentVersionNo }}</td>
-                <td class="ez-block-cell ez-block-cell-options">
-                    {{ contentInfo.lastModificationDate }}
-                    <div class="ez-block-row-options">
-                       <a class="ez-block-option-edit ez-font-icon" href="{{ path "editContent" id=contentInfo.id languageCode=contentInfo.mainLanguageCode }}"></a>
-                       <a class="ez-block-option-view ez-font-icon" href="{{ path "viewLocation" id=location.id languageCode=contentInfo.mainLanguageCode }}"></a>
-                    </div>
-                </td>
-            </tr>
-        {{/each}}
+        {{#unless loading}}
+            {{#if items.length}}
+                {{#each items}}
+                    <tr class="ez-block-row">
+                        <td class="ez-block-cell">{{ contentInfo.name }}</td>
+                        <td class="ez-block-cell">{{ lookup contentType.names contentInfo.mainLanguageCode }}</td>
+                        <td class="ez-block-cell">{{ contentInfo.currentVersionNo }}</td>
+                        <td class="ez-block-cell ez-block-cell-options">
+                            {{ contentInfo.lastModificationDate }}
+                            <div class="ez-block-row-options">
+                               <a class="ez-block-option-edit ez-font-icon" href="{{ path "editContent" id=contentInfo.id languageCode=contentInfo.mainLanguageCode }}"></a>
+                               <a class="ez-block-option-view ez-font-icon" href="{{ path "viewLocation" id=location.id languageCode=contentInfo.mainLanguageCode }}"></a>
+                            </div>
+                        </td>
+                    </tr>
+                {{/each}}
+            {{else}}
+                <tr>
+                    <td class="ez-block-cell ez-block-cell-no-result" colspan="4">You haven't modified any content item yet.</td>
+                </tr>
+            {{/if}}
+        {{/unless}}
         </tbody>
     </table>
     {{/if}}
