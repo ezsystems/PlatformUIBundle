@@ -331,10 +331,14 @@ YUI.add('ez-searchplugin', function (Y) {
         _loadContentForLocations: function (viewName, locationStructArr, callback) {
             var contentService = this._getContentService(),
                 contentIds,
+                contentIdsLocationIndexMap = {},
                 query;
 
-            contentIds = Y.Array.reduce(locationStructArr, '', function (previousId, struct) {
-                return previousId + "," + struct.location.get('contentInfo').get('contentId');
+            contentIds = Y.Array.reduce(locationStructArr, '', function (previousId, struct, index) {
+                var contentId = struct.location.get('contentInfo').get('contentId');
+
+                contentIdsLocationIndexMap[contentId] = index;
+                return previousId + "," + contentId;
             });
 
             query = this._createNewCreateViewStruct('contents-loading-' + viewName, 'ContentQuery', {
@@ -349,7 +353,10 @@ YUI.add('ez-searchplugin', function (Y) {
                     return;
                 }
                 Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit, i) {
-                    locationStructArr[i].content = this._createContent(hit);
+                    var content = this._createContent(hit),
+                        locationIndex = contentIdsLocationIndexMap[content.get('contentId')];
+
+                    locationStructArr[locationIndex].content = content;
                 }, this);
                 callback(err, locationStructArr);
             }, this));

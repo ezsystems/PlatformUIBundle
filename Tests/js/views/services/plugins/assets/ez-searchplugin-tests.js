@@ -591,7 +591,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                         case 'contentInfo':
                             return that.contentInfoMock;
                         default:
-                            Assert.fail('Requested attribute does not exist in the location model');
+                            Assert.fail('Requested attribute "' + attr + '" does not exist in the location model');
                             break;
                     }
                 };
@@ -604,8 +604,10 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                     switch (attr) {
                         case 'id':
                             return that.contentInfo.id;
+                        case 'contentId':
+                            return that.contentInfo.contentId;
                         default:
-                            Assert.fail('Requested attribute does not exist in the content model');
+                            Assert.fail('Requested attribute "' + attr + '" does not exist in the content model');
                             break;
                     }
                 };
@@ -634,7 +636,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                     if (that.contentInfo[attr] !== undefined) {
                         return that.contentInfo[attr];
                     } else {
-                        Assert.fail('Requested attribute does not exist in the contentInfo');
+                        Assert.fail('Requested attribute "' + attr + '" does not exist in the content info model');
                     }
                 }
             });
