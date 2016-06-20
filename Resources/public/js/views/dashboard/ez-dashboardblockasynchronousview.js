@@ -44,10 +44,19 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
 
             this.get('container')
                 .addClass(this._generateViewClassName(Y.eZ.DashboardBlockBaseView.NAME))
-                .addClass(this._generateViewClassName(Y.eZ.DashboardBlockAsynchronousView.NAME))
-                .addClass(CLASS_LOADING);
+                .addClass(this._generateViewClassName(Y.eZ.DashboardBlockAsynchronousView.NAME));
 
-            this.after('itemsChange', this._uiEndLoading);
+            this.after('itemsChange', function () {
+                this._set('loading', false);
+            });
+            this.after('loadingChange', function () {
+                if ( this.get('loading') ) {
+                    this._uiStartLoading();
+                } else {
+                    this._uiEndLoading();
+                }
+            });
+            this._set('loading', true);
         },
 
         render: function () {
@@ -55,6 +64,7 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
 
             this.get('container').setHTML(this.template({
                 items: items,
+                loading: this.get('loading'),
                 loadingError: this.get('loadingError'),
             }));
 
@@ -101,13 +111,23 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
         },
 
         /**
-         * Removes the loading state of the UI
+         * Removes the loading class to reflect the non loading state
          *
          * @method _uiEndLoading
          * @protected
          */
         _uiEndLoading: function () {
             this.get('container').removeClass(CLASS_LOADING);
+        },
+
+        /**
+         * Adds the loading class to reflect the loading state
+         *
+         * @method _uiStartLoading
+         * @protected
+         */
+        _uiStartLoading: function () {
+            this.get('container').addClass(CLASS_LOADING);
         },
 
         /**
@@ -148,6 +168,18 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
              */
             items: {
                 value: []
+            },
+
+            /**
+             * Flag indicating if the block is currently waiting for data.
+             *
+             * @attribute loading
+             * @type Boolean
+             * @default undefined
+             * @readOnly
+             */
+            loading: {
+                readOnly: true,
             }
         }
     });
