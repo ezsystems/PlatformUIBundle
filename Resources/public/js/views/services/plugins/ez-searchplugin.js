@@ -62,7 +62,11 @@ YUI.add('ez-searchplugin', function (Y) {
             query.body.ViewInput[type].Criteria = search.criteria;
             query.body.ViewInput[type].offset = search.offset;
             query.body.ViewInput[type].limit = search.limit;
-            query.body.ViewInput[type].SortClauses = search.sortClauses;
+            if ( search.sortClauses ) {
+                query.body.ViewInput[type].SortClauses = search.sortClauses;
+            } else if ( search.sortLocation ) {
+                query.body.ViewInput[type].SortClauses = search.sortLocation.getSortClause();
+            }
 
             return query;
         },
@@ -123,6 +127,8 @@ YUI.add('ez-searchplugin', function (Y) {
          * @param {String} search.viewName the name of the REST view to use
          * @param {Object} search.criteria the search criteria used as Criteria in LocationQuery
          * @param {Object} [search.sortClauses] the sort clauses
+         * @param {eZ.Location} [search.sortLocation] the Location to use to
+         * generate the sort clauses
          * @param {Number} [search.offset]
          * @param {Number} [search.limit]
          * @param {Boolean} [search.loadContent] flag indicating whether the
@@ -175,16 +181,18 @@ YUI.add('ez-searchplugin', function (Y) {
          * @param {EventFacade} e
          * @param {Object} e.search
          * @param {Object} e.search.criteria the search criteria used as Criteria in LocationQuery
-         * @param {Object} e.search.sortClauses the search sort clauses
+         * @param {Object} [e.search.sortClauses] the search sort clauses
+         * @param {eZ.Location} [search.sortLocation] the Location to use to
+         * generate the sort clauses
          * @param {Integer} e.search.offset the offset for the search result
          * @param {Integer} e.search.limit number of records returned
          * @param {String} e.resultAttribute the name of attribute that will by updated with search results
-         * @param {String} e.resultTotalCountAttribute the name of attribute that will be updated with total
+         * @param {String} [e.resultTotalCountAttribute] the name of attribute that will be updated with total
          * number of records matching search criteria
-         * @param {Bool} e.loadContent the flag indicating whether the eZ.Content should be loaded for all
+         * @param {Bool} [e.loadContent] the flag indicating whether the eZ.Content should be loaded for all
          * of the locations searched. If it is set to *TRUE* then `content` field will be present inside
          * every search result (locationStruct)
-         * @param {Bool} e.loadContentType the flag indicating whether the eZ.ContentType should be loaded for all
+         * @param {Bool} [e.loadContentType] the flag indicating whether the eZ.ContentType should be loaded for all
          * of the locations searched. If it is set to *TRUE* then `contentType` field will be present inside
          * every search result (locationStruct)
          */

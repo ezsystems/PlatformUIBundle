@@ -369,6 +369,34 @@ YUI.add('ez-searchplugin-tests', function (Y) {
             }, function () {});
         },
 
+        "Should set the sort clause based on the given Location": function () {
+            var sortClauses = {},
+                location = new Mock();
+
+            Mock.expect(location, {
+                method: 'getSortClause',
+                returns: sortClauses
+            });
+
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
+                run: function (query, cb) {
+                    Assert.areSame(
+                        sortClauses,
+                        query.body.ViewInput.LocationQuery.SortClauses,
+                        "The sortClauses should be set on the view create struct"
+                    );
+                }
+            });
+
+            this._runSearch({
+                criteria: {},
+                sortLocation: location,
+            }, function () {});
+
+        },
+
         "Should handle the search error": function () {
             var response = {},
                 errorObject = {},
