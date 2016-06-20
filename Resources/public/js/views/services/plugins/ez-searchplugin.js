@@ -116,6 +116,57 @@ YUI.add('ez-searchplugin', function (Y) {
         },
 
         /**
+         * Executes a location search based on the provide `search` object.
+         *
+         * @method findLocations
+         * @param {Object} search
+         * @param {String} search.viewName the name of the REST view to use
+         * @param {Object} search.criteria the search criteria used as Criteria in LocationQuery
+         * @param {Object} [search.sortClauses] the sort clauses
+         * @param {Number} [search.offset]
+         * @param {Number} [search.limit]
+         * @param {Boolean} [search.loadContent] flag indicating whether the
+         * Content item of each result has to be loaded in addition
+         * @param {Boolean} [search.loadContentType] flag indicating whether the
+         * Content Type of each result has to be loaded in addition
+         * @param {Function} callback
+         * @param {Error|null} callback.error
+         * @param {Response|Array} callback.result the Response object in case
+         * of error or an array of Location struct. A Location struct is object
+         * containing the Location and/or the Content item and/or the Content
+         * Type depending on the `loadContent` and `loadContentType` flags.
+         * @param {Number} callback.resultCount the total result number of the
+         * search
+         */
+        findLocations: function (search, callback) {
+            var contentService = this._getContentService(),
+                query;
+
+            query = this._createNewCreateViewStruct(search.viewName, 'LocationQuery', search);
+            contentService.createView(query, Y.bind(function (error, result) {
+                var parsedResult = [];
+
+                if ( error ) {
+                    return callback(error, result, 0);
+                }
+                parsedResult = this._parseSearchResult(result, 'location', '_createLocation');
+                if (parsedResult.length && (search.loadContentType || search.loadContent)) {
+                    this._loadResources(
+                        search.viewName,
+                        search.loadContentType,
+                        search.loadContent,
+                        parsedResult,
+                        function (error, structs) {
+                            callback(error, structs, result.document.View.Result.count);
+                        }
+                    );
+                } else {
+                    callback(error, parsedResult, result.document.View.Result.count);
+                }
+            }, this));
+        },
+
+        /**
          * `locationSearch` event handler. It executes the location search and
          * set the result on the target of the event.
          *
@@ -138,45 +189,23 @@ YUI.add('ez-searchplugin', function (Y) {
          * every search result (locationStruct)
          */
         _doLocationSearch: function (e) {
-            var listView = e.target,
-                contentService = this._getContentService(),
-                query;
+            var search = Y.merge(e.search),
+                listView = e.target,
+                attrs = {'loadingError': false};
 
-            query = this._createNewCreateViewStruct(e.viewName, 'LocationQuery', e.search);
-            contentService.createView(query, Y.bind(function (error, result) {
-                var attrs = {'loadingError': true},
-                    parsedResult = [];
-
+            search.viewName = e.viewName;
+            search.loadContent = e.loadContent;
+            search.loadContentType = e.loadContentType;
+            this.findLocations(search, function (error, result, resultCount) {
+                attrs.loadingError = error ? true : false;
                 if ( !error ) {
-                    parsedResult = this._parseSearchResult(result, 'location', '_createLocation');
-
-                    attrs.loadingError = false;
-                    if (e.resultTotalCountAttribute) {
-                        attrs[e.resultTotalCountAttribute] = result.document.View.Result.count;
+                    attrs[e.resultAttribute] = result;
+                    if ( e.resultTotalCountAttribute ) {
+                        attrs[e.resultTotalCountAttribute] = resultCount;
                     }
-                    attrs[e.resultAttribute] = parsedResult;
                 }
-
-                if (parsedResult.length && (e.loadContentType || e.loadContent)) {
-                    this._loadResources(
-                        e.viewName,
-                        e.loadContentType,
-                        e.loadContent,
-                        attrs[e.resultAttribute],
-                        function (error, locationStructArr){
-                            if (error) {
-                                attrs = {'loadingError': true};
-                            }
-
-                            attrs[e.resultAttribute] = locationStructArr;
-
-                            listView.setAttrs(attrs);
-                        }
-                    );
-                } else {
-                    listView.setAttrs(attrs);
-                }
-            }, this));
+                listView.setAttrs(attrs);
+            });
         },
 
         /**

@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-searchplugin-tests', function (Y) {
-    var locationSearchTests, contentSearchTests, loadResourcesTests, registerTest,
+    var locationSearchTests, locationSearchEventTests,
+        contentSearchTests, loadResourcesTests, registerTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     contentSearchTests = new Y.Test.Case({
@@ -288,7 +289,250 @@ YUI.add('ez-searchplugin-tests', function (Y) {
     });
 
     locationSearchTests = new Y.Test.Case({
-        name: "eZ Search Plugin location search tests",
+        name: "eZ Search Plugin findLocations tests",
+
+        setUp: function () {
+            this.LocationModelConstructor = function () {};
+            this.capi = new Mock();
+            this.contentService = new Mock();
+            this.viewName = 'REST-View-Name';
+            this.query = {body: {ViewInput: {LocationQuery: {}}}};
+
+            Mock.expect(this.capi, {
+                method: 'getContentService',
+                returns: this.contentService,
+            });
+            Mock.expect(this.contentService, {
+                method: 'newViewCreateStruct',
+                args: [this.viewName, 'LocationQuery'],
+                returns: this.query,
+            });
+            this.service = new Y.Base();
+            this.service.set('capi', this.capi);
+            this.plugin = new Y.eZ.Plugin.Search({
+                host: this.service,
+                locationModelConstructor: this.LocationModelConstructor,
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            this.plugin.destroy();
+            delete this.service;
+            delete this.plugin;
+            delete this.capi;
+            delete this.contentService;
+            delete this.query;
+        },
+
+        _runSearch: function (search, callback) {
+            search.viewName = this.viewName;
+            this.plugin.findLocations(search, callback);
+        },
+
+        "Should create a LocationQuery with the given name and search properties": function () {
+            var criteria = {}, sortClauses = {},
+                offset = 42, limit = 43;
+
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
+                run: function (query, cb) {
+                    Assert.areSame(
+                        criteria,
+                        query.body.ViewInput.LocationQuery.Criteria,
+                        "The criteria should be set on the view create struct"
+                    );
+                    Assert.areSame(
+                        sortClauses,
+                        query.body.ViewInput.LocationQuery.SortClauses,
+                        "The sortClauses should be set on the view create struct"
+                    );
+                    Assert.areEqual(
+                        offset,
+                        query.body.ViewInput.LocationQuery.offset,
+                        "The offset should be set on the view create struct"
+                    );
+                    Assert.areEqual(
+                        limit,
+                        query.body.ViewInput.LocationQuery.limit,
+                        "The limit should be set on the view create struct"
+                    );
+                }
+            });
+
+            this._runSearch({
+                criteria: criteria,
+                sortClauses: sortClauses,
+                offset: offset,
+                limit: limit,
+            }, function () {});
+        },
+
+        "Should handle the search error": function () {
+            var response = {},
+                errorObject = {},
+                callbackCalled = false;
+
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
+                run: function (query, cb) {
+                    cb(errorObject, response);
+                }
+            });
+
+            this._runSearch({criteria: {}}, function (error, result, count) {
+                callbackCalled = true;
+
+                Assert.areSame(
+                    errorObject, error,
+                    "The CAPI error object should be provided"
+                );
+                Assert.areSame(
+                    response, result,
+                    "The CAPI response object should be provided"
+                );
+                Assert.areEqual(
+                    0, count,
+                    "The result count should be 0"
+                );
+            });
+
+            Assert.isTrue(
+                callbackCalled,
+                "The findLocations callback should have been called"
+            );
+        },
+
+        "Should provide the result to the callback": function () {
+            var response = {
+                    document: {
+                        View: {
+                            Result: {
+                                count: 2,
+                                searchHits: {
+                                    searchHit: [{
+                                        value: {
+                                            Location: {}
+                                        },
+                                    }, {
+                                        value: {
+                                            Location: {}
+                                        }
+                                    }]
+                                }
+                            }
+                        }
+                    }
+                },
+                callbackCalled = false;
+
+            this.LocationModelConstructor.prototype.loadFromHash = function (hash) {
+                this.hash = hash;
+            };
+
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
+                run: function (query, cb) {
+                    cb(false, response);
+                }
+            });
+
+            this._runSearch({criteria: {}}, Y.bind(function (error, result, count) {
+                callbackCalled = true;
+                Assert.isFalse(
+                    error,
+                    "The error parameter should be false"
+                );
+                Assert.areEqual(
+                    response.document.View.Result.count,
+                    count,
+                    "The result count should be provided"
+                );
+                Assert.isArray(
+                    result,
+                    "The result parameter should be an array"
+                );
+                result.forEach(function (value, i) {
+                    Assert.isObject(value, "The result value should be an object");
+                    Assert.isInstanceOf(
+                        this.LocationModelConstructor,
+                        value.location,
+                        "The result value should contain location field which should be an instance of the model"
+                    );
+                    Assert.areSame(
+                        response.document.View.Result.searchHits.searchHit[i].value.Location,
+                        value.location.hash,
+                        "The location from the value should be created from the hash"
+                    );
+                }, this);
+            }, this));
+
+            Assert.isTrue(
+                callbackCalled,
+                "The findLocations callback should have been called"
+            );
+        },
+
+        "Should set an empty array on the target when there's no result": function () {
+            var response = {
+                    document: {
+                        View: {
+                            Result: {
+                                count: 0,
+                                searchHits: {
+                                    searchHit: []
+                                }
+                            }
+                        }
+                    }
+                },
+                callbackCalled = false;
+
+            this.LocationModelConstructor.prototype.loadFromHash = function (hash) {
+                this.hash = hash;
+            };
+
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
+                run: function (query, cb) {
+                    cb(false, response);
+                }
+            });
+
+            this._runSearch({criteria: {}}, function (error, result, count) {
+                callbackCalled = true;
+                Assert.isFalse(
+                    error,
+                    "The error parameter should be false"
+                );
+                Assert.areEqual(
+                    response.document.View.Result.count,
+                    count,
+                    "The result count should be provided"
+                );
+                Assert.isArray(
+                    result,
+                    "The result parameter should be an array"
+                );
+                Assert.areEqual(
+                    0, result.length,
+                    "The result parameter should be an empty array"
+                );
+            });
+
+            Assert.isTrue(
+                callbackCalled,
+                "The findLocations callback should have been called"
+            );
+        },
+    });
+
+    locationSearchEventTests = new Y.Test.Case({
+        name: "eZ Search Plugin location search event tests",
 
         setUp: function () {
             this.LocationModelConstructor = function () {};
@@ -325,6 +569,15 @@ YUI.add('ez-searchplugin-tests', function (Y) {
             delete this.query;
         },
 
+        _runSearch: function (search, resultAttr, resultCountAttr) {
+            this.view.fire('locationSearch', {
+                viewName: this.viewName,
+                search: search,
+                resultAttribute: resultAttr,
+                resultTotalCountAttribute: resultCountAttr,
+            });
+        },
+
         "Should create a LocationQuery with the given name and search properties": function () {
             var criteria = {}, sortClauses = {},
                 offset = 42, limit = 43;
@@ -356,14 +609,11 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 }
             });
 
-            this.view.fire('locationSearch', {
-                viewName: this.viewName,
-                search: {
-                    criteria: criteria,
-                    sortClauses: sortClauses,
-                    offset: offset,
-                    limit: limit,
-                }
+            this._runSearch({
+                criteria: criteria,
+                sortClauses: sortClauses,
+                offset: offset,
+                limit: limit,
             });
         },
 
@@ -376,12 +626,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 }
             });
 
-            this.view.fire('locationSearch', {
-                viewName: this.viewName,
-                search: {
-                    criteria: {},
-                }
-            });
+            this._runSearch({criteria: {}});
 
             Assert.isTrue(
                 this.view.get('loadingError'),
@@ -426,14 +671,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 }
             });
 
-            this.view.fire('locationSearch', {
-                viewName: this.viewName,
-                resultAttribute: resultAttr,
-                resultTotalCountAttribute: resultCountAttr,
-                search: {
-                    criteria: {},
-                }
-            });
+            this._runSearch({criteria: {}}, resultAttr, resultCountAttr);
 
             Assert.isFalse(
                 this.view.get('loadingError'),
@@ -489,7 +727,6 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 this.hash = hash;
             };
 
-            this.service.set('locationModelConstructor', this.LocationModelConstructor);
             Mock.expect(this.contentService, {
                 method: 'createView',
                 args: [this.query, Mock.Value.Function],
@@ -498,14 +735,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 }
             });
 
-            this.view.fire('locationSearch', {
-                viewName: this.viewName,
-                resultAttribute: resultAttr,
-                resultTotalCountAttribute: resultCountAttr,
-                search: {
-                    criteria: {},
-                }
-            });
+            this._runSearch({criteria: {}}, resultAttr, resultCountAttr);
 
             Assert.isFalse(
                 this.view.get('loadingError'),
@@ -794,9 +1024,10 @@ YUI.add('ez-searchplugin-tests', function (Y) {
     registerTest.Plugin = Y.eZ.Plugin.Search;
     registerTest.components = ['locationViewViewService', 'dashboardBlocksViewService'];
 
-    Y.Test.Runner.setName("eZ Search Plugin locationSearchTests");
+    Y.Test.Runner.setName("eZ Search Plugin Tests");
     Y.Test.Runner.add(contentSearchTests);
     Y.Test.Runner.add(locationSearchTests);
+    Y.Test.Runner.add(locationSearchEventTests);
     Y.Test.Runner.add(loadResourcesTests);
     Y.Test.Runner.add(registerTest);
 }, '', {requires: ['test', 'base', 'model', 'ez-searchplugin', 'ez-pluginregister-tests']});
