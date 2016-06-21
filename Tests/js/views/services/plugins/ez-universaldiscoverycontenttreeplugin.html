@@ -30,8 +30,12 @@
                 fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-universaldiscoverycontenttreeplugin.js"
             },
             "ez-contenttreeplugin": {
-                requires: ['ez-viewservicebaseplugin', 'ez-contenttree', 'parallel'],
+                requires: ['ez-viewservicebaseplugin', 'ez-contenttree', 'ez-searchplugin'],
                 fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-contenttreeplugin.js"
+            },
+            "ez-searchplugin": {
+                requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-searchplugin.js"
             },
             "ez-viewservicebaseplugin": {
                 requires: ['plugin', 'base'],

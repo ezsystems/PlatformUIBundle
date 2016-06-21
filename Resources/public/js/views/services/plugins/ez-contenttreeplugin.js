@@ -47,84 +47,46 @@ YUI.add('ez-contenttreeplugin', function (Y) {
          * @param {Function} callback
          */
         _loadNode: function (node, callback) {
-            var capi = this.get('host').get('capi'),
-                options = {api: capi},
-                contentService = capi.getContentService(),
-                levelLocation = node.data.location,
-                query;
+            var levelLocation = node.data.location,
+                loadContent = this.get('tree').rootNode.data.loadContent;
 
-            query = contentService.newViewCreateStruct('children_' + levelLocation.get('locationId'), 'LocationQuery');
-            query.body.ViewInput.LocationQuery.Criteria = {
-                "ParentLocationIdCriterion": levelLocation.get('locationId'),
-            };
-
-            /*
-             * @TODO sort correctly the sub-items of the levelLocation
-             * see https://jira.ez.no/browse/EZP-24998
-            query.body.ViewInput.LocationQuery.SortClauses = {
-                "SortClause": {
-                    "SortField": levelLocation.get('sortField'),
-                    "SortOrder": levelLocation.get('sortOrder'),
+            this.get('host').search.findLocations({
+                viewName: 'children_' + levelLocation.get('locationId'),
+                criteria: {
+                    "ParentLocationIdCriterion": levelLocation.get('locationId'),
                 },
-            };
-            */
-
-            contentService.createView(query, Y.bind(function (err, response) {
-                var tasks = new Y.Parallel(),
-                    loadError = false,
-                    children = {};
-
-                if ( err ) {
+                sortLocation: levelLocation,
+                loadContent: loadContent,
+                loadContentType: true,
+            }, function (error, results) {
+                if ( error ) {
                     callback({node: node});
                     return;
                 }
-                Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit) {
-                    var loc, contentInfo, contentType,
-                        end = tasks.add(function (err) {
-                            if ( err ) {
-                                loadError = true;
-                                return;
-                            }
-                            node.append({
-                                data: children[loc.get('id')],
-                                id: loc.get('id'),
-                                canHaveChildren: children[loc.get('id')].contentType.get('isContainer'),
-                                state: {
-                                    leaf: (loc.get('childCount') === 0),
-                                },
-                            });
-                        });
+                results.forEach(function (locationStruct) {
+                    var location = locationStruct.location,
+                        contentType = locationStruct.contentType,
+                        data = {
+                            location: location,
+                            contentInfo: location.get('contentInfo'),
+                            contentType: contentType,
+                        };
 
-                    loc = new Y.eZ.Location({id: hit.value.Location._href});
-                    loc.loadFromHash(hit.value.Location);
-
-                    // TODO we should be a bit smarter here to not load again
-                    // and again the same content type at least for a given level.
-                    contentInfo = loc.get('contentInfo');
-                    contentType = new Y.eZ.ContentType({id: contentInfo.get('resources').ContentType});
-
-                    children[loc.get('id')] = {
-                        "location": loc,
-                        "contentInfo": contentInfo,
-                        "contentType": contentType,
-                    };
-                    contentType.load(options, end);
-                });
-
-                if ( node.tree.rootNode.data.loadContent ) {
-                    this._loadContents(levelLocation, children, tasks.add(function (err) {
-                        loadError = err;
-                    }));
-                }
-
-                tasks.done(function () {
-                    if ( loadError ) {
-                        callback({node: node});
-                        return;
+                    if ( loadContent ) {
+                        data.content = locationStruct.content;
                     }
-                    callback();
+
+                    node.append({
+                        data: data,
+                        id: location.get('id'),
+                        canHaveChildren: contentType.get('isContainer'),
+                        state: {
+                            leaf: (location.get('childCount') === 0),
+                        },
+                    });
                 });
-            }, this));
+                callback();
+            });
         },
 
         /**
@@ -194,6 +156,7 @@ YUI.add('ez-contenttreeplugin', function (Y) {
          * @param {eZ.Location} levelLocation
          * @param {Object} data
          * @param {Function} callback
+         * @deprecated
          * @protected
          */
         _loadContents: function (levelLocation, data, callback) {
@@ -201,6 +164,8 @@ YUI.add('ez-contenttreeplugin', function (Y) {
                 contents = {},
                 query;
 
+            console.log('[DEPRECATED] `_loadContents` method is deprecated');
+            console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
             query = contentService.newViewCreateStruct('children_content' + levelLocation.get('locationId'), 'ContentQuery');
             query.body.ViewInput.ContentQuery.Criteria = {
                 "ParentLocationIdCriterion": levelLocation.get('locationId'),

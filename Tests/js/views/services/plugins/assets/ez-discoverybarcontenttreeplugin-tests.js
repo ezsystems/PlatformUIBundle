@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
-    var tests, loadingTest, notLocationViewTest, parallelLoadTest, registerTest,
+    var tests, loadingTest, notLocationViewTest, parallelLoadTest,
+        registerTest, registerSearchTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     tests = new Y.Test.Case({
@@ -94,24 +95,15 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
         name: "eZ Content Tree Plugin loading tests",
 
         setUp: function () {
-            var capi = new Mock(),
-                query = {body: {ViewInput: {LocationQuery: {}}}};
-
             Y.eZ.LocationViewView = Y.View;
-            this.contentService = new Mock();
-            Mock.expect(capi, {
-                method: 'getContentService',
-                returns: this.contentService,
-            });
-            Mock.expect(this.contentService, {
-                method: 'newViewCreateStruct',
-                args: [Mock.Value.String, 'LocationQuery'],
-                returns: query,
-            });
             this.app = new Y.Base();
             this.service = new Y.Base();
-            this.service.set('capi', capi);
             this.service.set('app', this.app);
+            this.service.search = new Mock();
+            Mock.expect(this.service.search, {
+                method: 'findLocations',
+                args: [Mock.Value.Object, Mock.Value.Function],
+            });
             this.view = new Y.eZ.LocationViewView();
             this.app.set('activeView', this.view);
             this.view.addTarget(this.service);
@@ -157,13 +149,6 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
             loc = this._getLocationMock(
                 {'id': id, 'locationId': locationId, 'contentInfo': contentInfo}
             );
-            Mock.expect(this.contentService, {
-                method: 'createView',
-                args: [Mock.Value.Object, Mock.Value.Function],
-                run: function (query, callback) {
-                    callback(true); // simulating an error to ease the test
-                },
-            });
             this.service.set('response', {view: {"location": loc, path: []}});
             this.view.set('expanded', true);
 
@@ -198,8 +183,6 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
         name: "eZ Content Tree Plugin not Location view tests",
 
         setUp: function () {
-            var query = {body: {ViewInput: {LocationQuery: {}}}};
-
             this.contentInfo = {};
             Y.eZ.LocationViewView = Y.Base.create('locationView', Y.View, [], {});
             Y.eZ.Location = Y.Base.create('location', Y.Model, [], {}, {
@@ -209,22 +192,18 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
                     }
                 }
             });
-            this.capi = new Mock();
-            this.contentService = new Mock();
-            Mock.expect(this.capi, {
-                method: 'getContentService',
-                returns: this.contentService,
-            });
-            Mock.expect(this.contentService, {
-                method: 'newViewCreateStruct',
-                args: [Mock.Value.String, 'LocationQuery'],
-                returns: query,
-            });
 
             this.app = new Y.Base();
             this.service = new Y.Base();
             this.service.set('app', this.app);
-            this.service.set('capi', this.capi);
+            this.service.search = new Mock();
+            Mock.expect(this.service.search, {
+                method: 'findLocations',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (search, callback) {
+                    callback(false, [], 0);
+                },
+            });
             this.view = new Y.View();
             this.view.addTarget(this.service);
             this.app.set('activeView', this.view);
@@ -273,13 +252,6 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
             var tree = this.plugin.get('tree'),
                 treeCleared = false, loadFired = false;
 
-            Mock.expect(this.contentService, {
-                method: 'createView',
-                args: [Mock.Value.Object, Mock.Value.Function],
-                run: function (query, callback) {
-                    callback(true); // simulating an error to ease the test
-                },
-            });
             this.service.set('response', {view: {}});
             this.view.set('expanded', true);
 
@@ -376,10 +348,15 @@ YUI.add('ez-discoverybarcontenttreeplugin-tests', function (Y) {
     registerTest.Plugin = Y.eZ.Plugin.DiscoveryBarContentTree;
     registerTest.components = ['discoveryBarViewService'];
 
+    registerSearchTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
+    registerSearchTest.Plugin = Y.eZ.Plugin.Search;
+    registerSearchTest.components = ['discoveryBarViewService'];
+
     Y.Test.Runner.setName("eZ Discovery Bar Content Tree Plugin tests");
     Y.Test.Runner.add(tests);
     Y.Test.Runner.add(loadingTest);
     Y.Test.Runner.add(notLocationViewTest);
     Y.Test.Runner.add(parallelLoadTest);
     Y.Test.Runner.add(registerTest);
+    Y.Test.Runner.add(registerSearchTest);
 }, '', {requires: ['test', 'base', 'view', 'model', 'ez-discoverybarcontenttreeplugin', 'ez-pluginregister-tests']});
