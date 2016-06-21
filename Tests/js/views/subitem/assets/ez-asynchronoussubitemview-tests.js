@@ -37,6 +37,11 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
                 this.view.get('limit'),
                 "The search event should contain the limit"
             );
+            Assert.areSame(
+                this.view.get('location'),
+                evt.search.sortLocation,
+                "The current Location should be used to sort the subitems"
+            );
         },
 
         "Should fire the search event when becoming active": function () {

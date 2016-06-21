@@ -97,16 +97,7 @@ YUI.add('ez-asynchronoussubitemview', function (Y) {
                     },
                     offset: this.get('offset'),
                     limit: this.get('limit'),
-                    /*
-                     * @TODO see https://jira.ez.no/browse/EZP-24315
-                     * this is not yet supported by the views in the REST API
-                    sortClauses: {
-                        SortClause: {
-                            SortField: this.get('location').get('sortField'),
-                            SortOrder: this.get('location').get('sortOrder'),
-                        },
-                    },
-                    */
+                    sortLocation: this.get('location'),
                 },
             });
         },
