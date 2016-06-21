@@ -36,16 +36,18 @@ YUI.add('ez-richtext-resolveimage', function (Y) {
     };
 
     ResolveImage.prototype._loadEmbeds = function (mapNode, view) {
-        view.fire('contentSearch', {
-            viewName: 'resolveimage-field-' + view.get('field').id,
-            search: {
-                criteria: {'ContentIdCriterion': Object.keys(mapNode).join(',')},
-                offset: 0,
-            },
-            loadContent: true,
-            loadContentType: true,
-            callback: Y.bind(this._renderEmbed, this, mapNode, view),
-        });
+        if(0 !== Object.keys(mapNode).length) {
+            view.fire('contentSearch', {
+                viewName: 'resolveimage-field-' + view.get('field').id,
+                search: {
+                    criteria: {'ContentIdCriterion': Object.keys(mapNode).join(',')},
+                    offset: 0,
+                },
+                loadContent: true,
+                loadContentType: true,
+                callback: Y.bind(this._renderEmbed, this, mapNode, view),
+            });
+        }
     };
 
     ResolveImage.prototype._renderEmbed = function (mapNode, view, error, results) {

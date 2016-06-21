@@ -78,14 +78,16 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
      * @param {eZ.FieldView|eZ.FieldEditView} view
      */
     ResolveEmbed.prototype._loadEmbeds = function (mapNode, view) {
-        view.fire('contentSearch', {
-            viewName: 'resolveembed-field-' + view.get('field').id,
-            search: {
-                criteria: {'ContentIdCriterion': Object.keys(mapNode).join(',')},
-                offset: 0,
-            },
-            callback: Y.bind(this._renderEmbed, this, mapNode),
-        });
+        if(0 !== Object.keys(mapNode).length) {
+            view.fire('contentSearch', {
+                viewName: 'resolveembed-field-' + view.get('field').id,
+                search: {
+                    criteria: {'ContentIdCriterion': Object.keys(mapNode).join(',')},
+                    offset: 0,
+                },
+                callback: Y.bind(this._renderEmbed, this, mapNode),
+            });
+        }
     };
 
     /**
