@@ -159,24 +159,6 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
 
         _getSubItemStructs: getSubItemStructs,
 
-        "Should handle error on the initial loading": function () {
-            var notified = false;
-
-            this.view.set('active', true);
-
-            this.view.on('notify', Y.bind(function (e) {
-                notified = true;
-                this._assertErrorNotification(e.notification);
-            }, this));
-            this.view.set('loadingError', true);
-
-            Assert.isTrue(notified, "A notification error should have been fired");
-            Assert.areEqual(
-                -1 * this.view.get('limit'), this.view.get('offset'),
-                "The offset value should be reset to the previous value"
-            );
-        },
-
         "Should handle loading error": function () {
             var notified = false;
 
@@ -190,9 +172,10 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
             this.view.set('loadingError', true);
 
             Assert.isTrue(notified, "A notification error should have been fired");
-            Assert.areEqual(
-                0, this.view.get('offset'),
-                "The offset value should be reset to the previous value"
+
+            Assert.isTrue(
+                this.view.get('container').one('.ez-loadmorepagination-more').get('disabled'),
+                "The load more button should be disabled"
             );
         },
     };

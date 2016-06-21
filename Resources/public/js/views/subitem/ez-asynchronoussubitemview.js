@@ -92,8 +92,7 @@ YUI.add('ez-asynchronoussubitemview', function (Y) {
                         timeout: 0
                     }
                 });
-                this.set('offset', this.get('offset') - this.get('limit'));
-                this._uiUpdatePagination();
+                this._disableLoadMore();
             }
         },
 
