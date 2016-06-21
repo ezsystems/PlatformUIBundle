@@ -5,7 +5,7 @@
 YUI.add('ez-subitemlistmoreview-tests', function (Y) {
     var renderTest, itemSetterTest, loadSubitemsTest, listItemTest,
         loadingStateTest, paginationUpdateTest, loadMoreTest, errorHandlingTest,
-        lockPriorityEditTest, 
+        lockPriorityEditTest, refreshTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
    function _configureSubitemsMock(priority) {
@@ -243,6 +243,7 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
             this.location = new Y.Model({locationId: 42});
             this.view = new Y.eZ.SubitemListMoreView({
                 location: this.location,
+                itemViewConstructor: Y.View,
             });
             this.location.set('childCount', this.view.get('limit') * 2 + 1);
             this.view.render();
@@ -339,6 +340,32 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
         },
     });
 
+    refreshTest = new Y.Test.Case(Y.merge(Y.eZ.Test.AsynchronousSubitemView.RefreshTestCase, {
+        name: "eZ Subitem ListMore View refresh test",
+
+        setUp: function () {
+            var ItemView;
+
+            this.location = new Y.Model({
+                locationId: 42,
+                sortOrder: 'ASC',
+                sortField: 'SECTION',
+            });
+            ItemView = Y.Base.create('itemView', Y.View, [], {});
+            this.view = new Y.eZ.SubitemListMoreView({
+                container: '.container',
+                location: this.location,
+                items: [],
+                itemViewConstructor: ItemView,
+            });
+            this.location.set('childCount', this.view.get('limit') * 2 + 1);
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+    }));
 
     Y.Test.Runner.setName("eZ Subitem ListMore View tests");
     Y.Test.Runner.add(renderTest);
@@ -350,9 +377,10 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
     Y.Test.Runner.add(loadMoreTest);
     Y.Test.Runner.add(errorHandlingTest);
     Y.Test.Runner.add(lockPriorityEditTest);
+    Y.Test.Runner.add(refreshTest);
 }, '', {
     requires: [
-        'test', 'base', 'view-node-map', 'model', 'node-event-simulate',
+        'test', 'base', 'view', 'view-node-map', 'model', 'node-event-simulate',
         'ez-loadmorepagination-tests', 'ez-asynchronoussubitemview-tests',
         'ez-subitemlistmoreview'
     ]

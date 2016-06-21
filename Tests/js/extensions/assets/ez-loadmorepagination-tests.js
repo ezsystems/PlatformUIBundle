@@ -7,13 +7,16 @@ YUI.add('ez-loadmorepagination-tests', function (Y) {
 
     var Assert = Y.Assert,
         getSubItemStructs = function (count) {
-            return (new Array(count)).map(function () {
-                return {
+            var structs = [];
+
+            for(var i = 0; i != count; ++i) {
+                structs.push({
                     content: new Y.Model(),
                     location: new Y.Model(),
                     contentType: new Y.Model(),
-                };
-            });
+                });
+            }
+            return structs;
         };
 
     Y.eZ.Test.LoadMorePagination.ItemSetterTestCase = {
@@ -55,6 +58,26 @@ YUI.add('ez-loadmorepagination-tests', function (Y) {
             Assert.isTrue(
                 this.view.get(this.attr).indexOf(subitem) !== -1,
                 "The subitems attribute should contain the contain of the second value"
+            );
+        },
+
+        "Should not concatenate the arrays": function () {
+            var initialValue = [1], overrideValue = [2];
+
+            this.view.set(this.attr, []);
+            this.view.set(this.attr, overrideValue, {reset: true});
+
+            Assert.areNotSame(
+                initialValue, this.view.get(this.attr),
+                "A new array should have been set"
+            );
+            Assert.areSame(
+                1, this.view.get(this.attr).length,
+                "The value should have been set without concatenating"
+            );
+            Assert.areSame(
+                overrideValue[0], this.view.get(this.attr)[0],
+                "The value should have been set without concatenating"
             );
         },
     };

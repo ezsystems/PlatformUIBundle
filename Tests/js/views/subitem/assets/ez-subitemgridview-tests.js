@@ -5,7 +5,7 @@
 YUI.add('ez-subitemgridview-tests', function (Y) {
     var renderTest, itemSetterTest, subitemsSetterTest, loadSubitemsTest, gridItemTest,
         loadingStateTest, paginationUpdateTest, loadMoreTest, errorHandlingTest,
-        gridItemsDoNotDuplicateTest,
+        gridItemsDoNotDuplicateTest, refreshTest,
         Assert = Y.Assert;
 
     renderTest = new Y.Test.Case({
@@ -208,7 +208,9 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Y.Model({locationId: 42});
+            Y.eZ.SubitemGridItemView = Y.View;
             this.view = new Y.eZ.SubitemGridView({
+                container: '.container',
                 location: this.location,
             });
             this.location.set('childCount', this.view.get('limit') * 2 + 1);
@@ -217,6 +219,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         tearDown: function () {
             this.view.destroy();
+            delete Y.eZ.SubitemGridItemView;
         },
     }));
 
@@ -243,6 +246,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
 
         setUp: function () {
             this.location = new Y.Model({locationId: 42});
+            Y.eZ.SubitemGridItemView = Y.View;
             this.view = new Y.eZ.SubitemGridView({
                 location: this.location,
             });
@@ -251,6 +255,7 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
         },
 
         tearDown: function () {
+            delete Y.eZ.SubitemGridItemView;
             this.view.destroy();
         },
     }));
@@ -320,6 +325,31 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
         },
     });
 
+    refreshTest = new Y.Test.Case(Y.merge(Y.eZ.Test.AsynchronousSubitemView.RefreshTestCase, {
+        name: "eZ Subitem Grid View refresh test",
+
+        setUp: function () {
+            Y.eZ.SubitemGridItemView = Y.Base.create('itemView', Y.View, [], {});
+            this.location = new Y.Model({
+                locationId: 42,
+                sortOrder: 'ASC',
+                sortField: 'SECTION',
+            });
+            this.view = new Y.eZ.SubitemGridView({
+                container: '.container',
+                location: this.location,
+                items: [],
+            });
+            this.location.set('childCount', this.view.get('limit') * 2 + 1);
+            this.view.render();
+        },
+
+        tearDown: function () {
+            delete Y.eZ.SubitemGridItemView;
+            this.view.destroy();
+        },
+    }));
+
     Y.Test.Runner.setName("eZ Subitem Grid View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(itemSetterTest);
@@ -331,9 +361,10 @@ YUI.add('ez-subitemgridview-tests', function (Y) {
     Y.Test.Runner.add(loadMoreTest);
     Y.Test.Runner.add(errorHandlingTest);
     Y.Test.Runner.add(gridItemsDoNotDuplicateTest);
+    Y.Test.Runner.add(refreshTest);
 }, '', {
     requires: [
-        'test', 'base', 'view-node-map', 'model', 'node-event-simulate',
+        'test', 'base', 'view', 'view-node-map', 'model', 'node-event-simulate',
         'ez-loadmorepagination-tests', 'ez-asynchronoussubitemview-tests',
         'ez-subitemgridview'
     ]

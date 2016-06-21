@@ -372,7 +372,17 @@ YUI.add('ez-locationviewviewservice', function (Y) {
                         'done',
                         5
                     );
-
+                    /**
+                     * Fired when the sortOrder and/or sortField have been
+                     * successfully updated.
+                     *
+                     * @event updatedLocationSorting
+                     * @param {eZ.Location} location the Location that has been
+                     * updated
+                     */
+                    this.fire('updatedLocationSorting', {
+                        location: location,
+                    });
                 } else {
                     this._notify(
                         'An error occured while updating the sub items sort method:' + error,
