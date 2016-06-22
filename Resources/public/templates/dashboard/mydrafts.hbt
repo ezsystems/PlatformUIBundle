@@ -16,19 +16,27 @@
             </tr>
         </thead>
         <tbody class="ez-block-content">
-        {{#each items}}
-            <tr class="ez-block-row">
-                <td class="ez-block-cell">{{ lookup version.names version.initialLanguageCode }}</td>
-                <td class="ez-block-cell">{{ lookup contentType.names version.initialLanguageCode }}</td>
-                <td class="ez-block-cell">{{ version.versionNo }}</td>
-                <td class="ez-block-cell ez-block-cell-options">
-                    {{ version.modificationDate }}
-                    <div class="ez-block-row-options">
-                        <a class="ez-block-option-edit ez-font-icon" href="{{ path "editContentVersion" id=contentInfo.id versionId=version.id languageCode=version.initialLanguageCode }}"></a>
-                    </div>
-                </td>
-            </tr>
-        {{/each}}
+        {{#unless loading}}
+            {{#if items.length}}
+                {{#each items}}
+                    <tr class="ez-block-row">
+                        <td class="ez-block-cell">{{ lookup version.names version.initialLanguageCode }}</td>
+                        <td class="ez-block-cell">{{ lookup contentType.names version.initialLanguageCode }}</td>
+                        <td class="ez-block-cell">{{ version.versionNo }}</td>
+                        <td class="ez-block-cell ez-block-cell-options">
+                            {{ version.modificationDate }}
+                            <div class="ez-block-row-options">
+                                <a class="ez-block-option-edit ez-font-icon" href="{{ path "editContentVersion" id=contentInfo.id versionId=version.id languageCode=version.initialLanguageCode }}"></a>
+                            </div>
+                        </td>
+                    </tr>
+                {{/each}}
+            {{else}}
+                <tr>
+                    <td class="ez-block-cell ez-block-cell-no-result" colspan="4">You don't have any drafts.</td>
+                </tr>
+            {{/if}}
+        {{/unless}}
         </tbody>
     </table>
     {{/if}}

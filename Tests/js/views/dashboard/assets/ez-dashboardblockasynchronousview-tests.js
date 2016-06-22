@@ -35,6 +35,10 @@ YUI.add('ez-dashboardblockasynchronousview-tests', function (Y) {
                     params.loadingError,
                     '`loadingError` should be false'
                 );
+                Assert.isTrue(
+                    params.loading,
+                    '`loading` should true'
+                );
 
                 return origTpl.apply(this, arguments);
             };
@@ -56,6 +60,37 @@ YUI.add('ez-dashboardblockasynchronousview-tests', function (Y) {
                 'The view should be rendered in loading state'
             );
         },
+
+        'Should remove the loading state when getting `items`': function () {
+            var view = this.view,
+                templateCalled = false,
+                origTpl = this.view.template;
+
+            this['Should render view in loading state']();
+
+            view.template = function (params) {
+                templateCalled = true;
+
+                Assert.isFalse(
+                    params.loading,
+                    '`loading` should false'
+                );
+
+                return origTpl.apply(this, arguments);
+            };
+
+
+            this.view.set('items', []);
+
+            Assert.isFalse(
+                this.view.get('container').hasClass(CLASS_LOADING),
+                'The view should be rerendered in non loading state'
+            );
+            Assert.isTrue(
+                templateCalled,
+                'The template should have been used to render view'
+            );
+        }, 
     };
 
     NS.RowOptionTest = {

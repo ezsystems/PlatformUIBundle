@@ -52,3 +52,8 @@
 .ez-view-dashboardblockasynchronousview  .ez-block-option-view:before {
     content: '\E607';
 }
+
+.ez-view-dashboardblockasynchronousview .ez-block-cell-no-result {
+    font-style: italic;
+    text-align: center;
+}
