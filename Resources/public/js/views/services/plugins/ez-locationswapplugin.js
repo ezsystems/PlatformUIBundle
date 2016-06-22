@@ -107,6 +107,15 @@ YUI.add('ez-locationswapplugin', function (Y) {
                         'done',
                         5
                     );
+                    /**
+                     * Fired when a Location is swapped with another one.
+                     *
+                     * @event swappedLocation
+                     * @param {eZ.Location} location
+                     */
+                    service.fire('swappedLocation', {
+                        location: location,
+                    });
 
                     app.navigateTo('viewLocation', {
                         id: location.get('id'),

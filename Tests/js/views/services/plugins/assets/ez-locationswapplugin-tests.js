@@ -356,6 +356,7 @@ YUI.add('ez-locationswapplugin-tests', function (Y) {
 
         "Should swap locations and fire notifications": function () {
             var selection = this._getSelection(),
+                swappedLocationFired = false,
                 that = this;
 
             this.startNotificationFired = false;
@@ -404,6 +405,15 @@ YUI.add('ez-locationswapplugin-tests', function (Y) {
             });
 
             this._assertNotifications();
+            this.service.on('swappedLocation', Y.bind(function (e) {
+                swappedLocationFired = true;
+
+                Assert.areSame(
+                    this.location,
+                    e.location,
+                    "The swapped Location be provided in the event facade"
+                );
+            }, this));
 
             this.service.fire('swapLocation', {location: this.location});
 
@@ -415,6 +425,10 @@ YUI.add('ez-locationswapplugin-tests', function (Y) {
             Assert.isTrue(this.startNotificationFired, 'Should fire notification with `started` state');
             Assert.isTrue(this.successNotificationFired, 'Should fire notification with `done` state');
             Assert.isFalse(this.errorNotificationFired, 'Should not fire notification with `error` state');
+            Assert.isTrue(
+                swappedLocationFired,
+                "The swappedLocation event should have been fired"
+            );
         },
 
         "Should fire notifications if swap fails": function () {
@@ -448,6 +462,10 @@ YUI.add('ez-locationswapplugin-tests', function (Y) {
 
             this._assertNotifications();
 
+            this.service.on('swappedLocation', function () {
+                Assert.fail('The swappedLocation event should not have been fired');
+
+            });
             this.service.fire('swapLocation', {location: this.location});
 
             Assert.isTrue(this.startNotificationFired, 'Should fire notification with `started` state');
