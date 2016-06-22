@@ -1010,6 +1010,25 @@ YUI.add('ez-locationmodel-tests', function (Y) {
             );
         },
 
+        _testUnsupportedSortClause: function (sortField, sortOrder) {
+            var clause;
+
+            this.model.setAttrs({
+                sortField: sortField,
+                sortOrder: sortOrder,
+            });
+            clause = this.model.getSortClause();
+
+            Assert.isObject(
+                clause,
+                "The sort clause should be an object"
+            );
+            Assert.areEqual(
+                0, Y.Object.keys(clause).length,
+                "The sort clause should be an empty object"
+            );
+        },
+
         "MODIFIED ASC": function () {
             this._testSortClause('MODIFIED', 'ASC', 'DateModified', 'ascending');
         },
@@ -1051,27 +1070,27 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         },
 
         "CLASS_IDENTIFIER ASC": function () {
-            this._testSortClause('CLASS_IDENTIFIER', 'ASC', 'ClassIdentifier', 'ascending');
+            this._testUnsupportedSortClause('CLASS_IDENTIFIER', 'ASC');
         },
 
         "CLASS_IDENTIFIER DESC": function () {
-            this._testSortClause('CLASS_IDENTIFIER', 'DESC', 'ClassIdentifier', 'descending');
+            this._testUnsupportedSortClause('CLASS_IDENTIFIER', 'DESC');
         },
 
         "CLASS_NAME ASC": function () {
-            this._testSortClause('CLASS_NAME', 'ASC', 'ClassName', 'ascending');
+            this._testUnsupportedSortClause('CLASS_NAME', 'ASC');
         },
 
         "CLASS_NAME DESC": function () {
-            this._testSortClause('CLASS_NAME', 'DESC', 'ClassName', 'descending');
+            this._testUnsupportedSortClause('CLASS_NAME', 'DESC');
         },
 
         "PRIORITY ASC": function () {
-            this._testSortClause('PRIORITY', 'ASC', 'Priority', 'ascending');
+            this._testSortClause('PRIORITY', 'ASC', 'LocationPriority', 'ascending');
         },
 
         "PRIORITY DESC": function () {
-            this._testSortClause('PRIORITY', 'DESC', 'Priority', 'descending');
+            this._testSortClause('PRIORITY', 'DESC', 'LocationPriority', 'descending');
         },
 
         "NAME ASC": function () {

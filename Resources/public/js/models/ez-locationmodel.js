@@ -362,26 +362,28 @@ YUI.add('ez-locationmodel', function (Y) {
          *
          * @method _getSortClauseIdentifier
          * @protected
-         * @return {String}
+         * @return {String|Null}
          */
         _getSortClauseIdentifier: function () {
-            switch(this.get('sortField')) {
+            var sortField = this.get('sortField');
+
+            switch(sortField) {
                 case 'MODIFIED':
                     return 'DateModified';
                 case 'PUBLISHED':
                     return 'DatePublished';
                 case 'PATH':
-                    return 'LocationPath'; // Not Implemented server side !?!
+                    return 'LocationPath';
                 case 'SECTION':
                     return 'SectionIdentifier';
                 case 'DEPTH':
                     return 'LocationDepth';
                 case 'CLASS_IDENTIFIER':
-                    return 'ClassIdentifier'; // Not implemented server side !?!
                 case 'CLASS_NAME':
-                    return 'ClassName'; // Not Implemented server side !?!
+                    console.warn(sortField + ' sort order is unsupported');
+                    return null;
                 case 'PRIORITY':
-                    return 'Priority'; // Not Implemented server side !?!
+                    return 'LocationPriority';
                 case 'NAME':
                     return 'ContentName';
                 default:
@@ -398,9 +400,12 @@ YUI.add('ez-locationmodel', function (Y) {
          * @return {Object}
          */
         getSortClause: function () {
-            var clause = {};
+            var clause = {},
+                identifier = this._getSortClauseIdentifier();
 
-            clause[this._getSortClauseIdentifier()] = this._getSortDirection();
+            if ( identifier ) {
+                clause[this._getSortClauseIdentifier()] = this._getSortDirection();
+            }
             return clause;
         },
     }, {
