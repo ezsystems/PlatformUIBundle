@@ -206,4 +206,7 @@ YUI.add('ez-discoverybarcontenttreeplugin', function (Y) {
     Y.eZ.PluginRegistry.registerPlugin(
         Y.eZ.Plugin.DiscoveryBarContentTree, ['discoveryBarViewService']
     );
+    Y.eZ.PluginRegistry.registerPlugin(
+        Y.eZ.Plugin.Search, ['discoveryBarViewService']
+    );
 });

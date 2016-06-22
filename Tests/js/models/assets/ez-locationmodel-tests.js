@@ -3,7 +3,9 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationmodel-tests', function (Y) {
-    var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest, toJSONTest, updateSortingTest, updatePriorityTest, isRootTest, swapTest,
+    var modelTest, trashTest, moveTest, hideTest, removeTest, loadPathTest,
+        toJSONTest, updateSortingTest, updatePriorityTest, isRootTest, swapTest,
+        getSortClauseTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
@@ -973,6 +975,141 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         },
     });
 
+    swapTest = new Y.Test.Case({
+        "name": "eZ Location getSortClause tests",
+
+        setUp: function () {
+            this.model = new Y.eZ.Location();
+        },
+
+        tearDown: function () {
+            this.model.destroy();
+            delete this.model;
+        },
+
+        _testSortClause: function (sortField, sortOrder, sortClauseIdentifier, sortClauseOrder) {
+            var clause;
+
+            this.model.setAttrs({
+                sortField: sortField,
+                sortOrder: sortOrder,
+            });
+            clause = this.model.getSortClause();
+
+            Assert.isObject(
+                clause,
+                "The sort clause should be an object"
+            );
+            Assert.areEqual(
+                1, Y.Object.keys(clause).length,
+                "The sort clause should have one clause"
+            );
+            Assert.areEqual(
+                sortClauseOrder, clause[sortClauseIdentifier],
+                "The sort clause should be on " + sortField + " " + sortOrder
+            );
+        },
+
+        _testUnsupportedSortClause: function (sortField, sortOrder) {
+            var clause;
+
+            this.model.setAttrs({
+                sortField: sortField,
+                sortOrder: sortOrder,
+            });
+            clause = this.model.getSortClause();
+
+            Assert.isObject(
+                clause,
+                "The sort clause should be an object"
+            );
+            Assert.areEqual(
+                0, Y.Object.keys(clause).length,
+                "The sort clause should be an empty object"
+            );
+        },
+
+        "MODIFIED ASC": function () {
+            this._testSortClause('MODIFIED', 'ASC', 'DateModified', 'ascending');
+        },
+
+        "MODIFIED DESC": function () {
+            this._testSortClause('MODIFIED', 'DESC', 'DateModified', 'descending');
+        },
+
+        "PUBLISHED ASC": function () {
+            this._testSortClause('PUBLISHED', 'ASC', 'DatePublished', 'ascending');
+        },
+
+        "PUBLISHED DESC": function () {
+            this._testSortClause('PUBLISHED', 'DESC', 'DatePublished', 'descending');
+        },
+
+        "PATH ASC": function () {
+            this._testSortClause('PATH', 'ASC', 'LocationPath', 'ascending');
+        },
+
+        "PATH DESC": function () {
+            this._testSortClause('PATH', 'DESC', 'LocationPath', 'descending');
+        },
+
+        "SECTION ASC": function () {
+            this._testSortClause('SECTION', 'ASC', 'SectionIdentifier', 'ascending');
+        },
+
+        "SECTION DESC": function () {
+            this._testSortClause('SECTION', 'DESC', 'SectionIdentifier', 'descending');
+        },
+
+        "DEPTH ASC": function () {
+            this._testSortClause('DEPTH', 'ASC', 'LocationDepth', 'ascending');
+        },
+
+        "DEPTH DESC": function () {
+            this._testSortClause('DEPTH', 'DESC', 'LocationDepth', 'descending');
+        },
+
+        "CLASS_IDENTIFIER ASC": function () {
+            this._testUnsupportedSortClause('CLASS_IDENTIFIER', 'ASC');
+        },
+
+        "CLASS_IDENTIFIER DESC": function () {
+            this._testUnsupportedSortClause('CLASS_IDENTIFIER', 'DESC');
+        },
+
+        "CLASS_NAME ASC": function () {
+            this._testUnsupportedSortClause('CLASS_NAME', 'ASC');
+        },
+
+        "CLASS_NAME DESC": function () {
+            this._testUnsupportedSortClause('CLASS_NAME', 'DESC');
+        },
+
+        "PRIORITY ASC": function () {
+            this._testSortClause('PRIORITY', 'ASC', 'LocationPriority', 'ascending');
+        },
+
+        "PRIORITY DESC": function () {
+            this._testSortClause('PRIORITY', 'DESC', 'LocationPriority', 'descending');
+        },
+
+        "NAME ASC": function () {
+            this._testSortClause('NAME', 'ASC', 'ContentName', 'ascending');
+        },
+
+        "NAME DESC": function () {
+            this._testSortClause('NAME', 'DESC', 'ContentName', 'descending');
+        },
+
+        "unknown ASC": function () {
+            this._testSortClause('unknown', 'ASC', 'DateModified', 'ascending');
+        },
+
+        "unknown DESC": function () {
+            this._testSortClause('unknown', 'DESC', 'DateModified', 'descending');
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(trashTest);
@@ -985,4 +1122,5 @@ YUI.add('ez-locationmodel-tests', function (Y) {
     Y.Test.Runner.add(toJSONTest);
     Y.Test.Runner.add(isRootTest);
     Y.Test.Runner.add(swapTest);
+    Y.Test.Runner.add(getSortClauseTest);
 }, '', {requires: ['test', 'model-tests', 'ez-locationmodel', 'ez-restmodel']});

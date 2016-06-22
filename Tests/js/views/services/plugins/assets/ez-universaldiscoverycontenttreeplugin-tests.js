@@ -3,16 +3,22 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
-    var tests, registerTest, startingLocationTests,
+    var tests, registerTest, registerSearchTest, startingLocationTests,
         Assert = Y.Assert, Mock = Y.Mock;
 
     tests = new Y.Test.Case({
         name: "eZ Universal Discovery Content Tree Plugin tests",
 
         setUp: function () {
-            this.capi = new Mock();
             this.service = new Y.Base();
-            this.service.set('capi', this.capi);
+            this.service.search = new Mock();
+            Mock.expect(this.service.search, {
+                method: 'findLocations',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: function (search, callback) {
+                    callback(false, [], 0);
+                },
+            });
             this.treeView = new Y.Base();
             this.view = new Y.Base();
             this.view.set('treeView', this.treeView);
@@ -34,7 +40,6 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
             delete this.plugin;
             delete this.view;
             delete this.treeView;
-            delete this.capi;
 
             Y.eZ.Location = this.origLocation;
         },
@@ -50,9 +55,7 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
         },
 
         "Should rebuild the tree if the view is visible": function () {
-            var contentService = new Mock(),
-                tree = this.plugin.get('tree'),
-                query = {body: {ViewInput: {LocationQuery: {}}}},
+            var tree = this.plugin.get('tree'),
                 cleared = false,
                 load = false;
 
@@ -73,22 +76,6 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
                 load = true;
             });
 
-            Mock.expect(this.capi, {
-                method: 'getContentService',
-                returns: contentService
-            });
-            Mock.expect(contentService, {
-                method: 'newViewCreateStruct',
-                args: ['children_1', 'LocationQuery'],
-                returns: query,
-            });
-            Mock.expect(contentService, {
-                method: 'createView',
-                args: [query, Mock.Value.Function],
-                run: function (query, callback) {
-                    callback(true);
-                },
-            });
             this.view.set('visible', true);
             this.view.fire('universalDiscoveryBrowseView:visibleChange');
 
@@ -98,8 +85,6 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
             );
             Assert.isTrue(cleared, "The tree should have been cleared");
             Assert.isTrue(load, "The tree root node should be loaded");
-            Mock.verify(this.capi);
-            Mock.verify(contentService);
         },
 
         "Should set the loadContent flag from the view": function () {
@@ -137,55 +122,54 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
     });
 
     startingLocationTests = new Y.Test.Case({
-        name: "eZ Universal Discovery Content Tree Plugin tests",
+        name: "eZ Universal Discovery Content Tree Plugin with a starting Location tests",
 
         setUp: function () {
             var that = this,
                 BrowseView = Y.Base.create('universalDiscoveryBrowseView', Y.View, [], {
-                selectContent: function (struct) {
-                    that.isContentSelected = true;
+                selectContent: Y.bind(function (struct) {
+                    this.isContentSelected = true;
                     Assert.areSame(
-                        that.view.get('startingLocationId'), struct.location.get('id'),
+                        this.view.get('startingLocationId'), struct.location.get('id'),
                         "the struct should have the startingLocation"
                     );
                     Assert.areSame(
-                        that.contentInfo, struct.contentInfo,
-                        "the struct should have a contentInfo"
+                        this.struct.location, struct.location,
+                        "the struct should have the Location"
+                    );
+                    Assert.areSame(
+                        this.struct.location.get('contentInfo'), struct.contentInfo,
+                        "the struct should have the contentInfo coming from the Location"
                     );
                     Assert.isUndefined(
                         struct.content,
                         "As loadContent is false the struct should not have a content"
                     );
                     Assert.areSame(
-                        that.contentTypeId, struct.contentType.get('id'),
-                        "the struct should have the good contentType"
+                        this.struct.contentType, struct.contentType,
+                        "the struct should have the contentType"
                     );
-                },
+                }, this),
             },{});
 
             this.isContentSelected = false;
-            this.capi = new Mock();
             this.service = new Y.Base();
-            this.service.set('capi', this.capi);
+            this.service.search = new Mock();
             this.treeView = new Y.Base();
             this.view = new BrowseView();
             this.view.set('treeView', this.treeView);
             this.view.set('loadContent', false);
-            this.view.set('startingLocationId', '/api/ezp/v2/content/locations/1/2');
+            this.startingLocationId = '/api/ezp/v2/content/locations/1/2';
+            this.view.set('startingLocationId', this.startingLocationId);
             this.startingLocationLocationId = '1/2';
             this.path = [];
             this.origLocation = Y.eZ.Location;
-            this.contentTypeId = 42;
-           
-            this.contentInfo = new Y.Base();
-            this.contentInfo.set('resources', {ContentType: this.contentTypeId});
+            this.origContentType = Y.eZ.ContentType;
 
             Y.eZ.ContentType =  Y.Base.create('contentTypeModel', Y.Model, [], {
             }, {ATTRS: {isContainer: {value: false}}});
             Y.eZ.Location  = Y.Base.create('locationModel', Y.Base, [], {
-                loadFromHash: function () {
-                    this.set('contentInfo', that.contentInfo);
-                },
+                loadFromHash: function () {},
                 loadPath: function (options, callback) {
                     callback(false, that.path);
                 },
@@ -194,40 +178,50 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
                         that.view.get('startingLocationId'), this.get('id'),
                         "The location id should be the one provided by the view"
                     );
-                    this.set('locationId', that.startingLocationLocationId);
-
-                    that.childLocation = this;
-
                     callback(false);
                 },
-            }, {ATTRS: {id: {}}});
+            }, {ATTRS: {id: {}, locationId: {}, contentInfo: {}}});
 
             this.view.addTarget(this.service);
             this.plugin = new Y.eZ.Plugin.UniversalDiscoveryContentTree({
                 host: this.service
             });
-        },
 
-        _getLocationSearchResponse: function () {
-            return {
-                document: {
-                    "View": {
-                        "Result": {
-                            "searchHits": {
-                                "searchHit": [
-                                    {
-                                        "value": {
-                                            "Location": {
-                                                "_href": '/api/ezp/v2/content/locations/1/2'
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                }
+            this.struct = {
+                location: new Y.eZ.Location({
+                    id: this.startingLocationId,
+                    locationId: this.startingLocationLocationId,
+                    contentInfo: {},
+                }),
+                contentType: new Y.eZ.ContentType(),
             };
+
+            Mock.expect(this.service.search, {
+                method: 'findLocations',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (search, callback) {
+                    Assert.areEqual(
+                        1, search.criteria.ParentLocationIdCriterion,
+                        "The search should be on the children of the virtual root"
+                    );
+                    Assert.areEqual(
+                        '/api/ezp/v2/content/locations/1',
+                        search.sortLocation.get('id'),
+                        "The search results should be sorted according to the sortField/sortOrder of virtual root Location"
+                    );
+                    Assert.isTrue(
+                        search.loadContentType,
+                        "The loadContentType flag should be set"
+                    );
+                    Assert.areSame(
+                        this.view.get('loadContent'),
+                        search.loadContent,
+                        "The loadContent flag should be consistent with the browse view configuration"
+                    );
+
+                    callback(false, [this.struct], 1);
+                }, this),
+            });
         },
 
         tearDown: function () {
@@ -239,20 +233,15 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
             delete this.plugin;
             delete this.view;
             delete this.treeView;
-            delete this.capi;
 
             Y.eZ.Location = this.origLocation;
+            Y.eZ.ContentType = this.origContentType;
         },
 
         "Should rebuild the tree if the view is visible": function () {
-            var contentService = new Mock(),
-                tree = this.plugin.get('tree'),
-                query = {body: {ViewInput: {LocationQuery: {}}}},
+            var tree = this.plugin.get('tree'),
                 cleared = false,
-                countLoad = 0,
-                response;
-
-            response = this._getLocationSearchResponse();
+                countLoad = 0;
 
             tree.after('clear', Y.bind(function () {
                 cleared = true;
@@ -269,23 +258,6 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
                 countLoad++;
             });
 
-            Mock.expect(this.capi, {
-                method: 'getContentService',
-                returns: contentService
-            });
-            Mock.expect(contentService, {
-                method: 'newViewCreateStruct',
-                args: [Y.Mock.Value.String, 'LocationQuery'],
-                returns: query,
-            });
-            Mock.expect(contentService, {
-                method: 'createView',
-                args: [query, Mock.Value.Function],
-                run: function (query, callback) {
-                    callback(false, response);
-                },
-            });
-
             Assert.areEqual(
                this.path.length, countLoad,
                 "The load event was not fired the expected number of time"
@@ -298,7 +270,6 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
         "Should initialize the tree starting from the given Location": function () {
             var rootNodeLocation, rootNode,
                 restId = '/api/ezp/v2/content/locations/1';
-
 
             this["Should rebuild the tree if the view is visible"]();
 
@@ -322,6 +293,14 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
                 restId, rootNodeLocation.get('id'),
                 "The tree should build from the Location '/api/ezp/v2/content/locations/1'"
             );
+            Assert.areEqual(
+                'SECTION', rootNodeLocation.get('sortField'),
+                "The sortField of the virtual root should be set to SECTION"
+            );
+            Assert.areEqual(
+                'ASC', rootNodeLocation.get('sortOrder'),
+                "The sortOrder of the virtual root should be set to ASC"
+            );
             Assert.isTrue(
                 rootNode.hasChildren(),
                 "rootNode should have children"
@@ -335,16 +314,19 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
                 'selectContent should have been called'
             );
         },
-
     });
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.UniversalDiscoveryContentTree;
     registerTest.components = ['universalDiscoveryViewService'];
 
+    registerSearchTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
+    registerSearchTest.Plugin = Y.eZ.Plugin.Search;
+    registerSearchTest.components = ['universalDiscoveryViewService'];
+
     Y.Test.Runner.setName("eZ Universal Discovery Content Tree Plugin tests");
     Y.Test.Runner.add(tests);
     Y.Test.Runner.add(startingLocationTests);
     Y.Test.Runner.add(registerTest);
-
+    Y.Test.Runner.add(registerSearchTest);
 }, '', {requires: ['test', 'base', 'model', 'view', 'ez-universaldiscoverycontenttreeplugin', 'ez-pluginregister-tests']});

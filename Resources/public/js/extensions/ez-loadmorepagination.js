@@ -87,7 +87,7 @@ YUI.add('ez-loadmorepagination', function (Y) {
             /**
              * Holds the View constructor to use to render each item.
              *
-             * @property _ItemViews
+             * @property _ItemView
              * @protected
              * @required
              * @type {Function}
@@ -122,8 +122,8 @@ YUI.add('ez-loadmorepagination', function (Y) {
             });
             this.after('itemsChange', function (e) {
                 this._set('loading', false);
-                this._uiUpdatePagination();
                 this._appendItems(this._getNewlyAddedItems(e.newVal, e.prevVal));
+                this._uiUpdatePagination();
             });
         },
 
@@ -135,8 +135,9 @@ YUI.add('ez-loadmorepagination', function (Y) {
          */
         _destroyItemViews: function () {
             this._itemViews.forEach(function (item) {
-                item.destroy();
+                item.destroy({remove: true});
             });
+            this._itemViews = [];
         },
 
         destructor: function () {
@@ -177,14 +178,14 @@ YUI.add('ez-loadmorepagination', function (Y) {
         },
 
         /**
-         * Counts the number of loaded items.
+         * Counts the number of loaded and displayed items.
          *
          * @method _countLoadedItems
          * @protected
          * @return {Number}
          */
         _countLoadedItems: function () {
-            return this.get('items') ? this.get('items').length : 0;
+            return this._itemViews.length;
         },
 
         /**
@@ -229,6 +230,8 @@ YUI.add('ez-loadmorepagination', function (Y) {
             this._updateMoreCount();
             if ( this._countLoadedItems() < this._getExpectedItemsCount() ) {
                 this._enableLoadMore();
+            } else {
+                this._disableLoadMore();
             }
         },
 
@@ -351,8 +354,12 @@ YUI.add('ez-loadmorepagination', function (Y) {
              */
             items: {
                 setter: function (value, attr, info) {
-                    var current = this.get('items');
+                    var current = this.get('items'),
+                        flag = info || {};
 
+                    if ( flag.reset ) {
+                        return value;
+                    }
                     if ( current ) {
                         return current.concat(value);
                     }

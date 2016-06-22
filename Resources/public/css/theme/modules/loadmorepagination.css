@@ -26,3 +26,12 @@
     -webkit-animation: spin 0.7s infinite linear;
             animation: spin 0.7s infinite linear;
 }
+
+.ez-loadmorepagination .ez-loadmorepagination-content {
+    opacity: 1;
+    transition: all ease 0.3s;
+}
+
+.ez-loadmorepagination.is-page-loading .ez-loadmorepagination-content {
+    opacity: 0.3;
+}

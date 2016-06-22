@@ -351,7 +351,8 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         },
 
         "Should update the sort methods on sortUpdate event": function () {
-            var that = this;
+            var that = this,
+                updatedLocationSortingFired = false;
 
             Mock.expect(this.locationMock, {
                 method: 'updateSorting',
@@ -361,9 +362,23 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                     cb(false);
                 },
             });
+            this.service.on('updatedLocationSorting', Y.bind(function (e) {
+                updatedLocationSortingFired = true;
+
+                Assert.areSame(
+                    this.locationMock,
+                    e.location,
+                    "The Location should be provided in the updatedLocationSorting event facade"
+                );
+
+            }, this));
             this.service.fire('whatever:sortUpdate', {sortType: this.sortField, sortOrder: this.sortOrder});
 
             Mock.verify(this.locationMock);
+            Assert.isTrue(
+                updatedLocationSortingFired,
+                "The updatedLocationSorting event should have been fired"
+            );
         },
 
         "Should send a started notification on sortUpdate event": function () {
@@ -486,6 +501,9 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                         "The notification timeout should be set to 0"
                     );
                 });
+            });
+            this.service.on('updatedLocationSorting', function () {
+                Assert.fail('The updatedLocationSorting should not be fired');
             });
             this.service.fire('whatever:sortUpdate', {sortType: this.sortField, sortOrder: this.sortOrder});
             Assert.isTrue(notified, "The notified event should have been fired");

@@ -97,6 +97,10 @@ YUI.add('ez-updatetreeplugin-tests', function (Y) {
             this._clearTreeOnEvent('whatever:savedDraft');
         },
 
+        "Should clear tree when catching the updatedLocationSorting event if tree has been loaded": function () {
+            this._clearTreeOnEvent('whatever:updatedLocationSorting');
+        },
+
         "Should NOT clear tree when catching the sendToTrash event if tree has NOT been loaded": function () {
             this._doNotClearTreeOnEvent('whatever:sentToTrash');
         },
@@ -126,6 +130,10 @@ YUI.add('ez-updatetreeplugin-tests', function (Y) {
         },
         "Should NOT clear tree when catching the deleteContent event if tree has NOT been loaded": function () {
             this._doNotClearTreeOnEvent('whatever:deletedContent');
+        },
+
+        "Should NOT clear tree when catching the updatedLocationSorting event if tree has NOT been loaded": function () {
+            this._doNotClearTreeOnEvent('whatever:updatedLocationSorting');
         },
     });
 

@@ -48,8 +48,12 @@ YUI.add('ez-universaldiscoverycontenttreeplugin', function (Y) {
 
             // TODO: this location id should not be hardcoded, but auto
             // detected somehow.
-            virtualRoot.set('id', '/api/ezp/v2/content/locations/1');
-            virtualRoot.set('locationId', 1);
+            virtualRoot.setAttrs({
+                'id': '/api/ezp/v2/content/locations/1',
+                'locationId': 1,
+                'sortField': 'SECTION',
+                'sortOrder': 'ASC',
+            });
 
             tree.clear(this._getRootNode([virtualRoot], browseView.get('loadContent')));
             browseView.get('treeView').set('tree', tree);
@@ -103,5 +107,8 @@ YUI.add('ez-universaldiscoverycontenttreeplugin', function (Y) {
 
     Y.eZ.PluginRegistry.registerPlugin(
         Y.eZ.Plugin.UniversalDiscoveryContentTree, ['universalDiscoveryViewService']
+    );
+    Y.eZ.PluginRegistry.registerPlugin(
+        Y.eZ.Plugin.Search, ['universalDiscoveryViewService']
     );
 });

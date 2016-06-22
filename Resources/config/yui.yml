@@ -1257,7 +1257,7 @@ system:
                     requires: ['ez-contenttreeplugin', 'ez-locationmodel', 'ez-locationviewview', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-discoverybarcontenttreeplugin.js
                 ez-contenttreeplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'ez-contentmodel', 'parallel']
+                    requires: ['ez-viewservicebaseplugin', 'ez-searchplugin', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
                 ez-locationsearchplugin: # deprecated module, provide a BC component based on ez-searchplugin
                     requires: ['ez-searchplugin']

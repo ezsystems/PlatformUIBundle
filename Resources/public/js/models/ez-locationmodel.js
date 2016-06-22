@@ -345,6 +345,69 @@ YUI.add('ez-locationmodel', function (Y) {
             return attrs;
         },
 
+        /**
+         * Returns the REST API sort order based on the sortOrder attribute
+         *
+         * @method _getSortDirection
+         * @protected
+         * @return 'ascending' or 'descending'
+         */
+        _getSortDirection: function () {
+            return this.get('sortOrder') === 'ASC' ? 'ascending' : 'descending';
+        },
+
+        /**
+         * Returns the REST API sort clause identifier based on the sortField
+         * attribute.
+         *
+         * @method _getSortClauseIdentifier
+         * @protected
+         * @return {String|Null}
+         */
+        _getSortClauseIdentifier: function () {
+            var sortField = this.get('sortField');
+
+            switch(sortField) {
+                case 'MODIFIED':
+                    return 'DateModified';
+                case 'PUBLISHED':
+                    return 'DatePublished';
+                case 'PATH':
+                    return 'LocationPath';
+                case 'SECTION':
+                    return 'SectionIdentifier';
+                case 'DEPTH':
+                    return 'LocationDepth';
+                case 'CLASS_IDENTIFIER':
+                case 'CLASS_NAME':
+                    console.warn(sortField + ' sort order is unsupported');
+                    return null;
+                case 'PRIORITY':
+                    return 'LocationPriority';
+                case 'NAME':
+                    return 'ContentName';
+                default:
+                    console.warn("Unknow sortField '" + this.get('sortField') + "'");
+                    return 'DateModified';
+            }
+        },
+
+        /**
+         * Returns the sort clause suitable for the Search Plugin based on the
+         * Location's sortOrder and sortField attribute.
+         *
+         * @method getSortClause
+         * @return {Object}
+         */
+        getSortClause: function () {
+            var clause = {},
+                identifier = this._getSortClauseIdentifier();
+
+            if ( identifier ) {
+                clause[this._getSortClauseIdentifier()] = this._getSortDirection();
+            }
+            return clause;
+        },
     }, {
         REST_STRUCT_ROOT: "Location",
         ATTRS_REST_MAP: [
