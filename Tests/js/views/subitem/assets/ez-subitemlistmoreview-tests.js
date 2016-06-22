@@ -5,7 +5,7 @@
 YUI.add('ez-subitemlistmoreview-tests', function (Y) {
     var renderTest, itemSetterTest, loadSubitemsTest, listItemTest,
         loadingStateTest, paginationUpdateTest, loadMoreTest, errorHandlingTest,
-        lockPriorityEditTest, refreshTest,
+        lockPriorityEditTest, refreshTest, updatePriorityTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
    function _configureSubitemsMock(priority) {
@@ -367,6 +367,107 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
         },
     }));
 
+    updatePriorityTest = new Y.Test.Case({
+        name: "eZ Subitem ListMore View update priority test",
+
+        setUp: function () {
+            var ItemView, that = this;
+
+            this.itemView = null;
+            ItemView = Y.Base.create('itemView', Y.View, [], {
+                initializer: function () {
+                    that.itemView = this;
+                },
+            }, {
+                ATTRS: {
+                    canEditPriority: {},
+                    editingPriority: {},
+                }
+            });
+            this.locationId = 42;
+            this.childCount = 40;
+            this.location = new Mock(new Y.Model({
+                locationId: this.locationId,
+                childCount: this.childCount,
+            }));
+            this.priority = 24;
+            this.locationJSON = {};
+            Mock.expect(this.location, {
+                method: 'toJSON',
+                returns: this.locationJSON,
+            });
+            _configureSubitemsMock.call(this, this.priority);
+
+            this.view = new Y.eZ.SubitemListMoreView({
+                container: '.container',
+                location: this.location,
+                itemViewConstructor: ItemView,
+            });
+            this.view.render();
+            this.view.set('active', true);
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        _getLoadMoreButton: function () {
+            return this.view.get('container').one('.ez-loadmorepagination-more');
+        },
+
+        "Should ignore priority update": function () {
+            this.location.set('sortField', 'NAME');
+            this.view.set('items', this.subitems.slice(10));
+            this.itemView.fire('updatePriority', {
+                location: this.itemView.get('location'),
+            });
+
+            Assert.isFalse(
+                this.view.get('loading'),
+                "loading should remain false"
+            );
+            Assert.isFalse(
+                this._getLoadMoreButton().get('disabled'),
+                "The load more button should be enabled"
+            );
+        },
+
+        "Should set the loading state": function () {
+            this.location.set('sortField', 'PRIORITY');
+            this.view.set('items', this.subitems.slice(10));
+            this.itemView.fire('updatePriority', {
+                location: this.itemView.get('location'),
+            });
+
+            Assert.isTrue(
+                this.view.get('loading'),
+                "loading should be set"
+            );
+            Assert.isTrue(
+                this._getLoadMoreButton().get('disabled'),
+                "The load more button should be disabled"
+            );
+        },
+
+        "Should reload the subitems when the priority is updated": function () {
+            var searchFired = false;
+
+            this["Should set the loading state"]();
+
+            this.view.on('locationSearch', function () {
+                searchFired = true;
+            });
+            this.itemView.get('location').set('priority', -10);
+
+            Assert.isTrue(
+                searchFired,
+                "The subitems should be reloaded"
+            );
+        },
+    });
+
+
     Y.Test.Runner.setName("eZ Subitem ListMore View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(itemSetterTest);
@@ -377,6 +478,7 @@ YUI.add('ez-subitemlistmoreview-tests', function (Y) {
     Y.Test.Runner.add(loadMoreTest);
     Y.Test.Runner.add(errorHandlingTest);
     Y.Test.Runner.add(lockPriorityEditTest);
+    Y.Test.Runner.add(updatePriorityTest);
     Y.Test.Runner.add(refreshTest);
 }, '', {
     requires: [
