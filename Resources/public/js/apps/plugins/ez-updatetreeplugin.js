@@ -26,7 +26,7 @@ YUI.add('ez-updatetreeplugin', function (Y) {
                 events = [
                     '*:sentToTrash', '*:restoredLocation', '*:copiedContent',
                     '*:movedContent', '*:publishedDraft', '*:savedDraft',
-                    '*:deletedContent'
+                    '*:deletedContent', '*:swappedLocation',
                 ];
 
             app.on(events, Y.bind(this._clearTree, this));
