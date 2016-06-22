@@ -228,7 +228,7 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
             var startTest = this.callback();
 
             this.editor = AlloyEditor.editable(
-                Y.one('.container').getDOMNode(), {
+                Y.one('.container-appendelement').getDOMNode(), {
                     extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezaddcontent',
                 }
             );
