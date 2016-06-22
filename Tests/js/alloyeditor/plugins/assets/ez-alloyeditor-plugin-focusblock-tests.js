@@ -101,6 +101,26 @@ YUI.add('ez-alloyeditor-plugin-focusblock-tests', function (Y) {
                 "The p should have the focus class"
             );
         },
+
+        "Should move the focus block class to the first block in the path": function () {
+            var editor = this.editor.get('nativeEditor');
+
+            this["Should add the focus block class"]();
+            this._moveCaretToElement(editor, editor.element.findOne('li'));
+
+            Assert.isFalse(
+                this.container.one('blockquote').hasClass('is-block-focused'),
+                "The blockquote should NOT have the focus class"
+            );
+            Assert.isTrue(
+                this.container.one('ul').hasClass('is-block-focused'),
+                "The ul should have the focus class"
+            );
+            Assert.isFalse(
+                this.container.one('li').hasClass('is-block-focused'),
+                "The li should NOT have the focus class"
+            );
+        },
     });
 
     blurTest = new Y.Test.Case({

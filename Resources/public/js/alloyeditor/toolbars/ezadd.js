@@ -16,9 +16,12 @@ YUI.add('ez-alloyeditor-toolbar-ezadd', function (Y) {
      */
     Y.namespace('eZ');
 
-var AlloyEditor = Y.eZ.AlloyEditor,
-    React = Y.eZ.React,
-    ToolbarAdd = Y.extend(function () {}, AlloyEditor.Toolbars.add, {}, AlloyEditor.Toolbars.add);
+    var AlloyEditor = Y.eZ.AlloyEditor,
+        React = Y.eZ.React,
+        ToolbarAdd = Y.extend(
+            React.createClass({render: function () {}}), AlloyEditor.Toolbars.add,
+            {}, AlloyEditor.Toolbars.add
+        );
 
     /**
      * The `ezadd` toolbar. It extends the AlloyEditor's `add` toolbar to be
