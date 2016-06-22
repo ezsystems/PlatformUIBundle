@@ -675,7 +675,7 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
 
             CKEDITOR.plugins.addExternal('lineutils', '../../../lineutils/');
             CKEDITOR.plugins.addExternal('widget', '../../../widget/');
-            this.container = Y.one('.container');
+            this.container = Y.one('.container-insertedit');
             this.containerContent = this.container.getHTML();
             this.editor = AlloyEditor.editable(
                 this.container.getDOMNode(), {
@@ -738,7 +738,7 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
         },
 
         "Should insert the widget after the focused one": function () {
-            var existing = this._getWidget('#last-element');
+            var existing = this._getWidget('[data-ezelement="ezembed"]');
 
             existing.focus();
             this.editor.get('nativeEditor').execCommand('ezembed');
