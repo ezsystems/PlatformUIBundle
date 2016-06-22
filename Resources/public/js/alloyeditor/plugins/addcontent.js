@@ -49,19 +49,44 @@ YUI.add('ez-alloyeditor-plugin-addcontent', function (Y) {
         });
     }
 
+    /**
+     * Appends the element to the editor content. Depending on the editor's
+     * state, the element is added at a different place:
+     *
+     * - if nothing is selected, editor.insertElement is called and the element
+     *   is added at the beginning of the editor
+     * - if a block element is selected (not a widget), the element is added
+     *   after the element or after the first block in the element path (after
+     *   the ul element if a li has the focus)
+     * - if a widget has the focus, the element is added right after it
+     *
+     * @method appendElement
+     * @param {CKEDITOR.editor} editor
+     * @param {CKEDITOR.dom.element} element
+     */
+    function appendElement(editor, element) {
+        var elementPath = editor.elementPath(),
+            selection = editor.getSelection(),
+            elements;
+
+        if ( selection && selection.getSelectedElement() && elementPath.block ) {
+            elements = elementPath.elements;
+            element.insertAfter(elements[elements.length - 2]);
+        } else if ( editor.widgets && editor.widgets.focused ) {
+            element.insertAfter(editor.widgets.focused.wrapper);
+        } else {
+            editor.insertElement(element);
+        }
+    }
+
     addContentCommand = {
         exec: function (editor, data) {
             var element = createElement(
                     editor.document, data.tagName, data.content, data.attributes
                 ),
-                focusElement = element,
-                selection = editor.getSelection();
+                focusElement = element;
 
-            if ( selection && selection.getSelectedElement() ) {
-                element.insertAfter(selection.getSelectedElement());
-            } else {
-                editor.insertElement(element);
-            }
+            appendElement(editor, element);
             if ( data.focusElement ) {
                 focusElement = element.findOne(data.focusElement);
             }
@@ -82,6 +107,8 @@ YUI.add('ez-alloyeditor-plugin-addcontent', function (Y) {
      */
     CKEDITOR.plugins.add('ezaddcontent', {
         init: function (editor) {
+            editor.eZ = {};
+            editor.eZ.appendElement = Y.bind(appendElement, editor, editor);
             editor.addCommand('eZAddContent', addContentCommand);
         },
     });

@@ -4,7 +4,7 @@
  */
 /* global CKEDITOR, AlloyEditor */
 YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
-    var definePluginTest, commandTest,
+    var definePluginTest, commandTest, appendElementTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     definePluginTest = new Y.Test.Case({
@@ -12,6 +12,10 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
 
         setUp: function () {
             this.editor = new Mock();
+            Mock.expect(this.editor, {
+                method: 'addCommand',
+                args: ['eZAddContent', Mock.Value.Object],
+            });
         },
 
         tearDown: function () {
@@ -35,12 +39,18 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
         "Should define the eZAddContent command": function () {
             var plugin = CKEDITOR.plugins.get('ezaddcontent');
 
-            Mock.expect(this.editor, {
-                method: 'addCommand',
-                args: ['eZAddContent', Mock.Value.Object],
-            });
             plugin.init(this.editor);
             Mock.verify(this.editor);
+        },
+
+        "Should define the `eZ` property on the editor": function () {
+            var plugin = CKEDITOR.plugins.get('ezaddcontent');
+
+            plugin.init(this.editor);
+            Assert.isObject(
+                this.editor.eZ,
+                "The `eZ` property should have been defined"
+            );
         },
     });
 
@@ -50,12 +60,11 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
         "async:init": function () {
             var startTest = this.callback();
 
+            this.container = Y.one('.container');
+            this.containerContent = this.container.getHTML();
             this.editor = AlloyEditor.editable(
-                Y.one('.container').getDOMNode(), {
+                this.container.getDOMNode(), {
                     extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezaddcontent',
-                    eZ: {
-                        editableRegion: '.editable',
-                    },
                 }
             );
             this.editor.get('nativeEditor').on('instanceReady', function () {
@@ -65,6 +74,7 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
 
         destroy: function () {
             this.editor.destroy();
+            this.container.setHTML(this.containerContent);
         },
 
         "Should add the content to the editable region": function () {
@@ -125,7 +135,8 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
 
             newElement = nativeEditor.element.findOne('.added3');
             Assert.areSame(
-                selectedElement.$, newElement.getPrevious().$
+                selectedElement.$, newElement.getPrevious().$,
+                "The tag should have been added after the selected element"
             );
         },
 
@@ -210,7 +221,80 @@ YUI.add('ez-alloyeditor-plugin-addcontent-tests', function (Y) {
         },
     });
 
+    appendElementTest = new Y.Test.Case({
+        name: "eZ AlloyEditor addcontent appendElement test",
+
+        "async:init": function () {
+            var startTest = this.callback();
+
+            this.editor = AlloyEditor.editable(
+                Y.one('.container').getDOMNode(), {
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezaddcontent',
+                }
+            );
+            this.editor.get('nativeEditor').on('instanceReady', function () {
+                startTest();
+            });
+        },
+
+        destroy: function () {
+            this.editor.destroy();
+            this.container.setHTML(this.containerContent);
+        },
+
+        _createElement: function () {
+            return CKEDITOR.dom.element.createFromHtml('<p class="added">Added</p>');
+        },
+
+        "Should add the content in the beginning of the document": function () {
+            var element = this._createElement(),
+                editor = this.editor.get('nativeEditor');
+
+            editor.eZ.appendElement(element);
+
+            Assert.areSame(
+                editor.element.getChild(0).$,
+                element.$,
+                "The element should have been added at the beginning"
+            );
+        },
+
+        "Should add the content after the selected element": function () {
+            var element = this._createElement(),
+                editor = this.editor.get('nativeEditor'),
+                ref = editor.element.findOne('.listening');
+
+            editor.getSelection().fake(ref);
+            editor.eZ.appendElement(element);
+
+            Assert.areSame(
+                ref.$,
+                element.getPrevious().$,
+                "The element should have been added after the selected element"
+            );
+        },
+
+        "Should add the content after the first block in the path": function () {
+            var element = this._createElement(),
+                editor = this.editor.get('nativeEditor'),
+                ref = editor.element.findOne('li'),
+                list = editor.element.findOne('ul');
+
+            editor.getSelection().fake(ref);
+            editor.eZ.appendElement(element);
+
+            Assert.areSame(
+                list.$,
+                element.getPrevious().$,
+                "The element should have been added after the list"
+            );
+
+        },
+
+    });
+
     Y.Test.Runner.setName("eZ AlloyEditor addcontent plugin tests");
     Y.Test.Runner.add(definePluginTest);
     Y.Test.Runner.add(commandTest);
+    Y.Test.Runner.add(appendElementTest);
 }, '', {requires: ['test', 'node', 'ez-alloyeditor-plugin-addcontent']});

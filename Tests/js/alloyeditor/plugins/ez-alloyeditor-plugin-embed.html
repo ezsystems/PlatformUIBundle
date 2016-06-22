@@ -52,7 +52,11 @@
         filter: loaderFilter,
         modules: {
             "ez-alloyeditor-plugin-embed": {
+                requires: ['ez-alloyeditor-plugin-addcontent'],
                 fullpath: "../../../../Resources/public/js/alloyeditor/plugins/embed.js",
+            },
+            "ez-alloyeditor-plugin-addcontent": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/plugins/addcontent.js",
             },
         }
     }).use('ez-alloyeditor-plugin-embed-tests', function (Y) {
