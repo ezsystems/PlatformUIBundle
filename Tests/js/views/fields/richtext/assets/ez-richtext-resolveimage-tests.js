@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-richtext-resolveimage-tests', function (Y) {
-    var processTest,
+    var processTest, noProcessTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     processTest = new Y.Test.Case({
@@ -209,6 +209,35 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
         },
     });
 
+    noProcessTest = new Y.Test.Case({
+        // regression test for EZP-25941
+        name: "eZ RichText resolve image process without image test",
+
+        setUp: function () {
+            this.containerContent = Y.one('.container-noimage').getContent();
+            this.processor = new Y.eZ.RichTextResolveImage();
+            this.view = new Y.View({
+                container: Y.one('.container-noimage'),
+                field: {id: 42},
+            });
+        },
+
+        tearDown: function () {
+            this.view.get('container').setContent(this.containerContent);
+            this.view.destroy();
+            delete this.view;
+            delete this.processor;
+        },
+
+        "Should not search for non existing image content": function () {
+            this.view.on('contentSearch', function () {
+                Assert.fail('No search should have been triggered');
+            });
+            this.processor.process(this.view);
+        },
+    });
+
     Y.Test.Runner.setName("eZ RichText resolve image processor tests");
     Y.Test.Runner.add(processTest);
+    Y.Test.Runner.add(noProcessTest);
 }, '', {requires: ['test', 'view', 'ez-richtext-resolveimage']});
