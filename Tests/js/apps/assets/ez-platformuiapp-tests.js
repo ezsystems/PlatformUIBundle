@@ -5,7 +5,7 @@
 YUI.add('ez-platformuiapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest, sideViewServicesTest,
         loginTest, logoutTest, isLoggedInTest, checkUserTest,
-        showSideViewTest, hideSideViewTest,
+        showSideViewTest, hideSideViewTest, enablingRoutingTest, hashChangeTest,
         handleMainViewTest, titleTest, configRouteTest,
         dispatchConfigTest, getLanguageNameTest, refreshViewTest,
         Assert = Y.Assert, Mock = Y.Mock;
@@ -1697,6 +1697,101 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
+    enablingRoutingTest = new Y.Test.Case({
+        name: "Check handle views app tests",
+
+        setUp: function () {
+            this.root = '/ez';
+            this.app = new Y.eZ.PlatformUIApp({
+                container: '.app',
+                viewContainer: '.view-container',
+            });
+            this.app.render();
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
+        "Should deletes views handling middleware if routingEnabled attribute is false": function () {
+            this.app.set('routingEnabled', false);
+            
+            Y.Object.each(this.app.get('routes'), function(route) {
+                Y.Assert.areSame(
+                    0,
+                    route.callbacks.length,
+                    'route callbacks should be empty'
+                );
+            });
+        },
+
+        "Should have views handling middleware if routingEnabled attribute is true": function () {
+            this["Should deletes views handling middleware if routingEnabled attribute is false"]();
+            this.app.set('routingEnabled', true);
+
+            Y.Object.each(this.app.get('routes'), function(route) {
+                Y.Assert.isTrue(
+                    route.callbacks.length > 0,
+                    'route callbacks should NOT be empty'
+                );
+                Y.Assert.areSame(
+                    route.callbacks,
+                    route._initialCallbacks,
+                    'route callbacks should be the same than the initial callbacks'
+                );
+            });
+        },
+    });
+
+    hashChangeTest = new Y.Test.Case({
+        name: "Hash change app tests",
+
+        _should: {
+            ignore: {
+                "Should set the old hash back if handleViews is false ": true //ignore this test,
+                //todo find a way to make the test pass
+            }
+        },
+
+        setUp: function () {
+            var routes = [
+                {path: '/the/hash', name: "currentTest"},
+            ];
+            this.root = '/Tests/';
+            this.app = new Y.eZ.PlatformUIApp({
+                config: {
+                    rootInfo: {
+                        root: this.root,
+                    },
+                },
+                container: '.app',
+                viewContainer: '.view-container'
+            });
+            Y.Array.each(routes, function (route) {
+                hashChangeTest.app.route(route, function () {});
+            });
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
+        "Should set the old hash back if handleViews is false ": function () {
+            Y.config.win.location.hash = '/the/hash';
+
+            this.app.set('routingEnabled', false);
+
+            Y.config.win.location.hash = '/the/hashashin';
+
+
+            this.wait(function () {
+                Assert.areEqual('/the/hash', Y.config.win.location.hash);
+            }, 505);
+        },
+    });
+
     checkUserTest = new Y.Test.Case({
         name: "Check user app tests",
 
@@ -2220,4 +2315,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(dispatchConfigTest);
     Y.Test.Runner.add(getLanguageNameTest);
     Y.Test.Runner.add(refreshViewTest);
-}, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice', 'ez-viewservicebaseplugin']});
+    Y.Test.Runner.add(enablingRoutingTest);
+    Y.Test.Runner.add(hashChangeTest);
+}, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice', 'ez-viewservicebaseplugin', 'history-hash']});

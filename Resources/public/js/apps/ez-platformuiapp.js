@@ -120,6 +120,26 @@ YUI.add('ez-platformuiapp', function (Y) {
         },
 
         /**
+         * The hash change event subscription.
+         *
+         * @property _hashSubscription
+         * @default null
+         * @type EventHandle
+         * @protected
+         */
+        _hashChangeSubscription: null,
+
+        /**
+         * The current location hash .
+         *
+         * @property _currentLocationHash
+         * @default null
+         * @type string
+         * @protected
+         */
+        _currentLocationHash: null,
+
+        /**
          * Initializes the application.
          *
          * @method initializer
@@ -142,6 +162,15 @@ YUI.add('ez-platformuiapp', function (Y) {
                 'loadingChange': this._loading,
                 'navigate': function () {
                     this.set('loading', true);
+                },
+            });
+            this.after('routingEnabledChange', function () {
+                if (!this.get('routingEnabled')) {
+                    this._preventHashChange();
+                    this._disableRouting();
+                } else {
+                    this._allowHashChange();
+                    this._enableRouting();
                 }
             });
 
@@ -152,6 +181,58 @@ YUI.add('ez-platformuiapp', function (Y) {
                 if (oldService && newService) {
                     oldService.setNextViewServiceParameters(newService);
                 }
+            });
+        },
+
+        /**
+         * Prevent hash changes by setting the old hash on hashChange event
+         *
+         * @method  _preventHashChange
+         * @protected
+         */
+        _preventHashChange: function() {
+            var app = this;
+
+            this._hashChangeSubscription = Y.on('hashchange', function (e) {
+                if ( e.newHash != app._currentLocationHash ) {
+                    Y.HistoryHash.setHash(e.oldHash);
+                    app._currentLocationHash = e.oldHash;
+                }
+            });
+        },
+
+        /**
+         * Allows hash changes by detaching hashChange subscription
+         *
+         * @method  _allowHashChange
+         * @protected
+         */
+        _allowHashChange: function() {
+            this._hashChangeSubscription.detach();
+        },
+
+        /**
+         * Disable routing by deleting the callbacks of the routes
+         *
+         * @method _disableRouting
+         * @protected
+         */
+        _disableRouting: function() {
+            this.get('routes').forEach(function(route) {
+                route._initialCallbacks = route.callbacks;
+                route.callbacks = [];
+            });
+        },
+
+        /**
+         * Enables routing by setting back the callbacks to the routes
+         *
+         * @method _enableRouting
+         * @protected
+         */
+        _enableRouting: function() {
+            this.get('routes').forEach(function(route) {
+                route.callbacks = route._initialCallbacks;
             });
         },
 
@@ -830,7 +911,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     service: Y.eZ.ContentEditViewService,
                     sideViews: {'navigationHub': false, 'discoveryBar': false},
                     view: 'contentEditView',
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: ['open', 'checkUser',  'handleSideViews', 'handleMainView']
                 }, {
                     name: "createContent",
                     path: '/create',
@@ -1064,6 +1145,17 @@ YUI.add('ez-platformuiapp', function (Y) {
             localesMap: {
                 readOnly: true,
                 value: {},
+            },
+            
+            /**
+             * Boolean that determine if the app routing is enabled
+             *
+             * @attribute routingEnabled
+             * @default true
+             * @type {Boolean}
+             */
+            routingEnabled: {
+                value: true,
             },
         }
     });

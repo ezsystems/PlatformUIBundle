@@ -29,9 +29,11 @@ YUI.add('ez-universaldiscoveryplugin', function (Y) {
 
             app.on('*:contentDiscover', function (e) {
                 app.showSideView('universalDiscovery', e.config);
+                app.set('routingEnabled', false);
             });
 
             app.on(['*:contentDiscovered', '*:cancelDiscover'], function () {
+                app.set('routingEnabled', true);
                 app.hideSideView('universalDiscovery');
             });
         },
