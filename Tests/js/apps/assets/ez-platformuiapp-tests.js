@@ -1931,6 +1931,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 'pol-PL': {'languageCode': 'pol-PL', 'name': 'Polish'}
             };
             this.defaultLanguageCode = 'eng-GB';
+            this.localesMap = {'fr_FR': 'fre-FR'};
             Y.eZ.CAPI = Y.bind(function (apiRoot, sessionAuthAgent) {
                 Assert.areEqual(
                     this.apiRoot, apiRoot,
@@ -1961,7 +1962,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     },
                     anonymousUserId: this.anonymousUserId,
                     sessionInfo: this.sessionInfo,
-                    languages: this.configLanguages
+                    languages: this.configLanguages,
+                    localesMap: this.localesMap,
                 },
             });
         },
@@ -2060,6 +2062,19 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             Assert.isUndefined(
                 this.app.get('config').anonymousUserId,
                 "The anonymousUserId should have been removed from the configuration"
+            );
+        },
+
+        "Should configure the `localesMap`": function () {
+            this._buildApp();
+            Assert.areSame(
+                this.localesMap,
+                this.app.get('localesMap'),
+                "The `localesMap` attribute should have been set"
+            );
+            Assert.isUndefined(
+                this.app.get('config').localesMap,
+                "The localesMap property should have been removed from the configuration"
             );
         },
 
