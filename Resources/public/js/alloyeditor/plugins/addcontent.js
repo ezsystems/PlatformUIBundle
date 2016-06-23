@@ -66,10 +66,9 @@ YUI.add('ez-alloyeditor-plugin-addcontent', function (Y) {
      */
     function appendElement(editor, element) {
         var elementPath = editor.elementPath(),
-            selection = editor.getSelection(),
             elements;
 
-        if ( selection && selection.getSelectedElement() && elementPath.block ) {
+        if ( elementPath && elementPath.block ) {
             elements = elementPath.elements;
             element.insertAfter(elements[elements.length - 2]);
         } else if ( editor.widgets && editor.widgets.focused ) {
