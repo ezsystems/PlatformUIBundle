@@ -27,11 +27,12 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
      * @param {eZ.FieldView|eZ.FieldEditView} view
      */
     ResolveEmbed.prototype.process = function (view) {
-        var embeds = this._getEmbedList(view),
-            mapNode = this._buildEmbedMapNodes(embeds);
+        var embeds = this._getEmbedList(view);
         
-        this._renderLoadingEmbeds(embeds);
-        this._loadEmbeds(mapNode, view);
+        if ( !embeds.isEmpty() ) {
+            this._renderLoadingEmbeds(embeds);
+            this._loadEmbeds(this._buildEmbedMapNodes(embeds), view);
+        }
     };
 
     /**
@@ -41,6 +42,7 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
      * @method _getEmbedList
      * @protected
      * @param {eZ.FieldView|eZ.FieldEditView} view
+     * @return {Y.NodeList}
      */
     ResolveEmbed.prototype._getEmbedList = function (view) {
         var embeds = view.get('container').all('[data-ezelement="ezembed"]'),
