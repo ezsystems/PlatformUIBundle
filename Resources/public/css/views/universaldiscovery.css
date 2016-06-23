@@ -16,6 +16,7 @@
 
 .is-universaldiscovery-hidden .ez-universaldiscovery-container {
     display: none;
+    z-index: -10;
 }
 
 .ez-universaldiscovery-container .ez-view-universaldiscoveryview {
