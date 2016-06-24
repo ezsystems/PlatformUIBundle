@@ -14,7 +14,7 @@
                 </div>
                 <div class="ez-ud-full-list-item-content">
                     <h3 class="ez-ud-full-list-item-title">{{ contentInfo.name }}</h3>
-                    <p class="ez-ud-full-list-item-details"><strong>{{ contentType.names.[eng-GB] }}</strong></p>
+                    <p class="ez-ud-full-list-item-details"><strong>{{ translate_property contentType.names }}</strong></p>
                 </div>
             </div>
             {{/each}}
@@ -25,7 +25,7 @@
     <h2 class="ez-ud-mini-display-title">Confirmed items:</h2>
     <ul class="ez-ud-mini-display-list">
     {{#each miniDisplayList}}
-        <li class="ez-ud-mini-display-item" title="{{ contentInfo.name }} ({{ contentType.names.[eng-GB] }})">{{ contentInfo.name }}</li>
+        <li class="ez-ud-mini-display-item" title="{{ contentInfo.name }} ({{ translate_property contentType.names }})">{{ contentInfo.name }}</li>
     {{/each}}
     {{#if remainingCount}}
         <li class="ez-ud-mini-display-item ez-ud-mini-display-remaining-count">+{{ remainingCount }} more</li>

@@ -47,7 +47,7 @@
                         {{#each searchResultList}}
                         <tr class="ez-searchresult-row" data-location-id="{{location.id}}">
                             <td>{{location.contentInfo.name}}</td>
-                            <td>{{contentType.names.[eng-GB]}}</td>
+                            <td>{{translate_property contentType.names}}</td>
                             <td>
                                 <button class="ez-ud-searchresult-preview-button"
                                     data-location-id="{{location.id}}">Preview</button>

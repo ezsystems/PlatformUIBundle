@@ -11,7 +11,7 @@
             </nav>
             <div class="ez-page-header-name" data-icon="&#xe601;">
                 <h1 class="ez-page-header-content-name">{{ content.name }}</h1>
-                <span class="ez-page-header-contenttype">{{ contentType.names.[eng-GB] }}</span>
+                <span class="ez-page-header-contenttype">{{ translate_property contentType.names }}</span>
             </div>
         </header>
         <section class="ez-tabs">

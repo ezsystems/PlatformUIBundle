@@ -5,14 +5,14 @@
             <h1 class="ez-page-header-name" data-icon="&#xe601;">{{ content.name }}</h1>
             <div class="ez-infos">
                 <ul class="ez-technical-infos">
-                    <li>{{ contentType.names.[eng-GB] }}</li>
+                    <li>{{ translate_property contentType.names }}</li>
                     <li>Created by {{ owner.name }}</li>
                     {{#if content.contentId}}
                     <li>{{ content.lastModificationDate }}</li>
                     <li>Content ID: {{ content.contentId }}, Location ID: {{ mainLocation.locationId }}</li>
                     {{/if}}
                 </ul>
-                <p class="ez-description">{{contentType.descriptions.[eng-GB]}}</p>
+                <p class="ez-description">{{ translate_property contentType.descriptions }}</p>
             </div>
             <div class="ez-content-language-container">
                 <div class="ez-content-language-indicator">
