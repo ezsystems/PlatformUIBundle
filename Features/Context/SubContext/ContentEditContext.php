@@ -15,7 +15,7 @@ use EzSystems\PlatformUIBundle\Features\Context\PlatformUI;
 class ContentEditContext extends PlatformUI
 {
     /**
-     * @var EzSystems\PlatformBehatBundle\Context\Object\BasicContentContext
+     * @var eZ\Bundle\EzPublishCoreBundle\Features\Context\BasicContentContext
      */
     protected $basicContentContext;
 

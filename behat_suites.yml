@@ -11,7 +11,7 @@ platformui:
         contentactions:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/ContentActions ]
             contexts:
-              - EzSystems\PlatformBehatBundle\Context\Object\BasicContentContext
+              - eZ\Bundle\EzPublishCoreBundle\Features\Context\BasicContentContext
               - EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
               - EzSystems\PlatformUIBundle\Features\Context\SubContext\Authentication
               - EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
@@ -21,7 +21,7 @@ platformui:
         role:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/RoleUI ]
             contexts:
-              - EzSystems\PlatformBehatBundle\Context\Object\RoleContext
+              - eZ\Bundle\EzPublishCoreBundle\Features\Context\RoleContext
               - EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
               - EzSystems\PlatformUIBundle\Features\Context\SubContext\Authentication
               - EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
@@ -30,7 +30,7 @@ platformui:
         fieldtype_integer:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/Stories/FieldTypes/IntegerFieldType.feature ]
             contexts:
-              - EzSystems\PlatformBehatBundle\Context\Object\FieldTypeContext
+              - eZ\Bundle\EzPublishCoreBundle\Features\Context\FieldTypeContext
               - EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
               - EzSystems\PlatformUIBundle\Features\Context\SubContext\Authentication
               - EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
@@ -39,7 +39,7 @@ platformui:
         user:
             paths: [ vendor/ezsystems/platform-ui-bundle/Features/Users/users.feature ]
             contexts:
-              - EzSystems\PlatformBehatBundle\Context\Object\UserContext
+              - eZ\Bundle\EzPublishCoreBundle\Features\Context\UserContext
               - EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
               - EzSystems\PlatformUIBundle\Features\Context\SubContext\Authentication
               - EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext

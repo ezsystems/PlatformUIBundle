@@ -10,7 +10,7 @@
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
 use Behat\Mink\WebAssert;
-use EzSystems\PlatformBehatBundle\Context\Object\FieldTypeContext as FieldType;
+use eZ\Bundle\EzPublishCoreBundle\Features\Context\FieldTypeContext as FieldType;
 
 class Fields extends PlatformUI
 {
@@ -18,7 +18,7 @@ class Fields extends PlatformUI
     const NOTIFICATION_PUBLISH_ERROR = 'An error occured while publishing the draft';
 
     /**
-     * @var EzSystems\PlatformBehatBundle\Context\Object\FieldTypeContext
+     * @var eZ\Bundle\EzPublishCoreBundle\Features\Context\FieldTypeContext
      */
     protected $fieldtypeContext;
 
