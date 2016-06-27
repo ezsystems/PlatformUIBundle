@@ -9,36 +9,11 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
-use EzSystems\BehatBundle\Helper\EzAssertion;
 use EzSystems\PlatformUIBundle\Features\Context\PlatformUI;
 use EzSystems\PlatformBehatBundle\Helper\Xpath;
 
 class BrowserContext extends PlatformUI
 {
-    /**
-     * @var \EzSystems\BehatBundle\Helper\Xpath
-     */
-    private $xpath;
-
-    /**
-     * @BeforeScenario
-     */
-    public function prepareHelpers()
-    {
-        // initialize Helpers
-        $this->xpath = new Xpath($this->getSession());
-    }
-
-    /**
-     * Getter for Xpath.
-     *
-     * @return \EzSystems\BehatBundle\Helper\Xpath
-     */
-    public function getXpath()
-    {
-        return $this->xpath;
-    }
-
     /**
      * @Given I clicked on/at (the) :link link
      * @When  I click on/at (the) :link link
@@ -143,18 +118,17 @@ class BrowserContext extends PlatformUI
      */
     public function checkOption($option)
     {
-        $fieldElements = $this->getXpath()->findFields($option);
-        EzAssertion::assertElementFound($option, $fieldElements, null, 'checkbox');
+        $session = $this->getSession();
+        $selectorsHandler = $session->getSelectorsHandler();
+        $literal = $selectorsHandler->xpathLiteral($option);
 
-        // this is needed for the cases where are checkboxes and radio's
-        // side by side, for main option the radio and the extra being the
-        // checkboxes values
-        if (strtolower($fieldElements[0]->getAttribute('type')) !== 'checkbox') {
-            $value = $fieldElements[0]->getAttribute('value');
-            $fieldElements = $this->getXpath()->findXpath("//input[@type='checkbox' and @value='$value']");
-            EzAssertion::assertElementFound($value, $fieldElements, null, 'checkbox');
-        }
+        // To be able to work on mink 1.6 (ezplatform) & mink 1.5 (5.4+ezpublish-community) w/o deprecation exceptions
+        $selector = $selectorsHandler->isSelectorRegistered('named_partial') ?
+            $selectorsHandler->getSelector('named_partial') :
+            $selectorsHandler->getSelector('named');
+        $xpath = $selector->translateToXPath(array('field', $literal));
 
-        $fieldElements[0]->check();
+        $fieldElement = $session->getPage()->find('xpath', $xpath);
+        $fieldElement->check();
     }
 }
