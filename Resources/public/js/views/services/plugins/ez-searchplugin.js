@@ -334,7 +334,8 @@ YUI.add('ez-searchplugin', function (Y) {
                 query;
 
             contentIds = Y.Array.reduce(locationStructArr, '', function (previousId, struct) {
-                return previousId + "," + struct.location.get('contentInfo').get('contentId');
+                previousId = previousId ? previousId + ',' : previousId;
+                return previousId + struct.location.get('contentInfo').get('contentId');
             });
 
             query = this._createNewCreateViewStruct('contents-loading-' + viewName, 'ContentQuery', {
