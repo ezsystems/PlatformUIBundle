@@ -210,10 +210,8 @@ YUI.add('ez-platformuiapp', function (Y) {
                 this._set('anonymousUserId', config.anonymousUserId);
                 delete config.anonymousUserId;
             }
-            if ( config.localesMap ) {
-                this._set('localesMap', config.localesMap);
-                delete config.localesMap;
-            }
+            config.localesMap = config.localesMap || {};
+            this._set('localesMap', config.localesMap);
 
             this._set('capi', new Y.eZ.CAPI(
                 this.get('apiRoot').replace(/\/{1,}$/, ''),

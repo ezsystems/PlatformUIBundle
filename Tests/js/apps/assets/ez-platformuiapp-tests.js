@@ -1951,7 +1951,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.app.destroy();
         },
 
-        _buildApp: function () {
+        _buildApp: function (localesMap) {
             this.app = new Y.eZ.PlatformUIApp({
                 config: {
                     rootInfo: {
@@ -1963,7 +1963,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     anonymousUserId: this.anonymousUserId,
                     sessionInfo: this.sessionInfo,
                     languages: this.configLanguages,
-                    localesMap: this.localesMap,
+                    localesMap: localesMap,
                 },
             });
         },
@@ -2066,15 +2066,30 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
 
         "Should configure the `localesMap`": function () {
-            this._buildApp();
+            this._buildApp(this.localesMap);
             Assert.areSame(
                 this.localesMap,
                 this.app.get('localesMap'),
                 "The `localesMap` attribute should have been set"
             );
-            Assert.isUndefined(
+        },
+
+        "Should configure the `localesMap` default value": function () {
+            this._buildApp(null);
+
+            Assert.isObject(
+                this.app.get('localesMap'),
+                "The `localesMap` attribute should have been set"
+            );
+            Assert.areEqual(
+                0,
+                Y.Object.keys(this.app.get('localesMap')).length,
+                "The `localesMap` attribute should have been set with an empty object"
+            );
+            Assert.areSame(
+                this.app.get('localesMap'),
                 this.app.get('config').localesMap,
-                "The localesMap property should have been removed from the configuration"
+                "The app config should reference the localesMap"
             );
         },
 

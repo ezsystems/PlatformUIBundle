@@ -126,7 +126,9 @@ YUI.add('ez-createcontentactionview', function (Y) {
              */
             contentTypeSelectorView: {
                 valueFn: function () {
-                    return new Y.eZ.ContentTypeSelectorView();
+                    return new Y.eZ.ContentTypeSelectorView({
+                        config: this.get('config'),
+                    });
                 }
             },
 

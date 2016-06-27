@@ -4,6 +4,7 @@
  */
 YUI.add('ez-createcontentactionview-tests', function (Y) {
     var viewTest, eventTest, renderTest, hideTest, disabledTest,
+        contentTypeSelectorViewAttrTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     viewTest = new Y.Test.Case(
@@ -276,10 +277,46 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
         },
     });
 
+    contentTypeSelectorViewAttrTest = new Y.Test.Case({
+        name: 'eZ Create Action View contentTypeSelectorView attribute test',
+
+        setUp: function () {
+            this.contentType = new Y.Base();
+            this.contentType.set('isContainer', true);
+            this.config = {};
+
+            Y.eZ.ContentTypeSelectorView = Y.View;
+            this.view = new Y.eZ.CreateContentActionView({
+                actionId: 'createContent',
+                label: "Create",
+                disabled: false,
+                contentType: this.contentType,
+                config: this.config,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.contentType.destroy();
+            delete this.view;
+            delete this.contentType;
+            delete Y.eZ.ContentTypeSelectorView;
+        },
+
+        "Should pass the config to the Content Type Selector": function () {
+            Assert.areSame(
+                this.view.get('config'),
+                this.view.get('contentTypeSelectorView').get('config'),
+                "The Content Type Selector should have received the config"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Create Content Action View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(hideTest);
     Y.Test.Runner.add(disabledTest);
+    Y.Test.Runner.add(contentTypeSelectorViewAttrTest);
 }, '', {requires: ['test', 'ez-createcontentactionview', 'ez-genericbuttonactionview-tests', 'node-event-simulate']});

@@ -301,6 +301,7 @@ YUI.add('ez-locationviewview', function (Y) {
                         location: this.get('location'),
                         content: this.get('content'),
                         contentType: this.get('contentType'),
+                        config: this.get('config'),
                         bubbleTargets: this,
                     });
                 }
