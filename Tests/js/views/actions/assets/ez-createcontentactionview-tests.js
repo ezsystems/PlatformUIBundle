@@ -40,6 +40,10 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
                     contentTypeSelectorView: this.selectorMock,
                     contentType: this.contentTypeMock
                 });
+                Mock.expect(this.selectorMock, {
+                    method: 'removeTarget',
+                    args: [this.view],
+                });
             },
 
             tearDown: function () {
@@ -73,6 +77,10 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
                 disabled: false,
                 contentTypeSelectorView: this.selectorMock,
                 contentType: this.contentTypeMock
+            });
+            Mock.expect(this.selectorMock, {
+                method: 'removeTarget',
+                args: [this.view],
             });
         },
 
@@ -122,6 +130,10 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
                 disabled: false,
                 contentTypeSelectorView: this.selectorMock,
                 contentType: this.contentTypeMock
+            });
+            Mock.expect(this.selectorMock, {
+                method: 'removeTarget',
+                args: [this.view],
             });
         },
 
@@ -187,6 +199,10 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
                 contentTypeSelectorView: this.selectorMock,
                 contentType: this.contentTypeMock
             });
+            Mock.expect(this.selectorMock, {
+                method: 'removeTarget',
+                args: [this.view],
+            });
         },
 
         tearDown: function () {
@@ -227,6 +243,10 @@ YUI.add('ez-createcontentactionview-tests', function (Y) {
         },
 
         tearDown: function () {
+            Mock.expect(this.selectorMock, {
+                method: 'removeTarget',
+                args: [this.view],
+            });
             this.view.get('container').setHTML('');
             this.view.destroy();
             delete this.view;
