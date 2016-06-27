@@ -24,7 +24,7 @@ YUI.add('ez-platformuiapp', function (Y) {
      * @constructor
      * @extends App
      */
-    Y.eZ.PlatformUIApp = Y.Base.create('platformuiApp', Y.App, [], {
+    Y.eZ.PlatformUIApp = Y.Base.create('platformuiApp', Y.App, [Y.eZ.TranslateProperty], {
         /**
          * The list of available sides views. Each side view is an entry in this
          * hash which contains the following properties:
