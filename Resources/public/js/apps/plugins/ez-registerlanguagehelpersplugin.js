@@ -7,7 +7,7 @@ YUI.add('ez-registerlanguagehelpersplugin', function (Y) {
     /**
      * Provides the register language helpers plugin
      *
-     * @module ez-registerhelpersplugin
+     * @module ez-registerlanguagehelpersplugin
      */
     Y.namespace('eZ.Plugin');
 
