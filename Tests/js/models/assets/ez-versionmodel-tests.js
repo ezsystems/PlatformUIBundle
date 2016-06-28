@@ -4,7 +4,7 @@
  */
 YUI.add('ez-versionmodel-tests', function (Y) {
     var modelTest, createTest, updateTest, removeTest, hasTranslationTest,
-        isDraftTest, createdByTest,
+        isDraftTest, createdByTest, isCurrentVersionTest,
         restResponse = {
             "Version": {
                 "_media-type": "application/vnd.ez.api.Version+json",
@@ -733,6 +733,50 @@ YUI.add('ez-versionmodel-tests', function (Y) {
         },
     });
 
+    isCurrentVersionTest = new Y.Test.Case({
+        name: "eZ Version Model isCurrentVersion test",
+
+        setUp: function () {
+            this.version = new Y.eZ.Version();
+        },
+
+        tearDown: function () {
+            this.version.destroy();
+            delete this.version;
+        },
+
+        "Should detect an unsaved version": function () {
+            Assert.isFalse(
+                this.version.isCurrentVersionOf({}),
+                "The unsaved version should have been detected"
+            );
+        },
+
+        "Should detect the current version": function () {
+            var content = new Y.Model();
+
+            this.version.setAttrs(this.version.parse({document: restResponse}));
+            content.set('currentVersion', this.version);
+
+            Assert.isTrue(
+                this.version.isCurrentVersionOf(content),
+                "The version should have been detected as the current version"
+            );
+        },
+
+        "Should detect a different version": function () {
+            var content = new Y.Model();
+
+            this.version.setAttrs(this.version.parse({document: restResponse}));
+            content.set('currentVersion', new Y.eZ.Version({id: 'not-the-same'}));
+
+            Assert.isFalse(
+                this.version.isCurrentVersionOf(content),
+                "The version should have been detected as not the current version"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Version Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(createTest);
@@ -741,4 +785,5 @@ YUI.add('ez-versionmodel-tests', function (Y) {
     Y.Test.Runner.add(hasTranslationTest);
     Y.Test.Runner.add(isDraftTest);
     Y.Test.Runner.add(createdByTest);
+    Y.Test.Runner.add(isCurrentVersionTest);
 }, '', {requires: ['test', 'json', 'model-tests', 'ez-versionmodel', 'ez-restmodel']});

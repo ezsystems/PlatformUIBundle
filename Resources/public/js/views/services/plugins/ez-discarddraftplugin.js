@@ -26,8 +26,9 @@ YUI.add('ez-discarddraftplugin', function (Y) {
         },
 
         /**
-         * Event handler for the discardAction event. It deletes the version
-         * from the repositry and fire the discardedDraft event.
+         * Event handler for the discardAction event. It deletes the version (or
+         * the content if the version has just been created) from the repository
+         * and fire the `discardedDraft` event.
          *
          * @method _discardDraft
          * @protected
@@ -36,10 +37,16 @@ YUI.add('ez-discarddraftplugin', function (Y) {
         _discardDraft: function (e) {
             var service = this.get('host'),
                 version = service.get('version'),
+                content = service.get('content'),
+                toDestroy = version,
                 app = service.get('app');
 
             app.set('loading', true);
-            version.destroy({
+            if ( version.isCurrentVersionOf(content) ) {
+                toDestroy = content;
+            }
+
+            toDestroy.destroy({
                 remove: true,
                 api: service.get('capi')
             }, function () {
