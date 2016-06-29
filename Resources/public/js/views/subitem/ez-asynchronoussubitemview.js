@@ -65,13 +65,19 @@ YUI.add('ez-asynchronoussubitemview', function (Y) {
          * @protected
          */
         _refresh: function () {
-            if ( this.get('active') ) {
-                this.set('items', [], {reset: true});
-                this._set('loading', true);
-                this.once('loadingChange', function () {
+            if ( this._getChildCount() ) {
+                if ( this.get('active') ) {
+                    this.set('items', [], {reset: true});
+                    this._set('loading', true);
+                    this.once('loadingChange', function () {
+                        this._destroyItemViews();
+                    });
+                    this._fireLocationSearch(this.get('offset') + this.get('limit'));
+                } else if ( this.get('offset') >= 0 ) {
                     this._destroyItemViews();
-                });
-                this._fireLocationSearch(this.get('offset') + this.get('limit'));
+                    this.set('items', [], {reset: true});
+                    this.reset('offset');
+                }
             }
         },
 
