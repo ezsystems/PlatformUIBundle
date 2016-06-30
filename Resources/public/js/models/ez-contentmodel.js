@@ -91,8 +91,10 @@ YUI.add('ez-contentmodel', function (Y) {
                 );
             } else if ( action === 'create' ) {
                 this._createContent(options, callback);
+            } else if ( action === 'delete' ) {
+                this.delete(options, callback);
             } else {
-                callback("Only read and create operations are supported at the moment");
+                callback("Only read, create and delete operations are supported at the moment");
             }
         },
 
@@ -330,9 +332,12 @@ YUI.add('ez-contentmodel', function (Y) {
         delete: function (options, callback) {
             var capi = options.api,
                 contentService = capi.getContentService();
-            
+
+            if ( !this.get('id') ) {
+                return callback(false);
+            }
             contentService.deleteContent(this.get('id'), callback);
-        }
+        },
     }, {
         REST_STRUCT_ROOT: "Content",
         ATTRS_REST_MAP: [
