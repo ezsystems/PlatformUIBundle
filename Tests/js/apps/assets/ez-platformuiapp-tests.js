@@ -236,6 +236,28 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             Y.Assert.isTrue(rendered, "The view should be rerendered");
         },
 
+        "Should set the `active` attribute to false on the previous view": function ()  {
+            var req1 = {route: {view: 'testView1'}},
+                req2 = {route: {view: 'testView2'}},
+                view;
+
+            this.app.views.testView1 = {
+                type: Y.View,
+            };
+            this.app.views.testView2 = {
+                type: Y.View,
+            };
+
+            this.app.handleMainView(req1);
+            view = this.app.get('activeView');
+
+            this.app.handleMainView(req2);
+            Assert.isFalse(
+                view.get('active'),
+                "The previous view should be updated to be inactive"
+            );
+        },
+
         "Should show the view after using the view service": function () {
             var rendered = false,
                 serviceInit = false, serviceLoad = false,
