@@ -145,3 +145,7 @@
 .ez-view-buttonactionview .ez-action[data-action="preview"] .action-trigger[data-action-option="mobile"]:before {
     content: "\E60a";
 }
+
+.ez-view-buttonactionview .ez-action[data-action="viewSearch"] .action-icon:before {
+    content: "\E986";
+}
