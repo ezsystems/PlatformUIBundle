@@ -409,7 +409,7 @@ trait CommonActions
      */
     public function iShouldBeOnTheDashboard()
     {
-        $this->assertSession()->elementExists('css', '.ez-view-dashboardview');
+        $this->assertSession()->elementExists('css', '.ez-view-dashboardblocksview');
     }
 
     /**
