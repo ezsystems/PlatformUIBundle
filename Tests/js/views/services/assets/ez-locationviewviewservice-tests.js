@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-locationviewviewservice-tests', function (Y) {
-    var functionalTest, eventTest, getViewParametersTest, sendToTrashButtonTest, moveContentTest, deleteContentTest,
+    var functionalTest, eventTest, getViewParametersTest, sendToTrashButtonTest,
+        moveContentTest, deleteContentTest, translateContent,
         Assert = Y.Assert, Mock = Y.Mock;
 
     functionalTest = new Y.Test.Case({
@@ -1718,6 +1719,107 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         },
     });
 
+    translateContent = new Y.Test.Case({
+        name: "eZ Location View View Service translate content tests",
+
+        setUp: function () {
+            this.app = new Mock();
+
+            this.service = new Y.eZ.LocationViewViewService({
+                app: this.app,
+                request: {params: {}},
+            });
+            this.view = new Y.View();
+            this.view.addTarget(this.service);
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            this.view.destroy();
+            delete this.service;
+            delete this.view;
+            delete this.app;
+        },
+
+        _getContent: function (id) {
+            var content = new Y.Base();
+
+            content.set('id', id);
+            return content;
+        },
+
+        _configureAppNavigate: function (uri) {
+            Mock.expect(this.app, {
+                method: 'navigate',
+                args: [uri],
+            });
+        },
+
+        "Should redirect to the editContent route": function () {
+            var contentId = 'red-hot-chili-peppers-the-getaway',
+                content = this._getContent(contentId),
+                languageCode = 'fre-FR',
+                routeUri = '/edit/';
+
+            Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['editContent', Mock.Value.Object],
+                run: function (name, params) {
+                    Assert.areEqual(
+                        contentId, params.id,
+                        "The content id should be in the route params"
+                    );
+                    Assert.areEqual(
+                        languageCode, params.languageCode,
+                        "The language code should be in the route params"
+                    );
+                    return routeUri;
+                },
+            });
+            this._configureAppNavigate(routeUri);
+            this.view.fire('translateContent', {
+                content: content,
+                toLanguageCode: languageCode,
+            });
+            Mock.verify(this.app);
+        },
+
+        "Should redirect to the translateContent route with the base language": function () {
+            var contentId = 'red-hot-chili-peppers-the-getaway',
+                content = this._getContent(contentId),
+                languageCode = 'fre-FR',
+                baseLanguageCode = 'eng-GB',
+                routeUri = '/translate/';
+
+            Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['translateContent', Mock.Value.Object],
+                run: function (name, params) {
+                    Assert.areEqual(
+                        contentId, params.id,
+                        "The content id should be in the route params"
+                    );
+                    Assert.areEqual(
+                        languageCode, params.languageCode,
+                        "The language code should be in the route params"
+                    );
+                    Assert.areEqual(
+                        baseLanguageCode, params.baseLanguageCode,
+                        "The base language code should be in the route params"
+                    );
+                    return routeUri;
+                },
+            });
+            this._configureAppNavigate(routeUri);
+            this.view.fire('translateContent', {
+                content: content,
+                toLanguageCode: languageCode,
+                baseLanguageCode: baseLanguageCode,
+            });
+            Mock.verify(this.app);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location View View Service tests");
     Y.Test.Runner.add(functionalTest);
     Y.Test.Runner.add(eventTest);
@@ -1725,4 +1827,5 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
     Y.Test.Runner.add(sendToTrashButtonTest);
     Y.Test.Runner.add(moveContentTest);
     Y.Test.Runner.add(deleteContentTest);
-}, '', {requires: ['test', 'ez-locationviewviewservice']});
+    Y.Test.Runner.add(translateContent);
+}, '', {requires: ['test', 'base', 'view', 'ez-locationviewviewservice']});
