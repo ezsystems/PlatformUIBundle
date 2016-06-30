@@ -795,17 +795,34 @@ YUI.add('ez-searchplugin-tests', function (Y) {
             this.ContentModelConstructor = function () {};
             this.capi = new Mock();
             this.contentService = new Mock();
-            this.contentInfoMock = new Mock();
             this.viewName = 'REST-View-Name';
             this.locationQuery = {body: {ViewInput: {LocationQuery: {}}}};
             this.contentQuery = {body: {ViewInput: {ContentQuery: {}}}};
-            this.contentInfo = {
+            this.contentInfo1 = {
                 id: '/content/id/4112',
                 contentId: '4112',
                 resources: {
                     ContentType: '/content/type/id'
                 }
             };
+            this.contentInfo2 = {
+                id: '/content/id/4113',
+                contentId: '4113',
+                resources: {
+                    ContentType: '/content/type/id'
+                }
+            };
+            this.contentInfoMock1 = new Mock();
+            this.contentInfoMock2 = new Mock();
+            this.contentInfos = {};
+            this.contentInfosById = {};
+            this.contentInfos[this.contentInfo1.contentId] = this.contentInfo1;
+            this.contentInfos[this.contentInfo2.contentId] = this.contentInfo2;
+            this.contentInfosById[this.contentInfo1.id] = this.contentInfo1;
+            this.contentInfosById[this.contentInfo2.id] = this.contentInfo2;
+            this.contentInfoMocks = {};
+            this.contentInfoMocks[this.contentInfo1.contentId] = this.contentInfoMock1;
+            this.contentInfoMocks[this.contentInfo2.contentId] = this.contentInfoMock2;
             this.locationResponse = {
                 document: {
                     View: {
@@ -814,7 +831,13 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                                 searchHit: [{
                                     value: {
                                         Location: {
-                                            contentInfo: this.contentInfo
+                                            contentInfo: this.contentInfo1,
+                                        }
+                                    },
+                                }, {
+                                    value: {
+                                        Location: {
+                                            contentInfo: this.contentInfo2,
                                         }
                                     },
                                 }]
@@ -832,7 +855,13 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                                 searchHit: [{
                                     value: {
                                         Content: {
-                                            _href: "4112"
+                                            _href: this.contentInfo1.id,
+                                        }
+                                    },
+                                }, {
+                                    value: {
+                                        Content: {
+                                            _href: this.contentInfo2.id,
                                         }
                                     },
                                 }]
@@ -847,7 +876,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 this.get = function (attr) {
                     switch (attr) {
                         case 'contentInfo':
-                            return that.contentInfoMock;
+                            return that.contentInfoMocks[hash.contentInfo.contentId];
                         default:
                             Assert.fail('Requested attribute "' + attr + '" does not exist in the location model');
                             break;
@@ -861,9 +890,9 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 this.get = function (attr) {
                     switch (attr) {
                         case 'id':
-                            return that.contentInfo.id;
+                            return that.contentInfosById[hash._href].id;
                         case 'contentId':
-                            return that.contentInfo.contentId;
+                            return that.contentInfosById[hash._href].contentId;
                         default:
                             Assert.fail('Requested attribute "' + attr + '" does not exist in the content model');
                             break;
@@ -887,17 +916,9 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                     }
                 }
             });
-            Mock.expect(this.contentInfoMock, {
-                method: 'get',
-                args: [Mock.Value.String],
-                run: function (attr) {
-                    if (that.contentInfo[attr] !== undefined) {
-                        return that.contentInfo[attr];
-                    } else {
-                        Assert.fail('Requested attribute "' + attr + '" does not exist in the content info model');
-                    }
-                }
-            });
+            this._configureContentInfoMock(this.contentInfoMock1, this.contentInfo1);
+            this._configureContentInfoMock(this.contentInfoMock2, this.contentInfo2);
+
             Mock.expect(this.contentService, {
                 method: 'createView',
                 args: [Mock.Value.Object, Mock.Value.Function],
@@ -905,6 +926,11 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                     if (query === that.locationQuery) {
                         cb(false, that.locationResponse);
                     } else if (query === that.contentQuery) {
+                        Assert.areEqual(
+                            Y.Object.keys(that.contentInfos).join(','),
+                            query.body.ViewInput.ContentQuery.Criteria.ContentIdCriterion,
+                            "The request should be on the Content Ids"
+                        );
                         cb(false, that.contentResponse);
                     }
                 }
@@ -916,6 +942,20 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 host: this.service,
                 locationModelConstructor: this.LocationModelConstructor,
                 contentModelConstructor: this.ContentModelConstructor,
+            });
+        },
+
+        _configureContentInfoMock: function (contentInfoMock, infoObj) {
+            Mock.expect(contentInfoMock, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: function (attr) {
+                    if (infoObj[attr] !== undefined) {
+                        return infoObj[attr];
+                    } else {
+                        Assert.fail('Requested attribute does not exist in the contentInfo');
+                    }
+                },
             });
         },
 
@@ -931,8 +971,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
         },
 
         "Should load Content and ContentType into location struct": function () {
-            var contentInfo = this.contentInfo,
-                response = this.locationResponse,
+            var response = this.locationResponse,
                 resultAttr = 'whateverAttr';
 
             Y.eZ.ContentType = Y.Model;
@@ -957,6 +996,8 @@ YUI.add('ez-searchplugin-tests', function (Y) {
             );
 
             Y.Array.each(this.view.get(resultAttr), function (value, i) {
+                var contentInfo = this.contentInfos[Y.Object.keys(this.contentInfos)[i]];
+
                 Assert.isObject(value, "The result value should be an object");
                 Assert.isInstanceOf(
                     this.LocationModelConstructor,
