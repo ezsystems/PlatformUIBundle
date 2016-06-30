@@ -48,6 +48,12 @@ YUI.add('ez-discoverybarview', function (Y) {
                             label: "Minimize",
                             priority: 1000
                         }),
+                        new Y.eZ.ButtonActionView({
+                            actionId: "viewSearch",
+                            disabled: false,
+                            label: "Search",
+                            priority: 900
+                        }),
                         new Y.eZ.TreeActionView({
                             actionId: "tree",
                             disabled: false,

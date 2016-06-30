@@ -71,9 +71,9 @@ YUI.add('ez-discoverybarview-tests', function (Y) {
             var actionsList = this.view.get('actionsList');
 
             Assert.areSame(
-                3,
+                4,
                 actionsList.length,
-                "Action list should contain 3 items"
+                "Action list should contain 4 items"
             );
 
             Y.Array.each(actionsList, Y.bind(function (buttonActionView) {
@@ -85,6 +85,8 @@ YUI.add('ez-discoverybarview-tests', function (Y) {
 
                 if (buttonActionView.get('actionId') === "minimizeDiscoveryBar") {
                     this._testButtonAction(buttonActionView, false, "Minimize", 1000);
+                } else if (buttonActionView.get('actionId') === "viewSearch") {
+                    this._testButtonAction(buttonActionView, false, "Search", 900);
                 } else if (buttonActionView.get('actionId') === "tree") {
                     this._testButtonAction(buttonActionView, false, "Content tree", 800);
                 } else if (buttonActionView.get('actionId') === "viewTrash") {

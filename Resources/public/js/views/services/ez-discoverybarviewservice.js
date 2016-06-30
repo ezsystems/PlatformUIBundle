@@ -23,6 +23,7 @@ YUI.add('ez-discoverybarviewservice', function (Y) {
 
         initializer: function () {
             this.on('*:viewTrashAction', this._redirectToTrashView);
+            this.on('*:viewSearchAction', this._redirectToSearchView);
         },
 
         /**
@@ -33,6 +34,16 @@ YUI.add('ez-discoverybarviewservice', function (Y) {
          */
         _redirectToTrashView: function () {
             this.get('app').navigateTo("viewTrash");
+        },
+
+        /**
+         * Redirects to the Search view
+         *
+         * @method _redirectToSearchView
+         * @protected
+         */
+        _redirectToSearchView: function () {
+            this.get('app').navigateTo("viewSearch");
         },
     });
 });
