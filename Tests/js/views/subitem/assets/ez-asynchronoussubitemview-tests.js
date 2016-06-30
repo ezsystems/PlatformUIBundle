@@ -209,6 +209,62 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
             this._noRefreshTest('sortOrder');
         },
 
+        _resetView: function (attr) {
+            var initialItemCount = 10;
+
+            this.view.set('items', this._getSubItemStructs(initialItemCount));
+            this.view.set('active', false);
+            this.view.set('offset', initialItemCount);
+
+            this.view.on('locationSearch', function (e) {
+                Assert.fail('The locationSearch event should have been fired');
+            });
+            this.location.set(attr, 'whatever');
+
+            Assert.areSame(
+                0,
+                this.view.get('items').length,
+                "The items attribute should have been emptied"
+            );
+            Assert.isTrue(
+                this.view.get('offset') < 0,
+                "The offset should have been reset"
+            );
+        },
+
+        "Should reset the view state when Location sortField is changed": function () {
+            this._resetView('sortField');
+        },
+
+        "Should reset the view state when Location sortOrder is changed": function () {
+            this._resetView('sortOrder');
+        },
+
+        _noReloadItems: function (attr) {
+            var initialOffset = this.view.get('offset');
+
+            this.location.set('childCount', 0);
+            this.view.set('active', true);
+
+            this.view.on('locationSearch', function (e) {
+                Assert.fail('The locationSearch event should have been fired');
+            });
+            this.location.set(attr, 'whatever');
+            Assert.areEqual(
+                initialOffset,
+                this.view.get('offset'),
+                "The offset should remain unchanged"
+            );
+        },
+
+        "Should ignore Location sortField change if no subitems": function () {
+            this._noReloadItems('sortField');
+        },
+
+        "Should ignore Location sortOrder change if no subitems": function () {
+            this._noReloadItems('sortOrder');
+        },
+
         _reloadItems: function (attr) {
             var initialItems = this.view.get('items'),
                 locationSearchFired = false;
