@@ -198,6 +198,9 @@ YUI.add('ez-loadmorepagination-tests', function (Y) {
     };
 
     Y.eZ.Test.LoadMorePagination.PaginationUpdateTestCase = {
+        _getItemCount: function () {
+            return this.location.get('childCount');
+        },
         "Should disable the load more button when offset is changing": function () {
             var container = this.view.get('container');
 
@@ -212,7 +215,7 @@ YUI.add('ez-loadmorepagination-tests', function (Y) {
 
         "Should enable the load more button if there's more content to load": function () {
             var container = this.view.get('container'),
-                offset = this.location.get('childCount') - 1;
+                offset = this._getItemCount() - 1;
 
             container.one('.ez-loadmorepagination-more').set('disabled', false);
             this.view.set('offset', offset);
@@ -226,7 +229,7 @@ YUI.add('ez-loadmorepagination-tests', function (Y) {
 
         "Should keep the load more button disabled": function () {
             var container = this.view.get('container'),
-                offset = this.location.get('childCount') + 1;
+                offset = this._getItemCount() + 1;
 
             container.one('.ez-loadmorepagination-more').set('disabled', false);
             this.view.set('offset', offset);
@@ -274,13 +277,13 @@ YUI.add('ez-loadmorepagination-tests', function (Y) {
 
             this._updateMoreCountTest(
                 offset,
-                this.location.get('childCount') - offset
+                this._getItemCount() - offset
             );
         },
 
         "Should update the more count with the limit when there's no more content to load": function () {
             this._updateMoreCountTest(
-                this.location.get('childCount'),
+                this._getItemCount(),
                 this.view.get('limit')
             );
         },

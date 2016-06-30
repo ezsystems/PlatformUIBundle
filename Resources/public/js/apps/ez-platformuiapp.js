@@ -105,6 +105,10 @@ YUI.add('ez-platformuiapp', function (Y) {
                 type: Y.eZ.TrashView,
                 parent: 'locationViewView'
             },
+            searchView: {
+                type: Y.eZ.SearchView,
+                parent: 'locationViewView'
+            },
             serverSideView: {
                 type: Y.eZ.ServerSideView,
             },
@@ -937,6 +941,14 @@ YUI.add('ez-platformuiapp', function (Y) {
                 }, {
                     name: "viewSearch",
                     path: "/search",
+                    service: Y.eZ.SearchViewService,
+                    view: "searchView",
+                    sideViews: {'navigationHub': true, 'discoveryBar': true},
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView'],
+                }, {
+                    name: "doSearch",
+                    path: "/search/:searchString/:limit",
+                    service: Y.eZ.SearchViewService,
                     view: "searchView",
                     sideViews: {'navigationHub': true, 'discoveryBar': true},
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView'],
