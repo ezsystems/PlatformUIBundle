@@ -201,6 +201,8 @@ system:
                         - 'ez-notificationhubplugin'
                         - 'ez-positionplugin'
                         - 'ez-updatetreeplugin'
+                        - 'ez-searchviewservice'
+                        - 'ez-searchview'
                     path: %ez_platformui.public_dir%/js/apps/ez-platformuiapp.js
                 ez-viewservice:
                     requires: ['base', 'parallel']
@@ -1327,3 +1329,18 @@ system:
                         - 'ez-viewservicebaseplugin'
                         - 'ez-pluginregistry'
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationswapplugin.js
+                ez-searchview:
+                    requires: ['ez-templatebasedview', 'ez-searchlistview', 'searchview-ez-template', 'node-style']
+                    path: %ez_platformui.public_dir%/js/views/ez-searchview.js
+                ez-searchlistview:
+                    requires: ['ez-templatebasedview', 'searchlistview-ez-template', 'ez-subitemlistitemview', 'ez-loadmorepagination']
+                    path: %ez_platformui.public_dir%/js/views/ez-searchlistview.js
+                searchview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/searchview.hbt
+                searchlistview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/searchlistview.hbt
+                ez-searchviewservice:
+                    requires: ['ez-viewservice', 'ez-searchplugin']
+                    path: %ez_platformui.public_dir%/js/views/services/ez-searchviewservice.js
