@@ -204,6 +204,19 @@ YUI.add('ez-versionmodel', function (Y) {
             return this.get('fields')[identifier];
         },
 
+        /**
+         * Checks whether the version is the current version of the given
+         * `content`
+         *
+         * @method isCurrentVersionOf
+         * @param {eZ.Content} content
+         * @return {Boolean}
+         */
+        isCurrentVersionOf: function (content) {
+            var id = this.get('id');
+
+            return !!(id && id === content.get('currentVersion').get('id'));
+        },
     }, {
         REST_STRUCT_ROOT: "Version.VersionInfo",
         ATTRS_REST_MAP: [

@@ -644,8 +644,8 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         name: "eZ Content Model delete content tests",
 
         setUp: function() {
-            this.model = new Y.eZ.Content();
             this.contentId = 'Pele';
+            this.model = new Y.eZ.Content({id: this.contentId});
 
             this.capi = new Mock();
             this.contentService = new Mock();
@@ -653,12 +653,6 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             Y.Mock.expect(this.capi, {
                 method: 'getContentService',
                 returns: this.contentService
-            });
-
-            Y.Mock.expect(this.model, {
-                method: 'get',
-                args: ['id'],
-                returns: this.contentId
             });
         },
 
@@ -682,6 +676,25 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             content.delete(options, callback);
         },
 
+        "Should not try to delete an unsaved content": function () {
+            var options = {api: this.capi},
+                callbackCalled = false;
+
+            this.model.set('id', undefined);
+
+            this.model.delete(options, function (error) {
+                Assert.isFalse(
+                    error,
+                    "The error should be false"
+                );
+                callbackCalled = true;
+            });
+            Assert.isTrue(
+                callbackCalled,
+                "The callback should have been called"
+            );
+        },
+
         "Should handle the error while deleting a content": function () {
             var content = this.model,
                 that = this,
@@ -699,6 +712,27 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             }, function (error, response) {
                 Assert.areSame(err, error, "The CAPI error should be provided");
             });
+        },
+
+        "Should call delete to destroy a content": function () {
+            var content = this.model,
+                callback = function () {};
+
+            Mock.expect(content, {
+                method: 'delete',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (option) {
+                    Assert.areSame(
+                        this.capiMock,
+                        option.api,
+                        "The CAPI should be provided"
+                    );
+                }, this),
+            });
+
+            this.model.sync('delete', {api: this.capiMock}, callback);
+
+            Mock.verify(content);
         },
     });
 
