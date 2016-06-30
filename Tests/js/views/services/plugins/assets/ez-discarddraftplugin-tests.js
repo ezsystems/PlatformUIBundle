@@ -4,22 +4,26 @@
  */
 YUI.add('ez-discarddraftplugin-tests', function (Y) {
     var tests, registerTest,
-        Assert = Y.Assert;
+        Assert = Y.Assert, Mock = Y.Mock;
 
     tests = new Y.Test.Case({
         name: "eZ Discard Draft Plugin event tests",
 
         setUp: function () {
-            this.discardRedirectionUrl = '/something';
             this.capi = {};
             this.version = new Y.Mock();
+            this.content = new Mock();
             this.app = new Y.Mock();
+            Mock.expect(this.app, {
+                method: 'set',
+                args: ['loading', true]
+            });
 
             this.service = new Y.Base();
             this.service.set('capi', this.capi);
             this.service.set('version', this.version);
+            this.service.set('content', this.content);
             this.service.set('app', this.app);
-            this.service.set('discardRedirectionUrl', this.discardRedirectionUrl);
 
             this.view = new Y.View();
             this.view.addTarget(this.service);
@@ -39,24 +43,21 @@ YUI.add('ez-discarddraftplugin-tests', function (Y) {
             delete this.service;
         },
 
-        "Should discard the draft": function () {
-            var fields = [{}, {}],
-                that = this;
+        _configureCurrentVersion: function (isCurrentVersion) {
+            Mock.expect(this.version, {
+                method: 'isCurrentVersionOf',
+                args: [this.content],
+                returns: isCurrentVersion,
+            });
+        },
 
-            Y.Mock.expect(this.app, {
-                method: 'set',
-                args: ['loading', true]
-            });
-            Y.Mock.expect(this.app, {
-                method: 'navigate',
-                args: [this.discardRedirectionUrl],
-            });
-            Y.Mock.expect(this.version, {
+        _configureDestroy: function (mock) {
+            Mock.expect(mock, {
                 method: 'destroy',
-                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
-                run: function (options, callback) {
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (options, callback) {
                     Assert.areSame(
-                        that.capi,
+                        this.capi,
                         options.api,
                         "The save options should contain the CAPI"
                     );
@@ -66,24 +67,50 @@ YUI.add('ez-discarddraftplugin-tests', function (Y) {
 
                     );
                     callback();
-                }
+                }, this),
             });
 
-            this.view.fire('whatever:discardAction', {
-                formIsValid: true,
-                fields: fields
-            });
+        },
+
+        "Should destroy the draft version": function () {
+            this._configureCurrentVersion(false);
+            this._configureDestroy(this.version);
+
+            this.view.fire('whatever:discardAction');
 
             Y.Mock.verify(this.version);
         },
 
-        "Should fire the `discardedDraft` event": function () {
+        "Should destroy the content": function () {
+            this._configureCurrentVersion(true);
+            this._configureDestroy(this.content);
+
+            this.view.fire('whatever:discardAction');
+
+            Mock.verify(this.content);
+        },
+
+        "Should fire the `discardedDraft` event after destroying the version": function () {
             var eventFired = false;
 
             this.service.on('discardedDraft', function () {
                 eventFired = true;
             });
-            this["Should discard the draft"]();
+            this["Should destroy the draft version"]();
+
+            Assert.isTrue(
+                eventFired,
+                "The discardedDraft event should have been fired"
+            );
+        },
+
+        "Should fire the `discardedDraft` event after destroying the content": function () {
+            var eventFired = false;
+
+            this.service.on('discardedDraft', function () {
+                eventFired = true;
+            });
+            this["Should destroy the content"]();
 
             Assert.isTrue(
                 eventFired,
