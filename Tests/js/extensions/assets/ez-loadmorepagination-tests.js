@@ -126,6 +126,11 @@ YUI.add('ez-loadmorepagination-tests', function (Y) {
                     listView.get('contentType'),
                     "The list item view should have received the contentType"
                 );
+                Assert.areSame(
+                    this.view.get('config'),
+                    listView.get('config'),
+                    "The list item view should have received the configuration"
+                );
                 
                 i++;
             }, this);

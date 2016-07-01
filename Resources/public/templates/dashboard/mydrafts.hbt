@@ -21,7 +21,7 @@
                 {{#each items}}
                     <tr class="ez-block-row">
                         <td class="ez-block-cell">{{ lookup version.names version.initialLanguageCode }}</td>
-                        <td class="ez-block-cell">{{ lookup contentType.names version.initialLanguageCode }}</td>
+                        <td class="ez-block-cell">{{ translate_property contentType.names }}</td>
                         <td class="ez-block-cell">{{ version.versionNo }}</td>
                         <td class="ez-block-cell ez-block-cell-options">
                             {{ version.modificationDate }}
