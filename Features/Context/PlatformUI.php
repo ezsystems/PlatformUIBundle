@@ -290,14 +290,23 @@ class PlatformUI extends Context
     {
         $xpath = '';
 
+        // makes sure string is clean for xpath
+        if (strpos($text, '"') === false) {
+            // if it does not contains " encase in "
+            $textXpath = '"' . $text . '"';
+        } else {
+            // encase in ' elsewise
+            $textXpath = "'$text'";
+        }
+
         if (!empty($classes)) {
             foreach ($classes as $class) {
                 $xpath .= "//*[contains(concat(' ', normalize-space(@class), ' '), ' $class ')]";
             }
             $xpath = rtrim($xpath, ']');
-            $xpath .= "and descendant-or-self::*//text()='$text']";
+            $xpath .= "and descendant-or-self::*//text()=$textXpath]";
         } else {
-            $xpath = "//*[text()='$text']";
+            $xpath = "//*[text()=$textXpath]";
         }
 
         return $this->findElementWithXpath($xpath, $text, $baseElement);
