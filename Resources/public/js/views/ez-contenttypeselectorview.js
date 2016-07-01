@@ -11,10 +11,6 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var _GET_NAME = function (type) {
-            return type.get('names')['eng-GB'];
-        };
-
     /**
      * Content type selector view
      *
@@ -23,7 +19,7 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.ContentTypeSelectorView = Y.Base.create('contentTypeSelectorView', Y.eZ.TemplateBasedView, [], {
+    Y.eZ.ContentTypeSelectorView = Y.Base.create('contentTypeSelectorView', Y.eZ.TemplateBasedView, [Y.eZ.TranslateProperty], {
         events: {
             '.ez-contenttypeselector-group-checkbox': {
                 'change': '_syncSelectedIds',
@@ -108,14 +104,17 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
                     types = types.concat(group.get('contentTypes'));
                 }
             });
-            types.sort(function (a, b) {
-                if ( _GET_NAME(a) < _GET_NAME(b) ) {
+            types.sort(Y.bind(function (a, b) {
+                var nameA = this._getContentTypeName(a),
+                    nameB = this._getContentTypeName(b);
+
+                if ( nameA < nameB ) {
                     return -1;
-                } else if ( _GET_NAME(a) > _GET_NAME(b) ) {
+                } else if ( nameA > nameB ) {
                     return 1;
                 }
                 return 0;
-            });
+            }, this));
             return types;
         },
 
@@ -161,15 +160,15 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
                 listNode: container.one('.ez-contenttypeselector-list'),
                 source: this._getContentTypes(),
                 resultFilters: 'phraseMatch',
-                resultTextLocator: function (sourceElement) {
-                    return _GET_NAME(sourceElement);
-                },
-                resultAttributesFormatter: function (sourceElement) {
+                resultTextLocator: Y.bind(function (sourceElement) {
+                    return this._getContentTypeName(sourceElement);
+                }, this),
+                resultAttributesFormatter: Y.bind(function (sourceElement) {
                     return {
                         id: sourceElement.get('id'),
-                        text: _GET_NAME(sourceElement),
+                        text: this._getContentTypeName(sourceElement),
                     };
-                },
+                }, this),
             });
             this._set('filterView', filter);
             filter.on('select', function (e) {
@@ -245,6 +244,22 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
         _getCheckboxes: function (checked) {
             return this.get('container').all(
                 '.ez-contenttypeselector-group-checkbox' + (checked ? ':checked' : '')
+            );
+        },
+
+        /**
+         * Returns the Content Type name according to the user's browser
+         * configuration and the App Locales Map.
+         *
+         * @method _getContentTypeName
+         * @private
+         * @param {eZ.ContentType} type
+         * @return {String}
+         */
+        _getContentTypeName: function (type) {
+            return this.translateProperty(
+                this.get('config').localesMap,
+                type.get('names')
             );
         },
     }, {

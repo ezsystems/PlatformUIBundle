@@ -2,17 +2,17 @@
     <div class="pure-u ez-editfield-infos">
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
             <p class="ez-fielddefinition-name">
-                {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+                {{ translate_property fieldDefinition.names }}{{#if isRequired}}*{{/if}}:
             </p>
             <p class="ez-editfield-error-message">&nbsp;</p>
             <p class="ez-field-description is-showing-description">
-                {{ fieldDefinition.descriptions.[eng-GB] }}
+                {{ translate_property fieldDefinition.descriptions }}
             </p>
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
         <div class="ez-editfield-input"><div class="ez-richtext-input-ui">
-            <h1 class="ez-page-header-name" data-icon="&#xe601;">{{ content.name }} &gt; {{ fieldDefinition.names.[eng-GB] }}</h1>
+            <h1 class="ez-page-header-name" data-icon="&#xe601;">{{ content.name }} &gt; {{ translate_property fieldDefinition.names }}</h1>
             <button class="pure-button ez-button ez-richtext-save-and-return">Save and Return</button>
 
             <div class="ez-richtext-toolbar">

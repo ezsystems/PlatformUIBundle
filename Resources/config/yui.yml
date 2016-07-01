@@ -201,6 +201,7 @@ system:
                         - 'ez-notificationhubplugin'
                         - 'ez-positionplugin'
                         - 'ez-updatetreeplugin'
+                        - 'ez-translateproperty'
                     path: %ez_platformui.public_dir%/js/apps/ez-platformuiapp.js
                 ez-viewservice:
                     requires: ['base', 'parallel']
@@ -1128,7 +1129,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/createcontentaction.hbt
                 ez-contenttypeselectorview:
-                    requires: ['ez-templatebasedview', 'contenttypeselectorview-ez-template']
+                    requires: ['ez-templatebasedview', 'ez-translateproperty', 'contenttypeselectorview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-contenttypeselectorview.js
                 contenttypeselectorview-ez-template:
                     type: 'template'
@@ -1301,6 +1302,9 @@ system:
                 ez-processable:
                     requires: ['view']
                     path: %ez_platformui.public_dir%/js/extensions/ez-processable.js
+                ez-translateproperty:
+                    requires: ['base', 'array-extras']
+                    path: %ez_platformui.public_dir%/js/extensions/ez-translateproperty.js
                 ez-contentinfo-attributes:
                     requires: ['ez-restmodel']
                     path: %ez_platformui.public_dir%/js/models/extensions/ez-contentinfo-attributes.js

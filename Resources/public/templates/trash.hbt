@@ -22,7 +22,7 @@
                                    type="checkbox" value="{{ item.id }}"/>
                         </td>
                         <td>{{item.contentInfo.name}}</td>
-                        <td>{{contentType.names.eng-GB}}</td>
+                        <td>{{ translate_property contentType.names }}</td>
                         <td>
                             {{#if parentLocation.locationId}}
                             <ul class="ez-breadcrumbs-list">

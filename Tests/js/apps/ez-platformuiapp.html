@@ -39,7 +39,8 @@
             "ez-platformuiapp": {
                 requires: [
                     'app', 'app-transitions', 'node-screen', 'parallel',
-                    'ez-capi', 'ez-view', 'ez-viewservice', 'ez-usermodel', 'ez-pluginregistry'
+                    'ez-capi', 'ez-view', 'ez-viewservice', 'ez-usermodel',
+                    'ez-pluginregistry', 'ez-translateproperty',
                 ],
                 fullpath: "../../../Resources/public/js/apps/ez-platformuiapp.js"
             },
@@ -69,6 +70,10 @@
             "ez-viewservicebaseplugin": {
                 requires: ['base', 'plugin'],
                 fullpath: "../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js"
+            },
+            "ez-translateproperty": {
+                requires: ['base', 'array-extras'],
+                fullpath: "../../../Resources/public/js/extensions/ez-translateproperty.js"
             },
         }
     }).use('ez-platformuiapp-tests', function (Y) {
