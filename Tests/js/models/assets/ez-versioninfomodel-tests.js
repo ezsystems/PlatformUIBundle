@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-versioninfomodel-tests', function (Y) {
-    var loadFromHashTest,
+    var loadFromHashTest, removeTest,
         Assert = Y.Assert;
 
     loadFromHashTest = new Y.Test.Case({
@@ -130,7 +130,122 @@ YUI.add('ez-versioninfomodel-tests', function (Y) {
         },
     });
 
+    removeTest = new Y.Test.Case({
+        name: "eZ Version Model remove tests",
+
+        setUp: function () {
+            this.contentId = "/ezp/api/content/objects/4242";
+            this.versionId = "42";
+            this.version = new Y.eZ.VersionInfo();
+            this.version.setAttrs({
+                id: this.contentId + "/version/2",
+                versionId: this.versionId,
+                versionNo: 2
+            });
+            this.capiMock = new Y.Mock();
+            this.contentService = new Y.Mock();
+
+            Y.Mock.expect(this.capiMock, {
+                method: 'getContentService',
+                returns: this.contentService,
+            });
+        },
+
+        tearDown: function () {
+            this.version.destroy();
+            delete this.version;
+        },
+
+        "Should delete the version in the repository": function () {
+            var version = this.version;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'deleteVersion',
+                args: [this.version.get('id'), Y.Mock.Value.Function],
+                run: function (id, callback) {
+                    callback();
+                }
+            });
+
+            this.version.destroy({
+                remove: true,
+                api: this.capiMock
+            }, function (error) {
+                Y.Assert.isFalse(!!error, "The destroy callback should be called without error");
+                Y.Assert.areEqual(
+                    "", version.get('versionId'),
+                    "The version object should reseted"
+                );
+            });
+
+            Y.Mock.verify(this.contentService);
+        },
+
+        "Should handle the error while deleting the version": function () {
+            var version = this.version,
+                versionId = this.versionId;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'deleteVersion',
+                args: [this.version.get('id'), Y.Mock.Value.Function],
+                run: function (id, callback) {
+                    callback(true);
+                }
+            });
+
+            this.version.destroy({
+                remove: true,
+                api: this.capiMock
+            }, function (error) {
+                Y.Assert.isTrue(!!error, "The destroy callback should be called with an error");
+
+                Y.Assert.areEqual(
+                    versionId, version.get('versionId'),
+                    "The version object should be left intact"
+                );
+            });
+
+            Y.Mock.verify(this.contentService);
+        },
+
+        "Should ignore unsaved version": function () {
+            Y.Mock.expect(this.contentService, {
+                method: 'deleteVersion',
+                callCount: 0,
+            });
+
+            this.version.set('id', undefined);
+            this.version.destroy({
+                api: this.capiMock,
+                remove: true,
+            }, Y.bind(function (error) {
+                Y.Assert.isFalse(error, "The error parameter of the callback should be false");
+                Y.Mock.verify(this.contentService);
+            },this));
+        },
+
+        "Should provide a message when action is not supported": function () {
+            var action = "tartiflette";
+
+            Y.Mock.expect(this.contentService, {
+                method: 'deleteVersion',
+                callCount: 0,
+            });
+
+            this.version.set('id', undefined);
+            this.version.sync(action,{}, Y.bind(function (error) {
+                Y.Assert.areSame(
+                    action + " not supported",
+                    error,
+                    "Error message is not matching the expected one"
+                );
+                Y.Mock.verify(this.contentService);
+            }, this));
+        },
+    });
+
     Y.Test.Runner.setName("eZ Version Info Model tests");
     Y.Test.Runner.add(loadFromHashTest);
+    Y.Test.Runner.add(removeTest);
 
 }, '', {requires: ['test', 'json', 'model-tests', 'ez-versioninfomodel', 'ez-restmodel']});

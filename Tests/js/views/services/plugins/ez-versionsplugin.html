@@ -26,7 +26,12 @@
         filter: loaderFilter,
         modules: {
             "ez-versionsplugin": {
-                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'fake-models'],
+                requires: [
+                    'ez-viewservicebaseplugin',
+                    'ez-pluginregistry',
+                     'fake-models',
+                     'parallel',
+                 ],
                 fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-versionsplugin.js"
             },
             "ez-viewservicebaseplugin": {

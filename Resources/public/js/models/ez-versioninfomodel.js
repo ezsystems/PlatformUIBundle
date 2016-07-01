@@ -21,6 +21,25 @@ YUI.add('ez-versioninfomodel', function (Y) {
      * @extends eZ.RestModel
      */
     Y.eZ.VersionInfo = Y.Base.create('versionInfoModel', Y.eZ.RestModel, [], {
+
+
+        /**
+         * sync implementation for the VersionInfo. For now, it supports deleting it.
+         *
+         * @method sync
+         * @param {String} action the action, only delete is supported
+         * @param {Object} options the options for the sync.
+         * @param {Object} options.api the JS REST client instance
+         * @param {Function} callback a callback executed when the operation is finished
+         */
+        sync: function (action, options, callback) {
+            if ( action === 'delete' ) {
+                this._deleteVersion(options, callback);
+            } else {
+                callback(action + " not supported");
+            }
+        },
+
         /**
          * Override of the eZ.RestModel _parseStruct method to locate the VersionInfo in the
          * REST_STRUCT_ROOT hierarchy and add the Version Id
@@ -33,9 +52,35 @@ YUI.add('ez-versioninfomodel', function (Y) {
          */
         _parseStruct: function (struct, responseDoc) {
             var attrs = this.constructor.superclass._parseStruct.call(this, struct.VersionInfo);
-        
+
             attrs.id = struct.Version._href;
             return attrs;
+        },
+
+        /**
+         * Deletes the version in the repository.
+         *
+         * @protected
+         * @method _deleteVersion
+         * @param {Object} options
+         * @param {Object} options.api the JS REST client instance
+         * @param {Function} callback
+         */
+        _deleteVersion: function (options, callback) {
+            var contentService = options.api.getContentService(),
+                version = this;
+
+            if ( !this.get('id') ) {
+                return callback(false);
+            }
+            contentService.deleteVersion(this.get('id'), function (error, response) {
+                if ( error ) {
+                    callback(error);
+                    return;
+                }
+                version.reset();
+                callback();
+            });
         },
 
         /**

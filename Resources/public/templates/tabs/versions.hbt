@@ -15,6 +15,7 @@
             <table class="pure-table pure-table-striped ez-versions-list-table">
                 <thead>
                 <tr>
+                    <th></th>
                     <th>Version</th>
                     <th>Language</th>
                     <th>Author</th>
@@ -25,6 +26,12 @@
                 <tbody>
                 {{#each draftVersions}}
                     <tr>
+                        <td>
+                            <input type="checkbox"
+                                   value="{{ id }}"
+                                   class="ez-version-checkbox ez-draft-version-checkbox"
+                                   data-version-id="{{ id }}">
+                        </td>
                         <td>
                             {{versionNo}}
                         </td>
@@ -44,6 +51,16 @@
                 {{/each}}
                 </tbody>
             </table>
+
+            <div class="ez-versions-list-table-tools">
+                <button class="ez-delete-draft-button ez-button pure-button"
+                        data-version-id="{{id}}"
+                        disabled="disabled"
+                >
+                    Delete selected draft(s)
+                </button>
+            </div>
+
             </div>
         </div>
         {{else}}
@@ -117,7 +134,7 @@
                         <td>
                             <input type="checkbox"
                                    value="{{ id }}"
-                                   class="ez-archived-version-checkbox"
+                                   class="ez-version-checkbox ez-archived-version-checkbox"
                                    data-version-id="{{ id }}">
                         </td>
                         <td>
@@ -140,7 +157,7 @@
                 </tbody>
             </table>
 
-            <div class="ez-create-draft-from-archived-tools">
+            <div class="ez-versions-list-table-tools">
                 <button class="ez-create-draft-from-archived-button ez-button pure-button"
                         data-version-id="{{id}}"
                         disabled="disabled"
