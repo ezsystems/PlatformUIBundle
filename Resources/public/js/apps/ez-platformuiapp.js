@@ -24,7 +24,7 @@ YUI.add('ez-platformuiapp', function (Y) {
      * @constructor
      * @extends App
      */
-    Y.eZ.PlatformUIApp = Y.Base.create('platformuiApp', Y.App, [], {
+    Y.eZ.PlatformUIApp = Y.Base.create('platformuiApp', Y.App, [Y.eZ.TranslateProperty], {
         /**
          * The list of available sides views. Each side view is an entry in this
          * hash which contains the following properties:
@@ -210,6 +210,8 @@ YUI.add('ez-platformuiapp', function (Y) {
                 this._set('anonymousUserId', config.anonymousUserId);
                 delete config.anonymousUserId;
             }
+            config.localesMap = config.localesMap || {};
+            this._set('localesMap', config.localesMap);
 
             this._set('capi', new Y.eZ.CAPI(
                 this.get('apiRoot').replace(/\/{1,}$/, ''),
@@ -1049,6 +1051,20 @@ YUI.add('ez-platformuiapp', function (Y) {
             contentCreationDefaultLanguageCode: {
                 readOnly: true,
                 value: "eng-GB"
+            },
+
+            /**
+             * Holds the Locales conversion map between eZ Locale codes and
+             * POSIX ones. See locale.yml
+             *
+             * @attribute localesMap
+             * @type {Object}
+             * @readOnly
+             * @default {}
+             */
+            localesMap: {
+                readOnly: true,
+                value: {},
             },
         }
     });

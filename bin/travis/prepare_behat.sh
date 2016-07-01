@@ -7,7 +7,7 @@ git fetch --unshallow && git checkout -b tmp_travis_branch
 cd "$HOME/build"
 
 # Checkout meta repo, change the branch and/or remote to use a different ezpublish branch/distro
-git clone --depth 1 --single-branch --branch master https://github.com/ezsystems/ezplatform.git
+git clone --depth 1 --single-branch --branch 1.4 https://github.com/ezsystems/ezplatform.git
 cd ezplatform
 
 ./bin/.travis/disable_xdebug.sh

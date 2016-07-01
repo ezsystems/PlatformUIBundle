@@ -187,12 +187,16 @@ YUI.add('ez-subitemlistitemview-tests', function (Y) {
 
         "Should extract the content type name": function () {
             var attr = 'names',
-                typeName = 'type name';
+                typeNames = {
+                    'eng-GB': 'Potatoe',
+                    'fre-FR': 'Pomme de terre',
+                    'bressab-BR': 'Quatrouille',
+                };
 
             Mock.expect(this.contentType, {
                 method: 'get',
                 args: [attr],
-                returns: {'eng-GB': typeName},
+                returns: typeNames,
             });
             this.view.get('availableProperties')[attr] = {
                 extractor: '_getContentTypeName',
@@ -200,7 +204,7 @@ YUI.add('ez-subitemlistitemview-tests', function (Y) {
 
             this._testProperty(attr, function (property) {
                 Assert.areEqual(
-                    typeName, property.value,
+                    typeNames['eng-GB'], property.value,
                     "The property object should contain the value"
                 );
             });

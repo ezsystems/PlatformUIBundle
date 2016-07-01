@@ -260,6 +260,7 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             Y.eZ.ActionBarView = Y.Base.create('actionBarView', Y.View, [], {}, {
                 ATTRS: {
                     content: {},
+                    config: {},
                     actionList: {},
                     viewLessText: {},
                     viewMoreText: {},
@@ -481,9 +482,18 @@ YUI.add('ez-locationviewview-tests', function (Y) {
             Y.Assert.areSame(
                 this.view.get('contentType'),
                 this.view.get('actionBar').get('contentType'),
-                'The contentType should have been set to the rawContentview'
+                'The contentType should have been set on the actionBar'
             );
         },
+
+        "Should set the config of the action bar": function () {
+            Assert.areSame(
+                this.view.get('config'),
+                this.view.get('actionBar').get('config'),
+                'The config should have been set on the actionBar'
+            );
+        },
+
 
         "Should set the location on the subitem box": function () {
             Assert.areSame(

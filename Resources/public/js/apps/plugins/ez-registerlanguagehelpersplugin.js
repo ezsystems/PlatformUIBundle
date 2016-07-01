@@ -7,7 +7,7 @@ YUI.add('ez-registerlanguagehelpersplugin', function (Y) {
     /**
      * Provides the register language helpers plugin
      *
-     * @module ez-registerhelpersplugin
+     * @module ez-registerlanguagehelpersplugin
      */
     Y.namespace('eZ.Plugin');
 
@@ -26,6 +26,7 @@ YUI.add('ez-registerlanguagehelpersplugin', function (Y) {
     Y.eZ.Plugin.RegisterLanguageHelpers = Y.Base.create('registerLanguageHelpersPlugin', Y.Plugin.Base, [], {
         initializer: function () {
             this._registerLanguageName();
+            this._registerTranslatedProperty();
         },
 
         /**
@@ -41,6 +42,21 @@ YUI.add('ez-registerlanguagehelpersplugin', function (Y) {
             var app = this.get('host');
 
             Y.Handlebars.registerHelper('language_name', Y.bind(app.getLanguageName, app));
+        },
+
+        /**
+         * Registers the `translate_property` handlebars helper. The
+         * `translate_property` helper expects a hash indexed by eZ Locale
+         * ('eng-GB', 'fre-FR', ...) and will try to pick the best one according
+         * to the browser languages configuration.
+         *
+         * @method _registerTranslatedProperty
+         * @protected
+         */
+        _registerTranslatedProperty: function () {
+            var app = this.get('host');
+
+            Y.Handlebars.registerHelper('translate_property', Y.bind(app.translateProperty, app, app.get('localesMap')));
         },
     }, {
         NS: 'registerLanguageHelpers',

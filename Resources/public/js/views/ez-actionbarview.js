@@ -61,7 +61,8 @@ YUI.add('ez-actionbarview', function (Y) {
                             actionId: 'createContent',
                             label: 'Create',
                             priority: 210,
-                            contentType: this.get('contentType')
+                            contentType: this.get('contentType'),
+                            config: this.get('config'),
                         }),
                         new Y.eZ.TranslateActionView({
                             actionId: "translate",

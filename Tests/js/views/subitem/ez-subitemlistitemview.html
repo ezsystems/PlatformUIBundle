@@ -52,12 +52,16 @@
         filter: loaderFilter,
         modules: {
             "ez-subitemlistitemview": {
-                requires: ['ez-templatebasedview', 'event-tap', 'event-valuechange', 'template'],
+                requires: ['ez-templatebasedview', 'ez-translateproperty', 'event-tap', 'event-valuechange', 'template'],
                 fullpath: "../../../../Resources/public/js/views/subitem/ez-subitemlistitemview.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
                 fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-translateproperty": {
+                requires: ['base', 'array-extras'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-translateproperty.js"
             },
             "ez-view": {
                 requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],

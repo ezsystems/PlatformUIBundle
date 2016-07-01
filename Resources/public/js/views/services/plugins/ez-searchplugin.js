@@ -376,7 +376,7 @@ YUI.add('ez-searchplugin', function (Y) {
 
                 contentIdsLocationIndexMap[contentId] = index;
                 previousId = previousId ? previousId + ',' : previousId;
-                return previousId + struct.location.get('contentInfo').get('contentId');
+                return previousId + contentId;
             });
 
             query = this._createNewCreateViewStruct('contents-loading-' + viewName, 'ContentQuery', {
