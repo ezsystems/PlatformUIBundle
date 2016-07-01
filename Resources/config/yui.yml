@@ -414,6 +414,7 @@ system:
                 ez-subitemlistitemview:
                     requires:
                         - 'ez-templatebasedview'
+                        - 'ez-translateproperty'
                         - 'event-tap'
                         - 'event-valuechange'
                         - 'template'

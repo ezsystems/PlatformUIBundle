@@ -267,6 +267,24 @@ YUI.add('ez-loadmorepagination', function (Y) {
         },
 
         /**
+         * Returns the item view configuration for the given `struct`.
+         * It mixes the view configuration, the  base item view configuration
+         * and the struct.
+         *
+         * @private
+         * @method _getItemViewConfig
+         * @param {Object} struct
+         * @return {Object}
+         */
+        _getItemViewConfig: function (struct) {
+            return Y.merge(
+                {config: this.get('config')},
+                this._itemViewBaseConfig,
+                struct
+            );
+        },
+
+        /**
          * Appends a rendered item view for the last loaded items.
          *
          * @method _appendItems
@@ -276,11 +294,10 @@ YUI.add('ez-loadmorepagination', function (Y) {
          */
         _appendItems: function (newItems) {
             var content = this.get('container').one('.ez-loadmorepagination-content'),
-                ItemView = this._ItemView,
-                baseConfig = this._itemViewBaseConfig;
+                ItemView = this._ItemView;
 
             newItems.forEach(function (struct) {
-                var itemView = new ItemView(Y.merge(baseConfig, struct));
+                var itemView = new ItemView(this._getItemViewConfig(struct));
 
                 itemView.addTarget(this);
                 this._itemViews.push(itemView);

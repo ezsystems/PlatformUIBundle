@@ -23,7 +23,7 @@ YUI.add('ez-subitemlistitemview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.SubitemListItemView = Y.Base.create('subitemListItemView', Y.eZ.TemplateBasedView, [], {
+    Y.eZ.SubitemListItemView = Y.Base.create('subitemListItemView', Y.eZ.TemplateBasedView, [Y.eZ.TranslateProperty], {
         events: {
             '.ez-subitemlistitem-priority': {
                 'mouseover': '_displayEditIcon',
@@ -165,7 +165,10 @@ YUI.add('ez-subitemlistitemview', function (Y) {
          * @return {String}
          */
         _getContentTypeName: function () {
-            return this.get('contentType').get('names')['eng-GB'];
+            return this.translateProperty(
+                this.get('config').localesMap,
+                this.get('contentType').get('names')
+            );
         },
 
         /**
