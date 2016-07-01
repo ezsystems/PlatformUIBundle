@@ -1,7 +1,7 @@
 <div class="ez-subitemgrid-item-content">
     <p class="ez-subitemgrid-item-content-type">
         <a href="{{path 'viewLocation' id=location.id languageCode=content.mainLanguageCode}}" class="ez-subitemgrid-item-link" data-icon="&#xe601;">
-            {{ contentType.names.[eng-GB] }}
+            {{ translate_property contentType.names }}
         </a>
     </p>
     <a href="{{path 'viewLocation' id=location.id languageCode=content.mainLanguageCode}}" class="ez-subitemgrid-item-link ez-subitemgrid-item-visual" data-icon="&#xe601;"></a>

@@ -98,7 +98,7 @@
                 fullpath: "../../../Resources/public/js/views/actions/ez-createcontentactionview.js"
             },
             "ez-contenttypeselectorview": {
-                requires: ['ez-templatebasedview'],
+                requires: ['ez-templatebasedview', 'ez-translateproperty'],
                 fullpath: "../../../Resources/public/js/views/ez-contenttypeselectorview.js"
             },
             "ez-translateactionview": {
@@ -120,6 +120,10 @@
             'ez-expandable': {
                 requires: ['view'],
                 fullpath: "../../../Resources/public/js/extensions/ez-expandable.js"
+            },
+            'ez-translateproperty': {
+                requires: ['view', 'array-extras'],
+                fullpath: "../../../Resources/public/js/extensions/ez-translateproperty.js"
             },
             'ez-texthelper': {
                 requires: ['handlebars'],

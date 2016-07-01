@@ -2,7 +2,7 @@
     <div class="pure-u ez-editfield-infos">
         <label for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-login">
             <p class="ez-fielddefinition-name">
-                {{ fieldDefinition.names.[eng-GB] }}{{#if isRequired}}*{{/if}}:
+                {{ translate_property fieldDefinition.names }}{{#if isRequired}}*{{/if}}:
             </p>
             <p class="ez-editfield-login-error-message ez-editfield-error-message">&nbsp;</p>
         </label>

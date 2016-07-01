@@ -78,8 +78,11 @@ YUI.add('ez-view', function (Y) {
              *
              * @attribute config
              * @type {Object}
+             * @default {}
              */
-            config: {},
+            config: {
+                value: {},
+            },
         }
     });
 });

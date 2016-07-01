@@ -1,7 +1,5 @@
-{{#if fieldDefinition.descriptions.[eng-GB] }}
-    <div class="ez-field-description ez-tail-down-tooltip">
-        <p class="ez-fielddescription-tooltip-text">
-            {{ fieldDefinition.descriptions.[eng-GB] }}
-        </p>
-    </div>
-{{/if}}
+<div class="ez-field-description ez-tail-down-tooltip">
+    <p class="ez-fielddescription-tooltip-text">
+        {{ translate_property fieldDefinition.descriptions }}
+    </p>
+</div>

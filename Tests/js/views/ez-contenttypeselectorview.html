@@ -38,7 +38,7 @@
         filter: loaderFilter,
         modules: {
             "ez-contenttypeselectorview": {
-                requires: ['ez-templatebasedview', 'ez-selectionfilterview'],
+                requires: ['ez-templatebasedview', 'ez-selectionfilterview', 'ez-translateproperty'],
                 fullpath: "../../../Resources/public/js/views/ez-contenttypeselectorview.js"
             },
             "ez-selectionfilterview": {
@@ -48,6 +48,10 @@
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-translateproperty": {
+                requires: ['view', 'array-extras'],
+                fullpath: "../../../Resources/public/js/extensions/ez-translateproperty.js"
             },
             "ez-view": {
                 requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],

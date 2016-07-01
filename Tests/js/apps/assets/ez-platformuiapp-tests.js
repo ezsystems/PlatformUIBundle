@@ -1931,6 +1931,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 'pol-PL': {'languageCode': 'pol-PL', 'name': 'Polish'}
             };
             this.defaultLanguageCode = 'eng-GB';
+            this.localesMap = {'fr_FR': 'fre-FR'};
             Y.eZ.CAPI = Y.bind(function (apiRoot, sessionAuthAgent) {
                 Assert.areEqual(
                     this.apiRoot, apiRoot,
@@ -1950,7 +1951,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             this.app.destroy();
         },
 
-        _buildApp: function () {
+        _buildApp: function (localesMap) {
             this.app = new Y.eZ.PlatformUIApp({
                 config: {
                     rootInfo: {
@@ -1961,7 +1962,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     },
                     anonymousUserId: this.anonymousUserId,
                     sessionInfo: this.sessionInfo,
-                    languages: this.configLanguages
+                    languages: this.configLanguages,
+                    localesMap: localesMap,
                 },
             });
         },
@@ -2060,6 +2062,34 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             Assert.isUndefined(
                 this.app.get('config').anonymousUserId,
                 "The anonymousUserId should have been removed from the configuration"
+            );
+        },
+
+        "Should configure the `localesMap`": function () {
+            this._buildApp(this.localesMap);
+            Assert.areSame(
+                this.localesMap,
+                this.app.get('localesMap'),
+                "The `localesMap` attribute should have been set"
+            );
+        },
+
+        "Should configure the `localesMap` default value": function () {
+            this._buildApp(null);
+
+            Assert.isObject(
+                this.app.get('localesMap'),
+                "The `localesMap` attribute should have been set"
+            );
+            Assert.areEqual(
+                0,
+                Y.Object.keys(this.app.get('localesMap')).length,
+                "The `localesMap` attribute should have been set with an empty object"
+            );
+            Assert.areSame(
+                this.app.get('localesMap'),
+                this.app.get('config').localesMap,
+                "The app config should reference the localesMap"
             );
         },
 
