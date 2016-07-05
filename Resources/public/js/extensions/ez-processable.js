@@ -77,10 +77,12 @@ YUI.add('ez-processable', function (Y) {
          *
          * @method _process
          * @protected
+         * @param {EventFacade} [event] the event parameters of the event
+         * triggering the process (if any)
          */
-        _process: function () {
+        _process: function (event) {
             this.get('processors').forEach(function (info) {
-                info.processor.process(this);
+                info.processor.process(this, event);
             }, this);
         },
     }, {
