@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-richtext-resolveembed-tests', function (Y) {
-    var processTest, noProcessTest,
+    var processTest, noProcessTest, useSelectionTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     processTest = new Y.Test.Case({
@@ -149,9 +149,72 @@ YUI.add('ez-richtext-resolveembed-tests', function (Y) {
             });
             this.processor.process(this.view);
         },
+
+        "Should handle non existing embed node": function () {
+            var contentInfo = new Y.Base();
+
+            contentInfo.set('contentId', 'whatever');
+            this.view.on('contentSearch', function () {
+                Assert.fail('No search should have been triggered');
+            });
+            this.processor.process(this.view, {
+                embedStruct: {
+                    contentInfo: contentInfo,
+                }
+            });
+            Assert.areEqual(
+                this.containerContent,
+                this.view.get('container').getContent(),
+                "The view container content should remain unchanged"
+            );
+        },
+    });
+
+    useSelectionTest = new Y.Test.Case({
+        name: "eZ RichText resolve embed process using the selection test",
+
+        setUp: function () {
+            var container = Y.one('.container-useselection'),
+                contentInfo = new Y.Base();
+
+            this.containerContent = container.getContent();
+            this.processor = new Y.eZ.RichTextResolveEmbed();
+            this.view = new Y.View({
+                container: container,
+                field: {id: 42},
+            });
+
+            contentInfo.set('contentId', 41);
+            contentInfo.set('name', 'name-' + contentInfo.get('contentId'));
+            this.contentInfo = contentInfo;
+        },
+
+        tearDown: function () {
+            this.view.get('container').setContent(this.containerContent);
+            this.view.destroy();
+            delete this.view;
+            delete this.processor;
+        },
+
+        "Should use the selection to render the embed": function () {
+            var embed = this.view.get('container').one('#embed-selection');
+
+            this.processor.process(this.view, {
+                embedStruct: {
+                    contentInfo: this.contentInfo,
+                }
+            });
+
+            Assert.areEqual(
+                this.contentInfo.get('name'),
+                embed.one('.ez-embed-content').getContent(),
+                "The embed should be rendered"
+            );
+        },
     });
 
     Y.Test.Runner.setName("eZ RichText resolve embed processor tests");
     Y.Test.Runner.add(processTest);
     Y.Test.Runner.add(noProcessTest);
-}, '', {requires: ['test', 'view', 'ez-richtext-resolveembed']});
+    Y.Test.Runner.add(useSelectionTest);
+}, '', {requires: ['test', 'base', 'view', 'ez-richtext-resolveembed']});
