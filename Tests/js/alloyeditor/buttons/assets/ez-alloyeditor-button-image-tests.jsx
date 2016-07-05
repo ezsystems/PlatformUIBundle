@@ -276,7 +276,12 @@ YUI.add('ez-alloyeditor-button-image-tests', function (Y) {
                 contentType = new Mock(),
                 contentInfo = new Mock(),
                 content = new Mock(),
-                eventFired = false;
+                eventFired = false,
+                selection = {
+                    contentType: contentType,
+                    content: content,
+                    contentInfo: contentInfo
+                };
 
             fields[fieldIdentifier] = {fieldValue: {id: 42}};
 
@@ -288,11 +293,16 @@ YUI.add('ez-alloyeditor-button-image-tests', function (Y) {
                 returns: contentId,
             });
 
-            this.listeners.push(this.editor.get('nativeEditor').on('updatedEmbed', function () {
+            this.listeners.push(this.editor.get('nativeEditor').on('updatedEmbed', function (e) {
                 eventFired = true;
+                Assert.areSame(
+                    selection,
+                    e.data.embedStruct,
+                    "The updatedEmbed event parameters should contain the selection"
+                );
             }));
 
-            handler({selection: {contentType: contentType, content: content, contentInfo: contentInfo}});
+            handler({selection: selection});
             Assert.isTrue(eventFired, "The updatedEmbed event should have been fired");
         },
     });

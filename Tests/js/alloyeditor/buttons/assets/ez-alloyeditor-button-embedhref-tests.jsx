@@ -110,7 +110,10 @@ YUI.add('ez-alloyeditor-button-embedhref-tests', function (Y) {
         "Should update the embed": function () {
             var button, contentInfo = new Mock(),
                 updatedEmbed = false,
-                contentId = 42;
+                contentId = 42,
+                selection = {
+                    contentInfo: contentInfo,
+                };
 
             Mock.expect(contentInfo, {
                 method: 'get',
@@ -123,8 +126,14 @@ YUI.add('ez-alloyeditor-button-embedhref-tests', function (Y) {
                 }
             });
 
-            this.editor.get('nativeEditor').on('updatedEmbed', function () {
+            this.editor.get('nativeEditor').on('updatedEmbed', function (e) {
                 updatedEmbed = true;
+
+                Assert.areSame(
+                    selection,
+                    e.data.embedStruct,
+                    "The updatedEmbed event parameters should contain the selection"
+                );
             });
             this.editor.get('nativeEditor').on('contentDiscover', function (evt) {
                 var wrapper = this.element.findOne('.cke_widget_element'),
@@ -132,9 +141,7 @@ YUI.add('ez-alloyeditor-button-embedhref-tests', function (Y) {
 
                 widget.focus();
                 evt.data.config.contentDiscoveredHandler.call(this, {
-                    selection: {
-                        contentInfo: contentInfo,
-                    }
+                    selection: selection,
                 });
 
                 Assert.areEqual(
