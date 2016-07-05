@@ -185,7 +185,17 @@ YUI.add('ez-richtext-view-tests', function (Y) {
             });
             Mock.expect(this.processorMock, {
                 method: 'process',
-                args: [this.view],
+                args: [this.view, Mock.Value.Object],
+                run: Y.bind(function (view, event) {
+                    Assert.areSame(
+                        view, event.target,
+                        "The activeChange event facade should be passed"
+                    );
+                    Assert.areSame(
+                        view.constructor.NAME + ':activeChange', event.type,
+                        "The activeChange event facade should be passed"
+                    );
+                }, this),
             });
         },
 

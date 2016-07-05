@@ -52,8 +52,7 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
          * @protected
          */
         _addImage: function (e) {
-            var nativeEditor = this.props.editor.get('nativeEditor'),
-                widget;
+            var widget;
 
             this.execCommand();
             this._setContentInfo(e.selection.contentInfo);
@@ -62,7 +61,7 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
                 .setConfig('size', 'medium')
                 .setImageType()
                 .setWidgetContent('');
-            nativeEditor.fire('updatedEmbed');
+            this._fireUpdatedEmbed(e.selection);
             widget.setFocused(true);
         },
 

@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-richtext-resolveimage-tests', function (Y) {
-    var processTest, noProcessTest,
+    var processTest, noProcessTest, useSelectionTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     processTest = new Y.Test.Case({
@@ -235,9 +235,146 @@ YUI.add('ez-richtext-resolveimage-tests', function (Y) {
             });
             this.processor.process(this.view);
         },
+
+        "Should handle non existing embed node": function () {
+            var contentInfo = new Y.Base();
+
+            contentInfo.set('contentId', 'whatever');
+            this.view.on('contentSearch', function () {
+                Assert.fail('No search should have been triggered');
+            });
+            this.processor.process(this.view, {
+                embedStruct: {
+                    contentInfo: contentInfo,
+                }
+            });
+            Assert.areEqual(
+                this.containerContent,
+                this.view.get('container').getContent(),
+                "The view container content should remain unchanged"
+            );
+        },
+    });
+
+    useSelectionTest = new Y.Test.Case({
+        name: "eZ RichText resolve image process using the selection test",
+
+        setUp: function () {
+            var container = Y.one('.container-useselection'),
+                fields = {};
+
+            this.containerContent = container.getContent();
+            this.processor = new Y.eZ.RichTextResolveImage();
+            this.view = new Y.View({
+                container: container,
+                field: {id: 42},
+            });
+
+            this.imageFieldIdentifier = 'image';
+            this.contentType = new Mock();
+            Mock.expect(this.contentType, {
+                method: 'getFieldDefinitionIdentifiers',
+                args: ['ezimage'],
+                returns: [this.imageFieldIdentifier],
+            });
+            this.content = new Y.Base();
+            this.contentInfo = new Y.Base();
+            fields[this.imageFieldIdentifier] = {};
+            this.content.set('contentId', 41);
+            this.contentInfo.set('contentId', this.content.get('contentId'));
+            this.content.set('name', 'name-' + this.content.get('contentId'));
+            this.content.set('fields', fields);
+        },
+
+        tearDown: function () {
+            this.view.get('container').setContent(this.containerContent);
+            this.view.destroy();
+            delete this.view;
+            delete this.processor;
+        },
+
+        _process: function () {
+            this.processor.process(this.view, {
+                embedStruct: {
+                    content: this.content,
+                    contentInfo: this.contentInfo,
+                    contentType: this.contentType,
+                }
+            });
+        },
+
+        _getEmbedNode: function () {
+            return this.view.get('container').one('#image-useselection');
+        },
+
+        "Should set the embed image as loading": function () {
+            var embed = this._getEmbedNode();
+
+            this._process();
+
+            Assert.isTrue(
+                embed.hasClass('is-embed-loading'),
+                "The embed should be in loading mode"
+            );
+        },
+
+        "Should load the variation": function () {
+            var loadImageVariationFired = false;
+
+            this.view.on('loadImageVariation', Y.bind(function (e) {
+                loadImageVariationFired = true;
+
+                Assert.areSame(
+                    this.content.get('fields')[this.imageFieldIdentifier],
+                    e.field,
+                    "The image field should be provided"
+                );
+                Assert.areEqual(
+                    'medium', e.variation,
+                    "The medium variation should be loaded"
+                );
+            }, this));
+            this._process();
+
+            Assert.isTrue(
+                loadImageVariationFired,
+                "The loadImageVariation event should have been fired"
+            );
+        },
+
+        "Should use the selection to render the embed": function () {
+            var embed = this._getEmbedNode(),
+                imgNode,
+                variation = {
+                    uri: "http://www.reactiongifs.com/r/clk.gif",
+                };
+
+            this.view.on('loadImageVariation', Y.bind(function (e) {
+                e.callback(false, variation);
+            }, this));
+            this._process();
+
+            Assert.isFalse(
+                embed.hasClass('is-embed-loading'),
+                "The embed should not be in loading mode"
+            );
+            imgNode = embed.one('.ez-embed-content');
+
+            Assert.areEqual(
+                variation.uri,
+                imgNode.getAttribute('src'),
+                "An img should be filled with the variation uri"
+            );
+            Assert.areEqual(
+                this.content.get('name'),
+                imgNode.getAttribute('alt'),
+                "The alt attribute should be the content name"
+            );
+        },
     });
 
     Y.Test.Runner.setName("eZ RichText resolve image processor tests");
     Y.Test.Runner.add(processTest);
     Y.Test.Runner.add(noProcessTest);
-}, '', {requires: ['test', 'view', 'ez-richtext-resolveimage']});
+    Y.Test.Runner.add(useSelectionTest);
+}, '', {requires: ['test', 'base', 'view', 'ez-richtext-resolveimage']});

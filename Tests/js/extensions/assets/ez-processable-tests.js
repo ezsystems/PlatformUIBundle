@@ -140,23 +140,31 @@ YUI.add('ez-processable-tests', function (Y) {
             delete this.view;
         },
 
-        _getProcessor: function () {
+        _getProcessor: function (eventParams) {
             var processor = new Mock();
 
             Mock.expect(processor, {
                 method: 'process',
-                args: [this.view],
+                args: [this.view, Mock.Value.Object],
+                run: function (view, eventFacade) {
+                    Assert.areSame(
+                        eventParams.processParam,
+                        eventFacade.processParam,
+                        "The initial event facade property should be passed to the processors"
+                    );
+                },
             });
             return processor;
         },
 
         "Should execute the processors": function () {
-            var processor1 = this._getProcessor(),
-                processor2 = this._getProcessor();
+            var eventParams = {processParam: {}},
+                processor1 = this._getProcessor(eventParams),
+                processor2 = this._getProcessor(eventParams);
 
             this.view.addProcessor(processor1, 10);
             this.view.addProcessor(processor2, 250);
-            this.view.fire(processEvent);
+            this.view.fire(processEvent, eventParams);
 
             Mock.verify(processor1);
             Mock.verify(processor2);
