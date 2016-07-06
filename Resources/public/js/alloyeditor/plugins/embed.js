@@ -85,6 +85,23 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                     this._syncAlignment();
                     this._getEzConfigElement();
                     this.setWidgetContent('');
+                    this._cancelEditEvents();
+                },
+
+                /**
+                 * Cancels the widget events that trigger the `edit` event as
+                 * an embed widget can not be edited in a *CKEditor way*.
+                 *
+                 * @method _cancelEditEvents
+                 * @private
+                 */
+                _cancelEditEvents: function () {
+                    var cancel = function (e) {
+                            e.cancel();
+                        };
+
+                    this.on('doubleclick', cancel, null, null, 5);
+                    this.on('key', cancel, null, null, 5);
                 },
 
                 /**
