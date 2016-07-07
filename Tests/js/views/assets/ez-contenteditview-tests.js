@@ -169,7 +169,7 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             this.wait();
         },
 
-        "Should fire a closeView event when 'escape' hotkey is pressed": function () {
+        "Should NOT fire a closeView event when 'escape' hotkey is pressed": function () {
             var closeFired = false, container = this.view.get('container');
 
             this.view.on('closeView', function (e) {
@@ -178,10 +178,10 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
             this.view.render();
             container.one('.ez-main-content').simulate("keyup", { charCode: 27 }); // Sending "escape" key code
-            Y.assert(closeFired, "The close event should have been fired");
+            Y.assert(!closeFired, "The close event should NOT have been fired");
         },
 
-        "Should NOT fire a closeView event when any hotkey other than 'escape' is pressed": function () {
+        "Should NOT fire a closeView event when any hotkey is pressed": function () {
             var closeFired = false, container = this.view.get('container');
 
             this.view.on('closeView', function (e) {

@@ -51,6 +51,16 @@ YUI.add('ez-universaldiscoveryplugin-tests', function (Y) {
             );
         },
 
+        "Should set the app routingEnabled attribute to false on contentDiscover": function () {
+            var eventConfig = {};
+
+            this.app.fire('whatever:contentDiscover', {config: eventConfig});
+            Assert.areEqual(
+                false, this.app.get('routingEnabled'),
+                "routingEnabled should be false"
+            );
+        },
+
         "Should hide the universal discovery side view (contentDiscovered)": function () {
             this.app.fire('whatever:contentDiscovered');
             Assert.areEqual(
@@ -64,6 +74,22 @@ YUI.add('ez-universaldiscoveryplugin-tests', function (Y) {
             Assert.areEqual(
                 "universalDiscovery", this.hideSideViewName,
                 "The universal discovery should have been hidden"
+            );
+        },
+
+        "Should set the app routingEnabled attribute to true on contentDiscovered": function () {
+            this.app.fire('whatever:contentDiscovered');
+            Assert.areEqual(
+                true, this.app.get('routingEnabled'),
+                "routingEnabled should be true"
+            );
+        },
+
+        "Should set the app routingEnabled attribute to true on cancelDiscover": function () {
+            this.app.fire('whatever:cancelDiscover');
+            Assert.areEqual(
+                true, this.app.get('routingEnabled'),
+                "routingEnabled should be true"
             );
         },
     });
