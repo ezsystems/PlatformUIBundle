@@ -157,6 +157,7 @@ system:
                         - 'app-transitions'
                         - 'node-screen'
                         - 'parallel'
+                        - 'history-hash'
                         - 'ez-capi'
                         - 'ez-loginformviewservice'
                         - 'ez-loginformview'

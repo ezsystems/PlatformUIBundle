@@ -33,9 +33,6 @@ YUI.add('ez-contenteditview', function (Y) {
                 'mouseout': '_hideDetails',
                 'tap': '_showDetails',
             },
-            '.ez-main-content': {
-                'keyup': '_handleKeyboard'
-            },
             '.ez-change-content-language-link': {
                 'tap': '_changeLanguage',
             }
@@ -223,9 +220,11 @@ YUI.add('ez-contenteditview', function (Y) {
          *
          * @method _handleKeyboard
          * @protected
+         * @deprecated this method is deprecated and will be removed in PlatformUI 2.0
          * @param {Object} e event facade of the keyboard event
          */
         _handleKeyboard: function (e) {
+            console.warn('[DEPRECATED] method _handleKeyboard is deprecated and will be removed in PlatformUI 2.0');
             if (e.keyCode === ESCAPE_KEY) {
                 this._closeView(e);
             }
