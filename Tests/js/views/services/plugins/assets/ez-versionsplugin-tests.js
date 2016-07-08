@@ -4,6 +4,7 @@
  */
 YUI.add('ez-versionsplugin-tests', function (Y) {
     var loadTest, createDraftTest, registerTest,
+        deleteDraftEventTest, deleteVersionTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     loadTest = new Y.Test.Case({
@@ -304,6 +305,396 @@ YUI.add('ez-versionsplugin-tests', function (Y) {
         },
     });
 
+    deleteDraftEventTest = new Y.Test.Case({
+        name: "eZ Versions Plugin delete draft event tests",
+
+        setUp: function () {
+            this.service = new Y.Base();
+            this.view = new Y.View();
+
+            this.plugin = new Y.eZ.Plugin.Versions({
+                host: this.service
+            });
+        },
+
+        tearDown: function () {
+            this.plugin.destroy();
+            this.view.destroy();
+            this.service.destroy();
+            delete this.plugin;
+            delete this.view;
+            delete this.service;
+        },
+
+        "Should trigger confirm box open on `deleteVersionDraft` event": function () {
+            var confirmBoxOpenTriggered = false;
+
+            this.service.on('confirmBoxOpen', function (e) {
+                confirmBoxOpenTriggered = true;
+                Assert.isString(e.config.title, 'The `title` param in config should be string');
+                Assert.isFunction(
+                    e.config.confirmHandler,
+                    'The `confirmHandler` param should be function'
+                );
+                Assert.isFunction(
+                    e.config.cancelHandler,
+                    'The `cancelHandler` param should be function'
+                );
+            });
+
+            this.service.fire('deleteVersionDraft', {});
+
+            Assert.isTrue(
+                confirmBoxOpenTriggered,
+                "The `confirmBoxOpen` event should have been fired"
+            );
+        },
+
+        "Should call `afterDeleteVersionsCallback` function with FALSE when cancelHandler is triggered": function () {
+            var confirmBoxOpenTriggered = false,
+                afterDeleteVersionsCallbackCalled = false,
+                afterDeleteVersionsCallback = function (versionsRemoved) {
+                    afterDeleteVersionsCallbackCalled = true;
+                    Assert.isFalse(
+                        versionsRemoved,
+                        'Callback function should be called with FALSE param'
+                    );
+                };
+
+            this.service.on('confirmBoxOpen', function (e) {
+                confirmBoxOpenTriggered = true;
+                Assert.isString(e.config.title, 'The `title` param in config should be string');
+                Assert.isFunction(
+                    e.config.confirmHandler,
+                    'The `confirmHandler` param should be function'
+                );
+                Assert.isFunction(
+                    e.config.cancelHandler,
+                    'The `cancelHandler` param should be function'
+                );
+
+                e.config.cancelHandler();
+            });
+
+            this.service.fire('deleteVersionDraft', {
+                versions: [],
+                afterDeleteVersionsCallback: afterDeleteVersionsCallback
+            });
+
+            Assert.isTrue(
+                confirmBoxOpenTriggered,
+                "The `confirmBoxOpen` event should have been fired"
+            );
+            Assert.isTrue(
+                afterDeleteVersionsCallbackCalled,
+                'Should call afterDeleteVersionsCallback function'
+            );
+        },
+    });
+
+    deleteVersionTest = new Y.Test.Case({
+        name: "eZ Versions Plugin delete tests",
+
+        setUp: function () {
+            this.service = new Y.Base();
+            this.view = new Y.View();
+            this.view.addTarget(this.service);
+            this.capi = new Mock();
+            this.contentJson = {
+                'id': '/content/The/Memory/Remains',
+                'name': 'One',
+            };
+            this.firstVersion = this._getVersionMock({id: '/first/version'});
+            this.secondVersion = this._getVersionMock({id: '/second/version'});
+            this.thirdVersion = this._getVersionMock({id: '/third/version'});
+            this.content = this._getContentMock(this.contentJson);
+
+            this.service.set('capi', this.capi);
+            this.service.set('content', this.content);
+
+            this.plugin = new Y.eZ.Plugin.Versions({
+                host: this.service
+            });
+        },
+
+        tearDown: function () {
+            this.plugin.destroy();
+            this.view.destroy();
+            this.service.destroy();
+            delete this.plugin;
+            delete this.view;
+            delete this.service;
+        },
+
+        _getContentMock: function (attrs) {
+            var contentMock = new Mock();
+
+            Mock.expect(contentMock, {
+                'method': 'get',
+                'args': [Mock.Value.String],
+                'run': function (attr) {
+                    switch (attr) {
+                        case 'id':
+                            return attrs.id;
+                        case 'name':
+                            return attrs.name;
+                        default:
+                            Assert.fail('Trying to `get` incorrect attribute `' + attr + '` from content mock');
+                            break;
+                    }
+                }
+            });
+
+            return contentMock;
+        },
+
+        _getVersionMock: function (attrs) {
+            var versionMock = new Mock();
+
+            Mock.expect(versionMock, {
+                'method': 'get',
+                'args': [Mock.Value.String],
+                'run': function (attr) {
+                    switch (attr) {
+                        case 'id':
+                            return attrs.id;
+                        default:
+                            Assert.fail('Trying to `get` incorrect attribute from location mock');
+                            break;
+                    }
+                }
+            });
+
+            return versionMock;
+        },
+
+        _setupVersionForRemoval: function(versionMockList) {
+            var versionsForRemoval = [],
+                that = this;
+
+            Y.Array.each(versionMockList, function (versionMockItem) {
+                Mock.expect(versionMockItem.object, {
+                    method: 'destroy',
+                    args: [Mock.Value.Object, Mock.Value.Function],
+                    run: function (options, callback) {
+                        Assert.areSame(
+                            options.api,
+                            that.capi,
+                            "The CAPI should be passed"
+                        );
+                        Assert.isTrue(
+                            options.remove,
+                            "The remove parameter should be set to TRUE"
+                        );
+
+                        callback(versionMockItem.error);
+                    }
+                });
+
+                versionsForRemoval.push(versionMockItem.object);
+            });
+
+            return versionsForRemoval;
+        },
+
+        _assertStartedNotification: function (notification, nbItems) {
+            if (notification.state === 'started') {
+                this.startNotificationFired = true;
+                Assert.isTrue(
+                    (notification.text.indexOf(this.contentJson.name) >= 0),
+                    "The notification should contain name of content"
+                );
+                Assert.isTrue(
+                    (notification.identifier.indexOf(this.contentJson.id) >= 0),
+                    "The notification identifier should contain id of content"
+                );
+                Assert.isTrue(
+                    (notification.identifier.indexOf(nbItems) >= 0),
+                    "The notification identifier should contain number of versions for removal"
+                );
+                Assert.areEqual(
+                    notification.timeout, 5,
+                    "The timeout of notification should be set to 5"
+                );
+            }
+        },
+
+        _assertDoneNotification: function (notification, nbItems) {
+            if (notification.state === 'done') {
+                this.successNotificationFired = true;
+                Assert.isTrue(
+                    (notification.text.indexOf(this.contentJson.name) >= 0),
+                    "The notification should contain name of content"
+                );
+                Assert.isTrue(
+                    (notification.identifier.indexOf(this.contentJson.id) >= 0),
+                    "The notification identifier should contain id of content"
+                );
+                Assert.isTrue(
+                    (notification.identifier.indexOf(nbItems) >= 0),
+                    "The notification identifier should contain number of versions for removal"
+                );
+                Assert.areEqual(
+                    notification.timeout, 5,
+                    "The timeout of notification should be set to 5"
+                );
+            }
+        },
+
+        _assertErrorNotification: function (notification) {
+            if (notification.state === 'error') {
+                this.errorNotificationFired = true;
+            }
+        },
+
+        "Should remove versions and fire notifications": function () {
+            var afterDeleteVersionsCallbackCalled = false,
+                afterDeleteVersionsCallback = function (versionsRemoved) {
+                    afterDeleteVersionsCallbackCalled = true;
+                    Assert.isTrue(versionsRemoved, 'Callback function should be called with TRUE param');
+                },
+                versionsForRemoval = this._setupVersionForRemoval([
+                    {object:this.firstVersion, error: false},
+                    {object:this.secondVersion, error: false}
+                ]);
+
+            this.startNotificationFired = false;
+            this.successNotificationFired = false;
+            this.errorNotificationFired = false;
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler();
+            });
+
+            this.service.on('notify', Y.bind(function (e) {
+                this._assertStartedNotification(
+                    e.notification,
+                    versionsForRemoval.length
+                );
+
+                this._assertDoneNotification(
+                    e.notification,
+                    versionsForRemoval.length
+                );
+
+                this._assertErrorNotification(e.notification);
+            },this));
+
+            this.service.fire('deleteVersionDraft', {
+                versions: versionsForRemoval,
+                afterDeleteVersionsCallback: afterDeleteVersionsCallback
+            });
+
+            Assert.isTrue(this.startNotificationFired, 'Should fire notification with `started` state');
+            Assert.isTrue(this.successNotificationFired, 'Should fire notification with `done` state');
+            Assert.isFalse(this.errorNotificationFired, 'Should not fire notification with `error` state');
+            Assert.isTrue(
+                afterDeleteVersionsCallbackCalled,
+                'Should call afterDeleteVersionsCallbackCalled function'
+            );
+        },
+
+        "Should display an error and success message when only one deletion fails": function () {
+            var afterDeleteVersionsCallbackCalled = false,
+                afterDeleteVersionsCallback = function (versionsRemoved) {
+                    afterDeleteVersionsCallbackCalled = true;
+                    Assert.isTrue(versionsRemoved, 'Callback function should be called with TRUE param');
+                },
+                versionsForRemoval = this._setupVersionForRemoval([
+                    {object:this.firstVersion, error: false},
+                    {object:this.secondVersion, error: true},
+                    {object:this.thirdVersion, error: false}
+                ]);
+
+            this.startNotificationFired = false;
+            this.successNotificationFired = false;
+            this.errorNotificationFired = false;
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler();
+            });
+
+            this.service.on('notify', Y.bind(function (e) {
+                this._assertStartedNotification(
+                    e.notification,
+                    versionsForRemoval.length
+                );
+
+                this._assertDoneNotification(
+                    e.notification,
+                    versionsForRemoval.length
+                );
+
+                this._assertErrorNotification(e.notification);
+            }, this));
+
+            this.service.fire('deleteVersionDraft', {
+                versions: versionsForRemoval,
+                afterDeleteVersionsCallback: afterDeleteVersionsCallback
+            });
+
+            Assert.isTrue(this.startNotificationFired, 'Should fire notification with `started` state');
+            Assert.isTrue(this.successNotificationFired, 'Should fire notification with `done` state');
+            Assert.isTrue(this.errorNotificationFired, 'Should fire notification with `error` state');
+            Assert.isTrue(
+                afterDeleteVersionsCallbackCalled,
+                'Should call afterDeleteVersionsCallbackCalled function'
+            );
+        },
+
+        "Should display an error message when deleting a single item fails": function () {
+            var afterDeleteVersionsCallbackCalled = false,
+                afterDeleteVersionsCallback = function (versionsRemoved) {
+                    afterDeleteVersionsCallbackCalled = true;
+                    Assert.isFalse(versionsRemoved, 'Callback function should be called with FALSE param');
+                },
+                versionsForRemoval = this._setupVersionForRemoval([
+                    {object:this.firstVersion, error: true},
+                ]);
+
+            this.startNotificationFired = false;
+            this.successNotificationFired = false;
+            this.errorNotificationFired = false;
+
+            this.service.on('confirmBoxOpen', function (e) {
+                e.config.confirmHandler();
+            });
+
+            this.service.on('notify', Y.bind(function (e) {
+                this._assertStartedNotification(
+                    e.notification,
+                    versionsForRemoval.length
+                );
+
+                this._assertDoneNotification(
+                    e.notification,
+                    versionsForRemoval.length
+                );
+
+                this._assertErrorNotification(e.notification);
+
+                Assert.isFalse(
+                    (e.notification.identifier.indexOf("-error") >= 0),
+                    "When all items errored, the notification should replace the `started` one"
+                );
+
+            }, this));
+
+            this.service.fire('deleteVersionDraft', {
+                versions: versionsForRemoval,
+                afterDeleteVersionsCallback: afterDeleteVersionsCallback
+            });
+
+            Assert.isTrue(this.startNotificationFired, 'Should fire notification with `started` state');
+            Assert.isFalse(this.successNotificationFired, 'Should not fire notification with `done` state');
+            Assert.isTrue(this.errorNotificationFired, 'Should fire notification with `error` state');
+            Assert.isTrue(
+                afterDeleteVersionsCallbackCalled,
+                'Should call afterDeleteVersionsCallbackCalled function'
+            );
+        },
+    });
+
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.Versions;
     registerTest.components = ['locationViewViewService'];
@@ -312,4 +703,6 @@ YUI.add('ez-versionsplugin-tests', function (Y) {
     Y.Test.Runner.add(loadTest);
     Y.Test.Runner.add(registerTest);
     Y.Test.Runner.add(createDraftTest);
+    Y.Test.Runner.add(deleteDraftEventTest);
+    Y.Test.Runner.add(deleteVersionTest);
 }, '', {requires: ['test', 'view', 'base', 'ez-versionsplugin', 'ez-pluginregister-tests']});

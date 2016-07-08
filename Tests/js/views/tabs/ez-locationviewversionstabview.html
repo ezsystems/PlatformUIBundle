@@ -11,14 +11,27 @@
 <script type="text/x-handlebars-template" id="locationviewversionstabview-ez-template">
     <button class="ez-asynchronousview-retry">Retry</button>
 
+    <button class="ez-delete-draft-button"
+            disabled="disabled">
+        Delete selected draft
+    </button>
+
     <button class="ez-create-draft-from-archived-button"
             disabled="disabled">
         New draft based on selected version
     </button>
     <div>
+        {{#each draftVersions}}
+        <input type="checkbox"
+               class="ez-version-checkbox ez-draft-version-checkbox"
+               {{#if checked}}checked="checked"{{/if}}
+               data-version-id="{{versionId}}">
+       {{/each}}
+    </div>
+    <div>
         {{#each archivedVersions}}
         <input type="checkbox"
-               class="ez-archived-version-checkbox"
+               class="ez-version-checkbox ez-archived-version-checkbox"
                {{#if checked}}checked="checked"{{/if}}
                data-version-id="{{versionId}}">
        {{/each}}

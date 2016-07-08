@@ -19,6 +19,9 @@ YUI.add('ez-versionsplugin', function (Y) {
      * In order to use it you need to fire `loadVersions` event with parameter
      * `content` containing the eZ.Content object for which you want to load versions.
      *
+     * Deleting versions:
+     * In order to use it you need to fire `deleteVersionDraft`
+     *
      * Creating draft based on an archived version:
      * In order to use it you need to fire 'createDraft' with corresponding
      * parameters (see method).
@@ -33,6 +36,7 @@ YUI.add('ez-versionsplugin', function (Y) {
         initializer: function () {
             this.onHostEvent('*:loadVersions', this._loadVersions);
             this.onHostEvent('*:createDraft', this._createDraftFromArchivedVersion);
+            this.onHostEvent('*:deleteVersionDraft', this._deleteDraftConfirm);
         },
 
         /**
@@ -128,6 +132,95 @@ YUI.add('ez-versionsplugin', function (Y) {
                 app.navigate(
                     app.routeUri(routeName, routeParams)
                 );
+            }, this));
+        },
+
+        /**
+         * deleteVersionDraft event handler, opens confirm box to confirm that selected draft
+         * are going to be deleted
+         *
+         * @method _deleteDraftConfirm
+         * @private
+         * @param {EventFacade} e deleteVersionDraft event facade
+         */
+        _deleteDraftConfirm: function (e) {
+            var service = this.get('host');
+
+            service.fire('confirmBoxOpen', {
+                config: {
+                    title: "Are you sure you want to remove selected drafts?",
+                    confirmHandler: Y.bind(function () {
+                        this._deleteVersion(e.versions, e.afterDeleteVersionsCallback);
+                    }, this),
+                    cancelHandler: Y.bind(e.afterDeleteVersionsCallback, this, false)
+                }
+            });
+        },
+
+        /**
+         * Removes given versions. After that, calls the callback function.
+         *
+         * @method _deleteVersion
+         * @protected
+         * @param {Array} versions array containing eZ.VersionInfo objects for removal
+         * @param {Function} callback
+         */
+        _deleteVersion: function (versions, callback) {
+            var service = this.get('host'),
+                content = service.get('content'),
+                notificationIdentifier = 'delete-versions-' + content.get('id') + '-' + versions.length,
+                countRemovedVersions = 0,
+                countRemovedVersionsFails = 0,
+                tasks = new Y.Parallel();
+
+            this._notify(
+                "Removing versions for '" + content.get('name') + "'",
+                notificationIdentifier,
+                'started',
+                5
+            );
+
+            Y.Array.each(versions, function (version) {
+                var end = tasks.add(function (error, response) {
+                        if (error) {
+                            countRemovedVersionsFails++;
+                            return;
+                        }
+
+                        countRemovedVersions++;
+                    });
+
+                version.destroy({remove: true, api: service.get('capi')}, end);
+            });
+
+            tasks.done(Y.bind(function () {
+                var errorNotificationIdentifier = notificationIdentifier + '-error',
+                    versionsRemoved = (countRemovedVersions > 0);
+
+                if (versionsRemoved) {
+                    this._notify(
+                        countRemovedVersions + " version(s) of '" + content.get('name') +
+                         "' have been removed",
+                        notificationIdentifier,
+                        'done',
+                        5
+                    );
+                } else {
+                    // start notification will be removed by an error
+                    errorNotificationIdentifier = notificationIdentifier;
+                }
+
+                if (countRemovedVersionsFails > 0) {
+                    this._notify(
+                        "Removing of " + countRemovedVersionsFails + " version(s) of '" +
+                         content.get('name') + "' has failed",
+                        errorNotificationIdentifier,
+                        'error',
+                        0
+                    );
+                }
+
+                callback(versionsRemoved);
             }, this));
         },
 

@@ -54,32 +54,6 @@ YUI.add('ez-versionmodel', function (Y) {
         },
 
         /**
-         * Deletes the version in the repository.
-         *
-         * @protected
-         * @method _deleteVersion
-         * @param {Object} options
-         * @param {Object} options.api the JS REST client instance
-         * @param {Function} callback
-         */
-        _deleteVersion: function (options, callback) {
-            var contentService = options.api.getContentService(),
-                version = this;
-
-            if ( !this.get('id') ) {
-                return callback(false);
-            }
-            contentService.deleteVersion(this.get('id'), function (error, response) {
-                if ( error ) {
-                    callback(error);
-                    return;
-                }
-                version.reset();
-                callback();
-            });
-        },
-
-        /**
          * Saves the version in the repository. Only the version with a status
          * different than PUBLISHED can be saved. In addtion, if options
          * contains a publish property with a truthy value, it will also publish

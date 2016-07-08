@@ -9,8 +9,36 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
         fireLoadVersionsEventTest,
         fireCreateDraftEventTest,
         selectArchivedVersionTest,
+        selectDeleteDraftVersionTest,
+        fireDeleteVersionDraftEventTest,
         Assert = Y.Assert,
-        Mock = Y.Mock;
+        Mock = Y.Mock,
+        createCheckableVersionMock = function (versionId, versionNo, checked) {
+            var versionMock = new Mock();
+
+            Mock.expect(versionMock, {
+                'method': 'toJSON',
+                returns: {
+                    versionId: versionId,
+                    checked: checked
+                }
+            });
+
+            Mock.expect(versionMock, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: Y.bind(function (attr) {
+                    if ( attr === 'id' ) {
+                        return versionId;
+                    } else if ( attr === 'versionNo' ) {
+                        return versionNo;
+                    }
+                    Y.fail('Unexpected call to get("' + attr + '")');
+                }, this),
+            });
+
+            return versionMock;
+        };
 
     attributesTest = new Y.Test.Case({
         name: "eZ LocationViewVersionsTabView attributes test",
@@ -270,43 +298,16 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
             delete this.view;
         },
 
-        _createVersionMock: function (versionId, versionNo, checked) {
-            var versionMock = new Mock();
-
-            Mock.expect(versionMock, {
-                'method': 'toJSON',
-                returns: {
-                    versionId: versionId,
-                    checked: checked
-                }
-            });
-
-            Mock.expect(versionMock, {
-                method: 'get',
-                args: [Mock.Value.String],
-                run: Y.bind(function (attr) {
-                    if ( attr === 'id' ) {
-                        return versionId;
-                    } else if ( attr === 'versionNo' ) {
-                        return versionNo;
-                    }
-                    Y.fail('Unexpected call to get("' + attr + '")');
-                }, this),
-            });
-
-            return versionMock;
-        },
-
         _createArchivedVersionMock: function (nbOfChecked) {
             for (var i = 1; i <= nbOfChecked; i++) {
                 this.versions.ARCHIVED.push(
-                    this._createVersionMock("/version/" + i, i, true)
+                    createCheckableVersionMock("/version/" + i, i, true)
                 );
             }
 
             //creating an item that is not checked
             this.versions.ARCHIVED.push(
-                this._createVersionMock("/version/" + 42, 42, false)
+                createCheckableVersionMock("/version/" + 42, 42, false)
             );
         },
 
@@ -400,37 +401,12 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
             delete this.view;
         },
 
-        _createVersionMock: function (versionId, versionNo, checked) {
-            var versionMock = new Mock();
 
-            Mock.expect(versionMock, {
-                'method': 'toJSON',
-                returns: {
-                    versionId: versionId,
-                    checked: checked
-                }
-            });
-
-            Mock.expect(versionMock, {
-                method: 'get',
-                args: [Mock.Value.String],
-                run: Y.bind(function (attr) {
-                    if ( attr === 'id' ) {
-                        return versionId;
-                    } else if ( attr === 'versionNo' ) {
-                        return versionNo;
-                    }
-                    Y.fail('Unexpected call to get("' + attr + '")');
-                }, this),
-            });
-
-            return versionMock;
-        },
 
         _createArchivedVersionMock: function (nb) {
             for (var i = 1; i <= nb; i++) {
                 this.versions.ARCHIVED.push(
-                    this._createVersionMock("/version/" + i, i, false)
+                    createCheckableVersionMock("/version/" + i, i, false)
                 );
             }
         },
@@ -488,6 +464,259 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
         },
     });
 
+    selectDeleteDraftVersionTest = new Y.Test.Case({
+        name: "ViewVersionsTabView select a draft delete version test",
+        setUp: function () {
+            this.contentMock = new Mock();
+            this.versions = {'DRAFT': []};
+
+            this.view = new Y.eZ.LocationViewVersionsTabView({
+                content: this.contentMock,
+                container: '.container'
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        _createDraftVersionMock: function (nb) {
+            for (var i = 1; i <= nb; i++) {
+                this.versions.DRAFT.push(
+                    createCheckableVersionMock("/version/" + i, i, false)
+                );
+            }
+        },
+
+        "Should enable the create button when at least an item is selected": function () {
+            var createButton,
+                version1,
+                version2;
+
+            this._createDraftVersionMock(4);
+
+            this.view.set('versions', this.versions);
+            this.view.render();
+
+            createButton = this.view.get('container').one('.ez-delete-draft-button');
+            version1 = this.view.get('container').one(".ez-draft-version-checkbox[data-version-id='/version/1']");
+            version2 = this.view.get('container').one(".ez-draft-version-checkbox[data-version-id='/version/2']");
+
+            Assert.isTrue(
+                createButton.get('disabled'),
+                "Create Button should be disabled when no items are checked"
+            );
+
+            version1.setAttribute('checked', 'checked');
+            version1.simulate('change');
+
+            Assert.isFalse(
+                createButton.get('disabled'),
+                "Create Button should not be disabled with one item checked"
+            );
+
+            version2.setAttribute('checked', 'checked');
+            version2.simulate('change');
+
+            Assert.isFalse(
+                createButton.get('disabled'),
+                "Create Button should not be disabled with two items checked"
+            );
+
+            version1.removeAttribute('checked');
+            version1.simulate('change');
+
+            Assert.isFalse(
+                createButton.get('disabled'),
+                "Create Button should not be disabled"
+            );
+
+            version2.removeAttribute('checked');
+            version2.simulate('change');
+
+            Assert.isTrue(
+                createButton.get('disabled'),
+                "Create Button should be disabled when no items are checked"
+            );
+        },
+    });
+
+    fireDeleteVersionDraftEventTest = new Y.Test.Case({
+        name: "ViewVersionsTabView fire `deleteVersionDraft` event test",
+        setUp: function () {
+            this.contentMock = new Mock();
+            this.versions = {'DRAFT': []};
+
+            this.view = new Y.eZ.LocationViewVersionsTabView({
+                content: this.contentMock,
+                container: '.container'
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        _createDraftVersionMock: function (nbOfChecked) {
+            for (var i = 1; i <= nbOfChecked; i++) {
+                this.versions.DRAFT.push(
+                    createCheckableVersionMock("/version/" + i, i, true)
+                );
+            }
+
+            //creating an item that is not checked
+            this.versions.DRAFT.push(
+                createCheckableVersionMock("/version/" + 42, 42, false)
+            );
+        },
+
+        "Should fire the `deleteVersionDraft` event": function () {
+            var eventFired = false,
+                viewRefreshed = false,
+                createButton;
+
+            this._createDraftVersionMock(2);
+
+            this.view.set('versions', this.versions);
+
+            this.view.on('*:loadVersions', function (e) {
+                viewRefreshed = true;
+            });
+
+            this.view.on('*:deleteVersionDraft', Y.bind(function (e) {
+                var container = this.view.get('container'),
+                    checkbox = container.one('.ez-draft-version-checkbox[data-version-id="/version/1"]');
+
+                eventFired = true;
+                Assert.areSame(
+                    this.versions.DRAFT[0],
+                    e.versions[0],
+                    "The event facade should contain the version's first item"
+                );
+                Assert.areSame(
+                    this.versions.DRAFT[1],
+                    e.versions[1],
+                    "The event facade should contain the version's second item"
+                );
+                Assert.isFunction(
+                    e.afterDeleteVersionsCallback,
+                    "`afterDeleteVersionsCallback` should be a function"
+                );
+                Assert.isTrue(
+                    checkbox.get('disabled'),
+                    "The checkbox should be disabled"
+                );
+
+                e.afterDeleteVersionsCallback(true);
+
+            }, this));
+
+            this.view.render();
+
+            createButton = this.view.get('container').one('.ez-delete-draft-button');
+            createButton.set('disabled', false);
+
+            createButton.simulateGesture('tap', Y.bind(function () {
+                this.resume(function (e) {
+                    Assert.isTrue(
+                        eventFired,
+                        "The `deleteVersionDraft` event should have been fired"
+                    );
+                    Assert.isTrue(
+                        viewRefreshed,
+                        "The view should have been refreshed"
+                    );
+
+                });
+            }, this));
+            this.wait();
+        },
+
+        "Should not fire the `deleteVersionDraft` event if no versions are selected": function () {
+            var eventFired = false,
+                viewRefreshed = false,
+                createButton;
+
+            this._createDraftVersionMock(0);
+
+            this.view.set('versions', this.versions);
+
+            this.view.on('*:loadVersions', function (e) {
+                viewRefreshed = true;
+            });
+
+            this.view.on('*:deleteVersionDraft', Y.bind(function (e) {
+                eventFired = true;
+            }, this));
+
+            this.view.render();
+
+            createButton = this.view.get('container').one('.ez-delete-draft-button');
+            createButton.set('disabled', false);
+
+            createButton.simulateGesture('tap', Y.bind(function () {
+                this.resume(function (e) {
+                    Assert.isFalse(
+                        eventFired,
+                        "The `deleteVersionDraft` event should not be fired"
+                    );
+                    Assert.isFalse(
+                        viewRefreshed,
+                        "The view should no be refreshed"
+                    );
+                });
+            }, this));
+            this.wait();
+        },
+
+        "Should enabled checkboxes after cancel in confirm box": function () {
+            var eventFired = false,
+                viewRefreshed = false,
+                createButton;
+
+            this._createDraftVersionMock(2);
+
+            this.view.set('versions', this.versions);
+
+            this.view.on('*:loadVersions', function (e) {
+                viewRefreshed = true;
+            });
+
+            this.view.on('*:deleteVersionDraft', Y.bind(function (e) {
+                eventFired = true;
+                e.afterDeleteVersionsCallback(false);
+            }, this));
+
+            this.view.render();
+
+            createButton = this.view.get('container').one('.ez-delete-draft-button');
+            createButton.set('disabled', false);
+
+            createButton.simulateGesture('tap', Y.bind(function () {
+                this.resume(function (e) {
+                    Assert.isTrue(
+                        eventFired,
+                        "The `deleteVersionDraft` event should not be fired"
+                    );
+                    Assert.isFalse(
+                        viewRefreshed,
+                        "The view should no be refreshed"
+                    );
+                    Assert.isFalse(
+                        this.view
+                            .get('container')
+                            .one('.ez-draft-version-checkbox[data-version-id="/version/1"]')
+                            .get('disabled'),
+                        "The checkbox should not be disabled"
+                    );
+                });
+            }, this));
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Location View Versions Tab View tests");
     Y.Test.Runner.add(attributesTest);
     Y.Test.Runner.add(renderTest);
@@ -495,4 +724,6 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
     Y.Test.Runner.add(fireLoadVersionsEventTest);
     Y.Test.Runner.add(fireCreateDraftEventTest);
     Y.Test.Runner.add(selectArchivedVersionTest);
+    Y.Test.Runner.add(selectDeleteDraftVersionTest);
+    Y.Test.Runner.add(fireDeleteVersionDraftEventTest);
 }, '', {requires: ['test', 'ez-locationviewversionstabview', 'node-event-simulate']});
