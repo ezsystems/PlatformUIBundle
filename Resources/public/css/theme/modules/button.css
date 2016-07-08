@@ -33,6 +33,10 @@ a.ez-button {
     content: "\E615";
 }
 
+.ez-button-create:before {
+    content: "\E61D";
+}
+
 .ez-button-upload:before {
     content: "\E61f";
 }

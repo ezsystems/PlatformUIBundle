@@ -1,2 +1,5 @@
+<p class="ez-dashboard-toolbar">
+    <button class="ez-button pure-button ez-button-create ez-font-icon ez-dashboard-create-button">Create New Content</button>
+</p>
 <h1 class="ez-dashboard-title">My Dashboard</h1>
 <div class="ez-dashboard-content"></div>
