@@ -254,6 +254,11 @@ YUI.add('ez-alloyeditor-button-imagehref-tests', function (Y) {
                 contentInfo = new Mock(),
                 content = new Mock(),
                 eventFired = false,
+                selection = {
+                    contentType: contentType,
+                    content: content,
+                    contentInfo: contentInfo,
+                },
                 widget;
 
             fields[fieldIdentifier] = {fieldValue: {id: 42}};
@@ -268,9 +273,15 @@ YUI.add('ez-alloyeditor-button-imagehref-tests', function (Y) {
 
             this.listeners.push(this.editor.get('nativeEditor').on('updatedEmbed', function (evt) {
                 eventFired = true;
+
+                Assert.areSame(
+                    selection,
+                    evt.data.embedStruct,
+                    "The updatedEmbed event parameters should contain the selection"
+                );
             }));
 
-            handler({selection: {contentType: contentType, content: content, contentInfo: contentInfo}});
+            handler({selection: selection});
 
             widget = this._getWidget();
 

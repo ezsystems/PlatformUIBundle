@@ -105,7 +105,8 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
         "Should add the embed after choosing the content": function () {
             var button, contentInfo = new Mock(),
                 contentId = 42,
-                updatedEmbed = false;
+                updatedEmbed = false,
+                selection = {contentInfo: contentInfo};
 
             Mock.expect(contentInfo, {
                 method: 'get',
@@ -118,17 +119,21 @@ YUI.add('ez-alloyeditor-button-embed-tests', function (Y) {
                 }
             });
 
-            this.editor.get('nativeEditor').on('updatedEmbed', function () {
+            this.editor.get('nativeEditor').on('updatedEmbed', function (e) {
                 updatedEmbed = true;
+
+                Assert.areSame(
+                    selection,
+                    e.data.embedStruct,
+                    "The updatedEmbed event parameters should contain the selection"
+                );
             });
 
             this.editor.get('nativeEditor').on('contentDiscover', function (evt) {
                 var wrapper, widget;
 
                 evt.data.config.contentDiscoveredHandler.call(this, {
-                    selection: {
-                        contentInfo: contentInfo,
-                    },
+                    selection: selection,
                 });
 
                 wrapper = this.element.findOne('.cke_widget_element');

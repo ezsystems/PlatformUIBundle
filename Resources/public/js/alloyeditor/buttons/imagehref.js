@@ -63,7 +63,7 @@ YUI.add('ez-alloyeditor-button-imagehref', function (Y) {
 
             this._setContentInfo(contentInfo);
             this._getWidget().setWidgetContent('');
-            this.props.editor.get('nativeEditor').fire('updatedEmbed');
+            this._fireUpdatedEmbed(e.selection);
         },
 
         render: function () {
