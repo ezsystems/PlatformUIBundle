@@ -567,6 +567,29 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
                 "The config element should be initialized"
             );
         },
+
+        // Regression tests for EZP-26027
+        _testCancelEditEvents: function (event, eventParams) {
+            var widget = this._getWidget('#embed'),
+                wrapperNode = Y.one(widget.wrapper.$),
+                initialContent = this.container.getHTML();
+
+            wrapperNode.simulate('dblclick');
+            Assert.areEqual(
+                initialContent,
+                this.container.getHTML(),
+                "The content of the editor should remain intact"
+            );
+
+        },
+
+        "Should not add a new embed on doubleclick": function () {
+            this._testCancelEditEvents('dblclick');
+        },
+
+        "Should not add a new embed on enter": function () {
+            this._testCancelEditEvents('keypress', {charCode: 13});
+        },
     });
 
     alignMethodsTest = new Y.Test.Case({
