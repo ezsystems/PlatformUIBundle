@@ -54,7 +54,7 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
             this.execCommand();
             this._setContentInfo(contentInfo);
             widget = this._getWidget().setWidgetContent('');
-            this.props.editor.get('nativeEditor').fire('updatedEmbed');
+            this._fireUpdatedEmbed(e.selection);
             widget.setFocused(true);
         },
 

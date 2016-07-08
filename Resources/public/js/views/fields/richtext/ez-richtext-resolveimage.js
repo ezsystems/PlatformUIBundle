@@ -35,6 +35,25 @@ YUI.add('ez-richtext-resolveimage', function (Y) {
         return list;
     };
 
+    ResolveImage.prototype._renderSelectedContent = function (view, embedStruct, mapNodes) {
+        var content = embedStruct.content,
+            contentId = embedStruct.contentInfo.get('contentId'),
+            contentType = embedStruct.contentType,
+            embedNodes = mapNodes[contentId],
+            imageField;
+
+        if ( !embedNodes ) {
+            return;
+        }
+
+        imageField = content.get('fields')[contentType.getFieldDefinitionIdentifiers('ezimage')[0]];
+        embedNodes.forEach(function (node) {
+            this._renderLoadingEmbed(node);
+            this._loadVariation(view, content, imageField, node);
+        }, this);
+        delete mapNodes[contentId];
+    };
+
     ResolveImage.prototype._loadEmbeds = function (mapNode, view) {
         view.fire('contentSearch', {
             viewName: 'resolveimage-field-' + view.get('field').id,
@@ -55,18 +74,31 @@ YUI.add('ez-richtext-resolveimage', function (Y) {
                 imageField;
 
             imageField = content.get('fields')[contentType.getFieldDefinitionIdentifiers('ezimage')[0]];
-            mapNode[content.get('contentId')].forEach(function (embedNode) {
-                view.fire('loadImageVariation', {
-                    variation: this._getEmbedVariation(embedNode),
-                    field: imageField,
-                    callback: Y.bind(function (error, variation) {
-                        this._unsetLoading(embedNode);
-                        this._getEmbedContent(embedNode).remove(true);
-                        this._renderImage(embedNode, content, variation);
-                    }, this),
-                });
-            }, this);
+            mapNode[content.get('contentId')].forEach(Y.bind(this._loadVariation, this, view, content, imageField));
         }, this);
+    };
+
+    /**
+     * Fires the loadImageVariation event to load the image variation to display
+     * in the image embed.
+     *
+     * @method _loadVariation
+     * @private
+     * @param {eZ.FieldView|eZ.FieldEditView} view
+     * @param {eZ.Content} content
+     * @param {Object} imageField
+     * @param {Node} embedNode
+     */
+    ResolveImage.prototype._loadVariation = function (view, content, imageField, embedNode) {
+        view.fire('loadImageVariation', {
+            variation: this._getEmbedVariation(embedNode),
+            field: imageField,
+            callback: Y.bind(function (error, variation) {
+                this._unsetLoading(embedNode);
+                this._getEmbedContent(embedNode).remove(true);
+                this._renderImage(embedNode, content, variation);
+            }, this),
+        });
     };
 
     /**

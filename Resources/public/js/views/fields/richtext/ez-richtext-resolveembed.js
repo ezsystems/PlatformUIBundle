@@ -25,14 +25,44 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
      *
      * @method process
      * @param {eZ.FieldView|eZ.FieldEditView} view
+     * @param {EventFacade} [event] the event parameters (if any) that triggered
+     * the process
      */
-    ResolveEmbed.prototype.process = function (view) {
-        var embeds = this._getEmbedList(view);
-        
-        if ( !embeds.isEmpty() ) {
-            this._renderLoadingEmbeds(embeds);
-            this._loadEmbeds(this._buildEmbedMapNodes(embeds), view);
+    ResolveEmbed.prototype.process = function (view, event) {
+        var embeds = this._getEmbedList(view),
+            mapNodes = this._buildEmbedMapNodes(embeds);
+
+        if ( event && event.embedStruct ) {
+            this._renderSelectedContent(view, event.embedStruct, mapNodes);
         }
+        if ( !Y.Object.isEmpty(mapNodes) ) {
+            this._renderLoadingEmbedElements(mapNodes);
+            this._loadEmbeds(mapNodes, view);
+        }
+    };
+
+    /**
+     * Renders the embed from the embedStruct provided in the event parameters
+     * that triggered the process.
+     *
+     * @method _renderSelectedContent
+     * @protected
+     * @param {eZ.FieldView|eZ.FieldEditView} view
+     * @param {Object} embedStruct
+     * @param {Object} mapNodes
+     */
+    ResolveEmbed.prototype._renderSelectedContent = function (view, embedStruct, mapNodes) {
+        var embedNodes = mapNodes[embedStruct.contentInfo.get('contentId')];
+
+        if ( !embedNodes ) {
+            return;
+        }
+
+        embedNodes.forEach(function (node) {
+            this._appendContentNode(node)
+                .setContent(embedStruct.contentInfo.get('name'));
+        }, this);
+        delete mapNodes[embedStruct.contentInfo.get('contentId')];
     };
 
     /**
@@ -58,13 +88,40 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
     };
 
     /**
+     * Renders the embeds in the `mapNode` as loading
+     *
+     * @protected
+     * @method _renderLoadingEmbedElements
+     * @param {Object} mapNode
+     */
+    ResolveEmbed.prototype._renderLoadingEmbedElements = function (mapNode) {
+        Y.Object.each(mapNode, function (embedNodes) {
+            embedNodes.forEach(this._renderLoadingEmbed, this);
+        }, this);
+    };
+
+    /**
+     * Renders the given embed node as loading
+     *
+     * @protected
+     * @method _renderLoadingEmbed
+     * @param {Node} node
+     */
+    ResolveEmbed.prototype._renderLoadingEmbed = function (node) {
+        this._setLoading(node);
+        this._appendLoadingNode(node);
+    };
+
+    /**
      * Renders the embed as in *loading mode*.
      *
      * @method _renderLoadingEmbeds
      * @protected
      * @param {NodeList} embeds
+     * @deprecated
      */
     ResolveEmbed.prototype._renderLoadingEmbeds = function (embeds) {
+        console.log('[DEPRECATED] _renderLoadingEmbeds is deprecated, it will be removed from PlatformUI 2.0');
         embeds.each(function (embedNode) {
             this._setLoading(embedNode);
             this._appendLoadingNode(embedNode);
@@ -155,6 +212,19 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
     };
 
     /**
+     * Appends the content node to the embed node.
+     *
+     * @method _appendContentNode
+     * @private
+     * @param {Node} embedNode
+     * @return {Node} the content node
+     */
+    ResolveEmbed.prototype._appendContentNode = function (embedNode) {
+        embedNode.append('<p class="ez-embed-content"></p>');
+        return this._getEmbedContent(embedNode);
+    };
+
+    /**
      * Appends the embed content element when in loading mode.
      *
      * @method _appendLoadingNode
@@ -162,7 +232,7 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
      * @param {Node} embedNode
      */
     ResolveEmbed.prototype._appendLoadingNode = function (embedNode) {
-        embedNode.append('<p class="ez-embed-content">Loading...</a>');
+        this._appendContentNode(embedNode).setContent('Loading...');
     };
 
     /**
