@@ -315,6 +315,7 @@ system:
                     path: %ez_platformui.public_dir%/templates/dashboard.hbt
                 ez-dashboardblocksview:
                     requires:
+                        - 'event-tap'
                         - 'ez-templatebasedview'
                         - 'ez-dashboardblockallcontentview'
                         - 'ez-dashboardblockmydraftsview'

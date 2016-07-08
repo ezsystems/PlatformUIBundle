@@ -9,9 +9,11 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
         forwardActiveTest,
         addBlockTest,
         removeBlockTest,
+        createButtonTest,
         VIEW_CONFIG = {container: '.container'},
         SELECTOR_CONTENT = '.ez-dashboard-content',
-        View = Y.eZ.DashboardBlocksView;
+        View = Y.eZ.DashboardBlocksView,
+        Assert = Y.Assert;
 
     Y.eZ.DashboardBlockBaseView = Y.Base.create('dashboardBlockBaseView', Y.View, [], {}, {
         ATTRS: {
@@ -212,14 +214,42 @@ YUI.add('ez-dashboardblocksview-tests', function (Y) {
         }
     });
 
+    createButtonTest = new Y.Test.Case({
+        name: 'eZ Dashboard Blocks View create button test',
+
+        setUp: function () {
+            this.view = new View(VIEW_CONFIG);
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should fire the `contentCreationWizard` event": function () {
+            var contentCreationWizardEvent = false,
+                button = this.view.get('container').one('.ez-dashboard-create-button');
+
+            this.view.on('contentCreationWizardOpen', this.next(function () {
+                contentCreationWizardEvent = true;
+            }, this));
+
+            button.simulateGesture('tap');
+            this.wait();
+
+            Assert.isTrue(
+                contentCreationWizardEvent,
+                "The `contentCreationWizard` event should have been fired"
+            );
+        },
+    });
+
     Y.Test.Runner.setName('eZ Dashboard Blocks View tests');
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(addBlockTest);
     Y.Test.Runner.add(removeBlockTest);
     Y.Test.Runner.add(forwardActiveTest);
+    Y.Test.Runner.add(createButtonTest);
 }, '', {requires: [
-    'test',
-    'base',
-    'view',
-    'ez-dashboardblocksview'
+    'test', 'base', 'view', 'node-event-simulate', 'ez-dashboardblocksview'
 ]});

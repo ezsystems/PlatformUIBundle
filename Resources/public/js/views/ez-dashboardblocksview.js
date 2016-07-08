@@ -22,8 +22,30 @@ YUI.add('ez-dashboardblocksview', function (Y) {
      * @extends eZ.TemplateBasedView
      */
     Y.eZ.DashboardBlocksView = Y.Base.create('dashboardBlocksView', Y.eZ.TemplateBasedView, [], {
+        events: {
+            '.ez-dashboard-create-button': {
+                'tap': '_launchContentCreationWidget',
+            },
+        },
+
         initializer: function () {
             this.after('activeChange', this._toggleBlocksActiveState, this);
+        },
+
+        /**
+         * Fires the `contentCreationWizardOpen` event to run the Content
+         * Creation Widget to let the editor create a Content item.
+         *
+         * @method _launchContentCreationWidget
+         * @protected
+         */
+        _launchContentCreationWidget: function () {
+            /**
+             * Fired to open the Content Creation Wizard
+             *
+             * @event contentCreationWizardOpen
+             */
+            this.fire('contentCreationWizardOpen');
         },
 
         /**
