@@ -22,6 +22,11 @@
     margin-top: 1em;
 }
 
+.ez-view-dashboardblocksview .ez-dashboard-toolbar {
+    text-align: right;
+    margin: 0;
+}
+
 @media (min-width: 1024px) {
     .ez-view-dashboardblocksview {
         padding: 2% 6%;
