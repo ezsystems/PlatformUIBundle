@@ -20,7 +20,7 @@ YUI.add('ez-versionsplugin', function (Y) {
      * `content` containing the eZ.Content object for which you want to load versions.
      *
      * Deleting versions:
-     * In order to use it you need to fire `deleteVersionDraft`
+     * In order to use it you need to fire `deleteVersion`
      *
      * Creating draft based on an archived version:
      * In order to use it you need to fire 'createDraft' with corresponding
@@ -36,7 +36,7 @@ YUI.add('ez-versionsplugin', function (Y) {
         initializer: function () {
             this.onHostEvent('*:loadVersions', this._loadVersions);
             this.onHostEvent('*:createDraft', this._createDraftFromArchivedVersion);
-            this.onHostEvent('*:deleteVersionDraft', this._deleteDraftConfirm);
+            this.onHostEvent('*:deleteVersion', this._confirmDeleteVersion);
         },
 
         /**
@@ -136,19 +136,19 @@ YUI.add('ez-versionsplugin', function (Y) {
         },
 
         /**
-         * deleteVersionDraft event handler, opens confirm box to confirm that selected draft
+         * deleteVersion event handler, opens confirm box to confirm that selected versions
          * are going to be deleted
          *
-         * @method _deleteDraftConfirm
+         * @method _confirmDeleteVersion
          * @private
-         * @param {EventFacade} e deleteVersionDraft event facade
+         * @param {EventFacade} e deleteVersion event facade
          */
-        _deleteDraftConfirm: function (e) {
+        _confirmDeleteVersion: function (e) {
             var service = this.get('host');
 
             service.fire('confirmBoxOpen', {
                 config: {
-                    title: "Are you sure you want to remove selected drafts?",
+                    title: "Are you sure you want to remove selected version(s)?",
                     confirmHandler: Y.bind(function () {
                         this._deleteVersion(e.versions, e.afterDeleteVersionsCallback);
                     }, this),

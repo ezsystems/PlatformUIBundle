@@ -326,7 +326,7 @@ YUI.add('ez-versionsplugin-tests', function (Y) {
             delete this.service;
         },
 
-        "Should trigger confirm box open on `deleteVersionDraft` event": function () {
+        "Should trigger confirm box open on `deleteVersion` event": function () {
             var confirmBoxOpenTriggered = false;
 
             this.service.on('confirmBoxOpen', function (e) {
@@ -342,7 +342,7 @@ YUI.add('ez-versionsplugin-tests', function (Y) {
                 );
             });
 
-            this.service.fire('deleteVersionDraft', {});
+            this.service.fire('deleteVersion', {});
 
             Assert.isTrue(
                 confirmBoxOpenTriggered,
@@ -376,7 +376,7 @@ YUI.add('ez-versionsplugin-tests', function (Y) {
                 e.config.cancelHandler();
             });
 
-            this.service.fire('deleteVersionDraft', {
+            this.service.fire('deleteVersion', {
                 versions: [],
                 afterDeleteVersionsCallback: afterDeleteVersionsCallback
             });
@@ -580,7 +580,7 @@ YUI.add('ez-versionsplugin-tests', function (Y) {
                 this._assertErrorNotification(e.notification);
             },this));
 
-            this.service.fire('deleteVersionDraft', {
+            this.service.fire('deleteVersion', {
                 versions: versionsForRemoval,
                 afterDeleteVersionsCallback: afterDeleteVersionsCallback
             });
@@ -628,7 +628,7 @@ YUI.add('ez-versionsplugin-tests', function (Y) {
                 this._assertErrorNotification(e.notification);
             }, this));
 
-            this.service.fire('deleteVersionDraft', {
+            this.service.fire('deleteVersion', {
                 versions: versionsForRemoval,
                 afterDeleteVersionsCallback: afterDeleteVersionsCallback
             });
@@ -680,7 +680,7 @@ YUI.add('ez-versionsplugin-tests', function (Y) {
 
             }, this));
 
-            this.service.fire('deleteVersionDraft', {
+            this.service.fire('deleteVersion', {
                 versions: versionsForRemoval,
                 afterDeleteVersionsCallback: afterDeleteVersionsCallback
             });
