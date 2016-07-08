@@ -164,6 +164,12 @@
                 >
                     New draft based on selected version
                 </button>
+                <button class="ez-delete-archived-button ez-button pure-button"
+                        data-version-id="{{id}}"
+                        disabled="disabled"
+                >
+                    Remove selected archived version(s)
+                </button>
             </div>
             </div>
         </div>

@@ -16,10 +16,13 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
             'tap': '_createDraftFromArchivedVersion'
         },
         '.ez-archived-version-checkbox': {
-            'change': '_enableCreateDraftFromArchivedVersionButton'
+            'change': '_enableArchivedVersionButtons'
         },
         '.ez-delete-draft-button': {
             'tap': '_deleteDraft'
+        },
+        '.ez-delete-archived-button': {
+            'tap': '_deleteArchived'
         },
         '.ez-draft-version-checkbox': {
             'change': '_enableCreateDeleteDraftButton'
@@ -109,20 +112,27 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
         },
 
         /**
-         * Enables the `Create Draft form archived version` button if the selection is right
+         * Enables the `buttons corresponding to the archived list.
          *
-         * @method _enableCreateDraftFromArchivedVersionButton
+         * @method _enableArchivedVersionButtons
          * @protected
          */
-        _enableCreateDraftFromArchivedVersionButton: function () {
+        _enableArchivedVersionButtons: function () {
             var c = this.get('container'),
                 checked = c.all('.ez-archived-version-checkbox:checked'),
-                button = c.one('.ez-create-draft-from-archived-button');
+                createDraftButton = c.one('.ez-create-draft-from-archived-button'),
+                deleteButton = c.one('.ez-delete-archived-button');
 
             if (checked.size() === 1) {
-                button.set('disabled', false);
+                createDraftButton.set('disabled', false);
             } else {
-                button.set('disabled', true);
+                createDraftButton.set('disabled', true);
+            }
+
+            if (checked.size() >= 1) {
+                deleteButton.set('disabled', false);
+            } else {
+                deleteButton.set('disabled', true);
             }
         },
 
@@ -151,15 +161,7 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
          * @protected
          */
         _createDraftFromArchivedVersion: function () {
-            var c = this.get('container'),
-                versions = Y.Array.reject(this.get('versions').ARCHIVED, function (version) {
-                    var checkbox = c.one('.ez-archived-version-checkbox[data-version-id="' + version.get('id') + '"]');
-
-                    if (checkbox && checkbox.get('checked')) {
-                        return false;
-                    }
-                    return true;
-                });
+            var versions = this._getSelectedArchived();
 
             if (versions.length === 1) {
                 this._disableVersionsCheckboxes();
@@ -180,18 +182,20 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
         },
 
         /**
-         * Returns the selected draft as VersionInfo
+         * Returns the selected versions as VersionInfo
          *
-         * @method _getSelectedDrafts
-         * @protected
+         * @method _getSelectedVersionItems
+         * @private
+         * @param {Array} versionList of eZ.VersionInfo versions to pick from
+         * @param {String} checkboxClass CSS class of the checkboxes
          * @return {Array} of eZ.VersionInfo
          */
-        _getSelectedDrafts: function () {
+        _getSelectedVersionItems: function (versionList, checkboxClass) {
             var c = this.get('container');
 
-            return Y.Array.reject(this.get('versions').DRAFT, function (version) {
+            return Y.Array.reject(versionList, function (version) {
                 var checkbox = c.one(
-                    '.ez-draft-version-checkbox[data-version-id="' + version.get('id') + '"]'
+                    checkboxClass + '[data-version-id="' + version.get('id') + '"]'
                 );
 
                 if (checkbox && checkbox.get('checked')) {
@@ -202,26 +206,73 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
         },
 
         /**
+         * Returns the selected draft as VersionInfo
+         *
+         * @method _getSelectedDrafts
+         * @protected
+         * @return {Array} of eZ.VersionInfo
+         */
+         _getSelectedDrafts: function () {
+             return this._getSelectedVersionItems(
+                 this.get('versions').DRAFT,
+                 '.ez-draft-version-checkbox'
+             );
+         },
+
+        /**
+         * Returns the selected archived versions as VersionInfo
+         *
+         * @method _getSelectedArchived
+         * @protected
+         * @return {Array} of eZ.VersionInfo
+         */
+        _getSelectedArchived: function () {
+            return this._getSelectedVersionItems(
+                this.get('versions').ARCHIVED,
+                '.ez-archived-version-checkbox'
+            );
+        },
+
+        /**
+         * Deletes one or several archived version
+         *
+         * @method _deleteArchived
+         * @protected
+         */
+        _deleteArchived: function () {
+            this._fireDeleteVersions(this._getSelectedArchived());
+        },
+
+        /**
          * Deletes one or several drafts
          *
          * @method _deleteDraft
          * @protected
          */
         _deleteDraft: function () {
-            var versions = this._getSelectedDrafts();
+            this._fireDeleteVersions(this._getSelectedDrafts());
+        },
 
+        /**
+         * Fires the Delete version event if `versions` is not empty
+         *
+         * @method _fireDeleteVersions
+         * @protected
+         * @param {Array} versions of eZ.VersionInfo
+         */
+        _fireDeleteVersions: function (versions) {
             if (versions.length > 0) {
                 this._disableVersionsCheckboxes();
 
                 /**
-                 * Fired when the user clicks on the Delete draft button
+                 * Fired when the user clicks any of the delete version buttons
                  *
-                 * @event deleteVersionDraft
+                 * @event deleteVersion
                  * @param {Array} of eZ.VersionInfo
                  *        {Function} afterDeleteVersionsCallback
                  *
                  */
-                this.fire('deleteVersionDraft', {
+                this.fire('deleteVersion', {
                     versions: versions,
                     afterDeleteVersionsCallback: Y.bind(this._afterDeleteVersionsCallback, this)
                 });

@@ -10,7 +10,7 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
         fireCreateDraftEventTest,
         selectArchivedVersionTest,
         selectDeleteDraftVersionTest,
-        fireDeleteVersionDraftEventTest,
+        fireDeleteVersionEventTest,
         Assert = Y.Assert,
         Mock = Y.Mock,
         createCheckableVersionMock = function (versionId, versionNo, checked) {
@@ -462,6 +462,58 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
                 "Create Button should be disabled when no items are checked"
             );
         },
+
+        "Should enable the delete button when at least an item is selected": function () {
+            var deleteButton,
+                version1,
+                version2;
+
+            this._createArchivedVersionMock(4);
+
+            this.view.set('versions', this.versions);
+            this.view.render();
+
+            deleteButton = this.view.get('container').one('.ez-delete-archived-button');
+            version1 = this.view.get('container').one(".ez-archived-version-checkbox[data-version-id='/version/1']");
+            version2 = this.view.get('container').one(".ez-archived-version-checkbox[data-version-id='/version/2']");
+
+            Assert.isTrue(
+                deleteButton.get('disabled'),
+                "Create Button should be disabled when no items are checked"
+            );
+
+            version1.setAttribute('checked', 'checked');
+            version1.simulate('change');
+
+            Assert.isFalse(
+                deleteButton.get('disabled'),
+                "Create Button should not be disabled with one item checked"
+            );
+
+            version2.setAttribute('checked', 'checked');
+            version2.simulate('change');
+
+            Assert.isFalse(
+                deleteButton.get('disabled'),
+                "Create Button should not be disabled with two items checked"
+            );
+
+            version1.removeAttribute('checked');
+            version1.simulate('change');
+
+            Assert.isFalse(
+                deleteButton.get('disabled'),
+                "Create Button should not be disabled"
+            );
+
+            version2.removeAttribute('checked');
+            version2.simulate('change');
+
+            Assert.isTrue(
+                deleteButton.get('disabled'),
+                "Create Button should be disabled when no items are checked"
+            );
+        },
     });
 
     selectDeleteDraftVersionTest = new Y.Test.Case({
@@ -489,8 +541,8 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
             }
         },
 
-        "Should enable the create button when at least an item is selected": function () {
-            var createButton,
+        "Should enable the delete button when at least an item is selected": function () {
+            var deleteButton,
                 version1,
                 version2;
 
@@ -499,12 +551,12 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
             this.view.set('versions', this.versions);
             this.view.render();
 
-            createButton = this.view.get('container').one('.ez-delete-draft-button');
+            deleteButton = this.view.get('container').one('.ez-delete-draft-button');
             version1 = this.view.get('container').one(".ez-draft-version-checkbox[data-version-id='/version/1']");
             version2 = this.view.get('container').one(".ez-draft-version-checkbox[data-version-id='/version/2']");
 
             Assert.isTrue(
-                createButton.get('disabled'),
+                deleteButton.get('disabled'),
                 "Create Button should be disabled when no items are checked"
             );
 
@@ -512,7 +564,7 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
             version1.simulate('change');
 
             Assert.isFalse(
-                createButton.get('disabled'),
+                deleteButton.get('disabled'),
                 "Create Button should not be disabled with one item checked"
             );
 
@@ -520,7 +572,7 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
             version2.simulate('change');
 
             Assert.isFalse(
-                createButton.get('disabled'),
+                deleteButton.get('disabled'),
                 "Create Button should not be disabled with two items checked"
             );
 
@@ -528,7 +580,7 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
             version1.simulate('change');
 
             Assert.isFalse(
-                createButton.get('disabled'),
+                deleteButton.get('disabled'),
                 "Create Button should not be disabled"
             );
 
@@ -536,17 +588,20 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
             version2.simulate('change');
 
             Assert.isTrue(
-                createButton.get('disabled'),
+                deleteButton.get('disabled'),
                 "Create Button should be disabled when no items are checked"
             );
         },
     });
 
-    fireDeleteVersionDraftEventTest = new Y.Test.Case({
-        name: "ViewVersionsTabView fire `deleteVersionDraft` event test",
+    fireDeleteVersionEventTest = new Y.Test.Case({
+        name: "ViewVersionsTabView fire `deleteVersion` event test",
         setUp: function () {
             this.contentMock = new Mock();
-            this.versions = {'DRAFT': []};
+            this.versions = {
+                'DRAFT': [],
+                'ARCHIVED': [],
+            };
 
             this.view = new Y.eZ.LocationViewVersionsTabView({
                 content: this.contentMock,
@@ -572,12 +627,23 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
             );
         },
 
-        "Should fire the `deleteVersionDraft` event": function () {
+        _createArchivedVersionMock: function (nbOfChecked) {
+            for (var i = 1; i <= nbOfChecked; i++) {
+                this.versions.ARCHIVED.push(
+                    createCheckableVersionMock("/version/" + i, i, true)
+                );
+            }
+
+            //creating an item that is not checked
+            this.versions.ARCHIVED.push(
+                createCheckableVersionMock("/version/" + 42, 42, false)
+            );
+        },
+
+        _testDeleteVersion: function(expectedVersions, deleteButtonClass, checkboxClass) {
             var eventFired = false,
                 viewRefreshed = false,
-                createButton;
-
-            this._createDraftVersionMock(2);
+                deleteButton;
 
             this.view.set('versions', this.versions);
 
@@ -585,18 +651,18 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
                 viewRefreshed = true;
             });
 
-            this.view.on('*:deleteVersionDraft', Y.bind(function (e) {
+            this.view.on('*:deleteVersion', Y.bind(function (e) {
                 var container = this.view.get('container'),
-                    checkbox = container.one('.ez-draft-version-checkbox[data-version-id="/version/1"]');
+                    checkbox = container.one(checkboxClass + '[data-version-id="/version/1"]');
 
                 eventFired = true;
                 Assert.areSame(
-                    this.versions.DRAFT[0],
+                    expectedVersions[0],
                     e.versions[0],
                     "The event facade should contain the version's first item"
                 );
                 Assert.areSame(
-                    this.versions.DRAFT[1],
+                    expectedVersions[1],
                     e.versions[1],
                     "The event facade should contain the version's second item"
                 );
@@ -610,19 +676,18 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
                 );
 
                 e.afterDeleteVersionsCallback(true);
-
             }, this));
 
             this.view.render();
 
-            createButton = this.view.get('container').one('.ez-delete-draft-button');
-            createButton.set('disabled', false);
+            deleteButton = this.view.get('container').one(deleteButtonClass);
+            deleteButton.set('disabled', false);
 
-            createButton.simulateGesture('tap', Y.bind(function () {
+            deleteButton.simulateGesture('tap', Y.bind(function () {
                 this.resume(function (e) {
                     Assert.isTrue(
                         eventFired,
-                        "The `deleteVersionDraft` event should have been fired"
+                        "The `deleteVersion` event should have been fired"
                     );
                     Assert.isTrue(
                         viewRefreshed,
@@ -634,10 +699,28 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
             this.wait();
         },
 
-        "Should not fire the `deleteVersionDraft` event if no versions are selected": function () {
+        "Should fire the `deleteVersion` event using draft": function () {
+            this._createDraftVersionMock(2);
+            this._testDeleteVersion(
+                this.versions.DRAFT,
+                '.ez-delete-draft-button',
+                '.ez-draft-version-checkbox'
+            );
+        },
+
+        "Should fire the `deleteVersion` event using archived": function () {
+            this._createArchivedVersionMock(2);
+            this._testDeleteVersion(
+                this.versions.ARCHIVED,
+                '.ez-delete-archived-button',
+                '.ez-archived-version-checkbox'
+            );
+        },
+
+        "Should not fire the `deleteVersion` event if no versions are selected": function () {
             var eventFired = false,
                 viewRefreshed = false,
-                createButton;
+                deleteButton;
 
             this._createDraftVersionMock(0);
 
@@ -647,20 +730,20 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
                 viewRefreshed = true;
             });
 
-            this.view.on('*:deleteVersionDraft', Y.bind(function (e) {
+            this.view.on('*:deleteVersion', Y.bind(function (e) {
                 eventFired = true;
             }, this));
 
             this.view.render();
 
-            createButton = this.view.get('container').one('.ez-delete-draft-button');
-            createButton.set('disabled', false);
+            deleteButton = this.view.get('container').one('.ez-delete-draft-button');
+            deleteButton.set('disabled', false);
 
-            createButton.simulateGesture('tap', Y.bind(function () {
+            deleteButton.simulateGesture('tap', Y.bind(function () {
                 this.resume(function (e) {
                     Assert.isFalse(
                         eventFired,
-                        "The `deleteVersionDraft` event should not be fired"
+                        "The `deleteVersion` event should not be fired"
                     );
                     Assert.isFalse(
                         viewRefreshed,
@@ -671,10 +754,10 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
             this.wait();
         },
 
-        "Should enabled checkboxes after cancel in confirm box": function () {
+        "Should enable checkboxes after cancel in confirm box": function () {
             var eventFired = false,
                 viewRefreshed = false,
-                createButton;
+                deleteButton;
 
             this._createDraftVersionMock(2);
 
@@ -684,21 +767,21 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
                 viewRefreshed = true;
             });
 
-            this.view.on('*:deleteVersionDraft', Y.bind(function (e) {
+            this.view.on('*:deleteVersion', Y.bind(function (e) {
                 eventFired = true;
                 e.afterDeleteVersionsCallback(false);
             }, this));
 
             this.view.render();
 
-            createButton = this.view.get('container').one('.ez-delete-draft-button');
-            createButton.set('disabled', false);
+            deleteButton = this.view.get('container').one('.ez-delete-draft-button');
+            deleteButton.set('disabled', false);
 
-            createButton.simulateGesture('tap', Y.bind(function () {
+            deleteButton.simulateGesture('tap', Y.bind(function () {
                 this.resume(function (e) {
                     Assert.isTrue(
                         eventFired,
-                        "The `deleteVersionDraft` event should not be fired"
+                        "The `deleteVersion` event should not be fired"
                     );
                     Assert.isFalse(
                         viewRefreshed,
@@ -725,5 +808,5 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
     Y.Test.Runner.add(fireCreateDraftEventTest);
     Y.Test.Runner.add(selectArchivedVersionTest);
     Y.Test.Runner.add(selectDeleteDraftVersionTest);
-    Y.Test.Runner.add(fireDeleteVersionDraftEventTest);
+    Y.Test.Runner.add(fireDeleteVersionEventTest);
 }, '', {requires: ['test', 'ez-locationviewversionstabview', 'node-event-simulate']});
