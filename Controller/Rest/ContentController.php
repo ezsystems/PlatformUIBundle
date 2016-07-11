@@ -249,7 +249,7 @@ class ContentController extends Content
         foreach ($contentUpdateStruct->fields as $field) {
             if ($field->value instanceof UserFieldValue) {
                 $userUpdateStruct->email = $field->value->email;
-                $userUpdateStruct->password = $field->value->passwordHash;
+                $userUpdateStruct->password = $field->value->passwordHash ?: null;
 
                 $field->value->passwordHash = null;
             }
