@@ -1,0 +1,29 @@
+<button class="ez-contentcreationwizard-close ez-font-icon" data-icon="&#xe62a;"></button>
+<h1 class="ez-contentcreationwizard-title">Create New Content</h1>
+
+<ol class="ez-contentcreationwizard-toc">
+    <li class="ez-contentcreationwizard-step1-name">Choose a Content Type</li>
+    <li class="ez-contentcreationwizard-step2-name">Confirm Location</li>
+</ol>
+
+<hr class="ez-contentcreationwizard-separator">
+
+<div class="ez-contentcreationwizard-steps">
+    <div class="ez-contentcreationwizard-step1">
+        <div class="ez-contenttypeselector-container"></div>
+
+    </div>
+    <div class="ez-contentcreationwizard-step2">
+        <h2>Selected Location:</h2>
+        <p class="ez-contentcreationwizard-content-name"></p>
+        <p>
+            <button class="ez-button ez-contentcreationwizard-edit-location">Edit Location</button>
+            <button class="ez-button ez-contentcreationwizard-choose-location">Choose Location</button>
+        </p>
+    </div>
+</div>
+<div class="ez-contentcreationwizard-toolbar">
+    <button class="ez-button ez-contentcreationwizard-next">Next</button>
+    <button class="ez-button ez-contentcreationwizard-back">Back</button>
+    <button class="ez-button ez-contentcreationwizard-finish">Finish</button>
+</div>
