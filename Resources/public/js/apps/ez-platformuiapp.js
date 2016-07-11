@@ -78,6 +78,12 @@ YUI.add('ez-platformuiapp', function (Y) {
                 service: Y.eZ.NotificationHubViewService,
                 container: '.ez-notification-container',
             },
+            contentCreationWizard: {
+                type: Y.eZ.ContentCreationWizardView,
+                service: Y.eZ.ContentCreationWizardViewService,
+                container: '.ez-contentcreationwizard-container',
+                hideClass: 'is-contentcreationwizard-hidden',
+            },
         },
 
         views: {
