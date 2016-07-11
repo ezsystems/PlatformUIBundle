@@ -187,6 +187,8 @@ system:
                         - 'ez-universaldiscoveryview'
                         - 'ez-confirmboxviewservice'
                         - 'ez-confirmboxview'
+                        - 'ez-contentcreationwizardviewservice'
+                        - 'ez-contentcreationwizardview'
                         - 'ez-languageselectionboxviewservice'
                         - 'ez-languageselectionboxview'
                         - 'ez-notificationhubviewservice'
@@ -198,6 +200,7 @@ system:
                         - 'ez-domstateplugin'
                         - 'ez-universaldiscoveryplugin'
                         - 'ez-confirmboxplugin'
+                        - 'ez-contentcreationwizardplugin'
                         - 'ez-languageselectionboxplugin'
                         - 'ez-notificationhubplugin'
                         - 'ez-positionplugin'
@@ -282,6 +285,9 @@ system:
                 ez-confirmboxviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-confirmboxviewservice.js"
+                ez-contentcreationwizardviewservice:
+                    requires: ['ez-viewservice', 'ez-sideviewservice']
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-contentcreationwizardviewservice.js"
                 ez-languageselectionboxviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-languageselectionboxviewservice.js"
@@ -565,6 +571,12 @@ system:
                 draftconflictview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/confirmbox/draftconflict.hbt"
+                ez-contentcreationwizardview:
+                    requires: ['event-tap', 'ez-templatebasedview', 'contentcreationwizardview-ez-template']
+                    path: "%ez_platformui.public_dir%/js/views/ez-contentcreationwizardview.js"
+                contentcreationwizardview-ez-template:
+                    type: 'template'
+                    path: "%ez_platformui.public_dir%/templates/contentcreationwizard.hbt"
                 ez-languageselectionboxview:
                     requires: ['ez-templatebasedview', 'languageselectionboxview-ez-template']
                     path: "%ez_platformui.public_dir%/js/views/ez-languageselectionboxview.js"
@@ -1206,6 +1218,9 @@ system:
                 ez-confirmboxplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/apps/plugins/ez-confirmboxplugin.js"
+                ez-contentcreationwizardplugin:
+                    requires: ['plugin', 'base', 'ez-pluginregistry']
+                    path: "%ez_platformui.public_dir%/js/apps/plugins/ez-contentcreationwizardplugin.js"
                 ez-languageselectionboxplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/apps/plugins/ez-languageselectionboxplugin.js"

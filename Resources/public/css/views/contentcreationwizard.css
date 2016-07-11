@@ -1,0 +1,38 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-contentcreationwizard-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 20000;
+
+    display: flex;
+}
+
+.is-contentcreationwizard-hidden .ez-contentcreationwizard-container {
+    display: none;
+    z-index: -10;
+}
+
+.ez-contentcreationwizard-container .ez-view-contentcreationwizardview {
+    flex: 1 1 30%;
+    max-width: 500px;
+}
+
+.ez-view-contentcreationwizardview {
+    margin: auto;
+    padding: 2em;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-close {
+    float: right;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-title {
+    margin: 0;
+}
