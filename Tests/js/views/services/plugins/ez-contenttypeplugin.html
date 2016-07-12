@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>eZ Content Create Plugin tests</title>
+<title>eZ Content Type Plugin tests</title>
 </head>
 <body>
 <script type="text/javascript" src="../../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="../../../assets/pluginregister-tests.js"></script>
-<script type="text/javascript" src="./assets/ez-contentcreateplugin-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-contenttypeplugin-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -21,15 +21,11 @@
     }
 
     YUI({
-        coverage: ['ez-contentcreateplugin'],
+        coverage: ['ez-contenttypeplugin'],
         filter: loaderFilter,
         modules: {
-            'ez-contentcreateplugin': {
-                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contenttypeplugin'],
-                fullpath: '../../../../../Resources/public/js/views/services/plugins/ez-contentcreateplugin.js'
-            },
             'ez-contenttypeplugin': {
-                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry'],
+                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contenttypegroupmodel'],
                 fullpath: '../../../../../Resources/public/js/views/services/plugins/ez-contenttypeplugin.js'
             },
             'ez-viewservicebaseplugin': {
@@ -44,8 +40,20 @@
                 requires: ['base', 'parallel'],
                 fullpath: '../../../../../Resources/public/js/views/services/ez-viewservice.js'
             },
+            'ez-contenttypegroupmodel': {
+                requires: ['ez-restmodel', 'ez-contenttypemodel'],
+                fullpath: '../../../../../Resources/public/js/models/ez-contenttypegroupmodel.js'
+            },
+            'ez-contenttypemodel': {
+                requires: ['ez-restmodel'],
+                fullpath: '../../../../../Resources/public/js/models/ez-contenttypemodel.js'
+            },
+            'ez-restmodel': {
+                requires: ['model'],
+                fullpath: '../../../../../Resources/public/js/models/ez-restmodel.js'
+            },
         }
-    }).use('ez-contentcreateplugin-tests', function (Y) {
+    }).use('ez-contenttypeplugin-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>
