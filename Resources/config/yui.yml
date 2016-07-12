@@ -1300,8 +1300,12 @@ system:
                     requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel', 'ez-contentmodel']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-searchplugin.js"
                 ez-contentcreateplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contenttypeplugin']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-contentcreateplugin.js"
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-contentcreateplugin.js"
+                ez-contenttypeplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contenttypegroupmodel', 'parallel']
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-contenttypeplugin.js"
                 ez-copycontentplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-copycontentplugin.js"
