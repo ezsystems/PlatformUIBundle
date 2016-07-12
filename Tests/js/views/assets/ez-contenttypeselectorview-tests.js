@@ -167,30 +167,38 @@ YUI.add('ez-contenttypeselectorview-tests', function (Y) {
             );
         },
 
-        "Should fire the createContent event when picking a content type": function () {
-            var that = this,
-                createContentFired = false,
+        _testFireEvent: function (eventName) {
+            var eventFired = false,
                 selected,
                 typeId = '';
 
-            this.view.on('createContent', function (e) {
-                createContentFired = true;
+            this.view.on(eventName, function (e) {
+                eventFired = true;
                 Assert.isObject(e.contentType, "The content type should be provided in the event facade");
                 typeId = e.contentType.get('id');
             });
             this.view.render();
 
             selected = this.view.get('container').one('.ez-selection-filter-item');
-            selected.simulateGesture('tap', function () {
-                that.resume(function () {
-                    Assert.isTrue(createContentFired, "The createContent event should have been fired");
-                    Assert.areEqual(
-                        selected.getAttribute('data-id'), typeId,
-                        "The content type provided in the event facade should be the picked one"
-                    );
-                });
-            });
+            selected.simulateGesture('tap', this.next(function () {
+                Assert.isTrue(eventFired, "The createContent event should have been fired");
+                Assert.areEqual(
+                    selected.getAttribute('data-id'), typeId,
+                    "The content type provided in the event facade should be the picked one"
+                );
+            }, this));
             this.wait();
+        },
+
+        "Should fire the createContent event when picking a content type": function () {
+            this._testFireEvent('createContent');
+        },
+
+        "Should fire the configured event when picking a content type": function () {
+            var eventName = 'selectedContentType';
+
+            this.view.set('selectedContentTypeEvent', eventName);
+            this._testFireEvent(eventName);
         },
 
         "Should disable the content type group checkbox if one is selected": function () {
