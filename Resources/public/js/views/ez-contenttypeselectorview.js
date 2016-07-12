@@ -151,7 +151,6 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
          */
         _renderFilterView: function () {
             var filter,
-                that = this,
                 container = this.get('container');
 
             filter = new Y.eZ.SelectionFilterView({
@@ -171,20 +170,21 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
                 }, this),
             });
             this._set('filterView', filter);
-            filter.on('select', function (e) {
-                that._createContentEvent(e.attributes.id);
-            });
+            filter.on('select', Y.bind(function (e) {
+                this._fireSelectedContentTypeEvent(e.attributes.id);
+            }, this));
             filter.render();
         },
 
         /**
-         * Fires the `createContent` event
+         * Fires the event configured in the `selectedContentTypeEvent`
+         * attribute.
          *
-         * @method _createContentEvent
+         * @method _fireSelectedContentTypeEvent
          * @protected
          * @param {String} typeId the content type id
          */
-        _createContentEvent: function (typeId) {
+        _fireSelectedContentTypeEvent: function (typeId) {
             var type;
 
             type = Y.Array.find(this._getContentTypes(), function (t) {
@@ -192,17 +192,31 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
             });
 
             /**
-             * Fired when creating a new content of a given type
+             * Fired when selected a Content Type
              *
-             * @event createContent
+             * @event <value of the selectedContentTypeEvent attribute>
              * @param {eZ.ContentType} contentType
              * @param {String} languageCode (always set to "eng-GB"). This
              *        parameter is deprecated and will be removed in PlatformUI 2.0
              */
-            this.fire('createContent', {
+            this.fire(this.get('selectedContentTypeEvent'), {
                 contentType: type,
                 languageCode: 'eng-GB',
             });
+        },
+
+        /**
+         * Fires the `createContent` event
+         *
+         * @method _createContentEvent
+         * @protected
+         * @deprecated
+         * @param {String} typeId the content type id
+         */
+        _createContentEvent: function (typeId) {
+            console.log('[DEPRECATED] _createContentEvent is deprecated');
+            console.log('[DEPRECATED] it will be removed from PlatformUI 2.0, use _fireSelectedContentTypeEvent instead');
+            this._fireSelectedContentTypeEvent(typeId);
         },
 
         /**
@@ -294,6 +308,17 @@ YUI.add('ez-contenttypeselectorview', function (Y) {
              */
             selectedGroupIds: {
                 value: ['/api/ezp/v2/content/typegroups/1'],
+            },
+
+            /**
+             * The name of the event to fire when a Content Type is selected.
+             *
+             * @attribute selectedContentTypeEvent
+             * @default 'createContent'
+             * @type {String}
+             */
+            selectedContentTypeEvent: {
+                value: 'createContent',
             }
         }
     });
