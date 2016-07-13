@@ -4,7 +4,8 @@
  */
 YUI.add('ez-contentcreationwizardview-tests', function (Y) {
     var renderTest, closeTest, contentTypeGroupsSetterTest, selectorViewTest,
-        selectedContentTypeTest, activeChangeTest, stepTest,
+        selectedContentTypeTest, activeChangeTest, stepTest, udwTest,
+        selectedParentLocationTest,
         Assert = Y.Assert;
 
     renderTest = new Y.Test.Case({
@@ -202,6 +203,13 @@ YUI.add('ez-contentcreationwizardview-tests', function (Y) {
                 contentTypeSelectorView: new Y.View(),
             });
             this.view.render();
+            this.contentName = 'Saint-Paul-de-Varax';
+            this.locationId = '/st/paul/de/varax';
+            this.location = new Y.Base();
+            this.contentInfo = new Y.Base();
+            this.contentInfo.set('name', this.contentName);
+            this.location.set('id', this.locationId);
+            this.location.set('contentInfo', this.contentInfo);
         },
 
         tearDown: function () {
@@ -225,11 +233,16 @@ YUI.add('ez-contentcreationwizardview-tests', function (Y) {
             this.view.set('active', true);
             this.view._set('step', 'whatever');
             this.view._set('selectedContentType', {});
+            this.view._set('selectedParentLocation', this.location);
             this.view.set('active', false);
 
             Assert.isNull(
                 this.view.get('selectedContentType'),
                 "The selected Content Type should be null"
+            );
+            Assert.isNull(
+                this.view.get('selectedParentLocation'),
+                "The selected Location should be null"
             );
             Assert.isUndefined(
                 this.view.get('step'),
@@ -332,6 +345,209 @@ YUI.add('ez-contentcreationwizardview-tests', function (Y) {
         },
     });
 
+    udwTest = new Y.Test.Case({
+        name: "eZ Content Creation Wizard View UDW test",
+
+        setUp: function () {
+            this.view = new Y.eZ.ContentCreationWizardView({
+                container: '.container',
+                contentTypeSelectorView: new Y.View(),
+            });
+            this.view.render();
+            this.contentName = 'Saint-Paul-de-Varax';
+            this.locationId = '/st/paul/de/varax';
+            this.location = new Y.Base();
+            this.contentInfo = new Y.Base();
+            this.contentInfo.set('name', this.contentName);
+            this.location.set('id', this.locationId);
+            this.location.set('contentInfo', this.contentInfo);
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.location.destroy();
+            this.contentInfo.destroy();
+            delete this.view;
+            delete this.location;
+            delete this.contentInfo;
+        },
+
+        _getPickLocationButton: function () {
+            return this.view.get('container').one('.ez-contentcreationwizard-pick-location');
+        },
+
+        "Should run the Universal Discovery Widget": function () {
+            this.view.on('contentDiscover', this.next(function (e) {
+                var config = e.config;
+
+                Assert.isString(
+                    config.title,
+                    "The title should be defined"
+                );
+                Assert.isFalse(
+                    config.startingLocationId,
+                    "The startingLocationId should be false"
+                );
+
+            }, this));
+            this._getPickLocationButton().simulateGesture('tap');
+            this.wait();
+        },
+
+        "Should run the Universal Discovery Widget at the starting Location": function () {
+            this.view._set('selectedParentLocation', this.location);
+            this.view.on('contentDiscover', this.next(function (e) {
+                var config = e.config;
+
+                Assert.areEqual(
+                    this.locationId,
+                    config.startingLocationId,
+                    "The startingLocationId should be set with the previously chosen Location id"
+                );
+            }, this));
+            this._getPickLocationButton().simulateGesture('tap');
+            this.wait();
+        },
+
+        "Should allow only container Content to be selected": function () {
+            var containerContentType = new Y.Base(),
+                nonContainerContentType = new Y.Base();
+
+            containerContentType.set('isContainer', true);
+            nonContainerContentType.set('isContainer', false);
+
+            this.view.on('contentDiscover', this.next(function (e) {
+                var isSelectable = e.config.isSelectable;
+
+                Assert.isFalse(
+                    isSelectable({contentType: nonContainerContentType}),
+                    "non container Content should not be selectable"
+                );
+                Assert.isTrue(
+                    isSelectable({contentType: containerContentType}),
+                    "container Content should be selectable"
+                );
+            }, this));
+            this._getPickLocationButton().simulateGesture('tap');
+            this.wait();
+        },
+
+        "Should store the Location in the selectedParentLocation attribute": function () {
+            this.view.on('contentDiscover', this.next(function (e) {
+                var config = e.config;
+
+                config.contentDiscoveredHandler({selection: {location: this.location}});
+
+                Assert.areSame(
+                    this.location,
+                    this.view.get('selectedParentLocation'),
+                    "The selected Location should be stored in the selectedParentLocation attribute"
+                );
+            }, this));
+            this._getPickLocationButton().simulateGesture('tap');
+            this.wait();
+        },
+    });
+
+    selectedParentLocationTest = new Y.Test.Case({
+        name: "eZ Content Creation Wizard View selectedParentLocation test",
+
+        setUp: function () {
+            this.view = new Y.eZ.ContentCreationWizardView({
+                contentTypeSelectorView: new Y.View(),
+            });
+            this.view.render();
+            this.contentName = 'Saint-Paul-de-Varax';
+            this.locationId = '/st/paul/de/varax';
+            this.location = new Y.Base();
+            this.contentInfo = new Y.Base();
+            this.contentInfo.set('name', this.contentName);
+            this.location.set('id', this.locationId);
+            this.location.set('contentInfo', this.contentInfo);
+            this.contentType = new Y.Base();
+            this.contentType.set('names', {'fre-FR': 'Village'});
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.location.destroy();
+            this.contentInfo.destroy();
+            this.contentType.destroy();
+            delete this.view;
+            delete this.location;
+            delete this.contentInfo;
+            delete this.contentType;
+        },
+
+        _getContentNameNode: function () {
+            return this.view.get('container').one('.ez-contentcreationwizard-content-name');
+        },
+
+        _getFinishButton: function () {
+            return this.view.get('container').one('.ez-contentcreationwizard-finish');
+        },
+
+        "Should add the Location chosen class": function () {
+            this.view._set('selectedParentLocation', this.location);
+
+            Assert.isTrue(
+                this.view.get('container').hasClass('is-location-chosen'),
+                "The Location chosen class should have been added"
+            );
+        },
+
+        "Should remove the Location chosen class": function () {
+            this["Should add the Location chosen class"]();
+            this.view._set('selectedParentLocation', null);
+
+            Assert.isFalse(
+                this.view.get('container').hasClass('is-location-chosen'),
+                "The Location chosen class should have been remove"
+            );
+        },
+
+        "Should add the Content name": function () {
+            this.view._set('selectedParentLocation', this.location);
+
+            Assert.areEqual(
+                this.contentName,
+                this._getContentNameNode().getContent(),
+                "The Content name should be displayed"
+            );
+        },
+
+        "Should remove the Content name": function () {
+            this["Should add the Content name"]();
+            this.view._set('selectedParentLocation', null);
+
+            Assert.areEqual(
+                "",
+                this._getContentNameNode().getContent(),
+                "The Content name should be removed"
+            );
+        },
+
+        "Should enable the finish button": function () {
+            this.view._set('selectedContentType', this.contentType);
+            this.view._set('selectedParentLocation', this.location);
+
+            Assert.isFalse(
+                this._getFinishButton().get('disabled'),
+                "The finish button should be enabled"
+            );
+        },
+
+        "Should disabled the finish button": function () {
+            this["Should enable the finish button"]();
+            this.view._set('selectedParentLocation', null);
+
+            Assert.isTrue(
+                this._getFinishButton().get('disabled'),
+                "The finish button should be disabled"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Creation Wizard View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(closeTest);
@@ -340,4 +556,6 @@ YUI.add('ez-contentcreationwizardview-tests', function (Y) {
     Y.Test.Runner.add(selectedContentTypeTest);
     Y.Test.Runner.add(activeChangeTest);
     Y.Test.Runner.add(stepTest);
+    Y.Test.Runner.add(udwTest);
+    Y.Test.Runner.add(selectedParentLocationTest);
 }, '', {requires: ['test', 'base', 'node-event-simulate', 'ez-contentcreationwizardview']});
