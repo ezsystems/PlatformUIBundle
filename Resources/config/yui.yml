@@ -560,7 +560,7 @@ system:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/confirmbox.hbt
                 ez-contentcreationwizardview:
-                    requires: ['event-tap', 'ez-templatebasedview', 'contentcreationwizardview-ez-template']
+                    requires: ['event-tap', 'ez-templatebasedview', 'contentcreationwizardview-ez-template', 'ez-translateproperty']
                     path: %ez_platformui.public_dir%/js/views/ez-contentcreationwizardview.js
                 contentcreationwizardview-ez-template:
                     type: 'template'
