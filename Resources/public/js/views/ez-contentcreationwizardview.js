@@ -11,6 +11,7 @@ YUI.add('ez-contentcreationwizardview', function (Y) {
      */
 
     var SELECTED_TYPE_EVT = 'selectedContentType',
+        LOCATION_CHOSEN_CLASS = 'is-location-chosen',
         STEP_CONTENTTYPE = 'contenttype',
         STEP_LOCATION = 'location';
 
@@ -35,12 +36,16 @@ YUI.add('ez-contentcreationwizardview', function (Y) {
             },
             '.ez-contentcreationwizard-contenttype-name': {
                 'tap': '_moveToStepContentType',
-            }
+            },
+            '.ez-contentcreationwizard-pick-location': {
+                'tap': '_pickLocation',
+            },
         },
 
         initializer: function () {
             this.after('*:' + SELECTED_TYPE_EVT, this._storeContentType);
-            this.after('selectedContentTypeChange', this._uiSetNextButtonState);
+            this.after('selectedContentTypeChange', this._uiSetButtonsState);
+            this.after('selectedParentLocationChange', this._uiSetLocation);
             this.after('stepChange', this._uiSetStep);
             this.after('activeChange', function (e) {
                 if ( !this.get('active') ) {
@@ -50,6 +55,76 @@ YUI.add('ez-contentcreationwizardview', function (Y) {
                     this._renderContentTypeSelector();
                 }
             });
+        },
+
+        /**
+         * Launches the UDW to select the parent Location of the future Content
+         * item.
+         *
+         * @method _pickLocation
+         * @protected
+         */
+        _pickLocation: function () {
+            var startingLocationId = false;
+
+            if ( this.get('selectedParentLocation') ) {
+                startingLocationId = this.get('selectedParentLocation').get('id');
+            }
+            this.fire('contentDiscover', {
+                config: {
+                    title: 'Select a parent Location for the new Content item',
+                    contentDiscoveredHandler: Y.bind(this._storeLocation, this),
+                    startingLocationId: startingLocationId,
+                    isSelectable: function (struct) {
+                        return struct.contentType.get('isContainer');
+                    },
+                },
+            });
+        },
+
+        /**
+         * UDW `contentDiscoveredHandler` to store the selected Location in the
+         * `selectedParentLocation` attribute.
+         *
+         * @method _storeLocation
+         * @protected
+         * @param {EventFacade} e
+         */
+        _storeLocation: function (e) {
+            this._set('selectedParentLocation', e.selection.location);
+        },
+
+        /**
+         * Returns the node used to display the Content name.
+         *
+         * @method _getContentNameNode
+         * @private
+         */
+        _getContentNameNode: function () {
+            return this.get('container').one('.ez-contentcreationwizard-content-name');
+        },
+
+        /**
+         * Reflects in the UI the new selected Location
+         *
+         * @method _uiSetLocation
+         * @protected
+         */
+        _uiSetLocation: function () {
+            var container = this.get('container'),
+                location = this.get('selectedParentLocation');
+
+            if ( location ) {
+                container.addClass('is-location-chosen');
+                this._getContentNameNode().setContent(
+                    location.get('contentInfo').get('name')
+                );
+            } else {
+                container.removeClass(LOCATION_CHOSEN_CLASS);
+                this._getContentNameNode().setContent('');
+            }
+
+            this._uiSetFinishButtonState();
         },
 
         /**
@@ -85,6 +160,17 @@ YUI.add('ez-contentcreationwizardview', function (Y) {
         },
 
         /**
+         * Updates the state of the Next and Finish buttons.
+         *
+         * @method _uiSetButtonsState
+         * @protected
+         */
+        _uiSetButtonsState: function () {
+            this._uiSetNextButtonState();
+            this._uiSetFinishButtonState();
+        },
+
+        /**
          * Enables or disables the Next button depending on the
          * `selectedContentType` attribute value.
          *
@@ -96,6 +182,20 @@ YUI.add('ez-contentcreationwizardview', function (Y) {
 
             this.get('container')
                 .one('.ez-contentcreationwizard-next').set('disabled', disabled);
+        },
+
+        /**
+         * Enables or disables the Finish button depending on the
+         * `selectedContentType` and `selectedParentLocation` attribute values.
+         *
+         * @method _uiSetFinishButtonState
+         * @protected
+         */
+        _uiSetFinishButtonState: function () {
+            var disabled = !this.get('selectedContentType') || !this.get('selectedParentLocation');
+
+            this.get('container')
+                .one('.ez-contentcreationwizard-finish').set('disabled', disabled);
         },
 
         /**
@@ -179,6 +279,7 @@ YUI.add('ez-contentcreationwizardview', function (Y) {
         _resetState: function () {
             this._set('step', undefined);
             this._set('selectedContentType', null);
+            this._set('selectedParentLocation', null);
             this.reset('contentTypeGroups');
         },
     }, {
@@ -204,6 +305,20 @@ YUI.add('ez-contentcreationwizardview', function (Y) {
              * @readOnly
              */
             selectedContentType: {
+                value: null,
+                readOnly: true,
+            },
+
+            /**
+             * Contains the selected Location to use as the parent Location for
+             * the future Content item.
+             *
+             * @attribute selectedParentLocation
+             * @type {Null|eZ.Location}
+             * @default null
+             * @readOnly
+             */
+            selectedParentLocation: {
                 value: null,
                 readOnly: true,
             },

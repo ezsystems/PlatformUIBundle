@@ -9,7 +9,7 @@
     height: 100%;
     top: 0;
     left: 0;
-    z-index: 20000;
+    z-index: 15000;
 
     display: flex;
 }
@@ -67,4 +67,37 @@
 
 .ez-view-contentcreationwizardview .ez-contentcreationwizard-toolbar-contenttype {
     text-align: right;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-toolbar-location {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-step-title {
+    margin-top: 0.3em;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-step-toolbar {
+    text-align: center;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-change-location {
+    display: none;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-content-name {
+    display: none;
+}
+
+.ez-view-contentcreationwizardview.is-location-chosen .ez-contentcreationwizard-choose-location {
+    display: none;
+}
+
+.ez-view-contentcreationwizardview.is-location-chosen .ez-contentcreationwizard-change-location {
+    display: inline-block;
+}
+
+.ez-view-contentcreationwizardview.is-location-chosen .ez-contentcreationwizard-content-name {
+    display: block;
 }
