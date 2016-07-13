@@ -80,3 +80,16 @@
     transform: translateX(-100%);
     opacity: 0;
 }
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-content-name:before {
+    content: '> ';
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-content-name {
+    padding: 1em;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-step-title {
+    font-size: 108%;
+    font-weight: bold;
+}
