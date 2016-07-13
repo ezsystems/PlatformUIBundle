@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contenttypeplugin-tests', function (Y) {
-    var loadAllContentTypesTest,
+    var loadAllContentTypesTest, registerTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     loadAllContentTypesTest = new Y.Test.Case({
@@ -137,8 +137,13 @@ YUI.add('ez-contenttypeplugin-tests', function (Y) {
         },
     });
 
+    registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
+    registerTest.Plugin = Y.eZ.Plugin.ContentType;
+    registerTest.components = ['contentCreationWizardViewService'];
+
     Y.Test.Runner.setName('eZ Content Create Plugin tests');
     Y.Test.Runner.add(loadAllContentTypesTest);
+    Y.Test.Runner.add(registerTest);
 }, '', {
-    requires: ['test', 'base', 'ez-contenttypeplugin', 'ez-viewservice']
+    requires: ['test', 'base', 'ez-contenttypeplugin', 'ez-pluginregister-tests', 'ez-viewservice']
 });

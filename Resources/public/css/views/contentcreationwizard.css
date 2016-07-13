@@ -21,12 +21,12 @@
 
 .ez-contentcreationwizard-container .ez-view-contentcreationwizardview {
     flex: 1 1 30%;
-    max-width: 500px;
+    max-width: 400px;
 }
 
 .ez-view-contentcreationwizardview {
     margin: auto;
-    padding: 2em;
+    padding: 1em;
 }
 
 .ez-view-contentcreationwizardview .ez-contentcreationwizard-close {
@@ -35,4 +35,36 @@
 
 .ez-view-contentcreationwizardview .ez-contentcreationwizard-title {
     margin: 0;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-contenttype-name {
+    display: none;
+}
+
+.ez-view-contentcreationwizardview.is-step-location .ez-contentcreationwizard-contenttype-name {
+    display: inline-block;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-steps,
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-toolbars {
+    display: flex;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-step,
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-toolbar {
+    flex: 0 0 100%;
+}
+
+.ez-view-contentcreationwizardview.is-step-contenttype .ez-contentcreationwizard-step-location,
+.ez-view-contentcreationwizardview.is-step-contenttype .ez-contentcreationwizard-toolbar-location {
+    display: none;
+}
+
+.ez-view-contentcreationwizardview.is-step-location .ez-contentcreationwizard-step-contenttype,
+.ez-view-contentcreationwizardview.is-step-location .ez-contentcreationwizard-toolbar-contenttype {
+    display: none;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-toolbar-contenttype {
+    text-align: right;
 }
