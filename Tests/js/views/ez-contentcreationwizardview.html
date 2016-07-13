@@ -9,6 +9,11 @@
 
 <script type="text/x-handlebars-template" id="contentcreationwizardview-ez-template">
     <button class="ez-contentcreationwizard-close">Close</button>
+    <button class="ez-contentcreationwizard-contenttype-name"></button>
+    <button class="ez-contentcreationwizard-next" disabled>Next</button>
+    <button class="ez-contentcreationwizard-back">Back</button>
+
+    <div class="ez-contenttypeselector-container"></div>
 </script>
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -31,12 +36,16 @@
         filter: loaderFilter,
         modules: {
             "ez-contentcreationwizardview": {
-                requires: ['ez-templatebasedview', 'event-tap'],
+                requires: ['ez-templatebasedview', 'event-tap', 'ez-translateproperty'],
                 fullpath: "../../../Resources/public/js/views/ez-contentcreationwizardview.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
                 fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-translateproperty": {
+                requires: ['base', 'array-extras'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-translateproperty.js"
             },
             "ez-view": {
                 requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],

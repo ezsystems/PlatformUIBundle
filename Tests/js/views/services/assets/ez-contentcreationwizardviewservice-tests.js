@@ -3,8 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contentcreationwizardviewservice-tests', function (Y) {
-    var getViewParametersTest,
-        Assert = Y.Assert;
+    var getViewParametersTest, loadTest,
+        Assert = Y.Assert, Mock = Y.Mock;
 
     getViewParametersTest = new Y.Test.Case({
         name: "eZ Content Creation Wizard View Service getViewParameters test",
@@ -18,17 +18,137 @@ YUI.add('ez-contentcreationwizardviewservice-tests', function (Y) {
             delete this.service;
         },
 
-        "Should return the parameters object": function () {
+        "Should return an object build on parameters": function () {
+            var viewParameters;
+
             this.service.set('parameters', {param: 'param'});
+            viewParameters = this.service.getViewParameters();
 
             Assert.areEqual(
-                'param',
-                this.service.getViewParameters().param,
-                "getViewParameters should return the parameters object"
+                'param', viewParameters.param,
+                "getViewParameters should return an object build from the parameters"
+            );
+        },
+
+        "Should return the app config": function () {
+            var config = {};
+
+            this.service.set('config', config);
+
+            Assert.areSame(
+                config,
+                this.service.getViewParameters().config,
+                "The view parameters should contain the config"
+            );
+        },
+
+        "Should return the content type groups": function () {
+            var groups = [];
+
+            this.service.set('contentTypeGroups', groups);
+
+            Assert.areSame(
+                groups,
+                this.service.getViewParameters().contentTypeGroups,
+                "The view parameters should contain the Content Type Groups"
+            );
+        },
+    });
+
+    loadTest = new Y.Test.Case({
+        name: "eZ Content Creation Wizard View Service load test",
+
+        setUp: function () {
+            this.app = new Y.Base();
+            this.app.set('loading', false);
+            this.service = new Y.eZ.ContentCreationWizardViewService({
+                app: this.app,
+            });
+            this.service.contentType = new Mock();
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+        },
+
+        "Should set the app loading flag": function () {
+            Mock.expect(this.service.contentType, {
+                method: 'loadAllContentTypes',
+                args: [Mock.Value.Function],
+            });
+            this.service.load(function () {
+                Assert.fail('The callback should not be called');
+            });
+
+            Assert.isTrue(
+                this.app.get('loading'),
+                "The `loading` flag should be set"
+            );
+        },
+
+        "Should handle content types loading error": function () {
+            var errorEvent = false;
+
+            Mock.expect(this.service.contentType, {
+                method: 'loadAllContentTypes',
+                args: [Mock.Value.Function],
+                run: function (callback) {
+                    callback(true);
+                },
+            });
+
+            this.service.on('error', function () {
+                errorEvent = true;
+            });
+
+            this.service.load(function () {
+                Assert.fail('The callback should not be called');
+            });
+
+            Assert.isFalse(
+                this.app.get('loading'),
+                "The `loading` flag should be false"
+            );
+            Assert.isTrue(
+                errorEvent,
+                "The error event should have been fired"
+            );
+        },
+
+        "Should load the content types": function () {
+            var callbackCalled = false,
+                groups = [];
+
+            Mock.expect(this.service.contentType, {
+                method: 'loadAllContentTypes',
+                args: [Mock.Value.Function],
+                run: function (callback) {
+                    callback(false, groups);
+                },
+            });
+
+            this.service.load(Y.bind(function () {
+                callbackCalled = true;
+
+                Assert.areSame(
+                    groups, this.get('contentTypeGroups'),
+                    "The Content Type Groups should have been loaded"
+                );
+            }, this.service));
+
+            Assert.isFalse(
+                this.app.get('loading'),
+                "The `loading` flag should be false"
+            );
+            Assert.isTrue(
+                callbackCalled,
+                "The load callback should have been called"
             );
         },
     });
 
     Y.Test.Runner.setName("eZ Content Creation Wizard View Service tests");
     Y.Test.Runner.add(getViewParametersTest);
-}, '', {requires: ['test', 'ez-contentcreationwizardviewservice']});
+    Y.Test.Runner.add(loadTest);
+}, '', {requires: ['test', 'base', 'ez-contentcreationwizardviewservice']});
