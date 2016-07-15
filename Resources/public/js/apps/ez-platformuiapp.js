@@ -490,6 +490,23 @@ YUI.add('ez-platformuiapp', function (Y) {
         },
 
         /**
+         * Middleware to warn about the depreciation of a route. It just logs a
+         * message to console and call the `next` callback.
+         *
+         * @method logDeprecatedRoute
+         * @param {Object} req
+         * @param {Object} res
+         * @param {Function} next
+         */
+        logDeprecatedRoute: function (req, res, next) {
+            var route = req.route;
+
+            console.log('[DEPRECATED] The route "' + route.name + '" (path "' + route.path + '") is deprecated');
+            console.log('[DEPRECATED] It will be removed from PlatformUI 2.0');
+            next();
+        },
+
+        /**
          * Middleware to handle the *side views* configured for the given route.
          * Depending on the configuration, it will apply the CSS class to
          * show/hide the side views. If a side view is not explicitly
@@ -929,7 +946,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     service: Y.eZ.ContentCreateViewService,
                     sideViews: {'navigationHub': false, 'discoveryBar': false},
                     view: 'contentEditView',
-                    callbacks: DEFAULT_ROUTE_CALLBACKS,
+                    callbacks: ['logDeprecatedRoute'].concat(DEFAULT_ROUTE_CALLBACKS),
                 }, {
                     name: "viewLocation",
                     path: '/view/:id/:languageCode',
