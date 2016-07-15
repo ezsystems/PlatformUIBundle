@@ -18,8 +18,9 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base', function (Y) {
     function outlineTotalWidth(block) {
         var outlineOffset = parseInt(block.getComputedStyle('outline-offset'), 10);
         var outlineWidth = parseInt(block.getComputedStyle('outline-width'), 10);
-        if (isNaN(outlineOffset))
-          outlineOffset = 1;
+        if ( isNaN(outlineOffset) ) {
+            outlineOffset = 1;
+        }
         return outlineOffset + outlineWidth;
     }
 
