@@ -2286,7 +2286,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
 
         setUp: function () {
             this.app = new Y.eZ.PlatformUIApp();
-            this.nonDefaultRoute = ['loginForm'];
+            this.nonDefaultRoute = ['loginForm', 'createContent'];
         },
 
         tearDown: function () {
@@ -2329,6 +2329,35 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     this._assertDefaultRoute(route);
                 }
             }, this);
+        },
+
+        _getRouteByName: function (name) {
+            return Y.Array.find(this.app.get('routes'), function (elt) {
+                return (elt.name === name);
+            });
+        },
+
+        _testDeprecatedRoute: function (routeName) {
+            var route = this._getRouteByName(routeName),
+                nextCalled = false,
+                next = function () {
+                    nextCalled = true;
+                };
+
+            Assert.isTrue(
+                route.callbacks.indexOf('logDeprecatedRoute') === 0,
+                "The route '" + routeName + "' should be deprecated"
+            );
+            this.app.logDeprecatedRoute({route: route}, {}, next);
+
+            Assert.isTrue(
+                nextCalled,
+                "The logDeprecatedRoute should call the next callback"
+            );
+        },
+
+        "'createContent' should be deprecated": function () {
+            this._testDeprecatedRoute('createContent');
         },
     });
 
