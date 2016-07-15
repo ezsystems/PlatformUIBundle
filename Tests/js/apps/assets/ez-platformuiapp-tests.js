@@ -6,7 +6,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest, sideViewServicesTest,
         loginTest, logoutTest, isLoggedInTest, checkUserTest,
         showSideViewTest, hideSideViewTest, enablingRoutingTest, hashChangeTest,
-        handleMainViewTest, titleTest, configRouteTest,
+        handleMainViewTest, titleTest,
         dispatchConfigTest, getLanguageNameTest, refreshViewTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
@@ -1989,45 +1989,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
-    configRouteTest = new Y.Test.Case({
-        name: "eZ Platform UI App route config tests",
-
-        setUp: function () {
-            this.app = new Y.eZ.PlatformUIApp();
-        },
-
-        tearDown: function () {
-            this.app.destroy();
-        },
-
-        _getRouteByName: function (name) {
-            return Y.Array.find(this.app.get('routes'), function (elt) {
-                return (elt.name === name);
-            });
-        },
-
-        "Should enrich route with config": function () {
-            Y.Object.each(this.app.get('routeConfig'), function (value, routeName) {
-                var route = this._getRouteByName(routeName);
-
-                Assert.areSame(
-                    value,
-                    route.config,
-                    'The route config should have received a config'
-                );
-            }, this);
-        },
-
-        "Should not enrich route with config if routeConfig does NOT match": function () {
-            var dashboard = this._getRouteByName('dashboard');
-
-            Assert.isUndefined(
-                dashboard.config,
-                'The dashboard route config should be undefined'
-            );
-        },
-    });
-
     dispatchConfigTest = new Y.Test.Case({
         name: "eZ Platform UI App reverse dispatch config tests",
 
@@ -2333,7 +2294,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(logoutTest);
     Y.Test.Runner.add(isLoggedInTest);
     Y.Test.Runner.add(checkUserTest);
-    Y.Test.Runner.add(configRouteTest);
     Y.Test.Runner.add(dispatchConfigTest);
     Y.Test.Runner.add(getLanguageNameTest);
     Y.Test.Runner.add(refreshViewTest);
