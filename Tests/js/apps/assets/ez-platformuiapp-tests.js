@@ -6,7 +6,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest, sideViewServicesTest,
         loginTest, logoutTest, isLoggedInTest, checkUserTest,
         showSideViewTest, hideSideViewTest, enablingRoutingTest, hashChangeTest,
-        handleMainViewTest, titleTest,
+        handleMainViewTest, titleTest, routeCallbacksTest,
         dispatchConfigTest, getLanguageNameTest, refreshViewTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
@@ -2281,6 +2281,57 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
+    refreshViewTest = new Y.Test.Case({
+        name: "eZ Platform UI App refreshView test",
+
+        setUp: function () {
+            this.app = new Y.eZ.PlatformUIApp();
+            this.nonDefaultRoute = ['loginForm'];
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
+        "Should expose the default route callbacks": function () {
+            Assert.isArray(
+                Y.eZ.PlatformUIApp.DEFAULT_ROUTE_CALLBACKS,
+                "The default route callbacks should be available in DEFAULT_ROUTE_CALLBACKS"
+            );
+
+            Y.eZ.PlatformUIApp.DEFAULT_ROUTE_CALLBACKS.forEach(function (middleware) {
+                Assert.isFunction(
+                    this.app[middleware],
+                    '"' + middleware + '" should be an app method'
+                );
+            }, this);
+        },
+
+        _assertDefaultRoute: function (route) {
+            Assert.areEqual(
+                Y.eZ.PlatformUIApp.DEFAULT_ROUTE_CALLBACKS.length,
+                route.callbacks.length,
+                "The default route callbacks should be used in route '" + route.name + "' (length)"
+            );
+            route.callbacks.forEach(function (middleware, i) {
+                Assert.areEqual(
+                    Y.eZ.PlatformUIApp.DEFAULT_ROUTE_CALLBACKS[i],
+                    middleware,
+                    "The default route callbacks should be used in route '" + route.name + "'"
+                );
+            }, this);
+        },
+
+        "Should use the default callbacks": function () {
+            this.app.get('routes').forEach(function (route) {
+                if ( this.nonDefaultRoute.indexOf(route.name) === -1 ) {
+                    this._assertDefaultRoute(route);
+                }
+            }, this);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Platform UI App tests");
     Y.Test.Runner.add(appTest);
     Y.Test.Runner.add(titleTest);
@@ -2299,4 +2350,5 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(refreshViewTest);
     Y.Test.Runner.add(enablingRoutingTest);
     Y.Test.Runner.add(hashChangeTest);
+    Y.Test.Runner.add(routeCallbacksTest);
 }, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice', 'ez-viewservicebaseplugin', 'history-hash']});

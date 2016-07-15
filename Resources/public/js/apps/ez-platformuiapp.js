@@ -13,6 +13,7 @@ YUI.add('ez-platformuiapp', function (Y) {
     Y.namespace('eZ');
 
     var L = Y.Lang,
+        DEFAULT_ROUTE_CALLBACKS = ['open', 'checkUser', 'handleSideViews', 'handleMainView'],
         APP_OPEN = 'is-app-open',
         APP_LOADING = 'is-app-loading';
 
@@ -831,6 +832,15 @@ YUI.add('ez-platformuiapp', function (Y) {
             }
         },
     }, {
+        /**
+         * The default route callbacks
+         *
+         * @static
+         * @property DEFAULT_ROUTE_CALLBACKS
+         * @type {Array}
+         */
+        DEFAULT_ROUTE_CALLBACKS: DEFAULT_ROUTE_CALLBACKS,
+
         ATTRS: {
             /**
              * Stores the available routes for the application.
@@ -879,61 +889,61 @@ YUI.add('ez-platformuiapp', function (Y) {
                     service: Y.eZ.DashboardBlocksViewService,
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     view: 'dashboardView',
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "studioPresentation",
                     path: "/studio/presentation",
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     view: 'studioPresentationView',
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "studioPlusPresentation",
                     path: "/studioplus/presentation",
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     view: 'studioPlusPresentationView',
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "editContentVersion",
                     path: '/edit/:id/version/:versionId/:languageCode',
                     service: Y.eZ.ContentEditViewService,
                     sideViews: {'navigationHub': false, 'discoveryBar': false},
                     view: 'contentEditView',
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "translateContent",
                     path: '/edit/:id/:languageCode/:baseLanguageCode',
                     service: Y.eZ.ContentEditViewService,
                     sideViews: {'navigationHub': false, 'discoveryBar': false},
                     view: 'contentEditView',
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "editContent",
                     path: '/edit/:id/:languageCode',
                     service: Y.eZ.ContentEditViewService,
                     sideViews: {'navigationHub': false, 'discoveryBar': false},
                     view: 'contentEditView',
-                    callbacks: ['open', 'checkUser',  'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "createContent",
                     path: '/create',
                     service: Y.eZ.ContentCreateViewService,
                     sideViews: {'navigationHub': false, 'discoveryBar': false},
                     view: 'contentEditView',
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "viewLocation",
                     path: '/view/:id/:languageCode',
                     service: Y.eZ.LocationViewViewService,
                     sideViews: {'discoveryBar': true, 'navigationHub': true},
                     view: 'locationViewView',
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "viewTrash",
                     path: '/trash',
                     service: Y.eZ.TrashViewService,
                     sideViews: {'navigationHub': true, 'discoveryBar': true},
                     view: 'trashView',
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "adminSection",
                     regex: /\/admin\/(pjax%2Fsection%2F.*)/,
@@ -942,7 +952,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     service: Y.eZ.SectionServerSideViewService,
                     view: "sectionServerSideView",
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "adminRole",
                     regex: /\/admin\/(pjax%2Frole$|pjax%2Frole%2F.*)/,
@@ -951,7 +961,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     service: Y.eZ.RoleServerSideViewService,
                     view: "roleServerSideView",
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "adminContentTypeEdit",
                     regex: /\/admin\/(pjax%2Fcontenttype%2Fupdate%2F.*)/,
@@ -960,7 +970,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     service: Y.eZ.ServerSideViewService,
                     view: "contentTypeEditServerSideView",
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "adminContentType",
                     regex: /\/admin\/(pjax%2Fcontenttype.*)/,
@@ -969,7 +979,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     service: Y.eZ.ServerSideViewService,
                     view: "serverSideView",
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "adminLanguage",
                     regex: /\/admin\/(pjax%2Flanguage.*)/,
@@ -978,14 +988,14 @@ YUI.add('ez-platformuiapp', function (Y) {
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     service: Y.eZ.ServerSideViewService,
                     view: "serverSideView",
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
                     name: "adminGenericRoute",
                     path: "/admin/:uri",
                     sideViews: {'navigationHub': true, 'discoveryBar': false},
                     service: Y.eZ.ServerSideViewService,
                     view: "serverSideView",
-                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
                 },]
             },
             serverRouting: {
