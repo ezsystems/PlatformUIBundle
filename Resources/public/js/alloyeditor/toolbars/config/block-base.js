@@ -16,10 +16,11 @@ YUI.add('ez-alloyeditor-toolbar-config-block-base', function (Y) {
     var ReactDOM = Y.eZ.AlloyEditor.ReactDOM;
 
     function outlineTotalWidth(block) {
-        return (
-            parseInt(block.getComputedStyle('outline-offset'), 10) +
-            parseInt(block.getComputedStyle('outline-width'), 10)
-        );
+        var outlineOffset = parseInt(block.getComputedStyle('outline-offset'), 10);
+        var outlineWidth = parseInt(block.getComputedStyle('outline-width'), 10);
+        if (isNaN(outlineOffset))
+          outlineOffset = 1;
+        return outlineOffset + outlineWidth;
     }
 
     function isEmpty(block) {
