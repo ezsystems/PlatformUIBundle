@@ -32,13 +32,22 @@ YUI.add('ez-contentcreationwizardplugin-tests', function (Y) {
             Mock.verify(this.app);
         },
 
-        "Should hide the content creation wizard side view": function () {
+        _hideTest: function (eventName) {
             Mock.expect(this.app, {
                 method: 'hideSideView',
                 args: ['contentCreationWizard'],
             });
-            this.app.fire('whatever:contentCreationWizardClose');
+            this.app.fire(eventName);
             Mock.verify(this.app);
+
+        },
+
+        "Should hide the content creation wizard side view on contentCreationWizardClose": function () {
+            this._hideTest('whatever:contentCreationWizardClose');
+        },
+
+        "Should hide the content creation wizard side view on contentCreationWizardEnding": function () {
+            this._hideTest('whatever:contentCreationWizardEnding');
         },
     });
 

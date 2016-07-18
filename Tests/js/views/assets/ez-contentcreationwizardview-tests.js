@@ -5,7 +5,7 @@
 YUI.add('ez-contentcreationwizardview-tests', function (Y) {
     var renderTest, closeTest, contentTypeGroupsSetterTest, selectorViewTest,
         selectedContentTypeTest, activeChangeTest, stepTest, udwTest,
-        selectedParentLocationTest,
+        selectedParentLocationTest, finishTest,
         Assert = Y.Assert;
 
     renderTest = new Y.Test.Case({
@@ -548,6 +548,53 @@ YUI.add('ez-contentcreationwizardview-tests', function (Y) {
         },
     });
 
+    finishTest = new Y.Test.Case({
+        name: "eZ Content Creation Wizard View finish button test",
+
+        setUp: function () {
+            this.view = new Y.eZ.ContentCreationWizardView({
+                container: '.container',
+                contentTypeSelectorView: new Y.View(),
+            });
+            this.view.render();
+            this.location = new Y.Base();
+            this.contentInfo = new Y.Base();
+            this.location.set('contentInfo', this.contentInfo);
+            this.contentType = new Y.Base();
+
+            this.view._set('selectedContentType', this.contentType);
+            this.view._set('selectedParentLocation', this.location);
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.location.destroy();
+            this.contentType.destroy();
+            delete this.view;
+            delete this.location;
+            delete this.contentType;
+        },
+
+        "Should fire the `contentCreationWizardEnding` event": function () {
+            var finish = this.view.get('container').one('.ez-contentcreationwizard-finish');
+
+            this.view.on('contentCreationWizardEnding', this.next(function (e) {
+                Assert.areSame(
+                    this.location,
+                    e.parentLocation,
+                    "The parent Location should be available in the event facade"
+                );
+                Assert.areSame(
+                    this.contentType,
+                    e.contentType,
+                    "The Content Type should be available in the event facade"
+                );
+            }, this));
+            finish.simulateGesture('tap');
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Creation Wizard View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(closeTest);
@@ -558,4 +605,5 @@ YUI.add('ez-contentcreationwizardview-tests', function (Y) {
     Y.Test.Runner.add(stepTest);
     Y.Test.Runner.add(udwTest);
     Y.Test.Runner.add(selectedParentLocationTest);
+    Y.Test.Runner.add(finishTest);
 }, '', {requires: ['test', 'base', 'node-event-simulate', 'ez-contentcreationwizardview']});

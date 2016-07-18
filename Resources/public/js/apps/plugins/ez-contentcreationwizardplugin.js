@@ -28,7 +28,7 @@ YUI.add('ez-contentcreationwizardplugin', function (Y) {
                 app.showSideView('contentCreationWizard');
             });
 
-            app.on('*:contentCreationWizardClose', function () {
+            app.on(['*:contentCreationWizardClose', '*:contentCreationWizardEnding'], function () {
                 app.hideSideView('contentCreationWizard');
             });
         },

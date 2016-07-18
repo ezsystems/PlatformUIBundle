@@ -40,6 +40,9 @@ YUI.add('ez-contentcreationwizardview', function (Y) {
             '.ez-contentcreationwizard-pick-location': {
                 'tap': '_pickLocation',
             },
+            '.ez-contentcreationwizard-finish': {
+                'tap': '_endWizard',
+            },
         },
 
         initializer: function () {
@@ -54,6 +57,28 @@ YUI.add('ez-contentcreationwizardview', function (Y) {
                     this._set('step', STEP_CONTENTTYPE);
                     this._renderContentTypeSelector();
                 }
+            });
+        },
+
+        /**
+         * tap event hander on the finish button. It fires the
+         * `contentCreationWizardEnding` event with the result of the wizard.
+         *
+         * @method _endWizard
+         * @protected
+         */
+        _endWizard: function () {
+            /**
+             * Fired when the content creation wizard ends with a selected
+             * Content Type and a selected Parent Location.
+             *
+             * @event contentCreationWizardEnding
+             * @param {eZ.ContentType} contentType
+             * @param {eZ.Location} parentLocation
+             */
+            this.fire('contentCreationWizardEnding', {
+                contentType: this.get('selectedContentType'),
+                parentLocation: this.get('selectedParentLocation'),
             });
         },
 
