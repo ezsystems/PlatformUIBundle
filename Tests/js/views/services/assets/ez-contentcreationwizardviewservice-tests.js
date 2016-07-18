@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contentcreationwizardviewservice-tests', function (Y) {
-    var getViewParametersTest, loadTest,
+    var getViewParametersTest, loadTest, wizardEndingTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     getViewParametersTest = new Y.Test.Case({
@@ -148,7 +148,57 @@ YUI.add('ez-contentcreationwizardviewservice-tests', function (Y) {
         },
     });
 
+    wizardEndingTest = new Y.Test.Case({
+        name: "eZ Content Creation Wizard View Service contentCreationWizardEnding event test",
+
+        setUp: function () {
+            this.app = new Mock(new Y.Base());
+            this.service = new Y.eZ.ContentCreationWizardViewService({
+                app: this.app,
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+        },
+
+        "Should redirect the user to the create content route": function () {
+            var contentTypeId = 'quatrouille',
+                locationId = 'st-paul-de-varax',
+                contentType = new Y.Base(),
+                location = new Y.Base();
+
+            contentType.set('id', contentTypeId);
+            location.set('id', locationId);
+
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: ['createContentUnder', Mock.Value.Object],
+                run: function (name, params) {
+                    Assert.areEqual(
+                        contentTypeId,
+                        params.contentTypeId,
+                        "The content type id should be provided in the route params"
+                    );
+                    Assert.areEqual(
+                        locationId,
+                        params.parentLocationId,
+                        "The parent location id should be provided in the route params"
+                    );
+                },
+            });
+
+            this.service.fire('contentCreationWizardEnding', {
+                contentType: contentType,
+                parentLocation: location,
+            });
+            Mock.verify(this.app);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Creation Wizard View Service tests");
     Y.Test.Runner.add(getViewParametersTest);
     Y.Test.Runner.add(loadTest);
+    Y.Test.Runner.add(wizardEndingTest);
 }, '', {requires: ['test', 'base', 'ez-contentcreationwizardviewservice']});
