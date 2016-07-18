@@ -11,6 +11,14 @@ YUI.add('ez-contentcreateplugin', function (Y) {
      */
     Y.namespace('eZ.Plugin');
 
+    var logDeprecatedAttribute = function (value, attr) {
+            if ( typeof value !== 'undefined' ) {
+                console.log('[DEPRECATED] The attribute "' + attr + '" is deprecated');
+                console.log('[DEPRECATED] It will be removed from PlatformUI 2.0');
+            }
+            return value;
+        };
+
     /**
      * Content create plugin.
      *
@@ -21,7 +29,7 @@ YUI.add('ez-contentcreateplugin', function (Y) {
      */
     Y.eZ.Plugin.ContentCreate = Y.Base.create('contentCreate', Y.eZ.Plugin.ViewServiceBase, [], {
         initializer: function () {
-            this.onHostEvent('*:createContent', this._handleCreateContentAction);
+            this.onHostEvent('*:createContent', this._redirectToCreateContent);
             this.afterHostEvent('*:createContentAction', this._getContentTypes);
         },
 
@@ -108,6 +116,7 @@ YUI.add('ez-contentcreateplugin', function (Y) {
          * route.
          *
          * @protected
+         * @deprecated
          * @method _handleCreateContentAction
          * @param {Object} event event facade
          */
@@ -115,12 +124,32 @@ YUI.add('ez-contentcreateplugin', function (Y) {
             var service = this.get('host'),
                 app = service.get('app');
 
+            console.log('[DEPRECATED] _handleCreateContentAction is deprecated');
+            console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
             this.setAttrs({
                 contentType: event.contentType,
                 parentLocation: service.get('location'),
                 parentContent: service.get('content')
             });
             app.navigate(app.routeUri('createContent'));
+        },
+
+        /**
+         * Redirects the editor to the creation form according to the selected
+         * Content Type.
+         *
+         * @method _redirectToCreateContent
+         * @protected
+         * @param {EventFacade} e
+         */
+        _redirectToCreateContent: function (e) {
+            var service = this.get('host'),
+                app = service.get('app');
+
+            app.navigate(app.routeUri('createContentUnder', {
+                contentTypeId: e.contentType.get('id'),
+                parentLocationId: service.get('location').get('id'),
+            }));
         },
     }, {
         NS: 'contentCreate',
@@ -131,18 +160,23 @@ YUI.add('ez-contentcreateplugin', function (Y) {
              *
              * @attribute contentType
              * @default undefined
+             * @deprecated
              * @type Y.eZ.ContentType
              */
-            contentType: {},
+            contentType: {
+                setter: logDeprecatedAttribute,
+            },
 
             /**
              * The language code to use to create the new content
              *
              * @attribute languageCode
              * @default value taken from app.contentCreationDefaultLanguageCode
+             * @deprecated
              * @type String
              */
             languageCode: {
+                setter: logDeprecatedAttribute,
                 valueFn: function () {
                     var app = this.get('host').get('app');
                     return app.get('contentCreationDefaultLanguageCode');
@@ -153,18 +187,24 @@ YUI.add('ez-contentcreateplugin', function (Y) {
              *
              * @attribute parentLocation
              * @type Y.eZ.Location
+             * @deprecated
              * @default undefined
              */
-            parentLocation: {},
+            parentLocation: {
+                setter: logDeprecatedAttribute,
+            },
 
             /**
              * The parent content of the content that will be created
              *
              * @attribute parentContent
              * @type Y.eZ.Content
+             * @deprecated
              * @default undefined
              */
-            parentContent: {},
+            parentContent: {
+                setter: logDeprecatedAttribute,
+            },
         }
     });
 
