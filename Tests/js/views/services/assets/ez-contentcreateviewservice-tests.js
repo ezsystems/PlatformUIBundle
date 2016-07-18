@@ -3,11 +3,366 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-contentcreateviewservice-tests', function (Y) {
-    var loadTest, eventTest, changeLanguageTest,
+    var loadTest, deprecatedLoadTest, eventTest, changeLanguageTest,
+        languageCodeTest,
         Mock = Y.Mock, Assert = Y.Assert;
 
     loadTest = new Y.Test.Case({
         name: 'eZ Content Create View Service load test',
+
+        setUp: function () {
+            var thisTest = this;
+
+            this.contentTypeId = 'song';
+            this.names = {'eng-GB': "Song", 'fre-FR': "Chanson"};
+            this.fieldDefinitions = {
+                "title": {
+                    "fieldDefinitionIdentifier": "title",
+                    "defaultValue": "Ramble on",
+                },
+                "artist": {
+                    "fieldDefinitionIdentifier": "artist",
+                    "defaultValue": "Led Zeppelin",
+                }
+            };
+            this.parentContentMainLanguageCode = 'eng-GB';
+            this.parentContentId = 41;
+            this.parentLocationId = '42';
+            this.viewParentLocation = '/view/parent/';
+            this.requestLanguageCode = 'pol-PL';
+
+            this.origLocationModel = Y.eZ.Location;
+            this.locationLoadError = false;
+            this.loadedLocation = null;
+            Y.eZ.Location = Y.Base.create('locationModel', Y.Model, [], {
+                load: function (options, callback) {
+                    Assert.areSame(
+                        thisTest.capi,
+                        options.api,
+                        "The CAPI instance should be passed to Location load"
+                    );
+                    thisTest.loadedLocation = this;
+                    callback(thisTest.locationLoadError);
+                },
+            }, {
+                ATTRS: {
+                    contentInfo: {
+                        valueFn: Y.bind(function () {
+                            return new Y.Model({mainLanguageCode: this.parentContentMainLanguageCode});
+                        }, this),
+                    },
+                    resources: {
+                        value: {Content: this.parentContentId},
+                    },
+                },
+            });
+
+            this.origContentModel = Y.eZ.Content;
+            this.contentLoadError = false;
+            this.loadedContent = null;
+            Y.eZ.Content = Y.Base.create('contentModel', Y.Model, [], {
+                load: function (options, callback) {
+                    Assert.areSame(
+                        thisTest.capi,
+                        options.api,
+                        "The CAPI instance should be passed to Location load"
+                    );
+                    thisTest.loadedContent = this;
+                    callback(thisTest.contentLoadError);
+                },
+            });
+
+            this.type = new Mock(new Y.Model({
+                names: this.names,
+                fieldDefinitions: this.fieldDefinitions,
+            }));
+            this.app = new Mock(new Y.Base());
+            this.app.set('user', {});
+            this.defaultLanguageCode = 'eng-GB';
+            this.app.set('contentCreationDefaultLanguageCode', this.defaultLanguageCode);
+
+            Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['viewLocation', Mock.Value.Object],
+                run: Y.bind(function (route, params) {
+                    Assert.areEqual(
+                        this.parentLocationId, params.id,
+                        "The parent location id should be passed to routeUri"
+                    );
+                    Assert.areEqual(
+                        this.parentContentMainLanguageCode, params.languageCode,
+                        "The parent language code should be passed to routeUri"
+                    );
+                    return this.viewParentLocation;
+                }, this),
+            });
+            this.request = {
+                route: {},
+                params: {
+                    languageCode: this.requestLanguageCode,
+                    contentTypeId: this.contentTypeId,
+                    parentLocationId: this.parentLocationId,
+                },
+            };
+            this.capi = {};
+            this.service = new Y.eZ.ContentCreateViewService({
+                contentType: this.type,
+                app: this.app,
+                capi: this.capi,
+                request: this.request,
+            });
+        },
+
+        tearDown: function () {
+            this.service.destroy();
+            delete this.service;
+            Y.eZ.Location = this.origLocationModel;
+            Y.eZ.Content = this.origContentModel;
+        },
+
+        _configureModelLoad: function (mock, error) {
+            Mock.expect(mock, {
+                method: 'load',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (options, callback) {
+                    Assert.areSame(
+                        this.capi,
+                        options.api,
+                        "The CAPI should be provided to the load options"
+                    );
+                    callback(error);
+                }, this),
+            });
+        },
+
+        "Should load the Content Type": function () {
+            var callbackCalled = false;
+
+            this._configureModelLoad(this.type);
+            this.service.load(Y.bind(function () {
+                callbackCalled = true;
+
+                Assert.areEqual(
+                    this.request.params.contentTypeId,
+                    this.service.get('contentType').get('id'),
+                    "The content type id should be set from the one in the request"
+                );
+                Mock.verify(this.type);
+            }, this));
+            Assert.isTrue(
+                callbackCalled,
+                "The load callback should have been called"
+            );
+        },
+
+        "Should handle the Content Type loading error": function () {
+            var errorFired = false;
+
+            this._configureModelLoad(this.type, true);
+            this.service.on('error', function (e) {
+                errorFired = true;
+
+            });
+            this.service.load(Y.bind(function () {
+                Assert.fail('The callback should not be called');
+            }, this));
+
+            Assert.isTrue(
+                errorFired,
+                "The error event should have been fired"
+            );
+        },
+
+        "Should load the parent Location": function () {
+            var callbackCalled = false;
+
+            this._configureModelLoad(this.type);
+            this.service.load(Y.bind(function () {
+                callbackCalled = true;
+
+                Assert.areEqual(
+                    this.request.params.parentLocationId,
+                    this.service.get('parentLocation').get('id'),
+                    "The parent Location should initialized with the request Location id"
+                );
+                Assert.areSame(
+                    this.loadedLocation,
+                    this.service.get('parentLocation'),
+                    "The parent Location should have been loaded"
+                );
+            }, this));
+            Assert.isTrue(
+                callbackCalled,
+                "The load callback should have been called"
+            );
+        },
+
+        "Should load the parent Content": function () {
+            var callbackCalled = false;
+
+            this._configureModelLoad(this.type);
+            this.service.load(Y.bind(function () {
+                callbackCalled = true;
+
+                Assert.areEqual(
+                    this.parentContentId,
+                    this.service.get('parentContent').get('id'),
+                    "The parent Content should initialized from the parent Location"
+                );
+                Assert.areSame(
+                    this.loadedContent,
+                    this.service.get('parentContent'),
+                    "The parent Content should have been loaded"
+                );
+            }, this));
+            Assert.isTrue(
+                callbackCalled,
+                "The load callback should have been called"
+            );
+
+        },
+
+        "Should handle the parent Location loading error": function () {
+            var errorFired = false;
+
+            this._configureModelLoad(this.type);
+            this.locationLoadError = true;
+            this.service.on('error', function (e) {
+                errorFired = true;
+
+            });
+            this.service.load(Y.bind(function () {
+                Assert.fail('The callback should not be called');
+            }, this));
+
+            Assert.isTrue(
+                errorFired,
+                "The error event should have been fired"
+            );
+        },
+
+        "Should handle the parent Content loading error": function () {
+            var errorFired = false;
+
+            this._configureModelLoad(this.type);
+            this.contentLoadError = true;
+            this.service.on('error', function (e) {
+                errorFired = true;
+
+            });
+            this.service.load(Y.bind(function () {
+                Assert.fail('The callback should not be called');
+            }, this));
+
+            Assert.isTrue(
+                errorFired,
+                "The error event should have been fired"
+            );
+        },
+
+        _assertLoadResult: function (service) {
+            var content = service.get('content'),
+                version = service.get('version'),
+                fields = content.get('fields'),
+                that = this;
+
+            Assert.areSame(
+                content.get('fields'),
+                version.get('fields'),
+                "The fields of the version and the content should be the same"
+            );
+            Assert.isTrue(
+                content.get('name').indexOf(that.names['eng-GB']) !== -1,
+                "The name of the content should contain the name of the type" + content.get('name')
+            );
+            Assert.areEqual(
+                Y.Object.keys(that.fieldDefinitions).length,
+                Y.Object.keys(fields).length,
+                "The content should have as many fields as there are field definitions in the type"
+            );
+            Y.Object.each(that.fieldDefinitions, function (fieldDef, identifier) {
+                Assert.areEqual(
+                    identifier,
+                    fields[identifier].fieldDefinitionIdentifier,
+                    "The field definition identifier should set for each field"
+                );
+                Assert.areEqual(
+                    fieldDef.defaultValue,
+                    fields[identifier].fieldValue,
+                    "The value of the fields should be the default value of the corresponding field definition"
+                );
+            });
+        },
+
+        "Should initialize a new content and a new version": function () {
+            var loadCallback = false, that = this,
+                originalVersion = this.service.get('version'),
+                originalContent = this.service.get('content');
+
+            this._configureModelLoad(this.type);
+            this.service.load(function (service) {
+                loadCallback = true;
+
+                Assert.areNotSame(
+                    originalVersion,
+                    that.service.get('version'),
+                    "A new version object should have been instantiated"
+                );
+                Assert.areNotSame(
+                    originalContent,
+                    that.service.get('content'),
+                    "A new content object should have been instantiated"
+                );
+                that._assertLoadResult(service);
+            });
+            Assert.isTrue(loadCallback, "The load callback should have been called");
+        },
+
+        "Should initialize the redirection attributes": function () {
+            var mainLocationId = 'good-bad-times',
+                mainLanguageCode = 'fre-FR',
+                viewMainLocation = '/view/' + mainLocationId + "/" + mainLanguageCode;
+
+            this["Should initialize a new content and a new version"]();
+            this.service.get('content').set('mainLanguageCode', mainLanguageCode);
+            this.service.get('content').set('resources', {MainLocation: mainLocationId});
+
+            Mock.expect(this.app, {
+                method: 'routeUri',
+                args: ['viewLocation', Mock.Value.Object],
+                run: function (route, params) {
+                    Assert.areEqual(
+                        mainLocationId, params.id,
+                        "The main location id should be passed to routeUri"
+                    );
+                    Assert.areEqual(
+                        mainLanguageCode, params.languageCode,
+                        "The main language code should be passed to routeUri"
+                    );
+
+                    return viewMainLocation;
+                }
+            });
+            Assert.areEqual(
+                this.viewParentLocation,
+                this.service.get('discardRedirectionUrl'),
+                "The discardRedirectionUrl should be the parent location view url"
+            );
+            Assert.areEqual(
+                this.viewParentLocation,
+                this.service.get('closeRedirectionUrl'),
+                "The closeRedirectionUrl should be the parent location view url"
+            );
+            Assert.areEqual(
+                viewMainLocation,
+                this.service.get('publishRedirectionUrl'),
+                "THe publishRedirectionUrl should be the main location view url"
+            );
+        },
+    });
+
+    deprecatedLoadTest = new Y.Test.Case({
+        name: 'eZ Content Create View Service deprecated load test',
 
         setUp: function () {
             var that = this;
@@ -40,20 +395,17 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                     }
                 }
             });
-            this.parentLocation = new Mock();
-            this.parentLocationId = '42';
-            this.viewParentLocation = '/view/parent/';
-            Mock.expect(this.parentLocation, {
-                method: 'get',
-                args: ['id'],
-                returns: this.parentLocationId,
-            });
-            this.parentContent = new Mock();
             this.parentContentMainLanguageCode = 'eng-GB';
-            Mock.expect(this.parentContent, {
-                method: 'get',
-                args: ['mainLanguageCode'],
-                returns: this.parentContentMainLanguageCode,
+            this.parentLocationId = '42';
+            this.parentLocation = new Y.Model({
+                id: this.parentLocationId,
+                contentInfo: new Y.Model({
+                    mainLanguageCode: this.parentContentMainLanguageCode,
+                }),
+            });
+            this.viewParentLocation = '/view/parent/';
+            this.parentContent = new Y.Model({
+                mainLanguageCode: this.parentContentMainLanguageCode,
             });
             Mock.expect(this.app, {
                 method: 'routeUri',
@@ -71,7 +423,10 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 }
             });
             this.languageCode = 'pol-PL';
-            this.request = {params: {languageCode: this.languageCode}};
+            this.request = {
+                params: {languageCode: this.languageCode},
+                route: {name: 'createContent'},
+            };
             this.capi = {};
             this.service = new Y.eZ.ContentCreateViewService({
                 contentType: this.type,
@@ -295,7 +650,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
         name: 'eZ Content Create View Service change language test',
 
         setUp: function () {
-            this.app = new Mock();
+            this.app = new Mock(new Y.Base());
             this.version = new Mock();
             this.languageCode = 'pol-PL';
             this.switchedLanguageCode = 'ger-DE';
@@ -314,6 +669,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 args: [this.switchedLanguageCode],
                 returns: this.switchedLanguageName,
             });
+            this.app.set('contentCreationDefaultLanguageCode', this.languageCode);
 
             this.view = new Y.View();
             this.service = new Y.eZ.ContentCreateViewService({
@@ -476,8 +832,39 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
         }
     });
 
+    languageCodeTest = new Y.Test.Case({
+        name: 'eZ Content Create View Service language code test',
+
+        setUp: function () {
+            this.app = new Y.Base();
+            this.app.set('contentCreationDefaultLanguageCode', 'bressan_BRESSE');
+
+            this.service = new Y.eZ.ContentCreateViewService({
+                app: this.app,
+                request: {params: {}},
+            });
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            this.service.destroy();
+            delete this.app;
+            delete this.service;
+        },
+
+        "Should initialize the languageCode with the app contentCreationDefaultLanguageCode": function () {
+            Assert.areEqual(
+                this.app.get('contentCreationDefaultLanguageCode'),
+                this.service.get('languageCode'),
+                "The languageCode should be initialized with the default creation language code"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Create View Service tests");
     Y.Test.Runner.add(loadTest);
+    Y.Test.Runner.add(deprecatedLoadTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(changeLanguageTest);
-}, '', {requires: ['test', 'ez-contentcreateviewservice']});
+    Y.Test.Runner.add(languageCodeTest);
+}, '', {requires: ['test', 'base', 'model', 'ez-contentcreateviewservice']});
