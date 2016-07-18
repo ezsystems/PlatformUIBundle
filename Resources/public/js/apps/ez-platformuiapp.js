@@ -941,6 +941,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                     view: 'contentEditView',
                     callbacks: DEFAULT_ROUTE_CALLBACKS,
                 }, {
+                    name: "createContentUnder",
+                    path: '/create/:contentTypeId/:parentLocationId',
+                    service: Y.eZ.ContentCreateViewService,
+                    sideViews: {'navigationHub': false, 'discoveryBar': false},
+                    view: 'contentEditView',
+                    callbacks: DEFAULT_ROUTE_CALLBACKS,
+                }, {
                     name: "createContent",
                     path: '/create',
                     service: Y.eZ.ContentCreateViewService,
