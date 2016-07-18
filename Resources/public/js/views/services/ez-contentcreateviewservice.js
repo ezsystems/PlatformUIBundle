@@ -26,7 +26,95 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
             this.on('*:changeLanguage', this._selectLanguage);
         },
 
+        /**
+         * Sets the language code for the content creation.
+         * Override the Content Edit View Service implementation to force the
+         * value to the default content creation language.
+         *
+         * @method _setLanguageCode
+         * @protected
+         */
+        _setLanguageCode: function () {
+            this.set('languageCode', this.get('app').get('contentCreationDefaultLanguageCode'));
+        },
+
         _load: function (next) {
+            var request = this.get('request'),
+                tasks = new Y.Parallel(),
+                hasError = false,
+                contentType = this.get('contentType');
+
+            if ( request.route.name === 'createContent' ) {
+                this._deprecatedLoad(next);
+                return;
+            }
+
+            contentType.set('id', request.params.contentTypeId);
+            contentType.load({api: this.get('capi')}, tasks.add(Y.bind(function (err) {
+                if ( err ) {
+                    hasError = true;
+                    this._error("Could not load the Content Type");
+                }
+            }, this)));
+
+            this._loadParentLocation(request.params.parentLocationId, tasks.add(Y.bind(function (err) {
+                if ( err ) {
+                    hasError = true;
+                    this._error("Could not load the parent Location and Content");
+                }
+            }, this)));
+
+            tasks.done(Y.bind(function () {
+                if ( !hasError ) {
+                    this._setRedirectionUrls();
+                    this._initModels(next);
+                }
+            }, this));
+        },
+
+        /**
+         * Loads the Location by its ids. To preverse the BC, this method also
+         * loads the parent Content item in the `parentContent` attribute.
+         *
+         * @method _loadParentLocation
+         * @param {String} locationId
+         * @param {Function} callback
+         * @param {false|Error} callback.error
+         * @private
+         */
+        _loadParentLocation: function (locationId, callback) {
+            var location = new Y.eZ.Location({id: locationId}),
+                content = new Y.eZ.Content();
+
+            location.load({api: this.get('capi')}, Y.bind(function (err) {
+                if ( err ) {
+                    return callback(err);
+                }
+                this.set('parentLocation', location);
+
+                // deprecated part, to be removed together with `parentContent`
+                // attribute
+                content.set('id', location.get('resources').Content);
+                content.load({api: this.get('capi')}, Y.bind(function (err) {
+                    if ( err ) {
+                        return callback(err);
+                    }
+                    this.set('parentContent', content);
+                    callback();
+                }, this));
+            }, this));
+        },
+
+        /**
+         * Provides the deprecated behaviour of `load` called when the
+         * deprecated `createContent` route is used.
+         *
+         * @method _deprecatedLoad
+         * @private
+         * @deprecated
+         * @param {Function} next
+         */
+        _deprecatedLoad: function (next) {
             var type = this.get('contentType'),
                 service = this;
 
@@ -95,11 +183,12 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
          */
         _setRedirectionUrls: function () {
             var app = this.get('app'),
+                parentLocation = this.get('parentLocation'),
                 viewParent;
 
             viewParent = app.routeUri('viewLocation', {
-                id: this.get('parentLocation').get('id'),
-                languageCode: this.get('parentContent').get('mainLanguageCode')
+                id: parentLocation.get('id'),
+                languageCode: parentLocation.get('contentInfo').get('mainLanguageCode')
             });
             this.set('discardRedirectionUrl', viewParent);
             this.set('closeRedirectionUrl', viewParent);
@@ -207,7 +296,6 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
              *
              * @attribute parentLocation
              * @type Y.eZ.Location
-             * @required
              */
             parentLocation: {},
 
@@ -215,10 +303,17 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
              * The parent content of the new content
              *
              * @attribute parentContent
+             * @deprecated
              * @type Y.eZ.Content
-             * @required
              */
-            parentContent: {},
+            parentContent: {
+                getter: function (value, attr) {
+                    console.log('[DEPRECATED] The attribute "' + attr + '" is deprecated');
+                    console.log('[DEPRECATED] It will be removed from PlatformUI 2.0');
+
+                    return value;
+                },
+            },
         }
     });
 });
