@@ -13,7 +13,6 @@
                     value="{{ field.fieldValue }}"
                     id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}"
                     {{#if isRequired}} required{{/if}}
-                    {{#if floatPattern}} pattern="{{ floatPattern }}"{{/if}}
                 ></div></div>
         {{> ez_fielddescription_tooltip }}
     </div>

@@ -13,7 +13,7 @@ YUI.add('ez-float-editview', function (Y) {
 
     var L = Y.Lang,
         FIELDTYPE_IDENTIFIER = 'ezfloat',
-        FLOAT_PATTERN = "\\-?\\d*\\.?\\d+"; // WARNING: each backslash is doubled, because it is escaped on output otherwise
+        VALIDATION_PATTERN = /^\-?\d*\.?\d+$/;
 
     /**
      * Float edit view
@@ -50,7 +50,7 @@ YUI.add('ez-float-editview', function (Y) {
             if ( validity.valueMissing ) {
                 this.set('errorStatus', 'This field is required');
             // Float pattern validation
-            } else if ( validity.patternMismatch ) {
+            } else if ( !this._isValidFloat() ) {
                 this.set(
                     'errorStatus',
                     'The value should be a valid float number'
@@ -95,7 +95,6 @@ YUI.add('ez-float-editview', function (Y) {
 
             return {
                 "isRequired": def.isRequired,
-                "floatPattern": FLOAT_PATTERN,
                 "minFloatValue": minFloatValue,
                 "maxFloatValue": maxFloatValue
             };
@@ -124,7 +123,22 @@ YUI.add('ez-float-editview', function (Y) {
          */
         _getFieldValue: function () {
             return parseFloat(this.get('container').one('.ez-float-input-ui input').get('value'));
-        }
+        },
+
+        /**
+         * Checks field validity based on the validation regexp.
+         * Regexp is tested only if field is not empty.
+         *
+         * @protected
+         * @method _isValidInt
+         * @return {Boolean}
+         */
+        _isValidFloat: function () {
+            if (this._getFieldValue().length > 0) {
+                return VALIDATION_PATTERN.test(this._getFieldValue());
+            }
+            return true;
+        },
     });
 
     Y.eZ.FieldEditView.registerFieldEditView(

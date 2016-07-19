@@ -13,7 +13,7 @@ YUI.add('ez-integer-editview', function (Y) {
 
     var L = Y.Lang,
         FIELDTYPE_IDENTIFIER = 'ezinteger',
-        INTEGER_PATTERN = "\\-?\\d*"; // WARNING: each backslash is doubled, because it is escaped on output otherwise;
+        VALIDATION_PATTERN = /^\-?\d*$/;
 
     /**
      * Integer edit view
@@ -44,7 +44,7 @@ YUI.add('ez-integer-editview', function (Y) {
             if ( validity.valueMissing ) {
                 this.set('errorStatus', 'This field is required');
                 // Integer pattern validation
-            } else if ( validity.patternMismatch ) {
+            } else if ( !this._isValidInt() ) {
                 this.set(
                     'errorStatus',
                     'The value should be a valid integer number'
@@ -89,7 +89,6 @@ YUI.add('ez-integer-editview', function (Y) {
 
             return {
                 "isRequired": def.isRequired,
-                "integerPattern": INTEGER_PATTERN,
                 "minIntegerValue": minIntegerValue,
                 "maxIntegerValue": maxIntegerValue
             };
@@ -118,6 +117,21 @@ YUI.add('ez-integer-editview', function (Y) {
          */
         _getFieldValue: function () {
             return parseInt(this.get('container').one('.ez-integer-input-ui input').get('value'), 10);
+        },
+
+        /**
+         * Checks field validity based on the validation regexp.
+         * Regexp is tested only if field is not empty.
+         *
+         * @protected
+         * @method _isValidInt
+         * @return {Boolean}
+         */
+        _isValidInt: function () {
+            if (this._getFieldValue().length > 0) {
+                return VALIDATION_PATTERN.test(this._getFieldValue());
+            }
+            return true;
         },
     });
 
