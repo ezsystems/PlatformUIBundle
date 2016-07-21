@@ -1,0 +1,103 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-contentcreationwizard-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 15000;
+
+    display: flex;
+}
+
+.is-contentcreationwizard-hidden .ez-contentcreationwizard-container {
+    display: none;
+    z-index: -10;
+}
+
+.ez-contentcreationwizard-container .ez-view-contentcreationwizardview {
+    flex: 1 1 30%;
+    max-width: 400px;
+}
+
+.ez-view-contentcreationwizardview {
+    margin: auto;
+    padding: 1em;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-close {
+    float: right;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-title {
+    margin: 0;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-contenttype-name {
+    display: none;
+}
+
+.ez-view-contentcreationwizardview.is-step-location .ez-contentcreationwizard-contenttype-name {
+    display: inline-block;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-steps,
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-toolbars {
+    display: flex;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-step,
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-toolbar {
+    flex: 0 0 100%;
+}
+
+.ez-view-contentcreationwizardview.is-step-contenttype .ez-contentcreationwizard-step-location,
+.ez-view-contentcreationwizardview.is-step-contenttype .ez-contentcreationwizard-toolbar-location {
+    display: none;
+}
+
+.ez-view-contentcreationwizardview.is-step-location .ez-contentcreationwizard-step-contenttype,
+.ez-view-contentcreationwizardview.is-step-location .ez-contentcreationwizard-toolbar-contenttype {
+    display: none;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-toolbar-contenttype {
+    text-align: right;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-toolbar-location {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-step-title {
+    margin-top: 0.3em;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-step-toolbar {
+    text-align: center;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-change-location {
+    display: none;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-content-name {
+    display: none;
+}
+
+.ez-view-contentcreationwizardview.is-location-chosen .ez-contentcreationwizard-choose-location {
+    display: none;
+}
+
+.ez-view-contentcreationwizardview.is-location-chosen .ez-contentcreationwizard-change-location {
+    display: inline-block;
+}
+
+.ez-view-contentcreationwizardview.is-location-chosen .ez-contentcreationwizard-content-name {
+    display: block;
+}

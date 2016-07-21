@@ -187,6 +187,8 @@ system:
                         - 'ez-universaldiscoveryview'
                         - 'ez-confirmboxviewservice'
                         - 'ez-confirmboxview'
+                        - 'ez-contentcreationwizardviewservice'
+                        - 'ez-contentcreationwizardview'
                         - 'ez-languageselectionboxviewservice'
                         - 'ez-languageselectionboxview'
                         - 'ez-notificationhubviewservice'
@@ -198,6 +200,7 @@ system:
                         - 'ez-domstateplugin'
                         - 'ez-universaldiscoveryplugin'
                         - 'ez-confirmboxplugin'
+                        - 'ez-contentcreationwizardplugin'
                         - 'ez-languageselectionboxplugin'
                         - 'ez-notificationhubplugin'
                         - 'ez-positionplugin'
@@ -280,6 +283,9 @@ system:
                 ez-confirmboxviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-confirmboxviewservice.js
+                ez-contentcreationwizardviewservice:
+                    requires: ['ez-viewservice', 'ez-sideviewservice']
+                    path: %ez_platformui.public_dir%/js/views/services/ez-contentcreationwizardviewservice.js
                 ez-languageselectionboxviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice']
                     path: %ez_platformui.public_dir%/js/views/services/ez-languageselectionboxviewservice.js
@@ -315,6 +321,7 @@ system:
                     path: %ez_platformui.public_dir%/templates/dashboard.hbt
                 ez-dashboardblocksview:
                     requires:
+                        - 'event-tap'
                         - 'ez-templatebasedview'
                         - 'ez-dashboardblockallcontentview'
                         - 'ez-dashboardblockmydraftsview'
@@ -552,6 +559,12 @@ system:
                 confirmboxview-ez-template:
                     type: 'template'
                     path: %ez_platformui.public_dir%/templates/confirmbox.hbt
+                ez-contentcreationwizardview:
+                    requires: ['event-tap', 'ez-templatebasedview', 'contentcreationwizardview-ez-template', 'ez-translateproperty']
+                    path: %ez_platformui.public_dir%/js/views/ez-contentcreationwizardview.js
+                contentcreationwizardview-ez-template:
+                    type: 'template'
+                    path: %ez_platformui.public_dir%/templates/contentcreationwizard.hbt
                 ez-languageselectionboxview:
                     requires: ['ez-templatebasedview', 'languageselectionboxview-ez-template']
                     path: %ez_platformui.public_dir%/js/views/ez-languageselectionboxview.js
@@ -1193,6 +1206,9 @@ system:
                 ez-confirmboxplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-confirmboxplugin.js
+                ez-contentcreationwizardplugin:
+                    requires: ['plugin', 'base', 'ez-pluginregistry']
+                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-contentcreationwizardplugin.js
                 ez-languageselectionboxplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/apps/plugins/ez-languageselectionboxplugin.js
@@ -1269,8 +1285,11 @@ system:
                     requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel', 'ez-contentmodel']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-searchplugin.js
                 ez-contentcreateplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contenttypeplugin']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contentcreateplugin.js
+                ez-contenttypeplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contenttypegroupmodel', 'parallel']
+                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttypeplugin.js
                 ez-copycontentplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
                     path: %ez_platformui.public_dir%/js/views/services/plugins/ez-copycontentplugin.js

@@ -8,6 +8,7 @@
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="dashboardblocksview-ez-template" >
+    <button class="ez-dashboard-create-button">Create</button>
     <div class="ez-dashboard-content"></div>
 </script>
 
@@ -25,7 +26,7 @@
         filter: loaderFilter,
         modules: {
             'ez-dashboardblocksview': {
-                requires: ['ez-templatebasedview'],
+                requires: ['ez-templatebasedview', 'event-tap'],
                 fullpath: '../../../Resources/public/js/views/ez-dashboardblocksview.js'
             },
             'ez-templatebasedview': {

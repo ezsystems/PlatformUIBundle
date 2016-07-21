@@ -11,6 +11,8 @@ YUI.add('ez-contentcreateplugin', function (Y) {
      */
     Y.namespace('eZ.Plugin');
 
+    var VIEW_SERVICES = ['locationViewViewService'];
+
     /**
      * Content create plugin.
      *
@@ -22,7 +24,7 @@ YUI.add('ez-contentcreateplugin', function (Y) {
     Y.eZ.Plugin.ContentCreate = Y.Base.create('contentCreate', Y.eZ.Plugin.ViewServiceBase, [], {
         initializer: function () {
             this.onHostEvent('*:createContent', this._handleCreateContentAction);
-            this.afterHostEvent('*:createContentAction', this._getContentTypes);
+            this.afterHostEvent('*:createContentAction', this._loadContentTypesList);
         },
 
         /**
@@ -56,9 +58,34 @@ YUI.add('ez-contentcreateplugin', function (Y) {
         },
 
         /**
+         * Fetches the content type groups and the content types and set it back
+         * to the event target.
+         *
+         * @protected
+         * @method _loadContentTypesList
+         * @param {Object} event event facade
+         */
+        _loadContentTypesList: function (event) {
+            var view = event.target;
+
+            if ( !view.get('expanded') ) {
+                return;
+            }
+
+            this.get('host').contentType.loadAllContentTypes(function (error, groups) {
+                if ( error ) {
+                    view.set('loadingError', true);
+                    return;
+                }
+                view.set('contentTypeGroups', groups);
+            });
+        },
+
+        /**
          * Fetches the content type groups and the content types.
          *
          * @protected
+         * @deprecated
          * @method _getContentTypesList
          * @param {Object} event event facade
          */
@@ -67,6 +94,8 @@ YUI.add('ez-contentcreateplugin', function (Y) {
                 view = event.target,
                 typeService = this.get('host').get('capi').getContentTypeService();
 
+            console.log('[DEPRECATED] _getContentTypes is deprecated');
+            console.log('[DEPRECATED] it will be removed from PlatformUI 2.0, please use _loadContentTypesList instead');
             if ( !view.get('expanded') ) {
                 return;
             }
@@ -169,6 +198,9 @@ YUI.add('ez-contentcreateplugin', function (Y) {
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.ContentCreate, ['locationViewViewService']
+        Y.eZ.Plugin.ContentType, VIEW_SERVICES
+    );
+    Y.eZ.PluginRegistry.registerPlugin(
+        Y.eZ.Plugin.ContentCreate, VIEW_SERVICES
     );
 });

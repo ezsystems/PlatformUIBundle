@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Content Creation Wizard view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+
+<script type="text/x-handlebars-template" id="contentcreationwizardview-ez-template">
+    <button class="ez-contentcreationwizard-close">Close</button>
+    <button class="ez-contentcreationwizard-contenttype-name"></button>
+    <button class="ez-contentcreationwizard-next" disabled>Next</button>
+    <button class="ez-contentcreationwizard-back">Back</button>
+
+    <div class="ez-contenttypeselector-container"></div>
+
+    <button class="ez-contentcreationwizard-pick-location">Choose Location</button>
+    <p class="ez-contentcreationwizard-content-name"></p>
+    <button class="ez-contentcreationwizard-finish">Finish</button>
+</script>
+
+<script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-contentcreationwizardview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-contentcreationwizardview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-contentcreationwizardview": {
+                requires: ['ez-templatebasedview', 'event-tap', 'ez-translateproperty'],
+                fullpath: "../../../Resources/public/js/views/ez-contentcreationwizardview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-translateproperty": {
+                requires: ['base', 'array-extras'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-translateproperty.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-contentcreationwizardview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
