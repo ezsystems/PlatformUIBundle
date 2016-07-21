@@ -8,9 +8,10 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
         changeEventTest,
         fireLoadVersionsEventTest,
         fireCreateDraftEventTest,
+        fireDeleteVersionEventTest,
+        fireEditVersionEventTest,
         selectArchivedVersionTest,
         selectDeleteDraftVersionTest,
-        fireDeleteVersionEventTest,
         Assert = Y.Assert,
         Mock = Y.Mock,
         createCheckableVersionMock = function (versionId, versionNo, checked) {
@@ -384,6 +385,187 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
         },
     });
 
+    fireEditVersionEventTest = new Y.Test.Case({
+        name: "ViewVersionsTabView fire `editDraft` event test",
+        setUp: function () {
+            this.contentMock = new Mock();
+            this.versions = {'DRAFT': []};
+
+            this.view = new Y.eZ.LocationViewVersionsTabView({
+                content: this.contentMock,
+                container: '.container'
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        _createDraftVersionMock: function (nbOfChecked) {
+            for (var i = 1; i <= nbOfChecked; i++) {
+                this.versions.DRAFT.push(
+                    createCheckableVersionMock("/version/" + i, i, true)
+                );
+            }
+
+            //creating an item that is not checked
+            this.versions.DRAFT.push(
+                createCheckableVersionMock("/version/" + 42, 42, false)
+            );
+        },
+
+        "Should fire the `editDraft` event": function () {
+            var eventFired = false,
+                editButton;
+
+            this._createDraftVersionMock(1);
+
+            this.view.set('versions', this.versions);
+
+            this.view.on('*:editVersion', Y.bind(function (e) {
+                var checkbox = this.view.get('container').one('.ez-draft-version-checkbox[data-version-id="/version/1"]');
+
+                eventFired = true;
+                Assert.areSame(
+                    this.contentMock,
+                    e.content,
+                    "The event facade should contain the content"
+                );
+                Assert.areSame(
+                    "/version/1",
+                    e.version.get('id'),
+                    "The event facade should contain the version"
+                );
+                Assert.isTrue(
+                    checkbox.get('disabled'),
+                    "The checkbox should be disabled"
+                );
+            }, this));
+
+            this.view.render();
+
+            editButton = this.view.get('container').one('.ez-edit-draft-button');
+            editButton.set('disabled', false);
+
+            editButton.simulateGesture('tap', Y.bind(function () {
+                this.resume(function (e) {
+                    Assert.isTrue(
+                        eventFired,
+                        "The `editVersion` event should have been fired"
+                    );
+                });
+            }, this));
+            this.wait();
+        },
+
+        "Should not fire the `editVersion` event if more than one version": function () {
+            var eventFired = false,
+                editButton;
+
+            this._createDraftVersionMock(2);
+
+            this.view.set('versions', this.versions);
+
+            this.view.on('*:editVersion', Y.bind(function (e) {
+                eventFired = true;
+            }, this));
+
+            this.view.render();
+
+            editButton = this.view.get('container').one('.ez-edit-draft-button');
+            editButton.set('disabled', false);
+
+            editButton.simulateGesture('tap', Y.bind(function () {
+                this.resume(function (e) {
+                    Assert.isFalse(
+                        eventFired,
+                        "The `editVersion` event should not have been fired"
+                    );
+                });
+            }, this));
+            this.wait();
+        },
+    });
+
+    function assertOnlyOneItem (button, version1, version2) {
+        Assert.isTrue(
+            button.get('disabled'),
+            "Create Button should be disabled when no items are checked"
+        );
+
+        version1.setAttribute('checked', 'checked');
+        version1.simulate('change');
+
+        Assert.isFalse(
+            button.get('disabled'),
+            "Create Button should not be disabled"
+        );
+
+        version2.setAttribute('checked', 'checked');
+        version2.simulate('change');
+
+        Assert.isTrue(
+            button.get('disabled'),
+            "Create Button should be disabled when more than on item is checked"
+        );
+
+        version1.removeAttribute('checked');
+        version1.simulate('change');
+
+        Assert.isFalse(
+            button.get('disabled'),
+            "Create Button should not be disabled"
+        );
+
+        version2.removeAttribute('checked');
+        version2.simulate('change');
+
+        Assert.isTrue(
+            button.get('disabled'),
+            "Create Button should be disabled when no items are checked"
+        );
+    }
+
+    function assertAtLeastAnItem (button, version1, version2) {
+        Assert.isTrue(
+            button.get('disabled'),
+            "Create Button should be disabled when no items are checked"
+        );
+
+        version1.setAttribute('checked', 'checked');
+        version1.simulate('change');
+
+        Assert.isFalse(
+            button.get('disabled'),
+            "Create Button should not be disabled with one item checked"
+        );
+
+        version2.setAttribute('checked', 'checked');
+        version2.simulate('change');
+
+        Assert.isFalse(
+            button.get('disabled'),
+            "Create Button should not be disabled with two items checked"
+        );
+
+        version1.removeAttribute('checked');
+        version1.simulate('change');
+
+        Assert.isFalse(
+            button.get('disabled'),
+            "Create Button should not be disabled"
+        );
+
+        version2.removeAttribute('checked');
+        version2.simulate('change');
+
+        Assert.isTrue(
+            button.get('disabled'),
+            "Create Button should be disabled when no items are checked"
+        );
+    }
+
     selectArchivedVersionTest = new Y.Test.Case({
         name: "ViewVersionsTabView select an archived version test",
         setUp: function () {
@@ -401,8 +583,6 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
             delete this.view;
         },
 
-
-
         _createArchivedVersionMock: function (nb) {
             for (var i = 1; i <= nb; i++) {
                 this.versions.ARCHIVED.push(
@@ -412,106 +592,28 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
         },
 
         "Should enable the create button when only an item is selected": function () {
-            var createButton,
-                version1,
-                version2;
-
             this._createArchivedVersionMock(4);
 
             this.view.set('versions', this.versions);
             this.view.render();
 
-            createButton = this.view.get('container').one('.ez-create-draft-from-archived-button');
-            version1 = this.view.get('container').one(".ez-archived-version-checkbox[data-version-id='/version/1']");
-            version2 = this.view.get('container').one(".ez-archived-version-checkbox[data-version-id='/version/2']");
-
-            Assert.isTrue(
-                createButton.get('disabled'),
-                "Create Button should be disabled when no items are checked"
-            );
-
-            version1.setAttribute('checked', 'checked');
-            version1.simulate('change');
-
-            Assert.isFalse(
-                createButton.get('disabled'),
-                "Create Button should not be disabled"
-            );
-
-            version2.setAttribute('checked', 'checked');
-            version2.simulate('change');
-
-            Assert.isTrue(
-                createButton.get('disabled'),
-                "Create Button should be disabled when more than on item is checked"
-            );
-
-            version1.removeAttribute('checked');
-            version1.simulate('change');
-
-            Assert.isFalse(
-                createButton.get('disabled'),
-                "Create Button should not be disabled"
-            );
-
-            version2.removeAttribute('checked');
-            version2.simulate('change');
-
-            Assert.isTrue(
-                createButton.get('disabled'),
-                "Create Button should be disabled when no items are checked"
+            assertOnlyOneItem(
+                this.view.get('container').one('.ez-create-draft-from-archived-button'),
+                this.view.get('container').one(".ez-archived-version-checkbox[data-version-id='/version/1']"),
+                this.view.get('container').one(".ez-archived-version-checkbox[data-version-id='/version/2']")
             );
         },
 
         "Should enable the delete button when at least an item is selected": function () {
-            var deleteButton,
-                version1,
-                version2;
-
             this._createArchivedVersionMock(4);
 
             this.view.set('versions', this.versions);
             this.view.render();
 
-            deleteButton = this.view.get('container').one('.ez-delete-archived-button');
-            version1 = this.view.get('container').one(".ez-archived-version-checkbox[data-version-id='/version/1']");
-            version2 = this.view.get('container').one(".ez-archived-version-checkbox[data-version-id='/version/2']");
-
-            Assert.isTrue(
-                deleteButton.get('disabled'),
-                "Create Button should be disabled when no items are checked"
-            );
-
-            version1.setAttribute('checked', 'checked');
-            version1.simulate('change');
-
-            Assert.isFalse(
-                deleteButton.get('disabled'),
-                "Create Button should not be disabled with one item checked"
-            );
-
-            version2.setAttribute('checked', 'checked');
-            version2.simulate('change');
-
-            Assert.isFalse(
-                deleteButton.get('disabled'),
-                "Create Button should not be disabled with two items checked"
-            );
-
-            version1.removeAttribute('checked');
-            version1.simulate('change');
-
-            Assert.isFalse(
-                deleteButton.get('disabled'),
-                "Create Button should not be disabled"
-            );
-
-            version2.removeAttribute('checked');
-            version2.simulate('change');
-
-            Assert.isTrue(
-                deleteButton.get('disabled'),
-                "Create Button should be disabled when no items are checked"
+            assertAtLeastAnItem(
+                this.view.get('container').one('.ez-delete-archived-button'),
+                this.view.get('container').one(".ez-archived-version-checkbox[data-version-id='/version/1']"),
+                this.view.get('container').one(".ez-archived-version-checkbox[data-version-id='/version/2']")
             );
         },
     });
@@ -541,55 +643,29 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
             }
         },
 
-        "Should enable the delete button when at least an item is selected": function () {
-            var deleteButton,
-                version1,
-                version2;
-
+        "Should enable the edit button when only an item is selected": function () {
             this._createDraftVersionMock(4);
 
             this.view.set('versions', this.versions);
             this.view.render();
 
-            deleteButton = this.view.get('container').one('.ez-delete-draft-button');
-            version1 = this.view.get('container').one(".ez-draft-version-checkbox[data-version-id='/version/1']");
-            version2 = this.view.get('container').one(".ez-draft-version-checkbox[data-version-id='/version/2']");
-
-            Assert.isTrue(
-                deleteButton.get('disabled'),
-                "Create Button should be disabled when no items are checked"
+            assertOnlyOneItem(
+                this.view.get('container').one('.ez-edit-draft-button'),
+                this.view.get('container').one(".ez-draft-version-checkbox[data-version-id='/version/1']"),
+                this.view.get('container').one(".ez-draft-version-checkbox[data-version-id='/version/2']")
             );
+        },
 
-            version1.setAttribute('checked', 'checked');
-            version1.simulate('change');
+        "Should enable the delete button when at least an item is selected": function () {
+            this._createDraftVersionMock(4);
 
-            Assert.isFalse(
-                deleteButton.get('disabled'),
-                "Create Button should not be disabled with one item checked"
-            );
+            this.view.set('versions', this.versions);
+            this.view.render();
 
-            version2.setAttribute('checked', 'checked');
-            version2.simulate('change');
-
-            Assert.isFalse(
-                deleteButton.get('disabled'),
-                "Create Button should not be disabled with two items checked"
-            );
-
-            version1.removeAttribute('checked');
-            version1.simulate('change');
-
-            Assert.isFalse(
-                deleteButton.get('disabled'),
-                "Create Button should not be disabled"
-            );
-
-            version2.removeAttribute('checked');
-            version2.simulate('change');
-
-            Assert.isTrue(
-                deleteButton.get('disabled'),
-                "Create Button should be disabled when no items are checked"
+            assertAtLeastAnItem(
+                this.view.get('container').one('.ez-delete-draft-button'),
+                this.view.get('container').one(".ez-draft-version-checkbox[data-version-id='/version/1']"),
+                this.view.get('container').one(".ez-draft-version-checkbox[data-version-id='/version/2']")
             );
         },
     });
@@ -809,4 +885,5 @@ YUI.add('ez-locationviewversionstabview-tests', function (Y) {
     Y.Test.Runner.add(selectArchivedVersionTest);
     Y.Test.Runner.add(selectDeleteDraftVersionTest);
     Y.Test.Runner.add(fireDeleteVersionEventTest);
+    Y.Test.Runner.add(fireEditVersionEventTest);
 }, '', {requires: ['test', 'ez-locationviewversionstabview', 'node-event-simulate']});

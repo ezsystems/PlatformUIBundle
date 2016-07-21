@@ -16,7 +16,10 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
             'tap': '_createDraftFromArchivedVersion'
         },
         '.ez-archived-version-checkbox': {
-            'change': '_enableArchivedVersionButtons'
+            'change': '_setArchivedButtonsState'
+        },
+        '.ez-edit-draft-button': {
+            'tap': '_editDraft'
         },
         '.ez-delete-draft-button': {
             'tap': '_deleteDraft'
@@ -25,7 +28,7 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
             'tap': '_deleteArchived'
         },
         '.ez-draft-version-checkbox': {
-            'change': '_enableCreateDeleteDraftButton'
+            'change': '_setDraftButtonsState'
         },
     };
 
@@ -112,12 +115,25 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
         },
 
         /**
-         * Enables the `buttons corresponding to the archived list.
+         * Enables the `Create Draft form archived version` button if the selection is right
          *
-         * @method _enableArchivedVersionButtons
+         * @method _enableCreateDraftFromArchivedVersionButton
+         * @protected
+         * @deprecated
+         */
+        _enableCreateDraftFromArchivedVersionButton: function () {
+            console.log('[DEPRECATED] The method `_enableCreateDraftFromArchivedVersionButton` is deprecated');
+            console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
+            this._setArchivedButtonsState.apply(this, arguments);
+        },
+
+        /**
+         * Enables the Archived buttons if the selection in the list is right
+         *
+         * @method _setArchivedButtonsState
          * @protected
          */
-        _enableArchivedVersionButtons: function () {
+        _setArchivedButtonsState: function () {
             var c = this.get('container'),
                 checked = c.all('.ez-archived-version-checkbox:checked'),
                 createDraftButton = c.one('.ez-create-draft-from-archived-button'),
@@ -137,20 +153,27 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
         },
 
         /**
-         * Enables the `Delete selected Draft('s')` button if the selection is right
+         * Enables the Draft buttons if the selection in the list is right
          *
-         * @method _enableCreateDeleteDraftButton
+         * @method _setDraftButtonsState
          * @protected
          */
-        _enableCreateDeleteDraftButton: function () {
+        _setDraftButtonsState: function () {
             var c = this.get('container'),
                 checked = c.all('.ez-draft-version-checkbox:checked'),
-                button = c.one('.ez-delete-draft-button');
+                editDraftButton = c.one('.ez-edit-draft-button'),
+                deleteButton = c.one('.ez-delete-draft-button');
+
+            if (checked.size() === 1) {
+                editDraftButton.set('disabled', false);
+            } else {
+                editDraftButton.set('disabled', true);
+            }
 
             if (checked.size() >= 1) {
-                button.set('disabled', false);
+                deleteButton.set('disabled', false);
             } else {
-                button.set('disabled', true);
+                deleteButton.set('disabled', true);
             }
         },
 
@@ -177,6 +200,33 @@ YUI.add('ez-locationviewversionstabview', function (Y) {
                 this.fire('createDraft', {
                     content: this.get('content'),
                     versionNo: versions[0].get('versionNo'),
+                });
+            }
+        },
+
+        /**
+         * Edits a selected draft
+         *
+         * @method _editDraft
+         * @protected
+         */
+        _editDraft: function () {
+            var versions = this._getSelectedDrafts();
+
+            if (versions.length === 1) {
+                this._disableVersionsCheckboxes();
+
+                /**
+                 * Fired when the user clicks on the edit draft button
+                 *
+                 * @event editVersion
+                 * @param {eZ.Content} content
+                 * @param {eZ.Version} version
+                 *
+                 */
+                this.fire('editVersion', {
+                    content: this.get('content'),
+                    version: versions[0],
                 });
             }
         },

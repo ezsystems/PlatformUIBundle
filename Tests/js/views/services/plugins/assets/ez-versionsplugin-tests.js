@@ -5,6 +5,7 @@
 YUI.add('ez-versionsplugin-tests', function (Y) {
     var loadTest, createDraftTest, registerTest,
         deleteDraftEventTest, deleteVersionTest,
+        editVersionTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     loadTest = new Y.Test.Case({
@@ -301,6 +302,110 @@ YUI.add('ez-versionsplugin-tests', function (Y) {
             Assert.isTrue(
                 notified,
                 "A notification should have been displayed"
+            );
+        },
+    });
+
+    editVersionTest = new Y.Test.Case({
+        name: "eZ Versions Plugin create draft tests",
+
+        setUp: function () {
+            this.app = {
+                navigate: Y.bind(function (param) {
+                    Assert.areSame(
+                        "truc",
+                        param,
+                        "Result of routeUri should have been provided to navigate"
+                    );
+
+                    this.navigateCalled = true;
+                }, this),
+
+                routeUri: Y.bind(function (routeName, routeParams) {
+                    Assert.areSame(
+                        'editContentVersion',
+                        routeName,
+                        "The route provided should be 'editContentVersion'"
+                    );
+                    Assert.areSame(
+                        this.contentId,
+                        routeParams.id,
+                        "The id provided to the route doesn't match"
+                    );
+                    Assert.areSame(
+                        this.initialLanguageCode,
+                        routeParams.languageCode,
+                        "The language code provided to the route doesn't match"
+                    );
+                    Assert.areSame(
+                        this.versionId,
+                        routeParams.versionId,
+                        "The versionsId provided to the route doesn't match"
+                    );
+
+                    return "truc";
+                }, this)
+            };
+            this.service = new Y.Base();
+            this.view = new Y.View();
+            this.view.set('loadingError', false);
+            this.view.addTarget(this.service);
+            this.service.set('app', this.app);
+            this.content = new Mock();
+            this.version = new Mock();
+            this.versionNo = "42";
+            this.contentId = "/zinedine/zidane";
+            this.contentName = "zidane";
+            this.initialLanguageCode = "eng-US";
+            this.versionId = "/path/to/version/42";
+            this.navigateCalled = false;
+
+            this.plugin = new Y.eZ.Plugin.Versions({
+                host: this.service
+            });
+        },
+
+        tearDown: function () {
+            this.plugin.destroy();
+            this.view.destroy();
+            this.service.destroy();
+            delete this.plugin;
+            delete this.view;
+            delete this.service;
+        },
+
+        _setupMocks: function () {
+            Mock.expect(this.version, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: Y.bind(function (attr) {
+                    if ( attr === 'id' ) {
+                        return this.versionId;
+                    } else if ( attr === 'initialLanguageCode' ) {
+                        return this.initialLanguageCode;
+                    }
+                    Y.fail('Unexpected call to get("' + attr + '")');
+                }, this),
+            });
+
+            Mock.expect(this.content, {
+                method: 'get',
+                args: ['id'],
+                returns: this.contentId,
+            });
+        },
+
+        "Should redirect to edit page for a given version": function () {
+            this._setupMocks();
+
+            this.view.fire('editVersion', {
+                content: this.content,
+                version: this.version
+            });
+
+            Assert.isTrue(
+                this.navigateCalled,
+                "Navigate should have been called"
             );
         },
     });
@@ -705,4 +810,5 @@ YUI.add('ez-versionsplugin-tests', function (Y) {
     Y.Test.Runner.add(createDraftTest);
     Y.Test.Runner.add(deleteDraftEventTest);
     Y.Test.Runner.add(deleteVersionTest);
+    Y.Test.Runner.add(editVersionTest);
 }, '', {requires: ['test', 'view', 'base', 'ez-versionsplugin', 'ez-pluginregister-tests']});

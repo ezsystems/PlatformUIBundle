@@ -53,6 +53,12 @@
             </table>
 
             <div class="ez-versions-list-table-tools">
+                <button class="ez-edit-draft-button ez-button pure-button"
+                        data-version-id="{{id}}"
+                        disabled="disabled"
+                >
+                    Edit selected draft
+                </button>
                 <button class="ez-delete-draft-button ez-button pure-button"
                         data-version-id="{{id}}"
                         disabled="disabled"

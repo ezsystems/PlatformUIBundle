@@ -37,6 +37,7 @@ YUI.add('ez-versionsplugin', function (Y) {
             this.onHostEvent('*:loadVersions', this._loadVersions);
             this.onHostEvent('*:createDraft', this._createDraftFromArchivedVersion);
             this.onHostEvent('*:deleteVersion', this._confirmDeleteVersion);
+            this.onHostEvent('*:editVersion', this._redirectToEditVersion);
         },
 
         /**
@@ -133,6 +134,30 @@ YUI.add('ez-versionsplugin', function (Y) {
                     app.routeUri(routeName, routeParams)
                 );
             }, this));
+        },
+
+        /**
+         * Edits a given version by redirecting to the edit page
+         *
+         * @method _redirectToEditVersion
+         * @private
+         * @param {EventFacade} e
+         * @param {eZ.Content} e.content the content
+         * @param {eZ.Version} e.version to be edited
+         *
+         */
+        _redirectToEditVersion: function (e) {
+            var app = this.get('host').get('app'),
+                version = e.version,
+                routeParams = {
+                    id: e.content.get('id'),
+                    languageCode: version.get('initialLanguageCode'),
+                    versionId: version.get('id'),
+                };
+
+                app.navigate(
+                    app.routeUri('editContentVersion', routeParams)
+                );
         },
 
         /**
