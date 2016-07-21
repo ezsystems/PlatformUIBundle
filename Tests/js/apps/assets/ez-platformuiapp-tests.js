@@ -6,7 +6,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     var appTest, reverseRoutingTest, sideViewsTest, sideViewServicesTest,
         loginTest, logoutTest, isLoggedInTest, checkUserTest,
         showSideViewTest, hideSideViewTest, enablingRoutingTest, hashChangeTest,
-        handleMainViewTest, titleTest, configRouteTest,
+        handleMainViewTest, titleTest, routeCallbacksTest,
         dispatchConfigTest, getLanguageNameTest, refreshViewTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
@@ -1989,45 +1989,6 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
-    configRouteTest = new Y.Test.Case({
-        name: "eZ Platform UI App route config tests",
-
-        setUp: function () {
-            this.app = new Y.eZ.PlatformUIApp();
-        },
-
-        tearDown: function () {
-            this.app.destroy();
-        },
-
-        _getRouteByName: function (name) {
-            return Y.Array.find(this.app.get('routes'), function (elt) {
-                return (elt.name === name);
-            });
-        },
-
-        "Should enrich route with config": function () {
-            Y.Object.each(this.app.get('routeConfig'), function (value, routeName) {
-                var route = this._getRouteByName(routeName);
-
-                Assert.areSame(
-                    value,
-                    route.config,
-                    'The route config should have received a config'
-                );
-            }, this);
-        },
-
-        "Should not enrich route with config if routeConfig does NOT match": function () {
-            var dashboard = this._getRouteByName('dashboard');
-
-            Assert.isUndefined(
-                dashboard.config,
-                'The dashboard route config should be undefined'
-            );
-        },
-    });
-
     dispatchConfigTest = new Y.Test.Case({
         name: "eZ Platform UI App reverse dispatch config tests",
 
@@ -2320,6 +2281,86 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
     });
 
+    refreshViewTest = new Y.Test.Case({
+        name: "eZ Platform UI App refreshView test",
+
+        setUp: function () {
+            this.app = new Y.eZ.PlatformUIApp();
+            this.nonDefaultRoute = ['loginForm', 'createContent'];
+        },
+
+        tearDown: function () {
+            this.app.destroy();
+            delete this.app;
+        },
+
+        "Should expose the default route callbacks": function () {
+            Assert.isArray(
+                Y.eZ.PlatformUIApp.DEFAULT_ROUTE_CALLBACKS,
+                "The default route callbacks should be available in DEFAULT_ROUTE_CALLBACKS"
+            );
+
+            Y.eZ.PlatformUIApp.DEFAULT_ROUTE_CALLBACKS.forEach(function (middleware) {
+                Assert.isFunction(
+                    this.app[middleware],
+                    '"' + middleware + '" should be an app method'
+                );
+            }, this);
+        },
+
+        _assertDefaultRoute: function (route) {
+            Assert.areEqual(
+                Y.eZ.PlatformUIApp.DEFAULT_ROUTE_CALLBACKS.length,
+                route.callbacks.length,
+                "The default route callbacks should be used in route '" + route.name + "' (length)"
+            );
+            route.callbacks.forEach(function (middleware, i) {
+                Assert.areEqual(
+                    Y.eZ.PlatformUIApp.DEFAULT_ROUTE_CALLBACKS[i],
+                    middleware,
+                    "The default route callbacks should be used in route '" + route.name + "'"
+                );
+            }, this);
+        },
+
+        "Should use the default callbacks": function () {
+            this.app.get('routes').forEach(function (route) {
+                if ( this.nonDefaultRoute.indexOf(route.name) === -1 ) {
+                    this._assertDefaultRoute(route);
+                }
+            }, this);
+        },
+
+        _getRouteByName: function (name) {
+            return Y.Array.find(this.app.get('routes'), function (elt) {
+                return (elt.name === name);
+            });
+        },
+
+        _testDeprecatedRoute: function (routeName) {
+            var route = this._getRouteByName(routeName),
+                nextCalled = false,
+                next = function () {
+                    nextCalled = true;
+                };
+
+            Assert.isTrue(
+                route.callbacks.indexOf('logDeprecatedRoute') === 0,
+                "The route '" + routeName + "' should be deprecated"
+            );
+            this.app.logDeprecatedRoute({route: route}, {}, next);
+
+            Assert.isTrue(
+                nextCalled,
+                "The logDeprecatedRoute should call the next callback"
+            );
+        },
+
+        "'createContent' should be deprecated": function () {
+            this._testDeprecatedRoute('createContent');
+        },
+    });
+
     Y.Test.Runner.setName("eZ Platform UI App tests");
     Y.Test.Runner.add(appTest);
     Y.Test.Runner.add(titleTest);
@@ -2333,10 +2374,10 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
     Y.Test.Runner.add(logoutTest);
     Y.Test.Runner.add(isLoggedInTest);
     Y.Test.Runner.add(checkUserTest);
-    Y.Test.Runner.add(configRouteTest);
     Y.Test.Runner.add(dispatchConfigTest);
     Y.Test.Runner.add(getLanguageNameTest);
     Y.Test.Runner.add(refreshViewTest);
     Y.Test.Runner.add(enablingRoutingTest);
     Y.Test.Runner.add(hashChangeTest);
+    Y.Test.Runner.add(routeCallbacksTest);
 }, '', {requires: ['test', 'ez-platformuiapp', 'ez-viewservice', 'ez-viewservicebaseplugin', 'history-hash']});

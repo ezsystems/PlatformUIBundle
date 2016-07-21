@@ -274,14 +274,29 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
             delete this.app;
         },
 
-        "Should navigate to the create content route with event paramters": function () {
-            var type = {}, location = {}, languageCode = 'ger-DE',
+        "Should navigate to the create content route with event parameters": function () {
+            var type = new Y.Model({id: 'contenttypeid'}),
+                location = new Y.Model({id: 'st-paul-de-varax'}),
+                languageCode = 'ger-DE',
                 createRouteUri = "/create";
 
             Mock.expect(this.app, {
                 method: 'routeUri',
-                args: ['createContent'],
-                returns: createRouteUri,
+                args: ['createContentUnder', Mock.Value.Object],
+                run: Y.bind(function (routeName, params) {
+                    Assert.areEqual(
+                        type.get('id'),
+                        params.contentTypeId,
+                        "The content type id should be provided"
+                    );
+                    Assert.areEqual(
+                        location.get('id'),
+                        params.parentLocationId,
+                        "The parent location id should be provided"
+                    );
+
+                    return createRouteUri;
+                }, this),
             });
             Mock.expect(this.app, {
                 method: 'navigate',
@@ -294,19 +309,6 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
             });
 
             Mock.verify(this.app);
-
-            Assert.areSame(
-                type, this.plugin.get('contentType'),
-                "The content type should be stored in the plugin"
-            );
-            Assert.areSame(
-                location, this.plugin.get('parentLocation'),
-                "The location should be stored in the plugin"
-            );
-            Assert.areNotSame(
-                languageCode, this.plugin.get('languageCode'),
-                "The languageCode event parameter should be ignored"
-            );
         },
     });
 
@@ -451,5 +453,5 @@ YUI.add('ez-contentcreateplugin-tests', function (Y) {
     Y.Test.Runner.add(nextServiceTest);
     Y.Test.Runner.add(registerTest);
 }, '', {
-    requires: ['test', 'base', 'ez-contentcreateplugin', 'ez-pluginregister-tests', 'view']
+    requires: ['test', 'base', 'model', 'ez-contentcreateplugin', 'ez-pluginregister-tests', 'view']
 });
