@@ -15,30 +15,6 @@ use Exception;
 trait CommonActions
 {
     /**
-     * @Given I clicked on/at (the) :link link
-     * @When  I click on/at (the) :link link
-     *
-     * Click a link with text ':link'
-     */
-    public function iClickAtLink($link)
-    {
-        $this->clickElementByText($link, 'a');
-         // @TODO implement click on link without get by text
-    }
-
-    /**
-     * @Given I clicked on/at (the) :button button
-     * @When I click on/at (the) :button button
-     *
-     * Clicks the button identified by ':button'
-     */
-    public function iClickAtButton($button)
-    {
-        $this->clickElementByText($button, 'button');
-        // @TODO implement click on link without get by text
-    }
-
-    /**
      * @When I fill in :field with :value
      * @When I set :field as empty
      *
@@ -144,18 +120,6 @@ trait CommonActions
         $page = $this->getSession()->getPage();
         $selector = '.ez-logo a';
         $page->find('css', $selector)->click();
-    }
-
-    /**
-     * @Given I click (on) the tab :tab
-     * Clicks on a PlatformUI tab
-     *
-     * @param   string  $tab    Text of the element to click
-     */
-    public function clickTab($tab)
-    {
-        $this->clickElementByText($tab, '.ez-tabs-label a[href]');
-        // @TODO implement without get by text
     }
 
     /**
@@ -319,25 +283,7 @@ trait CommonActions
             ".ez-contenttypeselector-types .ez-selection-filter-item[data-text='$contentType']"
         );
         $contentTypeElement->click();
-        //$this->clickElementByText($contentType, '.ez-contenttypeselector-types .ez-selection-filter-item');
         $this->waitWhileLoading();
-    }
-
-    /**
-     * @Given I create a content of content type :type with:
-     */
-    public function iCreateContentType($type, TableNode $fields)
-    {
-        $this->clickNavigationZone('Platform');
-        $this->iClickAtLink('Content structure');
-        $this->clickActionBar('Create a content');
-        $this->clickContentType($type);
-        foreach ($fields as $fieldArray) {
-            $keys = array_keys($fieldArray);
-            for ($i = 0; $i < count($keys); ++$i) {
-                $this->fillFieldWithValue($keys[$i], $fieldArray[$keys[$i]]);
-            }
-        }
     }
 
     /**
@@ -451,20 +397,6 @@ trait CommonActions
             return;
         }
         throw new Exception("Unexpected notification shown with message '$message'");
-    }
-
-    /**
-     * @Then I should see elements with the following names:
-     */
-    public function iSeeElements(TableNode $elements)
-    {
-        foreach ($elements as $element) {
-            $found = false;
-            $name = array_values($element)[0];
-            $found = $this->getElementByText($name, '.ez-selection-filter-item');
-            // @TODO implement without get by text
-            Assertion::assertNotNull($found, "Element: $name not found");
-        }
     }
 
     /**
