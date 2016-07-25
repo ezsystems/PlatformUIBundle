@@ -10,6 +10,7 @@
 namespace EzSystems\PlatformUIBundle\Features\Context\SubContext;
 
 use EzSystems\BehatBundle\Helper\EzAssertion;
+use Exception;
 
 trait CommonActions
 {
@@ -49,7 +50,7 @@ trait CommonActions
             function () use ($field) {
                 $fieldNode = $this->getSession()->getPage()->findField($field);
                 if ($fieldNode == null) {
-                    throw new \Exception('Field not found');
+                    throw new Exception('Field not found');
                 }
 
                 return $fieldNode;
@@ -72,7 +73,7 @@ trait CommonActions
                 $this->sleep();
                 $check = $this->getSession()->getPage()->findField($field)->getValue();
                 if ($check != $value) {
-                    throw new \Exception('Failed to set the field value: ' . $check);
+                    throw new Exception('Failed to set the field value: ' . $check);
                 }
 
                 return true;
@@ -95,7 +96,7 @@ trait CommonActions
                         return $titleElement;
                     }
                 }
-                throw new \Exception("Title '$title' not found");
+                throw new Exception("Title '$title' not found");
             }
         );
     }
@@ -107,7 +108,7 @@ trait CommonActions
     {
         $field = $this->getSession()->getPage()->findField($label);
         if (!$field) {
-            throw new \Exception("Field '$label' not found");
+            throw new Exception("Field '$label' not found");
         }
     }
 
@@ -171,6 +172,11 @@ trait CommonActions
             'Performance' => 'studioplus',
             'Admin Panel' => 'admin',
         ];
+
+        if (!isset($dataNavigation[$zone])) {
+            throw new Exception("Navigation zone $zone does not exist");
+        }
+
         $dataNavigationValue = $dataNavigation[$zone];
         $navigationZoneElement = $this->findWithWait(".ez-zone[data-navigation='$dataNavigationValue']");
         $navigationZoneElement->click();
@@ -223,7 +229,11 @@ trait CommonActions
             'Content tree' => 'tree',
             'Trash' => 'viewTrash',
         ];
-        // @TODO throw exception if missing dataAction
+
+        if (!isset($dataAction[$button])) {
+            throw new Exception("Discovery bar button $button does not exist");
+        }
+
         $button = $dataAction[$button];
         $buttonElement = $this->findWithWait(".ez-view-discoverybarview .ez-action[data-action='$button']");
         $this->waitWhileLoading();
@@ -247,7 +257,11 @@ trait CommonActions
             'Copy' => 'copy',
             'Send to Trash' => 'sendToTrash',
         ];
-        // @TODO throw exception if missing dataAction
+
+        if (!isset($dataAction[$button])) {
+            throw new Exception("Action bar button $button does not exist");
+        }
+
         $button = $dataAction[$button];
         $buttonElement = $this->findWithWait(".ez-actionbar-container .ez-action[data-action='$button']");
         $buttonElement->click();
@@ -267,7 +281,11 @@ trait CommonActions
             'Save' => 'save',
             'Discard changes' => 'discard',
         ];
-        // @TODO throw exception if missing dataAction
+
+        if (!isset($dataAction[$button])) {
+            throw new Exception("Edit Action bar button $button does not exist");
+        }
+
         $button = $dataAction[$button];
         $buttonElement = $this->findWithWait(".ez-editactionbar-container .ez-action[data-action='$button']");
         $buttonElement->click();
@@ -386,12 +404,12 @@ trait CommonActions
         $found = true;
         try {
             $this->clickOnTreePath($path);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $found = false;
         }
 
         if ($found) {
-            throw new \Exception("Tree path '$path' was found");
+            throw new Exception("Tree path '$path' was found");
         }
 
         return true;
@@ -415,10 +433,10 @@ trait CommonActions
      */
     public function iSeeNotification($message)
     {
-        $this->sleep();
-        $result = $this->getElementByText($message, '.ez-notification-text');
+        // @TODO check notification content
+        $result = $this->findWithWait('.ez-notification-text');
         if (!$result) {
-            throw new \Exception("The notification with message '$message' was not shown");
+            throw new Exception("The notification with message '$message' was not shown");
         }
     }
 
@@ -429,10 +447,10 @@ trait CommonActions
     {
         try {
             $this->iSeeNotification($message);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return;
         }
-        throw new \Exception("Unexpected notification shown with message '$message'");
+        throw new Exception("Unexpected notification shown with message '$message'");
     }
 
     /**
