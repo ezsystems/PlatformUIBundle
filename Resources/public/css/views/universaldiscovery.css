@@ -111,3 +111,12 @@
         -ms-flex: none;
             flex: none;
 }
+
+.ez-view-universaldiscoveryview .ez-tabs {
+    overflow: hidden;
+}
+
+.ez-view-universaldiscoveryview .ez-tabs-panels,
+.ez-view-universaldiscoveryview .ez-tabs-panel {
+    max-height: 100%;
+}

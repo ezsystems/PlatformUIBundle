@@ -4,6 +4,7 @@
  */
 
 .ez-view-universaldiscoverysearchview {
+    max-height: 100%;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -127,4 +128,13 @@
 
 .ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link[rel="prev"] {
     padding-right: 1em;
+}
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-content {
+    overflow: auto;
+    height: calc(100% - 6em);
+}
+
+.ez-view-universaldiscoverysearchview .ez-ud-pane-search-result {
+    max-height: calc(100% - 9em)
 }
