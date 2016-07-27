@@ -852,6 +852,12 @@ YUI.add('ez-platformuiapp', function (Y) {
                     view: 'trashView',
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
                 }, {
+                    name: "viewSearch",
+                    path: "/search",
+                    view: "searchView",
+                    sideViews: {'navigationHub': true, 'discoveryBar': true},
+                    callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView'],
+                }, {
                     name: "adminSection",
                     regex: /\/admin\/(pjax%2Fsection%2F.*)/,
                     keys: ['uri'],
@@ -903,7 +909,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                     service: Y.eZ.ServerSideViewService,
                     view: "serverSideView",
                     callbacks: ['open', 'checkUser', 'handleSideViews', 'handleMainView']
-                },]
+                }]
             },
             serverRouting: {
                 value: false

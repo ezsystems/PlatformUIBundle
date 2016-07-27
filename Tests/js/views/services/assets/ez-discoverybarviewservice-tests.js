@@ -75,6 +75,17 @@ YUI.add('ez-discoverybarviewservice-tests', function (Y) {
 
             Mock.verify(this.app);
         },
+        
+        "Should call navigateTo() on viewSearchAction event": function () {
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: ["viewSearch"],
+            });
+
+            this.service.fire('viewSearchAction');
+
+            Mock.verify(this.app);
+        },
     });
 
     Y.Test.Runner.setName("eZ Discovery Bar View Service tests");
