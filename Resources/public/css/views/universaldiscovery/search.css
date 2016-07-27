@@ -4,7 +4,6 @@
  */
 
 .ez-view-universaldiscoverysearchview {
-    max-height: 100%;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -131,10 +130,7 @@
 }
 
 .ez-view-universaldiscoverysearchview .ez-searchresult-content {
+    height: 100px;
     overflow: auto;
-    height: calc(100% - 6em);
-}
-
-.ez-view-universaldiscoverysearchview .ez-ud-pane-search-result {
-    max-height: calc(100% - 9em)
+    flex: 1 0 auto;
 }
