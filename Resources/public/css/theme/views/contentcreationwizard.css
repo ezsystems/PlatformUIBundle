@@ -18,15 +18,69 @@
 }
 
 .ez-view-contentcreationwizardview {
-    background: #f5f4f2;
+    background: #d8d8d8;
 }
 
 .ez-view-contentcreationwizardview .ez-contentcreationwizard-title {
+    font-weight: bold;
     font-size: 150%;
 }
 
 .ez-view-contentcreationwizardview .ez-contentcreationwizard-toc {
     line-height: 1.5em;
+    list-style-type: none;
+    font-size: 110%;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-separator {
+    height: 2px;
+    background: #c9c9c9;
+    border: 0;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-step-name:before {
+    font-size: 130%;
+    border-radius: 50%;
+    color: #fff;
+    background: #999;
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5;
+    text-align: center;
+    font-weight: bold;
+    content: "✓";
+    margin-right: 0.25em;
+}
+
+.ez-view-contentcreationwizardview.is-step-contenttype .ez-contentcreationwizard-step-name-contenttype:before,
+.ez-view-contentcreationwizardview.is-step-location .ez-contentcreationwizard-step-name-location:before {
+    background: #3FB499;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-step-name-contenttype:before {
+    content: "1";
+}
+
+.ez-view-contentcreationwizardview.is-step-location .ez-contentcreationwizard-step-name-contenttype:before {
+    content: "✓";
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-step-name-location:before {
+    content: "2";
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-step-result {
+    padding: 0.5em 0 0.5em 2em;
+    border-left: 1px solid #ccc;
+    font-size: 1rem;
+    margin: 0.5em 0.5em 0.5em 1em;
+    font-weight: normal;
+}
+
+.ez-view-contentcreationwizardview.is-step-location .ez-contentcreationwizard-step-name-location,
+.ez-view-contentcreationwizardview.is-step-contenttype .ez-contentcreationwizard-step-name-contenttype {
+    font-weight: bold;
 }
 
 .ez-view-contentcreationwizardview.is-step-location .ez-contentcreationwizard-step-name-contenttype,
@@ -35,14 +89,18 @@
 }
 
 .ez-view-contentcreationwizardview.is-step-location .ez-contentcreationwizard-contenttype-name {
-    border: 1px solid #ddd;
+    border: 1px solid #bbb;
+    background: #c2c2c2;
+    color: #777;
     border-radius: 3px;
+    padding: 0.2em 0.5em;
 }
 
 .ez-view-contentcreationwizardview .ez-contentcreationwizard-close {
     border: 0;
     background: transparent;
-    font-size: 200%;
+    font-size: 180%;
+    color: #444;
 }
 
 .ez-view-contentcreationwizardview .ez-contentcreationwizard-steps,
@@ -51,7 +109,7 @@
 }
 
 .ez-view-contentcreationwizardview .ez-contentcreationwizard-step,
-.ez-view-contentcreationwizardview .ez-contentcreationwizard-toolbar{
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-toolbar {
     transition: all ease 0.3s;
 }
 
@@ -81,15 +139,24 @@
     opacity: 0;
 }
 
-.ez-view-contentcreationwizardview .ez-contentcreationwizard-content-name:before {
-    content: '> ';
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-content-name {
+    margin: 0;
 }
 
-.ez-view-contentcreationwizardview .ez-contentcreationwizard-content-name {
-    padding: 1em;
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-content-name:before {
+    content: ' > ';
 }
 
 .ez-view-contentcreationwizardview .ez-contentcreationwizard-step-title {
     font-size: 108%;
     font-weight: bold;
+}
+
+.ez-view-contentcreationwizardview .ez-view-contenttypeselectorview .ez-contenttypeselector-zone-title {
+    color: #000;
+    background: #9b9b9b;
+}
+
+.ez-view-contentcreationwizardview .ez-selection-filter .ez-selection-filter-item-selected {
+    background: #3FB499;
 }

@@ -27,6 +27,10 @@
     margin: 0;
 }
 
+.ez-view-dashboardblocksview .ez-dashboard-create-button {
+    padding: 0.5em;
+}
+
 @media (min-width: 1024px) {
     .ez-view-dashboardblocksview {
         padding: 2% 6%;

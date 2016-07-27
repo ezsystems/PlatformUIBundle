@@ -2,12 +2,17 @@
 <h1 class="ez-contentcreationwizard-title">Create New Content</h1>
 
 <ol class="ez-contentcreationwizard-toc">
-    <li class="ez-contentcreationwizard-step-name-contenttype">
+    <li class="ez-contentcreationwizard-step-name ez-contentcreationwizard-step-name-contenttype">
         Choose a Content Type
-        <button class="ez-contentcreationwizard-contenttype-name"></button>
+        <div class="ez-contentcreationwizard-step-result">
+            <button class="ez-contentcreationwizard-contenttype-name"></button>
+        </div>
     </li>
-    <li class="ez-contentcreationwizard-step-name-location">
-        Choose Location
+    <li class="ez-contentcreationwizard-step-name ez-contentcreationwizard-step-name-location">
+        Select Location
+        <div class="ez-contentcreationwizard-step-result">
+            <p class="ez-contentcreationwizard-content-name"></p>
+        </div>
     </li>
 </ol>
 
@@ -18,16 +23,17 @@
         <div class="ez-contenttypeselector-container"></div>
     </div>
     <div class="ez-contentcreationwizard-step ez-contentcreationwizard-step-location">
-        <h2 class="ez-contentcreationwizard-step-title">Choose Location</h2>
-        <p class="ez-contentcreationwizard-content-name"></p>
-        <p class="ez-contentcreationwizard-step-toolbar">
-            <button class="ez-button ez-button-tree pure-button ez-font-icon ez-contentcreationwizard-pick-location ez-contentcreationwizard-choose-location">
-                Choose Location
-            </button>
-            <button class="ez-button ez-button-tree pure-button ez-font-icon ez-contentcreationwizard-pick-location ez-contentcreationwizard-change-location">
-                Change Location
-            </button>
-        </p>
+        <div class="ez-locationselector-container">
+            <h2 class="ez-contentcreationwizard-step-title">Select Location</h2>
+            <p class="ez-contentcreationwizard-step-toolbar">
+                <button class="ez-button ez-button-tree pure-button ez-font-icon ez-contentcreationwizard-pick-location ez-contentcreationwizard-choose-location">
+                    Choose Location
+                </button>
+                <button class="ez-button ez-button-tree pure-button ez-font-icon ez-contentcreationwizard-pick-location ez-contentcreationwizard-change-location">
+                    Change Location
+                </button>
+            </p>
+        </div>
     </div>
 </div>
 <div class="ez-contentcreationwizard-toolbars">

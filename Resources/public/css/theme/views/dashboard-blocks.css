@@ -12,3 +12,12 @@
     padding-bottom: 2px;
     border-bottom: 1px solid #999;
 }
+
+.ez-view-dashboardblocksview .ez-dashboard-create-button,
+.ez-view-dashboardblocksview .ez-dashboard-create-button:hover {
+    background: #3FB499;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 3px;
+    border: 0;
+}

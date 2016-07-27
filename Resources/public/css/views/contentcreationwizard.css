@@ -21,7 +21,7 @@
 
 .ez-contentcreationwizard-container .ez-view-contentcreationwizardview {
     flex: 1 1 30%;
-    max-width: 400px;
+    max-width: 410px;
 }
 
 .ez-view-contentcreationwizardview {
@@ -37,12 +37,18 @@
     margin: 0;
 }
 
-.ez-view-contentcreationwizardview .ez-contentcreationwizard-contenttype-name {
-    display: none;
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-separator {
+    margin: 0;
 }
 
-.ez-view-contentcreationwizardview.is-step-location .ez-contentcreationwizard-contenttype-name {
-    display: inline-block;
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-contenttype-name,
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-content-name {
+    visibility: hidden;
+}
+
+.ez-view-contentcreationwizardview.is-step-location .ez-contentcreationwizard-contenttype-name,
+.ez-view-contentcreationwizardview.is-location-chosen .ez-contentcreationwizard-content-name {
+    visibility: visible;
 }
 
 .ez-view-contentcreationwizardview .ez-contentcreationwizard-steps,
@@ -65,6 +71,16 @@
     display: none;
 }
 
+
+.ez-view-contentcreationwizardview .ez-contenttypeselector-container,
+.ez-view-contentcreationwizardview .ez-locationselector-container {
+    padding: 1em;
+}
+
+.ez-view-contentcreationwizardview .ez-contentcreationwizard-toolbars {
+    margin: 0.5em 1em;
+}
+
 .ez-view-contentcreationwizardview .ez-contentcreationwizard-toolbar-contenttype {
     text-align: right;
 }
@@ -79,14 +95,11 @@
 }
 
 .ez-view-contentcreationwizardview .ez-contentcreationwizard-step-toolbar {
+    margin-top: 4em;
     text-align: center;
 }
 
 .ez-view-contentcreationwizardview .ez-contentcreationwizard-change-location {
-    display: none;
-}
-
-.ez-view-contentcreationwizardview .ez-contentcreationwizard-content-name {
     display: none;
 }
 
@@ -98,6 +111,15 @@
     display: inline-block;
 }
 
-.ez-view-contentcreationwizardview.is-location-chosen .ez-contentcreationwizard-content-name {
-    display: block;
+.ez-view-contentcreationwizardview .ez-view-contenttypeselectorview {
+    padding: 0;
+}
+
+.ez-view-contentcreationwizardview .ez-view-contenttypeselectorview.ez-selection-filter .ez-selection-filter-list {
+    height: 12em;
+    max-height: 12em;
+}
+
+.ez-view-contentcreationwizardview .ez-view-contenttypeselectorview .ez-contenttypeselector-title {
+    margin-bottom: 0.7em;
 }
