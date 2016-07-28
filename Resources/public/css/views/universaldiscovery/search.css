@@ -128,3 +128,9 @@
 .ez-view-universaldiscoverysearchview .ez-searchresult-navigation-link[rel="prev"] {
     padding-right: 1em;
 }
+
+.ez-view-universaldiscoverysearchview .ez-searchresult-content {
+    height: 100px;
+    overflow: auto;
+    flex: 1 0 auto;
+}
