@@ -13,6 +13,7 @@ YUI.add('ez-navigationitemview-tests', function (Y) {
 
         setUp: function () {
             this.title = "Title";
+            this.identifier = 'title';
             this.route = {
                 name: "viewLocation",
                 params: {
@@ -22,6 +23,7 @@ YUI.add('ez-navigationitemview-tests', function (Y) {
             };
             this.view = new Y.eZ.NavigationItemView({
                 title: this.title,
+                identifier: this.identifier,
                 route: this.route,
             });
         },
@@ -41,6 +43,19 @@ YUI.add('ez-navigationitemview-tests', function (Y) {
             Assert.isTrue(
                 c.hasClass('ez-view-navigationitemview'),
                 "The container should have the ez-view-navigationitemview"
+            );
+        },
+
+        "Should add the navigation identifier on the container": function () {
+            var c = this.view.get('container');
+
+            Assert.isTrue(
+                c.hasAttribute('data-navigation-item-identifier'),
+                "The container should have the data-navigation-item-identifier"
+            );
+            Assert.areEqual(
+                this.view.get('identifier'), c.getAttribute('data-navigation-item-identifier'),
+                "The data-navigation-item-identifier should have the right identifier value"
             );
         },
 
