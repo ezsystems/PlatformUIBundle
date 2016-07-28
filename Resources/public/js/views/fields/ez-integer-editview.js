@@ -13,7 +13,7 @@ YUI.add('ez-integer-editview', function (Y) {
 
     var L = Y.Lang,
         FIELDTYPE_IDENTIFIER = 'ezinteger',
-        INTEGER_PATTERN = "\\-?\\d*"; // WARNING: each backslash is doubled, because it is escaped on output otherwise;
+        INTEGER_PATTERN = "-?\\d*"; // WARNING: each backslash is doubled, because it is escaped on output otherwise;
 
     /**
      * Integer edit view
