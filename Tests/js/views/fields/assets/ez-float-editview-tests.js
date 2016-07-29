@@ -4,7 +4,7 @@
  */
 YUI.add('ez-float-editview-tests', function (Y) {
     var viewTest, registerTest, getFieldTest,
-        FLOAT_TEST_PATTERN = "\\-?\\d*\\.?\\d+";
+        FLOAT_TEST_PATTERN = "-?\\d*\\.?\\d+";
 
     viewTest = new Y.Test.Case({
         name: "eZ Float View test",
