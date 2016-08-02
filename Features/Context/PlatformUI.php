@@ -278,33 +278,75 @@ class PlatformUI extends Context
     }
 
     /**
-     * Finds an HTML element by class and the text value and returns it.
+     * Finds an HTML element by class and the text value.
      *
-     * @param string    $text           Text value of the element
-     * @param string    $selector       CSS selector of the element
-     * @param string    $textSelector   Extra CSS selector for text of the element
-     * @param string    $baseElement    Element in which the search is based
-     * @param int       $iteration      Iteration number, used to control number of executions
-     * @return array
+     * @param string    $text         Text value of the element
+     * @param array     $classes      Array with the classes of the element
+     * @param string    $baseElement  Element in which the search is based
+     *
+     * @return Behat\Mink\Element\NodeElement
      */
-    protected function getElementByText($text, $selector, $textSelector = null, $baseElement = null)
+    protected function getElementByText($text, array $classes = [], $baseElement = null)
     {
-        if ($baseElement == null) {
-            $baseElement = $this->getSession()->getPage();
-        }
-        $elements = $this->findAllWithWait($selector, $baseElement);
-        foreach ($elements as $element) {
-            if ($textSelector != null) {
-                $elementText = $this->findWithWait($textSelector, $element)->getText();
-            } else {
-                $elementText = $element->getText();
-            }
-            if ($elementText == $text) {
-                return $element;
-            }
+        $xpath = '';
+
+        // makes sure string is clean for xpath
+        if (strpos($text, '"') === false) {
+            // if it does not contains " encase in "
+            $textXpath = '"' . $text . '"';
+        } else {
+            // encase in ' elsewise
+            $textXpath = "'$text'";
         }
 
-        return false;
+        if (!empty($classes)) {
+            foreach ($classes as $class) {
+                $xpath .= "//*[contains(concat(' ', normalize-space(@class), ' '), ' $class ')]";
+            }
+            $xpath = rtrim($xpath, ']');
+            $xpath .= "and descendant-or-self::*//text()=$textXpath]";
+        } else {
+            $xpath = "//*[text()=$textXpath]";
+        }
+
+        return $this->findElementWithXpath($xpath, $text, $baseElement);
+    }
+
+    /**
+     * Finds an HTML element by class and the text value and returns it.
+     *
+     * @param string    $xpath          Xpath query for the element
+     * @param string    $exceptionText  Exception message
+     * @param string    $baseElement    Element in which the search is based
+     *
+     * @return Behat\Mink\Element\NodeElement
+     */
+    protected function findElementWithXpath($xpath, $exceptionText, $baseElement = null)
+    {
+        if (!$baseElement) {
+            $baseElement = $this->getSession()->getPage();
+        }
+
+        $element = $this->spin(
+            function () use ($xpath, $baseElement, $exceptionText) {
+                $element = $baseElement->find('xpath', $xpath);
+                if (!$element) {
+                    //TODO improve exception message
+                    throw new \Exception("Element with text '$exceptionText' was not found");
+                }
+                // An exception may be thrown if the element is not valid/attached to DOM.
+                $element->getValue();
+
+                if (!$element->isVisible()) {
+                    //TODO improve exception message
+                    throw new \Exception("Element with text '$exceptionText' is not visible");
+                }
+
+                 return $element;
+            }
+        );
+
+        return $element;
     }
 
     /**
@@ -312,18 +354,15 @@ class PlatformUI extends Context
      *
      * @param string    $text           Text value of the element
      * @param string    $selector       CSS selector of the element
-     * @param string    $textSelector   Extra CSS selector for text of the element
      * @param string    $baseElement    Element in which the search is based
      */
-    protected function clickElementByText($text, $selector, $textSelector = null, $baseElement = null, $index = 1)
+    protected function clickElementByText($text, array $selector = [], $baseElement = null)
     {
-        $element = $this->getElementByText($text, $selector, $textSelector, $baseElement);
-        if ($element && $element->isVisible()) {
+        $element = $this->getElementByText($text, $selector, $baseElement);
+        if ($element->isVisible()) {
             $element->click();
-        } elseif ($element) {
-            throw new \Exception("Can't click '$text' element: not visible");
         } else {
-            throw new \Exception("Can't click '$text' element: not Found");
+            throw new \Exception("Can't click '$text' element: not visible");
         }
     }
 
@@ -352,10 +391,7 @@ class PlatformUI extends Context
             }
         }
         // find an '.ez-tree-node' element which contains an '.ez-tree-navigate' with text '$text'
-        $element = $this->getElementByText($text, '.ez-tree-node', '.ez-tree-navigate', $parentNode);
-        if (!$element) {
-            throw new \Exception("The tree node '$text' was not found");
-        }
+        $element = $this->getElementByText($text, ['ez-tree-node'], $parentNode);
 
         return $element;
     }
