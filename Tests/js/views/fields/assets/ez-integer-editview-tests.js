@@ -4,7 +4,7 @@
  */
 YUI.add('ez-integer-editview-tests', function (Y) {
     var viewTest, registerTest, getFieldTest,
-        INTEGER_TEST_PATTERN = "\\-?\\d*";
+        INTEGER_TEST_PATTERN = "-?\\d*";
 
     viewTest = new Y.Test.Case({
         name: "eZ Integer View test",

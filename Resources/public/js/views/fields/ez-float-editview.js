@@ -13,7 +13,7 @@ YUI.add('ez-float-editview', function (Y) {
 
     var L = Y.Lang,
         FIELDTYPE_IDENTIFIER = 'ezfloat',
-        FLOAT_PATTERN = "\\-?\\d*\\.?\\d+"; // WARNING: each backslash is doubled, because it is escaped on output otherwise
+        FLOAT_PATTERN = "-?\\d*\\.?\\d+"; // WARNING: each backslash is doubled, because it is escaped on output otherwise
 
     /**
      * Float edit view
