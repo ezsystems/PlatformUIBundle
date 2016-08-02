@@ -27,7 +27,9 @@ YUI.add('ez-usermenuitemfireeventview', function (Y) {
         },
 
         initializer: function () {
-            this.containerTemplate = '<li class="' + this._generateViewClassName(this._getName()) + '"/>';
+            var dataEvent = 'data-event-name="' + this.get('eventName') + '"';
+
+            this.containerTemplate = '<li class="' + this._generateViewClassName(this._getName()) + '" ' + dataEvent + '/>';
 
             this.on('addedToUserMenu', this._addUserMenuHideOnEvent, this);
         },

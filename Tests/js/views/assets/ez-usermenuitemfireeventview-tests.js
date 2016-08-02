@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-usermenuitemfireeventview-tests', function (Y) {
-    var renderTest, eventTest;
+    var renderTest, eventTest, dataTest;
 
     renderTest = new Y.Test.Case({
         name: "eZ User Menu Item Fire Event render test",
@@ -108,7 +108,36 @@ YUI.add('ez-usermenuitemfireeventview-tests', function (Y) {
         },
     });
 
+    dataTest = new Y.Test.Case({
+        name: "eZ User Menu Item Fire Event data test",
+
+        setUp: function () {
+            this.view = new Y.eZ.UserMenuItemFireEventView({
+                eventName: 'logOut'
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should pass the event name to the container": function () {
+            var container = this.view.get('container');
+
+            Y.Assert.isTrue(
+                container.hasAttribute('data-event-name'),
+                'Should have a data event name attribute in the container'
+            );
+            Y.Assert.areEqual(
+                this.view.get('eventName'), container.getAttribute('data-event-name'),
+                'Should have the correct data event name value in the container'
+            );
+        },
+
+    });
+
     Y.Test.Runner.setName("eZ User Menu Item Fire Event View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(eventTest);
+    Y.Test.Runner.add(dataTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-usermenuitemfireeventview']});
