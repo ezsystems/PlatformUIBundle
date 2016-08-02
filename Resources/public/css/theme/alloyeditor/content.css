@@ -6,6 +6,10 @@
 .ez-richtext-editable .is-block-focused,
 .ez-richtext-editable .cke_widget_wrapper.cke_widget_focused>.cke_widget_element {
     outline: 2px dashed #aaa;
+    /* when changing outline-offset remember to also change
+     * the outline width computation for Edge in
+     * js/alloyeditor/toolbars/config/block-base.js
+     */
     outline-offset: 1px;
 }
 
