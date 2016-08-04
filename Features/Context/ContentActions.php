@@ -9,8 +9,29 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
+use PHPUnit_Framework_Assert as Assertion;
+
 class ContentActions extends PlatformUI
 {
+    /**
+     * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\ContentEditContext
+     */
+    protected $contentEditContext;
+
+    /**
+     * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
+     */
+    protected $dashboardContext;
+
+    /**
+     */
+    private function iSeeNotification($message)
+    {
+        $this->sleep();
+        $result = $this->getElementByText($message, '.ez-notification-text');
+        Assertion::AssertNotNull($result);
+    }
+
     /**
      * @Then I am notified that :name has been copied under :destiny
      */
@@ -25,10 +46,11 @@ class ContentActions extends PlatformUI
      */
     public function moveInto($name, $destiny)
     {
-        $this->onFullView($name);
-        $this->clickActionBar('Move');
-        $this->selectFromUniversalDiscovery("eZ Platform/$destiny");
-        $this->confirmSelection();
+        $this->contentEditContext->onFullView($name);
+        $this->waitWhileLoading();
+        $this->dashboardContext->clickActionBar('Move');
+        $this->dashboardContext->selectFromUniversalDiscovery("eZ Platform/$destiny");
+        $this->dashboardContext->confirmSelection();
         $destinyName = explode('/', $destiny);
         $destinyName = end($destinyName);
         $this->iSeeMovedNotification($name, $destinyName);
@@ -58,9 +80,9 @@ class ContentActions extends PlatformUI
      */
     public function removeContent($name)
     {
-        $this->onFullView($name);
+        $this->contentEditContext->onFullView($name);
         $this->waitWhileLoading();
-        $this->clickActionBar('Send to Trash');
+        $this->dashboardContext->clickActionBar('Send to Trash');
     }
 
     /**

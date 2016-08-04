@@ -9,9 +9,11 @@
  */
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
-use EzSystems\BehatBundle\Context\Browser\Context;
+use ReflectionClass;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\MinkExtension\Context\RawMinkContext;
 
-class PlatformUI extends Context
+class PlatformUI extends RawMinkContext
 {
     /**
      * Default Platform URI.
@@ -43,9 +45,6 @@ class PlatformUI extends Context
      */
     const NOT_WAITING = 0;
     const WAITING_FOR_PUBLISHING = 1;
-
-    use SubContext\Authentication;
-    use SubContext\CommonActions;
 
     /**
      * PlatformUI relative URL path.
@@ -80,26 +79,42 @@ class PlatformUI extends Context
     protected $platformStatus = self::NOT_WAITING;
 
     /**
-     * Mapping of the new paths of contents after being moved.
-     */
-    protected $newPathsMap = array();
-
-    /**
      * Initialize class.
      *
      * @param string $uri
      */
     public function __construct($uri = self::PLATFORM_URI, $user = null, $password = null)
     {
-        parent::__construct();
-        $this->pageIdentifierMap['roles'] = '/ez#/admin/pjax%2Frole';
-        $this->pageIdentifierMap['users'] = '/ez#/view/%2Fapi%2Fezp%2Fv2%2Fcontent%2Flocations%2F1%2F5/eng-GB';
         $this->platformUiUri = $uri;
         if ($user != null) {
             $this->user = $user;
         }
         if ($password != null) {
             $this->password = $password;
+        }
+    }
+
+    /**
+     * @BeforeScenario
+     *
+     * Default gather contexts method.
+     * Uses doc comment type hint to get the contexts and set them
+     */
+    public function gatherContexts(BeforeScenarioScope $scope)
+    {
+        $refClass = new ReflectionClass($this);
+        $refProperties = $refClass->getProperties();
+        foreach ($refProperties as $refProperty) {
+            $propertyName = $refProperty->getName();
+            // get property type hint from doc comment
+            preg_match_all('#@var\s(.*?)\n#s', $refProperty->getDocComment(), $matches);
+            foreach ($matches[1] as $typeHint) {
+                // checks if the type hint implements Behat Context
+                $implements = @class_implements($typeHint);
+                if (!empty($implements) && in_array('Behat\Behat\Context\Context', $implements)) {
+                    $this->$propertyName = $scope->getEnvironment()->getContext($typeHint);
+                }
+            }
         }
     }
 
@@ -118,7 +133,6 @@ class PlatformUI extends Context
     {
         $this->closeConfirmBox();
         $this->closeEditView();
-        $this->iLogout();
     }
 
     /**
@@ -130,11 +144,41 @@ class PlatformUI extends Context
         $this->waitWhileLoading();
     }
 
-    /**
-     * @AfterStep
-     */
-    public function afterStep()
+    public function fillFieldWithValue($field, $value = '')
     {
+        $fieldNode = $this->spin(
+            function () use ($field) {
+                $fieldNode = $this->getSession()->getPage()->findField($field);
+                if ($fieldNode == null) {
+                    throw new \Exception('Field not found');
+                }
+
+                return $fieldNode;
+            }
+        );
+
+        $this->spin(
+            function () use ($fieldNode, $field, $value) {
+                // make sure any autofocus elements don't mis-behave when setting value
+                $fieldNode->blur();
+                usleep(10 * 1000);
+                $fieldNode->focus();
+                usleep(10 * 1000);
+
+                // setting value on pre-filled inputs can cause issues, clearing before
+                $fieldNode->setValue('');
+                $fieldNode->setValue($value);
+
+                // verication that the field was really filled in correctly
+                $this->sleep();
+                $check = $this->getSession()->getPage()->findField($field)->getValue();
+                if ($check != $value) {
+                    throw new \Exception('Failed to set the field value: ' . $check);
+                }
+
+                return true;
+            }
+        );
     }
 
     /**
@@ -284,7 +328,7 @@ class PlatformUI extends Context
      * @param string    $selector       CSS selector of the element
      * @param string    $textSelector   Extra CSS selector for text of the element
      * @param string    $baseElement    Element in which the search is based
-     * @param int       $iteration      Iteration number, used to control number of executions
+     *
      * @return array
      */
     protected function getElementByText($text, $selector, $textSelector = null, $baseElement = null)
@@ -406,35 +450,6 @@ class PlatformUI extends Context
                 $this->waitWhileLoading();
             }
         } catch (\Exception $e) {
-        }
-    }
-    /**
-     * Attaches a file to a input field on the HTML.
-     *
-     * @param   string $file        file name relative to mink definitions
-     * @param   string $selector    CSS file upload element selector
-     */
-    protected function attachFile($fileName, $selector)
-    {
-        if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(
-                realpath(
-                    $this->getMinkParameter('files_path')
-                ),
-                DIRECTORY_SEPARATOR
-            ) . DIRECTORY_SEPARATOR . $fileName;
-
-            if (is_file($fullPath)) {
-                $fileInput = 'input[type="file"]' . $selector;
-                $field = $this->getSession()->getPage()->find('css', $fileInput);
-
-                if (null === $field) {
-                    throw new Exception("File input $selector is not found");
-                }
-                $field->attachFile($fullPath);
-            }
-        } else {
-            throw new Exception("File $fileName is not found at the given location: $fullPath");
         }
     }
 }

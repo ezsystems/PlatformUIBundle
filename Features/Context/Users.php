@@ -14,23 +14,45 @@ use Behat\Gherkin\Node\TableNode;
 class Users extends PlatformUI
 {
     /**
+     * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\DashboardContext
+     */
+    protected $dashboardContext;
+
+    /**
+     * @var EzSystems\PlatformUIBundle\Features\Context\SubContext\BrowserContext
+     */
+    protected $browserContext;
+
+    /**
+     * @Given I am on the Users page
+     */
+    public function onUsersPage()
+    {
+        $this->getSession()->visit(
+            $this->locatePath(
+                self::PLATFORM_URI . '#/view/%2Fapi%2Fezp%2Fv2%2Fcontent%2Flocations%2F1%2F5/eng-GB'
+            )
+        );
+    }
+
+    /**
      * @When I create a new User
      * @When I fill a new User fields with:
      */
     public function iCreateUser(TableNode $users = null)
     {
-        $this->clickActionBar('Create');
+        $this->dashboardContext->clickActionBar('Create');
         $this->waitWhileLoading('.ez-contenttypes-loading');
-        $this->checkOption('Users');
-        $this->clickContentType('User');
+        $this->browserContext->checkOption('Users');
+        $this->dashboardContext->clickContentType('User');
         if ($users) {
             foreach ($users as $user) {
-                $this->fillFieldWithValue('First name', $user['First name']);
-                $this->fillFieldWithValue('Last name', $user['Last name']);
-                $this->fillFieldWithValue('Login', $user['Login']);
-                $this->fillFieldWithValue('Email', $user['Email']);
-                $this->fillFieldWithValue('Password', $user['Password']);
-                $this->fillFieldWithValue('Confirm password', $user['Password']);
+                $this->browserContext->fillFieldWithValue('First name', $user['First name']);
+                $this->browserContext->fillFieldWithValue('Last name', $user['Last name']);
+                $this->browserContext->fillFieldWithValue('Login', $user['Login']);
+                $this->browserContext->fillFieldWithValue('Email', $user['Email']);
+                $this->browserContext->fillFieldWithValue('Password', $user['Password']);
+                $this->browserContext->fillFieldWithValue('Confirm password', $user['Password']);
             }
         }
     }
@@ -40,10 +62,10 @@ class Users extends PlatformUI
      */
     public function editUserUser($username)
     {
-        $this->clickOnTreePath("$username $username");
+        $this->dashboardContext->clickOnTreePath("$username $username");
         $this->sleep(); //safegaurd for application delays
         $this->waitWhileLoading();
-        $this->clickActionBar('Edit');
+        $this->dashboardContext->clickActionBar('Edit');
     }
 
     /**
@@ -52,7 +74,7 @@ class Users extends PlatformUI
     public function iSeeUsersPage()
     {
         $this->sleep(); // safegaurd for application delays
-        $this->iSeeTitle('Users');
+        $this->browserContext->iSeeTitle('Users');
     }
 
     /**
