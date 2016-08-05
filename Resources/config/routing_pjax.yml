@@ -146,6 +146,12 @@ admin_roleList:
     defaults:
         _controller: ezsystems.platformui.controller.role:listRolesAction
 
+admin_roleViewAssigments:
+    path: /role/view/{roleId}/assignments
+    defaults:
+        _controller: ezsystems.platformui.controller.role:viewRoleAction
+        activeTab: "ez-tabs-content"
+
 admin_roleView:
     path: /role/view/{roleId}
     defaults:

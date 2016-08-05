@@ -91,10 +91,11 @@ class RoleController extends Controller
      * Renders a role.
      *
      * @param int $roleId Role ID
+     * @param string $activeTab Selected Tab
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewRoleAction($roleId)
+    public function viewRoleAction($roleId, $activeTab = "ez-tabs-role-name")
     {
         $role = $this->roleService->loadRole($roleId);
         $roleAssignments = $this->roleService->getRoleAssignments($role);
@@ -134,6 +135,7 @@ class RoleController extends Controller
             'can_delete' => $this->isGranted(new Attribute('role', 'delete')),
             'deleteFormsByAssignment' => $deleteFormsByAssignment,
             'editablePolicies' => $editablePolicies,
+            'activeTab' => $activeTab,
         ]);
     }
 
@@ -360,7 +362,7 @@ class RoleController extends Controller
             $this->notifyError('role.assignment.error.delete', [], 'role');
         }
 
-        return $this->redirectToRouteAfterFormPost('admin_roleView', ['roleId' => $roleAssignment->role->id]);
+        return $this->redirectToRouteAfterFormPost('admin_roleViewAssigments', ['roleId' => $roleAssignment->role->id]);
     }
 
     /**
