@@ -95,7 +95,7 @@ class RoleController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function viewRoleAction($roleId, $activeTab = "ez-tabs-role-name")
+    public function viewRoleAction($roleId, $activeTab = 'ez-tabs-role-name')
     {
         $role = $this->roleService->loadRole($roleId);
         $roleAssignments = $this->roleService->getRoleAssignments($role);
