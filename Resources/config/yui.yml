@@ -9,8 +9,16 @@ system:
                 ez-capi:
                     requires: ['capi']
                     path: %ez_platformui.public_dir%/js/external/ez-capi.js
+                react:
+                    path: %ez_platformui.external_assets_public_dir%/vendors/react/react.js
+                react-dom:
+                    path: %ez_platformui.external_assets_public_dir%/vendors/react/react-dom.js
+                ez-react:
+                    requires: ['react', 'react-dom']
+                    path: %ez_platformui.public_dir%/js/external/ez-react.js
                 alloyeditor:
-                    path: %ez_platformui.external_assets_public_dir%/vendors/alloy-editor/dist/alloy-editor/alloy-editor-all.js
+                    requires: ['ez-react']
+                    path: %ez_platformui.external_assets_public_dir%/vendors/alloy-editor/dist/alloy-editor/alloy-editor-no-react.js
                 ez-alloyeditor:
                     requires: ['alloyeditor']
                     path: %ez_platformui.public_dir%/js/external/ez-alloyeditor.js
