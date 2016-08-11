@@ -118,7 +118,11 @@ class PlatformUI extends Context
     {
         $this->closeConfirmBox();
         $this->closeEditView();
-        $this->iLogout();
+
+        // Only logout if the scenario logged the user in (otherwise this will fail, for instance on skipped scenarios)
+        if ($this->shouldBeLoggedIn) {
+            $this->iLogout();
+        }
     }
 
     /**

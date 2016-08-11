@@ -37,6 +37,7 @@ trait Authentication
         $this->fillFieldWithValue('password', $password);
         $this->iClickAtButton('Login');
         $this->iShouldBeLoggedIn();
+        $this->shouldBeLoggedIn = true;
     }
 
     /**
