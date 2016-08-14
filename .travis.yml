@@ -1,33 +1,34 @@
-sudo: false
+# Use trusty for better performance (and avoiding mysql/postgres/solr gone issues on precise and container infra)
+dist: trusty
+sudo: required
 language: php
+
 env:
     global:
         secure: "aNPcXEtgV3Q/GVCH+FvITm/gLXcNyFl7YiOT9JcqZUwYXsT2zi8g4BcwBgDtpbSmi8NSCsEWONNxxDM10BqCPzfkiFD2I0cPHXVxmJ3cmOqySci5JvysEd+RU6gnatCxqzAJYDH2BanfPyu+yPwrSIgWdkPuvNhydNJFUrwsinw="
 
 matrix:
+    fast_finish: true
     include:
+        # Run behat first as it takes the most time (don't need to specify php version here as we don't really care about version on host)
+        - env: BEFORE="./bin/travis/prepare_behat.sh" TEST_CMD="./bin/travis/runbehat.sh" AFTER_SUCCESS='echo "After success"' RUN_INSTALL=1 COMPOSE_FILE="doc/docker-compose/base-prod.yml:doc/docker-compose/selenium.yml" SYMFONY_ENV=behat SYMFONY_DEBUG=0
+        - env: BEFORE="./bin/travis/setupnode.sh" TEST_CMD="./bin/travis/runnode.sh" AFTER_SUCCESS="./bin/travis/generate_apidoc.sh"
         - php: 7.0
-          env: BEFORE="./bin/travis/setupnode.sh" TEST_CMD="grunt test" AFTER_SUCCESS="./bin/travis/generate_apidoc.sh"
-        - php: 7.0
-          env: BEFORE="composer install --prefer-dist" TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
-        - php: 7.0
-          env: BEFORE="./bin/travis/prepare_behat.sh" TEST_CMD="./bin/travis/runbehat.sh" AFTER_SUCCESS='echo "After success"'
+          env: BEFORE="composer install --prefer-dist" TEST_CMD="./vendor/bin/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
         - php: 5.6
-          env: BEFORE='php -d memory_limit=-1 composer.phar install --prefer-dist' TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
+          env: BEFORE='composer install --prefer-dist' TEST_CMD="./vendor/bin/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
         - php: 5.5
-          env: BEFORE='php -d memory_limit=-1 composer.phar install --prefer-dist' TEST_CMD="./vendor/phpunit/phpunit/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
+          env: BEFORE='composer install --prefer-dist' TEST_CMD="./vendor/bin/phpunit -c phpunit.xml" AFTER_SUCCESS='echo "After success"'
 
 # test only master (+ Pull requests)
 branches:
     only:
         - master
-        - "1.2"
-        - "1.3"
-        - "1.4"
+        - /^\d.\d+$/
 
 before_install:
     - phpenv config-rm xdebug.ini
-    - wget http://getcomposer.org/composer.phar
+    - echo 'memory_limit = -1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 before_script:
     - $BEFORE
