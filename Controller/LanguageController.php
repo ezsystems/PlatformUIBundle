@@ -50,7 +50,7 @@ class LanguageController extends Controller
         foreach ($languageList as $language) {
             $languageId = $language->id;
             $deleteFormsByLanguageId[$languageId] = $this->createForm(
-                new LanguageDeleteType($this->languageService),
+                LanguageDeleteType::class,
                 ['languageId' => $languageId]
             )->createView();
         }
@@ -73,7 +73,7 @@ class LanguageController extends Controller
     public function viewAction($languageId)
     {
         $language = $this->languageService->loadLanguageById($languageId);
-        $deleteForm = $this->createForm(new LanguageDeleteType($this->languageService), ['languageId' => $languageId]);
+        $deleteForm = $this->createForm(LanguageDeleteType::class, ['languageId' => $languageId]);
 
         return $this->render('eZPlatformUIBundle:Language:view.html.twig', [
             'language' => $language,
@@ -93,7 +93,7 @@ class LanguageController extends Controller
     public function deleteAction(Request $request, $languageId, $redirectErrorsTo = 'list')
     {
         $language = $this->languageService->loadLanguageById($languageId);
-        $deleteForm = $this->createForm(new LanguageDeleteType($this->languageService), ['languageId' => $languageId]);
+        $deleteForm = $this->createForm(LanguageDeleteType::class, ['languageId' => $languageId]);
         $deleteForm->handleRequest($request);
         if ($deleteForm->isValid()) {
             $this->languageService->deleteLanguage($language);
@@ -131,7 +131,7 @@ class LanguageController extends Controller
         ]);
         $languageData = (new LanguageMapper())->mapToFormData($language);
         $actionUrl = $this->generateUrl('admin_languageedit', ['languageId' => $languageId]);
-        $form = $this->createForm(new LanguageType(), $languageData);
+        $form = $this->createForm(LanguageType::class, $languageData);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $this->actionDispatcher->dispatchFormAction(

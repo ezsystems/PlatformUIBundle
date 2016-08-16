@@ -19,6 +19,7 @@ use EzSystems\RepositoryForms\Data\Mapper\PolicyMapper;
 use EzSystems\RepositoryForms\Data\Mapper\RoleMapper;
 use EzSystems\RepositoryForms\Form\ActionDispatcher\ActionDispatcherInterface;
 use EzSystems\RepositoryForms\Form\Type\Role\PolicyDeleteType;
+use EzSystems\RepositoryForms\Form\Type\Role\PolicyType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleAssignmentDeleteType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleCreateType;
 use EzSystems\RepositoryForms\Form\Type\Role\RoleDeleteType;
@@ -75,7 +76,7 @@ class RoleController extends Controller
      */
     public function listRolesAction()
     {
-        $createForm = $this->createForm(new RoleCreateType());
+        $createForm = $this->createForm(RoleCreateType::class);
 
         return $this->render('eZPlatformUIBundle:Role:list_roles.html.twig', [
             'roles' => $this->roleService->loadRoles(),
@@ -98,14 +99,14 @@ class RoleController extends Controller
     {
         $role = $this->roleService->loadRole($roleId);
         $roleAssignments = $this->roleService->getRoleAssignments($role);
-        $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
+        $deleteForm = $this->createForm(RoleDeleteType::class, ['roleId' => $roleId]);
         $editablePolicies = [];
 
         $deleteFormsByPolicyId = [];
         foreach ($role->getPolicies() as $policy) {
             $policyId = $policy->id;
             $deleteFormsByPolicyId[$policyId] = $this->createForm(
-                new PolicyDeleteType(),
+                PolicyDeleteType::class,
                 ['policyId' => $policyId, 'roleId' => $roleId]
             )->createView();
 
@@ -119,7 +120,7 @@ class RoleController extends Controller
         $deleteFormsByAssignment = [];
         foreach ($roleAssignments as $roleAssignment) {
             $deleteFormsByAssignment[$roleAssignment->id] = $this->createForm(
-                new RoleAssignmentDeleteType(),
+                RoleAssignmentDeleteType::class,
                 ['assignmentId' => $roleAssignment->id]
             )->createView();
         }
@@ -144,7 +145,7 @@ class RoleController extends Controller
      */
     public function createRoleAction(Request $request)
     {
-        $createForm = $this->createForm(new RoleCreateType());
+        $createForm = $this->createForm(RoleCreateType::class);
         $createForm->handleRequest($request);
         if ($createForm->isValid()) {
             $roleCreateStruct = new RoleCreateStruct(['identifier' => '__new__' . md5(microtime(true))]);
@@ -190,7 +191,7 @@ class RoleController extends Controller
         }
 
         $roleData = (new RoleMapper())->mapToFormData($roleDraft);
-        $form = $this->createForm(new RoleUpdateType(), $roleData);
+        $form = $this->createForm(RoleUpdateType::class, $roleData);
         $actionUrl = $this->generateUrl('admin_roleUpdate', ['roleId' => $roleId]);
 
         // Synchronize form and data.
@@ -233,7 +234,7 @@ class RoleController extends Controller
     public function deleteRoleAction(Request $request, $roleId)
     {
         $role = $this->roleService->loadRole($roleId);
-        $deleteForm = $this->createForm(new RoleDeleteType(), ['roleId' => $roleId]);
+        $deleteForm = $this->createForm(RoleDeleteType::class, ['roleId' => $roleId]);
         $deleteForm->handleRequest($request);
         if ($deleteForm->isValid()) {
             $this->roleService->deleteRole($role);
@@ -276,7 +277,7 @@ class RoleController extends Controller
             'availableLimitationTypes' => $limitationTypes,
         ]);
         $actionUrl = $this->generateUrl('admin_policyEdit', ['roleId' => $roleId, 'policyId' => $policyId]);
-        $form = $this->createForm('ezrepoforms_policy_edit', $policyData);
+        $form = $this->createForm(PolicyType::class, $policyData);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $this->policyActionDispatcher->dispatchFormAction(
@@ -302,7 +303,7 @@ class RoleController extends Controller
     {
         $role = $this->roleService->loadRole($roleId);
         $deleteForm = $this->createForm(
-            new PolicyDeleteType(),
+            PolicyDeleteType::class,
             ['policyId' => $policyId, 'roleId' => $roleId]
         );
         $deleteForm->handleRequest($request);
@@ -351,7 +352,7 @@ class RoleController extends Controller
     public function deleteRoleAssignmentAction(Request $request, $roleAssignmentId)
     {
         $roleAssignment = $this->roleService->loadRoleAssignment($roleAssignmentId);
-        $deleteForm = $this->createForm(new RoleAssignmentDeleteType(), ['assignmentId' => $roleAssignmentId]);
+        $deleteForm = $this->createForm(RoleAssignmentDeleteType::class, ['assignmentId' => $roleAssignmentId]);
         $deleteForm->handleRequest($request);
         if ($deleteForm->isValid()) {
             $this->roleService->removeRoleAssignment($roleAssignment);
