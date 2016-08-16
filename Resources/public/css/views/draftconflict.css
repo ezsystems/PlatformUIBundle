@@ -1,0 +1,43 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+
+.ez-view-draftconflictview .ez-draft-conflict-title {
+    margin: 0.5em 0 0 0;
+}
+
+.ez-view-draftconflictview .ez-draft-conflict-toolbar {
+    text-align: right;
+    margin: 0.5em 0;
+}
+
+.ez-view-draftconflictview .ez-draft-conflict-newdraft {
+    display: inline-block;
+    padding: 0.5em;
+}
+
+.ez-view-draftconflictview .ez-draft-conflict-table {
+    width: 100%;
+}
+
+.ez-view-draftconflictview [class*="ez-draft-conflict-list-head-"] {
+    padding: 0.8em;
+}
+
+.ez-view-draftconflictview .ez-draft-conflict-list-cell {
+    padding: 0 0.5em;
+    text-align: center;
+}
+
+.ez-view-draftconflictview .ez-draft-conflict-edit {
+    visibility: hidden;
+    width: 3em;
+    height: 3em;
+    display: block;
+}
+
+.ez-view-draftconflictview .is-row-selected .ez-draft-conflict-edit {
+    visibility: visible;
+}

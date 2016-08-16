@@ -43,6 +43,10 @@
     margin: 2em 0 0 0;
 }
 
+.ez-view-confirmboxview .ez-confirmbox-tools-hidden {
+    display: none;
+}
+
 .ez-view-confirmboxview .ez-confirmbox-confirm {
     margin-left: 2em;
 }

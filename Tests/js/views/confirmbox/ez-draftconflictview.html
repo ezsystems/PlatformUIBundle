@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Draft conflict view tests</title>
+</head>
+<body>
+
+<div class="container"></div>
+<div class="outside"></div>
+
+<script type="text/x-handlebars-template" id="draftconflictview-ez-template">
+    <a class="ez-draft-conflict-link" href="route66">edit draft</a>
+
+    <table>
+        <tbody class="ez-draft-conflict-list-content">
+        {{#each drafts}}
+            <tr class="ez-draft-conflict-list-row">
+                <td>
+                    {{ versionNo }}
+                    <div class="ez-draft-conflict-list-row-options"></div>
+                </td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</script>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-draftconflictview-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-draftconflictview'],
+        filter: loaderFilter,
+        modules: {
+            "ez-draftconflictview": {
+                requires: [
+                    'ez-templatebasedview',
+                    'event-tap',
+                    'event-outside',
+                ],
+                fullpath: "../../../../Resources/public/js/views/confirmbox/ez-draftconflictview.js"
+            },
+            "ez-templatebasedview": {
+                requires: ['ez-view', 'handlebars', 'template'],
+                fullpath: "../../../../Resources/public/js/views/ez-templatebasedview.js"
+            },
+            "ez-view": {
+                requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],
+                fullpath: "../../../../Resources/public/js/views/ez-view.js"
+            },
+            "ez-pluginregistry": {
+                requires: ['array-extras'],
+                fullpath: "../../../../../Resources/public/js/services/ez-pluginregistry.js"
+            },
+        }
+    }).use('ez-draftconflictview-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>

@@ -66,14 +66,16 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          * @param {Object} e event facade of the editAction event
          */
         _editContent: function (e) {
-            var app = this.get('app');
 
-            app.navigate(
-                app.routeUri('editContent', {
-                    id: e.content.get('id'),
-                    languageCode: this.get('languageCode')
-                })
-            );
+            /**
+             * Fired when a content needs to be edited
+             * @event editContentRequest
+             */
+            this.fire('editContentRequest', {
+                content: e.content,
+                languageCode: this.get('languageCode'),
+                contentType: this.get('contentType'),
+            });
         },
 
         /**

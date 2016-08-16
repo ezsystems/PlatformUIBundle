@@ -324,6 +324,42 @@ YUI.add('ez-contentmodel', function (Y) {
         },
 
         /**
+         * Loads content's version list sorted by status
+         *
+         * @method loadVersionsSortedByStatus
+         * @param {Object} options
+         * @param {Object} options.api (required) the JS REST client instance
+         * @param {Function} callback
+         */
+        loadVersionsSortedByStatus: function (options, callback) {
+            this.loadVersions(options, Y.bind(function (error, versions) {
+                callback(error, this._sortVersions(versions));
+            }, this));
+        },
+
+        /**
+         * Sorts an array of version info by status
+         *
+         * @method _sortVersions
+         * @protected
+         * @param versions {Array} of eZ.VersionInfo
+         * @return {Object} of sorted versions by status:
+         *              struct.<status_name>: {Array} of eZ.VersionInfo
+         */
+        _sortVersions: function(versions) {
+            var versionsByStatus = {};
+
+            versions.forEach(function (version) {
+                if ( !versionsByStatus[version.get('status')]) {
+                    versionsByStatus[version.get('status')] = [];
+                }
+                versionsByStatus[version.get('status')].push(version);
+             });
+
+            return versionsByStatus;
+        },
+
+        /**
          * Adds new location for content
          *
          * @method addLocation
