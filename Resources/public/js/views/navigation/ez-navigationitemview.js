@@ -24,7 +24,9 @@ YUI.add('ez-navigationitemview', function (Y) {
      */
     Y.eZ.NavigationItemView = Y.Base.create('navigationItemView', Y.eZ.TemplateBasedView, [], {
         initializer: function () {
-            this.containerTemplate = '<li class="' + this._generateViewClassName(this._getName()) + '"/>';
+            var dataNavigationIdentifier = 'data-navigation-item-identifier="' + this.get('identifier') + '"';
+
+            this.containerTemplate = '<li class="' + this._generateViewClassName(this._getName()) + '" ' + dataNavigationIdentifier + '/>';
             this.after('selectedChange', this._uiSelectedChange);
             this.after('routeChange', function (){
                 this.render();
