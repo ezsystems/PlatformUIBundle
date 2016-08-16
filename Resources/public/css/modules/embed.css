@@ -14,6 +14,7 @@
 
 [data-ezelement="ezembed"] .ez-embed-content {
     margin: 0;
+    max-width: 100%;
 }
 
 [data-ezelement="ezembed"] .ez-embed-content:before {
