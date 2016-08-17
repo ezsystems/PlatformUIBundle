@@ -7,6 +7,11 @@ env:
     global:
         secure: "aNPcXEtgV3Q/GVCH+FvITm/gLXcNyFl7YiOT9JcqZUwYXsT2zi8g4BcwBgDtpbSmi8NSCsEWONNxxDM10BqCPzfkiFD2I0cPHXVxmJ3cmOqySci5JvysEd+RU6gnatCxqzAJYDH2BanfPyu+yPwrSIgWdkPuvNhydNJFUrwsinw="
 
+cache:
+  directories:
+    - node_modules # NPM packages
+    - $HOME/.composer/cache/files
+
 matrix:
     fast_finish: true
     include:
