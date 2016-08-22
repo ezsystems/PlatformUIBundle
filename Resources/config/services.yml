@@ -34,170 +34,170 @@ parameters:
 
 services:
     ezsystems.platformui.twig.yui_extension:
-        class: %ezsystems.platformui.twig.yui_extension.class%
-        arguments: [@ezpublish.config.resolver, @router, @?logger]
+        class: "%ezsystems.platformui.twig.yui_extension.class%"
+        arguments: ["@ezpublish.config.resolver", "@router", "@?logger"]
         tags:
             - { name: twig.extension }
 
     ezsystems.platformui.controller.base:
-        class: %ezsystems.platformui.controller.base.class%
+        class: "%ezsystems.platformui.controller.base.class%"
         abstract: true
         calls:
-            - [setContainer, [@service_container]]
-            - [setNotificationPool, [@ezsystems.platformui.notification_pool]]
+            - [setContainer, ["@service_container"]]
+            - [setNotificationPool, ["@ezsystems.platformui.notification_pool"]]
             - [performAccessChecks, []]
 
     ezsystems.platformui.controller:
-        class: %ezsystems.platformui.controller.class%
+        class: "%ezsystems.platformui.controller.class%"
         arguments:
-            - @ezsystems.platformui.application_config.aggregator
-            - @ezsystems.platformui.loader.combo_loader
+            - "@ezsystems.platformui.application_config.aggregator"
+            - "@ezsystems.platformui.loader.combo_loader"
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.application_config.aggregator:
-        class: %ezsystems.platformui.application_config.aggregator.class%
+        class: "%ezsystems.platformui.application_config.aggregator.class%"
 
     ezsystems.platformui.application_config.provider.session_info:
-        class: %ezsystems.platformui.application_config.provider.session_info.class%
+        class: "%ezsystems.platformui.application_config.provider.session_info.class%"
         arguments:
-            - @session
-            - @security.csrf.token_manager
-            - %ezpublish_rest.csrf_token_intention%
-            - @router
+            - "@session"
+            - "@security.csrf.token_manager"
+            - "%ezpublish_rest.csrf_token_intention%"
+            - "@router"
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'sessionInfo'}
 
     ezsystems.platformui.application_config.provider.anonymous_user_id:
-        class: %ezsystems.platformui.application_config.provider.anonymous_user_id.class%
+        class: "%ezsystems.platformui.application_config.provider.anonymous_user_id.class%"
         arguments:
-            - @router
+            - "@router"
             - $anonymous_user_id$
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'anonymousUserId'}
 
     ezsystems.platformui.application_config.provider.countries_info:
-        class: %ezsystems.platformui.application_config.provider.value.class%
+        class: "%ezsystems.platformui.application_config.provider.value.class%"
         arguments:
-            - %ezpublish.fieldType.ezcountry.data%
+            - "%ezpublish.fieldType.ezcountry.data%"
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'countriesInfo'}
 
     ezsystems.platformui.application_config.provider.locales_map:
-        class: %ezsystems.platformui.application_config.provider.locales_map.class%
+        class: "%ezsystems.platformui.application_config.provider.locales_map.class%"
         arguments:
-            - %ezpublish.locale.conversion_map%
+            - "%ezpublish.locale.conversion_map%"
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'localesMap'}
 
     ezsystems.platformui.application_config.provider.image_variations:
-        class: %ezsystems.platformui.application_config.provider.value.class%
+        class: "%ezsystems.platformui.application_config.provider.value.class%"
         arguments:
             - $image_variations$
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'imageVariations'}
 
     ezsystems.platformui.application_config.provider.root_info:
-        class: %ezsystems.platformui.application_config.provider.root_info.class%
+        class: "%ezsystems.platformui.application_config.provider.root_info.class%"
         arguments:
-            - @request_stack
-            - @templating.helper.assets
-            - %ez_platformui.external_assets_public_dir%
+            - "@request_stack"
+            - "@templating.helper.assets"
+            - "%ez_platformui.external_assets_public_dir%"
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'rootInfo'}
 
     ezsystems.platformui.application_config.provider.languages:
-        class: %ezsystems.platformui.application_config.provider.languages.class%
+        class: "%ezsystems.platformui.application_config.provider.languages.class%"
         arguments:
-            - @ezpublish.api.service.language
+            - "@ezpublish.api.service.language"
             - $languages$
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'languages'}
 
     ezsystems.platformui.controller.template:
-        class: %ezsystems.platformui.controller.template.class%
-        arguments: [@ezpublish.config.resolver]
+        class: "%ezsystems.platformui.controller.template.class%"
+        arguments: ["@ezpublish.config.resolver"]
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.dashboard:
-        class: %ezsystems.platformui.controller.dashboard.class%
+        class: "%ezsystems.platformui.controller.dashboard.class%"
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.helper.systeminfo:
-        class: %ezsystems.platformui.helper.systeminfo.class%
+        class: "%ezsystems.platformui.helper.systeminfo.class%"
         arguments:
-            - @database_connection
-            - %kernel.bundles%
+            - "@database_connection"
+            - "%kernel.bundles%"
 
     ezsystems.platformui.controller.systeminfo:
-        class: %ezsystems.platformui.controller.systeminfo.class%
+        class: "%ezsystems.platformui.controller.systeminfo.class%"
         arguments:
-            - @support_tools.system_info.collector_registry
+            - "@support_tools.system_info.collector_registry"
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.controller.content_type:
-        class: %ezsystems.platformui.controller.content_type.class%
+        class: "%ezsystems.platformui.controller.content_type.class%"
         parent: ezsystems.platformui.controller.base
         arguments:
-            - @ezpublish.api.service.content_type
-            - @ezpublish.api.service.search
-            - @ezpublish.api.service.user
-            - @ezrepoforms.action_dispatcher.content_type.group
-            - @ezrepoforms.action_dispatcher.content_type
-            - @ezrepoforms.field_type_form_mapper.registry
+            - "@ezpublish.api.service.content_type"
+            - "@ezpublish.api.service.search"
+            - "@ezpublish.api.service.user"
+            - "@ezrepoforms.action_dispatcher.content_type.group"
+            - "@ezrepoforms.action_dispatcher.content_type"
+            - "@ezrepoforms.field_type_form_mapper.registry"
         calls:
             - [setPrioritizedLanguages, ["$languages$"]]
 
     ezsystems.platformui.notification_pool:
-        class: %ezsystems.platforui.notification_pool.class%
-        arguments: [@translator, @session]
+        class: "%ezsystems.platforui.notification_pool.class%"
+        arguments: ["@translator", "@session"]
         tags:
             - { name: kernel.event_subscriber }
 
     ezsystems.platformui.form_processor.content_type:
-        class: %ezsystems.platformui.form_processor.content_type.class%
-        arguments: [@router, @ezsystems.platformui.notification_pool, @ezpublish.api.service.content_type]
+        class: "%ezsystems.platformui.form_processor.content_type.class%"
+        arguments: ["@router", "@ezsystems.platformui.notification_pool", "@ezpublish.api.service.content_type"]
         tags:
             - { name: kernel.event_subscriber }
 
     ezsystems.platformui.form_processor.content_type_group:
-        class: %ezsystems.platformui.form_processor.content_type_group.class%
-        arguments: [@ezsystems.platformui.notification_pool, @router]
+        class: "%ezsystems.platformui.form_processor.content_type_group.class%"
+        arguments: ["@ezsystems.platformui.notification_pool", "@router"]
         tags:
             - { name: kernel.event_subscriber }
 
     ezsystems.platformui.controller.role:
-        class: %ezsystems.platformui.controller.role.class%
+        class: "%ezsystems.platformui.controller.role.class%"
         parent: ezsystems.platformui.controller.base
         arguments:
-            - @ezpublish.api.service.role
-            - @ezpublish.api.service.section
-            - @ezrepoforms.action_dispatcher.role
-            - @ezrepoforms.action_dispatcher.policy
-            - @translator
+            - "@ezpublish.api.service.role"
+            - "@ezpublish.api.service.section"
+            - "@ezrepoforms.action_dispatcher.role"
+            - "@ezrepoforms.action_dispatcher.policy"
+            - "@translator"
 
     ezsystems.platformui.form_processor.role:
-        class: %ezsystems.platformui.form_processor.role.class%
-        arguments: [@router, @ezsystems.platformui.notification_pool, @ezpublish.api.service.role]
+        class: "%ezsystems.platformui.form_processor.role.class%"
+        arguments: ["@router", "@ezsystems.platformui.notification_pool", "@ezpublish.api.service.role"]
         tags:
             - { name: kernel.event_subscriber }
 
     ezsystems.platformui.form_processor.policy:
-        class: %ezsystems.platformui.form_processor.policy.class%
-        arguments: [@router, @ezsystems.platformui.notification_pool]
+        class: "%ezsystems.platformui.form_processor.policy.class%"
+        arguments: ["@router", "@ezsystems.platformui.notification_pool"]
         tags:
             - { name: kernel.event_subscriber }
 
     ezsystems.platformui.exception_listener:
-        class: %ezsystems.platformui.exception_listener.class%
+        class: "%ezsystems.platformui.exception_listener.class%"
         arguments:
-            - %ezsystems.platformui.exception_controller%
-            - @?logger
+            - "%ezsystems.platformui.exception_controller%"
+            - "@?logger"
         tags:
             - { name: kernel.event_subscriber }
             - { name: monolog.logger, channel: request }
 
     ezsystems.platformui.controller.exception:
-        class: %ezsystems.platformui.controller.exception.class%
+        class: "%ezsystems.platformui.controller.exception.class%"
         parent: twig.controller.exception
 
     ezsystems.platformui.rest.user_field_type_processor:
@@ -207,34 +207,34 @@ services:
 
     ## Section related services
     ezsystems.platformui.controller.section:
-        class: %ezsystems.platformui.controller.section.class%
+        class: "%ezsystems.platformui.controller.section.class%"
         arguments:
-            - @ezrepoforms.action_dispatcher.section
-            - @ezpublish.api.service.section
-            - @ezsystems.platformui.notification_pool
+            - "@ezrepoforms.action_dispatcher.section"
+            - "@ezpublish.api.service.section"
+            - "@ezsystems.platformui.notification_pool"
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.form_processor.section:
-        class: %ezsystems.platformui.form_processor.section.class%
-        arguments: [@ezsystems.platformui.notification_pool, @router]
+        class: "%ezsystems.platformui.form_processor.section.class%"
+        arguments: ["@ezsystems.platformui.notification_pool", "@router"]
         tags:
             - { name: kernel.event_subscriber }
 
     ## Language related services
     ezsystems.platformui.controller.language:
-        class: %ezsystems.platformui.controller.language.class%
+        class: "%ezsystems.platformui.controller.language.class%"
         arguments:
-            - @ezrepoforms.action_dispatcher.language
-            - @ezpublish.api.service.language
-            - @ezsystems.platformui.notification_pool
+            - "@ezrepoforms.action_dispatcher.language"
+            - "@ezpublish.api.service.language"
+            - "@ezsystems.platformui.notification_pool"
         parent: ezsystems.platformui.controller.base
 
     ezsystems.platformui.form_processor.language:
-        class: %ezsystems.platformui.form_processor.language.class%
-        arguments: [@ezsystems.platformui.notification_pool, @router]
+        class: "%ezsystems.platformui.form_processor.language.class%"
+        arguments: ["@ezsystems.platformui.notification_pool", "@router"]
         tags:
             - { name: kernel.event_subscriber }
 
     ezsystems.platformui.loader.combo_loader:
-        class: %ezsystems.platformui.loader.combo_loader.class%
-        arguments: [@ezpublish.config.resolver, @templating, "$yui.build_dir;ez_platformui$", %webroot_dir%]
+        class: "%ezsystems.platformui.loader.combo_loader.class%"
+        arguments: ["@ezpublish.config.resolver", "@templating", "$yui.build_dir;ez_platformui$", "%webroot_dir%"]

@@ -5,152 +5,152 @@ system:
             combine: true
             modules:
                 capi:
-                    path: %ez_platformui.external_assets_public_dir%/vendors/ez-js-rest-client/dist/CAPI.js
+                    path: "%ez_platformui.external_assets_public_dir%/vendors/ez-js-rest-client/dist/CAPI.js"
                 ez-capi:
                     requires: ['capi']
-                    path: %ez_platformui.public_dir%/js/external/ez-capi.js
+                    path: "%ez_platformui.public_dir%/js/external/ez-capi.js"
                 alloyeditor:
-                    path: %ez_platformui.external_assets_public_dir%/vendors/alloy-editor/dist/alloy-editor/alloy-editor-all.js
+                    path: "%ez_platformui.external_assets_public_dir%/vendors/alloy-editor/dist/alloy-editor/alloy-editor-all.js"
                 ez-alloyeditor:
                     requires: ['alloyeditor']
-                    path: %ez_platformui.public_dir%/js/external/ez-alloyeditor.js
+                    path: "%ez_platformui.public_dir%/js/external/ez-alloyeditor.js"
                 ez-alloyeditor-toolbar-ezadd:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/ezadd.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/ezadd.js"
                 ez-alloyeditor-toolbar-config-link:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/link.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/link.js"
                 ez-alloyeditor-toolbar-config-text:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/text.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/text.js"
                 ez-alloyeditor-toolbar-config-table:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/table.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/table.js"
                 ez-alloyeditor-toolbar-config-block-base:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/block-base.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/block-base.js"
                 ez-alloyeditor-toolbar-config-heading:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/heading.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/heading.js"
                 ez-alloyeditor-toolbar-config-paragraph:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/paragraph.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/paragraph.js"
                 ez-alloyeditor-toolbar-config-embed:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/embed.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/embed.js"
                 ez-alloyeditor-toolbar-config-image:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/toolbars/config/image.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/image.js"
                 ez-alloyeditor-plugin-addcontent:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/addcontent.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/addcontent.js"
                 ez-alloyeditor-plugin-removeblock:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/removeblock.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/removeblock.js"
                 ez-alloyeditor-plugin-yui3:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/yui3.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/yui3.js"
                 ez-alloyeditor-plugin-embed:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-plugin-addcontent']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/embed.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/embed.js"
                 ez-alloyeditor-plugin-focusblock:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/plugins/focusblock.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/focusblock.js"
                 ez-alloyeditor-button-heading:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/heading.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/heading.js"
                 ez-alloyeditor-button-paragraph:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/paragraph.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/paragraph.js"
                 ez-alloyeditor-button-list:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/list.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/list.js"
                 ez-alloyeditor-button-image:
                     requires:
                         - 'ez-alloyeditor'
                         - 'ez-alloyeditor-button-mixin-embeddiscovercontent'
                         - 'ez-alloyeditor-button-mixin-embedimage'
                         - 'ez-alloyeditor-button-mixin-widgetbutton'
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/image.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/image.js"
                 ez-alloyeditor-button-embed:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-widgetbutton']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embed.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embed.js"
                 ez-alloyeditor-button-imagevariation:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embedimage']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/imagevariation.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/imagevariation.js"
                 ez-alloyeditor-button-embedcenter:
                     requires:
                         - 'ez-alloyeditor'
                         - 'ez-alloyeditor-button-mixin-embedalign'
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embedcenter.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embedcenter.js"
                 ez-alloyeditor-button-embedright:
                     requires:
                         - 'ez-alloyeditor'
                         - 'ez-alloyeditor-button-mixin-embedalign'
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embedright.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embedright.js"
                 ez-alloyeditor-button-embedleft:
                     requires:
                         - 'ez-alloyeditor'
                         - 'ez-alloyeditor-button-mixin-embedalign'
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embedleft.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embedleft.js"
                 ez-alloyeditor-button-mixin-embedalign:
                     requires:
                         - 'ez-alloyeditor'
                         - 'ez-alloyeditor-button-mixin-widgetbutton'
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embedalign.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embedalign.js"
                 ez-alloyeditor-button-blocktextalignleft:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignleft.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignleft.js"
                 ez-alloyeditor-button-blocktextaligncenter:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextaligncenter.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextaligncenter.js"
                 ez-alloyeditor-button-blocktextalignright:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignright.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignright.js"
                 ez-alloyeditor-button-blocktextalignjustify:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignjustify.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignjustify.js"
                 ez-alloyeditor-button-blockremove:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/blockremove.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blockremove.js"
                 ez-alloyeditor-button-embedhref:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-widgetbutton']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/embedhref.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embedhref.js"
                 ez-alloyeditor-button-imagehref:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage', 'ez-alloyeditor-button-mixin-widgetbutton']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/imagehref.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/imagehref.js"
                 ez-alloyeditor-button-mixin-blocktextalign:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/blocktextalign.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/blocktextalign.js"
                 ez-alloyeditor-button-mixin-widgetbutton:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/widgetbutton.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/widgetbutton.js"
                 ez-alloyeditor-button-mixin-embeddiscovercontent:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embeddiscovercontent.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embeddiscovercontent.js"
                 ez-alloyeditor-button-mixin-embedimage:
                     requires: ['ez-alloyeditor']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embedimage.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embedimage.js"
                 ez-editorcontentprocessorbase:
-                    path: %ez_platformui.public_dir%/js/alloyeditor/processors/base.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/processors/base.js"
                 ez-editorcontentprocessorxhtml5edit:
                     requires: ['ez-editorcontentprocessorbase']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/processors/xhtml5edit.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/processors/xhtml5edit.js"
                 ez-editorcontentprocessorremoveids:
                     requires: ['ez-editorcontentprocessorbase']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/processors/removeids.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/processors/removeids.js"
                 ez-editorcontentprocessoremptyembed:
                     requires: ['ez-editorcontentprocessorbase']
-                    path: %ez_platformui.public_dir%/js/alloyeditor/processors/emptyembed.js
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/processors/emptyembed.js"
                 ez-richtext-embedcontainer:
                     requires: ['node']
-                    path: %ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-embedcontainer.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-embedcontainer.js"
                 ez-richtext-resolveembed:
                     requires: ['node']
-                    path: %ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-resolveembed.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-resolveembed.js"
                 ez-richtext-resolveimage:
                     requires: ['ez-richtext-resolveembed', 'node']
-                    path: %ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-resolveimage.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-resolveimage.js"
                 ez-platformuiapp:
                     requires:
                         - 'app'
@@ -203,13 +203,13 @@ system:
                         - 'ez-positionplugin'
                         - 'ez-updatetreeplugin'
                         - 'ez-translateproperty'
-                    path: %ez_platformui.public_dir%/js/apps/ez-platformuiapp.js
+                    path: "%ez_platformui.public_dir%/js/apps/ez-platformuiapp.js"
                 ez-viewservice:
                     requires: ['base', 'parallel']
-                    path: %ez_platformui.public_dir%/js/views/services/ez-viewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-viewservice.js"
                 ez-loginformviewservice:
                     requires: ['ez-viewservice']
-                    path: %ez_platformui.public_dir%/js/views/services/ez-loginformviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-loginformviewservice.js"
                 ez-dashboardblocksviewservice:
                     requires:
                         - 'ez-viewservice'
@@ -217,7 +217,7 @@ system:
                         - 'ez-locationmodel'
                         - 'ez-userdraftsplugin'
                         - 'promise'
-                    path: %ez_platformui.public_dir%/js/views/services/ez-dashboardblocksviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-dashboardblocksviewservice.js"
                 ez-contenteditviewservice:
                     requires:
                         - 'parallel'
@@ -233,10 +233,10 @@ system:
                         - 'ez-discarddraftplugin'
                         - 'ez-loginavailableplugin'
                         - 'array-extras'
-                    path: %ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-contenteditviewservice.js"
                 ez-contentcreateviewservice:
                     requires: ['ez-contenteditviewservice']
-                    path: %ez_platformui.public_dir%/js/views/services/ez-contentcreateviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-contentcreateviewservice.js"
                 ez-trashviewservice:
                     requires:
                         - 'parallel'
@@ -247,7 +247,7 @@ system:
                         - 'ez-contenttypemodel'
                         - 'ez-loginavailableplugin'
                         - 'array-extras'
-                    path: %ez_platformui.public_dir%/js/views/services/ez-trashviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-trashviewservice.js"
                 ez-locationviewviewservice:
                     requires:
                         - 'parallel'
@@ -267,52 +267,52 @@ system:
                         - 'ez-copycontentplugin'
                         - 'ez-versionsplugin'
                         - 'ez-locationswapplugin'
-                    path: %ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js"
                 ez-navigationhubviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras', 'ez-height-change']
-                    path: %ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js"
                 ez-discoverybarviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-discoverybarcontenttreeplugin']
-                    path: %ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js"
                 ez-universaldiscoveryviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-universaldiscoverycontenttreeplugin']
-                    path: %ez_platformui.public_dir%/js/views/services/ez-universaldiscoveryviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-universaldiscoveryviewservice.js"
                 ez-confirmboxviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice']
-                    path: %ez_platformui.public_dir%/js/views/services/ez-confirmboxviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-confirmboxviewservice.js"
                 ez-languageselectionboxviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice']
-                    path: %ez_platformui.public_dir%/js/views/services/ez-languageselectionboxviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-languageselectionboxviewservice.js"
                 ez-notificationhubviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-notificationlist']
-                    path: %ez_platformui.public_dir%/js/views/services/ez-notificationhubviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-notificationhubviewservice.js"
                 ez-serversideviewservice:
                     requires: ['io-base', 'io-form', 'ez-viewservice']
-                    path: %ez_platformui.public_dir%/js/views/services/ez-serversideviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-serversideviewservice.js"
                 ez-sectionserversideviewservice:
                     requires: ['ez-serversideviewservice', 'parallel']
-                    path: %ez_platformui.public_dir%/js/views/services/ez-sectionserversideviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-sectionserversideviewservice.js"
                 ez-roleserversideviewservice:
                     requires: ['ez-serversideviewservice', 'parallel']
-                    path: %ez_platformui.public_dir%/js/views/services/ez-roleserversideviewservice.js
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-roleserversideviewservice.js"
                 ez-view:
                     requires: ['view', 'base-pluginhost', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/views/ez-view.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-view.js"
                 ez-templatebasedview:
                     requires: ['ez-texthelper', 'ez-view', 'handlebars', 'template']
-                    path: %ez_platformui.public_dir%/js/views/ez-templatebasedview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-templatebasedview.js"
                 ez-loginformview:
                     requires: ['ez-templatebasedview', 'node-style', 'loginformview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/ez-loginformview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-loginformview.js"
                 loginformview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/loginform.hbt
+                    path: "%ez_platformui.public_dir%/templates/loginform.hbt"
                 ez-dashboardview:
                     requires: ['ez-templatebasedview', 'dashboardview-ez-template', 'ez-height-fit', 'event-resize']
-                    path: %ez_platformui.public_dir%/js/views/ez-dashboardview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-dashboardview.js"
                 dashboardview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/dashboard.hbt
+                    path: "%ez_platformui.public_dir%/templates/dashboard.hbt"
                 ez-dashboardblocksview:
                     requires:
                         - 'ez-templatebasedview'
@@ -320,34 +320,34 @@ system:
                         - 'ez-dashboardblockmydraftsview'
                         - 'ez-dashboardblockmycontentview'
                         - 'dashboardblocksview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/ez-dashboardblocksview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-dashboardblocksview.js"
                 dashboardblocksview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/dashboard-blocks.hbt
+                    path: "%ez_platformui.public_dir%/templates/dashboard-blocks.hbt"
                 ez-dashboardblockbaseview:
                     requires: ['ez-templatebasedview']
-                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockbaseview.js
+                    path: "%ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockbaseview.js"
                 ez-dashboardblockasynchronousview:
                     requires: ['ez-dashboardblockbaseview', 'ez-asynchronousview', 'event-tap', 'event-outside']
-                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockasynchronousview.js
+                    path: "%ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockasynchronousview.js"
                 ez-dashboardblockallcontentview:
                     requires: ['ez-dashboardblockasynchronousview', 'dashboardblockallcontentview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockallcontentview.js
+                    path: "%ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockallcontentview.js"
                 dashboardblockallcontentview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/dashboard/allcontent.hbt
+                    path: "%ez_platformui.public_dir%/templates/dashboard/allcontent.hbt"
                 ez-dashboardblockmycontentview:
                     requires: ['ez-dashboardblockasynchronousview', 'dashboardblockmycontentview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockmycontentview.js
+                    path: "%ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockmycontentview.js"
                 dashboardblockmycontentview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/dashboard/mycontent.hbt
+                    path: "%ez_platformui.public_dir%/templates/dashboard/mycontent.hbt"
                 ez-dashboardblockmydraftsview:
                     requires: ['ez-dashboardblockasynchronousview', 'dashboardblockmydraftsview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockmydraftsview.js
+                    path: "%ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockmydraftsview.js"
                 dashboardblockmydraftsview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/dashboard/mydrafts.hbt
+                    path: "%ez_platformui.public_dir%/templates/dashboard/mydrafts.hbt"
                 ez-locationviewview:
                     requires:
                         - 'ez-templatebasedview'
@@ -363,10 +363,10 @@ system:
                         - 'event-tap'
                         - 'array-extras'
                         - 'locationviewview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/ez-locationviewview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-locationviewview.js"
                 locationviewview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/locationview.hbt
+                    path: "%ez_platformui.public_dir%/templates/locationview.hbt"
                 ez-subitemboxview:
                     requires:
                         - 'ez-templatebasedview'
@@ -377,19 +377,19 @@ system:
                         - 'ez-expandable'
                         - 'event-tap'
                         - 'array-extras'
-                    path: %ez_platformui.public_dir%/js/views/ez-subitemboxview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-subitemboxview.js"
                 subitemboxview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/subitembox.hbt
+                    path: "%ez_platformui.public_dir%/templates/subitembox.hbt"
                 ez-subitembaseview:
                     requires: ['ez-templatebasedview']
-                    path: %ez_platformui.public_dir%/js/views/subitem/ez-subitembaseview.js
+                    path: "%ez_platformui.public_dir%/js/views/subitem/ez-subitembaseview.js"
                 ez-asynchronoussubitemview:
                     requires:
                         - 'ez-subitembaseview'
                         - 'ez-asynchronousview'
                         - 'ez-loadmorepagination'
-                    path: %ez_platformui.public_dir%/js/views/subitem/ez-asynchronoussubitemview.js
+                    path: "%ez_platformui.public_dir%/js/views/subitem/ez-asynchronoussubitemview.js"
                 ez-subitemlistview:
                     requires:
                         - 'ez-subitembaseview'
@@ -399,19 +399,19 @@ system:
                         - 'subitemlistview-ez-template'
                         - 'event-valuechange'
                         - 'array-extras'
-                    path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemlistview.js
+                    path: "%ez_platformui.public_dir%/js/views/subitem/ez-subitemlistview.js"
                 subitemlistview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/subitem/list.hbt
+                    path: "%ez_platformui.public_dir%/templates/subitem/list.hbt"
                 ez-subitemlistmoreview:
                     requires:
                         - 'ez-asynchronoussubitemview'
                         - 'ez-subitemlistitemview'
                         - 'subitemlistmoreview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemlistmoreview.js
+                    path: "%ez_platformui.public_dir%/js/views/subitem/ez-subitemlistmoreview.js"
                 subitemlistmoreview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/subitem/listmore.hbt
+                    path: "%ez_platformui.public_dir%/templates/subitem/listmore.hbt"
                 ez-subitemlistitemview:
                     requires:
                         - 'ez-templatebasedview'
@@ -422,80 +422,80 @@ system:
                         - 'subitemlistitemview-ez-template'
                         - 'subitemlistitem-name-ez-template'
                         - 'subitemlistitem-priority-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemlistitemview.js
+                    path: "%ez_platformui.public_dir%/js/views/subitem/ez-subitemlistitemview.js"
                 subitemlistitemview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/subitem/listitem.hbt
+                    path: "%ez_platformui.public_dir%/templates/subitem/listitem.hbt"
                 subitemlistitem-name-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/subitem/listitem/name.hbt
+                    path: "%ez_platformui.public_dir%/templates/subitem/listitem/name.hbt"
                 subitemlistitem-priority-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/subitem/listitem/priority.hbt
+                    path: "%ez_platformui.public_dir%/templates/subitem/listitem/priority.hbt"
                 ez-subitemgridview:
                     requires:
                         - 'ez-asynchronoussubitemview'
                         - 'ez-subitemgriditemview'
                         - 'subitemgridview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemgridview.js
+                    path: "%ez_platformui.public_dir%/js/views/subitem/ez-subitemgridview.js"
                 subitemgridview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/subitem/grid.hbt
+                    path: "%ez_platformui.public_dir%/templates/subitem/grid.hbt"
                 ez-subitemgriditemview:
                     requires:
                         - 'ez-templatebasedview'
                         - 'ez-asynchronousview'
                         - 'array-extras'
                         - 'subitemgriditemview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/subitem/ez-subitemgriditemview.js
+                    path: "%ez_platformui.public_dir%/js/views/subitem/ez-subitemgriditemview.js"
                 subitemgriditemview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/subitem/griditem.hbt
+                    path: "%ez_platformui.public_dir%/templates/subitem/griditem.hbt"
                 ez-locationviewtabview:
                     requires: ['ez-templatebasedview']
-                    path: %ez_platformui.public_dir%/js/views/ez-locationviewtabview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-locationviewtabview.js"
                 ez-locationviewviewtabview:
                     requires: ['ez-locationviewtabview', 'ez-rawcontentview', 'locationviewviewtabview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/tabs/ez-locationviewviewtabview.js
+                    path: "%ez_platformui.public_dir%/js/views/tabs/ez-locationviewviewtabview.js"
                 locationviewviewtabview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/tabs/view.hbt
+                    path: "%ez_platformui.public_dir%/templates/tabs/view.hbt"
                 ez-locationviewdetailstabview:
                     requires: ['ez-locationviewtabview', 'locationviewdetailstabview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/tabs/ez-locationviewdetailstabview.js
+                    path: "%ez_platformui.public_dir%/js/views/tabs/ez-locationviewdetailstabview.js"
                 locationviewdetailstabview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/tabs/details.hbt
+                    path: "%ez_platformui.public_dir%/templates/tabs/details.hbt"
                 ez-locationviewrelationstabview:
                     requires: ['ez-locationviewtabview', 'locationviewrelationstabview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/tabs/ez-locationviewrelationstabview.js
+                    path: "%ez_platformui.public_dir%/js/views/tabs/ez-locationviewrelationstabview.js"
                 locationviewrelationstabview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/tabs/relations.hbt
+                    path: "%ez_platformui.public_dir%/templates/tabs/relations.hbt"
                 ez-locationviewlocationstabview:
                     requires: ['ez-locationviewtabview', 'locationviewlocationstabview-ez-template', 'array-extras']
-                    path: %ez_platformui.public_dir%/js/views/tabs/ez-locationviewlocationstabview.js
+                    path: "%ez_platformui.public_dir%/js/views/tabs/ez-locationviewlocationstabview.js"
                 locationviewlocationstabview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/tabs/locations.hbt
+                    path: "%ez_platformui.public_dir%/templates/tabs/locations.hbt"
                 ez-locationviewversionstabview:
                     requires: ['ez-locationviewtabview', 'locationviewversionstabview-ez-template', 'array-extras']
-                    path: %ez_platformui.public_dir%/js/views/tabs/ez-locationviewversionstabview.js
+                    path: "%ez_platformui.public_dir%/js/views/tabs/ez-locationviewversionstabview.js"
                 locationviewversionstabview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/tabs/versions.hbt
+                    path: "%ez_platformui.public_dir%/templates/tabs/versions.hbt"
                 ez-studiopresentationview:
                     requires: ['ez-templatebasedview', 'studiopresentationview-ez-template', 'ez-height-fit', 'event-resize']
-                    path: %ez_platformui.public_dir%/js/views/ez-studiopresentationview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-studiopresentationview.js"
                 studiopresentationview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/studiopresentation.hbt
+                    path: "%ez_platformui.public_dir%/templates/studiopresentation.hbt"
                 ez-studiopluspresentationview:
                     requires: ['ez-templatebasedview', 'studiopluspresentationview-ez-template', 'ez-height-fit', 'event-resize']
-                    path: %ez_platformui.public_dir%/js/views/ez-studiopluspresentationview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-studiopluspresentationview.js"
                 studiopluspresentationview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/studiopluspresentation.hbt
+                    path: "%ez_platformui.public_dir%/templates/studiopluspresentation.hbt"
                 ez-universaldiscoveryview:
                     requires:
                         - 'ez-tabs'
@@ -507,84 +507,84 @@ system:
                         - 'array-extras'
                         - 'event-tap'
                         - 'node-screen'
-                    path: %ez_platformui.public_dir%/js/views/ez-universaldiscoveryview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-universaldiscoveryview.js"
                 universaldiscoveryview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/universaldiscovery.hbt
+                    path: "%ez_platformui.public_dir%/templates/universaldiscovery.hbt"
                 ez-universaldiscoveryconfirmedlistview:
                     requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'universaldiscoveryconfirmedlistview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryconfirmedlistview.js
+                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryconfirmedlistview.js"
                 universaldiscoveryconfirmedlistview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/universaldiscovery/confirmedlist.hbt
+                    path: "%ez_platformui.public_dir%/templates/universaldiscovery/confirmedlist.hbt"
                 ez-universaldiscoverymethodbaseview:
                     requires: ['ez-templatebasedview']
-                    path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverymethodbaseview.js
+                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverymethodbaseview.js"
                 ez-universaldiscoverybrowseview:
                     requires:
                         - 'ez-universaldiscoverymethodbaseview'
                         - 'universaldiscoverybrowseview-ez-template'
                         - 'ez-treeview'
                         - 'ez-universaldiscoveryselectedview'
-                    path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverybrowseview.js
+                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverybrowseview.js"
                 universaldiscoverybrowseview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/universaldiscovery/browse.hbt
+                    path: "%ez_platformui.public_dir%/templates/universaldiscovery/browse.hbt"
                 ez-universaldiscoverysearchview:
                     requires:
                         - 'ez-universaldiscoverymethodbaseview'
                         - 'ez-asynchronousview'
                         - 'ez-universaldiscoveryselectedview'
                         - 'universaldiscoverysearchview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverysearchview.js
+                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverysearchview.js"
                 universaldiscoverysearchview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/universaldiscovery/search.hbt
+                    path: "%ez_platformui.public_dir%/templates/universaldiscovery/search.hbt"
                 ez-universaldiscoveryselectedview:
                     requires: ['event-tap', 'ez-templatebasedview', 'universaldiscoveryselectedview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryselectedview.js
+                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryselectedview.js"
                 universaldiscoveryselectedview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/universaldiscovery/selected.hbt
+                    path: "%ez_platformui.public_dir%/templates/universaldiscovery/selected.hbt"
                 ez-confirmboxview:
                     requires: ['ez-templatebasedview', 'confirmboxview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/ez-confirmboxview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-confirmboxview.js"
                 confirmboxview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/confirmbox.hbt
+                    path: "%ez_platformui.public_dir%/templates/confirmbox.hbt"
                 ez-languageselectionboxview:
                     requires: ['ez-templatebasedview', 'languageselectionboxview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/ez-languageselectionboxview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-languageselectionboxview.js"
                 languageselectionboxview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/languageselectionbox.hbt
+                    path: "%ez_platformui.public_dir%/templates/languageselectionbox.hbt"
                 ez-notificationhubview:
                     requires: ['ez-view', 'ez-notificationview', 'ez-notificationlist', 'ez-height-change']
-                    path: %ez_platformui.public_dir%/js/views/ez-notificationhubview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-notificationhubview.js"
                 ez-notificationview:
                     requires: ['ez-templatebasedview', 'notificationview-ez-template', 'transition', 'event-tap']
-                    path: %ez_platformui.public_dir%/js/views/ez-notificationview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-notificationview.js"
                 notificationview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/notification.hbt
+                    path: "%ez_platformui.public_dir%/templates/notification.hbt"
                 ez-navigationhubview:
                     requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'node-style', 'event-outside', 'navigationhubview-ez-template', 'ez-userprofileview']
-                    path: %ez_platformui.public_dir%/js/views/ez-navigationhubview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-navigationhubview.js"
                 navigationhubview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/navigationhub.hbt
+                    path: "%ez_platformui.public_dir%/templates/navigationhub.hbt"
                 ez-navigationitemsubtreeview:
                     requires: ['ez-navigationitemview']
-                    path: %ez_platformui.public_dir%/js/views/navigation/ez-navigationitemsubtreeview.js
+                    path: "%ez_platformui.public_dir%/js/views/navigation/ez-navigationitemsubtreeview.js"
                 ez-navigationitemparameterview:
                     requires: ['ez-navigationitemview']
-                    path: %ez_platformui.public_dir%/js/views/navigation/ez-navigationitemparameterview.js
+                    path: "%ez_platformui.public_dir%/js/views/navigation/ez-navigationitemparameterview.js"
                 ez-navigationitemview:
                     requires: ['ez-templatebasedview', 'navigationitemview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/navigation/ez-navigationitemview.js
+                    path: "%ez_platformui.public_dir%/js/views/navigation/ez-navigationitemview.js"
                 navigationitemview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/navigation/item.hbt
+                    path: "%ez_platformui.public_dir%/templates/navigation/item.hbt"
                 ez-userprofileview:
                     requires:
                         - 'ez-templatebasedview'
@@ -592,36 +592,36 @@ system:
                         - 'event-outside'
                         - 'ez-usermenuview'
                         - 'userprofileview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/ez-userprofileview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-userprofileview.js"
                 userprofileview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/userprofile.hbt
+                    path: "%ez_platformui.public_dir%/templates/userprofile.hbt"
                 ez-usermenuview:
                     requires:
                         - 'event-tap'
                         - 'ez-view'
                         - 'ez-usermenuitemfireeventview'
-                    path: %ez_platformui.public_dir%/js/views/ez-usermenuview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-usermenuview.js"
                 ez-usermenuitemview:
                     requires:
                         - 'ez-templatebasedview'
                         - 'usermenuitemview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/ez-usermenuitemview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-usermenuitemview.js"
                 usermenuitemview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/usermenuitem.hbt
+                    path: "%ez_platformui.public_dir%/templates/usermenuitem.hbt"
                 ez-usermenuitemfireeventview:
                     requires:
                         - 'event-tap'
                         - 'ez-usermenuitemview'
                         - 'usermenuitemfireeventview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/ez-usermenuitemfireeventview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-usermenuitemfireeventview.js"
                 usermenuitemfireeventview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/usermenuitemfireevent.hbt
+                    path: "%ez_platformui.public_dir%/templates/usermenuitemfireevent.hbt"
                 ez-discoverybarview:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview']
-                    path: %ez_platformui.public_dir%/js/views/ez-discoverybarview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-discoverybarview.js"
                 ez-actionbarview:
                     requires:
                         - 'ez-barview'
@@ -629,12 +629,12 @@ system:
                         - 'ez-createcontentactionview'
                         - 'ez-movecontentactionview'
                         - 'ez-translateactionview'
-                    path: %ez_platformui.public_dir%/js/views/ez-actionbarview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-actionbarview.js"
                 ez-trashbarview:
                     requires:
                         - 'ez-barview'
                         - 'ez-buttonactionview'
-                    path: %ez_platformui.public_dir%/js/views/ez-trashbarview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-trashbarview.js"
                 ez-rawcontentview:
                     requires:
                         - 'ez-templatebasedview'
@@ -665,22 +665,22 @@ system:
                         - 'ez-languageswitcherview'
                         - 'event-tap'
                         - 'rawcontentview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/ez-rawcontentview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-rawcontentview.js"
                 rawcontentview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/rawcontent.hbt
+                    path: "%ez_platformui.public_dir%/templates/rawcontent.hbt"
                 ez-languageswitcherview:
                     requires: ['ez-templatebasedview', 'ez-expandable', 'ez-getflagcodehelper', 'event-tap', 'languageswitcherview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/ez-languageswitcherview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-languageswitcherview.js"
                 languageswitcherview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/languageswitcher.hbt
+                    path: "%ez_platformui.public_dir%/templates/languageswitcher.hbt"
                 ez-contenteditview:
                     requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'event-tap', 'contenteditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/ez-contenteditview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-contenteditview.js"
                 contenteditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/contentedit.hbt
+                    path: "%ez_platformui.public_dir%/templates/contentedit.hbt"
                 ez-trashview:
                     requires:
                         - 'ez-templatebasedview'
@@ -689,10 +689,10 @@ system:
                         - 'ez-selection-table'
                         - 'node-style'
                         - 'array-extras'
-                    path: %ez_platformui.public_dir%/js/views/ez-trashview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-trashview.js"
                 trashview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/trash.hbt
+                    path: "%ez_platformui.public_dir%/templates/trash.hbt"
                 ez-contenteditformview:
                     requires:
                         - 'ez-templatebasedview'
@@ -723,91 +723,91 @@ system:
                         - 'ez-user-editview'
                         - 'event-tap'
                         - 'contenteditformview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/ez-contenteditformview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-contenteditformview.js"
                 contenteditformview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/contenteditform.hbt
+                    path: "%ez_platformui.public_dir%/templates/contenteditform.hbt"
                 ez-fieldeditview:
                     requires: ['ez-templatebasedview', 'event-tap', 'event-outside', 'node-style', 'fielddescription-tooltip-ez-partial']
-                    path: %ez_platformui.public_dir%/js/views/ez-fieldeditview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-fieldeditview.js"
                 fielddescription-tooltip-ez-partial:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/partials/fielddescription_tooltip.hbt
+                    path: "%ez_platformui.public_dir%/templates/partials/fielddescription_tooltip.hbt"
                 ez-fieldview:
                     requires: ['ez-templatebasedview', 'fieldview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/ez-fieldview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-fieldview.js"
                 fieldview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/field.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/field.hbt"
                 ez-date-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'dateeditview-ez-template', 'datatype-date-format', 'event-tap', 'calendar', 'datatype-date', 'datatype-date-parse', 'node']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-date-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-date-editview.js"
                 dateeditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/date.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/date.hbt"
                 ez-dateandtime-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'dateandtimeeditview-ez-template', 'datatype-date-format']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-dateandtime-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-dateandtime-editview.js"
                 dateandtimeeditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/dateandtime.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/dateandtime.hbt"
                 ez-dateandtime-view:
                     requires: ['ez-fieldview', 'dateandtimeview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-dateandtime-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-dateandtime-view.js"
                 dateandtimeview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/dateandtime.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/dateandtime.hbt"
                 ez-isbn-editview:
                     requires: ['ez-fieldeditview', 'isbneditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-isbn-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-isbn-editview.js"
                 isbneditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/isbn.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/isbn.hbt"
                 ez-time-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'timeeditview-ez-template', 'datatype-date-format', 'datatype-date']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-time-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-time-editview.js"
                 timeeditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/time.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/time.hbt"
                 ez-date-view:
                     requires: ['ez-dateandtime-view']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-date-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-date-view.js"
                 ez-time-view:
                     requires: ['ez-dateandtime-view']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-time-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-time-view.js"
                 ez-xmltext-view:
                     requires: ['ez-fieldview', 'xmltextview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-xmltext-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-xmltext-view.js"
                 xmltextview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/xmltext.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/xmltext.hbt"
                 ez-checkbox-view:
                     requires: ['ez-fieldview']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-checkbox-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-checkbox-view.js"
                 ez-checkbox-editview:
                     requires: ['ez-fieldeditview', 'checkboxeditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-checkbox-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-checkbox-editview.js"
                 checkboxeditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/checkbox.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/checkbox.hbt"
                 ez-textline-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'textlineeditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-textline-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-textline-editview.js"
                 textlineeditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/textline.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/textline.hbt"
                 ez-textblock-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'textblockeditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-textblock-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-textblock-editview.js"
                 textblockeditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/textblock.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/textblock.hbt"
                 ez-xmltext-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'xmltexteditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-xmltext-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-xmltext-editview.js"
                 xmltexteditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/xmltext.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/xmltext.hbt"
                 ez-richtext-editview:
                     requires:
                         - 'ez-fieldeditview'
@@ -848,178 +848,178 @@ system:
                         - 'ez-editorcontentprocessorremoveids'
                         - 'ez-editorcontentprocessoremptyembed'
                         - 'richtexteditview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js"
                 richtexteditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/richtext.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/richtext.hbt"
                 ez-image-editview:
                     requires: ['ez-binarybase-editview', 'imageeditview-ez-template', 'ez-asynchronousview', 'event-tap']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-image-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-image-editview.js"
                 imageeditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/image.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/image.hbt"
                 ez-binaryfile-editview:
                     requires: ['ez-binarybase-editview', 'binaryfileeditview-ez-template', 'event-tap']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-binaryfile-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-binaryfile-editview.js"
                 binaryfileeditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/binaryfile.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/binaryfile.hbt"
                 ez-media-editview:
                     requires: ['ez-binarybase-editview', 'mediaeditview-ez-template', 'event-tap', 'event-valuechange', 'node-event-html5']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-media-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-media-editview.js"
                 mediaeditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/media.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/media.hbt"
                 ez-binarybase-editview:
                     requires: ['ez-fieldeditview', 'event-tap']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-binarybase-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-binarybase-editview.js"
                 ez-emailaddress-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'emailaddresseditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-emailaddress-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-emailaddress-editview.js"
                 emailaddresseditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/emailaddress.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/emailaddress.hbt"
                 ez-user-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'usereditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-user-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-user-editview.js"
                 usereditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/user.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/user.hbt"
                 ez-relationlist-view:
                     requires: ['ez-fieldview', 'relationlistview-ez-template', 'ez-asynchronousview']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-relationlist-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-relationlist-view.js"
                 relationlistview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/relationlist.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/relationlist.hbt"
                 ez-relation-view:
                     requires: ['ez-fieldview', 'relationview-ez-template', 'ez-asynchronousview']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-relation-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-relation-view.js"
                 relationview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/relation.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/relation.hbt"
                 ez-image-view:
                     requires: ['ez-fieldview', 'imageview-ez-template', 'ez-asynchronousview']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-image-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-image-view.js"
                 imageview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/image.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/image.hbt"
                 ez-country-view:
                     requires: ['ez-fieldview', 'countryview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-country-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-country-view.js"
                 countryview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/country.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/country.hbt"
                 ez-user-view:
                     requires: ['ez-fieldview', 'userview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-user-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-user-view.js"
                 userview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/user.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/user.hbt"
                 ez-binaryfile-view:
                     requires: ['ez-fieldview', 'binaryfileview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-binaryfile-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-binaryfile-view.js"
                 binaryfileview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/binaryfile.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/binaryfile.hbt"
                 ez-selection-view:
                     requires: ['ez-fieldview', 'selectionview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-selection-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-selection-view.js"
                 selectionview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/selection.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/selection.hbt"
                 ez-url-view:
                     requires: ['ez-fieldview', 'urlview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-url-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-url-view.js"
                 urlview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/url.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/url.hbt"
                 ez-media-view:
                     requires: ['ez-fieldview', 'node-event-html5', 'mediaview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-media-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-media-view.js"
                 mediaview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/media.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/media.hbt"
                 ez-url-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'urleditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-url-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-url-editview.js"
                 urleditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/url.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/url.hbt"
                 ez-country-editview:
                     requires: ['ez-fieldeditview', 'ez-selection-editview', 'event-valuechange', 'countryeditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-country-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-country-editview.js"
                 countryeditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/country.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/country.hbt"
                 ez-keyword-view:
                     requires: ['ez-fieldview', 'keywordview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-keyword-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-keyword-view.js"
                 keywordview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/keyword.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/keyword.hbt"
                 ez-keyword-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'keywordeditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-keyword-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-keyword-editview.js"
                 keywordeditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/keyword.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/keyword.hbt"
                 ez-author-view:
                     requires: ['ez-fieldview', 'authorview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-author-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-author-view.js"
                 authorview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/author.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/author.hbt"
                 ez-author-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'event-tap', 'model', 'model-list', 'authoreditview-ez-template', 'authorinputview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-author-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-author-editview.js"
                 authoreditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/author.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/author.hbt"
                 authorinputview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/authorinput.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/authorinput.hbt"
                 ez-float-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'floateditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-float-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-float-editview.js"
                 ez-float-view:
                     requires: ['ez-fieldview']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-float-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-float-view.js"
                 floateditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/float.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/float.hbt"
                 ez-integer-view:
                     requires: ['ez-fieldview']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-integer-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-integer-view.js"
                 ez-integer-editview:
                     requires: ['ez-fieldeditview', 'event-valuechange', 'integereditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-integer-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-integer-editview.js"
                 integereditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/integer.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/integer.hbt"
                 ez-maplocation-view:
                     requires: ['ez-fieldview', 'ez-googlemapapiloader', 'maplocationview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-maplocation-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-maplocation-view.js"
                 maplocationview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/maplocation.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/maplocation.hbt"
                 ez-maplocation-editview:
                     requires: ['ez-fieldeditview', 'ez-googlemapapiloader', 'maplocationeditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-maplocation-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-maplocation-editview.js"
                 maplocationeditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/maplocation.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/maplocation.hbt"
                 ez-relation-editview:
                     requires: ['ez-fieldeditview', 'relationeditview-ez-template', 'ez-asynchronousview']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-relation-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-relation-editview.js"
                 relationeditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/relation.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/relation.hbt"
                 ez-relationlist-editview:
                     requires: ['ez-fieldeditview', 'relationlisteditview-ez-template', 'ez-asynchronousview', 'array-extras', 'transition']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-relationlist-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-relationlist-editview.js"
                 relationlisteditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/relationlist.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/relationlist.hbt"
                 ez-richtext-view:
                     requires:
                         - 'ez-fieldview'
@@ -1028,97 +1028,97 @@ system:
                         - 'ez-richtext-resolveembed'
                         - 'ez-richtext-resolveimage'
                         - 'richtextview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-richtext-view.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-richtext-view.js"
                 richtextview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/view/richtext.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/view/richtext.hbt"
                 ez-selection-editview:
                     requires: ['ez-fieldeditview', 'ez-selectionfilterview', 'event-tap', 'event-outside', 'node-screen', 'selectioneditview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/fields/ez-selection-editview.js
+                    path: "%ez_platformui.public_dir%/js/views/fields/ez-selection-editview.js"
                 selectioneditview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/fields/edit/selection.hbt
+                    path: "%ez_platformui.public_dir%/templates/fields/edit/selection.hbt"
                 ez-selectionfilterview:
                     requires: ['autocomplete-base', 'autocomplete-highlighters', 'autocomplete-filters', 'event-tap', 'view']
-                    path: %ez_platformui.public_dir%/js/views/ez-selectionfilterview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-selectionfilterview.js"
                 ez-restmodel:
                     requires: ['model', 'json']
-                    path: %ez_platformui.public_dir%/js/models/ez-restmodel.js
+                    path: "%ez_platformui.public_dir%/js/models/ez-restmodel.js"
                 ez-contentmodel:
                     requires: ['ez-restmodel', 'ez-versionmodel','ez-versioninfomodel', 'array-extras', 'ez-contentinfo-attributes']
-                    path: %ez_platformui.public_dir%/js/models/ez-contentmodel.js
+                    path: "%ez_platformui.public_dir%/js/models/ez-contentmodel.js"
                 ez-versionmodel:
                     requires: ['ez-versioninfomodel']
-                    path: %ez_platformui.public_dir%/js/models/ez-versionmodel.js
+                    path: "%ez_platformui.public_dir%/js/models/ez-versionmodel.js"
                 ez-versioninfomodel:
                     requires: ['ez-restmodel']
                     path: '%ez_platformui.public_dir%/js/models/ez-versioninfomodel.js'
                 ez-locationmodel:
                     requires: ['ez-restmodel', 'ez-contentinfomodel', array-extras]
-                    path: %ez_platformui.public_dir%/js/models/ez-locationmodel.js
+                    path: "%ez_platformui.public_dir%/js/models/ez-locationmodel.js"
                 ez-trashitemmodel:
                     requires: ['ez-restmodel', 'ez-contentinfomodel']
-                    path: %ez_platformui.public_dir%/js/models/ez-trashitemmodel.js
+                    path: "%ez_platformui.public_dir%/js/models/ez-trashitemmodel.js"
                 ez-usermodel:
                     requires: ['ez-restmodel', 'ez-versioninfomodel']
-                    path: %ez_platformui.public_dir%/js/models/ez-usermodel.js
+                    path: "%ez_platformui.public_dir%/js/models/ez-usermodel.js"
                 ez-contenttypemodel:
                     requires: ['ez-restmodel']
-                    path: %ez_platformui.public_dir%/js/models/ez-contenttypemodel.js
+                    path: "%ez_platformui.public_dir%/js/models/ez-contenttypemodel.js"
                 ez-contenttypegroupmodel:
                     requires: ['ez-restmodel', 'ez-contenttypemodel']
-                    path: %ez_platformui.public_dir%/js/models/ez-contenttypegroupmodel.js
+                    path: "%ez_platformui.public_dir%/js/models/ez-contenttypegroupmodel.js"
                 ez-contentinfomodel:
                     requires: ['ez-restmodel', 'ez-contentinfo-attributes']
-                    path: %ez_platformui.public_dir%/js/models/ez-contentinfomodel.js
+                    path: "%ez_platformui.public_dir%/js/models/ez-contentinfomodel.js"
                 ez-contenttree:
                     requires: ['tree', 'tree-openable', 'tree-selectable', 'tree-lazy']
-                    path: %ez_platformui.public_dir%/js/models/structs/ez-contenttree.js
+                    path: "%ez_platformui.public_dir%/js/models/structs/ez-contenttree.js"
                 ez-notification:
                     requires: ['model']
-                    path: %ez_platformui.public_dir%/js/models/structs/ez-notification.js
+                    path: "%ez_platformui.public_dir%/js/models/structs/ez-notification.js"
                 ez-notificationlist:
                     requires: ['model-list', 'ez-notification']
-                    path: %ez_platformui.public_dir%/js/models/structs/ez-notificationlist.js
+                    path: "%ez_platformui.public_dir%/js/models/structs/ez-notificationlist.js"
                 ez-editactionbarview:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-previewactionview']
-                    path: %ez_platformui.public_dir%/js/views/ez-editactionbarview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-editactionbarview.js"
                 ez-buttonactionview:
                     requires: ['ez-templatebasedview', 'buttonactionview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/actions/ez-buttonactionview.js
+                    path: "%ez_platformui.public_dir%/js/views/actions/ez-buttonactionview.js"
                 buttonactionview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/buttonaction.hbt
+                    path: "%ez_platformui.public_dir%/templates/buttonaction.hbt"
                 ez-previewactionview:
                     requires: ['ez-buttonactionview', 'ez-editpreviewview', 'previewactionview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/actions/ez-previewactionview.js
+                    path: "%ez_platformui.public_dir%/js/views/actions/ez-previewactionview.js"
                 previewactionview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/previewaction.hbt
+                    path: "%ez_platformui.public_dir%/templates/previewaction.hbt"
                 ez-treeactionview:
                     requires: ['ez-buttonactionview', 'ez-treeview', 'ez-expandable', 'event-outside', 'node-style', 'treeactionview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/actions/ez-treeactionview.js
+                    path: "%ez_platformui.public_dir%/js/views/actions/ez-treeactionview.js"
                 treeactionview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/treeaction.hbt
+                    path: "%ez_platformui.public_dir%/templates/treeaction.hbt"
                 ez-translateactionview:
                     requires:
                         - 'ez-buttonactionview'
                         - 'ez-expandable'
                         - 'translateactionview-ez-template'
                         - 'event-outside'
-                    path: %ez_platformui.public_dir%/js/views/actions/ez-translateactionview.js
+                    path: "%ez_platformui.public_dir%/js/views/actions/ez-translateactionview.js"
                 translateactionview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/translateaction.hbt
+                    path: "%ez_platformui.public_dir%/templates/translateaction.hbt"
                 ez-movecontentactionview:
                     requires:
                         - 'ez-buttonactionview'
                         - 'movecontentactionview-ez-template'
-                    path: %ez_platformui.public_dir%/js/views/actions/ez-movecontentactionview.js
+                    path: "%ez_platformui.public_dir%/js/views/actions/ez-movecontentactionview.js"
                 movecontentactionview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/buttonaction.hbt
+                    path: "%ez_platformui.public_dir%/templates/buttonaction.hbt"
                 ez-createcontentactionview:
                     requires:
                         - 'ez-buttonactionview'
@@ -1126,91 +1126,91 @@ system:
                         - 'ez-contenttypeselectorview'
                         - 'createcontentactionview-ez-template'
                         - 'event-outside'
-                    path: %ez_platformui.public_dir%/js/views/actions/ez-createcontentactionview.js
+                    path: "%ez_platformui.public_dir%/js/views/actions/ez-createcontentactionview.js"
                 createcontentactionview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/createcontentaction.hbt
+                    path: "%ez_platformui.public_dir%/templates/createcontentaction.hbt"
                 ez-contenttypeselectorview:
                     requires: ['ez-templatebasedview', 'ez-translateproperty', 'contenttypeselectorview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/ez-contenttypeselectorview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-contenttypeselectorview.js"
                 contenttypeselectorview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/contenttypeselector.hbt
+                    path: "%ez_platformui.public_dir%/templates/contenttypeselector.hbt"
                 ez-editpreviewview:
                     requires: ['ez-templatebasedview', 'event-tap', 'node-screen', 'editpreviewview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/ez-editpreviewview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-editpreviewview.js"
                 editpreviewview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/editpreview.hbt
+                    path: "%ez_platformui.public_dir%/templates/editpreview.hbt"
                 ez-barview:
                     requires: ['ez-templatebasedview', 'event-tap', 'event-resize', 'barview-ez-template']
-                    path: %ez_platformui.public_dir%/js/views/ez-barview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-barview.js"
                 barview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/bar.hbt
+                    path: "%ez_platformui.public_dir%/templates/bar.hbt"
                 ez-treeview:
                     requires: ['ez-templatebasedview', 'event-tap', 'treeview-ez-template', 'template', 'tree-ez-partial']
-                    path: %ez_platformui.public_dir%/js/views/ez-treeview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-treeview.js"
                 treeview-ez-template:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/tree.hbt
+                    path: "%ez_platformui.public_dir%/templates/tree.hbt"
                 tree-ez-partial:
                     type: 'template'
-                    path: %ez_platformui.public_dir%/templates/partials/tree.hbt
+                    path: "%ez_platformui.public_dir%/templates/partials/tree.hbt"
                 ez-serversideview:
                     requires: ['ez-view', 'ez-tabs', 'ez-selection-table', 'event-tap']
-                    path: %ez_platformui.public_dir%/js/views/ez-serversideview.js
+                    path: "%ez_platformui.public_dir%/js/views/ez-serversideview.js"
                 ez-contenttypeeditserversideview:
                     requires: ['ez-serversideview', 'event-tap']
-                    path: %ez_platformui.public_dir%/js/views/serverside/ez-contenttypeeditserversideview.js
+                    path: "%ez_platformui.public_dir%/js/views/serverside/ez-contenttypeeditserversideview.js"
                 ez-sectionserversideview:
                     requires: ['ez-serversideview', 'event-tap']
-                    path: %ez_platformui.public_dir%/js/views/serverside/ez-sectionserversideview.js
+                    path: "%ez_platformui.public_dir%/js/views/serverside/ez-sectionserversideview.js"
                 ez-roleserversideview:
                     requires: ['ez-serversideview', 'event-tap']
-                    path: %ez_platformui.public_dir%/js/views/serverside/ez-roleserversideview.js
+                    path: "%ez_platformui.public_dir%/js/views/serverside/ez-roleserversideview.js"
                 ez-texthelper:
                     requires: ['handlebars']
-                    path: %ez_platformui.public_dir%/js/helpers/ez-texthelper.js
+                    path: "%ez_platformui.public_dir%/js/helpers/ez-texthelper.js"
                 ez-getflagcodehelper:
                     requires: ['handlebars']
-                    path: %ez_platformui.public_dir%/js/helpers/ez-getflagcodehelper.js
+                    path: "%ez_platformui.public_dir%/js/helpers/ez-getflagcodehelper.js"
                 ez-googlemapapiloader:
                     requires: ['jsonp', 'jsonp-url', 'event-custom']
-                    path: %ez_platformui.public_dir%/js/services/ez-googlemapapiloader.js
+                    path: "%ez_platformui.public_dir%/js/services/ez-googlemapapiloader.js"
                 ez-pluginregistry:
                     requires: ['array-extras']
-                    path: %ez_platformui.public_dir%/js/services/ez-pluginregistry.js
+                    path: "%ez_platformui.public_dir%/js/services/ez-pluginregistry.js"
                 ez-positionplugin:
                     requires: ['plugin', 'base', 'node-style', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-positionplugin.js
+                    path: "%ez_platformui.public_dir%/js/apps/plugins/ez-positionplugin.js"
                 ez-updatetreeplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-updatetreeplugin.js
+                    path: "%ez_platformui.public_dir%/js/apps/plugins/ez-updatetreeplugin.js"
                 ez-notificationhubplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-notificationhubplugin.js
+                    path: "%ez_platformui.public_dir%/js/apps/plugins/ez-notificationhubplugin.js"
                 ez-confirmboxplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-confirmboxplugin.js
+                    path: "%ez_platformui.public_dir%/js/apps/plugins/ez-confirmboxplugin.js"
                 ez-languageselectionboxplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-languageselectionboxplugin.js
+                    path: "%ez_platformui.public_dir%/js/apps/plugins/ez-languageselectionboxplugin.js"
                 ez-universaldiscoveryplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-universaldiscoveryplugin.js
+                    path: "%ez_platformui.public_dir%/js/apps/plugins/ez-universaldiscoveryplugin.js"
                 ez-domstateplugin:
                     requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-domstateplugin.js
+                    path: "%ez_platformui.public_dir%/js/apps/plugins/ez-domstateplugin.js"
                 ez-registerurlhelpersplugin:
                     requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-registerurlhelpersplugin.js
+                    path: "%ez_platformui.public_dir%/js/apps/plugins/ez-registerurlhelpersplugin.js"
                 ez-registerlanguagehelpersplugin:
                     requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/apps/plugins/ez-registerlanguagehelpersplugin.js
+                    path: "%ez_platformui.public_dir%/js/apps/plugins/ez-registerlanguagehelpersplugin.js"
                 ez-viewservicebaseplugin:
                     requires: ['plugin', 'base']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-viewservicebaseplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-viewservicebaseplugin.js"
                 ez-objectrelationsloadplugin:
                     requires:
                         - 'parallel'
@@ -1218,118 +1218,118 @@ system:
                         - 'ez-pluginregistry'
                         - 'ez-contentmodel'
                         - 'ez-locationmodel'
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationsloadplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationsloadplugin.js"
                 ez-userloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-userloadplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-userloadplugin.js"
                 ez-userdraftsplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentinfomodel', 'ez-contenttypemodel', 'promise']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-userdraftsplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-userdraftsplugin.js"
                 ez-visibilityswitcherplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-visibilityswitcherplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-visibilityswitcherplugin.js"
                 ez-locationsloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationsloadplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-locationsloadplugin.js"
                 ez-versionsplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-versionsplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-versionsplugin.js"
                 ez-locationcreateplugin:
                     requires:
                         - 'ez-viewservicebaseplugin'
                         - 'ez-pluginregistry'
                         - 'ez-contentmodel'
                         - 'parallel'
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationcreateplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-locationcreateplugin.js"
                 ez-contentsetmainlocationplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contentsetmainlocationplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-contentsetmainlocationplugin.js"
                 ez-locationremoveplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel', 'parallel']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationremoveplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-locationremoveplugin.js"
                 ez-objectrelationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationloadplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-objectrelationloadplugin.js"
                 ez-imagevariationloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-imagevariationloadplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-imagevariationloadplugin.js"
                 ez-universaldiscoverycontenttreeplugin:
                     requires: ['ez-contenttreeplugin', 'ez-pluginregistry', 'ez-locationmodel']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-universaldiscoverycontenttreeplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-universaldiscoverycontenttreeplugin.js"
                 ez-discoverybarcontenttreeplugin:
                     requires: ['ez-contenttreeplugin', 'ez-locationmodel', 'ez-locationviewview', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-discoverybarcontenttreeplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-discoverybarcontenttreeplugin.js"
                 ez-contenttreeplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-searchplugin', 'ez-contenttypemodel', 'ez-locationmodel', 'ez-contenttree', 'ez-contentmodel']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-contenttreeplugin.js"
                 ez-locationsearchplugin: # deprecated module, provide a BC component based on ez-searchplugin
                     requires: ['ez-searchplugin']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationsearchplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-locationsearchplugin.js"
                 ez-searchplugin:
                     requires: ['parallel', 'ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-locationmodel', 'ez-contentmodel']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-searchplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-searchplugin.js"
                 ez-contentcreateplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-createcontentactionview', 'ez-contenttypegroupmodel']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-contentcreateplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-contentcreateplugin.js"
                 ez-copycontentplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-copycontentplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-copycontentplugin.js"
                 ez-discarddraftplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-discarddraftplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-discarddraftplugin.js"
                 ez-savedraftplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-savedraftplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-savedraftplugin.js"
                 ez-publishdraftplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-publishdraftplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-publishdraftplugin.js"
                 ez-sideviewservice:
                     requires: ['base']
-                    path: %ez_platformui.public_dir%/js/extensions/ez-sideviewservice.js
+                    path: "%ez_platformui.public_dir%/js/extensions/ez-sideviewservice.js"
                 ez-loginavailableplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-loginavailableplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-loginavailableplugin.js"
                 ez-height-change:
                     requires: ['view']
-                    path: %ez_platformui.public_dir%/js/extensions/ez-height-change.js
+                    path: "%ez_platformui.public_dir%/js/extensions/ez-height-change.js"
                 ez-asynchronousview:
                     requires: ['view', 'event-tap']
-                    path: %ez_platformui.public_dir%/js/extensions/ez-asynchronousview.js
+                    path: "%ez_platformui.public_dir%/js/extensions/ez-asynchronousview.js"
                 ez-loadmorepagination:
                     requires: ['view', 'event-tap']
-                    path: %ez_platformui.public_dir%/js/extensions/ez-loadmorepagination.js
+                    path: "%ez_platformui.public_dir%/js/extensions/ez-loadmorepagination.js"
                 ez-expandable:
                     requires: ['view']
-                    path: %ez_platformui.public_dir%/js/extensions/ez-expandable.js
+                    path: "%ez_platformui.public_dir%/js/extensions/ez-expandable.js"
                 ez-processable:
                     requires: ['view']
-                    path: %ez_platformui.public_dir%/js/extensions/ez-processable.js
+                    path: "%ez_platformui.public_dir%/js/extensions/ez-processable.js"
                 ez-translateproperty:
                     requires: ['base', 'array-extras']
-                    path: %ez_platformui.public_dir%/js/extensions/ez-translateproperty.js
+                    path: "%ez_platformui.public_dir%/js/extensions/ez-translateproperty.js"
                 ez-contentinfo-attributes:
                     requires: ['ez-restmodel']
-                    path: %ez_platformui.public_dir%/js/models/extensions/ez-contentinfo-attributes.js
+                    path: "%ez_platformui.public_dir%/js/models/extensions/ez-contentinfo-attributes.js"
                 ez-height-fit:
                     requires: ['view', 'node-screen', 'node-style']
-                    path: %ez_platformui.public_dir%/js/extensions/ez-height-fit.js
+                    path: "%ez_platformui.public_dir%/js/extensions/ez-height-fit.js"
                 ez-accordion-element:
                     requires: ['transition']
-                    path: %ez_platformui.public_dir%/js/extensions/ez-accordion-element.js
+                    path: "%ez_platformui.public_dir%/js/extensions/ez-accordion-element.js"
                 ez-tabs:
                     requires: ['node', 'event-tap']
-                    path: %ez_platformui.public_dir%/js/extensions/ez-tabs.js
+                    path: "%ez_platformui.public_dir%/js/extensions/ez-tabs.js"
                 ez-selection-table:
                     requires: ['node']
-                    path: %ez_platformui.public_dir%/js/extensions/ez-selection-table.js
+                    path: "%ez_platformui.public_dir%/js/extensions/ez-selection-table.js"
                 ez-app-extension:
                     requires: ['base']
-                    path: %ez_platformui.public_dir%/js/apps/extensions/ez-app-extension.js
+                    path: "%ez_platformui.public_dir%/js/apps/extensions/ez-app-extension.js"
                 ez-app-extension-admin:
                     requires: ['ez-serversideview', 'ez-serversideviewservice', 'ez-app-extension']
-                    path: %ez_platformui.public_dir%/js/apps/extensions/ez-app-extension-admin.js
+                    path: "%ez_platformui.public_dir%/js/apps/extensions/ez-app-extension-admin.js"
                 ez-locationswapplugin:
                     requires:
                         - 'ez-viewservicebaseplugin'
                         - 'ez-pluginregistry'
-                    path: %ez_platformui.public_dir%/js/views/services/plugins/ez-locationswapplugin.js
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-locationswapplugin.js"

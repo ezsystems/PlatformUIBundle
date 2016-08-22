@@ -56,7 +56,7 @@ class SectionController extends Controller
                 $deletableSections[$sectionId] = true;
             }
             $deleteFormsBySectionId[$sectionId] = $this->createForm(
-                new SectionDeleteType($this->sectionService),
+                SectionDeleteType::class,
                 ['sectionId' => $sectionId]
             )->createView();
         }
@@ -81,7 +81,7 @@ class SectionController extends Controller
     public function viewAction($sectionId)
     {
         $section = $this->sectionService->loadSection($sectionId);
-        $deleteForm = $this->createForm(new SectionDeleteType($this->sectionService), ['sectionId' => $sectionId]);
+        $deleteForm = $this->createForm(SectionDeleteType::class, ['sectionId' => $sectionId]);
 
         return $this->render('eZPlatformUIBundle:Section:view.html.twig', [
             'section' => $section,
@@ -103,7 +103,7 @@ class SectionController extends Controller
     public function deleteAction(Request $request, $sectionId, $redirectErrorsTo = 'list')
     {
         $section = $this->sectionService->loadSection($sectionId);
-        $deleteForm = $this->createForm(new SectionDeleteType($this->sectionService), ['sectionId' => $sectionId]);
+        $deleteForm = $this->createForm(SectionDeleteType::class, ['sectionId' => $sectionId]);
         $deleteForm->handleRequest($request);
         if ($deleteForm->isValid()) {
             $this->sectionService->deleteSection($section);
@@ -141,7 +141,7 @@ class SectionController extends Controller
         ]);
         $sectionData = (new SectionMapper())->mapToFormData($section);
         $actionUrl = $this->generateUrl('admin_sectionedit', ['sectionId' => $sectionId]);
-        $form = $this->createForm(new SectionType(), $sectionData);
+        $form = $this->createForm(SectionType::class, $sectionData);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $this->actionDispatcher->dispatchFormAction(

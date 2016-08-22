@@ -28,6 +28,7 @@ use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeCreateType;
 use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeDeleteType;
 use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeGroupDeleteType;
 use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeGroupType;
+use EzSystems\RepositoryForms\Form\Type\ContentType\ContentTypeUpdateType;
 use Symfony\Component\HttpFoundation\Request;
 
 class ContentTypeController extends Controller
@@ -98,7 +99,7 @@ class ContentTypeController extends Controller
         foreach ($contentTypeGroups as $contentTypeGroup) {
             $id = $contentTypeGroup->id;
             $deleteFormsById[$id] = $this->createForm(
-                new ContentTypeGroupDeleteType(),
+                ContentTypeGroupDeleteType::class,
                 ['contentTypeGroupId' => $id]
             )->createView();
         }
@@ -115,7 +116,7 @@ class ContentTypeController extends Controller
     {
         $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
         $createForm = $this->createForm(
-            new ContentTypeCreateType($this->contentTypeService),
+            ContentTypeCreateType::class,
             ['contentTypeGroupId' => $contentTypeGroupId]
         );
         $contentTypes = $this->contentTypeService->loadContentTypes($contentTypeGroup);
@@ -126,7 +127,7 @@ class ContentTypeController extends Controller
         foreach ($contentTypes as $contentType) {
             $contentTypeId = $contentType->id;
             $deleteFormsById[$contentTypeId] = $this->createForm(
-                new ContentTypeDeleteType(),
+                ContentTypeDeleteType::class,
                 ['contentTypeId' => $contentTypeId]
             )->createView();
 
@@ -154,7 +155,7 @@ class ContentTypeController extends Controller
 
         $data = (new ContentTypeGroupMapper())->mapToFormData($contentTypeGroup);
         $actionUrl = $this->generateUrl('admin_contenttypeGroupEdit', ['contentTypeGroupId' => $contentTypeGroupId]);
-        $form = $this->createForm(new ContentTypeGroupType(), $data);
+        $form = $this->createForm(ContentTypeGroupType::class, $data);
         $form->handleRequest($request);
         if ($form->isValid()) {
             $this->contentTypeGroupActionDispatcher->dispatchFormAction(
@@ -179,7 +180,7 @@ class ContentTypeController extends Controller
     public function deleteContentTypeGroupAction(Request $request, $contentTypeGroupId)
     {
         $contentTypeGroup = $this->contentTypeService->loadContentTypeGroup($contentTypeGroupId);
-        $deleteForm = $this->createForm(new ContentTypeGroupDeleteType(), ['contentTypeGroupId' => $contentTypeGroupId]);
+        $deleteForm = $this->createForm(ContentTypeGroupDeleteType::class, ['contentTypeGroupId' => $contentTypeGroupId]);
         $deleteForm->handleRequest($request);
         if ($deleteForm->isValid()) {
             try {
@@ -217,7 +218,7 @@ class ContentTypeController extends Controller
             'limit' => 0,
         ]);
         $contentCount = $this->searchService->findContent($countQuery, [], false)->totalCount;
-        $deleteForm = $this->createForm(new ContentTypeDeleteType(), ['contentTypeId' => $contentTypeId]);
+        $deleteForm = $this->createForm(ContentTypeDeleteType::class, ['contentTypeId' => $contentTypeId]);
 
         if (!isset($languageCode) || !isset($contentType->names[$languageCode])) {
             $languageCode = $this->getPrioritizedLanguage($contentType);
@@ -236,7 +237,7 @@ class ContentTypeController extends Controller
 
     public function createContentTypeAction(Request $request, $contentTypeGroupId, $languageCode = null)
     {
-        $createForm = $this->createForm(new ContentTypeCreateType($this->contentTypeService), ['contentTypeGroupId' => $contentTypeGroupId]);
+        $createForm = $this->createForm(ContentTypeCreateType::class, ['contentTypeGroupId' => $contentTypeGroupId]);
         $createForm->handleRequest($request);
         if ($createForm->isValid()) {
             $languageCode = $languageCode ?: $this->prioritizedLanguages[0];
@@ -289,7 +290,7 @@ class ContentTypeController extends Controller
 
         $contentTypeData = (new ContentTypeDraftMapper())->mapToFormData($contentTypeDraft);
         $form = $this->createForm(
-            'ezrepoforms_contenttype_update',
+            ContentTypeUpdateType::class,
             $contentTypeData,
             ['languageCode' => $languageCode]
         );
@@ -332,7 +333,7 @@ class ContentTypeController extends Controller
     public function deleteContentTypeAction(Request $request, $contentTypeId)
     {
         $contentType = $this->contentTypeService->loadContentType($contentTypeId);
-        $deleteForm = $this->createForm(new ContentTypeDeleteType(), ['contentTypeId' => $contentTypeId]);
+        $deleteForm = $this->createForm(ContentTypeDeleteType::class, ['contentTypeId' => $contentTypeId]);
         $deleteForm->handleRequest($request);
         if ($deleteForm->isValid()) {
             $this->contentTypeService->deleteContentType($contentType);
