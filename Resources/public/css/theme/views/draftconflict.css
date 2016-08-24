@@ -1,0 +1,65 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+
+.ez-view-draftconflictview .ez-draft-conflict-title {
+    font-size: 100%;
+    font-weight: bold;
+}
+
+.ez-view-draftconflictview .ez-draft-conflict-table {
+    border-collapse: collapse;
+    border: 1px solid #d2d2d2;
+    border-radius: 5px;
+    background: #fff;
+}
+
+.ez-view-draftconflictview .ez-draft-conflict-newdraft {
+    background: #888;
+    border: 1px solid #888;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 90%;
+}
+
+.ez-view-draftconflictview .ez-draft-conflict-newdraft:before {
+    content: "+";
+}
+
+.ez-view-draftconflictview .ez-draft-conflict-list-header {
+    border-bottom: 1px solid #d2d2d2;
+    background: #eee;
+    color: #777;
+}
+
+.ez-view-draftconflictview .ez-draft-conflict-list-row {
+    cursor: pointer;
+}
+
+.ez-view-draftconflictview .is-row-selected .ez-draft-conflict-list-cell,
+.ez-view-draftconflictview .is-row-selected .ez-draft-conflict-edit-cell {
+    background: #FFF;
+    transition: all ease 0.3s;
+}
+
+.ez-view-draftconflictview .is-row-selected .ez-draft-conflict-list-cell {
+    background: #E2EFFF;
+}
+
+.ez-view-draftconflictview .is-row-selected .ez-draft-conflict-edit-cell {
+    background: #38B599;
+}
+
+.ez-view-draftconflictview .ez-draft-conflict-edit {
+    color: #fff;
+}
+
+.ez-view-draftconflictview .ez-draft-conflict-edit:before {
+    font-size: 150%;
+    display: block;
+    text-align: center;
+    height: 100%;
+    line-height: 2;
+}

@@ -20,8 +20,6 @@ YUI.add('ez-versionsplugin-tests', function (Y) {
             this.service.set('capi', this.capi);
             this.versions = [];
             this.content = new Mock();
-            this.status1 = "walking";
-            this.status2 = "biking";
 
             this.plugin = new Y.eZ.Plugin.Versions({
                 host: this.service
@@ -39,7 +37,7 @@ YUI.add('ez-versionsplugin-tests', function (Y) {
 
         _setupContentMock: function (error, versions) {
             Mock.expect(this.content, {
-                method: 'loadVersions',
+                method: 'loadVersionsSortedByStatus',
                 args: [Mock.Value.Object, Mock.Value.Function],
                 run: function (options, callback) {
                     callback(error, versions);
@@ -47,47 +45,18 @@ YUI.add('ez-versionsplugin-tests', function (Y) {
             });
         },
 
-        _addVersionMock: function (status) {
-            var versionMock = new Mock();
-
-            Mock.expect(versionMock, {
-                'method': 'get',
-                'args': ['status'],
-                returns: status
-            });
-
-            Mock.expect(versionMock, {
-                'method': 'toJSON',
-                returns: {}
-            });
-
-            this.versions.push(versionMock);
-        },
-
-        _assertVersionsResult: function (status, nbVersion) {
-            var versions = this.view.get('versions');
-
-            Assert.areSame(
-                nbVersion,
-                versions[status].length,
-                "The number of " + status + " version doesn't match"
-            );
-        },
-
-        "Should load versions sorted by status": function () {
+        "Should load versions (sorted by status)": function () {
             this._setupContentMock(false, this.versions);
-
-            this._addVersionMock(this.status1);
-            this._addVersionMock(this.status2);
-            this._addVersionMock(this.status2);
-
 
             this.view.fire('loadVersions', {
                 content: this.content
             });
 
-            this._assertVersionsResult(this.status1, 1);
-            this._assertVersionsResult(this.status2, 2);
+            Assert.areSame(
+                this.versions,
+                this.view.get('versions'),
+                "Versions should have been retrieved"
+            );
         },
 
         "Should load versions with no versions": function () {

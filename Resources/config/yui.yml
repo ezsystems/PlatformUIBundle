@@ -257,6 +257,7 @@ system:
                         - 'ez-objectrelationloadplugin'
                         - 'ez-objectrelationsloadplugin'
                         - 'ez-userloadplugin'
+                        - 'ez-contenteditplugin'
                         - 'ez-locationsloadplugin'
                         - 'ez-locationcreateplugin'
                         - 'ez-contentsetmainlocationplugin'
@@ -267,6 +268,7 @@ system:
                         - 'ez-copycontentplugin'
                         - 'ez-versionsplugin'
                         - 'ez-locationswapplugin'
+                        - 'ez-draftconflictview'
                     path: "%ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js"
                 ez-navigationhubviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras', 'ez-height-change']
@@ -552,6 +554,16 @@ system:
                 confirmboxview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/confirmbox.hbt"
+                ez-draftconflictview:
+                    requires:
+                        - 'ez-templatebasedview'
+                        - 'draftconflictview-ez-template'
+                        - 'event-tap'
+                        - 'event-outside'
+                    path: "%ez_platformui.public_dir%/js/views/confirmbox/ez-draftconflictview.js"
+                draftconflictview-ez-template:
+                    type: 'template'
+                    path: "%ez_platformui.public_dir%/templates/confirmbox/draftconflict.hbt"
                 ez-languageselectionboxview:
                     requires: ['ez-templatebasedview', 'languageselectionboxview-ez-template']
                     path: "%ez_platformui.public_dir%/js/views/ez-languageselectionboxview.js"
@@ -1222,6 +1234,9 @@ system:
                 ez-userloadplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-userloadplugin.js"
+                ez-contenteditplugin:
+                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel']
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-contenteditplugin.js"
                 ez-userdraftsplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentinfomodel', 'ez-contenttypemodel', 'promise']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-userdraftsplugin.js"

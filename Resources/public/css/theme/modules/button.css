@@ -45,6 +45,10 @@ a.ez-button {
     content: "\E989";
 }
 
+.ez-button-edit:before {
+    content: "\E606";
+}
+
 .ez-button.is-loading:before {
     content: "\E61C";
     -webkit-animation: spin 0.5s infinite linear;

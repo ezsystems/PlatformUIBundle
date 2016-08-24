@@ -60,14 +60,14 @@ YUI.add('ez-versionsplugin', function (Y) {
                     api: capi,
                 };
 
-            e.content.loadVersions(options, Y.bind(function (error, versions) {
+            e.content.loadVersionsSortedByStatus(options, function (error, versions) {
                 if (error) {
                     e.target.set('loadingError', true);
                 } else {
                     e.target.set('loadingError', false);
-                    e.target.set('versions', this._sortVersions(versions));
+                    e.target.set('versions', versions);
                 }
-            }, this));
+            });
         },
 
         /**
@@ -75,12 +75,16 @@ YUI.add('ez-versionsplugin', function (Y) {
          *
          * @method _sortVersions
          * @protected
+         * @deprecated
          * @param versions {Array} of eZ.VersionInfo
          * @return {Object} of sorted versions by status:
          *              struct.<status_name>: {Array} of eZ.VersionInfo
          */
         _sortVersions: function(versions) {
             var versionsByStatus = {};
+
+            console.log('[DEPRECATED] The method `_sortVersions` is deprecated please use `eZ.Content.loadVersionsSortedByStatus` instead');
+            console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
 
             versions.forEach(function (version) {
                 if ( !versionsByStatus[version.get('status')]) {

@@ -1,0 +1,43 @@
+<header>
+    <h2 class="ez-draft-conflict-title">
+        {{ lookup content.currentVersion.names languageCode }}
+        ({{ translate_property contentType.names }})
+    </h2>
+
+    <div class="ez-draft-conflict-toolbar">
+        <a href="{{ path 'editContent' id=content.id languageCode=languageCode }}"
+           class="ez-draft-conflict-link ez-draft-conflict-newdraft">
+            New Draft
+        </a>
+    </div>
+</header>
+
+<table class="ez-draft-conflict-table">
+    <thead class="ez-draft-conflict-list-header">
+    <tr>
+        <th class="ez-draft-conflict-list-head-language">Language</th>
+        <th class="ez-draft-conflict-list-head-author">Owner</th>
+        <th class="ez-draft-conflict-list-head-saved">Last Modified</th>
+        <th class="ez-draft-conflict-list-head-edit"></th>
+    </tr>
+    </thead>
+    <tbody class="ez-draft-conflict-list-content">
+    {{#each drafts}}
+        <tr class="ez-draft-conflict-list-row">
+            <td class="ez-draft-conflict-list-cell">
+                {{languageCodes}}
+            </td>
+            <td class="ez-draft-conflict-list-cell">
+                {{resources.Creator}}
+            </td>
+            <td class="ez-draft-conflict-list-cell">
+                {{modificationDate}}
+            </td>
+            <td class="ez-draft-conflict-edit-cell">
+                <a href="{{ path 'editContentVersion' id=../content.id languageCode=initialLanguageCode versionId=id }}"
+                   class="ez-draft-conflict-link ez-draft-conflict-edit ez-font-icon ez-button-edit"></a>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

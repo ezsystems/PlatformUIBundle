@@ -1,6 +1,9 @@
 <a href="#" class="ez-confirmbox-close-icon ez-confirmbox-close" data-icon-after="&#xe62a;"></a><h1 class="ez-confirmbox-title">{{ title }}</h1>
 
 <div class="ez-confirmbox-details">{{&details }}</div>
+
+<div class="ez-confirmbox-view"></div>
+
 <p class="ez-confirmbox-tools">
     <a href="#" class="ez-confirmbox-cancel ez-confirmbox-close">Cancel</a>
     <button class="ez-confirmbox-confirm ez-button pure-button">Confirm</button>

@@ -312,43 +312,33 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
             delete this.content;
         },
 
-        "Should navigate to the content edit when receiving an editAction event": function () {
-            var contentMock, contentId = 'aContentId',
-                editUri = '/i/want/to/edit/aContentId/pol-PL',
-                app = this.app;
+        "Should fire `editContentRequest` when receiving an editAction event": function () {
+            var content = {},
+                contentType = {},
+                languageCode = {};
 
-            contentMock = new Y.Test.Mock();
-            Y.Mock.expect(contentMock, {
-                method: 'get',
-                args: ['id'],
-                returns: contentId
+            this.service.set('contentType', contentType);
+            this.service.set('languageCode', languageCode);
+
+            this.service.on('*:editContentRequest', function (e) {
+                Assert.areSame(
+                    content,
+                    e.content,
+                    "Content provided in the EventFacade is not the same"
+                );
+                Assert.areSame(
+                    contentType,
+                    e.contentType,
+                    "ContentType provided in the EventFacade is not the same"
+                );
+                Assert.areSame(
+                    languageCode,
+                    e.languageCode,
+                    "LanguageCode provided in the EventFacade is not the same"
+                );
             });
 
-            Y.Mock.expect(app, {
-                method: 'routeUri',
-                args: ['editContent', Y.Mock.Value.Object],
-                run: function (routeName, params) {
-                    Y.Assert.isObject(
-                        params,
-                        "routeUri should be called with an object in parameter"
-                    );
-                    Y.Assert.areEqual(
-                        params.id,
-                        contentId,
-                        "routeUri should receive the content id in parameter"
-                    );
-                    return editUri;
-                }
-            });
-
-            Y.Mock.expect(app, {
-                method: 'navigate',
-                args: [editUri]
-            });
-
-            this.service.fire('whatever:editAction', {content: contentMock});
-            Y.Mock.verify(app);
-            Y.Mock.verify(contentMock);
+            this.service.fire('whatever:editAction', {content: content});
         },
 
         "Should update the sort methods on sortUpdate event": function () {

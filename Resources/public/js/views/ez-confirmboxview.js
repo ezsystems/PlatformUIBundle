@@ -58,11 +58,14 @@ YUI.add('ez-confirmboxview', function (Y) {
             this.on(['confirmHandlerChange', 'cancelHandlerChange'], function (e) {
                 this._syncEventHandler(e.attrName.replace(/Handler$/, ''), e.prevVal, e.newVal);
             });
+
             this._syncEventHandler('confirm');
             this._syncEventHandler('cancel');
             this.after('activeChange', function () {
                 if ( this.get('active') ) {
                     this._uiUpdateTitle();
+                    this._uiUpdateView();
+                    this._uiUpdateButton();
                 }
             });
             this._publishEvents();
@@ -70,13 +73,51 @@ YUI.add('ez-confirmboxview', function (Y) {
 
         /**
          * Updates the title in the rendered confirmBox
-         * 
+         *
          * @method _uiUpdateTitle
          * @protected
          */
         _uiUpdateTitle: function () {
             this.get('container')
                 .one('.ez-confirmbox-title').setContent(this.get('title'));
+        },
+
+        /**
+         * Hides of reveal the buttons
+         *
+         * @method _uiButtonDisplay
+         * @protected
+         */
+        _uiUpdateButton: function () {
+            var container = this.get('container').one('.ez-confirmbox-tools');
+
+            if (this.get('renderDefaultButtons')) {
+                container.removeClass('ez-confirmbox-tools-hidden');
+            } else {
+                container.addClass('ez-confirmbox-tools-hidden');
+            }
+        },
+
+        /**
+         * Updates the view in the rendered confirmBox
+         *
+         * @method _uiUpdateView
+         * @protected
+         */
+        _uiUpdateView: function () {
+            var view = this.get('view');
+
+            if (view instanceof Y.View) {
+                view.on('*:confirm', Y.bind(function(e) {
+                    this.fire(CONFIRM, e);
+                }, this));
+
+                view.render();
+
+                this.get('container').one('.ez-confirmbox-view').append(view.get('container'));
+
+                view.set('active', true);
+            }
         },
 
         /**
@@ -110,8 +151,10 @@ YUI.add('ez-confirmboxview', function (Y) {
          * @param {Function} newHandler
          */
         _syncEventHandler: function (eventName, oldHandler, newHandler) {
-            this.detach(eventName);
-            this.after(eventName, function (e) {
+            var fullEventName = '*:' + eventName;
+
+            this.detach(fullEventName);
+            this.after(fullEventName, function (e) {
                 if ( newHandler ) {
                     newHandler(e);
                 }
@@ -130,6 +173,12 @@ YUI.add('ez-confirmboxview', function (Y) {
             this.reset('details');
             this.reset('confirmHandler');
             this.reset('cancelHandler');
+            this.reset('renderDefaultButtons');
+
+            if (this.get('view') instanceof Y.View) {
+                this.get('view').destroy({remove: true});
+                this.reset('view');
+            }
         },
 
         render: function () {
@@ -175,6 +224,29 @@ YUI.add('ez-confirmboxview', function (Y) {
              */
             details: {
                 value: "",
+            },
+
+            /**
+             * View of the confirmBox.
+             * A Y.View that can be provided to be displayed in the confirm box
+             *
+             * @attribute view
+             * @default null
+             * @type {Y.View|null}
+             */
+            view: {
+                value: null,
+            },
+
+            /**
+             * Wether or not to display the `Confirm` and `Cancel` buttons
+             *
+             * @attribute renderDefaultButtons
+             * @default true
+             * @type {Boolean}
+             */
+            renderDefaultButtons: {
+                value: true,
             },
 
             /**

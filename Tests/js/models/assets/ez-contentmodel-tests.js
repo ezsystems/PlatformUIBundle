@@ -897,17 +897,45 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             });
 
             this.model.set('id', this.id);
-            this.version1 = "truc";
-            this.version2 = "bidule";
+            this.version1 = {
+                name: "truc",
+                status: "DRAFT"
+            };
+            this.version2 = {
+                name: "bidule",
+                status: "PUBLISHED"
+            };
+            this.version3 = {
+                name: "chose",
+                status: "PUBLISHED"
+            };
 
             this.loadVersionsResponse = { document: {
                 VersionList: {
                     VersionItem: [
                         this.version1,
                         this.version2,
+                        this.version3,
                     ]
                 }
             }};
+
+            Y.eZ.VersionInfo = Y.Base.create('versionInfoModel', Y.eZ.RestModel, [], {
+                loadFromHash: function (hash) {
+                    this.set('name', hash.name);
+                    this.set('status', hash.status);
+                },
+
+            }, {
+                ATTRS: {
+                    name: {
+                        value: 'merguez'
+                    },
+                    status: {
+                        value: 'barbecued'
+                    }
+                }
+            });
         },
 
         tearDown: function () {
@@ -945,19 +973,6 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                 },
                 callbackCalled = false;
 
-            Y.eZ.VersionInfo = Y.Base.create('versionInfoModel', Y.eZ.RestModel, [], {
-                loadFromHash: function (hash) {
-                    this.set('hash', hash);
-                },
-
-            }, {
-                ATTRS: {
-                    hash: {
-                        value: 'merguez'
-                    }
-                }
-            });
-
             Y.Mock.expect(this.contentService, {
                 method: 'loadVersions',
                 args: [this.id, Mock.Value.Function],
@@ -972,14 +987,55 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                 Assert.isFalse(err, 'Should not return the error');
 
                 Assert.areEqual(
-                    this.version1,
-                    response[0].get('hash'),
+                    this.version1.name,
+                    response[0].get('name'),
                     'First version should have been loaded'
                 );
 
                 Assert.areEqual(
-                    this.version2,
-                    response[1].get('hash'),
+                    this.version2.name,
+                    response[1].get('name'),
+                    'Second version should have been loaded'
+                );
+            }, this));
+
+            Assert.isTrue(callbackCalled, 'Should call callback function');
+        },
+
+        'Should load sorted versions by status': function () {
+            var options = {
+                    api: this.capi,
+                },
+                callbackCalled = false;
+
+            Y.Mock.expect(this.contentService, {
+                method: 'loadVersions',
+                args: [this.id, Mock.Value.Function],
+                run: Y.bind(function (contentId, cb) {
+                    cb(false, this.loadVersionsResponse);
+                }, this)
+            });
+
+            this.model.loadVersionsSortedByStatus(options, Y.bind(function (err, response) {
+                callbackCalled = true;
+
+                Assert.isFalse(err, 'Should not return the error');
+
+                Assert.areEqual(
+                    this.version1.name,
+                    response.DRAFT[0].get('name'),
+                    'First version should have been loaded'
+                );
+
+                Assert.areEqual(
+                    this.version2.name,
+                    response.PUBLISHED[0].get('name'),
+                    'Second version should have been loaded'
+                );
+
+                Assert.areEqual(
+                    this.version3.name,
+                    response.PUBLISHED[1].get('name'),
                     'Second version should have been loaded'
                 );
             }, this));
