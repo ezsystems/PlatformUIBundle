@@ -241,9 +241,12 @@ YUI.add('ez-richtext-editview', function (Y) {
                     return element.get('children').some(function (node) {
                         return L.trim(node.get('text')) !== '';
                     });
+                },
+                hasEmbedElement = function(element) {
+                    return !!element.one('[data-ezelement=ezembed]');
                 };
 
-            return !section || !hasChildNodes(section) || !hasChildWithContent(section);
+            return !section || !hasChildNodes(section) || !(hasChildWithContent(section) || hasEmbedElement(section));
         },
 
         _variables: function () {
