@@ -68,6 +68,21 @@ YUI.add('ez-alloyeditor-plugin-yui3-tests', function (Y) {
                 "The id should have been removed"
             );
         },
+
+        "Should lock and unlock the undo manager": function () {
+            var nativeEditor = this.editor.get('nativeEditor');
+
+            nativeEditor.undoManager = new Mock(nativeEditor.undoManager);
+            Mock.expect(nativeEditor.undoManager, {
+                method: 'lock',
+            });
+            Mock.expect(nativeEditor.undoManager, {
+                method: 'unlock',
+            });
+            nativeEditor.execCommand('bold');
+
+            Mock.verify(nativeEditor.undoManager);
+        },
     });
 
     Y.Test.Runner.setName("eZ AlloyEditor yui3 plugin tests");

@@ -11,12 +11,14 @@ YUI.add('ez-alloyeditor-plugin-yui3', function (Y) {
     }
 
     function cleanUpIds(editor) {
+        editor.undoManager.lock();
         Array.prototype.forEach.call(
             editor.element.$.querySelectorAll('[id]'),
             function (element) {
                 element.removeAttribute('id');
             }
         );
+        editor.undoManager.unlock();
     }
 
     /**
