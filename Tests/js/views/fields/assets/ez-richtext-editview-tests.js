@@ -8,6 +8,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         editorTest, rerenderEditorTest, focusModeTest, editorFocusHandlingTest, appendToolbarConfigTest,
         eventForwardTest, defaultEditorProcessorsTest, defaultProcessorsTest,
         VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, RESULT_EMPTY_XHTML,
+        VALID_XHTML_WITH_EMBED,
         Assert = Y.Assert, Mock = Y.Mock,
         destroyTearDown = function () {
             // setTimeout is needed otherwise, the editor is destroyed while
@@ -25,6 +26,10 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     VALID_XHTML = '<?xml version="1.0" encoding="UTF-8"?>';
     VALID_XHTML += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
     VALID_XHTML += '<p>I\'m not empty</p></section>';
+
+    VALID_XHTML_WITH_EMBED = '<?xml version="1.0" encoding="UTF-8"?>';
+    VALID_XHTML_WITH_EMBED += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
+    VALID_XHTML_WITH_EMBED += '<div data-ezelement="ezembed"></div></section>';
 
     EMPTY_XHTML = '<?xml version="1.0" encoding="UTF-8"?>';
     EMPTY_XHTML += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit"/>';
@@ -269,6 +274,21 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             Assert.isTrue(
                 this.view.isValid(),
                 "A required and filled field should not be valid"
+            );
+        },
+
+        "Should validate an embed and required field": function () {
+            var fieldDefinition = this._getFieldDefinition(true),
+                processor = this._getProcessorMock(1, VALID_XHTML_WITH_EMBED, VALID_XHTML_WITH_EMBED);
+
+            this._configureNativeEditor(1, VALID_XHTML_WITH_EMBED);
+            this.view.set('fieldDefinition', fieldDefinition);
+            this.view.set('editorContentProcessors', [processor]);
+            this.view.validate();
+
+            Assert.isTrue(
+                this.view.isValid(),
+                "A required and filled field with embed should be valid"
             );
         },
     });
