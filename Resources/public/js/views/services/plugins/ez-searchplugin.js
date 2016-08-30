@@ -374,7 +374,12 @@ YUI.add('ez-searchplugin', function (Y) {
             contentIds = Y.Array.reduce(locationStructArr, '', function (previousId, struct, index) {
                 var contentId = struct.location.get('contentInfo').get('contentId');
 
-                contentIdsLocationIndexMap[contentId] = index;
+                if (!contentIdsLocationIndexMap[contentId]) {
+                    contentIdsLocationIndexMap[contentId] = [index];
+                } else {
+                    contentIdsLocationIndexMap[contentId].push(index);
+                }
+
                 previousId = previousId ? previousId + ',' : previousId;
                 return previousId + contentId;
             });
@@ -392,9 +397,11 @@ YUI.add('ez-searchplugin', function (Y) {
                 }
                 Y.Array.each(response.document.View.Result.searchHits.searchHit, function (hit, i) {
                     var content = this._createContent(hit),
-                        locationIndex = contentIdsLocationIndexMap[content.get('contentId')];
+                        locationIndexes = contentIdsLocationIndexMap[content.get('contentId')];
 
-                    locationStructArr[locationIndex].content = content;
+                    locationIndexes.forEach(function(index) {
+                        locationStructArr[index].content = content;
+                    });
                 }, this);
                 callback(err, locationStructArr);
             }, this));
