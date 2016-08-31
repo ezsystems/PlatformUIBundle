@@ -26,7 +26,7 @@
         modules: {
             "ez-contentinfomodel": {
                 requires: [
-                    'ez-restmodel', 'array-extras', 'ez-contentinfo-attributes'
+                    'ez-restmodel', 'array-extras', 'ez-contentinfo-base'
                 ],
                 fullpath: "../../../Resources/public/js/models/ez-contentinfomodel.js"
             },
@@ -34,9 +34,9 @@
                 requires: ['model'],
                 fullpath: "../../../Resources/public/js/models/ez-restmodel.js"
             },
-            "ez-contentinfo-attributes": {
+            "ez-contentinfo-base": {
                 requires: ['ez-restmodel'],
-                fullpath: "../../../Resources/public/js/models/extensions/ez-contentinfo-attributes.js"
+                fullpath: "../../../Resources/public/js/models/extensions/ez-contentinfo-base.js"
             },
         }
     }).use('ez-contentinfomodel-tests', function (Y) {

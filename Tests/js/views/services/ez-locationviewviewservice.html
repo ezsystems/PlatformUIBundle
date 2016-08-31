@@ -24,7 +24,14 @@
         filter: loaderFilter,
         modules: {
             "ez-locationviewviewservice": {
-                requires: ['ez-viewservice', 'parallel', 'ez-locationmodel', 'ez-contentmodel', 'ez-contenttypemodel'],
+                requires: [
+                    'ez-viewservice',
+                    'parallel',
+                    'ez-locationmodel',
+                    'ez-contentmodel',
+                    'ez-contenttypemodel',
+                    'ez-draftconflict',
+                ],
                 fullpath: "../../../../Resources/public/js/views/services/ez-locationviewviewservice.js"
             },
             "ez-viewservice": {
@@ -32,12 +39,12 @@
                 fullpath: "../../../../Resources/public/js/views/services/ez-viewservice.js"
             },
             "ez-contentmodel": {
-                requires: ['ez-restmodel', 'array-extras', 'ez-contentinfo-attributes'],
+                requires: ['ez-restmodel', 'array-extras', 'ez-contentinfo-base'],
                 fullpath: "../../../../Resources/public/js/models/ez-contentmodel.js"
             },
-            "ez-contentinfo-attributes": {
+            "ez-contentinfo-base": {
                 requires: ['ez-restmodel'],
-                fullpath: "../../../../Resources/public/js/models/extensions/ez-contentinfo-attributes.js"
+                fullpath: "../../../../Resources/public/js/models/extensions/ez-contentinfo-base.js"
             },
             "ez-contenttypemodel": {
                 requires: ['ez-restmodel'],
@@ -46,6 +53,10 @@
             "ez-locationmodel": {
                 requires: ['ez-restmodel'],
                 fullpath: "../../../../Resources/public/js/models/ez-locationmodel.js"
+            },
+            'ez-draftconflict': {
+                requires: ['view'],
+                fullpath: '../../../../Resources/public/js/extensions/ez-draftconflict.js'
             },
             "ez-restmodel": {
                 requires: ['model'],

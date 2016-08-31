@@ -12,7 +12,12 @@ YUI.add('ez-dashboardblockmycontentview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var BLOCK_IDENTIFIER = 'my-content';
+    var BLOCK_IDENTIFIER = 'my-content',
+        events = {
+            '.ez-edit-content-button': {
+                'tap': '_callFireEditContentRequest'
+            },
+        };
 
     /**
      * The all content dashboard block view
@@ -22,9 +27,10 @@ YUI.add('ez-dashboardblockmycontentview', function (Y) {
      * @constructor
      * @extends eZ.DashboardBlockAsynchronousView
      */
-    Y.eZ.DashboardBlockMyContentView = Y.Base.create('dashboardBlockMyContentView', Y.eZ.DashboardBlockAsynchronousView, [], {
+    Y.eZ.DashboardBlockMyContentView = Y.Base.create('dashboardBlockMyContentView', Y.eZ.DashboardBlockAsynchronousView, [Y.eZ.DraftConflict], {
         initializer: function () {
             this._set('identifier', BLOCK_IDENTIFIER);
+            this._addDOMEventHandlers(events);
         },
 
         _getTemplateItem: function (item) {
@@ -33,6 +39,25 @@ YUI.add('ez-dashboardblockmycontentview', function (Y) {
                 location: item.location.toJSON(),
                 contentInfo: item.location.get('contentInfo').toJSON(),
             };
+        },
+
+        /**
+         * Retrieves the item and fires a `editContentRequest` event to edit a content's version
+         *
+         * @method _callFireEditContentRequest
+         * @protected
+         */
+        _callFireEditContentRequest: function (e) {
+            var item = this._getItem(e.target.getAttribute('data-content-id'));
+
+            e.preventDefault();
+
+            if (item) {
+                this._fireEditContentRequest(
+                    item.location.get('contentInfo'),
+                    item.contentType
+                );
+            }
         },
 
         /**

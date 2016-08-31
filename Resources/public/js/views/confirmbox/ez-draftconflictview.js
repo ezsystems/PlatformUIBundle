@@ -42,11 +42,26 @@ YUI.add('ez-draftconflictview', function (Y) {
         },
 
         render: function () {
-            var container = this.get('container');
+            var container = this.get('container'),
+                content = this.get('content'),
+                contentInfo = this.get('contentInfo'),
+                contentJson,
+                contentInfoJson;
+
+            if (contentInfo) {
+                contentInfoJson = contentInfo.toJSON();
+            }
+
+            if (content.toJSON) {
+                console.warn('[DEPRECATED] the `content` parameter is deprecated and it will be removed in PlatformUI 2.0');
+                console.warn('[DEPRECATED] use the `contentInfo` parameter instead');
+                contentJson = content.toJSON();
+            }
 
             container.setHTML(this.template({
                 drafts: this._prepareDraftForDisplay(),
-                content: this.get('content').toJSON(),
+                content: contentJson,
+                contentInfo: contentInfoJson,
                 languageCode: this.get('languageCode'),
                 contentType: this.get('contentType').toJSON(),
             }));
@@ -141,14 +156,27 @@ YUI.add('ez-draftconflictview', function (Y) {
             },
 
             /**
-             * Content being displayed
+             * Content being displayed as a Content. This attribute is deprecated, it will be
+             * removed in PlatformUI 2.0. Use `contentInfo` instead.
              *
              * @attribute content
              * @default {}
              * @type {eZ.Content}
+             * @deprecated
              */
             content: {
                 value: {},
+            },
+
+            /**
+             * Content being displayed as a ContentInfo
+             *
+             * @attribute contentInfo
+             * @default null
+             * @type {eZ.ContentInfo}
+             */
+            contentInfo: {
+                value: null,
             },
 
             /**

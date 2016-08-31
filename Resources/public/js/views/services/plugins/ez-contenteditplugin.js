@@ -34,14 +34,16 @@ YUI.add('ez-contenteditplugin', function (Y) {
          * @method _checkExistingDraft
          * @protected
          * @param {Object} e event facade of the editContentRequest event
-         * @param {eZ.Content} e.content being edited
+         * @param {eZ.Content} e.content (deprecated use contentInfo) being edited
+         * @param {eZ.ContentInfo} e.contentInfo being edited
          * @param {String} e.languageCode
          * @param {eZ.ContentType} e.contentType of the content
          */
         _checkExistingDraft: function (e) {
             var service = this.get('host'),
                 app = service.get('app'),
-                content = e.content,
+                contentItem,
+                contentItemConfig,
                 languageCode = e.languageCode,
                 capi = service.get('capi'),
                 options = {
@@ -50,19 +52,29 @@ YUI.add('ez-contenteditplugin', function (Y) {
 
             app.set('loading', true);
 
-            content.loadVersionsSortedByStatus(options, function (error, versions) {
+            if (e.content instanceof Y.eZ.Content) {
+                console.warn('[DEPRECATED] the `content` parameter is deprecated and it will be removed in PlatformUI 2.0');
+                console.warn('[DEPRECATED] use the `contentInfo` parameter instead');
+
+                contentItem = e.content;
+                contentItemConfig = {content: contentItem};
+            } else {
+                contentItem = e.contentInfo;
+                contentItemConfig = {contentInfo: contentItem};
+            }
+
+            contentItem.loadVersionsSortedByStatus(options, function (error, versions) {
                 app.set('loading', false);
 
                 if (!error && versions.DRAFT && versions.DRAFT.length >= 1) {
                     service.fire('confirmBoxOpen', {
                         config: {
                             title: "Select an Open Draft",
-                            view: new Y.eZ.DraftConflictView({
+                            view: new Y.eZ.DraftConflictView(Y.merge({
                                 drafts: versions.DRAFT,
-                                content: content,
                                 languageCode: languageCode,
                                 contentType: e.contentType,
-                            }),
+                            }, contentItemConfig)),
                             renderDefaultButtons: false,
                             confirmHandler: function (e) {
                                 app.navigate(e.route);
@@ -72,7 +84,7 @@ YUI.add('ez-contenteditplugin', function (Y) {
                 } else {
                     app.navigate(
                         app.routeUri('editContent', {
-                            id: content.get('id'),
+                            id: contentItem.get('id'),
                             languageCode: languageCode
                         })
                     );
@@ -84,6 +96,6 @@ YUI.add('ez-contenteditplugin', function (Y) {
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.ContentEdit, ['locationViewViewService']
+        Y.eZ.Plugin.ContentEdit, ['locationViewViewService', 'dashboardBlocksViewService']
     );
 });

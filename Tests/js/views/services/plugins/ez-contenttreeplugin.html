@@ -32,9 +32,9 @@
                 requires: ['plugin', 'base'],
                 fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-viewservicebaseplugin.js"
             },
-            "ez-contentinfo-attributes": {
+            "ez-contentinfo-base": {
                 requires: ['ez-restmodel'],
-                fullpath: "../../../../../Resources/public/js/models/extensions/ez-contentinfo-attributes.js"
+                fullpath: "../../../../../Resources/public/js/models/extensions/ez-contentinfo-base.js"
             },
             "ez-locationmodel": {
                 requires: ['ez-restmodel', 'ez-contentinfomodel'],
@@ -57,7 +57,7 @@
                 fullpath: "../../../../../Resources/public/js/models/ez-versioninfomodel.js"
             },
             "ez-contentinfomodel": {
-                requires: ['ez-restmodel', 'ez-contentinfo-attributes'],
+                requires: ['ez-restmodel', 'ez-contentinfo-base'],
                 fullpath: "../../../../../Resources/public/js/models/ez-contentinfomodel.js"
             },
             "ez-contenttree": {

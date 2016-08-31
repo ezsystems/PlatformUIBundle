@@ -37,16 +37,16 @@
                 fullpath: "../../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
             "ez-contentmodel": {
-                requires: ['ez-restmodel', 'array-extras', 'ez-contentinfo-attributes'],
+                requires: ['ez-restmodel', 'array-extras', 'ez-contentinfo-base'],
                 fullpath: "../../../../../Resources/public/js/models/ez-contentmodel.js"
             },
             "ez-restmodel": {
                 requires: ['model'],
                 fullpath: "../../../../../Resources/public/js/models/ez-restmodel.js"
             },
-            "ez-contentinfo-attributes": {
+            "ez-contentinfo-base": {
                 requires: ['ez-restmodel'],
-                fullpath: "../../../../../Resources/public/js/models/extensions/ez-contentinfo-attributes.js"
+                fullpath: "../../../../../Resources/public/js/models/extensions/ez-contentinfo-base.js"
             },
         }
     }).use('ez-objectrelationsloadplugin-tests', function (Y) {

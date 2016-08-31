@@ -20,7 +20,7 @@ YUI.add('ez-contentmodel', function (Y) {
      * @constructor
      * @extends eZ.RestModel
      */
-    Y.eZ.Content = Y.Base.create('contentModel', Y.eZ.RestModel, [Y.eZ.ContentInfoAttributes], {
+    Y.eZ.Content = Y.Base.create('contentModel', Y.eZ.RestModel, [Y.eZ.ContentInfoBase], {
         /**
          * Override of the eZ.RestModel _parseStruct method to also read the
          * fields of the current version
@@ -295,69 +295,7 @@ YUI.add('ez-contentmodel', function (Y) {
             );
         },
 
-        /**
-         * Loads content's version list
-         *
-         * @method loadVersions
-         * @param {Object} options
-         * @param {Object} options.api (required) the JS REST client instance
-         * @param {Function} callback
-         */
-        loadVersions: function (options, callback) {
-            var versions = [],
-                contentService = options.api.getContentService();
 
-            contentService.loadVersions(this.get('id'), function (error, response) {
-                if (error) {
-                    callback(error, response);
-                    return;
-                }
-
-                Y.Array.each(response.document.VersionList.VersionItem, function (versionItemHash) {
-                    var versionInfo = new Y.eZ.VersionInfo();
-                    versionInfo.loadFromHash(versionItemHash);
-                    versions.push(versionInfo);
-                });
-
-                callback(error, versions);
-            });
-        },
-
-        /**
-         * Loads content's version list sorted by status
-         *
-         * @method loadVersionsSortedByStatus
-         * @param {Object} options
-         * @param {Object} options.api (required) the JS REST client instance
-         * @param {Function} callback
-         */
-        loadVersionsSortedByStatus: function (options, callback) {
-            this.loadVersions(options, Y.bind(function (error, versions) {
-                callback(error, this._sortVersions(versions));
-            }, this));
-        },
-
-        /**
-         * Sorts an array of version info by status
-         *
-         * @method _sortVersions
-         * @protected
-         * @param versions {Array} of eZ.VersionInfo
-         * @return {Object} of sorted versions by status:
-         *              struct.<status_name>: {Array} of eZ.VersionInfo
-         */
-        _sortVersions: function(versions) {
-            var versionsByStatus = {};
-
-            versions.forEach(function (version) {
-                if ( !versionsByStatus[version.get('status')]) {
-                    versionsByStatus[version.get('status')] = [];
-                }
-                versionsByStatus[version.get('status')].push(version);
-             });
-
-            return versionsByStatus;
-        },
 
         /**
          * Adds new location for content

@@ -21,7 +21,7 @@ YUI.add('ez-locationviewviewservice', function (Y) {
      * @constructor
      * @extends eZ.ViewService
      */
-    Y.eZ.LocationViewViewService = Y.Base.create('locationViewViewService', Y.eZ.ViewService, [], {
+    Y.eZ.LocationViewViewService = Y.Base.create('locationViewViewService', Y.eZ.ViewService, [Y.eZ.DraftConflict], {
         initializer: function () {
             this.on('*:editAction', this._editContent);
             this.on('*:sendToTrashAction', this._sendContentToTrashConfirmBox);
@@ -66,16 +66,10 @@ YUI.add('ez-locationviewviewservice', function (Y) {
          * @param {Object} e event facade of the editAction event
          */
         _editContent: function (e) {
-
-            /**
-             * Fired when a content needs to be edited
-             * @event editContentRequest
-             */
-            this.fire('editContentRequest', {
-                content: e.content,
-                languageCode: this.get('languageCode'),
-                contentType: this.get('contentType'),
-            });
+            this._fireEditContentRequest(
+                this.get('location').get('contentInfo'),
+                this.get('contentType')
+            );
         },
 
         /**

@@ -20,7 +20,7 @@ YUI.add('ez-contentinfomodel', function (Y) {
      * @constructor
      * @extends eZ.RestModel
      */
-    Y.eZ.ContentInfo = Y.Base.create('contentInfoModel', Y.eZ.RestModel, [Y.eZ.ContentInfoAttributes], {
+    Y.eZ.ContentInfo = Y.Base.create('contentInfoModel', Y.eZ.RestModel, [Y.eZ.ContentInfoBase], {
 
         /**
          * sync implementation that relies on the JS REST client.

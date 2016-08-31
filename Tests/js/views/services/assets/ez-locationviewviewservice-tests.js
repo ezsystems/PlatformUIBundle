@@ -313,18 +313,29 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
         },
 
         "Should fire `editContentRequest` when receiving an editAction event": function () {
-            var content = {},
-                contentType = {},
-                languageCode = {};
+            var languageCode = "fre-FR",
+                contentInfo = new Mock(),
+                contentType = {};
+
+            Mock.expect(contentInfo, {
+                method: 'get',
+                args: ['mainLanguageCode'],
+                returns: languageCode
+            });
+
+            Mock.expect(this.locationMock, {
+                method: 'get',
+                args: ['contentInfo'],
+                returns: contentInfo,
+            });
 
             this.service.set('contentType', contentType);
-            this.service.set('languageCode', languageCode);
 
             this.service.on('*:editContentRequest', function (e) {
                 Assert.areSame(
-                    content,
-                    e.content,
-                    "Content provided in the EventFacade is not the same"
+                    contentInfo,
+                    e.contentInfo,
+                    "ContentInfo provided in the EventFacade is not the same"
                 );
                 Assert.areSame(
                     contentType,
@@ -338,7 +349,7 @@ YUI.add('ez-locationviewviewservice-tests', function (Y) {
                 );
             });
 
-            this.service.fire('whatever:editAction', {content: content});
+            this.service.fire('whatever:editAction');
         },
 
         "Should update the sort methods on sortUpdate event": function () {
