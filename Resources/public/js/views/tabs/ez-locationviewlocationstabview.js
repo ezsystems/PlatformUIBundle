@@ -39,7 +39,7 @@ YUI.add('ez-locationviewlocationstabview', function (Y) {
      */
     Y.eZ.LocationViewLocationsTabView = Y.Base.create('locationViewLocationsTabView', Y.eZ.LocationViewTabView, [Y.eZ.AsynchronousView], {
         initializer: function () {
-            this.events = Y.merge(this.events, events);
+            this._addDOMEventHandlers(events);
             this._fireMethod = this._fireLoadLocations;
             this._watchAttribute = 'locations';
         },

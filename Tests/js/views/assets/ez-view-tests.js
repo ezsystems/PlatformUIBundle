@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-view-tests', function (Y) {
-    var viewTest, pluginTests, Assert = Y.Assert;
+    var viewTest, pluginTests, addEventsTest, Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
         name: "eZ View view tests",
@@ -36,7 +36,83 @@ YUI.add('ez-view-tests', function (Y) {
                 view.get('subPlainView').get('active'),
                 "The active attribute of the subPlainView should be undefined"
             );
-        }
+        },
+    });
+
+    addEventsTest = new Y.Test.Case({
+        name: "eZ View addEvent tests",
+
+        tearDown: function() {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        _testEventsInDom: function () {
+            var link1 = this.view.get('container').one('.event1'),
+                link2 = this.view.get('container').one('.event2');
+
+
+            link1.simulate('click');
+            Assert.isTrue(
+                this.view.get('event1Fired'),
+                "click on .event1 should have been caught"
+            );
+
+            link2.simulate('click');
+            Assert.isTrue(
+                this.view.get('event2Fired'),
+                "click on .event2 should have been caught"
+            );
+        },
+
+        _getTestView: function (parent) {
+
+            this.TestView = Y.Base.create('TestView', parent, [], {
+                initializer: function() {
+                    this._addDOMEventHandlers({'.event2': {'click': '_event2'}});
+                },
+
+                _event1: function() {
+                    this.set('event1Fired', true);
+                },
+                _event2: function() {
+                    this.set('event2Fired', true);
+                },
+            }, {
+                ATTRS: {
+                    event1Fired: {
+                        value: false
+                    },
+                    event2Fired: {
+                        value: false
+                    },
+                }
+            });
+
+            return new this.TestView({
+                events: {'.event1': {'click': '_event1'}},
+                container: '.container',
+            });
+        },
+
+        "Should add events to the DOM event handler": function () {
+            this.view = this._getTestView(Y.eZ.View);
+
+            this._testEventsInDom();
+        },
+
+        "Should add events to the DOM event handler and attach events": function () {
+            this.ParentTestView = Y.Base.create('ParentTestView', Y.eZ.View, [], {
+                initializer: function() {
+                    // Creating the container in the parent view
+                    this.get('container');
+                },
+            }, {});
+
+            this.view = this._getTestView(this.ParentTestView);
+
+            this._testEventsInDom();
+        },
     });
 
     pluginTests = new Y.Test.Case({
@@ -84,4 +160,5 @@ YUI.add('ez-view-tests', function (Y) {
     Y.Test.Runner.setName("eZ View view tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(pluginTests);
-}, '', {requires: ['test', 'base', 'plugin', 'ez-view']});
+    Y.Test.Runner.add(addEventsTest);
+}, '', {requires: ['test', 'base', 'plugin', 'ez-view', 'node-event-simulate', 'event-tap']});

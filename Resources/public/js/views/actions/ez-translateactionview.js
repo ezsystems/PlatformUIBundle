@@ -27,7 +27,7 @@ YUI.add('ez-translateactionview', function (Y) {
      */
     Y.eZ.TranslateActionView = Y.Base.create('translateActionView', Y.eZ.ButtonActionView, [Y.eZ.Expandable], {
         initializer: function () {
-            this.events = Y.merge(this.events, events);
+            this._addDOMEventHandlers(events);
             this.after({
                 'translateAction': this._toggleExpanded,
                 'expandedChange': this._setClickOutsideEventHandler,

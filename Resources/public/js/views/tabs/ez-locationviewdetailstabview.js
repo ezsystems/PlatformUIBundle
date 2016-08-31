@@ -46,7 +46,7 @@ YUI.add('ez-locationviewdetailstabview', function (Y) {
             this.after(['creatorChange', 'ownerChange'], function (e) {
                 this.render();
             });
-            this.events = Y.merge(this.events, events);
+            this._addDOMEventHandlers(events);
             this._set('sortField', this.get('location').get('sortField'));
             this._set('sortOrder', this.get('location').get('sortOrder'));
             this.after(['sortFieldChange', 'sortOrderChange'], function (e) {

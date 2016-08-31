@@ -275,7 +275,7 @@ YUI.add('ez-fieldeditview', function (Y) {
 
             this.after('errorStatusChange', this._errorUI);
 
-            this.events = Y.merge(_events, this.events);
+            this._addDOMEventHandlers(_events);
         },
 
         /**

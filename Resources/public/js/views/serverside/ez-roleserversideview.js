@@ -39,7 +39,7 @@ YUI.add('ez-roleserversideview', function (Y) {
      */
     Y.eZ.RoleServerSideView = Y.Base.create('roleServerSideView', Y.eZ.ServerSideView, [], {
         initializer: function () {
-            this.events = Y.merge(this.events, events);
+            this._addDOMEventHandlers(events);
         },
 
         /**

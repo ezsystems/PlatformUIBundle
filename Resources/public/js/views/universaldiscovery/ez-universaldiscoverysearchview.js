@@ -45,7 +45,7 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
             this._fireMethod = this._fireLocationSearch;
             this._watchAttribute = 'searchResultList';
 
-            this.events = Y.merge(this.events, events);
+            this._addDOMEventHandlers(events);
 
             this.on('searchResultListChange', this._searchResultChanged);
             this.on('selectContent', this._uiSelectContent);
