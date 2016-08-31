@@ -16,10 +16,22 @@
     margin: 2em;
 }
 
-.ez-view-searchview .ez-form .ez-form-label {
+.ez-view-searchview .ez-search-form  {
+    margin-bottom: 3em;
+}
+
+.ez-view-searchview .ez-searchview-search-form .ez-search-form-label {
     display: block;
 }
 
-.ez-view-searchview .ez-form .ez-form-input {
+.ez-view-searchview .ez-searchview-search-form .ez-search-form-input {
     width: 40%;
+}
+
+.ez-view-searchview .ez-search-form .ez-search-form-input,
+.ez-view-searchview .ez-search-form-button {
+    line-height: 2.2em;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: auto;
 }

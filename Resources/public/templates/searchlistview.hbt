@@ -1,11 +1,11 @@
 {{#if searchResultCount}}
     <p class="ez-searchlist-count">Result list ({{searchResultCount}})</p>
     <div class="ez-searchlist-resultlist">
-        <table class="ez-resultlist-table pure-table pure-table-bordered">
+        <table class="ez-resultlist-table">
             <thead>
             <tr>
                 {{#each columns}}
-                    <th class="ez-searchlist-{{ identifier }}-column">{{ name }}</th>
+                    <th class="ez-searchlist-column-head ez-searchlist-{{ identifier }}-column">{{ name }}</th>
                 {{/each}}
             </tr>
             </thead>

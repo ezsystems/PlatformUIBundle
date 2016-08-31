@@ -59,8 +59,12 @@
                 fullpath: "../../../../Resources/public/js/extensions/ez-loadmorepagination.js"
             },
             "ez-subitemlistitemview": {
-                requires: ['ez-templatebasedview'],
+                requires: ['ez-templatebasedview', 'ez-translateproperty'],
                 fullpath: "../../../../Resources/public/js/views/subitem/ez-subitemlistitemview.js"
+            },
+            "ez-translateproperty": {
+                requires: ['base', 'array-extras'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-translateproperty.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],
