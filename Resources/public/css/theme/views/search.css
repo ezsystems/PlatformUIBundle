@@ -12,6 +12,7 @@
     border-bottom: 1px solid #ccc;
 }
 
-.ez-view-searchview .ezsearch-form .ezsearch-form-label {
+.ez-view-searchview .ez-searchview-search-form .ez-search-form-label {
     font-weight: bold;
 }
+
