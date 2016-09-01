@@ -816,8 +816,8 @@ YUI.add('ez-searchplugin-tests', function (Y) {
             this.contentInfoMock2 = new Mock();
             this.contentInfos = {};
             this.contentInfosById = {};
-            this.contentInfos[this.contentInfo1.contentId] = this.contentInfo1;
-            this.contentInfos[this.contentInfo2.contentId] = this.contentInfo2;
+            this.contentInfos[this.contentInfo1.contentId] = [this.contentInfo1];
+            this.contentInfos[this.contentInfo2.contentId] = [this.contentInfo2, this.contentInfo2];
             this.contentInfosById[this.contentInfo1.id] = this.contentInfo1;
             this.contentInfosById[this.contentInfo2.id] = this.contentInfo2;
             this.contentInfoMocks = {};
@@ -840,13 +840,18 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                                             contentInfo: this.contentInfo2,
                                         }
                                     },
+                                }, {
+                                    value: {
+                                        Location: {
+                                            contentInfo: this.contentInfo2,
+                                        }
+                                    },
                                 }]
                             }
                         }
                     }
                 }
             };
-
             this.contentResponse = {
                 document: {
                     View: {
@@ -926,8 +931,20 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                     if (query === that.locationQuery) {
                         cb(false, that.locationResponse);
                     } else if (query === that.contentQuery) {
+                        var contentIds = Y.Array.map(
+                            that.locationResponse.document.View.Result.searchHits.searchHit,
+                            function (hit) {
+                                return '' + hit.value.Location.contentInfo.contentId;
+                            }
+                        );
+                        contentIds = Y.Array.map(
+                            that.locationResponse.document.View.Result.searchHits.searchHit,
+                            function (hit) {
+                                return '' + hit.value.Location.contentInfo.contentId;
+                            }
+                        );
                         Assert.areEqual(
-                            Y.Object.keys(that.contentInfos).join(','),
+                            contentIds.join(','),
                             query.body.ViewInput.ContentQuery.Criteria.ContentIdCriterion,
                             "The request should be on the Content Ids"
                         );
@@ -996,7 +1013,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
             );
 
             Y.Array.each(this.view.get(resultAttr), function (value, i) {
-                var contentInfo = this.contentInfos[Y.Object.keys(this.contentInfos)[i]];
+                var contentInfo = this.locationResponse.document.View.Result.searchHits.searchHit[i].value.Location.contentInfo;
 
                 Assert.isObject(value, "The result value should be an object");
                 Assert.isInstanceOf(
