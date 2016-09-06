@@ -6,6 +6,7 @@
 <body>
 
 <script type="text/javascript" src="../../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="../../../extensions/assets/ez-draftserversidevalidation-tests.js"></script>
 <script type="text/javascript" src="../../../assets/pluginregister-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-publishdraftplugin-tests.js"></script>
 <script>
@@ -25,8 +26,16 @@
         filter: loaderFilter,
         modules: {
             "ez-publishdraftplugin": {
-                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry'],
+                requires: ['ez-viewservicebaseplugin', 'ez-draftserversidevalidation', 'ez-pluginregistry'],
                 fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-publishdraftplugin.js"
+            },
+            "ez-draftserversidevalidation": {
+                requires: ['base', 'ez-fielderrordetails'],
+                fullpath: "../../../../../Resources/public/js/views/services/plugins/extensions/ez-draftserversidevalidation.js"
+            },
+            "ez-fielderrordetails": {
+                requires: ['base'],
+                fullpath: "../../../../../Resources/public/js/models/structs/ez-fielderrordetails.js"
             },
             "ez-viewservicebaseplugin": {
                 requires: ['plugin', 'base'],

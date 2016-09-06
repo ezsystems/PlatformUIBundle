@@ -20,7 +20,7 @@ YUI.add('ez-savedraftplugin', function (Y) {
      * @constructor
      * @extends eZ.Plugin.ViewServiceBase
      */
-    Y.eZ.Plugin.SaveDraft = Y.Base.create('saveDraftPlugin', Y.eZ.Plugin.ViewServiceBase, [], {
+    Y.eZ.Plugin.SaveDraft = Y.Base.create('saveDraftPlugin', Y.eZ.Plugin.ViewServiceBase, [Y.eZ.DraftServerSideValidation], {
         initializer: function () {
             this.onHostEvent('*:saveAction', Y.bind(this._saveDraft, this));
         },
@@ -52,6 +52,15 @@ YUI.add('ez-savedraftplugin', function (Y) {
              */
             this._callback = e.callback;
 
+            /**
+             * Stores a custom _serverSideErrorCallback sent in the `saveAction` event parameters.
+             *
+             * @property _serverSideErrorCallback
+             * @protected
+             * @type {Function}
+             */
+            this._serverSideErrorCallback = e.serverSideErrorCallback;
+            
             service.fire('notify', {
                 notification: {
                     identifier: this._buildNotificationIdentifier(isNew, content),
@@ -106,6 +115,7 @@ YUI.add('ez-savedraftplugin', function (Y) {
             }
 
             if ( error ) {
+                this._parseServerFieldsErrors(response, this._serverSideErrorCallback);
                 notification.text = this.get('errorNotificationText');
                 notification.state = 'error';
                 notification.timeout = 0;

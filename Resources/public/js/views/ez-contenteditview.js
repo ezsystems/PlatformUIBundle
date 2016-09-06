@@ -101,6 +101,9 @@ YUI.add('ez-contenteditview', function (Y) {
 
             e.fields = form.getFields();
             e.formIsValid = form.isValid();
+            e.serverSideErrorCallback = function (serverSideErrors) {
+                form.setServerSideErrors(serverSideErrors);
+            };
         },
 
         /**

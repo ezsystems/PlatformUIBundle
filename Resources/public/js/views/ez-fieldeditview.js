@@ -356,6 +356,21 @@ YUI.add('ez-fieldeditview', function (Y) {
         _isTouch: function () {
             return Y.UA.touchEnabled;
         },
+
+        /**
+         * Append the server side error messages to the error status.
+         *
+         * @method appendServerSideError
+         * @param {Y.eZ.FieldErrorDetails} serverSideError
+         *
+         */
+        appendServerSideError: function (serverSideError) {
+            if (this.get('errorStatus')) {
+                this.set('errorStatus', serverSideError.get('message') + '. ' + this.get('errorStatus'));
+            } else {
+                this.set('errorStatus', serverSideError.get('message'));
+            }
+        },
     }, {
         ATTRS: {
             /**

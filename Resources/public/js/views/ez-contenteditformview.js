@@ -59,6 +59,16 @@ YUI.add('ez-contenteditformview', function (Y) {
                 config = this.get('config'),
                 languageCode = this.get('languageCode');
 
+            /**
+             * The field edit views instances for the current content indexed by fieldDefinition id
+             *
+             * @property _fieldEditViewsByDefinitionId
+             * @default []
+             * @type Array of {eZ.FieldEditView}
+             * @protected
+             */
+            this._fieldEditViewsByDefinitionId = [];
+
             Y.Object.each(fieldDefinitions, function (def) {
                 var EditView, view,
                     field = version.getField(def.identifier);
@@ -77,6 +87,7 @@ YUI.add('ez-contenteditformview', function (Y) {
                             languageCode: languageCode,
                             user: user,
                         });
+                        that._fieldEditViewsByDefinitionId[def.id] = view;
                         views.push(view);
                         view.addTarget(that);
                     } catch (e) {
@@ -165,6 +176,18 @@ YUI.add('ez-contenteditformview', function (Y) {
                 }
             });
             return res;
+        },
+
+        /**
+         * Set the server side errors.
+         *
+         * @method setServerSideErrors
+         * @param {Array} serverSideErrors Array of Y.eZ.FieldDErrorDetails
+         */
+        setServerSideErrors: function (serverSideErrors) {
+            serverSideErrors.forEach(function (serverSideError) {
+                this._fieldEditViewsByDefinitionId[serverSideError.get('fieldDefinitionId')].appendServerSideError(serverSideError);
+            }, this);
         },
 
         /**

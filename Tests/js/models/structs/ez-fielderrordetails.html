@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+    <title>eZ Field Error Details tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="assets/ez-fielderrordetails-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+            loaderFilter;
+    if (filter == 'coverage'){
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-fielderrordetails'],
+        filter: loaderFilter,
+        modules: {
+            "ez-fielderrordetails": {
+                requires: ['base'],
+                fullpath: "../../../../../Resources/public/js/models/structs/ez-fielderrordetails.js"
+            },
+        }
+    }).use('ez-fielderrordetails-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
