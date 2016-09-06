@@ -44,6 +44,25 @@ YUI.add('ez-view', function (Y) {
         },
 
         /**
+         * Adds DOM event handlers on the current view. It makes sure
+         * event subscriptions are really taken into account which might
+         * not be the case if the view container has already been initialized.
+         * see https://jira.ez.no/browse/EZP-26236
+         *
+         * @method _addDOMEventHandlers
+         * @protected
+         * @param {Object} events
+         */
+        _addDOMEventHandlers: function (events) {
+            this.events = Y.merge(this.events, events);
+
+            if ( this._container ) {
+                this.attachEvents();
+            }
+        },
+
+
+        /**
          * Sets the active attribute of the sub views stored in attributes to
          * the same value as the current view
          *

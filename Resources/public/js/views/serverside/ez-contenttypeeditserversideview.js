@@ -27,7 +27,7 @@ YUI.add('ez-contenttypeeditserversideview', function (Y) {
      */
     Y.eZ.ContentTypeEditServerSideView = Y.Base.create('contentTypeEditServerSideView', Y.eZ.ServerSideView, [], {
         initializer: function () {
-            this.events = Y.merge(this.events, events);
+            this._addDOMEventHandlers(events);
         },
 
         /**

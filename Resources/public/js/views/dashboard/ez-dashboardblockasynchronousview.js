@@ -40,7 +40,8 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
              * @protected
              */
             this._clickOutsideHandler = null;
-            this.events = Y.merge(this.events, EVENTS);
+
+            this._addDOMEventHandlers(EVENTS);
 
             this.get('container')
                 .addClass(this._generateViewClassName(Y.eZ.DashboardBlockBaseView.NAME))
