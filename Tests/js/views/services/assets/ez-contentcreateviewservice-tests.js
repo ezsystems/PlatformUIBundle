@@ -135,10 +135,18 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             });
         },
 
+        _configureContentTypeGetDefaultFields: function (mock, fields) {
+            Mock.expect(mock, {
+                method: 'getDefaultFields',
+                returns: fields
+            });
+        },
+
         "Should load the Content Type": function () {
             var callbackCalled = false;
 
             this._configureModelLoad(this.type);
+            this._configureContentTypeGetDefaultFields(this.type, {});
             this.service.load(Y.bind(function () {
                 callbackCalled = true;
 
@@ -159,6 +167,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             var errorFired = false;
 
             this._configureModelLoad(this.type, true);
+            this._configureContentTypeGetDefaultFields(this.type, {});
             this.service.on('error', function (e) {
                 errorFired = true;
 
@@ -177,6 +186,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             var callbackCalled = false;
 
             this._configureModelLoad(this.type);
+            this._configureContentTypeGetDefaultFields(this.type, {});
             this.service.load(Y.bind(function () {
                 callbackCalled = true;
 
@@ -201,6 +211,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             var callbackCalled = false;
 
             this._configureModelLoad(this.type);
+            this._configureContentTypeGetDefaultFields(this.type, {});
             this.service.load(Y.bind(function () {
                 callbackCalled = true;
 
@@ -260,10 +271,9 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             );
         },
 
-        _assertLoadResult: function (service) {
+        _assertLoadResult: function (service, fields) {
             var content = service.get('content'),
                 version = service.get('version'),
-                fields = content.get('fields'),
                 that = this;
 
             Assert.areSame(
@@ -271,35 +281,24 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 version.get('fields'),
                 "The fields of the version and the content should be the same"
             );
+            Assert.areSame(
+                fields, content.get('fields'),
+                "The fields attribute should be initialized from the Content Type"
+            );
             Assert.isTrue(
                 content.get('name').indexOf(that.names['eng-GB']) !== -1,
                 "The name of the content should contain the name of the type" + content.get('name')
             );
-            Assert.areEqual(
-                Y.Object.keys(that.fieldDefinitions).length,
-                Y.Object.keys(fields).length,
-                "The content should have as many fields as there are field definitions in the type"
-            );
-            Y.Object.each(that.fieldDefinitions, function (fieldDef, identifier) {
-                Assert.areEqual(
-                    identifier,
-                    fields[identifier].fieldDefinitionIdentifier,
-                    "The field definition identifier should set for each field"
-                );
-                Assert.areEqual(
-                    fieldDef.defaultValue,
-                    fields[identifier].fieldValue,
-                    "The value of the fields should be the default value of the corresponding field definition"
-                );
-            });
         },
 
         "Should initialize a new content and a new version": function () {
             var loadCallback = false, that = this,
                 originalVersion = this.service.get('version'),
-                originalContent = this.service.get('content');
+                originalContent = this.service.get('content'),
+                fields = {};
 
             this._configureModelLoad(this.type);
+            this._configureContentTypeGetDefaultFields(this.type, fields);
             this.service.load(function (service) {
                 loadCallback = true;
 
@@ -313,7 +312,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                     that.service.get('content'),
                     "A new content object should have been instantiated"
                 );
-                that._assertLoadResult(service);
+                that._assertLoadResult(service, fields);
             });
             Assert.isTrue(loadCallback, "The load callback should have been called");
         },
@@ -438,10 +437,9 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             });
         },
 
-        _assertLoadResult: function (service) {
+        _assertLoadResult: function (service, fields) {
             var content = service.get('content'),
                 version = service.get('version'),
-                fields = content.get('fields'),
                 that = this;
 
             Assert.areSame(
@@ -459,33 +457,21 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 version.get('fields'),
                 "The fields of the version and the content should be the same"
             );
+            Assert.areSame(
+                fields, content.get('fields'),
+                "The fields attribute should be initialized from the Content Type"
+            );
             Assert.isTrue(
                 content.get('name').indexOf(that.names['eng-GB']) !== -1,
                 "The name of the content should contain the name of the type" + content.get('name')
             );
-            Assert.areEqual(
-                Y.Object.keys(that.fieldDefinitions).length,
-                Y.Object.keys(fields).length,
-                "The content should have as many fields as there are field definitions in the type"
-            );
-            Y.Object.each(that.fieldDefinitions, function (fieldDef, identifier) {
-                Assert.areEqual(
-                    identifier,
-                    fields[identifier].fieldDefinitionIdentifier,
-                    "The field definition identifier should set for each field"
-                );
-                Assert.areEqual(
-                    fieldDef.defaultValue,
-                    fields[identifier].fieldValue,
-                    "The value of the fields should be the default value of the corresponding field definition"
-                );
-            });
         },
 
         "Should initialize a new content and a new version": function () {
             var loadCallback = false, that = this,
                 originalVersion = this.service.get('version'),
-                originalContent = this.service.get('content');
+                originalContent = this.service.get('content'),
+                fields = {};
 
             Mock.expect(this.type, {
                 method: 'get',
@@ -499,6 +485,10 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                         Y.fail("Unexpected type.get(" + attr + ") call");
                     }
                 }
+            });
+            Mock.expect(this.type, {
+                method: 'getDefaultFields',
+                returns: fields,
             });
 
             this.service.load(function (service) {
@@ -514,13 +504,14 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                     that.service.get('content'),
                     "A new content object should have been instantiated"
                 );
-                that._assertLoadResult(service);
+                that._assertLoadResult(service, fields);
             });
             Assert.isTrue(loadCallback, "The load callback should have been called");
         },
 
         "Should handle missing fieldDefinitions in the content type": function () {
             var loadCallback = false, that = this,
+                fields = {},
                 getFieldDefinitionsCalls = 0;
 
             Mock.expect(this.type, {
@@ -551,9 +542,13 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                     callback(false);
                 }
             });
+            Mock.expect(this.type, {
+                method: 'getDefaultFields',
+                returns: fields,
+            });
             this.service.load(function (service) {
                 loadCallback = true;
-                that._assertLoadResult(service);
+                that._assertLoadResult(service, fields);
             });
             Assert.isTrue(loadCallback, "The load callback should have been called");
         },

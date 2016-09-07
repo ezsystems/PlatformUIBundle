@@ -144,15 +144,9 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
             var content = new Y.eZ.Content(),
                 version = new Y.eZ.Version(),
                 type = this.get('contentType'),
-                defaultFields = {};
+                defaultFields = type.getDefaultFields();
 
             content.set('name', this._getNewContentName());
-            Y.Object.each(type.get('fieldDefinitions'), function (fieldDef, identifier) {
-                defaultFields[identifier] = {
-                    fieldDefinitionIdentifier: identifier,
-                    fieldValue: fieldDef.defaultValue,
-                };
-            });
 
             this.set('content', content);
             this.set('version', version);
