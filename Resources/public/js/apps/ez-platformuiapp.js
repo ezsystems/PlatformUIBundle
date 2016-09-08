@@ -35,6 +35,11 @@ YUI.add('ez-platformuiapp', function (Y) {
          *      rendered view
          *   * `hideClass`: a class to add on the application container to hide
          *     the rendered side view when it's not needed.
+         *   * `service`: a reference to the constructor of a view service
+         *   * [`destroyUnusedView=false`]: a boolean flag. If true, the view
+         *     will be destroyed when the view is not used anymore. As a result,
+         *     when this flag is positionned, the view is recreated and
+         *     rerendered everytime it is used.
          *
          * The lifecycle of the side views is handled by the `handleSideViews`
          * method based on the meta information available in the route.
@@ -651,6 +656,10 @@ YUI.add('ez-platformuiapp', function (Y) {
                 view = viewInfo.instance;
                 view.set('active', false);
                 viewInfo.serviceInstance.removeTarget(this);
+                if ( viewInfo.destroyUnusedView ) {
+                    view.destroy({remove: true});
+                    delete viewInfo.instance;
+                }
             }
         },
 
