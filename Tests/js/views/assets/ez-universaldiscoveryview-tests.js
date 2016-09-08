@@ -7,6 +7,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         tabTest, defaultMethodsTest, selectContentTest, confirmButtonStateTest,
         updateTitleTest, confirmSelectedContentTest, resetTest, selectionUpdateConfirmViewTest,
         defaultConfirmedListTest, multipleClassTest, animatedSelectionTest, unselectContentTest,
+        activeTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -989,6 +990,47 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
         },
     });
 
+    activeTest= new Y.Test.Case({
+        name: "eZ Universal Discovery View active test",
+
+        setUp: function () {
+            this.method1 = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method1._set('identifier', 'browse');
+            this.method2 = new Y.eZ.UniversalDiscoveryMethodBaseView();
+            this.method2._set('identifier', 'create');
+            this.confirmedList = new Y.View();
+            this.view = new Y.eZ.UniversalDiscoveryView({
+                container: '.container',
+                title: "Easier to run",
+                methods: [this.method1, this.method2],
+                confirmedListView: this.confirmedList,
+            });
+            this.view.render();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            this.method.destroy();
+            this.confirmedList.destroy();
+            delete this.view;
+            delete this.method;
+            delete this.confirmedList;
+        },
+
+        "Should forward the active flag to the methods": function () {
+            this.view.set('active', true);
+
+            Assert.isTrue(
+                this.method1.get('active'),
+                "The method1 should be active"
+            );
+            Assert.isTrue(
+                this.method2.get('active'),
+                "The method2 should be active"
+            );
+        },
+    });
+
     resetTest= new Y.Test.Case({
         name: "eZ Universal Discovery View reset test",
 
@@ -1294,6 +1336,7 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
     Y.Test.Runner.add(eventHandlersTest);
     Y.Test.Runner.add(eventsTest);
     Y.Test.Runner.add(visibleMethodTest);
+    Y.Test.Runner.add(activeTest);
     Y.Test.Runner.add(tabTest);
     Y.Test.Runner.add(defaultMethodsTest);
     Y.Test.Runner.add(selectContentTest);

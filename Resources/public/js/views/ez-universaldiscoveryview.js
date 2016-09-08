@@ -286,7 +286,8 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     'loadContent': this.get('loadContent'),
                     'startingLocationId': startingLocationId,
                     'visible': visible,
-                    'isSelectable': Y.bind(this.get('isSelectable'), this)
+                    'isSelectable': Y.bind(this.get('isSelectable'), this),
+                    'active': this.get('active'),
                 });
                 if ( visible ) {
                     this._visibleMethodView = method;
