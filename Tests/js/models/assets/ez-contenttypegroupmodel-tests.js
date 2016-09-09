@@ -59,8 +59,8 @@ YUI.add('ez-contenttypegroupmodel-tests', function (Y) {
             this.capi = new Y.Mock();
             this.typeService = new Y.Mock();
             this.response = {
-                "ContentTypeInfoList": {
-                    "_media-type": "application\/vnd.ez.api.ContentTypeInfoList+json",
+                "ContentTypeList": {
+                    "_media-type": "application\/vnd.ez.api.ContentTypeList+json",
                     "_href": "\/api\/ezp\/v2\/content\/typegroups\/2\/types",
                     "ContentType": [
                         {
@@ -105,20 +105,25 @@ YUI.add('ez-contenttypegroupmodel-tests', function (Y) {
             });
         },
 
+        _configureContentTypeService: function (error) {
+            Y.Mock.expect(this.typeService, {
+                method: 'loadContentTypes',
+                args: [this.groupId, 'application/vnd.ez.api.ContentTypeList+json', Y.Mock.Value.Function],
+                run: Y.bind(function (id, header, callback) {
+                    callback(error, error ? undefined : {document: this.response});
+                }, this),
+            });
+
+        },
+
         "Should load the content types": function () {
             var that = this,
                 group = this.group;
 
-            Y.Mock.expect(this.typeService, {
-                method: 'loadContentTypes',
-                args: [this.groupId, Y.Mock.Value.Function],
-                run: function (id, callback) {
-                    callback(false, {document: that.response});
-                },
-            });
+            this._configureContentTypeService(false);
             this.group.loadContentTypes({api: this.capi}, function (error) {
                 var types = group.get('contentTypes'),
-                    responseTypes = that.response.ContentTypeInfoList.ContentType;
+                    responseTypes = that.response.ContentTypeList.ContentType;
 
                 Y.Assert.isUndefined(error, "No error should have been found");
                 Y.Assert.areEqual(
@@ -144,13 +149,7 @@ YUI.add('ez-contenttypegroupmodel-tests', function (Y) {
             var that = this,
                 group = this.group;
 
-            Y.Mock.expect(this.typeService, {
-                method: 'loadContentTypes',
-                args: [this.groupId, Y.Mock.Value.Function],
-                run: function (id, callback) {
-                    callback(true);
-                },
-            });
+            this._configureContentTypeService(true);
             this.group.loadContentTypes({api: this.capi}, function (error) {
                 Y.Assert.isNotUndefined(error, "An error should have been found");
                 Y.Assert.isUndefined(

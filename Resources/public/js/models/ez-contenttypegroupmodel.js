@@ -60,13 +60,13 @@ YUI.add('ez-contenttypegroupmodel', function (Y) {
             if ( this.get('contentTypes') ) {
                 return callback();
             }
-            typeService.loadContentTypes(this.get('id'), function (error, response) {
+            typeService.loadContentTypes(this.get('id'), 'application/vnd.ez.api.ContentTypeList+json', function (error, response) {
                 var types = [];
 
                 if ( error ) {
                     return callback(error);
                 }
-                Y.Array.each(response.document.ContentTypeInfoList.ContentType, function (typeHash) {
+                Y.Array.each(response.document.ContentTypeList.ContentType, function (typeHash) {
                     var type = new Y.eZ.ContentType();
 
                     type.set('id', typeHash._href);
