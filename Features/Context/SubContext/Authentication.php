@@ -77,12 +77,6 @@ trait Authentication
      */
     public function iShouldBeLoggedIn()
     {
-        $this->spin(
-            function () {
-                $logoutElement = $this->findWithWait('.ez-user-profile');
-
-                return $logoutElement != null;
-            }
-        );
+        $this->findWithWait('.ez-user-profile');
     }
 }
