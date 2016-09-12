@@ -7,7 +7,7 @@ YUI.add('ez-contentcreationwizardview', function (Y) {
     /**
      * Provides the content creation wizard view class
      *
-     * @method ez-contentcreationwizardview
+     * @module ez-contentcreationwizardview
      */
 
     var SELECTED_TYPE_EVT = 'selectedContentType',
