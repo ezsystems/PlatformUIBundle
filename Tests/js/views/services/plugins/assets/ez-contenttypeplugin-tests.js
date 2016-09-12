@@ -139,7 +139,7 @@ YUI.add('ez-contenttypeplugin-tests', function (Y) {
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.ContentType;
-    registerTest.components = ['contentCreationWizardViewService'];
+    registerTest.components = ['contentCreationWizardViewService', 'universalDiscoveryViewService'];
 
     Y.Test.Runner.setName('eZ Content Create Plugin tests');
     Y.Test.Runner.add(loadAllContentTypesTest);

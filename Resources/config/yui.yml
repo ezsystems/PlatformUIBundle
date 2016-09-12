@@ -512,6 +512,7 @@ system:
                         - 'universaldiscoveryview-ez-template'
                         - 'ez-universaldiscoverybrowseview'
                         - 'ez-universaldiscoverysearchview'
+                        - 'ez-universaldiscoverycreateview'
                         - 'ez-universaldiscoveryconfirmedlistview'
                         - 'array-extras'
                         - 'event-tap'
@@ -539,6 +540,15 @@ system:
                 universaldiscoverybrowseview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/universaldiscovery/browse.hbt"
+                ez-universaldiscoverycreateview:
+                    requires:
+                        - 'ez-universaldiscoverymethodbaseview'
+                        - 'universaldiscoverycreateview-ez-template'
+                        - 'ez-contenteditview'
+                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverycreateview.js"
+                universaldiscoverycreateview-ez-template:
+                    type: 'template'
+                    path: "%ez_platformui.public_dir%/templates/universaldiscovery/create.hbt"
                 ez-universaldiscoverysearchview:
                     requires:
                         - 'ez-universaldiscoverymethodbaseview'

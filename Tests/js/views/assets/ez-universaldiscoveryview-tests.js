@@ -616,9 +616,9 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
 
         setUp: function () {
             this.confirmedList = new Y.View();
-            this.config = {};
             this.multiple = true;
             this.startingLocationId = 'l/o/c/a/t/i/o/n/i/d';
+            this.loadContent = false;
 
             Y.eZ.UniversalDiscoveryBrowseView = Y.Base.create(
                 'testBrowseView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
@@ -626,10 +626,14 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             Y.eZ.UniversalDiscoverySearchView = Y.Base.create(
                 'testSearchView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
             );
+            Y.eZ.UniversalDiscoveryCreateView = Y.Base.create(
+                'testCreateView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
+            );
             this.view = new Y.eZ.UniversalDiscoveryView({
                 multiple: this.multiple,
                 confirmedListView: this.confirmedList,
-                startingLocationId: this.startingLocationId
+                startingLocationId: this.startingLocationId,
+                loadContent: this.loadContent,
             });
         },
 
@@ -639,9 +643,11 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             delete this.view;
             delete this.confirmedList;
             delete Y.eZ.UniversalDiscoveryBrowseView;
+            delete Y.eZ.UniversalDiscoverySearchView;
+            delete Y.eZ.UniversalDiscoveryCreateView;
         },
 
-        "Should instantiate the browse method": function () {
+        "Should instantiate the discovery methods": function () {
             var methods = this.view.get('methods');
 
             Assert.isArray(
@@ -649,40 +655,82 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 "The method list should be an array"
             );
             Assert.areEqual(
-                2, methods.length,
-                "The default method list should contain 2 elements"
-            );
-            Assert.isInstanceOf(
-                Y.eZ.UniversalDiscoveryBrowseView, methods[0],
-                "The first element should be an instance of the browse method"
-            );
-            Assert.areSame(
-                this.multiple, methods[0].get('multiple'),
-                "The selection mode should be passed to the method views"
-            );
-            Assert.isFunction(
-                methods[0].get('isAlreadySelected'),
-                "The isAlreadySelected function should be passed to the method views"
-            );
-            Assert.areSame(
-                this.startingLocationId, methods[0].get('startingLocationId'),
-                "The startingLocationId should be passed to the method views"
+                3, methods.length,
+                "The default method list should contain 3 elements"
             );
         },
 
-        "Should add the universal discovery view as a bubble target": function () {
-            var methods = this.view.get('methods'),
-                bubble = false;
+        _assertMethodParameters: function (ctor, method) {
+            Assert.isInstanceOf(
+                ctor, method,
+                "The method should be an instance of " + ctor.name
+            );
+            Assert.areSame(
+                this.multiple, method.get('multiple'),
+                "The selection mode should be passed to the method views"
+            );
+            Assert.isFunction(
+                method.get('isAlreadySelected'),
+                "The isAlreadySelected function should be passed to the method views"
+            );
+            Assert.areSame(
+                this.startingLocationId, method.get('startingLocationId'),
+                "The startingLocationId should be passed to the method views"
+            );
+            Assert.areEqual(
+                this.loadContent, method.get('loadContent'),
+                "The method should have received the loadContent flag"
+            );
+        },
+
+        "Should instantiate the browse method": function () {
+            var method = this.view.get('methods')[0];
+
+            this._assertMethodParameters(Y.eZ.UniversalDiscoveryBrowseView, method);
+        },
+
+        "Should instantiate the search method": function () {
+            var method = this.view.get('methods')[1];
+
+            this._assertMethodParameters(Y.eZ.UniversalDiscoverySearchView, method);
+        },
+
+        "Should instantiate the create method": function () {
+            var method = this.view.get('methods')[2];
+
+            this._assertMethodParameters(Y.eZ.UniversalDiscoveryCreateView, method);
+        },
+
+        _assertBubbleTarget: function (method) {
+            var bubble = false;
 
             this.view.on('*:whatever', function () {
                 bubble = true;
             });
-            methods[0].fire('whatever');
+            method.fire('whatever');
 
             Assert.isTrue(
                 bubble,
                 "The method's event should bubble to the universal discovery view"
             );
+        },
+
+        "Should add the universal discovery view as a bubble target of the browse method": function () {
+            var method = this.view.get('methods')[0];
+
+            this._assertBubbleTarget(method);
+        },
+
+        "Should add the universal discovery view as a bubble target of the search method": function () {
+            var method = this.view.get('methods')[1];
+
+            this._assertBubbleTarget(method);
+        },
+
+        "Should add the universal discovery view as a bubble target of the create method": function () {
+            var method = this.view.get('methods')[2];
+
+            this._assertBubbleTarget(method);
         },
     });
 

@@ -21,6 +21,32 @@ YUI.add('ez-universaldiscoveryviewservice', function (Y) {
      * @extends eZ.ViewService
      */
     Y.eZ.UniversalDiscoveryViewService = Y.Base.create('universalDiscoveryViewService', Y.eZ.ViewService, [Y.eZ.SideViewService], {
+        initializer: function () {
+            this.on('*:loadContentTypes', this._loadContentTypes);
+        },
+
+        /**
+         * `loadContentTypes` event handler.
+         *
+         * @method _loadContentTypes
+         * @param {EventFacade} e
+         * @protected
+         */
+        _loadContentTypes: function (e) {
+            var view = e.target;
+
+            this.contentType.loadAllContentTypes(function (error, groups) {
+                if ( error ) {
+                    view.set('loadingError', true);
+                    return;
+                }
+                view.setAttrs({
+                    'contentTypeGroups': groups,
+                    'loadingError': false,
+                });
+            });
+        },
+
         /**
          * Returns the value of the `parameters` attribute. This attribute is set
          * when the app shows the universal discovery side view with the

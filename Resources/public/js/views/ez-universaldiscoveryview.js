@@ -573,6 +573,13 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
                             startingLocationId: this.get('startingLocationId')
                         }),
+                        new Y.eZ.UniversalDiscoveryCreateView({
+                            bubbleTargets: this,
+                            priority: 300,
+                            multiple: this.get('multiple'),
+                            loadContent: this.get('loadContent'),
+                            startingLocationId: this.get('startingLocationId')
+                        }),
                     ];
                 },
             },

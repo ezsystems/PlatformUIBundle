@@ -85,6 +85,6 @@ YUI.add('ez-contenttypeplugin', function (Y) {
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.ContentType, ['contentCreationWizardViewService']
+        Y.eZ.Plugin.ContentType, ['contentCreationWizardViewService', 'universalDiscoveryViewService']
     );
 });
