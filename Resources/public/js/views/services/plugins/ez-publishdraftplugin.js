@@ -113,6 +113,7 @@ YUI.add('ez-publishdraftplugin', function (Y) {
                  * @event publishedDraft
                  * @param {eZ.Content} content
                  */
+                app.set('loading', false);
                 service.fire('publishedDraft', {content: content});
             });
         },
