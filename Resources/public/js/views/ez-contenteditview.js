@@ -375,7 +375,9 @@ YUI.add('ez-contenteditview', function (Y) {
              * @type {String}
              * @required
              */
-            languageCode: '',
+            languageCode: {
+                value: '',
+            },
         }
     });
 });
