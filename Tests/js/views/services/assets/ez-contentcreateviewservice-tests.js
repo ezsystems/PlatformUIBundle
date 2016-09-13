@@ -135,10 +135,15 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             });
         },
 
-        _configureContentTypeGetDefaultFields: function (mock, fields) {
+        _configureContentType: function (mock, fields) {
             Mock.expect(mock, {
                 method: 'getDefaultFields',
                 returns: fields
+            });
+            Mock.expect(mock, {
+                method: 'getName',
+                args: [this.defaultLanguageCode],
+                returns: this.names[this.defaultLanguageCode],
             });
         },
 
@@ -146,7 +151,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             var callbackCalled = false;
 
             this._configureModelLoad(this.type);
-            this._configureContentTypeGetDefaultFields(this.type, {});
+            this._configureContentType(this.type, {});
             this.service.load(Y.bind(function () {
                 callbackCalled = true;
 
@@ -167,7 +172,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             var errorFired = false;
 
             this._configureModelLoad(this.type, true);
-            this._configureContentTypeGetDefaultFields(this.type, {});
+            this._configureContentType(this.type, {});
             this.service.on('error', function (e) {
                 errorFired = true;
 
@@ -186,7 +191,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             var callbackCalled = false;
 
             this._configureModelLoad(this.type);
-            this._configureContentTypeGetDefaultFields(this.type, {});
+            this._configureContentType(this.type, {});
             this.service.load(Y.bind(function () {
                 callbackCalled = true;
 
@@ -211,7 +216,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             var callbackCalled = false;
 
             this._configureModelLoad(this.type);
-            this._configureContentTypeGetDefaultFields(this.type, {});
+            this._configureContentType(this.type, {});
             this.service.load(Y.bind(function () {
                 callbackCalled = true;
 
@@ -298,7 +303,7 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 fields = {};
 
             this._configureModelLoad(this.type);
-            this._configureContentTypeGetDefaultFields(this.type, fields);
+            this._configureContentType(this.type, fields);
             this.service.load(function (service) {
                 loadCallback = true;
 
@@ -479,8 +484,6 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 run: function (attr) {
                     if ( attr === 'fieldDefinitions' ) {
                         return that.fieldDefinitions;
-                    } else if ( attr === 'names' ) {
-                        return that.names;
                     } else {
                         Y.fail("Unexpected type.get(" + attr + ") call");
                     }
@@ -489,6 +492,11 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
             Mock.expect(this.type, {
                 method: 'getDefaultFields',
                 returns: fields,
+            });
+            Mock.expect(this.type, {
+                method: 'getName',
+                args: [this.defaultLanguageCode],
+                returns: this.names[this.defaultLanguageCode],
             });
 
             this.service.load(function (service) {
@@ -524,8 +532,6 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                             return undefined;
                         }
                         return that.fieldDefinitions;
-                    } else if ( attr === 'names' ) {
-                        return that.names;
                     } else {
                         Y.fail("Unexpected type.get(" + attr + ") call");
                     }
@@ -546,6 +552,12 @@ YUI.add('ez-contentcreateviewservice-tests', function (Y) {
                 method: 'getDefaultFields',
                 returns: fields,
             });
+            Mock.expect(this.type, {
+                method: 'getName',
+                args: [this.defaultLanguageCode],
+                returns: this.names[this.defaultLanguageCode],
+            });
+
             this.service.load(function (service) {
                 loadCallback = true;
                 that._assertLoadResult(service, fields);

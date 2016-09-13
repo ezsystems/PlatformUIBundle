@@ -203,6 +203,21 @@ YUI.add('ez-contenttypemodel', function (Y) {
             });
             return defaultFields;
         },
+
+        /**
+         * Returns the name of the Content Type in the given `languageCode`, if
+         * the name in this languageCode does not exist, it returns the first
+         * available name.
+         *
+         * @method getName
+         * @param {String} languageCode
+         * @return {String}
+         */
+        getName: function (languageCode) {
+            var names = this.get('names');
+
+            return names[languageCode] || names[Object.keys(names)[0]];
+        },
     }, {
         REST_STRUCT_ROOT: 'ContentType',
         ATTRS_REST_MAP: [
