@@ -26,7 +26,7 @@ class PlatformUI extends Context
     /**
      * Max. time to use when trying to access html DOM elements (seconds).
      */
-    const SPIN_TIMEOUT = 5;
+    const SPIN_TIMEOUT = 10;
 
     /**
      * sleep time interval, in ms.
