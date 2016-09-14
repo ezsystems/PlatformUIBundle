@@ -4,7 +4,7 @@
  */
 YUI.add('ez-contenttypemodel-tests', function (Y) {
     var modelTest, hasFieldTypeTest, getFieldDefinitionIdentifiersTest,
-        belongToTest, loadGroupsFlagTest,
+        belongToTest, loadGroupsFlagTest, getDefaultFields, getNameTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     modelTest = new Y.Test.Case(Y.merge(Y.eZ.Test.ModelTests, {
@@ -587,10 +587,100 @@ YUI.add('ez-contenttypemodel-tests', function (Y) {
         },
     });
 
+    getDefaultFields = new Y.Test.Case({
+        name: "eZ ContentType Model getDefaultFields tests",
+
+        setUp: function () {
+            this.fieldDefinitions = {
+                "title": {
+                    "defaultValue": "Quatrouille",
+                },
+                "language": {
+                    "defaultValue": "Bressan",
+                },
+            };
+            this.contentType = new Y.eZ.ContentType({
+                fieldDefinitions: this.fieldDefinitions,
+            });
+        },
+
+        tearDown: function () {
+            this.contentType.destroy();
+        },
+
+        "Should build the default field object": function () {
+            var fields = this.contentType.getDefaultFields();
+
+            Assert.isObject(
+                fields,
+                "The default fields should be an object"
+            );
+            Assert.areEqual(
+                Y.Object.size(this.fieldDefinitions),
+                Y.Object.size(fields),
+                "The default fields should contain as many fields as field definitions"
+            );
+            Y.Object.each(this.fieldDefinitions, function (def, identifier) {
+                Assert.areEqual(
+                    identifier,
+                    fields[identifier].fieldDefinitionIdentifier,
+                    "The identifier should be used as key and available in the field object"
+                );
+                Assert.areEqual(
+                    def.fieldValue,
+                    fields[identifier].defaultValue,
+                    "The field value should be the default value in the field definition"
+                );
+            });
+        },
+    });
+
+    getNameTest = new Y.Test.Case({
+        name: "eZ ContentType Model getName tests",
+
+        setUp: function () {
+            this.contentType = new Y.eZ.ContentType({
+                names: [{
+                    'bressan': 'Quatrouille',
+                }, {
+                    'fr': 'Pomme de terre',
+                }, {
+                    'en': 'Potatoe',
+                }],
+            });
+        },
+
+        tearDown: function () {
+            this.contentType.destroy();
+        },
+
+        "Should retrieve the name in the given language": function () {
+            var type = this.contentType;
+
+            Assert.areEqual(
+                type.get('names').fr,
+                type.getName('fr'),
+                "The name in fr should be returned"
+            );
+        },
+
+        "Should retrieve the first name": function () {
+            var type = this.contentType;
+
+            Assert.areEqual(
+                type.get('names').bressan,
+                type.getName('no'),
+                "The first name should be returned"
+            );
+        },
+    });
+
     Y.Test.Runner.setName("eZ ContentType Model tests");
     Y.Test.Runner.add(modelTest);
     Y.Test.Runner.add(hasFieldTypeTest);
     Y.Test.Runner.add(getFieldDefinitionIdentifiersTest);
     Y.Test.Runner.add(belongToTest);
     Y.Test.Runner.add(loadGroupsFlagTest);
+    Y.Test.Runner.add(getDefaultFields);
+    Y.Test.Runner.add(getNameTest);
 }, '', {requires: ['test', 'model-tests', 'ez-contenttypemodel', 'ez-restmodel']});

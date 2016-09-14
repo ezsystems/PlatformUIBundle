@@ -184,6 +184,40 @@ YUI.add('ez-contenttypemodel', function (Y) {
         belongTo: function (contentTypeGroupId) {
             return this.get('contentTypeGroupIds').indexOf(contentTypeGroupId) !== -1;
         },
+
+        /**
+         * Returns a hash representing the fields with the default values for a
+         * Content of this type.
+         *
+         * @method getDefaultFields
+         * @return {Object}
+         */
+        getDefaultFields: function () {
+            var defaultFields = {};
+
+            Y.Object.each(this.get('fieldDefinitions'), function (fieldDef, identifier) {
+                defaultFields[identifier] = {
+                    fieldDefinitionIdentifier: identifier,
+                    fieldValue: fieldDef.defaultValue,
+                };
+            });
+            return defaultFields;
+        },
+
+        /**
+         * Returns the name of the Content Type in the given `languageCode`, if
+         * the name in this languageCode does not exist, it returns the first
+         * available name.
+         *
+         * @method getName
+         * @param {String} languageCode
+         * @return {String}
+         */
+        getName: function (languageCode) {
+            var names = this.get('names');
+
+            return names[languageCode] || names[Object.keys(names)[0]];
+        },
     }, {
         REST_STRUCT_ROOT: 'ContentType',
         ATTRS_REST_MAP: [

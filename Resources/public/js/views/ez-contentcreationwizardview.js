@@ -7,7 +7,7 @@ YUI.add('ez-contentcreationwizardview', function (Y) {
     /**
      * Provides the content creation wizard view class
      *
-     * @method ez-contentcreationwizardview
+     * @module ez-contentcreationwizardview
      */
 
     var SELECTED_TYPE_EVT = 'selectedContentType',
@@ -52,7 +52,7 @@ YUI.add('ez-contentcreationwizardview', function (Y) {
             this.after('stepChange', this._uiSetStep);
             this.after('activeChange', function (e) {
                 if ( !this.get('active') ) {
-                    this._resetState();
+                    this.reset();
                 } else {
                     this._set('step', STEP_CONTENTTYPE);
                     this._renderContentTypeSelector();
@@ -295,17 +295,20 @@ YUI.add('ez-contentcreationwizardview', function (Y) {
             );
         },
 
-        /**
-         * Resets the state of the view to make it ready for a new run.
-         *
-         * @method _resetState
-         * @protected
-         */
-        _resetState: function () {
-            this._set('step', undefined);
-            this._set('selectedContentType', null);
-            this._set('selectedParentLocation', null);
-            this.reset('contentTypeGroups');
+        reset: function (name) {
+            if ( name === 'contentTypeSelectorView' ) {
+                this.get('contentTypeSelectorView').reset();
+                return;
+            }
+            if ( name === 'step' ) {
+                this._set('step', undefined);
+                return;
+            }
+            if ( name === 'selectedContentType' || name === 'selectedParentLocation' ) {
+                this._set(name, null);
+                return;
+            }
+            this.constructor.superclass.reset.apply(this, arguments);
         },
     }, {
         ATTRS: {

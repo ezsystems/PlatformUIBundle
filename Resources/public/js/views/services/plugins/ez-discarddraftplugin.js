@@ -63,6 +63,6 @@ YUI.add('ez-discarddraftplugin', function (Y) {
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.DiscardDraft, ['contentEditViewService', 'contentCreateViewService']
+        Y.eZ.Plugin.DiscardDraft, ['contentEditViewService', 'contentCreateViewService', 'contentCreatorViewService']
     );
 });

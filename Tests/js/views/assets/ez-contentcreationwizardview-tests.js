@@ -246,7 +246,7 @@ YUI.add('ez-contentcreationwizardview-tests', function (Y) {
             );
             Assert.isUndefined(
                 this.view.get('step'),
-                "The step should be resetted to 'contenttype'"
+                "The step should be resetted to undefined"
             );
             Assert.isNull(
                 this.view.get('contentTypeGroups'),

@@ -10,15 +10,20 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         name: "eZ Content Edit View test",
 
         setUp: function () {
-            var mockConf = {
-                    method: 'toJSON',
-                    returns: {}
-                };
-
-            Y.Array.each(['content', 'contentType', 'owner', 'mainLocation', 'version', 'user'], function (mock) {
+            this.contentJSON = {};
+            this.contentTypeJSON = {};
+            this.mainLocationJSON = {};
+            this.ownerJSON = {};
+            this.versionJSON = {};
+            this.modelAttributes = ['content', 'contentType', 'owner', 'mainLocation', 'version'];
+            this.modelAttributes.forEach(function (mock) {
                 this[mock] = new Y.Mock();
-                Y.Mock.expect(this[mock], mockConf);
+                Y.Mock.expect(this[mock], {
+                    method: 'toJSON',
+                    returns: this[mock + 'JSON']
+                });
             }, this);
+            this.user = {};
 
             this.formView = new Y.Mock();
             this.formViewContents = '<form></form>';
@@ -99,22 +104,55 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         "Test available variable in template": function () {
             var origTpl = this.view.template;
 
-            this.view.template = function (variables) {
+            this.view.template = Y.bind(function (variables) {
                 Y.Assert.isObject(variables, "The template should receive some variables");
                 Y.Assert.areEqual(6, Y.Object.keys(variables).length, "The template should receive 6 variables");
-                Y.Assert.isObject(variables.content, "content should be available in the template and should be an object");
-                Y.Assert.isObject(variables.contentType, "contentType should be available in the template and should be an object");
-                Y.Assert.isObject(variables.mainLocation, "mainLocation should be available in the template and should be an object");
-                Y.Assert.isObject(variables.owner, "owner should be available in the template and should be an object");
-                Y.Assert.isObject(variables.version, "version should be available in the template and should be an object");
-                Y.Assert.isString(variables.languageCode, "languageCode should be available in the template and should be a string");
+                this.modelAttributes.forEach(function (attr) {
+                    Assert.areSame(
+                        this[attr + 'JSON'],
+                        variables[attr],
+                        "The attribute '" + attr + "' should be jsonified and available in the template"
+                    );
+                }, this);
+                Assert.areEqual(
+                    this.languageCode,
+                    variables.languageCode,
+                    "languageCode should be available in the template"
+                );
 
-                return  origTpl.call(this, variables);
-            };
+                return origTpl.call(this.view, variables);
+            }, this);
             this.view.render();
             this.view.destroy();
             Y.Mock.verify(this.formView);
             Y.Mock.verify(this.actionBar);
+        },
+
+        "Should handle a missing main location": function () {
+            var origTpl;
+
+            this.view.destroy();
+            this.view = new Y.eZ.ContentEditView({
+                container: '.container',
+                content: this.content,
+                contentType: this.contentType,
+                version: this.version,
+                owner: this.owner,
+                formView: this.formView,
+                actionBar: this.actionBar,
+                languageCode: this.languageCode,
+                user: this.user,
+            });
+
+            origTpl = this.view.template;
+            this.view.template = function (variables) {
+                Y.Assert.isObject(variables, "The template should receive some variables");
+                Y.Assert.areEqual(6, Y.Object.keys(variables).length, "The template should receive 6 variables");
+                Y.Assert.isObject(variables.mainLocation, "mainLocation should be available in the template and should be an object");
+
+                return  origTpl.call(this, variables);
+            };
+            this.view.render();
         },
 
         "Should render formView and actionBar in designated containers": function () {

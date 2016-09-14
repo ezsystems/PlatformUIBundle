@@ -21,6 +21,16 @@ YUI.add('ez-view', function (Y) {
      */
     Y.eZ.View = Y.Base.create('eZView', Y.View, [], {
         initializer: function () {
+            /**
+             * Holds the attribute names for which the view should not be updated
+             * when the `active` flag is changed.
+             *
+             * @protected
+             * @property _preventActiveForwardAttributes
+             * @type {Array}
+             * @default undefined
+             */
+
             this.after('activeChange', this._setSubviewsActive);
             this._initPlugins();
         },
@@ -44,6 +54,22 @@ YUI.add('ez-view', function (Y) {
         },
 
         /**
+         * Checks whether the `active` attribute value should be forwarded for
+         * the `name` attribute.
+         *
+         * @method _preventActiveForward
+         * @private
+         * @param {String} name
+         * @return {Boolean}
+         */
+        _preventActiveForward: function (name) {
+            return (
+                this._preventActiveForwardAttributes &&
+                this._preventActiveForwardAttributes.indexOf(name) !== -1
+            );
+        },
+
+        /**
          * Sets the active attribute of the sub views stored in attributes to
          * the same value as the current view
          *
@@ -54,7 +80,7 @@ YUI.add('ez-view', function (Y) {
             Y.Object.each(this._getAttrCfgs(), function (attrCfg, name) {
                 var attr = this.get(name);
 
-                if ( attr instanceof Y.eZ.View ) {
+                if ( !this._preventActiveForward(name) && attr instanceof Y.eZ.View ) {
                     attr.set('active', this.get('active'));
                 }
             }, this);

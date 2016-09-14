@@ -189,6 +189,8 @@ system:
                         - 'ez-confirmboxview'
                         - 'ez-contentcreationwizardviewservice'
                         - 'ez-contentcreationwizardview'
+                        - 'ez-contentcreatorviewservice'
+                        - 'ez-contentcreatorview'
                         - 'ez-languageselectionboxviewservice'
                         - 'ez-languageselectionboxview'
                         - 'ez-notificationhubviewservice'
@@ -199,6 +201,7 @@ system:
                         - 'ez-registerlanguagehelpersplugin'
                         - 'ez-domstateplugin'
                         - 'ez-universaldiscoveryplugin'
+                        - 'ez-contentcreatorplugin'
                         - 'ez-confirmboxplugin'
                         - 'ez-contentcreationwizardplugin'
                         - 'ez-languageselectionboxplugin'
@@ -288,6 +291,9 @@ system:
                 ez-contentcreationwizardviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-contentcreationwizardviewservice.js"
+                ez-contentcreatorviewservice:
+                    requires: ['ez-viewservice', 'ez-sideviewservice']
+                    path: "%ez_platformui.public_dir%/js/views/services/ez-contentcreatorviewservice.js"
                 ez-languageselectionboxviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-languageselectionboxviewservice.js"
@@ -512,6 +518,7 @@ system:
                         - 'universaldiscoveryview-ez-template'
                         - 'ez-universaldiscoverybrowseview'
                         - 'ez-universaldiscoverysearchview'
+                        - 'ez-universaldiscoverycreateview'
                         - 'ez-universaldiscoveryconfirmedlistview'
                         - 'array-extras'
                         - 'event-tap'
@@ -539,6 +546,15 @@ system:
                 universaldiscoverybrowseview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/universaldiscovery/browse.hbt"
+                ez-universaldiscoverycreateview:
+                    requires:
+                        - 'ez-universaldiscoverymethodbaseview'
+                        - 'universaldiscoverycreateview-ez-template'
+                        - 'ez-contenteditview'
+                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoverycreateview.js"
+                universaldiscoverycreateview-ez-template:
+                    type: 'template'
+                    path: "%ez_platformui.public_dir%/templates/universaldiscovery/create.hbt"
                 ez-universaldiscoverysearchview:
                     requires:
                         - 'ez-universaldiscoverymethodbaseview'
@@ -700,6 +716,9 @@ system:
                 languageswitcherview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/languageswitcher.hbt"
+                ez-contentcreatorview:
+                    requires: ['ez-view', 'ez-contenteditview']
+                    path: '%ez_platformui.public_dir%/js/views/ez-contentcreatorview.js'
                 ez-contenteditview:
                     requires: ['ez-templatebasedview', 'ez-contenteditformview', 'ez-editactionbarview', 'event-tap', 'contenteditview-ez-template']
                     path: "%ez_platformui.public_dir%/js/views/ez-contenteditview.js"
@@ -1227,6 +1246,9 @@ system:
                 ez-universaldiscoveryplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/apps/plugins/ez-universaldiscoveryplugin.js"
+                ez-contentcreatorplugin:
+                    requires: ['plugin', 'base', 'ez-pluginregistry']
+                    path: "%ez_platformui.public_dir%/js/apps/plugins/ez-contentcreatorplugin.js"
                 ez-domstateplugin:
                     requires: ['plugin', 'base', 'node', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/apps/plugins/ez-domstateplugin.js"

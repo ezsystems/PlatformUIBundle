@@ -13,7 +13,7 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
             this.publishRedirectionUrl = '/something';
             this.languageCode = 'eng-GB';
             this.contentId = '/reamonn/supergirl';
-            this.app = new Y.Mock();
+            this.app = new Y.Mock(new Y.Base());
             this.capi = {};
             this.version = new Y.Mock();
             this.content = new Y.Mock();
@@ -208,13 +208,12 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                         options.languageCode,
                         "The save options should contain the language code"
                     );
+                    Assert.isTrue(
+                        that.app.get('loading'),
+                        "The app loading flag should be true"
+                    );
                     callback();
                 }
-            });
-
-            Y.Mock.expect(this.app, {
-                method: 'set',
-                args: ['loading', true]
             });
 
             this.view.fire('whatever:publishAction', {
@@ -226,9 +225,12 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                 this.view.get('disabled'),
                 "Disabled should have been set to false"
             );
+            Assert.isFalse(
+                that.app.get('loading'),
+                "The app loading flag should be false"
+            );
 
             Y.Mock.verify(this.version);
-            Y.Mock.verify(this.app);
         },
 
         "Should fire event after publishing draft": function () {
@@ -284,11 +286,6 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                     );
                     callback();
                 }
-            });
-
-            Y.Mock.expect(this.app, {
-                method: 'set',
-                args: ['loading', true]
             });
 
             this.service.once('publishedDraft', function (e) {
@@ -370,6 +367,10 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                         options.fields,
                         "The fields should be passed to save"
                     );
+                    Assert.isTrue(
+                        that.app.get('loading'),
+                        "The app loading flag should true"
+                    );
                     callback(false, response);
                 }
             });
@@ -413,18 +414,17 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                     callback();
                 }
             });
-            Y.Mock.expect(this.app, {
-                method: 'set',
-                args: ['loading', true]
-            });
             this.view.fire('whatever:publishAction', {
                 formIsValid: true,
                 fields: fields
             });
 
+            Assert.isFalse(
+                this.app.get('loading'),
+                "The app loading flag should be false"
+            );
             Y.Mock.verify(this.content);
             Y.Mock.verify(this.version);
-            Y.Mock.verify(this.app);
         },
 
         "Should fire publishedDraft event after publishing a draft": function () {
@@ -479,7 +479,7 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
 
         "Should handle content creation error": function () {
             var fields = [],
-                loading, errorNotification = false;
+                errorNotification = false;
 
             Y.Mock.expect(this.content, {
                 method: 'isNew',
@@ -496,13 +496,6 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                 run: function (options, callback) {
                     callback(true);
                 }
-            });
-            Y.Mock.expect(this.app, {
-                method: 'set',
-                args: ['loading', Mock.Value.Boolean],
-                run: function (attr, value) {
-                    loading = value;
-                },
             });
             this.service.once('notify', function () {
                 this.once('notify', function (e) {
@@ -522,12 +515,12 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                 fields: fields
             });
 
-            Assert.isFalse(loading, "The app should not be in loading mode");
+            Assert.isFalse(this.app.get('loading'), "The app should not be in loading mode");
             Assert.isTrue(errorNotification, "The notification should have been fired");
         },
 
         "Should handle publishing error": function () {
-            var fields = [], loading, errorNotification = false,
+            var fields = [], errorNotification = false,
                 response = {document: this.createContentResponse},
                 versionAttrs = {};
 
@@ -572,13 +565,6 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                     callback(true);
                 }
             });
-            Y.Mock.expect(this.app, {
-                method: 'set',
-                args: ['loading', Mock.Value.Boolean],
-                run: function (attr, value) {
-                    loading = value;
-                }
-            });
             this.service.once('notify', function () {
                 this.once('notify', function (e) {
                     errorNotification = true;
@@ -598,14 +584,14 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
                 fields: fields
             });
 
-            Assert.isFalse(loading, "The app should not be in loading mode");
+            Assert.isFalse(this.app.get('loading'), "The app should not be in loading mode");
             Assert.isTrue(errorNotification, "The notification should have been fired");
         },
     });
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.PublishDraft;
-    registerTest.components = ['contentEditViewService', 'contentCreateViewService'];
+    registerTest.components = ['contentEditViewService', 'contentCreateViewService', 'contentCreatorViewService'];
 
     Y.Test.Runner.setName("eZ Publish Draft Plugin tests");
     Y.Test.Runner.add(tests);

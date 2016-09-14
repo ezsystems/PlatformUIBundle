@@ -1,0 +1,22 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.is-contentcreator-hidden .ez-contentcreator-container {
+    display: block;
+
+    background: rgba(0, 0, 0, 0);
+    transform: translateY(-100%);
+}
+
+.ez-contentcreator-container {
+    background: rgba(0, 0, 0, 0.6);
+
+    transform: translateY(0);
+    transition: transform 0.3s, background 0.3s;
+}
+
+.ez-contentcreator-container .ez-view-contentcreatorview {
+    background: #f3f3f3;
+}

@@ -9,10 +9,17 @@ YUI.add('ez-view-tests', function (Y) {
         name: "eZ View view tests",
 
         setUp: function () {
-            this.TestView = Y.Base.create('TestView', Y.eZ.View, [], {}, {
+            this.TestView = Y.Base.create('TestView', Y.eZ.View, [], {
+                initializer: function () {
+                    this._preventActiveForwardAttributes = ['noForward'];
+                },
+            }, {
                 ATTRS: {
                     notAView: {},
                     subEzView: {
+                        value: new Y.eZ.View()
+                    },
+                    noForward: {
                         value: new Y.eZ.View()
                     },
                     subPlainView: {
@@ -20,10 +27,15 @@ YUI.add('ez-view-tests', function (Y) {
                     }
                 }
             });
+            this.view = new this.TestView();
+        },
+
+        destroy: function () {
+            this.view.destroy();
         },
 
         "Should set the 'active' attribute to the sub ez views": function () {
-            var view = new this.TestView();
+            var view = this.view;
 
             view.set('active', true);
 
@@ -36,7 +48,17 @@ YUI.add('ez-view-tests', function (Y) {
                 view.get('subPlainView').get('active'),
                 "The active attribute of the subPlainView should be undefined"
             );
-        }
+        },
+
+        "Should not update the 'active' attribute on configured attribute": function() {
+            var view = this.view;
+
+            view.set('active', true);
+            Assert.isFalse(
+                view.get('noForward').get('active'),
+                "The active flag should still be false"
+            );
+        },
     });
 
     pluginTests = new Y.Test.Case({

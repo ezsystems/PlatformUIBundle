@@ -1167,7 +1167,34 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             Y.Assert.isTrue(nextCalled, "The next callback should have been called");
         },
 
-        "Should destroy the sideViews": function () {
+        "Should destroy the side view when unused": function () {
+            var req = {
+                    route: {
+                        sideViews: {
+                            sideView1: true,
+                        }
+                    }
+                },
+                destroyed = false;
+
+            this.app.sideViews.sideView1.destroyUnusedView = true;
+            this.app.sideViews.sideView1.type = Y.Base.create('sideView1', Y.View, [], {
+                destructor: function () {
+                    destroyed = true;
+                },
+            });
+
+            this.app.handleSideViews(req, {}, function () {});
+            this.app.handleSideViews({route: {sideViews: {sideView1: false}}}, {}, function () {});
+
+            Assert.isTrue(destroyed, "The side view should not be destroyed");
+            Assert.isUndefined(
+                this.app.sideViews.sideView1.instance,
+                "The view object should have been deleted"
+            );
+        },
+
+        "Should destroy the sideViews on logout": function () {
             var sideViewInstanceMock = new Y.Mock(),
                 sideViewServiceMock = new Y.Mock();
 

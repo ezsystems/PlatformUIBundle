@@ -126,7 +126,7 @@ YUI.add('ez-contenteditview', function (Y) {
             container.setHTML(this.template({
                 content: this.get('content').toJSON(),
                 version: this.get('version').toJSON(),
-                mainLocation: this.get('mainLocation').toJSON(),
+                mainLocation: this.get('mainLocation') ? this.get('mainLocation').toJSON() : {},
                 contentType: this.get('contentType').toJSON(),
                 owner: this.get('owner').toJSON(),
                 languageCode: this.get('languageCode')
@@ -299,7 +299,6 @@ YUI.add('ez-contenteditview', function (Y) {
              *
              * @attribute mainLocation
              * @default {}
-             * @required
              */
             mainLocation: {
                 writeOnce: "initOnly",
@@ -375,7 +374,9 @@ YUI.add('ez-contenteditview', function (Y) {
              * @type {String}
              * @required
              */
-            languageCode: '',
+            languageCode: {
+                value: '',
+            },
         }
     });
 });

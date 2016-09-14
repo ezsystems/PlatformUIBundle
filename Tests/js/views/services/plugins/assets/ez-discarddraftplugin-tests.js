@@ -121,7 +121,7 @@ YUI.add('ez-discarddraftplugin-tests', function (Y) {
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.DiscardDraft;
-    registerTest.components = ['contentEditViewService'];
+    registerTest.components = ['contentEditViewService', 'contentCreateViewService', 'contentCreatorViewService'];
 
     Y.Test.Runner.setName("eZ Discard Draft Plugin tests");
     Y.Test.Runner.add(tests);

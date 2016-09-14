@@ -144,15 +144,9 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
             var content = new Y.eZ.Content(),
                 version = new Y.eZ.Version(),
                 type = this.get('contentType'),
-                defaultFields = {};
+                defaultFields = type.getDefaultFields();
 
             content.set('name', this._getNewContentName());
-            Y.Object.each(type.get('fieldDefinitions'), function (fieldDef, identifier) {
-                defaultFields[identifier] = {
-                    fieldDefinitionIdentifier: identifier,
-                    fieldValue: fieldDef.defaultValue,
-                };
-            });
 
             this.set('content', content);
             this.set('version', version);
@@ -206,18 +200,13 @@ YUI.add('ez-contentcreateviewservice', function (Y) {
          *
          * @method _getNewContentName
          * @protected
+         * @return {String}
          */
         _getNewContentName: function() {
-            var app = this.get('app'),
-                type = this.get('contentType'),
-                contentTypeNames,
-                contentTypeName;
+            var languageCode = this.get('app').get('contentCreationDefaultLanguageCode'),
+                type = this.get('contentType');
 
-            contentTypeNames = type.get('names');
-            contentTypeName = contentTypeNames[app.get('contentCreationDefaultLanguageCode')]
-                || contentTypeNames[Object.keys(contentTypeNames)[0]];
-
-            return 'New "' + contentTypeName + '"';
+            return 'New "' + type.getName(languageCode) + '"';
         },
 
         /**
