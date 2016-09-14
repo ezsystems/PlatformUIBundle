@@ -591,7 +591,7 @@ YUI.add('ez-publishdraftplugin-tests', function (Y) {
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.PublishDraft;
-    registerTest.components = ['contentEditViewService', 'contentCreateViewService'];
+    registerTest.components = ['contentEditViewService', 'contentCreateViewService', 'contentCreatorViewService'];
 
     Y.Test.Runner.setName("eZ Publish Draft Plugin tests");
     Y.Test.Runner.add(tests);

@@ -229,6 +229,6 @@ YUI.add('ez-savedraftplugin', function (Y) {
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.SaveDraft, ['contentEditViewService', 'contentCreateViewService']
+        Y.eZ.Plugin.SaveDraft, ['contentEditViewService', 'contentCreateViewService', 'contentCreatorViewService']
     );
 });

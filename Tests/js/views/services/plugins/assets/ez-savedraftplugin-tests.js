@@ -755,7 +755,7 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.SaveDraft;
-    registerTest.components = ['contentEditViewService', 'contentCreateViewService'];
+    registerTest.components = ['contentEditViewService', 'contentCreateViewService', 'contentCreatorViewService'];
 
     Y.Test.Runner.setName("eZ Save Draft Plugin tests");
     Y.Test.Runner.add(tests);

@@ -228,6 +228,8 @@ YUI.add('ez-publishdraftplugin', function (Y) {
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.PublishDraft, ['contentEditViewService', 'contentCreateViewService']
+        Y.eZ.Plugin.PublishDraft, [
+            'contentEditViewService', 'contentCreateViewService', 'contentCreatorViewService'
+        ]
     );
 });

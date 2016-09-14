@@ -89,6 +89,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                 container: '.ez-contentcreationwizard-container',
                 hideClass: 'is-contentcreationwizard-hidden',
             },
+            contentCreator: {
+                type: Y.eZ.ContentCreatorView,
+                service: Y.eZ.ContentCreatorViewService,
+                container: '.ez-contentcreator-container',
+                hideClass: 'is-contentcreator-hidden',
+                destroyUnusedView: true,
+            },
         },
 
         views: {

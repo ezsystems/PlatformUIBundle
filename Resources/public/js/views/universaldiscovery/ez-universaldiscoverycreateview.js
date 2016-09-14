@@ -29,10 +29,67 @@ YUI.add('ez-universaldiscoverycreateview', function (Y) {
             this._fireMethod = this._fireLoadContentTypes;
 
             this.after('contentTypeGroupsChange', this._renderWizardView);
+            this.on('*:contentCreationWizardEnding', this._openContentCreator);
             this.after('visibleChange', function () {
                 if ( !this.get('visible') ) {
                     this.reset();
                 }
+            });
+        },
+
+        /**
+         * `contentCreationWizardEnding` event handler.
+         * Opens the content creator side view to create the Content item with
+         * the selected Content Type and under the selected Parent Location.
+         *
+         * @method _openContentCreator
+         * @protected
+         * @param {EventFacade} e
+         */
+        _openContentCreator: function (e) {
+            var createView = this;
+
+            /**
+             * Fired to open the Content Creator side view.
+             *
+             * @event contentCreatorOpen
+             * @param {Object} config
+             * @param {eZ.Content} config.contentType
+             * @param {eZ.Location} config.parentLocation
+             * @param {Object} config.eventHandlers
+             * @param {Function} config.eventHandlers.contentCreated
+             * @param {Object} config.eventHandlers.contentCreated.contentCreatedStruct
+             * @param {eZ.Location} config.eventHandlers.contentCreated.contentCreatedStruct.mainLocation
+             * @param {eZ.Content} config.eventHandlers.contentCreated.contentCreatedStruct.content
+             * @param {eZ.ContentType} config.eventHandlers.contentCreated.contentCreatedStruct.contentType
+             */
+            this.fire('contentCreatorOpen', {
+                config: {
+                    contentType: e.contentType,
+                    parentLocation: e.parentLocation,
+                    eventHandlers: {
+                        "contentCreated": function (contentCreatedStruct) {
+                            var struct = {
+                                    location: contentCreatedStruct.mainLocation,
+                                    contentInfo: contentCreatedStruct.mainLocation.get('contentInfo'),
+                                    contentType: contentCreatedStruct.contentType,
+                                };
+
+                            if ( createView.get('loadContent') ) {
+                                struct.content = contentCreatedStruct.content;
+                            }
+
+                            // atm the content item that was just created is not
+                            // displayed but directly used. In a "multiple" UDW,
+                            // it is added to the selection, in a unique UDW,
+                            // it is directly selected.
+                            createView.fire(createView.get('multiple') ? 'confirmSelectedContent' : 'selectContent', {
+                                selection: struct,
+                            });
+                            this.closeContentCreator();
+                        },
+                    },
+                },
             });
         },
 

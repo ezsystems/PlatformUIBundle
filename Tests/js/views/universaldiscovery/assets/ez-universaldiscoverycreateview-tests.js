@@ -4,6 +4,7 @@
  */
 YUI.add('ez-universaldiscoverycreateview-tests', function (Y) {
     var renderTest, resetTest, wizardTest, visibleChangeTest, defaultWizardTest,
+        contentCreationWizardEndingTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     renderTest = new Y.Test.Case({
@@ -214,10 +215,60 @@ YUI.add('ez-universaldiscoverycreateview-tests', function (Y) {
         },
     });
 
+    contentCreationWizardEndingTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Create contentCreationWizardEnding tests',
+
+        setUp: function () {
+            Y.eZ.ContentCreationWizardView = Y.View;
+            this.view = new Y.eZ.UniversalDiscoveryCreateView();
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete Y.eZ.ContentCreationWizardView;
+        },
+
+        "Should open the Content Creator": function () {
+            var eventFired = false,
+                contentType = {},
+                parentLocation  = {};
+
+            this.view.on('contentCreatorOpen', function (e) {
+                eventFired = true;
+
+                Assert.areSame(
+                    contentType, e.config.contentType,
+                    "The choosen Content Type should be provided"
+                );
+                Assert.areSame(
+                    parentLocation, e.config.parentLocation,
+                    "The choosen parent Location should be provided"
+                );
+                Assert.isFunction(
+                    e.config.eventHandlers.contentCreated,
+                    "An event handler for the `contentCreated` event should be provided"
+                );
+            });
+
+            this.view.get('wizardView').fire('contentCreationWizardEnding', {
+                contentType: contentType,
+                parentLocation: parentLocation
+            });
+
+            Assert.isTrue(
+                eventFired,
+                "The `contentCreatorOpen` event should have been fired"
+            );
+        },
+
+        // TODO test the contentCreated event handler
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Create View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(resetTest);
     Y.Test.Runner.add(wizardTest);
     Y.Test.Runner.add(visibleChangeTest);
     Y.Test.Runner.add(defaultWizardTest);
+    Y.Test.Runner.add(contentCreationWizardEndingTest);
 }, '', {requires: ['test', 'base', 'view', 'ez-universaldiscoverycreateview']});
