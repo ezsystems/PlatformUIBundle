@@ -48,10 +48,13 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 "The application container should get the is-app-loading class"
             );
             this.app.set('loading', false);
-            Y.assert(
-                !this.app.get('container').hasClass('is-app-loading'),
-                "The application container should not get the is-app-loading class"
-            );
+
+            this.wait(Y.bind(function () {
+                Y.assert(
+                    !this.app.get('container').hasClass('is-app-loading'),
+                    "The application container should not get the is-app-loading class"
+                );
+            }, this), 500);
         },
 
         "Navigate event should change the loading attribute": function () {
@@ -1738,7 +1741,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
 
         "Should deletes views handling middleware if routingEnabled attribute is false": function () {
             this.app.set('routingEnabled', false);
-            
+
             Y.Object.each(this.app.get('routes'), function(route) {
                 Y.Assert.areSame(
                     0,
