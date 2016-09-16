@@ -1,0 +1,24 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+.ez-view-searchlistview .ez-resultlist-table {
+    width: 100%;
+}
+
+.ez-view-searchlistview .ez-searchlist-resultlist {
+    padding: 1em;
+}
+
+
+.ez-view-searchlistview .ez-searchlist-count {
+    margin: 0;
+    padding: 0 1rem 0 1em;
+    line-height: 2.5em;
+}
+
+.ez-view-searchlistview .ez-searchlist-column-head {
+    text-align: left;
+    vertical-align: middle;
+    padding: 0.8em 0.5em;
+}

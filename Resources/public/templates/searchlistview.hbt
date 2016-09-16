@@ -1,0 +1,29 @@
+{{#if searchResultCount}}
+    <p class="ez-searchlist-count">Result list ({{searchResultCount}})</p>
+    <div class="ez-searchlist-resultlist">
+        <table class="ez-resultlist-table">
+            <thead>
+            <tr>
+                {{#each columns}}
+                    <th class="ez-searchlist-column-head ez-searchlist-{{ identifier }}-column">{{ name }}</th>
+                {{/each}}
+            </tr>
+            </thead>
+            <tbody class="ez-searchlist-content  ez-loadmorepagination-content"></tbody>
+        </table>
+
+        <div class="ez-searchlist-pagination">
+            <p>
+                viewing <strong class="ez-loadmorepagination-display-count">{{ displayCount }}</strong>
+                out of <strong>{{ searchResultCount }}</strong> items
+            </p>
+            <p>
+                <button class="pure-button ez-button ez-loadmorepagination-more ez-font-icon" disabled>
+                    Show <span class="ez-loadmorepagination-more-count">{{ remainingCount }}</span> more results
+                </button>
+            </p>
+        </div>
+    </div>
+{{else}}
+    <p class="ez-searchlist-no-result">This search has no result.</p>
+{{/if}}

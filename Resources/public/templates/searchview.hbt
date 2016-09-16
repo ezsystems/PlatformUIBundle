@@ -1,0 +1,17 @@
+<div class="pure-g">
+    <div class="ez-searchview-content pure-u">
+        <header class="ez-page-header">
+            <h1 class="ez-page-header-name" data-icon="&#xe986;">Search</h1>
+        </header>
+        <div class="ez-searchview-search-form">
+            <form class="ez-search-form pure-form">
+                <p>
+                    <label class="ez-search-form-label" for="searchstring">Search content:</label>
+                    <input class="ez-search-form-input" required type="text" value="{{searchString}}">
+                    <button type="submit" class="ez-search-form-button pure-button ez-button">Search</button>
+                </p>
+            </form>
+            <div class="ez-searchlist-content"></div>
+        </div>
+    </div>
+</div>

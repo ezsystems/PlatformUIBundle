@@ -1,0 +1,37 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+.ez-view-searchview {
+    width: 100%;
+    padding-bottom: 1em;
+    height: 100%;
+}
+
+.ez-view-searchview .ez-searchview-content {
+    width: 100%;
+}
+
+.ez-view-searchview .ez-searchview-search-form {
+    margin: 2em;
+}
+
+.ez-view-searchview .ez-search-form  {
+    margin-bottom: 3em;
+}
+
+.ez-view-searchview .ez-searchview-search-form .ez-search-form-label {
+    display: block;
+}
+
+.ez-view-searchview .ez-searchview-search-form .ez-search-form-input {
+    width: 40%;
+}
+
+.ez-view-searchview .ez-search-form .ez-search-form-input,
+.ez-view-searchview .ez-search-form-button {
+    line-height: 2.2em;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: auto;
+}

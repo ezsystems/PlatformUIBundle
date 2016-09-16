@@ -1,0 +1,29 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+.ez-view-searchlistview {
+    border: 1px solid #ccc;
+    background: #F5F4F2;
+}
+
+.ez-view-searchlistview .ez-searchlist-pagination {
+    text-align: center;
+}
+
+.ez-view-searchlistview .ez-searchlist-resultlist {
+    background: #F5F4F2;
+}
+
+.ez-view-searchlistview .ez-searchlist-count {
+    background: #fff;
+    font-size: 1.1em;
+    font-weight: bold;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid #ccc;
+}
+
+.ez-view-searchlistview .ez-searchlist-column-head {
+    border-bottom: 2px solid #999;
+    background: #F5F4F2;
+}

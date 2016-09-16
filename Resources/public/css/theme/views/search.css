@@ -1,0 +1,18 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.ez-view-searchview {
+    background: #fff;
+}
+
+.ez-view-searchview .ez-page-header {
+    background: #f5f4f2;
+    border-bottom: 1px solid #ccc;
+}
+
+.ez-view-searchview .ez-searchview-search-form .ez-search-form-label {
+    font-weight: bold;
+}
+
