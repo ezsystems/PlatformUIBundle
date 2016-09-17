@@ -12,7 +12,7 @@ YUI.add('ez-dashboardblockasynchronousview-tests', function (Y) {
         CLASS_ROW_SELECTED = 'is-row-selected',
         SELECTOR_ROW = '.ez-block-row',
         SELECTOR_OUTSIDE = '.outside',
-        Assert = Y.Assert;
+        Assert = Y.Assert, Mock = Y.Mock;
 
     NS.RenderTest = {
         'Should render the view with a template': function () {
@@ -129,6 +129,120 @@ YUI.add('ez-dashboardblockasynchronousview-tests', function (Y) {
             this.wait();
         },
     };
+
+    NS.EditContentEventTest = {
+        setUp: function () {
+            this._createView();
+            this.languageCode = 'fre-FR';
+            Y.eZ.Content = Y.Model;
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        _addToJsonToMock: function (mock) {
+            Mock.expect(mock, {
+                method: 'toJSON',
+                args: [],
+                returns: {},
+            });
+        },
+
+        _createItemMock: function (contentId) {
+            var locationMock = new Mock(),
+                contentInfoMock = new Mock(),
+                contentTypeMock = new Mock();
+
+            Mock.expect(contentInfoMock, {
+                method: 'get',
+                args: [Mock.Value.String],
+                run: Y.bind(function (attr) {
+                    if ( attr === 'id' ) {
+                        return contentId;
+                    } else if ( attr === 'mainLanguageCode' ) {
+                        return this.languageCode;
+                    }
+                    Y.fail('Unexpected call to get("' + attr + '")');
+                }, this),
+            });
+
+            Mock.expect(locationMock, {
+                method: 'get',
+                args: ['contentInfo'],
+                returns: contentInfoMock,
+            });
+
+            this._addToJsonToMock(locationMock);
+            this._addToJsonToMock(contentInfoMock);
+            this._addToJsonToMock(contentTypeMock);
+
+            return {
+                location: locationMock,
+                contentType: contentTypeMock
+            };
+        },
+
+        'Should fire `editContentRequest`': function () {
+            var editButton,
+                eventFired = false,
+                itemMock = this._createItemMock('42');
+
+            this.view.set('items', [itemMock]);
+
+            editButton = this.view.get('container').one('.ez-edit-content-button');
+
+            this.view.on('editContentRequest', Y.bind(function (e) {
+                eventFired = true;
+
+                Assert.areSame(
+                    this.languageCode,
+                    e.languageCode,
+                    "The languageCode provided by the event should be the same."
+                );
+                Assert.areSame(
+                    itemMock.contentType,
+                    e.contentType,
+                    "The contentType provided by the event should be the same."
+                );
+            }, this));
+
+            editButton.simulateGesture('tap', Y.bind(function () {
+                this.resume(function (e) {
+                    Assert.isTrue(
+                        eventFired,
+                        "The `editContentRequest` event should have been fired"
+                    );
+                });
+            }, this));
+            this.wait();
+        },
+
+        'Should not fire `editContentRequest` if item is not found': function () {
+            var editButton,
+                eventFired = false,
+                itemMock = this._createItemMock('avishai-cohen');
+
+            this.view.set('items', [itemMock]);
+
+            editButton = this.view.get('container').one('.ez-edit-content-button');
+
+            this.view.on('editContentRequest', Y.bind(function (e) {
+                eventFired = true;
+            }, this));
+
+            editButton.simulateGesture('tap', Y.bind(function () {
+                this.resume(function (e) {
+                    Assert.isFalse(
+                        eventFired,
+                        "The `editContentRequest` event should not be fired"
+                    );
+                });
+            }, this));
+            this.wait();
+        },
+    };
+
 }, '', {
     requires: [
         'test', 'base', 'view', 'model', 'node-event-simulate',

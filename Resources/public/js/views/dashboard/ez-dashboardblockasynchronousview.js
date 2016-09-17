@@ -155,6 +155,22 @@ YUI.add('ez-dashboardblockasynchronousview', function (Y) {
             return item;
         },
 
+        /**
+         * Gets a single item from the `items` attribute.
+         *
+         * @method _getItem
+         * @protected
+         * @param {String} contentId
+         * @return {Object|undefined} The item as an object or undefined if the item was not found
+         */
+        _getItem: function (contentId) {
+            return Y.Array.find(this.get('items'), function (item) {
+                if (item.location.get('contentInfo').get('id') == contentId) {
+                    return true;
+                }
+            });
+        },
+
         destructor: function () {
             this._clearClickOutsideHandler();
         }

@@ -21,6 +21,7 @@
         {{/each}}
         </tbody>
     </table>
+    <a class="ez-edit-content-button" data-content-id="42">edit content</a>
 </script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
@@ -38,7 +39,7 @@
         filter: loaderFilter,
         modules: {
             'ez-dashboardblockallcontentview': {
-                requires: ['ez-dashboardblockasynchronousview'],
+                requires: ['ez-dashboardblockasynchronousview', 'ez-draftconflict', 'array-extras'],
                 fullpath: '../../../../Resources/public/js/views/dashboard/ez-dashboardblockallcontentview.js'
             },
             'ez-dashboardblockasynchronousview': {
@@ -52,6 +53,10 @@
             'ez-templatebasedview': {
                 requires: ['ez-view', 'handlebars', 'template'],
                 fullpath: '../../../../Resources/public/js/views/ez-templatebasedview.js'
+            },
+            'ez-draftconflict': {
+                requires: ['view'],
+                fullpath: '../../../../Resources/public/js/extensions/ez-draftconflict.js'
             },
             'ez-view': {
                 requires: ['view', 'base-pluginhost', 'ez-pluginregistry'],

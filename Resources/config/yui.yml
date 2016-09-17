@@ -271,6 +271,7 @@ system:
                         - 'ez-versionsplugin'
                         - 'ez-locationswapplugin'
                         - 'ez-draftconflictview'
+                        - 'ez-draftconflict'
                     path: "%ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js"
                 ez-navigationhubviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras', 'ez-height-change']
@@ -332,16 +333,24 @@ system:
                     requires: ['ez-templatebasedview']
                     path: "%ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockbaseview.js"
                 ez-dashboardblockasynchronousview:
-                    requires: ['ez-dashboardblockbaseview', 'ez-asynchronousview', 'event-tap', 'event-outside']
+                    requires: ['ez-dashboardblockbaseview', 'ez-asynchronousview', 'event-tap', 'event-outside', 'array-extras']
                     path: "%ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockasynchronousview.js"
                 ez-dashboardblockallcontentview:
-                    requires: ['ez-dashboardblockasynchronousview', 'dashboardblockallcontentview-ez-template']
+                    requires:
+                        - 'ez-dashboardblockasynchronousview'
+                        - 'dashboardblockallcontentview-ez-template'
+                        - 'event-tap'
+                        - 'ez-draftconflict'
                     path: "%ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockallcontentview.js"
                 dashboardblockallcontentview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/dashboard/allcontent.hbt"
                 ez-dashboardblockmycontentview:
-                    requires: ['ez-dashboardblockasynchronousview', 'dashboardblockmycontentview-ez-template']
+                    requires:
+                        - 'ez-dashboardblockasynchronousview'
+                        - 'dashboardblockmycontentview-ez-template'
+                        - 'event-tap'
+                        - 'ez-draftconflict'
                     path: "%ez_platformui.public_dir%/js/views/dashboard/ez-dashboardblockmycontentview.js"
                 dashboardblockmycontentview-ez-template:
                     type: 'template'
@@ -1059,7 +1068,7 @@ system:
                     requires: ['model', 'json']
                     path: "%ez_platformui.public_dir%/js/models/ez-restmodel.js"
                 ez-contentmodel:
-                    requires: ['ez-restmodel', 'ez-versionmodel','ez-versioninfomodel', 'array-extras', 'ez-contentinfo-attributes']
+                    requires: ['ez-restmodel', 'ez-versionmodel','ez-versioninfomodel', 'array-extras', 'ez-contentinfo-base']
                     path: "%ez_platformui.public_dir%/js/models/ez-contentmodel.js"
                 ez-versionmodel:
                     requires: ['ez-versioninfomodel']
@@ -1083,7 +1092,7 @@ system:
                     requires: ['ez-restmodel', 'ez-contenttypemodel']
                     path: "%ez_platformui.public_dir%/js/models/ez-contenttypegroupmodel.js"
                 ez-contentinfomodel:
-                    requires: ['ez-restmodel', 'ez-contentinfo-attributes']
+                    requires: ['ez-restmodel', 'ez-contentinfo-base']
                     path: "%ez_platformui.public_dir%/js/models/ez-contentinfomodel.js"
                 ez-contenttree:
                     requires: ['tree', 'tree-openable', 'tree-selectable', 'tree-lazy']
@@ -1324,12 +1333,18 @@ system:
                 ez-translateproperty:
                     requires: ['base', 'array-extras']
                     path: "%ez_platformui.public_dir%/js/extensions/ez-translateproperty.js"
-                ez-contentinfo-attributes:
+                ez-contentinfo-attributes: # deprecated module, provide a BC component based on ez-contentinfo-base
                     requires: ['ez-restmodel']
                     path: "%ez_platformui.public_dir%/js/models/extensions/ez-contentinfo-attributes.js"
+                ez-contentinfo-base:
+                    requires: ['ez-restmodel']
+                    path: "%ez_platformui.public_dir%/js/models/extensions/ez-contentinfo-base.js"
                 ez-height-fit:
                     requires: ['view', 'node-screen', 'node-style']
                     path: "%ez_platformui.public_dir%/js/extensions/ez-height-fit.js"
+                ez-draftconflict:
+                    requires: ['view']
+                    path: "%ez_platformui.public_dir%/js/extensions/ez-draftconflict.js"
                 ez-accordion-element:
                     requires: ['transition']
                     path: "%ez_platformui.public_dir%/js/extensions/ez-accordion-element.js"

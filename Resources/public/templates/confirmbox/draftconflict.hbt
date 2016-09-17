@@ -1,11 +1,10 @@
 <header>
     <h2 class="ez-draft-conflict-title">
-        {{ lookup content.currentVersion.names languageCode }}
-        ({{ translate_property contentType.names }})
+        {{contentInfo.name}} ({{ translate_property contentType.names }})
     </h2>
 
     <div class="ez-draft-conflict-toolbar">
-        <a href="{{ path 'editContent' id=content.id languageCode=languageCode }}"
+        <a href="{{ path 'editContent' id=contentInfo.id languageCode=languageCode }}"
            class="ez-draft-conflict-link ez-draft-conflict-newdraft">
             New Draft
         </a>
@@ -34,8 +33,8 @@
                 {{modificationDate}}
             </td>
             <td class="ez-draft-conflict-edit-cell">
-                <a href="{{ path 'editContentVersion' id=../content.id languageCode=initialLanguageCode versionId=id }}"
-                   class="ez-draft-conflict-link ez-draft-conflict-edit ez-font-icon ez-button-edit"></a>
+               <a href="{{ path 'editContentVersion' id=../contentInfo.id languageCode=initialLanguageCode versionId=id }}"
+                  class="ez-draft-conflict-link ez-draft-conflict-edit ez-font-icon ez-button-edit"></a>
             </td>
         </tr>
     {{/each}}

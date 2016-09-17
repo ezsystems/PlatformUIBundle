@@ -9,6 +9,7 @@ YUI.add('ez-dashboardblockmycontentview-tests', function (Y) {
         renderTest,
         searchEventTest,
         rowOptionTest,
+        editContentEventTest,
         CLASS_LOADING = 'is-loading',
         Assert = Y.Assert, Model = Y.Model, Mock = Y.Mock;
 
@@ -181,10 +182,21 @@ YUI.add('ez-dashboardblockmycontentview-tests', function (Y) {
         },
     }));
 
+    editContentEventTest = new Y.Test.Case(Y.merge(AsynchronousViewTests.EditContentEventTest, {
+        name: 'eZ Dashboard All Content Block View edit content event test',
+
+        _createView: function () {
+            this.view = new Y.eZ.DashboardBlockMyContentView({
+                container: '.container',
+            });
+        },
+    }));
+
     Y.Test.Runner.setName('eZ Dashboard My Content Block View tests');
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(searchEventTest);
     Y.Test.Runner.add(rowOptionTest);
+    Y.Test.Runner.add(editContentEventTest);
 }, '', {
     requires: [
         'test', 'base', 'view', 'model', 'node-event-simulate',

@@ -24,8 +24,13 @@
                 <td class="ez-block-cell ez-block-cell-options">
                     {{ contentInfo.lastModificationDate }}
                     <div class="ez-block-row-options">
-                        <a class="ez-block-option-edit ez-font-icon" href="{{ path "editContent" id=contentInfo.id languageCode=contentInfo.mainLanguageCode }}"></a>
-                        <a class="ez-block-option-view ez-font-icon" href="{{ path "viewLocation" id=location.id languageCode=contentInfo.mainLanguageCode }}"></a>
+                        <a  class="ez-block-option-edit ez-font-icon ez-edit-content-button"
+                            href="{{ path "editContent" id=contentInfo.id languageCode=contentInfo.mainLanguageCode }}"
+                            data-content-id="{{contentInfo.id}}"
+                        ></a>
+                        <a  class="ez-block-option-view ez-font-icon"
+                            href="{{ path "viewLocation" id=location.id languageCode=contentInfo.mainLanguageCode }}">
+                        </a>
                     </div>
                 </td>
             </tr>

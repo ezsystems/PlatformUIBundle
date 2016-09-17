@@ -23,6 +23,7 @@ YUI.add('ez-contenteditplugin-tests', function (Y) {
             this.languageCode = "fre-FR";
 
             this.content = new Mock();
+            this.contentInfo = new Mock();
 
             Mock.expect(this.app, {
                 method: 'set',
@@ -44,8 +45,8 @@ YUI.add('ez-contenteditplugin-tests', function (Y) {
             delete this.service;
         },
 
-        _setupContentMock: function (error, versions) {
-            Mock.expect(this.content, {
+        _setupContentInfoMock: function (error, versions) {
+            Mock.expect(this.contentInfo, {
                 method: 'loadVersionsSortedByStatus',
                 args: [Mock.Value.Object, Mock.Value.Function],
                 run: function (options, callback) {
@@ -53,26 +54,57 @@ YUI.add('ez-contenteditplugin-tests', function (Y) {
                 }
             });
 
-            Mock.expect(this.content, {
+            Mock.expect(this.contentInfo, {
                 method: 'get',
                 args: ['id'],
                 returns: this.contentId
             });
         },
 
-        "Should redirect to edit page when no draft": function () {
+        _setupContentMock: function (error, versions) {
+            var contentId = this.contentId;
+
+            Y.eZ.Content = Y.Base.create('contentModelMock',Y.Base,[],{
+                loadVersionsSortedByStatus: function(option, callback) {
+                    callback(error, versions);
+                },
+
+                get: function (param) {
+                    if (param == 'id') {
+                        return contentId;
+                    }
+                },
+            }, {});
+
+            this.content = new Y.eZ.Content();
+        },
+
+
+        "Should redirect to edit page when no draft using a Y.eZ.Content": function () {
             this._setupContentMock(false, {DRAFT: []});
 
-            this._testRedirect();
+            this._testRedirect({content: this.content});
         },
 
-        "Should redirect to edit page on REST error": function () {
+        "Should redirect to edit page when no draft using a Y.eZ.ContentInfo": function () {
+            this._setupContentInfoMock(false, {DRAFT: []});
+
+            this._testRedirect({contentInfo: this.contentInfo});
+        },
+
+        "Should redirect to edit page on REST error with a Y.eZ.Content": function () {
             this._setupContentMock(true, {DRAFT: ["allez", "om"]});
 
-            this._testRedirect();
+            this._testRedirect({content: this.content});
         },
 
-        _testRedirect: function () {
+        "Should redirect to edit page on REST error with a Y.eZ.ContentInfo": function () {
+            this._setupContentInfoMock(true, {DRAFT: ["allez", "om"]});
+
+            this._testRedirect({contentInfo: this.contentInfo});
+        },
+
+        _testRedirect: function (contentItemConfig) {
             var route = "/on/the/road/again";
 
             Mock.expect(this.app, {
@@ -99,10 +131,9 @@ YUI.add('ez-contenteditplugin-tests', function (Y) {
                 args: [route],
             });
 
-            this.view.fire('editContentRequest', {
-                content: this.content,
+            this.view.fire('editContentRequest', Y.merge({
                 languageCode: this.languageCode
-            });
+            }, contentItemConfig));
 
             Mock.verify(this.app);
         },

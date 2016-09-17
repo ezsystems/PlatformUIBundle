@@ -8,6 +8,7 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
     var AsynchronousViewTests = Y.eZ.Test.DashblockBlockAsynchronousViewTests,
         renderTest,
         searchEventTest,
+        editContentEventTest,
         rowOptionTest,
         CLASS_LOADING = 'is-loading',
         Assert = Y.Assert, Model = Y.Model, Mock = Y.Mock;
@@ -148,6 +149,16 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
         }
     });
 
+    editContentEventTest = new Y.Test.Case(Y.merge(AsynchronousViewTests.EditContentEventTest, {
+        name: 'eZ Dashboard All Content Block View edit content event test',
+
+        _createView: function () {
+            this.view = new Y.eZ.DashboardBlockAllContentView({
+                container: '.container',
+            });
+        },
+    }));
+
     rowOptionTest = new Y.Test.Case(Y.merge(AsynchronousViewTests.RowOptionTest, {
         name: 'eZ Dashboard All Content Block View row option test',
 
@@ -179,6 +190,7 @@ YUI.add('ez-dashboardblockallcontentview-tests', function (Y) {
     Y.Test.Runner.setName('eZ Dashboard All Content Block View tests');
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(searchEventTest);
+    Y.Test.Runner.add(editContentEventTest);
     Y.Test.Runner.add(rowOptionTest);
 }, '', {
     requires: [
