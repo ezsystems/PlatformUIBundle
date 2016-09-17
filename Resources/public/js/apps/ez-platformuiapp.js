@@ -458,8 +458,8 @@ YUI.add('ez-platformuiapp', function (Y) {
                 anonymousUserId = this.get('anonymousUserId'),
                 userId = this.get('user').get('id');
 
-            if ( userId ) {
-                callback(userId === anonymousUserId);
+            if ( userId === anonymousUserId ) {
+                callback(true, false);
                 return;
             }
             capi.isLoggedIn(function (error, response) {
