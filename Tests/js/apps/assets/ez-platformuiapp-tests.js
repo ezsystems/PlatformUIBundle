@@ -1623,10 +1623,26 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             Assert.isTrue(callbackCalled, "The callback should have been called");
         },
 
-        "Should consider any other user than anonymous as logged in": function () {
-            var callbackCalled = false;
+        _testCheckServerSideSession: function (appUserId, serverUserId) {
+            var callbackCalled = false,
+                response = {
+                    document: {
+                        Session: {
+                            User: {
+                                _href: serverUserId,
+                            }
+                        }
+                    }
+                };
 
-            this._mockUserGetId("crapouille");
+            this._mockUserGetId(appUserId);
+            Mock.expect(this.capiMock, {
+                method: 'isLoggedIn',
+                args: [Mock.Value.Function],
+                run: function (callback) {
+                    callback(false, response);
+                },
+            });
             this.app.isLoggedIn(function (notLoggedIn) {
                 callbackCalled = true;
                 Assert.isFalse(
@@ -1637,10 +1653,15 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             Assert.isTrue(callbackCalled, "The callback should have been called");
         },
 
+        "Should check the session server side for a non loaded user": function () {
+            // happens after a refresh of the whole page
+            this._testCheckServerSideSession(undefined, 'user/42');
+        },
+
         "Should call the capi isLoggedIn": function () {
             var callbackCalled = false;
 
-            this._mockUserGetId(undefined);
+            this._mockUserGetId(42);
             Mock.expect(this.capiMock, {
                 method: 'isLoggedIn',
                 args: [Mock.Value.Function],
@@ -1659,12 +1680,16 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         },
 
         "Should call the capi isLoggedIn and check the user id": function () {
+            this._testCheckServerSideSession('user/42', 'user/42');
+        },
+
+        "Should call the capi isLoggedIn and consider anonymous as not logged in": function () {
             var callbackCalled = false,
                 response = {
                     document: {
                         Session: {
                             User: {
-                                _href: this.anonymousUserId
+                                _href: this.anonymousUserId,
                             }
                         }
                     }
@@ -1682,37 +1707,32 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 callbackCalled = true;
                 Assert.isTrue(
                     notLoggedIn,
-                    "The user should not be considered as logged in"
+                    "The user should not be considered logged in"
                 );
             });
             Assert.isTrue(callbackCalled, "The callback should have been called");
+
         },
 
-        "Should call the capi isLoggedIn and check the user id (not anonymous)": function () {
+        "Should handle CAPI error": function () {
             var callbackCalled = false,
                 response = {
-                    document: {
-                        Session: {
-                            User: {
-                                _href: 'crapouille'
-                            }
-                        }
-                    }
+                    document: {},
                 };
 
-            this._mockUserGetId(undefined);
+            this._mockUserGetId(42);
             Mock.expect(this.capiMock, {
                 method: 'isLoggedIn',
                 args: [Mock.Value.Function],
                 run: function (callback) {
-                    callback(false, response);
+                    callback(new Error(), response);
                 },
             });
             this.app.isLoggedIn(function (notLoggedIn) {
                 callbackCalled = true;
-                Assert.isFalse(
+                Assert.isTrue(
                     notLoggedIn,
-                    "The user should be considered as logged in"
+                    "The user should not be considered as logged in"
                 );
             });
             Assert.isTrue(callbackCalled, "The callback should have been called");
@@ -1820,11 +1840,11 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
         setUp: function () {
             this.capiMock = new Y.Mock();
             this.userMock = new Y.Mock();
-            this.app = new Y.eZ.PlatformUIApp({
+            this.app = new Mock(new Y.eZ.PlatformUIApp({
                 config: {
                     anonymousUserId: '10',
                 },
-            });
+            }));
             this.app._set('capi', this.capiMock);
             this.app._set('user', this.userMock);
         },
@@ -1872,8 +1892,8 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             });
         },
 
-        _configureCapiMockIsLoggedIn: function (error, response) {
-            Y.Mock.expect(this.capiMock, {
+        _configureIsLoggedIn: function (error, response) {
+            Y.Mock.expect(this.app, {
                 method: 'isLoggedIn',
                 args: [Y.Mock.Value.Function],
                 run: function (callback) {
@@ -1882,17 +1902,26 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             });
         },
 
-        "Should call the next callback if the user is loaded": function () {
-            var userId = '14',
-                nextCalled = false;
+        _configureNavigateToLoginForm: function () {
+            Mock.expect(this.app, {
+                method: 'navigateTo',
+                args: ['loginForm'],
+            });
+        },
+
+        "Should call next if the user is logged in and the user is loaded": function () {
+            var nextCalled = false,
+                userId = '14',
+                isLoggedInResponse = {};
 
             this._configureUserMockGet(userId);
+            this._configureIsLoggedIn(false, isLoggedInResponse);
 
             this.app.checkUser({}, {}, function () {
                 nextCalled = true;
             });
 
-            Y.Assert.isTrue(nextCalled, "The next callback should have been called");
+            Assert.isTrue(nextCalled, "The next callback should have been called");
         },
 
         "Should check if the user is logged in and load the user": function () {
@@ -1909,7 +1938,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 };
 
             this._configureUserMockGet(false);
-            this._configureCapiMockIsLoggedIn(false, isLoggedInResponse);
+            this._configureIsLoggedIn(false, isLoggedInResponse);
             this._configureCapiUserLoad(userId, false);
 
             this.app.checkUser({}, {}, function () {
@@ -1917,35 +1946,21 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             });
 
             Y.Assert.isTrue(nextCalled, "The next callback should have been called");
-            Y.Mock.verify(this.capiMock);
         },
 
         "Should redirect to the login form if the user not logged in": function () {
-            var navigateToLoginForm = false;
-
-            this.app.navigateTo = function (routeName, params) {
-                Y.Assert.areSame(
-                    'loginForm', routeName,
-                    "The app should navigate to the login form"
-                );
-                Y.Assert.isUndefined(params);
-                navigateToLoginForm = true;
-            };
-
-            this._configureUserMockGet(false);
-            this._configureCapiMockIsLoggedIn(true, {});
+            this._configureNavigateToLoginForm();
+            this._configureIsLoggedIn(true, {});
 
             this.app.checkUser({}, {}, function () {
                 Y.Assert.fail("The next callback should not have been called");
             });
 
-            Y.Assert.isTrue(navigateToLoginForm);
-            Y.Mock.verify(this.capiMock);
+            Mock.verify(this.app);
         },
 
         "Should redirect to the login form if the user loading fails": function () {
-            var navigateToLoginForm = false,
-                userId = '14',
+            var userId = '14',
                 isLoggedInResponse = {
                     document: {
                         Session: {
@@ -1956,20 +1971,12 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     }
                 };
 
-            this.app.navigateTo = function (routeName, params) {
-                Y.Assert.areSame(
-                    'loginForm', routeName,
-                    "The app should navigate to the login form"
-                );
-                Y.Assert.isUndefined(params);
-                navigateToLoginForm = true;
-            };
-
+            this._configureNavigateToLoginForm();
             this._configureUserMockGet(false);
-            this._configureCapiMockIsLoggedIn(false, isLoggedInResponse);
+            this._configureIsLoggedIn(false, isLoggedInResponse);
             this._configureCapiUserLoad(userId, true);
 
-            Y.Mock.expect(this.capiMock, {
+            Y.Mock.expect(this.app, {
                 method: 'logOut',
                 args: [Y.Mock.Value.Function],
                 run: function (cb) {
@@ -1984,8 +1991,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 Y.Assert.fail("The next callback should not have been called");
             });
 
-            Y.Assert.isTrue(navigateToLoginForm);
-            Y.Mock.verify(this.capiMock);
+            Mock.verify(this.app);
         },
     });
 
