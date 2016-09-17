@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
     <body>
       <trans-unit id="34cebbd8a2d90255fd1317160dedb480" resname="system.information">
         <source>system.information</source>
@@ -10,19 +13,19 @@
         <source>server</source>
         <target>Server</target>
       </trans-unit>
-      <trans-unit id="e4a1f39efd0f709d30101601d92dd525" resname="composer">
+      <trans-unit id="180b81a58ca6dde990aba761b7299f43" resname="composer">
         <source>composer</source>
         <target>Composer</target>
       </trans-unit>
-      <trans-unit id="0a494c0444d9ab47159e112ba895b692" resname="composer.minimum_stability">
+      <trans-unit id="4259235adf812d1a87a7162d8f5adeb2" resname="composer.minimum_stability">
         <source>composer.minimum_stability</source>
         <target>Minimum stability</target>
       </trans-unit>
-      <trans-unit id="2bb22b8c875ccf10e0f0c19eb7503cc6" resname="packages">
+      <trans-unit id="2fc9e51174a78dd5bfc57e8e368590b3" resname="packages">
         <source>packages</source>
         <target>Packages</target>
       </trans-unit>
-      <trans-unit id="35ab991adc09aa1295fc07c0e9ab49a1" resname="packages.empty">
+      <trans-unit id="7af323858ab8f3dc509a7ad4277be4e7" resname="packages.empty">
         <source>packages.empty</source>
         <target>Could not find any packages, composer.lock file missing?</target>
       </trans-unit>
@@ -30,11 +33,11 @@
         <source>ez.platform.version</source>
         <target>You are using eZ Platform version</target>
       </trans-unit>
-      <trans-unit id="8a1ce0ddfe57e402219493e0f982eb66" resname="kernel.running">
+      <trans-unit id="3f1a562f14c0c9bdffe25dd8a38e2863" resname="kernel.running">
         <source>kernel.running</source>
         <target>running on kernel</target>
       </trans-unit>
-      <trans-unit id="0048810a6ffb8437b3e9e1b7773da19c" resname="symfony_kernel">
+      <trans-unit id="4a87b21029122f88b506a503018369ed" resname="symfony_kernel">
         <source>symfony_kernel</source>
         <target>Symfony kernel</target>
       </trans-unit>
@@ -42,47 +45,47 @@
         <source>symfony.based</source>
         <target>based on Symfony</target>
       </trans-unit>
-      <trans-unit id="c1e25d68edee44c0ea67f96b39809457" resname="symfony_kernel.environment">
+      <trans-unit id="8acca870919dabbbb59a73eb8074e48d" resname="symfony_kernel.environment">
         <source>symfony_kernel.environment</source>
         <target>Environment</target>
       </trans-unit>
-      <trans-unit id="872c751bd3ebff095052570af37e49cd" resname="symfony_kernel.debugMode">
+      <trans-unit id="8ce8795e0a3dbfcffeca590b90e50f01" resname="symfony_kernel.debugMode">
         <source>symfony_kernel.debugMode</source>
         <target>Debug mode</target>
       </trans-unit>
-      <trans-unit id="41fcd0a59fd6dddd622a45b0ed610802" resname="symfony_kernel.debugMode.enabled">
+      <trans-unit id="e195e782ccea5c1e7da752ec216175a9" resname="symfony_kernel.debugMode.enabled">
         <source>symfony_kernel.debugMode.enabled</source>
         <target>Enabled</target>
       </trans-unit>
-      <trans-unit id="aadabdf0dec034cbfdbd4185faa74ce2" resname="symfony_kernel.debugMode.disabled">
+      <trans-unit id="8d423fe01f5037b27be335a440a3a3fc" resname="symfony_kernel.debugMode.disabled">
         <source>symfony_kernel.debugMode.disabled</source>
         <target>Disabled</target>
       </trans-unit>
-      <trans-unit id="5b00ab667a19c50c2627cb6de44a0610" resname="symfony_kernel.version">
+      <trans-unit id="e024f73eb3d20b6dfcd58f3a7925d78e" resname="symfony_kernel.version">
         <source>symfony_kernel.version</source>
         <target>Version</target>
       </trans-unit>
-      <trans-unit id="ea44e8cbf5d48680fef71d504bf08f59" resname="symfony_kernel.rootDir">
+      <trans-unit id="2c939474e8e8ce635900e36af8119f1f" resname="symfony_kernel.rootDir">
         <source>symfony_kernel.rootDir</source>
         <target>Root directory</target>
       </trans-unit>
-      <trans-unit id="0250628c16a1e170fbdbd6767bc1f6a1" resname="symfony_kernel.name">
+      <trans-unit id="0ba8adb7b47e7440b02e6c64e4828167" resname="symfony_kernel.name">
         <source>symfony_kernel.name</source>
         <target>Name</target>
       </trans-unit>
-      <trans-unit id="37a38528e7c330b807956ade9dbaa37d" resname="symfony_kernel.cacheDir">
+      <trans-unit id="e0ae3d17de282b46803648e4c2b37698" resname="symfony_kernel.cacheDir">
         <source>symfony_kernel.cacheDir</source>
         <target>Cache directory</target>
       </trans-unit>
-      <trans-unit id="67f462f291c0937515a6992e9d25ae46" resname="symfony_kernel.logDir">
+      <trans-unit id="c615ae09b6160a202585aac396541999" resname="symfony_kernel.logDir">
         <source>symfony_kernel.logDir</source>
         <target>Log directory</target>
       </trans-unit>
-      <trans-unit id="3925230a1bd3eddedf77293f1760e4bf" resname="symfony_kernel.charset">
+      <trans-unit id="f718eae88b593e117dfc4c1808df1640" resname="symfony_kernel.charset">
         <source>symfony_kernel.charset</source>
         <target>Character set</target>
       </trans-unit>
-      <trans-unit id="a7f78dc12d3e8419ed8b760f35b6dcab" resname="symfony_kernel.bundles.empty">
+      <trans-unit id="363049cf614af48be4243f4134a4726c" resname="symfony_kernel.bundles.empty">
         <source>symfony_kernel.bundles.empty</source>
         <target>Could not find any bundles.</target>
       </trans-unit>
@@ -94,7 +97,7 @@
         <source>software</source>
         <target>Software</target>
       </trans-unit>
-      <trans-unit id="083ee35fb8b7624896b3ca31ede06612" resname="php">
+      <trans-unit id="e1bfd762321e409cee4ac0b6e841963c" resname="php">
         <source>php</source>
         <target>PHP</target>
       </trans-unit>
@@ -134,19 +137,19 @@
         <source>database</source>
         <target>Database</target>
       </trans-unit>
-      <trans-unit id="30513a651d4c090798924d92232de225" resname="database.type">
+      <trans-unit id="826fcf4e7ec9f1e0a889dd8bd357db1d" resname="database.type">
         <source>database.type</source>
         <target>Type</target>
       </trans-unit>
-      <trans-unit id="00e641d8ada05e700a68278d6e55961d" resname="database.name">
+      <trans-unit id="d8f018a50df9f8cf488d657d4df1a9c8" resname="database.name">
         <source>database.name</source>
         <target>Name</target>
       </trans-unit>
-      <trans-unit id="3de1a02e8d6d847cac643319ba4d5d79" resname="database.host">
+      <trans-unit id="f01058c42342bffc8bce00ce590f5f99" resname="database.host">
         <source>database.host</source>
         <target>Host</target>
       </trans-unit>
-      <trans-unit id="993f9789ae2f4d756ec225bd4b432c31" resname="database.username">
+      <trans-unit id="b638caf82485ee625353ade2b1d96de5" resname="database.username">
         <source>database.username</source>
         <target>Username</target>
       </trans-unit>
