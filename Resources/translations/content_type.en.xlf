@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
     <body>
       <trans-unit id="4f1cfd17c4ea63fdcfb4a10fda0755ff" resname="content_type.dashboard_title">
         <source>content_type.dashboard_title</source>
@@ -22,7 +25,7 @@
         <source>content_type.group.edit</source>
         <target>Edit</target>
       </trans-unit>
-      <trans-unit id="2cf33e780bfbad13ad16fcf5634ec70c">
+      <trans-unit id="533cbf0160637dac331c0f2779f6582f" resname="content_type.group.new">
         <source>content_type.group.new</source>
         <target>Create a Content type group</target>
       </trans-unit>
@@ -30,31 +33,31 @@
         <source>content_type.group</source>
         <target>Content type group</target>
       </trans-unit>
-      <trans-unit id="d95b927203e077ad6f20662ae465821d">
+      <trans-unit id="0c6565a851269ed5e86b5338855e23ed" resname="content_type.group.create.title">
         <source>content_type.group.create.title</source>
         <target>Creating a new Content type group</target>
       </trans-unit>
-      <trans-unit id="80644ee5d10e849935daf17deddf5e6f">
+      <trans-unit id="a6298eb22986a1804622696c91bc28ad" resname="content_type.group.edit.title">
         <source>content_type.group.edit.title</source>
         <target>Editing Content type group "%identifier%"</target>
       </trans-unit>
-      <trans-unit id="7a70af7dfe97699edb120836224eee1e">
+      <trans-unit id="9ebab0d28e04a0fe2cbbd5833b995318" resname="content_type.group.cancel">
         <source>content_type.group.cancel</source>
         <target>Cancel</target>
       </trans-unit>
-      <trans-unit id="a8d0b6d82750581100743046985fcf80">
+      <trans-unit id="3e2de2bdb94119c0f07348fe100a158f" resname="content_type.group.notification.created">
         <source>content_type.group.notification.created</source>
         <target>Content type group "%identifier%" was correctly created.</target>
       </trans-unit>
-      <trans-unit id="c20c719ac1ac6b400867977af4a0c6e1">
+      <trans-unit id="4b6ba9c7b64e69a199c45aa6ae00c07e" resname="content_type.group.notification.updated">
         <source>content_type.group.notification.updated</source>
         <target>Content type group "%identifier%" was correctly updated.</target>
       </trans-unit>
-      <trans-unit id="20d385d52df00a6a1aa4d01c7e75f4e5">
+      <trans-unit id="4a9243666e4b2db74e3a25ddae694f4b" resname="content_type.group.deleted">
         <source>content_type.group.deleted</source>
         <target>Content type group "%identifier%" was correctly deleted.</target>
       </trans-unit>
-      <trans-unit id="147661b50276b00ffac1bb715bdb4746">
+      <trans-unit id="727de183fa8f686e10a786244da41d58" resname="content_type.group.cannot_delete.has_content_types">
         <source>content_type.group.cannot_delete.has_content_types</source>
         <target>Cannot delete Content type group "%identifier%" as it still contains Content types.</target>
       </trans-unit>
@@ -123,22 +126,22 @@
         <target>Default children sorting</target>
       </trans-unit>
       <trans-unit id="dc20866b714ed1642b9bce242bf460fd" resname="content_type.notification.draft_updated">
-          <source>content_type.notification.draft_updated</source>
-          <target>The Content type draft was successfully updated.</target>
+        <source>content_type.notification.draft_updated</source>
+        <target>The Content type draft was successfully updated.</target>
       </trans-unit>
       <trans-unit id="9706f09166fa56162a4558261b87a9e2" resname="content_type.notification.draft_removed">
-          <source>content_type.notification.draft_removed</source>
-          <target>The Content type draft was successfully removed.</target>
+        <source>content_type.notification.draft_removed</source>
+        <target>The Content type draft was successfully removed.</target>
       </trans-unit>
       <trans-unit id="ced84ba84fbde36bb688787c0562b1da" resname="content_type.notification.published">
-          <source>content_type.notification.published</source>
-          <target>The Content type draft was successfully updated and published. Related Content has also been updated.</target>
+        <source>content_type.notification.published</source>
+        <target>The Content type draft was successfully updated and published. Related Content has also been updated.</target>
       </trans-unit>
-      <trans-unit id="a44f54993f84d2d1a54f550bfd4f59e1">
+      <trans-unit id="175ebfc2809c7532f761bf322810e3ca" resname="content_type.notification.deleted">
         <source>content_type.notification.deleted</source>
         <target>The Content type "%contentTypeName%" was successfully deleted.</target>
       </trans-unit>
-      <trans-unit id="1d549f54e575ebb7f13e696af6c5bb96">
+      <trans-unit id="3833bc9869da7269d0b832230d25c1a6" resname="content_type.is_in_use">
         <source>content_type.is_in_use</source>
         <target>The content type cannot be deleted because it has content items, or because you don't have permission.</target>
       </trans-unit>
