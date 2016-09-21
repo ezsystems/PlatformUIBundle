@@ -1239,7 +1239,7 @@ system:
                     requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/apps/plugins/ez-registerurlhelpersplugin.js"
                 ez-registerlanguagehelpersplugin:
-                    requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry']
+                    requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/apps/plugins/ez-registerlanguagehelpersplugin.js"
                 ez-viewservicebaseplugin:
                     requires: ['plugin', 'base']

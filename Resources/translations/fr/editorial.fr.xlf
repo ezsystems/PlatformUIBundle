@@ -102,6 +102,10 @@
         <source>discoverybar.search</source>
         <target>Recherche</target>
       </trans-unit>
+      <trans-unit id="fdebbdb6b33acdce757976a6b2bd789c" resname="locationview.details.title">
+        <source>locationview.details.title</source>
+        <target>Détails du contenu</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -4,6 +4,7 @@
  */
 YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
     var registerHelpersTest, languageNameTest, translatePropertyTest, registerTest,
+        translateTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     registerHelpersTest = new Y.Test.Case({
@@ -36,6 +37,10 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
 
         "Should register the `translate_property` helper": function () {
             this._helperRegistered('translate_property');
+        },
+
+        "Should register the `translate` helper": function () {
+            this._helperRegistered('translate');
         },
     });
 
@@ -107,6 +112,64 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
         }
     });
 
+    translateTest = new Y.Test.Case({
+        name: "eZ Register Language Helpers translate test",
+
+        tearDown: function () {
+            this.plugin.destroy();
+            delete this.plugin;
+        },
+
+        _mockTranslator: function (expectedMessage, expectedName, expectedDomain) {
+            Y.eZ.Translator = {
+                trans: function(message, variables, domain) {
+                    Assert.areSame(
+                        expectedMessage,
+                        message,
+                        "The message should be passed to the translator"
+                    );
+                    if (expectedName) {
+                        Assert.areSame(
+                            expectedName,
+                            variables.name,
+                            "The variables should be passed to the translator"
+                        );
+                    }
+
+                    Assert.areSame(
+                        expectedDomain,
+                        domain,
+                        "The domain should be passed to the translator"
+                    );
+                }
+            };
+        },
+
+        "Should call the `translate` method": function () {
+            var message = "Translate me!",
+                name = "John Doe",
+                variables = "{\"name\": \"" + name + "\"}",
+                domain = "unit test";
+
+            this._mockTranslator(message, name, domain);
+
+            /*jshint camelcase: false */
+            Y.Handlebars.helpers.translate(message, variables, domain);
+            /*jshint camelcase: true */
+        },
+
+        "Should call the `translate` method without variables": function () {
+            var message = "Translate me!",
+                domain = "unit test";
+
+            this._mockTranslator(message, null, domain);
+
+            /*jshint camelcase: false */
+            Y.Handlebars.helpers.translate(message, domain);
+            /*jshint camelcase: true */
+        }
+    });
+
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.RegisterLanguageHelpers;
     registerTest.components = ['platformuiApp'];
@@ -115,5 +178,6 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
     Y.Test.Runner.add(registerHelpersTest);
     Y.Test.Runner.add(languageNameTest);
     Y.Test.Runner.add(translatePropertyTest);
+    Y.Test.Runner.add(translateTest);
     Y.Test.Runner.add(registerTest);
 }, '', {requires: ['test', 'handlebars', 'ez-registerlanguagehelpersplugin', 'ez-pluginregister-tests']});
