@@ -1,0 +1,2 @@
+<h1>{{translate 'test.translation.title' 'testdomain'}} </h1>
+
