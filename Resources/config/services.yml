@@ -28,6 +28,7 @@ parameters:
     ezsystems.platformui.exception_controller: "ezsystems.platformui.controller.exception:showAction"
     ezsystems.platformui.controller.exception.class: EzSystems\PlatformUIBundle\Controller\ExceptionController
     ezsystems.platformui.loader.combo_loader.class: EzSystems\PlatformUIBundle\Loader\ComboLoader
+    ezsystems.platformui.translation.extractor.handlebars.class: EzSystems\PlatformUIBundle\Translation\HandleBarsExtractor
 
     # override of the REST content controller
     ezpublish_rest.controller.content.class: EzSystems\PlatformUIBundle\Controller\Rest\ContentController
@@ -238,3 +239,10 @@ services:
     ezsystems.platformui.loader.combo_loader:
         class: "%ezsystems.platformui.loader.combo_loader.class%"
         arguments: ["@ezpublish.config.resolver", "@templating", "$yui.build_dir;ez_platformui$", "%webroot_dir%"]
+
+    ## Translation extractor service
+    ezsystems.platformui.translation.extractor.handlebars:
+        class: "%ezsystems.platformui.translation.extractor.handlebars.class%"
+        arguments: ["@=service('kernel').locateResource('@eZPlatformUIBundle/Resources/public/templates')"]
+        tags:
+            - { name: translation.extractor, alias: handlebars }
