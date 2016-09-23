@@ -416,8 +416,8 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                 var elt = expected[i];
 
                 Y.Assert.areEqual(
-                    elt.id,
-                    relation.id,
+                    elt.destination,
+                    relation.destination,
                     "The element " + i + " should be " + elt.id
                 );
             });
@@ -427,8 +427,38 @@ YUI.add('ez-contentmodel-tests', function (Y) {
             this._testRelations(this.relationsCommon, "COMMON");
         },
 
-        "Should filter ATTRIBUTE relations with a field identifier": function () {
-            this._testRelations(this.relationsAttribute2, "ATTRIBUTE", "attr2");
+        "Should return ATTRIBUTE relation list with a field identifier": function () {
+            var fieldDefinitionIdentifier = 'attr2',
+                fields = {},
+                destinationContentId = 42;
+
+            fields[fieldDefinitionIdentifier] = {
+                fieldValue: {destinationContentIds: [destinationContentId]}
+            };
+            this.model.set('fields', fields);
+
+            this._testRelations(
+                [{destination: "/api/ezp/v2/content/objects/" + destinationContentId}],
+                "ATTRIBUTE",
+                fieldDefinitionIdentifier
+            );
+        },
+
+        "Should return ATTRIBUTE relation with a field identifier": function () {
+            var fieldDefinitionIdentifier = 'attr2',
+                fields = {},
+                destinationContentId = 42;
+
+            fields[fieldDefinitionIdentifier] = {
+                fieldValue: {destinationContentId: destinationContentId}
+            };
+            this.model.set('fields', fields);
+
+            this._testRelations(
+                [{destination: "/api/ezp/v2/content/objects/" + destinationContentId}],
+                "ATTRIBUTE",
+                fieldDefinitionIdentifier
+            );
         },
 
         "Should filter ATTRIBUTE relations without a field identifier": function () {
