@@ -10,6 +10,7 @@ namespace EzSystems\PlatformUIBundle\Controller;
 
 use Symfony\Bundle\TwigBundle\Controller\ExceptionController as BaseExceptionController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Templating\TemplateReferenceInterface;
 
 class ExceptionController extends BaseExceptionController
 {
@@ -22,8 +23,14 @@ class ExceptionController extends BaseExceptionController
             return $template;
         }
 
-        $customTemplate = clone $template;
-        $customTemplate->set('bundle', 'eZPlatformUIBundle');
+        // pre Symfony 2.8 compatibility
+        if ($template instanceof TemplateReferenceInterface) {
+            $customTemplate = clone $template;
+            $customTemplate->set('bundle', 'eZPlatformUIBundle');
+        } else {
+            $customTemplate = str_replace('@Twig', '@eZPlatformUIBundle', $template);
+        }
+
         if ($this->templateExists($customTemplate)) {
             return $customTemplate;
         }
