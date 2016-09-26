@@ -70,6 +70,6 @@ YUI.add('ez-userloadplugin', function (Y) {
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.UserLoad, ['locationViewViewService']
+        Y.eZ.Plugin.UserLoad, ['locationViewViewService', 'universalDiscoveryViewService']
     );
 });

@@ -1,9 +1,22 @@
 {{#if contentInfo}}
     <div class="ez-ud-pane ez-ud-pane-selected">
         <h2 class="ez-ud-pane-title">Selected item</h2>
-        <div class="ez-ud-pane-content">
-            <h3>{{ contentInfo.name }} ({{ translate_property contentType.names }})</h3>
+        <div class="ez-ud-pane-content ez-asynchronousview">
+            <h3 class="ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}"> {{ contentInfo.name }} ({{ translate_property contentType.names }})</h3>
 
+
+            <div class="ez-ud-selected-visual ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}">
+                <img alt="" class="ez-ud-selected-image">
+            </div>
+
+
+            <p class="ez-asynchronousview-error ez-font-icon">
+                An error occurred while loading the image.
+                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+            </p>
+            <h2>{{ contentInfo.name }}</h2>
+            <p class="ez-ud-selected-infos">Last Modified
+            <div>{{ contentInfo.lastModified }} by {{ owner.name }} {{ creator.name }}</div></p>
             {{#if addConfirmButton}}
             <p>
                 <button class="ez-ud-selected-confirm ez-button pure-button"{{#unless confirmButtonEnabled}} disabled="disabled"{{/unless}}>Choose this content</button>

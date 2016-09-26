@@ -99,7 +99,6 @@ YUI.add('ez-asynchronousview', function (Y) {
             var attrs = {
                     loadingError: false
                 };
-
             if ( this._watchAttribute ) {
                 attrs[this._watchAttribute] = null;
             }

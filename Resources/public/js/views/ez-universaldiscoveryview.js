@@ -36,6 +36,9 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
         },
 
         initializer: function () {
+            this.on('*:loadImageVariation', function (e) {
+                console.log('REMONTE a discoveryview')
+            });
             this.on('changeTab', this._updateVisibleMethod);
             this.after('multipleChange', this._uiMultipleMode);
             this.after('visibleMethodChange', this._updateMethods);
@@ -283,7 +286,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
 
                 method.setAttrs({
                     'multiple': this.get('multiple'),
-                    'loadContent': this.get('loadContent'),
+                    'loadContent': method.get('loadContent') === true ? true : this.get('loadContent'),
                     'startingLocationId': startingLocationId,
                     'visible': visible,
                     'isSelectable': Y.bind(this.get('isSelectable'), this)
@@ -560,7 +563,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             bubbleTargets: this,
                             priority: 100,
                             multiple: this.get('multiple'),
-                            loadContent: this.get('loadContent'),
+                            loadContent: true,
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
                             startingLocationId: this.get('startingLocationId')
                         }),
