@@ -37,6 +37,7 @@
 
 .ez-view-universaldiscoveryselectedview .ez-ud-pane-content {
     position: relative;
+    width: 100%;
 }
 
 .ez-view-universaldiscoveryselectedview .ez-ud-selected-animation {
@@ -52,15 +53,6 @@
     visibility: visible;
 }
 
-
-.ez-view-universaldiscoveryselectedview .ez-ud-selected-visual,
-.ez-view-universaldiscoveryselectedview .ez-asynchronousview-error {
-    display: block;
-    width: 100%;
-    height: 9rem;
-    box-sizing: border-box;
-}
-
 .ez-view-universaldiscoveryselectedview .ez-asynchronousview .ez-asynchronousview-error {
     padding-top: 1rem;
     margin: 0;
@@ -70,19 +62,11 @@
     display: none;
 }
 
-.ez-view-universaldiscoveryselectedview.is-state-image-loaded .ez-ud-selected-visual {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-}
-
 .ez-view-universaldiscoveryselectedview.is-state-image-loaded .ez-ud-selected-image {
     display: block;
-    margin: auto;
+    margin: 0 auto;
     height: auto;
     max-width: 100%;
-    max-height: 100%;
 }
 
 .ez-view-universaldiscoveryselectedview .ez-asynchronousview-error {
@@ -97,4 +81,11 @@
     display: none;
 }
 
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-confirm {
+    width: 100%;
+}
 
+.ez-view-universaldiscoveryselectedview .ez-ud-pane-content {
+    height: 200px;
+    overflow: auto;
+}

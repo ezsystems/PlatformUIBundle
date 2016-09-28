@@ -35,57 +35,66 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
         },
 
         initializer: function () {
-            var imageField;
-            this._fireMethod = function () {};
-            this._watchAttribute = 'content2';
+            this._fireMethod = Y.bind(this._fireLoadImageVariation, this);
+            this._triggerAttribute = 'imageField';
 
             this.after('imageStateChange', this._uiSetState);
-            this.after('viewStateChange', this._uiSetState);
             this.after('loadImageVariation', function () {
                 this._set('imageState', STATE_IMAGE_LOADING);
             });
 
-
-
-
             this.after('imageVariationChange', function (e) {
-                this._set('imageState', STATE_IMAGE_LOADED);
-                this._renderImageVariation();
+                if (this.get('imageVariation')) {
+                    this._set('imageState', STATE_IMAGE_LOADED);
+                    this._renderImageVariation();
+                }
             });
 
             this._errorHandlingMethod = function () {
                 this._set('imageState', STATE_IMAGE_ERROR);
             };
-
-            this.on('contentStructChange', function () {
-                this._set('imageState', STATE_IMAGE_LOADING);
-            });
+            
             this.after('contentStructChange', function (e) {
                 this._setConfirmButtonState(e.newVal);
+                if ( this.get('contentStruct') && this.get('contentStruct').content ) {
+                    this._setTranslations();
+                    this._detectImage();
+                }
 
-
-                imageField = this._getFilledImageField();
-                this._set('imageState', STATE_IMAGE_LOADING);
-                    if ( imageField ) {
-                        this._fireMethod = Y.bind(this._fireLoadImageVariation, this, imageField);
-                    } else {
-                        this._fireMethod = function () {};
-                        this._set('imageState', STATE_IMAGE_NONE);
-                    }
-
-
-                    this._fireMethod();
-                        this.render();
-
-
+                this.render();
             });
-
             this.after('confirmButtonEnabledChange', function (e) {
                 this._uiButtonState();
                 if ( this.get('confirmButtonEnabled') ) {
                     this._uiResetAnimation();
                 }
             });
+        },
+
+        /**
+         * Detect if the content has an image and set the view state accordingly
+         *
+         * @method _detectImage
+         * @protected
+         */
+        _detectImage: function () {
+            if ( this._getFilledImageField() ) {
+                this.set('imageField', this._getFilledImageField());
+
+            } else {
+                this._set('imageState', STATE_IMAGE_NONE);
+                this.set('imageVariation', null);
+            }
+        },
+
+        /**
+         * Set translations
+         *
+         * @method _setTranslations
+         * @protected
+         */
+        _setTranslations: function () {
+            this.set('translations', this._getTranslations());
         },
 
         /**
@@ -105,12 +114,11 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
          * the image variation stored in `variationIdentifier` attribute.
          *
          * @method _fireLoadImageVariation
-         * @param {Object} imageField
          * @protected
          */
-        _fireLoadImageVariation: function (imageField) {
+        _fireLoadImageVariation: function () {
             this.fire('loadImageVariation', {
-                field: imageField,
+                field: this.get('imageField'),
                 variation: this.get('variationIdentifier'),
             });
         },
@@ -141,8 +149,8 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
          * @return {Object|Null}
          */
         _getFilledImageField: function () {
-            var content = this.get('contentStruct')['content'],
-                contentType = this.get('contentStruct')['contentType'];
+            var content = this.get('contentStruct').content,
+                contentType = this.get('contentStruct').contentType;
 
             return Y.Array.find(content.getFieldsOfType(contentType, 'ezimage'), function (field) {
                 return !!field.fieldValue;
@@ -218,48 +226,26 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
         },
 
         /**
-         * Fire the `loadUser` event
-         * @method _fireLoadUser
+         * Returns and formats the translations list to a string suitable for the template
+         *
+         * @method _getTranslations
          * @protected
+         * @return {String} String of language codes in which the content is
+         * translated
          */
-        _fireLoadUser: function (callback) {
-            var creatorId = this.get('content').get('currentVersion').get('resources').Creator,
-                ownerId = this.get('content').get('resources').Owner;
-
-            /**
-             * Fired when the details view needs authors
-             * @event loadUser
-             * @param {String} userId Id of the author
-             * @param {String} attributeName Where to store the result
-             */
-            this.fire('loadUser', {
-                userId: creatorId,
-                attributeName: 'creator',
-            });
-
-            if (creatorId === ownerId) {
-                this.onceAfter('creatorChange', function (e) {
-                    this.set('owner', this.get('creator'));
-                });
-            } else {
-                this.fire('loadUser', {
-                    userId: ownerId,
-                    attributeName: 'owner',
-                });
-            }
-            this.after('ownerChange', callback);
+        _getTranslations: function () {
+            return this.get('contentStruct').content.get('currentVersion').getTranslationsList().join(', ');
         },
 
         render: function () {
             this.get('container').setHTML(this.template({
+                translations: this.get('translations'),
                 content: this._modelJson('content'),
                 contentInfo: this._modelJson('contentInfo'),
                 location: this._modelJson('location'),
                 contentType: this._modelJson('contentType'),
                 addConfirmButton: this.get('addConfirmButton'),
                 confirmButtonEnabled: this.get('confirmButtonEnabled'),
-                owner: this.get('owner') ? this.get('owner').toJSON() : false,
-                creator: this.get('creator') ? this.get('creator').toJSON() : false,
             }));
             return this;
         },
@@ -328,7 +314,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
     }, {
         ATTRS: {
             /**
-             * Holds the current state of the grid item view regarding an image
+             * Holds the current state of the selected view regarding an image
              * to display.
              *
              * @attribute imageState
@@ -347,11 +333,21 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
              * @attribute imageVariation
              * @type {Object}
              */
-            imageVariation: {},
-
-            content: {
+            imageVariation: {
                 value: null
             },
+
+            /**
+             * The image field of the content
+             *
+             * @attribute imageField
+             * @type {null|Object}
+             * @default null
+             */
+            imageField : {
+                value: null
+            },
+            
             /**
              * The variation identifier to use to display the image
              *
@@ -425,22 +421,6 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
                     return true;
                 }
             },
-
-            /**
-             * The creator of the content
-             *
-             * @attribute creator
-             * @type {Object}
-             */
-            creator: {},
-
-            /**
-             * The owner of the content
-             *
-             * @attribute owner
-             * @type {Object}
-             */
-            owner: {},
         }
     });
 });

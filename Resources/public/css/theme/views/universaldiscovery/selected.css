@@ -28,6 +28,11 @@
     border: 1px solid #333;
 }
 
+.ez-view-universaldiscoveryselectedview .ez-ud-pane-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+
 .ez-view-universaldiscoveryselectedview .ez-asynchronousview-error {
     text-align: center;
 }
@@ -40,33 +45,49 @@
 .ez-view-universaldiscoveryselectedview.is-state-image-loading .ez-ud-selected-visual:before {
     display: block;
     text-align: center;
-    line-height: 9rem;
+    line-height: 7rem;
 }
 
 .ez-view-universaldiscoveryselectedview.is-state-image-loading .ez-ud-selected-visual:before {
     content: "\e61c";
     color: #ddd;
-    -webkit-animation: spin 0.7s infinite linear;
     animation: spin 0.7s infinite linear;
 }
-
 
 .ez-view-universaldiscoveryselectedview.is-state-image-loaded .ez-ud-selected-visual:before {
     content: "";
 }
+
 .ez-view-universaldiscoveryselectedview .ez-ud-selected-confirm {
-    background: #2B84B1;
-    color: #FFFFFF;
     font-size: 110%;
     font-weight: bold;
-    border: 1px solid #2B84B1;
     border-radius: 5px;
 }
 
-.ez-view-universaldiscoveryselectedview .ez-contenttype-icon {
-    color: #F6F6F6;
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-name {
+    font-size: 120%;
+    font-weight: bold;
+    margin-bottom: 0;
 }
 
-.ez-view-universaldiscoveryselectedview .ez-ud-selected-visual.ez-contenttype-icon {
-    color: #2B84B1;
+.ez-view-universaldiscoveryselectedview .ez-contenttype-icon {
+    color: #444444;
+}
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-contenttype {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-infos {
+    margin-left: 2em;
+}
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-infos .ez-ud-selected-infos-title {
+    font-weight: bold;
+}
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-infos .ez-ud-selected-info {
+    margin-bottom: 0.5em;
+    margin-left: 0;
 }

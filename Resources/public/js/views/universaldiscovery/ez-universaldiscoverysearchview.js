@@ -40,7 +40,7 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
      * @extends eZ.UniversalDiscoveryMethodBaseView
      */
     Y.eZ.UniversalDiscoverySearchView = Y.Base.create('universalDiscoverySearchView',
-        Y.eZ.UniversalDiscoveryMethodBaseView, [], {
+        Y.eZ.UniversalDiscoveryMethodBaseView, [Y.eZ.AsynchronousView], {
         initializer: function () {
             this._fireMethod = this._fireLocationSearch;
             this._watchAttribute = 'searchResultList';

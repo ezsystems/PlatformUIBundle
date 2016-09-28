@@ -48,6 +48,16 @@ YUI.add('ez-asynchronousview', function (Y) {
          */
 
         /**
+         * Holds the attribute name which change event triggers the asynchronous
+         * process.
+         *
+         * @property _triggerAttribute
+         * @type String
+         * @protected
+         * @default 'active'
+         */
+
+        /**
          * Holds the attribute name which stores the data needed to render the
          * view. If provided, the asynchronous view will subscribe to the
          * corresponding change event.
@@ -67,9 +77,12 @@ YUI.add('ez-asynchronousview', function (Y) {
             if ( !this._errorHandlingMethod ) {
                 this._errorHandlingMethod = this.render;
             }
+            if ( !this._triggerAttribute ) {
+                this._triggerAttribute = 'active';
+            }
 
-            this.after('activeChange', function (e) {
-                if ( this.get('active') ) {
+            this.after(this._triggerAttribute + 'Change', function (e) {
+                if ( this.get(this._triggerAttribute) ) {
                     this._fireMethod(e);
                 }
             });
@@ -99,6 +112,7 @@ YUI.add('ez-asynchronousview', function (Y) {
             var attrs = {
                     loadingError: false
                 };
+
             if ( this._watchAttribute ) {
                 attrs[this._watchAttribute] = null;
             }

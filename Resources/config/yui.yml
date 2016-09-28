@@ -280,7 +280,7 @@ system:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-discoverybarcontenttreeplugin']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js"
                 ez-universaldiscoveryviewservice:
-                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-imagevariationloadplugin', 'ez-userloadplugin', 'ez-universaldiscoverycontenttreeplugin']
+                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-imagevariationloadplugin', 'ez-universaldiscoverycontenttreeplugin']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-universaldiscoveryviewservice.js"
                 ez-confirmboxviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice']

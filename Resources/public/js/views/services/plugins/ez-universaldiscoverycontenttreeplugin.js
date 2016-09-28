@@ -33,8 +33,8 @@ YUI.add('ez-universaldiscoverycontenttreeplugin', function (Y) {
 
         /**
          * Builds the tree for the universal discovery browse view. The tree is
-         * also initialize with the `loadContent` flag so the Content items are
-         * also loaded if needed.
+         * also initialize with the true flag so the Content items are
+         * also loaded because they are needed for browse and search UDW methods.
          *
          * @method _buildTree
          * @protected
@@ -55,7 +55,7 @@ YUI.add('ez-universaldiscoverycontenttreeplugin', function (Y) {
                 'sortOrder': 'ASC',
             });
 
-            tree.clear(this._getRootNode([virtualRoot], browseView.get('loadContent')));
+            tree.clear(this._getRootNode([virtualRoot], true));
             browseView.get('treeView').set('tree', tree);
 
             if (browseView.get('startingLocationId')) {
