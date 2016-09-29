@@ -14,7 +14,8 @@ YUI.add('ez-platformuiapp', function (Y) {
 
     var L = Y.Lang,
         APP_OPEN = 'is-app-open',
-        APP_LOADING = 'is-app-loading';
+        APP_LOADING = 'is-app-loading',
+        LOADING_TIMEOUT = 500;
 
     /**
      * PlatformUI Application
@@ -766,10 +767,14 @@ YUI.add('ez-platformuiapp', function (Y) {
          * @param {Object} e the event facade object of the loadingChange event
          */
         _loading: function (e) {
+            window.clearTimeout(this._loadingTimeout);
+
             if ( e.newVal ) {
                 this.get('container').addClass(APP_LOADING);
             } else {
-                this.get('container').removeClass(APP_LOADING);
+                this._loadingTimeout = window.setTimeout(Y.bind(function () {
+                    this.get('container').removeClass(APP_LOADING);
+                }, this), LOADING_TIMEOUT);
             }
         },
 
@@ -1147,7 +1152,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                 readOnly: true,
                 value: {},
             },
-            
+
             /**
              * Boolean that determine if the app routing is enabled
              *
