@@ -15,10 +15,6 @@
     box-shadow: 3px 3px 10px 1px rgba(175,175,175,.6);
 }
 
-.ez-view-loginformview .ez-loginform-link {
-    font-size: 90%;
-}
-
 .ez-view-loginformview .ez-loginform-input {
     border-radius: 3px;
 }
