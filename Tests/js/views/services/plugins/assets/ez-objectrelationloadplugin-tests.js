@@ -11,13 +11,18 @@ YUI.add('ez-objectrelationloadplugin-tests', function (Y) {
 
         setUp: function () {
             this.relatedContent = new Y.Mock();
-            this.destination = '/api/ezp/v2/content/objects/117';
+            this.destination = "24";
             this.fieldDefinitionIdentifier = 'super_attribut_relation';
             this.relationId = 42;
 
+            this.fields = {};
+            this.fields[this.fieldDefinitionIdentifier] = {fieldValue: {destinationContentId: this.destinationId}};
+            this.content = new Y.eZ.Content();
+            this.content.set('fields', this.fields);
+
             Y.Mock.expect(this.relatedContent, {
                 method: 'set',
-                args: ['id', this.destination],
+                args: ['id', "/api/ezp/v2/content/objects/" + this.destinationId],
             });
 
             this.capi = {};
@@ -29,21 +34,7 @@ YUI.add('ez-objectrelationloadplugin-tests', function (Y) {
             this.view.addTarget(this.service);
 
             this.service.set('capi', this.capi);
-            this.service.set('content', new Y.eZ.Content());
-            this.service.get('content').set('relations', [
-                {
-                    id: this.relationId,
-                    destination: this.destination,
-                    type: 'ATTRIBUTE',
-                    fieldDefinitionIdentifier: this.fieldDefinitionIdentifier,
-                },
-                {
-                    id: this.relationId,
-                    destination: this.destination,
-                    type: 'EMBED',
-                    fieldDefinitionIdentifier: this.fieldDefinitionIdentifier,
-                }
-            ]);
+            this.service.set('content', this.content);
 
             this.plugin = new Y.eZ.Plugin.ObjectRelationLoad({
                 host: this.service,

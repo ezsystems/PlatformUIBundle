@@ -212,19 +212,45 @@ YUI.add('ez-contentmodel', function (Y) {
                 return this.get('relations');
             }
 
+            if (type === "ATTRIBUTE" && fieldDefinitionIdentifier) {
+                return this._getRelationsFromField(fieldDefinitionIdentifier);
+            }
+
             relations = Y.Array.filter(this.get('relations'), function (relation) {
-                if (
-                    fieldDefFilter
-                    && type === relation.type
-                    && fieldDefinitionIdentifier === relation.fieldDefinitionIdentifier
-                ) {
-                    return true;
-                } else if ( !fieldDefFilter && type === relation.type ) {
+                if ( !fieldDefFilter && type === relation.type ) {
                     return true;
                 }
                 return false;
             });
             return relations;
+        },
+
+        /**
+         * Returns the relations ids from the field in the shape of an Array of Object
+         *
+         * @protected
+         * @method _getRelationsFromField
+         *
+         * @param {String} fieldDefinitionIdentifier
+         * @return {Array}
+         */
+        _getRelationsFromField: function(fieldDefinitionIdentifier) {
+            var fields = this.get('fields'),
+                destinationContentIds,
+                fieldValue = fields[fieldDefinitionIdentifier].fieldValue;
+
+            if (fieldValue.destinationContentIds) {
+                // relation list
+                destinationContentIds = fieldValue.destinationContentIds;
+            } else {
+                // relation
+                destinationContentIds = [fieldValue.destinationContentId];
+            }
+
+            return destinationContentIds.map(function (contentId) {
+                // Will use a cleaner approach on 1.6 when EZP-23000 is fixed and we have REST ID available
+                return {destination: "/api/ezp/v2/content/objects/" + contentId};
+            });
         },
 
         /**
