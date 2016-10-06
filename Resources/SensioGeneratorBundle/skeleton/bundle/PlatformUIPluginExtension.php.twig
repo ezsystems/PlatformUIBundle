@@ -1,0 +1,50 @@
+{% extends 'skeleton/bundle/Extension.php.twig' %}
+
+{% block use_statements %}
+{{ parent() }}
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\Config\Resource\FileResource;
+{% endblock use_statements %}
+
+{% block class_definition %}
+class {{ bundle_basename }}Extension extends Extension implements PrependExtensionInterface
+{% endblock class_definition %}
+
+{% block class_body %}
+{{ parent() }}
+
+    public function prepend(ContainerBuilder $container)
+    {
+        $container->prependExtensionConfig(
+            'assetic', array('bundles' => array('{{ bundle }}'))
+        );
+
+        $this->prependYui($container);
+        $this->prependCss($container);
+    }
+
+    private function prependYui(ContainerBuilder $container)
+    {
+        $container->setParameter(
+            'extension_skeleton.js_dir',
+            'bundles/{{ extension_alias }}/js'
+        );
+        $yuiConfigFile = __DIR__ . '/../Resources/config/yui.yml';
+        $config = Yaml::parse(file_get_contents($yuiConfigFile));
+        $container->prependExtensionConfig('ez_platformui', $config);
+        $container->addResource(new FileResource($yuiConfigFile));
+    }
+
+    private function prependCss(ContainerBuilder $container)
+    {
+        $container->setParameter(
+            'extension_skeleton.css_dir',
+            'bundles/{{ extension_alias }}/css'
+        );
+        $cssConfigFile = __DIR__ . '/../Resources/config/css.yml';
+        $config = Yaml::parse(file_get_contents($cssConfigFile));
+        $container->prependExtensionConfig('ez_platformui', $config);
+        $container->addResource(new FileResource($cssConfigFile));
+    }
+{% endblock %}
