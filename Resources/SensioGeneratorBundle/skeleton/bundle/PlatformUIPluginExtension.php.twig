@@ -13,6 +13,14 @@ class {{ bundle_basename }}Extension extends Extension implements PrependExtensi
 
 {% block class_body %}
 {{ parent() }}
+    /**
+    * {@inheritdoc}
+    */
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+    }
 
     public function prepend(ContainerBuilder $container)
     {
