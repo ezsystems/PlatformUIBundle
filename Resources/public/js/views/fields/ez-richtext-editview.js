@@ -266,10 +266,39 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @return {DocumentFragment}
          */
         _getHTMLDocumentFragment: function () {
-            var fragment = Y.config.doc.createDocumentFragment(),
-                root = Y.config.doc.createElement('div'),
+            var fragment = Y.config.doc.implementation.createHTMLDocument().createDocumentFragment(),
+                root = fragment.ownerDocument.createElement('div'),
                 doc = (new DOMParser()).parseFromString(this.get('field').fieldValue.xhtml5edit, "text/xml"),
-                i;
+                importChildNodes = function (parent, element, skipElement) {
+                    // recursively import element and its descendants under
+                    // parent this allows to correctly transform an `xhtml5edit`
+                    // document (it's an XML document) to an HTML document a
+                    // browser can understand.
+                    var i, newElement;
+
+                    if ( skipElement ) {
+                        newElement = parent;
+                    } else {
+                        if ( element.nodeType === Node.ELEMENT_NODE ) {
+                            newElement = parent.ownerDocument.createElement(element.localName);
+                            for (i = 0; i != element.attributes.length; i++) {
+                                importChildNodes(newElement, element.attributes[i], false);
+                            }
+                            parent.appendChild(newElement);
+                        } else if ( element.nodeType === Node.TEXT_NODE ) {
+                            parent.appendChild(parent.ownerDocument.createTextNode(element.nodeValue));
+                            return;
+                        } else if ( element.nodeType === Node.ATTRIBUTE_NODE ) {
+                            parent.setAttribute(element.localName, element.value);
+                            return;
+                        } else {
+                            return;
+                        }
+                    }
+                    for (i = 0; i != element.childNodes.length; i++) {
+                        importChildNodes(newElement, element.childNodes[i], false);
+                    }
+                };
 
             if ( !doc || !doc.documentElement || doc.querySelector("parsererror") ) {
                 console.warn(
@@ -279,9 +308,8 @@ YUI.add('ez-richtext-editview', function (Y) {
             }
 
             fragment.appendChild(root);
-            for (i = 0; i != doc.documentElement.childNodes.length; i++) {
-                root.appendChild(doc.documentElement.childNodes.item(i).cloneNode(true));
-            }
+
+            importChildNodes(root, doc.documentElement, true);
             return fragment;
         },
 
