@@ -25,6 +25,6 @@ return Symfony\CS\Config\Config::create()
                 'Resources/public',
                 'Tests/js',
             ])
-            ->files()->name('*.php')
+            ->files()->name('/\.php$/')
     )
 ;
