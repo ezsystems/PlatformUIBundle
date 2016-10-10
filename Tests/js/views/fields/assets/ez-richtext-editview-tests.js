@@ -8,7 +8,8 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
         editorTest, rerenderEditorTest, focusModeTest, editorFocusHandlingTest, appendToolbarConfigTest,
         eventForwardTest, defaultEditorProcessorsTest, defaultProcessorsTest,
         VALID_XHTML, INVALID_XHTML, RESULT_XHTML, EMPTY_XHTML, RESULT_EMPTY_XHTML,
-        VALID_XHTML_WITH_EMBED,
+        VALID_XHTML_WITH_EMBED, VALID_XHTML_BR, RESULT_BR_XHTML, VALID_XHTML_COMPLEX,
+        RESULT_COMPLEX_XHTML,
         Assert = Y.Assert, Mock = Y.Mock,
         destroyTearDown = function () {
             // setTimeout is needed otherwise, the editor is destroyed while
@@ -27,6 +28,18 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     VALID_XHTML += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
     VALID_XHTML += '<p>I\'m not empty</p></section>';
 
+    VALID_XHTML_BR = '<?xml version="1.0" encoding="UTF-8"?>';
+    VALID_XHTML_BR += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
+    VALID_XHTML_BR += '<p>Line<br/>Breaks<br/>Line<br/>Breaks</p></section>';
+
+    VALID_XHTML_COMPLEX = '<?xml version="1.0" encoding="UTF-8"?>';
+    VALID_XHTML_COMPLEX += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
+    VALID_XHTML_COMPLEX += '<ul><li>Item 1</li><li>Item 2</li></ul>';
+    VALID_XHTML_COMPLEX += '<!-- should be ignored -->';
+    VALID_XHTML_COMPLEX += '<p>With<br/>breaks</p>';
+    VALID_XHTML_COMPLEX += '<div data-ezelement="ezembed" view="embed" data-href="ezcontent://52"/>';
+    VALID_XHTML_COMPLEX += '</section>';
+
     VALID_XHTML_WITH_EMBED = '<?xml version="1.0" encoding="UTF-8"?>';
     VALID_XHTML_WITH_EMBED += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit">';
     VALID_XHTML_WITH_EMBED += '<div data-ezelement="ezembed"></div></section>';
@@ -35,6 +48,12 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
     EMPTY_XHTML += '<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit"/>';
 
     RESULT_EMPTY_XHTML = '<p></p>';
+
+    RESULT_BR_XHTML = '<p>Line<br>Breaks<br>Line<br>Breaks</p>';
+
+    RESULT_COMPLEX_XHTML = '<ul><li>Item 1</li><li>Item 2</li></ul>';
+    RESULT_COMPLEX_XHTML += '<p>With<br>breaks</p>';
+    RESULT_COMPLEX_XHTML += '<div data-ezelement="ezembed" view="embed" data-href="ezcontent://52"></div>';
 
     RESULT_XHTML = '<p>I\'m not empty</p>';
 
@@ -126,7 +145,10 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
                     "The editable class should be available in the template"
                 );
                 Assert.areSame(expectRequired, variables.isRequired);
-                Assert.areSame(expectedXhtml, variables.xhtml);
+                Assert.areSame(
+                    expectedXhtml, variables.xhtml,
+                    "The HTML code should be available in the template"
+                );
 
                 return origTpl.call(this, variables);
             };
@@ -147,6 +169,15 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
         "Should add a paragraph in empty document": function () {
             this._testAvailableVariables(false, false, EMPTY_XHTML, RESULT_EMPTY_XHTML);
+        },
+
+        "Should transform the xhtml5edit code to HTML": function () {
+            this._testAvailableVariables(false, false, VALID_XHTML_COMPLEX, RESULT_COMPLEX_XHTML);
+        },
+
+        // regression test for EZP-26135
+        "Should not double the br tag": function () {
+            this._testAvailableVariables(false, false, VALID_XHTML_BR, RESULT_BR_XHTML);
         },
     });
 
