@@ -11,18 +11,18 @@ YUI.add('ez-objectrelationloadplugin-tests', function (Y) {
 
         setUp: function () {
             this.relatedContent = new Y.Mock();
-            this.destination = "24";
+            this.destinationHref = "/my/content/24";
             this.fieldDefinitionIdentifier = 'super_attribut_relation';
             this.relationId = 42;
 
             this.fields = {};
-            this.fields[this.fieldDefinitionIdentifier] = {fieldValue: {destinationContentId: this.destinationId}};
+            this.fields[this.fieldDefinitionIdentifier] = {fieldValue: {destinationContentHref: this.destinationHref}};
             this.content = new Y.eZ.Content();
             this.content.set('fields', this.fields);
 
             Y.Mock.expect(this.relatedContent, {
                 method: 'set',
-                args: ['id', "/api/ezp/v2/content/objects/" + this.destinationId],
+                args: ['id', this.destinationHref],
             });
 
             this.capi = {};

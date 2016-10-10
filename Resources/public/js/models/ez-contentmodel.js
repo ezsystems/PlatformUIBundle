@@ -236,20 +236,19 @@ YUI.add('ez-contentmodel', function (Y) {
          */
         _getRelationsFromField: function(fieldDefinitionIdentifier) {
             var fields = this.get('fields'),
-                destinationContentIds,
+                destinationContentHrefs,
                 fieldValue = fields[fieldDefinitionIdentifier].fieldValue;
 
-            if (fieldValue.destinationContentIds) {
+            if (fieldValue.destinationContentHrefs) {
                 // relation list
-                destinationContentIds = fieldValue.destinationContentIds;
+                destinationContentHrefs = fieldValue.destinationContentHrefs;
             } else {
                 // relation
-                destinationContentIds = [fieldValue.destinationContentId];
+                destinationContentHrefs = [fieldValue.destinationContentHref];
             }
 
-            return destinationContentIds.map(function (contentId) {
-                // Will use a cleaner approach on 1.6 when EZP-23000 is fixed and we have REST ID available
-                return {destination: "/api/ezp/v2/content/objects/" + contentId};
+            return destinationContentHrefs.map(function (contentHref) {
+                return {destination: contentHref};
             });
         },
 
