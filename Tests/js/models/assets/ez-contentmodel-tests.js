@@ -430,15 +430,15 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         "Should return ATTRIBUTE relation list with a field identifier": function () {
             var fieldDefinitionIdentifier = 'attr2',
                 fields = {},
-                destinationContentId = 42;
+                destinationContentHref = "/my/content/42";
 
             fields[fieldDefinitionIdentifier] = {
-                fieldValue: {destinationContentIds: [destinationContentId]}
+                fieldValue: {destinationContentHrefs: [destinationContentHref]}
             };
             this.model.set('fields', fields);
 
             this._testRelations(
-                [{destination: "/api/ezp/v2/content/objects/" + destinationContentId}],
+                [{destination: destinationContentHref}],
                 "ATTRIBUTE",
                 fieldDefinitionIdentifier
             );
@@ -447,15 +447,15 @@ YUI.add('ez-contentmodel-tests', function (Y) {
         "Should return ATTRIBUTE relation with a field identifier": function () {
             var fieldDefinitionIdentifier = 'attr2',
                 fields = {},
-                destinationContentId = 42;
+                destinationContentHref = "/my/content/42";
 
             fields[fieldDefinitionIdentifier] = {
-                fieldValue: {destinationContentId: destinationContentId}
+                fieldValue: {destinationContentHref: destinationContentHref}
             };
             this.model.set('fields', fields);
 
             this._testRelations(
-                [{destination: "/api/ezp/v2/content/objects/" + destinationContentId}],
+                [{destination: destinationContentHref}],
                 "ATTRIBUTE",
                 fieldDefinitionIdentifier
             );
