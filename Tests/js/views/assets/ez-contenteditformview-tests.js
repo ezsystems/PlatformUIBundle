@@ -4,7 +4,7 @@
  */
 YUI.add('ez-contenteditformview-tests', function (Y) {
     var viewTest, isValidTest, getFieldsTest, activeFlagTest, haltSubmitTest, incosistencyFieldsTest,
-        setVersionTest,
+        setVersionTest, setServerSideErrorsTest,
         Assert = Y.Assert;
 
     viewTest = new Y.Test.Case({
@@ -684,6 +684,83 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
         },
     });
 
+    setServerSideErrorsTest = new Y.Test.Case({
+        name: "eZ Content Edit Form View server side errors test",
+
+        setUp: function () {
+            var that = this;
+
+            this.appendServerSideErrorCalled = false;
+            this.contentType = new Y.Mock();
+            this.version = new Y.Mock();
+            this.config = {
+                fieldEditViews: {
+                    something: 'hello'
+                }
+            };
+
+            Y.Mock.expect(this.contentType, {
+                method: 'get',
+                args: ['fieldDefinitions'],
+                returns: {
+                    'id1': {
+                        'identifier': 'id1',
+                        'fieldType': 'test1',
+                        'fieldGroup': 'testfieldgroup',
+                        'id': 'id1',
+                    },
+                }
+            });
+            Y.eZ.FieldEditView.registerFieldEditView('test1', Y.Base.create('fieldEdit1', Y.eZ.FieldEditView, [], {
+                appendServerSideError: function () {
+                    that.appendServerSideErrorCalled = true;
+                }
+            }, {
+                ATTRS: {
+                    field: {
+                        fieldDefinitionIdentifier: 'test1'
+                    },
+                    fieldDefinition: {
+                        id: 'id1'
+                    }
+                }
+            }));
+
+            Y.Mock.expect(this.version, {
+                method: 'getField',
+                args: [Y.Mock.Value.String],
+                run: function (id) {
+                    return {
+                        'identifier': id,
+                        'value': 'some value'
+                    };
+                }
+            });
+
+            this.view = new Y.eZ.ContentEditFormView({
+                contentType: this.contentType,
+                version: this.version,
+                config: this.config
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+            Y.eZ.FieldEditView.registerFieldEditView('test1', undefined);
+        },
+
+        "Should call fieldEditView's appendServerSideError method": function () {
+            var serverSideError = new Y.Base(),
+                serverSideErrors = [serverSideError];
+
+            serverSideError.set('fieldDefinitionId', 'id1');
+            this.view.setServerSideErrors(serverSideErrors);
+
+            Assert.isTrue(this.appendServerSideErrorCalled, "Should append server side errors on field edit views");
+        },
+    });
+
     Y.Test.Runner.setName("eZ Content Edit Form View tests");
     Y.Test.Runner.add(viewTest);
     Y.Test.Runner.add(isValidTest);
@@ -692,4 +769,5 @@ YUI.add('ez-contenteditformview-tests', function (Y) {
     Y.Test.Runner.add(haltSubmitTest);
     Y.Test.Runner.add(incosistencyFieldsTest);
     Y.Test.Runner.add(setVersionTest);
+    Y.Test.Runner.add(setServerSideErrorsTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-contenteditformview']});

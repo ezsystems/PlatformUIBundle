@@ -1103,6 +1103,9 @@ system:
                 ez-notificationlist:
                     requires: ['model-list', 'ez-notification']
                     path: "%ez_platformui.public_dir%/js/models/structs/ez-notificationlist.js"
+                ez-fielderrordetails:
+                    requires: ['base']
+                    path: "%ez_platformui.public_dir%/js/models/structs/ez-fielderrordetails.js"
                 ez-editactionbarview:
                     requires: ['ez-barview', 'ez-buttonactionview', 'ez-previewactionview']
                     path: "%ez_platformui.public_dir%/js/views/ez-editactionbarview.js"
@@ -1303,11 +1306,14 @@ system:
                 ez-discarddraftplugin:
                     requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-discarddraftplugin.js"
+                ez-draftserversidevalidation:
+                    requires: ['base', 'ez-fielderrordetails']
+                    path: "%ez_platformui.public_dir%/js/views/services/plugins/extensions/ez-draftserversidevalidation.js"
                 ez-savedraftplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
+                    requires: ['ez-pluginregistry', 'ez-draftserversidevalidation', 'ez-viewservicebaseplugin']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-savedraftplugin.js"
                 ez-publishdraftplugin:
-                    requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry']
+                    requires: ['ez-pluginregistry', 'ez-draftserversidevalidation', 'ez-viewservicebaseplugin']
                     path: "%ez_platformui.public_dir%/js/views/services/plugins/ez-publishdraftplugin.js"
                 ez-sideviewservice:
                     requires: ['base']

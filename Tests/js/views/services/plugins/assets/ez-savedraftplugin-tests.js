@@ -3,8 +3,50 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-savedraftplugin-tests', function (Y) {
-    var tests, customNotificationTextTest, registerTest,
-        Assert = Y.Assert, Mock = Y.Mock;
+    var tests, customNotificationTextTest, registerTest, serverSideErrorTest,
+        Assert = Y.Assert, Mock = Y.Mock,
+        message1 = "Value for required field definition 'FirstField' with language 'eng-GB' is empty",
+        message2 = "Value for required field definition 'SecondField' with language 'eng-GB' is empty",
+        message3 = "Explosion in 10, 9, 8...",
+        type1 = "empty",
+        type2 = "empty",
+        type3 = "veryBad",
+        fieldTypeId1 = 198,
+        fieldTypeId2 = 199,
+        errorResponse = {
+            "ErrorMessage": {
+                "_media-type": "application\/vnd.ez.api.ErrorMessage+json",
+                "errorCode": 400,
+                "errorMessage": "Bad Request",
+                "errorDescription": "Content fields did not validate",
+                "errorDetails": {
+                    "fields": [
+                        {
+                            "_fieldTypeId": fieldTypeId1,
+                            "errors": [
+                                {
+                                    "type": type1,
+                                    "message": message1
+                                }
+                            ]
+                        },
+                        {
+                            "_fieldTypeId": fieldTypeId2,
+                            "errors": [
+                                {
+                                    "type": type2,
+                                    "message": message2
+                                },
+                                {
+                                    "type": type3,
+                                    "message": message3
+                                }
+                            ]
+                        }
+                    ]
+                },
+            }
+        };
 
     tests = new Y.Test.Case({
         name: "eZ Save Draft Plugin event tests",
@@ -33,6 +75,7 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                 host: this.service,
             });
 
+            this.createContentErrorResponse = errorResponse;
             this.createContentResponse = {
                 "Content": {
                     "CurrentVersion": {
@@ -413,6 +456,7 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
             var contentId = "all-my-life",
                 notificationId,
                 notified = false,
+                errorResponse = {document: this.createContentErrorResponse},
                 plugin = this.plugin;
 
             Y.Mock.expect(this.content, {
@@ -428,7 +472,7 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                 method: 'save',
                 args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
                 run: function (options, callback) {
-                    callback(true);
+                    callback(true, errorResponse);
                 },
             });
 
@@ -582,6 +626,7 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
         "Should notify about the failure of the draft creation process": function () {
             var notificationId,
                 notified = false,
+                errorResponse = {document: this.createContentErrorResponse},
                 plugin = this.plugin;
 
             Y.Mock.expect(this.content, {
@@ -592,7 +637,7 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
                 method: 'save',
                 args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
                 run: Y.bind(function (options, callback) {
-                    callback(true);
+                    callback(true, errorResponse);
                 }, this),
             });
             Y.Mock.expect(this.version, {
@@ -635,6 +680,76 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
         },
     });
 
+    serverSideErrorTest = new Y.Test.Case(Y.merge(Y.eZ.Test.DraftServerSideValidation.CallbackCalledTestCase, {
+        name: "eZ Save Draft Plugin event tests",
+
+        setUp: function () {
+            var that = this;
+
+            this.capi = {};
+            this.version = new Y.Mock();
+            this.content = new Y.Mock();
+            this.contentType = {};
+            this.parentLocation = {};
+            this.languageCode = 'fre-FR';
+            this.errorMessages = [message1, message2, message3];
+            this.errorTypes = [type1, type2, type3];
+            this.errorFieldDefinitionIds = [fieldTypeId1, fieldTypeId2, fieldTypeId2];
+
+            this.service = new Y.Base();
+            this.service.set('capi', this.capi);
+            this.service.set('version', this.version);
+            this.service.set('content', this.content);
+            this.service.set('languageCode', this.languageCode);
+            this.service.set('contentType', this.contentType);
+            this.service.set('parentLocation', this.parentLocation);
+            this.service.set('location', this.location);
+
+            this.view = new Y.View();
+            this.view.addTarget(this.service);
+
+            this.plugin = new Y.eZ.Plugin.SaveDraft({
+                host: this.service,
+            });
+
+            this.createContentErrorResponse = errorResponse;
+
+            this.errorResponse = {document: this.createContentErrorResponse};
+            this.action = 'whatever:saveAction';
+            this.contentId = "all-my-life";
+
+            Y.Mock.expect(this.content, {
+                method: 'isNew',
+                returns: false
+            });
+            Y.Mock.expect(this.content, {
+                method: 'get',
+                args: ['id'],
+                returns: this.contentId,
+            });
+            Y.Mock.expect(this.version, {
+                method: 'save',
+                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
+                run: function (options, callback) {
+                    callback(true, that.errorResponse);
+                },
+            });
+        },
+
+        tearDown: function () {
+            this.plugin.destroy();
+            this.view.destroy();
+            this.service.destroy();
+            delete this.capi;
+            delete this.plugin;
+            delete this.view;
+            delete this.service;
+            delete this.content;
+            delete this.version;
+            delete this.contentType;
+        },
+    }));
+    
     customNotificationTextTest = new Y.Test.Case({
         name: "eZ Save Draft Plugin custom notification text tests",
 
@@ -759,6 +874,7 @@ YUI.add('ez-savedraftplugin-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Save Draft Plugin tests");
     Y.Test.Runner.add(tests);
+    Y.Test.Runner.add(serverSideErrorTest);
     Y.Test.Runner.add(customNotificationTextTest);
     Y.Test.Runner.add(registerTest);
-}, '', {requires: ['test', 'view', 'base', 'ez-savedraftplugin', 'ez-pluginregister-tests']});
+}, '', {requires: ['test', 'view', 'base', 'ez-savedraftplugin', 'ez-draftserversidevalidation-tests', 'ez-pluginregister-tests']});

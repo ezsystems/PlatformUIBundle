@@ -20,7 +20,7 @@ YUI.add('ez-publishdraftplugin', function (Y) {
      * @constructor
      * @extends eZ.Plugin.ViewServiceBase
      */
-    Y.eZ.Plugin.PublishDraft = Y.Base.create('publishDraftPlugin', Y.eZ.Plugin.ViewServiceBase, [], {
+    Y.eZ.Plugin.PublishDraft = Y.Base.create('publishDraftPlugin', Y.eZ.Plugin.ViewServiceBase, [Y.eZ.DraftServerSideValidation], {
         initializer: function () {
             this.onHostEvent('*:publishAction', this._publishDraft);
         },
@@ -49,6 +49,15 @@ YUI.add('ez-publishdraftplugin', function (Y) {
             } else {
                 notificationIdentifier = this._buildNotificationIdentifier(content.get('id'));
             }
+
+            /**
+             * Stores a custom _serverSideErrorCallback sent in the `publishAction` event parameters.
+             *
+             * @property _serverSideErrorCallback
+             * @protected
+             * @type {Function}
+             */
+            this._serverSideErrorCallback = e.serverSideErrorCallback;
 
             service.fire('notify', {
                 notification: {
@@ -79,15 +88,18 @@ YUI.add('ez-publishdraftplugin', function (Y) {
          * event.
          *
          * @method _publishDraftCallback
+         * @param {Object} error The error object.
+         * @param {Object} response The response object.
          * @protected
          */
-        _publishDraftCallback: function (error) {
+        _publishDraftCallback: function (error, response) {
             var service = this.get('host'),
                 app = this.get('host').get('app'),
                 content = service.get('content'),
                 notificationIdentifier = this._buildNotificationIdentifier(content.get('id'));
 
             if ( error ) {
+                this._parseServerFieldsErrors(response, this._serverSideErrorCallback);
                 this._notifyError(content.get('id'));
                 app.set('loading', false);
                 return;
@@ -141,6 +153,7 @@ YUI.add('ez-publishdraftplugin', function (Y) {
                 fields: fields,
             }, Y.bind(function (error, response) {
                 if ( error ) {
+                    this._parseServerFieldsErrors(response, this._serverSideErrorCallback);
                     this._notifyError(content.get('id'));
                     service.get('app').set('loading', false);
                     return;

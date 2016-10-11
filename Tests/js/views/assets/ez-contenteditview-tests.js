@@ -510,14 +510,14 @@ YUI.add('ez-contenteditview-tests', function (Y) {
         name: "eZ Content Edit View event tests",
 
         setUp: function () {
-            this.formView = new Y.Mock();
+            this.formView = new Y.Mock(new Y.Base());
             this.actionBar = new Y.Mock();
 
-            this._configureSubViewMock(this.formView);
             this._configureSubViewMock(this.actionBar);
 
             this.fields = [];
             this.valid = true;
+            this.serverSideErrorSetted = false;
             Y.Mock.expect(this.formView, {
                 method: 'getFields',
                 returns: this.fields
@@ -526,7 +526,19 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                 method: 'isValid',
                 returns: this.valid
             });
-
+            Y.Mock.expect(this.formView, {
+                method: 'setServerSideErrors',
+                args: [Y.Mock.Value.Object],
+                run: Y.bind(function (arg) {
+                    Y.Assert.isArray(
+                        arg,
+                        "parameter should be an array"
+                    );
+                    this.formView.set('serverSideErrors', arg);
+                    this.serverSideErrorSetted = true;
+                },this)
+            });
+            
             this.view = new Y.eZ.ContentEditView({
                 container: '.container',
                 actionBar: this.actionBar,
@@ -557,6 +569,10 @@ YUI.add('ez-contenteditview-tests', function (Y) {
                     e.formIsValid,
                     "The form validity should be available in the event facade"
                 );
+                Y.Assert.isFunction(
+                    e.serverSideErrorCallback,
+                    "The serverSideErrorCallback should be available in the event facade"
+                );
             }, this));
             this.view.fire('whatever:' + evt);
         },
@@ -567,6 +583,22 @@ YUI.add('ez-contenteditview-tests', function (Y) {
 
         "Should add data to the publishAction event facade": function () {
             this._testAddDataActionEvent('publishAction');
+        },
+
+        "Should set the server side errors to the form view when calling the serverSideErrorCallback": function () {
+            var serverSideErrors = ['lots of errors'];
+            this.view.on('*:publishAction', Y.bind(function (e) {
+                e.serverSideErrorCallback(serverSideErrors);
+                Y.Assert.isTrue(
+                    this.serverSideErrorSetted,
+                    "The server side errors should have been setted to the form view"
+                );
+                Y.Assert.areSame(
+                    serverSideErrors, this.formView.get('serverSideErrors'),
+                    'Server side errors of the contenteditformview should be the same as the ones of the contenteditview'
+                );
+            }, this));
+            this.view.fire('whatever:publishAction');
         },
 
         "Should transform previewAction in saveAction": function () {
@@ -760,4 +792,4 @@ YUI.add('ez-contenteditview-tests', function (Y) {
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(domEventTest);
     Y.Test.Runner.add(attrsToFormViewAndActionBarTest);
-}, '', {requires: ['test', 'node-event-simulate', 'ez-contenteditview']});
+}, '', {requires: ['test', 'base', 'node-event-simulate', 'ez-contenteditview']});

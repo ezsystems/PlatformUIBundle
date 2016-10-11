@@ -154,6 +154,36 @@ YUI.add('ez-fieldeditview-tests', function (Y) {
 
         },
 
+        "Test error message handling from serverSideError": function () {
+            var serverSideError = new Y.Base(),
+                container = this.view.get('container'),
+                message1 = 'error !',
+                message2 = 'another error!';
+
+            serverSideError.set('message', message1);
+            this.view.render();
+            this.view.appendServerSideError(serverSideError);
+
+            Y.Assert.isTrue(
+                container.hasClass('is-error'),
+                "Should set the is-error class on the container when there's an error"
+            );
+            Y.Assert.areEqual(
+                serverSideError.get('message'),
+                container.one('.ez-editfield-error-message').getContent(),
+                "Should set the error message in .ez-editfield-error-message element"
+            );
+
+            serverSideError.set('message', message2);
+            this.view.appendServerSideError(serverSideError);
+
+            Y.Assert.areEqual(
+                message2 + '. ' + message1,
+                container.one('.ez-editfield-error-message').getContent(),
+                "Should set and concatenate the error messages in .ez-editfield-error-message element"
+            );
+        },
+
         "Test isValid": function () {
             this.view.render();
 
