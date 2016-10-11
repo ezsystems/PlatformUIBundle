@@ -80,27 +80,37 @@ YUI.add('ez-usermodel', function (Y) {
          * @method loadDrafts
          * @param options {Object}
          * @param options.api {Object} (required) the JS REST client instance
+         * @param [options.preloadContentInfo] boolean
          * @param callback {Function} function to call after processing response
          */
         loadDrafts: function (options, callback) {
-            options.api.getContentService().loadUserDrafts(this.get('id'), function (error, response) {
-                var versions = [];
+            var cb = function (error, response) {
+                    var versions = [];
 
-                if (error) {
-                    callback(error, response);
+                    if (error) {
+                        callback(error, response);
 
-                    return;
-                }
+                        return;
+                    }
 
-                response.document.VersionList.VersionItem.forEach(function (versionItemHash) {
-                    var versionInfo = new Y.eZ.VersionInfo();
+                    response.document.VersionList.VersionItem.forEach(function (versionItemHash) {
+                        var versionInfo = new Y.eZ.VersionInfo();
 
-                    versionInfo.loadFromHash(versionItemHash);
-                    versions.push(versionInfo);
-                });
+                        versionInfo.loadFromHash(versionItemHash);
+                        versions.push(versionInfo);
+                    });
 
-                callback(error, versions);
-            });
+                    callback(error, versions);
+            };
+            if ( options.preloadContentInfo ) {
+                options.api.getContentService().loadUserDrafts(
+                    this.get('id'),
+                    {"x-ez-embed-value": "VersionList.VersionItem.VersionInfo.Content"},
+                    cb
+                );
+            } else {
+                options.api.getContentService().loadUserDrafts(this.get('id'), cb);
+            }
         },
     }, {
         REST_STRUCT_ROOT: "User",
