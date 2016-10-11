@@ -22,6 +22,7 @@ trait CommonActions
     public function iClickAtLink($link)
     {
         $this->clickElementByText($link, 'a');
+         // @TODO implement click on link without get by text
     }
 
     /**
@@ -33,6 +34,7 @@ trait CommonActions
     public function iClickAtButton($button)
     {
         $this->clickElementByText($button, 'button');
+        // @TODO implement click on link without get by text
     }
 
     /**
@@ -152,6 +154,7 @@ trait CommonActions
     public function clickTab($tab)
     {
         $this->clickElementByText($tab, '.ez-tabs-label a[href]');
+        // @TODO implement without get by text
     }
 
     /**
@@ -162,24 +165,20 @@ trait CommonActions
      */
     public function clickNavigationZone($zone)
     {
-        $this->clickElementByText($zone, '.ez-zone-name');
+        $dataNavigation = [
+            'Content' => 'platform',
+            'Page' => 'studio',
+            'Performance' => 'studioplus',
+            'Admin Panel' => 'admin',
+        ];
+        $dataNavigationValue = $dataNavigation[$zone];
+        $navigationZoneElement = $this->findWithWait(".ez-zone[data-navigation='$dataNavigationValue']");
+        $navigationZoneElement->click();
         $this->waitWhileLoading();
         // Clicking navigation zone triggers load of first item,
         // we must wait before interacting with the page (see EZP-25128)
         // this method sleeps for a default amount (see EzSystems\PlatformUIBundle\Features\Context\PlaformUI)
         $this->sleep();
-    }
-
-    /**
-     * @Given I click on the :button button number :index
-     * Click on a PlatformUI button
-     *
-     * @param  string   $button     Text of the element to click
-     * @param  string   $index      WHAT IS THIS?!
-     */
-    public function clickButtonWithIndex($button, $index)
-    {
-        $this->clickElementByText($button, 'button', $index);
     }
 
     /**
@@ -190,7 +189,24 @@ trait CommonActions
      */
     public function clickNavigationItem($item)
     {
-        $this->clickElementByText($item, '.ez-navigation-item');
+        $dataNavigationIdentifier = [
+            'Content structure' => 'content-structure',
+            'Media library' => 'media-library',
+            'Administration dashboard' => 'admin-dashboard',
+            'System information' => 'admin-systeminfo',
+            'Sections' => 'admin-sections',
+            'Content types' => 'admin-contenttypes',
+            'Languages' => 'admin-languages',
+            'Users' => 'admin-users',
+            'Roles' => 'admin-roles',
+
+        ];
+
+        $item = $dataNavigationIdentifier[$item];
+        $navigationZoneElement = $this->findWithWait(
+            ".ez-view-navigationitemview[data-navigation-item-identifier='$item'] .ez-navigation-item"
+        );
+        $navigationZoneElement->click();
         $this->waitWhileLoading();
     }
 
@@ -202,7 +218,16 @@ trait CommonActions
      */
     public function clickDiscoveryBar($button)
     {
-        $this->clickElementByText($button, '.ez-view-discoverybarview .ez-action', '.action-label');
+        $dataAction = [
+            'Minimize' => 'minimizeDiscoveryBar',
+            'Content tree' => 'tree',
+            'Trash' => 'viewTrash',
+        ];
+        // @TODO throw exception if missing dataAction
+        $button = $dataAction[$button];
+        $buttonElement = $this->findWithWait(".ez-view-discoverybarview .ez-action[data-action='$button']");
+        $this->waitWhileLoading();
+        $buttonElement->click();
         $this->waitWhileLoading();
     }
 
@@ -214,7 +239,18 @@ trait CommonActions
      */
     public function clickActionBar($button)
     {
-        $this->clickElementByText($button, '.ez-actionbar-container .ez-action', '.action-label');
+        $dataAction = [
+            'Minimize' => 'minimizeActionBar',
+            'Create' => 'createContent',
+            'Edit' => 'edit',
+            'Move' => 'move',
+            'Copy' => 'copy',
+            'Send to Trash' => 'sendToTrash',
+        ];
+        // @TODO throw exception if missing dataAction
+        $button = $dataAction[$button];
+        $buttonElement = $this->findWithWait(".ez-actionbar-container .ez-action[data-action='$button']");
+        $buttonElement->click();
         $this->waitWhileLoading();
     }
 
@@ -226,7 +262,15 @@ trait CommonActions
      */
     public function clickEditActionBar($button)
     {
-        $this->clickElementByText($button, '.ez-editactionbar-container .ez-action', '.action-label');
+        $dataAction = [
+            'Publish' => 'publish',
+            'Save' => 'save',
+            'Discard changes' => 'discard',
+        ];
+        // @TODO throw exception if missing dataAction
+        $button = $dataAction[$button];
+        $buttonElement = $this->findWithWait(".ez-editactionbar-container .ez-action[data-action='$button']");
+        $buttonElement->click();
         $this->waitWhileLoading();
     }
 
@@ -242,6 +286,7 @@ trait CommonActions
         $node = $this->findWithWait('.ez-view-discoverybarview');
         $this->clickDiscoveryBar('Content tree');
         $this->openTreePath($path, $node);
+        $this->waitWhileLoading();
     }
 
     /**
@@ -252,7 +297,11 @@ trait CommonActions
      */
     public function clickContentType($contentType)
     {
-        $this->clickElementByText($contentType, '.ez-contenttypeselector-types .ez-selection-filter-item ');
+        $contentTypeElement = $this->findWithWait(
+            ".ez-contenttypeselector-types .ez-selection-filter-item[data-text='$contentType']"
+        );
+        $contentTypeElement->click();
+        //$this->clickElementByText($contentType, '.ez-contenttypeselector-types .ez-selection-filter-item');
         $this->waitWhileLoading();
     }
 
@@ -291,7 +340,8 @@ trait CommonActions
      */
     public function confirmSelection()
     {
-        $this->clickElementByText('Confirm selection', '.ez-universaldiscovery-confirm');
+        $confirmElement = $this->findWithWait('.ez-universaldiscovery-confirm');
+        $confirmElement->click();
     }
 
     /**
@@ -394,6 +444,7 @@ trait CommonActions
             $found = false;
             $name = array_values($element)[0];
             $found = $this->getElementByText($name, '.ez-selection-filter-item');
+            // @TODO implement without get by text
             Assertion::assertNotNull($found, "Element: $name not found");
         }
     }
@@ -418,8 +469,7 @@ trait CommonActions
      */
     public function iShouldBeOnTheDashboard()
     {
-        $this->waitWhileLoading();
-        $this->findWithWait('.ez-dashboard-content');
+        $this->assertSession()->elementExists('css', '.ez-view-dashboardblocksview');
     }
 
     /**

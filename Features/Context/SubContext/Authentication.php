@@ -35,7 +35,8 @@ trait Authentication
         $this->waitWhileLoading();
         $this->fillFieldWithValue('username', $username);
         $this->fillFieldWithValue('password', $password);
-        $this->iClickAtButton('Login');
+        $loginButton = $this->findWithWait('.ez-loginform-button');
+        $loginButton->click();
         $this->iShouldBeLoggedIn();
         $this->shouldBeLoggedIn = true;
     }
