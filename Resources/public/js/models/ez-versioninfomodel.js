@@ -131,7 +131,7 @@ YUI.add('ez-versioninfomodel', function (Y) {
             "creationDate", "modificationDate",
             "languageCodes", "initialLanguageCode", "names",
         ],
-        LINKS_MAP: ['Content', 'Creator'],
+        LINKS_MAP: [{'Content': 'contentInfo'}, 'Creator'],
 
         ATTRS: {
             /**
@@ -223,6 +223,17 @@ YUI.add('ez-versioninfomodel', function (Y) {
             names: {
                 setter: '_setterLocalizedValue',
                 value: {}
+            },
+
+            contentInfo: {
+                getter: function (value) {
+                    var contentInfo = new Y.eZ.ContentInfo();
+
+                    if ( value ) {
+                        contentInfo.setAttrs(contentInfo.parse({document: value}));
+                    }
+                    return contentInfo;
+                }
             },
         }
     });
