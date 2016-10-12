@@ -227,10 +227,12 @@ YUI.add('ez-versioninfomodel', function (Y) {
 
             contentInfo: {
                 getter: function (value) {
-                    var contentInfo = new Y.eZ.ContentInfo();
+                    var contentInfo = new Y.eZ.ContentInfo(),
+                        parseVal = {};
 
                     if ( value ) {
-                        contentInfo.setAttrs(contentInfo.parse({document: value}));
+                        parseVal[Y.eZ.ContentInfo.REST_STRUCT_ROOT] = value;
+                        contentInfo.setAttrs(contentInfo.parse({document: parseVal}));
                     }
                     return contentInfo;
                 }

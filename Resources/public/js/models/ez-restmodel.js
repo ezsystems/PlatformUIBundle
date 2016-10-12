@@ -143,8 +143,7 @@ YUI.add('ez-restmodel', function (Y) {
                     // TODO: this should not only be trigger by the resources
                     // being represented as an object but also if the resources
                     // is embedded.
-                    attrs[attrName] = {};
-                    attrs[attrName][linkName] = struct[linkName];
+                    attrs[attrName] = struct[linkName];
                 }
                 if ( struct[item] ) {
                     links[item] = struct[item]._href;
