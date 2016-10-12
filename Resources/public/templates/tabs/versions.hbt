@@ -39,7 +39,7 @@
                             {{languageCodes}}
                         </td>
                         <td>
-                            {{resources.Creator}}
+                            {{creator.name}}
                         </td>
                         <td>
                             {{creationDate}}
@@ -99,7 +99,7 @@
                             {{languageCodes}}
                         </td>
                         <td>
-                            {{resources.Creator}}
+                            {{creator.name}}
                         </td>
                         <td>
                             {{creationDate}}
@@ -150,7 +150,7 @@
                             {{languageCodes}}
                         </td>
                         <td>
-                            {{resources.Creator}}
+                            {{creator.name}}
                         </td>
                         <td>
                             {{creationDate}}

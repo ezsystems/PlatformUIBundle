@@ -63,14 +63,18 @@ YUI.add('ez-usermodel', function (Y) {
          * @param {Object} the response document
          */
         _parseStruct: function (struct, responseDoc) {
-                var attrs, imageField,
-                    imageIdentifiers = responseDoc._contentType.getFieldDefinitionIdentifiers('ezimage');
+            var attrs, imageField, imageIdentifiers = [];
 
             attrs = this.constructor.superclass._parseStruct.call(this, struct);
-            imageField = struct.Version.Fields.field.filter(function (field) {
-                return field.fieldDefinitionIdentifier == imageIdentifiers[0];
-            });
-            attrs.avatar = imageField.length ? imageField[0].fieldValue : null;
+            if ( responseDoc._contentType ) {
+                imageIdentifiers = responseDoc._contentType.getFieldDefinitionIdentifiers('ezimage');
+            }
+            if ( imageIdentifiers.length ) {
+                imageField = struct.Version.Fields.field.filter(function (field) {
+                    return field.fieldDefinitionIdentifier == imageIdentifiers[0];
+                });
+                attrs.avatar = imageField.length ? imageField[0].fieldValue : null;
+            }
             return attrs;
         },
 
