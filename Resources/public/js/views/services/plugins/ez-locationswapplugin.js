@@ -92,7 +92,7 @@ YUI.add('ez-locationswapplugin', function (Y) {
             location.swap({api: capi}, destinationLocation, function (error) {
                 if (error) {
                     that._notify(
-                        "Swaping location for '" + location.get('contentInfo').get('name') + "' failed",
+                        "Swapping location for '" + location.get('contentInfo').get('name') + "' failed",
                         notificationIdentifier,
                         'error',
                         0
