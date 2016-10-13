@@ -2,17 +2,17 @@
 <div class="ez-block-wrapper ez-asynchronousview ez-font-icon">
     {{#if loadingError}}
     <p class="ez-asynchronousview-error ez-font-icon">
-        An error occurred while loading the content list.
-        <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+        {{ translate 'dashboard.loading.error' 'dashboardblocks' }}
+        <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{ translate 'dashboard.retry' 'dashboardblocks' }}</button>
     </p>
     {{else}}
     <table class="ez-block-items-table">
         <thead class="ez-block-header">
             <tr>
-                <th class="ez-block-head-title">Title</th>
-                <th class="ez-block-head-content-type">Content Type</th>
-                <th class="ez-block-head-version">Version</th>
-                <th class="ez-block-head-modified">Last saved</th>
+                <th class="ez-block-head-title">{{ translate 'dashboard.title' 'dashboardblocks' }}</th>
+                <th class="ez-block-head-content-type">{{ translate 'dashboard.content.type' 'dashboardblocks' }}</th>
+                <th class="ez-block-head-version">{{ translate 'dashboard.version' 'dashboardblocks' }}</th>
+                <th class="ez-block-head-modified">{{ translate 'dashboard.last.saved' 'dashboardblocks' }}</th>
             </tr>
         </thead>
         <tbody class="ez-block-content">
@@ -39,7 +39,7 @@
                 {{/each}}
             {{else}}
                 <tr>
-                    <td class="ez-block-cell ez-block-cell-no-result" colspan="4">You haven't modified any content item yet.</td>
+                    <td class="ez-block-cell ez-block-cell-no-result" colspan="4">{{ translate 'dashboard.mycontent.no.modified.content' 'dashboardblocks' }}</td>
                 </tr>
             {{/if}}
         {{/unless}}
