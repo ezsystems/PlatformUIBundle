@@ -1,46 +1,48 @@
 <div class="ez-details-box">
     <h2 class="ez-details-box-title">
-        {{translate 'locationview.details.title' 'editorial'}}
+        {{translate 'locationview.details.title' 'locationview'}}
     </h2>
 
     <dl class="ez-details-box-list ez-details-authors ez-asynchronousview pure-g"">
-        <dt class="ez-details-name pure-u-1-3">Creator</dt>
+        <dt class="ez-details-name pure-u-1-3">{{ translate 'locationview.details.creator' 'locationview'}}</dt>
         <dd class="ez-details-value pure-u-2-3">
         {{#if loadingError}}
             <p class="ez-asynchronousview-error ez-font-icon">
-                An error occurred while loading the creator.
+                {{ translate 'locationview.details.errorcreator' 'locationview'}}
                 <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">
-                    Retry
+                    {{ translate 'locationview.details.retry' 'locationview'}}
                 </button>
             </p>
         {{else}}
             {{#if contentCreator }}
                 {{contentCreator.name}} ({{content.publishedDate}})
             {{else}}
-                <p class="ez-font-icon ez-asynchronousview-loading">Loading the creator</p>
+                <p class="ez-font-icon ez-asynchronousview-loading">{{ translate 'locationview.details.loadingcreator' 'locationview' }}</p>
             {{/if}}
         {{/if}}
         </dd>
 
-        <dt class="ez-details-name pure-u-1-3">Last contributor</dt>
+        <dt class="ez-details-name pure-u-1-3">{{ translate 'locationview.details.lastcontributor' 'locationview' }}</dt>
         <dd class="ez-details-value pure-u-2-3">
         {{#if loadingError}}
             <p class="ez-asynchronousview-error ez-font-icon">
-                An error occurred while loading the last contributor.
-                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+                {{ translate 'locationview.details.errorcontributor' 'locationview'}}
+                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">
+                    {{ translate 'locationview.details.retry' 'locationview'}}
+                </button>
             </p>
         {{else}}
             {{#if lastContributor}}
                  {{lastContributor.name}} ({{content.lastModificationDate}})
             {{else}}
-                <p class="ez-font-icon ez-asynchronousview-loading">Loading the last contributor</p>
+                <p class="ez-font-icon ez-asynchronousview-loading">{{ translate 'locationview.details.loadingcontributor' 'locationview' }}</p>
             {{/if}}
         {{/if}}
         </dd>
 
-        <dt class="ez-details-name pure-u-1-3">Versions</dt>
+        <dt class="ez-details-name pure-u-1-3">{{ translate 'locationview.details.versions' 'locationview' }}</dt>
         <dd class="ez-details-value pure-u-2-3">{{currentVersion.versionNo}}</dd>
-        <dt class="ez-details-name pure-u-1-3">Translations</dt>
+        <dt class="ez-details-name pure-u-1-3">{{ translate 'locationview.details.translations' 'locationview' }}</dt>
         <dd class="ez-details-value pure-u-2-3">
             {{languageCount}}
             <ul class="ez-details-language-list">
@@ -55,31 +57,31 @@
 </div>
 
 <div class="ez-details-box">
-    <h2 class="ez-details-box-title">Technical details</h2>
+    <h2 class="ez-details-box-title">{{ translate 'locationview.details.technicaldetails' 'locationview' }}</h2>
     <dl class="ez-details-box-list pure-g">
-        <dt class="ez-details-name pure-u-1-3">Content Id</dt>
+        <dt class="ez-details-name pure-u-1-3">{{ translate 'locationview.details.contentid' 'locationview' }}</dt>
         <dd class="ez-details-value pure-u-2-3">{{content.contentId}}</dd>
-        <dt class="ez-details-name pure-u-1-3">Location Id</dt>
+        <dt class="ez-details-name pure-u-1-3">{{ translate 'locationview.details.locationid' 'locationview' }}</dt>
         <dd class="ez-details-value pure-u-2-3">{{location.locationId}}</dd>
-        <dt class="ez-details-name pure-u-1-3">Content remote Id</dt>
+        <dt class="ez-details-name pure-u-1-3">{{ translate 'locationview.details.contentremoteid' 'locationview' }}</dt>
         <dd class="ez-details-value pure-u-2-3">{{ content.remoteId}}</dd>
-        <dt class="ez-details-name pure-u-1-3">Location remote Id</dt>
+        <dt class="ez-details-name pure-u-1-3">{{ translate 'locationview.details.remoteid' 'locationview' }}</dt>
         <dd class="ez-details-value pure-u-2-3">{{location.remoteId}}</dd>
     </dl>
 </div>
 
 <div class="ez-details-box">
-    <h2 class="ez-details-box-title">Sub-items default ordering</h2>
-    <p class="ez-subitem-ordering-details">Default listing of sub-items by
+    <h2 class="ez-details-box-title">{{ translate 'locationview.details.subitems.default.ordering' 'locationview' }}</h2>
+    <p class="ez-subitem-ordering-details">{{ translate 'locationview.details.default.listing.of.subitems.by' 'locationview' }}
         <select class="ez-subitems-ordering-sort-type" >
             {{#each sortFields}}
                 <option {{#if selected}}selected{{/if}} value="{{identifier}}">{{name}}</option>
             {{/each}}
         </select>
         in
-        <select class="ez-subitems-sorting-order" se>
-            <option {{#if isAscendingOrder}}selected{{/if}} value="ASC">Ascending</option>
-            <option {{#unless isAscendingOrder}}selected{{/unless}} value="DESC">Descending</option>
+        <select class="ez-subitems-sorting-order">
+            <option {{#if isAscendingOrder}}selected{{/if}} value="ASC">{{ translate 'locationview.details.ascending' 'locationview' }}</option>
+            <option {{#unless isAscendingOrder}}selected{{/unless}} value="DESC">{{ translate 'locationview.details.desceding' 'locationview' }}</option>
         </select>
     </p>
 </div>
