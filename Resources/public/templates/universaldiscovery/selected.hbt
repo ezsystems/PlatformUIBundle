@@ -1,17 +1,19 @@
 {{#if contentInfo}}
     <div class="ez-ud-pane ez-ud-pane-selected">
-        <h2 class="ez-ud-pane-title">Selected item</h2>
+        <h2 class="ez-ud-pane-title">{{ translate 'universaldiscovery.selected.item' 'universaldiscovery' }}</h2>
         <div class="ez-ud-pane-content">
             <h3>{{ contentInfo.name }} ({{ translate_property contentType.names }})</h3>
 
             {{#if addConfirmButton}}
             <p>
-                <button class="ez-ud-selected-confirm ez-button pure-button"{{#unless confirmButtonEnabled}} disabled="disabled"{{/unless}}>Choose this content</button>
+                <button class="ez-ud-selected-confirm ez-button pure-button"{{#unless confirmButtonEnabled}} disabled="disabled"{{/unless}}>
+                    {{ translate 'universaldiscovery.choose.this.content' 'universaldiscovery' }}
+                </button>
             </p>
             {{/if}}
             <div class="ez-ud-selected-animation"></div>
         </div>
     </div>
 {{else}}
-    <p class="ez-ud-help-text">Select a content from the left</p>
+    <p class="ez-ud-help-text">{{ translate 'universaldiscovery.select.from.left' 'universaldiscovery' }}</p>
 {{/if}}

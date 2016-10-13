@@ -3,7 +3,7 @@
     <div>
         <form class="ez-ud-search-form">
             <input type="text" class="ez-ud-search-text" value="{{searchText}}"/>
-            <button type="submit" class="ez-ud-search-button ez-button pure-button">Search</button>
+            <button type="submit" class="ez-ud-search-button ez-button pure-button">{{ translate 'universaldiscovery.search' 'universaldiscovery' }}</button>
         </form>
     </div>
 </div>
@@ -14,24 +14,24 @@
         {{#if searchResultCount}}
             {{#if loadingError}}
                 <p class="ez-asynchronousview-error ez-font-icon">
-                    An error occurred while loading the search result list..
-                    <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+                    {{ translate 'universaldiscovery.error.loading.result' 'universaldiscovery' }}
+                    <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{ translate 'universaldiscovery.retry' 'universaldiscovery' }}</button>
                 </p>
             {{else}}
                 {{#if searchResultList }}
                     {{#if hasPages}}
                     <ul class="ez-searchresult-navigation">
                         <li class="ez-searchresult-navigation-item">
-                            <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="first">First</a>
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="first">{{ translate 'universaldiscovery.first' 'universaldiscovery' }}</a>
                         </li>
                         <li class="ez-searchresult-navigation-item">
-                            <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="prev">Previous</a>
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="prev">{{ translate 'universaldiscovery.previous' 'universaldiscovery' }}</a>
                         </li>
                         <li class="ez-searchresult-navigation-item">
-                            <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="next">Next</a>
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="next">{{ translate 'universaldiscovery.next' 'universaldiscovery' }}</a>
                         </li>
                         <li class="ez-searchresult-navigation-item">
-                            <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="last">Last</a>
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="last">{{ translate 'universaldiscovery.last' 'universaldiscovery' }}</a>
                         </li>
                     </ul>
                     {{/if}}
@@ -50,7 +50,7 @@
                             <td>{{translate_property contentType.names}}</td>
                             <td>
                                 <button class="ez-ud-searchresult-preview-button"
-                                    data-location-id="{{location.id}}">Preview</button>
+                                    data-location-id="{{location.id}}">{{ translate 'universaldiscovery.preview' 'universaldiscovery' }}</button>
                             </td>
                         </tr>
                         {{/each}}
@@ -59,16 +59,16 @@
                     {{#if hasPages}}
                     <ul class="ez-searchresult-navigation">
                         <li class="ez-searchresult-navigation-item">
-                            <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="first">First</a>
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="first">{{ translate 'universaldiscovery.first' 'universaldiscovery' }}</a>
                         </li>
                         <li class="ez-searchresult-navigation-item">
-                            <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="prev">Previous</a>
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="prev">{{ translate 'universaldiscovery.previous' 'universaldiscovery' }}</a>
                         </li>
                         <li class="ez-searchresult-navigation-item">
-                            <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="next">Next</a>
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="next">{{ translate 'universaldiscovery.next' 'universaldiscovery' }}</a>
                         </li>
                         <li class="ez-searchresult-navigation-item">
-                            <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="last">Last</a>
+                            <a href="#" class="ez-searchresult-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="last">{{ translate 'universaldiscovery.last' 'universaldiscovery' }}</a>
                         </li>
                     </ul>
                     {{/if}}
@@ -80,7 +80,7 @@
             {{#if searchText}}
                 <p class="ez-searchresult-no-sub-items">No results were found while searching for "{{searchText}}".</p>
             {{else}}
-                <p class="ez-searchresult-no-sub-items">Please provide search text</p>
+                <p class="ez-searchresult-no-sub-items">{{ translate 'universaldiscovery.provide.search.text' 'universaldiscovery' }}</p>
             {{/if}}
         {{/if}}
         </div>
