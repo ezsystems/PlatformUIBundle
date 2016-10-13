@@ -22,5 +22,5 @@
         </p>
     </div>
 {{else}}
-    <p class="ez-subitemlist-no-sub-items">This location has no sub-item.</p>
+    <p class="ez-subitemlist-no-sub-items">{{ translate 'subitem.no.subitem' 'subitem' }}</p>
 {{/if}}
