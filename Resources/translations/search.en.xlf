@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="168ea7cb62bf63f358233d32263ae360" resname="search.result.list">
+        <source>search.result.list</source>
+        <target>Result list</target>
+      </trans-unit>
+      <trans-unit id="781c57b03fbbd16c6c42edbdd6cfdf1f" resname="search.no.result">
+        <source>search.no.result</source>
+        <target>This search has no result.</target>
+      </trans-unit>
+      <trans-unit id="d0f4c68012e75bc7097f43a502021a7f" resname="search.search.content">
+        <source>search.search.content</source>
+        <target>Search content:</target>
+      </trans-unit>
+      <trans-unit id="62641ec1a72d0addc93aed4b84b3eb2d" resname="search.search">
+        <source>search.search</source>
+        <target>Search</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
