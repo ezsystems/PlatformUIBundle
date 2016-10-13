@@ -20,7 +20,7 @@
             </trans-unit>
             <trans-unit id="be3def83a46457e29924c29510691bb9" resname="section.assigned.content">
                 <source>section.assigned.content</source>
-                <target>Assigned contents</target>
+                <target>Assigned Content items</target>
             </trans-unit>
             <trans-unit id="bd9bc055699bd779f27ce1c3b2e0121d" resname="section.edit">
                 <source>section.edit</source>
@@ -90,7 +90,7 @@
             </trans-unit>
             <trans-unit id="1bf9bdce5e87c98df324d43e717d9d85" resname="section.assign.universaldiscovery.title">
                 <source>section.assign.universaldiscovery.title</source>
-                <target>Pick the contents to assign the section "%sectionName%"</target>
+                <target>Pick the Content items to assign to section "%sectionName%"</target>
             </trans-unit>
             <trans-unit id="058b034a4aa957ab59f853e8375ff2b3" resname="section.assign.contents">
                 <source>section.assign.contents</source>
