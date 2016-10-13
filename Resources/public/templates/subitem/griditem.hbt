@@ -9,8 +9,8 @@
         <img alt="" class="ez-subitemgrid-item-image">
     </a>
     <p class="ez-asynchronousview-error ez-font-icon">
-        An error occurred while loading the image.
-        <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+        {{ translate 'subitem.error.loading.image' 'subitem' }}
+        <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{ translate 'subitem.retry' 'subitem' }}</button>
     </p>
 
     <h3 class="ez-subitemgrid-item-name">
