@@ -3,9 +3,9 @@
 
     {{#if loadingError}}
     <p class="ez-asynchronousview-error ez-font-icon">
-        An error occurred while loading the related content list.
+        {{ translate 'locationview.relations.error.loading.related' 'locationview' }}
         <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">
-            Retry
+            {{ translate 'locationview.retry' 'locationview' }}
         </button>
     </p>
     {{else}}
@@ -14,8 +14,8 @@
         <table class="ez-relations-box-table ez-asynchronousview pure-table pure-table-bordered">
         <thead>
             <tr>
-                <th>Content</th>
-                <th>Relation type</th>
+                <th>{{ translate 'locationview.relations.content' 'locationview' }}</th>
+                <th>{{ translate 'locationview.relations.relation.type' 'locationview' }}</th>
             </tr>
         </thead>
         <tbody>
@@ -48,7 +48,7 @@
         </tbody>
         </table>
         {{else}}
-            <p class="ez-relations-box-list-no-content">This content has no related content.</p>
+            <p class="ez-relations-box-list-no-content">{{ translate 'locationview.relations.no.related.content' 'locationview' }}</p>
         {{/if}}
     </div>
     {{/if}}

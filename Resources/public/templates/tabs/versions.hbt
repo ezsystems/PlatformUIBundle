@@ -1,9 +1,9 @@
 <div class="ez-versions-box">
     {{#if loadingError}}
     <p class="ez-asynchronousview-error ez-font-icon">
-        An error occurred while loading the versions list.
+        {{ translate 'locationview.versions.error.loading.list' 'locationview' }}
         <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">
-            Retry
+            {{ translate 'locationview.retry' 'locationview' }}
         </button>
     </p>
     {{else}}
@@ -16,11 +16,11 @@
                 <thead>
                 <tr>
                     <th></th>
-                    <th>Version</th>
-                    <th>Language</th>
-                    <th>Author</th>
-                    <th>Created</th>
-                    <th>Last saved</th>
+                    <th>{{ translate 'locationview.versions.version' 'locationview' }}</th>
+                    <th>{{ translate 'locationview.versions.language' 'locationview' }}</th>
+                    <th>{{ translate 'locationview.versions.author' 'locationview' }}</th>
+                    <th>{{ translate 'locationview.versions.created' 'locationview' }}</th>
+                    <th>{{ translate 'locationview.versions.last.saved' 'locationview' }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -57,20 +57,20 @@
                         data-version-id="{{id}}"
                         disabled="disabled"
                 >
-                    Edit selected draft
+                    {{ translate 'locationview.versions.edit.selected.draft' 'locationview' }}
                 </button>
                 <button class="ez-delete-draft-button ez-button pure-button"
                         data-version-id="{{id}}"
                         disabled="disabled"
                 >
-                    Delete selected draft(s)
+                    {{ translate 'locationview.versions.delete.selected.draft' 'locationview' }}
                 </button>
             </div>
 
             </div>
         </div>
         {{else}}
-            <p class="ez-font-icon ez-asynchronousview-loading">Loading the draft list</p>
+            <p class="ez-font-icon ez-asynchronousview-loading">{{ translate 'locationview.versions.loading.draft.list' 'locationview' }}</p>
         {{/if}}
         {{/if}}
 
@@ -82,11 +82,11 @@
             <table class="pure-table pure-table-striped ez-versions-list-table">
                 <thead>
                 <tr>
-                    <th>Version</th>
-                    <th>Language</th>
-                    <th>Author</th>
-                    <th>Created</th>
-                    <th>Last saved</th>
+                    <th>{{ translate 'locationview.versions.version' 'locationview' }}</th>
+                    <th>{{ translate 'locationview.versions.language' 'locationview' }}</th>
+                    <th>{{ translate 'locationview.versions.author' 'locationview' }}</th>
+                    <th>{{ translate 'locationview.versions.created' 'locationview' }}</th>
+                    <th>{{ translate 'locationview.versions.last.saved' 'locationview' }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -114,7 +114,7 @@
             </div>
         </div>
         {{else}}
-            <p class="ez-font-icon ez-asynchronousview-loading">Loading the published version list</p>
+            <p class="ez-font-icon ez-asynchronousview-loading">{{ translate 'locationview.versions.loading.published.list' 'locationview' }}</p>
         {{/if}}
         {{/if}}
 
@@ -127,11 +127,11 @@
                 <thead>
                 <tr>
                     <th></th>
-                    <th>Version</th>
-                    <th>Language</th>
-                    <th>Author</th>
-                    <th>Created</th>
-                    <th>Last saved</th>
+                    <th>{{ translate 'locationview.versions.version' 'locationview' }}</th>
+                    <th>{{ translate 'locationview.versions.language' 'locationview' }}</th>
+                    <th>{{ translate 'locationview.versions.author' 'locationview' }}</th>
+                    <th>{{ translate 'locationview.versions.created' 'locationview' }}</th>
+                    <th>{{ translate 'locationview.versions.last.saved' 'locationview' }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -168,19 +168,19 @@
                         data-version-id="{{id}}"
                         disabled="disabled"
                 >
-                    New draft based on selected version
+                    {{ translate 'locationview.versions.new.draft.selected.version' 'locationview' }}
                 </button>
                 <button class="ez-delete-archived-button ez-button pure-button"
                         data-version-id="{{id}}"
                         disabled="disabled"
                 >
-                    Remove selected archived version(s)
+                    {{ translate 'locationview.versions.remove.selected.archived.version' 'locationview' }}
                 </button>
             </div>
             </div>
         </div>
         {{else}}
-            <p class="ez-font-icon ez-asynchronousview-loading">Loading the archived version list</p>
+            <p class="ez-font-icon ez-asynchronousview-loading">{{ translate 'locationview.versions.loading.archived.list' 'locationview' }}</p>
         {{/if}}
         {{/if}}
     {{/if}}

@@ -1,4 +1,4 @@
-<h2 class="ez-raw-content-title"><a href="#" class="ez-collapse-toggle">Content</a></h2>
+<h2 class="ez-raw-content-title"><a href="#" class="ez-collapse-toggle">{{ translate 'rawcontent.content' 'locationview' }}</a></h2>
 <div class="ez-language-switcher-container"></div>
 <div class="ez-fieldgroups">
 {{#each fieldGroups}}
