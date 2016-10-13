@@ -9,7 +9,7 @@
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
         <label class="ez-field-sublabel ez-first-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-link">
-            URL{{#if isRequired}}*{{/if}}:
+            {{translate "url.url" "fieldedit"}}{{#if isRequired}}*{{/if}}:
         </label>
         <div class="ez-editfield-input"><div class="ez-url-input-ui"><input type="text"
             class="ez-url-field-value ez-validated-input"
@@ -18,7 +18,7 @@
             {{#if isRequired}} required{{/if}}
         ></div></div>
         <label class="ez-field-sublabel" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-text">
-            Text:
+            {{translate "url.text" "fieldedit"}}
         </label>
         <div class="ez-editfield-input-no-validation"><div class="ez-url-input-ui"><input type="text"
             class="ez-url-title-value"

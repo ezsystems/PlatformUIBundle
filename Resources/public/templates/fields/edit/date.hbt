@@ -21,7 +21,7 @@
             >
             {{#unless supportsDateInput}}
                 <button class="ez-date-cancel-button ez-font-icon"></button>
-                <button class="ez-date-calendar-button ez-button ez-button-calendar ez-font-icon pure-button">Calendar</button>
+                <button class="ez-date-calendar-button ez-button ez-button-calendar ez-font-icon pure-button">{{translate "date.calendar" "fieldedit"}}</button>
                 <div class="ez-yui-calendar-container" ></div>
             {{/unless}}
             </div></div>

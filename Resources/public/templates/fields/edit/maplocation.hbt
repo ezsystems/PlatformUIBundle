@@ -10,7 +10,7 @@
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
         <div class="ez-maplocation-input-area">
             <label class="ez-field-sublabel ez-maplocation-address-label" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}-address">
-                Address:
+                {{translate "maplocation.address" "fieldedit"}}
             </label>
             <span class="ez-maplocation-errors"></span>
             <div class="ez-maplocation-find-address-input ez-editfield-input pure-g">
@@ -19,7 +19,7 @@
                      value="{{ field.fieldValue.address }}"
                 ></div>
                 <div class="pure-u-3-8">
-                    <button class="pure-button pure-button-disabled ez-button ez-maplocation-find-address-button">Locate Address <span class="ez-inline-loader"></span></button>
+                    <button class="pure-button pure-button-disabled ez-button ez-maplocation-find-address-button">{{translate "maplocation.locateaddress" "fieldedit"}} <span class="ez-inline-loader"></span></button>
                 </div>
             </div>
             {{> ez_fielddescription_tooltip }}
@@ -30,11 +30,17 @@
                 <div class="pure-u-3-8">
                     <div class="ez-maplocation-coordinates">
                         <ul>
-                            <li class="is-loading">Longitude: <strong class="ez-maplocation-longitude">{{ field.fieldValue.longitude }}</strong><span class="ez-inline-loader"></span></li>
-                            <li class="is-loading">Latitude: <strong class="ez-maplocation-latitude">{{ field.fieldValue.latitude }}</strong><span class="ez-inline-loader"></span></li>
+                            <li class="is-loading">
+                                {{translate "maplocation.longitude" "fieldedit"}}
+                                <strong class="ez-maplocation-longitude">{{ field.fieldValue.longitude }}</strong><span class="ez-inline-loader"></span>
+                            </li>
+                            <li class="is-loading">
+                                {{translate "maplocation.latitude" "fieldedit"}}
+                                <strong class="ez-maplocation-latitude">{{ field.fieldValue.latitude }}</strong><span class="ez-inline-loader"></span>
+                            </li>
                         </ul>
                     </div>
-                    <button class="pure-button pure-button-disabled ez-button ez-maplocation-locate-me-button">Locate Me <span class="ez-inline-loader"></span></button>
+                    <button class="pure-button pure-button-disabled ez-button ez-maplocation-locate-me-button">{{translate "maplocation.locateme" "fieldedit"}} <span class="ez-inline-loader"></span></button>
                     <p class="ez-maplocation-locate-me-errors"></p>
                 </div>
             </div>
