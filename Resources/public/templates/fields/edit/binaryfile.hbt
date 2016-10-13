@@ -8,33 +8,47 @@
             <p class="ez-field-description is-showing-description">
                 {{ translate_property fieldDefinition.descriptions }}
             </p>
-            <p class="ez-binarybase-help">Drag and drop your file here or simply click on the buttons and select your file manually.</p>
+            <p class="ez-binarybase-help">
+                {{translate "binaryfile.help" "fieldedit"}}
+            </p>
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area">
         <div class="ez-editfield-input ez-binarybase-drop-area"><div class="ez-binaryfile-input-ui">
             <div class="ez-binaryfile-content ez-font-icon ez-binarybase-content">
                 <ul class="ez-binaryfile-properties">
-                    <li><b>File name:</b> <span class="ez-binaryfile-properties-name">{{ binaryfile.name }}</span></li>
-                    <li><b>Type:</b> <span class="ez-binaryfile-properties-type">{{ binaryfile.type }}</span></li>
-                    <li><b>File size:</b> <span class="ez-binaryfile-properties-size">{{ binaryfile.size }}</span>&nbsp;bytes</li>
-                    <li class="ez-binaryfile-properties-download"><a href="{{ binaryfile.uri }}" class="ez-binaryfile-download" target="_blank">Download the file</a></li>
+                    <li>
+                        <b>{{translate "binaryfile.name" "fieldedit"}}</b>
+                        <span class="ez-binaryfile-properties-name">{{ binaryfile.name }}</span>
+                    </li>
+                    <li>
+                        <b>{{translate "binaryfile.type" "fieldedit"}}</b>
+                        <span class="ez-binaryfile-properties-type">{{ binaryfile.type }}</span>
+                    </li>
+                    <li>
+                        <b>{{translate "binaryfile.size" "fieldedit"}}</b>
+                        <span class="ez-binaryfile-properties-size">{{ binaryfile.size }}</span>&nbsp;
+                        {{translate "binaryfile.bites" "fieldedit"}}
+                    </li>
+                    <li class="ez-binaryfile-properties-download">
+                        <a href="{{ binaryfile.uri }}" class="ez-binaryfile-download" target="_blank">{{translate "binaryfile.download" "fieldedit"}}</a>
+                    </li>
                 </ul>
             </div>
-            <p class="ez-binarybase-empty">No file yet.</p>
+            <p class="ez-binarybase-empty">{{translate "binaryfile.empty" "fieldedit"}}</p>
             <div class="ez-binarybase-action">
                 <div class="ez-binarybase-warning">
                     <a href="#" class="ez-binarybase-warning-hide ez-font-icon"></a>
                     <p class="ez-binarybase-warning-text ez-font-icon"></p>
                 </div>
                 <button class="ez-button ez-button-height ez-button-upload pure-button ez-font-icon">
-                    <span class="ez-binarybase-upload-new">Upload a file</span>
-                    <span class="ez-binarybase-upload-replace">Replace this file</span>
+                    <span class="ez-binarybase-upload-new">{{translate "binaryfile.upload" "fieldedit"}}</span>
+                    <span class="ez-binarybase-upload-replace">{{translate "binaryfile.replace" "fieldedit"}}</span>
                 </button>
                 <span class="ez-binarybase-remove-option">
-                    or
+                    {{translate "binaryfile.or" "fieldedit"}}
                     <button class="ez-button ez-button-height ez-button-delete pure-button ez-font-icon">
-                        Remove this file
+                        {{translate "binaryfile.remove" "fieldedit"}}
                     </button>
                 </span>
             </div>

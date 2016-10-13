@@ -9,9 +9,13 @@
                 {{ translate_property fieldDefinition.descriptions }}
             </p>
             {{#if isAudio }}
-            <p class="ez-binarybase-help">Drag and drop your audio file here or simply click on the buttons and select your audio file manually.</p>
+            <p class="ez-binarybase-help">
+                {{translate "media.audio.help" "fieldedit"}}
+            </p>
             {{else}}
-            <p class="ez-binarybase-help">Drag and drop your video here or simply click on the buttons and select your video manually. Customize size, controls & view.</p>
+            <p class="ez-binarybase-help">
+                {{translate "media.video.help" "fieldedit"}}
+            </p>
             {{/if}}
         </label>
     </div>
@@ -21,57 +25,118 @@
                 <div class="ez-media-editpreview-player">
                 {{#if isAudio }}
                     <audio src="{{ media.uri }}" controls="controls" preload="auto" class="ez-media-player ez-media-audio-player"></audio>
-                    <div class="ez-media-player-unsupported ez-media-player-unsupported-audio ez-font-icon">Unsupported audio format</div>
+                    <div class="ez-media-player-unsupported ez-media-player-unsupported-audio ez-font-icon">
+                        {{translate "media.audio.unsupported" "fieldedit"}}
+                    </div>
                 {{else}}
                     <video src="{{ media.uri }}" controls="controls" preload="auto" class="ez-media-player ez-media-video-player"></video>
-                    <div class="ez-media-player-unsupported ez-font-icon">Unsupported video format</div>
+                    <div class="ez-media-player-unsupported ez-font-icon">
+                        {{translate "media.video.unsupported" "fieldedit"}}
+                    </div>
                 {{/if}}
                 </div>
                 <div class="ez-media-properties">
                     <h2 class="ez-media-properties-title">
                     {{#if isAudio }}
-                        Audio file properties
+                        {{translate "media.audio.properties" "fieldedit"}}
                     {{else}}
-                        Video file properties
+                        {{translate "media.video.properties" "fieldedit"}}
                     {{/if}}
-                        (<a href="{{ media.uri }}" target="_blank" class="ez-media-link">Open it in a new tab</a>)
+                        (<a href="{{ media.uri }}" target="_blank" class="ez-media-link">{{translate "media.newtab" "fieldedit"}}</a>)
                     </h2>
                     <ul class="ez-media-properties-original">
-                        <li><b>File name:</b> <span class="ez-media-properties-name">{{ media.name }}</span></li>
-                        <li><b>Type:</b> <span class="ez-media-properties-type">{{ media.type }}</span></li>
-                        <li><b>File size:</b> <span class="ez-media-properties-size">{{ media.size }}</span>&nbsp;bytes</li>
+                        <li>
+                            <b>{{translate "media.name" "fieldedit"}}</b>
+                            <span class="ez-media-properties-name">{{ media.name }}</span>
+                        </li>
+                        <li>
+                            <b>{{translate "media.type" "fieldedit"}}</b>
+                            <span class="ez-media-properties-type">{{ media.type }}</span>
+                        </li>
+                        <li>
+                            <b>{{translate "media.size" "fieldedit"}}</b>
+                            <span class="ez-media-properties-size">{{ media.size }}</span>&nbsp;
+                            {{translate "media.bytes" "fieldedit"}}
+                        </li>
                     </ul>
 
-                    <h2 class="ez-media-player-settings-title">Player settings</h2>
+                    <h2 class="ez-media-player-settings-title">{{translate "media.playersettings" "fieldedit"}}</h2>
                     <ul class="ez-media-player-settings-list">
-                        <li class="ez-media-player-settings-item"><label>Display controls: <input type="checkbox" value="1" name="hasController" {{#if hasController }}checked="checked"{{/if}}></label></li>
-                        <li class="ez-media-player-settings-item"><label>Auto play: <input type="checkbox" value="1" name="autoplay" {{#if autoplay }}checked="checked"{{/if}}></label></li>
-                        <li class="ez-media-player-settings-item"><label>Loop: <input type="checkbox" value="1" name="loop" {{#if loop }}checked="checked"{{/if}}></label></li>
+                        <li class="ez-media-player-settings-item">
+                            <label>
+                                {{translate "media.displaycontrols" "fieldedit"}}
+                                 <input type="checkbox" value="1" name="hasController" {{#if hasController }}checked="checked"{{/if}}>
+                            </label>
+                        </li>
+                        <li class="ez-media-player-settings-item">
+                            <label>
+                                {{translate "media.autoplay" "fieldedit"}}
+                                <input type="checkbox" value="1" name="autoplay" {{#if autoplay }}checked="checked"{{/if}}>
+                            </label>
+                        </li>
+                        <li class="ez-media-player-settings-item">
+                            <label>
+                                {{translate "media.loop" "fieldedit"}}
+                                <input type="checkbox" value="1" name="loop" {{#if loop }}checked="checked"{{/if}}>
+                            </label>
+                        </li>
                     </ul>
                     {{#unless isAudio}}
                     <ul class="ez-media-player-settings-list">
-                        <li class="ez-media-player-settings-item"><label>Width: <input type="number" name="width" value="{{ width }}" step="1" class="ez-media-settings-size" min="0"></label></li>
-                        <li class="ez-media-player-settings-item"><label>Height: <input type="number" name="height" value="{{ height }}" step="1" class="ez-media-settings-size" min="0"></label></li>
+                        <li class="ez-media-player-settings-item">
+                            <label>
+                                {{translate "media.width" "fieldedit"}}
+                                <input type="number" name="width" value="{{ width }}" step="1" class="ez-media-settings-size" min="0">
+                            </label>
+                        </li>
+                        <li class="ez-media-player-settings-item">
+                            <label>
+                                {{translate "media.height" "fieldedit"}}
+                                <input type="number" name="height" value="{{ height }}" step="1" class="ez-media-settings-size" min="0">
+                            </label>
+                        </li>
                     </ul>
                     {{/unless}}
 
                 </div>
             </div>
 
-            <p class="ez-binarybase-empty">{{#if isAudio}}No audio file yet.{{else}}No video file yet.{{/if}}</p>
+            <p class="ez-binarybase-empty">
+                {{#if isAudio}}
+                {{translate "media.audio.empty" "fieldedit"}}
+                {{else}}
+                {{translate "media.video.empty" "fieldedit"}}
+                {{/if}}
+            </p>
             <div class="ez-binarybase-action">
                 <div class="ez-binarybase-warning">
                     <a href="#" class="ez-binarybase-warning-hide ez-font-icon"></a>
                     <p class="ez-binarybase-warning-text ez-font-icon"></p>
                 </div>
                 <button class="ez-button ez-button-height ez-button-upload pure-button ez-font-icon">
-                    <span class="ez-binarybase-upload-new">{{#if isAudio}}Upload an audio file{{else}}Upload a video{{/if}}</span>
-                    <span class="ez-binarybase-upload-replace">{{#if isAudio}}Replace this audio file{{else}}Replace this video{{/if}}</span>
+                    <span class="ez-binarybase-upload-new">
+                        {{#if isAudio}}
+                        {{translate "media.audio.upload" "fieldedit"}}
+                        {{else}}
+                        {{translate "media.video.upload" "fieldedit"}}
+                        {{/if}}
+                    </span>
+                    <span class="ez-binarybase-upload-replace">
+                        {{#if isAudio}}
+                        {{translate "media.audio.replace" "fieldedit"}}
+                        {{else}}
+                        {{translate "media.video.replace" "fieldedit"}}
+                        {{/if}}
+                    </span>
                 </button>
                 <span class="ez-binarybase-remove-option">
                     or
                     <button class="ez-button ez-button-height ez-button-delete pure-button ez-font-icon">
-                        {{#if isAudio}}Remove this audio file{{else}}Remove this video{{/if}}
+                        {{#if isAudio}}
+                        {{translate "media.audio.remove" "fieldedit"}}
+                        {{else}}
+                        {{translate "media.video.remove" "fieldedit"}}
+                        {{/if}}
                     </button>
                 </span>
             </div>

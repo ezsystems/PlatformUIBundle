@@ -8,7 +8,9 @@
             <p class="ez-field-description is-showing-description">
                 {{ translate_property fieldDefinition.descriptions }}
             </p>
-            <p class="ez-binarybase-help">Drag and drop your image here or simply click on the buttons and select your image manually.</p>
+            <p class="ez-binarybase-help">
+                {{translate "image.help" "fieldedit"}}
+            </p>
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area">
@@ -16,46 +18,56 @@
             <div class="ez-image-editpreview ez-binarybase-content">
                 <div class="ez-image-editpreview-image">
                     <img alt="Image preview" class="ez-image-preview" {{#if image.displayUri}}src="{{ image.displayUri }}"{{/if}} alt="Image preview">
-                    <p class="ez-font-icon ez-asynchronousview-loading">Loading a thumbnail of the image...</p>
+                    <p class="ez-font-icon ez-asynchronousview-loading">{{translate "image.thumbnail.loading" "fieldedit"}}</p>
                     <p class="ez-asynchronousview-error ez-font-icon">
-                        An error occurred while loading the thumbnail.
-                        <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+                        {{translate "image.thumbnail.error" "fieldedit"}}
+                        <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{translate "image.thumbnail.retry" "fieldedit"}}</button>
                     </p>
                 </div>
                 <div class="ez-image-properties">
                     <h2 class="ez-image-properties-title">
-                        Image properties
-                        (<a href="{{ image.originalUri }}" target="_blank" class="ez-image-view-original">View the full width image</a>)
+                        {{translate "image.properties" "fieldedit"}}
+                        (<a href="{{ image.originalUri }}" target="_blank" class="ez-image-view-original">{{translate "image.fullwidth" "fieldedit"}}</a>)
                     </h2>
                     <ul class="ez-image-properties-original">
-                        <li><b>File name:</b> <span class="ez-image-properties-name">{{ image.name }}</span></li>
-                        <li><b>Type:</b> <span class="ez-image-properties-type">{{ image.type }}</span></li>
-                        <li><b>File size:</b> <span class="ez-image-properties-size">{{ image.size }}</span>&nbsp;bytes</li>
+                        <li>
+                            <b>{{translate "image.name" "fieldedit"}}:</b>
+                            <span class="ez-image-properties-name">{{ image.name }}</span>
+                        </li>
+                        <li>
+                            <b>{{translate "image.type" "fieldedit"}}</b>
+                            <span class="ez-image-properties-type">{{ image.type }}</span>
+                        </li>
+                        <li>
+                            <b>{{translate "image.size" "fieldedit"}}</b>
+                            <span class="ez-image-properties-size">{{ image.size }}</span>&nbsp;
+                            {{translate "image.bytes" "fieldedit"}}
+                        </li>
                     </ul>
 
                     <div class="ez-image-alt-text">
-                        <label class="ez-image-alt-text-label" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">Alternative text:</label>
+                        <label class="ez-image-alt-text-label" for="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">{{translate "image.alternativetext" "fieldedit"}}</label>
                         <input type="text"
                             class="ez-image-alt-text-input"
-                            value="{{ alternativeText }}" 
+                            value="{{ alternativeText }}"
                             id="ez-field-{{ content.contentId }}-{{ fieldDefinition.identifier }}">
                     </div>
                 </div>
             </div>
-            <p class="ez-binarybase-empty">No image yet.</p>
+            <p class="ez-binarybase-empty">{{translate "image.noimage" "fieldedit"}}</p>
             <div class="ez-binarybase-action">
                 <div class="ez-binarybase-warning">
                     <a href="#" class="ez-binarybase-warning-hide ez-font-icon"></a>
                     <p class="ez-binarybase-warning-text ez-font-icon"></p>
                 </div>
                 <button class="ez-button ez-button-height ez-button-upload pure-button ez-font-icon">
-                    <span class="ez-binarybase-upload-new">Upload an image</span>
-                    <span class="ez-binarybase-upload-replace">Replace this image</span>
+                    <span class="ez-binarybase-upload-new">{{translate "image.upload" "fieldedit"}}</span>
+                    <span class="ez-binarybase-upload-replace">{{translate "image.replace" "fieldedit"}}</span>
                 </button>
                 <span class="ez-binarybase-remove-option">
-                    or
+                    {{translate "image.or" "fieldedit"}}
                     <button class="ez-button ez-button-height ez-button-delete pure-button ez-font-icon">
-                        Remove this image
+                        {{translate "image.remove" "fieldedit"}}
                     </button>
                 </span>
             </div>
