@@ -1,6 +1,9 @@
 <header class="ez-preview-header">
-    <button class="ez-preview-hide" data-icon-after="&#xe600;">Close preview</button>
-    <h2 class="ez-preview-title">Previewing: <strong>{{ legend }}</strong></h2>
+    <button class="ez-preview-hide" data-icon-after="&#xe600;">{{ translate 'contentedit.close.preview' 'contentedit' }}</button>
+    <h2 class="ez-preview-title">
+        {{ translate 'contentedit.previewing' 'contentedit' }}
+        <strong>{{ legend }}</strong>
+    </h2>
 </header>
 <div class="ez-preview-device {{ mode.id }}">
     <div class="ez-preview-iframe-wrapper">
