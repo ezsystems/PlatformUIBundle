@@ -24,7 +24,8 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
         },
         IS_SELECTED_ROW_CLASS = 'is-selected',
         IS_PAGE_LOADING = 'is-page-loading',
-        IS_DISABLED = 'is-disabled';
+        IS_DISABLED = 'is-disabled',
+        NO_SEARCH_COUNT = -1;
 
     function linkIsDisabled(link) {
         return link.hasClass(IS_DISABLED);
@@ -43,9 +44,14 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
         Y.eZ.UniversalDiscoveryMethodBaseView, [Y.eZ.AsynchronousView], {
         initializer: function () {
             this._fireMethod = this._fireLocationSearch;
-            this._watchAttribute = 'searchResultList';
 
             this._addDOMEventHandlers(events);
+
+            this.after('searchResultCountChange', function () {
+                if ( this.get('searchResultCount') !== NO_SEARCH_COUNT ) {
+                    this.render();
+                }
+            });
 
             this.on('searchResultListChange', this._searchResultChanged);
             this.on('selectContent', this._uiSelectContent);
@@ -151,6 +157,7 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
             var searchText = this.get('searchText');
 
             this._uiPageLoading();
+            this.reset('searchResultCount');
 
             if (searchText.length > 0) {
                 this.fire('locationSearch', {
@@ -181,9 +188,6 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
          * @return undefined|Array
          */
         _convertToJSONList: function () {
-            if ( !this.get('searchResultList') ) {
-                return this.get('searchResultList');
-            }
             return Y.Array.map(this.get('searchResultList'), function (locationStruct) {
                 return {
                     location: locationStruct.location.toJSON(),
@@ -482,14 +486,15 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
             },
 
             /**
-             * The number of total search results.
+             * The number of total search results. -1 means we are waiting for
+             * the results.
              *
              * @attribute searchResultCount
-             * @default 0
+             * @default -1
              * @type Number
              */
             searchResultCount: {
-                value: 0
+                value: NO_SEARCH_COUNT,
             },
 
             /**

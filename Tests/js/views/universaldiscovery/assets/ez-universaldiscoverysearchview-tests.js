@@ -5,32 +5,16 @@
 YUI.add('ez-universaldiscoverysearchview-tests', function (Y) {
     var resetTest, defaultSubViewTest, renderTest, unselectTest,
         multipleUpdateTest, onUnselectContentTest, paginationTest,
-        selectContentTest, searchTest,
+        selectContentTest, searchTest, searchResultCountChangeTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     resetTest = new Y.Test.Case({
         name: 'eZ Universal Discovery Search reset tests',
 
         setUp: function () {
-            this.selectedView = new Mock();
+            this.selectedView = new Mock(new Y.View());
             Mock.expect(this.selectedView, {
                 method: 'reset',
-            });
-            Mock.expect(this.selectedView, {
-                method: 'setAttrs',
-                args: [Mock.Value.Object]
-            });
-            Mock.expect(this.selectedView, {
-                method: 'set',
-                args: [Mock.Value.String, Mock.Value.Any]
-            });
-            Mock.expect(this.selectedView, {
-                method: 'render',
-                returns: this.selectedView
-            });
-            Mock.expect(this.selectedView, {
-                method: 'get',
-                args: [Mock.Value.String]
             });
             this.view = new Y.eZ.UniversalDiscoverySearchView({
                 selectedView: this.selectedView,
@@ -71,7 +55,7 @@ YUI.add('ez-universaldiscoverysearchview-tests', function (Y) {
 
     defaultSubViewTest = new Y.Test.Case({
         name: 'eZ Universal Discovery Search default sub views tests',
-                       
+
         setUp: function () {
             Y.eZ.UniversalDiscoverySelectedView = Y.Base.create('selectedView', Y.View, [], {});
             this.view = new Y.eZ.UniversalDiscoverySearchView();
@@ -110,7 +94,7 @@ YUI.add('ez-universaldiscoverysearchview-tests', function (Y) {
 
     renderTest = new Y.Test.Case({
         name: 'eZ Universal Discovery Search render tests',
-                       
+
         setUp: function () {
             var that = this;
 
@@ -713,7 +697,7 @@ YUI.add('ez-universaldiscoverysearchview-tests', function (Y) {
             Assert.areEqual(this.view.get('offset'), 0, "The offset attribute should be reset");
             Assert.areEqual(
                 this.view.get('searchResultCount'),
-                0,
+                -1,
                 "The searchResultCount attribute should be reset"
             );
             Assert.areEqual(
@@ -722,6 +706,45 @@ YUI.add('ez-universaldiscoverysearchview-tests', function (Y) {
                 "The searchResultList attribute should be reset"
             );
         }
+    });
+
+    searchResultCountChangeTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Search searchResultCountChange tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoverySearchView({
+                selectedView: new Y.View(),
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should render the view": function () {
+            var origTpl = this.view.template,
+                rendered = false;
+
+            this.view.template = function () {
+                rendered = true;
+                return origTpl.apply(this, arguments);
+            };
+            this.view.set('searchResultCount', 0);
+
+            Assert.isTrue(
+                rendered,
+                "The view should have been rendered"
+            );
+        },
+
+        "Should not render the view": function () {
+            this["Should render the view"]();
+            this.view.template = function () {
+                Assert.fail('The view should not have been rendered');
+            };
+            this.view.set('searchResultCount', -1);
+        },
     });
 
     Y.Test.Runner.setName("eZ Universal Discovery Search View tests");
@@ -734,4 +757,5 @@ YUI.add('ez-universaldiscoverysearchview-tests', function (Y) {
     Y.Test.Runner.add(paginationTest);
     Y.Test.Runner.add(selectContentTest);
     Y.Test.Runner.add(searchTest);
+    Y.Test.Runner.add(searchResultCountChangeTest);
 }, '', {requires: ['test', 'view', 'node-event-simulate', 'ez-universaldiscoverysearchview']});
