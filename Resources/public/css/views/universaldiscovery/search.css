@@ -43,12 +43,25 @@
         -ms-flex-direction: column;
             flex-direction: column;
 }
+
 .ez-view-universaldiscoverysearchview .ez-ud-pane-search-result-list {
-    width: 50%;
+    flex: 1;
 }
 
 .ez-view-universaldiscoverysearchview .ez-ud-search-selected {
-    margin-left: 1em;
+    margin: 0 1em;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+}
+
+.ez-view-universaldiscoverysearchview .ez-view-universaldiscoveryselectedview .ez-ud-pane {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.ez-view-universaldiscoverysearchview .ez-view-universaldiscoveryselectedview .ez-ud-pane-content {
     flex: 1;
 }
 
