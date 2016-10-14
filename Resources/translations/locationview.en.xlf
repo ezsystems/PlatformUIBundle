@@ -213,6 +213,10 @@
         <source>locationview.versions.error.loading.list</source>
         <target>An error occurred while loading the versions list.</target>
       </trans-unit>
+      <trans-unit id="f6f38b199866880db688472e57ed6f6f" resname="locationview.details.versions">
+        <source>locationview.details.versions</source>
+        <target>Versions</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
