@@ -4,11 +4,11 @@
     </div>
     <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
         {{#if isEmpty }}
-            This field is empty
+            {{translate 'fieldview.field.empty' 'fieldview'}}
         {{else}}
             <ul class="ez-user-properties">
-                <li><b>Username:</b> {{value.login}}</li>
-                <li><b>Email address:</b> <a href="mailto:{{ value.email }}">{{ value.email }}</a></li>
+                <li><b>{{translate 'user.username' 'fieldview'}}</b> {{value.login}}</li>
+                <li><b>{{translate 'user.mail' 'fieldview'}}</b> <a href="mailto:{{ value.email }}">{{ value.email }}</a></li>
             </ul>
         {{/if}}
     </div></div>

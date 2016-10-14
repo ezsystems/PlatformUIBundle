@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="91263c40d83a926684f9800eb3df6988" resname="contenttypeselector.choose.content.type">
+        <source>contenttypeselector.choose.content.type</source>
+        <target>Choose a content type</target>
+      </trans-unit>
+      <trans-unit id="dee0f19d5a0804aa3a0af578e02c25c8" resname="contenttypeselector.filter.group">
+        <source>contenttypeselector.filter.group</source>
+        <target>Filter by group</target>
+      </trans-unit>
+      <trans-unit id="e05e97e18b9acda832fb4b4b3ccd8484" resname="contenttypeselector.checked">
+        <source>contenttypeselector.checked</source>
+        <target> checked</target>
+      </trans-unit>
+      <trans-unit id="b61c2875287f1c24f59cb13f1a44c316" resname="contenttypeselector.available.content.type">
+        <source>contenttypeselector.available.content.type</source>
+        <target>Available content types</target>
+      </trans-unit>
+      <trans-unit id="7adf41ab0c0a8e72d5db65c3ef764f59" resname="contenttypeselector.start.typing">
+        <source>contenttypeselector.start.typing</source>
+        <target>start typing to refine the list</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

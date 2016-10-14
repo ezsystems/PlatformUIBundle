@@ -4,10 +4,10 @@
     </div>
     <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
         {{#if isEmpty }}
-            This field is empty
+            {{translate 'fieldview.field.empty' 'fieldview'}}
         {{else}}
             {{#if parseError}}
-                <div class="ez-richtext-parse-error">An error occurred while parsing the content of this field</div>
+                <div class="ez-richtext-parse-error">{{translate 'richtext.parsing.error' 'fieldview'}}</div>
             {{else}}
                 <div class="ez-richtext-content">{{{value}}}</div>
             {{/if}}

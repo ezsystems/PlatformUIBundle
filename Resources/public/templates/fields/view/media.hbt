@@ -4,40 +4,59 @@
     </div>
     <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
         {{#if isEmpty }}
-        This field is empty
+            {{translate 'fieldview.field.empty' 'fieldview'}}
         {{else}}
 
         <div class="ez-media-view">
             <div class="ez-media-view-player">
             {{#if isAudio}}
                 <audio src="{{ value.uri }}" controls="controls" preload="auto" class="ez-media-player ez-media-audio-player"></audio>
-                <div class="ez-media-player-unsupported ez-media-player-unsupported-audio font-icon">Unsupported audio format</div>
+                <div class="ez-media-player-unsupported ez-media-player-unsupported-audio font-icon">{{translate 'media.unsupported.audio' 'fieldview'}}</div>
             {{else}}
                 <video src="{{ value.uri }}" controls="controls" preload="auto" class="ez-media-player ez-media-video-player"></video>
-                <div class="ez-media-player-unsupported font-icon">Unsupported video format</div>
+                <div class="ez-media-player-unsupported font-icon">{{translate 'media.unsupported.video' 'fieldview'}}</div>
             {{/if}}
             </div>
 
             <div class="ez-media-view-properties">
                 <h2 class="ez-media-view-properties-title">
                 {{#if isAudio }}
-                    Audio file properties
+                    {{translate 'media.audio.file.properties' 'fieldview'}}
                 {{else}}
-                    Video file properties
+                    {{translate 'media.video.file.properties' 'fieldview'}}
                 {{/if}}
                 </h2>
 
                 <ul class="ez-media-view-properties-text">
-                    <li><b>File name:</b> {{ value.fileName }}</li>
-                    <li><b>Type:</b> {{ value.mimeType }}</li>
-                    <li><b>File size:</b> {{ value.fileSize }}&nbsp;bytes</li>
-                    <li><b>Display controls:</b> {{#if value.hasController }}yes{{else}}no{{/if}}</li>
-                    <li><b>Auto play:</b>{{#if value.autoplay }}yes{{else}}no{{/if}}</li>
-                    <li><b>Loop:</b> {{#if value.loop }}yes{{else}}no{{/if}}</li>
+                    <li><b>{{translate 'media.file.name' 'fieldview'}}</b> {{ value.fileName }}</li>
+                    <li><b>{{translate 'media.file.type' 'fieldview'}}</b> {{ value.mimeType }}</li>
+                    <li><b>{{translate 'media.file.size' 'fieldview'}}</b>
+                        {{ value.fileSize }}&nbsp;{{translate 'media.bytes' 'fieldview'}}</li>
+                    <li><b>{{translate 'media.display.controls' 'fieldview'}}</b>
+                        {{#if value.hasController }}
+                            {{translate 'fieldview.yes' 'fieldview'}}
+                        {{else}}
+                            {{translate 'fieldview.no' 'fieldview'}}
+                        {{/if}}
+                    </li>
+                    <li><b>{{translate 'media.auto.play' 'fieldview'}}</b>
+                        {{#if value.autoplay }}
+                            {{translate 'fieldview.yes' 'fieldview'}}
+                        {{else}}
+                            {{translate 'fieldview.no' 'fieldview'}}
+                        {{/if}}
+                    </li>
+                    <li><b>{{translate 'media.loop' 'fieldview'}}</b>
+                        {{#if value.loop }}
+                            {{translate 'fieldview.yes' 'fieldview'}}
+                        {{else}}
+                            {{translate 'fieldview.no' 'fieldview'}}
+                        {{/if}}
+                    </li>
 
                     {{#unless isAudio}}
-                        {{#if value.width }}<li><b>Width:</b> {{ value.width }}</li>{{/if}}
-                        {{#if value.height }}<li><b>Height:</b> {{ value.height }}</li>{{/if}}
+                        {{#if value.width }}<li><b>{{translate 'media.width' 'fieldview'}}</b> {{ value.width }}</li>{{/if}}
+                        {{#if value.height }}<li><b>{{translate 'media.heigth' 'fieldview'}}</b> {{ value.height }}</li>{{/if}}
                     {{/unless}}
                 </ul>
             </div>

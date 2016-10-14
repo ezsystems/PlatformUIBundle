@@ -13,7 +13,7 @@
 </button>
 <div class="ez-expandable-area">
     <div class="ez-contenttranslations">
-        <h2 class="ez-contenttranslations-title">Existing Translations</h2>
+        <h2 class="ez-contenttranslations-title">{{translate 'translateaction.existing.translations' 'bar'}}</h2>
         <div class="ez-contenttranslations-content">
             <ul class="ez-contenttranslations-list">
                 {{#each translations}}
@@ -22,12 +22,12 @@
                         {{ language_name this }}
                     </a>
                     <a class="ez-contenttranslation-edit-link" href="{{ path "editContent" id=../content.id languageCode=this }}">
-                        Edit
+                        {{translate 'translateaction.edit' 'bar'}}
                     </a>
                 </li>
                 {{/each}}
             </ul>
         </div>
     </div>
-    <button class="ez-button ez-newtranslation-button">+ New Translation</button>
+    <button class="ez-button ez-newtranslation-button">{{translate 'translateaction.new.translation' 'bar'}}</button>
 </div>

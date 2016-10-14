@@ -4,7 +4,7 @@
     </div>
     <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
             {{#if isEmpty}}
-                This field is empty
+                {{translate 'fieldview.field.empty' 'fieldview'}}
             {{else}}
                 {{#if relatedContents }}
                     <ul>
@@ -16,18 +16,18 @@
                     </ul>
                     {{#if loadingError}}
                         <div class="ez-asynchronousview-error ez-font-icon">
-                             An error occurred while loading some of the related contents.
-                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+                            {{translate 'relationlist.error.loading' 'fieldview'}}
+                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{translate 'fieldview.retry' 'fieldview'}}</button>
                         </div>
                     {{/if}}
                 {{else}}
                     {{#if loadingError}}
                         <div class="ez-asynchronousview-error ez-font-icon">
-                            An error occurred while loading some of the related contents.
-                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+                            {{translate 'relationlist.error.loading' 'fieldview'}}
+                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{translate 'fieldview.retry' 'fieldview'}}</button>
                         </div>
                     {{else}}
-                       <div class="ez-font-icon ez-asynchronousview-loading">Loading the related contents</div>
+                       <div class="ez-font-icon ez-asynchronousview-loading">{{translate 'relationlist.loading' 'fieldview'}}</div>
                     {{/if}}
                 {{/if}}
             {{/if}}
