@@ -286,7 +286,8 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                     'loadContent': this.get('loadContent'),
                     'startingLocationId': startingLocationId,
                     'visible': visible,
-                    'isSelectable': Y.bind(this.get('isSelectable'), this)
+                    'isSelectable': Y.bind(this.get('isSelectable'), this),
+                    'active': this.get('active'),
                 });
                 if ( visible ) {
                     this._visibleMethodView = method;
@@ -560,7 +561,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             bubbleTargets: this,
                             priority: 100,
                             multiple: this.get('multiple'),
-                            loadContent: this.get('loadContent'),
+                            loadContent: true,
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
                             startingLocationId: this.get('startingLocationId')
                         }),
@@ -568,7 +569,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
                             bubbleTargets: this,
                             priority: 200,
                             multiple: this.get('multiple'),
-                            loadContent: this.get('loadContent'),
+                            loadContent: true,
                             isAlreadySelected: Y.bind(this._isAlreadySelected, this),
                             startingLocationId: this.get('startingLocationId')
                         }),

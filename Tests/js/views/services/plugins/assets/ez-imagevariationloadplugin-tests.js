@@ -212,7 +212,7 @@ YUI.add('ez-imagevariationloadplugin-tests', function (Y) {
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.ImageVariationLoad;
-    registerTest.components = ['locationViewViewService', 'contentEditViewService', 'contentCreateViewService'];
+    registerTest.components = ['locationViewViewService', 'universalDiscoveryViewService', 'contentEditViewService', 'contentCreateViewService'];
 
     Y.Test.Runner.setName("eZ Image Variation Load Plugin tests");
     Y.Test.Runner.add(defaultCallbackTest);

@@ -280,7 +280,7 @@ system:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-discoverybarcontenttreeplugin']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-discoverybarviewservice.js"
                 ez-universaldiscoveryviewservice:
-                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-universaldiscoverycontenttreeplugin']
+                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-imagevariationloadplugin', 'ez-universaldiscoverycontenttreeplugin']
                     path: "%ez_platformui.public_dir%/js/views/services/ez-universaldiscoveryviewservice.js"
                 ez-confirmboxviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice']
@@ -554,7 +554,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/universaldiscovery/search.hbt"
                 ez-universaldiscoveryselectedview:
-                    requires: ['event-tap', 'ez-templatebasedview', 'universaldiscoveryselectedview-ez-template']
+                    requires: ['event-tap', 'ez-templatebasedview', 'universaldiscoveryselectedview-ez-template', 'ez-asynchronousview', 'array-extras']
                     path: "%ez_platformui.public_dir%/js/views/universaldiscovery//ez-universaldiscoveryselectedview.js"
                 universaldiscoveryselectedview-ez-template:
                     type: 'template'

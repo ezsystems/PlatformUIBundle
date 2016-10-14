@@ -37,6 +37,7 @@
 
 .ez-view-universaldiscoveryselectedview .ez-ud-pane-content {
     position: relative;
+    width: 100%;
 }
 
 .ez-view-universaldiscoveryselectedview .ez-ud-selected-animation {
@@ -50,4 +51,41 @@
 
 .ez-view-universaldiscoveryselectedview .is-animated {
     visibility: visible;
+}
+
+.ez-view-universaldiscoveryselectedview .ez-asynchronousview .ez-asynchronousview-error {
+    padding-top: 1rem;
+    margin: 0;
+}
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-image {
+    display: none;
+}
+
+.ez-view-universaldiscoveryselectedview.is-state-image-loaded .ez-ud-selected-image {
+    display: block;
+    margin: 0 auto;
+    height: auto;
+    max-width: 100%;
+}
+
+.ez-view-universaldiscoveryselectedview .ez-asynchronousview-error {
+    display: none;
+}
+
+.ez-view-universaldiscoveryselectedview.is-state-image-error .ez-asynchronousview-error {
+    display: block;
+}
+
+.ez-view-universaldiscoveryselectedview.is-state-image-error .ez-ud-selected-visual {
+    display: none;
+}
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-confirm {
+    width: 100%;
+}
+
+.ez-view-universaldiscoveryselectedview .ez-ud-pane-content {
+    height: 200px;
+    overflow: auto;
 }

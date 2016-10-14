@@ -71,6 +71,6 @@ YUI.add('ez-imagevariationloadplugin', function (Y) {
 
     Y.eZ.PluginRegistry.registerPlugin(
         Y.eZ.Plugin.ImageVariationLoad,
-        ['locationViewViewService', 'contentEditViewService', 'contentCreateViewService']
+        ['locationViewViewService', 'universalDiscoveryViewService', 'contentEditViewService', 'contentCreateViewService']
     );
 });

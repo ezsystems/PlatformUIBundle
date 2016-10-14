@@ -62,9 +62,9 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
             tree.after('clear', Y.bind(function () {
                 cleared = true;
 
-                Assert.areSame(
-                    this.view.get('loadContent'), tree.rootNode.data.loadContent,
-                    "The loadContent flag should be set from the view"
+                Assert.isTrue(
+                    tree.rootNode.data.loadContent,
+                    "The loadContent flag should be set to true"
                 );
             }, this));
 
@@ -213,10 +213,9 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
                         search.loadContentType,
                         "The loadContentType flag should be set"
                     );
-                    Assert.areSame(
-                        this.view.get('loadContent'),
+                    Assert.isTrue(
                         search.loadContent,
-                        "The loadContent flag should be consistent with the browse view configuration"
+                        "The loadContent flag should be true"
                     );
 
                     callback(false, [this.struct], 1);

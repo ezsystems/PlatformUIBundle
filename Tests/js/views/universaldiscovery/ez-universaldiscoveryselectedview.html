@@ -10,6 +10,7 @@
 <script type="text/x-handlebars-template" id="universaldiscoveryselectedview-ez-template">
 template
 <div class="ez-ud-selected-animation"></div>
+    <img alt="" class="ez-ud-selected-image">
 <button class="ez-ud-selected-confirm">Confirm</button>
 </script>
 
@@ -32,8 +33,12 @@ template
         filter: loaderFilter,
         modules: {
             "ez-universaldiscoveryselectedview": {
-                requires: ['ez-templatebasedview', 'event-tap'],
+                requires: ['ez-templatebasedview', 'event-tap', 'ez-asynchronousview', 'array-extras'],
                 fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoveryselectedview.js"
+            },
+            "ez-asynchronousview": {
+                requires: ['view', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-asynchronousview.js"
             },
             "ez-templatebasedview": {
                 requires: ['ez-view', 'handlebars', 'template'],

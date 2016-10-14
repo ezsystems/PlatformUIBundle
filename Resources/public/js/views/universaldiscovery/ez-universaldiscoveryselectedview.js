@@ -11,7 +11,12 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
      */
     Y.namespace('eZ');
 
-    var IS_ANIMATED = 'is-animated';
+    var IS_ANIMATED = 'is-animated',
+        STATE_CLASS_PREFIX = 'is-state-',
+        STATE_IMAGE_NONE = 'no-image',
+        STATE_IMAGE_LOADING = 'image-loading',
+        STATE_IMAGE_LOADED = 'image-loaded',
+        STATE_IMAGE_ERROR = 'image-error';
 
     /**
      * Universal Discovery Selected View. It's a view meant to display the
@@ -22,7 +27,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
      * @constructor
      * @extends eZ.TemplateBasedView
      */
-    Y.eZ.UniversalDiscoverySelectedView = Y.Base.create('universalDiscoverySelectedView', Y.eZ.TemplateBasedView, [], {
+    Y.eZ.UniversalDiscoverySelectedView = Y.Base.create('universalDiscoverySelectedView', Y.eZ.TemplateBasedView, [Y.eZ.AsynchronousView], {
         events: {
             '.ez-ud-selected-confirm': {
                 'tap': '_confirmSelected',
@@ -30,8 +35,32 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
         },
 
         initializer: function () {
+            this._fireMethod = Y.bind(this._fireLoadImageVariation, this);
+            this._triggerAttribute = 'imageField';
+
+            this.after('imageStateChange', this._uiSetState);
+            this.after('loadImageVariation', function () {
+                this._set('imageState', STATE_IMAGE_LOADING);
+            });
+
+            this.after('imageVariationChange', function (e) {
+                if (this.get('imageVariation')) {
+                    this._set('imageState', STATE_IMAGE_LOADED);
+                    this._renderImageVariation();
+                }
+            });
+
+            this._errorHandlingMethod = function () {
+                this._set('imageState', STATE_IMAGE_ERROR);
+            };
+            
             this.after('contentStructChange', function (e) {
                 this._setConfirmButtonState(e.newVal);
+                if ( this.get('contentStruct') && this.get('contentStruct').content ) {
+                    this._setTranslations();
+                    this._detectImage();
+                }
+
                 this.render();
             });
             this.after('confirmButtonEnabledChange', function (e) {
@@ -39,6 +68,92 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
                 if ( this.get('confirmButtonEnabled') ) {
                     this._uiResetAnimation();
                 }
+            });
+        },
+
+        /**
+         * Detect if the content has an image and set the view state accordingly
+         *
+         * @method _detectImage
+         * @protected
+         */
+        _detectImage: function () {
+            if ( this._getFilledImageField() ) {
+                this.set('imageField', this._getFilledImageField());
+
+            } else {
+                this._set('imageState', STATE_IMAGE_NONE);
+                this.set('imageVariation', null);
+            }
+        },
+
+        /**
+         * Set translations
+         *
+         * @method _setTranslations
+         * @protected
+         */
+        _setTranslations: function () {
+            this.set('translations', this._getTranslations());
+        },
+
+        /**
+         * Renders the image variation
+         *
+         * @method _renderImageVariation
+         * @protected
+         */
+        _renderImageVariation: function () {
+            this.get('container').one('.ez-ud-selected-image').setAttribute(
+                'src', this.get('imageVariation').uri
+            );
+        },
+
+        /**
+         * Fires the `loadImageVariation` event for the given image field and
+         * the image variation stored in `variationIdentifier` attribute.
+         *
+         * @method _fireLoadImageVariation
+         * @protected
+         */
+        _fireLoadImageVariation: function () {
+            this.fire('loadImageVariation', {
+                field: this.get('imageField'),
+                variation: this.get('variationIdentifier'),
+            });
+        },
+
+        /**
+         * `imageStateChange` handler. It sets a state class on the container
+         * and make sure the previous state class was removed.
+         *
+         * @method _uiSetState
+         * @protected
+         * @param {EventFacade} e
+         */
+        _uiSetState: function (e) {
+            var prevClass = STATE_CLASS_PREFIX + e.prevVal,
+                newClass = STATE_CLASS_PREFIX + e.newVal;
+
+            this.get('container')
+                .removeClass(prevClass)
+                .addClass(newClass);
+        },
+
+        /**
+         * Returns the first filled ezimage field of the content or null if
+         * there's none.
+         *
+         * @method _getFilledImageField
+         * @protected
+         * @return {Object|Null}
+         */
+        _getFilledImageField: function () {
+            var content = this.get('contentStruct').content,
+                contentType = this.get('contentStruct').contentType;
+
+            return Y.Array.find(content.getFieldsOfType(contentType, 'ezimage'), function (field) {
+                return !!field.fieldValue;
             });
         },
 
@@ -110,8 +225,22 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
             }
         },
 
+        /**
+         * Returns and formats the translations list to a string suitable for the template
+         *
+         * @method _getTranslations
+         * @protected
+         * @return {String} String of language codes in which the content is
+         * translated
+         */
+        _getTranslations: function () {
+            return this.get('contentStruct').content.get('currentVersion').getTranslationsList().join(', ');
+        },
+
         render: function () {
             this.get('container').setHTML(this.template({
+                translations: this.get('translations'),
+                content: this._modelJson('content'),
                 contentInfo: this._modelJson('contentInfo'),
                 location: this._modelJson('location'),
                 contentType: this._modelJson('contentType'),
@@ -184,6 +313,52 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
         },
     }, {
         ATTRS: {
+            /**
+             * Holds the current state of the selected view regarding an image
+             * to display.
+             *
+             * @attribute imageState
+             * @readOnly
+             * @default undefined
+             * @type {String}
+             */
+            imageState: {
+                readOnly: true,
+            },
+
+            /**
+             * The image variation to display. This attribute is filled
+             * asynchronously if the content has a filled ezimage field.
+             *
+             * @attribute imageVariation
+             * @type {Object}
+             */
+            imageVariation: {
+                value: null
+            },
+
+            /**
+             * The image field of the content
+             *
+             * @attribute imageField
+             * @type {null|Object}
+             * @default null
+             */
+            imageField : {
+                value: null
+            },
+            
+            /**
+             * The variation identifier to use to display the image
+             *
+             * @attribute variationIdentifier
+             * @type {String}
+             * @default 'platformui_rawcontentview'
+             */
+            variationIdentifier: {
+                value: 'platformui_rawcontentview'
+            },
+
             /**
              * The content structure representing the content to display. It
              * should contain the content info, the location and the content

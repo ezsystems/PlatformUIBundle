@@ -3,9 +3,33 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
-    var renderTest, domEventTest, startAnimationTest, confirmButtonStateTest,
-        Assert = Y.Assert, Mock = Y.Mock;
-
+    var renderTest, domEventTest, startAnimationTest, confirmButtonStateTest, imageTest,
+        Assert = Y.Assert, Mock = Y.Mock,
+        _configureMock = function (type, content, currentVersion, translations, imageFieldTab) {
+            Mock.expect(type, {
+                method: 'toJSON',
+                returns: {},
+            });
+            Mock.expect(content, {
+                method: 'toJSON',
+                returns: {},
+            });
+            Mock.expect(content, {
+                method: 'getFieldsOfType',
+                args: [type, 'ezimage'],
+                returns: imageFieldTab,
+            });
+            Mock.expect(content, {
+                method: 'get',
+                args: ['currentVersion'],
+                returns: currentVersion,
+            });
+            Mock.expect(currentVersion, {
+                method: 'getTranslationsList',
+                returns: translations,
+            });
+        };
+    
     renderTest = new Y.Test.Case({
         name: 'eZ Universal Discovery Selected render tests',
 
@@ -26,14 +50,19 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
             Assert.isTrue(templateCalled, "render should use the template");
         },
 
-        "Should pass the contentInfo, location and contentType to the template": function () {
+        "Should pass the content, contentInfo, location, contentType and translations to the template": function () {
             var origTpl = this.view.template,
-                location, contentInfo, type,
-                tplLocation = {}, tplContentInfo = {}, tplType = {};
+                translations = ['LYO-69', 'FRA-fr'],
+                location, contentInfo, type, content, currentVersion,
+                tplLocation = {}, tplContentInfo = {}, tplType = {}, tplContent = {};
                 
             location = new Mock();
+            content = new Mock();
             contentInfo = new Mock();
             type = new Mock();
+            currentVersion = new Mock();
+
+            _configureMock(type, content, currentVersion, translations, []);
 
             Mock.expect(location, {
                 method: 'toJSON',
@@ -43,11 +72,17 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 method: 'toJSON',
                 returns: tplContentInfo,
             });
+            Mock.expect(content, {
+                method: 'toJSON',
+                returns: tplContent,
+            });
+
             Mock.expect(type, {
                 method: 'toJSON',
                 returns: tplType,
             });
             this.view.set('contentStruct', {
+                content: content,
                 location: location,
                 contentInfo: contentInfo,
                 contentType: type,
@@ -60,10 +95,18 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 );
                 Assert.areSame(
                     tplContentInfo, variables.contentInfo,
+                    "The toJSON result of the content info should be available in the template"
+                );
+                Assert.areSame(
+                    tplContent, variables.content,
                     "The toJSON result of the content should be available in the template"
                 );
                 Assert.areSame(
                     tplType, variables.contentType,
+                    "The toJSON result of the content type should be available in the template"
+                );
+                Assert.areSame(
+                    translations.join(', '), variables.translations,
                     "The toJSON result of the content type should be available in the template"
                 );
                 Assert.isTrue(
@@ -84,6 +127,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
             var origTpl = this.view.template;
             
             this.view.template = function (variables) {
+                Assert.isFalse(variables.content, "The content variable should be false");
                 Assert.isFalse(variables.contentInfo, "The content variable should be false");
                 Assert.isFalse(variables.location, "The location variable should be false");
                 Assert.isFalse(variables.contentType, "The contentType variable should be false");
@@ -94,15 +138,22 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
 
         "Should rerender the view when the contentStruct changes": function () {
             var rerendered = false,
-                origTpl = this.view.template;
-            
+                origTpl = this.view.template,
+                type, content, currentVersion;
+
+            type = new Mock();
+            content = new Mock();
+            currentVersion = new Mock();
+
+            _configureMock(type, content, currentVersion, [], []);
+
             this.view.render();
             this.view.template = function () {
                 rerendered = true;
                 return origTpl.apply(this, arguments);
             };
 
-            this.view.set('contentStruct', {});
+            this.view.set('contentStruct', {content: content, contentType: type});
             Assert.isTrue(rerendered, "The view should have been rerendered");
         },
 
@@ -126,8 +177,13 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
 
         "Should fire the confirmSelectedContent event": function () {
             var container = this.view.get('container'),
-                struct = {},
+                type = new Mock(),
+                content = new Mock(),
+                currentVersion = new Mock(),
+                struct = {content: content, contentType: type},
                 that = this;
+
+            _configureMock(type, content, currentVersion, [], []);
 
             this.view.set('addConfirmButton', true);
             this.view.set('contentStruct', struct);
@@ -254,12 +310,15 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 isselectable1 = function (contentStruct) {return false;},
                 isselectable2 = function (contentStruct) {return true;},
                 location = new Mock(),
+                content = new Mock(),
                 contentInfo = new Mock(),
                 type = new Mock(),
+                currentVersion = new Mock(),
                 contentStruct = {
                     location: location,
                     contentInfo: contentInfo,
                     contentType: type,
+                    content: content,
                 };
 
             Mock.expect(location, {
@@ -270,10 +329,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 method: 'toJSON',
                 returns: {},
             });
-            Mock.expect(type, {
-                method: 'toJSON',
-                returns: {},
-            });
+            _configureMock(type, content, currentVersion, [], []);
 
             this.view.set('isAlreadySelected', isAlreadySelected1);
             this.view.set('isSelectable', isselectable1);
@@ -297,9 +353,167 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
         },
     });
 
+    imageTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Selected image tests',
+
+        setUp: function () {
+            this.view = new Y.eZ.UniversalDiscoverySelectedView({container: '.container'});
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete this.view;
+        },
+
+        "Should set the imageField attribute when content have an image field": function () {
+            var type = new Mock(),
+                content = new Mock(),
+                currentVersion = new Mock(),
+                struct = {content: content, contentType: type},
+                imageField = {fieldValue: "42"},
+                imageFieldTab = [imageField];
+
+            _configureMock(type, content, currentVersion, [], imageFieldTab);
+
+            this.view.render();
+            this.view.set('contentStruct', struct);
+
+            Assert.areSame(
+                this.view.get('imageField'),
+                imageField,
+                "Should set the imageField attribute"
+            );
+            Assert.areSame(
+                this.view.get('imageState'),
+                'image-loading',
+                "ImageState should be set to loading"
+            );
+        },
+
+        "Should NOT set the imageField attribute when content do not have an image field": function () {
+            var type = new Mock(),
+                content = new Mock(),
+                currentVersion = new Mock(),
+                struct = {content: content, contentType: type};
+
+            _configureMock(type, content, currentVersion, [], '');
+
+            this.view.render();
+            this.view.set('contentStruct', struct);
+
+            Assert.isNull(
+                this.view.get('imageField'),
+                "Should NOT set the imageField attribute"
+            );
+            Assert.areSame(
+                this.view.get('imageState'),
+                'no-image',
+                "ImageState should be set to no-image"
+            );
+            Assert.isNull(
+                this.view.get('imageVariation'),
+                "imageVarriation should be set to null"
+            );
+        },
+
+        "Should render image variation on imageVariationChange": function () {
+            var imageVariation = {uri:  "http://ezplatform/var/site/storage/images/images.jpg"},
+                container = this.view.get('container');
+
+            this.view.render();
+            this.view.set('imageVariation', imageVariation);
+
+            Assert.areSame(
+                this.view.get('imageState'),
+                'image-loaded',
+                "ImageState should be set to loaded"
+            );
+
+            Assert.areSame(
+                imageVariation.uri,
+                container.one('.ez-ud-selected-image').getAttribute('src'),
+                "Should render image Variation"
+            );
+        },
+
+        "Should set the imageState to 'image-error' on error": function () {
+            this.view.set('loadingError', true);
+
+            Assert.areEqual(
+                "image-error", this.view.get('imageState'),
+                "The `imageState` attribute should be set to 'image-error'"
+            );
+        },
+
+        "Should set the imageState to 'image-loading' after loadImageVariation event": function () {
+            this.view.fire('loadImageVariation');
+
+            Assert.areEqual(
+                "image-loading", this.view.get('imageState'),
+                "The `imageState` attribute should be set to 'image-loading'"
+            );
+        },
+
+        "Should fire 'loadImageVariation'  event when setting 'imageField'": function () {
+            var fired = false,
+                variationIdentifier = "oOOOooOOOoo",
+                type = new Mock(),
+                content = new Mock(),
+                currentVersion = new Mock(),
+                struct = {content: content, contentType: type},
+                imageField = {fieldValue: "42"},
+                imageFieldTab = [imageField];
+
+            _configureMock(type, content, currentVersion, [], imageFieldTab);
+
+            this.view.render();
+            this.view.set('variationIdentifier', variationIdentifier);
+            this.view.set('contentStruct', struct);
+
+            this.view.on('loadImageVariation', function (e) {
+                Assert.areSame(
+                    e.field,
+                    imageField,
+                    "The event should have a field"
+                );
+                Assert.areSame(
+                    e.variation,
+                    variationIdentifier,
+                    "The event should have a field"
+                );
+                fired = true;
+            });
+            this.view.set('imageField', imageField);
+            Assert.isTrue(fired, 'Event should have been fired');
+        },
+
+        "Should add loaded image state class on the container when image is loaded": function () {
+            var container = this.view.get('container');
+            
+            this.view._set('imageState', "image-loading");
+            Assert.isTrue(container.hasClass('is-state-image-loading'), 'Container should have "is-state-image-loading" class');
+
+            this.view._set('imageState', "image-loaded");
+            Assert.isFalse(container.hasClass('is-state-image-loading'), 'Container should NOT have "is-state-image-loading" class');
+            Assert.isTrue(container.hasClass('is-state-image-loaded'), 'Container should have "is-state-image-loaded" class');
+        },
+
+        "Should add error image state class on the container when image can not load": function () {
+            var container = this.view.get('container');
+
+            this.view._set('imageState', "image-loading");
+            Assert.isTrue(container.hasClass('is-state-image-loading'), 'Container should have "is-state-image-loading" class');
+
+            this.view._set('imageState', "image-error");
+            Assert.isFalse(container.hasClass('is-state-image-loading'), 'Container should NOT have "is-state-image-loading" class');
+            Assert.isTrue(container.hasClass('is-state-image-error'), 'Container should have "is-state-image-error" class');
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Selected View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(domEventTest);
     Y.Test.Runner.add(startAnimationTest);
     Y.Test.Runner.add(confirmButtonStateTest);
+    Y.Test.Runner.add(imageTest);
 }, '', {requires: ['test', 'node-style', 'node-event-simulate', 'ez-universaldiscoveryselectedview']});
