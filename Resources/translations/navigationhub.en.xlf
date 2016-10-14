@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="2cf44ed7209581f302b0731290d10273" resname="navigationhub.more">
+        <source>navigationhub.more</source>
+        <target>More</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
