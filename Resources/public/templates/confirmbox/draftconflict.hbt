@@ -6,7 +6,7 @@
     <div class="ez-draft-conflict-toolbar">
         <a href="{{ path 'editContent' id=contentInfo.id languageCode=languageCode }}"
            class="ez-draft-conflict-link ez-draft-conflict-newdraft">
-            New Draft
+            {{translate "draftconflict.newdraft" "confirm"}}
         </a>
     </div>
 </header>
@@ -14,9 +14,9 @@
 <table class="ez-draft-conflict-table">
     <thead class="ez-draft-conflict-list-header">
     <tr>
-        <th class="ez-draft-conflict-list-head-language">Language</th>
-        <th class="ez-draft-conflict-list-head-author">Owner</th>
-        <th class="ez-draft-conflict-list-head-saved">Last Modified</th>
+        <th class="ez-draft-conflict-list-head-language">{{translate "draftconflict.language" "confirm"}}</th>
+        <th class="ez-draft-conflict-list-head-author">{{translate "draftconflict.owner" "confirm"}}</th>
+        <th class="ez-draft-conflict-list-head-saved">{{translate "draftconflict.lastmodified" "confirm"}}</th>
         <th class="ez-draft-conflict-list-head-edit"></th>
     </tr>
     </thead>
