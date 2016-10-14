@@ -12,12 +12,12 @@
         <label for="ez-base-translation">
             <input type="checkbox" value="1" class="ez-base-translation-checkbox" id="ez-base-translation"
                 name="baseTranslation" {{#if baseTranslation}}checked="checked"{{/if}}>
-            Base this translation on an existing translation
+            {{translate 'languageselectionbox.base.existing.translation' 'languageselection'}}
         </label>
     </div>
 
     <div class="ez-languageselectionbox-existingtranslations-container">
-        <h3 class="ez-languageselectionbox-title">Select a base language:</h3>
+        <h3 class="ez-languageselectionbox-title">{{translate 'languageselectionbox.select.base.language' 'languageselection'}}</h3>
         <ul class="ez-languageselectionbox-languages ez-languageselectionbox-existingtranslations">
             {{#each referenceLanguageList}}
                 <li class="ez-language ez-base-language" data-languagecode="{{ this }}">{{ language_name this }}</li>
@@ -27,6 +27,6 @@
 </div>
 
 <p class="ez-languageselectionbox-tools">
-    <a href="#" class="ez-languageselectionbox-cancel ez-languageselectionbox-close">Cancel</a>
-    <button class="ez-languageselectionbox-confirm ez-button pure-button" disabled="disabled">Confirm</button>
+    <a href="#" class="ez-languageselectionbox-cancel ez-languageselectionbox-close">{{translate 'languageselectionbox.cancel' 'languageselection'}}</a>
+    <button class="ez-languageselectionbox-confirm ez-button pure-button" disabled="disabled">{{translate 'languageselectionbox.confirm' 'languageselection'}}</button>
 </p>

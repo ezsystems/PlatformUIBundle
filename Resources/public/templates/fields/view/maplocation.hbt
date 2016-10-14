@@ -1,19 +1,19 @@
 <div class="ez-fieldview-row pure-g">
     <div class="ez-fieldview-label pure-u">
         <p class="ez-fieldview-name"><strong>{{ translate_property fieldDefinition.names }}</strong></p>
-        <p class="ez-maplocation-message">The map is loading...</p>
+        <p class="ez-maplocation-message">{{translate 'maplocation.map.loading' 'fieldview'}}</p>
     </div>
     <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
     {{#if isEmpty }}
-        This field is empty
+        {{translate 'fieldview.field.empty' 'fieldview'}}
     {{else}}
         <div class="ez-maplocation-map">
             <ul class="ez-maplocation-data">
             {{#if value.address }}
                 <li class="ez-maplocation-item ez-maplocation-address">{{ value.address }}</li>
             {{/if}}
-                <li class="ez-maplocation-item">Latitude: {{ value.latitude }}</li>
-                <li class="ez-maplocation-item">Longitude: {{ value.longitude }}</li>
+                <li class="ez-maplocation-item">{{translate 'maplocation.latitude' 'fieldview'}} {{ value.latitude }}</li>
+                <li class="ez-maplocation-item">{{translate 'maplocation.longitude' 'fieldview'}} {{ value.longitude }}</li>
             </ul>
         </div>
     {{/if}}
