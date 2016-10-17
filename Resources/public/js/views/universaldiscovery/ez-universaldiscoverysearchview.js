@@ -110,7 +110,7 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
          * @protected
          */
         _searchResultChanged: function () {
-            this.get('selectedView').set('contentStruct', null);
+            this._unselectContent();
             this._uiPageEndLoading();
         },
 
@@ -175,7 +175,8 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
                     },
                 });
             } else {
-                this.reset();
+                this.reset('searchResultList');
+                this.render();
             }
         },
 

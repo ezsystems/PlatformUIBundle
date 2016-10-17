@@ -691,7 +691,19 @@ YUI.add('ez-universaldiscoverysearchview-tests', function (Y) {
         },
 
         "Should reset the view if provided search text is empty": function () {
+            var selectContentFired = false;
+
             this.view.set('searchText', 'Grunwald 1410');
+
+            this.view.on('selectContent', function (e) {
+                selectContentFired = true;
+
+                Assert.isNull(
+                    e.selection,
+                    "The selection should be null"
+                );
+            });
+
             this.view.set('searchText', '');
 
             Assert.areEqual(this.view.get('offset'), 0, "The offset attribute should be reset");
@@ -704,6 +716,14 @@ YUI.add('ez-universaldiscoverysearchview-tests', function (Y) {
                 this.view.get('searchResultList').length,
                 0,
                 "The searchResultList attribute should be reset"
+            );
+            Assert.isNull(
+                this.view.get('selectedView').get('contentStruct'),
+                "The contentStruct should be null in the selected view"
+            );
+            Assert.isTrue(
+                selectContentFired,
+                "The selectContent should have been fired"
             );
         }
     });
