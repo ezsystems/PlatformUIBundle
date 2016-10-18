@@ -135,6 +135,10 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
                     wrapper.get('region').left, region.left,
                     "region left property should hold the wrapper top position"
                 );
+                Assert.areSame(
+                    nativeEditor.widgets.focused, widget,
+                    "The widget should have the focus"
+                );
             });
 
             widget.fire('focus');
