@@ -1149,6 +1149,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             Y.eZ.EditorContentProcessorRemoveIds = function () {};
             Y.eZ.EditorContentProcessorXHTML5Edit = function () {};
             Y.eZ.EditorContentProcessorEmptyEmbed = function () {};
+            Y.eZ.EditorContentProcessorRemoveAnchors = function () {};
             this.view = new Y.eZ.RichTextEditView({processors: []});
         },
 
@@ -1157,6 +1158,7 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             delete Y.eZ.EditorContentProcessorRemoveIds;
             delete Y.eZ.EditorContentProcessorXHTML5Edit;
             delete Y.eZ.EditorContentProcessorEmptyEmbed;
+            delete Y.eZ.EditorContentProcessorRemoveAnchors;
         },
 
         "Should have some default editorContentProcessors": function () {
@@ -1164,23 +1166,25 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
 
             Assert.isArray(processors, "The processors should be in an array");
             Assert.areEqual(
-                3, processors.length,
-                "The view should have 3 processors by default"
+                4, processors.length,
+                "The view should have 4 processors by default"
             );
-            Y.Array.each(processors, function (processor) {
-                if (
-                    !(processor instanceof Y.eZ.EditorContentProcessorRemoveIds)
-                    &&
-                    !(processor instanceof Y.eZ.EditorContentProcessorXHTML5Edit)
-                    &&
-                    !(processor instanceof Y.eZ.EditorContentProcessorEmptyEmbed)
-                ) {
-                    Y.fail(
-                        "The processor should be an instance of EditorContentProcessorRemoveIds"
-                        + "or EditorContentProcessorXHTML5Edit or EditorContentProcessorEmptyEmbed"
-                    );
-               }
-            });
+            Assert.isInstanceOf(
+                Y.eZ.EditorContentProcessorRemoveIds, processors[0],
+                "The processor should be instance of Y.eZ.EditorContentProcessorRemoveIds"
+            );
+            Assert.isInstanceOf(
+                Y.eZ.EditorContentProcessorEmptyEmbed, processors[1],
+                "The processor should be instance of Y.eZ.EditorContentProcessorEmptyEmbed"
+            );
+            Assert.isInstanceOf(
+                Y.eZ.EditorContentProcessorRemoveAnchors, processors[2],
+                "The processor should be instance of Y.eZ.EditorContentProcessorRemoveAnchors"
+            );
+            Assert.isInstanceOf(
+                Y.eZ.EditorContentProcessorXHTML5Edit, processors[3],
+                "The processor should be instance of Y.eZ.EditorContentProcessorXHTML5Edit"
+            );
         },
     });
 

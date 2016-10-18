@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<title>eZ Editor Content removeanchors processor tests</title>
+</head>
+<body>
+
+<script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
+<script type="text/javascript" src="./assets/ez-editorcontentprocessorremoveanchors-tests.js"></script>
+<script>
+    var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
+        loaderFilter;
+
+    if (filter == 'coverage') {
+        loaderFilter = {
+            searchExp : "/Resources/public/js/",
+            replaceStr: "/Tests/instrument/Resources/public/js/"
+        };
+    } else {
+        loaderFilter = filter;
+    }
+
+    YUI({
+        coverage: ['ez-editorcontentprocessorremoveanchors'],
+        filter: loaderFilter,
+        modules: {
+            "ez-editorcontentprocessorremoveanchors": {
+                requires: ['ez-editorcontentprocessorbase'],
+                fullpath: "../../../../Resources/public/js/alloyeditor/processors/removeanchors.js",
+            },
+            "ez-editorcontentprocessorbase": {
+                fullpath: "../../../../Resources/public/js/alloyeditor/processors/base.js",
+            },
+        }
+    }).use('ez-editorcontentprocessorremoveanchors-tests', function (Y) {
+        Y.Test.Runner.run();
+    });
+</script>
+</body>
+</html>
