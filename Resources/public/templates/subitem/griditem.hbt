@@ -1,7 +1,7 @@
 <div class="ez-subitemgrid-item-content ez-asynchronousview">
     <p class="ez-subitemgrid-item-content-type">
         <a href="{{path 'viewLocation' id=location.id languageCode=content.mainLanguageCode}}" class="ez-subitemgrid-item-link ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}">
-        <a href="{{path 'viewLocation' id=location.id languageCode=content.mainLanguageCode}}" class="ez-subitemgrid-item-link" data-icon="&#xe601;">
+        <a href="{{path 'viewLocation' id=location.id languageCode=content.mainLanguageCode}}" class="ez-subitemgrid-item-link">
             {{ translate_property contentType.names }}
         </a>
     </p>
