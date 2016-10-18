@@ -310,6 +310,9 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                             pageY: wrapperRegion.top + wrapperRegion.height,
                         };
 
+                    editor.focus();
+                    this.focus();
+
                     editor.fire('editorInteraction', {
                         nativeEvent: e,
                         selectionData: {
