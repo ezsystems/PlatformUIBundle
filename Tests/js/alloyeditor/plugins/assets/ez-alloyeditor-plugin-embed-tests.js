@@ -657,6 +657,34 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
             );
         },
 
+        _assertEditorInteraction: function (widget, facade, evtName) {
+            Assert.areSame(
+                widget.element.$, facade.nativeEvent.target,
+                "The native event should have the widget element as target"
+            );
+            Assert.areEqual(
+                evtName, facade.nativeEvent.name,
+                "The native event name should be " + evtName
+            );
+
+        },
+
+        "setAlignment should fire the `editorInteraction` event": function () {
+            var widget = this._getWidget('#embed'),
+                editorInteractionFired = false;
+
+            this.editor.get('nativeEditor').once('editorInteraction', Y.bind(function (e) {
+                editorInteractionFired = true;
+                this._assertEditorInteraction(widget, e.data, 'widgetsetAlignmentright');
+            }, this));
+            widget.setAlignment('right');
+
+            Assert.isTrue(
+                editorInteractionFired,
+                "The `editorInteraction` event should have been fired"
+            );
+        },
+
         "setAlignment should handle a previously added alignment": function () {
             var widget = this._getWidget('#aligned-embed');
 
@@ -678,7 +706,7 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
         "unsetAlignment should unset the alignment": function () {
             var widget = this._getWidget('#aligned-embed');
 
-            widget.unsetAlignment('right');
+            widget.unsetAlignment();
             Assert.isFalse(
                 widget.isAligned('right'),
                 "The widget should not be aligned anymore"
@@ -690,6 +718,22 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
             Assert.isNull(
                 widget.element.data('ezalign'),
                 "The 'data-ezalign' attribute should have been removed from the element"
+            );
+        },
+
+        "unsetAlignment should fire the `editorInteraction` event": function () {
+            var widget = this._getWidget('#aligned-embed'),
+                editorInteractionFired = false;
+
+            this.editor.get('nativeEditor').once('editorInteraction', Y.bind(function (e) {
+                editorInteractionFired = true;
+                this._assertEditorInteraction(widget, e.data, 'widgetunsetAlignment');
+            }, this));
+            widget.unsetAlignment();
+
+            Assert.isTrue(
+                editorInteractionFired,
+                "The `editorInteraction` event should have been fired"
             );
         },
     });

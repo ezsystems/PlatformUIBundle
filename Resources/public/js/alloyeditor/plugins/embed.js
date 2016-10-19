@@ -115,9 +115,9 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                     var align = this.element.data(DATA_ALIGNMENT_ATTR);
 
                     if ( align ) {
-                        this.setAlignment(align);
+                        this._setAlignment(align);
                     } else {
-                        this.unsetAlignment();
+                        this._unsetAlignment();
                     }
                 },
 
@@ -126,22 +126,47 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                  * alignment is set by adding the `data-ezalign` attribute
                  * on the widget wrapper and the widget element.
                  *
-                 * @method setAlignment
+                 * @method _setAlignment
+                 * @protected
                  * @param {String} type
                  */
-                setAlignment: function (type) {
+                _setAlignment: function (type) {
                     this.wrapper.data(DATA_ALIGNMENT_ATTR, type);
                     this.element.data(DATA_ALIGNMENT_ATTR, type);
                 },
 
                 /**
+                 * Sets the alignment of the embed widget to `type` and fires
+                 * the corresponding `editorInteraction` event.
+                 *
+                 * @method setAlignment
+                 * @param {String} type
+                 */
+                setAlignment: function (type, fireEvent) {
+                    this._setAlignment(type);
+                    this._fireEditorInteraction('setAlignment' + type);
+                },
+
+                /**
                  * Removes the alignment of the widget.
+                 *
+                 * @method _unsetAlignment
+                 * @protected
+                 */
+                _unsetAlignment: function () {
+                    this.wrapper.data(DATA_ALIGNMENT_ATTR, false);
+                    this.element.data(DATA_ALIGNMENT_ATTR, false);
+                },
+
+                /**
+                 * Removes the alignment of the widget and fires the
+                 * corresponding `editorInteraction` event.
                  *
                  * @method unsetAlignment
                  */
                 unsetAlignment: function () {
-                    this.wrapper.data(DATA_ALIGNMENT_ATTR, false);
-                    this.element.data(DATA_ALIGNMENT_ATTR, false);
+                    this._unsetAlignment();
+                    this._fireEditorInteraction('unsetAlignment');
                 },
 
                 /**
@@ -298,14 +323,16 @@ YUI.add('ez-alloyeditor-plugin-embed', function (Y) {
                  *
                  * @method _fireEditorInteraction
                  * @protected
-                 * @param {Object} evt this initial event info object
+                 * @param {Object|String} evt this initial event info object or
+                 * the event name for which the `editorInteraction` is fired.
                  */
                 _fireEditorInteraction: function (evt) {
                     var wrapperRegion = this._getWrapperRegion(),
+                        name = evt.name || evt,
                         e = {
                             editor: editor,
                             target: this.element.$,
-                            name: "widget" + evt.name,
+                            name: "widget" + name,
                             pageX: wrapperRegion.left,
                             pageY: wrapperRegion.top + wrapperRegion.height,
                         };

@@ -87,7 +87,6 @@ YUI.add('ez-alloyeditor-button-mixin-embedalign', function (Y) {
             } else {
                 widget.setAlignment(this.props.alignment);
             }
-            this.props.editor.get('nativeEditor').fire('actionPerformed', this);
         },
 
         render: function() {
