@@ -558,12 +558,21 @@ YUI.add('ez-locationmodel-tests', function (Y) {
             delete this.model;
         },
 
-        _configureUpdateLocationMock: function (cbError) {
+        _configureUpdateLocationMock: function (cbError, invisible, hidden) {
+            var response = {
+                    document: {
+                        Location: {
+                            invisible: invisible,
+                            hidden: hidden,
+                        },
+                    },
+                };
+
             Mock.expect(this.contentServiceMock, {
                 method: 'updateLocation',
                 args: [this.locationId, this.updateStruct, Mock.Value.Function],
                 run: function (id, struct, cb) {
-                    cb(cbError);
+                    cb(cbError, response);
                 },
             });
         },
@@ -571,7 +580,7 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         "Should hide the location": function () {
             var options = {api: this.capiMock};
 
-            this._configureUpdateLocationMock(false);
+            this._configureUpdateLocationMock(false, true, true);
 
             this.model.hide(options, this.callback);
 
@@ -579,6 +588,11 @@ YUI.add('ez-locationmodel-tests', function (Y) {
                 this.model.get('hidden'),
                 "Attribute hidden should have been set to true"
             );
+            Assert.isTrue(
+                this.model.get('invisible'),
+                "Attribute invisible should have been set to true"
+            );
+
             Assert.isTrue(
                 this.callbackCalled,
                 "Callback should have been called"
@@ -591,13 +605,17 @@ YUI.add('ez-locationmodel-tests', function (Y) {
         "Should unhide the location": function () {
             var options = {api: this.capiMock};
 
-            this._configureUpdateLocationMock(false);
+            this._configureUpdateLocationMock(false, false, false);
 
             this.model.unhide(options, this.callback);
 
             Assert.isFalse(
                 this.model.get('hidden'),
                 "Attribute hidden should have been set to false"
+            );
+            Assert.isFalse(
+                this.model.get('invisible'),
+                "Attribute invisible should have been set to false"
             );
             Assert.isTrue(
                 this.callbackCalled,
