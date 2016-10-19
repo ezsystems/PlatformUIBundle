@@ -76,7 +76,11 @@ YUI.add('ez-alloyeditor-plugin-removeblock', function (Y) {
                 toRemove = editor.widgets.focused.wrapper;
             }
             newFocus = toRemove.getNext();
-            if ( !newFocus ) {
+            if ( !newFocus || newFocus.hasAttribute('data-cke-temp') ) {
+                // the data-cke-temp element is added by the Widget plugin for
+                // internal purposes but it exposes no API to handle it, so we
+                // are forced to manually check if newFocus is this element
+                // see https://jira.ez.no/browse/EZP-26016
                 newFocus = toRemove.getPrevious();
             }
 
