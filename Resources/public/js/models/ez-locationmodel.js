@@ -147,8 +147,12 @@ YUI.add('ez-locationmodel', function (Y) {
             locationUpdateStruct.body.LocationUpdate.sortOrder = this.get('sortOrder');
             options.api.getContentService().updateLocation(this.get('id'), locationUpdateStruct,
                 Y.bind(function (error, response) {
+                    var updatedLocation;
+
                     if (!error) {
-                        this.set('hidden', (hidden === 'true'));
+                        updatedLocation = this.parse(response);
+                        this.set('hidden', updatedLocation.hidden);
+                        this.set('invisible', updatedLocation.invisible);
                     }
                     callback(error, response);
                 }, this)
@@ -181,7 +185,7 @@ YUI.add('ez-locationmodel', function (Y) {
 
         /**
          * Swap the location with other location
-         * 
+         *
          * @method swap
          * @param {Object} options the required for the swap         *
          * @param {Object} options.api (required) the JS REST client instance
@@ -319,7 +323,7 @@ YUI.add('ez-locationmodel', function (Y) {
 
         /**
          * Returns if the location is a root one
-         * 
+         *
          * @method isRootLocation
          * @return {boolean}
          */
