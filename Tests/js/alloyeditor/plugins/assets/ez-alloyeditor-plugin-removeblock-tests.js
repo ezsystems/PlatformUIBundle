@@ -4,7 +4,7 @@
  */
 /* global CKEDITOR, AlloyEditor */
 YUI.add('ez-alloyeditor-plugin-removeblock-tests', function (Y) {
-    var definePluginTest, removeTest, focusTest,
+    var definePluginTest, removeTest, focusTest, removeLastEmbedTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
     definePluginTest = new Y.Test.Case({
@@ -204,8 +204,61 @@ YUI.add('ez-alloyeditor-plugin-removeblock-tests', function (Y) {
         },
     });
 
+    // regression test for https://jira.ez.no/browse/EZP-26016
+    removeLastEmbedTest = new Y.Test.Case({
+        name: "eZ AlloyEditor eZRemoveBlock remove last embed test",
+
+        "async:init": function () {
+            var startTest = this.callback();
+
+            CKEDITOR.plugins.addExternal('lineutils', '../../../lineutils/');
+            CKEDITOR.plugins.addExternal('widget', '../../../widget/');
+            this.container = Y.one('.container-remove-last-embed');
+            this.content = this.container.getHTML();
+            this.editor = AlloyEditor.editable(
+                this.container.getDOMNode(), {
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezremoveblock,widget,ezembed',
+                }
+            );
+            this.editor.get('nativeEditor').on('instanceReady', function () {
+                startTest();
+            });
+        },
+
+        destroy: function () {
+            this.editor.destroy();
+            this.container.set('innerHTML', this.content);
+        },
+
+        "Should remove the embed without error": function () {
+            var editor = this.editor.get('nativeEditor'),
+                embedElement = editor.element.findOne('#embed'),
+                embedWidget = editor.widgets.getByElement(embedElement),
+                editorInteractionFired = false;
+
+            embedWidget.focus();
+            editor.once('editorInteraction', function (evt) {
+                editorInteractionFired = true;
+
+                Assert.areEqual(
+                    editor.element.findOne('#previous').$,
+                    editor.getSelection().getStartElement().$,
+                    "The previous element should have been selected"
+                );
+            });
+            editor.execCommand('eZRemoveBlock');
+
+            Assert.isTrue(
+                editorInteractionFired,
+                "The `editorInteraction` event should have been fired"
+            );
+        },
+
+    });
+
     Y.Test.Runner.setName("eZ AlloyEditor removeblock plugin tests");
     Y.Test.Runner.add(definePluginTest);
     Y.Test.Runner.add(removeTest);
     Y.Test.Runner.add(focusTest);
+    Y.Test.Runner.add(removeLastEmbedTest);
 }, '', {requires: ['test', 'node', 'ez-alloyeditor-plugin-removeblock', 'ez-alloyeditor-plugin-embed']});
