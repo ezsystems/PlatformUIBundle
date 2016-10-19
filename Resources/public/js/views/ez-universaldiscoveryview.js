@@ -283,7 +283,7 @@ YUI.add('ez-universaldiscoveryview', function (Y) {
 
                 method.setAttrs({
                     'multiple': this.get('multiple'),
-                    'loadContent': this.get('loadContent'),
+                    'loadContent': true,
                     'startingLocationId': startingLocationId,
                     'visible': visible,
                     'isSelectable': Y.bind(this.get('isSelectable'), this),
