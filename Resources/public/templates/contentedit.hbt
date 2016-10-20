@@ -6,7 +6,9 @@
             <div class="ez-infos">
                 <ul class="ez-technical-infos">
                     <li>{{ translate_property contentType.names }}</li>
-                    <li>Created by {{ owner.name }}</li>
+                    {{#if owner}}
+                        <li>Created by {{ owner.name }}</li>
+                    {{/if}}
                     {{#if content.contentId}}
                     <li>{{ content.lastModificationDate }}</li>
                     <li>Content ID: {{ content.contentId }}, Location ID: {{ mainLocation.locationId }}</li>

@@ -11,6 +11,10 @@ YUI.add('ez-contenteditviewservice', function (Y) {
      */
     Y.namespace('eZ');
 
+    var getNewUser = function () {
+            return new Y.eZ.User();
+        };
+
     /**
      * Content edit view service.
      *
@@ -282,7 +286,20 @@ YUI.add('ez-contenteditviewservice', function (Y) {
          * @param {Function} callback
          */
         _loadOwner: function (id, callback) {
-            this._loadModel('owner', id, {}, "Could not load the user with id '" + id + "'", callback);
+            var owner = this.get('owner'),
+                loadOptions = {api: this.get('capi')};
+
+            if ( !owner ) {
+                owner = getNewUser();
+                this.set('owner', owner);
+            }
+            owner.set('id', id);
+            owner.load(loadOptions, Y.bind(function (error) {
+                if (error) {
+                    this.set('owner', null);
+                }
+                callback();
+            }, this));
         },
 
         /**
@@ -541,9 +558,7 @@ YUI.add('ez-contenteditviewservice', function (Y) {
              * @type Y.eZ.User
              */
             owner: {
-                valueFn: function () {
-                    return new Y.eZ.User();
-                }
+                valueFn: getNewUser
             },
 
             /**
