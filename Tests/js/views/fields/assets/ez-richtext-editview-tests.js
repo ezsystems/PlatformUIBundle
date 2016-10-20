@@ -570,6 +570,20 @@ YUI.add('ez-richtext-editview-tests', function (Y) {
             this._testExtraPlugins('ezfocusblock');
         },
 
+        "Should blacklist ae_embed plugin": function () {
+            this.view.onceAfter('activeChange', Y.bind(function () {
+                this.view.get('editor').get('nativeEditor').on('instanceReady', this.next(function () {
+                    Assert.isTrue(
+                        this.view.get('editor').get('removePlugins').indexOf('ae_embed') !== -1,
+                        "The ae_embed plugin should be blacklisted"
+                    );
+                }, this));
+            }, this));
+
+            this.view.set('active', true);
+            this.wait();
+        },
+
         "Should pass the `eZ` configuration": function () {
             this.view.onceAfter('activeChange', Y.bind(function () {
                 this.view.get('editor').get('nativeEditor').on('instanceReady', this.next(function () {

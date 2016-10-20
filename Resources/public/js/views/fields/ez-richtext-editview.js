@@ -160,6 +160,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                 this.get('container').one('.ez-richtext-editor').getDOMNode(), {
                     toolbars: this.get('toolbarsConfig'),
                     extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezaddcontent,widget,ezembed,ezremoveblock,ezfocusblock,yui3',
+                    removePlugins: AlloyEditor.Core.ATTRS.removePlugins.value + ',ae_embed',
                     eZ: {
                         editableRegion: '.' + EDITABLE_CLASS,
                         imageVariations: this._getImageVariations(),
