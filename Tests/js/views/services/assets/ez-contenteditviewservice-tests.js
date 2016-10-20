@@ -287,6 +287,31 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             Assert.isTrue(callbackCalled, "The next function should have been called");
         },
 
+        "Should set owner as a new user when trying to load a null owner": function () {
+            var service,
+                callbackCalled = false;
+
+            Mock.expect(this.content, {
+                method: 'hasTranslation',
+                args: [this.requestBaseLanguage.params.baseLanguageCode],
+                returns: true,
+            });
+
+            this._configureMocksLoading('none');
+            this.owner = null;
+            this.service = service = this._getService(this.requestBaseLanguage);
+
+            service.load(function () {
+                callbackCalled = true;
+            });
+
+            Assert.isTrue(
+                service.get('owner') instanceof Y.eZ.User,
+                "Owner should have been reseted to a new eZ.User"
+            );
+            Assert.isTrue(callbackCalled, "The next function should have been called");
+        },
+
         "Should check the content translation when edition is based on one": function () {
             var service,
                 errorTriggered = false;
@@ -553,8 +578,28 @@ YUI.add('ez-contenteditviewservice-tests', function (Y) {
             this._testSubloadError('contentType', this.requestBaseLanguage);
         },
 
-        "Should fire the error event when the owner loading fails":  function () {
-            this._testSubloadError('owner', this.requestBaseLanguage);
+        "Should set the owner to null in case of user loading error":  function () {
+            var service,
+                errorTriggered = false,
+                callbackCalled = false;
+
+            Mock.expect(this.content, {
+                method: 'hasTranslation',
+                args: [this.requestBaseLanguage.params.baseLanguageCode],
+                returns: true,
+            });
+            this.service = service = this._getService(this.requestBaseLanguage);
+            this._configureMocksLoading('owner');
+
+            service.once('error', function (e) {
+                errorTriggered = true;
+            });
+            service.load(function () {
+                callbackCalled = true;
+            });
+            Assert.isNull(service.get('owner'), "Owner should be set to null");
+            Assert.isFalse(errorTriggered, "The error event should NOT have been triggered");
+            Assert.isTrue(callbackCalled, "The service load callback should have been called");
         },
 
         "Should fire the error event when the version loading fails": function () {

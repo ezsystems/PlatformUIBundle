@@ -118,6 +118,17 @@ YUI.add('ez-contenteditview', function (Y) {
         },
 
         /**
+         * Return JSONified owner if the content still have an owner.
+         * A content with a deleted owner is considered like having no owner.
+         *
+         * @method _getOwner
+         * @return {Object | null}
+         */
+        _getOwner: function () {
+            return this.get('owner') ? this.get('owner').toJSON() : null;
+        },
+
+        /**
          * Renders the content edit view
          *
          * @method render
@@ -131,7 +142,7 @@ YUI.add('ez-contenteditview', function (Y) {
                 version: this.get('version').toJSON(),
                 mainLocation: this.get('mainLocation').toJSON(),
                 contentType: this.get('contentType').toJSON(),
-                owner: this.get('owner').toJSON(),
+                owner: this._getOwner(),
                 languageCode: this.get('languageCode')
             }));
             if ( this._isTouch() ) {
@@ -312,7 +323,7 @@ YUI.add('ez-contenteditview', function (Y) {
              * The owner of the content being edited
              *
              * @attribute owner
-             * @default {}
+             * @type {eZ.User | null}
              * @required
              */
             owner: {

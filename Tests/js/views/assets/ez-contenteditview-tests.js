@@ -117,6 +117,31 @@ YUI.add('ez-contenteditview-tests', function (Y) {
             Y.Mock.verify(this.actionBar);
         },
 
+        "Should pass a null owner parameter to the template if owner is  is null": function () {
+            var origTpl = this.view.template;
+
+            this.view = new Y.eZ.ContentEditView({
+                container: '.container',
+                content: this.content,
+                contentType: this.contentType,
+                mainLocation: this.mainLocation,
+                version: this.version,
+                owner: null,
+                formView: this.formView,
+                actionBar: this.actionBar,
+                languageCode: this.languageCode,
+                user: this.user,
+            });
+
+            this.view.template = function (variables) {
+               Y.Assert.isNull(variables.owner, "owner should NOT be available in the template and should be an object");
+
+                return  origTpl.call(this, variables);
+            };
+            this.view.render();
+            this.view.destroy();
+        },
+
         "Should render formView and actionBar in designated containers": function () {
             var container = this.view.get('container');
 
