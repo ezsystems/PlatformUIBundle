@@ -7,7 +7,7 @@ YUI.add('ez-editorcontentprocessoremptyembed', function (Y) {
     /**
      * Provides the empty embed EditorContentProcessor
      *
-     * @module ez-editorcontentprocessorxhtml5edit
+     * @module ez-editorcontentprocessoremptyembed
      */
 
     Y.namespace('eZ');
@@ -16,7 +16,7 @@ YUI.add('ez-editorcontentprocessoremptyembed', function (Y) {
      * empty embed EditorContentProcessor.
      *
      * @namespace eZ
-     * @class EditorContentProcessorXHTML5Edit
+     * @class EditorContentProcessorEmptyEmbed
      * @constructor
      * @extends eZ.EditorContentProcessorBase
      */

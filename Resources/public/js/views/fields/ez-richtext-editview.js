@@ -477,6 +477,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                     return [
                         new Y.eZ.EditorContentProcessorRemoveIds(),
                         new Y.eZ.EditorContentProcessorEmptyEmbed(),
+                        new Y.eZ.EditorContentProcessorRemoveAnchors(),
                         new Y.eZ.EditorContentProcessorXHTML5Edit(),
                     ];
                 },
