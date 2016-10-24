@@ -267,7 +267,7 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @return {DocumentFragment}
          */
         _getHTMLDocumentFragment: function () {
-            var fragment = Y.config.doc.implementation.createHTMLDocument().createDocumentFragment(),
+            var fragment = Y.config.doc.createDocumentFragment(),
                 root = fragment.ownerDocument.createElement('div'),
                 doc = (new DOMParser()).parseFromString(this.get('field').fieldValue.xhtml5edit, "text/xml"),
                 importChildNodes = function (parent, element, skipElement) {
