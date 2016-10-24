@@ -142,6 +142,9 @@ system:
                 ez-editorcontentprocessoremptyembed:
                     requires: ['ez-editorcontentprocessorbase']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/processors/emptyembed.js"
+                ez-editorcontentprocessorremoveanchors:
+                    requires: ['ez-editorcontentprocessorbase']
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/processors/removeanchors.js"
                 ez-richtext-embedcontainer:
                     requires: ['node']
                     path: "%ez_platformui.public_dir%/js/views/fields/richtext/ez-richtext-embedcontainer.js"
@@ -870,6 +873,7 @@ system:
                         - 'ez-editorcontentprocessorxhtml5edit'
                         - 'ez-editorcontentprocessorremoveids'
                         - 'ez-editorcontentprocessoremptyembed'
+                        - 'ez-editorcontentprocessorremoveanchors'
                         - 'richtexteditview-ez-template'
                     path: "%ez_platformui.public_dir%/js/views/fields/ez-richtext-editview.js"
                 richtexteditview-ez-template:

@@ -160,6 +160,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                 this.get('container').one('.ez-richtext-editor').getDOMNode(), {
                     toolbars: this.get('toolbarsConfig'),
                     extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezaddcontent,widget,ezembed,ezremoveblock,ezfocusblock,yui3',
+                    removePlugins: AlloyEditor.Core.ATTRS.removePlugins.value + ',ae_embed',
                     eZ: {
                         editableRegion: '.' + EDITABLE_CLASS,
                         imageVariations: this._getImageVariations(),
@@ -266,7 +267,7 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @return {DocumentFragment}
          */
         _getHTMLDocumentFragment: function () {
-            var fragment = Y.config.doc.implementation.createHTMLDocument().createDocumentFragment(),
+            var fragment = Y.config.doc.createDocumentFragment(),
                 root = fragment.ownerDocument.createElement('div'),
                 doc = (new DOMParser()).parseFromString(this.get('field').fieldValue.xhtml5edit, "text/xml"),
                 importChildNodes = function (parent, element, skipElement) {
@@ -476,6 +477,7 @@ YUI.add('ez-richtext-editview', function (Y) {
                     return [
                         new Y.eZ.EditorContentProcessorRemoveIds(),
                         new Y.eZ.EditorContentProcessorEmptyEmbed(),
+                        new Y.eZ.EditorContentProcessorRemoveAnchors(),
                         new Y.eZ.EditorContentProcessorXHTML5Edit(),
                     ];
                 },
