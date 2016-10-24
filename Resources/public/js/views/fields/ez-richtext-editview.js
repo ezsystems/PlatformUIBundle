@@ -152,14 +152,18 @@ YUI.add('ez-richtext-editview', function (Y) {
          * @method _initEditor
          */
         _initEditor: function () {
-            var editor, nativeEd, valid, setEditorFocused, unsetEditorFocused;
+            var editor, nativeEd, valid, setEditorFocused, unsetEditorFocused,
+                extraPlugins = [
+                    'ezaddcontent', 'widget', 'ezembed', 'ezremoveblock',
+                    'ezfocusblock', 'yui3', 'ezpaste',
+                ];
 
             this._registerExternalCKEditorPlugin('widget', 'widget/');
             this._registerExternalCKEditorPlugin('lineutils', 'lineutils/');
             editor = AlloyEditor.editable(
                 this.get('container').one('.ez-richtext-editor').getDOMNode(), {
                     toolbars: this.get('toolbarsConfig'),
-                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',ezaddcontent,widget,ezembed,ezremoveblock,ezfocusblock,yui3',
+                    extraPlugins: AlloyEditor.Core.ATTRS.extraPlugins.value + ',' + extraPlugins.join(','),
                     removePlugins: AlloyEditor.Core.ATTRS.removePlugins.value + ',ae_embed',
                     eZ: {
                         editableRegion: '.' + EDITABLE_CLASS,
