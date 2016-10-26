@@ -5,10 +5,6 @@
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
     <body>
-      <trans-unit id="0925124815e7265e61f1ec3182b7176f" resname="buttonaction.disabled">
-        <source>buttonaction.disabled</source>
-        <target>disabled</target>
-      </trans-unit>
       <trans-unit id="efd1900ac313302929fcb09d0b7bc056" resname="translateaction.existing.translations">
         <source>translateaction.existing.translations</source>
         <target>Existing Translations</target>
@@ -20,10 +16,6 @@
       <trans-unit id="2d4a7aceb8415c095005c42adda536b5" resname="translateaction.new.translation">
         <source>translateaction.new.translation</source>
         <target>+ New Translation</target>
-      </trans-unit>
-      <trans-unit id="f2eff9c2f3bec9b2622b45cb643fae69" resname="createcontentaction.disabled">
-        <source>createcontentaction.disabled</source>
-        <target>disabled</target>
       </trans-unit>
       <trans-unit id="2b15cd805c8b2f8c3eacbcf77d1efef3" resname="createcontentaction.loading">
         <source>createcontentaction.loading</source>
