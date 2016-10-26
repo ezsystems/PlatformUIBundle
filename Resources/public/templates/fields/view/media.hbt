@@ -10,10 +10,10 @@
         <div class="ez-media-view">
             <div class="ez-media-view-player">
             {{#if isAudio}}
-                <audio src="{{ value.uri }}" controls="controls" preload="auto" class="ez-media-player ez-media-audio-player"></audio>
+                <audio src="{{ value.uri }}?id={{ value.id }}" controls="controls" preload="auto" class="ez-media-player ez-media-audio-player"></audio>
                 <div class="ez-media-player-unsupported ez-media-player-unsupported-audio font-icon">Unsupported audio format</div>
             {{else}}
-                <video src="{{ value.uri }}" controls="controls" preload="auto" class="ez-media-player ez-media-video-player"></video>
+                <video src="{{ value.uri }}?id={{ value.id }}" controls="controls" preload="auto" class="ez-media-player ez-media-video-player"></video>
                 <div class="ez-media-player-unsupported font-icon">Unsupported video format</div>
             {{/if}}
             </div>
