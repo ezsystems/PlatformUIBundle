@@ -10,7 +10,7 @@
         {{#if hasDraft }}
         {{#if draftVersions }}
         <div class="ez-versions-list-container">
-            <h2 class="ez-versions-box-title">Draft under edit</h2>
+            <h2 class="ez-versions-box-title">{{ translate 'locationview.versions.draft.under.edit' 'locationview' }}</h2>
             <div class="ez-versions-list-table-container">
             <table class="pure-table pure-table-striped ez-versions-list-table">
                 <thead>
@@ -77,7 +77,7 @@
         {{#if hasPublished }}
         {{#if publishedVersions }}
         <div class="ez-versions-list-container">
-            <h2 class="ez-versions-box-title">Published version</h2>
+            <h2 class="ez-versions-box-title">{{ translate 'locationview.versions.published.version' 'locationview' }}</h2>
             <div class="ez-versions-list-table-container">
             <table class="pure-table pure-table-striped ez-versions-list-table">
                 <thead>
@@ -121,7 +121,7 @@
         {{#if hasArchived }}
         {{#if archivedVersions }}
         <div class="ez-versions-list-container">
-            <h2 class="ez-versions-box-title">Archived version</h2>
+            <h2 class="ez-versions-box-title">{{ translate 'locationview.versions.archived.versions' 'locationview' }}</h2>
             <div class="ez-versions-list-table-container">
             <table class="pure-table pure-table-striped ez-versions-list-table">
                 <thead>

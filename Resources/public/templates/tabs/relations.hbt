@@ -1,5 +1,5 @@
 <div class="ez-relations-box">
-    <h2 class="ez-relations-box-title">Related content</h2>
+    <h2 class="ez-relations-box-title">{{ translate 'locationview.relations.related.content' 'locationview' }}</h2>
 
     {{#if loadingError}}
     <p class="ez-asynchronousview-error ez-font-icon">

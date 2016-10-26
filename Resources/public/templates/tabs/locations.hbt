@@ -1,5 +1,5 @@
 <div class="ez-locations-box">
-    <h2 class="ez-locations-box-title">Content locations</h2>
+    <h2 class="ez-locations-box-title">{{ translate 'locationview.locations.content.locations' 'locationview' }}</h2>
     <div class="ez-locations-list-container">
         {{#if loadingError}}
             <p class="ez-asynchronousview-error ez-font-icon">
