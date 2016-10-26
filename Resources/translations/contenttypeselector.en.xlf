@@ -13,10 +13,6 @@
         <source>contenttypeselector.filter.group</source>
         <target>Filter by group</target>
       </trans-unit>
-      <trans-unit id="e05e97e18b9acda832fb4b4b3ccd8484" resname="contenttypeselector.checked">
-        <source>contenttypeselector.checked</source>
-        <target> checked</target>
-      </trans-unit>
       <trans-unit id="b61c2875287f1c24f59cb13f1a44c316" resname="contenttypeselector.available.content.type">
         <source>contenttypeselector.available.content.type</source>
         <target>Available content types</target>

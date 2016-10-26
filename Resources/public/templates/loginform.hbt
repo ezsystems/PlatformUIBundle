@@ -1,6 +1,6 @@
 <div class="ez-loginform-content">
     <form action="" class="ez-loginform" method="post">
-        <h1 class="ez-loginform-title"><img class="ez-logo" src="{{ asset 'bundles/ezplatformui/img/logo.png' }}" alt="eZ Logo"/>{{translate 'loginform.ezplatform' 'login'}}</h1>
+        <h1 class="ez-loginform-title"><img class="ez-logo" src="{{ asset 'bundles/ezplatformui/img/logo.png' }}" alt="eZ Logo"/>eZ Platform</h1>
 
         <p class="ez-loginform-line ez-loginform-message">{{translate 'loginform.need.login' 'login'}}</p>
 
@@ -18,8 +18,6 @@
     </form>
 
     <footer>
-        <p class="ez-copyright">{{translate 'loginform.copyright' 'login'}}<a
-                href="http://ez.no">{{translate 'loginform.ezsystems' 'login'}}</a>
-            {{translate 'loginform.and.others' 'login'}}</p>
+        <p class="ez-copyright">eZ Platform &copy; 1999-2016 <a href="http://ez.no">eZ Systems AS</a> and others.</p>
     </footer>
 </div>

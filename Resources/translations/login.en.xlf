@@ -5,10 +5,6 @@
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
     <body>
-      <trans-unit id="ea19a60f77c28ac36f0440bb18493bb8" resname="loginform.ezplatform">
-        <source>loginform.ezplatform</source>
-        <target> eZ Platform</target>
-      </trans-unit>
       <trans-unit id="28a1eeeab4e1443ed73c2f75926361d7" resname="loginform.need.login">
         <source>loginform.need.login</source>
         <target>You need to login to access this area</target>
@@ -24,18 +20,6 @@
       <trans-unit id="4d6e96049abc8a73659f61b5492f52dc" resname="loginform.login">
         <source>loginform.login</source>
         <target>Login</target>
-      </trans-unit>
-      <trans-unit id="a7db9eca5ed3b3c57dac4144182a59b6" resname="loginform.copyright">
-        <source>loginform.copyright</source>
-        <target>eZ Platform © 1999-2016</target>
-      </trans-unit>
-      <trans-unit id="c934a306522a7fe2fc98e8dc861fc499" resname="loginform.ezsystems">
-        <source>loginform.ezsystems</source>
-        <target>eZ Systems AS</target>
-      </trans-unit>
-      <trans-unit id="c36ee2cc07ec656326f724d29105118f" resname="loginform.and.others">
-        <source>loginform.and.others</source>
-        <target> and others.</target>
       </trans-unit>
     </body>
   </file>

@@ -6,7 +6,7 @@
             {{#each contentTypeGroups}}
             <li>
                 <label class="ez-contenttypeselector-group">
-                    <input type="checkbox" value="{{ id }}" class="ez-contenttypeselector-group-checkbox"{{#if checked }}{{translate 'contenttypeselector.checked' 'contenttypeselector'}}{{/if}}>
+                    <input type="checkbox" value="{{ id }}" class="ez-contenttypeselector-group-checkbox"{{#if checked }} checked{{/if}}>
                     {{ identifier }}
                 </label>
             </li>
