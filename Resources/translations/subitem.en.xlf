@@ -7,7 +7,7 @@
     <body>
       <trans-unit id="3883567b167de8cb80d35b5511771914" resname="subitem.no.subitem">
         <source>subitem.no.subitem</source>
-        <target><![CDATA[">This location has no sub-item.]]></target>
+        <target>This location has no sub-item.</target>
       </trans-unit>
       <trans-unit id="16245e895ed8c82d945fee889be41d1b" resname="subitem.error.loading.image">
         <source>subitem.error.loading.image</source>
