@@ -217,6 +217,26 @@
         <source>locationview.details.versions</source>
         <target>Versions</target>
       </trans-unit>
+      <trans-unit id="498ea2da03d5ec1254a61340d45a2737" resname="locationview.locations.content.locations">
+        <source>locationview.locations.content.locations</source>
+        <target>Content locations</target>
+      </trans-unit>
+      <trans-unit id="646dd94473d2fb6a5c62254e2f7bcaaf" resname="locationview.relations.related.content">
+        <source>locationview.relations.related.content</source>
+        <target>Related content</target>
+      </trans-unit>
+      <trans-unit id="e3b2e6ca7499f9611ca0dc54ce63a6c1" resname="locationview.versions.draft.under.edit">
+        <source>locationview.versions.draft.under.edit</source>
+        <target>Draft under edit</target>
+      </trans-unit>
+      <trans-unit id="5cf059d175bbc76833af2660cc089e01" resname="locationview.versions.published.version">
+        <source>locationview.versions.published.version</source>
+        <target>Published version</target>
+      </trans-unit>
+      <trans-unit id="f9c1f1ac084d7a81267b119c71dbcd8e" resname="locationview.versions.archived.versions">
+        <source>locationview.versions.archived.versions</source>
+        <target>Archived versions</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
