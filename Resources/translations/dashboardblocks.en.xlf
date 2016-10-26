@@ -45,6 +45,18 @@
         <source>dashboardblocks.my.dashboard</source>
         <target>My Dashboard</target>
       </trans-unit>
+      <trans-unit id="8785dd46ae0a167845519423c491a1d5" resname="dashboard.my.content">
+        <source>dashboard.my.content</source>
+        <target>My Content</target>
+      </trans-unit>
+      <trans-unit id="090a06527a47a8df7d56334606fa7611" resname="dashboard.all.content">
+        <source>dashboard.all.content</source>
+        <target>All Content</target>
+      </trans-unit>
+      <trans-unit id="be3ca37da23b8229c2335730a3786e4e" resname="dashboard.my.drafts">
+        <source>dashboard.my.drafts</source>
+        <target>My Drafts</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

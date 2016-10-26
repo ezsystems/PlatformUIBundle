@@ -1,4 +1,4 @@
-<h2 class="ez-block-title">My Content</h2>
+<h2 class="ez-block-title">{{ translate 'dashboard.my.content' 'dashboardblocks' }}</h2>
 <div class="ez-block-wrapper ez-asynchronousview ez-font-icon">
     {{#if loadingError}}
     <p class="ez-asynchronousview-error ez-font-icon">
