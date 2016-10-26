@@ -10,6 +10,10 @@
 namespace EzSystems\PlatformUIBundle\Features\Context;
 
 use EzSystems\BehatBundle\Context\Browser\Context;
+use eZ\Publish\API\Repository\SearchService;
+use eZ\Publish\API\Repository\Values\Content\LocationQuery;
+use eZ\Publish\API\Repository\Values\Content\Query\Criterion;
+use eZ\Publish\Core\Persistence\Legacy\Exception\TypeNotFound as TypeNotFoundException;
 
 class PlatformUI extends Context
 {
@@ -17,6 +21,14 @@ class PlatformUI extends Context
      * Default Platform URI.
      */
     const PLATFORM_URI = 'ez';
+    /**
+     * Default Platform URI admin username.
+     */
+    const PLATFORM_USERNAME = 'admin';
+    /**
+     * Default Platform admin user password.
+     */
+    const PLATFORM_USERPASSWORD = 'publish';
 
     /**
      * Max. time to wait while loading elements (f.e. during rest calls).
@@ -60,18 +72,18 @@ class PlatformUI extends Context
     protected $lastException;
 
     /**
-     * User account name, admin by default.
+     * User account name.
      *
      * @var string
      */
-    protected $user = 'admin';
+    protected $user;
 
     /**
-     * User account password, publish by default.
+     * User account password.
      *
      * @var string
      */
-    protected $password = 'publish';
+    protected $password;
 
     /**
      * Stores the status of the platform.
@@ -85,22 +97,24 @@ class PlatformUI extends Context
     protected $newPathsMap = array();
 
     /**
+     * Ezpublish api Search service.
+     */
+    protected $searchService;
+
+    /**
      * Initialize class.
      *
-     * @param string $uri
+     * @injectService $searchService @ezpublish.api.service.search
      */
-    public function __construct($uri = self::PLATFORM_URI, $user = null, $password = null)
+    public function __construct($searchService)
     {
         parent::__construct();
+        $this->platformUiUri = self::PLATFORM_URI;
+        $this->user = self::PLATFORM_USERNAME;
+        $this->password = self::PLATFORM_USERPASSWORD;
+        $this->searchService = $searchService;
         $this->pageIdentifierMap['roles'] = '/ez#/admin/pjax%2Frole';
         $this->pageIdentifierMap['users'] = '/ez#/view/%2Fapi%2Fezp%2Fv2%2Fcontent%2Flocations%2F1%2F5/eng-GB';
-        $this->platformUiUri = $uri;
-        if ($user != null) {
-            $this->user = $user;
-        }
-        if ($password != null) {
-            $this->password = $password;
-        }
     }
 
     /**
@@ -132,13 +146,6 @@ class PlatformUI extends Context
     {
         $this->sleep();
         $this->waitWhileLoading();
-    }
-
-    /**
-     * @AfterStep
-     */
-    public function afterStep()
-    {
     }
 
     /**
@@ -332,6 +339,57 @@ class PlatformUI extends Context
     }
 
     /**
+     * Returns the path string of the content with the given name.
+     *
+     * @param string $contentName
+     *
+     * @return string
+     */
+    protected function getContentLocationPath($contentName)
+    {
+        $criterion = new Criterion\ContentTypeIdentifier($contentName);
+        $query = new LocationQuery(
+            array(
+                'query' => $criterion,
+            )
+        );
+
+        $searchResult = null;
+        try {
+            $searchResult = $this->searchService->findLocations($query);
+        } catch (TypeNotFoundException $e) {
+            // do nothing if the content type identifier does not exist
+        }
+
+        if (!$searchResult) {
+            $criterions = array(
+                new Criterion\Field('title', Criterion\Operator::EQ, $contentName),
+                new Criterion\Field('short_title', Criterion\Operator::EQ, $contentName),
+                new Criterion\Field('name', Criterion\Operator::EQ, $contentName),
+                new Criterion\Field('short_name', Criterion\Operator::EQ, $contentName),
+            );
+            $query = new LocationQuery(
+                array(
+                    'query' => new Criterion\LogicalOr($criterions),
+                )
+            );
+            $searchResult = $this->searchService->findLocations($query);
+        }
+
+        $pathString = null;
+        foreach ($searchResult->searchHits as $searchHit) {
+            $pathString = $searchHit->valueObject->pathString;
+        }
+
+        if (!$pathString) {
+            throw new \Exception("Content $contentName not found");
+        }
+        $pathString = rtrim($pathString, '/');
+
+        return $pathString;
+    }
+
+    /**
      * Opens a content tree node based on the root of the tree or a given node.
      *
      * @param   string          $text   The text of the node that is going to be opened
@@ -355,8 +413,9 @@ class PlatformUI extends Context
                 );
             }
         }
+        $nodeId = '/api/ezp/v2/content/locations' . $this->getContentLocationPath($text);
         // find an '.ez-tree-node' element which contains an '.ez-tree-navigate' with text '$text'
-        $element = $this->getElementByText($text, '.ez-tree-node', '.ez-tree-navigate', $parentNode);
+        $element = $this->findWithWait(".ez-tree-node[data-node-id='$nodeId']", $parentNode);
         if (!$element) {
             throw new \Exception("The tree node '$text' was not found");
         }
