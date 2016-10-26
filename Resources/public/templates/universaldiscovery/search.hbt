@@ -1,5 +1,5 @@
 <div class="ez-ud-pane-search-form">
-    <h2 class="ez-ud-pane-title">Search</h2>
+    <h2 class="ez-ud-pane-title">{{ translate 'universaldiscovery.search' 'universaldiscovery' }}</h2>
     <div>
         <form class="ez-ud-search-form">
             <input type="text" class="ez-ud-search-text" value="{{searchText}}"/>
@@ -38,8 +38,8 @@
                     <table class="ez-searchresult-table pure-table pure-table-bordered">
                         <thead>
                         <tr>
-                            <th>Name</th>
-                            <th class="ez-searchresult-type-header">Type</th>
+                            <th>{{ translate 'universaldiscovery.name' 'universaldiscovery' }}</th>
+                            <th class="ez-searchresult-type-header">{{ translate 'universaldiscovery.type' 'universaldiscovery' }}</th>
                             <th class="ez-searchresult-preview-header"></th>
                         </tr>
                         </thead>

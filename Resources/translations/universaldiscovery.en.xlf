@@ -73,6 +73,14 @@
         <source>universaldiscovery.confirm.selection</source>
         <target>Confirm selection</target>
       </trans-unit>
+      <trans-unit id="dfcedf093a2f085a1234286473e6766a" resname="universaldiscovery.name">
+        <source>universaldiscovery.name</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="84d1b4dbc1498d16a71baed6b204f0f1" resname="universaldiscovery.type">
+        <source>universaldiscovery.type</source>
+        <target>Type</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
