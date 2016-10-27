@@ -56,6 +56,9 @@ system:
                 ez-alloyeditor-plugin-focusblock:
                     requires: ['ez-alloyeditor']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/focusblock.js"
+                ez-alloyeditor-plugin-paste:
+                    requires: ['ez-alloyeditor']
+                    path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/paste.js"
                 ez-alloyeditor-button-heading:
                     requires: ['ez-alloyeditor']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/heading.js"
@@ -842,6 +845,7 @@ system:
                         - 'ez-alloyeditor-plugin-addcontent'
                         - 'ez-alloyeditor-plugin-removeblock'
                         - 'ez-alloyeditor-plugin-focusblock'
+                        - 'ez-alloyeditor-plugin-paste'
                         - 'ez-alloyeditor-plugin-yui3'
                         - 'ez-alloyeditor-toolbar-ezadd'
                         - 'ez-alloyeditor-toolbar-config-link'
