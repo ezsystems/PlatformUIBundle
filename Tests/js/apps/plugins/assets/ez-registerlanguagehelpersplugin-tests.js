@@ -120,7 +120,7 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
             delete this.plugin;
         },
 
-        _mockTranslator: function (expectedMessage, expectedName, expectedDomain) {
+        _mockTranslator: function (expectedMessage, expectedDomain) {
             Y.eZ.Translator = {
                 trans: function(message, variables, domain) {
                     Assert.areSame(
@@ -128,13 +128,10 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
                         message,
                         "The message should be passed to the translator"
                     );
-                    if (expectedName) {
-                        Assert.areSame(
-                            expectedName,
-                            variables.name,
-                            "The variables should be passed to the translator"
-                        );
-                    }
+                    Assert.isObject(
+                        variables,
+                        "An object should be passed to the translator variables"
+                    );
 
                     Assert.areSame(
                         expectedDomain,
@@ -147,26 +144,11 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
 
         "Should call the `translate` method": function () {
             var message = "Translate me!",
-                name = "John Doe",
-                variables = "{\"name\": \"" + name + "\"}",
                 domain = "unit test";
 
-            this._mockTranslator(message, name, domain);
+            this._mockTranslator(message, domain);
 
-            /*jshint camelcase: false */
-            Y.Handlebars.helpers.translate(message, variables, domain);
-            /*jshint camelcase: true */
-        },
-
-        "Should call the `translate` method without variables": function () {
-            var message = "Translate me!",
-                domain = "unit test";
-
-            this._mockTranslator(message, null, domain);
-
-            /*jshint camelcase: false */
             Y.Handlebars.helpers.translate(message, domain);
-            /*jshint camelcase: true */
         }
     });
 

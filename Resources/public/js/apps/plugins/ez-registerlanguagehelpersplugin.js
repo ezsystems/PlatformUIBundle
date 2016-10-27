@@ -78,14 +78,8 @@ YUI.add('ez-registerlanguagehelpersplugin', function (Y) {
          * @protected
          */
         _registerTranslate: function () {
-            Y.Handlebars.registerHelper('translate', function (message, variables, domain) {
-                if ( typeof domain === 'string' ) {
-                    variables = JSON.parse(variables);
-                } else {
-                    domain = variables;
-                    variables = {};
-                }
-                return Y.eZ.Translator.trans(message, variables, domain);
+            Y.Handlebars.registerHelper('translate', function (message, domain) {
+                return Y.eZ.Translator.trans(message, {}, domain);
             });
         },
     }, {
