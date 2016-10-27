@@ -40,8 +40,7 @@
                         </li>
                         <li>
                             <b>{{translate "image.size" "fieldedit"}}</b>
-                            <span class="ez-image-properties-size">{{ image.size }}</span>&nbsp;
-                            {{translate "image.bytes" "fieldedit"}}
+                            <span class="ez-image-properties-size">{{ image.size }}</span>&nbsp;bytes
                         </li>
                     </ul>
 

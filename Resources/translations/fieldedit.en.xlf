@@ -137,10 +137,6 @@
         <source>binaryfile.size</source>
         <target>File size:</target>
       </trans-unit>
-      <trans-unit id="88b29daff9e49e77b705ac06a23cb5ef" resname="binaryfile.bites">
-        <source>binaryfile.bites</source>
-        <target>bytes</target>
-      </trans-unit>
       <trans-unit id="88a2997df1364fe26711319f45f3ea7b" resname="media.audio.help">
         <source>media.audio.help</source>
         <target>Drag and drop your audio file here or simply click on the buttons and select your audio file manually.</target>
@@ -180,10 +176,6 @@
       <trans-unit id="9a8ceaff4dff0f743f5f5889cb988f55" resname="media.size">
         <source>media.size</source>
         <target>File size:</target>
-      </trans-unit>
-      <trans-unit id="1d6ea693f118399204ca4790e7bad71b" resname="media.bytes">
-        <source>media.bytes</source>
-        <target>bytes</target>
       </trans-unit>
       <trans-unit id="a7f2f3f945aaea62773db02cbf1c8ff2" resname="media.playersettings">
         <source>media.playersettings</source>
@@ -316,10 +308,6 @@
       <trans-unit id="22cf294cfde798ddada0190db26b1f10" resname="image.size">
         <source>image.size</source>
         <target>File size:</target>
-      </trans-unit>
-      <trans-unit id="7684f3166b19bb857626b67cea10a5f0" resname="image.bytes">
-        <source>image.bytes</source>
-        <target>bytes</target>
       </trans-unit>
       <trans-unit id="c2c2198259944771ba55398de11265d4" resname="image.alternativetext">
         <source>image.alternativetext</source>
