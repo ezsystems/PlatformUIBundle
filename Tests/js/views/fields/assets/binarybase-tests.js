@@ -549,6 +549,7 @@ YUI.add('binarybase-tests', function (Y) {
                 if ( that.originalURL && that.originalURL.createObjectURL ) {
                     that.originalURL.revokeObjectURL(uri);
                 }
+                return 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
             };
         },
 
@@ -561,6 +562,34 @@ YUI.add('binarybase-tests', function (Y) {
                     }
                 }
             };
+        },
+
+        _readFileAssert: function (fileContent, file, binaryfile, fileReader) {
+            Assert.isFalse(
+                this.view.get('warning'),
+                "The warning attribute should stay false"
+            );
+
+            Assert.areEqual(
+                fileContent, binaryfile.data,
+                "The binaryfile content should be available in the file attribute"
+            );
+            Assert.areEqual(
+                file.name, binaryfile.name,
+                "The binaryfile name should be available in the file attribute"
+            );
+            Assert.areEqual(
+                file.size, binaryfile.size,
+                "The binaryfile size should be available in the file attribute"
+            );
+            Assert.areEqual(
+                file.type, binaryfile.type,
+                "The binaryfile type should be available in the file attribute"
+            );
+            Assert.isUndefined(
+                fileReader.onload,
+                "The onload handler should be resetted"
+            );
         },
 
         tearDown: function () {
@@ -608,7 +637,6 @@ YUI.add('binarybase-tests', function (Y) {
                 fileContent = "base64 binaryfile content",
                 file = {size: 5 * this.multiplicator, name: "file.jpg", type: "image/jpeg"},
                 base64ImgContent = "data;" + file.type + ";base64," + fileContent,
-                binaryfile,
                 eventFacade = new Y.DOMEventFacade({
                     type: 'change'
                 });
@@ -627,38 +655,14 @@ YUI.add('binarybase-tests', function (Y) {
                 args: [file],
                 run: function (f) {
                     fileReader.result = base64ImgContent;
-                    fileReader.onload();
+                    fileReader.onload({target: fileReader});
                 }
             });
 
             this.view.render();
             this.view._updateFile(eventFacade);
-            Assert.isFalse(
-                this.view.get('warning'),
-                "The warning attribute should stay false"
-            );
-            binaryfile = this.view.get('file');
-
-            Assert.areEqual(
-                fileContent, binaryfile.data,
-                "The binaryfile content should be available in the file attribute"
-            );
-            Assert.areEqual(
-                file.name, binaryfile.name,
-                "The binaryfile name should be available in the file attribute"
-            );
-            Assert.areEqual(
-                file.size, binaryfile.size,
-                "The binaryfile size should be available in the file attribute"
-            );
-            Assert.areEqual(
-                file.type, binaryfile.type,
-                "The binaryfile type should be available in the file attribute"
-            );
-            Assert.isUndefined(
-                fileReader.onload,
-                "The onload handler should be resetted"
-            );
+            
+            this._readFileAssert(fileContent, file, this.view.get('file'), fileReader);
         },
 
         "Should read the file (no max size)": function () {
@@ -927,6 +931,27 @@ YUI.add('binarybase-tests', function (Y) {
             );
         },
 
+        _dropFileAssert : function (reader, file, fileContent) {
+            Assert.isUndefined(reader.onload, "The onload handler should be resetted");
+            Assert.areEqual(
+                this.view.get('file').name, file.name,
+                "The name of the dropped file should be kept"
+            );
+            Assert.areEqual(
+                this.view.get('file').size, file.size,
+                "The size of the dropped file should be kept"
+            );
+            Assert.areEqual(
+                this.view.get('file').type, file.type,
+                "The type of the dropped file should be kept"
+            );
+            Assert.areEqual(
+                this.view.get('file').data, fileContent,
+                "The content of the dropped file should have been read"
+            );
+            Mock.verify(reader);
+        },
+        
         "Should accept the dropped file": function () {
             var dropArea,
                 that = this,
@@ -946,7 +971,7 @@ YUI.add('binarybase-tests', function (Y) {
                 args: [file],
                 run: function () {
                     reader.result = that.createdUrl;
-                    reader.onload();
+                    reader.onload({target: reader});
                 }
             });
 
@@ -966,24 +991,7 @@ YUI.add('binarybase-tests', function (Y) {
                 facade._event.defaultPrevented,
                 "The drop event should be prevented"
             );
-            Assert.isUndefined(reader.onload, "The onload handler should be resetted");
-            Assert.areEqual(
-                this.view.get('file').name, file.name,
-                "The name of the dropped file should be kept"
-            );
-            Assert.areEqual(
-                this.view.get('file').size, file.size,
-                "The size of the dropped file should be kept"
-            );
-            Assert.areEqual(
-                this.view.get('file').type, file.type,
-                "The type of the dropped file should be kept"
-            );
-            Assert.areEqual(
-                this.view.get('file').data, this.fileContent,
-                "The content of the dropped file should have been read"
-            );
-            Mock.verify(reader);
+            this._dropFileAssert(reader, file, this.fileContent);
         },
     };
 });

@@ -221,18 +221,29 @@ YUI.add('ez-binarybase-editview', function (Y) {
          * @param {File} file the File object from the input file element
          */
         _readFile: function (file) {
-            var reader = this.get('fileReader'),
-                that = this;
+            var reader = this.get('fileReader');
 
             if ( this._valid(file) ) {
                 this._beforeReadFile(file);
-                reader.onload = function (e) {
-                    var base64 = reader.result.replace(/^.*;base64,/, '');
-                    that._set('file', that._createFileStruct(file, base64));
-                    reader.onload = undefined;
-                };
+                reader.onload = Y.bind(this._base64ToFileStruct, this, file);
                 reader.readAsDataURL(file);
             }
+        },
+
+        /**
+         * Set the file attribute with a struct based on the file object from the
+         * input file element.
+         *
+         * @method _base64ToFileStruct
+         * @protected
+         * @param {EventFacade} e event facade
+         * @param {File} file the File object from the input file element
+         */
+        _base64ToFileStruct: function (file, e) {
+            var base64 = e.target.result.replace(/^.*;base64,/, '');
+            
+            this._set('file', this._createFileStruct(file, base64));
+            e.target.onload = undefined;
         },
 
         /**
