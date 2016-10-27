@@ -349,6 +349,14 @@
         <source>url.text</source>
         <target>Text:</target>
       </trans-unit>
+      <trans-unit id="91282200f47a3b59675263fb01743b7a" resname="date.placeholder">
+        <source>date.placeholder</source>
+        <target>YYYY-MM-DD</target>
+      </trans-unit>
+      <trans-unit id="1baf4be4ac0efc7b93e278e77e03d27d" resname="image.preview">
+        <source>image.preview</source>
+        <target>Image preview</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

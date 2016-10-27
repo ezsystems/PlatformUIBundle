@@ -12,7 +12,7 @@
         <div class="ez-editfield-input"><div class="ez-date-input-ui"><input type="date"
             value="{{ date }}"
             {{#unless supportsDateInput}}
-                placeholder="YYYY-MM-DD"
+                placeholder="{{ translate 'date.placeholder' 'fieldedit' }}"
                 pattern="^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$|^$"
             {{/unless}}
             class="ez-validated-input ez-date-input"
