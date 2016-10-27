@@ -121,6 +121,10 @@
         <source>image.loading</source>
         <target>Loading the image</target>
       </trans-unit>
+      <trans-unit id="b1bbd59c4bcf9a626d3c7c70ee851f56" resname="binaryfile.download.file">
+        <source>binaryfile.download.file</source>
+        <target>Download the file</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
