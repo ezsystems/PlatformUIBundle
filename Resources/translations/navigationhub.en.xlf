@@ -9,6 +9,10 @@
         <source>navigationhub.more</source>
         <target>More</target>
       </trans-unit>
+      <trans-unit id="3b69f5fe5fb8db0b6e32a532eaa9edbf" resname="navigationhub.logo.ez">
+        <source>navigationhub.logo.ez</source>
+        <target>Logo eZ</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -1,5 +1,5 @@
 <ul class="ez-zones-navigation">
-    <li class="ez-logo"><a href="{{ path "dashboard" }}"><img src="{{ asset "bundles/ezplatformui/img/logo.png" }}" alt="Logo eZ" /></a></li>
+    <li class="ez-logo"><a href="{{ path "dashboard" }}"><img src="{{ asset "bundles/ezplatformui/img/logo.png" }}" alt="{{ translate 'navigationhub.logo.ez' 'navigationhub' }}" /></a></li>
 {{#each zones }}
     <li class="ez-zone ez-{{ @key }}-zone{{#unless hasNavigation}} ez-zone-no-navigation{{/unless}}" data-navigation="{{ @key }}">
         <p class="ez-zone-name">{{ name }}</p>
@@ -9,7 +9,7 @@
 <nav class="ez-navigation">
 {{#each zones}}
     <ul class="ez-navigation-{{ @key }} is-navigation-hidden">
-        <li class="ez-logo"><a class="ez-navigation-item" href="{{ path "dashboard" }}"><img src="{{ asset "bundles/ezplatformui/img/logo.png" }}" alt="Logo eZ" /></a></li>
+        <li class="ez-logo"><a class="ez-navigation-item" href="{{ path "dashboard" }}"><img src="{{ asset "bundles/ezplatformui/img/logo.png" }}" alt="{{ translate 'navigationhub.logo.ez' 'navigationhub' }}" /></a></li>
         <li class="ez-more ez-sub-menu-link">
             <a href="#" class="ez-navigation-item">{{translate "navigationhub.more" "navigationhub"}}</a>
             <ul class="ez-sub-menu"></ul>
