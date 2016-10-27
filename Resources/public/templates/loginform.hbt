@@ -1,6 +1,6 @@
 <div class="ez-loginform-content">
     <form action="" class="ez-loginform" method="post">
-        <h1 class="ez-loginform-title"><img class="ez-logo" src="{{ asset 'bundles/ezplatformui/img/logo.png' }}" alt="eZ Logo"/>eZ Platform</h1>
+        <h1 class="ez-loginform-title"><img class="ez-logo" src="{{ asset 'bundles/ezplatformui/img/logo.png' }}" alt="{{ translate 'loginform.ez.logo' 'login' }}"/>eZ Platform</h1>
 
         <p class="ez-loginform-line ez-loginform-message">{{translate 'loginform.need.login' 'login'}}</p>
 

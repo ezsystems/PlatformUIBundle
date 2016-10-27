@@ -21,6 +21,10 @@
         <source>loginform.login</source>
         <target>Login</target>
       </trans-unit>
+      <trans-unit id="95e948d85a045f3e0abcd1d020773f21" resname="loginform.ez.logo">
+        <source>loginform.ez.logo</source>
+        <target>eZ Logo</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
