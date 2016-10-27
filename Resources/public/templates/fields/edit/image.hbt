@@ -17,7 +17,7 @@
         <div class="ez-editfield-input ez-binarybase-drop-area"><div class="ez-image-input-ui">
             <div class="ez-image-editpreview ez-binarybase-content">
                 <div class="ez-image-editpreview-image">
-                    <img alt="Image preview" class="ez-image-preview" {{#if image.displayUri}}src="{{ image.displayUri }}"{{/if}} alt="Image preview">
+                    <img class="ez-image-preview" {{#if image.displayUri}}src="{{ image.displayUri }}"{{/if}} alt="{{ translate 'image.preview' 'fieldedit' }}">
                     <p class="ez-font-icon ez-asynchronousview-loading">{{translate "image.thumbnail.loading" "fieldedit"}}</p>
                     <p class="ez-asynchronousview-error ez-font-icon">
                         {{translate "image.thumbnail.error" "fieldedit"}}
