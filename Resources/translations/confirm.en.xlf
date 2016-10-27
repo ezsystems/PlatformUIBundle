@@ -15,7 +15,7 @@
       </trans-unit>
       <trans-unit id="ff9f19d1379eaae89ed53ef575cdcee8" resname="draftconflict.owner">
         <source>draftconflict.owner</source>
-        <target>_Owner</target>
+        <target>Owner</target>
       </trans-unit>
       <trans-unit id="6fa328851fd01e7d88280f6ec0218f19" resname="draftconflict.lastmodified">
         <source>draftconflict.lastmodified</source>
