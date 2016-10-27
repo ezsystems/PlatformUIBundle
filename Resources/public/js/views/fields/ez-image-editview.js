@@ -51,6 +51,55 @@ YUI.add('ez-image-editview', function (Y) {
         },
 
         /**
+         * Set the file attribute with a struct based on the file object from the
+         * input file element. This implementation adds a validation to check that the chosen file
+         * is really an image the browser can load.
+         *
+         * @method _base64ToFileStruct
+         * @protected
+         * @param {EventFacade} e event facade
+         * @param {File} file the File object from the input file element
+         */
+        _base64ToFileStruct: function (file, e) {
+            var base64 = e.target.result.replace(/^.*;base64,/, ''),
+                testImageObject = new Image(100, 200),
+                fileStruct = this._createFileStruct(file, base64);
+
+            testImageObject.addEventListener("error", Y.bind(function () {
+                this._removeImageBeingUpdatedClass();
+                this._setWarningNotAnImage(file);
+
+            },this));
+            testImageObject.addEventListener("load", Y.bind(function () {
+                this._set('file', fileStruct);
+            }, this));
+
+            testImageObject.src = fileStruct.displayUri;
+            e.target.onload = undefined;
+        },
+
+        /**
+         * Removes the image being updated class
+         *
+         * @method _removeImageBeingUpdatedClass
+         * @protected
+         */
+        _removeImageBeingUpdatedClass: function () {
+            this.get('container').removeClass(IS_BEING_UPDATED);
+        },
+
+        /**
+         * Sets a warning because the file is not an image
+         *
+         * @method _setWarningNotAnImage
+         * @protected
+         * @param {File} file the File object from the input file element
+         */
+        _setWarningNotAnImage: function (file) {
+            this._set('warning', L.sub(NOT_IMAGE_TPL, {name: file.name}));
+        },
+
+        /**
          * Initializes the attributes events handling
          *
          * @method _initAttributesEvents
@@ -88,7 +137,7 @@ YUI.add('ez-image-editview', function (Y) {
                 removeButton.set('disabled', false);
                 if ( image.displayUri ) {
                     imgNode.setAttribute('src', image.displayUri);
-                    container.removeClass(IS_BEING_UPDATED);
+                    this._removeImageBeingUpdatedClass();
                 }
             } else {
                 // no need to update the DOM, the image is hidden by CSS
@@ -162,7 +211,7 @@ YUI.add('ez-image-editview', function (Y) {
                 isSVG = (file.type.indexOf('image/svg') === 0);
 
             if ( !isImage ) {
-                this._set('warning', L.sub(NOT_IMAGE_TPL, {name: file.name}));
+                this._setWarningNotAnImage(file);
             }
             if ( isSVG ) {
                 this._set('warning', SVG_IMAGE_TPL);
