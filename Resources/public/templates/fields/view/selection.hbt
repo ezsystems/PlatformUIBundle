@@ -4,7 +4,7 @@
     </div>
     <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
         {{#if isEmpty }}
-            This field is empty
+            {{translate 'fieldview.field.empty' 'fieldview'}}
         {{else}}
             {{#if isMultiple }}
                 <ul class="ez-selection-values">

@@ -1,2 +1,2 @@
-<p class="ez-tree-loading ez-font-icon">Loading</p>
+<p class="ez-tree-loading ez-font-icon">{{translate 'tree.loading' 'tree'}}</p>
 <div class="ez-tree-content"></div>

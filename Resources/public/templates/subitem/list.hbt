@@ -1,24 +1,24 @@
     {{#if location.childCount}}
         {{#if loadingError}}
             <p class="ez-asynchronousview-error ez-font-icon">
-                An error occurred while loading the sub-items list.
-                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+                {{ translate 'subitem.error.loading.list' 'subitem' }}
+                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{ translate 'subitem.retry' 'subitem' }}</button>
             </p>
         {{else}}
             {{#if subitems }}
                 {{#if hasPages}}
                 <ul class="ez-subitemlist-navigation">
                     <li class="ez-subitemlist-navigation-item">
-                        <a href="#" class="ez-subitemlist-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="first">First</a>
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="first">{{ translate 'subitem.first' 'subitem' }}</a>
                     </li>
                     <li class="ez-subitemlist-navigation-item">
-                        <a href="#" class="ez-subitemlist-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="prev">Previous</a>
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="prev">{{ translate 'subitem.previous' 'subitem' }}</a>
                     </li>
                     <li class="ez-subitemlist-navigation-item">
-                        <a href="#" class="ez-subitemlist-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="next">Next</a>
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="next">{{ translate 'subitem.next' 'subitem' }}</a>
                     </li>
                     <li class="ez-subitemlist-navigation-item">
-                        <a href="#" class="ez-subitemlist-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="last">Last</a>
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="last">{{ translate 'subitem.last' 'subitem' }}</a>
                     </li>
                 </ul>
                 {{/if}}
@@ -35,22 +35,22 @@
                 {{#if hasPages}}
                 <ul class="ez-subitemlist-navigation">
                     <li class="ez-subitemlist-navigation-item">
-                        <a href="#" class="ez-subitemlist-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="first">First</a>
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="first">{{ translate 'subitem.first' 'subitem' }}</a>
                     </li>
                     <li class="ez-subitemlist-navigation-item">
-                        <a href="#" class="ez-subitemlist-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="prev">Previous</a>
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isFirst}}is-disabled{{/if}}" rel="prev">{{ translate 'subitem.previous' 'subitem' }}</a>
                     </li>
                     <li class="ez-subitemlist-navigation-item">
-                        <a href="#" class="ez-subitemlist-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="next">Next</a>
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="next">{{ translate 'subitem.next' 'subitem' }}</a>
                     </li>
                     <li class="ez-subitemlist-navigation-item">
-                        <a href="#" class="ez-subitemlist-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="last">Last</a>
+                        <a href="#" class="ez-subitemlist-navigation-link {{#if isLast}}is-disabled{{/if}}" rel="last">{{ translate 'subitem.last' 'subitem' }}</a>
                     </li>
                 </ul>
                 {{/if}}
             {{/if}}
         {{/if}}
     {{else}}
-        <p class="ez-subitemlist-no-sub-items">This location has no sub-item.</p>
+        <p class="ez-subitemlist-no-sub-items">{{ translate 'subitem.no.subitem' 'subitem' }}</p>
     {{/if}}
     <div class="ez-subitemlist-loader-mask"></div>

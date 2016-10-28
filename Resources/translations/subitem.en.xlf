@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="3883567b167de8cb80d35b5511771914" resname="subitem.no.subitem">
+        <source>subitem.no.subitem</source>
+        <target>This location has no sub-item.</target>
+      </trans-unit>
+      <trans-unit id="16245e895ed8c82d945fee889be41d1b" resname="subitem.error.loading.image">
+        <source>subitem.error.loading.image</source>
+        <target>An error occurred while loading the image.</target>
+      </trans-unit>
+      <trans-unit id="d22bf1ca75120ea5dd691f5e21bc5b7c" resname="subitem.retry">
+        <source>subitem.retry</source>
+        <target>Retry</target>
+      </trans-unit>
+      <trans-unit id="b9492e63640c9f35e788802fa6116eef" resname="subitem.error.loading.list">
+        <source>subitem.error.loading.list</source>
+        <target>An error occurred while loading the sub-items list.</target>
+      </trans-unit>
+      <trans-unit id="3ddb6e8dd639dadf342ced7ae631ca3c" resname="subitem.first">
+        <source>subitem.first</source>
+        <target>First</target>
+      </trans-unit>
+      <trans-unit id="0afe69746051b11bee14b94bc91a09d6" resname="subitem.previous">
+        <source>subitem.previous</source>
+        <target>Previous</target>
+      </trans-unit>
+      <trans-unit id="838ef298d67a9bf29a5d62b824cd2e77" resname="subitem.next">
+        <source>subitem.next</source>
+        <target>Next</target>
+      </trans-unit>
+      <trans-unit id="c8c9c9c616ed7b5a730ee796b85ff386" resname="subitem.last">
+        <source>subitem.last</source>
+        <target>Last</target>
+      </trans-unit>
+      <trans-unit id="16d1ca2f90557e00680562a475a4db75" resname="subitem.subitems">
+        <source>subitem.subitems</source>
+        <target>Sub-items</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

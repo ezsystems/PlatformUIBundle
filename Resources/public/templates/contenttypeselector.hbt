@@ -1,7 +1,7 @@
-<h2 class="ez-contenttypeselector-title">Choose a content type</h2>
+<h2 class="ez-contenttypeselector-title">{{translate 'contenttypeselector.choose.content.type' 'contenttypeselector'}}</h2>
 <div class="ez-contenttypeselector-content">
     <div class="ez-contenttypeselector-groups">
-        <h3 class="ez-contenttypeselector-zone-title">Filter by group</h3>
+        <h3 class="ez-contenttypeselector-zone-title">{{translate 'contenttypeselector.filter.group' 'contenttypeselector'}}</h3>
         <ul class="ez-contenttypeselector-groups-list">
             {{#each contentTypeGroups}}
             <li>
@@ -14,8 +14,8 @@
         </ul>
     </div>
     <div class="ez-contenttypeselector-types">
-        <h3 class="ez-contenttypeselector-zone-title">Available content types</h3>
-        <input type="text" class="ez-contenttypeselector-filter" placeholder="start typing to refine the list" />
+        <h3 class="ez-contenttypeselector-zone-title">{{translate 'contenttypeselector.available.content.type' 'contenttypeselector'}}</h3>
+        <input type="text" class="ez-contenttypeselector-filter" placeholder="{{translate 'contenttypeselector.start.typing' 'contenttypeselector'}}" />
         <ul class="ez-contenttypeselector-list"></ul>
     </div>
 </div>

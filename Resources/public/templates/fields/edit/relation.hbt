@@ -8,13 +8,17 @@
             <p class="ez-field-description is-showing-description">
                 {{ translate_property fieldDefinition.descriptions }}
             </p>
-            <p class="ez-relation-help">Select another content and link it up with your content.</p>
+            <p class="ez-relation-help">
+                {{translate "relation.help" "fieldedit"}}
+            </p>
         </label>
     </div>
     <div class="pure-u ez-editfield-input-area ez-default-error-style">
         <div class="ez-editfield-input"><div class="ez-relation-input-ui">
             {{#if isEmpty}}
-               <p class="ez-relation-empty">No relation.</p>
+               <p class="ez-relation-empty">
+                   {{translate "relation.empty" "fieldedit"}}
+               </p>
             {{else}}
                 {{#if destinationContent }}
                 <div class="ez-relation-content">
@@ -22,25 +26,37 @@
                     <div class="ez-relation-value">
                         <h2 class="ez-relation-content-name">{{ destinationContent.name }}</h2>
                         <ul class="ez-relation-properties">
-                            <li class="ez-relation-property"><strong>Published:</strong> {{ destinationContent.publishedDate }}</li>
-                            <li class="ez-relation-property"><strong>Modified:</strong> {{ destinationContent.lastModificationDate }}</li>
+                            <li class="ez-relation-property">
+                                <strong>{{translate "relation.published" "fieldedit"}}</strong> {{ destinationContent.publishedDate }}
+                            </li>
+                            <li class="ez-relation-property">
+                                <strong>{{translate "relation.modified" "fieldedit"}}</strong> {{ destinationContent.lastModificationDate }}
+                            </li>
                         </ul>
                     </div>
                 </div>
                 {{else}}
                     {{#if loadingError}}
                         <p class="ez-asynchronousview-error ez-font-icon">
-                            An error occurred while loading the related content.
-                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+                            {{translate "relation.error" "fieldedit"}}
+                            <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">
+                                {{translate "relation.retry" "fieldedit"}}
+                            </button>
                         </p>
                     {{else}}
-                        <p class="ez-font-icon ez-asynchronousview-loading">Loading the related content</p>
+                        <p class="ez-font-icon ez-asynchronousview-loading">
+                            {{translate "relation.loading" "fieldedit"}}
+                        </p>
                     {{/if}}
                 {{/if}}
             {{/if}}
             <p class="ez-relation-tools">
-                <button class="ez-relation-discover ez-button ez-button-height ez-button-tree ez-font-icon pure-button">Select a content</button>
-                <button class="ez-relation-remove ez-button ez-button-height ez-button-delete ez-font-icon pure-button">Remove relation</button>
+                <button class="ez-relation-discover ez-button ez-button-height ez-button-tree ez-font-icon pure-button">
+                    {{translate "relation.select" "fieldedit"}}
+                </button>
+                <button class="ez-relation-remove ez-button ez-button-height ez-button-delete ez-font-icon pure-button">
+                    {{translate "relation.remove" "fieldedit"}}
+                </button>
             </p>
         </div></div>
     </div>

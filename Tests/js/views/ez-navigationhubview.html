@@ -64,6 +64,7 @@ item
 
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="./assets/ez-navigationhubview-tests.js"></script>
+<script type="text/javascript" src="../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -82,7 +83,7 @@ item
         filter: loaderFilter,
         modules: {
             "ez-navigationhubview": {
-                requires: ['ez-templatebasedview', 'ez-navigationitemview', 'event-tap', 'node-screen', 'node-style', 'event-outside', 'ez-height-change'],
+                requires: ['ez-templatebasedview', 'ez-navigationitemview', 'event-tap', 'node-screen', 'node-style', 'event-outside', 'ez-height-change', 'ez-translator'],
                 fullpath: "../../../Resources/public/js/views/ez-navigationhubview.js"
             },
             "ez-navigationitemview": {

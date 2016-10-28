@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="ec6bad396810c74068261b55cc7842c0" resname="rawcontent.content">
+        <source>rawcontent.content</source>
+        <target>Content</target>
+      </trans-unit>
+      <trans-unit id="fdebbdb6b33acdce757976a6b2bd789c" resname="locationview.details.title">
+        <source>locationview.details.title</source>
+        <target>Content details</target>
+      </trans-unit>
+      <trans-unit id="1a3fca998c2afb303c5e9e2495d6d7fd" resname="locationview.details.creator">
+        <source>locationview.details.creator</source>
+        <target>Creator</target>
+      </trans-unit>
+      <trans-unit id="b7dd57d3f91bbf9b3fa2b423f9343654" resname="locationview.details.errorcreator">
+        <source>locationview.details.errorcreator</source>
+        <target>An error occurred while loading the creator.</target>
+      </trans-unit>
+      <trans-unit id="b0d69fc52d38b836bef824f494b5bb1a" resname="locationview.details.loadingcreator">
+        <source>locationview.details.loadingcreator</source>
+        <target>Loading the creator</target>
+      </trans-unit>
+      <trans-unit id="1455b9610be563fd1965800e369aae43" resname="locationview.details.lastcontributor">
+        <source>locationview.details.lastcontributor</source>
+        <target>Last contributor</target>
+      </trans-unit>
+      <trans-unit id="18a52024ef48ef27fd4f986058bd4a4a" resname="locationview.details.errorcontributor">
+        <source>locationview.details.errorcontributor</source>
+        <target>An error occurred while loading the last contributor.</target>
+      </trans-unit>
+      <trans-unit id="3e130919238ab18ee350fa74dc10ff4c" resname="locationview.details.loadingcontributor">
+        <source>locationview.details.loadingcontributor</source>
+        <target>Loading the last contributor</target>
+      </trans-unit>
+      <trans-unit id="9372965ca8d9c7bd79ac0baeaa8a68db" resname="locationview.details.translations">
+        <source>locationview.details.translations</source>
+        <target>Translations</target>
+      </trans-unit>
+      <trans-unit id="ea38573ef109bef20b00aa86765a3e09" resname="locationview.details.retry">
+        <source>locationview.details.retry</source>
+        <target>Retry</target>
+      </trans-unit>
+      <trans-unit id="f029230effe8b86704b0cd6e93627550" resname="locationview.details.technicaldetails">
+        <source>locationview.details.technicaldetails</source>
+        <target>Technical details</target>
+      </trans-unit>
+      <trans-unit id="43243c62c72fa8db1ff55e1f5826c9c8" resname="locationview.details.contentid">
+        <source>locationview.details.contentid</source>
+        <target>Content Id</target>
+      </trans-unit>
+      <trans-unit id="0c493c8609b3a07905536e4a60066dfc" resname="locationview.details.locationid">
+        <source>locationview.details.locationid</source>
+        <target>Location Id</target>
+      </trans-unit>
+      <trans-unit id="b1389c6d4a5d86f0ce60f1dae2f8a245" resname="locationview.details.contentremoteid">
+        <source>locationview.details.contentremoteid</source>
+        <target>Content remote Id</target>
+      </trans-unit>
+      <trans-unit id="83a431903da44bf75cbeddf08dcbab76" resname="locationview.details.remoteid">
+        <source>locationview.details.remoteid</source>
+        <target>Location remove Id</target>
+      </trans-unit>
+      <trans-unit id="91e040e317bc115d1d9d73d191dbcae8" resname="locationview.details.subitems.default.ordering">
+        <source>locationview.details.subitems.default.ordering</source>
+        <target>Sub-items default ordering</target>
+      </trans-unit>
+      <trans-unit id="f4e95719cd456c9f4ef95b7b84884237" resname="locationview.details.default.listing.of.subitems.by">
+        <source>locationview.details.default.listing.of.subitems.by</source>
+        <target>Default listing of sub-items by</target>
+      </trans-unit>
+      <trans-unit id="9ba79d704fbb3e3ed12070f23d003408" resname="locationview.details.ascending">
+        <source>locationview.details.ascending</source>
+        <target>Ascending</target>
+      </trans-unit>
+      <trans-unit id="d4ed1f2e03c8e283495e709ed1674f5d" resname="locationview.details.desceding">
+        <source>locationview.details.desceding</source>
+        <target>Descending</target>
+      </trans-unit>
+      <trans-unit id="0d686143b05c238b39b6d8a90d6ac374" resname="locationview.locations.location.list.error">
+        <source>locationview.locations.location.list.error</source>
+        <target>An error occurred while loading the locations list.</target>
+      </trans-unit>
+      <trans-unit id="d98cce45f72a73debff69ccc9003c052" resname="locationview.retry">
+        <source>locationview.retry</source>
+        <target>Retry</target>
+      </trans-unit>
+      <trans-unit id="92a33cabe655a66c7ae9ddc5b937aaff" resname="locationview.locations.path">
+        <source>locationview.locations.path</source>
+        <target>Path</target>
+      </trans-unit>
+      <trans-unit id="a7beb6292defe3596087a75ce8a4c447" resname="locationview.locations.subitems">
+        <source>locationview.locations.subitems</source>
+        <target>Sub-items</target>
+      </trans-unit>
+      <trans-unit id="6098dd3e06d9b7a585c0842ba28338a5" resname="locationview.locations.visibility">
+        <source>locationview.locations.visibility</source>
+        <target>Visibility</target>
+      </trans-unit>
+      <trans-unit id="5ab3a76ba7373173bac0ea9435b9cc3d" resname="locationview.locations.main">
+        <source>locationview.locations.main</source>
+        <target>Main</target>
+      </trans-unit>
+      <trans-unit id="f716e2b4f38761d244db448451fb1248" resname="locationview.locations.reveal">
+        <source>locationview.locations.reveal</source>
+        <target>Reveal</target>
+      </trans-unit>
+      <trans-unit id="ffeb5b4ea0fcac3800953a368b62f551" resname="locationview.locations.loading.location.list">
+        <source>locationview.locations.loading.location.list</source>
+        <target>Loading the locations list</target>
+      </trans-unit>
+      <trans-unit id="90a31d3e62f17cb242c5f55f6616e70b" resname="locationview.locations.remove.selected">
+        <source>locationview.locations.remove.selected</source>
+        <target>Remove selected</target>
+      </trans-unit>
+      <trans-unit id="01c3bd7ce587d955510529418a6bd1be" resname="locationview.locations.add.location">
+        <source>locationview.locations.add.location</source>
+        <target>Add Location</target>
+      </trans-unit>
+      <trans-unit id="1a70cfea404291727cc55ce2f60248da" resname="locationview.locations.swap.with.another">
+        <source>locationview.locations.swap.with.another</source>
+        <target>Swap the Content item at this location with another</target>
+      </trans-unit>
+      <trans-unit id="05e6218486f2260611fb0d7160f048dd" resname="locationview.locations.select.content.item">
+        <source>locationview.locations.select.content.item</source>
+        <target>Select Content item</target>
+      </trans-unit>
+      <trans-unit id="533b38bd35d43f6de2699b478f7e67d4" resname="locationview.locations.hidden">
+        <source>locationview.locations.hidden</source>
+        <target>Hidden</target>
+      </trans-unit>
+      <trans-unit id="52dd4e9154b04a4bc5af625d2e134510" resname="locationview.locations.hidden.by.superior">
+        <source>locationview.locations.hidden.by.superior</source>
+        <target>Hidden by superior</target>
+      </trans-unit>
+      <trans-unit id="05ae6556a57b2fd331218d3922277318" resname="locationview.locations.visible">
+        <source>locationview.locations.visible</source>
+        <target>Visible</target>
+      </trans-unit>
+      <trans-unit id="fffd15854c6376494cf6db75143ecf51" resname="locationview.locations.hide">
+        <source>locationview.locations.hide</source>
+        <target>Hide</target>
+      </trans-unit>
+      <trans-unit id="d5300be986c1f8b79194ce95dd533330" resname="locationview.relations.error.loading.related">
+        <source>locationview.relations.error.loading.related</source>
+        <target>An error occurred while loading the related content list.</target>
+      </trans-unit>
+      <trans-unit id="6537554254869d605b1022788cccdfb9" resname="locationview.relations.content">
+        <source>locationview.relations.content</source>
+        <target>Content</target>
+      </trans-unit>
+      <trans-unit id="90d267e68e89138349b8b399a0bbae9d" resname="locationview.relations.relation.type">
+        <source>locationview.relations.relation.type</source>
+        <target>Relation type</target>
+      </trans-unit>
+      <trans-unit id="489bb9fc65e5556ad3e44344fee73612" resname="locationview.relations.no.related.content">
+        <source>locationview.relations.no.related.content</source>
+        <target>This content has no related content.</target>
+      </trans-unit>
+      <trans-unit id="f7d1c943778d2f3d38ab8b3c42e4cd9f" resname="locationview.versions.version">
+        <source>locationview.versions.version</source>
+        <target>Version</target>
+      </trans-unit>
+      <trans-unit id="f1a26f052987f5bd4987cbe5a2b2b430" resname="locationview.versions.language">
+        <source>locationview.versions.language</source>
+        <target>Language</target>
+      </trans-unit>
+      <trans-unit id="7159c01a78447026ed43f0a542027c9c" resname="locationview.versions.author">
+        <source>locationview.versions.author</source>
+        <target>Author</target>
+      </trans-unit>
+      <trans-unit id="fe670d86240f3f6fac4165d71d1d87ca" resname="locationview.versions.created">
+        <source>locationview.versions.created</source>
+        <target>Created</target>
+      </trans-unit>
+      <trans-unit id="1d05e4f29b937597a182cd742821e39c" resname="locationview.versions.last.saved">
+        <source>locationview.versions.last.saved</source>
+        <target>Last saved</target>
+      </trans-unit>
+      <trans-unit id="bfd927ffc6467335e9215f07ba643c55" resname="locationview.versions.edit.selected.draft">
+        <source>locationview.versions.edit.selected.draft</source>
+        <target>Edit selected draft</target>
+      </trans-unit>
+      <trans-unit id="bdf064d2b316c5457b7b3546a7543207" resname="locationview.versions.delete.selected.draft">
+        <source>locationview.versions.delete.selected.draft</source>
+        <target>Delete selected draft</target>
+      </trans-unit>
+      <trans-unit id="5cc451bc29b7ed569fb92f50e6e26cd5" resname="locationview.versions.loading.draft.list">
+        <source>locationview.versions.loading.draft.list</source>
+        <target>Loading the draft list</target>
+      </trans-unit>
+      <trans-unit id="b759e1eb7c9eac77e26cc895e5592192" resname="locationview.versions.loading.published.list">
+        <source>locationview.versions.loading.published.list</source>
+        <target>Loading the published version list</target>
+      </trans-unit>
+      <trans-unit id="f65e933e7f5099aed4c856a7aca809bd" resname="locationview.versions.new.draft.selected.version">
+        <source>locationview.versions.new.draft.selected.version</source>
+        <target>New draft based on selected version</target>
+      </trans-unit>
+      <trans-unit id="6abd57a654107c0753f4f5f229636a40" resname="locationview.versions.remove.selected.archived.version">
+        <source>locationview.versions.remove.selected.archived.version</source>
+        <target>Remove selected archived version(s)</target>
+      </trans-unit>
+      <trans-unit id="db3a6cdbbabfeb6c56807f55e830a7b8" resname="locationview.versions.loading.archived.list">
+        <source>locationview.versions.loading.archived.list</source>
+        <target>Loading the archived version list</target>
+      </trans-unit>
+      <trans-unit id="ea648eed549cb643fb030d541cdc8f65" resname="locationview.versions.error.loading.list">
+        <source>locationview.versions.error.loading.list</source>
+        <target>An error occurred while loading the versions list.</target>
+      </trans-unit>
+      <trans-unit id="f6f38b199866880db688472e57ed6f6f" resname="locationview.details.versions">
+        <source>locationview.details.versions</source>
+        <target>Versions</target>
+      </trans-unit>
+      <trans-unit id="498ea2da03d5ec1254a61340d45a2737" resname="locationview.locations.content.locations">
+        <source>locationview.locations.content.locations</source>
+        <target>Content locations</target>
+      </trans-unit>
+      <trans-unit id="646dd94473d2fb6a5c62254e2f7bcaaf" resname="locationview.relations.related.content">
+        <source>locationview.relations.related.content</source>
+        <target>Related content</target>
+      </trans-unit>
+      <trans-unit id="e3b2e6ca7499f9611ca0dc54ce63a6c1" resname="locationview.versions.draft.under.edit">
+        <source>locationview.versions.draft.under.edit</source>
+        <target>Draft under edit</target>
+      </trans-unit>
+      <trans-unit id="5cf059d175bbc76833af2660cc089e01" resname="locationview.versions.published.version">
+        <source>locationview.versions.published.version</source>
+        <target>Published version</target>
+      </trans-unit>
+      <trans-unit id="f9c1f1ac084d7a81267b119c71dbcd8e" resname="locationview.versions.archived.versions">
+        <source>locationview.versions.archived.versions</source>
+        <target>Archived versions</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

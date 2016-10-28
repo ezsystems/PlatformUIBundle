@@ -5,6 +5,6 @@
 <div class="ez-confirmbox-view"></div>
 
 <p class="ez-confirmbox-tools">
-    <a href="#" class="ez-confirmbox-cancel ez-confirmbox-close">Cancel</a>
-    <button class="ez-confirmbox-confirm ez-button pure-button">Confirm</button>
+    <a href="#" class="ez-confirmbox-cancel ez-confirmbox-close">{{translate "confirmbox.cancel" "confirm"}}</a>
+    <button class="ez-confirmbox-confirm ez-button pure-button">{{translate "confirmbox.confirm" "confirm"}}</button>
 </p>

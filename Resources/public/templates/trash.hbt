@@ -1,7 +1,7 @@
 <div class="pure-g">
     <div class="ez-trashview-content pure-u">
         <header class="ez-page-header">
-            <h1 class="ez-page-header-name" data-icon="&#xe615;">Trash</h1>
+            <h1 class="ez-page-header-name" data-icon="&#xe615;">{{translate 'trash.header.name' 'trash'}}</h1>
         </header>
         <div class="ez-trashview-list">
             {{#if trashItems}}
@@ -9,9 +9,9 @@
                 <thead>
                 <tr>
                     <th></th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Original Location</th>
+                    <th>{{translate 'trash.name.label' 'trash'}}</th>
+                    <th>{{translate 'trash.type.label' 'trash'}}</th>
+                    <th>{{translate 'trash.original.location.label' 'trash'}}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -40,7 +40,7 @@
                                 </li>
                             </ul>
                             {{else}}
-                            <span class="ez-trashview-info-message">Item's ancestors are in Trash</span>
+                            <span class="ez-trashview-info-message">{{translate 'trash.ancestors' 'trash'}}</span>
                             {{/if}}
                         </td>
                     </tr>
@@ -48,7 +48,7 @@
                 </tbody>
             </table>
             {{else}}
-                <p class="ez-trashview-no-content">The trash is empty</p>
+                <p class="ez-trashview-no-content">{{translate 'trash.empty' 'trash'}}</p>
             {{/if}}
         </div>
     </div>

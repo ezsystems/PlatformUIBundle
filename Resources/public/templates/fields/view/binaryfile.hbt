@@ -4,9 +4,9 @@
     </div>
     <div class="ez-fieldview-value pure-u"><div class="ez-fieldview-value-content">
     {{#if isEmpty}}
-        This field is empty
+        {{translate 'fieldview.field.empty' 'fieldview'}}
     {{else}}
-        <a href="{{ value.url }}" title="Download the file">{{ value.fileName }}</a> ({{ value.fileSize }}&nbsp;bytes)
+        <a href="{{ value.url }}" title="{{ translate 'binaryfile.download.file' 'fieldview' }}">{{ value.fileName }}</a> ({{ value.fileSize }}&nbsp;bytes)
     {{/if}}
     </div></div>
 </div>

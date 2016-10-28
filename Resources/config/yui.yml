@@ -9,6 +9,8 @@ system:
                 ez-capi:
                     requires: ['capi']
                     path: "%ez_platformui.public_dir%/js/external/ez-capi.js"
+                ez-translator:
+                    path: "%ez_platformui.public_dir%/js/external/ez-translator.js"
                 alloyeditor:
                     path: "%ez_platformui.external_assets_public_dir%/vendors/alloy-editor/dist/alloy-editor/alloy-editor-all.js"
                 ez-alloyeditor:
@@ -280,7 +282,14 @@ system:
                         - 'ez-draftconflict'
                     path: "%ez_platformui.public_dir%/js/views/services/ez-locationviewviewservice.js"
                 ez-navigationhubviewservice:
-                    requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-navigationitemsubtreeview', 'ez-navigationitemparameterview', 'array-extras', 'ez-height-change']
+                    requires:
+                        - 'ez-viewservice'
+                        - 'ez-sideviewservice'
+                        - 'ez-navigationitemsubtreeview'
+                        - 'ez-navigationitemparameterview'
+                        - 'array-extras'
+                        - 'ez-height-change'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/views/services/ez-navigationhubviewservice.js"
                 ez-discoverybarviewservice:
                     requires: ['ez-viewservice', 'ez-sideviewservice', 'ez-discoverybarcontenttreeplugin']
@@ -649,7 +658,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/usermenuitemfireevent.hbt"
                 ez-discoverybarview:
-                    requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview']
+                    requires: ['ez-barview', 'ez-buttonactionview', 'ez-treeactionview', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/views/ez-discoverybarview.js"
                 ez-actionbarview:
                     requires:
@@ -658,6 +667,7 @@ system:
                         - 'ez-createcontentactionview'
                         - 'ez-movecontentactionview'
                         - 'ez-translateactionview'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/views/ez-actionbarview.js"
                 ez-trashbarview:
                     requires:
@@ -1240,7 +1250,7 @@ system:
                     requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/apps/plugins/ez-registerurlhelpersplugin.js"
                 ez-registerlanguagehelpersplugin:
-                    requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry']
+                    requires: ['plugin', 'handlebars', 'base', 'ez-pluginregistry', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/apps/plugins/ez-registerlanguagehelpersplugin.js"
                 ez-viewservicebaseplugin:
                     requires: ['plugin', 'base']

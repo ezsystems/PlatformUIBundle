@@ -7,6 +7,6 @@
     </div>
 </button>
 <div class="ez-expandable-area">
-    <p class="ez-contenttypes-loading ez-font-icon">Loading</p>
+    <p class="ez-contenttypes-loading ez-font-icon">{{translate 'createcontentaction.loading' 'bar'}}</p>
     <div class="ez-contenttype-selector"></div>
 </div>

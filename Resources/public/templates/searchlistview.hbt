@@ -1,5 +1,8 @@
 {{#if searchResultCount}}
-    <p class="ez-searchlist-count">Result list ({{searchResultCount}})</p>
+    <p class="ez-searchlist-count">
+        {{ translate 'search.result.list' 'search' }}
+        ({{searchResultCount}})
+    </p>
     <div class="ez-searchlist-resultlist">
         <table class="ez-resultlist-table">
             <thead>
@@ -25,5 +28,5 @@
         </div>
     </div>
 {{else}}
-    <p class="ez-searchlist-no-result">This search has no result.</p>
+    <p class="ez-searchlist-no-result">{{ translate 'search.no.result' 'search' }}</p>
 {{/if}}

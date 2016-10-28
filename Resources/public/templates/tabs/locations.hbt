@@ -1,11 +1,11 @@
 <div class="ez-locations-box">
-    <h2 class="ez-locations-box-title">Content locations</h2>
+    <h2 class="ez-locations-box-title">{{ translate 'locationview.locations.content.locations' 'locationview' }}</h2>
     <div class="ez-locations-list-container">
         {{#if loadingError}}
             <p class="ez-asynchronousview-error ez-font-icon">
-                An error occurred while loading the locations list.
+                {{ translate 'locationview.locations.location.list.error' 'locationview' }}
                 <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">
-                    Retry
+                    {{ translate 'locationview.retry' 'locationview' }}
                 </button>
             </p>
         {{else}}
@@ -14,10 +14,10 @@
                     <thead>
                         <tr>
                             <th></th>
-                            <th>Path</th>
-                            <th>Sub items</th>
-                            <th colspan="2">Visibility</th>
-                            <th>Main</th>
+                            <th>{{ translate 'locationview.locations.path' 'locationview' }}</th>
+                            <th>{{ translate 'locationview.locations.subitems' 'locationview' }}</th>
+                            <th colspan="2">{{ translate 'locationview.locations.visibility' 'locationview' }}</th>
+                            <th>{{ translate 'locationview.locations.main' 'locationview' }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,7 +42,15 @@
                                 </td>
                                 <td class="ez-table-data-childcount">{{ childCount }}</td>
                                 <td class="ez-table-data-visibility">
-                                    {{#if hidden}}Hidden{{else}}{{#if invisible}}Hidden by superior{{else}}Visible{{/if}}{{/if}}
+                                    {{#if hidden}}
+                                        {{ translate 'locationview.locations.hidden' 'locationview' }}
+                                    {{else}}
+                                        {{#if invisible}}
+                                            {{ translate 'locationview.locations.hidden.by.superior' 'locationview' }}
+                                        {{else}}
+                                            {{ translate 'locationview.locations.visible' 'locationview' }}
+                                        {{/if}}
+                                    {{/if}}
                                 </td>
                                 <td class="ez-table-data-visibility">
                                     <button
@@ -51,7 +59,11 @@
                                         {{#if hidden}}ez-locations-hidden-button-reveal{{else}}{{#if invisible}}ez-locations-hidden-button-hide{{else}}ez-locations-hidden-button-hide{{/if}}{{/if}}
                                         pure-button ez-font-icon ez-button">
 
-                                        {{#if hidden}}Reveal{{else}}{{#if invisible}}Hide{{else}}Hide{{/if}}{{/if}}
+                                        {{#if hidden}}
+                                            {{ translate 'locationview.locations.reveal' 'locationview' }}
+                                        {{else}}
+                                            {{ translate 'locationview.locations.hide' 'locationview' }}
+                                        {{/if}}
                                     </button>
                                 </td>
                                 <td class="ez-table-data-main-location">
@@ -63,13 +75,13 @@
                     </tbody>
                 </table>
             {{else}}
-                <p class="ez-font-icon ez-asynchronousview-loading">Loading the locations list</p>
+                <p class="ez-font-icon ez-asynchronousview-loading">{{ translate 'locationview.locations.loading.location.list' 'locationview' }}</p>
             {{/if}}
         {{/if}}
 
         <div class="ez-locations-tools">
-            <button class="ez-remove-locations-button ez-button pure-button">Remove selected</button>
-            or <button class="ez-add-location-button ez-button pure-button">Add location</button>
+            <button class="ez-remove-locations-button ez-button pure-button">{{ translate 'locationview.locations.remove.selected' 'locationview' }}</button>
+            or <button class="ez-add-location-button ez-button pure-button">{{ translate 'locationview.locations.add.location' 'locationview' }}</button>
         </div>
     </div>
 </div>
@@ -77,10 +89,10 @@
 <div class="ez-locations-box">
     <h2 class="ez-locations-box-title">Location Content Swap</h2>
     <p class="ez-subitem-swap-locations">
-        Swap the content item at this location with another
+        {{ translate 'locationview.locations.swap.with.another' 'locationview' }}
         <button
             class="ez-locations-swap-button pure-button ez-button">
-            Select Content Item
+            {{ translate 'locationview.locations.select.content.item' 'locationview' }}
         </button>
     </p>
 </div>

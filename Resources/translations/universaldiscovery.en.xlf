@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="d2347ae43877a7a6642e7c12182258f7" resname="universaldiscovery.selected.item">
+        <source>universaldiscovery.selected.item</source>
+        <target>Selected item</target>
+      </trans-unit>
+      <trans-unit id="194c6e5d516189dc636459bf82f4dce3" resname="universaldiscovery.choose.this.content">
+        <source>universaldiscovery.choose.this.content</source>
+        <target>Choose this content</target>
+      </trans-unit>
+      <trans-unit id="c02819e18b6762a34ca8b09dc01a151f" resname="universaldiscovery.select.from.left">
+        <source>universaldiscovery.select.from.left</source>
+        <target>Select a content from the left</target>
+      </trans-unit>
+      <trans-unit id="3a8fff3c8c46a8167820055942806e89" resname="universaldiscovery.confirmed.items">
+        <source>universaldiscovery.confirmed.items</source>
+        <target>Confirmed items</target>
+      </trans-unit>
+      <trans-unit id="715137d8fc5001fa9f9da35577fa5d79" resname="universaldiscovery.no.confirmed.contents">
+        <source>universaldiscovery.no.confirmed.contents</source>
+        <target>No confirmed content yet.</target>
+      </trans-unit>
+      <trans-unit id="29627593749621ceab0c07322c31e292" resname="universaldiscovery.search">
+        <source>universaldiscovery.search</source>
+        <target>Search</target>
+      </trans-unit>
+      <trans-unit id="82ea742e7b96d576e7f8c8535d4511d4" resname="universaldiscovery.error.loading.result">
+        <source>universaldiscovery.error.loading.result</source>
+        <target>An error occurred while loading the search result list.</target>
+      </trans-unit>
+      <trans-unit id="0101e5b679c89b7f21584caa030d1299" resname="universaldiscovery.retry">
+        <source>universaldiscovery.retry</source>
+        <target>Retry</target>
+      </trans-unit>
+      <trans-unit id="bbbef777e4a1b12536e4d21c2460648c" resname="universaldiscovery.first">
+        <source>universaldiscovery.first</source>
+        <target>First</target>
+      </trans-unit>
+      <trans-unit id="aebaef8b533b5190c67aabadaf5b1987" resname="universaldiscovery.previous">
+        <source>universaldiscovery.previous</source>
+        <target>Previous</target>
+      </trans-unit>
+      <trans-unit id="eabd1d72cb025bfeb652f75aedee76f5" resname="universaldiscovery.next">
+        <source>universaldiscovery.next</source>
+        <target>Next</target>
+      </trans-unit>
+      <trans-unit id="d32563d8334f56741c9401447a2d1eb8" resname="universaldiscovery.last">
+        <source>universaldiscovery.last</source>
+        <target>Last</target>
+      </trans-unit>
+      <trans-unit id="243537b4d9d6114b9cd0475617b25f38" resname="universaldiscovery.preview">
+        <source>universaldiscovery.preview</source>
+        <target>Preview</target>
+      </trans-unit>
+      <trans-unit id="aa4fa203c592a7eadb07427ce9181bf2" resname="universaldiscovery.provide.search.text">
+        <source>universaldiscovery.provide.search.text</source>
+        <target>Please provide search text</target>
+      </trans-unit>
+      <trans-unit id="2e345cdf5513da0683cc02178a36489b" resname="universaldiscovery.content.tree">
+        <source>universaldiscovery.content.tree</source>
+        <target>Content tree</target>
+      </trans-unit>
+      <trans-unit id="d1414af297d4246b331a7958d0be2a95" resname="universaldiscovery.cancel">
+        <source>universaldiscovery.cancel</source>
+        <target>Cancel</target>
+      </trans-unit>
+      <trans-unit id="641254cf02f5497a404848a2a7d8932b" resname="universaldiscovery.confirm.selection">
+        <source>universaldiscovery.confirm.selection</source>
+        <target>Confirm selection</target>
+      </trans-unit>
+      <trans-unit id="2e1b121897030280faf4af531eccc25e" resname="universaldiscovery.error.loading.image">
+        <source>universaldiscovery.error.loading.image</source>
+        <target>An error occurred while loading the image.</target>
+      </trans-unit>
+      <trans-unit id="33c98a2efaab3c5ce220f2a54f712086" resname="universaldiscovery.last.modified">
+        <source>universaldiscovery.last.modified</source>
+        <target>Last Modified</target>
+      </trans-unit>
+      <trans-unit id="148f497990a6934d77fe7b71d0b6d661" resname="universaldiscovery.translations">
+        <source>universaldiscovery.translations</source>
+        <target>Translations</target>
+      </trans-unit>
+      <trans-unit id="222eae4b4a6fce05d1224d7da5361cd7" resname="universaldiscovery.creation.date">
+        <source>universaldiscovery.creation.date</source>
+        <target>Creation Date</target>
+      </trans-unit>
+      <trans-unit id="dfcedf093a2f085a1234286473e6766a" resname="universaldiscovery.name">
+        <source>universaldiscovery.name</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="84d1b4dbc1498d16a71baed6b204f0f1" resname="universaldiscovery.type">
+        <source>universaldiscovery.type</source>
+        <target>Type</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

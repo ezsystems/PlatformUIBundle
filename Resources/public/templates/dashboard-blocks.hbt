@@ -1,2 +1,2 @@
-<h1 class="ez-dashboard-title">My Dashboard</h1>
+<h1 class="ez-dashboard-title">{{ translate 'dashboardblocks.my.dashboard' 'dashboardblocks' }}</h1>
 <div class="ez-dashboard-content"></div>

@@ -13,10 +13,17 @@ YUI.add('ez-registerlanguagehelpersplugin', function (Y) {
 
     /**
      * Register Language Helpers plugin for the Platform UI application. It registers
-     * handlebars helper allowing to get language name based on language code:
+     * handlebars helpers:
      *
-     *   * `language_name` is for returning language name based on given language code. It takes the
-     *   language code as an argument
+     *    * `language_name` is for returning language name based on given language code. It takes the
+     *    language code as an argument
+     *
+     *    * `translate_property` returns the translation of a property. It takes as an argument the property to
+     *    translate as a hash indexed by eZ Locale for example:
+     *    {'eng-GB': 'potatoes', 'fre-FR': 'pomme de terre'}
+     *
+     *    * `translate` returns a translated message. It takes as an argument the message to translate, the domain
+     *    where the message can be found and the parameters to be applied to the message.
      *
      * @namespace eZ.Plugin
      * @class RegisterLanguageHelpers
@@ -27,6 +34,7 @@ YUI.add('ez-registerlanguagehelpersplugin', function (Y) {
         initializer: function () {
             this._registerLanguageName();
             this._registerTranslatedProperty();
+            this._registerTranslate();
         },
 
         /**
@@ -57,6 +65,22 @@ YUI.add('ez-registerlanguagehelpersplugin', function (Y) {
             var app = this.get('host');
 
             Y.Handlebars.registerHelper('translate_property', Y.bind(app.translateProperty, app, app.get('localesMap')));
+        },
+
+        /**
+         * Registers the `translate` handlebars helper.
+         * The `translate` helper expects a message that can be found in a domain (See Symfony translation documentation).
+         * A list of variables to be inserted into the translated message can be provided in the `variables` attribute
+         * in the shape of a JSON hash, here is a example:
+         * {"name": "John Doe", "age": "42"}
+         *
+         * @method _registerTranslate
+         * @protected
+         */
+        _registerTranslate: function () {
+            Y.Handlebars.registerHelper('translate', function (message, domain) {
+                return Y.eZ.Translator.trans(message, {}, domain);
+            });
         },
     }, {
         NS: 'registerLanguageHelpers',

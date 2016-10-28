@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="138aa3fb92eafb452c42011915bc30f4" resname="trash.header.name">
+        <source>trash.header.name</source>
+        <target>Trash</target>
+      </trans-unit>
+      <trans-unit id="a95ee11d3aceab0db8bf1c41e8899eef" resname="trash.name.label">
+        <source>trash.name.label</source>
+        <target>Name</target>
+      </trans-unit>
+      <trans-unit id="896a46e46a8a926a72f47e4bdc2fd2cf" resname="trash.type.label">
+        <source>trash.type.label</source>
+        <target>Type</target>
+      </trans-unit>
+      <trans-unit id="0ba1e1e0839f70f657ee3aaea8712257" resname="trash.original.location.label">
+        <source>trash.original.location.label</source>
+        <target>Original Location</target>
+      </trans-unit>
+      <trans-unit id="7160f4a6858f44cb5621d97fe6f5fca9" resname="trash.ancestors">
+        <source>trash.ancestors</source>
+        <target>Item's ancestors are in Trash</target>
+      </trans-unit>
+      <trans-unit id="6761a85f1ad33cd09fa0255fe5836b35" resname="trash.empty">
+        <source>trash.empty</source>
+        <target>The trash is empty</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

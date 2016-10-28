@@ -1,6 +1,6 @@
 {{#if contentInfo}}
     <div class="ez-ud-pane ez-ud-pane-selected">
-        <h2 class="ez-ud-pane-title">Selected item</h2>
+        <h2 class="ez-ud-pane-title">{{ translate 'universaldiscovery.selected.item' 'universaldiscovery' }}</h2>
         <div class="ez-ud-pane-content ez-asynchronousview">
             <p class="ez-ud-selected-contenttype ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}"> {{ translate_property contentType.names }}</p>
 
@@ -9,26 +9,28 @@
             </div>
 
             <p class="ez-asynchronousview-error ez-font-icon">
-                An error occurred while loading the image.
-                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">Retry</button>
+                {{ translate 'universaldiscovery.error.loading.image' 'universaldiscovery' }}
+                <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">{{ translate 'universaldiscovery.retry' 'universaldiscovery' }}</button>
             </p>
             <h3 class="ez-ud-selected-name">{{ contentInfo.name }}</h3>
             <dl class="ez-ud-selected-infos">
-                <dt class="ez-ud-selected-infos-title" >Last Modified</dt>
+                <dt class="ez-ud-selected-infos-title" >{{ translate 'universaldiscovery.last.modified' 'universaldiscovery' }}</dt>
                 <dd class="ez-ud-selected-info">{{ contentInfo.lastModificationDate }}</dd>
-                <dt class="ez-ud-selected-infos-title" >Translations</dt>
+                <dt class="ez-ud-selected-infos-title" >{{ translate 'universaldiscovery.translations' 'universaldiscovery' }}</dt>
                 <dd class="ez-ud-selected-info">{{ translations }}</dd>
-                <dt class="ez-ud-selected-infos-title">Creation Date</dt>
+                <dt class="ez-ud-selected-infos-title">{{ translate 'universaldiscovery.creation.date' 'universaldiscovery' }}</dt>
                 <dd class="ez-ud-selected-info">{{ contentInfo.publishedDate }}</dd>
             </dl>
             {{#if addConfirmButton}}
             <p>
-                <button class="ez-ud-selected-confirm ez-button pure-button"{{#unless confirmButtonEnabled}} disabled="disabled"{{/unless}}>Choose this content</button>
+                <button class="ez-ud-selected-confirm ez-button pure-button"{{#unless confirmButtonEnabled}} disabled="disabled"{{/unless}}>
+                    {{ translate 'universaldiscovery.choose.this.content' 'universaldiscovery' }}
+                </button>
             </p>
             {{/if}}
             <div class="ez-ud-selected-animation"></div>
         </div>
     </div>
 {{else}}
-    <p class="ez-ud-help-text">Select a content from the left</p>
+    <p class="ez-ud-help-text">{{ translate 'universaldiscovery.select.from.left' 'universaldiscovery' }}</p>
 {{/if}}

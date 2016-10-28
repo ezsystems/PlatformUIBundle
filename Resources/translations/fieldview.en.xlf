@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="0f695e53f85380350a25274afc15ea28" resname="relationlist.error.loading">
+        <source>relationlist.error.loading</source>
+        <target>An error occurred while loading some of the related contents.</target>
+      </trans-unit>
+      <trans-unit id="cdb57d54c553efce5226517339f7532b" resname="relationlist.loading">
+        <source>relationlist.loading</source>
+        <target>Loading the related contents</target>
+      </trans-unit>
+      <trans-unit id="7e5cad33e10b1f66e6dd5cad074d8ca8" resname="relation.error.loading">
+        <source>relation.error.loading</source>
+        <target>An error occurred while loading some of the related content.</target>
+      </trans-unit>
+      <trans-unit id="fda496f70972008787b419d7bbaed028" resname="relation.loading">
+        <source>relation.loading</source>
+        <target>Loading the related content</target>
+      </trans-unit>
+      <trans-unit id="a5936f77b720ce3e694fe7b7994fcb90" resname="media.unsupported.audio">
+        <source>media.unsupported.audio</source>
+        <target>Unsupported audio format</target>
+      </trans-unit>
+      <trans-unit id="2b63b56c1aab41a7a12140ecaf10c087" resname="media.unsupported.video">
+        <source>media.unsupported.video</source>
+        <target>Unsupported video format</target>
+      </trans-unit>
+      <trans-unit id="6fb4aa04a204ca71f84e5e646a0bcf55" resname="media.audio.file.properties">
+        <source>media.audio.file.properties</source>
+        <target>Audio file properties</target>
+      </trans-unit>
+      <trans-unit id="7dc4e75511ad48b4b2dca3f92255318a" resname="media.video.file.properties">
+        <source>media.video.file.properties</source>
+        <target>Video file properties</target>
+      </trans-unit>
+      <trans-unit id="47a0e8d6fa243dfc585304ef73cc01fe" resname="media.file.name">
+        <source>media.file.name</source>
+        <target>File name:</target>
+      </trans-unit>
+      <trans-unit id="18cd75473c6ba07744c16bf5cc304afb" resname="media.file.type">
+        <source>media.file.type</source>
+        <target>Type:</target>
+      </trans-unit>
+      <trans-unit id="b3602d541d8c4c2f7ccab95c9b84f03d" resname="media.file.size">
+        <source>media.file.size</source>
+        <target>File size:</target>
+      </trans-unit>
+      <trans-unit id="1d6ea693f118399204ca4790e7bad71b" resname="media.bytes">
+        <source>media.bytes</source>
+        <target>bytes</target>
+      </trans-unit>
+      <trans-unit id="fe5954465496c40a4db2fa619dc1da59" resname="fieldview.field.empty">
+        <source>fieldview.field.empty</source>
+        <target>This field is empty</target>
+      </trans-unit>
+      <trans-unit id="537511d1883a52d32596e57e23658a8f" resname="fieldview.retry">
+        <source>fieldview.retry</source>
+        <target>Retry</target>
+      </trans-unit>
+      <trans-unit id="06a100fa2759f283d99638ce5938cf21" resname="media.display.controls">
+        <source>media.display.controls</source>
+        <target>Display controls:</target>
+      </trans-unit>
+      <trans-unit id="85d41139127e19ccb7325d53b562b1fc" resname="fieldview.yes">
+        <source>fieldview.yes</source>
+        <target>yes</target>
+      </trans-unit>
+      <trans-unit id="d4e35877ca20ce5d54fbc0204b67ee15" resname="fieldview.no">
+        <source>fieldview.no</source>
+        <target>no</target>
+      </trans-unit>
+      <trans-unit id="f77210c17aceb7080628ec2ee735fdd1" resname="media.auto.play">
+        <source>media.auto.play</source>
+        <target>Auto play:</target>
+      </trans-unit>
+      <trans-unit id="b796946c1cf48e89026639587967d7ee" resname="media.loop">
+        <source>media.loop</source>
+        <target>Loop:</target>
+      </trans-unit>
+      <trans-unit id="30ce641ca0efa043b4966276a3d8fbf5" resname="media.width">
+        <source>media.width</source>
+        <target>Width:</target>
+      </trans-unit>
+      <trans-unit id="17181e3063c14a1af27c7d5b7d29d184" resname="media.heigth">
+        <source>media.heigth</source>
+        <target>Height:</target>
+      </trans-unit>
+      <trans-unit id="2b0591edbc349e92e5a2b5f5b9c5d971" resname="maplocation.map.loading">
+        <source>maplocation.map.loading</source>
+        <target>The map is loading...</target>
+      </trans-unit>
+      <trans-unit id="7af39c184be0b1d2ee92c811ddd356e4" resname="maplocation.latitude">
+        <source>maplocation.latitude</source>
+        <target>Latitude:</target>
+      </trans-unit>
+      <trans-unit id="25fe516175d5eb7d5b98bb76cd78e159" resname="maplocation.longitude">
+        <source>maplocation.longitude</source>
+        <target>Longitude:</target>
+      </trans-unit>
+      <trans-unit id="72b35b9d17044a70a23520605ca6bbdb" resname="richtext.parsing.error">
+        <source>richtext.parsing.error</source>
+        <target>An error occurred while parsing the content of this field</target>
+      </trans-unit>
+      <trans-unit id="76f48b0e4ec6ca3c4c73fe3486373270" resname="user.username">
+        <source>user.username</source>
+        <target>Username:</target>
+      </trans-unit>
+      <trans-unit id="c223c858238991c065f60270ed2256cb" resname="user.mail">
+        <source>user.mail</source>
+        <target>Email address:</target>
+      </trans-unit>
+      <trans-unit id="0492f2e4f542f0452ca390d98c886b51" resname="image.error.loading">
+        <source>image.error.loading</source>
+        <target>An error occurred while loading the image.</target>
+      </trans-unit>
+      <trans-unit id="2e7bce38bf7a9290e97ab7811003e423" resname="image.loading">
+        <source>image.loading</source>
+        <target>Loading the image</target>
+      </trans-unit>
+      <trans-unit id="b1bbd59c4bcf9a626d3c7c70ee851f56" resname="binaryfile.download.file">
+        <source>binaryfile.download.file</source>
+        <target>Download the file</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
