@@ -19,7 +19,7 @@
       </trans-unit>
       <trans-unit id="cd2aa1dd5cb6a8cb294ba3754b191124" resname="navigationhub.zone.admin">
         <source>navigationhub.zone.admin</source>
-        <target>Admin panel</target>
+        <target>Admin Panel</target>
       </trans-unit>
       <trans-unit id="7a478740156846ce618ab61925bb0e81" resname="navigationhub.dashboard.title">
         <source>navigationhub.dashboard.title</source>
