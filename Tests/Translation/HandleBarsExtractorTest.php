@@ -27,7 +27,10 @@ class HandleBarsExtractorTest extends \PHPUnit_Framework_TestCase
         $m->invoke($extractor, $template, $catalogue);
 
         foreach ($messages as $key => $domain) {
-            $this->assertTrue($catalogue->has($key, $domain));
+            $this->assertTrue(
+                $catalogue->has($key, $domain),
+                "The key '$key' should be defined in the domain '$domain'"
+            );
             $this->assertEquals('prefix' . $key, $catalogue->get($key, $domain));
         }
     }
@@ -41,6 +44,9 @@ class HandleBarsExtractorTest extends \PHPUnit_Framework_TestCase
             array("{{translate      'new key' 'domain'}}", array('new key' => 'domain')),
             array("{{translate 'new key'     'domain'}}", array('new key' => 'domain')),
             array("{{translate 'new key' 'domain'     }}", array('new key' => 'domain')),
+            array("{{\ttranslate 'new key' 'domain'  \t\t   }}", array('new key' => 'domain')),
+            array("{{translate 'new key'\t\t'domain' }}", array('new key' => 'domain')),
+            array("{{translate\t\t\t'new key'    'domain' }}", array('new key' => 'domain')),
 
             //double quote
             array('{{translate "new key" "domain" }}', array('new key' => 'domain')),
@@ -48,11 +54,13 @@ class HandleBarsExtractorTest extends \PHPUnit_Framework_TestCase
             array("{{translate \"new key\" 'domain' }}", array('new key' => 'domain')),
 
             //with variables
-            array("{{ translate 'new \" key' 'variables' 'domain' }}", array('new " key' => 'domain')),
-            array("{{ translate 'new key'       'variables' 'domain' }}", array('new key' => 'domain')),
-            array("{{ translate 'new key' 'variables'             'domain' }}", array('new key' => 'domain')),
-            array('{{ translate "new key" "variables" "domain" }}', array('new key' => 'domain')),
-            array("{{ translate \"new key\" 'variables' \"domain\" }}", array('new key' => 'domain')),
+            array("{{ translate 'new \" key' 'domain' variable=var foo=bar }}", array('new " key' => 'domain')),
+            array("{{ translate 'new key' 'domain'            variable=var foo=bar }}", array('new key' => 'domain')),
+            array("{{ translate 'new key' 'domain'\t\tvariable=var foo=bar }}", array('new key' => 'domain')),
+            array("{{ translate 'new key' 'domain' variable=var foo=bar         \t}}", array('new key' => 'domain')),
+            array('{{ translate "new key" "domain" variable="var" foo=\'bar\' }}', array('new key' => 'domain')),
+            array('{{ translate "new key" "domain" variable="var" foo="bar" }}', array('new key' => 'domain')),
+            array("{{ translate \"new key\" \"domain\" variable='var' foo=\"bar\" }}", array('new key' => 'domain')),
         );
     }
 
