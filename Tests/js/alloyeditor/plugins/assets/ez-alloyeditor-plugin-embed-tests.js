@@ -756,9 +756,21 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
                     },
                 }
             );
-            this.editor.get('nativeEditor').on('instanceReady', function () {
+            this.editor.get('nativeEditor').on('instanceReady', Y.bind(function () {
+                var ed = this.editor.get('nativeEditor'),
+                    append = ed.eZ.appendElement,
+                    test = this;
+
+                ed.eZ.appendElement = function () {
+                    test.appendElementCalled = true;
+                    append.apply(this, arguments);
+                };
                 startTest();
-            });
+            }, this));
+        },
+
+        tearDown: function () {
+            this.appendElementCalled = false;
         },
 
         _getWidget: function (embedSelector) {
@@ -802,18 +814,16 @@ YUI.add('ez-alloyeditor-plugin-embed-tests', function (Y) {
             );
         },
 
-        "Should insert the widget at the beginning of the document": function () {
-            this.editor.get('nativeEditor').execCommand('ezembed');
-
-            this._assertIsNewEmbed(this.editor.get('nativeEditor').element.getChild(0));
-        },
-
         "Should insert the widget after the focused one": function () {
             var existing = this._getWidget('[data-ezelement="ezembed"]');
 
             existing.focus();
             this.editor.get('nativeEditor').execCommand('ezembed');
             this._assertIsNewEmbed(existing.wrapper.getNext());
+            Assert.isTrue(
+                this.appendElementCalled,
+                "editor.eZ.appendElement should have been used to add the embed"
+            );
         },
     });
 
