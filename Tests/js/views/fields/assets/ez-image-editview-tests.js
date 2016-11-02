@@ -464,6 +464,80 @@ YUI.add('ez-image-editview-tests', function (Y) {
                 return eventFacade;
             },
 
+            _readFileAssert: function (fileContent, file, binaryfile, fileReader) {
+                this.view.after('fileChange', this.next(Y.bind(function (e) {
+                    binaryfile = this.view.get('file');
+
+                    Assert.areEqual(
+                        fileContent, binaryfile.data,
+                        "The binaryfile content should be available in the file attribute"
+                    );
+                    Assert.areEqual(
+                        file.name, binaryfile.name,
+                        "The binaryfile name should be available in the file attribute"
+                    );
+                    Assert.areEqual(
+                        file.size, binaryfile.size,
+                        "The binaryfile size should be available in the file attribute"
+                    );
+                    Assert.areEqual(
+                        file.type, binaryfile.type,
+                        "The binaryfile type should be available in the file attribute"
+                    );
+                    Assert.isUndefined(
+                        fileReader.onload,
+                        "The onload handler should be resetted"
+                    );
+                },this)));
+                this.wait();
+            },
+
+            "Should refuse an image than can NOT be loaded": function () {
+                var win = Y.config.win,
+                    fileReader = this.view.get('fileReader'),
+                    file = {size: 5 * this.multiplicator, name: "test-image.gif", type: "image/gif"},
+
+                    eventFacade = new Y.DOMEventFacade({
+                        type: 'change'
+                    });
+
+                this.originalURL = win.URL;
+                win.URL = {};
+                win.URL.createObjectURL = function (uri) {};
+
+                eventFacade.target = new Mock();
+                Mock.expect(eventFacade.target, {
+                    method: 'getDOMNode',
+                    returns: {files: [file]},
+                });
+                Mock.expect(eventFacade.target, {
+                    method: 'set',
+                    args: ['value', ''],
+                });
+                Mock.expect(fileReader, {
+                    method: 'readAsDataURL',
+                    args: [file],
+                    run: function (f) {
+                        fileReader.onload({target: {result: ''}});
+                    }
+                });
+
+                this.view.render();
+                this.view._updateFile(eventFacade);
+                this.view.after('warningChange', this.next(Y.bind(function (e) {
+                    Assert.isString(
+                        this.view.get('warning'),
+                        "A warning should have been generated"
+                    );
+                    Assert.areNotEqual(
+                        this.view.get('warning').indexOf(file.name),
+                        -1,
+                        "Warning string should contain the file name"
+                    );
+                }, this)));
+                this.wait();
+            },
+            
             "Should refuse a non image file": function () {
                 var fileReader = this._configureFileReader(),
                     eventFacade = this._configureEventFacade("file.ogv", "video/ogg");
@@ -788,6 +862,33 @@ YUI.add('ez-image-editview-tests', function (Y) {
                 this._dropEventWarningTest(
                     [{size: (this.maxSize - 1) * this.multiplicator, name: "wrong.ogg", type: "audio/ogg"}]
                 );
+            },
+
+            _dropFileAssert : function (reader, file, fileContent) {
+                Assert.isUndefined(reader.onload, "The onload handler should be resetted");
+
+                this.view.after('fileChange', this.next(Y.bind(function (e) {
+
+                    Assert.areEqual(
+                        this.view.get('file').name, file.name,
+                        "The name of the dropped file should be kept"
+                    );
+                    Assert.areEqual(
+                        this.view.get('file').size, file.size,
+                        "The size of the dropped file should be kept"
+                    );
+                    Assert.areEqual(
+                        this.view.get('file').type, file.type,
+                        "The type of the dropped file should be kept"
+                    );
+                    Assert.areEqual(
+                        this.view.get('file').data, this.fileContent,
+                        "The content of the dropped file should have been read"
+                    );
+                    Mock.verify(reader);
+
+                }, this)));
+                this.wait();
             },
         })
     );
