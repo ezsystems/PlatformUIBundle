@@ -7,21 +7,32 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
         translateTest,
         Assert = Y.Assert, Mock = Y.Mock;
 
+    function initAppMock (localesMap) {
+        var app = new Mock();
+
+        Mock.expect(app, {
+            method: 'get',
+            args: ['localesMap'],
+            returns: localesMap,
+        });
+        return app;
+    }
+
     registerHelpersTest = new Y.Test.Case({
         name: "eZ Register Language Helpers register helpers test",
 
         setUp: function () {
-            this.app = new Mock();
             this.localesMap = {};
+            this.app = initAppMock(this.localesMap);
 
-            Mock.expect(this.app, {
-                method: 'get',
-                args: ['localesMap'],
-                returns: this.localesMap,
-            });
             this.plugin = new Y.eZ.Plugin.RegisterLanguageHelpers({
                 host: this.app,
             });
+        },
+
+        tearDown: function () {
+            this.plugin.destroy();
+            delete this.plugin;
         },
 
         _helperRegistered: function (name) {
@@ -49,7 +60,7 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
 
         setUp: function () {
             this.languageCode = 'pol-PL';
-            this.app = new Mock();
+            this.app = initAppMock({});
 
             Mock.expect(this.app, {
                 method: 'getLanguageName',
@@ -79,20 +90,14 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
         name: "eZ Register Language Helpers translate_property test",
 
         setUp: function () {
-            this.app = new Mock();
             this.localesMap = {};
+            this.app = initAppMock(this.localesMap);
             this.property = {};
 
             Mock.expect(this.app, {
                 method: 'translateProperty',
                 args: [this.localesMap, this.property],
             });
-            Mock.expect(this.app, {
-                method: 'get',
-                args: ['localesMap'],
-                returns: this.localesMap,
-            });
-
             this.plugin = new Y.eZ.Plugin.RegisterLanguageHelpers({
                 host: this.app
             });
@@ -115,9 +120,17 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
     translateTest = new Y.Test.Case({
         name: "eZ Register Language Helpers translate test",
 
+        setUp: function () {
+            this.app = initAppMock({});
+            this.plugin = new Y.eZ.Plugin.RegisterLanguageHelpers({
+                host: this.app,
+            });
+        },
+
         tearDown: function () {
             this.plugin.destroy();
             delete this.plugin;
+            delete Y.eZ.Translator;
         },
 
         _mockTranslator: function (expectedMessage, expectedDomain) {
