@@ -133,7 +133,7 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
             delete Y.eZ.Translator;
         },
 
-        _mockTranslator: function (expectedMessage, expectedDomain) {
+        _mockTranslator: function (expectedMessage, expectedDomain, variableCheckFunc) {
             Y.eZ.Translator = {
                 trans: function(message, variables, domain) {
                     Assert.areSame(
@@ -145,6 +145,9 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
                         variables,
                         "An object should be passed to the translator variables"
                     );
+                    if ( variableCheckFunc ) {
+                        variableCheckFunc.call(this, variables);
+                    }
 
                     Assert.areSame(
                         expectedDomain,
@@ -161,8 +164,44 @@ YUI.add('ez-registerlanguagehelpersplugin-tests', function (Y) {
 
             this._mockTranslator(message, domain);
 
-            Y.Handlebars.helpers.translate(message, domain);
-        }
+            Y.Handlebars.helpers.translate(message, domain, {hash: {}});
+        },
+
+        "Should not escape the translated string": function () {
+            var message = "When The Levee Breaks - <b>Led Zeppelin</b>",
+                domain = "led-zep";
+
+            this._mockTranslator(message, domain);
+
+            Y.Handlebars.helpers.translate(message, domain, {hash: {}});
+        },
+
+        "Should pass the parameters to the translator": function () {
+            var message = "When The Levee Breaks",
+                domain = "led-zep",
+                safeString = "Stairway to Heaven",
+                notSafeString = "<b>";
+
+            this._mockTranslator(message, domain, function (variables) {
+                Assert.areEqual(
+                    safeString, variables.safeString,
+                    "The variables should be passed to the translator"
+                );
+                Assert.areEqual(
+                    '&lt;b&gt;', variables.notSafeString,
+                    "The variables should be escaped"
+                );
+            });
+
+            Y.Handlebars.helpers.translate(
+                message, domain, {
+                    hash: {
+                        "safeString": safeString,
+                        "notSafeString": notSafeString,
+                    }
+                }
+            );
+        },
     });
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
