@@ -19,7 +19,7 @@
             <div class="ez-content-language-container">
                 <div class="ez-content-language-indicator">
                     <span class="ez-content-current-language">{{ language_name languageCode }}</span>
-                    <a href="#" class="ez-change-content-language-link">(change)</a>
+                    <a href="#" class="ez-change-content-language-link">{{ translate 'change' 'contentedit' }}</a>
                 </div>
             </div>
         </header>
