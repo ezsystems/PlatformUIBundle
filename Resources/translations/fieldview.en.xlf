@@ -125,6 +125,14 @@
         <source>binaryfile.download.file</source>
         <target>Download the file</target>
       </trans-unit>
+      <trans-unit id="01c03913d7d788beb4f1d36e14013f4a" resname="file.size">
+        <source>file.size</source>
+        <target><![CDATA[<span class="ez-binaryfile-properties-size">%size%</span>&nbsp;bytes]]></target>
+      </trans-unit>
+      <trans-unit id="9a8ceaff4dff0f743f5f5889cb988f55" resname="media.size">
+        <source>media.size</source>
+        <target>%size% bytes</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

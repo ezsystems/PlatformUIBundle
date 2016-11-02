@@ -31,7 +31,7 @@
                     <li><b>{{translate 'media.file.name' 'fieldview'}}</b> {{ value.fileName }}</li>
                     <li><b>{{translate 'media.file.type' 'fieldview'}}</b> {{ value.mimeType }}</li>
                     <li><b>{{translate 'media.file.size' 'fieldview'}}</b>
-                        {{ value.fileSize }}&nbsp;{{translate 'media.bytes' 'fieldview'}}</li>
+                        {{ translate 'media.size' 'fieldview' size=value.fileSize }}</li>
                     <li><b>{{translate 'media.display.controls' 'fieldview'}}</b>
                         {{#if value.hasController }}
                             {{translate 'fieldview.yes' 'fieldview'}}

@@ -25,6 +25,10 @@
         <source>loginform.ez.logo</source>
         <target>eZ Logo</target>
       </trans-unit>
+      <trans-unit id="2ae41fa6dbd644a6846389ad14167167" resname="copyright">
+        <source>copyright</source>
+        <target><![CDATA[eZ Platform ©1999-%endYear% <a href="http://ez.no">eZ Systems AS</a> and others.]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

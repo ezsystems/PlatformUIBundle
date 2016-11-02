@@ -21,6 +21,14 @@
         <source>search.search</source>
         <target>Search</target>
       </trans-unit>
+      <trans-unit id="589cf891cd3ad3cc4db8197ef1e32f92" resname="show.more.results">
+        <source>show.more.results</source>
+        <target><![CDATA[Show <span class="ez-loadmorepagination-more-count">%remainingCount%</span> more results]]></target>
+      </trans-unit>
+      <trans-unit id="e77285a90b5a02080b61ebe00aa3c123" resname="viewing.out.of.items">
+        <source>viewing.out.of.items</source>
+        <target><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%searchResultCount%</strong> items]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

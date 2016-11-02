@@ -12,12 +12,11 @@
 
     <div class="ez-subitemlist-pagination">
         <p>
-            viewing <strong class="ez-loadmorepagination-display-count">{{ displayCount }}</strong>
-            out of <strong>{{ location.childCount }}</strong> sub-items
+            {{ translate 'viewing.out.of.items' 'subitem' displayCount=displayCount subitemCount=subitemCount }}
         </p>
         <p>
             <button class="pure-button ez-button ez-loadmorepagination-more ez-font-icon" disabled>
-                Show <span class="ez-loadmorepagination-more-count">{{ limit }}</span> more results
+                {{ translate 'show.more.results' 'subitem' limit=limit }}
             </button>
         </p>
     </div>

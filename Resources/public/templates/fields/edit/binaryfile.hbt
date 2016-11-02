@@ -27,7 +27,7 @@
                     </li>
                     <li>
                         <b>{{translate "binaryfile.size" "fieldedit"}}</b>
-                        <span class="ez-binaryfile-properties-size">{{ binaryfile.size }}</span>&nbsp;bytes
+                        {{ translate 'file.size' 'fieldview' size=binaryfile.size }}
                     </li>
                     <li class="ez-binaryfile-properties-download">
                         <a href="{{ binaryfile.uri }}" class="ez-binaryfile-download" target="_blank">{{translate "binaryfile.download" "fieldedit"}}</a>

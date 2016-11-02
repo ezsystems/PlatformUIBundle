@@ -7,11 +7,11 @@
                 <ul class="ez-technical-infos">
                     <li>{{ translate_property contentType.names }}</li>
                     {{#if owner}}
-                        <li>Created by {{ owner.name }}</li>
+                        <li>{{ translate 'created.by' 'contentedit' name=owner.name }}</li>
                     {{/if}}
                     {{#if content.contentId}}
                     <li>{{ content.lastModificationDate }}</li>
-                    <li>Content ID: {{ content.contentId }}, Location ID: {{ mainLocation.locationId }}</li>
+                    <li>{{ translate 'content.id.location.id' 'contentedit' contentId=content.contentId locationId=mainLocation.locationId }}</li>
                     {{/if}}
                 </ul>
                 <p class="ez-description">{{ translate_property contentType.descriptions }}</p>

@@ -18,6 +18,6 @@
     </form>
 
     <footer>
-        <p class="ez-copyright">eZ Platform &copy; 1999-2016 <a href="http://ez.no">eZ Systems AS</a> and others.</p>
+        <p class="ez-copyright">{{ translate 'copyright' 'login' endYear=2016 }}</p>
     </footer>
 </div>
