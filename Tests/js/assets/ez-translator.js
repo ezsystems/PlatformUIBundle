@@ -3,9 +3,11 @@ YUI.add('ez-translator', function (Y) {
 
     Y.namespace('eZ');
 
+    Y.eZ.trans = function (str) {
+        return str;
+    };
+
     Y.eZ.Translator = {
-        trans: function (str) {
-            return str;
-        },
+        trans: Y.eZ.trans,
     };
 });

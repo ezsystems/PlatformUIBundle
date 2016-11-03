@@ -15,6 +15,14 @@ YUI.add('ez-translator-tests', function (Y) {
                 "The Translator object should have been imported in the sandbox"
             );
         },
+
+        "Should import the trans method in the right context": function () {
+            Assert.areSame(
+                window.Translator,
+                Y.eZ.trans(),
+                "The trans method should be executed in the Translator context"
+            );
+        },
     });
 
     Y.Test.Runner.setName("eZ Translator Import module tests");
