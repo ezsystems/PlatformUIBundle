@@ -4,8 +4,9 @@
  */
 YUI.add('ez-searchplugin-tests', function (Y) {
     var locationSearchTests, locationSearchEventTests, _configureQueryAndContentServiceMock,
-        contentSearchTests, loadResourcesTests, registerTest,
-        Assert = Y.Assert, Mock = Y.Mock;
+        contentSearchTests, contentSearchEventTests, loadResourcesTests, registerTest,
+        Assert = Y.Assert, Mock = Y.Mock,
+        contentSearchSetUp, _configureContentSearchQueryMock;
 
     _configureQueryAndContentServiceMock = function (context, queryMethodName) {
         Mock.expect(context.query, {
@@ -19,29 +20,468 @@ YUI.add('ez-searchplugin-tests', function (Y) {
         });
     };
 
-    contentSearchTests = new Y.Test.Case({
-        name: "eZ Search Plugin content search tests",
+    _configureContentSearchQueryMock = function (query, locationQuery, response) {
+        Mock.expect(query, {
+            method: 'setFilter',
+            args: [Mock.Value.Object],
+        });
+        Mock.expect(locationQuery, {
+            method: 'setLimitAndOffset',
+            args: [response.document.View.Result.searchHits.searchHit.length, undefined],
+        });
+        Mock.expect(locationQuery, {
+            method: 'setFilter',
+            args: [Mock.Value.Object],
+        });
+    };
 
-        setUp: function () {
-            this.Content = function () {};
-            this.Content.prototype.loadFromHash = function (hash) {
-                this.hash = hash;
+    contentSearchSetUp = function () {
+        var that = this;
+        this.LocationModelConstructor = function () {};
+        this.isFirstContent = true;
+        this.isContentWithoutLocation = false;
+        this.Content = function () {
+            this.get = function (whatever) {
+                if (!that.isContentWithoutLocation) {
+                    if (that.isFirstContent) {
+                        that.isFirstContent = false;
+                        return {ContentType: that.contentTypeId, MainLocation: that.locationId};
+
+                    } else {
+                        that.isFirstContent = true;
+                        return {ContentType: that.contentTypeId, MainLocation: that.locationId2};
+                    }
+                }
+                else {
+                    return {ContentType: that.contentTypeId, MainLocation: ''};
+                }
             };
-            this.Content.prototype.get = Y.bind(function (whatever) {
-                return {ContentType: this.contentTypeId};
-            }, this);
-            this.contentTypeId = 'this/is/my/content/type/id';
-            this.limit = 42;
-            this.offset = 69;
-            this.capi = new Mock();
-            this.contentService = new Mock();
-            this.viewName = 'REST-View-Name';
-            this.query = new Y.Mock();
-            this.sortClauses = {};
-            Mock.expect(this.query, {
-                method: 'setLimitAndOffset',
-                args: [this.limit, this.offset],
+        };
+
+        this.Content.prototype.loadFromHash = function (hash) {
+            this.hash = hash;
+        };
+
+        this.contentTypeId = 'this/is/my/content/type/id';
+        this.locationId = 'Am/I/really/doing/Damien/unit/tests/?/id1';
+        this.locationId2 = 'Karma/is/a/b***h/!/id2';
+        this.limit = 42;
+        this.offset = 69;
+        this.capi = new Mock();
+        this.contentService = new Mock();
+        this.viewName = 'REST-View-Name';
+        this.query = new Y.Mock();
+        this.locationQuery = new Y.Mock();
+        this.sortClauses = {};
+
+        this.LocationModelConstructor.prototype.loadFromHash = function (hash) {
+            this.hash = hash;
+            this.get = function (attr) {
+                switch (attr) {
+                    case 'id':
+                        return that.locationId;
+                    default:
+                        Assert.fail('Requested attribute "' + attr + '" does not exist in the location model');
+                        break;
+                }
+            };
+        };
+        Mock.expect(this.query, {
+            method: 'setLimitAndOffset',
+            args: [this.limit, this.offset],
+        });
+        Mock.expect(this.query, {
+            method: 'setSortClauses',
+            args: [Mock.Value.Object],
+            run: Y.bind(function (arg) {
+                Assert.areSame(
+                    this.sortClauses,
+                    arg,
+                    "method argument should be the sortClauses"
+                );
+            }, this)
+        });
+        Mock.expect(this.capi, {
+            method: 'getContentService',
+            returns: this.contentService,
+        });
+        Mock.expect(this.contentService, {
+            method: 'newViewCreateStruct',
+            args: [Mock.Value.String, Mock.Value.String],
+            run: Y.bind(function (viewName, queryType) {
+                if (queryType == 'LocationQuery') {
+                    Assert.areSame(
+                        viewName,
+                        'locations-loading-' + this.viewName,
+                        "Should have a view name"
+                    );
+                    return this.locationQuery;
+                } else if (queryType == 'ContentQuery') {
+                    Assert.areSame(
+                        viewName,
+                        this.viewName,
+                        "Should have a view name"
+                    );
+                    return this.query;
+                } else {
+                    Assert.fail('Wrong parameters');
+                }
+
+            }, this)
+
+        });
+        this.service = new Y.Base();
+        this.service.set('capi', this.capi);
+        this.plugin = new Y.eZ.Plugin.Search({
+            host: this.service,
+            contentModelConstructor: this.Content,
+            locationModelConstructor: this.LocationModelConstructor,
+        });
+        Y.eZ.ContentType = Y.Model;
+    };
+
+    contentSearchTests = new Y.Test.Case({
+        name: "eZ Search Plugin findContent tests",
+
+        setUp: contentSearchSetUp,
+
+        tearDown: function () {
+            this.service.destroy();
+            this.plugin.destroy();
+            delete this.service;
+            delete this.plugin;
+            delete this.capi;
+            delete this.contentService;
+            delete this.query;
+            delete Y.eZ.ContentType;
+        },
+
+        "Should create a content search query with criteria": function () {
+            var criteria = {}, sortClauses = this.sortClauses;
+
+            _configureQueryAndContentServiceMock(this, 'setCriteria');
+            this.plugin.findContent({
+                viewName: this.viewName,
+                criteria: criteria,
+                sortClauses: sortClauses,
+                offset: this.offset,
+                limit: this.limit,
+            }, function () {});
+            Mock.verify(this.query);
+        },
+
+        "Should create a content search query with query": function () {
+            var query = {}, sortClauses = this.sortClauses;
+
+            _configureQueryAndContentServiceMock(this, 'setQuery');
+            this.plugin.findContent({
+                viewName: this.viewName,
+                query: query,
+                sortClauses: sortClauses,
+                offset: this.offset,
+                limit: this.limit,
+            }, function () {});
+            Mock.verify(this.query);
+        },
+
+        "Should create a content search query with filter": function () {
+            var filter = {}, sortClauses = this.sortClauses;
+
+            _configureQueryAndContentServiceMock(this, 'setFilter');
+            this.plugin.findContent({
+                viewName: this.viewName,
+                filter: filter,
+                sortClauses: sortClauses,
+                offset: this.offset,
+                limit: this.limit,
+            }, function () {});
+            Mock.verify(this.query);
+        },
+
+        "Should handle the search error": function () {
+            var callbackCalled = false,
+                err = new Error();
+
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
+                run: function (query, cb) {
+                    cb(err);
+                }
             });
+
+            this.plugin.findContent({
+                viewName: this.viewName,
+                offset: this.offset,
+                limit: this.limit,
+            }, function (error) {
+                callbackCalled = true;
+                Assert.areSame(
+                    err, error,
+                    "The error should be provided to the callback"
+                );
+            });
+
+            Assert.isTrue(callbackCalled, "The callback should have been called");
+        },
+
+        "Should parse the results and provide them to the callback": function () {
+            var callbackCalled = false,
+                resultCount = 42,
+                contents = [{}, {}],
+                response = {
+                    document: {
+                        View: {
+                            Result: {
+                                count: resultCount,
+                                searchHits: {
+                                    searchHit: [{
+                                        value: {
+                                            Content: contents[0]
+                                        },
+                                    }, {
+                                        value: {
+                                            Content: contents[1]
+                                        }
+                                    }]
+                                }
+                            }
+                        }
+                    }
+                };
+
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
+                run: function (query, cb) {
+                    cb(false, response);
+                }
+            });
+
+            this.plugin.findContent({
+                viewName: this.viewName,
+                offset: this.offset,
+                limit: this.limit,
+            }, function (error, result, count) {
+                callbackCalled = true;
+
+                Assert.areEqual(
+                    resultCount, count,
+                    "The result count should be provided"
+                );
+                Assert.areSame(
+                    contents[0], result[0].content.hash,
+                    "The content should have been created from the results"
+                );
+                Assert.areSame(
+                    contents[1], result[1].content.hash,
+                    "The content should have been created from the results"
+                );
+            });
+
+            Assert.isTrue(callbackCalled, "The callback provided in the event should have been called");
+        },
+
+        "Should load the content type": function () {
+            var callbackCalled = false,
+                response = {
+                    document: {
+                        View: {
+                            Result: {
+                                count: 1,
+                                searchHits: {
+                                    searchHit: [{
+                                        value: {
+                                            Content: {},
+                                        },
+                                    }]
+                                }
+                            }
+                        }
+                    }
+                };
+
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
+                run: function (query, cb) {
+                    cb(false, response);
+                }
+            });
+
+            this.plugin.findContent({
+                viewName: this.viewName,
+                offset: this.offset,
+                limit: this.limit,
+                loadContentType: true,
+            }, Y.bind(function (error, result) {
+                callbackCalled = true;
+
+                Assert.isInstanceOf(
+                    Y.eZ.ContentType, result[0].contentType,
+                    "The contentType model should be added to the struct"
+                );
+                Assert.areEqual(
+                    this.contentTypeId, result[0].contentType.get('id'),
+                    "The contentType should have the content type id"
+                );
+            }, this));
+
+            Assert.isTrue(callbackCalled, "The callback should have been called");
+        },
+
+        "Should load the location": function () {
+            var callbackCalled = false,
+                resultCount = 42,
+                response = {
+                    document: {
+                        View: {
+                            Result: {
+                                count: resultCount,
+                                searchHits: {
+                                    searchHit: [{
+                                        value: {
+                                            Content: {}
+                                        },
+                                    }, {
+                                        value: {
+                                            Content: {}
+                                        },
+                                    }, {
+                                        value: {
+                                            Content: {}
+                                        },
+                                    }]
+                                }
+                            }
+                        }
+                    }
+                };
+
+            _configureContentSearchQueryMock(this.query, this.locationQuery, response);
+
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (query, callback) {
+                    callback(false, response);
+                }, this)
+            });
+
+            this.plugin.findContent({
+                viewName: this.viewName,
+                offset: this.offset,
+                limit: this.limit,
+                loadLocation: true,
+            }, Y.bind(function (error, result) {
+                callbackCalled = true;
+
+                Y.Array.each(result, Y.bind(function (hit) {
+                    if (hit.location) {
+                        Assert.isInstanceOf(
+                            this.LocationModelConstructor, hit.location,
+                            "The location model should be added to the struct"
+                        );
+                        Assert.areEqual(
+                            this.locationId, hit.location.get('id'),
+                            "The location should have the location id"
+                        );
+                    }
+
+                }, this));
+            }, this));
+            Assert.isTrue(callbackCalled, "The callback should have been called");
+        },
+
+        "Should NOT load the location if content has no location": function () {
+            var callbackCalled = false,
+                resultCount = 42,
+                response = {
+                    document: {
+                        View: {
+                            Result: {
+                                count: resultCount,
+                                searchHits: {
+                                    searchHit: [{
+                                        value: {
+                                            Content: {}
+                                        },
+                                    }, {
+                                        value: {
+                                            Content: {}
+                                        },
+                                    }, {
+                                        value: {
+                                            Content: {}
+                                        },
+                                    }]
+                                }
+                            }
+                        }
+                    }
+                };
+            this.isContentWithoutLocation = true;
+
+            _configureContentSearchQueryMock(this.query, this.locationQuery, response);
+
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (query, callback) {
+                    callback(false, response);
+                }, this)
+            });
+
+            this.plugin.findContent({
+                viewName: this.viewName,
+                offset: this.offset,
+                limit: this.limit,
+                loadLocation: true,
+            }, Y.bind(function (error, result) {
+                callbackCalled = true;
+
+                Y.Array.each(result, Y.bind(function (hit) {
+                    Assert.isUndefined(hit.location, 'There should not be a location');
+                }, this));
+            }, this));
+            Assert.isTrue(callbackCalled, "The callback should have been called");
+        },
+
+        "Should handle location loading error": function () {
+            var callbackCalled = false,
+                resultCount = 42,
+                response = {
+                    document: {
+                        View: {
+                            Result: {
+                                count: resultCount,
+                                searchHits: {
+                                    searchHit: [{
+                                        value: {
+                                            Content: {},
+                                        },
+                                    }]
+                                }
+                            }
+                        }
+                    }
+                },
+                err = new Error();
+
+            _configureContentSearchQueryMock(this.query, this.locationQuery, response);
+
+            Mock.expect(this.contentService, {
+                method: 'createView',
+                args: [Mock.Value.Object, Mock.Value.Function],
+                run: Y.bind(function (query, callback) {
+                    if (query == this.query) {
+                        callback(false, response);
+                    } else {
+                        callback(err, response);
+                    }
+                }, this)
+            });
+
             Mock.expect(this.query, {
                 method: 'setSortClauses',
                 args: [Mock.Value.Object],
@@ -53,23 +493,81 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                     );
                 }, this)
             });
-            Mock.expect(this.capi, {
-                method: 'getContentService',
-                returns: this.contentService,
-            });
+
+            this.plugin.findContent({
+                viewName: this.viewName,
+                offset: this.offset,
+                limit: this.limit,
+                loadLocation: true,
+            }, Y.bind(function (error) {
+                callbackCalled = true;
+
+                Assert.areSame(
+                    err, error,
+                    "The loading location error should be provided"
+                );
+            }, this));
+
+            Assert.isTrue(callbackCalled, "The callback should have been called");
+        },
+
+        "Should handle content type loading error": function () {
+            var callbackCalled = false,
+                response = {
+                    document: {
+                        View: {
+                            Result: {
+                                count: 1,
+                                searchHits: {
+                                    searchHit: [{
+                                        value: {
+                                            Content: {},
+                                        },
+                                    }]
+                                }
+                            }
+                        }
+                    }
+                },
+                err = new Error();
+
             Mock.expect(this.contentService, {
-                method: 'newViewCreateStruct',
-                args: [this.viewName, 'ContentQuery'],
-                returns: this.query,
+                method: 'createView',
+                args: [this.query, Mock.Value.Function],
+                run: function (query, cb) {
+                    cb(false, response);
+                }
             });
-            this.service = new Y.Base();
-            this.service.set('capi', this.capi);
+
+            Y.eZ.ContentType = function () {};
+            Y.eZ.ContentType.prototype.load = function (options, callback) {
+                callback(err);
+            };
+
+            this.plugin.findContent({
+                viewName: this.viewName,
+                offset: this.offset,
+                limit: this.limit,
+                loadContentType: true,
+            }, function (error) {
+                callbackCalled = true;
+
+                Assert.areSame(
+                    err, error,
+                    "The loading content type error should be provided"
+                );
+            });
+
+            Assert.isTrue(callbackCalled, "The callback should have been called");
+        },
+    });
+
+    contentSearchEventTests = new Y.Test.Case({
+        name: "eZ Search Plugin content search tests",
+
+        setUp: function () {
+            contentSearchSetUp.apply(this);
             this.view = new Y.Base({bubbleTargets: this.service});
-            this.plugin = new Y.eZ.Plugin.Search({
-                host: this.service,
-                contentModelConstructor: this.Content,
-            });
-            Y.eZ.ContentType = Y.Model;
         },
 
         tearDown: function () {
@@ -1187,6 +1685,17 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 "The loadingError flag should be true"
             );
         },
+
+        "Should call _loadLocationRessources when using deprecated loadRessources method": function () {
+            var loadLocationResourcesCalled = false;
+
+            this.plugin._loadLocationResources = function () {
+                loadLocationResourcesCalled = true;
+            };
+            this.plugin._loadResources('', true, true, [], function(){});
+
+            Assert.isTrue(loadLocationResourcesCalled, '_loadLocationRessources method should have been called');
+        },
     });
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
@@ -1195,6 +1704,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
 
     Y.Test.Runner.setName("eZ Search Plugin Tests");
     Y.Test.Runner.add(contentSearchTests);
+    Y.Test.Runner.add(contentSearchEventTests);
     Y.Test.Runner.add(locationSearchTests);
     Y.Test.Runner.add(locationSearchEventTests);
     Y.Test.Runner.add(loadResourcesTests);

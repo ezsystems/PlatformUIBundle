@@ -766,6 +766,7 @@ YUI.add('ez-locationmodel-tests', function (Y) {
                 }
             };
             this.viewCreateStruct = new Y.Mock();
+
             Mock.expect(this.viewCreateStruct, {
                 method: 'setFilter',
                 args: [Mock.Value.Object],

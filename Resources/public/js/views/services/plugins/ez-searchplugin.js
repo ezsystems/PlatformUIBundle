@@ -69,9 +69,12 @@ YUI.add('ez-searchplugin', function (Y) {
             }
             if (search.criteria) {
                 query.setCriteria(search.criteria);
+<<<<<<< ec7f7514a95176a5aa31d3dc3e9caf68f31ad205
                 console.log('[DEPRECATED] Criteria property is deprecated');
                 console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
                 console.log('[DEPRECATED] Please use Query or Filter instead');
+=======
+>>>>>>> EZP-26325: Use query and filter in PlatformUI
             }
 
             query.setLimitAndOffset(search.limit, search.offset);
