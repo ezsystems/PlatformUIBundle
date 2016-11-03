@@ -10,6 +10,7 @@
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
 <script type="text/javascript" src="./assets/ez-alloyeditor-button-blocktextalignjustify-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -29,7 +30,7 @@
         modules: {
             "ez-alloyeditor-button-blocktextalignjustify": {
                 fullpath: "../../../../Resources/public/js/alloyeditor/buttons/blocktextalignjustify.js",
-                requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign'],
+                requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign', 'ez-translator'],
             },
             "ez-alloyeditor-button-mixin-blocktextalign": {
                 fullpath: "../../../../Resources/public/js/alloyeditor/buttons/mixins/blocktextalign.js",

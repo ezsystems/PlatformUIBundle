@@ -40,7 +40,7 @@ YUI.add('ez-alloyeditor-button-blocktextaligncenter', function (Y) {
             return {
                 textAlign: 'center',
                 classIcon: 'center',
-                label: 'Center',
+                label: Y.eZ.trans('center', {}, 'onlineeditor'),
             };
         },
     });

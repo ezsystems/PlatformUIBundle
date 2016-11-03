@@ -53,7 +53,7 @@ YUI.add('ez-alloyeditor-button-paragraph', function (Y) {
             return (
                 <button className={css} onClick={this._addParagraph} tabIndex={this.props.tabIndex}>
                     <span className="ez-ae-icon ez-ae-icon-paragraph"></span>
-                    <p className="ez-ae-label">Paragraph</p>
+                    <p className="ez-ae-label">{Y.eZ.trans('paragraph', {}, 'onlineeditor')}</p>
                 </button>
             );
         },

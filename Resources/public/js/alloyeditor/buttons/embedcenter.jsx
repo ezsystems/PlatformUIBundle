@@ -37,7 +37,7 @@ YUI.add('ez-alloyeditor-button-embedcenter', function (Y) {
             return {
                 alignment: 'center',
                 classIcon: 'embedcenter',
-                label: 'Center',
+                label: Y.eZ.trans('center', {}, 'onlineeditor'),
             };
         },
     });

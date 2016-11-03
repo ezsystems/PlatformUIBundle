@@ -35,7 +35,7 @@ YUI.add('ez-alloyeditor-button-blocktextalignjustify', function (Y) {
             return {
                 textAlign: 'justify',
                 classIcon: 'justified',
-                label: 'Justify',
+                label: Y.eZ.trans('justify', {}, 'onlineeditor'),
             };
         },
     });

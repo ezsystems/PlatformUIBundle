@@ -12,6 +12,7 @@
 <script type="text/javascript" src="../../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
 <script type="text/javascript" src="./assets/toolbar-config-define-tests.js"></script>
 <script type="text/javascript" src="./assets/ez-alloyeditor-toolbar-config-heading-tests.js"></script>
+<script type="text/javascript" src="../../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -31,7 +32,7 @@
         modules: {
             "ez-alloyeditor-toolbar-config-heading": {
                 fullpath: "../../../../../Resources/public/js/alloyeditor/toolbars/config/heading.js",
-                requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base'],
+                requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base', 'ez-translator'],
             },
             "ez-alloyeditor-toolbar-config-block-base": {
                 requires: ['ez-alloyeditor'],

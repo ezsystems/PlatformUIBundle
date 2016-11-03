@@ -39,7 +39,7 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
             return {
                 command: 'ezembed',
                 modifiesSelection: true,
-                udwTitle: "Select a content to embed",
+                udwTitle: Y.eZ.trans('select.a.content.to.embed', {}, 'onlineeditor'),
                 udwContentDiscoveredMethod: '_addEmbed',
             };
         },
@@ -69,7 +69,7 @@ YUI.add('ez-alloyeditor-button-embed', function (Y) {
             return (
                 React.createElement("button", {className: css, onClick: this._chooseContent, tabIndex: this.props.tabIndex}, 
                     React.createElement("span", {className: "ez-ae-icon ez-ae-icon-embed ez-font-icon"}), 
-                    React.createElement("p", {className: "ez-ae-label"}, "Embed")
+                    React.createElement("p", {className: "ez-ae-label"}, Y.eZ.trans('embed', {}, 'onlineeditor'))
                 )
             );
         },

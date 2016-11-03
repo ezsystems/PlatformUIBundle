@@ -36,7 +36,7 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
             return {
                 command: 'ezembed',
                 modifiesSelection: true,
-                udwTitle: "Select an image to embed",
+                udwTitle: Y.eZ.trans('select.an.image.to.embed', {}, 'onlineeditor'),
                 udwContentDiscoveredMethod: '_addImage',
                 udwIsSelectableMethod: '_isImage',
                 udwLoadContent: true,
@@ -71,7 +71,7 @@ YUI.add('ez-alloyeditor-button-image', function (Y) {
             return (
                 <button className={css} onClick={this._chooseContent} tabIndex={this.props.tabIndex}>
                     <span className="ez-ae-icon ez-ae-icon-image ez-font-icon"></span>
-                    <p className="ez-ae-label">Image</p>
+                    <p className="ez-ae-label">{Y.eZ.trans('image', {}, 'onlineeditor')}</p>
                 </button>
             );
         },

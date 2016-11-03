@@ -83,7 +83,7 @@ class EzPlatformUIExtension extends Extension implements PrependExtensionInterfa
         return [
             'bar', 'confirm', 'contentedit', 'contenttypeselector', 'dashboardblocks', 'editorial',
             'fieldedit', 'fieldview', 'languageselection', 'locationview', 'login', 'navigationhub',
-            'search', 'subitem', 'trash', 'tree', 'universaldiscovery',
+            'search', 'subitem', 'trash', 'tree', 'universaldiscovery', 'onlineeditor',
         ];
     }
 }

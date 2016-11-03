@@ -42,7 +42,7 @@ YUI.add('ez-alloyeditor-button-embedright', function (Y) {
             return {
                 alignment: 'right',
                 classIcon: 'embedright',
-                label: 'Right',
+                label: Y.eZ.trans('right', {}, 'onlineeditor'),
             };
         },
     });

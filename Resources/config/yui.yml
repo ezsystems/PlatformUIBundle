@@ -32,7 +32,7 @@ system:
                     requires: ['ez-alloyeditor']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/block-base.js"
                 ez-alloyeditor-toolbar-config-heading:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/toolbars/config/heading.js"
                 ez-alloyeditor-toolbar-config-paragraph:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-toolbar-config-block-base']
@@ -62,13 +62,13 @@ system:
                     requires: ['ez-alloyeditor']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/plugins/paste.js"
                 ez-alloyeditor-button-heading:
-                    requires: ['ez-alloyeditor']
+                    requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/heading.js"
                 ez-alloyeditor-button-paragraph:
-                    requires: ['ez-alloyeditor']
+                    requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/paragraph.js"
                 ez-alloyeditor-button-list:
-                    requires: ['ez-alloyeditor']
+                    requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/list.js"
                 ez-alloyeditor-button-image:
                     requires:
@@ -76,9 +76,10 @@ system:
                         - 'ez-alloyeditor-button-mixin-embeddiscovercontent'
                         - 'ez-alloyeditor-button-mixin-embedimage'
                         - 'ez-alloyeditor-button-mixin-widgetbutton'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/image.js"
                 ez-alloyeditor-button-embed:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-widgetbutton']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-widgetbutton', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embed.js"
                 ez-alloyeditor-button-imagevariation:
                     requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embedimage']
@@ -87,16 +88,19 @@ system:
                     requires:
                         - 'ez-alloyeditor'
                         - 'ez-alloyeditor-button-mixin-embedalign'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embedcenter.js"
                 ez-alloyeditor-button-embedright:
                     requires:
                         - 'ez-alloyeditor'
                         - 'ez-alloyeditor-button-mixin-embedalign'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embedright.js"
                 ez-alloyeditor-button-embedleft:
                     requires:
                         - 'ez-alloyeditor'
                         - 'ez-alloyeditor-button-mixin-embedalign'
+                        - 'ez-translator'
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embedleft.js"
                 ez-alloyeditor-button-mixin-embedalign:
                     requires:
@@ -104,25 +108,25 @@ system:
                         - 'ez-alloyeditor-button-mixin-widgetbutton'
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/mixins/embedalign.js"
                 ez-alloyeditor-button-blocktextalignleft:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignleft.js"
                 ez-alloyeditor-button-blocktextaligncenter:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextaligncenter.js"
                 ez-alloyeditor-button-blocktextalignright:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignright.js"
                 ez-alloyeditor-button-blocktextalignjustify:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-blocktextalign', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blocktextalignjustify.js"
                 ez-alloyeditor-button-blockremove:
-                    requires: ['ez-alloyeditor']
+                    requires: ['ez-alloyeditor', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/blockremove.js"
                 ez-alloyeditor-button-embedhref:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-widgetbutton']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-widgetbutton', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/embedhref.js"
                 ez-alloyeditor-button-imagehref:
-                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage', 'ez-alloyeditor-button-mixin-widgetbutton']
+                    requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage', 'ez-alloyeditor-button-mixin-widgetbutton', 'ez-translator']
                     path: "%ez_platformui.public_dir%/js/alloyeditor/buttons/imagehref.js"
                 ez-alloyeditor-button-mixin-blocktextalign:
                     requires: ['ez-alloyeditor']

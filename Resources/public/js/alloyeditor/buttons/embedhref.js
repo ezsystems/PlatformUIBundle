@@ -41,9 +41,9 @@ YUI.add('ez-alloyeditor-button-embedhref', function (Y) {
 
         getDefaultProps: function () {
             return {
-                udwTitle: "Select a content to embed",
+                udwTitle: Y.eZ.trans('select.a.content.to.embed', {}, 'onlineeditor'),
                 udwContentDiscoveredMethod: "_updateEmbed",
-                label: "Select another content item",
+                label: Y.eZ.trans('select.another.content.item', {}, 'onlineeditor'),
             };
         },
 

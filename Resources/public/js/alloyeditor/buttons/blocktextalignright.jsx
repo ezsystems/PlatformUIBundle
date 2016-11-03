@@ -35,7 +35,7 @@ YUI.add('ez-alloyeditor-button-blocktextalignright', function (Y) {
             return {
                 textAlign: 'right',
                 classIcon: 'right',
-                label: 'Right',
+                label: Y.eZ.trans('right', {}, 'onlineeditor'),
             };
         },
     });

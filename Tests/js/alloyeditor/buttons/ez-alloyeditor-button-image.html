@@ -11,6 +11,7 @@
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="../../../../Resources/public/vendors/alloyeditor/dist/alloy-editor/alloy-editor-all.js"></script>
 <script type="text/javascript" src="./assets/ez-alloyeditor-button-image-tests.js"></script>
+<script type="text/javascript" src="../../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -30,7 +31,7 @@
         modules: {
             "ez-alloyeditor-button-image": {
                 fullpath: "../../../../Resources/public/js/alloyeditor/buttons/image.js",
-                requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage', 'ez-alloyeditor-button-mixin-widgetbutton'],
+                requires: ['ez-alloyeditor', 'ez-alloyeditor-button-mixin-embeddiscovercontent', 'ez-alloyeditor-button-mixin-embedimage', 'ez-alloyeditor-button-mixin-widgetbutton', 'ez-translator'],
             },
             "ez-alloyeditor-button-mixin-embeddiscovercontent": {
                 requires: ['ez-alloyeditor'],

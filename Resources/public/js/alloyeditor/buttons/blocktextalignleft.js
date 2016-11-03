@@ -40,7 +40,7 @@ YUI.add('ez-alloyeditor-button-blocktextalignleft', function (Y) {
             return {
                 textAlign: 'left',
                 classIcon: 'left',
-                label: 'Left',
+                label: Y.eZ.trans('left', {}, 'onlineeditor'),
             };
         },
     });

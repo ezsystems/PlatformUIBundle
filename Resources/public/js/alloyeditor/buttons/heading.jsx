@@ -51,7 +51,8 @@ YUI.add('ez-alloyeditor-button-heading', function (Y) {
 
             return (
                 <button className={css} onClick={this._addHeading} tabIndex={this.props.tabIndex}>
-                    <span className="ez-ae-icon ae-icon-h1"></span><p className="ez-ae-label">Heading</p>
+                    <span className="ez-ae-icon ae-icon-h1"></span>
+                    <p className="ez-ae-label">{Y.eZ.trans('heading', {}, 'onlineeditor')}</p>
                 </button>
             );
         },
