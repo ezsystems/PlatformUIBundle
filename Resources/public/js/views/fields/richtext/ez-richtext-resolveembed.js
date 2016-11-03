@@ -140,7 +140,7 @@ YUI.add('ez-richtext-resolveembed', function (Y) {
         view.fire('contentSearch', {
             viewName: 'resolveembed-field-' + view.get('field').id,
             search: {
-                criteria: {'ContentIdCriterion': Object.keys(mapNode).join(',')},
+                filter: {'ContentIdCriterion': Object.keys(mapNode).join(',')},
                 offset: 0,
             },
             callback: Y.bind(this._renderEmbed, this, mapNode),

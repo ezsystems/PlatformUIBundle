@@ -46,7 +46,7 @@ YUI.add('ez-searchviewservice', function (Y) {
                 viewName: 'search-' + this.get('searchString'),
                 loadContent: true,
                 loadContentType: true,
-                criteria: {
+                query: {
                     "FullTextCriterion": this.get('searchString'),
                 },
                 limit: this.get('limit'),

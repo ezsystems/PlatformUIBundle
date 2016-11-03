@@ -201,7 +201,7 @@ YUI.add('ez-universaldiscoverycontenttreeplugin-tests', function (Y) {
                 args: [Mock.Value.Object, Mock.Value.Function],
                 run: Y.bind(function (search, callback) {
                     Assert.areEqual(
-                        1, search.criteria.ParentLocationIdCriterion,
+                        1, search.filter.ParentLocationIdCriterion,
                         "The search should be on the children of the virtual root"
                     );
                     Assert.areEqual(

@@ -167,7 +167,7 @@ YUI.add('ez-universaldiscoverysearchview', function (Y) {
                     loadContent: this.get('loadContent'),
                     loadContentType: true,
                     search: {
-                        criteria: {
+                        query: {
                             "FullTextCriterion": searchText,
                         },
                         offset: this.get('offset'),

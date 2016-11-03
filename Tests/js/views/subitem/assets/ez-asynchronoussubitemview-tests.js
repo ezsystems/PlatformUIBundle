@@ -35,7 +35,7 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
                 "The content should be loaded"
             );
             Assert.areEqual(
-                evt.search.criteria.ParentLocationIdCriterion,
+                evt.search.filter.ParentLocationIdCriterion,
                 this.location.get('locationId'),
                 "The subitems of the location should be loaded"
             );
@@ -288,7 +288,7 @@ YUI.add('ez-asynchronoussubitemview-tests', function (Y) {
                     "The content should be loaded"
                 );
                 Assert.areEqual(
-                    evt.search.criteria.ParentLocationIdCriterion,
+                    evt.search.filter.ParentLocationIdCriterion,
                     this.location.get('locationId'),
                     "The subitems of the location should be loaded"
                 );
