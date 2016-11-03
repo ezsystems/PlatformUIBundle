@@ -357,6 +357,14 @@
         <source>image.preview</source>
         <target>Image preview</target>
       </trans-unit>
+      <trans-unit id="01c03913d7d788beb4f1d36e14013f4a" resname="file.size">
+        <source>file.size</source>
+        <target>(%size% bytes)</target>
+      </trans-unit>
+      <trans-unit id="b3602d541d8c4c2f7ccab95c9b84f03d" resname="media.file.size">
+        <source>media.file.size</source>
+        <target><![CDATA[<span class="ez-media-properties-size">%size%</span>&nbsp;bytes]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

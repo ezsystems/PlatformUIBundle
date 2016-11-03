@@ -55,7 +55,7 @@
                         </li>
                         <li>
                             <b>{{translate "media.size" "fieldedit"}}</b>
-                            <span class="ez-media-properties-size">{{ media.size }}</span>&nbsp;bytes
+                            {{ translate 'media.file.size' 'fieldedit' size=media.size }}
                         </li>
                     </ul>
 

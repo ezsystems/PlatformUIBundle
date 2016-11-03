@@ -28,7 +28,7 @@
         <li class="ez-ud-mini-display-item" title="{{ contentInfo.name }} ({{ translate_property contentType.names }})">{{ contentInfo.name }}</li>
     {{/each}}
     {{#if remainingCount}}
-        <li class="ez-ud-mini-display-item ez-ud-mini-display-remaining-count">+{{ remainingCount }} more</li>
+        <li class="ez-ud-mini-display-item ez-ud-mini-display-remaining-count">{{ translate 'remaining.more' 'universaldiscovery' remainingCount=remainingCount }}</li>
     {{/if}}
     </ul>
     <p class="ez-ud-mini-display-empty">{{ translate 'universaldiscovery.no.confirmed.contents' 'universaldiscovery' }}</p>

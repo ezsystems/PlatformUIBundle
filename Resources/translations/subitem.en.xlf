@@ -41,6 +41,14 @@
         <source>subitem.subitems</source>
         <target>Sub-items</target>
       </trans-unit>
+      <trans-unit id="e77285a90b5a02080b61ebe00aa3c123" resname="viewing.out.of.items">
+        <source>viewing.out.of.items</source>
+        <target><![CDATA[viewing <strong class="ez-loadmorepagination-display-count">%displayCount%</strong> out of <strong>%subitemCount%</strong> sub-items]]></target>
+      </trans-unit>
+      <trans-unit id="589cf891cd3ad3cc4db8197ef1e32f92" resname="show.more.results">
+        <source>show.more.results</source>
+        <target><![CDATA[Show <span class="ez-loadmorepagination-more-count">%limit%</span> more results]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

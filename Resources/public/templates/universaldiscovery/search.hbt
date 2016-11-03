@@ -73,7 +73,7 @@
                 </p>
             {{else}}
                 {{#if searchText}}
-                    <p class="ez-searchresult-no-sub-items">No results were found while searching for "{{searchText}}".</p>
+                    <p class="ez-searchresult-no-sub-items">{{ translate 'no.result' 'universaldiscovery' searchText=searchText }}</p>
                 {{else}}
                     <p class="ez-searchresult-no-sub-items">{{ translate 'universaldiscovery.provide.search.text' 'universaldiscovery' }}</p>
                 {{/if}}

@@ -97,6 +97,14 @@
         <source>universaldiscovery.type</source>
         <target>Type</target>
       </trans-unit>
+      <trans-unit id="a507890e498661e386bf7907b54572c7" resname="no.result">
+        <source>no.result</source>
+        <target>No results were found while searching for "%searchText%".</target>
+      </trans-unit>
+      <trans-unit id="db4840c30c7dbafb7cada74563df1e38" resname="remaining.more">
+        <source>remaining.more</source>
+        <target>+%remainingCount% more</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -88,26 +88,15 @@ class HandleBarsExtractor extends AbstractFileExtractor implements ExtractorInte
     {
         $parametersResult = [];
 
-        $hasParameterVariable = preg_match_all(
-            $this->buildParameterRegExp(true),
+        $matchedTranslate = preg_match_all(
+            $this->buildParameterRegExp(),
             $parametersString,
             $parametersResult,
             PREG_SET_ORDER
         );
 
-        if ($hasParameterVariable && count($parametersResult[0]) === 7) {
-            $this->addToCatalogue($catalogue, $parametersResult[0][2], $parametersResult[0][6]);
-        } else {
-            $hasParameters = preg_match_all(
-                $this->buildParameterRegExp(false),
-                $parametersString,
-                $parametersResult,
-                PREG_SET_ORDER
-            );
-
-            if ($hasParameters && count($parametersResult[0]) === 5) {
-                $this->addToCatalogue($catalogue, $parametersResult[0][2], $parametersResult[0][4]);
-            }
+        if ($matchedTranslate && count($parametersResult[0]) === 5) {
+            $this->addToCatalogue($catalogue, $parametersResult[0][2], $parametersResult[0][4]);
         }
     }
 
@@ -116,17 +105,13 @@ class HandleBarsExtractor extends AbstractFileExtractor implements ExtractorInte
      *
      * @return string Regexp
      */
-    private function buildParameterRegExp($withVariable)
+    private function buildParameterRegExp()
     {
-        $param1 = "([\\'\\\"])(.*)\\1";
-        $param2 = "([\\'\\\"])(.*)\\3";
-        $param3 = "([\\'\\\"])(.*)\\5";
+        $stringId = "([\\'\\\"])(.*)\\1";
+        $domain = "([\\'\\\"])(.*)\\3";
+        $parameters = '.*';
 
-        if ($withVariable) {
-            return '/' . $param1 . '\\s*' . $param2 . '\\s*' . $param3 . '/';
-        } else {
-            return '/' . $param1 . '\\s*' . $param2 . '/';
-        }
+        return '/' . $stringId . '\\s+' . $domain . '\\s*' . $parameters . '/U';
     }
 
     /**

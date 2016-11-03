@@ -6,7 +6,8 @@
     {{#if isEmpty}}
         {{translate 'fieldview.field.empty' 'fieldview'}}
     {{else}}
-        <a href="{{ value.url }}" title="{{ translate 'binaryfile.download.file' 'fieldview' }}">{{ value.fileName }}</a> ({{ value.fileSize }}&nbsp;bytes)
+        <a href="{{ value.url }}" title="{{ translate 'binaryfile.download.file' 'fieldview' }}">{{ value.fileName }}</a>
+        {{ translate 'file.size' 'fieldedit' size=value.fileSize }}
     {{/if}}
     </div></div>
 </div>

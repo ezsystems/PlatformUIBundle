@@ -17,12 +17,11 @@
 
         <div class="ez-searchlist-pagination">
             <p>
-                viewing <strong class="ez-loadmorepagination-display-count">{{ displayCount }}</strong>
-                out of <strong>{{ searchResultCount }}</strong> items
+                {{ translate 'viewing.out.of.items' 'search' displayCount=displayCount searchResultCount=searchResultCount }}
             </p>
             <p>
                 <button class="pure-button ez-button ez-loadmorepagination-more ez-font-icon" disabled>
-                    Show <span class="ez-loadmorepagination-more-count">{{ remainingCount }}</span> more results
+                    {{ translate 'show.more.results' 'search' remainingCount=remainingCount }}
                 </button>
             </p>
         </div>

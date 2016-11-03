@@ -68,18 +68,30 @@ YUI.add('ez-registerlanguagehelpersplugin', function (Y) {
         },
 
         /**
-         * Registers the `translate` handlebars helper.
-         * The `translate` helper expects a message that can be found in a domain (See Symfony translation documentation).
-         * A list of variables to be inserted into the translated message can be provided in the `variables` attribute
-         * in the shape of a JSON hash, here is a example:
-         * {"name": "John Doe", "age": "42"}
+         * Registers the `translate` handlebars helper.  The `translate` helper
+         * expects a message that can be found in a domain (See Symfony
+         * translation documentation).
+         *
+         * The parameters of the translated message can be provided as named
+         * parameters, for example:
+         *
+         *     {# string.id could be "My Name is %name% and I'm %age% #}
+         *     {{ translation 'string.id' 'domain' name="John" age=42 }}
          *
          * @method _registerTranslate
          * @protected
          */
         _registerTranslate: function () {
-            Y.Handlebars.registerHelper('translate', function (message, domain) {
-                return Y.eZ.Translator.trans(message, {}, domain);
+            Y.Handlebars.registerHelper('translate', function (message, domain, handlebarsData) {
+                var params = {};
+
+                Y.Object.each(handlebarsData.hash, function (value, key) {
+                    params[key] = Y.Handlebars.Utils.escapeExpression(value);
+                });
+
+                return new Y.Handlebars.SafeString(
+                    Y.eZ.Translator.trans(message, params, domain)
+                );
             });
         },
     }, {

@@ -13,6 +13,18 @@
         <source>contentedit.previewing</source>
         <target>Previewing</target>
       </trans-unit>
+      <trans-unit id="eb399bcaca686f8609137153307eecf1" resname="change">
+        <source>change</source>
+        <target>(change)</target>
+      </trans-unit>
+      <trans-unit id="7d05148036e9c074f403124ec637829b" resname="content.id.location.id">
+        <source>content.id.location.id</source>
+        <target>Content ID: %contentId%, Location ID: %locationId%</target>
+      </trans-unit>
+      <trans-unit id="4db37a2501795c5b942376d08166eba1" resname="created.by">
+        <source>created.by</source>
+        <target>Created by %name%</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
