@@ -52,7 +52,7 @@ YUI.add('ez-contenttreeplugin', function (Y) {
 
             this.get('host').search.findLocations({
                 viewName: 'children_' + levelLocation.get('locationId'),
-                criteria: {
+                filter: {
                     "ParentLocationIdCriterion": levelLocation.get('locationId'),
                 },
                 sortLocation: levelLocation,
@@ -168,9 +168,9 @@ YUI.add('ez-contenttreeplugin', function (Y) {
             console.log('[DEPRECATED] `_loadContents` method is deprecated');
             console.log('[DEPRECATED] it will be removed from PlatformUI 2.0');
             query = contentService.newViewCreateStruct('children_content' + levelLocation.get('locationId'), 'ContentQuery');
-            query.body.ViewInput.ContentQuery.Criteria = {
+            query.setFilter({
                 "ParentLocationIdCriterion": levelLocation.get('locationId'),
-            };
+            });
 
             contentService.createView(query, function (err, response) {
                 if ( err ) {

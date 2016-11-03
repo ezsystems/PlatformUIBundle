@@ -129,12 +129,12 @@ YUI.add('ez-dashboardblockmycontentview-tests', function (Y) {
                 );
                 Assert.areSame(
                     view.get('currentUser').get('userId'),
-                    event.search.criteria.UserMetadataCriterion.Value,
+                    event.search.filter.UserMetadataCriterion.Value,
                     'Should pass a correct search `UserMetaData` criterion value'
                 );
                 Assert.areSame(
                     userMetaDataCriterionTarget,
-                    event.search.criteria.UserMetadataCriterion.Target,
+                    event.search.filter.UserMetadataCriterion.Target,
                     'Should pass a correct search `UserMetaData` criterion value'
                 );
                 Assert.areEqual(

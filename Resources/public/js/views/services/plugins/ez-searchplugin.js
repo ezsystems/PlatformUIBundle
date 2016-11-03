@@ -46,7 +46,9 @@ YUI.add('ez-searchplugin', function (Y) {
          * @param {String} name
          * @param {String} type
          * @param {Object} search
-         * @param {Object} search.criteria
+         * @param {Object} [search.criteria]
+         * @param {Object} [search.query]
+         * @param {Object} [search.filter]
          * @param {Object} search.sortClauses
          * @param {Number} [search.limit]
          * @param {Number} [search.offset]
@@ -59,13 +61,21 @@ YUI.add('ez-searchplugin', function (Y) {
             query = contentService.newViewCreateStruct(name, type);
             // TODO ViewCreateStruct should expose an API
             // see https://jira.ez.no/browse/EZP-24808
-            query.body.ViewInput[type].Criteria = search.criteria;
-            query.body.ViewInput[type].offset = search.offset;
-            query.body.ViewInput[type].limit = search.limit;
+            if (search.query) {
+                query.setQuery(search.query);
+            }
+            if (search.filter) {
+                query.setFilter(search.filter);
+            }
+            if (search.criteria) {
+                query.setCriteria(search.criteria);
+            }
+
+            query.setLimitAndOffset(search.limit, search.offset);
             if ( search.sortClauses ) {
-                query.body.ViewInput[type].SortClauses = search.sortClauses;
+                query.setSortClauses(search.sortClauses);
             } else if ( search.sortLocation ) {
-                query.body.ViewInput[type].SortClauses = search.sortLocation.getSortClause();
+                query.setSortClauses(search.sortLocation.getSortClause());
             }
 
             return query;
@@ -125,7 +135,9 @@ YUI.add('ez-searchplugin', function (Y) {
          * @method findLocations
          * @param {Object} search
          * @param {String} search.viewName the name of the REST view to use
-         * @param {Object} search.criteria the search criteria used as Criteria in LocationQuery
+         * @param {Object} search.criteria (deprecated) the search criteria used as Criteria in LocationQuery
+         * @param {Object} search.query  the search query used as Query in LocationQuery
+         * @param {Object} search.filter the search filter used as Filter in LocationQuery
          * @param {Object} [search.sortClauses] the sort clauses
          * @param {eZ.Location} [search.sortLocation] the Location to use to
          * generate the sort clauses
@@ -180,7 +192,9 @@ YUI.add('ez-searchplugin', function (Y) {
          * @protected
          * @param {EventFacade} e
          * @param {Object} e.search
-         * @param {Object} e.search.criteria the search criteria used as Criteria in LocationQuery
+         * @param {Object} e.search.criteria (deprecated) the search criteria used as Criteria in LocationQuery
+         * @param {Object} e.search.query  the search query used as Query in LocationQuery
+         * @param {Object} e.search.filter the search filter used as Filter in LocationQuery
          * @param {Object} [e.search.sortClauses] the search sort clauses
          * @param {eZ.Location} [search.sortLocation] the Location to use to
          * generate the sort clauses
@@ -402,7 +416,7 @@ YUI.add('ez-searchplugin', function (Y) {
             });
 
             query = this._createNewCreateViewStruct('contents-loading-' + viewName, 'ContentQuery', {
-                criteria: {
+                filter: {
                     "ContentIdCriterion": contentIds
                 },
                 // In case we are asking for more then 25 items which is default limit, specify limit

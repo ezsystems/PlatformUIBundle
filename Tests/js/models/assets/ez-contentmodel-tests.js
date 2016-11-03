@@ -820,15 +820,22 @@ YUI.add('ez-contentmodel-tests', function (Y) {
                 }
             };
 
-            this.query = {
+            this.query = new Y.Mock({
                 'body': {
                     ViewInput: {
                         'LocationQuery': {
-                            'Criteria' : ""
+                            'Filter' : ""
                         }
                     }
                 }
-            };
+            });
+            Mock.expect(this.query, {
+                method: 'setFilter',
+                args: [Mock.Value.Object],
+                run: Y.bind(function (arg) {
+                    this.query.body.ViewInput.LocationQuery.Filter = arg;
+                },this)
+            });
 
             Mock.expect(this.contentService, {
                 method: 'newViewCreateStruct',

@@ -311,9 +311,9 @@ YUI.add('ez-locationmodel', function (Y) {
             var contentService = options.api.getContentService(),
                 query = contentService.newViewCreateStruct('ancestors-' + this.get('locationId'), 'LocationQuery');
 
-            query.body.ViewInput.LocationQuery.Criteria = {
+            query.setFilter({
                 AncestorCriterion: this.get('pathString')
-            };
+            });
 
             contentService.createView(
                 query,
