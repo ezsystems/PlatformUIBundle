@@ -183,6 +183,34 @@ YUI.add('ez-barview-tests', function (Y) {
             );
         },
 
+        "Should not pull actions from viewMore menu after scrolling": function () {
+            var container = this.view.get('container'),
+                activeMenu,
+                dummyDiv;
+
+            this.view.render();
+
+            activeMenu = container.one('.active-actions');
+            dummyDiv = Y.one('.dummy-div');
+            dummyDiv.setStyle('height','5000px');
+
+            Y.Assert.areEqual(
+                3, activeMenu.get('children').size(),
+                "There should be 3 actions in activeMenu initially"
+            );
+
+            window.scroll(0, 4800);
+
+            this.view.set('active', true);
+
+            Y.Assert.areEqual(
+                3, activeMenu.get('children').size(),
+                "There should be 3 actions in activeMenu"
+            );
+
+            dummyDiv.setStyle('height', '0px');
+        },
+
         "When pushing actions to viewMore menu, nothing should happen, when out of active actions": function () {
             var container = this.view.get('container'),
                 activeMenu,
@@ -455,4 +483,4 @@ YUI.add('ez-barview-tests', function (Y) {
     Y.Test.Runner.add(sameTemplateTest);
     Y.Test.Runner.add(eventsTest);
     Y.Test.Runner.add(destroyTest);
-}, '', {requires: ['test', 'node-event-simulate', 'ez-barview', 'ez-buttonactionview']});
+}, '', {requires: ['test', 'node-event-simulate', 'ez-barview', 'ez-buttonactionview', 'node-style']});

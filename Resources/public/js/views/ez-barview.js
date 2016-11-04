@@ -159,7 +159,11 @@ YUI.add('ez-barview', function (Y) {
          * @param {Object} e event facade of the resize event
          */
         _handleHeightUpdate: function (e) {
-            var availHeight = this.get('container').get('winHeight') - this.get('container').getY();
+            var container = this.get('container'),
+                winHeight = container.get('winHeight'),
+                containerPositionY = container.getY(),
+                scrolled = container.get('docScrollY'),
+                availHeight = winHeight - (containerPositionY - scrolled);
 
             if (this._getHeight() > availHeight) {
                 // push actions into view more menu until the main menu is not
