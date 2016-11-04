@@ -12,7 +12,7 @@ YUI.add('ez-alloyeditor-button-imagevariation', function (Y) {
     /**
      * Provides the image variation drop down
      *
-     * @module ez-alloyeditor-button-remove
+     * @module ez-alloyeditor-button-imagevariation
      */
     Y.namespace('eZ.AlloyEditorButton');
 
