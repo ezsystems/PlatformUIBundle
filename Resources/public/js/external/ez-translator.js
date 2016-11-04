@@ -17,4 +17,15 @@ YUI.add('ez-translator', function (Y) {
      * @constructor
      */
     Y.eZ.Translator = Translator;
+
+    /**
+     * Shortcut to the Y.eZ.Translator.trans method
+     *
+     * @namespace eZ
+     * @method Y.eZ.trans
+     * @param String key message to be translated
+     * @param Object parameters to be applied to the message
+     * @param String domain where the translation can be found
+     */
+    Y.eZ.trans = Y.bind(Translator.trans, Translator);
 });

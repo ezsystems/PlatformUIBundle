@@ -620,10 +620,10 @@ YUI.add('ez-navigationhubview', function (Y) {
              */
             zones: {
                 value: {
-                    'platform':  Y.eZ.Translator.trans('navigationhub.zone.platform', {}, 'editorial'),
-                    'studio': Y.eZ.Translator.trans('navigationhub.zone.studio', {}, 'editorial'),
-                    'studioplus': Y.eZ.Translator.trans('navigationhub.zone.studioplus', {}, 'editorial'),
-                    'admin': Y.eZ.Translator.trans('navigationhub.zone.admin', {}, 'editorial'),
+                    'platform':  Y.eZ.trans('navigationhub.zone.platform', {}, 'editorial'),
+                    'studio': Y.eZ.trans('navigationhub.zone.studio', {}, 'editorial'),
+                    'studioplus': Y.eZ.trans('navigationhub.zone.studioplus', {}, 'editorial'),
+                    'admin': Y.eZ.trans('navigationhub.zone.admin', {}, 'editorial'),
                 },
                 readOnly: true,
             },
@@ -736,7 +736,7 @@ YUI.add('ez-navigationhubview', function (Y) {
              * @type {Object}
              */
             matchedRoute: {},
-            
+
             /**
              * The user profile view
              *
