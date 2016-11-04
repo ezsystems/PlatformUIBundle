@@ -5,6 +5,7 @@
 </head>
 <body>
 
+<div class="dummy-div"></div>
 <div class="container"></div>
 
 <script type="text/x-handlebars-template" id="barview-ez-template">
@@ -47,7 +48,7 @@
         filter: loaderFilter,
         modules: {
             "ez-barview": {
-                requires: ['ez-templatebasedview', 'event-tap', 'event-resize'],
+                requires: ['ez-templatebasedview', 'event-tap', 'event-resize', 'node-screen'],
                 fullpath: "../../../Resources/public/js/views/ez-barview.js"
             },
             "ez-buttonactionview": {
