@@ -1,0 +1,21 @@
+.ez-view-universaldiscoveryfinderexplorerview .ez-ud-finder-explorerlevel {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+
+.ez-view-universaldiscoveryfinderexplorerview {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-left: 0.6em;
+}
+
+.ez-view-universaldiscoveryfinderexplorerview .ez-ud-pane-title{
+    margin-left: 0.6em;
+}

@@ -1,0 +1,2 @@
+<h2 class="ez-ud-pane-title">{{ translate 'universaldiscovery.content.browser' 'universaldiscovery' }}</h2>
+<div class="ez-ud-finder-explorerlevel"></div>
