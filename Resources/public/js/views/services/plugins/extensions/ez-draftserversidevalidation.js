@@ -32,7 +32,8 @@ YUI.add('ez-draftserversidevalidation', function (Y) {
          */
         _parseServerFieldsErrors: function (response, serverSideErrorCallback) {
             var serverSideFieldsError = [],
-                fieldsError = response.document.ErrorMessage.errorDetails.fields;
+                error = response.document.ErrorMessage,
+                fieldsError = error.errorDetails ?  error.errorDetails.fields : [];
 
             if (serverSideErrorCallback) {
                 fieldsError.forEach(function (field) {
