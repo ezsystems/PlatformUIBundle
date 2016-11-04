@@ -26,7 +26,7 @@ YUI.add('ez-draftserversidevalidation', function (Y) {
          *
          * @method _parseServerFieldsErrors
          * @param {Response} response
-         * @param {Function} (Optional) serverSideErrorCallback called on server side validation
+         * @param {Function} [serverSideErrorCallback] called on server side validation
          * @param {Array} serverSideErrorCallback.serverSideFieldsError Array of Y.eZ.FieldErrorDetails
          * @protected
          */
