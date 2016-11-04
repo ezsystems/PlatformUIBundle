@@ -1187,7 +1187,7 @@ system:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/editpreview.hbt"
                 ez-barview:
-                    requires: ['ez-templatebasedview', 'event-tap', 'event-resize', 'barview-ez-template']
+                    requires: ['ez-templatebasedview', 'event-tap', 'event-resize', 'barview-ez-template', 'node-screen']
                     path: "%ez_platformui.public_dir%/js/views/ez-barview.js"
                 barview-ez-template:
                     type: 'template'
