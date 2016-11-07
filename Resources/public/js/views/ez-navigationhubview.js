@@ -619,11 +619,13 @@ YUI.add('ez-navigationhubview', function (Y) {
              * @readOnly
              */
             zones: {
-                value: {
-                    'platform':  Y.eZ.trans('navigationhub.zone.platform', {}, 'editorial'),
-                    'studio': Y.eZ.trans('navigationhub.zone.studio', {}, 'editorial'),
-                    'studioplus': Y.eZ.trans('navigationhub.zone.studioplus', {}, 'editorial'),
-                    'admin': Y.eZ.trans('navigationhub.zone.admin', {}, 'editorial'),
+                valueFn: function () {
+                    return {
+                        'platform':  Y.eZ.trans('navigationhub.zone.platform', {}, 'editorial'),
+                        'studio': Y.eZ.trans('navigationhub.zone.studio', {}, 'editorial'),
+                        'studioplus': Y.eZ.trans('navigationhub.zone.studioplus', {}, 'editorial'),
+                        'admin': Y.eZ.trans('navigationhub.zone.admin', {}, 'editorial'),
+                    };
                 },
                 readOnly: true,
             },
