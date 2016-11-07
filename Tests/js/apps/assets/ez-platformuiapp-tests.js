@@ -2053,6 +2053,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                 'eng-GB': {'languageCode': 'eng-GB', 'name': 'English', 'default': true},
                 'pol-PL': {'languageCode': 'pol-PL', 'name': 'Polish'}
             };
+            this.interfaceLanguages = ['fr_FR', 'fr', 'en'];
             this.defaultLanguageCode = 'eng-GB';
             this.localesMap = {'fr_FR': 'fre-FR'};
             Y.eZ.CAPI = Y.bind(function (apiRoot, sessionAuthAgent) {
@@ -2087,6 +2088,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
                     sessionInfo: this.sessionInfo,
                     languages: this.configLanguages,
                     localesMap: localesMap,
+                    interfaceLanguages: this.interfaceLanguages,
                 },
             });
         },
@@ -2237,6 +2239,25 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
             Assert.isUndefined(
                 this.app.get('config').languages,
                 "The languages should have been removed from the configuration"
+            );
+        },
+
+        "Should configure the `interfaceLanguages`": function () {
+            this._buildApp();
+
+            Assert.areSame(
+                this.interfaceLanguages,
+                this.app.get('interfaceLanguages'),
+                "The `interfaceLanguages` attribute should have been set"
+            );
+            Assert.isUndefined(
+                this.app.get('config').interfaceLanguages,
+                "The interfaceLanguages should have been removed from the configuration"
+            );
+
+            Assert.areSame(
+                this.app.get('interfaceLanguages'), Y.eZ.Translator.preferredLanguages,
+                "The translator should be configured with the interfaceLanguages"
             );
         },
     });

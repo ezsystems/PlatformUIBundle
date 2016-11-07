@@ -167,6 +167,7 @@ system:
                         - 'parallel'
                         - 'history-hash'
                         - 'ez-capi'
+                        - 'ez-translator'
                         - 'ez-loginformviewservice'
                         - 'ez-loginformview'
                         - 'ez-dashboardblocksview'

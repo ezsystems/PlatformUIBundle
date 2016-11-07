@@ -152,6 +152,7 @@ YUI.add('ez-platformuiapp', function (Y) {
             this.on("logOut", this._destroySideViews);
             this.on("*:refreshView", this._refreshView);
             this._dispatchConfig();
+            Y.eZ.Translator.setPreferredLanguages(this.get('interfaceLanguages'));
             /**
              * Stores the initial title of the page so it can be used when
              * generating the title depending on the active view
@@ -316,6 +317,10 @@ YUI.add('ez-platformuiapp', function (Y) {
                 this._set('systemLanguageList', systemLanguageList);
                 this._set('contentCreationDefaultLanguageCode', defaultLanguageCode);
                 delete config.languages;
+            }
+            if ( config.interfaceLanguages ) {
+                this._set('interfaceLanguages', config.interfaceLanguages);
+                delete config.interfaceLanguages;
             }
         },
 
@@ -1164,6 +1169,20 @@ YUI.add('ez-platformuiapp', function (Y) {
             localesMap: {
                 readOnly: true,
                 value: {},
+            },
+
+            /**
+             * List of preferred languages in which the interface should be
+             * translated.
+             *
+             * @attribute interfaceLanguages
+             * @readOnly
+             * @default ['en']
+             * @type {Array}
+             */
+            interfaceLanguages: {
+                readOnly: true,
+                value: ['en'],
             },
             
             /**

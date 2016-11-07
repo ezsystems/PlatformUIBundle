@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ app.request.locale }}" class="ez-platformui-app-page">
+<html lang="{{ parameters.interfaceLanguages[0] }}" class="ez-platformui-app-page">
 {% trans_default_domain "general" %}
 <head>
     <title>eZ Platform UI</title>
@@ -58,7 +58,7 @@
     'search', 'subitem', 'trash', 'tree', 'universaldiscovery'
 ] %}
     {% for domain in domains %}
-        <script src="{{ url('bazinga_jstranslation_js', {'domain': domain}) }}?locales={{ app.request.locale }},{{ app.request.defaultLocale }}"></script>
+        <script src="{{ url('bazinga_jstranslation_js', {'domain': domain}) }}?locales={{ parameters.interfaceLanguages|join(',') }}"></script>
     {% endfor %}
 
     <script>
