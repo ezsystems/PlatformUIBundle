@@ -16,9 +16,6 @@ YUI.add('ez-searchplugin-tests', function (Y) {
         Mock.expect(context.contentService, {
             method: 'createView',
             args: [context.query, Mock.Value.Function],
-            run: Y.bind(function () {
-                Y.Mock.verify(context.query);
-            }, context)
         });
     };
 
@@ -34,17 +31,27 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 return {ContentType: this.contentTypeId};
             }, this);
             this.contentTypeId = 'this/is/my/content/type/id';
+            this.limit = 42;
+            this.offset = 69;
             this.capi = new Mock();
             this.contentService = new Mock();
             this.viewName = 'REST-View-Name';
-            this.query = new Y.Mock({body: {ViewInput: {ContentQuery: {}}}});
+            this.query = new Y.Mock();
+            this.sortClauses = {};
             Mock.expect(this.query, {
                 method: 'setLimitAndOffset',
-                args: [Mock.Value.Any, Mock.Value.Any],
+                args: [this.limit, this.offset],
             });
             Mock.expect(this.query, {
                 method: 'setSortClauses',
                 args: [Mock.Value.Object],
+                run: Y.bind(function (arg) {
+                    Assert.areSame(
+                        this.sortClauses,
+                        arg,
+                        "method argument should be the sortClauses"
+                    );
+                }, this)
             });
             Mock.expect(this.capi, {
                 method: 'getContentService',
@@ -77,8 +84,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
         },
 
         "Should create a content search query with criteria": function () {
-            var criteria = {}, sortClauses = {},
-                offset = 42, limit = 43;
+            var criteria = {}, sortClauses = this.sortClauses;
 
             _configureQueryAndContentServiceMock(this, 'setCriteria');
             this.view.fire('contentSearch', {
@@ -86,15 +92,15 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 search: {
                     criteria: criteria,
                     sortClauses: sortClauses,
-                    offset: offset,
-                    limit: limit,
+                    offset: this.offset,
+                    limit: this.limit,
                 }
             });
+            Y.Mock.verify(this.query);
         },
 
         "Should create a content search query with query": function () {
-            var query = {}, sortClauses = {},
-                offset = 42, limit = 43;
+            var query = {}, sortClauses = this.sortClauses;
 
             _configureQueryAndContentServiceMock(this, 'setQuery');
             this.view.fire('contentSearch', {
@@ -102,15 +108,15 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 search: {
                     query: query,
                     sortClauses: sortClauses,
-                    offset: offset,
-                    limit: limit,
+                    offset: this.offset,
+                    limit: this.limit,
                 }
             });
+            Y.Mock.verify(this.query);
         },
 
         "Should create a content search query with filter": function () {
-            var filter = {}, sortClauses = {},
-                offset = 42, limit = 43;
+            var filter = {}, sortClauses = this.sortClauses;
 
             _configureQueryAndContentServiceMock(this, 'setFilter');
             this.view.fire('contentSearch', {
@@ -118,10 +124,11 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 search: {
                     filter: filter,
                     sortClauses: sortClauses,
-                    offset: offset,
-                    limit: limit,
+                    offset: this.offset,
+                    limit: this.limit,
                 }
             });
+            Y.Mock.verify(this.query);
         },
 
         "Should handle the search error": function () {
@@ -138,7 +145,10 @@ YUI.add('ez-searchplugin-tests', function (Y) {
 
             this.view.fire('contentSearch', {
                 viewName: this.viewName,
-                search: {},
+                search: {
+                    offset: this.offset,
+                    limit: this.limit,
+                },
                 callback: function (error) {
                     callbackCalled = true;
                     Assert.areSame(
@@ -186,7 +196,10 @@ YUI.add('ez-searchplugin-tests', function (Y) {
 
             this.view.fire('contentSearch', {
                 viewName: this.viewName,
-                search: {},
+                search: {
+                    offset: this.offset,
+                    limit: this.limit,
+                },
                 callback: function (error, result, count) {
                     callbackCalled = true;
 
@@ -237,7 +250,10 @@ YUI.add('ez-searchplugin-tests', function (Y) {
 
             this.view.fire('contentSearch', {
                 viewName: this.viewName,
-                search: {},
+                search: {
+                    offset: this.offset,
+                    limit: this.limit,
+                },
                 loadContentType: true,
                 callback: Y.bind(function (error, result, count) {
                     callbackCalled = true;
@@ -292,7 +308,10 @@ YUI.add('ez-searchplugin-tests', function (Y) {
 
             this.view.fire('contentSearch', {
                 viewName: this.viewName,
-                search: {},
+                search: {
+                    offset: this.offset,
+                    limit: this.limit,
+                },
                 loadContentType: true,
                 callback: Y.bind(function (error) {
                     callbackCalled = true;
@@ -316,15 +335,18 @@ YUI.add('ez-searchplugin-tests', function (Y) {
             this.capi = new Mock();
             this.contentService = new Mock();
             this.viewName = 'REST-View-Name';
-            this.query = new Mock({body: {ViewInput: {LocationQuery: {}}}});
+            this.query = new Mock();
+            this.sortClauses = {};
+            this.limit = 42;
+            this.offset = 69;
 
             Mock.expect(this.query, {
                 method: 'setLimitAndOffset',
-                args: [Mock.Value.Any, Mock.Value.Any],
+                args: [this.limit, this.offset],
             });
             Mock.expect(this.query, {
                 method: 'setSortClauses',
-                args: [Mock.Value.Object],
+                args: [this.sortClauses],
             });
             Mock.expect(this.capi, {
                 method: 'getContentService',
@@ -359,59 +381,59 @@ YUI.add('ez-searchplugin-tests', function (Y) {
         },
 
         "Should create a LocationQuery with criteria": function () {
-            var criteria = {}, sortClauses = {},
-                offset = 42, limit = 43;
+            var criteria = {}, sortClauses = this.sortClauses;
 
             _configureQueryAndContentServiceMock(this, 'setCriteria');
             this._runSearch({
                 criteria: criteria,
                 sortClauses: sortClauses,
-                offset: offset,
-                limit: limit,
+                offset: this.offset,
+                limit: this.limit,
             }, function () {});
+            Y.Mock.verify(this.query);
         },
 
         "Should create a LocationQuery with filter": function () {
-            var filter = {}, sortClauses = {},
-                offset = 42, limit = 43;
+            var filter = {}, sortClauses = this.sortClauses;
 
             _configureQueryAndContentServiceMock(this, 'setFilter');
             this._runSearch({
                 filter: filter,
                 sortClauses: sortClauses,
-                offset: offset,
-                limit: limit,
+                offset: this.offset,
+                limit: this.limit,
             }, function () {});
+            Y.Mock.verify(this.query);
         },
 
         "Should create a LocationQuery with query": function () {
-            var query = {}, sortClauses = {},
-                offset = 42, limit = 43;
+            var query = {}, sortClauses = this.sortClauses;
 
             _configureQueryAndContentServiceMock(this, 'setQuery');
             this._runSearch({
                 query: query,
                 sortClauses: sortClauses,
-                offset: offset,
-                limit: limit,
+                offset: this.offset,
+                limit: this.limit,
             }, function () {});
+            Y.Mock.verify(this.query);
         },
 
         "Should create a LocationQuery with a criteria": function () {
-            var criteria = {}, sortClauses = {},
-                offset = 42, limit = 43;
+            var criteria = {}, sortClauses = this.sortClauses;
 
             _configureQueryAndContentServiceMock(this, 'setCriteria');
             this._runSearch({
                 criteria: criteria,
                 sortClauses: sortClauses,
-                offset: offset,
-                limit: limit,
+                offset: this.offset,
+                limit: this.limit,
             }, function () {});
+            Y.Mock.verify(this.query);
         },
 
         "Should set the sort clause based on the given Location": function () {
-            var sortClauses = {},
+            var sortClauses = this.sortClauses,
                 location = new Mock();
 
             Mock.expect(location, {
@@ -429,6 +451,8 @@ YUI.add('ez-searchplugin-tests', function (Y) {
 
             this._runSearch({
                 sortLocation: location,
+                offset: this.offset,
+                limit: this.limit,
             }, function () {});
 
         },
@@ -446,7 +470,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 }
             });
 
-            this._runSearch({}, function (error, result, count) {
+            this._runSearch({offset: this.offset, limit: this.limit}, function (error, result, count) {
                 callbackCalled = true;
 
                 Assert.areSame(
@@ -504,7 +528,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 }
             });
 
-            this._runSearch({}, Y.bind(function (error, result, count) {
+            this._runSearch({offset: this.offset, limit: this.limit}, Y.bind(function (error, result, count) {
                 callbackCalled = true;
                 Assert.isFalse(
                     error,
@@ -567,7 +591,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 }
             });
 
-            this._runSearch({}, function (error, result, count) {
+            this._runSearch({offset: this.offset, limit: this.limit}, function (error, result, count) {
                 callbackCalled = true;
                 Assert.isFalse(
                     error,
@@ -603,15 +627,18 @@ YUI.add('ez-searchplugin-tests', function (Y) {
             this.capi = new Mock();
             this.contentService = new Mock();
             this.viewName = 'REST-View-Name';
-            this.query = new Mock({body: {ViewInput: {LocationQuery: {}}}});
+            this.query = new Mock();
+            this.sortClauses = {};
+            this.offset = 42;
+            this.limit = 99;
 
             Mock.expect(this.query, {
                 method: 'setLimitAndOffset',
-                args: [Mock.Value.Any, Mock.Value.Any],
+                args: [this.limit, this.offset],
             });
             Mock.expect(this.query, {
                 method: 'setSortClauses',
-                args: [Mock.Value.Object],
+                args: [this.sortClauses],
             });
             Mock.expect(this.capi, {
                 method: 'getContentService',
@@ -651,42 +678,42 @@ YUI.add('ez-searchplugin-tests', function (Y) {
         },
 
         "Should create a LocationQuery with criteria": function () {
-            var criteria = {}, sortClauses = {},
-                offset = 42, limit = 43;
+            var criteria = {}, sortClauses = this.sortClauses;
 
             _configureQueryAndContentServiceMock(this, 'setCriteria');
             this._runSearch({
                 criteria: criteria,
                 sortClauses: sortClauses,
-                offset: offset,
-                limit: limit,
+                offset: this.offset,
+                limit: this.limit,
             });
+            Y.Mock.verify(this.query);
         },
 
         "Should create a LocationQuery with query": function () {
-            var query = {}, sortClauses = {},
-                offset = 42, limit = 43;
+            var query = {}, sortClauses = this.sortClauses;
 
             _configureQueryAndContentServiceMock(this, 'setQuery');
             this._runSearch({
                 query: query,
                 sortClauses: sortClauses,
-                offset: offset,
-                limit: limit,
+                offset: this.offset,
+                limit: this.limit,
             });
+            Y.Mock.verify(this.query);
         },
 
         "Should create a LocationQuery with filter": function () {
-            var filter = {}, sortClauses = {},
-                offset = 42, limit = 43;
+            var filter = {}, sortClauses = this.sortClauses;
 
             _configureQueryAndContentServiceMock(this, 'setFilter');
             this._runSearch({
                 filter: filter,
                 sortClauses: sortClauses,
-                offset: offset,
-                limit: limit,
+                offset: this.offset,
+                limit: this.limit,
             });
+            Y.Mock.verify(this.query);
         },
 
         "Should handle the search error": function () {
@@ -698,7 +725,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 }
             });
 
-            this._runSearch({});
+            this._runSearch({offset: this.offset, limit: this.limit});
 
             Assert.isTrue(
                 this.view.get('loadingError'),
@@ -743,7 +770,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 }
             });
 
-            this._runSearch({}, resultAttr, resultCountAttr);
+            this._runSearch({offset: this.offset, limit: this.limit}, resultAttr, resultCountAttr);
 
             Assert.isFalse(
                 this.view.get('loadingError'),
@@ -807,7 +834,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 }
             });
 
-            this._runSearch({}, resultAttr, resultCountAttr);
+            this._runSearch({offset: this.offset, limit: this.limit}, resultAttr, resultCountAttr);
 
             Assert.isFalse(
                 this.view.get('loadingError'),
@@ -840,8 +867,11 @@ YUI.add('ez-searchplugin-tests', function (Y) {
             this.capi = new Mock();
             this.contentService = new Mock();
             this.viewName = 'REST-View-Name';
-            this.locationQuery = new Mock({body: {ViewInput: {LocationQuery: {}}}});
-            this.contentQuery = new Mock({body: {ViewInput: {ContentQuery: {}}}});
+            this.filter = {};
+            this.limit = 42;
+            this.offset = 44;
+            this.locationQuery = new Mock();
+            this.contentQuery = new Mock();
             this.contentInfo1 = {
                 id: '/content/id/4112',
                 contentId: '4112',
@@ -952,14 +982,20 @@ YUI.add('ez-searchplugin-tests', function (Y) {
             Mock.expect(this.contentQuery, {
                 method: 'setFilter',
                 args: [Mock.Value.Object],
+                run: Y.bind(function (arg) {
+                    Assert.areSame(
+                        arg.ContentIdCriterion,
+                        this.contentInfo1.contentId + ',' + this.contentInfo2.contentId + ',' + this.contentInfo2.contentId
+                    );
+                }, this),
             });
             Mock.expect(this.locationQuery, {
                 method: 'setLimitAndOffset',
-                args: [Mock.Value.Any, Mock.Value.Any],
+                args: [this.limit, this.offset],
             });
             Mock.expect(this.contentQuery, {
                 method: 'setLimitAndOffset',
-                args: [Mock.Value.Any, Mock.Value.Any],
+                args: [undefined, undefined],
             });
             Mock.expect(this.capi, {
                 method: 'getContentService',
@@ -1051,7 +1087,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 resultAttribute: resultAttr,
                 loadContent: true,
                 loadContentType: true,
-                search: {}
+                search: {offset: this.offset, limit: this.limit}
             });
 
             Assert.isFalse(
@@ -1102,7 +1138,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
 
         "Should handle loading content error": function () {
             var resultAttr = 'whateverAttr',
-            that = this;
+                that = this;
 
             Mock.expect(this.contentService, {
                 method: 'createView',
@@ -1122,7 +1158,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 viewName: this.viewName,
                 resultAttribute: resultAttr,
                 loadContent: true,
-                search: {}
+                search: {offset: this.offset, limit: this.limit}
             });
 
             Assert.isTrue(
@@ -1143,7 +1179,7 @@ YUI.add('ez-searchplugin-tests', function (Y) {
                 viewName: this.viewName,
                 resultAttribute: resultAttr,
                 loadContentType: true,
-                search: {}
+                search: {offset: this.offset, limit: this.limit}
             });
 
             Assert.isTrue(
