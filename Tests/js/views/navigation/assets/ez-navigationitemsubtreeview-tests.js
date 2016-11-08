@@ -108,6 +108,18 @@ YUI.add('ez-navigationitemsubtreeview-tests', function (Y) {
                 "The navigation item should match"
             );
         },
+        "Should not match with a route that is not a subitem": function () {
+            var route = {
+                    name: this.routeName,
+                    parameters: {
+                        id: '/2/42/42',
+                    },
+                };
+            Assert.isFalse(
+                this.view.matchRoute(route),
+                "The navigation item should not match"
+            );
+        },
     });
 
     Y.Test.Runner.setName("eZ Navigation Item View tests");
