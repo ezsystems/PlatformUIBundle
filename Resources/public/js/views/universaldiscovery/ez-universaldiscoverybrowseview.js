@@ -11,6 +11,10 @@ YUI.add('ez-universaldiscoverybrowseview', function (Y) {
      */
     Y.namespace('eZ');
 
+    console.log('[DEPRECRATED] eZ.UniversalDiscoveryBrowseView is deprecated');
+    console.log('[DEPRECRATED] it will be removed from PlatformUI 2.0');
+    console.log('[DEPRECRATED] use eZ.UniversalDiscoveryFinderView instead');
+
     /**
      * The universal discovery browse method view. It allows the user to pick a
      * content in the repository by browsing using a tree.

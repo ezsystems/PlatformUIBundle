@@ -556,7 +556,6 @@ system:
                         - 'ez-tabs'
                         - 'ez-templatebasedview'
                         - 'universaldiscoveryview-ez-template'
-                        - 'ez-universaldiscoverybrowseview'
                         - 'ez-universaldiscoverysearchview'
                         - 'ez-universaldiscoveryfinderview'
                         - 'ez-universaldiscoveryconfirmedlistview'

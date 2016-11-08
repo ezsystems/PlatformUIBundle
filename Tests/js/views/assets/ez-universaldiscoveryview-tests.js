@@ -620,15 +620,13 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.multiple = true;
             this.startingLocationId = 'l/o/c/a/t/i/o/n/i/d';
 
-            Y.eZ.UniversalDiscoveryBrowseView = Y.Base.create(
-                'testBrowseView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
+            Y.eZ.UniversalDiscoveryFinderView = Y.Base.create(
+                'testFinderView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
             );
             Y.eZ.UniversalDiscoverySearchView = Y.Base.create(
                 'testSearchView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
             );
-            Y.eZ.UniversalDiscoveryFinderView = Y.Base.create(
-                'testFinderView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {}
-            );
+
             this.view = new Y.eZ.UniversalDiscoveryView({
                 multiple: this.multiple,
                 confirmedListView: this.confirmedList,
@@ -641,10 +639,10 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
             this.confirmedList.destroy();
             delete this.view;
             delete this.confirmedList;
-            delete Y.eZ.UniversalDiscoveryBrowseView;
+            delete Y.eZ.UniversalDiscoveryFinderView;
         },
 
-        "Should instantiate the browse method": function () {
+        "Should instantiate the finder method": function () {
             var methods = this.view.get('methods');
 
             Assert.isArray(
@@ -652,12 +650,12 @@ YUI.add('ez-universaldiscoveryview-tests', function (Y) {
                 "The method list should be an array"
             );
             Assert.areEqual(
-                3, methods.length,
-                "The default method list should contain 3 elements"
+                2, methods.length,
+                "The default method list should contain 2 elements"
             );
             Assert.isInstanceOf(
-                Y.eZ.UniversalDiscoveryBrowseView, methods[0],
-                "The first element should be an instance of the browse method"
+                Y.eZ.UniversalDiscoveryFinderView, methods[0],
+                "The first element should be an instance of the finder method"
             );
             Assert.areSame(
                 this.multiple, methods[0].get('multiple'),
