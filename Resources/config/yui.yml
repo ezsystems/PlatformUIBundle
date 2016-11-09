@@ -10,7 +10,7 @@ system:
                     requires: ['capi']
                     path: "%ez_platformui.public_dir%/js/external/ez-capi.js"
                 ez-translator:
-                    path: "%ez_platformui.public_dir%/js/external/ez-translator.js"
+                    path: "%ez_platformui.public_dir%/js/services/ez-translator.js"
                 alloyeditor:
                     path: "%ez_platformui.external_assets_public_dir%/vendors/alloy-editor/dist/alloy-editor/alloy-editor-all.js"
                 ez-alloyeditor:
@@ -167,6 +167,7 @@ system:
                         - 'parallel'
                         - 'history-hash'
                         - 'ez-capi'
+                        - 'ez-translator'
                         - 'ez-loginformviewservice'
                         - 'ez-loginformview'
                         - 'ez-dashboardblocksview'

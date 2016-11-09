@@ -22,6 +22,7 @@ parameters:
     ezsystems.platformui.application_config.aggregator.class: EzSystems\PlatformUIBundle\ApplicationConfig\Aggregator
     ezsystems.platformui.application_config.provider.root_info.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\RootInfo
     ezsystems.platformui.application_config.provider.languages.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\Languages
+    ezsystems.platformui.application_config.provider.interface_languages.class: EzSystems\PlatformUIBundle\ApplicationConfig\Providers\InterfaceLanguages
     ezsystems.platformui.form_processor.language.class: EzSystems\PlatformUIBundle\Form\Processor\LanguageFormProcessor
     ezsystems.platformui.form_processor.section.class: EzSystems\PlatformUIBundle\Form\Processor\SectionFormProcessor
     ezsystems.platformui.exception_listener.class: EzSystems\PlatformUIBundle\EventListener\ExceptionListener
@@ -113,6 +114,13 @@ services:
             - $languages$
         tags:
             - {name: ezsystems.platformui.application_config_provider, key: 'languages'}
+
+    ezsystems.platformui.application_config.provider.interface_languages:
+        class: "%ezsystems.platformui.application_config.provider.interface_languages.class%"
+        arguments:
+            - "@request_stack"
+        tags:
+            - {name: ezsystems.platformui.application_config_provider, key: 'interfaceLanguages'}
 
     ezsystems.platformui.controller.template:
         class: "%ezsystems.platformui.controller.template.class%"

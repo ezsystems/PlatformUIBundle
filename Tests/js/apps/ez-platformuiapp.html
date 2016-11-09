@@ -20,6 +20,7 @@
 <script type="text/javascript" src="../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
 <script type="text/javascript" src="../external/assets/capi.js"></script>
 <script type="text/javascript" src="./assets/ez-platformuiapp-tests.js"></script>
+<script type="text/javascript" src="../assets/ez-translator.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
         loaderFilter;
@@ -39,7 +40,7 @@
             "ez-platformuiapp": {
                 requires: [
                     'app', 'app-transitions', 'node-screen', 'parallel',
-                    'ez-capi', 'ez-view', 'ez-viewservice', 'ez-usermodel',
+                    'ez-capi', 'ez-view', 'ez-viewservice', 'ez-usermodel', 'ez-translator',
                     'ez-pluginregistry', 'ez-translateproperty', 'history-hash'
                 ],
                 fullpath: "../../../Resources/public/js/apps/ez-platformuiapp.js"
