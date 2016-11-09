@@ -156,6 +156,20 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
                     });
                 },
             },
+
+            /**
+             * Holds the finder explorer view that allows the user to explore contents
+             *
+             * @attribute finderExplorerView
+             * @type {eZ.UniversalDiscoveryFinderExplorerView}
+             */
+            finderExplorerView: {
+                valueFn: function () {
+                    return new Y.eZ.UniversalDiscoveryFinderExplorerView({
+                        bubbleTargets: this,
+                    });
+                },
+            },
         },
     });
 });
