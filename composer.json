@@ -23,8 +23,8 @@
         "_ci_branch-comment_": "Keep ci branch up-to-date with master or branch if on stable. ci is never on github but convention used for ci behat testing!",
         "_ci_branch-comment2_": "Remember to adjust bin/travis/prepare_behat.sh in regards to ezplatform branch when branching of stable branches!",
         "branch-alias": {
-            "dev-master": "1.6.x-dev",
-            "dev-tmp_ci_branch": "1.6.x-dev"
+            "dev-master": "1.7.x-dev",
+            "dev-tmp_ci_branch": "1.7.x-dev"
         }
     }
 }
