@@ -10,7 +10,6 @@ YUI.add('ez-translator', function (Y) {
 
     var preferredLanguages = [];
 
-
     /**
      * Translator *static* object.
      *
@@ -33,7 +32,7 @@ YUI.add('ez-translator', function (Y) {
     /**
      * Translates the given key from the domain with the given parameters.
      *
-     * ** /!\ Use the shortcut `Y.eZ.trans` so that you translation keys are
+     * ** /!\ Use the shortcut `Y.eZ.trans` so that translation keys are
      * recognized and dumped by `translation:update`.**
      *
      * @method trans
