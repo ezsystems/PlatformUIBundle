@@ -58,6 +58,7 @@ YUI.add('ez-contenttreeplugin', function (Y) {
                 sortLocation: levelLocation,
                 loadContent: loadContent,
                 loadContentType: true,
+                limit: 100,
             }, function (error, results) {
                 if ( error ) {
                     callback({node: node});

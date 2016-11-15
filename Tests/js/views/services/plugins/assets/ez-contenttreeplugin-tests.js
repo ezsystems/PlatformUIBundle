@@ -131,6 +131,11 @@ YUI.add('ez-contenttreeplugin-tests', function (Y) {
                 search.loadContentType,
                 "The loadContentType flag should be set"
             );
+            Assert.areSame(
+                100,
+                search.limit,
+                "The limit should be set to 100 to not be limited by default 25 on backend"
+            );
         },
 
         "Should search for children when opening the tree": function () {

@@ -326,32 +326,49 @@ YUI.add('ez-searchplugin', function (Y) {
          *
          * @method _loadContentTypeForLocations
          * @protected
-         * @param {Array|Null} locationStructArr
+         * @param {Array|Null} structArray
+         * @param {Function} getContentTypeIdFunc
          * @param {Function} callback
          */
         _loadContentTypeForStruct: function (structArray, getContentTypeIdFunc, callback) {
             var tasks = new Y.Parallel(),
-                loadContentTypeError = false;
+                loadContentTypeError = false,
+                contentTypList = [],
+                contentTypeIds = [];
 
-            Y.Array.each(structArray, function (struct, i) {
+            // Get list of content types ids
+            contentTypeIds = Y.Array.map(structArray, function (struct, i) {
+                return getContentTypeIdFunc(struct);
+            });
+
+            // Get rid of duplicates to avoid loading same item several times
+            contentTypeIds = Y.Array.dedupe(contentTypeIds);
+
+            // Load the unique content types
+            Y.Array.each(contentTypeIds, function (contentTypeId) {
                 var contentType = new Y.eZ.ContentType(
-                        {id: getContentTypeIdFunc(struct)}
+                        {id: contentTypeId}
                     ),
                     capi = this.get('host').get('capi'),
                     options = {api: capi},
                     endContentTypeLoad = tasks.add(function (error, response) {
                         if (error) {
                             loadContentTypeError = error;
+                            contentTypList[contentTypeId] = null;
                             return;
                         }
-
-                        structArray[i].contentType = contentType;
+                        contentTypList[contentTypeId] = contentType;
                     });
 
                 contentType.load(options, endContentTypeLoad);
             }, this);
 
             tasks.done(function () {
+                // Add the loaded content types on the structArray
+                Y.Array.each(structArray, function (struct, i) {
+                    structArray[i].contentType = contentTypList[getContentTypeIdFunc(struct)];
+                });
+
                 callback(loadContentTypeError, structArray);
             });
         },
