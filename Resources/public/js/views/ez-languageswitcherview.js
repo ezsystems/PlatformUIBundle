@@ -12,7 +12,7 @@ YUI.add('ez-languageswitcherview', function (Y) {
     Y.namespace('eZ');
 
     /**
-     * The raw content view
+     * The Language Switcher View
      *
      * @namespace eZ
      * @class LanguageSwitcherView
@@ -112,33 +112,24 @@ YUI.add('ez-languageswitcherview', function (Y) {
              *
              * @attribute content
              * @type Y.eZ.Content
-             * @writeOnce
              */
-            content: {
-                writeOnce: "initOnly",
-            },
+            content: {},
 
             /**
              * The current location
              *
              * @attribute location
              * @type Y.eZ.Location
-             * @writeOnce
              */
-            location: {
-                writeOnce: "initOnly",
-            },
+            location: {},
 
             /**
              * Language code of language currently active for the current location
              *
              * @attribute languageCode
              * @type String
-             * @writeOnce
              */
-            languageCode: {
-                writeOnce: "initOnly"
-            }
+            languageCode: {}
         }
     });
 });

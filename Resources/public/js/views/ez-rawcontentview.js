@@ -34,12 +34,40 @@ YUI.add('ez-rawcontentview', function (Y) {
         },
 
         initializer: function () {
-            this._setFieldViews();
+            /**
+             * The field views instances for the current content
+             *
+             * @property _fieldViews
+             * @protected
+             * @default []
+             * @type Array of {eZ.FieldView}
+             */
+            this._fieldViews = [];
+            if ( this.get('contentType') ) {
+                this._setFieldViews();
+            }
+            this.after('contentTypeChange', this._setFieldViews);
             this.after('activeChange', function (e) {
                 Y.Array.each(this._fieldViews, function (v) {
                     v.set('active', e.newVal);
                 });
             });
+            this.on(
+                ['contentChange', 'locationChange', 'languageCodeChange'],
+                this._forwardToLanguageSwitcherView
+            );
+        },
+
+        /**
+         * Attribute change event handler. It makes sure the attribute new value
+         * is set on the language switcher view.
+         *
+         * @method _forwardToLanguageSwitcherView
+         * @protected
+         * @param {EventFacade} e
+         */
+        _forwardToLanguageSwitcherView: function (e) {
+            this.get('languageSwitcherView').set(e.attrName, e.newVal);
         },
 
         /**
@@ -90,9 +118,9 @@ YUI.add('ez-rawcontentview', function (Y) {
         _setFieldViews: function () {
             var definitions = this.get('contentType').get('fieldDefinitions'),
                 content = this.get('content'),
-                views = [],
                 config = this.get('config');
 
+            this._destroyFieldViews();
             Y.Object.each(definitions, function (def) {
                 var View, fieldView,
                     field = content.getField(def.identifier);
@@ -105,23 +133,11 @@ YUI.add('ez-rawcontentview', function (Y) {
                         config: config,
                     });
                     fieldView.addTarget(this);
-                    views.push(
-                        fieldView
-                    );
+                    this._fieldViews.push(fieldView);
                 } else {
                     console.warn('Content doesn\'t contain field "' + def.identifier + '"');
                 }
             }, this);
-
-            /**
-             * The field views instances for the current content
-             *
-             * @property _fieldViews
-             * @protected
-             * @default []
-             * @type Array of {eZ.FieldView}
-             */
-            this._fieldViews = views;
         },
 
         /**
@@ -164,56 +180,55 @@ YUI.add('ez-rawcontentview', function (Y) {
             });
         },
 
-        destructor: function () {
+        /**
+         * Destroys the field views
+         *
+         * @method _destroyFieldViews
+         * @private
+         */
+        _destroyFieldViews: function () {
             Y.Array.each(this._fieldViews, function (view) {
-                view.destroy();
+                view.destroy({remove: true});
             });
+            this._fieldViews = [];
+        },
+
+        destructor: function () {
+            this._destroyFieldViews();
         },
     }, {
         ATTRS: {
             /**
-             * The location being rendered
+             * The location of the Content item being rendered
              *
              * @attribute location
              * @type Y.eZ.Location
-             * @writeOnce
              */
-            location: {
-                writeOnce: "initOnly",
-            },
+            location: {},
 
             /**
-             * The content associated the current location
+             * The rendered Content item
              *
              * @attribute content
              * @type Y.eZ.Content
-             * @writeOnce
              */
-            content: {
-                writeOnce: "initOnly",
-            },
+            content: {},
 
             /**
-             * The content type of the content at the current location
+             * The Content Type of the Content item
              *
              * @attribute contentType
              * @type Y.eZ.ContentType
-             * @writeOnce
              */
-            contentType: {
-                writeOnce: "initOnly",
-            },
+            contentType: {},
 
             /**
              * Language code of language currently active for the current location
              *
              * @attribute languageCode
              * @type String
-             * @writeOnce
              */
-            languageCode: {
-                writeOnce: "initOnly"
-            },
+            languageCode: {},
 
             /**
              * The language switcher view instance
