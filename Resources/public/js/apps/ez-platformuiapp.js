@@ -30,10 +30,14 @@ YUI.add('ez-platformuiapp', function (Y) {
          * hash which contains the following properties:
          *
          *   * `type`: a reference to the constructor of a view
+         *   * `service`: a reference to the constructor of a view service
          *   * `container`: a selector to the node that will receive the
          *      rendered view
          *   * `hideClass`: a class to add on the application container to hide
          *     the rendered side view when it's not needed.
+         *   * `forceRendering`: if set to true, the side view will be rendered
+         *      each time time it becomes visible. Otherwise, it is rendered
+         *      only after its creation.
          *
          * The lifecycle of the side views is handled by the `handleSideViews`
          * method based on the meta information available in the route.
@@ -607,7 +611,7 @@ YUI.add('ez-platformuiapp', function (Y) {
             service.addTarget(this);
             service.load(function () {
                 view.setAttrs(service.getViewParameters());
-                if ( createView ) {
+                if ( createView || viewInfo.forceRendering ) {
                     view.render();
                     container.one(viewInfo.container).append(
                         view.get('container')
