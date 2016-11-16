@@ -26,13 +26,14 @@ YUI.add('ez-draftserversidevalidation', function (Y) {
          *
          * @method _parseServerFieldsErrors
          * @param {Response} response
-         * @param {Function} (Optional) serverSideErrorCallback called on server side validation
+         * @param {Function} [serverSideErrorCallback] called on server side validation
          * @param {Array} serverSideErrorCallback.serverSideFieldsError Array of Y.eZ.FieldErrorDetails
          * @protected
          */
         _parseServerFieldsErrors: function (response, serverSideErrorCallback) {
             var serverSideFieldsError = [],
-                fieldsError = response.document.ErrorMessage.errorDetails.fields;
+                error = response.document.ErrorMessage,
+                fieldsError = error.errorDetails ?  error.errorDetails.fields : [];
 
             if (serverSideErrorCallback) {
                 fieldsError.forEach(function (field) {
