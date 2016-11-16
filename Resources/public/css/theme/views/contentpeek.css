@@ -1,0 +1,51 @@
+/**
+ * Copyright (C) eZ Systems AS. All rights reserved.
+ * For full copyright and license information view LICENSE file distributed with this source code.
+ */
+
+.is-contentpeek-hidden .ez-contentpeek-container {
+    display: flex;
+
+    background: rgba(0, 0, 0, 0);
+    -webkit-transform: translateY(-110%);
+            transform: translateY(-110%);
+}
+
+.ez-contentpeek-container {
+    background: rgba(0, 0, 0, 0.6);
+
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+    -webkit-transition: all 0.3s;
+            transition: all 0.3s;
+}
+
+.ez-view-contentpeekview {
+    background: #fafafa;
+    border: 1px solid #aaa;
+}
+
+.ez-view-contentpeekview .ez-contentpeek-header {
+    font-size: 2em;
+}
+
+.ez-view-contentpeekview .ez-contentpeek-header:before {
+    float: left;
+    width: 2.4rem;
+}
+
+.ez-view-contentpeekview .ez-contentpeek-close {
+    color: #aaa;
+    cursor: pointer;
+}
+
+.ez-view-contentpeekview .ez-contentpeek-name {
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.ez-view-contentpeekview .ez-contentpeek-contenttype {
+    color: #737373;
+    margin-left: 2.4rem;
+    font-size: 55%;
+}
