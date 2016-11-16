@@ -135,7 +135,9 @@ YUI.add('ez-objectrelationloadplugin-tests', function (Y) {
 
     registerTest = new Y.Test.Case(Y.eZ.Test.PluginRegisterTest);
     registerTest.Plugin = Y.eZ.Plugin.ObjectRelationLoad;
-    registerTest.components = ['locationViewViewService'];
+    registerTest.components = [
+        'locationViewViewService', 'contentEditViewService', 'contentPeekViewService',
+    ];
 
     Y.Test.Runner.setName("eZ Object Relation Load Plugin tests");
     Y.Test.Runner.add(tests);

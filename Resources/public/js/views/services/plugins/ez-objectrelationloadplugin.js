@@ -82,6 +82,8 @@ YUI.add('ez-objectrelationloadplugin', function (Y) {
     });
 
     Y.eZ.PluginRegistry.registerPlugin(
-        Y.eZ.Plugin.ObjectRelationLoad, ['locationViewViewService', 'contentEditViewService']
+        Y.eZ.Plugin.ObjectRelationLoad, [
+            'locationViewViewService', 'contentEditViewService', 'contentPeekViewService',
+        ]
     );
 });
