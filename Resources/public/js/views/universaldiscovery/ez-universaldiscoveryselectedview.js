@@ -31,7 +31,10 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
         events: {
             '.ez-ud-selected-confirm': {
                 'tap': '_confirmSelected',
-            }
+            },
+            '.ez-ud-selected-visual': {
+                'tap': '_openContentPeekView',
+            },
         },
 
         initializer: function () {
@@ -68,6 +71,35 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
                 if ( this.get('confirmButtonEnabled') ) {
                     this._uiResetAnimation();
                 }
+            });
+        },
+
+        /**
+         * Opens the ContentPeekView by firing the `contentPeekOpen` event.
+         *
+         * @method _openContentPeekView
+         * @protected
+         * @param {EventFacade} e tap event facade
+         */
+        _openContentPeekView: function (e) {
+            var struct = this.get('contentStruct');
+
+            e.preventDefault();
+            /**
+             * Fired to open the content peek view.
+             *
+             * @event contentPeekOpen
+             * @param {Object} config
+             * @param {eZ.Content} config.content
+             * @param {eZ.Location} config.location
+             * @param {eZ.ContentType} config.contentType
+             */
+            this.fire('contentPeekOpen', {
+                config: {
+                    content: struct.content,
+                    location: struct.location,
+                    contentType: struct.contentType,
+                },
             });
         },
 
