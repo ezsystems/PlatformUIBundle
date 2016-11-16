@@ -1184,7 +1184,7 @@ YUI.add('ez-platformuiapp', function (Y) {
                 readOnly: true,
                 value: ['en'],
             },
-            
+
             /**
              * Boolean that determine if the app routing is enabled
              *

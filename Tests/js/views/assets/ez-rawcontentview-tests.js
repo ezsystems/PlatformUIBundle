@@ -76,7 +76,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
         _getContentMock: function () {
             var mock = new Y.Test.Mock(), that = this;
-            
+
             Y.Mock.expect(mock, {
                 method: 'toJSON',
                 returns: this.contentJson
@@ -140,7 +140,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                     that.contentJson, variables.content,
                     "The content should available in the template"
                 );
-                
+
                 return origTpl.apply(this, arguments);
             };
             this.view.render();

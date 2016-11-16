@@ -53,7 +53,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
             this._errorHandlingMethod = function () {
                 this._set('imageState', STATE_IMAGE_ERROR);
             };
-            
+
             this.after('contentStructChange', function (e) {
                 this._setConfirmButtonState(e.newVal);
                 if ( this.get('contentStruct') && this.get('contentStruct').content ) {
@@ -347,7 +347,7 @@ YUI.add('ez-universaldiscoveryselectedview', function (Y) {
             imageField : {
                 value: null
             },
-            
+
             /**
              * The variation identifier to use to display the image
              *

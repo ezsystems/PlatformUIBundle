@@ -1758,7 +1758,7 @@ YUI.add('ez-platformuiapp-tests', function (Y) {
 
         "Should deletes views handling middleware if routingEnabled attribute is false": function () {
             this.app.set('routingEnabled', false);
-            
+
             Y.Object.each(this.app.get('routes'), function(route) {
                 Y.Assert.areSame(
                     0,
