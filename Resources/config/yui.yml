@@ -194,6 +194,8 @@ system:
                         - 'ez-discoverybarview'
                         - 'ez-universaldiscoveryviewservice'
                         - 'ez-universaldiscoveryview'
+                        - 'ez-contentpeekviewservice'
+                        - 'ez-contentpeekview'
                         - 'ez-confirmboxviewservice'
                         - 'ez-confirmboxview'
                         - 'ez-languageselectionboxviewservice'
@@ -206,6 +208,7 @@ system:
                         - 'ez-registerlanguagehelpersplugin'
                         - 'ez-domstateplugin'
                         - 'ez-universaldiscoveryplugin'
+                        - 'ez-contentpeekplugin'
                         - 'ez-confirmboxplugin'
                         - 'ez-languageselectionboxplugin'
                         - 'ez-notificationhubplugin'
@@ -1244,6 +1247,9 @@ system:
                 ez-notificationhubplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/apps/plugins/ez-notificationhubplugin.js"
+                ez-contentpeekplugin:
+                    requires: ['plugin', 'base', 'ez-pluginregistry']
+                    path: "%ez_platformui.public_dir%/js/apps/plugins/ez-contentpeekplugin.js"
                 ez-confirmboxplugin:
                     requires: ['plugin', 'base', 'ez-pluginregistry']
                     path: "%ez_platformui.public_dir%/js/apps/plugins/ez-confirmboxplugin.js"

@@ -64,6 +64,13 @@ YUI.add('ez-platformuiapp', function (Y) {
                 container: '.ez-universaldiscovery-container',
                 hideClass: 'is-universaldiscovery-hidden',
             },
+            contentPeek: {
+                type: Y.eZ.ContentPeekView,
+                service: Y.eZ.ContentPeekViewService,
+                container: '.ez-contentpeek-container',
+                hideClass: 'is-contentpeek-hidden',
+                forceRendering: true,
+            },
             confirmBox: {
                 type: Y.eZ.ConfirmBoxView,
                 service: Y.eZ.ConfirmBoxViewService,
