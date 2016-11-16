@@ -3,7 +3,8 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-rawcontentview-tests', function (Y) {
-    var viewTest, destroyTest, eventTest, configFieldViewTest, incosistencyFieldsTest,
+    var viewTest, destroyTest, eventTest, configFieldViewTest, inconsistencyFieldsTest,
+        languageSwitcherViewTest, contentTypeChangeTest,
         Assert = Y.Assert, Mock = Y.Mock,
         _getContentTypeMock = function (fieldDefinitions, fieldGroups) {
             var mock = new Y.Test.Mock();
@@ -18,7 +19,24 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 returns: fieldGroups,
             });
             return mock;
+        },
+        _getContentMock = function (contentJson) {
+            var content = new Mock();
+
+            Mock.expect(content, {
+                method: 'toJSON',
+                returns: contentJson
+            });
+            Mock.expect(content, {
+                method: 'getField',
+                args: [Mock.Value.String],
+                run: Y.bind(function (id) {
+                    return this.fields[id];
+                }, this),
+            });
+            return content;
         };
+
 
     viewTest = new Y.Test.Case({
         name: "eZ Raw Content View test",
@@ -26,9 +44,6 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
         setUp: function () {
             this.contentJson = {};
             this.languageCode = "eng-GB";
-            this.currentVersion = {
-                "languageCodes": "eng-GB,ger-DE,pol-PL,fre-FR"
-            };
             this.fieldDefinitions = [{
                 fieldGroup: 'content',
                 fieldType: 'something',
@@ -41,8 +56,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             this.fieldGroups = [{fieldGroupName: 'content'}, {fieldGroupName: 'meta'}];
             this.fields = {'id1': {fieldValue: 'value1'}, 'id2': {fieldValue: 'value2'}};
 
-            this.currentVersion = this._getVersionMock();
-            this.location = this._getLocationMock();
+            this.location = {};
             this.content = this._getContentMock();
             this.contentType = this._getContentTypeMock();
             this.config = {};
@@ -52,7 +66,8 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 content: this.content,
                 contentType: this.contentType,
                 languageCode: this.languageCode,
-                config: this.config
+                config: this.config,
+                languageSwitcherView: new Y.View(),
             });
         },
 
@@ -60,52 +75,8 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             this.view.destroy();
         },
 
-        _getVersionMock: function () {
-            var mock = new Y.Test.Mock();
-
-            Y.Mock.expect(mock, {
-                method: 'getTranslationsList',
-            });
-            Y.Mock.expect(mock, {
-                method: 'get',
-                args: ['languageCodes'],
-                returns: this.currentVersion.languageCodes
-            });
-            return mock;
-        },
-
         _getContentMock: function () {
-            var mock = new Y.Test.Mock(), that = this;
-
-            Y.Mock.expect(mock, {
-                method: 'toJSON',
-                returns: this.contentJson
-            });
-            Y.Mock.expect(mock, {
-                method: 'getField',
-                args: [Y.Mock.Value.String],
-                run: function (id) {
-                    return that.fields[id];
-                }
-            });
-            Y.Mock.expect(mock, {
-                method: 'get',
-                args: ['currentVersion'],
-                returns: that.currentVersion
-            });
-            return mock;
-        },
-
-        _getLocationMock: function () {
-            var mock = new Y.Test.Mock(),
-                locationJSON = {};
-
-            Y.Mock.expect(mock, {
-                method: "toJSON",
-                args: [],
-                returns: locationJSON,
-            });
-            return mock;
+            return _getContentMock.call(this, this.contentJson);
         },
 
         _getContentTypeMock: function () {
@@ -166,10 +137,13 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
         "Should collapse/uncollapse the raw content view": function () {
             var container = this.view.get('container'),
-                groups = container.one('.ez-fieldgroups'),
-                title = container.one('.ez-raw-content-title'),
-                initialHeight = parseInt(groups.getComputedStyle('height'), 10),
+                groups, title, initialHeight,
                 that = this;
+
+            this.view.render();
+            groups = container.one('.ez-fieldgroups');
+            title = container.one('.ez-raw-content-title');
+            initialHeight = parseInt(groups.getComputedStyle('height'), 10);
 
             title.simulateGesture('tap', function () {
                 that.resume(function () {
@@ -205,9 +179,11 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
         "Should collapse/uncollapse the field groups": function () {
             var container = this.view.get('container'),
-                fieldGroups = container.all('.ez-fieldgroup'),
+                fieldGroups,
                 that = this;
 
+            this.view.render();
+            fieldGroups = container.all('.ez-fieldgroup');
             fieldGroups.each(function (group) {
                 var name = group.previous('a'),
                     initialHeight = parseInt(group.getComputedStyle('height'), 10);
@@ -257,37 +233,89 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 that.wait();
             });
         },
+    });
+
+    languageSwitcherViewTest = new Y.Test.Case({
+        name: 'eZ Raw Content View languageSwitcherView test',
+
+        setUp: function () {
+            Y.eZ.LanguageSwitcherView = Y.View;
+            this.view = new Y.eZ.RawContentView({
+                content: {},
+                location: {},
+                languageCode: 'fre-FR',
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            delete Y.eZ.LanguageSwitcherView;
+        },
 
         "Should instantiate LanguageSwitcherView with proper parameters": function () {
+            var switcher = this.view.get('languageSwitcherView');
+
             Y.Assert.areSame(
                 this.view.get('content'),
-                this.view.get('languageSwitcherView').get('content'),
-                'The content should have been set to languageSwitcherView'
+                switcher.get('content'),
+                'The content should have been set on languageSwitcherView'
             );
             Y.Assert.areSame(
                 this.view.get('location'),
-                this.view.get('languageSwitcherView').get('location'),
-                'The location should have been set to languageSwitcherView'
+                switcher.get('location'),
+                'The location should have been set on languageSwitcherView'
             );
             Y.Assert.areSame(
                 this.view.get('languageCode'),
-                this.view.get('languageSwitcherView').get('languageCode'),
-                'The location should have been set to languageSwitcherView'
+                switcher.get('languageCode'),
+                'The location should have been set on languageSwitcherView'
             );
-        }
+        },
+
+        "Should set the raw content view as a bubble target of the language switcher": function () {
+            var bubble = false,
+                event = 'whatever';
+
+            this.view.on('*:' + event, function () {
+                bubble = true;
+            });
+            this.view.get('languageSwitcherView').fire(event);
+
+            Assert.isTrue(
+                bubble,
+                "The raw content view should be a bubble target of the language switcher"
+            );
+        },
+
+        _testForwardAttribute: function (attrName, value) {
+            this.view.set(attrName, value);
+
+            Assert.areSame(
+                value, this.view.get('languageSwitcherView').get(attrName)
+            );
+        },
+
+        "Should receive the new value of the content attribute": function () {
+            this._testForwardAttribute('content', {});
+        },
+
+        "Should receive the new value of the location attribute": function () {
+            this._testForwardAttribute('location', {});
+        },
+
+        "Should receive the new value of the languageCode attribute": function () {
+            this._testForwardAttribute('languageCode', 'eng-GB');
+        },
     });
 
     eventTest = new Y.Test.Case({
-        name: "eZ Raw Content View test",
+        name: "eZ Raw Content View events test",
 
         setUp: function () {
             var that = this;
 
             this.contentJson = {};
             this.languageCode = "eng-GB";
-            this.currentVersion = {
-                "languageCodes": "eng-GB,ger-DE,pol-PL,fre-FR"
-            };
             this.fieldDefinitions = [{
                 fieldGroup: 'content',
                 fieldType: 'something',
@@ -300,8 +328,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             this.fieldGroups = [{fieldGroupName: 'content'}, {fieldGroupName: 'meta'}];
             this.fields = {'id1': {fieldValue: 'value1'}, 'id2': {fieldValue: 'value2'}};
 
-            this.currentVersion = this._getVersionMock();
-            this.location = this._getLocationMock();
+            this.location = {};
             this.content = this._getContentMock();
             this.contentType = this._getContentTypeMock();
             that = this;
@@ -311,14 +338,6 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                     something: 'hello'
                 }
             };
-            this.view = new Y.eZ.RawContentView({
-                container: '.container',
-                location: this.location,
-                content: this.content,
-                contentType: this.contentType,
-                languageCode: this.languageCode,
-                config: this.config
-            });
             this.eventFacade = {Something: 'something'};
             this.activeChangeCalled = 0;
             this.activeChangeNewVal = null;
@@ -345,6 +364,16 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                     })
                 );
             });
+
+            this.view = new Y.eZ.RawContentView({
+                container: '.container',
+                location: this.location,
+                content: this.content,
+                contentType: this.contentType,
+                languageCode: this.languageCode,
+                config: this.config,
+                languageSwitcherView: new Y.View(),
+            });
         },
 
         tearDown: function () {
@@ -358,54 +387,8 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             });
         },
 
-        _initializer :function () {},
-
-        _getVersionMock: function () {
-            var mock = new Y.Test.Mock();
-
-            Y.Mock.expect(mock, {
-                method: 'getTranslationsList',
-            });
-            Y.Mock.expect(mock, {
-                method: 'get',
-                args: ['languageCodes'],
-                returns: this.currentVersion.languageCodes
-            });
-            return mock;
-        },
-
         _getContentMock: function () {
-            var mock = new Y.Test.Mock(), that = this;
-
-            Y.Mock.expect(mock, {
-                method: 'toJSON',
-                returns: this.contentJson
-            });
-            Y.Mock.expect(mock, {
-                method: 'getField',
-                args: [Y.Mock.Value.String],
-                run: function (id) {
-                    return that.fields[id];
-                }
-            });
-            Y.Mock.expect(mock, {
-                method: 'get',
-                args: ['currentVersion'],
-                returns: that.currentVersion
-            });
-            return mock;
-        },
-
-        _getLocationMock: function () {
-            var mock = new Y.Test.Mock(),
-                locationJSON = {};
-
-            Y.Mock.expect(mock, {
-                method: "toJSON",
-                args: [],
-                returns: locationJSON,
-            });
-            return mock;
+            return _getContentMock.call(this, this.contentJson);
         },
 
         _getContentTypeMock: function () {
@@ -415,18 +398,6 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
         "Should catch the fieldView's events": function () {
             var eventCount = 0, that = this;
 
-            this.view = new Y.eZ.RawContentView({
-                container: '.container',
-                location: this.location,
-                content: this.content,
-                contentType: this.contentType,
-                languageCode: this.languageCode,
-                config: {
-                    fieldViews: {
-                        something: 'hello'
-                    }
-                },
-            });
             this.view.on('*:fireSomething', function(e) {
                 eventCount++;
                 Y.Assert.areSame(
@@ -446,20 +417,6 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
         },
 
         "Should forward the active flag to the field sub views": function () {
-
-            this.view = new Y.eZ.RawContentView({
-                container: '.container',
-                location: this.location,
-                content: this.content,
-                contentType: this.contentType,
-                languageCode: this.languageCode,
-                config: {
-                    fieldViews: {
-                        ezthing: 'hello'
-                    }
-                },
-            });
-
             this.view.set('active', true);
 
             Y.Assert.isTrue(
@@ -490,14 +447,16 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             }];
             this.fieldGroups = [{fieldGroupName: 'content'}, {fieldGroupName: 'meta'}];
             this.fields = {'id1': {fieldValue: 'value1'}, 'id2': {fieldValue: 'value2'}};
+        },
 
+        destroy: function () {
+            this.view.destroy();
         },
 
         "Should destroy the field views": function () {
             var somethingDestroyed = false,
                 somethingElseDestroyed = false,
-                content = new Y.Mock(),
-                that = this;
+                content = _getContentMock.call(this, {});
 
             Y.eZ.FieldView.registerFieldView('something', Y.Base.create('somethingView', Y.eZ.FieldView, [], {
                 destructor: function () {
@@ -510,14 +469,6 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 }
             }));
 
-            Y.Mock.expect(content, {
-                method: 'getField',
-                args: [Y.Mock.Value.String],
-                run: function (id) {
-                    return that.fields[id];
-                }
-            });
-
             this.view = new Y.eZ.RawContentView({
                 content: content,
                 contentType: _getContentTypeMock(this.fieldDefinitions, this.fieldGroups),
@@ -526,6 +477,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                         ezthing: 'hello'
                     }
                 },
+                languageSwitcherView: new Y.View(),
             });
             this.view.destroy();
 
@@ -541,8 +493,10 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
         name: "eZ Raw Content View config field view test",
 
         setUp: function () {
-            var content = new Mock(),
-                fields = {'id1': {fieldValue: 'value1'}};
+            var content;
+
+            this.fields = {'id1': {fieldValue: 'value1'}};
+            content = _getContentMock.call(this, {});
 
             this.fieldDefinitions = [{
                 fieldGroup: 'content',
@@ -552,13 +506,6 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             this.fieldGroups = [{fieldGroupName: 'content'}];
 
             this.config = {};
-            Mock.expect(content, {
-                method: 'getField',
-                args: [Mock.Value.String],
-                run: function (id) {
-                    return fields[id];
-                }
-            });
 
             Y.eZ.FieldView.registerFieldView('something', Y.Base.create('somethingView', Y.eZ.FieldView, [], {
                 initializer: function () {
@@ -570,6 +517,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 content: content,
                 contentType: _getContentTypeMock(this.fieldDefinitions, this.fieldGroups),
                 config: this.config,
+                languageSwitcherView: new Y.View(),
             });
         },
 
@@ -587,13 +535,11 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
         },
     });
 
-    incosistencyFieldsTest = new Y.Test.Case({
-        name: "eZ Raw Content View incosistency fields test",
+    inconsistencyFieldsTest = new Y.Test.Case({
+        name: "eZ Raw Content View inconsistency fields test",
 
         setUp: function () {
-            var fields = {};
-
-            this.content = new Mock();
+            this.fields = {};
             this.fieldType = 'something';
             this.fieldDefinitions = [{
                 fieldGroup: 'content',
@@ -602,13 +548,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             }];
             this.fieldGroups = [{fieldGroupName: 'content'}, {fieldGroupName: 'meta'}];
 
-            Mock.expect(this.content, {
-                method: 'getField',
-                args: [Mock.Value.String],
-                run: function (id) {
-                    return fields[id];
-                }
-            });
+            this.content = _getContentMock.call(this, {});
 
             Y.eZ.FieldView.registerFieldView(this.fieldType, Y.Base.create('somethingView', Y.eZ.FieldView, [], {
                 initializer: function () {
@@ -626,15 +566,84 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
             this.view = new Y.eZ.RawContentView({
                 content: this.content,
                 contentType: _getContentTypeMock(this.fieldDefinitions, this.fieldGroups),
-                config: {}
+                config: {},
+                languageSwitcherView: new Y.View(),
             });
         }
     });
 
+    contentTypeChangeTest = new Y.Test.Case({
+        name: "eZ Raw Content View contentTypeChange test",
+
+        setUp: function () {
+            this.fieldDefinitions = [{
+                fieldGroup: 'content',
+                fieldType: 'something',
+                identifier: 'id1',
+            }, {
+                fieldGroup: 'meta',
+                fieldType: 'somethingelse',
+                identifier: 'id2',
+            }];
+            this.fieldGroups = [{fieldGroupName: 'content'}, {fieldGroupName: 'meta'}];
+            this.fields = {'id1': {fieldValue: 'value1'}, 'id2': {fieldValue: 'value2'}};
+            this.fieldViewsInitialized = {};
+
+            this.location = {};
+            this.content = _getContentMock.call(this, {});
+            this.contentType = this._getContentTypeMock();
+
+            Y.Array.each(this.fieldDefinitions, function (def) {
+                Y.eZ.FieldView.registerFieldView(
+                    def.fieldType ,
+                    Y.Base.create(def.fieldType + 'TestView', Y.eZ.FieldView, [], {
+                        initializer: Y.bind(function () {
+                            this.fieldViewsInitialized[def.identifier] = true;
+                        }, this),
+                    })
+                );
+            }, this);
+
+            this.view = new Y.eZ.RawContentView({
+                container: '.container',
+                location: this.location,
+                content: this.content,
+                languageCode: this.languageCode,
+                languageSwitcherView: new Y.View(),
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+            Y.Array.each(this.fieldDefinitions, function (def) {
+                Y.eZ.FieldView.registerFieldView(
+                    def.fieldType , undefined
+                );
+            });
+        },
+
+        _getContentTypeMock: function () {
+            return _getContentTypeMock(this.fieldDefinitions, this.fieldGroups);
+        },
+
+        "Should initialize the field views": function () {
+            this.view.set('contentType', this.contentType);
+
+            this.fieldDefinitions.forEach(function (def) {
+                Assert.isTrue(
+                    this.fieldViewsInitialized[def.identifier],
+                    "The field views for the content type should have been initialized"
+                );
+            }, this);
+        },
+    });
+
     Y.Test.Runner.setName("eZ Raw Content View tests");
     Y.Test.Runner.add(viewTest);
+    Y.Test.Runner.add(languageSwitcherViewTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(destroyTest);
     Y.Test.Runner.add(configFieldViewTest);
-    Y.Test.Runner.add(incosistencyFieldsTest);
+    Y.Test.Runner.add(inconsistencyFieldsTest);
+    Y.Test.Runner.add(contentTypeChangeTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-rawcontentview']});
