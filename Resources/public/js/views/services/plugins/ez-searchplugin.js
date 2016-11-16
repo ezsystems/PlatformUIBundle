@@ -455,7 +455,7 @@ YUI.add('ez-searchplugin', function (Y) {
         Y.eZ.Plugin.Search, [
             'locationViewViewService', 'universalDiscoveryViewService',
             'contentEditViewService', 'contentCreateViewService',
-            'dashboardBlocksViewService'
+            'dashboardBlocksViewService', 'contentPeekViewService',
         ]
     );
 });
