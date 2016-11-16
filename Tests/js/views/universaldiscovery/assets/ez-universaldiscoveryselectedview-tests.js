@@ -29,7 +29,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 returns: translations,
             });
         };
-    
+
     renderTest = new Y.Test.Case({
         name: 'eZ Universal Discovery Selected render tests',
 
@@ -40,7 +40,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
         "Should use the template": function () {
             var templateCalled = false,
                 origTpl = this.view.template;
-            
+
             this.view.template = function () {
                 templateCalled = true;
                 return origTpl.apply(this, arguments);
@@ -55,7 +55,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
                 translations = ['LYO-69', 'FRA-fr'],
                 location, contentInfo, type, content, currentVersion,
                 tplLocation = {}, tplContentInfo = {}, tplType = {}, tplContent = {};
-                
+
             location = new Mock();
             content = new Mock();
             contentInfo = new Mock();
@@ -125,7 +125,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
 
         "Should pass false as the contentInfo, location and type if no content struct is set": function () {
             var origTpl = this.view.template;
-            
+
             this.view.template = function (variables) {
                 Assert.isFalse(variables.content, "The content variable should be false");
                 Assert.isFalse(variables.contentInfo, "The content variable should be false");
@@ -489,7 +489,7 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
 
         "Should add loaded image state class on the container when image is loaded": function () {
             var container = this.view.get('container');
-            
+
             this.view._set('imageState', "image-loading");
             Assert.isTrue(container.hasClass('is-state-image-loading'), 'Container should have "is-state-image-loading" class');
 
