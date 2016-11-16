@@ -14,6 +14,7 @@ system:
             # layout stylesheets
                 - 'bundles/ezplatformui/css/layout.css'
                 - 'bundles/ezplatformui/css/views/navigationhub.css'
+                - 'bundles/ezplatformui/css/views/contentpeek.css'
                 - 'bundles/ezplatformui/css/views/confirmbox.css'
                 - 'bundles/ezplatformui/css/views/languageselectionbox.css'
                 - 'bundles/ezplatformui/css/views/notificationhub.css'
@@ -115,6 +116,7 @@ system:
                 - 'bundles/ezplatformui/css/theme/views/error.css'
                 - 'bundles/ezplatformui/css/theme/views/loginform.css'
                 - 'bundles/ezplatformui/css/theme/views/bar.css'
+                - 'bundles/ezplatformui/css/theme/views/contentpeek.css'
                 - 'bundles/ezplatformui/css/theme/views/confirmbox.css'
                 - 'bundles/ezplatformui/css/theme/views/languageselectionbox.css'
                 - 'bundles/ezplatformui/css/theme/views/notificationhub.css'
