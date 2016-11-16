@@ -42,10 +42,23 @@
 }
 
 .ez-view-universaldiscoveryselectedview.is-state-no-image .ez-ud-selected-visual:before,
-.ez-view-universaldiscoveryselectedview.is-state-image-loading .ez-ud-selected-visual:before {
+.ez-view-universaldiscoveryselectedview.is-state-image-loading .ez-ud-selected-visual:before,
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-visual:after {
     display: block;
     text-align: center;
     line-height: 7rem;
+}
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-visual:after {
+    opacity: 0;
+    transition: all ease 0.3s;
+    color: #fff;
+    content: "\e607";
+}
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-visual:hover:after {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .ez-view-universaldiscoveryselectedview.is-state-image-loading .ez-ud-selected-visual:before {

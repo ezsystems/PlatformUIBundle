@@ -4,6 +4,7 @@
  */
 YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
     var renderTest, domEventTest, startAnimationTest, confirmButtonStateTest, imageTest,
+        openContentPeekTest,
         Assert = Y.Assert, Mock = Y.Mock,
         _configureMock = function (type, content, currentVersion, translations, imageFieldTab) {
             Mock.expect(type, {
@@ -510,10 +511,56 @@ YUI.add('ez-universaldiscoveryselectedview-tests', function (Y) {
         },
     });
 
+    openContentPeekTest = new Y.Test.Case({
+        name: 'eZ Universal Discovery Selected open content peek tests',
+
+        setUp: function () {
+            var contentType = new Mock(),
+                content = new Mock(),
+                location = new Mock(),
+                currentVersion = new Mock();
+
+            this.view = new Y.eZ.UniversalDiscoverySelectedView({
+                container: '.container',
+            });
+
+            _configureMock(contentType, content, currentVersion, ['fre-FR'], []);
+            Mock.expect(location, {
+                method: 'toJSON',
+                returns: {},
+            });
+            this.view.set('contentStruct', {
+                contentType: contentType,
+                content: content,
+                location: location,
+            });
+        },
+
+        tearDown: function () {
+            this.view.destroy();
+        },
+
+        "Should fire the content peek": function () {
+            var container = this.view.get('container'),
+                visual = container.one('.ez-ud-selected-visual');
+
+            container.once('tap', function (e) {
+                Assert.isTrue(
+                    !!e.prevented,
+                    "The tap event should have been prevented"
+                );
+            });
+            this.view.on('contentPeekOpen', this.next(function () {}));
+            visual.simulateGesture('tap');
+            this.wait();
+        },
+    });
+
     Y.Test.Runner.setName("eZ Universal Discovery Selected View tests");
     Y.Test.Runner.add(renderTest);
     Y.Test.Runner.add(domEventTest);
     Y.Test.Runner.add(startAnimationTest);
     Y.Test.Runner.add(confirmButtonStateTest);
     Y.Test.Runner.add(imageTest);
+    Y.Test.Runner.add(openContentPeekTest);
 }, '', {requires: ['test', 'node-style', 'node-event-simulate', 'ez-universaldiscoveryselectedview']});

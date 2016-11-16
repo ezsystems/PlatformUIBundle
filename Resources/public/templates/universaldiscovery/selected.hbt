@@ -4,7 +4,7 @@
         <div class="ez-ud-pane-content ez-asynchronousview">
             <p class="ez-ud-selected-contenttype ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}"> {{ translate_property contentType.names }}</p>
 
-            <div class="ez-ud-selected-visual ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}">
+            <div class="ez-ud-selected-visual ez-font-icon ez-contenttype-icon ez-contenttype-icon-{{ contentType.identifier }}">
                 <img alt="" class="ez-ud-selected-image">
             </div>
 
