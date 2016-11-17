@@ -601,10 +601,12 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
                 isRequired: false
             };
             this.field = {fieldValue: {destinationContentIds: [45, 42]}};
+            this.content = {};
 
             this.view = new Y.eZ.RelationListEditView({
                 field: this.field,
                 fieldDefinition: this.fieldDefinition,
+                content: this.content,
             });
         },
 
@@ -614,20 +616,25 @@ YUI.add('ez-relationlist-editview-tests', function (Y) {
         },
 
         "Should fire the loadObjectRelations event": function () {
-            var loadContentEvent = false,
-                that = this;
+            var loadContentEvent = false;
 
-            this.view.on('loadObjectRelations', function (e) {
+            this.view.on('loadObjectRelations', Y.bind(function (e) {
                 Y.Assert.areSame(
-                    that.fieldDefinitionIdentifier,
+                    this.fieldDefinitionIdentifier,
                     e.fieldDefinitionIdentifier,
                     "fieldDefinitionIdentifier is the same than the one in the field"
                 );
+                Y.Assert.areSame(
+                    this.content,
+                    e.content,
+                    "The content should be provided in the event facade"
+                );
+
                 loadContentEvent = true;
-            });
+            }, this));
             this.view.set('active', true);
 
-            Y.Assert.isTrue(loadContentEvent, "loadContentEvent should be called when changing active value");
+            Y.Assert.isTrue(loadContentEvent, "loadObjectRelations event should be fired when getting active");
         },
 
         "Should NOT fire the loadObjectRelations event if field is empty": function () {
