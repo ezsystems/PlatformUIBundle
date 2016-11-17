@@ -3,7 +3,7 @@
  * For full copyright and license information view LICENSE file distributed with this source code.
  */
 YUI.add('ez-rawcontentview-tests', function (Y) {
-    var viewTest, destroyTest, eventTest, configFieldViewTest, inconsistencyFieldsTest,
+    var viewTest, destroyTest, eventTest, fieldViewParametersTest, inconsistencyFieldsTest,
         languageSwitcherViewTest, contentTypeChangeTest,
         Assert = Y.Assert, Mock = Y.Mock,
         _getContentTypeMock = function (fieldDefinitions, fieldGroups) {
@@ -489,8 +489,8 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
         },
     });
 
-    configFieldViewTest= new Y.Test.Case({
-        name: "eZ Raw Content View config field view test",
+    fieldViewParametersTest= new Y.Test.Case({
+        name: "eZ Raw Content View field view parameters test",
 
         setUp: function () {
             var content;
@@ -509,7 +509,9 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
 
             Y.eZ.FieldView.registerFieldView('something', Y.Base.create('somethingView', Y.eZ.FieldView, [], {
                 initializer: function () {
-                    configFieldViewTest.fieldViewConfig = this.get('config');
+                    fieldViewParametersTest.fieldViewConfig = this.get('config');
+                    fieldViewParametersTest.fieldViewContent = this.get('content');
+                    fieldViewParametersTest.fieldViewContentType = this.get('contentType');
                 },
             }));
 
@@ -531,6 +533,22 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
                 this.config,
                 this.fieldViewConfig,
                 "The field view should receive the configration from the raw content view"
+            );
+        },
+
+        "Should pass the content to the field view": function () {
+            Assert.areSame(
+                this.view.get('content'),
+                this.fieldViewContent,
+                "The field view should receive the content from the raw content view"
+            );
+        },
+
+        "Should pass the contentType to the field view": function () {
+            Assert.areSame(
+                this.view.get('contentType'),
+                this.fieldViewContentType,
+                "The field view should receive the contentType from the raw contentType view"
             );
         },
     });
@@ -643,7 +661,7 @@ YUI.add('ez-rawcontentview-tests', function (Y) {
     Y.Test.Runner.add(languageSwitcherViewTest);
     Y.Test.Runner.add(eventTest);
     Y.Test.Runner.add(destroyTest);
-    Y.Test.Runner.add(configFieldViewTest);
+    Y.Test.Runner.add(fieldViewParametersTest);
     Y.Test.Runner.add(inconsistencyFieldsTest);
     Y.Test.Runner.add(contentTypeChangeTest);
 }, '', {requires: ['test', 'node-event-simulate', 'ez-rawcontentview']});
