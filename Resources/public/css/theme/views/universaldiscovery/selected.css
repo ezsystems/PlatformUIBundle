@@ -39,26 +39,40 @@
 
 .ez-view-universaldiscoveryselectedview .ez-ud-selected-visual {
     font-size: 4em;
+    background: #fff;
+    transition: background ease 0.3s;
 }
 
 .ez-view-universaldiscoveryselectedview.is-state-no-image .ez-ud-selected-visual:before,
-.ez-view-universaldiscoveryselectedview.is-state-image-loading .ez-ud-selected-visual:before,
-.ez-view-universaldiscoveryselectedview .ez-ud-selected-visual:after {
+.ez-view-universaldiscoveryselectedview.is-state-image-loading .ez-ud-selected-visual:before {
     display: block;
     text-align: center;
     line-height: 7rem;
 }
 
 .ez-view-universaldiscoveryselectedview .ez-ud-selected-visual:after {
+    text-align: center;
     opacity: 0;
     transition: all ease 0.3s;
     color: #fff;
     content: "\e607";
 }
 
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-visual:hover {
+    background: rgba(50, 50, 50, 0.4);
+}
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-visual .ez-ud-selected-image {
+    opacity: 1;
+    transition: opacity ease 0.3s;
+}
+
+.ez-view-universaldiscoveryselectedview .ez-ud-selected-visual:hover .ez-ud-selected-image {
+    opacity: 0.5;
+}
+
 .ez-view-universaldiscoveryselectedview .ez-ud-selected-visual:hover:after {
     opacity: 1;
-    background: rgba(0, 0, 0, 0.5);
 }
 
 .ez-view-universaldiscoveryselectedview.is-state-image-loading .ez-ud-selected-visual:before {
