@@ -120,6 +120,22 @@ YUI.add('ez-fieldview', function (Y) {
              * @type {}
              */
             field: {},
+
+            /**
+             * The Content item the field belongs to
+             *
+             * @attribute content
+             * @type {eZ.Content}
+             */
+            content: {},
+
+            /**
+             * The Content Type of the Content item
+             *
+             * @attribute contentType
+             * @type {eZ.ContentType}
+             */
+            contentType: {},
         },
 
         /**
