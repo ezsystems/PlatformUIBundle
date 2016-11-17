@@ -25,7 +25,7 @@
         filter: loaderFilter,
         modules: {
             "ez-objectrelationloadplugin": {
-                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry', 'ez-contentmodel'],
+                requires: ['ez-viewservicebaseplugin', 'ez-pluginregistry'],
                 fullpath: "../../../../../Resources/public/js/views/services/plugins/ez-objectrelationloadplugin.js"
             },
             "ez-viewservicebaseplugin": {
@@ -35,18 +35,6 @@
             "ez-pluginregistry": {
                 requires: ['array-extras'],
                 fullpath: "../../../../../Resources/public/js/services/ez-pluginregistry.js"
-            },
-            "ez-contentmodel": {
-                requires: ['ez-restmodel', 'array-extras', 'ez-contentinfo-base'],
-                fullpath: "../../../../../Resources/public/js/models/ez-contentmodel.js"
-            },
-            "ez-restmodel": {
-                requires: ['model'],
-                fullpath: "../../../../../Resources/public/js/models/ez-restmodel.js"
-            },
-            "ez-contentinfo-base": {
-                requires: ['ez-restmodel'],
-                fullpath: "../../../../../Resources/public/js/models/extensions/ez-contentinfo-base.js"
             },
         }
     }).use('ez-objectrelationloadplugin-tests', function (Y) {
