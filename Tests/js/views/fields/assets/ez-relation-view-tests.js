@@ -158,6 +158,7 @@ YUI.add('ez-relation-view-tests', function (Y) {
             this.view = new Y.eZ.RelationView({
                 fieldDefinition: this.fieldDefinition,
                 field: this.field,
+                content: {},
             });
         },
 
@@ -166,18 +167,22 @@ YUI.add('ez-relation-view-tests', function (Y) {
         },
 
         "Should fire the loadFieldRelatedContent when getting active": function () {
-            var loadContentEvent = false,
-                that = this;
+            var loadContentEvent = false;
 
-            this.view.once('loadFieldRelatedContent', function (e) {
+            this.view.once('loadFieldRelatedContent', Y.bind(function (e) {
                 loadContentEvent = true;
                 Assert.areSame(
-                    that.fieldDefinitionIdentifier,
+                    this.fieldDefinitionIdentifier,
                     e.fieldDefinitionIdentifier,
                     "fieldDefinitionIdentifier should be available in the event facade"
                 );
+                Assert.areSame(
+                    this.view.get('content'),
+                    e.content,
+                    "The loadFieldRelatedContent event facade should contain the content"
+                );
 
-            });
+            }, this));
             this.view.set('active', true);
 
             Assert.isTrue(
