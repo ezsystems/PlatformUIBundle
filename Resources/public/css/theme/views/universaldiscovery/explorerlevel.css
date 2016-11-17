@@ -1,0 +1,35 @@
+.ez-view-universaldiscoveryfinderexplorerlevelview {
+    background-color: #FFFFFF;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-item.is-parent-location:after {
+    content: "\E605";
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-item:hover {
+    background: #f0f0f0;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-explorer-level-item.is-selected {
+    background: #7AAABE;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-ud-finder-explorerlevel-content.is-loading {
+    background: #7AAABE;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-ud-finder-explorerlevel-loading:after {
+    color: #999;
+    font-size: 2em;
+    content: '\e61c';
+    animation: spin .7s infinite linear;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview .ez-ud-finder-explorerlevel-loading:after {
+    display: block;
+    text-align: center;
+}
+
+.ez-view-universaldiscoveryfinderexplorerlevelview.is-loading .ez-ud-finder-explorerlevel-loading:after {
+    padding: 0.2em;
+}

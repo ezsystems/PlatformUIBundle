@@ -600,10 +600,31 @@ system:
                         - 'ez-universaldiscoverymethodbaseview'
                         - 'universaldiscoveryfinderview-ez-template'
                         - 'ez-universaldiscoveryselectedview'
+                        - 'ez-universaldiscoveryfinderexplorerview'
                     path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoveryfinderview.js"
                 universaldiscoveryfinderview-ez-template:
                     type: 'template'
                     path: "%ez_platformui.public_dir%/templates/universaldiscovery/finder.hbt"
+                ez-universaldiscoveryfinderexplorerview:
+                    requires:
+                        - 'ez-universaldiscoverymethodbaseview'
+                        - 'ez-universaldiscoveryfinderexplorerlevelview'
+                        - 'ez-searchplugin'
+                        - 'universaldiscoveryfinderexplorerview-ez-template'
+                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoveryfinderexplorerview.js"
+                universaldiscoveryfinderexplorerview-ez-template:
+                    type: 'template'
+                    path: "%ez_platformui.public_dir%/templates/universaldiscovery/explorer.hbt"
+                ez-universaldiscoveryfinderexplorerlevelview:
+                    requires:
+                        - 'ez-universaldiscoverymethodbaseview'
+                        - 'ez-asynchronousview'
+                        - 'event-tap'
+                        - 'universaldiscoveryfinderexplorerlevelview-ez-template'
+                    path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoveryfinderexplorerlevelview.js"
+                universaldiscoveryfinderexplorerlevelview-ez-template:
+                    type: 'template'
+                    path: "%ez_platformui.public_dir%/templates/universaldiscovery/explorerlevel.hbt"
                 ez-universaldiscoveryselectedview:
                     requires: ['event-tap', 'ez-templatebasedview', 'universaldiscoveryselectedview-ez-template', 'ez-asynchronousview', 'array-extras']
                     path: "%ez_platformui.public_dir%/js/views/universaldiscovery/ez-universaldiscoveryselectedview.js"

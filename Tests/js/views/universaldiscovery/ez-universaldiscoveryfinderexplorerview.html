@@ -2,17 +2,16 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>eZ Universal Discovery Finder view tests</title>
+    <title>eZ Universal Discovery Finder Explorer view tests</title>
 </head>
 <body>
 
-<script type="text/x-handlebars-template" id="universaldiscoveryfinderview-ez-template">
-    <div class="ez-ud-finder-selected"></div>
-    <div class="ez-ud-finder-explorer"></div>
+<script type="text/x-handlebars-template" id="universaldiscoveryfinderexplorerview-ez-template">
+    <div class="ez-ud-finder-explorerlevel"></div>
 </script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
-<script type="text/javascript" src="./assets/ez-universaldiscoveryfinderview-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-universaldiscoveryfinderexplorerview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
             loaderFilter;
@@ -26,12 +25,12 @@
     }
 
     YUI({
-        coverage: ['ez-universaldiscoveryfinderview'],
+        coverage: ['ez-universaldiscoveryfinderexplorerview'],
         filter: loaderFilter,
         modules: {
-            "ez-universaldiscoveryfinderview": {
+            "ez-universaldiscoveryfinderexplorerview": {
                 requires: ['ez-universaldiscoverymethodbaseview'],
-                fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoveryfinderview.js"
+                fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoveryfinderexplorerview.js"
             },
             "ez-universaldiscoverymethodbaseview": {
                 requires: ['ez-templatebasedview', 'event-tap'],
@@ -50,7 +49,7 @@
                 fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
         }
-    }).use('ez-universaldiscoveryfinderview-tests', function (Y) {
+    }).use('ez-universaldiscoveryfinderexplorerview-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>

@@ -1,0 +1,44 @@
+.ez-view-universaldiscoveryfinderview,
+.ez-view-universaldiscoveryfinderview .ez-ud-finder-selected {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.ez-view-universaldiscoveryfinderview .ez-ud-finder-explorer,
+.ez-view-universaldiscoveryfinderview .ez-ud-finder-selected {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1 1 auto;
+}
+
+.ez-view-universaldiscoveryfinderview .ez-ud-browse-selected {
+    margin-left: 1em;
+}
+
+.ez-view-universaldiscoveryfinderview .ez-ud-finder-explorer {
+    width: 70%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+
+    overflow: auto;
+    white-space: nowrap;
+}

@@ -22,9 +22,9 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
      */
     Y.eZ.UniversalDiscoveryFinderView = Y.Base.create('universalDiscoveryFinderView', Y.eZ.UniversalDiscoveryMethodBaseView, [], {
         initializer: function () {
-
             this.after(['multipleChange', 'isSelectableChange'], this._setSelectedViewAttrs);
             this.after('visibleChange', this._unselectContent);
+            this.on('*:explorerNavigate', this.selectContent);
         },
 
         /**
@@ -38,6 +38,10 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
                 this.get('selectedView').reset();
                 return;
             }
+            if ( name === 'finderExplorerView' ) {
+                this.get('finderExplorerView').reset();
+                return;
+            }
             this.constructor.superclass.reset.apply(this, arguments);
         },
 
@@ -47,6 +51,9 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
             container.setHTML(this.template());
             container.one('.ez-ud-finder-selected').append(
                 this.get('selectedView').render().get('container')
+            );
+            container.one('.ez-ud-finder-explorer').append(
+                this.get('finderExplorerView').render().get('container')
             );
             return this;
         },
@@ -78,21 +85,25 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
          * Public method to select a content
          *
          * @method selectContent
-         * @param {Object} struct the node data
+         * @param {eventFacade} e
+         * @param {eventFacade} e.data the node data
          */
-        selectContent: function (struct) {
-            this._fireSelectContent(struct);
-            this.get('selectedView').set('contentStruct', struct);
+        selectContent: function (e) {
+            this._fireSelectContent(e.data);
+            this.get('selectedView').set('contentStruct', e.data);
         },
 
         /**
          * `visibleChange` event handler. It makes to reset the current
-         * selection when the browse method is hidden/showed
+         * selection when the explorer method is hidden/showed
          *
          * @method _unselectContent
          * @protected
          */
         _unselectContent: function () {
+            if (this.get('visible')) {
+                this.get('finderExplorerView').wakeUp();
+            }
             this._fireSelectContent(null);
             this.get('selectedView').set('contentStruct', null);
         },
@@ -141,6 +152,23 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
             },
 
             /**
+             * Holds the virtual root location
+             *
+             * @attribute virtualRootLocation
+             * @type {eZ.Location}
+             */
+            virtualRootLocation: {
+                valueFn: function () {
+                    return new Y.eZ.Location({
+                        id: '/api/ezp/v2/content/locations/1',
+                        locationId: 1,
+                        sortField: 'SECTION',
+                        sortOrder: 'ASC',
+                    });
+                },
+            },
+
+            /**
              * Holds the selected view that displays the currently selected
              * content (if any)
              *
@@ -167,6 +195,7 @@ YUI.add('ez-universaldiscoveryfinderview', function (Y) {
                 valueFn: function () {
                     return new Y.eZ.UniversalDiscoveryFinderExplorerView({
                         bubbleTargets: this,
+                        startingLocation: this.get('virtualRootLocation'),
                     });
                 },
             },

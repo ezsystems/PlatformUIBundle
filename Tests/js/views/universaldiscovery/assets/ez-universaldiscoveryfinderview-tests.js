@@ -12,6 +12,7 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
 
         setUp: function () {
             this.selectedView = new Mock();
+            this.finderExplorerView = new Mock();
             Mock.expect(this.selectedView, {
                 method: 'reset',
             });
@@ -19,8 +20,13 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
                 method: 'setAttrs',
                 args: [Mock.Value.Object]
             });
+            Mock.expect(this.finderExplorerView, {
+                method: 'reset',
+            });
             this.view = new Y.eZ.UniversalDiscoveryFinderView({
                 selectedView: this.selectedView,
+                finderExplorerView: this.finderExplorerView,
+                virtualRootLocation: {}
             });
         },
 
@@ -28,6 +34,7 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             this.view.destroy();
             delete this.view;
             delete this.selectedView;
+            delete this.finderExplorerView;
         },
 
         "Should keep and reset the selectedView": function () {
@@ -36,6 +43,15 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             Assert.areSame(
                 this.selectedView, this.view.get('selectedView'),
                 "The selectedView should be kept"
+            );
+        },
+
+        "Should keep and reset the finderExplorerView": function () {
+            this.view.reset();
+            Mock.verify(this.finderExplorerView);
+            Assert.areSame(
+                this.finderExplorerView, this.view.get('finderExplorerView'),
+                "The finderExplorerView should be kept"
             );
         },
 
@@ -53,6 +69,7 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
                 "The identifier should be kept intact"
             );
             Mock.verify(this.selectedView);
+            Mock.verify(this.finderExplorerView);
         },
     });
 
@@ -61,6 +78,8 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
 
         setUp: function () {
             Y.eZ.UniversalDiscoverySelectedView = Y.Base.create('selectedView', Y.View, [], {});
+            Y.eZ.UniversalDiscoveryFinderExplorerView = Y.Base.create('finderExplorerView', Y.View, [], {});
+            Y.eZ.Location = Y.Base.create('locationModel', Y.Model, [], {});
             this.view = new Y.eZ.UniversalDiscoveryFinderView();
         },
 
@@ -68,12 +87,27 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             this.view.destroy();
             delete this.view;
             delete Y.eZ.UniversalDiscoverySelectedView;
+            delete Y.eZ.UniversalDiscoveryFinderExplorerView;
         },
 
         "selectedView should be an instance of eZ.UniversalDiscoverySelectedView": function () {
             Assert.isInstanceOf(
                 Y.eZ.UniversalDiscoverySelectedView, this.view.get('selectedView'),
                 "The selectedView attribute value should an instance of eZ.UniversalDiscoverySelectedView"
+            );
+        },
+
+        "finderExplorerView should be an instance of eZ.UniversalDiscoveryFinderExplorerView": function () {
+            Assert.isInstanceOf(
+                Y.eZ.UniversalDiscoveryFinderExplorerView, this.view.get('finderExplorerView'),
+                "The finderExplorerView attribute value should an instance of eZ.UniversalDiscoveryFinderExplorerView"
+            );
+        },
+
+        "finderExplorerView's startingLocation should be an instance of eZ.Location": function () {
+            Assert.isInstanceOf(
+                Y.eZ.Location, this.view.get('finderExplorerView').get('startingLocation'),
+                "The finderExplorerView's startingLocation attribute value should an instance of eZ.Location"
             );
         },
 
@@ -87,10 +121,28 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             Assert.isTrue(bubble, "The event should bubble to the finder view");
         },
 
+        "Should be a bubble target of the finderExplorerView": function () {
+            var bubble = false;
+
+            this.view.on('*:whatever', function () {
+                bubble = true;
+            });
+            this.view.get('finderExplorerView').fire('whatever');
+            Assert.isTrue(bubble, "The event should bubble to the finder view");
+        },
+
         "Should set the selectedView's addConfirmButton": function () {
             Assert.isFalse(
                 this.view.get('selectedView').get('addConfirmButton'),
                 "The selectedView's addConfirmButton flag should be false"
+            );
+        },
+
+        "Should set the finderExplorerView's startingLocation": function () {
+            Assert.areSame(
+                this.view.get('finderExplorerView').get('startingLocation'),
+                this.view.get('virtualRootLocation'),
+                "The finderExplorerView's startingLocation should be set"
             );
         },
     });
@@ -108,7 +160,15 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
                     return this;
                 },
             });
-            this.view = new Y.eZ.UniversalDiscoveryFinderView();
+            this.finderExplorerViewRendered = false;
+            Y.eZ.UniversalDiscoveryFinderExplorerView = Y.Base.create('finderExplorerView', Y.View, [], {
+                render: function () {
+                    that.finderExplorerViewRendered = true;
+                    return this;
+                },
+            });
+
+            this.view = new Y.eZ.UniversalDiscoveryFinderView({virtualRootLocation: {}});
         },
 
         tearDown: function () {
@@ -149,6 +209,24 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
                 "The selectedView should be added in the ez-ud-finder-selected element"
             );
         },
+
+        "Should render the finderExplorerView": function () {
+            var container = this.view.get('container'),
+                finderExplorerViewContainer = this.view.get('finderExplorerView').get('container');
+
+            this.view.render();
+
+            Assert.isTrue(this.finderExplorerViewRendered, "The finderExplorerView should have been rendered");
+
+            Assert.isTrue(
+                container.contains(finderExplorerViewContainer),
+                "The rendered selectedView should be added to the finder view"
+            );
+            Assert.isTrue(
+                finderExplorerViewContainer.get('parentNode').hasClass('ez-ud-finder-explorer'),
+                "The selectedView should be added in the ez-ud-finder-explorer element"
+            );
+        },
     });
 
     unselectTest = new Y.Test.Case({
@@ -156,8 +234,11 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
 
         setUp: function () {
             this.selectedView = new Mock();
+            this.finderExplorerView = new Mock();
             this.view = new Y.eZ.UniversalDiscoveryFinderView({
                 selectedView: this.selectedView,
+                finderExplorerView: this.finderExplorerView,
+                virtualRootLocation: {},
                 visible: true,
             });
         },
@@ -166,6 +247,7 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             this.view.destroy();
             delete this.view;
             delete this.selectedView;
+            delete this.finderExplorerView;
         },
 
         "Should fire the selectContent with a null selection": function () {
@@ -190,6 +272,21 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             );
             Mock.verify(this.selectedView);
         },
+
+
+        "Should wake up finder explorer view when view get visible ": function () {
+            Mock.expect(this.finderExplorerView, {
+                method: 'wakeUp',
+            });
+            Mock.expect(this.selectedView, {
+                method: 'set',
+                args: ['contentStruct', null],
+            });
+            this.view.set('visible', false);
+            this.view.set('visible', true);
+
+            Mock.verify(this.finderExplorerView);
+        },
     });
 
     multipleUpdateTest = new Y.Test.Case({
@@ -199,6 +296,8 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             this.selectedView = new Mock();
             this.view = new Y.eZ.UniversalDiscoveryFinderView({
                 selectedView: this.selectedView,
+                finderExplorerView: this.finderExplorerView,
+                virtualRootLocation: {},
                 treeView: {},
             });
         },
@@ -207,6 +306,7 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             this.view.destroy();
             delete this.view;
             delete this.selectedView;
+            delete this.finderExplorerView;
         },
 
         "Should forward the multiple value to the selectedView": function () {
@@ -247,12 +347,15 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
     });
 
     selectContentTest = new Y.Test.Case({
-        name: 'eZ Universal Discovery Browse select content test',
+        name: 'eZ Universal Discovery finder select content test',
 
         setUp: function () {
             this.selectedView = new Mock();
+            this.finderExplorerView = new Mock();
             this.view = new Y.eZ.UniversalDiscoveryFinderView({
                 selectedView: this.selectedView,
+                finderExplorerView: this.finderExplorerView,
+                virtualRootLocation: {},
                 visible: true,
             });
         },
@@ -261,26 +364,27 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             this.view.destroy();
             delete this.view;
             delete this.selectedView;
+            delete this.finderExplorerView;
         },
 
         "Should fire the selectContent event": function () {
             var selectContent = false,
-                struct = {id: 'struct'};
+                eventFacade = {data: {id: 'struct'}};
 
             Mock.expect(this.selectedView, {
                 method: 'set',
-                args: ['contentStruct', struct],
+                args: ['contentStruct', eventFacade.data],
             });
             this.view.on('selectContent', function (e) {
                 selectContent = true;
                 Assert.areSame(
-                    struct,
+                    eventFacade.data,
                     e.selection,
                     "The selectContent event facade should contain the struct"
                 );
             });
 
-            this.view.selectContent(struct);
+            this.view.selectContent(eventFacade);
             Assert.isTrue(
                 selectContent,
                 "The selectContent event should have been fired"
@@ -291,12 +395,14 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
     });
 
     onUnselectContentTest = new Y.Test.Case({
-        name: 'eZ Universal Discovery Browse onUnselectContentTest test',
+        name: 'eZ Universal Discovery finder onUnselectContentTest test',
 
         setUp: function () {
             this.selectedView = new Mock();
             this.view = new Y.eZ.UniversalDiscoveryFinderView({
                 selectedView: this.selectedView,
+                finderExplorerView: this.finderExplorerView,
+                virtualRootLocation: {},
             });
         },
 
@@ -304,6 +410,7 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
             this.view.destroy();
             delete this.view;
             delete this.selectedView;
+            delete this.finderExplorerView;
         },
 
         "Should ignore an empty selectedView": function () {
@@ -359,7 +466,6 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
         },
     });
 
-
     Y.Test.Runner.setName("eZ Universal Discovery Finder View tests");
     Y.Test.Runner.add(resetTest);
     Y.Test.Runner.add(defaultSubViewTest);
@@ -368,4 +474,4 @@ YUI.add('ez-universaldiscoveryfinderview-tests', function (Y) {
     Y.Test.Runner.add(multipleUpdateTest);
     Y.Test.Runner.add(selectContentTest);
     Y.Test.Runner.add(onUnselectContentTest);
-}, '', {requires: ['test', 'view', 'ez-universaldiscoveryfinderview']});
+}, '', {requires: ['test', 'view', 'model', 'ez-universaldiscoveryfinderview']});

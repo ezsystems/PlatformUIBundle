@@ -2,17 +2,25 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>eZ Universal Discovery Finder view tests</title>
+    <title>eZ Universal Discovery Finder Explorer Level view tests</title>
 </head>
 <body>
+<div class="container"></div>
 
-<script type="text/x-handlebars-template" id="universaldiscoveryfinderview-ez-template">
-    <div class="ez-ud-finder-selected"></div>
-    <div class="ez-ud-finder-explorer"></div>
+<script type="text/x-handlebars-template" id="universaldiscoveryfinderexplorerlevelview-ez-template">
+    <div class="ez-ud-finder-explorerlevel-content"></div>
+    <button class="ez-asynchronousview-retry ez-button ez-font-icon pure-button">retry</button>
+    <ul>
+        {{#each items}}
+        <li class="ez-explorer-level-item ez-font-icon {{#if selectedLocationId}} is-selected{{/if}}{{#if location.childCount}} is-parent-location{{/if}}" data-location-id="{{location.locationId}}">
+            <a>{{location.locationId}}</a>
+        </li>
+        {{/each}}
+    </ul>
 </script>
 
 <script type="text/javascript" src="../../../../Resources/public/vendors/yui3/build/yui/yui.js"></script>
-<script type="text/javascript" src="./assets/ez-universaldiscoveryfinderview-tests.js"></script>
+<script type="text/javascript" src="./assets/ez-universaldiscoveryfinderexplorerlevelview-tests.js"></script>
 <script>
     var filter = (window.location.search.match(/[?&]filter=([^&]+)/) || [])[1] || 'raw',
             loaderFilter;
@@ -26,12 +34,16 @@
     }
 
     YUI({
-        coverage: ['ez-universaldiscoveryfinderview'],
+        coverage: ['ez-universaldiscoveryfinderexplorerlevelview'],
         filter: loaderFilter,
         modules: {
-            "ez-universaldiscoveryfinderview": {
-                requires: ['ez-universaldiscoverymethodbaseview'],
-                fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoveryfinderview.js"
+            "ez-universaldiscoveryfinderexplorerlevelview": {
+                requires: ['ez-universaldiscoverymethodbaseview', 'ez-asynchronousview'],
+                fullpath: "../../../../Resources/public/js/views/universaldiscovery/ez-universaldiscoveryfinderexplorerlevelview.js"
+            },
+            "ez-asynchronousview": {
+                requires: ['view', 'event-tap'],
+                fullpath: "../../../../Resources/public/js/extensions/ez-asynchronousview.js"
             },
             "ez-universaldiscoverymethodbaseview": {
                 requires: ['ez-templatebasedview', 'event-tap'],
@@ -50,7 +62,7 @@
                 fullpath: "../../../../Resources/public/js/services/ez-pluginregistry.js"
             },
         }
-    }).use('ez-universaldiscoveryfinderview-tests', function (Y) {
+    }).use('ez-universaldiscoveryfinderexplorerlevelview-tests', function (Y) {
         Y.Test.Runner.run();
     });
 </script>
